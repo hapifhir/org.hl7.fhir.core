@@ -913,7 +913,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public ValidationResult validateCode(ValidationOptions options, String system, String version, String code, String display, ValueSet vs) {
     assert options != null;
     Coding c = new Coding(system, version, code, display);
-    return validateCode(options, "code", c, vs);
+    ValidationResult ret = validateCode(options, "$", c, vs);
+    ret.trimPath("$");
+    return ret;
   }
 
   @Override

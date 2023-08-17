@@ -135,21 +135,21 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       changedContentInterpretation = updateState(state, changedContentInterpretation);
     }
 
-    public void updatedMetadataState(boolean state, List<String> chMetadataFields) {
-      changedMetadata = updateState(state ? ChangeAnalysisState.Changed : ChangeAnalysisState.NotChanged, changedMetadata);
+    public void updatedMetadataState(boolean changed, List<String> chMetadataFields) {
+      changedMetadata = updateState(changed ? ChangeAnalysisState.Changed : ChangeAnalysisState.NotChanged, changedMetadata);
       this.chMetadataFields = chMetadataFields;
     }
 
-    public void updateDefinitionsState(boolean state) {
-      changedDefinitions = updateState(state ? ChangeAnalysisState.Changed : ChangeAnalysisState.NotChanged, changedDefinitions);
+    public void updateDefinitionsState(boolean changed) {
+      changedDefinitions = updateState(changed ? ChangeAnalysisState.Changed : ChangeAnalysisState.NotChanged, changedDefinitions);
     }
 
-    public void updateContentState(boolean state) {
-      changedContent = updateState(state ? ChangeAnalysisState.Changed : ChangeAnalysisState.NotChanged, changedContent);
+    public void updateContentState(boolean changed) {
+      changedContent = updateState(changed ? ChangeAnalysisState.Changed : ChangeAnalysisState.NotChanged, changedContent);
     }
 
-    public void updateContentInterpretationState(boolean state) {
-      changedContentInterpretation = updateState(state ? ChangeAnalysisState.Changed : ChangeAnalysisState.NotChanged, changedContentInterpretation);
+    public void updateContentInterpretationState(boolean changed) {
+      changedContentInterpretation = updateState(changed ? ChangeAnalysisState.Changed : ChangeAnalysisState.NotChanged, changedContentInterpretation);
     }
 
     public boolean anyUpdates() {
@@ -236,59 +236,74 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
     public boolean noUpdates() {
       return !(changedMetadata.noteable() || changedDefinitions.noteable() || !changedContent.noteable() || !changedContentInterpretation.noteable());
     }
+
+    public boolean noChangeOtherThanMetadata(String[] metadataFields) {
+      if (changedDefinitions.noteable() || changedContent.noteable() || changedContentInterpretation.noteable()) {
+        return false;
+      }
+      if (!changedMetadata.noteable()) {
+        return true;
+      }
+      for (String s : this.chMetadataFields) {
+        if (!Utilities.existsInList(s, metadataFields)) {
+          return false;
+        }
+      }
+      return true;
+    }
   }
 
   public CanonicalResourceComparer(ComparisonSession session) {
     super(session);
   }
 
-  protected boolean compareMetadata(CanonicalResource left, CanonicalResource right, Map<String, StructuralMatch<String>> comp, CanonicalResourceComparison<? extends CanonicalResource> res, List<String> changes) {
+  protected boolean compareMetadata(CanonicalResource left, CanonicalResource right, Map<String, StructuralMatch<String>> comp, CanonicalResourceComparison<? extends CanonicalResource> res, List<String> changes, Base parent, String version) {
     var changed = false;
-    if (comparePrimitives("url", left.getUrlElement(), right.getUrlElement(), comp, IssueSeverity.ERROR, res)) {
+    if (comparePrimitivesWithTracking("url", left.getUrlElement(), right.getUrlElement(), comp, IssueSeverity.ERROR, res, parent, version)) {
       changed = true;
       changes.add("url");
     }
     if (session.getForVersion() == null) {
-      if (comparePrimitives("version", left.getVersionElement(), right.getVersionElement(), comp, IssueSeverity.ERROR, res)) {
+      if (comparePrimitivesWithTracking("version", left.getVersionElement(), right.getVersionElement(), comp, IssueSeverity.ERROR, res, parent, version)) {
         changed = true;
         changes.add("version");
       }
     }
-    if (comparePrimitives("name", left.getNameElement(), right.getNameElement(), comp, IssueSeverity.INFORMATION, res)) {
+    if (comparePrimitivesWithTracking("name", left.getNameElement(), right.getNameElement(), comp, IssueSeverity.INFORMATION, res, parent, version)) {
       changed = true;
       changes.add("name");
     }
-    if (comparePrimitives("title", left.getTitleElement(), right.getTitleElement(), comp, IssueSeverity.INFORMATION, res)) {
+    if (comparePrimitivesWithTracking("title", left.getTitleElement(), right.getTitleElement(), comp, IssueSeverity.INFORMATION, res, parent, version)) {
       changed = true;
       changes.add("title");
     }
-    if (comparePrimitives("status", left.getStatusElement(), right.getStatusElement(), comp, IssueSeverity.INFORMATION, res)) {
+    if (comparePrimitivesWithTracking("status", left.getStatusElement(), right.getStatusElement(), comp, IssueSeverity.INFORMATION, res, parent, version)) {
       changed = true;
       changes.add("status");
     }
-    if (comparePrimitives("experimental", left.getExperimentalElement(), right.getExperimentalElement(), comp, IssueSeverity.WARNING, res)) {
+    if (comparePrimitivesWithTracking("experimental", left.getExperimentalElement(), right.getExperimentalElement(), comp, IssueSeverity.WARNING, res, parent, version)) {
       changed = true;
       changes.add("experimental");
     }
     if (session.getForVersion() == null) {
-      if (comparePrimitives("date", left.getDateElement(), right.getDateElement(), comp, IssueSeverity.INFORMATION, res)) {
+      if (comparePrimitivesWithTracking("date", left.getDateElement(), right.getDateElement(), comp, IssueSeverity.INFORMATION, res, parent, version)) {
         changed = true;
         changes.add("date");
       }
     }
-    if (comparePrimitives("publisher", left.getPublisherElement(), right.getPublisherElement(), comp, IssueSeverity.INFORMATION, res)) {
+    if (comparePrimitivesWithTracking("publisher", left.getPublisherElement(), right.getPublisherElement(), comp, IssueSeverity.INFORMATION, res, parent, version)) {
       changed = true;
       changes.add("publisher");
     }
-    if (comparePrimitives("description", left.getDescriptionElement(), right.getDescriptionElement(), comp, IssueSeverity.NULL, res)) {
+    if (comparePrimitivesWithTracking("description", left.getDescriptionElement(), right.getDescriptionElement(), comp, IssueSeverity.NULL, res, parent, version)) {
       changed = true;
       changes.add("description");
     }
-    if (comparePrimitives("purpose", left.getPurposeElement(), right.getPurposeElement(), comp, IssueSeverity.NULL, res)) {
+    if (comparePrimitivesWithTracking("purpose", left.getPurposeElement(), right.getPurposeElement(), comp, IssueSeverity.NULL, res, parent, version)) {
       changed = true;
       changes.add("purpose");
     }
-    if (comparePrimitives("copyright", left.getCopyrightElement(), right.getCopyrightElement(), comp, IssueSeverity.INFORMATION, res)) {
+    if (comparePrimitivesWithTracking("copyright", left.getCopyrightElement(), right.getCopyrightElement(), comp, IssueSeverity.INFORMATION, res, parent, version)) {
       changed = true;
       changes.add("copyright");
     }

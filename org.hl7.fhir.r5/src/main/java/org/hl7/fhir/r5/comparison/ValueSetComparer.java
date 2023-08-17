@@ -125,7 +125,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
     vs1.setDate(new Date());
    
     List<String> chMetadata = new ArrayList<>();
-    var ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata);
+    var ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata, right, session.getForVersion());
     var def = false;
     if (comparePrimitives("immutable", left.getImmutableElement(), right.getImmutableElement(), res.getMetadata(), IssueSeverity.WARNING, res)) {
       ch = true;

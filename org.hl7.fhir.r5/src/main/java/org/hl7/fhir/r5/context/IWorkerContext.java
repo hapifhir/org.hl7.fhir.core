@@ -323,6 +323,22 @@ public interface IWorkerContext {
       
     }
 
+    public void trimPath(String prefix) {
+      if (issues != null) {
+        for (OperationOutcomeIssueComponent iss : issues) {
+          for (int i = iss.getLocation().size() -1; i >= 0; i--) {
+            var s = iss.getLocation().get(i).primitiveValue();
+            if (prefix.equals(s)) {
+              iss.getLocation().remove(i);
+            } else if (s.startsWith(prefix+".")) {
+              iss.getLocation().get(i).setValueAsString(s.substring(prefix.length()+1));                
+            }            
+          }
+        }
+      }      
+      
+    }
+
   }
 
   public class CodingValidationRequest {

@@ -10,7 +10,7 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.comparison.ProfileComparer.ProfileComparison;
+import org.hl7.fhir.r5.comparison.StructureDefinitionComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.BackboneElement;
@@ -114,7 +114,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     cs1.setStatus(left.getStatus());
     cs1.setDate(new Date());
 
-    compareMetadata(left, right, res.getMetadata(), res, new ArrayList<>());
+    compareMetadata(left, right, res.getMetadata(), res, new ArrayList<>(), right, session.getForVersion());
     comparePrimitives("kind", left.getKindElement(), right.getKindElement(), res.getMetadata(), IssueSeverity.ERROR, res);
     compareCanonicalList("instantiates", left.getInstantiates(), right.getInstantiates(), res.getMetadata(), IssueSeverity.ERROR, res, cs.getInstantiates(), cs1.getInstantiates());
     compareCanonicalList("imports", left.getImports(), right.getImports(), res.getMetadata(), IssueSeverity.ERROR, res, cs.getImports(), cs1.getImports());
