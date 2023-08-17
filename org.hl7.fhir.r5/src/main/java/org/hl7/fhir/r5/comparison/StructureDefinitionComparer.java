@@ -392,7 +392,6 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
 
     boolean def = false;
     boolean ch = false;
-    System.out.println(left.getId());
     
     // not allowed to be different:   
 //    ruleEqual(comp, res, left.current().getDefaultValue(), right.current().getDefaultValue(), "defaultValue", path);

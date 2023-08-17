@@ -124,4 +124,17 @@ public class VersionComparisonAnnotation {
     return result.isEmpty() ? null : result.get(0);
   }
 
+
+
+
+  public static CanonicalResourceComparison<? extends CanonicalResource> artifactComparison(Base base) {
+    if (base.hasUserData(USER_DATA_NAME)) {
+      VersionComparisonAnnotation self = (VersionComparisonAnnotation) base.getUserData(USER_DATA_NAME);
+      return self.comp;
+    } else {
+      return null;
+    }
+  }
+
+  
 }
