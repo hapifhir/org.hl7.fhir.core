@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent;
@@ -132,7 +131,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
 
 
     List<String> chMetadata = new ArrayList<>();
-    boolean ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata, right, session.getForVersion());
+    boolean ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata, right);
     if (comparePrimitives("versionNeeded", left.getVersionNeededElement(), right.getVersionNeededElement(), res.getMetadata(), IssueSeverity.INFORMATION, res)) {
       ch = true;
       chMetadata.add("versionNeeded");
@@ -143,16 +142,16 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     }
     res.updatedMetadataState(ch, chMetadata);
     ch = false;
-    ch = comparePrimitivesWithTracking("caseSensitive", left.getCaseSensitiveElement(), right.getCaseSensitiveElement(), res.getMetadata(), IssueSeverity.ERROR, res, right, session.getForVersion()) || ch;
-    ch = comparePrimitivesWithTracking("hierarchyMeaning", left.getHierarchyMeaningElement(), right.getHierarchyMeaningElement(), res.getMetadata(), IssueSeverity.ERROR, res, right, session.getForVersion()) || ch;
-    ch = comparePrimitivesWithTracking("content", left.getContentElement(), right.getContentElement(), res.getMetadata(), IssueSeverity.WARNING, res, right, session.getForVersion());
+    ch = comparePrimitivesWithTracking("caseSensitive", left.getCaseSensitiveElement(), right.getCaseSensitiveElement(), res.getMetadata(), IssueSeverity.ERROR, res, right) || ch;
+    ch = comparePrimitivesWithTracking("hierarchyMeaning", left.getHierarchyMeaningElement(), right.getHierarchyMeaningElement(), res.getMetadata(), IssueSeverity.ERROR, res, right) || ch;
+    ch = comparePrimitivesWithTracking("content", left.getContentElement(), right.getContentElement(), res.getMetadata(), IssueSeverity.WARNING, res, right);
     
     ch = compareProperties(left.getProperty(), right.getProperty(), res.getProperties(), res.getUnion().getProperty(), res.getIntersection().getProperty(), res.getUnion(), res.getIntersection(), res, "CodeSystem.property", right) || ch;
     ch = compareFilters(left.getFilter(), right.getFilter(), res.getFilters(), res.getUnion().getFilter(), res.getIntersection().getFilter(), res.getUnion(), res.getIntersection(), res, "CodeSystem.filter", right) || ch;
     ch = compareConcepts(left.getConcept(), right.getConcept(), res.getCombined(), res.getUnion().getConcept(), res.getIntersection().getConcept(), res.getUnion(), res.getIntersection(), res, "CodeSystem.concept", right) || ch;
     res.updateDefinitionsState(ch);
 
-    VersionComparisonAnnotation.annotate(right, session.getForVersion(), res);
+    session.annotate(right, res);
     return res;
   }
 
@@ -193,7 +192,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
         union.add(l);
         res.updateContentState(true);
         combined.getChildren().add(new StructuralMatch<CodeSystem.PropertyComponent>(l, vmI(IssueSeverity.INFORMATION, "Removed this concept", path)));
-        VersionComparisonAnnotation.markDeleted(parent, session.getForVersion(), "concept", l);
+        session.markDeleted(parent, "concept", l);
       } else {
         matchR.add(r);
         PropertyComponent cdM = merge(l, r, res);
@@ -212,7 +211,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
         union.add(r);
         res.updateContentState(true);
         combined.getChildren().add(new StructuralMatch<CodeSystem.PropertyComponent>(vmI(IssueSeverity.INFORMATION, "Added this concept", path), r));    
-        VersionComparisonAnnotation.markAdded(r, session.getForVersion());     
+        session.markAdded(r);     
       }
     }
     return def;
@@ -229,7 +228,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
         union.add(l);
         res.updateContentState(true);
         combined.getChildren().add(new StructuralMatch<CodeSystem.CodeSystemFilterComponent>(l, vmI(IssueSeverity.INFORMATION, "Removed this concept", path)));
-        VersionComparisonAnnotation.markDeleted(parent, session.getForVersion(), "concept", l);
+        session.markDeleted(parent, "concept", l);
       } else {
         matchR.add(r);
         CodeSystemFilterComponent cdM = merge(l, r, res);
@@ -248,7 +247,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
         union.add(r);
         res.updateContentState(true);
         combined.getChildren().add(new StructuralMatch<CodeSystem.CodeSystemFilterComponent>(vmI(IssueSeverity.INFORMATION, "Added this concept", path), r));    
-        VersionComparisonAnnotation.markAdded(r, session.getForVersion());     
+        session.markAdded(r);     
       }
     }
     return def;
@@ -265,7 +264,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
         union.add(l);
         res.updateContentState(true);
         combined.getChildren().add(new StructuralMatch<CodeSystem.ConceptDefinitionComponent>(l, vmI(IssueSeverity.INFORMATION, "Removed this concept", path)));
-        VersionComparisonAnnotation.markDeleted(parent, session.getForVersion(), "concept", l);
+        session.markDeleted(parent, "concept", l);
       } else {
         matchR.add(r);
         ConceptDefinitionComponent cdM = merge(l, r, csU.getProperty(), res);
@@ -287,7 +286,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
         union.add(r);
         res.updateContentState(true);
         combined.getChildren().add(new StructuralMatch<CodeSystem.ConceptDefinitionComponent>(vmI(IssueSeverity.INFORMATION, "Added this concept", path), r));    
-        VersionComparisonAnnotation.markAdded(r, session.getForVersion());     
+        session.markAdded(r);     
       }
     }
     return def;
@@ -351,19 +350,19 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
     if (!Utilities.noString(right)) {
       if (Utilities.noString(left)) {
         msgs.add(vmI(level, "Value for "+name+" added", path));   
-        VersionComparisonAnnotation.markAdded(r, session.getForVersion());     
+        session.markAdded(r);     
         return true;
       } else if (!left.equals(right)) {
         if (level != IssueSeverity.NULL) {
           res.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path+"."+name, "Changed value for "+name+": '"+left+"' vs '"+right+"'", level));
         }
         msgs.add(vmI(level, name+" changed from left to right", path));
-        VersionComparisonAnnotation.markChanged(r, session.getForVersion());   
+        session.markChanged(r, l);   
         return true;
       }
     } else if (!Utilities.noString(left)) {
       msgs.add(vmI(level, "Value for "+name+" removed", path));
-      VersionComparisonAnnotation.markDeleted(parent, session.getForVersion(), "concept", l);
+      session.markDeleted(parent, "concept", l);
       return true;
     }
     return false;

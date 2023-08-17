@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.comparison.CanonicalResourceComparer.CanonicalResourceComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
@@ -19,7 +17,6 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -43,10 +40,8 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
@@ -147,7 +142,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     sd1.setDate(new Date());
 
     List<String> chMetadata = new ArrayList<>();
-    boolean ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata, right, session.getForVersion());
+    boolean ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata, right);
     if (comparePrimitives("fhirVersion", left.getFhirVersionElement(), right.getFhirVersionElement(), res.getMetadata(), IssueSeverity.WARNING, res)) {
       ch = true;
       chMetadata.add("fhirVersion");
@@ -178,7 +173,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     }
     res.updateDefinitionsState(ch);
 
-    VersionComparisonAnnotation.annotate(right, session.getForVersion(), res);
+    session.annotate(right, res);
     return res;
   }
 
@@ -228,19 +223,19 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
 
     // descriptive properties from ElementDefinition - merge them:
     subset.setLabel(mergeText(comp, res, path, "label", left.current().getLabel(), right.current().getLabel(), false));
-    comparePrimitivesWithTracking("label", left.current().getLabelElement(), right.current().getLabelElement(), null, IssueSeverity.INFORMATION, comp, right.current(), session.getForVersion());
+    comparePrimitivesWithTracking("label", left.current().getLabelElement(), right.current().getLabelElement(), null, IssueSeverity.INFORMATION, comp, right.current());
 
     subset.setShort(mergeText(comp, res, path, "short", left.current().getShort(), right.current().getShort(), false));
-    def = comparePrimitivesWithTracking("short", left.current().getShortElement(), right.current().getShortElement(), null, IssueSeverity.INFORMATION, comp, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("short", left.current().getShortElement(), right.current().getShortElement(), null, IssueSeverity.INFORMATION, comp, right.current()) || def;
     
     subset.setDefinition(mergeText(comp, res, path, "definition", left.current().getDefinition(), right.current().getDefinition(), false));
-    def = comparePrimitivesWithTracking("definition", left.current().getDefinitionElement(), right.current().getDefinitionElement(), null, IssueSeverity.INFORMATION, comp, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("definition", left.current().getDefinitionElement(), right.current().getDefinitionElement(), null, IssueSeverity.INFORMATION, comp, right.current()) || def;
 
     subset.setComment(mergeText(comp, res, path, "comments", left.current().getComment(), right.current().getComment(), false));
-    def = comparePrimitivesWithTracking("comment", left.current().getCommentElement(), right.current().getCommentElement(), null, IssueSeverity.INFORMATION, comp, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("comment", left.current().getCommentElement(), right.current().getCommentElement(), null, IssueSeverity.INFORMATION, comp, right.current()) || def;
 
     subset.setRequirements(mergeText(comp, res, path, "requirements", left.current().getRequirements(), right.current().getRequirements(), false));
-    def = comparePrimitivesWithTracking("requirements", left.current().getRequirementsElement(), right.current().getRequirementsElement(), null, IssueSeverity.INFORMATION, comp, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("requirements", left.current().getRequirementsElement(), right.current().getRequirementsElement(), null, IssueSeverity.INFORMATION, comp, right.current()) || def;
 
     subset.getCode().addAll(mergeCodings(left.current().getCode(), right.current().getCode()));
     subset.getAlias().addAll(mergeStrings(left.current().getAlias(), right.current().getAlias()));
@@ -253,12 +248,12 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
 
     }
     subset.setMustSupport(left.current().getMustSupport() || right.current().getMustSupport());
-    def = comparePrimitivesWithTracking("mustSupport", left.current().getMustSupportElement(), right.current().getMustSupportElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("mustSupport", left.current().getMustSupportElement(), right.current().getMustSupportElement(), null, IssueSeverity.INFORMATION, null, right.current()) || def;
 
     ElementDefinition superset = subset.copy();
 
-    def = comparePrimitivesWithTracking("min", left.current().getMinElement(), right.current().getMinElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
-    def = comparePrimitivesWithTracking("max", left.current().getMaxElement(), right.current().getMaxElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+    def = comparePrimitivesWithTracking("min", left.current().getMinElement(), right.current().getMinElement(), null, IssueSeverity.INFORMATION, null, right.current()) || def;
+    def = comparePrimitivesWithTracking("max", left.current().getMaxElement(), right.current().getMaxElement(), null, IssueSeverity.INFORMATION, null, right.current()) || def;
 
     // compare and intersect
     int leftMin = left.current().getMin();
@@ -396,6 +391,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     assert(left.path().equals(right.path()));
 
     boolean def = false;
+    boolean ch = false;
+    System.out.println(left.getId());
     
     // not allowed to be different:   
 //    ruleEqual(comp, res, left.current().getDefaultValue(), right.current().getDefaultValue(), "defaultValue", path);
@@ -403,25 +400,71 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
 //    ruleEqual(comp, res, left.current().getIsModifierElement(), right.current().getIsModifierElement(), "isModifier", path); - this check belongs in the core
 //    ruleEqual(comp, res, left.current().getIsSummaryElement(), right.current().getIsSummaryElement(), "isSummary", path); - so does this
 
-    if (left.current() == null && right.current() == null) {
+    ElementDefinition edl = left.current();
+    ElementDefinition edr = right.current();
+    if (edl == null && edr == null) {
       // both are sparse at this point, do nothing
-    } else if (left.current() == null) {
-      VersionComparisonAnnotation.markAdded(right.current(), session.getForVersion());      
-    } else if (right.current() == null) {
-      VersionComparisonAnnotation.markDeleted(right.parent(), session.getForVersion(), "element", left.current());            
+    } else if (edl == null) {
+      session.markAdded(edr);      
+    } else if (edr == null) {
+      session.markDeleted(right.parent(), "element", edl);            
     } else {
-      // descriptive properties from ElementDefinition - merge them:
-      comparePrimitivesWithTracking("label", left.current().getLabelElement(), right.current().getLabelElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion());
-      def = comparePrimitivesWithTracking("short", left.current().getShortElement(), right.current().getShortElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
-      def = comparePrimitivesWithTracking("definition", left.current().getDefinitionElement(), right.current().getDefinitionElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
-      def = comparePrimitivesWithTracking("comment", left.current().getCommentElement(), right.current().getCommentElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
-      def = comparePrimitivesWithTracking("requirements", left.current().getRequirementsElement(), right.current().getRequirementsElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
-      def = comparePrimitivesWithTracking("mustSupport", left.current().getMustSupportElement(), right.current().getMustSupportElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
-      def = comparePrimitivesWithTracking("min", left.current().getMinElement(), right.current().getMinElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
-      def = comparePrimitivesWithTracking("max", left.current().getMaxElement(), right.current().getMaxElement(), null, IssueSeverity.INFORMATION, null, right.current(), session.getForVersion()) || def;
+      // descriptive properties from ElementDefinition
+      comparePrimitivesWithTracking("label", edl.getLabelElement(), edr.getLabelElement(), null, IssueSeverity.INFORMATION, null, edr);
+      comparePrimitivesWithTracking("sliceName", edl.getSliceNameElement(), edr.getSliceNameElement(), null, IssueSeverity.INFORMATION, null, edr);
+      comparePrimitivesWithTracking("sliceIsConstraining", edl.getSliceIsConstrainingElement(), edr.getSliceIsConstrainingElement(), null, IssueSeverity.INFORMATION, null, edr);
+      comparePrimitivesWithTracking("alias", edl.getAlias(), edr.getAlias(), null, IssueSeverity.INFORMATION, null, edr);
+      compareDataTypesWithTracking("code", edl.getCode(), edr.getCode(), null, IssueSeverity.INFORMATION, null, edr);
+      
+      def = comparePrimitivesWithTracking("short", edl.getShortElement(), edr.getShortElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
+      def = comparePrimitivesWithTracking("definition", edl.getDefinitionElement(), edr.getDefinitionElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
+      def = comparePrimitivesWithTracking("comment", edl.getCommentElement(), edr.getCommentElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
+      def = comparePrimitivesWithTracking("requirements", edl.getRequirementsElement(), edr.getRequirementsElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
+      def = comparePrimitivesWithTracking("mustSupport", edl.getMustSupportElement(), edr.getMustSupportElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
+      def = comparePrimitivesWithTracking("meaningWhenMissing", edl.getMeaningWhenMissingElement(), edr.getMeaningWhenMissingElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
+      def = comparePrimitivesWithTracking("isModifierReason", edl.getIsModifierReasonElement(), edr.getIsModifierReasonElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
+      
+      ch = comparePrimitivesWithTracking("min", edl.getMinElement(), edr.getMinElement(), null, IssueSeverity.ERROR, null, edr) || ch;
+      ch = comparePrimitivesWithTracking("max", edl.getMaxElement(), edr.getMaxElement(), null, IssueSeverity.ERROR, null, edr) || ch;
+      ch = compareDataTypesWithTracking("defaultValue", edl.getDefaultValue(), edr.getDefaultValue(), null, IssueSeverity.ERROR, null, edr) || ch;
+      ch = compareDataTypesWithTracking("fixed", edl.getFixed(), edr.getFixed(), null, IssueSeverity.ERROR, null, edr) || ch;
+      ch = compareDataTypesWithTracking("pattern", edl.getPattern(), edr.getPattern(), null, IssueSeverity.ERROR, null, edr) || ch;
+      ch = compareDataTypesWithTracking("minValue", edl.getMinValue(), edr.getMinValue(), null, IssueSeverity.ERROR, null, edr) || ch;
+      ch = compareDataTypesWithTracking("maxValue", edl.getMaxValue(), edr.getMaxValue(), null, IssueSeverity.ERROR, null, edr) || ch;
+      ch = comparePrimitivesWithTracking("maxLength", edl.getMaxLengthElement(), edr.getMaxLengthElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
+      ch = comparePrimitivesWithTracking("mustHaveValue", edl.getMustHaveValueElement(), edr.getMustHaveValueElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
+      ch = comparePrimitivesWithTracking("valueAlternatives", edl.getValueAlternatives(), edr.getValueAlternatives(), null, IssueSeverity.INFORMATION, null, edr) || ch;
+      ch = comparePrimitivesWithTracking("isModifier", edl.getIsModifierElement(), edr.getIsModifierElement(), null, IssueSeverity.INFORMATION, null, edr) || def;
+      
+      def = compareTypes(path, sliceName, edl, edr, res) || def;
+      
+      
+      ElementDefinitionBindingComponent bl = edl.getBinding();
+      ElementDefinitionBindingComponent br = edr.getBinding();
+      if (bl == null && br == null) {
+        // both are sparse at this point, do nothing
+      } else if (bl == null) {
+        session.markAdded(edr);      
+      } else if (br == null) {
+        session.markDeleted(right.parent(), "element", edl);            
+      } else {
+        ch = comparePrimitivesWithTracking("strength", bl.getStrengthElement(), br.getStrengthElement(), null, IssueSeverity.ERROR, null, edr) || ch;
+        def = comparePrimitivesWithTracking("description", bl.getDescriptionElement(), br.getDescriptionElement(), null, IssueSeverity.ERROR, null, edr) || def;
+        ch = comparePrimitivesWithTracking("valueSet", bl.getValueSetElement(), br.getValueSetElement(), null, IssueSeverity.ERROR, null, edr) || ch;
+        // todo: additional
+      }
+
+      def = compareInvariants(path, sliceName, edl, edr, res) || def;
+      
+      // main todos:
+      //  invariants, slicing
+      // mappings 
     }
     // add the children
-    def = compareDiffChildren(path, left, right, right.current() == null ? parent : right.current(), res) || def;
+    if (ch) {
+      res.updateContentState(true);
+    }
+    def = compareDiffChildren(path, left, right, edr == null ? parent : edr, res) || def;
 //
 //    // now process the slices
 //    if (left.current().hasSlicing() || right.current().hasSlicing()) {
@@ -484,7 +527,6 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     return def;
   }
 
-
   private boolean compareDiffChildren(String path, DefinitionNavigator left, DefinitionNavigator right, Base parent, ProfileComparison res) throws DefinitionException, IOException, FHIRFormatError {
     boolean def = false;
     
@@ -495,7 +537,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     for (DefinitionNavigator l : lc) {
       DefinitionNavigator r = findInList(rc, l);
       if (r == null) {
-        VersionComparisonAnnotation.markDeleted(parent, session.getForVersion(), "element", l.current());
+        session.markDeleted(parent, "element", l.current());
         res.updateContentState(true);
       } else {
         matchR.add(r);
@@ -504,7 +546,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     }
     for (DefinitionNavigator r : rc) {
       if (!matchR.contains(r)) {
-        VersionComparisonAnnotation.markAdded(r.current(), session.getForVersion());
+        session.markAdded(r.current());
         res.updateContentState(true);
       }
     }
@@ -512,12 +554,110 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
   }
 
   private DefinitionNavigator findInList(List<DefinitionNavigator> rc, DefinitionNavigator l) {
+    String s = l.getId(); 
     for (DefinitionNavigator t : rc) {
-      if (tail(t.current().getPath()).equals(tail(l.current().getPath()))) {
+      String ts = t.getId(); 
+      if (tail(ts).equals(tail(s))) {
         return t;
       }
     }
     return null;
+  }
+
+  private boolean compareTypes(String path, String sliceName, ElementDefinition left, ElementDefinition right, ProfileComparison res) {
+    boolean def = false;
+
+    List<TypeRefComponent> matchR = new ArrayList<>();
+    for (TypeRefComponent l : left.getType()) {
+      TypeRefComponent r = findInList(right.getType(), l);
+      if (r == null) {
+        session.markDeleted(right, "type", l);
+        res.updateContentState(true);
+      } else {
+        matchR.add(r);
+        def = compareType(path+".type", l, r, res) || def;
+      }
+    }
+    for (TypeRefComponent r : right.getType()) {
+      if (!matchR.contains(r)) {
+        session.markAdded(r);
+        res.updateContentState(true);
+      }
+    }
+    return def;
+  }
+
+  private TypeRefComponent findInList(List<TypeRefComponent> rc, TypeRefComponent l) {
+    for (TypeRefComponent t : rc) {
+      if (t.getCodeElement().equalsDeep(l.getCodeElement())) {
+        return t;
+      }
+    }
+    return null;
+  }
+  
+
+  private boolean compareType(String string, TypeRefComponent l, TypeRefComponent r, ProfileComparison res) {
+    boolean def = false;
+    boolean ch = false;
+    // codes must match
+    ch = comparePrimitivesWithTracking("profile", l.getProfile(), r.getProfile(), null, IssueSeverity.ERROR, null, r) || ch;
+    ch = comparePrimitivesWithTracking("targetProfile", l.getTargetProfile(), r.getTargetProfile(), null, IssueSeverity.ERROR, null, r) || ch;
+    ch = comparePrimitivesWithTracking("aggregation", l.getAggregation(), r.getAggregation(), null, IssueSeverity.ERROR, null, r) || ch;
+    def = comparePrimitivesWithTracking("versioning", l.getVersioningElement(), r.getVersioningElement(), null, IssueSeverity.INFORMATION, null, r) || def;    
+    if (ch) {
+      res.updateContentState(true);
+    }
+    return def;
+  }
+
+
+  private boolean compareInvariants(String path, String sliceName, ElementDefinition left, ElementDefinition right, ProfileComparison res) {
+    boolean def = false;
+
+    List<ElementDefinitionConstraintComponent> matchR = new ArrayList<>();
+    for (ElementDefinitionConstraintComponent l : left.getConstraint()) {
+      ElementDefinitionConstraintComponent r = findInList(right.getConstraint(), l);
+      if (r == null) {
+        session.markDeleted(right, "invariant", l);
+        res.updateContentState(true);
+      } else {
+        matchR.add(r);
+        def = compareInvariant(path+".type", l, r, res) || def;
+      }
+    }
+    for (ElementDefinitionConstraintComponent r : right.getConstraint()) {
+      if (!matchR.contains(r)) {
+        session.markAdded(r);
+        res.updateContentState(true);
+      }
+    }
+    return def;
+  }
+
+  private ElementDefinitionConstraintComponent findInList(List<ElementDefinitionConstraintComponent> rc, ElementDefinitionConstraintComponent l) {
+    for (ElementDefinitionConstraintComponent t : rc) {
+      if (t.getKeyElement().equalsDeep(l.getKeyElement())) {
+        return t;
+      }
+    }
+    return null;
+  }
+  
+
+  private boolean compareInvariant(String string, ElementDefinitionConstraintComponent l, ElementDefinitionConstraintComponent r, ProfileComparison res) {
+    boolean def = false;
+    boolean ch = false;
+    // codes must match
+    def = comparePrimitivesWithTracking("requirements", l.getRequirementsElement(), r.getRequirementsElement(), null, IssueSeverity.INFORMATION, null, r) || def;
+    ch = comparePrimitivesWithTracking("severity", l.getSeverityElement(), r.getSeverityElement(), null, IssueSeverity.ERROR, null, r) || ch;
+    comparePrimitivesWithTracking("suppress", l.getSuppressElement(), r.getSuppressElement(), null, IssueSeverity.INFORMATION, null, r);
+    def = comparePrimitivesWithTracking("human", l.getHumanElement(), r.getHumanElement(), null, IssueSeverity.INFORMATION, null, r) || def;    
+    ch = comparePrimitivesWithTracking("expression", l.getExpressionElement(), r.getExpressionElement(), null, IssueSeverity.ERROR, null, r) || ch;
+    if (ch) {
+      res.updateContentState(true);
+    }
+    return def;
   }
 
 //  private void ruleEqual(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, DataType vLeft, DataType vRight, String name, String path) throws IOException {
