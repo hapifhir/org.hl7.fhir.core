@@ -91,7 +91,7 @@ public class CompareUtilitiesTests implements ResourceLoaderTests {
    final String expectedJSONPath = ROOT_JSON_TEST_PATH.resolve(expectedFileName).toString();
    final String actualJSONPath = ROOT_JSON_TEST_PATH.resolve(actualFileName).toString();
 
-   final String actualOutput = CompareUtilities.checkJsonSrcIsSame(getResourceAsString(expectedJSONPath), getResourceAsString(actualJSONPath), false);
+   final String actualOutput = CompareUtilities.checkJsonSrcIsSame(getResourceAsString(expectedJSONPath), getResourceAsString(actualJSONPath), false, null);
    if (expectedOutputFileName == null) {
      assertNull(actualOutput);
    } else {
