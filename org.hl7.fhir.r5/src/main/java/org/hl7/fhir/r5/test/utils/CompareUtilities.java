@@ -2,20 +2,22 @@ package org.hl7.fhir.r5.test.utils;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.json.JsonUtilities;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonElement;
+import org.hl7.fhir.utilities.json.model.JsonNull;
+import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.model.JsonPrimitive;
+import org.hl7.fhir.utilities.json.model.JsonProperty;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSyntaxException;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -28,21 +30,52 @@ import java.util.Map;
 public class CompareUtilities extends BaseTestingUtilities {
 
   private static final boolean SHOW_DIFF = true;
-
-  public static String createNotEqualMessage(final String message, final String expected, final String actual) {
+  private JsonObject externals;
+  
+  public String createNotEqualMessage(final String message, final String expected, final String actual) {
     return new StringBuilder()
       .append(message).append('\n')
-      .append("Expected :").append(expected).append('\n')
-      .append("Actual  :").append(actual).toString();
+      .append("Expected :").append(presentExpected(expected)).append('\n')
+      .append("Actual  :").append("\""+actual+"\"").toString();
+  }
+
+  private String presentExpected(String expected) {
+    if (expected.startsWith("$") && expected.endsWith("$")) {
+      if (expected.startsWith("$choice:")) {
+        return "Contains one of "+readChoices(8, expected).toString();
+      } else if (expected.startsWith("$fragments:")) {
+        List<String> fragments = readChoices(11, expected);
+        return "Contains all of "+fragments.toString();
+      } else if (expected.startsWith("$external:")) {
+        String[] cmd = expected.substring(1, expected.length() - 1).split("\\:");
+        if (externals != null) {
+          String s = externals.asString(cmd[1]);
+          return "\""+s+"\" (Ext)";
+        } else {
+          return "Contains \""+cmd[2]+"\"";
+        }
+      } else {
+        switch (expected) {
+        case "$$" : return "$$";
+        case "$instant$": return "\"An Instant\"";
+        case "$uuid$": return "\"A Uuid\"";
+        default: return "Unhandled template: "+expected;
+        }
+      }
+    } else {
+      return "\""+expected+"\"";
+    }
   }
 
   public static String checkXMLIsSame(InputStream expected, InputStream actual) throws Exception {
-    String result = compareXml(expected, actual);
+    CompareUtilities self = new CompareUtilities();
+    String result = self.compareXml(expected, actual);
     return result;
   }
 
   public static String checkXMLIsSame(String expected, String actual) throws Exception {
-    String result = compareXml(expected, actual);
+    CompareUtilities self = new CompareUtilities();
+    String result = self.compareXml(expected, actual);
     if (result != null && SHOW_DIFF) {
       String diff = getDiffTool();
       if (diff != null && new File(diff).exists() || Utilities.isToken(diff)) {
@@ -52,7 +85,7 @@ public class CompareUtilities extends BaseTestingUtilities {
     return result;
   }
 
-  private static String getDiffTool() throws IOException {
+ private static String getDiffTool() throws IOException {
     if (FhirSettings.hasDiffToolPath()) {
       return FhirSettings.getDiffToolPath();
     } else if (System.getenv("ProgramFiles") != null) { 
@@ -62,15 +95,15 @@ public class CompareUtilities extends BaseTestingUtilities {
     }
   }
 
-  private static String compareXml(InputStream expected, InputStream actual) throws Exception {
+  private String compareXml(InputStream expected, InputStream actual) throws Exception {
     return compareElements("", loadXml(expected).getDocumentElement(), loadXml(actual).getDocumentElement());
   }
 
-  private static String compareXml(String expected, String actual) throws Exception {
+  private String compareXml(String expected, String actual) throws Exception {
     return compareElements("", loadXml(expected).getDocumentElement(), loadXml(actual).getDocumentElement());
   }
 
-  private static String compareElements(String path, Element expectedElement, Element actualElement) {
+  private String compareElements(String path, Element expectedElement, Element actualElement) {
     if (!namespacesMatch(expectedElement.getNamespaceURI(), actualElement.getNamespaceURI()))
       return createNotEqualMessage("Namespaces differ at " + path, expectedElement.getNamespaceURI(), actualElement.getNamespaceURI());
     if (!expectedElement.getLocalName().equals(actualElement.getLocalName()))
@@ -109,18 +142,18 @@ public class CompareUtilities extends BaseTestingUtilities {
     return null;
   }
 
-  private static boolean namespacesMatch(String ns1, String ns2) {
+  private boolean namespacesMatch(String ns1, String ns2) {
     return ns1 == null ? ns2 == null : ns1.equals(ns2);
   }
 
-  private static Object normalise(String text) {
+  private String normalise(String text) {
     String result = text.trim().replace('\r', ' ').replace('\n', ' ').replace('\t', ' ');
     while (result.contains("  "))
       result = result.replace("  ", " ");
     return result;
   }
 
-  private static String compareAttributes(String path, NamedNodeMap expected, NamedNodeMap actual) {
+  private String compareAttributes(String path, NamedNodeMap expected, NamedNodeMap actual) {
     for (int i = 0; i < expected.getLength(); i++) {
 
       Node expectedNode = expected.item(i);
@@ -140,7 +173,7 @@ public class CompareUtilities extends BaseTestingUtilities {
     return null;
   }
 
-  private static boolean sameBytes(byte[] b1, byte[] b2) {
+  private boolean sameBytes(byte[] b1, byte[] b2) {
     if (b1.length == 0 || b2.length == 0)
       return false;
     if (b1.length != b2.length)
@@ -151,21 +184,21 @@ public class CompareUtilities extends BaseTestingUtilities {
     return true;
   }
 
-  private static byte[] unBase64(String text) {
+ private byte[] unBase64(String text) {
     return Base64.decodeBase64(text);
   }
 
-  private static Node skipBlankText(Node node) {
+ private Node skipBlankText(Node node) {
     while (node != null && (((node.getNodeType() == Node.TEXT_NODE) && StringUtils.isWhitespace(node.getTextContent())) || (node.getNodeType() == Node.COMMENT_NODE)))
       node = node.getNextSibling();
     return node;
   }
 
-  private static Document loadXml(String fn) throws Exception {
+ private Document loadXml(String fn) throws Exception {
     return loadXml(new FileInputStream(fn));
   }
 
-  private static Document loadXml(InputStream fn) throws Exception {
+ private Document loadXml(InputStream fn) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
     factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
@@ -179,12 +212,14 @@ public class CompareUtilities extends BaseTestingUtilities {
     return builder.parse(fn);
   }
 
-  public static String checkJsonSrcIsSame(String expected, String actual) throws JsonSyntaxException, FileNotFoundException, IOException {
-    return checkJsonSrcIsSame(expected, actual, true);
+  public static String checkJsonSrcIsSame(String expected, String actual, JsonObject externals) throws FileNotFoundException, IOException {
+    return checkJsonSrcIsSame(expected, actual, true, externals);
   }
 
-  public static String checkJsonSrcIsSame(String expectedString, String actualString, boolean showDiff) throws JsonSyntaxException, FileNotFoundException, IOException {
-    String result = compareJsonSrc(expectedString, actualString);
+  public static String checkJsonSrcIsSame(String expectedString, String actualString, boolean showDiff, JsonObject externals) throws FileNotFoundException, IOException {
+    CompareUtilities self = new CompareUtilities();
+    self.externals = externals;
+    String result = self.compareJsonSrc(expectedString, actualString);
     if (result != null && SHOW_DIFF && showDiff) {
       String diff = null;
       if (System.getProperty("os.name").contains("Linux"))
@@ -217,8 +252,9 @@ public class CompareUtilities extends BaseTestingUtilities {
     return result;
   }
 
-  public static String checkJsonIsSame(String expected, String actual) throws JsonSyntaxException, FileNotFoundException, IOException {
-    String result = compareJson(expected, actual);
+  public static String checkJsonIsSame(String expected, String actual) throws FileNotFoundException, IOException {
+    CompareUtilities self = new CompareUtilities();
+    String result = self.compareJson(expected, actual);
     if (result != null && SHOW_DIFF) {
       String diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
       List<String> command = new ArrayList<String>();
@@ -232,22 +268,22 @@ public class CompareUtilities extends BaseTestingUtilities {
     return result;
   }
 
-  private static String compareJsonSrc(String expected, String actual) throws JsonSyntaxException, FileNotFoundException, IOException {
-    JsonObject actualJsonObject = (JsonObject) new com.google.gson.JsonParser().parse(actual);
-    JsonObject expectedJsonObject = (JsonObject) new com.google.gson.JsonParser().parse(expected);
+  private String compareJsonSrc(String expected, String actual) throws FileNotFoundException, IOException {
+    JsonObject actualJsonObject = JsonParser.parseObject(actual);
+    JsonObject expectedJsonObject = JsonParser.parseObject(expected);
     return compareObjects("", expectedJsonObject, actualJsonObject);
   }
 
-  private static String compareJson(String expected, String actual) throws JsonSyntaxException, FileNotFoundException, IOException {
-    JsonObject actualJsonObject = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(actual));
-    JsonObject expectedJsonObject = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(expected));
+  private String compareJson(String expected, String actual) throws FileNotFoundException, IOException {
+    JsonObject actualJsonObject = JsonParser.parseObject(TextFile.fileToString(actual));
+    JsonObject expectedJsonObject = JsonParser.parseObject(TextFile.fileToString(expected));
     return compareObjects("", expectedJsonObject, actualJsonObject);
   }
 
-  private static String compareObjects(String path, JsonObject expectedJsonObject, JsonObject actualJsonObject) {
+  private String compareObjects(String path, JsonObject expectedJsonObject, JsonObject actualJsonObject) {
     List<String> optionals = listOptionals(expectedJsonObject);
-    for (Map.Entry<String, JsonElement> en : actualJsonObject.entrySet()) {
-      String n = en.getKey();
+    for (JsonProperty en : actualJsonObject.getProperties()) {
+      String n = en.getName();
       if (!n.equals("fhir_comments")) {
         if (expectedJsonObject.has(n)) {
           String s = compareNodes(path + '.' + n, expectedJsonObject.get(n), en.getValue());
@@ -257,8 +293,8 @@ public class CompareUtilities extends BaseTestingUtilities {
           return "properties differ at " + path + ": missing property " + n;
       }
     }
-    for (Map.Entry<String, JsonElement> en : expectedJsonObject.entrySet()) {
-      String n = en.getKey();
+    for (JsonProperty en : expectedJsonObject.getProperties()) {
+      String n = en.getName();
       if (!n.equals("fhir_comments") && !n.equals("$optional$") && !optionals.contains(n)) {
         if (!actualJsonObject.has(n))
           return "properties differ at " + path + ": missing property " + n;
@@ -267,38 +303,38 @@ public class CompareUtilities extends BaseTestingUtilities {
     return null;
   }
 
-  private static List<String> listOptionals(JsonObject expectedJsonObject) {
+ private List<String> listOptionals(JsonObject expectedJsonObject) {
     List<String> res = new ArrayList<>();
     if (expectedJsonObject.has("$optional-properties$")) {
       res.add("$optional-properties$");
-      for (String s : JsonUtilities.strings(expectedJsonObject.getAsJsonArray("$optional-properties$"))) {
+      for (String s : expectedJsonObject.getStrings("$optional-properties$")) {
         res.add(s);
       }
     }
     return res;
   }
 
-  private static String compareNodes(String path, JsonElement expectedJsonElement, JsonElement actualJsonElement) {
+  private String compareNodes(String path, JsonElement expectedJsonElement, JsonElement actualJsonElement) {
     if (actualJsonElement.getClass() != expectedJsonElement.getClass())
       return createNotEqualMessage("properties differ at " + path, expectedJsonElement.getClass().getName(), actualJsonElement.getClass().getName());
     else if (actualJsonElement instanceof JsonPrimitive) {
       JsonPrimitive actualJsonPrimitive = (JsonPrimitive) actualJsonElement;
       JsonPrimitive expectedJsonPrimitive = (JsonPrimitive) expectedJsonElement;
-      if (actualJsonPrimitive.isBoolean() && expectedJsonPrimitive.isBoolean()) {
-        if (actualJsonPrimitive.getAsBoolean() != expectedJsonPrimitive.getAsBoolean())
-          return createNotEqualMessage("boolean property values differ at " + path , expectedJsonPrimitive.getAsString(), actualJsonPrimitive.getAsString());
-      } else if (actualJsonPrimitive.isString() && expectedJsonPrimitive.isString()) {
-        String actualJsonString = actualJsonPrimitive.getAsString();
-        String expectedJsonString = expectedJsonPrimitive.getAsString();
+      if (actualJsonPrimitive.isJsonBoolean() && expectedJsonPrimitive.isJsonBoolean()) {
+        if (actualJsonPrimitive.asBoolean() != expectedJsonPrimitive.asBoolean())
+          return createNotEqualMessage("boolean property values differ at " + path , expectedJsonPrimitive.asString(), actualJsonPrimitive.asString());
+      } else if (actualJsonPrimitive.isJsonString() && expectedJsonPrimitive.isJsonString()) {
+        String actualJsonString = actualJsonPrimitive.asString();
+        String expectedJsonString = expectedJsonPrimitive.asString();
         if (!(actualJsonString.contains("<div") && expectedJsonString.contains("<div")))
           if (!matches(actualJsonString, expectedJsonString))
             if (!sameBytes(unBase64(actualJsonString), unBase64(expectedJsonString)))
               return createNotEqualMessage("string property values differ at " + path, expectedJsonString, actualJsonString);
-      } else if (actualJsonPrimitive.isNumber() && expectedJsonPrimitive.isNumber()) {
-        if (!actualJsonPrimitive.getAsString().equals(expectedJsonPrimitive.getAsString()))
-          return createNotEqualMessage("number property values differ at " + path, expectedJsonPrimitive.getAsString(), actualJsonPrimitive.getAsString());
+      } else if (actualJsonPrimitive.isJsonNumber() && expectedJsonPrimitive.isJsonNumber()) {
+        if (!actualJsonPrimitive.asString().equals(expectedJsonPrimitive.asString()))
+          return createNotEqualMessage("number property values differ at " + path, expectedJsonPrimitive.asString(), actualJsonPrimitive.asString());
       } else
-        return createNotEqualMessage("property types differ at " + path, expectedJsonPrimitive.getAsString(), actualJsonPrimitive.getAsString());
+        return createNotEqualMessage("property types differ at " + path, expectedJsonPrimitive.asString(), actualJsonPrimitive.asString());
     } else if (actualJsonElement instanceof JsonObject) {
       String s = compareObjects(path, (JsonObject) expectedJsonElement, (JsonObject) actualJsonElement);
       if (!Utilities.noString(s))
@@ -334,11 +370,11 @@ public class CompareUtilities extends BaseTestingUtilities {
     return null;
   }
 
-  private static boolean isOptional(JsonElement e) {
-    return e.isJsonObject() && e.getAsJsonObject().has("$optional$");
+ private boolean isOptional(JsonElement e) {
+    return e.isJsonObject() && e.asJsonObject().has("$optional$");
   }
 
-  private static int countExpectedMin(JsonArray array) {
+ private int countExpectedMin(JsonArray array) {
     int count = array.size();
     for (JsonElement e : array) {
       if (isOptional(e)) {
@@ -348,7 +384,7 @@ public class CompareUtilities extends BaseTestingUtilities {
     return count;
   }
 
-  private static boolean matches(String actualJsonString, String expectedJsonString) {
+  private boolean matches(String actualJsonString, String expectedJsonString) {
     if (expectedJsonString.startsWith("$") && expectedJsonString.endsWith("$")) {
       if (expectedJsonString.startsWith("$choice:")) {
         return Utilities.existsInList(actualJsonString, readChoices(8, expectedJsonString));
@@ -361,6 +397,14 @@ public class CompareUtilities extends BaseTestingUtilities {
           }
         }
         return true;
+      } else if (expectedJsonString.startsWith("$external:")) {
+        String[] cmd = expectedJsonString.substring(1, expectedJsonString.length() - 1).split("\\:");
+        if (externals != null) {
+          String s = externals.asString(cmd[1]);
+          return actualJsonString.equals(s);
+        } else {
+          return actualJsonString.contains(cmd[2]);
+        }
       } else {
         switch (expectedJsonString) {
         case "$$" : return true;
@@ -375,7 +419,7 @@ public class CompareUtilities extends BaseTestingUtilities {
     }
   }
 
-  private static List<String> readChoices(int offset, String s) {
+ private List<String> readChoices(int offset, String s) {
     List<String> list = new ArrayList<>();
     s = s.substring(offset, s.length()-1);
     for (String p : s.split("\\|")) {
@@ -384,12 +428,13 @@ public class CompareUtilities extends BaseTestingUtilities {
     return list;
   }
 
-  public static String checkTextIsSame(String expected, String actual) throws JsonSyntaxException, FileNotFoundException, IOException {
+  public static String checkTextIsSame(String expected, String actual) throws FileNotFoundException, IOException {
     return checkTextIsSame(expected, actual, true);
   }
 
-  public static String checkTextIsSame(String expectedString, String actualString, boolean showDiff) throws JsonSyntaxException, FileNotFoundException, IOException {
-    String result = compareText(expectedString, actualString);
+  public static String checkTextIsSame(String expectedString, String actualString, boolean showDiff) throws FileNotFoundException, IOException {
+    CompareUtilities self = new CompareUtilities();
+    String result = self.compareText(expectedString, actualString);
     if (result != null && SHOW_DIFF && showDiff) {
       String diff = null;
       if (System.getProperty("os.name").contains("Linux"))
@@ -423,7 +468,7 @@ public class CompareUtilities extends BaseTestingUtilities {
   }
 
 
-  private static String compareText(String expectedString, String actualString) {
+ private String compareText(String expectedString, String actualString) {
     for (int i = 0; i < Integer.min(expectedString.length(), actualString.length()); i++) {
       if (expectedString.charAt(i) != actualString.charAt(i))
         return createNotEqualMessage("Strings differ at character " + Integer.toString(i), String.valueOf(expectedString.charAt(i)), String.valueOf(actualString.charAt(i)));

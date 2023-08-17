@@ -7,4 +7,8 @@ public abstract class JsonPrimitive extends JsonElement {
   public String toJson() {
     return getValue();
   }
+
+  public boolean asBoolean() {
+    return "true".equals(getValue());
+  }
 }
