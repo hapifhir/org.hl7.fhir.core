@@ -350,12 +350,15 @@ public class CompareUtilities extends BaseTestingUtilities {
       JsonArray expectedArray = (JsonArray) expectedJsonElement;
       int expectedMin = countExpectedMin(expectedArray);
 
-      if (actualArray.size() > expectedArray.size() || actualArray.size() < expectedMin)
-        return createNotEqualMessage("array item count differs at " + path, Integer.toString(expectedArray.size()), Integer.toString(actualArray.size()));
+      int as = actualArray.size();
+      int es = expectedArray.size();
+      int oc = optionalCount(expectedArray);
+      if (as > es || as < expectedMin)
+        return createNotEqualMessage("array item count differs at " + path, Integer.toString(es), Integer.toString(as));
       int c = 0;
-      for (int i = 0; i < expectedArray.size(); i++) {
-        if (c >= actualArray.size()) {
-          if (i == expectedArray.size() - 1 && isOptional(expectedArray.get(i))) {
+      for (int i = 0; i < es; i++) {
+        if (c >= as) {
+          if (i >= es - oc && isOptional(expectedArray.get(i))) {
             return null; // this is OK 
           } else {
             return "One or more array items did not match at "+path+" starting at index "+i;
@@ -375,7 +378,20 @@ public class CompareUtilities extends BaseTestingUtilities {
     return null;
   }
 
- private boolean isOptional(JsonElement e) {
+ private int optionalCount(JsonArray arr) {
+    int c = 0;
+    for (JsonElement e : arr) {
+      if (e.isJsonObject()) {
+        JsonObject j = e.asJsonObject();
+        if (j.has("$optional$") && j.asBoolean("$optional$")) {
+          c++;
+        }
+      }
+    }
+    return c;
+  }
+
+private boolean isOptional(JsonElement e) {
     return e.isJsonObject() && e.asJsonObject().has("$optional$");
   }
 
