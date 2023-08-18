@@ -37,6 +37,8 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class CodeSystemRenderer extends TerminologyRenderer {
 
+  private Boolean doMarkdown = null;
+
   public CodeSystemRenderer(RenderingContext context) {
     super(context);
   }
@@ -616,7 +618,14 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   }
 
   private boolean hasMarkdownInDefinitions(CodeSystem cs) {
-    return ToolingExtensions.readBoolExtension(cs, "http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown");
+    if (doMarkdown == null) {
+      if (cs.hasExtension("http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown")) {
+        doMarkdown  = ToolingExtensions.readBoolExtension(cs, "http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown");
+      } else {
+        doMarkdown = CodeSystemUtilities.hasMarkdownInDefinitions(cs, context.getMarkdown());
+      }
+    }
+    return doMarkdown;
   }
 
 
