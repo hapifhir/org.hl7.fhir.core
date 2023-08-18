@@ -91,7 +91,7 @@ public class VersionComparisonAnnotation {
   }
   
   public static XhtmlNode render(Base b, XhtmlNode x) {
-    if (b.hasUserData(USER_DATA_NAME)) {
+    if (b != null && b.hasUserData(USER_DATA_NAME)) {
       VersionComparisonAnnotation self = (VersionComparisonAnnotation) b.getUserData(USER_DATA_NAME);
       return self.render(x);
     } else {
