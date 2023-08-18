@@ -113,6 +113,8 @@ import org.hl7.fhir.r5.renderers.OperationOutcomeRenderer;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
@@ -1185,12 +1187,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } catch (VSCheckerException e) {
         if (e.isWarning()) {
           localWarning = e.getMessage();
-        } else {
+        } else {  
           localError = e.getMessage();
         }
         if (e.getIssues() != null) {
           issues.addAll(e.getIssues());
         }
+      } catch (TerminologyServiceProtectionException e) {
+        OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, e.getType());
+        iss.getDetails().setText(e.getMessage());
+        issues.add(iss);
+        return new ValidationResult(IssueSeverity.ERROR, e.getMessage(), e.getError(), issues);
       } catch (Exception e) {
 //        e.printStackTrace();
         localError = e.getMessage();
@@ -1246,15 +1253,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected ValueSetExpander constructValueSetExpanderSimple() {
-    return new ValueSetExpander(this);
+    return new ValueSetExpander(this, new TerminologyOperationContext(this));
   }
 
   protected ValueSetValidator constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
-    return new ValueSetValidator(options, vs, this, ctxt, expParameters, tcc.getTxcaps());
+    return new ValueSetValidator(this, new TerminologyOperationContext(this), options, vs, ctxt, expParameters, tcc.getTxcaps());
   }
 
   protected ValueSetValidator constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs) {
-    return new ValueSetValidator(options, vs, this, expParameters, tcc.getTxcaps());
+    return new ValueSetValidator(this, new TerminologyOperationContext(this), options, vs, expParameters, tcc.getTxcaps());
   }
 
   protected Parameters constructParameters(ValueSet vs, boolean hierarchical) {

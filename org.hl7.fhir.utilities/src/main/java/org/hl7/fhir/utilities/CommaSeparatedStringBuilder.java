@@ -117,4 +117,12 @@ public class CommaSeparatedStringBuilder {
     }
     return b.toString();
   }
+
+  public static String build(List<String> list) {
+    CommaSeparatedStringBuilder self = new CommaSeparatedStringBuilder();
+    for (String s : list) {
+      self.append(s);
+    }
+    return self.toString();
+  }
 }
