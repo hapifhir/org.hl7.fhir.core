@@ -42,17 +42,18 @@ public class CompareUtilities extends BaseTestingUtilities {
   private String presentExpected(String expected) {
     if (expected.startsWith("$") && expected.endsWith("$")) {
       if (expected.startsWith("$choice:")) {
-        return "Contains one of "+readChoices(8, expected).toString();
+        return "Contains one of "+readChoices(expected.substring(8, expected.length()-1)).toString();
       } else if (expected.startsWith("$fragments:")) {
-        List<String> fragments = readChoices(11, expected);
+        List<String> fragments = readChoices(expected.substring(11, expected.length()-1));
         return "Contains all of "+fragments.toString();
       } else if (expected.startsWith("$external:")) {
-        String[] cmd = expected.substring(1, expected.length() - 1).split("\\:");
+        String[] cmd = expected.substring(1, expected.length() - 1).split(":");
         if (externals != null) {
           String s = externals.asString(cmd[1]);
           return "\""+s+"\" (Ext)";
         } else {
-          return "Contains \""+cmd[2]+"\"";
+          List<String> fragments = readChoices(cmd[2]);
+          return "Contains all of "+fragments.toString()+" (because no external string provided for "+cmd[1]+")";
         }
       } else {
         switch (expected) {
@@ -408,10 +409,10 @@ private boolean isOptional(JsonElement e) {
   private boolean matches(String actualJsonString, String expectedJsonString) {
     if (expectedJsonString.startsWith("$") && expectedJsonString.endsWith("$")) {
       if (expectedJsonString.startsWith("$choice:")) {
-        return Utilities.existsInList(actualJsonString, readChoices(8, expectedJsonString));
+        return Utilities.existsInList(actualJsonString, readChoices(expectedJsonString.substring(8, expectedJsonString.length()-1)));
 
       } else if (expectedJsonString.startsWith("$fragments:")) {
-        List<String> fragments = readChoices(11, expectedJsonString);
+        List<String> fragments = readChoices(expectedJsonString.substring(11, expectedJsonString.length()-1));
         for (String f : fragments) {
           if (!actualJsonString.toLowerCase().contains(f.toLowerCase())) {
             return false;
@@ -424,7 +425,13 @@ private boolean isOptional(JsonElement e) {
           String s = externals.asString(cmd[1]);
           return actualJsonString.equals(s);
         } else {
-          return actualJsonString.contains(cmd[2]);
+          List<String> fragments = readChoices(cmd[2]);
+          for (String f : fragments) {
+            if (!actualJsonString.toLowerCase().contains(f.toLowerCase())) {
+              return false;
+            }
+          }
+          return true;
         }
       } else {
         switch (expectedJsonString) {
@@ -440,9 +447,8 @@ private boolean isOptional(JsonElement e) {
     }
   }
 
- private List<String> readChoices(int offset, String s) {
+ private List<String> readChoices(String s) {
     List<String> list = new ArrayList<>();
-    s = s.substring(offset, s.length()-1);
     for (String p : s.split("\\|")) {
       list.add(p);
     }
