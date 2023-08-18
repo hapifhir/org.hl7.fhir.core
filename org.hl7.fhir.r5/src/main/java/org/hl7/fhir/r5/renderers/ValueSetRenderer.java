@@ -481,7 +481,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private void expRef(XhtmlNode x, String u, String v, Resource source) {
-    String t = u.substring(0, u.indexOf("|"));
+    String t = u.contains("|") ? u.substring(0, u.indexOf("|")) : u;
     u = u.substring(u.indexOf("|")+1);
     // TODO Auto-generated method stub
     if (u.equals("http://snomed.info/sct")) {
