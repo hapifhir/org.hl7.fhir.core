@@ -338,6 +338,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   public StructureDefinitionRenderer(RenderingContext context) {
     super(context);
     hostMd = new InternalMarkdownProcessor();
+    corePath = context.getContext().getSpecUrl();
   }
 
   public StructureDefinitionRenderer(RenderingContext context, ResourceContext rcontext) {
@@ -3353,8 +3354,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (compare == null || mode == GEN_MODE_DIFF) {
       if (md.hasValue()) {
         String xhtml = hostMd.processMarkdown(location, md);
+        if (Utilities.noString(xhtml)) {
+          return null;
+        }
         XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-        renderStatusDiv(md, x).add(new XhtmlParser().parseFragment(xhtml));
+        try {
+          renderStatusDiv(md, x).add(new XhtmlParser().parseFragment(xhtml));
+        } catch (Exception e) {
+          x.span("color: maroon").tx(e.getLocalizedMessage());          
+        }
         return x;
       } else {
         return null;
