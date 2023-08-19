@@ -60,6 +60,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
@@ -632,6 +633,24 @@ public class BaseValidator implements IValidationContextResourceLoader {
     }
     return thePass;
 
+  }
+  
+  /**
+   * Test a rule and add a {@link IssueSeverity#WARNING} validation message if the validation fails
+   * 
+   * @param thePass
+   *          Set this parameter to <code>false</code> if the validation does not pass
+   * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
+   */
+  protected void txIssue(List<ValidationMessage> errors, String ruleDate, String txLink, int line, int col, String path, OperationOutcomeIssueComponent issue) {
+    IssueType code = IssueType.fromCode(issue.getCode().toCode());
+    IssueSeverity severity = IssueSeverity.fromCode(issue.getSeverity().toCode());
+    ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, code, line, col, path, issue.getDetails().getText(), severity).setTxLink(txLink);
+//      if (checkMsgId(msg, vmsg)) {
+    errors.add(vmsg);
+//      }
+//    }
+//    return thePass;
   }
   
   /**
@@ -1312,17 +1331,17 @@ public class BaseValidator implements IValidationContextResourceLoader {
     if (standardsStatus == StandardsStatus.DEPRECATED) {
       if (!statusWarnings.contains(vurl+":DEPRECATED")) {  
         statusWarnings.add(vurl+":DEPRECATED");
-        hint(errors, "2023-08-10", IssueType.EXPIRED, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_DEPRECATED, type, vurl);
+        hint(errors, "2023-08-10", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_DEPRECATED, type, vurl);
       }
     } else if (standardsStatus == StandardsStatus.WITHDRAWN) {
       if (!statusWarnings.contains(vurl+":WITHDRAWN")) {  
         statusWarnings.add(vurl+":WITHDRAWN");
-        hint(errors, "2023-08-10", IssueType.EXPIRED, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_WITHDRAWN, type, vurl);
+        hint(errors, "2023-08-10", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_WITHDRAWN, type, vurl);
       }
     } else if (ex.getStatus() == PublicationStatus.RETIRED) {
       if (!statusWarnings.contains(vurl+":RETIRED")) {  
         statusWarnings.add(vurl+":RETIRED");
-        hint(errors, "2023-08-10", IssueType.EXPIRED, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_RETIRED, type, vurl);
+        hint(errors, "2023-08-10", IssueType.BUSINESSRULE, element.line(), element.col(), path, false, I18nConstants.MSG_DEPENDS_ON_RETIRED, type, vurl);
       }
     } else if (false && warnOnDraftOrExperimental && source != null) {
       // for now, this is disabled; these warnings are just everywhere, and it's an intractible problem. 

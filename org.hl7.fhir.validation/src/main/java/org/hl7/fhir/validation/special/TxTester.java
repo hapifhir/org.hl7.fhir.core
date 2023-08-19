@@ -255,7 +255,7 @@ public class TxTester {
       TxTesterSorters.sortValueSet(vs);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vs);
     } catch (EFhirClientException e) {
-      OperationOutcome oo = e.getServerErrors().get(0); 
+      OperationOutcome oo = e.getServerError(); 
       TxTesterScrubbers.scrubOO(oo, tight);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
@@ -279,7 +279,7 @@ public class TxTester {
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
     } catch (EFhirClientException e) {
-      OperationOutcome oo = e.getServerErrors().get(0); 
+      OperationOutcome oo = e.getServerError(); 
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }

@@ -522,37 +522,31 @@ public class FHIRToolingClient {
       complex = complex || !(p.getValue() instanceof PrimitiveType);
     Parameters searchResults = null;
     String ps = "";
-    try {
-      if (!complex)
-        for (ParametersParameterComponent p : params.getParameter())
-          if (p.getValue() instanceof PrimitiveType)
-            ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
-      ResourceRequest<T> result;
-      if (complex)
-        result = utils.issuePostRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps),
-            utils.getResourceAsByteArray(params, false, isJson(getPreferredResourceFormat())),
-            getPreferredResourceFormat(), TIMEOUT_OPERATION_LONG);
-      else
-        result = utils.issueGetResourceRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps),
-            getPreferredResourceFormat(), TIMEOUT_OPERATION_LONG);
-      result.addErrorStatus(410);// gone
-      result.addErrorStatus(404);// unknown
-      result.addSuccessStatus(200);// Only one for now
-      if (result.isUnsuccessfulRequest())
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
-            (OperationOutcome) result.getPayload());
-      if (result.getPayload() instanceof Parameters)
-        return (Parameters) result.getPayload();
-      else {
-        Parameters p_out = new Parameters();
-        p_out.addParameter().setName("return").setResource(result.getPayload());
-        return p_out;
-      }
-    } catch (Exception e) {
-      handleException(
-          "Error performing tx2 operation '" + name + ": " + e.getMessage() + "' (parameters = \"" + ps + "\")", e);
+    if (!complex)
+      for (ParametersParameterComponent p : params.getParameter())
+        if (p.getValue() instanceof PrimitiveType)
+          ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
+    ResourceRequest<T> result;
+    if (complex)
+      result = utils.issuePostRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps),
+          utils.getResourceAsByteArray(params, false, isJson(getPreferredResourceFormat())),
+          getPreferredResourceFormat(), TIMEOUT_OPERATION_LONG);
+    else
+      result = utils.issueGetResourceRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps),
+          getPreferredResourceFormat(), TIMEOUT_OPERATION_LONG);
+    result.addErrorStatus(410);// gone
+    result.addErrorStatus(404);// unknown
+    result.addSuccessStatus(200);// Only one for now
+    if (result.isUnsuccessfulRequest())
+      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
+          (OperationOutcome) result.getPayload());
+    if (result.getPayload() instanceof Parameters)
+      return (Parameters) result.getPayload();
+    else {
+      Parameters p_out = new Parameters();
+      p_out.addParameter().setName("return").setResource(result.getPayload());
+      return p_out;
     }
-    return null;
   }
 
   public Bundle transaction(Bundle batch) {

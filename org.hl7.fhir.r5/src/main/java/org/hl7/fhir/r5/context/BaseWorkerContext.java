@@ -1197,7 +1197,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, e.getType());
         iss.getDetails().setText(e.getMessage());
         issues.add(iss);
-        return new ValidationResult(IssueSeverity.ERROR, e.getMessage(), e.getError(), issues);
+        return new ValidationResult(IssueSeverity.FATAL, e.getMessage(), e.getError(), issues);
       } catch (Exception e) {
 //        e.printStackTrace();
         localError = e.getMessage();
@@ -1354,6 +1354,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     Set<String> unknownSystems = new HashSet<>();
 
+    List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
+    
+    String localError = null;
+    String localWarning = null;
+    
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
@@ -1365,14 +1370,37 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
         }
         return res;
-      } catch (Exception e) {
-        e.printStackTrace();
-        if (e instanceof NoTerminologyServiceException) {
-          return new ValidationResult(IssueSeverity.ERROR, "No Terminology Service", TerminologyServiceErrorClass.NOSERVICE, null);
+      } catch (VSCheckerException e) {
+        if (e.isWarning()) {
+          localWarning = e.getMessage();
+        } else {  
+          localError = e.getMessage();
         }
+        if (e.getIssues() != null) {
+          issues.addAll(e.getIssues());
+        }
+      } catch (TerminologyServiceProtectionException e) {
+        OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, e.getType());
+        iss.getDetails().setText(e.getMessage());
+        issues.add(iss);
+        return new ValidationResult(IssueSeverity.FATAL, e.getMessage(), e.getError(), issues);
+      } catch (Exception e) {
+//        e.printStackTrace();
+        localError = e.getMessage();
       }
     }
 
+    if (localError != null && tcc.getClient() == null) {
+      if (unknownSystems.size() > 0) {
+        return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues).setUnknownSystems(unknownSystems);
+      } else {
+        return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.UNKNOWN, issues);
+      }
+    }
+    if (localWarning != null && tcc.getClient() == null) {
+      return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localWarning), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);       
+    }
+    
     if (!options.isUseServer()) {
       return new ValidationResult(IssueSeverity.WARNING, "Unable to validate code without using server", TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, null);      
     }
@@ -1499,6 +1527,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     String system = null;
     String code = null;
     String version = null;
+    boolean inactive = false;
+    String status = null;
     List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
 
     TerminologyServiceErrorClass err = TerminologyServiceErrorClass.UNKNOWN;
@@ -1516,18 +1546,22 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           version = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("code")) {
           code = ((PrimitiveType<?>) p.getValue()).asStringValue();
+        } else if (p.getName().equals("inactive")) {
+          inactive = "true".equals(((PrimitiveType<?>) p.getValue()).asStringValue());
+        } else if (p.getName().equals("status")) {
+          status = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("x-caused-by-unknown-system")) {
           err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
         } else if (p.getName().equals("warning-withdrawn")) {
-          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXPIRED);
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
           iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_WITHDRAWN : I18nConstants.MSG_WITHDRAWN_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
           issues.add(iss);
         } else if (p.getName().equals("warning-deprecated")) {
-          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXPIRED);
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
           iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DEPRECATED : I18nConstants.MSG_DEPRECATED_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
           issues.add(iss);
         } else if (p.getName().equals("warning-retired")) {
-          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXPIRED);
+          OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
           iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_RETIRED : I18nConstants.MSG_RETIRED_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
           issues.add(iss);
         } else if (p.getName().equals("warning-experimental")) {
@@ -1565,7 +1599,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } else {
       res = new ValidationResult(system, version, new ConceptDefinitionComponent().setCode(code), null).setTxLink(txLog.getLastId());
     }
-    res.setIssues(issues );
+    res.setIssues(issues);
+    res.setStatus(inactive, status);
     return res;
   }
 
