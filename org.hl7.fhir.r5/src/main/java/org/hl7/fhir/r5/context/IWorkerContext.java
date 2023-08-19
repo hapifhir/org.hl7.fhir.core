@@ -124,6 +124,8 @@ public interface IWorkerContext {
     private List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
     private CodeableConcept codeableConcept;
     private Set<String> unknownSystems;
+    private boolean inactive;
+    private String status;
     
     @Override
     public String toString() {
@@ -337,6 +339,22 @@ public interface IWorkerContext {
         }
       }      
       
+    }
+
+    public boolean isInactive() {
+      return inactive;
+    }
+
+    public String getStatus() {
+      return status;
+    }
+
+    public ValidationResult setStatus(boolean inactive, String status) {
+      this.inactive = inactive;
+      if (!"inactive".equals(status)) {
+        this.status = status;
+      }
+      return this;
     }
 
   }

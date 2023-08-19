@@ -962,7 +962,10 @@ public class I18nConstants {
   public static final String MSG_RETIRED_SRC = "MSG_RETIRED_SRC";
   public static final String MSG_DRAFT_SRC = "MSG_DRAFT_SRC";
   public static final String MSG_EXPERIMENTAL_SRC = "MSG_EXPERIMENTAL_SRC";
-  public static final String INACTIVE_CODE_WARNING = "INACTIVE_CODE_WARNING";
+  public static final String STATUS_CODE_WARNING = "STATUS_CODE_WARNING";
+  public static final String STATUS_CODE_HINT = "STATUS_CODE_HINT";
+  public static final String STATUS_CODE_WARNING_CODE = "STATUS_CODE_WARNING_CODE";
+  public static final String STATUS_CODE_HINT_CODE = "STATUS_CODE_HINT_CODE";
   public static final String SD_EXTENSION_URL_MISSING = "SD_EXTENSION_URL_MISSING";
   public static final String MSG_DEPENDS_ON_DEPRECATED = "MSG_DEPENDS_ON_DEPRECATED";
   public static final String MSG_DEPENDS_ON_WITHDRAWN = "MSG_DEPENDS_ON_WITHDRAWN";
