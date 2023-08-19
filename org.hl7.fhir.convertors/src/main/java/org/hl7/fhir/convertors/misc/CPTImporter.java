@@ -11,6 +11,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -56,19 +58,23 @@ public class CPTImporter {
     cs.setCopyright("CPT © Copyright 2019 American Medical Association. All rights reserved. AMA and CPT are registered trademarks of the American Medical Association.");
     cs.addProperty().setCode("modifier").setDescription("Whether code is a modifier code").setType(PropertyType.BOOLEAN);
     cs.addProperty().setCode("modified").setDescription("Whether code has been modified (all base codes are not modified)").setType(PropertyType.BOOLEAN);
+    cs.addProperty().setCode("orthopox").setDescription("Whether code is one of the Pathology and Laboratory and Immunization Code(s) for Orthopoxvirus").setType(PropertyType.BOOLEAN);
+    cs.addProperty().setCode("telemedicine").setDescription("Whether code is appropriate for use with telemedicine (and the telemedicine modifier)").setType(PropertyType.BOOLEAN);
     cs.addProperty().setCode("kind").setDescription("Kind of Code (see metadata)").setType(PropertyType.CODE);
 
     defineMetadata(cs);
     
-    System.out.println(readCodes(cs, Utilities.path(src, "LONGULT.txt"), false, null, null));
-    System.out.println(readCodes(cs, Utilities.path(src, "LONGUT.txt"), false, "upper", null));
-    System.out.println(readCodes(cs, Utilities.path(src, "MEDU.txt"), false, "med", null));
-    System.out.println(readCodes(cs, Utilities.path(src, "SHORTU.txt"), false, "short", null));
-    System.out.println(readCodes(cs, Utilities.path(src, "ConsumerDescriptor.txt"), true, "consumer", null));
-    System.out.println(readCodes(cs, Utilities.path(src, "ClinicianDescriptor.txt"), true, "clinician", null));
-    System.out.println(readCodes(cs, Utilities.path(src, "OrthopoxvirusCodes.txt"), false, null, "orthopod"));
+    System.out.println("LONGULT: "+readCodes(cs, Utilities.path(src, "LONGULT.txt"), false, null, null, null));
+    System.out.println("LONGUT: "+readCodes(cs, Utilities.path(src, "LONGUT.txt"), false, "upper", null, null));
+    System.out.println("MEDU: "+readCodes(cs, Utilities.path(src, "MEDU.txt"), false, "med", null, null));
+    System.out.println("SHORTU: "+readCodes(cs, Utilities.path(src, "SHORTU.txt"), false, "short", null, null));
+    System.out.println("ConsumerDescriptor: "+readCodes(cs, Utilities.path(src, "ConsumerDescriptor.txt"), true, "consumer", null, null));
+    System.out.println("ClinicianDescriptor: "+readCodes(cs, Utilities.path(src, "ClinicianDescriptor.txt"), true, "clinician", null, null));
+    System.out.println("OrthopoxvirusCodes: "+readCodes(cs, Utilities.path(src, "OrthopoxvirusCodes.txt"), false, null, null, "orthopox"));
   
-    System.out.println(processModifiers(cs, Utilities.path(src, "modifiers.csv")));
+    System.out.println("modifiers: "+processModifiers(cs, Utilities.path(src, "modifiers.csv")));
+    System.out.println("appendix P: "+processAppendixP(cs));
+    
     
     System.out.println("-------------------");
     System.out.println(cs.getConcept().size());
@@ -87,10 +93,58 @@ public class CPTImporter {
     produceDB(Utilities.changeFileExt(dst, ".db"), cs);
     
     cs.setContent(CodeSystemContentMode.FRAGMENT);
-    cs.getConcept().removeIf(cc -> !Utilities.existsInList(cc.getCode(), "metadata-kinds", "metadata-designations", "99202", "99203", "0001A", "25", "P1", "1P", "F1"));
+    cs.getConcept().removeIf(cc -> !Utilities.existsInList(cc.getCode(), "metadata-kinds", "metadata-designations", "99202", "99203", "0001A", "99252", "25", "P1", "1P", "F1", "95"));
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.changeFileExt(dst, "-fragment.json")), cs); 
     produceDB(Utilities.changeFileExt(dst, "-fragment.db"), cs);
   }
+
+  private String processAppendixP(CodeSystem cs) {
+    List<String> tcodes = new ArrayList<>();
+    tcodes.add("90785");
+    tcodes.add("90791");
+    tcodes.add("90792");
+    tcodes.add("90832");
+    tcodes.add("90833");
+    tcodes.add("90834");
+    tcodes.add("90836");
+    tcodes.add("90837");
+    tcodes.add("90838");
+    tcodes.add("90839");
+    tcodes.add("90840");
+    tcodes.add("90845");
+    tcodes.add("90846");
+    tcodes.add("90847");
+    tcodes.add("92507");
+    tcodes.add("92508");
+    tcodes.add("92521");
+    tcodes.add("92522");
+    tcodes.add("92523");
+    tcodes.add("92524");
+    tcodes.add("96040");
+    tcodes.add("96110");
+    tcodes.add("96116");
+    tcodes.add("96160");
+    tcodes.add("96161");
+    tcodes.add("97802");
+    tcodes.add("97803");
+    tcodes.add("97804");
+    tcodes.add("99406");
+    tcodes.add("99407");
+    tcodes.add("99408");
+    tcodes.add("99409");
+    tcodes.add("99497");
+    tcodes.add("99498");
+
+    for (String c : tcodes) { 
+      ConceptDefinitionComponent cc = CodeSystemUtilities.findCode(cs.getConcept(), c);
+      if (cc == null) {
+        throw new Error("unable to find tcode "+c);
+      }
+      cc.addProperty().setCode("telemedicine").setValue(new BooleanType(true));
+    }    
+    return String.valueOf(tcodes.size());
+  }
+
 
   private void produceDB(String path, CodeSystem cs) throws ClassNotFoundException, SQLException {
     Connection con = connect(path);
@@ -197,7 +251,6 @@ public class CPTImporter {
     mm(pc.addConcept()).setCode("physical-status").setDisplay("Anesthesia Physical Status Modifiers");
     mm(pc.addConcept()).setCode("general").setDisplay("A general modifier");
     mm(pc.addConcept()).setCode("hcpcs").setDisplay("Level II (HCPCS/National) Modifiers");
-    mm(pc.addConcept()).setCode("orthopox").setDisplay("");
     mm(pc.addConcept()).setCode("metadata").setDisplay("A kind of code or designation");
 
     ConceptDefinitionComponent dc = mm(cs.addConcept().setCode("metadata-designations"));
@@ -251,7 +304,7 @@ public class CPTImporter {
     return res;
   }
 
-  private int readCodes(CodeSystem cs, String path, boolean hasConceptId, String use, String type) throws IOException {
+  private int readCodes(CodeSystem cs, String path, boolean hasConceptId, String use, String type, String boolProp) throws IOException {
     int res = 0;
     FileInputStream inputStream = null;
     Scanner sc = null;
@@ -285,6 +338,9 @@ public class CPTImporter {
             }
           } else if (type != null) {
             cc.addProperty().setCode("kind").setValue(new CodeType(type));
+          }
+          if (boolProp != null) {
+            cc.addProperty().setCode(boolProp).setValue(new BooleanType(true));
           }
           if (use == null) {
             if (cc.hasDisplay()) {

@@ -1,3 +1,3 @@
 string property values differ at .expectedArray[0]
-Expected :expectedValue 1
-Actual  :unexpectedValue 1
+Expected :"expectedValue 1"
+Actual  :"unexpectedValue 1"

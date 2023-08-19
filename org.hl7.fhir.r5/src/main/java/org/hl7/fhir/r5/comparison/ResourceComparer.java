@@ -3,8 +3,6 @@ package org.hl7.fhir.r5.comparison;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
-import org.hl7.fhir.r5.comparison.ResourceComparer.ResourceComparison;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -326,5 +324,7 @@ public class ResourceComparer {
     }
     return cell;
   }
-  
+ 
+
+
 }
