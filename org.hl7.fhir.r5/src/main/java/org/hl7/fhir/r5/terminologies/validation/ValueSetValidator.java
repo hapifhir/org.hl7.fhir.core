@@ -81,6 +81,7 @@ import org.hl7.fhir.r5.terminologies.providers.CodeSystemProvider;
 import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
 import org.hl7.fhir.r5.terminologies.providers.URICodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -195,6 +196,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     ValidationProcessInfo info = new ValidationProcessInfo();
 
     CodeableConcept vcc = new CodeableConcept();
+    
     if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
       int i = 0;
       for (Coding c : code.getCoding()) {
@@ -262,6 +264,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
         info.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path, msg));
       }
     }
+    if (vcc.hasCoding() && code.hasText()) {
+      vcc.setText(code.getText());
+    }
     if (!checkRequiredSupplements(info)) {
       return new ValidationResult(IssueSeverity.ERROR, info.getIssues().get(info.getIssues().size()-1).getDetails().getText(), info.getIssues());
     } else if (info.hasErrors()) {
@@ -295,7 +300,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private boolean checkRequiredSupplements(ValidationProcessInfo info) {
     if (!requiredSupplements.isEmpty()) {
-      info.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, null, context.formatMessagePlural(requiredSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(requiredSupplements))));
+      String msg= context.formatMessagePlural(requiredSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(requiredSupplements));
+      throw new TerminologyServiceProtectionException(msg, TerminologyServiceErrorClass.BUSINESS_RULE, IssueType.NOTFOUND);
     }
     return requiredSupplements.isEmpty();
   }
@@ -529,6 +535,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
             res.setMessage("Code found in include, however: " + res.getMessage());
             res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.EXCEPTION, path, res.getMessage()));
           }
+        } else if (res == null) {
+          res = new ValidationResult(system, wv, null, null);
         }
       } else if ((res != null && !res.isOk())) {
         String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), code.toString());
@@ -676,18 +684,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (vcc != null) {
       vcc.addCoding(vc);
     }
-    if (CodeSystemUtilities.isInactive(cs, cc)) {
-      info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.EXPIRED, path, context.formatMessage(I18nConstants.INACTIVE_CODE_WARNING, cc.getCode())));
-    }
-    boolean ws = false;    
+
+    boolean inactive = (CodeSystemUtilities.isInactive(cs, cc));
+    String status = inactive ? (CodeSystemUtilities.getStatus(cs, cc)) : null;
+
+    boolean ws = false;     
     if (code.getDisplay() == null) {
-      return new ValidationResult(code.getSystem(), cs.getVersion(), cc, vc.getDisplay());
+      return new ValidationResult(code.getSystem(), cs.getVersion(), cc, vc.getDisplay()).setStatus(inactive, status);
     }
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ", " or ");
     if (cc.hasDisplay() && isOkLanguage(cs.getLanguage())) {
       b.append("'"+cc.getDisplay()+"'");
       if (code.getDisplay().equalsIgnoreCase(cc.getDisplay())) {
-        return new ValidationResult(code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs));
+        return new ValidationResult(code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs)).setStatus(inactive, status);
       } else if (Utilities.normalize(code.getDisplay()).equals(Utilities.normalize(cc.getDisplay()))) {
         ws = true;
       }
@@ -698,7 +707,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (isOkLanguage(ds.getLanguage())) {
         b.append("'"+ds.getValue()+"'");
         if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
-          return new ValidationResult(code.getSystem(),cs.getVersion(),  cc, getPreferredDisplay(cc, cs));
+          return new ValidationResult(code.getSystem(),cs.getVersion(),  cc, getPreferredDisplay(cc, cs)).setStatus(inactive, status);
         }
         if (Utilities.normalize(code.getDisplay()).equalsIgnoreCase(Utilities.normalize(ds.getValue()))) {
           ws = true;
@@ -712,7 +721,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         if (vs.getCc().hasDisplay() && isOkLanguage(vs.getValueset().getLanguage())) {
           b.append("'"+vs.getCc().getDisplay()+"'");
           if (code.getDisplay().equalsIgnoreCase(vs.getCc().getDisplay())) {
-            return new ValidationResult(code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs));
+            return new ValidationResult(code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs)).setStatus(inactive, status);
           }
         }
         for (ConceptReferenceDesignationComponent ds : vs.getCc().getDesignation()) {
@@ -720,7 +729,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           if (isOkLanguage(ds.getLanguage())) {
             b.append("'"+ds.getValue()+"'");
             if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
-              return new ValidationResult(code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs));
+              return new ValidationResult(code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs)).setStatus(inactive, status);
             }
           }
         }
@@ -728,10 +737,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     if (b.count() == 0) {
       String msg = context.formatMessagePlural(options.getLanguages().size(), I18nConstants.NO_VALID_DISPLAY_FOUND, code.getSystem(), code.getCode(), code.getDisplay(), options.langSummary());
-      return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg));      
+      return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg)).setStatus(inactive, status);      
     } else {
       String msg = context.formatMessagePlural(b.count(), ws ? I18nConstants.DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF : I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF, code.getSystem(), code.getCode(), b.toString(), code.getDisplay(), options.langSummary());
-      return new ValidationResult(dispWarningStatus(), msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(dispWarning(), IssueType.INVALID, path+".display", msg));
+      return new ValidationResult(dispWarningStatus(), msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(dispWarning(), IssueType.INVALID, path+".display", msg)).setStatus(inactive, status);
     }
   }
 
