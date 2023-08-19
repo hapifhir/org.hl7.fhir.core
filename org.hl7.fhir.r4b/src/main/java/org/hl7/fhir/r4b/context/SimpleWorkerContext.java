@@ -306,7 +306,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     } catch (Exception e) {
       throw new FHIRException(formatMessage(canNoTS
           ? I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__
-          : I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER, e.getMessage()), e);
+          : I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER, e.getMessage(), client.getAddress()), e);
     }
   }
 

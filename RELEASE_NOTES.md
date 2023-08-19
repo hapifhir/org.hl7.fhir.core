@@ -5,6 +5,7 @@
 * Add checking around internal status consistency and across dependencies (draft/experimental/retired/deprecated)
 * Improved error messages on server failure
 * Fix bug in warning about No valid Display Names found
+* Use Supplements when validating display names
 * Fix issue in FHIRPath .combine focus handling 
 * Check Extension fixed values for URLs - enforce consistency
 * Fix R4 FML parser problem
