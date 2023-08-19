@@ -481,7 +481,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private void expRef(XhtmlNode x, String u, String v, Resource source) {
-    String t = u.substring(0, u.indexOf("|"));
+    String t = u.contains("|") ? u.substring(0, u.indexOf("|")) : u;
     u = u.substring(u.indexOf("|")+1);
     // TODO Auto-generated method stub
     if (u.equals("http://snomed.info/sct")) {
@@ -1146,7 +1146,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     boolean hasExtensions = false;
     XhtmlNode li;
     li = ul.li();
-    li = VersionComparisonAnnotation.render(inc, li);
+    li = renderStatus(inc, li);
 
     Map<String, ConceptDefinitionComponent> definitions = new HashMap<>();
     
@@ -1199,7 +1199,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
                 li.tx(", ");
               }
             }
-            XhtmlNode wli = VersionComparisonAnnotation.render(f, li);
+            XhtmlNode wli = renderStatus(f, li);
             if (f.getOp() == FilterOperator.EXISTS) {
               if (f.getValue().equals("true")) {
                 wli.tx(f.getProperty()+" exists");
@@ -1239,7 +1239,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
             first = false;
           else
             li.tx(", ");
-          XhtmlNode wli = VersionComparisonAnnotation.render(vs, li);
+          XhtmlNode wli = renderStatus(vs, li);
           AddVsRef(vs.asStringValue(), wli, vsRes);
         }
       }
@@ -1256,13 +1256,13 @@ public class ValueSetRenderer extends TerminologyRenderer {
             first = false;
           else
             li.tx(", ");
-          XhtmlNode wli = VersionComparisonAnnotation.render(vs, li);
+          XhtmlNode wli = renderStatus(vs, li);
           AddVsRef(vs.asStringValue(), wli, vsRes);
         }
       } else {
         XhtmlNode xul = li.ul();
         for (UriType vs : inc.getValueSet()) {
-          XhtmlNode wli = VersionComparisonAnnotation.render(vs,  xul.li());
+          XhtmlNode wli = renderStatus(vs,  xul.li());
           AddVsRef(vs.asStringValue(), wli, vsRes);
         }
         
@@ -1275,16 +1275,16 @@ public class ValueSetRenderer extends TerminologyRenderer {
       List<UsedConceptMap> maps, Map<String, String> designations, Map<String, ConceptDefinitionComponent> definitions,
       XhtmlNode t, boolean hasComments, boolean hasDefinition, ConceptReferenceComponent c) {
     XhtmlNode tr = t.tr();
-    XhtmlNode td = VersionComparisonAnnotation.renderRow(c, t, tr);
+    XhtmlNode td = renderStatusRow(c, t, tr);
     ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
     addCodeToTable(false, inc.getSystem(), c.getCode(), c.hasDisplay()? c.getDisplay() : cc != null ? cc.getDisplay() : "", td);
 
     td = tr.td();
     if (!Utilities.noString(c.getDisplay()))
-      VersionComparisonAnnotation.render(c.getDisplayElement(), td).addText(c.getDisplay());
+      renderStatus(c.getDisplayElement(), td).addText(c.getDisplay());
     else if (VersionComparisonAnnotation.hasDeleted(c, "display")) {
       StringType d = (StringType) VersionComparisonAnnotation.getDeletedItem(c, "display"); 
-      VersionComparisonAnnotation.render(d, td).addText(d.primitiveValue());
+      renderStatus(d, td).addText(d.primitiveValue());
     } else if (cc != null && !Utilities.noString(cc.getDisplay()))
       td.style("color: #cccccc").addText(cc.getDisplay());
 

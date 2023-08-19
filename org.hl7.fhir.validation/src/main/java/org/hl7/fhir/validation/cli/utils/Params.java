@@ -99,6 +99,7 @@ public class Params {
   public static final String SOURCE = "-source";
   public static final String INPUT = "-input";
   public static final String FILTER = "-filter";
+  public static final String EXTERNALS = "-externals";
   public static final String MODE = "-mode";
   private static final String FHIR_SETTINGS_PARAM = "-fhir-settings";
   private static final String WATCH_MODE_PARAM = "-watch-mode";

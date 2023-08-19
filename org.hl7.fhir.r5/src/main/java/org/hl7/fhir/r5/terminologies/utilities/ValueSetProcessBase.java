@@ -25,7 +25,14 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 public class ValueSetProcessBase {
 
   protected IWorkerContext context;
-  
+  protected TerminologyOperationContext opContext;
+  protected List<String> requiredSupplements = new ArrayList<>();
+
+  protected ValueSetProcessBase(IWorkerContext context, TerminologyOperationContext opContext) {
+    super();
+    this.context = context;
+    this.opContext = opContext;
+  }
   public static class AlternateCodesProcessingRules {
     private boolean all;
     private List<String> uses = new ArrayList<>();
@@ -106,7 +113,9 @@ public class ValueSetProcessBase {
       break;
     }
     result.setCode(type);
-    result.addLocation(location);
+    if (location != null) {
+      result.addLocation(location);
+    }
     result.getDetails().setText(message);
     ArrayList<OperationOutcomeIssueComponent> list = new ArrayList<>();
     list.add(result);

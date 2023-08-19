@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
@@ -32,6 +33,8 @@ import org.hl7.fhir.r5.comparison.StructureDefinitionComparer;
 import org.hl7.fhir.r5.comparison.StructureDefinitionComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
+import org.hl7.fhir.r5.conformance.profile.BindingResolution;
+import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.BaseWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -45,6 +48,7 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.renderers.CodeSystemRenderer;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
 import org.hl7.fhir.r5.renderers.ValueSetRenderer;
@@ -150,11 +154,14 @@ public class ComparisonTests {
 
     ComparisonSession session = new ComparisonSession(context, context, "Comparison Tests", null, null);
     if (content.has("version")) {
-      session.setForVersion(content.getJsonObject("version").asString("stated"));
       session.setAnnotate(true);
     }
     RenderingContext lrc = new RenderingContext(context, new MarkDownProcessor(Dialect.COMMON_MARK), null, "http://hl7.org/fhir", "", "en", ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER);
     lrc.setDestDir(Utilities.path("[tmp]", "comparison"));
+    lrc.setPkp(new TestProfileKnowledgeProvider(context));
+    if (content.has("version")) {
+      lrc.setChangeVersion(content.getJsonObject("version").asString("stated"));
+    }
     
     if (left instanceof CodeSystem && right instanceof CodeSystem) {
       CodeSystemComparer cs = new CodeSystemComparer(session);
@@ -199,6 +206,7 @@ public class ComparisonTests {
 //      String xml3 = new XhtmlComposer(true).compose(cs.renderExpansion(csc, "", ""));
       TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Structure") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
+      
 
       lrc.setStructureMode(StructureDefinitionRendererMode.DATA_DICT);
       new StructureDefinitionRenderer(lrc).render(right);
@@ -322,4 +330,83 @@ public class ComparisonTests {
       Assertions.assertEquals(output.asInteger("infoCount"), hc, "Expected " + Integer.toString(output.asInteger("infoCount")) + " hints, but found " + Integer.toString(hc) + ".");
   }
 
+
+  public class TestProfileKnowledgeProvider implements ProfileKnowledgeProvider {
+
+    private IWorkerContext context;
+
+    public TestProfileKnowledgeProvider(IWorkerContext context) {
+      this.context = context;
+    }
+
+    @Override
+    public boolean isDatatype(String typeSimple) {
+      throw new NotImplementedException();      
+    }
+    @Override
+    public boolean isPrimitiveType(String typeSimple) {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public boolean isResource(String typeSimple) {
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public boolean hasLinkFor(String typeSimple) {
+      return getLinkFor(null, typeSimple) != null;    
+    }
+
+    @Override
+    public String getLinkFor(String corePath, String typeSimple) {
+      StructureDefinition sd = context.fetchTypeDefinition(typeSimple);
+      if (sd !=  null) {
+        return sd.getWebPath();
+      }
+      return null;      
+    }
+
+    @Override
+    public BindingResolution resolveBinding(StructureDefinition def, ElementDefinitionBindingComponent binding, String path) throws FHIRException {
+      ValueSet vs = context.fetchResource(ValueSet.class, binding.getValueSet());
+      if (vs != null) {
+        return new BindingResolution(vs.present(), vs.getWebPath());
+      } else {
+        return new BindingResolution(binding.getValueSet(), null);
+      }
+    }
+
+    @Override
+    public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
+      ValueSet vs = context.fetchResource(ValueSet.class, url);
+      if (vs != null) {
+        if (vs.hasWebPath()) {
+          return new BindingResolution(vs.present(), vs.getWebPath());
+        } else {
+          return new BindingResolution(vs.present(), "valueset-"+vs.getIdBase()+".html");
+        }
+      }
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public String getLinkForProfile(StructureDefinition profile, String url) {
+      if ("http://hl7.org/fhir/StructureDefinition/Composition".equals(url)) {
+        return "http://hl7.org/fhir/composition.html|TestComposition";
+      }
+      throw new NotImplementedException();      
+    }
+
+    @Override
+    public boolean prependLinks() {
+      return false;      
+    }
+
+    @Override
+    public String getLinkForUrl(String corePath, String s) {
+      throw new NotImplementedException();      
+    }
+
+  }
 }

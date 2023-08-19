@@ -55,17 +55,19 @@ public class TxTester {
   private String output;
   private ITerminologyClient tx;
   private boolean tight;
+  private JsonObject externals;
   
 
-  public TxTester(ITxTesterLoader loader, String server, boolean tight) {
+  public TxTester(ITxTesterLoader loader, String server, boolean tight, JsonObject externals) {
     super();
     this.server = server;
     this.loader = loader;
     this.tight = tight;
+    this.externals = externals;
   }
 
   public static void main(String[] args) throws Exception {
-    new TxTester(new InternalTxLoader(args[0]), args[1], "true".equals(args[2])).execute(args[2], new ArrayList<>(), args[3]);
+    new TxTester(new InternalTxLoader(args[0]), args[1], "true".equals(args[2]), args.length == 5 ? JsonParser.parseObjectFromFile(args[4]) : null).execute(args[2], new ArrayList<>(), args[3]);
   }
   
   public boolean execute(String version, List<String> modes, String filter) throws IOException, URISyntaxException {
@@ -77,6 +79,7 @@ public class TxTester {
     System.out.println("  Source for tests: "+loader.describe());
     System.out.println("  Output Directory: "+output);
     System.out.println("  Term Service Url: "+server);
+    System.out.println("  External Strings: "+(externals != null));
     System.out.println("  Test  Exec Modes: "+modes.toString());
     if (version != null) {
       System.out.println("  Tx  FHIR Version: "+version);
@@ -185,12 +188,13 @@ public class TxTester {
         if (fo.exists()) {
           fo.delete();
         }
+        JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
 
         String msg = null;
         if (test.asString("operation").equals("expand")) {
-          msg = expand(tx, setup, req, resp, fp, profile);
+          msg = expand(tx, setup, req, resp, fp, profile, ext);
         } else if (test.asString("operation").equals("validate-code")) {
-          msg = validate(tx, setup, req, resp, fp, profile);      
+          msg = validate(tx, setup, req, resp, fp, profile, ext);      
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -239,7 +243,7 @@ public class TxTester {
     return new URI(server).getHost();
   }
 
-  private String expand(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, Parameters profile) throws IOException {
+  private String expand(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, Parameters profile, JsonObject ext) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -255,7 +259,7 @@ public class TxTester {
       TxTesterScrubbers.scrubOO(oo, tight);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj);
+    String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj, ext);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(vsj, fp);        
@@ -263,7 +267,7 @@ public class TxTester {
     return diff;
   }
 
-  private String validate(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, Parameters profile) throws IOException {
+  private String validate(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, Parameters profile, JsonObject ext) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -279,7 +283,7 @@ public class TxTester {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj);
+    String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, ext);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(pj, fp);        

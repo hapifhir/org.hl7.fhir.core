@@ -60,7 +60,7 @@ public class ParsingTests {
     r = new XmlParser().parse(b);
     b = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeBytes(r);
     String output = new String(b);
-    String msg = CompareUtilities.checkJsonSrcIsSame(src, output);
+    String msg = CompareUtilities.checkJsonSrcIsSame(src, output, null);
     Assertions.assertTrue(msg == null, msg);
   }
 

@@ -66,6 +66,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -887,6 +888,22 @@ public class CodeSystemUtilities {
     ConceptDefinitionComponent def = getCode(cs, code);
     ConceptPropertyComponent cp = getProperty(def, property);
     return cp == null ? null : cp.getValue();
+  }
+
+  public static boolean hasMarkdownInDefinitions(CodeSystem cs, MarkDownProcessor md) {
+    return hasMarkdownInDefinitions(cs.getConcept(), md);
+  }
+
+  private static boolean hasMarkdownInDefinitions(List<ConceptDefinitionComponent> concepts, MarkDownProcessor md) {
+    for (ConceptDefinitionComponent c : concepts) {
+      if (c.hasDefinition() && md.isProbablyMarkdown(c.getDefinition(), true)) {
+        return true;
+      }
+      if (c.hasConcept() && hasMarkdownInDefinitions(c.getConcept(), md)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 

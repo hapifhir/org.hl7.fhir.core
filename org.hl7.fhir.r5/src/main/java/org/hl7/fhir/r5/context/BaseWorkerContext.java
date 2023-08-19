@@ -113,6 +113,8 @@ import org.hl7.fhir.r5.renderers.OperationOutcomeRenderer;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
@@ -1008,7 +1010,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         BundleEntryComponent r = resp.getEntry().get(i);
 
         if (r.getResource() instanceof Parameters) {
-          t.setResult(processValidationResult((Parameters) r.getResource()));
+          t.setResult(processValidationResult((Parameters) r.getResource(), vs == null ? null : vs.getUrl()));
           if (txCache != null) {
             txCache.cacheValidation(t.getCacheToken(), t.getResult(), TerminologyCache.PERMANENT);
           }
@@ -1108,7 +1110,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         BundleEntryComponent r = resp.getEntry().get(i);
 
         if (r.getResource() instanceof Parameters) {
-          t.setResult(processValidationResult((Parameters) r.getResource()));
+          t.setResult(processValidationResult((Parameters) r.getResource(), vsUrl));
           if (txCache != null) {
             txCache.cacheValidation(t.getCacheToken(), t.getResult(), TerminologyCache.PERMANENT);
           }
@@ -1185,12 +1187,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } catch (VSCheckerException e) {
         if (e.isWarning()) {
           localWarning = e.getMessage();
-        } else {
+        } else {  
           localError = e.getMessage();
         }
         if (e.getIssues() != null) {
           issues.addAll(e.getIssues());
         }
+      } catch (TerminologyServiceProtectionException e) {
+        OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, e.getType());
+        iss.getDetails().setText(e.getMessage());
+        issues.add(iss);
+        return new ValidationResult(IssueSeverity.ERROR, e.getMessage(), e.getError(), issues);
       } catch (Exception e) {
 //        e.printStackTrace();
         localError = e.getMessage();
@@ -1246,15 +1253,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected ValueSetExpander constructValueSetExpanderSimple() {
-    return new ValueSetExpander(this);
+    return new ValueSetExpander(this, new TerminologyOperationContext(this));
   }
 
   protected ValueSetValidator constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
-    return new ValueSetValidator(options, vs, this, ctxt, expParameters, tcc.getTxcaps());
+    return new ValueSetValidator(this, new TerminologyOperationContext(this), options, vs, ctxt, expParameters, tcc.getTxcaps());
   }
 
   protected ValueSetValidator constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs) {
-    return new ValueSetValidator(options, vs, this, expParameters, tcc.getTxcaps());
+    return new ValueSetValidator(this, new TerminologyOperationContext(this), options, vs, expParameters, tcc.getTxcaps());
   }
 
   protected Parameters constructParameters(ValueSet vs, boolean hierarchical) {
@@ -1412,7 +1419,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } else {
       pOut = tcc.getClient().validateVS(pin);
     }
-    return processValidationResult(pOut);
+    return processValidationResult(pOut, vs == null ? null : vs.getUrl());
   }
 
   protected void addServerValidationParameters(ValueSet vs, Parameters pin, ValidationOptions options) {
@@ -1485,7 +1492,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return cache;
   }
 
-  public ValidationResult processValidationResult(Parameters pOut) {
+  public ValidationResult processValidationResult(Parameters pOut, String vs) {
     boolean ok = false;
     String message = "No Message returned";
     String display = null;
@@ -1513,23 +1520,23 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
         } else if (p.getName().equals("warning-withdrawn")) {
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXPIRED);
-          iss.getDetails().setText(formatMessage(I18nConstants.MSG_WITHDRAWN, ((PrimitiveType<?>) p.getValue()).asStringValue()));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_WITHDRAWN : I18nConstants.MSG_WITHDRAWN_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
           issues.add(iss);
         } else if (p.getName().equals("warning-deprecated")) {
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXPIRED);
-          iss.getDetails().setText(formatMessage(I18nConstants.MSG_DEPRECATED, ((PrimitiveType<?>) p.getValue()).asStringValue()));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DEPRECATED : I18nConstants.MSG_DEPRECATED_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
           issues.add(iss);
         } else if (p.getName().equals("warning-retired")) {
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXPIRED);
-          iss.getDetails().setText(formatMessage(I18nConstants.MSG_RETIRED, ((PrimitiveType<?>) p.getValue()).asStringValue()));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_RETIRED : I18nConstants.MSG_RETIRED_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
           issues.add(iss);
         } else if (p.getName().equals("warning-experimental")) {
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(I18nConstants.MSG_EXPERIMENTAL, ((PrimitiveType<?>) p.getValue()).asStringValue()));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_EXPERIMENTAL : I18nConstants.MSG_EXPERIMENTAL_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
           issues.add(iss);
         } else if (p.getName().equals("warning-draft")) {
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(I18nConstants.MSG_DRAFT, ((PrimitiveType<?>) p.getValue()).asStringValue()));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DRAFT : I18nConstants.MSG_DRAFT_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
           issues.add(iss);
         } else if (p.getName().equals("cause")) {
           try {

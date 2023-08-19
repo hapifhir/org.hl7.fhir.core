@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Stack;
 import java.util.Map;
 import java.util.Set;
 
@@ -54,6 +55,7 @@ import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.IntegerType;
+import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Resource;
@@ -79,6 +81,7 @@ import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
@@ -172,10 +175,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private abstract class ItemWithStatus {
     ListItemStatus status = ListItemStatus.New; // new, unchanged, removed    
 
-    protected abstract void renderDetails(XhtmlNode f);
+    protected abstract void renderDetails(XhtmlNode f) throws IOException;
     protected abstract boolean matches(ItemWithStatus other);
 
-    public void render(XhtmlNode x) {
+    public void render(XhtmlNode x) throws IOException {
       XhtmlNode f = x;
       if (status == ListItemStatus.Unchanged) {
         f = unchanged(f);
@@ -247,14 +250,25 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     
     public void renderDetails(XhtmlNode f) {
+      f = renderStatus(value, f);
       f.b().attribute("title", "Formal Invariant Identifier").tx(value.getKey());
       f.tx(": ");
-      f.tx(value.getHuman());
+      if (value.hasHuman()) {
+        renderStatus(value.getHumanElement(), f).tx(value.getHuman());
+      } else if (VersionComparisonAnnotation.hasDeleted(value, "human")) {
+        Base b =VersionComparisonAnnotation.getDeletedItem(value, "human");
+        renderStatus(b, f).tx(b.primitiveValue());        
+      }
       f.tx(" (");
       if (status == ListItemStatus.New) {
-        f.code().tx(value.getExpression());
+        if (value.hasExpression()) {
+          renderStatus(value.getExpressionElement(), f).code().tx(value.getExpression());
+        } else if (VersionComparisonAnnotation.hasDeleted(value, "expression")) {
+          Base b = VersionComparisonAnnotation.getDeletedItem(value, "expression");
+          renderStatus(b, f).code().tx(b.primitiveValue());        
+        }
       } else {
-        f.tx(value.getExpression());
+        renderStatus(value.getExpressionElement(), f).tx(value.getExpression());
       }
       f.tx(")");      
     }
@@ -293,6 +307,27 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
       f.tx(value.asStringValue());
     }
+    
+  }
+
+  private class DataValueWithStatus extends ItemWithStatus {
+    DataType value;
+    protected DataValueWithStatus(DataType value) {
+      this.value = value;
+    }
+
+    protected boolean matches(ItemWithStatus other) {
+      return ((ValueWithStatus) other).value.equalsDeep(value);
+    }
+
+    public void renderDetails(XhtmlNode f) throws IOException {
+
+      if (value.hasUserData("render.link")) {
+        f = f.ah(value.getUserString("render.link"));
+      }
+      f.tx(summarize(value));
+    }
+
   }
   
 
@@ -303,6 +338,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   public StructureDefinitionRenderer(RenderingContext context) {
     super(context);
     hostMd = new InternalMarkdownProcessor();
+    corePath = context.getContext().getSpecUrl();
   }
 
   public StructureDefinitionRenderer(RenderingContext context, ResourceContext rcontext) {
@@ -3060,8 +3096,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return null;
   }
 
-
-
   private ElementDefinition getUrlFor(StructureDefinition ed, ElementDefinition c) {
     int i = ed.getSnapshot().getElement().indexOf(c) + 1;
     while (i < ed.getSnapshot().getElement().size() && ed.getSnapshot().getElement().get(i).getPath().startsWith(c.getPath()+".")) {
@@ -3083,6 +3117,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       generateAnchors(stack, allAnchors);
       checkInScope(stack, excluded);
     }
+    Stack<ElementDefinition> dstack = new Stack<>();
     for (ElementDefinition ec : elements) {
       if ((incProfiledOut || !"0".equals(ec.getMax())) && !excluded.contains(ec)) {
         ElementDefinition compareElement = null;
@@ -3094,7 +3129,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         List<String> anchors = makeAnchors(ec, anchorPrefix);
         String title = ec.getId();
         XhtmlNode tr = t.tr();
-        XhtmlNode sp = VersionComparisonAnnotation.render(ec, tr.td("structure").colspan(2).spanClss("self-link-parent"));
+        XhtmlNode sp = renderStatus(ec, tr.td("structure").colspan(2).spanClss("self-link-parent"));
         for (String s : anchors) {
           sp.an(s).tx(" ");
         }
@@ -3116,6 +3151,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             // generateElementInner(b, extDefn, extDefn.getSnapshot().getElement().get(0), valueDefn == null ? 2 : 3, valueDefn);
           }
         } else {
+          while (!dstack.isEmpty() && !isParent(dstack.peek(), ec)) {
+            finish(t, sd, dstack.pop(), mode);
+          }
+          dstack.push(ec);            
           generateElementInner(t, sd, ec, mode, null, compareElement, null, false);
           if (ec.hasSlicing()) {
             generateSlicing(t, sd, ec, ec.getSlicing(), compareElement, mode, false);
@@ -3125,20 +3164,26 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       t.tx("\r\n");
       i++;
     }
-    for (Base b : VersionComparisonAnnotation.getDeleted(sd, "element")) {
+    while (!dstack.isEmpty()) {
+      finish(t, sd, dstack.pop(), mode);
+    }
+    finish(t, sd, null, mode);
+  }
+
+  private void finish(XhtmlNode t, StructureDefinition sd, ElementDefinition ed, int mode) throws FHIRException, IOException {
+
+    for (Base b : VersionComparisonAnnotation.getDeleted(ed == null ? sd : ed, "element")) {
       ElementDefinition ec = (ElementDefinition) b;
       String title = ec.getId();
       XhtmlNode tr = t.tr();
-      XhtmlNode sp = VersionComparisonAnnotation.render(ec, tr.td("structure").colspan(2).spanClss("self-link-parent"));
-      sp.span("color: grey", null).tx(Integer.toString(i++));
+      XhtmlNode sp = renderStatus(ec, tr.td("structure").colspan(2).spanClss("self-link-parent"));
+      sp.span("color: grey", null).tx("--");
       sp.b().tx(". "+title);
       
       generateElementInner(t, sd, ec, mode, null, null, null, true);
       if (ec.hasSlicing()) {
         generateSlicing(t, sd, ec, ec.getSlicing(), null, mode, true);
-      }
-      
-      t.tx("\r\n");
+      }      
     }
   }
 
@@ -3309,8 +3354,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (compare == null || mode == GEN_MODE_DIFF) {
       if (md.hasValue()) {
         String xhtml = hostMd.processMarkdown(location, md);
+        if (Utilities.noString(xhtml)) {
+          return null;
+        }
         XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-        VersionComparisonAnnotation.renderDiv(md, x).add(new XhtmlParser().parseFragment(xhtml));
+        try {
+          renderStatusDiv(md, x).add(new XhtmlParser().parseFragment(xhtml));
+        } catch (Exception e) {
+          x.span("color: maroon").tx(e.getLocalizedMessage());          
+        }
         return x;
       } else {
         return null;
@@ -3369,10 +3421,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     if (mode != GEN_MODE_KEY) {
       if (newStr != null) {
-        VersionComparisonAnnotation.render(source, x).ah(nLink).tx(newStr);
+        renderStatus(source, x).ah(nLink).tx(newStr);
       } else if (VersionComparisonAnnotation.hasDeleted(parent, name)) {
         PrimitiveType p = (PrimitiveType) VersionComparisonAnnotation.getDeletedItem(parent, name);
-        VersionComparisonAnnotation.render(p, x).tx(p.primitiveValue());        
+        renderStatus(p, x).tx(p.primitiveValue());        
       } else {
         return null;
       }
@@ -3380,7 +3432,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (newStr==null || newStr.isEmpty()) {
         return null;
       } else {
-        VersionComparisonAnnotation.render(source, x).ah(nLink).tx(newStr);
+        renderStatus(source, x).ah(nLink).tx(newStr);
       }
     } else if (oldStr!=null && !oldStr.isEmpty() && (newStr==null || newStr.isEmpty())) {
       if (mode == GEN_MODE_DIFF) {
@@ -3396,10 +3448,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
     } else if (newStr.startsWith(oldStr)) {
       unchanged(x).ah(oLink).tx(oldStr);
-      VersionComparisonAnnotation.render(source, x).ah(nLink).tx(newStr.substring(oldStr.length()));
+      renderStatus(source, x).ah(nLink).tx(newStr.substring(oldStr.length()));
     } else {
       // TODO: improve comparision in this fall-through case, by looking for matches in sub-paragraphs?
-      VersionComparisonAnnotation.render(source, x).ah(nLink).tx(newStr);
+      renderStatus(source, x).ah(nLink).tx(newStr);
       removed(x).ah(oLink).tx(oldStr);
     }
     return x;
@@ -3436,17 +3488,20 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     boolean slicedExtension = d.hasSliceName() && (d.getPath().endsWith(".extension") || d.getPath().endsWith(".modifierExtension"));
 //    int slicedExtensionMode = (mode == GEN_MODE_KEY) && slicedExtension ? GEN_MODE_SNAP : mode; // see ProfileUtilities.checkExtensionDoco / Task 3970
     if (d.hasSliceName()) {
-      tableRow(tbl, "SliceName", "profiling.html#slicing", strikethrough).tx(d.getSliceName());
+      tableRow(tbl, "Slice Name", "profiling.html#slicing", strikethrough, compareString(d.getSliceName(), d.getSliceNameElement(), null, (compare != null ? compare.getSliceName() : null), d, null, "sliceName", mode));   
+      tableRow(tbl, "Slice Constraining", "profiling.html#slicing", strikethrough, compareString(encodeValue(d.getSliceIsConstrainingElement()), d.getSliceIsConstrainingElement(), null, (compare != null ? encodeValue(compare.getSliceIsConstrainingElement()) : null), d, null, "sliceName", mode));   
     }
+
     tableRow(tbl, "Definition", null, strikethrough, compareMarkdown(sd.getName(), d.getDefinitionElement(), (compare==null) || slicedExtension ? null : compare.getDefinitionElement(), mode));
     tableRow(tbl, "Short", null, strikethrough, compareString(d.hasShort() ? d.getShort() : null, d.getShortElement(), null, "short", d, compare!= null && compare.hasShortElement() ? compare.getShort() : null, null, mode));
+    tableRow(tbl, "Comments", null, strikethrough, compareMarkdown(sd.getName(), d.getCommentElement(), (compare==null) || slicedExtension ? null : compare.getCommentElement(), mode));
     tableRow(tbl, "Note", null, strikethrough, businessIdWarning(sd.getName(), tail(d.getPath())));
     tableRow(tbl, "Control", "conformance-rules.html#conformance", strikethrough, describeCardinality(d, compare, mode)); 
     tableRow(tbl, "Binding", "terminologies.html", strikethrough, describeBinding(sd, d, d.getPath(), compare, mode));
     if (d.hasContentReference()) {
       tableRow(tbl, "Type", null, strikethrough, "See " + d.getContentReference().substring(1));
     } else {
-      tableRow(tbl, "Type", "datatypes.html", strikethrough, describeTypes(d.getType(), false, compare, mode, value, compareValue, sd)); 
+      tableRow(tbl, "Type", "datatypes.html", strikethrough, describeTypes(d.getType(), false, d, compare, mode, value, compareValue, sd)); 
     }
     if (d.hasExtension(ToolingExtensions.EXT_DEF_TYPE)) {
       tableRow(tbl, "Default Type", "datatypes.html", strikethrough, ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_DEF_TYPE));          
@@ -3457,7 +3512,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (d.getPath().endsWith("[x]") && !d.prohibited()) {
       tableRow(tbl, "[x] Note", null, strikethrough).ahWithText("See ", spec("formats.html#choice"), null, "Choice of Data Types", " for further information about how to use [x]");
     }
-    tableRow(tbl, "Is Modifier", "conformance-rules.html#ismodifier", strikethrough, displayBoolean(d.getIsModifier(), d.getIsModifierElement(), "isModifier", d, null, mode));
+    tableRow(tbl, "Is Modifier", "conformance-rules.html#ismodifier", strikethrough, presentModifier(d, mode, compare));
     if (d.getMustHaveValue()) {
       tableRow(tbl, "Primitive Value", "elementdefinition.html#primitives", strikethrough, "This primitive type must have a value (the value must be present, and cannot be replaced by an extension)");
     } else if (d.hasValueAlternatives()) {
@@ -3471,7 +3526,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     tableRow(tbl, "Must Support", "conformance-rules.html#mustSupport", strikethrough, displayBoolean(d.getMustSupport(), d.getMustSupportElement(), "mustSupport", d, compare==null ? null : compare.getMustSupportElement(), mode));
     if (d.getMustSupport()) {
       if (hasMustSupportTypes(d.getType())) {
-        tableRow(tbl, "Must Support Types", "datatypes.html", strikethrough, describeTypes(d.getType(), true, compare, mode, null, null, sd));
+        tableRow(tbl, "Must Support Types", "datatypes.html", strikethrough, describeTypes(d.getType(), true, d, compare, mode, null, null, sd));
       } else if (hasChoices(d.getType())) {
         tableRow(tbl, "Must Support Types", "datatypes.html", strikethrough, "No must-support rules about the choice of types/profiles");
       }
@@ -3552,19 +3607,37 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       tableRow(tbl, "Summary", "search.html#summary", strikethrough, Boolean.toString(d.getIsSummary()));
     }
     tableRow(tbl, "Requirements", null, strikethrough, compareMarkdown(sd.getName(), d.getRequirementsElement(), (compare==null) || slicedExtension ? null : compare.getRequirementsElement(), mode));
+    tableRow(tbl, "Label", null, strikethrough, compareString(d.getLabel(), d.getLabelElement(), null, "label", d, (compare != null ? compare.getLabel() : null), null, mode));   
     tableRow(tbl, "Alternate Names", null, strikethrough, compareSimpleTypeLists(d.getAlias(), ((compare==null) || slicedExtension ? null : compare.getAlias()), mode));
-    tableRow(tbl, "Comments", null, strikethrough, compareMarkdown(sd.getName(), d.getCommentElement(), (compare==null) || slicedExtension ? null : compare.getCommentElement(), mode));
+    tableRow(tbl, "Definitional Codes", null, strikethrough, compareDataTypeLists(d.getCode(), ((compare==null) || slicedExtension ? null : compare.getCode()), mode));
+    tableRow(tbl, "Min Value", null, strikethrough, compareString(d.hasMinValue() ? encodeValue(d.getMinValue()) : null, d.getMinValue(), null, "minValue", d, compare!= null && compare.hasMinValue() ? encodeValue(compare.getMinValue()) : null, null, mode));
+    tableRow(tbl, "Max Value", null, strikethrough, compareString(d.hasMaxValue() ? encodeValue(d.getMaxValue()) : null, d.getMaxValue(), null, "maxValue", d, compare!= null && compare.hasMaxValue() ? encodeValue(compare.getMaxValue()) : null, null, mode));
     tableRow(tbl, "Max Length", null, strikethrough, compareString(d.hasMaxLength() ? toStr(d.getMaxLength()) : null, d.getMaxLengthElement(), null, "maxLength", d, compare!= null && compare.hasMaxLengthElement() ? toStr(compare.getMaxLength()) : null, null, mode));
+    tableRow(tbl, "Value Required", null, strikethrough, compareString(encodeValue(d.getMustHaveValueElement()), d.getMustHaveValueElement(), null, (compare != null ? encodeValue(compare.getMustHaveValueElement()) : null), d, null, "mustHaveValueElement", mode));   
+    tableRow(tbl, "Value Alternatives", null, strikethrough, compareSimpleTypeLists(d.getValueAlternatives(), ((compare==null) || slicedExtension ? null : compare.getValueAlternatives()), mode));
     tableRow(tbl, "Default Value", null, strikethrough, encodeValue(d.getDefaultValue(), "defaultValue", d, compare==null ? null : compare.getDefaultValue(), mode));
     tableRow(tbl, "Meaning if Missing", null, strikethrough, d.getMeaningWhenMissing());
     tableRow(tbl, "Fixed Value", null, strikethrough, encodeValue(d.getFixed(), "fixed", d, compare==null ? null : compare.getFixed(), mode));
     tableRow(tbl, "Pattern Value", null, strikethrough, encodeValue(d.getPattern(), "pattern", d, compare==null ? null : compare.getPattern(), mode));
     tableRow(tbl, "Example", null, strikethrough, encodeValues(d.getExample()));
-    tableRow(tbl, "Invariants", null, strikethrough, invariants(d.getConstraint(), compare==null ? null : compare.getConstraint(), mode));
+    tableRow(tbl, "Invariants", null, strikethrough, invariants(d.getConstraint(), compare==null ? null : compare.getConstraint(), d, mode));
     tableRow(tbl, "LOINC Code", null, strikethrough, getMapping(sd, d, LOINC_MAPPING, compare, mode));
     tableRow(tbl, "SNOMED-CT Code", null, strikethrough, getMapping(sd, d, SNOMED_MAPPING, compare, mode));
+    tbl.tx("\r\n");
   }
-
+  
+  private XhtmlNode presentModifier(ElementDefinition d, int mode, ElementDefinition compare) throws FHIRException, IOException {
+    XhtmlNode x1 = compareString(encodeValue(d.getIsModifierElement()), d.getIsModifierElement(), null, "isModifier", d, compare == null ? null : encodeValue(compare.getIsModifierElement()), null, mode);
+    if (x1 != null) {
+      XhtmlNode x2 = compareString(encodeValue(d.getIsModifierReasonElement()), d.getIsModifierReasonElement(), null, "isModifierReason", d, compare == null ? null : encodeValue(compare.getIsModifierReasonElement()), null, mode);
+      if (x2 != null) {
+        x1.tx(" because ");
+        x1.copyAllContent(x2);
+      }
+    }
+    return x1;
+  }  
+  
   private String spec(String name) {
     return Utilities.pathURL(VersionUtilities.getSpecUrl(context.getWorker().getVersion()) , name);
   }
@@ -3817,6 +3890,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       x.tx(", and defines no discriminators to differentiate the slices");
     }
     tableRow(tbl, "Slicing", "profiling.html#slicing", strikethrough, x);
+    tbl.tx("\r\n");
   }
 
   private XhtmlNode tableRow(XhtmlNode x, String name, String defRef, boolean strikethrough) throws IOException {
@@ -3896,18 +3970,18 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return null;
   }
 
-  private XhtmlNode describeCardinality(ElementDefinition d, ElementDefinition compare, int mode) {
+  private XhtmlNode describeCardinality(ElementDefinition d, ElementDefinition compare, int mode) throws IOException {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     if (compare==null || mode==GEN_MODE_DIFF) {
       if (!d.hasMax() && !d.hasMin())
         return null;
       else if (d.getMax() == null) {
-        VersionComparisonAnnotation.render(d.getMinElement(), x).tx(toStr(d.getMin()));
+        renderStatus(d.getMinElement(), x).tx(toStr(d.getMin()));
         x.tx("..?");
       } else {
-        VersionComparisonAnnotation.render(d.getMinElement(), x).tx(toStr(d.getMin()));
+        renderStatus(d.getMinElement(), x).tx(toStr(d.getMin()));
         x.tx( "..");
-        VersionComparisonAnnotation.render(d.getMaxElement(), x).tx( d.getMax());
+        renderStatus(d.getMaxElement(), x).tx( d.getMax());
       }
     } else {
       if (!(mode==GEN_MODE_DIFF && (d.getMin()==compare.getMin() || d.getMin()==0))) {
@@ -3936,19 +4010,21 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return false;
   }
 
-  private XhtmlNode describeTypes(List<TypeRefComponent> types, boolean mustSupportOnly, ElementDefinition compare, int mode, ElementDefinition value, ElementDefinition compareValue, StructureDefinition sd) throws FHIRException {
+  private XhtmlNode describeTypes(List<TypeRefComponent> types, boolean mustSupportOnly, ElementDefinition ed, ElementDefinition compare, int mode, ElementDefinition value, ElementDefinition compareValue, StructureDefinition sd) throws FHIRException, IOException {
     if (types.isEmpty())
       return null;
 
     List<TypeRefComponent> compareTypes = compare==null ? new ArrayList<>() : compare.getType();
     XhtmlNode ret = new XhtmlNode(NodeType.Element, "div");
-    if ((!mustSupportOnly && types.size() == 1 && compareTypes.size() <=1) || (mustSupportOnly && mustSupportCount(types) == 1)) {
+    if ((!mustSupportOnly && types.size() == 1 && compareTypes.size() <=1 && (mode != GEN_MODE_DIFF || !VersionComparisonAnnotation.hasDeleted(ed, "type"))) || (mustSupportOnly && mustSupportCount(types) == 1)) {
       if (!mustSupportOnly || isMustSupport(types.get(0))) {
         describeType(ret, types.get(0), mustSupportOnly, compareTypes.size()==0 ? null : compareTypes.get(0), mode, sd);
       }
     } else {
       boolean first = true;
-      ret.tx("Choice of: ");
+      if (types.size() > 1) {
+        ret.tx("Choice of: ");
+      }
       Map<String,TypeRefComponent> map = new HashMap<String, TypeRefComponent>();
       for (TypeRefComponent t : compareTypes) {
         map.put(t.getCode(), t);
@@ -3970,6 +4046,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         ret.tx(", ");
         describeType(removed(ret), t, mustSupportOnly, null, mode, sd);
       }
+      if (mode == GEN_MODE_DIFF) {
+        for (Base b : VersionComparisonAnnotation.getDeleted(ed, "type")) {
+          TypeRefComponent t = (TypeRefComponent) b;
+          ret.tx(", ");
+          describeType(ret, t, false, null, mode, sd);
+        }
+      }
     }
     if (value != null) {
       XhtmlNode xt = processSecondary(mode, value, compareValue, mode, sd);
@@ -3980,7 +4063,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return ret;
   }
   
-  private XhtmlNode processSecondary(int mode, ElementDefinition value, ElementDefinition compareValue, int compMode, StructureDefinition sd) throws FHIRException {
+  private XhtmlNode processSecondary(int mode, ElementDefinition value, ElementDefinition compareValue, int compMode, StructureDefinition sd) throws FHIRException, IOException {
     switch (mode) {
     case 1:
       return null;
@@ -3991,7 +4074,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     case 3:
       x = new XhtmlNode(NodeType.Element, "div");
       x.tx(" (Extension Type: ");
-      x.copyAllContent(describeTypes(value.getType(), false, compareValue, compMode, null, null, sd));
+      x.copyAllContent(describeTypes(value.getType(), false, value, compareValue, compMode, null, null, sd));
       x.tx(")");
       return x;
     default:
@@ -4011,7 +4094,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   
-  private void describeType(XhtmlNode x, TypeRefComponent t, boolean mustSupportOnly, TypeRefComponent compare, int mode, StructureDefinition sd) throws FHIRException {
+  private void describeType(XhtmlNode x, TypeRefComponent t, boolean mustSupportOnly, TypeRefComponent compare, int mode, StructureDefinition sd) throws FHIRException, IOException {
     if (t.getWorkingCode() == null) {
       return;
     }
@@ -4021,9 +4104,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
     boolean ts = false;
     if (t.getWorkingCode().startsWith("xs:")) {
-      ts = compareString(x, t.getWorkingCode(), t.getCodeElement(), null, "code", t, compare==null ? null : compare.getWorkingCode(), null, mode);
+      ts = compareString(x, t.getWorkingCode(), t, null, "code", t, compare==null ? null : compare.getWorkingCode(), null, mode);
     } else {
-      ts = compareString(x, t.getWorkingCode(), t.getCodeElement(), getTypeLink(t, sd), "code", t, compare==null ? null : compare.getWorkingCode(), compare==null ? null : getTypeLink(compare, sd), mode);
+      ts = compareString(x, t.getWorkingCode(), t, getTypeLink(t, sd), "code", t, compare==null ? null : compare.getWorkingCode(), compare==null ? null : getTypeLink(compare, sd), mode);
     }
     
     if ((!mustSupportOnly && (t.hasProfile() || (compare!=null && compare.hasProfile()))) || isMustSupport(t.getProfile())) {
@@ -4140,7 +4223,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
 
-  private XhtmlNode invariants(List<ElementDefinitionConstraintComponent> originalList, List<ElementDefinitionConstraintComponent> compareList, int mode) {
+  private XhtmlNode invariants(List<ElementDefinitionConstraintComponent> originalList, List<ElementDefinitionConstraintComponent> compareList, ElementDefinition parent, int mode) throws IOException {
     StatusList<InvariantWithStatus> list = new StatusList<>();
     for (ElementDefinitionConstraintComponent v : originalList) {
       if (!v.isEmpty()) {
@@ -4161,6 +4244,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (first) first = false; else x.br();
       t.render(x);
     }
+    for (Base b : VersionComparisonAnnotation.getDeleted(parent, "invariant")) {
+      if (first) first = false; else x.br();
+      InvariantWithStatus ts = new InvariantWithStatus((ElementDefinitionConstraintComponent) b);
+      ts.render(x);
+    }
     return x;
   }
 
@@ -4172,31 +4260,23 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       ElementDefinitionBindingComponent compBinding = compare == null ? null : compare.getBinding();
       XhtmlNode bindingDesc = null;
       if (binding.hasDescription()) {
-        StringType newBinding = PublicationHacker.fixBindingDescriptions(context.getContext(), binding.getDescriptionElement());
+        MarkdownType newBinding = PublicationHacker.fixBindingDescriptions(context.getContext(), binding.getDescriptionElement());
         if (mode == GEN_MODE_SNAP || mode == GEN_MODE_MS) {
           bindingDesc = new XhtmlNode(NodeType.Element, "div");
           bindingDesc.add(new XhtmlParser().parseFragment(hostMd.processMarkdown("Binding.description", newBinding)));
         } else {
+
           StringType oldBinding = compBinding != null && compBinding.hasDescription() ? PublicationHacker.fixBindingDescriptions(context.getContext(), compBinding.getDescriptionElement()) : null;
           bindingDesc = compareMarkdown("Binding.description", newBinding, oldBinding, mode);
         }
       }
-      if (!binding.hasValueSet())
+      if (!binding.hasValueSet()) {
         return bindingDesc;
+      }
       
       XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
       var nsp = x.span();
-      renderBinding(nsp, binding, path, sd);      
-      if (compBinding!=null ) {
-        var osp = x.span();
-        renderBinding(osp, compBinding, path, sd);
-        if (osp.allText().equals(nsp.allText())) {
-          nsp.style(unchangedStyle());
-          x.remove(osp);
-        } else {
-          osp.style(removedStyle());
-        }
-      }
+      renderBinding(nsp, binding, compBinding, path, sd, mode);      
       if (bindingDesc != null) {
         if (isSimpleContent(bindingDesc)) {
           x.tx(": ");
@@ -4232,16 +4312,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return bindingDesc.getChildNodes().size() == 1 && bindingDesc.getChildNodes().get(0).isPara();
   }
 
-  private void renderBinding(XhtmlNode span, ElementDefinitionBindingComponent binding, String path, StructureDefinition sd) {
+  private void renderBinding(XhtmlNode span, ElementDefinitionBindingComponent binding, ElementDefinitionBindingComponent compare, String path, StructureDefinition sd, int mode) {
+    compareString(span, conf(binding), binding.getStrengthElement(), null, "strength", binding, compare == null ? null : conf(compare), null, mode);
+    span.tx(" ");
     BindingResolution br = context.getPkp().resolveBinding(sd, binding, path);
-    span.tx(conf(binding));
-    if (br.url == null) {
-      span.code().tx(br.display);
-    } else {
-      span.ah(br.url).tx(br.display);
-    }
-    span.tx(confTail(binding));
-
+    compareString(span, br.display, binding.getValueSetElement(), br.url, "valueSet", binding, compare == null ? null : compare.getValueSet(), null, mode);
   }
 
   private String stripPara(String s) {
@@ -4254,13 +4329,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return s;
   }
 
-  private String confTail(ElementDefinitionBindingComponent def) {
-    if (def.getStrength() == BindingStrength.EXTENSIBLE)
-      return "; other codes may be used where these codes are not suitable";
-    else
-      return "";
-  }
-
   private String conf(ElementDefinitionBindingComponent def) {
     if (def.getStrength() == null) {
       return "For codes, see ";
@@ -4271,7 +4339,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     case PREFERRED:
       return "The codes SHOULD be taken from ";
     case EXTENSIBLE:
-      return "The codes SHALL be taken from ";
+      return "Unless not suitable, these codes SHALL be taken from ";
     case REQUIRED:
       return "The codes SHALL be taken from ";
     default:
@@ -4348,12 +4416,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return compareString(Utilities.escapeXml(newMap), null, null, "mapping", d, Utilities.escapeXml(oldMap), null, mode);
   }
 
-  private XhtmlNode compareSimpleTypeLists(List<? extends PrimitiveType> original, List<? extends PrimitiveType> compare, int mode) {
+  private XhtmlNode compareSimpleTypeLists(List<? extends PrimitiveType> original, List<? extends PrimitiveType> compare, int mode) throws IOException {
     return compareSimpleTypeLists(original, compare, mode, ", ");
   }
 
  
-  private XhtmlNode compareSimpleTypeLists(List<? extends PrimitiveType> originalList, List<? extends PrimitiveType> compareList, int mode, String separator) {
+  private XhtmlNode compareSimpleTypeLists(List<? extends PrimitiveType> originalList, List<? extends PrimitiveType> compareList, int mode, String separator) throws IOException {
     StatusList<ValueWithStatus> list = new StatusList<>();
     for (PrimitiveType v : originalList) {
       if (!v.isEmpty()) {
@@ -4378,6 +4446,37 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
   
 
+  private XhtmlNode compareDataTypeLists(List<? extends DataType> original, List<? extends DataType> compare, int mode) throws IOException {
+    return compareDataTypeLists(original, compare, mode, ", ");
+  }
+
+ 
+  private XhtmlNode compareDataTypeLists(List<? extends DataType> originalList, List<? extends DataType> compareList, int mode, String separator) throws IOException {
+    StatusList<DataValueWithStatus> list = new StatusList<>();
+    for (DataType v : originalList) {
+      if (!v.isEmpty()) {
+        list.add(new DataValueWithStatus(v));
+      }
+    }
+    if (compareList != null && mode != GEN_MODE_DIFF) {
+      for (DataType v : compareList) {
+        list.merge(new DataValueWithStatus(v));
+      }      
+    }
+    if (list.size() == 0) {
+      return null;
+    }
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    boolean first = true;
+    for (DataValueWithStatus t : list) {
+      if (first) first = false; else x.tx(separator);
+      t.render(x);
+    }
+    return x;
+  }
+  
+
+  
   private String summarise(CodeableConcept cc) throws FHIRException {
     if (cc.getCoding().size() == 1 && cc.getText() == null) {
       return summarise(cc.getCoding().get(0));

@@ -47,6 +47,7 @@ import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
+import org.hl7.fhir.r5.extensions.ExtensionConstants;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
@@ -79,6 +80,7 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.providers.CodeSystemProvider;
 import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
 import org.hl7.fhir.r5.terminologies.providers.URICodeSystem;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -106,18 +108,18 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private Set<String> unknownSystems;
   private boolean throwToServer;
 
-  public ValueSetValidator(ValidationOptions options, ValueSet source, IWorkerContext context, Parameters expansionProfile, TerminologyCapabilities txCaps) {
+  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, Parameters expansionProfile, TerminologyCapabilities txCaps) {
+    super(context, opContext);
     this.valueset = source;
-    this.context = context;
     this.options = options;
     this.expansionProfile = expansionProfile;
     this.txCaps = txCaps;
     analyseValueSet();
   }
   
-  public ValueSetValidator(ValidationOptions options, ValueSet source, IWorkerContext context, ValidationContextCarrier ctxt, Parameters expansionProfile, TerminologyCapabilities txCaps) {
+  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, ValidationContextCarrier ctxt, Parameters expansionProfile, TerminologyCapabilities txCaps) {
+    super(context, opContext);
     this.valueset = source;
-    this.context = context;
     this.options = options.copy();
     this.options.setEnglishOk(true);
     this.localContext = ctxt;
@@ -143,6 +145,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private void analyseValueSet() {
+    if (valueset != null) {
+      opContext.seeContext(valueset.getVersionedUrl());
+      for (Extension s : valueset.getExtensionsByUrl(ExtensionConstants.EXT_VSSUPPLEMENT)) {
+        requiredSupplements.add(s.getValue().primitiveValue());
+      }
+    }
+
     altCodeParams.seeParameters(expansionProfile);
     altCodeParams.seeValueSet(valueset);
     if (localContext != null) {
@@ -158,6 +167,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private void analyseComponent(ConceptSetComponent i) {
+    opContext.deadCheck();
     if (i.getSystemElement().hasExtension(ToolingExtensions.EXT_VALUESET_SYSTEM)) {
       String ref = i.getSystemElement().getExtensionString(ToolingExtensions.EXT_VALUESET_SYSTEM);
       if (ref.startsWith("#")) {
@@ -179,6 +189,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
   
   public ValidationResult validateCode(String path, CodeableConcept code) throws FHIRException {
+    opContext.deadCheck();
+
     // first, we validate the codings themselves
     ValidationProcessInfo info = new ValidationProcessInfo();
 
@@ -250,7 +262,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
         info.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path, msg));
       }
     }
-    if (info.hasErrors()) {
+    if (!checkRequiredSupplements(info)) {
+      return new ValidationResult(IssueSeverity.ERROR, info.getIssues().get(info.getIssues().size()-1).getDetails().getText(), info.getIssues());
+    } else if (info.hasErrors()) {
       ValidationResult res = new ValidationResult(IssueSeverity.ERROR, info.summary(), info.getIssues());
       if (foundCoding != null) {
         ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
@@ -277,6 +291,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
       cd.setDisplay(lookupDisplay(foundCoding));
       return new ValidationResult(foundCoding.getSystem(), getVersion(foundCoding), cd, getPreferredDisplay(cd, null)).addCodeableConcept(vcc);
     }
+  }
+
+  private boolean checkRequiredSupplements(ValidationProcessInfo info) {
+    if (!requiredSupplements.isEmpty()) {
+      info.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, null, context.formatMessagePlural(requiredSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(requiredSupplements))));
+    }
+    return requiredSupplements.isEmpty();
   }
 
   private boolean valueSetDependsOn(String system, String version) {
@@ -315,7 +336,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         return t;
       }
     }
-    CodeSystem cs = context.fetchCodeSystem(system, version);
+    CodeSystem cs = context.fetchSupplementedCodeSystem(system, version);
     if (cs == null) {
       cs = findSpecialCodeSystem(system, version);
     }
@@ -342,6 +363,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
   
   public ValidationResult validateCode(String path, Coding code) throws FHIRException {
+    opContext.deadCheck();
     String warningMessage = null;
     // first, we validate the concept itself
 
@@ -460,6 +482,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
       inInclude = checkInclude(code, vi);
     }
     String wv = vi.getVersion(system, code.getVersion());
+    if (!checkRequiredSupplements(info)) {
+      return new ValidationResult(IssueSeverity.ERROR, issues.get(issues.size()-1).getDetails().getText(), issues);
+    }
 
     
     // then, if we have a value set, we check it's in the value set
@@ -597,6 +622,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private ValidationResult findCodeInExpansion(Coding code, List<ValueSetExpansionContainsComponent> contains) {
     for (ValueSetExpansionContainsComponent containsComponent: contains) {
+      opContext.deadCheck();
       if (containsComponent.getSystem().equals(code.getSystem()) && containsComponent.getCode().equals(code.getCode())) {
         ConceptDefinitionComponent ccd = new ConceptDefinitionComponent();
         ccd.setCode(containsComponent.getCode());
@@ -623,6 +649,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private boolean checkExpansion(Coding code, List<ValueSetExpansionContainsComponent> contains, VersionInfo vi) {
     for (ValueSetExpansionContainsComponent containsComponent: contains) {
+      opContext.deadCheck();
       if (containsComponent.hasSystem() && containsComponent.hasCode() && containsComponent.getSystem().equals(code.getSystem()) && containsComponent.getCode().equals(code.getCode())) {
         vi.setExpansionVersion(containsComponent.getVersion());
         return true;
@@ -667,6 +694,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     
     for (ConceptDefinitionDesignationComponent ds : cc.getDesignation()) {
+      opContext.deadCheck();
       if (isOkLanguage(ds.getLanguage())) {
         b.append("'"+ds.getValue()+"'");
         if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
@@ -688,6 +716,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           }
         }
         for (ConceptReferenceDesignationComponent ds : vs.getCc().getDesignation()) {
+          opContext.deadCheck();
           if (isOkLanguage(ds.getLanguage())) {
             b.append("'"+ds.getValue()+"'");
             if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
@@ -732,6 +761,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return null;
     // if it has an expansion
     for (ValueSetExpansionContainsComponent exp : valueset.getExpansion().getContains()) {
+      opContext.deadCheck();
       if (system.equals(exp.getSystem()) && code.equals(exp.getCode())) {
         ConceptReferenceComponent cc = new ConceptReferenceComponent();
         cc.setDisplay(exp.getDisplay());
@@ -810,6 +840,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private ConceptDefinitionComponent findCodeInConcept(ConceptDefinitionComponent concept, String code, AlternateCodesProcessingRules altCodeRules) {
+    opContext.deadCheck();
     if (code.equals(concept.getCode())) {
       return concept;
     }
@@ -879,6 +910,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
       int i = 0;
       for (ConceptSetComponent vsi : valueset.getCompose().getInclude()) {
+        opContext.deadCheck();
         if (vsi.hasValueSet()) {
           for (CanonicalType u : vsi.getValueSet()) {
             if (!checkForCodeInValueSet(code, u.getValue(), sys, problems)) {
@@ -963,6 +995,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
    */
   private boolean checkSystems(List<ValueSetExpansionContainsComponent> contains, String code, Set<String> systems, List<String> problems) {
     for (ValueSetExpansionContainsComponent c: contains) {
+      opContext.deadCheck();
       if (c.getCode().equals(code)) {
         systems.add(c.getSystem());
       }
@@ -976,6 +1009,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (valueset == null) {
       return false;
     }
+    opContext.deadCheck();
     checkCanonical(info.getIssues(), path, valueset, valueset);
     Boolean result = false;
     VersionInfo vi = new VersionInfo(this);
@@ -1010,6 +1044,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private Boolean inComponent(String path, ConceptSetComponent vsi, int vsiIndex, String system, String version, String code, boolean only, ValidationProcessInfo info) throws FHIRException {
+    opContext.deadCheck();
     boolean ok = true;
     
     if (vsi.hasValueSet()) {
@@ -1189,6 +1224,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   public boolean validateCodeInConceptList(String code, CodeSystem def, List<ConceptDefinitionComponent> list, AlternateCodesProcessingRules altCodeRules) {
+    opContext.deadCheck();
     if (def.getCaseSensitive()) {
       for (ConceptDefinitionComponent cc : list) {
         if (cc.getCode().equals(code)) { 
@@ -1219,7 +1255,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return inner.get(url);
     }
     ValueSet vs = context.fetchResource(ValueSet.class, url, valueset);
-    ValueSetValidator vsc = new ValueSetValidator(options, vs, context, localContext, expansionProfile, txCaps);
+    ValueSetValidator vsc = new ValueSetValidator(context, opContext.copy(), options, vs, localContext, expansionProfile, txCaps);
     vsc.setThrowToServer(throwToServer);
     inner.put(url, vsc);
     return vsc;

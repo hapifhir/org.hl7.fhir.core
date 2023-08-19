@@ -866,6 +866,7 @@ public class I18nConstants {
   public static final String UNKNOWN_CODESYSTEM = "UNKNOWN_CODESYSTEM";
   public static final String UNKNOWN_CODESYSTEM_VERSION = "UNKNOWN_CODESYSTEM_VERSION";
   public static final String VALUESET_TOO_COSTLY = "VALUESET_TOO_COSTLY";
+  public static final String VALUESET_TOO_COSTLY_TIME = "VALUESET_TOO_COSTLY_TIME";
   public static final String NO_VALID_DISPLAY_FOUND = "NO_VALID_DISPLAY_FOUND";
   public static final String SD_NO_CONTEXT_WHEN_NOT_EXTENSION = "SD_NO_CONTEXT_WHEN_NOT_EXTENSION";
   public static final String SD_CONTEXT_SHOULD_NOT_BE_ELEMENT = "SD_CONTEXT_SHOULD_NOT_BE_ELEMENT";
@@ -954,10 +955,15 @@ public class I18nConstants {
   public static final String MSG_DEPRECATED = "MSG_DEPRECATED";
   public static final String MSG_WITHDRAWN = "MSG_WITHDRAWN";
   public static final String MSG_RETIRED = "MSG_RETIRED";
-  public static final String INACTIVE_CODE_WARNING = "INACTIVE_CODE_WARNING";
-  public static final String SD_EXTENSION_URL_MISSING = "SD_EXTENSION_URL_MISSING";
   public static final String MSG_EXPERIMENTAL = "MSG_EXPERIMENTAL";
   public static final String MSG_DRAFT = "MSG_DRAFT";
+  public static final String MSG_DEPRECATED_SRC = "MSG_DEPRECATED_SRC";
+  public static final String MSG_WITHDRAWN_SRC = "MSG_WITHDRAWN_SRC";
+  public static final String MSG_RETIRED_SRC = "MSG_RETIRED_SRC";
+  public static final String MSG_DRAFT_SRC = "MSG_DRAFT_SRC";
+  public static final String MSG_EXPERIMENTAL_SRC = "MSG_EXPERIMENTAL_SRC";
+  public static final String INACTIVE_CODE_WARNING = "INACTIVE_CODE_WARNING";
+  public static final String SD_EXTENSION_URL_MISSING = "SD_EXTENSION_URL_MISSING";
   public static final String MSG_DEPENDS_ON_DEPRECATED = "MSG_DEPENDS_ON_DEPRECATED";
   public static final String MSG_DEPENDS_ON_WITHDRAWN = "MSG_DEPENDS_ON_WITHDRAWN";
   public static final String MSG_DEPENDS_ON_RETIRED = "MSG_DEPENDS_ON_RETIRED";
@@ -972,6 +978,8 @@ public class I18nConstants {
   public static final String CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO = "CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO";
   public static final String CODESYSTEM_CS_COUNT_SUPPLEMENT_WRONG = "CODESYSTEM_CS_COUNT_SUPPLEMENT_WRONG";
   public static final String CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED = "CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED";
+  public static final String VALUESET_CIRCULAR_REFERENCE = "VALUESET_CIRCULAR_REFERENCE";
+  public static final String VALUESET_SUPPLEMENT_MISSING = "VALUESET_SUPPLEMENT_MISSING";
 }
 
 

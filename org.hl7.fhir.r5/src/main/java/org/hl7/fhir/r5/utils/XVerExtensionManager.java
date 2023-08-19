@@ -83,6 +83,7 @@ public class XVerExtensionManager {
     String verSource = url.substring(20, 23);
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);
+    String r = e.contains(".") ? e.substring(0, e.indexOf(".")) : e;
     JsonObject root = lists.get(verSource);
     JsonObject path = root.getJsonObject(e);
     if (path == null) {
@@ -91,7 +92,11 @@ public class XVerExtensionManager {
     
     StructureDefinition sd = new StructureDefinition();
     sd.setUserData(XVER_EXT_MARKER, "true");
-    sd.setWebPath(PackageHacker.fixPackageUrl("https://hl7.org/fhir/versions.html#extensions"));
+    if (context.getResourceNamesAsSet().contains(r)) {
+      sd.setWebPath(Utilities.pathURL(context.getSpecUrl(), r.toLowerCase()+"-definitions.html#"+e));
+    } else {
+      sd.setWebPath(PackageHacker.fixPackageUrl("https://hl7.org/fhir/versions.html#extensions"));
+    }
     sd.setUrl(url);
     sd.setVersion(context.getVersion());
     sd.setFhirVersion(FHIRVersion.fromCode(context.getVersion()));

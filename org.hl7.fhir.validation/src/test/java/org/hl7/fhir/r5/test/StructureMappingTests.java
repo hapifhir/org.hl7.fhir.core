@@ -120,7 +120,7 @@ public class StructureMappingTests {
       fail(e.getMessage());
     }
     if (output.endsWith("json")) {
-      msg = CompareUtilities.checkJsonSrcIsSame(s.toString(), outputJson);
+      msg = CompareUtilities.checkJsonSrcIsSame(s.toString(), outputJson, null);
     } else {
       TextFile.bytesToFile(s.toByteArray(), fileOutputRes);
       TextFile.bytesToFile(outputJson.getBytes(), fileOutputResOrig);
