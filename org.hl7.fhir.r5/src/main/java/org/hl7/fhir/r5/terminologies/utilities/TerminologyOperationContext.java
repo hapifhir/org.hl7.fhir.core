@@ -13,12 +13,12 @@ import java.util.ArrayList;
 
 public class TerminologyOperationContext {
 
-  public class TerminologyServiceProtectionException extends FHIRException {
+  public static class TerminologyServiceProtectionException extends FHIRException {
 
     private TerminologyServiceErrorClass error;
     private IssueType type;
 
-    protected TerminologyServiceProtectionException(String message, TerminologyServiceErrorClass error, IssueType type) {
+    public TerminologyServiceProtectionException(String message, TerminologyServiceErrorClass error, IssueType type) {
       super(message);
       this.error = error;
       this.type = type;

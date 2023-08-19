@@ -29,8 +29,12 @@ public class TxTesterSorters {
       }
     }
   }
-  
 
+
+  public static void sortOperationOutcome(OperationOutcome oo) {
+    Collections.sort(oo.getIssue(), new TxTesterSorters.OperationIssueSorter());
+  }
+  
   public static void sortValueSet(ValueSet vs) {
     Collections.sort(vs.getExtension(), new TxTesterSorters.ExtensionSorter());
     if (vs.hasExpansion()) {
