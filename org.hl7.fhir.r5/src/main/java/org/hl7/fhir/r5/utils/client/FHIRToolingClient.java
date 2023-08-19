@@ -421,16 +421,16 @@ public class FHIRToolingClient {
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand"),
-        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())),
-        getPreferredResourceFormat(),
-        generateHeaders(),
-        "ValueSet/$expand?url=" + source.getUrl(),
-        TIMEOUT_OPERATION_EXPAND);
-      if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
-      }
+          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())),
+          getPreferredResourceFormat(),
+          generateHeaders(),
+          "ValueSet/$expand?url=" + source.getUrl(),
+          TIMEOUT_OPERATION_EXPAND);
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new FHIRException(e);
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
     }
     return result == null ? null : (ValueSet) result.getPayload();
   }

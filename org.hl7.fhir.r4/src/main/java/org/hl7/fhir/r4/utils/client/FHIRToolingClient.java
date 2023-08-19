@@ -278,42 +278,36 @@ public class FHIRToolingClient {
     return result.getPayload();
   }
 
-  public <T extends Resource> Parameters operateType(Class<T> resourceClass, String name, Parameters params) {
+  public <T extends Resource> Parameters operateType(Class<T> resourceClass, String name, Parameters params) throws IOException {
     boolean complex = false;
     for (ParametersParameterComponent p : params.getParameter())
       complex = complex || !(p.getValue() instanceof PrimitiveType);
     String ps = "";
-    try {
-      if (!complex)
-        for (ParametersParameterComponent p : params.getParameter())
-          if (p.getValue() instanceof PrimitiveType)
-            ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
-      ResourceRequest<T> result;
-      URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
-      if (complex) {
-        byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()));
-        result = client.issuePostRequest(url, body, getPreferredResourceFormat(), generateHeaders(),
-            "POST " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
-      } else {
-        result = client.issueGetResourceRequest(url, getPreferredResourceFormat(), generateHeaders(),
-            "GET " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
-      }
-      if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
-            (OperationOutcome) result.getPayload());
-      }
-      if (result.getPayload() instanceof Parameters) {
-        return (Parameters) result.getPayload();
-      } else {
-        Parameters p_out = new Parameters();
-        p_out.addParameter().setName("return").setResource(result.getPayload());
-        return p_out;
-      }
-    } catch (Exception e) {
-      handleException(
-          "Error performing tx4 operation '" + name + ": " + e.getMessage() + "' (parameters = \"" + ps + "\")", e);
+    if (!complex)
+      for (ParametersParameterComponent p : params.getParameter())
+        if (p.getValue() instanceof PrimitiveType)
+          ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
+    ResourceRequest<T> result;
+    URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
+    if (complex) {
+      byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()));
+      result = client.issuePostRequest(url, body, getPreferredResourceFormat(), generateHeaders(),
+          "POST " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
+    } else {
+      result = client.issueGetResourceRequest(url, getPreferredResourceFormat(), generateHeaders(),
+          "GET " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
     }
-    return null;
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
+          (OperationOutcome) result.getPayload());
+    }
+    if (result.getPayload() instanceof Parameters) {
+      return (Parameters) result.getPayload();
+    } else {
+      Parameters p_out = new Parameters();
+      p_out.addParameter().setName("return").setResource(result.getPayload());
+      return p_out;
+    }
   }
 
   public Bundle transaction(Bundle batch) {
@@ -390,16 +384,16 @@ public class FHIRToolingClient {
     parameters.put("url", vsUrl);
 
     org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
-    try {
-      result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand", parameters),
-          getPreferredResourceFormat(), generateHeaders(), "ValueSet/$expand?url=" + vsUrl, TIMEOUT_OPERATION_EXPAND);
+      try {
+        result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand", parameters),
+            getPreferredResourceFormat(), generateHeaders(), "ValueSet/$expand?url=" + vsUrl, TIMEOUT_OPERATION_EXPAND);
+      } catch (IOException e) {
+        throw new FHIRException(e);
+      }
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
             (OperationOutcome) result.getPayload());
       }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
     return result == null ? null : (ValueSet) result.getPayload();
   }
 
@@ -416,7 +410,7 @@ public class FHIRToolingClient {
             (OperationOutcome) result.getPayload());
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new FHIRException(e);
     }
     return result == null ? null : (ValueSet) result.getPayload();
   }
@@ -427,7 +421,7 @@ public class FHIRToolingClient {
       result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup", params),
           getPreferredResourceFormat(), generateHeaders(), "CodeSystem/$lookup", TIMEOUT_NORMAL);
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new FHIRException(e);
     }
     if (result.isUnsuccessfulRequest()) {
       throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
@@ -455,7 +449,7 @@ public class FHIRToolingClient {
             (OperationOutcome) result.getPayload());
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new FHIRException(e);
     }
     return result == null ? null : (ValueSet) result.getPayload();
   }
@@ -478,7 +472,7 @@ public class FHIRToolingClient {
             (OperationOutcome) result.getPayload());
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new FHIRException(e);
     }
     return result == null ? null : (ConceptMap) result.getPayload();
   }
@@ -498,7 +492,7 @@ public class FHIRToolingClient {
             (OperationOutcome) result.getPayload());
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new FHIRException(e);
     }
     return result == null ? null : (ConceptMap) result.getPayload();
   }
