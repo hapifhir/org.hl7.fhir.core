@@ -363,9 +363,13 @@ public class CodeSystemUtilities {
   }
   
   public static boolean isInactive(CodeSystem cs, ConceptDefinitionComponent def) throws FHIRException {
+    StandardsStatus ss = ToolingExtensions.getStandardsStatus(def);
+    if (ss == StandardsStatus.DEPRECATED || ss == StandardsStatus.WITHDRAWN) {
+      return true;
+    }
     for (ConceptPropertyComponent p : def.getProperty()) {
       if ("status".equals(p.getCode()) && p.hasValueStringType()) {
-        return "inactive".equals(p.getValueStringType().primitiveValue()) || "retired".equals(p.getValueStringType().primitiveValue());
+        return "inactive".equals(p.getValueStringType().primitiveValue()) || "retired".equals(p.getValueStringType().primitiveValue()) || "deprecated".equals(p.getValueStringType().primitiveValue());
       }
       if ("inactive".equals(p.getCode()) && p.hasValueBooleanType()) {
         return p.getValueBooleanType().getValue();
@@ -886,6 +890,10 @@ public class CodeSystemUtilities {
 
   public static DataType getProperty(CodeSystem cs, String code, String property) {
     ConceptDefinitionComponent def = getCode(cs, code);
+    return getProperty(cs, def, property);
+  }
+  
+  public static DataType getProperty(CodeSystem cs, ConceptDefinitionComponent def, String property) {
     ConceptPropertyComponent cp = getProperty(def, property);
     return cp == null ? null : cp.getValue();
   }
@@ -904,6 +912,19 @@ public class CodeSystemUtilities {
       }
     }
     return false;
+  }
+
+  public static String getStatus(CodeSystem cs, ConceptDefinitionComponent cc) {
+    StandardsStatus ss = ToolingExtensions.getStandardsStatus(cc);
+    if (ss == StandardsStatus.DEPRECATED || ss == StandardsStatus.WITHDRAWN) {
+      return ss.toCode();
+    }
+    DataType v = getProperty(cs, cc, "status");
+    if (v == null || !v.isPrimitive()) {
+      return null;
+    } else {
+      return v.primitiveValue();
+    }
   }
 }
 

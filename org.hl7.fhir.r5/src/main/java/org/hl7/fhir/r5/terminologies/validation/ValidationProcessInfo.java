@@ -24,7 +24,7 @@ public class ValidationProcessInfo {
   public void setErr(TerminologyServiceErrorClass err) {
     this.err = err;
   }
-
+  
   public List<OperationOutcomeIssueComponent> getIssues() {
     return issues;
   }

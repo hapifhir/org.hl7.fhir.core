@@ -78,7 +78,7 @@ public class TerminologyServiceTests {
     String contents = TestingUtilities.loadTestResource("tx", "test-cases.json");
     String externalSource = TestingUtilities.loadTestResource("tx", "messages-tx.fhir.org.json");
     externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(externalSource);
-    
+
     Map<String, JsonObjectPair> examples = new HashMap<String, JsonObjectPair>();
     manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
     for (org.hl7.fhir.utilities.json.model.JsonObject suite : manifest.getJsonObjects("suites")) {
@@ -95,7 +95,7 @@ public class TerminologyServiceTests {
 
     List<Object[]> objects = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
-        objects.add(new Object[]{id, examples.get(id)});
+      objects.add(new Object[]{id, examples.get(id)});
     }
     return objects;
   }
@@ -105,7 +105,7 @@ public class TerminologyServiceTests {
   private JsonObjectPair setup;
   private String version;
   private String name;
-  
+
 
   private static ValidationEngine baseEngine;
 
@@ -114,7 +114,7 @@ public class TerminologyServiceTests {
     this.setup = setup;
     version = "5.0.0";
   }
-  
+
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
@@ -208,8 +208,9 @@ public class TerminologyServiceTests {
       }
       e.getDetails().setText(vse.getError());
       oo.addIssue(e);
+      TxTesterSorters.sortOperationOutcome(oo);
       TxTesterScrubbers.scrubOO(oo, false);
-      
+
       String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
       String diff = CompareUtilities.checkJsonSrcIsSame(resp, ooj, ext);
       if (diff != null) {
@@ -242,7 +243,7 @@ public class TerminologyServiceTests {
       options = options.withLanguage(p.getParameterString("displayLanguage"));
     }
     if (p.hasParameter("valueSetMode") && "CHECK_MEMBERSHIP_ONLY".equals(p.getParameterString("valueSetMode"))) {
-       options = options.withCheckValueSetOnly();
+      options = options.withCheckValueSetOnly();
     }
     if (p.hasParameter("mode") && "lenient-display-validation".equals(p.getParameterString("mode"))) {
       options = options.setDisplayWarningMode(true);
@@ -265,51 +266,73 @@ public class TerminologyServiceTests {
     } else {
       throw new Error("validate not done yet for this steup");
     }
-    org.hl7.fhir.r5.model.Parameters res = new org.hl7.fhir.r5.model.Parameters();
-    if (vm.getSystem() != null) {
-      res.addParameter("system", new UriType(vm.getSystem()));
-    }
-    if (vm.getCode() != null) {
-      res.addParameter("code", new CodeType(vm.getCode()));
-    }
-    if (vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR) {
-      res.addParameter("result", false);
-    } else {
-      res.addParameter("result", true);
-    }
-    if (vm.getMessage() != null) {
-      res.addParameter("message", vm.getMessage());
-    }
-    if (vm.getVersion() != null) {
-      res.addParameter("version", vm.getVersion());
-    }
-    if (vm.getDisplay() != null) {
-      res.addParameter("display", vm.getDisplay());
-    }
-    if (vm.getCodeableConcept() != null) {
-      res.addParameter("codeableConcept", vm.getCodeableConcept());
-    }
-    if (vm.getUnknownSystems() != null) {
-      for (String s : vm.getUnknownSystems()) {
-        res.addParameter("x-caused-by-unknown-system", new CanonicalType(s));
-      }
-    }
-    if (vm.getIssues().size() > 0) {
+    if (vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.FATAL) {
       OperationOutcome oo = new OperationOutcome();
       oo.getIssue().addAll(vm.getIssues());
-      res.addParameter().setName("issues").setResource(oo);
+      TxTesterSorters.sortOperationOutcome(oo);
+      TxTesterScrubbers.scrubOO(oo, false);
+      
+      String pj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, ext);
+      if (diff != null) {
+        Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
+        TextFile.stringToFile(pj, fp); 
+        System.out.println("Test "+name+"failed: "+diff);
+      }
+      Assertions.assertTrue(diff == null, diff);
+    } else {
+      org.hl7.fhir.r5.model.Parameters res = new org.hl7.fhir.r5.model.Parameters();
+      if (vm.getSystem() != null) {
+        res.addParameter("system", new UriType(vm.getSystem()));
+      }
+      if (vm.getCode() != null) {
+        res.addParameter("code", new CodeType(vm.getCode()));
+      }
+      if (vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR) {
+        res.addParameter("result", false);
+      } else {
+        res.addParameter("result", true);
+      }
+      if (vm.getMessage() != null) {
+        res.addParameter("message", vm.getMessage());
+      }
+      if (vm.getVersion() != null) {
+        res.addParameter("version", vm.getVersion());
+      }
+      if (vm.getDisplay() != null) {
+        res.addParameter("display", vm.getDisplay());
+      }
+      if (vm.getCodeableConcept() != null) {
+        res.addParameter("codeableConcept", vm.getCodeableConcept());
+      }
+      if (vm.isInactive()) {
+        res.addParameter("inactive", true);
+      }
+      if (vm.getStatus() != null) {
+        res.addParameter("status", vm.getStatus());
+      }
+      if (vm.getUnknownSystems() != null) {
+        for (String s : vm.getUnknownSystems()) {
+          res.addParameter("x-caused-by-unknown-system", new CanonicalType(s));
+        }
+      }
+      if (vm.getIssues().size() > 0) {
+        OperationOutcome oo = new OperationOutcome();
+        oo.getIssue().addAll(vm.getIssues());
+        res.addParameter().setName("issues").setResource(oo);
+      }
+      TxTesterSorters.sortParameters(res);
+      TxTesterScrubbers.scrubParams(res);
+
+      String pj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(res);
+      String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, ext);
+      if (diff != null) {
+        Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
+        TextFile.stringToFile(pj, fp); 
+        System.out.println("Test "+name+"failed: "+diff);
+      }
+      Assertions.assertTrue(diff == null, diff);
     }
-    TxTesterSorters.sortParameters(res);
-    TxTesterScrubbers.scrubParams(res);
-    
-    String pj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(res);
-    String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, ext);
-    if (diff != null) {
-      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-      TextFile.stringToFile(pj, fp); 
-      System.out.println("Test "+name+"failed: "+diff);
-    }
-    Assertions.assertTrue(diff == null, diff);
   }
 
   public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
