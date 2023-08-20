@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.HumanName;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
@@ -239,5 +240,15 @@ public class PEInstance {
 
   public Base getBase() {
     return data;
+  }
+
+  public boolean hasChild(String name) {
+    PEDefinition child = byName(definition.children(), name);
+    List<Base> instances = builder.exec(resource, data, child.fhirpath());
+    return !instances.isEmpty();
+  }
+  
+  public IWorkerContext getContext() {
+    return builder.getContext();
   }
 }

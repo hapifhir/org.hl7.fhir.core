@@ -294,6 +294,26 @@ public abstract class PEDefinition {
     return !"1".equals(definition.getBase().getMax());
   }
 
+
+  public StructureDefinition getProfile() {
+    return profile;
+  }
+
+
+  public boolean isKeyElement() {
+    boolean selfKey = definition.getMustSupport() || definition.getMustHaveValue() || min() > 0 || definition.hasCondition();
+    if (isProfiled() && !selfKey) {
+      if (types() != null && types().size() > 0) {
+        for (PEDefinition child : children()) {
+          if (child.isKeyElement()) {
+            return true;
+          }
+        }
+      }
+    }
+    return selfKey;
+  }
+
 }
 
 
