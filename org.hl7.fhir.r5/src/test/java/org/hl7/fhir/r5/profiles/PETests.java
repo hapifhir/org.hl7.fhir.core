@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.profiles;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.profilemodel.PEDefinition;
 import org.hl7.fhir.r5.profilemodel.PEInstance;
 import org.hl7.fhir.r5.profilemodel.PEType;
+import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator;
+import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
 import org.hl7.fhir.r5.profilemodel.gen.ProfileExample;
 import org.hl7.fhir.r5.profilemodel.gen.ProfileExample.LOINCCodesForCholesterolInSerumPlasma;
 import org.hl7.fhir.r5.profilemodel.gen.ProfileExample.ProfileExampleComplex;
@@ -370,5 +373,22 @@ public class PETests {
     Assertions.assertEquals("Another string value", sl3.getSlice3b().get(0).primitiveValue());
   }
 
-  
+
+  @Test
+  public void testGenerate() throws IOException {
+    load();
+    PECodeGenerator gen = new PECodeGenerator(ctxt);
+    gen.setFolder(Utilities.path("[tmp]"));
+    gen.setCanonical("http://hl7.org/fhir/test/StructureDefinition/pe-profile1");
+    gen.setPkgName("org.hl7.fhir.r5.profiles");
+    gen.setExtensionPolicy(ExtensionPolicy.None);
+    gen.setNarrative(false);
+    gen.setMeta(false);
+    gen.setLanguage("en-AU");
+    gen.setContained(false);
+    gen.setKeyELementsOnly(true);
+    gen.execute();    
+    gen.setCanonical("http://hl7.org/fhir/test/StructureDefinition/pe-profile2");
+    gen.execute();    
+  }
 }

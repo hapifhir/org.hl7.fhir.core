@@ -30,7 +30,7 @@ import org.hl7.fhir.utilities.Utilities;
  * *** NOTE: This sub-system is still under development ***
  * 
  * This subsystem takes a profile and creates a view of the profile that stitches
- * all the parts together, and presents it as a seemless tree. There's two views:
+ * all the parts together, and presents it as a seamless tree. There's two views:
  * 
  *  - definition: A logical view of the contents of the profile 
  *  - instance: a logical view of a resource that conforms to the profile
