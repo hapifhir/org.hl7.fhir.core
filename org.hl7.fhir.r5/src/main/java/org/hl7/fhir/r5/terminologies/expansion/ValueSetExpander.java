@@ -877,9 +877,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
           def.checkNoModifiers("Code in Code System", "expanding");
           inactive = CodeSystemUtilities.isInactive(cs, def);
           isAbstract = CodeSystemUtilities.isNotSelectable(cs, def);
+          addCode(dwc, inc.getSystem(), c.getCode(), !Utilities.noString(c.getDisplay()) ? c.getDisplay() : def.getDisplay(), c.hasDisplay() ? vsSrc.getLanguage() : cs.getLanguage(), null, mergeDesignations(def, convertDesignations(c.getDesignation())), 
+              expParams, isAbstract, inactive, imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), null, def.getExtension(), c.getExtension(), exp);
         }
-        addCode(dwc, inc.getSystem(), c.getCode(), !Utilities.noString(c.getDisplay()) ? c.getDisplay() : def == null ? null : def.getDisplay(), c.hasDisplay() ? vsSrc.getLanguage() : cs.getLanguage(), null, mergeDesignations(def, convertDesignations(c.getDesignation())), 
-            expParams, isAbstract, inactive, imports, noInactive, false, exp.getProperty(), def == null ? null : makeCSProps(def.getDefinition(), def.getProperty()), null, def == null ? null : def.getExtension(), c.getExtension(), exp);
       }
     }
     if (inc.getFilter().size() > 0) {
@@ -963,7 +963,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private List<ConceptDefinitionDesignationComponent> mergeDesignations(ConceptDefinitionComponent def,
       List<ConceptDefinitionDesignationComponent> list) {
     List<ConceptDefinitionDesignationComponent> res = new ArrayList<>();
-    res.addAll(def.getDesignation());
+    if (def != null) {
+      res.addAll(def.getDesignation());
+    }
     res.addAll(list);
     return res;
   }
