@@ -557,7 +557,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
     try {
       if (source.hasCompose()) {
-        ExtensionsUtils.stripExtensions(focus.getCompose());
+//        ExtensionsUtils.stripExtensions(focus.getCompose()); - disabled 23/05/2023 GDG - why was this ever thought to be a good idea?
         handleCompose(source.getCompose(), focus.getExpansion(), expParams, source.getUrl(), focus.getExpansion().getExtension(), source);
       }
     } catch (EFinished e) {
