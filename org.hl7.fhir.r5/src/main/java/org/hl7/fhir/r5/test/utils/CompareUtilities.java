@@ -349,11 +349,12 @@ public class CompareUtilities extends BaseTestingUtilities {
     } else if (actualJsonElement instanceof JsonArray) {
       JsonArray actualArray = (JsonArray) actualJsonElement;
       JsonArray expectedArray = (JsonArray) expectedJsonElement;
+      
       int expectedMin = countExpectedMin(expectedArray);
-
       int as = actualArray.size();
       int es = expectedArray.size();
       int oc = optionalCount(expectedArray);
+      
       if (as > es || as < expectedMin)
         return createNotEqualMessage("array item count differs at " + path, Integer.toString(es), Integer.toString(as));
       int c = 0;
@@ -373,7 +374,9 @@ public class CompareUtilities extends BaseTestingUtilities {
           c++;
         }
       }
-    
+      if (c < as) {
+        return "Unexpected Node found in array at index "+c;
+      }
     } else
       return "unhandled property " + actualJsonElement.getClass().getName();
     return null;

@@ -3220,6 +3220,12 @@ public class ValueSet extends MetadataResource {
 
   }
 
+  @Override
+  public String toString() {
+    var s = (hasValue() ? getValue().primitiveValue() : "");
+    return getName() + "=" + s;
+  }
+
   }
 
     @Block()
