@@ -293,7 +293,7 @@ class UtilitiesTest {
     RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
       Utilities.path(pathStrings);
     });
-    assertTrue(thrown.getMessage().endsWith(pathStrings[0]));
+    assertTrue(thrown.getMessage().endsWith(pathStrings[0]+", full path = "+String.join(", ", pathStrings)));
   }
 
   public static Stream<Arguments> macAndLinuxNonFirstElementStartPaths() {
@@ -384,7 +384,7 @@ class UtilitiesTest {
     RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
       Utilities.path(pathsStrings);
     });
-    assertEquals("First path entry cannot be null or empty",thrown.getMessage());
+    assertEquals("First entry in file path cannot be null or empty, full path = "+String.join(", ", pathsStrings),thrown.getMessage());
   }
 
   @Test
