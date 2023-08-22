@@ -11,6 +11,8 @@
 * Fix R4 FML parser problem
 * Track and report inactive status when reported from terminology server
 * Add defense against large terminology operations causing obscure java errors
+* Fix bug with client sending too much data to tx.fhir.org (big performance hit in some cases)
+* Fix obscure bug with designations in a more specific language the the code system they are in
 
 ## Other code changes
 
