@@ -1499,7 +1499,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     boolean cache = false;
     for (CanonicalType c : inc.getValueSet()) {
       ValueSet vs = fetchResource(ValueSet.class, c.getValue(), src);
-      if (vs != null) {
+      if (vs != null && !hasCanonicalResource(pin, "tx-resource", vs.getVUrl())) {
         pin.addParameter().setName("tx-resource").setResource(vs);
         if (tcc.isTxCaching() && tcc.getCacheId() == null || !tcc.getCached().contains(vs.getVUrl())) {
           tcc.getCached().add(vs.getVUrl());
@@ -1509,7 +1509,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     CodeSystem cs = fetchResource(CodeSystem.class, inc.getSystem(), src);
-    if (cs != null && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
+    if (cs != null && !hasCanonicalResource(pin, "tx-resource", cs.getVUrl()) && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
       pin.addParameter().setName("tx-resource").setResource(cs);
       if (tcc.isTxCaching() && tcc.getCacheId() == null || !tcc.getCached().contains(cs.getVUrl())) {
         tcc.getCached().add(cs.getVUrl());
@@ -1518,6 +1518,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       // todo: supplements
     }
     return cache;
+  }
+
+  private boolean hasCanonicalResource(Parameters pin, String name, String vUrl) {
+    for (ParametersParameterComponent p : pin.getParameter()) {
+      if (name.equals(p.getName()) && p.hasResource() &&
+          p.getResource() instanceof CanonicalResource && vUrl.equals(((CanonicalResource) p.getResource()).getVUrl())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public ValidationResult processValidationResult(Parameters pOut, String vs) {
