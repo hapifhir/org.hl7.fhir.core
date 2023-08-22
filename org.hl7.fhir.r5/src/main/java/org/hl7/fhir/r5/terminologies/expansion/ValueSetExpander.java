@@ -207,7 +207,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     String dstLang = focus.getLanguage();
     
     boolean usedDisplay = false;
-    ConceptDefinitionDesignationComponent tu = expParams.hasParameter("displayLanguage") ? getMatchingLang(designations, expParams.getParameterString("displayLanguage")) : null;
+    ConceptDefinitionDesignationComponent tu;
+    if (LanguageUtils.langsMatch(dstLang, dispLang)) {
+      tu = null; // use display
+    } else {
+      tu = expParams.hasParameter("displayLanguage") ? getMatchingLang(designations, expParams.getParameterString("displayLanguage")) : null;
+    }
     if (tu != null) {
       n.setDisplay(tu.getValue());        
     } else if (display != null && (srcLang == null || dstLang == null || LanguageUtils.langsMatch(dstLang, srcLang))) {
