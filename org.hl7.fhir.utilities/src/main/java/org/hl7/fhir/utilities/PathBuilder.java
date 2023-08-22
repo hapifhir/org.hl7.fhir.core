@@ -150,7 +150,7 @@ public class PathBuilder {
       return;
     }
     if (isPathRoot(args[0])) {
-      throw new RuntimeException("First entry cannot be root: " + args[0]);
+      throw new RuntimeException("First entry in file path cannot be root: " + args[0]+", full path = "+String.join(", ", args));
     }
   }
 
@@ -159,7 +159,7 @@ public class PathBuilder {
       return;
     }
     if (args[0] == null || Utilities.noString(args[0].trim())) {
-      throw new RuntimeException("First path entry cannot be null or empty");
+      throw new RuntimeException("First entry in file path cannot be null or empty, full path = "+String.join(", ", args));
     }
   }
 
