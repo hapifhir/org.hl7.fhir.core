@@ -41,6 +41,7 @@ public class TxTesterSorters {
       Collections.sort(vs.getExpansion().getParameter(), new TxTesterSorters.ExpParameterSorter());
       Collections.sort(vs.getExpansion().getProperty(), new TxTesterSorters.PropertyDefnSorter());
       Collections.sort(vs.getExpansion().getExtension(), new TxTesterSorters.ExtensionSorter());
+      Collections.sort(vs.getExpansion().getContains(), new TxTesterSorters.ContainsSorter());
       for (ValueSetExpansionContainsComponent cc : vs.getExpansion().getContains()) {
         sortContainsFeatures(cc);
       }
@@ -48,6 +49,7 @@ public class TxTesterSorters {
   }
 
   public static void sortContainsFeatures(ValueSetExpansionContainsComponent cc) {
+    Collections.sort(cc.getContains(), new TxTesterSorters.ContainsSorter());
     Collections.sort(cc.getExtension(), new TxTesterSorters.ExtensionSorter());
     Collections.sort(cc.getDesignation(), new TxTesterSorters.DesignationSorter());
     Collections.sort(cc.getProperty(), new TxTesterSorters.PropertyValueSorter());
@@ -128,6 +130,16 @@ public class TxTesterSorters {
 
   }
   
+
+  public static class ContainsSorter implements Comparator<ValueSetExpansionContainsComponent> {
+
+    @Override
+    public int compare(ValueSetExpansionContainsComponent o1, ValueSetExpansionContainsComponent o2) {
+      return o1.getCode().compareTo(o2.getCode());
+    }
+
+  }
+
 
   public static class ExpParameterSorter implements Comparator<ValueSetExpansionParameterComponent> {
 

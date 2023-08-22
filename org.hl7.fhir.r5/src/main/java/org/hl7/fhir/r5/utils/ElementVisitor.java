@@ -4,12 +4,17 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.utils.ElementVisitor.ElementVisitorInstruction;
 
 public class ElementVisitor {
 
+  public enum ElementVisitorInstruction {
+    VISIT_CHILDREN, NO_VISIT_CHILDREN;
+  }
+
   public interface IElementVisitor {
-    public void visit(Object context, Resource resource);
-    public void visit(Object context, Element element);
+    public ElementVisitorInstruction visit(Object context, Resource resource);
+    public ElementVisitorInstruction visit(Object context, Element element);
   }
 
   private IElementVisitor visitor;
@@ -33,13 +38,17 @@ public class ElementVisitor {
   }
 
   public void visit(Object context, Resource res) {
-    visitor.visit(context, res);
-    visitBase(context, res);
+    ElementVisitorInstruction c = visitor.visit(context, res);
+    if (c == ElementVisitorInstruction.VISIT_CHILDREN) {
+      visitBase(context, res);
+    }
   }
 
   public void visit(Object context, Element e) {
-    visitor.visit(context, e);
-    visitBase(context, e);
+    ElementVisitorInstruction c = visitor.visit(context, e);
+    if (c == ElementVisitorInstruction.VISIT_CHILDREN) {
+      visitBase(context, e);
+    }
   }
 
 }
