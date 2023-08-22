@@ -8,6 +8,7 @@ import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.ElementVisitor;
+import org.hl7.fhir.r5.utils.ElementVisitor.ElementVisitorInstruction;
 import org.hl7.fhir.r5.utils.ElementVisitor.IElementVisitor;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -53,16 +54,22 @@ public class TxTesterScrubbers {
     }
     
     @Override
-    public void visit(Object context, Resource resource) {
+    public ElementVisitorInstruction visit(Object context, Resource resource) {
       if (resource instanceof DomainResource) {
         DomainResource dr = (DomainResource) resource;
         dr.getExtension().removeIf(ext -> !isManagedExtension(ext));
       } 
+      return ElementVisitorInstruction.VISIT_CHILDREN;
     }
 
     @Override
-    public void visit(Object context, Element element) {
+    public ElementVisitorInstruction visit(Object context, Element element) {
       element.getExtension().removeIf(ext -> !isManagedExtension(ext));
+      if (element.fhirType().equals("ValueSet.compose")) {
+        return ElementVisitorInstruction.NO_VISIT_CHILDREN;
+      } else {
+        return ElementVisitorInstruction.VISIT_CHILDREN;
+      }
     }
   }
   

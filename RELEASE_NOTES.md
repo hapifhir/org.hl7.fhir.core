@@ -9,6 +9,8 @@
 * Fix issue in FHIRPath .combine focus handling 
 * Check Extension fixed values for URLs - enforce consistency
 * Fix R4 FML parser problem
+* Track and report inactive status when reported from terminology server
+* Add defense against large terminology operations causing obscure java errors
 
 ## Other code changes
 
@@ -24,8 +26,11 @@
 * Remove spurious logging in FHIRPath engine
 * Fix addChild error in PEBuilder (#1343) + Add test case
 * CPT Importer
-* Dependencies fixed: okhttp, thymeleaf, and commonmark
+* Dependencies fixed/updated: okhttp, thymeleaf, commonmark & UCUM
 * Xhtml fluent improvements + related XHtmlNode improvements
 * Release new pubpack for new icons
 * Json Object comparison: fix bug in arrays with multiple optional elements + improved error messages + support for external strings
 * fix cross-version extensions web references where possible
+* Don't suppress exceptions in terminology clients
+* Add first cut of Profile Generation code
+* Stop putting invalid codes in expansions if they are not in the code system
