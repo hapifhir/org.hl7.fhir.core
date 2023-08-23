@@ -44,13 +44,8 @@
 
 		<!-- XML Parsers -->
 		<dependency>
-			<groupId>xpp3</groupId>
+			<groupId>org.ogce</groupId>
 			<artifactId>xpp3</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>xpp3</groupId>
-			<artifactId>xpp3_xpath</artifactId>
 			<optional>true</optional>
 		</dependency>
 
