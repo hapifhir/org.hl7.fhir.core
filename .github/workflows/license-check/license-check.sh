@@ -46,4 +46,13 @@ do
     fi
 done
 
+echo "Check complete."
+
+if (( exitStatus == 0 ))
+then
+  echo "All licenses OK"
+else
+  echo "Possible license incompatibilities found. Check above logs."
+fi
+
 exit $exitStatus
