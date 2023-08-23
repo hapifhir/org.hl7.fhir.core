@@ -2,3 +2,8 @@
 (Unknown license) javaparser (com.google.code.javaparser:javaparser:1.0.11 - http://code.google.com/p/javaparser/)
 # Because of parsing issues, FHIR R4 shows up as a license. I really need to redo this script in Python for cleaner parsing. -dotasek
 (Apache Software License 2.0) HAPI FHIR - Validation Resources (FHIR R4) (ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4:6.4.1 - https://hapifhir.io/hapi-deployable-pom/hapi-fhir-validation-resources-r4)
+# The following can be licensed with either license, of which the Apache is compatible
+(Apache Software License, version 1.1) (Indiana University Extreme! Lab Software License, vesion 1.1.1) (Public Domain) MXP1: Xml Pull Parser 3rd Edition (XPP3) (xpp3:xpp3:1.1.4c - http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/)
+(Indiana University Extreme! Lab Software License, vesion 1.1.1) MXP1: Xml Pull Parser 3rd Edition (XPP3) (xpp3:xpp3_xpath:1.1.4c - http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/)
+# Aggregator is incorrectly parsed as a license.
+(Eclipse Public License v2.0) JUnit Jupiter (Aggregator) (org.junit.jupiter:junit-jupiter:5.9.1 - https://junit.org/junit5/)
