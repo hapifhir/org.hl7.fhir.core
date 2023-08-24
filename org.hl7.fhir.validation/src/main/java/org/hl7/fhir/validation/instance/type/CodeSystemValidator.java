@@ -197,7 +197,9 @@ public class CodeSystemValidator  extends BaseValidator {
           warning(errors, "2023-08-15", IssueType.INVALID, nstack, count < statedCount, I18nConstants.CODESYSTEM_CS_COUNT_FRAGMENT_WRONG, count, statedCount);
           break;
         case "not-present":
-          hint(errors, "2023-08-15", IssueType.INVALID, stack.push(cs.getNamedChild("concept"), -1, null, null), statedCount > 0, I18nConstants.CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO, statedCount);
+          if (cs.hasChildren("concept")) {
+            hint(errors, "2023-08-15", IssueType.INVALID, stack.push(cs.getNamedChild("concept"), -1, null, null), statedCount > 0, I18nConstants.CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO, statedCount);
+          }
           break;
         case "supplement": 
           CodeSystem css = context.fetchCodeSystem(supp);
