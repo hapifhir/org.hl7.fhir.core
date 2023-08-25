@@ -1500,22 +1500,35 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (CanonicalType c : inc.getValueSet()) {
       ValueSet vs = fetchResource(ValueSet.class, c.getValue(), src);
       if (vs != null && !hasCanonicalResource(pin, "tx-resource", vs.getVUrl())) {
-        pin.addParameter().setName("tx-resource").setResource(vs);
-        if (tcc.isTxCaching() && tcc.getCacheId() == null || !tcc.getCached().contains(vs.getVUrl())) {
-          tcc.getCached().add(vs.getVUrl());
-          cache = true;
-        }
+        cache = checkAddToParams(pin, vs) || cache;
         addDependentResources(pin, vs);
       }
     }
     CodeSystem cs = fetchResource(CodeSystem.class, inc.getSystem(), src);
     if (cs != null && !hasCanonicalResource(pin, "tx-resource", cs.getVUrl()) && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
-      pin.addParameter().setName("tx-resource").setResource(cs);
-      if (tcc.isTxCaching() && tcc.getCacheId() == null || !tcc.getCached().contains(cs.getVUrl())) {
-        tcc.getCached().add(cs.getVUrl());
-        cache = true;
-      }
+      cache = checkAddToParams(pin, cs) || cache;
       // todo: supplements
+    }
+    return cache;
+  }
+
+  private boolean checkAddToParams(Parameters pin, CanonicalResource cr) {
+    boolean cache = false;
+    boolean addToParams = false;
+    if (tcc.usingCache()) {
+      if (!tcc.alreadyCached(cr)) {
+        tcc.addToCache(cr);
+        System.out.println("add to cache: "+cr.getVUrl());
+        addToParams = true;
+        cache = true;
+      } else {
+        System.out.println("already cached: "+cr.getVUrl());
+      }
+    } else {
+      addToParams = true;
+    }
+    if (addToParams) {
+      pin.addParameter().setName("tx-resource").setResource(cr);
     }
     return cache;
   }
