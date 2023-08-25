@@ -214,15 +214,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (!VersionUtilities.isR5Plus(val.getContext().getVersion())) {
       val.getBaseOptions().setUseValueSetDisplays(true);
     }
-    val.getBaseOptions().getLanguages().clear();
-    if (content.has("languages")) {
-      for (String s : content.get("languages").getAsString().split("\\,")) {
-        String l = s.trim();
-        val.getBaseOptions().getLanguages().add(l);        
-      }
-    } else {
-      
-    }
+    val.getBaseOptions().setLanguages(content.get("languages").getAsString());
     
     if (content.has("fetcher") && "standalone".equals(JsonUtilities.str(content, "fetcher"))) {
       val.setFetcher(vCurr);

@@ -87,11 +87,14 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Factory;
+import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
@@ -112,6 +115,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander.Token;
 import org.hl7.fhir.r5.terminologies.providers.CodeSystemProvider;
 import org.hl7.fhir.r5.terminologies.providers.CodeSystemProviderExtension;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
@@ -121,10 +125,34 @@ import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
+import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 
 public class ValueSetExpander extends ValueSetProcessBase {
 
+
+  public class Token {
+    private String system;
+    private String code;
+    public Token(String system, String code) {
+      super();
+      this.system = system;
+      this.code = code;
+    }
+    public String getSystem() {
+      return system;
+    }
+    public String getCode() {
+      return code;
+    }
+    public boolean matches(Coding use) {
+      return system.equals(use.getSystem()) && code.equals(use.getCode());
+    }
+    public boolean matchesLang(String language) {
+      return system.equals("urn:ietf:bcp:47") && code.equals(language);
+    }
+  }
 
   private static final boolean REPORT_VERSION_ANYWAY = true;
   
@@ -135,6 +163,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
   
   private boolean checkCodesWhenExpanding;
   private boolean includeAbstract = true;
+
+  private AcceptLanguageHeader langs;
+  private List<Token> designations = new ArrayList<>();
 
   public ValueSetExpander(IWorkerContext context, TerminologyOperationContext opContext) {
     super(context, opContext);
@@ -203,31 +234,24 @@ public class ValueSetExpander extends ValueSetProcessBase {
         "http://hl7.org/fhir/StructureDefinition/rendering-xhtml");
     
     // display and designations
-    String srcLang = dispLang;
-    String dstLang = focus.getLanguage();
-    
-    boolean usedDisplay = false;
-    ConceptDefinitionDesignationComponent tu;
-    if (LanguageUtils.langsMatch(dstLang, dispLang)) {
-      tu = null; // use display
-    } else {
-      tu = expParams.hasParameter("displayLanguage") ? getMatchingLang(designations, expParams.getParameterString("displayLanguage")) : null;
-    }
-    if (tu != null) {
-      n.setDisplay(tu.getValue());        
-    } else if (display != null && (srcLang == null || dstLang == null || LanguageUtils.langsMatch(dstLang, srcLang))) {
+    ConceptDefinitionDesignationComponent pref = null;
+    if (langs == null) {
       n.setDisplay(display);
-      usedDisplay = true;
     } else {
-      // we don't have a usable display
+      if (designations == null) {
+        designations = new ArrayList<>();
+      }
+      designations.add(new ConceptDefinitionDesignationComponent().setLanguage(dispLang).setValue(display).setUse(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/designation-usage").setCode("display")));
+      pref = findMatchingDesignation(designations);
+      if (pref != null) {
+        n.setDisplay(pref.getValue());
+      }
     }
 
-    if (expParams.getParameterBool("includeDesignations") && designations != null) {
-      if (!usedDisplay && display != null) {
-        n.addDesignation().setLanguage(srcLang).setValue(display);
-      }
+    if (expParams.getParameterBool("includeDesignations")) {
+      
       for (ConceptDefinitionDesignationComponent t : designations) {
-        if (t != tu && (t.hasLanguage() || t.hasUse()) && t.getValue() != null) {
+        if (t != pref && (t.hasLanguage() || t.hasUse()) && t.getValue() != null && passesDesignationFilter(t)) {
           ConceptReferenceDesignationComponent d = n.addDesignation();
           if (t.getLanguage() != null) {
             d.setLanguage(t.getLanguage().trim());
@@ -288,6 +312,63 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return n;
   }
 
+  private boolean passesDesignationFilter(ConceptDefinitionDesignationComponent d) {
+    if (designations.isEmpty()) {
+      return true;
+    }
+    for (Token t : designations) {
+      if (t.matches(d.getUse()) || t.matchesLang(d.getLanguage())) {
+        return true;
+      }
+      for (Coding c : d.getAdditionalUse()) {
+        if (t.matches(c)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private ConceptDefinitionDesignationComponent findMatchingDesignation(List<ConceptDefinitionDesignationComponent> designations) {
+    if (langs == null) {
+      return null;
+    }
+    // we have a list of languages in priority order 
+    // we have a list of designations in no order 
+    // language exact match is preferred
+    // display is always preferred
+    
+    for (LanguagePreference lang : langs.getLangs()) {
+      if (lang.getValue() > 0) {
+        for (ConceptDefinitionDesignationComponent cd : designations) {
+          if (isDisplay(cd) && LanguageUtils.langsMatchExact(cd.getLanguage(), lang.getLang())) {
+            return cd;
+          }
+        }
+        for (ConceptDefinitionDesignationComponent cd : designations) {
+          if (isDisplay(cd) && LanguageUtils.langsMatch(cd.getLanguage(), lang.getLang())) {
+            return cd;
+          }
+        }
+        for (ConceptDefinitionDesignationComponent cd : designations) {
+          if (LanguageUtils.langsMatchExact(cd.getLanguage(), lang.getLang())) {
+            return cd;
+          }
+        }
+        for (ConceptDefinitionDesignationComponent cd : designations) {
+          if (LanguageUtils.langsMatch(cd.getLanguage(), lang.getLang())) {
+            return cd;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  private boolean isDisplay(ConceptDefinitionDesignationComponent cd) {
+    return cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display");
+  }
+
   private boolean filterContainsCode(List<ValueSet> filters, String system, String code, ValueSetExpansionComponent exp) {
     for (ValueSet vse : filters) {
       checkCanonical(exp, vse, focus);
@@ -307,13 +388,17 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return false;
   }
 
-  private ConceptDefinitionDesignationComponent getMatchingLang(List<ConceptDefinitionDesignationComponent> list, String lang) {
-    for (ConceptDefinitionDesignationComponent t : list)
-      if (t.getLanguage().equals(lang))
+  private ConceptDefinitionDesignationComponent getMatchingLang(List<ConceptDefinitionDesignationComponent> list, AcceptLanguageHeader langs) {
+    for (ConceptDefinitionDesignationComponent t : list) {
+      if (LanguageUtils.langsMatchExact(langs, t.getLanguage())) {
         return t;
-    for (ConceptDefinitionDesignationComponent t : list)
-      if (t.getLanguage().startsWith(lang))
+      }
+    }
+    for (ConceptDefinitionDesignationComponent t : list) {
+      if (LanguageUtils.langsMatch(langs, t.getLanguage())) {
         return t;
+      }
+    }
     return null;
   }
 
@@ -519,6 +604,42 @@ public class ValueSetExpander extends ValueSetProcessBase {
       return doExpand(source, expParams);
   }
 
+  private void processParameter(String name, DataType value) {
+    if (Utilities.existsInList(name, "includeDesignations", "excludeNested", "activeOnly", "offset", "count")) {
+      focus.getExpansion().getParameter().removeIf(p -> p.getName().equals(name));
+      focus.getExpansion().addParameter().setName(name).setValue(value);
+    }
+    if ("displayLanguage".equals(name)) {
+      this.langs = new AcceptLanguageHeader(value.primitiveValue(), true);
+      focus.getExpansion().getParameter().removeIf(p -> p.getName().equals(name));
+      focus.getExpansion().addParameter().setName(name).setValue(new CodeType(value.primitiveValue()));
+    }
+    if ("designation".equals(name)) {
+      String[] v = value.primitiveValue().split("\\|");
+      if (v.length != 2 || !Utilities.isAbsoluteUrl(v[0]) || Utilities.noString(v[1])) {
+        throw new NoTerminologyServiceException("Unable to understand designation parameter "+value.primitiveValue());
+      }
+      this.designations.add(new Token(v[0], v[1]));
+      focus.getExpansion().addParameter().setName(name).setValue(new StringType(value.primitiveValue()));
+    }
+    if ("offset".equals(name) && value instanceof IntegerType) {
+      focus.getExpansion().getParameter().removeIf(p -> p.getName().equals(name));
+      focus.getExpansion().addParameter().setName(name).setValue(value);
+      dwc.setOffset(((IntegerType) value).getValue());
+      if (dwc.getOffset() < 0) {
+        dwc.setOffset(0);
+      }
+    }
+    if ("count".equals(name)) {
+      focus.getExpansion().getParameter().removeIf(p -> p.getName().equals(name));
+      focus.getExpansion().addParameter().setName(name).setValue(value);
+      dwc.setCount(((IntegerType) value).getValue());
+      if (dwc.getCount() < 0) {
+        dwc.setCount(0);
+      }
+    }
+  }
+  
   public ValueSetExpansionOutcome doExpand(ValueSet source, Parameters expParams) throws FHIRException, ETooCostly, FileNotFoundException, IOException, CodeSystemProviderExtension {
     if (expParams == null)
       expParams = makeDefaultExpansion();
@@ -532,33 +653,20 @@ public class ValueSetExpander extends ValueSetProcessBase {
     focus.getExpansion().setTimestampElement(DateTimeType.now());
     focus.getExpansion().setIdentifier(Factory.createUUID()); 
     checkCanonical(focus.getExpansion(), focus, focus);
+    for (Extension ext : focus.getCompose().getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinion/valueset-expansion-param")) {
+      processParameter(ext.getExtensionString("name"), ext.getExtensionByUrl("value").getValue());
+    }
     for (ParametersParameterComponent p : expParams.getParameter()) {
-      if (Utilities.existsInList(p.getName(), "includeDesignations", "excludeNested", "activeOnly", "offset", "count")) {
-        focus.getExpansion().addParameter().setName(p.getName()).setValue(p.getValue());
-      }
-      if ("displayLanguage".equals(p.getName()) && (!expParams.hasLanguage() || !expParams.getLanguage().equals(p.getValue().primitiveValue()))) {
-        focus.getExpansion().addParameter().setName(p.getName()).setValue(p.getValue());
-      }
-      if ("offset".equals(p.getName()) && p.hasValueIntegerType()) {
-        dwc.setOffset(p.getValueIntegerType().getValue());
-        if (dwc.getOffset() < 0) {
-          dwc.setOffset(0);
-        }
-      }
-      if ("count".equals(p.getName()) && p.hasValueIntegerType()) {
-        dwc.setCount(p.getValueIntegerType().getValue());
-        if (dwc.getCount() < 0) {
-          dwc.setCount(0);
-        }
-      }
+      processParameter(p.getName(), p.getValue());
     }
     for (Extension s : focus.getExtensionsByUrl(ExtensionConstants.EXT_VSSUPPLEMENT)) {
       requiredSupplements.add(s.getValue().primitiveValue());
     }
-    if (expParams.hasLanguage()) {
-      focus.setLanguage(expParams.getLanguage());
+    if (langs == null && focus.hasLanguage()) {
+      langs = new AcceptLanguageHeader(focus.getLanguage(), true);
+    } else if (langs != null && langs.hasChosen()) {
+      focus.setLanguage(langs.getChosen());
     }
-    
 
     try {
       if (source.hasCompose()) {
@@ -609,6 +717,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     return new ValueSetExpansionOutcome(focus);
   }
+
 
   private Parameters makeDefaultExpansion() {
     Parameters res = new Parameters();

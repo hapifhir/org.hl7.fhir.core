@@ -47,9 +47,11 @@ import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
+import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.extensions.ExtensionConstants;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -90,6 +92,7 @@ import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationConte
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -191,6 +194,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   
   public ValidationResult validateCode(String path, CodeableConcept code) throws FHIRException {
     opContext.deadCheck();
+    checkValueSetOptions();
 
     // first, we validate the codings themselves
     ValidationProcessInfo info = new ValidationProcessInfo();
@@ -370,6 +374,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
   
   public ValidationResult validateCode(String path, Coding code) throws FHIRException {
     opContext.deadCheck();
+    checkValueSetOptions();
+    
     String warningMessage = null;
     // first, we validate the concept itself
 
@@ -548,6 +554,21 @@ public class ValueSetValidator extends ValueSetProcessBase {
       res.setSeverity(IssueSeverity.ERROR); // back patching for display logic issue
     }
     return res;
+  }
+
+  private void checkValueSetOptions() {
+    if (valueset != null) {
+      for (Extension ext : valueset.getCompose().getExtensionsByUrl("http://hl7.org/fhir/tools/StructureDefinion/valueset-expansion-param")) {
+        var name = ext.getExtensionString("name");
+        var value = ext.getExtensionByUrl("value").getValue();
+        if ("displayLanguage".equals(name)) {
+          options.setLanguages(value.primitiveValue());
+        }
+      }
+      if (!options.hasLanguages() && valueset.hasLanguage()) {
+        options.addLanguage(valueset.getLanguage());
+      }
+    }
   }
 
   private static final Set<String> SERVER_SIDE_LIST = new HashSet<>(Arrays.asList("http://fdasis.nlm.nih.gov", "http://hl7.org/fhir/sid/ndc", "http://loinc.org", "http://snomed.info/sct", "http://unitsofmeasure.org", 
@@ -736,7 +757,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     }
     if (b.count() == 0) {
-      String msg = context.formatMessagePlural(options.getLanguages().size(), I18nConstants.NO_VALID_DISPLAY_FOUND, code.getSystem(), code.getCode(), code.getDisplay(), options.langSummary());
+      String msg = context.formatMessagePlural(options.getLanguages().getLangs().size(), I18nConstants.NO_VALID_DISPLAY_FOUND, code.getSystem(), code.getCode(), code.getDisplay(), options.langSummary());
       return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg)).setStatus(inactive, status);      
     } else {
       String msg = context.formatMessagePlural(b.count(), ws ? I18nConstants.DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF : I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF, code.getSystem(), code.getCode(), b.toString(), code.getDisplay(), options.langSummary());
@@ -756,10 +777,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (!options.hasLanguages()) {
       return true;
     }
-    if (options.getLanguages().contains(language)) {
+    if (LanguageUtils.langsMatch(options.getLanguages(), language)) {
       return true;
     }
-    if (language == null && (options.getLanguages().contains("en") || options.getLanguages().contains("en-US") || options.isEnglishOk())) {
+    if (language == null && (options.langSummary().contains("en") || options.langSummary().contains("en-US") || options.isEnglishOk())) {
       return true;
     }
     return false;
@@ -1285,20 +1306,20 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (!options.hasLanguages()) {
       return cc.getDisplay();
     }
-    if (options.getLanguages().contains(valueset.getLanguage())) {
+    if (LanguageUtils.langsMatch(options.getLanguages(), valueset.getLanguage())) {
       return cc.getDisplay();
     }
     // if there's no language, we default to accepting the displays as (US) English
-    if (valueset.getLanguage() == null && (options.getLanguages().contains("en") || options.getLanguages().contains("en-US"))) {
+    if (valueset.getLanguage() == null && (options.langSummary().contains("en") || options.langSummary().contains("en-US"))) {
       return cc.getDisplay();
     }
     for (ConceptReferenceDesignationComponent d : cc.getDesignation()) {
-      if (!d.hasUse() && options.getLanguages().contains(d.getLanguage())) {
+      if (!d.hasUse() && LanguageUtils.langsMatch(options.getLanguages(), d.getLanguage())) {
         return d.getValue();
       }
     }
     for (ConceptReferenceDesignationComponent d : cc.getDesignation()) {
-      if (options.getLanguages().contains(d.getLanguage())) {
+      if (LanguageUtils.langsMatch(options.getLanguages(), d.getLanguage())) {
         return d.getValue();
       }
     }
@@ -1310,20 +1331,20 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (!options.hasLanguages()) {
       return cc.getDisplay();
     }
-    if (cs != null && options.getLanguages().contains(cs.getLanguage())) {
+    if (cs != null && LanguageUtils.langsMatch(options.getLanguages(), cs.getLanguage())) {
       return cc.getDisplay();
     }
     // if there's no language, we default to accepting the displays as (US) English
-    if ((cs == null || cs.getLanguage() == null) && (options.getLanguages().contains("en") || options.getLanguages().contains("en-US"))) {
+    if ((cs == null || cs.getLanguage() == null) && (options.langSummary().contains("en") || options.langSummary().contains("en-US"))) {
       return cc.getDisplay();
     }
     for (ConceptDefinitionDesignationComponent d : cc.getDesignation()) {
-      if (!d.hasUse() && options.getLanguages().contains(d.getLanguage())) {
+      if (!d.hasUse() && LanguageUtils.langsMatch(options.getLanguages(), d.getLanguage())) {
         return d.getValue();
       }
     }
     for (ConceptDefinitionDesignationComponent d : cc.getDesignation()) {
-      if (options.getLanguages().contains(d.getLanguage())) {
+      if (LanguageUtils.langsMatch(options.getLanguages(), d.getLanguage())) {
         return d.getValue();
       }
     }
