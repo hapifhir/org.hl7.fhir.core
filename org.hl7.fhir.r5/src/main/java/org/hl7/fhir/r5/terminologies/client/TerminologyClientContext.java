@@ -3,7 +3,9 @@ package org.hl7.fhir.r5.terminologies.client;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
+import org.hl7.fhir.r5.model.ValueSet;
 
 public class TerminologyClientContext {
   private String cacheId;
@@ -74,6 +76,18 @@ public class TerminologyClientContext {
     client = other.client;
     txcaps = other.txcaps;
 
+  }
+
+  public boolean usingCache() {
+    return isTxCaching && cacheId != null;
+  }
+
+  public boolean alreadyCached(CanonicalResource cr) {
+    return cached.contains(cr.getVUrl());
+  }
+
+  public void addToCache(CanonicalResource cr) {
+    cached.add(cr.getVUrl());
   }
 
   
