@@ -105,6 +105,7 @@ public class ClientUtils {
   private ToolingClientLogger logger;
   private int retryCount;
   private String userAgent;
+  private String acceptLang;
 
   public HttpHost getProxy() {
     return proxy;
@@ -293,6 +294,9 @@ public class ClientUtils {
   protected void configureFhirRequest(HttpRequest request, String format, List<Header> headers) {
     if (!Utilities.noString(userAgent)) {
       request.addHeader("User-Agent", userAgent);
+    }
+    if (!Utilities.noString(acceptLang)) {
+      request.addHeader("Accept-Language", acceptLang);
     }
 
     if (format != null) {
@@ -722,4 +726,7 @@ public class ClientUtils {
     this.userAgent = userAgent;
   }
 
+  public void setLanguage(String language) {
+    this.acceptLang = language;
+  }
 }
