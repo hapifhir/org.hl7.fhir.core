@@ -895,4 +895,8 @@ public class FHIRToolingClient {
   public String getServerVersion() {
     return conf == null ? null : conf.getSoftware().getVersion();
   }
+
+  public void setLanguage(String lang) {
+    utils.setLanguage(lang);
+  }
 }
