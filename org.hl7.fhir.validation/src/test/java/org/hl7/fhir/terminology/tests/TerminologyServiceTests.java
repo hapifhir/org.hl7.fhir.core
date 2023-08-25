@@ -142,19 +142,22 @@ public class TerminologyServiceTests {
       engine.getContext().setExpansionProfile((org.hl7.fhir.r5.model.Parameters) loadResource("parameters-default.json"));
     }
     if (setup.test.asString("operation").equals("expand")) {
-      expand(engine, req, resp, fp, ext);
+      expand(engine, req, resp, setup.test.asString("Accept-Language"), fp, ext);
     } else if (setup.test.asString("operation").equals("validate-code")) {
-      validate(engine, setup.test.asString("name"), req, resp, fp, ext);      
+      validate(engine, setup.test.asString("name"), req, resp, setup.test.asString("Accept-Language"), fp, ext);      
     } else {
       Assertions.fail("Unknown Operation "+setup.test.asString("operation"));
     }
   }
 
-  private void expand(ValidationEngine engine, Resource req, String resp, String fp, JsonObject ext) throws IOException {
+  private void expand(ValidationEngine engine, Resource req, String resp, String lang, String fp, JsonObject ext) throws IOException {
     org.hl7.fhir.r5.model.Parameters p = ( org.hl7.fhir.r5.model.Parameters) req;
     ValueSet vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
     boolean hierarchical = p.hasParameter("excludeNested") ? p.getParameterBool("excludeNested") == false : true;
     Assertions.assertNotNull(vs);
+    if (lang != null && !p.hasParameter("displayLanguage")) {
+      p.addParameter("displayLanguage", new CodeType(lang));
+    }
     ValueSetExpansionOutcome vse = engine.getContext().expandVS(vs, false, hierarchical, false, p);
     if (resp.contains("\"ValueSet\"")) {
       if (vse.getValueset() == null) {
@@ -230,7 +233,7 @@ public class TerminologyServiceTests {
     }
   }
 
-  private void validate(ValidationEngine engine, String name, Resource req, String resp, String fp, JsonObject ext) throws JsonSyntaxException, FileNotFoundException, IOException {
+  private void validate(ValidationEngine engine, String name, Resource req, String resp, String lang, String fp, JsonObject ext) throws JsonSyntaxException, FileNotFoundException, IOException {
     org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) req;
     ValueSet vs = null;
     if (p.hasParameter("valueSetVersion")) {
@@ -241,6 +244,8 @@ public class TerminologyServiceTests {
     ValidationOptions options = new ValidationOptions();
     if (p.hasParameter("displayLanguage")) {
       options = options.withLanguage(p.getParameterString("displayLanguage"));
+    } else if (lang != null ) {
+      options = options.withLanguage(lang);
     }
     if (p.hasParameter("valueSetMode") && "CHECK_MEMBERSHIP_ONLY".equals(p.getParameterString("valueSetMode"))) {
       options = options.withCheckValueSetOnly();
