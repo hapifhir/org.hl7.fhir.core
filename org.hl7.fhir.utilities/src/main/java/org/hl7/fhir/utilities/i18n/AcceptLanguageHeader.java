@@ -51,14 +51,13 @@ public class AcceptLanguageHeader {
 
     @Override
     public String toString() {
-      if (value == 0) {
+      if (value == 1) {
         return lang;
       } else {
-        return lang+"; q="+Double.toString(value);
+        return lang+"; q="+(String.format("%.6f", value).replaceAll("(\\.\\d+?)0*$", "$1")); //Double.toString(value);
       }
     }
   }
-
 
   private String source;
   private List<LanguagePreference> langs = new ArrayList<>();
