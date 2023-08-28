@@ -8,6 +8,16 @@ public class AcceptLanguageTests {
   @Test
   public void testEasy() {
     AcceptLanguageHeader hdr = new AcceptLanguageHeader("en", true);
+    Assertions.assertEquals(2, hdr.getLangs().size());
+    Assertions.assertEquals(1, hdr.getLangs().get(0).getValue());
+    Assertions.assertEquals(0, hdr.getLangs().get(0).getOrder());
+    Assertions.assertEquals("en", hdr.getLangs().get(0).getLang());
+  }
+  
+
+  @Test
+  public void testEasy2() {
+    AcceptLanguageHeader hdr = new AcceptLanguageHeader("en", false);
     Assertions.assertEquals(1, hdr.getLangs().size());
     Assertions.assertEquals(1, hdr.getLangs().get(0).getValue());
     Assertions.assertEquals(0, hdr.getLangs().get(0).getOrder());

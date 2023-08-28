@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "http://www.genenames.org/geneId",
   "code" : "HGNC:11389"
-}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgnc-vs--0", "version": "1.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgnc-vs--0", "version": "1.0.0", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -11,7 +11,12 @@
 }}####
 v: {
   "severity" : "error",
-  "error" : "The CodeSystem http://www.genenames.org/geneId is unknown; The provided code http://www.genenames.org/geneId#HGNC:11389 is not in the value set 'http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgnc-vs--0' (from Tx-Server)",
-  "class" : "UNKNOWN"
+  "error" : "The CodeSystem http://www.genenames.org/geneId is unknown; Unable to check whether the code is in the value set http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgnc-vs--0|1.0.0 (from Tx-Server)",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "unknown-systems" : "http://www.genenames.org/geneId",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
 }
 -------------------------------------------------------------------------------------

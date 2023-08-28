@@ -51,7 +51,7 @@ public class ValidationOptions {
   }
 
   public boolean hasLanguages() {
-    return langs != null;
+    return langs != null && !Utilities.noString(langs.getSource());
   }
 
 
@@ -285,7 +285,11 @@ public class ValidationOptions {
     if (langs == null) {
       return "--";
     } else {
-      return langs.toString();
+      String s = langs.toString();
+      if (Utilities.noString(s)) {
+        s = "--";
+      }
+      return s;
     }
   }
 

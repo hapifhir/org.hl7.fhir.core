@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguageSorter;
 
@@ -32,6 +33,8 @@ public class AcceptLanguageHeader {
     private int order;
     private String lang;
     private double value;
+    private boolean auto;
+    
     public String getLang() {
       return lang;
     }
@@ -42,11 +45,15 @@ public class AcceptLanguageHeader {
     public int getOrder() {
       return order;
     }
-    public LanguagePreference(int order, String lang, double value) {
+    public boolean isAuto() {
+      return auto;
+    }
+    public LanguagePreference(int order, String lang, double value, boolean auto) {
       super();
       this.order = order;
       this.lang = lang;
       this.value = value;
+      this.auto = auto;
     }
 
     @Override
@@ -74,32 +81,37 @@ public class AcceptLanguageHeader {
   public AcceptLanguageHeader(String source, boolean doWildcard) {
     super();
     this.doWildcard = doWildcard;
-    this.source = source;
-    process();
+    this.source = source == null ? "" : source;
+    process(source, langs, doWildcard);
   }
 
-  private void process() {
-    langs.clear();
-    String[] parts = source.split("\\,");
+  private void process(String src, List<LanguagePreference> list, boolean doWildcard) {
+    list.clear();
     boolean wildcard = false;
-    for (int i = 0; i < parts.length; i++) {
-      String lang = parts[i].trim();
-      double weight = 1;
-      if (lang.contains(";")) {
-        String w = lang.substring(lang.indexOf(";")+1);
-        if (w.contains("=")) {
-          w = w.substring(w.indexOf("=")+1);
+    int offset = langs.size();
+    if (!Utilities.noString(src)) {
+      String[] parts = src.split("\\,");
+      for (int i = 0; i < parts.length; i++) {
+        String lang = parts[i].trim();
+        double weight = 1;
+        if (lang.contains(";")) {
+          String w = lang.substring(lang.indexOf(";")+1);
+          if (w.contains("=")) {
+            w = w.substring(w.indexOf("=")+1);
+          }
+          lang = lang.substring(0, lang.indexOf(";"));
+          weight = Float.valueOf(w);
         }
-        lang = lang.substring(0, lang.indexOf(";"));
-        weight = Float.valueOf(w);
+        if (!Utilities.noString(lang)) {
+          list.add(new LanguagePreference(i+offset, lang, weight, false));
+          wildcard = wildcard || "*".equals(lang);
+        }
       }
-      langs.add(new LanguagePreference(i, lang, weight));
-      wildcard = wildcard || "*".equals(lang);
     }
     if (!wildcard && doWildcard) {
-      langs.add(new LanguagePreference(100, "*", 0.01));
+      list.add(new LanguagePreference(100, "*", 0.01, true));
     }
-    Collections.sort(langs, new LanguageSorter());
+    Collections.sort(list, new LanguageSorter());
 
   }
 
@@ -121,9 +133,28 @@ public class AcceptLanguageHeader {
   }
 
   public void add(String language) {
-    source = toString()+","+language;
-    process();
-    
+    List<LanguagePreference> list = new ArrayList<>();
+    process(language, list, false);
+    for (LanguagePreference lang : list) {
+      LanguagePreference existing = getByLang(langs, lang.lang);
+      if (existing == null) {
+        langs.add(lang);
+      } else {
+        existing.auto = false;
+        existing.value = lang.value;
+      }
+    }
+    Collections.sort(langs, new LanguageSorter());
+    source = toString();
+  }
+
+  private LanguagePreference getByLang(List<LanguagePreference> list, String lang) {
+    for (LanguagePreference l : list) {
+      if (l.lang.equals(lang)) {
+        return l;
+      }
+    }
+    return null;
   }
 
   public AcceptLanguageHeader copy() {
@@ -134,7 +165,9 @@ public class AcceptLanguageHeader {
   public String toString() {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (LanguagePreference lang : langs) {
-      b.append(lang.toString());
+      if (!lang.isAuto()) {
+       b .append(lang.toString());
+      }
     }
     return b.toString();
   }
