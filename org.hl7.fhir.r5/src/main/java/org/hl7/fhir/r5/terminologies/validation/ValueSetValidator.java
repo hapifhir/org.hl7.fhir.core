@@ -29,8 +29,6 @@ package org.hl7.fhir.r5.terminologies.validation;
 
  */
 
-
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -216,15 +214,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
           if (context.isNoTerminologyServer()) {
             if (c.hasVersion()) {
               String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, c.getSystem(), c.getVersion() , resolveCodeSystemVersions(c.getSystem()).toString());
-//              if (valueSetDependsOn(c.getSystem(), c.getVersion())) {
                 unknownSystems.add(c.getSystem()+"|"+c.getVersion());
-//              }
               res = new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg)).setUnknownSystems(unknownSystems);
             } else {
               String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, c.getSystem(), c.getVersion());
-//              if (valueSetDependsOn(c.getSystem(), null)) {
                 unknownSystems.add(c.getSystem());
-//              }
               res = new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg)).setUnknownSystems(unknownSystems);
             }
           } else {
