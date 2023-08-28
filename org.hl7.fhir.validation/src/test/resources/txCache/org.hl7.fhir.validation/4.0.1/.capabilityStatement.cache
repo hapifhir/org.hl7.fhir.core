@@ -12,7 +12,7 @@
   "version" : "4.0.1-3.0.0",
   "name" : "FHIR Reference Server Conformance Statement",
   "status" : "active",
-  "date" : "2023-08-28T10:16:21.252Z",
+  "date" : "2023-08-28T12:31:00.252Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
