@@ -112,7 +112,7 @@ public class FHIRPathEngine {
 
   private enum Equality { Null, True, False }
 
-  private class FHIRConstant extends Base {
+  private static class FHIRConstant extends Base {
 
     private static final long serialVersionUID = -8933773658248269439L;
     private String value;
@@ -149,7 +149,7 @@ public class FHIRPathEngine {
     }
   }
 
-  private class ClassTypeInfo extends Base {
+  private static class ClassTypeInfo extends Base {
     private static final long serialVersionUID = 4909223114071029317L;
     private Base instance;
 
@@ -1019,7 +1019,7 @@ public class FHIRPathEngine {
     }
   }
 
-  private class ExecutionTypeContext {
+  private static class ExecutionTypeContext {
     private Object appInfo; 
     private String resource;
     private TypeDetails context;
@@ -5605,7 +5605,7 @@ public class FHIRPathEngine {
     return result;
   }
 
-  public class ElementDefinitionMatch {
+  public static class ElementDefinitionMatch {
     private ElementDefinition definition;
     private String fixedType;
     public ElementDefinitionMatch(ElementDefinition definition, String fixedType) {
