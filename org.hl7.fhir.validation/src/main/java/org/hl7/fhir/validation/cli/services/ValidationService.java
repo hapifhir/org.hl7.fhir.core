@@ -77,6 +77,7 @@ import org.hl7.fhir.validation.cli.renderers.DefaultRenderer;
 import org.hl7.fhir.validation.cli.renderers.ESLintCompactRenderer;
 import org.hl7.fhir.validation.cli.renderers.NativeRenderer;
 import org.hl7.fhir.validation.cli.renderers.ValidationOutputRenderer;
+import org.hl7.fhir.validation.cli.utils.Common;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 
@@ -441,7 +442,7 @@ public class ValidationService {
   @Nonnull
   protected ValidationEngine buildValidationEngine( CliContext cliContext, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
     System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
-    ValidationEngine validationEngine = getValidationEngineBuilder().withTHO(false).withVersion(cliContext.getSv()).withTimeTracker(timeTracker).withUserAgent("fhir/validator").fromSource(definitions);
+    ValidationEngine validationEngine = getValidationEngineBuilder().withTHO(false).withVersion(cliContext.getSv()).withTimeTracker(timeTracker).withUserAgent(Common.getValidatorUserAgent()).fromSource(definitions);
 
     System.out.println(" - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
 
