@@ -3,7 +3,7 @@
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "code" : "1000990",
   "display" : "oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -14,14 +14,19 @@ v: {
   "display" : "oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray",
   "code" : "1000990",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "??"
+  "version" : "??",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "code" : "1010603",
   "display" : "Suboxone 2 MG / 0.5 MG Sublingual Film"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -32,14 +37,19 @@ v: {
   "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film [Suboxone]",
   "code" : "1010603",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "??"
+  "version" : "??",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "code" : "1298088",
   "display" : "Flurazepam Hydrochloride 15 MG Oral Capsule"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -50,14 +60,19 @@ v: {
   "display" : "flurazepam hydrochloride 15 MG Oral Capsule",
   "code" : "1298088",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "??"
+  "version" : "??",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "code" : "1010600",
   "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -68,13 +83,18 @@ v: {
   "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film",
   "code" : "1010600",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "??"
+  "version" : "??",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "code" : "1591957"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -85,6 +105,11 @@ v: {
   "display" : "Mircera",
   "code" : "1591957",
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
-  "version" : "??"
+  "version" : "??",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
 }
 -------------------------------------------------------------------------------------
