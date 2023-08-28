@@ -245,7 +245,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
       
       for (Coding c : code.getCoding()) {
-        b.append(c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "")+"#"+c.getCode());
+        b.append("'"+c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "")+"#"+c.getCode()+"'");
         Boolean ok = codeInValueSet(path, c.getSystem(), c.getVersion(), c.getCode(), info);
         if (ok == null && result != null && result == false) {
           result = null;
@@ -523,7 +523,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 //              res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, res.getMessage()));
 //            } else
 //            {
-              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), code.toString());
+              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), "'"+code.toString()+"'");
               res.addToMessage(msg).setSeverity(IssueSeverity.ERROR);
               res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path, msg));
               res.setDefinition(null);
@@ -545,7 +545,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           res = new ValidationResult(system, wv, null, null);
         }
       } else if ((res != null && !res.isOk())) {
-        String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), code.toString());
+        String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), "'"+code.toString()+"'");
         res.setMessage(res.getMessage()+"; "+msg);
         res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path, msg));
       }
@@ -715,7 +715,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ", " or ");
     if (cc.hasDisplay() && isOkLanguage(cs.getLanguage())) {
-      b.append("'"+cc.getDisplay()+"'");
+      b.append("'"+cc.getDisplay()+"'"+(cs.hasLanguage() ? " ("+cs.getLanguage()+")" : ""));
       if (code.getDisplay().equalsIgnoreCase(cc.getDisplay())) {
         return new ValidationResult(code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs)).setStatus(inactive, status);
       } else if (Utilities.normalize(code.getDisplay()).equals(Utilities.normalize(cc.getDisplay()))) {
