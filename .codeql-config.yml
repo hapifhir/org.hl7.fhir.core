@@ -1,10 +1,7 @@
 name: "Code scanning CodeQL config"
 
 query-filters:
-  # This should be empty, but contains three queries that currently break the CodeQL action - dotasek
-  - exclude:
-      id: java/polynomial-redos
-  - exclude:
-      id: java/redos
-  - exclude:
-      id: java/overly-large-range
+  # This should be empty; if a query times out or causes a exception, you can exclude it here.
+  # See the example commented out below.
+  # - exclude:
+  #    id: java/polynomial-redos
