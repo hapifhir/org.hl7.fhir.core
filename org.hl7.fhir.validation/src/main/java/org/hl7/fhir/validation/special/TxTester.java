@@ -261,7 +261,7 @@ public class TxTester {
       TxTesterScrubbers.scrubOO(oo, tight);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj, ext);
+    String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj, false, ext);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(vsj, fp);        
@@ -286,7 +286,7 @@ public class TxTester {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, ext);
+    String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, false, ext);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(pj, fp);        

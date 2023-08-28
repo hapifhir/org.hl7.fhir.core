@@ -35,7 +35,7 @@ public class CompareUtilities extends BaseTestingUtilities {
   public String createNotEqualMessage(final String message, final String expected, final String actual) {
     return new StringBuilder()
       .append(message).append('\n')
-      .append("Expected :").append(presentExpected(expected)).append('\n')
+      .append("Expected:").append(presentExpected(expected)).append('\n')
       .append("Actual  :").append("\""+actual+"\"").toString();
   }
 
