@@ -31,6 +31,7 @@ import org.hl7.fhir.r4b.model.Tuple;
 import org.hl7.fhir.r4b.model.TypeDetails;
 import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.r4b.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4b.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.utils.LiquidEngine;
 import org.hl7.fhir.r4b.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.TextFile;

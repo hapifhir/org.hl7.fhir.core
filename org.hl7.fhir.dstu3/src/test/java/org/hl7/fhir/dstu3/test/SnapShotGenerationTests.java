@@ -31,6 +31,7 @@ import org.hl7.fhir.dstu3.test.support.TestingUtilities;
 import org.hl7.fhir.dstu3.utils.CodingUtilities;
 import org.hl7.fhir.dstu3.utils.FHIRPathEngine;
 import org.hl7.fhir.dstu3.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.dstu3.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
