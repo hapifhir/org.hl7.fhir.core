@@ -1080,7 +1080,7 @@ public class FHIRPathEngine {
     }
   }
 
-  private static class ExecutionContext {
+  private class ExecutionContext {
     private Object appInfo;
     private Base focusResource;
     private Base rootResource;
@@ -5909,7 +5909,7 @@ public class FHIRPathEngine {
     return result;
   }
 
-  public class ElementDefinitionMatch {
+  public static class ElementDefinitionMatch {
     private ElementDefinition definition;
     private ElementDefinition sourceDefinition; // if there was a content reference
     private String fixedType;
