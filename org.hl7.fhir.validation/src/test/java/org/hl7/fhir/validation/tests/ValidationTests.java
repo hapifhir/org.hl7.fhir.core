@@ -126,7 +126,6 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     for (String id : names) {
       // The following tests will fail due to server based issues. Under no circumstance are these exclusions to be included outside of release 6.0.22.1
       if (!(Set.of(
-        "R4.cda/example-no-styles",
         "R4.cdshooks-request-order-select-extensions",
         "R4.cdshooks-response-empty-source"
       )).contains(id)) {
