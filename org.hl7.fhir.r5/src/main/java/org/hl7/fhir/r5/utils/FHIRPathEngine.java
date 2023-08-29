@@ -118,7 +118,7 @@ import ca.uhn.fhir.util.ElementUtil;
 public class FHIRPathEngine {
 
   private enum Equality { Null, True, False }
-  
+
   private IWorkerContext worker;
   private IEvaluationContext hostServices;
   private StringBuilder log = new StringBuilder();
@@ -971,7 +971,7 @@ public class FHIRPathEngine {
     }
   }
 
-  private class ExecutionTypeContext {
+  private static class ExecutionTypeContext {
     private Object appInfo; 
     private String resource;
     private TypeDetails context;
@@ -5741,7 +5741,8 @@ public class FHIRPathEngine {
     return result;
   }
 
-  private class ElementDefinitionMatch {
+
+  public static class ElementDefinitionMatch {
     private ElementDefinition definition;
     private ElementDefinition sourceDefinition; // if there was a content reference
     private String fixedType;
