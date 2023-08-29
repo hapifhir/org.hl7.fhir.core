@@ -264,6 +264,9 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   public void see(CachedCanonicalResource<T> cr) {
     // -- 1. exit conditions -----------------------------------------------------------------------------
     
+    if ("http://hl7.org/fhir/StructureDefinition/Address".equals(cr.getUrl())) {
+      System.out.println("!"); // #FIXME
+    }
     // ignore UTG NUCC erroneous code system
     if (cr.getPackageInfo() != null
       && cr.getPackageInfo().getId() != null
