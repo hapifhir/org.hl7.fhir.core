@@ -30,6 +30,7 @@ import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
 
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -37,6 +38,7 @@ import org.junit.runners.Parameterized.Parameters;
 import com.google.common.base.Charsets;
 
 @RunWith(Parameterized.class)
+@Disabled("External terminology server has changed since release 6.0.15 so these tests will be invalid for 6.0.15.1")
 public class ExternalTerminologyServiceTests implements ITxTesterLoader {
 
   public static class JsonObjectPair {
