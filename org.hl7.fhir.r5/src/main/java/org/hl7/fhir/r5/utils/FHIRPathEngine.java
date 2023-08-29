@@ -5774,7 +5774,7 @@ public class FHIRPathEngine {
     return result;
   }
 
-  public class ElementDefinitionMatch {
+  public static class ElementDefinitionMatch {
     private ElementDefinition definition;
     private String fixedType;
     public ElementDefinitionMatch(ElementDefinition definition, String fixedType) {
