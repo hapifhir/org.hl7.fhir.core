@@ -48,6 +48,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
@@ -567,6 +568,16 @@ public class TerminologyCache {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"definition\" : \""+Utilities.escapeJson(ce.v.getDefinition()).trim()+"\"");
           }
+          if (ce.v.getUnknownSystems() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"unknown-systems\" : \""+Utilities.escapeJson(CommaSeparatedStringBuilder.join(",", ce.v.getUnknownSystems())).trim()+"\"");
+          }
+          if (ce.v.getIssues() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            OperationOutcome oo = new OperationOutcome();
+            oo.setIssue(ce.v.getIssues());
+            sw.write("  \"issues\" : "+json.composeString(oo).trim()+"\r\n");
+          }
           sw.write("\r\n}\r\n");
         }
         sw.write(ENTRY_MARKER+"\r\n");
@@ -602,8 +613,6 @@ public class TerminologyCache {
     }
   }
 
-
-
   private CacheEntry getCacheEntry(String request, String resultString) throws IOException {
     CacheEntry ce = new CacheEntry();
     ce.persistent = true;
@@ -625,9 +634,15 @@ public class TerminologyCache {
       String system = loadJS(o.get("system"));
       String version = loadJS(o.get("version"));
       String definition = loadJS(o.get("definition"));
+      String unknownSystems = loadJS(o.get("unknown-systems"));
+      OperationOutcome oo = o.has("issues") ? (OperationOutcome) new JsonParser().parse(o.getAsJsonObject("issues")) : null;
       t = loadJS(o.get("class")); 
       TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
       ce.v = new ValidationResult(severity, error, system, version, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code), display, null).setErrorClass(errorClass);
+      ce.v.setUnknownSystems(CommaSeparatedStringBuilder.toSet(unknownSystems));
+      if (oo != null) {
+        ce.v.setIssues(oo.getIssue());
+      }
     }
     return ce;
   }
