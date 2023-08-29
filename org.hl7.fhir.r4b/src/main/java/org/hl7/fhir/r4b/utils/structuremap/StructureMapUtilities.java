@@ -68,6 +68,7 @@ import org.hl7.fhir.r4b.utils.FHIRLexer;
 import org.hl7.fhir.r4b.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r4b.utils.FHIRPathEngine;
 import org.hl7.fhir.r4b.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4b.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;

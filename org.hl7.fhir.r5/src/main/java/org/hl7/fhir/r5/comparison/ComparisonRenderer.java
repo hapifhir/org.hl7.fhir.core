@@ -30,6 +30,7 @@ import org.hl7.fhir.r5.model.Tuple;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.utils.LiquidEngine;
 import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.TextFile;

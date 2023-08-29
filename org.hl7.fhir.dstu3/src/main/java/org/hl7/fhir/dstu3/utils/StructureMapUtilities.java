@@ -108,6 +108,7 @@ import org.hl7.fhir.dstu3.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.dstu3.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.dstu3.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.dstu3.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.dstu3.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
