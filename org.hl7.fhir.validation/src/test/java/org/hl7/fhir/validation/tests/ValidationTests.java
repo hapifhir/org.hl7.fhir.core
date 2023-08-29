@@ -124,7 +124,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
     List<Object[]> objects = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
-      // The following tests will fail due to server based issues. Under no circumstance are these exclusions to be included outside of release 6.0.15.1
+      // The following tests will fail due to server based issues. Under no circumstance are these exclusions to be included outside of release 6.0.22.1
       if (!(Set.of(
         "R4.cda/example-no-styles",
         "R4.cdshooks-request-order-select-extensions",
