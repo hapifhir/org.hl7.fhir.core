@@ -28,6 +28,7 @@ import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -38,7 +39,6 @@ import org.junit.runners.Parameterized.Parameters;
 import com.google.common.base.Charsets;
 
 @RunWith(Parameterized.class)
-@Disabled("External terminology server has changed since release 6.0.15 so these tests will be invalid for 6.0.15.1")
 public class ExternalTerminologyServiceTests implements ITxTesterLoader {
 
   public static class JsonObjectPair {
@@ -92,6 +92,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   
   @SuppressWarnings("deprecation")
   @Test
+  @Ignore("External terminology server has changed since release 6.0.15 so these tests will be invalid for 6.0.15.1")
   public void test() throws Exception {
     if (SERVER != null) {
       if (tester == null) {
