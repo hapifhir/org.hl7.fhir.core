@@ -103,6 +103,9 @@ public class FHIRToolingClient {
   private String password;
   private String userAgent;
 
+
+  private String acceptLang;
+
   //Pass endpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_JSON;
@@ -584,6 +587,11 @@ public class FHIRToolingClient {
     if (!Utilities.noString(userAgent)) {
       builder.add("User-Agent: "+userAgent);
     }
+
+    if (!Utilities.noString(acceptLang)) {
+      builder.add("Accept-Language: "+acceptLang);
+    }
+    
     return builder.build();
   }
 
@@ -614,6 +622,10 @@ public class FHIRToolingClient {
       }
     }
     return capabilities == null ? null : capabilities.getSoftware().getVersion();
+  }
+
+  public void setLanguage(String lang) {
+    this.acceptLang = lang;
   }
   
   

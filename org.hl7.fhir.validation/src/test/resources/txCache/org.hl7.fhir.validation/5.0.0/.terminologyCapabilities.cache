@@ -1,11 +1,11 @@
 {
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
-  "url" : "http://tx.fhir.org/r4/metadata",
+  "url" : "http://tx-dev.fhir.org/r4/metadata",
   "version" : "2.0.0",
   "name" : "FHIR Reference Server Teminology Capability Statement",
   "status" : "active",
-  "date" : "2023-05-17T01:01:47.732Z",
+  "date" : "2023-08-28T13:43:12.307Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -27,6 +27,9 @@
   },
   {
     "uri" : "http://fdasis.nlm.nih.gov"
+  },
+  {
+    "uri" : "http://fhir.ohdsi.org/CodeSystem/concepts"
   },
   {
     "uri" : "http://healthit.gov/nhin/purposeofuse"
@@ -3545,6 +3548,9 @@
     "uri" : "http://www.ada.org/snodent"
   },
   {
+    "uri" : "http://www.ama-assn.org/go/cpt"
+  },
+  {
     "uri" : "http://www.nlm.nih.gov/research/umls/rxnorm"
   },
   {
@@ -3601,11 +3607,85 @@
   "expansion" : {
     "parameter" : [{
       "name" : "cache-id",
-      "documentation" : "This server supports caching terminology resources between calls. Clients only need to send value sets and codesystems once; there after tehy are automatically in scope for calls with the same cache-id. The cache is retained for 30 min from last call"
+      "documentation" : "This server supports caching terminology resources between calls. Clients only need to send value sets and codesystems once; there after they are automatically in scope for calls with the same cache-id. The cache is retained for 30 min from last call"
     },
     {
       "name" : "tx-resource",
       "documentation" : "Additional valuesets needed for evaluation e.g. value sets referred to from the import statement of the value set being expanded"
+    },
+    {
+      "name" : "_incomplete"
+    },
+    {
+      "name" : "abstract"
+    },
+    {
+      "name" : "activeOnly"
+    },
+    {
+      "name" : "check-system-version"
+    },
+    {
+      "name" : "count"
+    },
+    {
+      "name" : "default-to-latest-version"
+    },
+    {
+      "name" : "displayLanguage"
+    },
+    {
+      "name" : "excludeNested"
+    },
+    {
+      "name" : "excludeNotForUI"
+    },
+    {
+      "name" : "excludePostCoordinated"
+    },
+    {
+      "name" : "force-system-version"
+    },
+    {
+      "name" : "inactive"
+    },
+    {
+      "name" : "includeAlternateCodes"
+    },
+    {
+      "name" : "includeDefinition"
+    },
+    {
+      "name" : "includeDesignations"
+    },
+    {
+      "name" : "incomplete-ok"
+    },
+    {
+      "name" : "limitedExpansion"
+    },
+    {
+      "name" : "mode",
+      "documentation" : "=lenient-display-validation"
+    },
+    {
+      "name" : "no-cache"
+    },
+    {
+      "name" : "offset"
+    },
+    {
+      "name" : "profile"
+    },
+    {
+      "name" : "property"
+    },
+    {
+      "name" : "system-version"
+    },
+    {
+      "name" : "valueSetMode",
+      "documentation" : "= CHECK_MEMBERSHIP_ONLY | NO_MEMBERSHIP_CHECK"
     }]
   }
 }

@@ -6592,9 +6592,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setValidationLanguage(String validationLanguage) {
     this.validationLanguage = validationLanguage;
-    if (this.validationLanguage == null) {
-      this.validationLanguage = "en";
-    }
   }
 
  
@@ -6635,9 +6632,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String lang = stack.getWorkingLang();
     if (lang == null) {
       lang = validationLanguage;
-    }
-    if (lang == null) {
-      lang = "en"; // ubiquitious default languauge
     }
     codingObserver.seeCode(stack, system, version, code, display);
     return checkForInctive(context.validateCode(baseOptions.withLanguage(lang), system, version, code, checkDisplay ? display : null));
