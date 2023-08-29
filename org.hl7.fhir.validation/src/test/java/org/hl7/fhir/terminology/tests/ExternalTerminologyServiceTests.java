@@ -92,7 +92,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   
   @SuppressWarnings("deprecation")
   @Test
-  @Ignore("External terminology server has changed since release 6.0.15 so these tests will be invalid for 6.0.15.1")
+  @Ignore("External terminology server has changed since release 6.0.15 so these tests will be invalid for 6.0.22.1")
   public void test() throws Exception {
     if (SERVER != null) {
       if (tester == null) {
