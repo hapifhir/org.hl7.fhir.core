@@ -209,4 +209,10 @@ public class TerminologyClientR2 implements ITerminologyClient {
   public String getServerVersion() {
     return client.getServerVersion();
   }
+
+  @Override
+  public ITerminologyClient setLanguage(String lang) {
+    client.setLanguage(lang);
+    return this;
+  }
 }

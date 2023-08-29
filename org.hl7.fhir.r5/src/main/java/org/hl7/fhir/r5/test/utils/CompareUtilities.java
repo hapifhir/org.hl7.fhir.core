@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class CompareUtilities extends BaseTestingUtilities {
 
-  private static final boolean SHOW_DIFF = true;
+  private static final boolean SHOW_DIFF = false;
   private JsonObject externals;
   
   public String createNotEqualMessage(final String message, final String expected, final String actual) {

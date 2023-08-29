@@ -190,11 +190,12 @@ public class TxTester {
         }
         JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
 
+        String lang = test.asString("Accept-Language");
         String msg = null;
         if (test.asString("operation").equals("expand")) {
-          msg = expand(tx, setup, req, resp, fp, profile, ext);
+          msg = expand(tx, setup, req, resp, fp, lang, profile, ext);
         } else if (test.asString("operation").equals("validate-code")) {
-          msg = validate(tx, setup, req, resp, fp, profile, ext);      
+          msg = validate(tx, setup, req, resp, fp, lang, profile, ext);      
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -243,10 +244,11 @@ public class TxTester {
     return new URI(server).getHost();
   }
 
-  private String expand(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, Parameters profile, JsonObject ext) throws IOException {
+  private String expand(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
+    tx.setLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
     String vsj;
     try {
@@ -259,7 +261,7 @@ public class TxTester {
       TxTesterScrubbers.scrubOO(oo, tight);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj, ext);
+    String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj, false, ext);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(vsj, fp);        
@@ -267,11 +269,12 @@ public class TxTester {
     return diff;
   }
 
-  private String validate(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, Parameters profile, JsonObject ext) throws IOException {
+  private String validate(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
     p.getParameter().addAll(profile.getParameter());
+    tx.setLanguage(lang);
     String pj;
     try {
       Parameters po = tx.validateVS(p);
@@ -283,7 +286,7 @@ public class TxTester {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, ext);
+    String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, false, ext);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(pj, fp);        
