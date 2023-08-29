@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,89 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MeasureReportType {
 
-        /**
-         * An individual report that provides information on the performance for a given measure with respect to a single patient
-         */
-        INDIVIDUAL, 
-        /**
-         * A patient list report that includes a listing of patients that satisfied each population criteria in the measure
-         */
-        PATIENTLIST, 
-        /**
-         * A summary report that returns the number of patients in each population criteria for the measure
-         */
-        SUMMARY, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static MeasureReportType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("individual".equals(codeString))
-          return INDIVIDUAL;
-        if ("patient-list".equals(codeString))
-          return PATIENTLIST;
-        if ("summary".equals(codeString))
-          return SUMMARY;
-        throw new FHIRException("Unknown MeasureReportType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INDIVIDUAL: return "individual";
-            case PATIENTLIST: return "patient-list";
-            case SUMMARY: return "summary";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/measure-report-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INDIVIDUAL: return "An individual report that provides information on the performance for a given measure with respect to a single patient";
-            case PATIENTLIST: return "A patient list report that includes a listing of patients that satisfied each population criteria in the measure";
-            case SUMMARY: return "A summary report that returns the number of patients in each population criteria for the measure";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INDIVIDUAL: return "Individual";
-            case PATIENTLIST: return "Patient List";
-            case SUMMARY: return "Summary";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * An individual report that provides information on the performance for a given
+   * measure with respect to a single patient
+   */
+  INDIVIDUAL,
+  /**
+   * A patient list report that includes a listing of patients that satisfied each
+   * population criteria in the measure
+   */
+  PATIENTLIST,
+  /**
+   * A summary report that returns the number of patients in each population
+   * criteria for the measure
+   */
+  SUMMARY,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static MeasureReportType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("individual".equals(codeString))
+      return INDIVIDUAL;
+    if ("patient-list".equals(codeString))
+      return PATIENTLIST;
+    if ("summary".equals(codeString))
+      return SUMMARY;
+    throw new FHIRException("Unknown MeasureReportType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INDIVIDUAL:
+      return "individual";
+    case PATIENTLIST:
+      return "patient-list";
+    case SUMMARY:
+      return "summary";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/measure-report-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INDIVIDUAL:
+      return "An individual report that provides information on the performance for a given measure with respect to a single patient";
+    case PATIENTLIST:
+      return "A patient list report that includes a listing of patients that satisfied each population criteria in the measure";
+    case SUMMARY:
+      return "A summary report that returns the number of patients in each population criteria for the measure";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INDIVIDUAL:
+      return "Individual";
+    case PATIENTLIST:
+      return "Patient List";
+    case SUMMARY:
+      return "Summary";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

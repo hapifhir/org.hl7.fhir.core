@@ -191,7 +191,18 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
+  public String getUserAgent() {
+    return client.getUserAgent();
+  }
+
+  @Override
   public String getServerVersion() {
     return client.getServerVersion();
+  }
+
+  @Override
+  public ITerminologyClient setLanguage(String lang) {
+    client.setLanguage(lang);
+    return this;
   }
 }

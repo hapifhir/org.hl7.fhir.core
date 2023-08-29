@@ -29,7 +29,6 @@ package org.hl7.fhir.r4.utils;
   
  */
 
-
 import org.hl7.fhir.r4.model.Coding;
 
 public class CodingUtilities {
@@ -43,7 +42,7 @@ public class CodingUtilities {
   public static String present(Coding coding) {
     if (coding == null)
       return "";
-    return coding.getSystem()+"::"+coding.getCode();
+    return coding.getSystem() + "::" + coding.getCode();
   }
 
 }

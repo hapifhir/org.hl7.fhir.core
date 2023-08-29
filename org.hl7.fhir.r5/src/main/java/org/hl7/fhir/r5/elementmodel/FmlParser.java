@@ -28,6 +28,7 @@ import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -563,12 +564,14 @@ public class FmlParser extends ParserBase {
   }
 
   private void parseParameter(Element ref, FHIRLexer lexer) throws FHIRLexerException, FHIRFormatError {
+    boolean r5 = VersionUtilities.isR5Plus(context.getVersion());
+    String name = r5 ? "parameter" : "variable";
     if (!lexer.isConstant()) {
-      ref.addElement("parameter").markLocation(lexer.getCurrentLocation()).makeElement("valueId").setValue(lexer.take());
+      ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueId" : "value").setValue(lexer.take());
     } else if (lexer.isStringConstant())
-      ref.addElement("parameter").markLocation(lexer.getCurrentLocation()).makeElement("valueString").setValue(lexer.readConstant("??"));
+      ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueString" : "value").setValue(lexer.readConstant("??"));
     else {
-      ref.addElement("parameter").markLocation(lexer.getCurrentLocation()).makeElement("valueString").setValue(readConstant(lexer.take(), lexer));
+      ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueString" : "value").setValue(readConstant(lexer.take(), lexer));
     }
   }
  

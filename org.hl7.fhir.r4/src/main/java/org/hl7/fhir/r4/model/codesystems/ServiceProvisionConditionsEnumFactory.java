@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ServiceProvisionConditionsEnumFactory implements EnumFactory<ServiceProvisionConditions> {
@@ -48,7 +44,7 @@ public class ServiceProvisionConditionsEnumFactory implements EnumFactory<Servic
       return ServiceProvisionConditions.DISC;
     if ("cost".equals(codeString))
       return ServiceProvisionConditions.COST;
-    throw new IllegalArgumentException("Unknown ServiceProvisionConditions code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ServiceProvisionConditions code '" + codeString + "'");
   }
 
   public String toCode(ServiceProvisionConditions code) {
@@ -61,8 +57,8 @@ public class ServiceProvisionConditionsEnumFactory implements EnumFactory<Servic
     return "?";
   }
 
-    public String toSystem(ServiceProvisionConditions code) {
-      return code.getSystem();
-      }
+  public String toSystem(ServiceProvisionConditions code) {
+    return code.getSystem();
+  }
 
 }

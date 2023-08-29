@@ -29,8 +29,6 @@ package org.hl7.fhir.r4.utils;
   
  */
 
-
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,7 +36,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.model.Bundle;
@@ -53,7 +50,6 @@ public class Unbundler {
     unbundle(args[0]);
   }
 
-
   private static void unbundle(String src) throws FHIRFormatError, FileNotFoundException, IOException {
     String folder = Utilities.getDirectoryForFile(src);
     Bundle bnd = (Bundle) new JsonParser().parse(new FileInputStream(src));
@@ -65,7 +61,7 @@ public class Unbundler {
             r.setId(tail((MetadataResource) r));
         }
         if (!StringUtils.isBlank(r.getId())) {
-          String tgt = Utilities.path(folder, r.fhirType()+"-"+r.getId()+".json");
+          String tgt = Utilities.path(folder, r.fhirType() + "-" + r.getId() + ".json");
           if (!new File(tgt).exists())
             new JsonParser().compose(new FileOutputStream(tgt), r);
         }
@@ -74,6 +70,6 @@ public class Unbundler {
   }
 
   private static String tail(MetadataResource r) {
-    return r.getUrl().contains("/") ? r.getUrl().substring(r.getUrl().lastIndexOf("/")+1) : null;
+    return r.getUrl().contains("/") ? r.getUrl().substring(r.getUrl().lastIndexOf("/") + 1) : null;
   }
 }

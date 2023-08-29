@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class RestfulSecurityServiceEnumFactory implements EnumFactory<RestfulSecurityService> {
@@ -54,7 +50,7 @@ public class RestfulSecurityServiceEnumFactory implements EnumFactory<RestfulSec
       return RestfulSecurityService.KERBEROS;
     if ("Certificates".equals(codeString))
       return RestfulSecurityService.CERTIFICATES;
-    throw new IllegalArgumentException("Unknown RestfulSecurityService code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown RestfulSecurityService code '" + codeString + "'");
   }
 
   public String toCode(RestfulSecurityService code) {
@@ -73,8 +69,8 @@ public class RestfulSecurityServiceEnumFactory implements EnumFactory<RestfulSec
     return "?";
   }
 
-    public String toSystem(RestfulSecurityService code) {
-      return code.getSystem();
-      }
+  public String toSystem(RestfulSecurityService code) {
+    return code.getSystem();
+  }
 
 }

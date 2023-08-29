@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum QuestionnaireEnableBehavior {
 
-        /**
-         * Enable the question when all the enableWhen criteria are satisfied.
-         */
-        ALL, 
-        /**
-         * Enable the question when any of the enableWhen criteria are satisfied.
-         */
-        ANY, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static QuestionnaireEnableBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("all".equals(codeString))
-          return ALL;
-        if ("any".equals(codeString))
-          return ANY;
-        throw new FHIRException("Unknown QuestionnaireEnableBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ALL: return "all";
-            case ANY: return "any";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/questionnaire-enable-behavior";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ALL: return "Enable the question when all the enableWhen criteria are satisfied.";
-            case ANY: return "Enable the question when any of the enableWhen criteria are satisfied.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ALL: return "All";
-            case ANY: return "Any";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Enable the question when all the enableWhen criteria are satisfied.
+   */
+  ALL,
+  /**
+   * Enable the question when any of the enableWhen criteria are satisfied.
+   */
+  ANY,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static QuestionnaireEnableBehavior fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("all".equals(codeString))
+      return ALL;
+    if ("any".equals(codeString))
+      return ANY;
+    throw new FHIRException("Unknown QuestionnaireEnableBehavior code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ALL:
+      return "all";
+    case ANY:
+      return "any";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/questionnaire-enable-behavior";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ALL:
+      return "Enable the question when all the enableWhen criteria are satisfied.";
+    case ANY:
+      return "Enable the question when any of the enableWhen criteria are satisfied.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ALL:
+      return "All";
+    case ANY:
+      return "Any";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

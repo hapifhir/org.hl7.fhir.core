@@ -29,63 +29,62 @@ package org.hl7.fhir.dstu2.model;
   
  */
 
-
-
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import org.hl7.fhir.instance.model.api.IBaseBooleanDatatype;
 
 /**
  * Primitive type "boolean" in FHIR "true" or "false"
  */
-@DatatypeDef(name="boolean")
+@DatatypeDef(name = "boolean")
 public class BooleanType extends PrimitiveType<Boolean> implements IBaseBooleanDatatype {
 
-	private static final long serialVersionUID = 3L;
+  private static final long serialVersionUID = 3L;
 
-	public BooleanType() {
-		super();
-	}
+  public BooleanType() {
+    super();
+  }
 
-	public BooleanType(boolean theBoolean) {
-		super();
-		setValue(theBoolean);
-	}
+  public BooleanType(boolean theBoolean) {
+    super();
+    setValue(theBoolean);
+  }
 
-	public BooleanType(Boolean theBoolean) {
-		super();
-		setValue(theBoolean);
-	}
+  public BooleanType(Boolean theBoolean) {
+    super();
+    setValue(theBoolean);
+  }
 
-	public BooleanType(String value) {
-		super();
-		setValueAsString(value);  
-	}
+  public BooleanType(String value) {
+    super();
+    setValueAsString(value);
+  }
 
-	protected Boolean parse(String theValue) {
-		String value = theValue.trim();
-		if ("true".equals(value)) {
-			return Boolean.TRUE;
-		} else if ("false".equals(value)) {
-			return Boolean.FALSE;
-		} else {
-			throw new IllegalArgumentException("Invalid boolean string: '" + theValue + "'");
-		}
-	}
+  protected Boolean parse(String theValue) {
+    String value = theValue.trim();
+    if ("true".equals(value)) {
+      return Boolean.TRUE;
+    } else if ("false".equals(value)) {
+      return Boolean.FALSE;
+    } else {
+      throw new IllegalArgumentException("Invalid boolean string: '" + theValue + "'");
+    }
+  }
 
-	protected String encode(Boolean theValue) {
-		if (Boolean.TRUE.equals(theValue)) {
-			return "true";
-		} else {
-			return "false";
-		}
-	}
-	
-	public BooleanType copy() {
-		return new BooleanType(getValue());
- 	}
-	public String fhirType() {
-		return "boolean";		
-	}
+  protected String encode(Boolean theValue) {
+    if (Boolean.TRUE.equals(theValue)) {
+      return "true";
+    } else {
+      return "false";
+    }
+  }
+
+  public BooleanType copy() {
+    return new BooleanType(getValue());
+  }
+
+  public String fhirType() {
+    return "boolean";
+  }
 
   public boolean booleanValue() {
     return getValue().booleanValue();

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum VerificationresultValidationStatus {
 
-        /**
-         * null
-         */
-        SUCCESSFUL, 
-        /**
-         * null
-         */
-        FAILED, 
-        /**
-         * The validations status has not been determined yet
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static VerificationresultValidationStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("successful".equals(codeString))
-          return SUCCESSFUL;
-        if ("failed".equals(codeString))
-          return FAILED;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        throw new FHIRException("Unknown VerificationresultValidationStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SUCCESSFUL: return "successful";
-            case FAILED: return "failed";
-            case UNKNOWN: return "unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/validation-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SUCCESSFUL: return "";
-            case FAILED: return "";
-            case UNKNOWN: return "The validations status has not been determined yet";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SUCCESSFUL: return "Successful";
-            case FAILED: return "Failed";
-            case UNKNOWN: return "Unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * null
+   */
+  SUCCESSFUL,
+  /**
+   * null
+   */
+  FAILED,
+  /**
+   * The validations status has not been determined yet
+   */
+  UNKNOWN,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static VerificationresultValidationStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("successful".equals(codeString))
+      return SUCCESSFUL;
+    if ("failed".equals(codeString))
+      return FAILED;
+    if ("unknown".equals(codeString))
+      return UNKNOWN;
+    throw new FHIRException("Unknown VerificationresultValidationStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case SUCCESSFUL:
+      return "successful";
+    case FAILED:
+      return "failed";
+    case UNKNOWN:
+      return "unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/validation-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case SUCCESSFUL:
+      return "";
+    case FAILED:
+      return "";
+    case UNKNOWN:
+      return "The validations status has not been determined yet";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case SUCCESSFUL:
+      return "Successful";
+    case FAILED:
+      return "Failed";
+    case UNKNOWN:
+      return "Unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

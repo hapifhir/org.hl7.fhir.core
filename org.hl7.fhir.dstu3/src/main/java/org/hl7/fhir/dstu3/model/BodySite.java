@@ -569,7 +569,7 @@ public class BodySite extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("active")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BodySite.active");
+          throw new FHIRException("Cannot call addChild on a singleton property BodySite.active");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -579,7 +579,7 @@ public class BodySite extends DomainResource {
           return addQualifier();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type BodySite.description");
+          throw new FHIRException("Cannot call addChild on a singleton property BodySite.description");
         }
         else if (name.equals("image")) {
           return addImage();

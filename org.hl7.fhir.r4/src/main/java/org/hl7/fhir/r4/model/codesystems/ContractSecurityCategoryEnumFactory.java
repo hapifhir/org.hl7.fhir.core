@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ContractSecurityCategoryEnumFactory implements EnumFactory<ContractSecurityCategory> {
@@ -44,7 +40,7 @@ public class ContractSecurityCategoryEnumFactory implements EnumFactory<Contract
       return null;
     if ("policy".equals(codeString))
       return ContractSecurityCategory.POLICY;
-    throw new IllegalArgumentException("Unknown ContractSecurityCategory code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ContractSecurityCategory code '" + codeString + "'");
   }
 
   public String toCode(ContractSecurityCategory code) {
@@ -53,8 +49,8 @@ public class ContractSecurityCategoryEnumFactory implements EnumFactory<Contract
     return "?";
   }
 
-    public String toSystem(ContractSecurityCategory code) {
-      return code.getSystem();
-      }
+  public String toSystem(ContractSecurityCategory code) {
+    return code.getSystem();
+  }
 
 }

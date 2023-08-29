@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
@@ -114,6 +113,8 @@ public class StructuralMatch<T> {
     return this;
   }
 
-
+  public boolean isDifferent() {
+    return (left == null) != (right == null) || !messages.isEmpty();
+  }
   
 }

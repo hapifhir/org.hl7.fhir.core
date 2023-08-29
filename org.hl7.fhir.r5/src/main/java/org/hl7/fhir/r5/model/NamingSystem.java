@@ -757,23 +757,23 @@ public class NamingSystem extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.uniqueId.type");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.uniqueId.type");
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.uniqueId.value");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.uniqueId.value");
         }
         else if (name.equals("preferred")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.uniqueId.preferred");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.uniqueId.preferred");
         }
         else if (name.equals("comment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.uniqueId.comment");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.uniqueId.comment");
         }
         else if (name.equals("period")) {
           this.period = new Period();
           return this.period;
         }
         else if (name.equals("authoritative")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.uniqueId.authoritative");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.uniqueId.authoritative");
         }
         else
           return super.addChild(name);
@@ -2941,13 +2941,13 @@ public class NamingSystem extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.url");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.version");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.version");
         }
         else if (name.equals("versionAlgorithmString")) {
           this.versionAlgorithm = new StringType();
@@ -2958,38 +2958,38 @@ public class NamingSystem extends MetadataResource {
           return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.name");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.title");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.title");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.status");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.status");
         }
         else if (name.equals("kind")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.kind");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.kind");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.experimental");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.date");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.publisher");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("responsible")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.responsible");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.responsible");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
           return this.type;
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.description");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -2998,19 +2998,19 @@ public class NamingSystem extends MetadataResource {
           return addJurisdiction();
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.purpose");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.purpose");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.copyright");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.copyright");
         }
         else if (name.equals("copyrightLabel")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.copyrightLabel");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.copyrightLabel");
         }
         else if (name.equals("approvalDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.approvalDate");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.approvalDate");
         }
         else if (name.equals("lastReviewDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.lastReviewDate");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.lastReviewDate");
         }
         else if (name.equals("effectivePeriod")) {
           this.effectivePeriod = new Period();
@@ -3035,7 +3035,7 @@ public class NamingSystem extends MetadataResource {
           return addRelatedArtifact();
         }
         else if (name.equals("usage")) {
-          throw new FHIRException("Cannot call addChild on a primitive type NamingSystem.usage");
+          throw new FHIRException("Cannot call addChild on a singleton property NamingSystem.usage");
         }
         else if (name.equals("uniqueId")) {
           return addUniqueId();

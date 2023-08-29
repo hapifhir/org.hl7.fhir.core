@@ -60,7 +60,6 @@ public class NpmPackageTests {
     checkNpm(npm);
   }
 
-
   private void checkNpm(NpmPackage npm) throws IOException {
     Assertions.assertEquals(1, npm.list("other").size());
     Assertions.assertEquals("help.png", npm.list("other").get(0));

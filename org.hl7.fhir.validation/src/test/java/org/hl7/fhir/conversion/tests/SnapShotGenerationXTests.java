@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.convertors.loaders.XVersionLoader;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -44,7 +43,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
-
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Document;
@@ -109,7 +107,7 @@ public class SnapShotGenerationXTests {
       sort = "true".equals(test.getAttribute("sort"));
       fail = "true".equals(test.getAttribute("fail"));
       newSliceProcessing = !"false".equals(test.getAttribute("new-slice-processing"));
-      debug = false; // "true".equals(test.getAttribute("debug"));
+      debug = "true".equals(test.getAttribute("debug"));
 
       id = test.getAttribute("id");
       include = test.getAttribute("include");
@@ -512,7 +510,7 @@ public class SnapShotGenerationXTests {
     pu.setAllowUnknownProfile(AllowUnknownProfile.ALL_TYPES);
     if (test.isSort()) {
       List<String> errors = new ArrayList<String>();
-      int lastCount = output.getDifferential().getElement().size();
+//      int lastCount = output.getDifferential().getElement().size();
       pu.sortDifferential(base, output, test.getSource().getName(), errors, false);
       if (errors.size() > 0)
         throw new FHIRException("Sort failed: " + errors.toString());

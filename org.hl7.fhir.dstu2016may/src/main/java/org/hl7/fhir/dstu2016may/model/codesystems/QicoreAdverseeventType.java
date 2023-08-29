@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,88 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum QicoreAdverseeventType {
 
-        /**
-         * A safety incident, reaction, medication error, or other untoward medical event affecting a patient
-         */
-        INCIDENT, 
-        /**
-         * A safety event that almost happened, but was noticed and prevented in time to prevent harm from occurring to the patient
-         */
-        NEARMISS, 
-        /**
-         * Any unsafe condition that poses a elevated risk to patient safety
-         */
-        UNSAFE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static QicoreAdverseeventType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("incident".equals(codeString))
-          return INCIDENT;
-        if ("near-miss".equals(codeString))
-          return NEARMISS;
-        if ("unsafe".equals(codeString))
-          return UNSAFE;
-        throw new FHIRException("Unknown QicoreAdverseeventType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INCIDENT: return "incident";
-            case NEARMISS: return "near-miss";
-            case UNSAFE: return "unsafe";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/qicore-adverseevent-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INCIDENT: return "A safety incident, reaction, medication error, or other untoward medical event affecting a patient";
-            case NEARMISS: return "A safety event that almost happened, but was noticed and prevented in time to prevent harm from occurring to the patient";
-            case UNSAFE: return "Any unsafe condition that poses a elevated risk to patient safety";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INCIDENT: return "Incident";
-            case NEARMISS: return "Near Miss";
-            case UNSAFE: return "Unsafe Condition";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * A safety incident, reaction, medication error, or other untoward medical
+   * event affecting a patient
+   */
+  INCIDENT,
+  /**
+   * A safety event that almost happened, but was noticed and prevented in time to
+   * prevent harm from occurring to the patient
+   */
+  NEARMISS,
+  /**
+   * Any unsafe condition that poses a elevated risk to patient safety
+   */
+  UNSAFE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static QicoreAdverseeventType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("incident".equals(codeString))
+      return INCIDENT;
+    if ("near-miss".equals(codeString))
+      return NEARMISS;
+    if ("unsafe".equals(codeString))
+      return UNSAFE;
+    throw new FHIRException("Unknown QicoreAdverseeventType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INCIDENT:
+      return "incident";
+    case NEARMISS:
+      return "near-miss";
+    case UNSAFE:
+      return "unsafe";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/qicore-adverseevent-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INCIDENT:
+      return "A safety incident, reaction, medication error, or other untoward medical event affecting a patient";
+    case NEARMISS:
+      return "A safety event that almost happened, but was noticed and prevented in time to prevent harm from occurring to the patient";
+    case UNSAFE:
+      return "Any unsafe condition that poses a elevated risk to patient safety";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INCIDENT:
+      return "Incident";
+    case NEARMISS:
+      return "Near Miss";
+    case UNSAFE:
+      return "Unsafe Condition";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

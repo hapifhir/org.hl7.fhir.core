@@ -1,6 +1,14 @@
 package org.hl7.fhir.dstu3.utils.client.network;
 
-import okhttp3.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.dstu3.formats.IParser;
 import org.hl7.fhir.dstu3.formats.JsonParser;
@@ -12,17 +20,15 @@ import org.hl7.fhir.dstu3.utils.ResourceUtilities;
 import org.hl7.fhir.dstu3.utils.client.EFhirClientException;
 import org.hl7.fhir.dstu3.utils.client.ResourceFormat;
 import org.hl7.fhir.exceptions.FHIRException;
-
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
-import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import okhttp3.Authenticator;
+import okhttp3.Credentials;
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class FhirRequestBuilder {
 
@@ -53,9 +59,11 @@ public class FhirRequestBuilder {
    * {@link ToolingClientLogger} for log output.
    */
   private ToolingClientLogger logger = null;
+  private String source;
 
-  public FhirRequestBuilder(Request.Builder httpRequest) {
+  public FhirRequestBuilder(Request.Builder httpRequest, String source) {
     this.httpRequest = httpRequest;
+    this.source = source;
   }
 
   /**
@@ -259,9 +267,9 @@ public class FhirRequestBuilder {
           error = (OperationOutcome) resource;
         }
       } catch (IOException ioe) {
-        throw new EFhirClientException("Error reading Http Response: " + ioe.getMessage(), ioe);
+        throw new EFhirClientException("Error reading Http Response from "+source+": " + ioe.getMessage(), ioe);
       } catch (Exception e) {
-        throw new EFhirClientException("Error parsing response message: " + e.getMessage(), e);
+        throw new EFhirClientException("Error parsing response message from "+source+": " + e.getMessage(), e);
       }
     }
 
@@ -295,12 +303,12 @@ public class FhirRequestBuilder {
         }
       }
     } catch (IOException ioe) {
-      throw new EFhirClientException("Error reading Http Response", ioe);
+      throw new EFhirClientException("Error reading Http Response from "+source+": "+ioe.getMessage(), ioe);
     } catch (Exception e) {
-      throw new EFhirClientException("Error parsing response message", e);
+      throw new EFhirClientException("Error parsing response message from "+source+":"+e.getMessage(), e);
     }
     if (error != null) {
-      throw new EFhirClientException("Error from server: " + ResourceUtilities.getErrorDescription(error), error);
+      throw new EFhirClientException("Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
     }
     return feed;
   }

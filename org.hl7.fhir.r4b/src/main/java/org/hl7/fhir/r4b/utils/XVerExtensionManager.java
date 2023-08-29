@@ -42,9 +42,9 @@ public class XVerExtensionManager {
 
   public boolean isR5(String url) {
     String v = url.substring(20, 23);
-    return "5.0".equals(v);    
+    return "5.0".equals(v);
   }
-  
+
   public XVerExtensionStatus status(String url) throws FHIRException {
     if (url.length() < 24) {
       return XVerExtensionStatus.Invalid;
@@ -52,9 +52,9 @@ public class XVerExtensionManager {
     String v = url.substring(20, 23);
     String e = url.substring(54);
     if (!lists.containsKey(v)) {
-      if (context.getBinaries().containsKey("xver-paths-"+v+".json")) {
+      if (context.getBinaries().containsKey("xver-paths-" + v + ".json")) {
         try {
-          lists.put(v, JsonTrackingParser.parseJson(context.getBinaries().get("xver-paths-"+v+".json")));
+          lists.put(v, JsonTrackingParser.parseJson(context.getBinaries().get("xver-paths-" + v + ".json")));
         } catch (IOException e1) {
           throw new FHIRException(e);
         }
@@ -65,7 +65,7 @@ public class XVerExtensionManager {
     JsonObject root = lists.get(v);
     JsonObject path = root.getAsJsonObject(e);
     if (path == null) {
-      path = root.getAsJsonObject(e+"[x]");      
+      path = root.getAsJsonObject(e + "[x]");
     }
     if (path == null) {
       return XVerExtensionStatus.Unknown;
@@ -88,9 +88,9 @@ public class XVerExtensionManager {
     JsonObject root = lists.get(verSource);
     JsonObject path = root.getAsJsonObject(e);
     if (path == null) {
-      path = root.getAsJsonObject(e+"[x]");
+      path = root.getAsJsonObject(e + "[x]");
     }
-    
+
     StructureDefinition sd = new StructureDefinition();
     sd.setUserData(XVER_EXT_MARKER, "true");
     sd.setUserData("path", PackageHacker.fixPackageUrl("https://hl7.org/fhir/versions.html#extensions"));
@@ -100,13 +100,14 @@ public class XVerExtensionManager {
     sd.setKind(StructureDefinitionKind.COMPLEXTYPE);
     sd.setType("Extension");
     sd.setDerivation(TypeDerivationRule.CONSTRAINT);
-    sd.setName("Extension-"+verSource+"-"+e);
-    sd.setTitle("Extension Definition for "+e+" for Version "+verSource);
+    sd.setName("Extension-" + verSource + "-" + e);
+    sd.setTitle("Extension Definition for " + e + " for Version " + verSource);
     sd.setStatus(PublicationStatus.ACTIVE);
     sd.setExperimental(false);
     sd.setDate(new Date());
     sd.setPublisher("FHIR Project");
-    sd.setPurpose("Defined so the validator can validate cross version extensions (see http://hl7.org/fhir/versions.html#extensions)");
+    sd.setPurpose(
+        "Defined so the validator can validate cross version extensions (see http://hl7.org/fhir/versions.html#extensions)");
     sd.setAbstract(false);
     sd.addContext().setType(ExtensionContextType.ELEMENT).setExpression(head(e));
     sd.setBaseDefinition("http://hl7.org/fhir/StructureDefinition/Extension");
@@ -117,23 +118,23 @@ public class XVerExtensionManager {
       populateTypes(path, val, verSource, verTarget);
     } else if (path.has("elements")) {
       for (JsonElement i : path.getAsJsonArray("elements")) {
-        JsonObject elt = root.getAsJsonObject(e+"."+i.getAsString());
+        JsonObject elt = root.getAsJsonObject(e + "." + i.getAsString());
         if (elt != null) {
-        String s = i.getAsString().replace("[x]", "");
-        sd.getDifferential().addElement().setPath("Extension.extension").setSliceName(s);
-        sd.getDifferential().addElement().setPath("Extension.extension.extension").setMax("0");
-        sd.getDifferential().addElement().setPath("Extension.extension.url").setFixed(new UriType(s));
-        ElementDefinition val = sd.getDifferential().addElement().setPath("Extension.extension.value[x]").setMin(1);
-        if (!elt.has("types")) {
-          throw new FHIRException("Internal error - nested elements not supported yet");
+          String s = i.getAsString().replace("[x]", "");
+          sd.getDifferential().addElement().setPath("Extension.extension").setSliceName(s);
+          sd.getDifferential().addElement().setPath("Extension.extension.extension").setMax("0");
+          sd.getDifferential().addElement().setPath("Extension.extension.url").setFixed(new UriType(s));
+          ElementDefinition val = sd.getDifferential().addElement().setPath("Extension.extension.value[x]").setMin(1);
+          if (!elt.has("types")) {
+            throw new FHIRException("Internal error - nested elements not supported yet");
+          }
+          populateTypes(elt, val, verSource, verTarget);
         }
-        populateTypes(elt, val, verSource, verTarget);
-        }
-      }      
+      }
       sd.getDifferential().addElement().setPath("Extension.url").setFixed(new UriType(url));
       sd.getDifferential().addElement().setPath("Extension.value[x]").setMax("0");
     } else {
-      throw new FHIRException("Internal error - attempt to define extension for "+url+" when it is invalid");
+      throw new FHIRException("Internal error - attempt to define extension for " + url + " when it is invalid");
     }
     if (path.has("modifier") && path.get("modifier").getAsBoolean()) {
       ElementDefinition baseDef = new ElementDefinition("Extension");
@@ -149,17 +150,17 @@ public class XVerExtensionManager {
       if (s.contains("(")) {
         String t = s.substring(0, s.indexOf("("));
         TypeRefComponent tr = val.addType().setCode(translateDataType(verTarget, t));
-        if (hasTargets(tr.getCode()) ) {
-          s = s.substring(t.length()+1);
-          for (String p : s.substring(0, s.length()-1).split("\\|")) {
+        if (hasTargets(tr.getCode())) {
+          s = s.substring(t.length() + 1);
+          for (String p : s.substring(0, s.length() - 1).split("\\|")) {
             if ("Any".equals(p)) {
               tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource");
             } else if (p.contains(",")) {
               for (String pp : p.split("\\,")) {
-                tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+pp);                              
+                tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/" + pp);
               }
-            } else  {
-              tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+p);              
+            } else {
+              tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/" + p);
             }
           }
         }
@@ -212,7 +213,7 @@ public class XVerExtensionManager {
       return id;
     }
   }
-  
+
   public String getVersion(String url) {
     return url.substring(20, 23);
   }
@@ -224,8 +225,7 @@ public class XVerExtensionManager {
     String pfx = url.substring(0, 20);
     String v = url.substring(20, 23);
     String sfx = url.substring(23, 54);
-    return pfx.equals("http://hl7.org/fhir/") &&
-       isVersionPattern(v) && sfx.equals("/StructureDefinition/extension-");
+    return pfx.equals("http://hl7.org/fhir/") && isVersionPattern(v) && sfx.equals("/StructureDefinition/extension-");
   }
 
   private boolean isVersionPattern(String v) {

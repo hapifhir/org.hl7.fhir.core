@@ -391,7 +391,7 @@ public class DocumentReference extends DomainResource {
           return this.mode;
         }
         else if (name.equals("time")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.attester.time");
+          throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.attester.time");
         }
         else if (name.equals("party")) {
           this.party = new Reference();
@@ -2618,16 +2618,16 @@ public class DocumentReference extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.version");
+          throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.version");
         }
         else if (name.equals("basedOn")) {
           return addBasedOn();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.status");
+          throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.status");
         }
         else if (name.equals("docStatus")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.docStatus");
+          throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.docStatus");
         }
         else if (name.equals("modality")) {
           return addModality();
@@ -2665,7 +2665,7 @@ public class DocumentReference extends DomainResource {
           return this.period;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.date");
+          throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.date");
         }
         else if (name.equals("author")) {
           return addAuthor();
@@ -2681,7 +2681,7 @@ public class DocumentReference extends DomainResource {
           return addRelatesTo();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type DocumentReference.description");
+          throw new FHIRException("Cannot call addChild on a singleton property DocumentReference.description");
         }
         else if (name.equals("securityLabel")) {
           return addSecurityLabel();

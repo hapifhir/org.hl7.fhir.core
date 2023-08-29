@@ -250,7 +250,7 @@ public class CodeableConcept extends Type implements ICompositeType {
           return addCoding();
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type CodeableConcept.text");
+          throw new FHIRException("Cannot call addChild on a singleton property CodeableConcept.text");
         }
         else
           return super.addChild(name);

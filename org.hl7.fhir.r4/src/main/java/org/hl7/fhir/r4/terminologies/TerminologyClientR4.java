@@ -1,5 +1,7 @@
 package org.hl7.fhir.r4.terminologies;
 
+import java.io.IOException;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,10 +32,10 @@ package org.hl7.fhir.r4.terminologies;
  */
 
 
-
 import java.net.URISyntaxException;
 import java.util.Map;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.HTMLClientLogger;
 import org.hl7.fhir.r4.model.CapabilityStatement;
 import org.hl7.fhir.r4.model.CodeSystem;
@@ -45,7 +47,7 @@ import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 public class TerminologyClientR4 implements TerminologyClient {
 
   private FHIRToolingClient client;
-  
+
   public TerminologyClientR4(String address, String userAgent) throws URISyntaxException {
     client = new FHIRToolingClient(address, userAgent);
   }
@@ -67,17 +69,25 @@ public class TerminologyClientR4 implements TerminologyClient {
 
   @Override
   public Parameters validateCS(Parameters pin) {
-    return client.operateType(CodeSystem.class, "validate-code", pin);
+    try {
+      return client.operateType(CodeSystem.class, "validate-code", pin);
+    } catch (IOException e) {
+     throw new FHIRException(e);
+    }
   }
 
   @Override
   public Parameters validateVS(Parameters pin) {
-    return client.operateType(ValueSet.class, "validate-code", pin);
+    try {
+      return client.operateType(ValueSet.class, "validate-code", pin);
+    } catch (IOException e) {
+      throw new FHIRException(e);
+     }
   }
 
   @Override
   public void setTimeout(int i) {
-    client.setTimeout(i);    
+    client.setTimeout(i);
   }
 
   @Override

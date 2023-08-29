@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,50 +31,64 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3Calendar {
 
-        /**
-         * The Gregorian calendar is the calendar in effect in most countries of Christian influence since approximately 1582. This calendar superceded the Julian calendar.
-         */
-        GREG, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static V3Calendar fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("GREG".equals(codeString))
-          return GREG;
-        throw new FHIRException("Unknown V3Calendar code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case GREG: return "GREG";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/v3-Calendar";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case GREG: return "The Gregorian calendar is the calendar in effect in most countries of Christian influence since approximately 1582. This calendar superceded the Julian calendar.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case GREG: return "Gregorian";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The Gregorian calendar is the calendar in effect in most countries of
+   * Christian influence since approximately 1582. This calendar superceded the
+   * Julian calendar.
+   */
+  GREG,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static V3Calendar fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("GREG".equals(codeString))
+      return GREG;
+    throw new FHIRException("Unknown V3Calendar code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case GREG:
+      return "GREG";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/v3-Calendar";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case GREG:
+      return "The Gregorian calendar is the calendar in effect in most countries of Christian influence since approximately 1582. This calendar superceded the Julian calendar.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case GREG:
+      return "Gregorian";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

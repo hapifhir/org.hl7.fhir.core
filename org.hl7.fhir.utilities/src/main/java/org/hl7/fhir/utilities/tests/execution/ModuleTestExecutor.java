@@ -1,8 +1,8 @@
 package org.hl7.fhir.utilities.tests.execution;
 
-import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
-
 import java.io.PrintStream;
+
+import org.hl7.fhir.utilities.tests.execution.junit5.JUnit5ModuleTestExecutor;
 
 public abstract class ModuleTestExecutor {
   private static final String FAILURE_SUMMARY_TEMPLATE = "Test failures for module %s (%d):";

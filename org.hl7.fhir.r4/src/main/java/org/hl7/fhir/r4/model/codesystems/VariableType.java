@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum VariableType {
 
-        /**
-         * The variable is dichotomous, such as present or absent.
-         */
-        DICHOTOMOUS, 
-        /**
-         * The variable is a continuous result such as a quantity.
-         */
-        CONTINUOUS, 
-        /**
-         * The variable is described narratively rather than quantitatively.
-         */
-        DESCRIPTIVE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static VariableType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("dichotomous".equals(codeString))
-          return DICHOTOMOUS;
-        if ("continuous".equals(codeString))
-          return CONTINUOUS;
-        if ("descriptive".equals(codeString))
-          return DESCRIPTIVE;
-        throw new FHIRException("Unknown VariableType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DICHOTOMOUS: return "dichotomous";
-            case CONTINUOUS: return "continuous";
-            case DESCRIPTIVE: return "descriptive";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/variable-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DICHOTOMOUS: return "The variable is dichotomous, such as present or absent.";
-            case CONTINUOUS: return "The variable is a continuous result such as a quantity.";
-            case DESCRIPTIVE: return "The variable is described narratively rather than quantitatively.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DICHOTOMOUS: return "Dichotomous";
-            case CONTINUOUS: return "Continuous";
-            case DESCRIPTIVE: return "Descriptive";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The variable is dichotomous, such as present or absent.
+   */
+  DICHOTOMOUS,
+  /**
+   * The variable is a continuous result such as a quantity.
+   */
+  CONTINUOUS,
+  /**
+   * The variable is described narratively rather than quantitatively.
+   */
+  DESCRIPTIVE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static VariableType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("dichotomous".equals(codeString))
+      return DICHOTOMOUS;
+    if ("continuous".equals(codeString))
+      return CONTINUOUS;
+    if ("descriptive".equals(codeString))
+      return DESCRIPTIVE;
+    throw new FHIRException("Unknown VariableType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case DICHOTOMOUS:
+      return "dichotomous";
+    case CONTINUOUS:
+      return "continuous";
+    case DESCRIPTIVE:
+      return "descriptive";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/variable-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case DICHOTOMOUS:
+      return "The variable is dichotomous, such as present or absent.";
+    case CONTINUOUS:
+      return "The variable is a continuous result such as a quantity.";
+    case DESCRIPTIVE:
+      return "The variable is described narratively rather than quantitatively.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case DICHOTOMOUS:
+      return "Dichotomous";
+    case CONTINUOUS:
+      return "Continuous";
+    case DESCRIPTIVE:
+      return "Descriptive";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

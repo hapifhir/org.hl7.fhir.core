@@ -36,8 +36,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -51,11 +51,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import javax.annotation.Nonnull;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -64,6 +65,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
@@ -76,7 +78,6 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
-import javax.annotation.Nonnull;
 
 /**
  * info and loader for a package 
@@ -142,6 +143,9 @@ public class NpmPackage {
     }
     public String getSupplements() {
       return supplements;
+    }
+    public boolean hasId() {
+      return !Utilities.noString(id);
     }
     
   }
@@ -252,6 +256,19 @@ public class NpmPackage {
       }
     }
 
+    public ByteProvider getProvider(String file) throws FileNotFoundException, IOException {
+      if (folder != null) {
+        File f = new File(Utilities.path(folder.getAbsolutePath(), file));
+        if (f.exists()) {
+          return ByteProvider.forFile(f);
+        } else {
+          return null;
+        }
+      } else {
+        return ByteProvider.forBytes(content.get(file));
+      }
+    }
+
     public boolean hasFile(String file) throws IOException {
       if (folder != null) {
         return new File(Utilities.path(folder.getAbsolutePath(), file)).exists();
@@ -297,6 +314,7 @@ public class NpmPackage {
   private Map<String, Object> userData;
   private boolean minimalMemory;
   private int size;
+  private boolean warned = false;
 
   /**
    * Constructor
@@ -462,7 +480,7 @@ public class NpmPackage {
 
       while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
         String n = entry.getName();
-        if (n.contains("..")) {
+        if (n.contains("/..") || n.contains("../")) {
           throw new RuntimeException("Entry with an illegal name: " + n);
         }
         if (entry.isDirectory()) {
@@ -793,6 +811,7 @@ public class NpmPackage {
   public InputStream load(String file) throws IOException {
     return load("package", file);
   }
+  
   /**
    * get a stream that contains the contents of one of the files in a folder
    * 
@@ -813,6 +832,27 @@ public class NpmPackage {
     }
   }
 
+  /**
+   * get a stream that contains the contents of one of the files in a folder
+   * 
+   * @param folder
+   * @param file
+   * @return
+   * @throws IOException
+   */
+  public ByteProvider getProvider(String folder, String file) throws IOException {
+    NpmPackageFolder f = folders.get(folder);
+    if (f == null) {
+      f = folders.get(Utilities.path("package", folder));
+    }
+    if (f != null && f.hasFile(file)) {
+      return f.getProvider(file);
+    } else {
+      throw new IOException("Unable to find the file "+folder+"/"+file+" in the package "+name());
+    }
+  }
+
+  
   public boolean hasFile(String folder, String file) throws IOException {
     NpmPackageFolder f = folders.get(folder);
     if (f == null) {
@@ -1266,6 +1306,11 @@ public class NpmPackage {
     return Utilities.existsInList(npm.asString("type"), "fhir.core", "Core");
   }
 
+  public boolean isCoreExamples() {
+    return name().startsWith("hl7.fhir.r") && name().endsWith(".examples");
+  }
+  
+  
   public boolean isTx() {
     return npm.asString("name").startsWith("hl7.terminology");
   }
@@ -1301,7 +1346,7 @@ public class NpmPackage {
     if (npm.asBoolean("lazy-load")) {
       return true;
     }
-    if (!hasFile("other", "spec.internals")) {
+    if (!hasFile("other", "spec.internals") && folders.get("package").cachedIndex == null) {
       return false;
     }
     return true;
@@ -1369,5 +1414,14 @@ public class NpmPackage {
   public void setSize(int size) {
     this.size = size;
   }
+
+  public boolean isWarned() {
+    return warned;
+  }
+
+  public void setWarned(boolean warned) {
+    this.warned = warned;
+  }
+
   
 }

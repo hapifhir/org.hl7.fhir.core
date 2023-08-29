@@ -1,6 +1,5 @@
 package org.hl7.fhir.r4b.model;
 
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -46,478 +45,553 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for Expression Type: A expression that is evaluated in a specified context and returns a value. The context of use of the expression must specify the context in which the expression is evaluated, and how the result of the expression is used.
+ * Base StructureDefinition for Expression Type: A expression that is evaluated
+ * in a specified context and returns a value. The context of use of the
+ * expression must specify the context in which the expression is evaluated, and
+ * how the result of the expression is used.
  */
-@DatatypeDef(name="Expression")
+@DatatypeDef(name = "Expression")
 public class Expression extends DataType implements ICompositeType {
 
-    /**
-     * A brief, natural language description of the condition that effectively communicates the intended semantics.
-     */
-    @Child(name = "description", type = {StringType.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Natural language description of the condition", formalDefinition="A brief, natural language description of the condition that effectively communicates the intended semantics." )
-    protected StringType description;
+  /**
+   * A brief, natural language description of the condition that effectively
+   * communicates the intended semantics.
+   */
+  @Child(name = "description", type = {
+      StringType.class }, order = 0, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "Natural language description of the condition", formalDefinition = "A brief, natural language description of the condition that effectively communicates the intended semantics.")
+  protected StringType description;
 
-    /**
-     * A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.
-     */
-    @Child(name = "name", type = {IdType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Short name assigned to expression for reuse", formalDefinition="A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined." )
-    protected IdType name;
+  /**
+   * A short name assigned to the expression to allow for multiple reuse of the
+   * expression in the context where it is defined.
+   */
+  @Child(name = "name", type = { IdType.class }, order = 1, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "Short name assigned to expression for reuse", formalDefinition = "A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.")
+  protected IdType name;
 
-    /**
-     * The media type of the language for the expression.
-     */
-    @Child(name = "language", type = {CodeType.class}, order=2, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="text/cql | text/fhirpath | application/x-fhir-query | etc.", formalDefinition="The media type of the language for the expression." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/expression-language")
-    protected CodeType language;
+  /**
+   * The media type of the language for the expression.
+   */
+  @Child(name = "language", type = { CodeType.class }, order = 2, min = 1, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "text/cql | text/fhirpath | application/x-fhir-query | etc.", formalDefinition = "The media type of the language for the expression.")
+  @ca.uhn.fhir.model.api.annotation.Binding(valueSet = "http://hl7.org/fhir/ValueSet/expression-language")
+  protected CodeType language;
 
-    /**
-     * An expression in the specified language that returns a value.
-     */
-    @Child(name = "expression", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Expression in specified language", formalDefinition="An expression in the specified language that returns a value." )
-    protected StringType expression;
+  /**
+   * An expression in the specified language that returns a value.
+   */
+  @Child(name = "expression", type = {
+      StringType.class }, order = 3, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "Expression in specified language", formalDefinition = "An expression in the specified language that returns a value.")
+  protected StringType expression;
 
-    /**
-     * A URI that defines where the expression is found.
-     */
-    @Child(name = "reference", type = {UriType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Where the expression is found", formalDefinition="A URI that defines where the expression is found." )
-    protected UriType reference;
+  /**
+   * A URI that defines where the expression is found.
+   */
+  @Child(name = "reference", type = { UriType.class }, order = 4, min = 0, max = 1, modifier = false, summary = true)
+  @Description(shortDefinition = "Where the expression is found", formalDefinition = "A URI that defines where the expression is found.")
+  protected UriType reference;
 
-    private static final long serialVersionUID = -465056222L;
+  private static final long serialVersionUID = -465056222L;
 
   /**
    * Constructor
    */
-    public Expression() {
-      super();
-    }
+  public Expression() {
+    super();
+  }
 
   /**
    * Constructor
    */
-    public Expression(String language) {
-      super();
-      this.setLanguage(language);
-    }
+  public Expression(String language) {
+    super();
+    this.setLanguage(language);
+  }
 
-    /**
-     * @return {@link #description} (A brief, natural language description of the condition that effectively communicates the intended semantics.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-     */
-    public StringType getDescriptionElement() { 
+  /**
+   * @return {@link #description} (A brief, natural language description of the
+   *         condition that effectively communicates the intended semantics.).
+   *         This is the underlying object with id, value and extensions. The
+   *         accessor "getDescription" gives direct access to the value
+   */
+  public StringType getDescriptionElement() {
+    if (this.description == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create Expression.description");
+      else if (Configuration.doAutoCreate())
+        this.description = new StringType(); // bb
+    return this.description;
+  }
+
+  public boolean hasDescriptionElement() {
+    return this.description != null && !this.description.isEmpty();
+  }
+
+  public boolean hasDescription() {
+    return this.description != null && !this.description.isEmpty();
+  }
+
+  /**
+   * @param value {@link #description} (A brief, natural language description of
+   *              the condition that effectively communicates the intended
+   *              semantics.). This is the underlying object with id, value and
+   *              extensions. The accessor "getDescription" gives direct access to
+   *              the value
+   */
+  public Expression setDescriptionElement(StringType value) {
+    this.description = value;
+    return this;
+  }
+
+  /**
+   * @return A brief, natural language description of the condition that
+   *         effectively communicates the intended semantics.
+   */
+  public String getDescription() {
+    return this.description == null ? null : this.description.getValue();
+  }
+
+  /**
+   * @param value A brief, natural language description of the condition that
+   *              effectively communicates the intended semantics.
+   */
+  public Expression setDescription(String value) {
+    if (Utilities.noString(value))
+      this.description = null;
+    else {
       if (this.description == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Expression.description");
-        else if (Configuration.doAutoCreate())
-          this.description = new StringType(); // bb
-      return this.description;
+        this.description = new StringType();
+      this.description.setValue(value);
     }
+    return this;
+  }
 
-    public boolean hasDescriptionElement() { 
-      return this.description != null && !this.description.isEmpty();
-    }
+  /**
+   * @return {@link #name} (A short name assigned to the expression to allow for
+   *         multiple reuse of the expression in the context where it is
+   *         defined.). This is the underlying object with id, value and
+   *         extensions. The accessor "getName" gives direct access to the value
+   */
+  public IdType getNameElement() {
+    if (this.name == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create Expression.name");
+      else if (Configuration.doAutoCreate())
+        this.name = new IdType(); // bb
+    return this.name;
+  }
 
-    public boolean hasDescription() { 
-      return this.description != null && !this.description.isEmpty();
-    }
+  public boolean hasNameElement() {
+    return this.name != null && !this.name.isEmpty();
+  }
 
-    /**
-     * @param value {@link #description} (A brief, natural language description of the condition that effectively communicates the intended semantics.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-     */
-    public Expression setDescriptionElement(StringType value) { 
-      this.description = value;
-      return this;
-    }
+  public boolean hasName() {
+    return this.name != null && !this.name.isEmpty();
+  }
 
-    /**
-     * @return A brief, natural language description of the condition that effectively communicates the intended semantics.
-     */
-    public String getDescription() { 
-      return this.description == null ? null : this.description.getValue();
-    }
+  /**
+   * @param value {@link #name} (A short name assigned to the expression to allow
+   *              for multiple reuse of the expression in the context where it is
+   *              defined.). This is the underlying object with id, value and
+   *              extensions. The accessor "getName" gives direct access to the
+   *              value
+   */
+  public Expression setNameElement(IdType value) {
+    this.name = value;
+    return this;
+  }
 
-    /**
-     * @param value A brief, natural language description of the condition that effectively communicates the intended semantics.
-     */
-    public Expression setDescription(String value) { 
-      if (Utilities.noString(value))
-        this.description = null;
-      else {
-        if (this.description == null)
-          this.description = new StringType();
-        this.description.setValue(value);
-      }
-      return this;
-    }
+  /**
+   * @return A short name assigned to the expression to allow for multiple reuse
+   *         of the expression in the context where it is defined.
+   */
+  public String getName() {
+    return this.name == null ? null : this.name.getValue();
+  }
 
-    /**
-     * @return {@link #name} (A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-     */
-    public IdType getNameElement() { 
+  /**
+   * @param value A short name assigned to the expression to allow for multiple
+   *              reuse of the expression in the context where it is defined.
+   */
+  public Expression setName(String value) {
+    if (Utilities.noString(value))
+      this.name = null;
+    else {
       if (this.name == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Expression.name");
-        else if (Configuration.doAutoCreate())
-          this.name = new IdType(); // bb
-      return this.name;
+        this.name = new IdType();
+      this.name.setValue(value);
     }
+    return this;
+  }
 
-    public boolean hasNameElement() { 
-      return this.name != null && !this.name.isEmpty();
-    }
+  /**
+   * @return {@link #language} (The media type of the language for the
+   *         expression.). This is the underlying object with id, value and
+   *         extensions. The accessor "getLanguage" gives direct access to the
+   *         value
+   */
+  public CodeType getLanguageElement() {
+    if (this.language == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create Expression.language");
+      else if (Configuration.doAutoCreate())
+        this.language = new CodeType(); // bb
+    return this.language;
+  }
 
-    public boolean hasName() { 
-      return this.name != null && !this.name.isEmpty();
-    }
+  public boolean hasLanguageElement() {
+    return this.language != null && !this.language.isEmpty();
+  }
 
-    /**
-     * @param value {@link #name} (A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-     */
-    public Expression setNameElement(IdType value) { 
-      this.name = value;
-      return this;
-    }
+  public boolean hasLanguage() {
+    return this.language != null && !this.language.isEmpty();
+  }
 
-    /**
-     * @return A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.
-     */
-    public String getName() { 
-      return this.name == null ? null : this.name.getValue();
-    }
+  /**
+   * @param value {@link #language} (The media type of the language for the
+   *              expression.). This is the underlying object with id, value and
+   *              extensions. The accessor "getLanguage" gives direct access to
+   *              the value
+   */
+  public Expression setLanguageElement(CodeType value) {
+    this.language = value;
+    return this;
+  }
 
-    /**
-     * @param value A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.
-     */
-    public Expression setName(String value) { 
-      if (Utilities.noString(value))
-        this.name = null;
-      else {
-        if (this.name == null)
-          this.name = new IdType();
-        this.name.setValue(value);
-      }
-      return this;
-    }
+  /**
+   * @return The media type of the language for the expression.
+   */
+  public String getLanguage() {
+    return this.language == null ? null : this.language.getValue();
+  }
 
-    /**
-     * @return {@link #language} (The media type of the language for the expression.). This is the underlying object with id, value and extensions. The accessor "getLanguage" gives direct access to the value
-     */
-    public CodeType getLanguageElement() { 
-      if (this.language == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Expression.language");
-        else if (Configuration.doAutoCreate())
-          this.language = new CodeType(); // bb
-      return this.language;
-    }
+  /**
+   * @param value The media type of the language for the expression.
+   */
+  public Expression setLanguage(String value) {
+    if (this.language == null)
+      this.language = new CodeType();
+    this.language.setValue(value);
+    return this;
+  }
 
-    public boolean hasLanguageElement() { 
-      return this.language != null && !this.language.isEmpty();
-    }
+  /**
+   * @return {@link #expression} (An expression in the specified language that
+   *         returns a value.). This is the underlying object with id, value and
+   *         extensions. The accessor "getExpression" gives direct access to the
+   *         value
+   */
+  public StringType getExpressionElement() {
+    if (this.expression == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create Expression.expression");
+      else if (Configuration.doAutoCreate())
+        this.expression = new StringType(); // bb
+    return this.expression;
+  }
 
-    public boolean hasLanguage() { 
-      return this.language != null && !this.language.isEmpty();
-    }
+  public boolean hasExpressionElement() {
+    return this.expression != null && !this.expression.isEmpty();
+  }
 
-    /**
-     * @param value {@link #language} (The media type of the language for the expression.). This is the underlying object with id, value and extensions. The accessor "getLanguage" gives direct access to the value
-     */
-    public Expression setLanguageElement(CodeType value) { 
-      this.language = value;
-      return this;
-    }
+  public boolean hasExpression() {
+    return this.expression != null && !this.expression.isEmpty();
+  }
 
-    /**
-     * @return The media type of the language for the expression.
-     */
-    public String getLanguage() { 
-      return this.language == null ? null : this.language.getValue();
-    }
+  /**
+   * @param value {@link #expression} (An expression in the specified language
+   *              that returns a value.). This is the underlying object with id,
+   *              value and extensions. The accessor "getExpression" gives direct
+   *              access to the value
+   */
+  public Expression setExpressionElement(StringType value) {
+    this.expression = value;
+    return this;
+  }
 
-    /**
-     * @param value The media type of the language for the expression.
-     */
-    public Expression setLanguage(String value) { 
-        if (this.language == null)
-          this.language = new CodeType();
-        this.language.setValue(value);
-      return this;
-    }
+  /**
+   * @return An expression in the specified language that returns a value.
+   */
+  public String getExpression() {
+    return this.expression == null ? null : this.expression.getValue();
+  }
 
-    /**
-     * @return {@link #expression} (An expression in the specified language that returns a value.). This is the underlying object with id, value and extensions. The accessor "getExpression" gives direct access to the value
-     */
-    public StringType getExpressionElement() { 
+  /**
+   * @param value An expression in the specified language that returns a value.
+   */
+  public Expression setExpression(String value) {
+    if (Utilities.noString(value))
+      this.expression = null;
+    else {
       if (this.expression == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Expression.expression");
-        else if (Configuration.doAutoCreate())
-          this.expression = new StringType(); // bb
-      return this.expression;
+        this.expression = new StringType();
+      this.expression.setValue(value);
     }
+    return this;
+  }
 
-    public boolean hasExpressionElement() { 
-      return this.expression != null && !this.expression.isEmpty();
-    }
+  /**
+   * @return {@link #reference} (A URI that defines where the expression is
+   *         found.). This is the underlying object with id, value and extensions.
+   *         The accessor "getReference" gives direct access to the value
+   */
+  public UriType getReferenceElement() {
+    if (this.reference == null)
+      if (Configuration.errorOnAutoCreate())
+        throw new Error("Attempt to auto-create Expression.reference");
+      else if (Configuration.doAutoCreate())
+        this.reference = new UriType(); // bb
+    return this.reference;
+  }
 
-    public boolean hasExpression() { 
-      return this.expression != null && !this.expression.isEmpty();
-    }
+  public boolean hasReferenceElement() {
+    return this.reference != null && !this.reference.isEmpty();
+  }
 
-    /**
-     * @param value {@link #expression} (An expression in the specified language that returns a value.). This is the underlying object with id, value and extensions. The accessor "getExpression" gives direct access to the value
-     */
-    public Expression setExpressionElement(StringType value) { 
-      this.expression = value;
-      return this;
-    }
+  public boolean hasReference() {
+    return this.reference != null && !this.reference.isEmpty();
+  }
 
-    /**
-     * @return An expression in the specified language that returns a value.
-     */
-    public String getExpression() { 
-      return this.expression == null ? null : this.expression.getValue();
-    }
+  /**
+   * @param value {@link #reference} (A URI that defines where the expression is
+   *              found.). This is the underlying object with id, value and
+   *              extensions. The accessor "getReference" gives direct access to
+   *              the value
+   */
+  public Expression setReferenceElement(UriType value) {
+    this.reference = value;
+    return this;
+  }
 
-    /**
-     * @param value An expression in the specified language that returns a value.
-     */
-    public Expression setExpression(String value) { 
-      if (Utilities.noString(value))
-        this.expression = null;
-      else {
-        if (this.expression == null)
-          this.expression = new StringType();
-        this.expression.setValue(value);
-      }
-      return this;
-    }
+  /**
+   * @return A URI that defines where the expression is found.
+   */
+  public String getReference() {
+    return this.reference == null ? null : this.reference.getValue();
+  }
 
-    /**
-     * @return {@link #reference} (A URI that defines where the expression is found.). This is the underlying object with id, value and extensions. The accessor "getReference" gives direct access to the value
-     */
-    public UriType getReferenceElement() { 
+  /**
+   * @param value A URI that defines where the expression is found.
+   */
+  public Expression setReference(String value) {
+    if (Utilities.noString(value))
+      this.reference = null;
+    else {
       if (this.reference == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Expression.reference");
-        else if (Configuration.doAutoCreate())
-          this.reference = new UriType(); // bb
-      return this.reference;
+        this.reference = new UriType();
+      this.reference.setValue(value);
+    }
+    return this;
+  }
+
+  protected void listChildren(List<Property> children) {
+    super.listChildren(children);
+    children.add(new Property("description", "string",
+        "A brief, natural language description of the condition that effectively communicates the intended semantics.",
+        0, 1, description));
+    children.add(new Property("name", "id",
+        "A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.",
+        0, 1, name));
+    children
+        .add(new Property("language", "code", "The media type of the language for the expression.", 0, 1, language));
+    children.add(new Property("expression", "string", "An expression in the specified language that returns a value.",
+        0, 1, expression));
+    children
+        .add(new Property("reference", "uri", "A URI that defines where the expression is found.", 0, 1, reference));
+  }
+
+  @Override
+  public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+    switch (_hash) {
+    case -1724546052:
+      /* description */ return new Property("description", "string",
+          "A brief, natural language description of the condition that effectively communicates the intended semantics.",
+          0, 1, description);
+    case 3373707:
+      /* name */ return new Property("name", "id",
+          "A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.",
+          0, 1, name);
+    case -1613589672:
+      /* language */ return new Property("language", "code", "The media type of the language for the expression.", 0, 1,
+          language);
+    case -1795452264:
+      /* expression */ return new Property("expression", "string",
+          "An expression in the specified language that returns a value.", 0, 1, expression);
+    case -925155509:
+      /* reference */ return new Property("reference", "uri", "A URI that defines where the expression is found.", 0, 1,
+          reference);
+    default:
+      return super.getNamedProperty(_hash, _name, _checkValid);
     }
 
-    public boolean hasReferenceElement() { 
-      return this.reference != null && !this.reference.isEmpty();
+  }
+
+  @Override
+  public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+    switch (hash) {
+    case -1724546052:
+      /* description */ return this.description == null ? new Base[0] : new Base[] { this.description }; // StringType
+    case 3373707:
+      /* name */ return this.name == null ? new Base[0] : new Base[] { this.name }; // IdType
+    case -1613589672:
+      /* language */ return this.language == null ? new Base[0] : new Base[] { this.language }; // CodeType
+    case -1795452264:
+      /* expression */ return this.expression == null ? new Base[0] : new Base[] { this.expression }; // StringType
+    case -925155509:
+      /* reference */ return this.reference == null ? new Base[0] : new Base[] { this.reference }; // UriType
+    default:
+      return super.getProperty(hash, name, checkValid);
     }
 
-    public boolean hasReference() { 
-      return this.reference != null && !this.reference.isEmpty();
+  }
+
+  @Override
+  public Base setProperty(int hash, String name, Base value) throws FHIRException {
+    switch (hash) {
+    case -1724546052: // description
+      this.description = TypeConvertor.castToString(value); // StringType
+      return value;
+    case 3373707: // name
+      this.name = TypeConvertor.castToId(value); // IdType
+      return value;
+    case -1613589672: // language
+      this.language = TypeConvertor.castToCode(value); // CodeType
+      return value;
+    case -1795452264: // expression
+      this.expression = TypeConvertor.castToString(value); // StringType
+      return value;
+    case -925155509: // reference
+      this.reference = TypeConvertor.castToUri(value); // UriType
+      return value;
+    default:
+      return super.setProperty(hash, name, value);
     }
 
-    /**
-     * @param value {@link #reference} (A URI that defines where the expression is found.). This is the underlying object with id, value and extensions. The accessor "getReference" gives direct access to the value
-     */
-    public Expression setReferenceElement(UriType value) { 
-      this.reference = value;
-      return this;
+  }
+
+  @Override
+  public Base setProperty(String name, Base value) throws FHIRException {
+    if (name.equals("description")) {
+      this.description = TypeConvertor.castToString(value); // StringType
+    } else if (name.equals("name")) {
+      this.name = TypeConvertor.castToId(value); // IdType
+    } else if (name.equals("language")) {
+      this.language = TypeConvertor.castToCode(value); // CodeType
+    } else if (name.equals("expression")) {
+      this.expression = TypeConvertor.castToString(value); // StringType
+    } else if (name.equals("reference")) {
+      this.reference = TypeConvertor.castToUri(value); // UriType
+    } else
+      return super.setProperty(name, value);
+    return value;
+  }
+
+  @Override
+  public Base makeProperty(int hash, String name) throws FHIRException {
+    switch (hash) {
+    case -1724546052:
+      return getDescriptionElement();
+    case 3373707:
+      return getNameElement();
+    case -1613589672:
+      return getLanguageElement();
+    case -1795452264:
+      return getExpressionElement();
+    case -925155509:
+      return getReferenceElement();
+    default:
+      return super.makeProperty(hash, name);
     }
 
-    /**
-     * @return A URI that defines where the expression is found.
-     */
-    public String getReference() { 
-      return this.reference == null ? null : this.reference.getValue();
+  }
+
+  @Override
+  public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+    switch (hash) {
+    case -1724546052:
+      /* description */ return new String[] { "string" };
+    case 3373707:
+      /* name */ return new String[] { "id" };
+    case -1613589672:
+      /* language */ return new String[] { "code" };
+    case -1795452264:
+      /* expression */ return new String[] { "string" };
+    case -925155509:
+      /* reference */ return new String[] { "uri" };
+    default:
+      return super.getTypesForProperty(hash, name);
     }
 
-    /**
-     * @param value A URI that defines where the expression is found.
-     */
-    public Expression setReference(String value) { 
-      if (Utilities.noString(value))
-        this.reference = null;
-      else {
-        if (this.reference == null)
-          this.reference = new UriType();
-        this.reference.setValue(value);
-      }
-      return this;
-    }
+  }
 
-      protected void listChildren(List<Property> children) {
-        super.listChildren(children);
-        children.add(new Property("description", "string", "A brief, natural language description of the condition that effectively communicates the intended semantics.", 0, 1, description));
-        children.add(new Property("name", "id", "A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.", 0, 1, name));
-        children.add(new Property("language", "code", "The media type of the language for the expression.", 0, 1, language));
-        children.add(new Property("expression", "string", "An expression in the specified language that returns a value.", 0, 1, expression));
-        children.add(new Property("reference", "uri", "A URI that defines where the expression is found.", 0, 1, reference));
-      }
-
-      @Override
-      public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-        switch (_hash) {
-        case -1724546052: /*description*/  return new Property("description", "string", "A brief, natural language description of the condition that effectively communicates the intended semantics.", 0, 1, description);
-        case 3373707: /*name*/  return new Property("name", "id", "A short name assigned to the expression to allow for multiple reuse of the expression in the context where it is defined.", 0, 1, name);
-        case -1613589672: /*language*/  return new Property("language", "code", "The media type of the language for the expression.", 0, 1, language);
-        case -1795452264: /*expression*/  return new Property("expression", "string", "An expression in the specified language that returns a value.", 0, 1, expression);
-        case -925155509: /*reference*/  return new Property("reference", "uri", "A URI that defines where the expression is found.", 0, 1, reference);
-        default: return super.getNamedProperty(_hash, _name, _checkValid);
-        }
-
-      }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
-        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // IdType
-        case -1613589672: /*language*/ return this.language == null ? new Base[0] : new Base[] {this.language}; // CodeType
-        case -1795452264: /*expression*/ return this.expression == null ? new Base[0] : new Base[] {this.expression}; // StringType
-        case -925155509: /*reference*/ return this.reference == null ? new Base[0] : new Base[] {this.reference}; // UriType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1724546052: // description
-          this.description = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 3373707: // name
-          this.name = TypeConvertor.castToId(value); // IdType
-          return value;
-        case -1613589672: // language
-          this.language = TypeConvertor.castToCode(value); // CodeType
-          return value;
-        case -1795452264: // expression
-          this.expression = TypeConvertor.castToString(value); // StringType
-          return value;
-        case -925155509: // reference
-          this.reference = TypeConvertor.castToUri(value); // UriType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("description")) {
-          this.description = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("name")) {
-          this.name = TypeConvertor.castToId(value); // IdType
-        } else if (name.equals("language")) {
-          this.language = TypeConvertor.castToCode(value); // CodeType
-        } else if (name.equals("expression")) {
-          this.expression = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("reference")) {
-          this.reference = TypeConvertor.castToUri(value); // UriType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1724546052:  return getDescriptionElement();
-        case 3373707:  return getNameElement();
-        case -1613589672:  return getLanguageElement();
-        case -1795452264:  return getExpressionElement();
-        case -925155509:  return getReferenceElement();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1724546052: /*description*/ return new String[] {"string"};
-        case 3373707: /*name*/ return new String[] {"id"};
-        case -1613589672: /*language*/ return new String[] {"code"};
-        case -1795452264: /*expression*/ return new String[] {"string"};
-        case -925155509: /*reference*/ return new String[] {"uri"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Expression.description");
-        }
-        else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Expression.name");
-        }
-        else if (name.equals("language")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Expression.language");
-        }
-        else if (name.equals("expression")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Expression.expression");
-        }
-        else if (name.equals("reference")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Expression.reference");
-        }
-        else
-          return super.addChild(name);
-      }
+  @Override
+  public Base addChild(String name) throws FHIRException {
+    if (name.equals("description")) {
+      throw new FHIRException("Cannot call addChild on a singleton property Expression.description");
+    } else if (name.equals("name")) {
+      throw new FHIRException("Cannot call addChild on a singleton property Expression.name");
+    } else if (name.equals("language")) {
+      throw new FHIRException("Cannot call addChild on a singleton property Expression.language");
+    } else if (name.equals("expression")) {
+      throw new FHIRException("Cannot call addChild on a singleton property Expression.expression");
+    } else if (name.equals("reference")) {
+      throw new FHIRException("Cannot call addChild on a singleton property Expression.reference");
+    } else
+      return super.addChild(name);
+  }
 
   public String fhirType() {
     return "Expression";
 
   }
 
-      public Expression copy() {
-        Expression dst = new Expression();
-        copyValues(dst);
-        return dst;
-      }
+  public Expression copy() {
+    Expression dst = new Expression();
+    copyValues(dst);
+    return dst;
+  }
 
-      public void copyValues(Expression dst) {
-        super.copyValues(dst);
-        dst.description = description == null ? null : description.copy();
-        dst.name = name == null ? null : name.copy();
-        dst.language = language == null ? null : language.copy();
-        dst.expression = expression == null ? null : expression.copy();
-        dst.reference = reference == null ? null : reference.copy();
-      }
+  public void copyValues(Expression dst) {
+    super.copyValues(dst);
+    dst.description = description == null ? null : description.copy();
+    dst.name = name == null ? null : name.copy();
+    dst.language = language == null ? null : language.copy();
+    dst.expression = expression == null ? null : expression.copy();
+    dst.reference = reference == null ? null : reference.copy();
+  }
 
-      protected Expression typedCopy() {
-        return copy();
-      }
+  protected Expression typedCopy() {
+    return copy();
+  }
 
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof Expression))
-          return false;
-        Expression o = (Expression) other_;
-        return compareDeep(description, o.description, true) && compareDeep(name, o.name, true) && compareDeep(language, o.language, true)
-           && compareDeep(expression, o.expression, true) && compareDeep(reference, o.reference, true);
-      }
+  @Override
+  public boolean equalsDeep(Base other_) {
+    if (!super.equalsDeep(other_))
+      return false;
+    if (!(other_ instanceof Expression))
+      return false;
+    Expression o = (Expression) other_;
+    return compareDeep(description, o.description, true) && compareDeep(name, o.name, true)
+        && compareDeep(language, o.language, true) && compareDeep(expression, o.expression, true)
+        && compareDeep(reference, o.reference, true);
+  }
 
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof Expression))
-          return false;
-        Expression o = (Expression) other_;
-        return compareValues(description, o.description, true) && compareValues(name, o.name, true) && compareValues(language, o.language, true)
-           && compareValues(expression, o.expression, true) && compareValues(reference, o.reference, true);
-      }
+  @Override
+  public boolean equalsShallow(Base other_) {
+    if (!super.equalsShallow(other_))
+      return false;
+    if (!(other_ instanceof Expression))
+      return false;
+    Expression o = (Expression) other_;
+    return compareValues(description, o.description, true) && compareValues(name, o.name, true)
+        && compareValues(language, o.language, true) && compareValues(expression, o.expression, true)
+        && compareValues(reference, o.reference, true);
+  }
 
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, name, language
-          , expression, reference);
-      }
-
+  public boolean isEmpty() {
+    return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, name, language, expression, reference);
+  }
 
 }
-

@@ -594,7 +594,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     if (list != null) {
       for (CanonicalResourceManager<T>.CachedCanonicalResource<T> t : list) {
         possibleMatches = true;
-        if (pvlist == null || pvlist.contains(t.getPackageInfo().getVID())) {
+        if (pvlist == null || t.getPackageInfo() == null || pvlist.contains(t.getPackageInfo().getVID())) {
           res.add(t.getResource());
         }
       }

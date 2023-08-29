@@ -78,7 +78,9 @@ import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.utilities.xml.XMLWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 public class XmlParser extends ParserBase {
@@ -97,8 +99,6 @@ public class XmlParser extends ParserBase {
   public void setSchemaPath(String schemaPath) {
     this.schemaPath = schemaPath;
   }
-
-
 
   public boolean isAllowXsiLocation() {
     return allowXsiLocation;
@@ -154,6 +154,7 @@ public class XmlParser extends ParserBase {
         nullTransformer.transform(saxSource, domResult);
       } else {
         DocumentBuilder builder = factory.newDocumentBuilder();
+        builder.setErrorHandler(new NullErrorHandler());
         doc = builder.parse(stream);
       }
     } catch (Exception e) {
@@ -822,4 +823,20 @@ public class XmlParser extends ParserBase {
     return "?xml-p2?";
   }
 
+  class NullErrorHandler implements ErrorHandler {
+    @Override
+    public void fatalError(SAXParseException e) {
+        // do nothing
+    }
+
+    @Override
+    public void error(SAXParseException e) {
+        // do nothing
+    }
+    
+    @Override
+    public void warning(SAXParseException e) {
+        // do nothing
+    }
+}
 }

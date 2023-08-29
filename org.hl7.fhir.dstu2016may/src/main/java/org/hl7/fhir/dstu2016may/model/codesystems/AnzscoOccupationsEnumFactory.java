@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 */
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
-
 
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
@@ -2694,7 +2690,7 @@ public class AnzscoOccupationsEnumFactory implements EnumFactory<AnzscoOccupatio
       return AnzscoOccupations._899922;
     if ("899999".equals(codeString))
       return AnzscoOccupations._899999;
-    throw new IllegalArgumentException("Unknown AnzscoOccupations code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown AnzscoOccupations code '" + codeString + "'");
   }
 
   public String toCode(AnzscoOccupations code) {
@@ -5353,8 +5349,8 @@ public class AnzscoOccupationsEnumFactory implements EnumFactory<AnzscoOccupatio
     return "?";
   }
 
-    public String toSystem(AnzscoOccupations code) {
-      return code.getSystem();
-      }
+  public String toSystem(AnzscoOccupations code) {
+    return code.getSystem();
+  }
 
 }

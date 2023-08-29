@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,50 +31,63 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcDeltaFlagNumericNom {
 
-        /**
-         * The current test results are not significantly different from previous results
-         */
-        UNCHANGED, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static HspcDeltaFlagNumericNom fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("unchanged".equals(codeString))
-          return UNCHANGED;
-        throw new FHIRException("Unknown HspcDeltaFlagNumericNom code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case UNCHANGED: return "unchanged";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://healthcaresoa.org/fhir/hspc-deltaFlag-numericNom";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case UNCHANGED: return "The current test results are not significantly different from previous results";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case UNCHANGED: return "Unchanged";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The current test results are not significantly different from previous
+   * results
+   */
+  UNCHANGED,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static HspcDeltaFlagNumericNom fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("unchanged".equals(codeString))
+      return UNCHANGED;
+    throw new FHIRException("Unknown HspcDeltaFlagNumericNom code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case UNCHANGED:
+      return "unchanged";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://healthcaresoa.org/fhir/hspc-deltaFlag-numericNom";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case UNCHANGED:
+      return "The current test results are not significantly different from previous results";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case UNCHANGED:
+      return "Unchanged";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

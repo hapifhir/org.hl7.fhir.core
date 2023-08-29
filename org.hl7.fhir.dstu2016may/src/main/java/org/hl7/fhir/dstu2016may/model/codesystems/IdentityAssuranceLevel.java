@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,98 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum IdentityAssuranceLevel {
 
-        /**
-         * Little or no confidence in the asserted identity's accuracy.
-         */
-        LEVEL1, 
-        /**
-         * Some confidence in the asserted identity's accuracy.
-         */
-        LEVEL2, 
-        /**
-         * High confidence in the asserted identity's accuracy.
-         */
-        LEVEL3, 
-        /**
-         * Very high confidence in the asserted identity's accuracy.
-         */
-        LEVEL4, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static IdentityAssuranceLevel fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("level1".equals(codeString))
-          return LEVEL1;
-        if ("level2".equals(codeString))
-          return LEVEL2;
-        if ("level3".equals(codeString))
-          return LEVEL3;
-        if ("level4".equals(codeString))
-          return LEVEL4;
-        throw new FHIRException("Unknown IdentityAssuranceLevel code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case LEVEL1: return "level1";
-            case LEVEL2: return "level2";
-            case LEVEL3: return "level3";
-            case LEVEL4: return "level4";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/identity-assuranceLevel";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case LEVEL1: return "Little or no confidence in the asserted identity's accuracy.";
-            case LEVEL2: return "Some confidence in the asserted identity's accuracy.";
-            case LEVEL3: return "High confidence in the asserted identity's accuracy.";
-            case LEVEL4: return "Very high confidence in the asserted identity's accuracy.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case LEVEL1: return "Level 1";
-            case LEVEL2: return "Level 2";
-            case LEVEL3: return "Level 3";
-            case LEVEL4: return "Level 4";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Little or no confidence in the asserted identity's accuracy.
+   */
+  LEVEL1,
+  /**
+   * Some confidence in the asserted identity's accuracy.
+   */
+  LEVEL2,
+  /**
+   * High confidence in the asserted identity's accuracy.
+   */
+  LEVEL3,
+  /**
+   * Very high confidence in the asserted identity's accuracy.
+   */
+  LEVEL4,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static IdentityAssuranceLevel fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("level1".equals(codeString))
+      return LEVEL1;
+    if ("level2".equals(codeString))
+      return LEVEL2;
+    if ("level3".equals(codeString))
+      return LEVEL3;
+    if ("level4".equals(codeString))
+      return LEVEL4;
+    throw new FHIRException("Unknown IdentityAssuranceLevel code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case LEVEL1:
+      return "level1";
+    case LEVEL2:
+      return "level2";
+    case LEVEL3:
+      return "level3";
+    case LEVEL4:
+      return "level4";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/identity-assuranceLevel";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case LEVEL1:
+      return "Little or no confidence in the asserted identity's accuracy.";
+    case LEVEL2:
+      return "Some confidence in the asserted identity's accuracy.";
+    case LEVEL3:
+      return "High confidence in the asserted identity's accuracy.";
+    case LEVEL4:
+      return "Very high confidence in the asserted identity's accuracy.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case LEVEL1:
+      return "Level 1";
+    case LEVEL2:
+      return "Level 2";
+    case LEVEL3:
+      return "Level 3";
+    case LEVEL4:
+      return "Level 4";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

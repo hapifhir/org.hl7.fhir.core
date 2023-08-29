@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class VariableTypeEnumFactory implements EnumFactory<VariableType> {
@@ -48,7 +44,7 @@ public class VariableTypeEnumFactory implements EnumFactory<VariableType> {
       return VariableType.CONTINUOUS;
     if ("descriptive".equals(codeString))
       return VariableType.DESCRIPTIVE;
-    throw new IllegalArgumentException("Unknown VariableType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown VariableType code '" + codeString + "'");
   }
 
   public String toCode(VariableType code) {
@@ -61,8 +57,8 @@ public class VariableTypeEnumFactory implements EnumFactory<VariableType> {
     return "?";
   }
 
-    public String toSystem(VariableType code) {
-      return code.getSystem();
-      }
+  public String toSystem(VariableType code) {
+    return code.getSystem();
+  }
 
 }

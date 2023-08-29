@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AddressType {
 
-        /**
-         * Mailing addresses - PO Boxes and care-of addresses.
-         */
-        POSTAL, 
-        /**
-         * A physical address that can be visited.
-         */
-        PHYSICAL, 
-        /**
-         * An address that is both physical and postal.
-         */
-        BOTH, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static AddressType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("postal".equals(codeString))
-          return POSTAL;
-        if ("physical".equals(codeString))
-          return PHYSICAL;
-        if ("both".equals(codeString))
-          return BOTH;
-        throw new FHIRException("Unknown AddressType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case POSTAL: return "postal";
-            case PHYSICAL: return "physical";
-            case BOTH: return "both";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/address-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case POSTAL: return "Mailing addresses - PO Boxes and care-of addresses.";
-            case PHYSICAL: return "A physical address that can be visited.";
-            case BOTH: return "An address that is both physical and postal.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case POSTAL: return "Postal";
-            case PHYSICAL: return "Physical";
-            case BOTH: return "Postal & Physical";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Mailing addresses - PO Boxes and care-of addresses.
+   */
+  POSTAL,
+  /**
+   * A physical address that can be visited.
+   */
+  PHYSICAL,
+  /**
+   * An address that is both physical and postal.
+   */
+  BOTH,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static AddressType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("postal".equals(codeString))
+      return POSTAL;
+    if ("physical".equals(codeString))
+      return PHYSICAL;
+    if ("both".equals(codeString))
+      return BOTH;
+    throw new FHIRException("Unknown AddressType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case POSTAL:
+      return "postal";
+    case PHYSICAL:
+      return "physical";
+    case BOTH:
+      return "both";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/address-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case POSTAL:
+      return "Mailing addresses - PO Boxes and care-of addresses.";
+    case PHYSICAL:
+      return "A physical address that can be visited.";
+    case BOTH:
+      return "An address that is both physical and postal.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case POSTAL:
+      return "Postal";
+    case PHYSICAL:
+      return "Physical";
+    case BOTH:
+      return "Postal & Physical";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

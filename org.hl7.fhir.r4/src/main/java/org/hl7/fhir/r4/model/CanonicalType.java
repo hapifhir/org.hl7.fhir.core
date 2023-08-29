@@ -29,54 +29,52 @@ package org.hl7.fhir.r4.model;
   
  */
 
-
-
 import java.net.URI;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
- * Primitive type "canonical" in FHIR: an OID represented as urn:oid:0.1.2.3.4...
+ * Primitive type "canonical" in FHIR: an OID represented as
+ * urn:oid:0.1.2.3.4...
  */
-@DatatypeDef(name="canonical", profileOf=UriType.class)
+@DatatypeDef(name = "canonical", profileOf = UriType.class)
 public class CanonicalType extends UriType {
 
-	private static final long serialVersionUID = 4L;
+  private static final long serialVersionUID = 4L;
 
-	/**
-	 * Constructor
-	 */
-	public CanonicalType() {
-		super();
-	}
+  /**
+   * Constructor
+   */
+  public CanonicalType() {
+    super();
+  }
 
-	/**
-	 * Constructor
-	 */
-	public CanonicalType(String theValue) {
-		super(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public CanonicalType(String theValue) {
+    super(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	public CanonicalType(URI theValue) {
-		super(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public CanonicalType(URI theValue) {
+    super(theValue);
+  }
 
-	/**
-	 * Constructor
-	 */
-	@Override
-	public CanonicalType copy() {
-		CanonicalType ret = new CanonicalType(getValue());
+  /**
+   * Constructor
+   */
+  @Override
+  public CanonicalType copy() {
+    CanonicalType ret = new CanonicalType(getValue());
     copyValues(ret);
     return ret;
-	}
+  }
 
-	public String fhirType() {
-		return "canonical";		
-	}
-	
+  public String fhirType() {
+    return "canonical";
+  }
 
 }

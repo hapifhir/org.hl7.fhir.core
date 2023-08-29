@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,88 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AllergyIntoleranceCriticality {
 
-        /**
-         * Worst case result of a future exposure is not assessed to be life-threatening or having high potential for organ system failure.
-         */
-        LOW, 
-        /**
-         * Worst case result of a future exposure is assessed to be life-threatening or having high potential for organ system failure.
-         */
-        HIGH, 
-        /**
-         * Unable to assess the worst case result of a future exposure.
-         */
-        UNABLETOASSESS, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static AllergyIntoleranceCriticality fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("low".equals(codeString))
-          return LOW;
-        if ("high".equals(codeString))
-          return HIGH;
-        if ("unable-to-assess".equals(codeString))
-          return UNABLETOASSESS;
-        throw new FHIRException("Unknown AllergyIntoleranceCriticality code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case LOW: return "low";
-            case HIGH: return "high";
-            case UNABLETOASSESS: return "unable-to-assess";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/allergy-intolerance-criticality";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case LOW: return "Worst case result of a future exposure is not assessed to be life-threatening or having high potential for organ system failure.";
-            case HIGH: return "Worst case result of a future exposure is assessed to be life-threatening or having high potential for organ system failure.";
-            case UNABLETOASSESS: return "Unable to assess the worst case result of a future exposure.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case LOW: return "Low Risk";
-            case HIGH: return "High Risk";
-            case UNABLETOASSESS: return "Unable to Assess Risk";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Worst case result of a future exposure is not assessed to be life-threatening
+   * or having high potential for organ system failure.
+   */
+  LOW,
+  /**
+   * Worst case result of a future exposure is assessed to be life-threatening or
+   * having high potential for organ system failure.
+   */
+  HIGH,
+  /**
+   * Unable to assess the worst case result of a future exposure.
+   */
+  UNABLETOASSESS,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static AllergyIntoleranceCriticality fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("low".equals(codeString))
+      return LOW;
+    if ("high".equals(codeString))
+      return HIGH;
+    if ("unable-to-assess".equals(codeString))
+      return UNABLETOASSESS;
+    throw new FHIRException("Unknown AllergyIntoleranceCriticality code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case LOW:
+      return "low";
+    case HIGH:
+      return "high";
+    case UNABLETOASSESS:
+      return "unable-to-assess";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/allergy-intolerance-criticality";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case LOW:
+      return "Worst case result of a future exposure is not assessed to be life-threatening or having high potential for organ system failure.";
+    case HIGH:
+      return "Worst case result of a future exposure is assessed to be life-threatening or having high potential for organ system failure.";
+    case UNABLETOASSESS:
+      return "Unable to assess the worst case result of a future exposure.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case LOW:
+      return "Low Risk";
+    case HIGH:
+      return "High Risk";
+    case UNABLETOASSESS:
+      return "Unable to Assess Risk";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

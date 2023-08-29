@@ -1,39 +1,46 @@
 package org.hl7.fhir.validation.cli.services;
 
+import static org.hl7.fhir.validation.tests.utilities.TestUtilities.getTerminologyCacheDirectory;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.AdditionalMatchers.and;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.endsWith;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.startsWith;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
-import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
+import org.hl7.fhir.validation.cli.utils.VersionUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-
-import static org.hl7.fhir.validation.tests.utilities.TestUtilities.getTerminologyCacheDirectory;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.AdditionalMatchers.and;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
 class ValidationServiceTest  {
 
@@ -55,7 +62,7 @@ class ValidationServiceTest  {
     List<FileInfo> filesToValidate = new ArrayList<>();
     filesToValidate.add(new FileInfo().setFileName("test_resource.json").setFileContent(resource).setFileType(Manager.FhirFormat.JSON.getExtension()));
 
-    ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setTxCache(getTerminologyCacheDirectory("validationService"))).setFilesToValidate(filesToValidate);
+    ValidationRequest request = new ValidationRequest().setCliContext(new CliContext().setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"))).setFilesToValidate(filesToValidate);
     // Validation run 1...nothing cached yet
     myService.validateSources(request);
     verify(sessionCache, Mockito.times(1)).cacheSession(ArgumentMatchers.any(ValidationEngine.class));
@@ -222,8 +229,10 @@ class ValidationServiceTest  {
     return cliContext;
   }
 
-  /* This is a particularly long way to test that a single field in ValidationEngine was set.
-     However, it does provide example code to test other parts of the buildValidationEngine method as well.
+  /*  This is a particularly long way to test that fields in ValidationEngine are
+      set to expected default values.
+
+      It also provides example code to test other parts of the buildValidationEngine method as well.
   */
   @Test
   public void buildValidationEngineTest() throws IOException, URISyntaxException {
@@ -235,12 +244,11 @@ class ValidationServiceTest  {
     final ValidationEngine validationEngine = mock(ValidationEngine.class);
     when(validationEngine.getContext()).thenReturn(workerContext);
 
+   final ValidationEngine.ValidationEngineBuilder validationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);;
+
     final ValidationService validationService = new ValidationService() {
       @Override
       protected ValidationEngine.ValidationEngineBuilder getValidationEngineBuilder() {
-
-        ValidationEngine.ValidationEngineBuilder validationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);
-
         when(validationEngineBuilder.withTHO(anyBoolean())).thenReturn(validationEngineBuilder);
         when(validationEngineBuilder.withVersion(isNull())).thenReturn(validationEngineBuilder);
         when(validationEngineBuilder.withTimeTracker(any())).thenReturn(validationEngineBuilder);
@@ -261,10 +269,10 @@ class ValidationServiceTest  {
       }
     };
 
-
-
     CliContext cliContext = new CliContext();
 
     validationService.buildValidationEngine(cliContext, null, timeTracker);
+
+    verify(validationEngineBuilder).withUserAgent(eq("fhir/validator/" + VersionUtil.getVersion()));
   }
 }

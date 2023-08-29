@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,113 +31,159 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum RelatedArtifactType {
 
-        /**
-         * Additional documentation for the knowledge resource. This would include additional instructions on usage as well as additional information on clinical context or appropriateness.
-         */
-        DOCUMENTATION, 
-        /**
-         * A summary of the justification for the knowledge resource including supporting evidence, relevant guidelines, or other clinically important information. This information is intended to provide a way to make the justification for the knowledge resource available to the consumer of interventions or results produced by the knowledge resource.
-         */
-        JUSTIFICATION, 
-        /**
-         * Bibliographic citation for papers, references, or other relevant material for the knowledge resource. This is intended to allow for citation of related material, but that was not necessarily specifically prepared in connection with this knowledge resource.
-         */
-        CITATION, 
-        /**
-         * The previous version of the knowledge resource.
-         */
-        PREDECESSOR, 
-        /**
-         * The next version of the knowledge resource.
-         */
-        SUCCESSOR, 
-        /**
-         * The knowledge resource is derived from the related artifact. This is intended to capture the relationship in which a particular knowledge resource is based on the content of another artifact, but is modified to capture either a different set of overall requirements, or a more specific set of requirements such as those involved in a particular institution or clinical setting.
-         */
-        DERIVEDFROM, 
-        /**
-         * The knowledge resource depends on the given related artifact.
-         */
-        DEPENDSON, 
-        /**
-         * The knowledge resource is composed of the given related artifact.
-         */
-        COMPOSEDOF, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static RelatedArtifactType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("documentation".equals(codeString))
-          return DOCUMENTATION;
-        if ("justification".equals(codeString))
-          return JUSTIFICATION;
-        if ("citation".equals(codeString))
-          return CITATION;
-        if ("predecessor".equals(codeString))
-          return PREDECESSOR;
-        if ("successor".equals(codeString))
-          return SUCCESSOR;
-        if ("derived-from".equals(codeString))
-          return DERIVEDFROM;
-        if ("depends-on".equals(codeString))
-          return DEPENDSON;
-        if ("composed-of".equals(codeString))
-          return COMPOSEDOF;
-        throw new FHIRException("Unknown RelatedArtifactType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DOCUMENTATION: return "documentation";
-            case JUSTIFICATION: return "justification";
-            case CITATION: return "citation";
-            case PREDECESSOR: return "predecessor";
-            case SUCCESSOR: return "successor";
-            case DERIVEDFROM: return "derived-from";
-            case DEPENDSON: return "depends-on";
-            case COMPOSEDOF: return "composed-of";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/related-artifact-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DOCUMENTATION: return "Additional documentation for the knowledge resource. This would include additional instructions on usage as well as additional information on clinical context or appropriateness.";
-            case JUSTIFICATION: return "A summary of the justification for the knowledge resource including supporting evidence, relevant guidelines, or other clinically important information. This information is intended to provide a way to make the justification for the knowledge resource available to the consumer of interventions or results produced by the knowledge resource.";
-            case CITATION: return "Bibliographic citation for papers, references, or other relevant material for the knowledge resource. This is intended to allow for citation of related material, but that was not necessarily specifically prepared in connection with this knowledge resource.";
-            case PREDECESSOR: return "The previous version of the knowledge resource.";
-            case SUCCESSOR: return "The next version of the knowledge resource.";
-            case DERIVEDFROM: return "The knowledge resource is derived from the related artifact. This is intended to capture the relationship in which a particular knowledge resource is based on the content of another artifact, but is modified to capture either a different set of overall requirements, or a more specific set of requirements such as those involved in a particular institution or clinical setting.";
-            case DEPENDSON: return "The knowledge resource depends on the given related artifact.";
-            case COMPOSEDOF: return "The knowledge resource is composed of the given related artifact.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DOCUMENTATION: return "Documentation";
-            case JUSTIFICATION: return "Justification";
-            case CITATION: return "Citation";
-            case PREDECESSOR: return "Predecessor";
-            case SUCCESSOR: return "Successor";
-            case DERIVEDFROM: return "Derived From";
-            case DEPENDSON: return "Depends On";
-            case COMPOSEDOF: return "Composed Of";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Additional documentation for the knowledge resource. This would include
+   * additional instructions on usage as well as additional information on
+   * clinical context or appropriateness.
+   */
+  DOCUMENTATION,
+  /**
+   * A summary of the justification for the knowledge resource including
+   * supporting evidence, relevant guidelines, or other clinically important
+   * information. This information is intended to provide a way to make the
+   * justification for the knowledge resource available to the consumer of
+   * interventions or results produced by the knowledge resource.
+   */
+  JUSTIFICATION,
+  /**
+   * Bibliographic citation for papers, references, or other relevant material for
+   * the knowledge resource. This is intended to allow for citation of related
+   * material, but that was not necessarily specifically prepared in connection
+   * with this knowledge resource.
+   */
+  CITATION,
+  /**
+   * The previous version of the knowledge resource.
+   */
+  PREDECESSOR,
+  /**
+   * The next version of the knowledge resource.
+   */
+  SUCCESSOR,
+  /**
+   * The knowledge resource is derived from the related artifact. This is intended
+   * to capture the relationship in which a particular knowledge resource is based
+   * on the content of another artifact, but is modified to capture either a
+   * different set of overall requirements, or a more specific set of requirements
+   * such as those involved in a particular institution or clinical setting.
+   */
+  DERIVEDFROM,
+  /**
+   * The knowledge resource depends on the given related artifact.
+   */
+  DEPENDSON,
+  /**
+   * The knowledge resource is composed of the given related artifact.
+   */
+  COMPOSEDOF,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static RelatedArtifactType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("documentation".equals(codeString))
+      return DOCUMENTATION;
+    if ("justification".equals(codeString))
+      return JUSTIFICATION;
+    if ("citation".equals(codeString))
+      return CITATION;
+    if ("predecessor".equals(codeString))
+      return PREDECESSOR;
+    if ("successor".equals(codeString))
+      return SUCCESSOR;
+    if ("derived-from".equals(codeString))
+      return DERIVEDFROM;
+    if ("depends-on".equals(codeString))
+      return DEPENDSON;
+    if ("composed-of".equals(codeString))
+      return COMPOSEDOF;
+    throw new FHIRException("Unknown RelatedArtifactType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case DOCUMENTATION:
+      return "documentation";
+    case JUSTIFICATION:
+      return "justification";
+    case CITATION:
+      return "citation";
+    case PREDECESSOR:
+      return "predecessor";
+    case SUCCESSOR:
+      return "successor";
+    case DERIVEDFROM:
+      return "derived-from";
+    case DEPENDSON:
+      return "depends-on";
+    case COMPOSEDOF:
+      return "composed-of";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/related-artifact-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case DOCUMENTATION:
+      return "Additional documentation for the knowledge resource. This would include additional instructions on usage as well as additional information on clinical context or appropriateness.";
+    case JUSTIFICATION:
+      return "A summary of the justification for the knowledge resource including supporting evidence, relevant guidelines, or other clinically important information. This information is intended to provide a way to make the justification for the knowledge resource available to the consumer of interventions or results produced by the knowledge resource.";
+    case CITATION:
+      return "Bibliographic citation for papers, references, or other relevant material for the knowledge resource. This is intended to allow for citation of related material, but that was not necessarily specifically prepared in connection with this knowledge resource.";
+    case PREDECESSOR:
+      return "The previous version of the knowledge resource.";
+    case SUCCESSOR:
+      return "The next version of the knowledge resource.";
+    case DERIVEDFROM:
+      return "The knowledge resource is derived from the related artifact. This is intended to capture the relationship in which a particular knowledge resource is based on the content of another artifact, but is modified to capture either a different set of overall requirements, or a more specific set of requirements such as those involved in a particular institution or clinical setting.";
+    case DEPENDSON:
+      return "The knowledge resource depends on the given related artifact.";
+    case COMPOSEDOF:
+      return "The knowledge resource is composed of the given related artifact.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case DOCUMENTATION:
+      return "Documentation";
+    case JUSTIFICATION:
+      return "Justification";
+    case CITATION:
+      return "Citation";
+    case PREDECESSOR:
+      return "Predecessor";
+    case SUCCESSOR:
+      return "Successor";
+    case DERIVEDFROM:
+      return "Derived From";
+    case DEPENDSON:
+      return "Depends On";
+    case COMPOSEDOF:
+      return "Composed Of";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

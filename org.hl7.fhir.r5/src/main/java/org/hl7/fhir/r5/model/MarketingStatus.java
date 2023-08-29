@@ -367,7 +367,7 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
           return this.dateRange;
         }
         else if (name.equals("restoreDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MarketingStatus.restoreDate");
+          throw new FHIRException("Cannot call addChild on a singleton property MarketingStatus.restoreDate");
         }
         else
           return super.addChild(name);

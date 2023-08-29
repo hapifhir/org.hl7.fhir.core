@@ -1,13 +1,13 @@
 package org.hl7.fhir.validation.cli.services;
 
+import java.io.IOException;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.hl7.fhir.validation.ValidationEngine;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 class SessionCacheTest {
 

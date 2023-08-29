@@ -842,7 +842,7 @@ The dosage instructions should reflect the dosage of the medication that was adm
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicationAdministration.text");
+          throw new FHIRException("Cannot call addChild on a singleton property MedicationAdministration.text");
         }
         else if (name.equals("site")) {
           this.site = new CodeableConcept();
@@ -2430,7 +2430,7 @@ The dosage instructions should reflect the dosage of the medication that was adm
           return addPartOf();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicationAdministration.status");
+          throw new FHIRException("Cannot call addChild on a singleton property MedicationAdministration.status");
         }
         else if (name.equals("category")) {
           this.category = new CodeableConcept();
@@ -2467,7 +2467,7 @@ The dosage instructions should reflect the dosage of the medication that was adm
           return addPerformer();
         }
         else if (name.equals("notGiven")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicationAdministration.notGiven");
+          throw new FHIRException("Cannot call addChild on a singleton property MedicationAdministration.notGiven");
         }
         else if (name.equals("reasonNotGiven")) {
           return addReasonNotGiven();

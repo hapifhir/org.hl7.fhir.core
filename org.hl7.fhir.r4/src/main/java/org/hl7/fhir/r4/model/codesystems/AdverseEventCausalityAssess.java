@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,95 +31,137 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AdverseEventCausalityAssess {
 
-        /**
-         * i) Event or laboratory test abnormality, with plausible time relationship to drug intake; ii) Cannot be explained by disease or other drugs; iii) Response to withdrawal plausible (pharmacologically, pathologically); iv) Event definitive pharmacologically or phenomenologically (i.e. an objective and specific medical disorder or a recognized pharmacological phenomenon); or v) Re-challenge satisfactory, if necessary.
-         */
-        CERTAIN, 
-        /**
-         * i) Event or laboratory test abnormality, with reasonable time relationship to drug intake; ii) Unlikely to be attributed to disease or other drugs; iii) Response to withdrawal clinically reasonable; or iv) Re-challenge not required.
-         */
-        PROBABLYLIKELY, 
-        /**
-         * i) Event or laboratory test abnormality, with reasonable time relationship to drug intake; ii) Could also be explained by disease or other drugs; or iii) Information on drug withdrawal may be lacking or unclear.
-         */
-        POSSIBLE, 
-        /**
-         * i) Event or laboratory test abnormality, with a time to drug intake that makes a relationship improbable (but not impossible); or ii) Disease or other drugs provide plausible explanations.
-         */
-        UNLIKELY, 
-        /**
-         * i) Event or laboratory test abnormality; ii) More data for proper assessment needed; or iii) Additional data under examination.
-         */
-        CONDITIONALCLASSIFIED, 
-        /**
-         * i) Report suggesting an adverse reaction; ii) Cannot be judged because information is insufficient or contradictory; or iii) Data cannot be supplemented or verified.
-         */
-        UNASSESSABLEUNCLASSIFIABLE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static AdverseEventCausalityAssess fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("Certain".equals(codeString))
-          return CERTAIN;
-        if ("Probably-Likely".equals(codeString))
-          return PROBABLYLIKELY;
-        if ("Possible".equals(codeString))
-          return POSSIBLE;
-        if ("Unlikely".equals(codeString))
-          return UNLIKELY;
-        if ("Conditional-Classified".equals(codeString))
-          return CONDITIONALCLASSIFIED;
-        if ("Unassessable-Unclassifiable".equals(codeString))
-          return UNASSESSABLEUNCLASSIFIABLE;
-        throw new FHIRException("Unknown AdverseEventCausalityAssess code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case CERTAIN: return "Certain";
-            case PROBABLYLIKELY: return "Probably-Likely";
-            case POSSIBLE: return "Possible";
-            case UNLIKELY: return "Unlikely";
-            case CONDITIONALCLASSIFIED: return "Conditional-Classified";
-            case UNASSESSABLEUNCLASSIFIABLE: return "Unassessable-Unclassifiable";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/adverse-event-causality-assess";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case CERTAIN: return "i) Event or laboratory test abnormality, with plausible time relationship to drug intake; ii) Cannot be explained by disease or other drugs; iii) Response to withdrawal plausible (pharmacologically, pathologically); iv) Event definitive pharmacologically or phenomenologically (i.e. an objective and specific medical disorder or a recognized pharmacological phenomenon); or v) Re-challenge satisfactory, if necessary.";
-            case PROBABLYLIKELY: return "i) Event or laboratory test abnormality, with reasonable time relationship to drug intake; ii) Unlikely to be attributed to disease or other drugs; iii) Response to withdrawal clinically reasonable; or iv) Re-challenge not required.";
-            case POSSIBLE: return "i) Event or laboratory test abnormality, with reasonable time relationship to drug intake; ii) Could also be explained by disease or other drugs; or iii) Information on drug withdrawal may be lacking or unclear.";
-            case UNLIKELY: return "i) Event or laboratory test abnormality, with a time to drug intake that makes a relationship improbable (but not impossible); or ii) Disease or other drugs provide plausible explanations.";
-            case CONDITIONALCLASSIFIED: return "i) Event or laboratory test abnormality; ii) More data for proper assessment needed; or iii) Additional data under examination.";
-            case UNASSESSABLEUNCLASSIFIABLE: return "i) Report suggesting an adverse reaction; ii) Cannot be judged because information is insufficient or contradictory; or iii) Data cannot be supplemented or verified.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case CERTAIN: return "Certain";
-            case PROBABLYLIKELY: return "Probably/Likely";
-            case POSSIBLE: return "Possible";
-            case UNLIKELY: return "Unlikely";
-            case CONDITIONALCLASSIFIED: return "Conditional/Classified";
-            case UNASSESSABLEUNCLASSIFIABLE: return "Unassessable/Unclassifiable";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * i) Event or laboratory test abnormality, with plausible time relationship to
+   * drug intake; ii) Cannot be explained by disease or other drugs; iii) Response
+   * to withdrawal plausible (pharmacologically, pathologically); iv) Event
+   * definitive pharmacologically or phenomenologically (i.e. an objective and
+   * specific medical disorder or a recognized pharmacological phenomenon); or v)
+   * Re-challenge satisfactory, if necessary.
+   */
+  CERTAIN,
+  /**
+   * i) Event or laboratory test abnormality, with reasonable time relationship to
+   * drug intake; ii) Unlikely to be attributed to disease or other drugs; iii)
+   * Response to withdrawal clinically reasonable; or iv) Re-challenge not
+   * required.
+   */
+  PROBABLYLIKELY,
+  /**
+   * i) Event or laboratory test abnormality, with reasonable time relationship to
+   * drug intake; ii) Could also be explained by disease or other drugs; or iii)
+   * Information on drug withdrawal may be lacking or unclear.
+   */
+  POSSIBLE,
+  /**
+   * i) Event or laboratory test abnormality, with a time to drug intake that
+   * makes a relationship improbable (but not impossible); or ii) Disease or other
+   * drugs provide plausible explanations.
+   */
+  UNLIKELY,
+  /**
+   * i) Event or laboratory test abnormality; ii) More data for proper assessment
+   * needed; or iii) Additional data under examination.
+   */
+  CONDITIONALCLASSIFIED,
+  /**
+   * i) Report suggesting an adverse reaction; ii) Cannot be judged because
+   * information is insufficient or contradictory; or iii) Data cannot be
+   * supplemented or verified.
+   */
+  UNASSESSABLEUNCLASSIFIABLE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static AdverseEventCausalityAssess fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("Certain".equals(codeString))
+      return CERTAIN;
+    if ("Probably-Likely".equals(codeString))
+      return PROBABLYLIKELY;
+    if ("Possible".equals(codeString))
+      return POSSIBLE;
+    if ("Unlikely".equals(codeString))
+      return UNLIKELY;
+    if ("Conditional-Classified".equals(codeString))
+      return CONDITIONALCLASSIFIED;
+    if ("Unassessable-Unclassifiable".equals(codeString))
+      return UNASSESSABLEUNCLASSIFIABLE;
+    throw new FHIRException("Unknown AdverseEventCausalityAssess code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case CERTAIN:
+      return "Certain";
+    case PROBABLYLIKELY:
+      return "Probably-Likely";
+    case POSSIBLE:
+      return "Possible";
+    case UNLIKELY:
+      return "Unlikely";
+    case CONDITIONALCLASSIFIED:
+      return "Conditional-Classified";
+    case UNASSESSABLEUNCLASSIFIABLE:
+      return "Unassessable-Unclassifiable";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/adverse-event-causality-assess";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case CERTAIN:
+      return "i) Event or laboratory test abnormality, with plausible time relationship to drug intake; ii) Cannot be explained by disease or other drugs; iii) Response to withdrawal plausible (pharmacologically, pathologically); iv) Event definitive pharmacologically or phenomenologically (i.e. an objective and specific medical disorder or a recognized pharmacological phenomenon); or v) Re-challenge satisfactory, if necessary.";
+    case PROBABLYLIKELY:
+      return "i) Event or laboratory test abnormality, with reasonable time relationship to drug intake; ii) Unlikely to be attributed to disease or other drugs; iii) Response to withdrawal clinically reasonable; or iv) Re-challenge not required.";
+    case POSSIBLE:
+      return "i) Event or laboratory test abnormality, with reasonable time relationship to drug intake; ii) Could also be explained by disease or other drugs; or iii) Information on drug withdrawal may be lacking or unclear.";
+    case UNLIKELY:
+      return "i) Event or laboratory test abnormality, with a time to drug intake that makes a relationship improbable (but not impossible); or ii) Disease or other drugs provide plausible explanations.";
+    case CONDITIONALCLASSIFIED:
+      return "i) Event or laboratory test abnormality; ii) More data for proper assessment needed; or iii) Additional data under examination.";
+    case UNASSESSABLEUNCLASSIFIABLE:
+      return "i) Report suggesting an adverse reaction; ii) Cannot be judged because information is insufficient or contradictory; or iii) Data cannot be supplemented or verified.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case CERTAIN:
+      return "Certain";
+    case PROBABLYLIKELY:
+      return "Probably/Likely";
+    case POSSIBLE:
+      return "Possible";
+    case UNLIKELY:
+      return "Unlikely";
+    case CONDITIONALCLASSIFIED:
+      return "Conditional/Classified";
+    case UNASSESSABLEUNCLASSIFIABLE:
+      return "Unassessable/Unclassifiable";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

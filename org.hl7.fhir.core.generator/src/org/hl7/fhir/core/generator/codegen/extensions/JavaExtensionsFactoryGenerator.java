@@ -3,7 +3,6 @@ package org.hl7.fhir.core.generator.codegen.extensions;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -12,17 +11,12 @@ import java.util.Set;
 import org.hl7.fhir.core.generator.analysis.AnalysisElementInfo;
 import org.hl7.fhir.core.generator.codegen.Configuration;
 import org.hl7.fhir.core.generator.codegen.JavaBaseGenerator;
-import org.hl7.fhir.core.generator.codegen.extensions.JavaExtensionsFactoryGenerator.TypeTuple;
 import org.hl7.fhir.core.generator.engine.Definitions;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionContextComponent;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
 
 public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
 

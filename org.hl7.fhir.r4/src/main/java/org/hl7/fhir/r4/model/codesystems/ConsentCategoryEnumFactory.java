@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ConsentCategoryEnumFactory implements EnumFactory<ConsentCategory> {
@@ -60,7 +56,7 @@ public class ConsentCategoryEnumFactory implements EnumFactory<ConsentCategory> 
       return ConsentCategory.RSDID;
     if ("rsreid".equals(codeString))
       return ConsentCategory.RSREID;
-    throw new IllegalArgumentException("Unknown ConsentCategory code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ConsentCategory code '" + codeString + "'");
   }
 
   public String toCode(ConsentCategory code) {
@@ -85,8 +81,8 @@ public class ConsentCategoryEnumFactory implements EnumFactory<ConsentCategory> 
     return "?";
   }
 
-    public String toSystem(ConsentCategory code) {
-      return code.getSystem();
-      }
+  public String toSystem(ConsentCategory code) {
+    return code.getSystem();
+  }
 
 }

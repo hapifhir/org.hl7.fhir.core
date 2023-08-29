@@ -281,6 +281,7 @@ public class FHIRPathEngine {
   private boolean doNotEnforceAsSingletonRule;
   private boolean doNotEnforceAsCaseSensitive;
   private boolean allowDoubleQuotes;
+  private List<String> typeWarnings = new ArrayList<>();
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -656,7 +657,8 @@ public class FHIRPathEngine {
    * @throws PathEngineException 
    * @if the path is not valid
    */
-  public TypeDetails checkOnTypes(Object appContext, String resourceType, List<String> typeList, ExpressionNode expr) throws FHIRLexerException, PathEngineException, DefinitionException {
+  public TypeDetails checkOnTypes(Object appContext, String resourceType, List<String> typeList, ExpressionNode expr, List<String> warnings) throws FHIRLexerException, PathEngineException, DefinitionException {
+    typeWarnings.clear();
 
     // if context is a path that refers to a type, do that conversion now 
     TypeDetails types = new TypeDetails(CollectionStatus.SINGLETON);
@@ -666,7 +668,7 @@ public class FHIRPathEngine {
         if (sd == null) {
           throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT, t);        
         }
-        types = new TypeDetails(CollectionStatus.SINGLETON, sd.getUrl());
+        types.addType(sd.getUrl());
       } else {
         String ctxt = t.substring(0, t.indexOf('.'));
         StructureDefinition sd = cu.findType(ctxt);
@@ -678,18 +680,19 @@ public class FHIRPathEngine {
           throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT_ELEMENT, t);
         }
         if (ed.fixedType != null) { 
-          types = new TypeDetails(CollectionStatus.SINGLETON, ed.fixedType);
+          types.addType(ed.fixedType);
         } else if (ed.getDefinition().getType().isEmpty() || isAbstractType(ed.getDefinition().getType())) { 
-          types = new TypeDetails(CollectionStatus.SINGLETON, sd.getType()+"#"+t);
+          types.addType(sd.getType()+"#"+t);
         } else {
-          types = new TypeDetails(CollectionStatus.SINGLETON);
           for (TypeRefComponent tt : ed.getDefinition().getType()) { 
             types.addType(tt.getCode());
           }
         }
       }
     }
-    return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, false);
+    TypeDetails res = executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, false);
+    warnings.addAll(typeWarnings);
+    return res;
   }
   
   /**
@@ -2017,18 +2020,54 @@ public class FHIRPathEngine {
   }
 
 
+  private void checkCardinalityForComparabilitySame(TypeDetails left, Operation operation, TypeDetails right, ExpressionNode expr) {
+    if (left.isList() && !right.isList()) {
+      typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_LEFT, expr.toString()));
+    } else if (!left.isList() && right.isList()) {
+      typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_RIGHT, expr.toString()));
+    }
+  }
+
+  private void checkCardinalityForSingle(TypeDetails left, Operation operation, TypeDetails right, ExpressionNode expr) {
+    if (left.isList()) {
+      typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_LEFT, expr.toString()));
+    } 
+    if (right.isList()) {
+      typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_RIGHT, expr.toString()));
+    }
+  }
+  
   private TypeDetails operateTypes(TypeDetails left, Operation operation, TypeDetails right, ExpressionNode expr) {
     switch (operation) {
-    case Equals: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case Equivalent: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case NotEquals: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case NotEquivalent: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case LessThan: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case Greater: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case LessOrEqual: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case GreaterOrEqual: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case Is: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    case Equals: 
+      checkCardinalityForComparabilitySame(left, operation, right, expr);
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    case Equivalent: 
+      checkCardinalityForComparabilitySame(left, operation, right, expr);
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    case NotEquals: 
+      checkCardinalityForComparabilitySame(left, operation, right, expr);
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    case NotEquivalent: 
+      checkCardinalityForComparabilitySame(left, operation, right, expr);
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    case LessThan: 
+      checkCardinalityForSingle(left, operation, right, expr);
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    case Greater: 
+      checkCardinalityForSingle(left, operation, right, expr);
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    case LessOrEqual: 
+      checkCardinalityForSingle(left, operation, right, expr);
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    case GreaterOrEqual: 
+      checkCardinalityForSingle(left, operation, right, expr);
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    case Is: 
+      checkCardinalityForSingle(left, operation, right, expr);
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case As: 
+      checkCardinalityForSingle(left, operation, right, expr);
       TypeDetails td = new TypeDetails(CollectionStatus.SINGLETON, right.getTypes());
       if (td.typesHaveTargets()) {
         td.addTargets(left.getTargets());
@@ -2040,6 +2079,7 @@ public class FHIRPathEngine {
     case Xor: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Implies : return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Times: 
+      checkCardinalityForSingle(left, operation, right, expr);
       TypeDetails result = new TypeDetails(CollectionStatus.SINGLETON);
       if (left.hasType(worker, "integer") && right.hasType(worker, "integer")) {
         result.addType(TypeDetails.FP_Integer);
@@ -2048,6 +2088,7 @@ public class FHIRPathEngine {
       }
       return result;
     case DivideBy: 
+      checkCardinalityForSingle(left, operation, right, expr);
       result = new TypeDetails(CollectionStatus.SINGLETON);
       if (left.hasType(worker, "integer") && right.hasType(worker, "integer")) {
         result.addType(TypeDetails.FP_Decimal);
@@ -2056,9 +2097,11 @@ public class FHIRPathEngine {
       }
       return result;
     case Concatenate:
+      checkCardinalityForSingle(left, operation, right, expr);
       result = new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
       return result;
     case Plus:
+      checkCardinalityForSingle(left, operation, right, expr);
       result = new TypeDetails(CollectionStatus.SINGLETON);
       if (left.hasType(worker, "integer") && right.hasType(worker, "integer")) {
         result.addType(TypeDetails.FP_Integer);
@@ -2075,6 +2118,7 @@ public class FHIRPathEngine {
       }
       return result;
     case Minus:
+      checkCardinalityForSingle(left, operation, right, expr);
       result = new TypeDetails(CollectionStatus.SINGLETON);
       if (left.hasType(worker, "integer") && right.hasType(worker, "integer")) {
         result.addType(TypeDetails.FP_Integer);
@@ -2092,6 +2136,7 @@ public class FHIRPathEngine {
       return result;
     case Div: 
     case Mod: 
+      checkCardinalityForSingle(left, operation, right, expr);
       result = new TypeDetails(CollectionStatus.SINGLETON);
       if (left.hasType(worker, "integer") && right.hasType(worker, "integer")) {
         result.addType(TypeDetails.FP_Integer);
@@ -3222,7 +3267,7 @@ public class FHIRPathEngine {
     if (atEntry && Character.isUpperCase(exp.getName().charAt(0)) && hashTail(type).equals(exp.getName())) { // special case for start up
       return new TypeDetails(CollectionStatus.SINGLETON, type);
     }
-    TypeDetails result = new TypeDetails(null);
+    TypeDetails result = new TypeDetails(focus.getCollectionStatus());
     getChildTypesByName(type, exp.getName(), result, exp, focus, elementDependencies);
     return result;
   }
@@ -3265,6 +3310,10 @@ public class FHIRPathEngine {
       } while (changed);
       paramTypes.clear();
       paramTypes.add(base);
+    } else if (exp.getFunction() == Function.Where || exp.getFunction() == Function.Select || exp.getFunction() == Function.Exists || 
+        exp.getFunction() == Function.All || exp.getFunction() == Function.AllTrue || exp.getFunction() == Function.AnyTrue 
+        || exp.getFunction() == Function.AllFalse || exp.getFunction() == Function.AnyFalse) {
+      evaluateParameters(context, focus.toSingleton(), exp, elementDependencies, paramTypes, false);
     } else {
       evaluateParameters(context, focus, exp, elementDependencies, paramTypes, false);
     }
@@ -3337,8 +3386,12 @@ public class FHIRPathEngine {
       return td;
     }
     case OfType : { 
-      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
-      TypeDetails td = new TypeDetails(CollectionStatus.SINGLETON, exp.getParameters().get(0).getName());
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+      String tn = exp.getParameters().get(0).getName();
+      if (typeCastIsImpossible(focus, tn)) {
+        typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_OFTYPE_IMPOSSIBLE, focus.describeMin(), tn, exp.toString()));
+      }
+      TypeDetails td = new TypeDetails(CollectionStatus.SINGLETON, tn);
       if (td.typesHaveTargets()) {
         td.addTargets(focus.getTargets());
       }
@@ -3491,7 +3544,7 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_DateTime);
     case Resolve : {
       checkContextReference(focus, "resolve", exp);
-      return new TypeDetails(CollectionStatus.ORDERED, "DomainResource"); 
+      return new TypeDetails(focus.getCollectionStatus(), "Resource"); 
     }
     case Extension : {
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
@@ -3655,6 +3708,10 @@ public class FHIRPathEngine {
       break;
     }
     throw new Error("not Implemented yet");
+  }
+
+  private boolean typeCastIsImpossible(TypeDetails focus, String tn) {
+    return !focus.hasType(tn);
   }
 
   private boolean isExpressionParameter(ExpressionNode exp, int i) {
@@ -4769,7 +4826,7 @@ public class FHIRPathEngine {
     for (Base item : focus) {
       result.add(item);
     }
-    for (Base item : execute(context, focus, exp.getParameters().get(0), true)) {
+    for (Base item : execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true)) {
       result.add(item);
     }
     return result;
@@ -4777,7 +4834,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcIntersect(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    List<Base> other = execute(context, focus, exp.getParameters().get(0), true);
+    List<Base> other = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
 
     for (Base item : focus) {
       if (!doContains(result, item) && doContains(other, item)) {
@@ -6268,7 +6325,6 @@ public class FHIRPathEngine {
         SourcedChildDefinitions childDefinitions = profileUtilities.getChildMap(sd, element.getElement());
         for (ElementDefinition t : childDefinitions.getList()) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
-            System.out.println("t: "+t.getId());
             StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty() || t.getType().get(0).getProfile().isEmpty()) ?
                 null : worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue(), profile);
             while (exsd != null && !exsd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {

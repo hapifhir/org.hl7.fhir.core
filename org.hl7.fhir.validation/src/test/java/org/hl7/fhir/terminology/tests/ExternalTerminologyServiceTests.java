@@ -22,13 +22,13 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
 
 import org.junit.Ignore;
+
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -50,15 +50,16 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     private JsonObject test;
   }
 
-  private static final String SERVER = FhirSettings.getTxFhirDevelopment();
-//  private static final String SERVER = FhirSettings.getTxFhirLocal();  
-//    private static final String SERVER = "https://r4.ontoserver.csiro.au/fhir";
+  private static final String SERVER = FhirSettings.getTxFhirDevelopment();  
+// private static final String SERVER = FhirSettings.getTxFhirLocal();  
+// private static final String SERVER = "https://r4.ontoserver.csiro.au/fhir";
 
   
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
 
     String contents = TestingUtilities.loadTestResource("tx", "test-cases.json");
+    externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(TestingUtilities.loadTestResource("tx", "messages-tx.fhir.org.json"));
 
     Map<String, JsonObjectPair> examples = new HashMap<String, JsonObjectPair>();
     manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
@@ -82,9 +83,11 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   }
 
   private static org.hl7.fhir.utilities.json.model.JsonObject manifest;
+  private static org.hl7.fhir.utilities.json.model.JsonObject externals;
   private JsonObjectPair setup;
   private String version = "5.0.0";
   private static TxTester tester;
+  private List<String> modes = new ArrayList<>();
 
   public ExternalTerminologyServiceTests(String name, JsonObjectPair setup) {
     this.setup = setup;
@@ -96,9 +99,9 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   public void test() throws Exception {
     if (SERVER != null) {
       if (tester == null) {
-        tester = new TxTester(this, SERVER, true);
+        tester = new TxTester(this, SERVER, true, externals);
       }
-      String err = tester.executeTest(setup.suite, setup.test);
+      String err = tester.executeTest(setup.suite, setup.test, modes);
       Assertions.assertTrue(err == null, err);
     } else {
       Assertions.assertTrue(true);

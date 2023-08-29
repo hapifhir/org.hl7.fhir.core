@@ -12,7 +12,6 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageClient;
 import org.hl7.fhir.utilities.npm.PackageInfo;
 import org.hl7.fhir.utilities.npm.PackageServer;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 
 public class PackageValidator {
 

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,88 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum Participantrequired {
 
-        /**
-         * The participant is required to attend the appointment.
-         */
-        REQUIRED, 
-        /**
-         * The participant may optionally attend the appointment.
-         */
-        OPTIONAL, 
-        /**
-         * The participant is excluded from the appointment, and may not be informed of the appointment taking place. (Appointment is about them, not for them - such as 2 doctors discussing results about a patient's test).
-         */
-        INFORMATIONONLY, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static Participantrequired fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("required".equals(codeString))
-          return REQUIRED;
-        if ("optional".equals(codeString))
-          return OPTIONAL;
-        if ("information-only".equals(codeString))
-          return INFORMATIONONLY;
-        throw new FHIRException("Unknown Participantrequired code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case REQUIRED: return "required";
-            case OPTIONAL: return "optional";
-            case INFORMATIONONLY: return "information-only";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/participantrequired";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case REQUIRED: return "The participant is required to attend the appointment.";
-            case OPTIONAL: return "The participant may optionally attend the appointment.";
-            case INFORMATIONONLY: return "The participant is excluded from the appointment, and may not be informed of the appointment taking place. (Appointment is about them, not for them - such as 2 doctors discussing results about a patient's test).";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case REQUIRED: return "Required";
-            case OPTIONAL: return "Optional";
-            case INFORMATIONONLY: return "Information Only";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The participant is required to attend the appointment.
+   */
+  REQUIRED,
+  /**
+   * The participant may optionally attend the appointment.
+   */
+  OPTIONAL,
+  /**
+   * The participant is excluded from the appointment, and may not be informed of
+   * the appointment taking place. (Appointment is about them, not for them - such
+   * as 2 doctors discussing results about a patient's test).
+   */
+  INFORMATIONONLY,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static Participantrequired fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("required".equals(codeString))
+      return REQUIRED;
+    if ("optional".equals(codeString))
+      return OPTIONAL;
+    if ("information-only".equals(codeString))
+      return INFORMATIONONLY;
+    throw new FHIRException("Unknown Participantrequired code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case REQUIRED:
+      return "required";
+    case OPTIONAL:
+      return "optional";
+    case INFORMATIONONLY:
+      return "information-only";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/participantrequired";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case REQUIRED:
+      return "The participant is required to attend the appointment.";
+    case OPTIONAL:
+      return "The participant may optionally attend the appointment.";
+    case INFORMATIONONLY:
+      return "The participant is excluded from the appointment, and may not be informed of the appointment taking place. (Appointment is about them, not for them - such as 2 doctors discussing results about a patient's test).";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case REQUIRED:
+      return "Required";
+    case OPTIONAL:
+      return "Optional";
+    case INFORMATIONONLY:
+      return "Information Only";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

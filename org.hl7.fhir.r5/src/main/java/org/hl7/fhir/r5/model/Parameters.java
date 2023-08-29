@@ -1200,7 +1200,7 @@ public class Parameters extends Resource implements IBaseParameters {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Parameters.parameter.name");
+          throw new FHIRException("Cannot call addChild on a singleton property Parameters.parameter.name");
         }
         else if (name.equals("valueBase64Binary")) {
           this.value = new Base64BinaryType();
@@ -1750,6 +1750,14 @@ public String toString() {
   public boolean hasParameterValue(String name) {
     for (ParametersParameterComponent p : getParameter()) {
       if (p.getName().equals(name) && p.hasValue())
+        return true;
+    }
+    return false;
+  } 
+
+  public boolean hasParameterValue(String name, String value) {
+    for (ParametersParameterComponent p : getParameter()) {
+      if (p.getName().equals(name) && p.hasValue() && value.equals(p.getValue().primitiveValue()))
         return true;
     }
     return false;

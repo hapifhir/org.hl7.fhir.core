@@ -9,7 +9,6 @@ import java.util.Objects;
 
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.cli.services.ValidatorWatchMode;
@@ -56,6 +55,8 @@ public class CliContext {
   private HtmlInMarkdownCheck htmlInMarkdownCheck = HtmlInMarkdownCheck.WARNING;
   @JsonProperty("allowDoubleQuotesInFHIRPath")  
   private boolean allowDoubleQuotesInFHIRPath = false;
+  @JsonProperty("checkIPSCodes")  
+  private boolean checkIPSCodes;
   @JsonProperty("langTransform")
   private String langTransform = null;
   @JsonProperty("map")
@@ -100,6 +101,8 @@ public class CliContext {
   private List<String> sources = new ArrayList<String>();
   @JsonProperty("inputs")
   private List<String> inputs = new ArrayList<String>();
+  @JsonProperty("modeParams")
+  private List<String> modeParams = new ArrayList<String>();
 
   @JsonProperty("mode")
   private EngineMode mode = EngineMode.VALIDATION;
@@ -315,6 +318,14 @@ public class CliContext {
     this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
   }
 
+  public boolean isCheckIPSCodes() {
+    return checkIPSCodes;
+  }
+
+  public void setCheckIPSCodes(boolean checkIPSCodes) {
+    this.checkIPSCodes = checkIPSCodes;
+  }
+
   @JsonProperty("locale")
   public String getLanguageCode() {
     return locale;
@@ -417,6 +428,12 @@ public class CliContext {
   @JsonProperty("inputs")
   public List<String> getInputs() {
     return inputs;
+  }
+  
+
+  @JsonProperty("modeParams")
+  public List<String> getModeParams() {
+    return modeParams;
   }
 
   @JsonProperty("sources")
@@ -727,6 +744,7 @@ public class CliContext {
       displayWarnings == that.displayWarnings &&
       wantInvariantsInMessages == that.wantInvariantsInMessages &&
       allowDoubleQuotesInFHIRPath == that.allowDoubleQuotesInFHIRPath &&
+      checkIPSCodes == that.checkIPSCodes &&
       Objects.equals(extensions, that.extensions) &&
       Objects.equals(map, that.map) &&
       Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck) &&
@@ -768,7 +786,7 @@ public class CliContext {
     return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
             noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
             targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars, watchMode, watchScanDelay, watchSettleTime,
-            htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath);
+            htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
   }
 
   @Override
@@ -821,6 +839,7 @@ public class CliContext {
       ", bundleValidationRules=" + bundleValidationRules +
       ", htmlInMarkdownCheck=" + htmlInMarkdownCheck +
       ", allowDoubleQuotesInFHIRPath=" + allowDoubleQuotesInFHIRPath +
+      ", checkIPSCodes=" + checkIPSCodes +
       ", watchMode=" + watchMode +
       ", watchSettleTime=" + watchSettleTime +
       ", watchScanDelay=" + watchScanDelay +

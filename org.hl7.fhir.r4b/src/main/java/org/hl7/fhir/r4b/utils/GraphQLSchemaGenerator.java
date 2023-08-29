@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.utils;
   
  */
 
-
-
 // todo:
 // - generate sort order parameters
 // - generate inherited search parameters
@@ -62,14 +60,18 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class GraphQLSchemaGenerator {
 
-  public enum FHIROperationType {READ, SEARCH, CREATE, UPDATE, DELETE};
-  
+  public enum FHIROperationType {
+    READ, SEARCH, CREATE, UPDATE, DELETE
+  };
+
   private static final String INNER_TYPE_NAME = "gql.type.name";
-  private static final Set<String> JSON_NUMBER_TYPES = new HashSet<String>() {{
-    add("decimal");
-    add("positiveInt");
-    add("unsignedInt");
-  }};
+  private static final Set<String> JSON_NUMBER_TYPES = new HashSet<String>() {
+    {
+      add("decimal");
+      add("positiveInt");
+      add("unsignedInt");
+    }
+  };
 
   IWorkerContext context;
   private ProfileUtilities profileUtilities;
@@ -79,23 +81,25 @@ public class GraphQLSchemaGenerator {
     super();
     this.context = context;
     this.version = version;
-    profileUtilities = new ProfileUtilities(context, null, null); 
+    profileUtilities = new ProfileUtilities(context, null, null);
   }
-  
+
   public void generateTypes(OutputStream stream) throws IOException, FHIRException {
     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
-    
+
     Map<String, StructureDefinition> pl = new HashMap<String, StructureDefinition>();
     Map<String, StructureDefinition> tl = new HashMap<String, StructureDefinition>();
     for (StructureDefinition sd : context.allStructures()) {
-      if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+      if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE
+          && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         pl.put(sd.getName(), sd);
       }
-      if (sd.getKind() == StructureDefinitionKind.COMPLEXTYPE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+      if (sd.getKind() == StructureDefinitionKind.COMPLEXTYPE
+          && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         tl.put(sd.getName(), sd);
       }
     }
-    writer.write("# FHIR GraphQL Schema. Version "+version+"\r\n\r\n");
+    writer.write("# FHIR GraphQL Schema. Version " + version + "\r\n\r\n");
     writer.write("# FHIR Defined Primitive types\r\n");
     for (String n : sorted(pl.keySet()))
       generatePrimitive(writer, pl.get(n));
@@ -103,7 +107,7 @@ public class GraphQLSchemaGenerator {
     writer.write("# FHIR Defined Search Parameter Types\r\n");
     for (SearchParamType dir : SearchParamType.values()) {
       if (dir != SearchParamType.NULL)
-        generateSearchParamType(writer, dir.toCode());      
+        generateSearchParamType(writer, dir.toCode());
     }
     writer.write("\r\n");
     generateElementBase(writer);
@@ -113,9 +117,10 @@ public class GraphQLSchemaGenerator {
     writer.close();
   }
 
-  public void generateResource(OutputStream stream, StructureDefinition sd, List<SearchParameter> parameters, EnumSet<FHIROperationType> operations) throws IOException, FHIRException {
+  public void generateResource(OutputStream stream, StructureDefinition sd, List<SearchParameter> parameters,
+      EnumSet<FHIROperationType> operations) throws IOException, FHIRException {
     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
-    writer.write("# FHIR GraphQL Schema. Version "+version+"\r\n\r\n");
+    writer.write("# FHIR GraphQL Schema. Version " + version + "\r\n\r\n");
     writer.write("# import * from 'types.graphql'\r\n\r\n");
     generateType(writer, sd);
     if (operations.contains(FHIROperationType.READ))
@@ -135,61 +140,62 @@ public class GraphQLSchemaGenerator {
   }
 
   private void generateCreate(BufferedWriter writer, String name) throws IOException {
-    writer.write("type "+name+"CreateType {\r\n");
-    writer.write("  "+name+"Create(");
-    param(writer, "resource", name+"Input", false, false);
-    writer.write("): "+name+"Creation\r\n");
+    writer.write("type " + name + "CreateType {\r\n");
+    writer.write("  " + name + "Create(");
+    param(writer, "resource", name + "Input", false, false);
+    writer.write("): " + name + "Creation\r\n");
     writer.write("}\r\n");
-    writer.write("\r\n");    
-    writer.write("type "+name+"Creation {\r\n");
+    writer.write("\r\n");
+    writer.write("type " + name + "Creation {\r\n");
     writer.write("  location: String\r\n");
-    writer.write("  resource: "+name+"\r\n");
+    writer.write("  resource: " + name + "\r\n");
     writer.write("  information: OperationOutcome\r\n");
     writer.write("}\r\n");
-    writer.write("\r\n");    
+    writer.write("\r\n");
   }
 
   private void generateUpdate(BufferedWriter writer, String name) throws IOException {
-    writer.write("type "+name+"UpdateType {\r\n");
-    writer.write("  "+name+"Update(");
+    writer.write("type " + name + "UpdateType {\r\n");
+    writer.write("  " + name + "Update(");
     param(writer, "id", "ID", false, false);
     writer.write(", ");
-    param(writer, "resource", name+"Input", false, false);
-    writer.write("): "+name+"Update\r\n");
+    param(writer, "resource", name + "Input", false, false);
+    writer.write("): " + name + "Update\r\n");
     writer.write("}\r\n");
-    writer.write("\r\n");    
-    writer.write("type "+name+"Update {\r\n");
-    writer.write("  resource: "+name+"\r\n");
+    writer.write("\r\n");
+    writer.write("type " + name + "Update {\r\n");
+    writer.write("  resource: " + name + "\r\n");
     writer.write("  information: OperationOutcome\r\n");
     writer.write("}\r\n");
-    writer.write("\r\n");    
+    writer.write("\r\n");
   }
 
   private void generateDelete(BufferedWriter writer, String name) throws IOException {
-    writer.write("type "+name+"DeleteType {\r\n");
-    writer.write("  "+name+"Delete(");
+    writer.write("type " + name + "DeleteType {\r\n");
+    writer.write("  " + name + "Delete(");
     param(writer, "id", "ID", false, false);
-    writer.write("): "+name+"Delete\r\n");
+    writer.write("): " + name + "Delete\r\n");
     writer.write("}\r\n");
-    writer.write("\r\n");    
-    writer.write("type "+name+"Delete {\r\n");
+    writer.write("\r\n");
+    writer.write("type " + name + "Delete {\r\n");
     writer.write("  information: OperationOutcome\r\n");
     writer.write("}\r\n");
-    writer.write("\r\n");    
+    writer.write("\r\n");
   }
 
-  private void generateListAccess(BufferedWriter writer, List<SearchParameter> parameters, String name) throws IOException {
-    writer.write("type "+name+"ListType {\r\n");
-    writer.write("  "+name+"List(");
+  private void generateListAccess(BufferedWriter writer, List<SearchParameter> parameters, String name)
+      throws IOException {
+    writer.write("type " + name + "ListType {\r\n");
+    writer.write("  " + name + "List(");
     param(writer, "_filter", "String", false, false);
     for (SearchParameter sp : parameters)
       param(writer, sp.getName().replace("-", "_"), getGqlname(sp.getType().toCode()), true, true);
     param(writer, "_sort", "String", false, true);
     param(writer, "_count", "Int", false, true);
     param(writer, "_cursor", "String", false, true);
-    writer.write("): ["+name+"]\r\n");
+    writer.write("): [" + name + "]\r\n");
     writer.write("}\r\n");
-    writer.write("\r\n");    
+    writer.write("\r\n");
   }
 
   private void param(BufferedWriter writer, String name, String type, boolean list, boolean line) throws IOException {
@@ -199,24 +205,25 @@ public class GraphQLSchemaGenerator {
     writer.write(": ");
     if (list)
       writer.write("[");
-    writer.write(type);      
+    writer.write(type);
     if (list)
       writer.write("]");
   }
 
-  private void generateConnectionAccess(BufferedWriter writer, List<SearchParameter> parameters, String name) throws IOException {
-    writer.write("type "+name+"ConnectionType {\r\n");
-    writer.write("  "+name+"Conection(");
+  private void generateConnectionAccess(BufferedWriter writer, List<SearchParameter> parameters, String name)
+      throws IOException {
+    writer.write("type " + name + "ConnectionType {\r\n");
+    writer.write("  " + name + "Conection(");
     param(writer, "_filter", "String", false, false);
     for (SearchParameter sp : parameters)
       param(writer, sp.getName().replace("-", "_"), getGqlname(sp.getType().toCode()), true, true);
     param(writer, "_sort", "String", false, true);
     param(writer, "_count", "Int", false, true);
     param(writer, "_cursor", "String", false, true);
-    writer.write("): "+name+"Connection\r\n");
+    writer.write("): " + name + "Connection\r\n");
     writer.write("}\r\n");
-    writer.write("\r\n");    
-    writer.write("type "+name+"Connection {\r\n");
+    writer.write("\r\n");
+    writer.write("type " + name + "Connection {\r\n");
     writer.write("  count: Int\r\n");
     writer.write("  offset: Int\r\n");
     writer.write("  pagesize: Int\r\n");
@@ -224,23 +231,22 @@ public class GraphQLSchemaGenerator {
     writer.write("  previous: ID\r\n");
     writer.write("  next: ID\r\n");
     writer.write("  last: ID\r\n");
-    writer.write("  edges: ["+name+"Edge]\r\n");
+    writer.write("  edges: [" + name + "Edge]\r\n");
     writer.write("}\r\n");
-    writer.write("\r\n");    
-    writer.write("type "+name+"Edge {\r\n");
+    writer.write("\r\n");
+    writer.write("type " + name + "Edge {\r\n");
     writer.write("  mode: String\r\n");
     writer.write("  score: Float\r\n");
-    writer.write("  resource: "+name+"\r\n");
+    writer.write("  resource: " + name + "\r\n");
     writer.write("}\r\n");
-    writer.write("\r\n");    
+    writer.write("\r\n");
   }
 
-  
   private void generateIdAccess(BufferedWriter writer, String name) throws IOException {
-    writer.write("type "+name+"ReadType {\r\n");
-    writer.write("  "+name+"(id: ID!): "+name+"\r\n");
+    writer.write("type " + name + "ReadType {\r\n");
+    writer.write("  " + name + "(id: ID!): " + name + "\r\n");
     writer.write("}\r\n");
-    writer.write("\r\n");    
+    writer.write("\r\n");
   }
 
   private void generateElementBase(BufferedWriter writer) throws IOException {
@@ -249,7 +255,7 @@ public class GraphQLSchemaGenerator {
     writer.write("  extension: [Extension]\r\n");
     writer.write("}\r\n");
     writer.write("\r\n");
-    
+
     writer.write("input ElementBaseInput {\r\n");
     writer.write("  id : ID\r\n");
     writer.write("  extension: [ExtensionInput]\r\n");
@@ -260,7 +266,7 @@ public class GraphQLSchemaGenerator {
   private void generateType(BufferedWriter writer, StructureDefinition sd) throws IOException {
     if (sd.getAbstract())
       return;
-    
+
     List<StringBuilder> list = new ArrayList<StringBuilder>();
     StringBuilder b = new StringBuilder();
     list.add(b);
@@ -289,16 +295,17 @@ public class GraphQLSchemaGenerator {
       writer.write(bs.toString());
   }
 
-  private void generateProperties(List<StringBuilder> list, StringBuilder b, String typeName, StructureDefinition sd, ElementDefinition ed, String mode, String suffix) throws IOException {
+  private void generateProperties(List<StringBuilder> list, StringBuilder b, String typeName, StructureDefinition sd,
+      ElementDefinition ed, String mode, String suffix) throws IOException {
     List<ElementDefinition> children = profileUtilities.getChildList(sd, ed);
     for (ElementDefinition child : children) {
       if (child.hasContentReference()) {
-        ElementDefinition ref = resolveContentReference(sd, child.getContentReference());        
+        ElementDefinition ref = resolveContentReference(sd, child.getContentReference());
         generateProperty(list, b, typeName, sd, child, ref.getType().get(0), false, ref, mode, suffix);
       } else if (child.getType().size() == 1) {
         generateProperty(list, b, typeName, sd, child, child.getType().get(0), false, null, mode, suffix);
       } else {
-        boolean ref  = false;
+        boolean ref = false;
         for (TypeRefComponent t : child.getType()) {
           if (!t.hasTarget())
             generateProperty(list, b, typeName, sd, child, t, true, null, mode, suffix);
@@ -317,12 +324,14 @@ public class GraphQLSchemaGenerator {
       if (id.equals(ed.getId()))
         return ed;
     }
-    throw new Error("Unable to find "+id);
+    throw new Error("Unable to find " + id);
   }
 
-  private void generateProperty(List<StringBuilder> list, StringBuilder b, String typeName, StructureDefinition sd, ElementDefinition child, TypeRefComponent typeDetails, boolean suffix, ElementDefinition cr, String mode, String suffixS) throws IOException {
+  private void generateProperty(List<StringBuilder> list, StringBuilder b, String typeName, StructureDefinition sd,
+      ElementDefinition child, TypeRefComponent typeDetails, boolean suffix, ElementDefinition cr, String mode,
+      String suffixS) throws IOException {
     if (isPrimitive(typeDetails)) {
-      String n = getGqlname(typeDetails.getWorkingCode()); 
+      String n = getGqlname(typeDetails.getWorkingCode());
       b.append("  ");
       b.append(tail(child.getPath(), suffix));
       if (suffix)
@@ -334,15 +343,15 @@ public class GraphQLSchemaGenerator {
         b.append(tail(child.getPath(), suffix));
         if (suffix)
           b.append(Utilities.capitalize(typeDetails.getWorkingCode()));
-          if (!child.getMax().equals("1")) {
-            b.append(": [ElementBase");
-            b.append(suffixS);
-            b.append("]\r\n");
-          } else {
-            b.append(": ElementBase");
-            b.append(suffixS);
-            b.append("\r\n");
-          }
+        if (!child.getMax().equals("1")) {
+          b.append(": [ElementBase");
+          b.append(suffixS);
+          b.append("]\r\n");
+        } else {
+          b.append(": ElementBase");
+          b.append(suffixS);
+          b.append("\r\n");
+        }
       } else
         b.append("\r\n");
     } else {
@@ -359,7 +368,7 @@ public class GraphQLSchemaGenerator {
       else if (Utilities.existsInList(type, "Element", "BackboneElement"))
         b.append(generateInnerType(list, sd, typeName, child, mode, suffixS));
       else
-        b.append(type+suffixS);
+        b.append(type + suffixS);
       if (!child.getMax().equals("1"))
         b.append("]");
       if (child.getMin() != 0 && !suffix)
@@ -368,12 +377,13 @@ public class GraphQLSchemaGenerator {
     }
   }
 
-  private String generateInnerType(List<StringBuilder> list, StructureDefinition sd, String name, ElementDefinition child, String mode, String suffix) throws IOException {
-    if (child.hasUserData(INNER_TYPE_NAME+"."+mode))
-      return child.getUserString(INNER_TYPE_NAME+"."+mode);
-    
-    String typeName = name+Utilities.capitalize(tail(child.getPath(), false));
-    child.setUserData(INNER_TYPE_NAME+"."+mode, typeName);
+  private String generateInnerType(List<StringBuilder> list, StructureDefinition sd, String name,
+      ElementDefinition child, String mode, String suffix) throws IOException {
+    if (child.hasUserData(INNER_TYPE_NAME + "." + mode))
+      return child.getUserString(INNER_TYPE_NAME + "." + mode);
+
+    String typeName = name + Utilities.capitalize(tail(child.getPath(), false));
+    child.setUserData(INNER_TYPE_NAME + "." + mode, typeName);
     StringBuilder b = new StringBuilder();
     list.add(b);
     b.append(mode);
@@ -385,12 +395,12 @@ public class GraphQLSchemaGenerator {
     b.append("}");
     b.append("\r\n");
     b.append("\r\n");
-    return typeName+suffix;
+    return typeName + suffix;
   }
 
   private String tail(String path, boolean suffix) {
     if (suffix)
-      path = path.substring(0, path.length()-3);
+      path = path.substring(0, path.length() - 3);
     int i = path.lastIndexOf(".");
     return i < 0 ? path : path.substring(i + 1);
   }
@@ -412,12 +422,12 @@ public class GraphQLSchemaGenerator {
 
   private void generatePrimitive(BufferedWriter writer, StructureDefinition sd) throws IOException, FHIRException {
     String gqlName = getGqlname(sd.getName());
-    if (gqlName.equals(sd.getName())) { 
+    if (gqlName.equals(sd.getName())) {
       writer.write("scalar ");
       writer.write(sd.getName());
       writer.write(" # JSON Format: ");
       writer.write(getJsonFormat(sd));
-    } else  {
+    } else {
       writer.write("# Type ");
       writer.write(sd.getName());
       writer.write(": use GraphQL Scalar type ");
@@ -432,11 +442,11 @@ public class GraphQLSchemaGenerator {
       writer.write("# Search Param ");
       writer.write(name);
       writer.write(": already defined as Primitive with JSON Format: string ");
-    } else if (gqlName.equals(name)) { 
+    } else if (gqlName.equals(name)) {
       writer.write("scalar ");
       writer.write(name);
       writer.write(" # JSON Format: string");
-    } else  {
+    } else {
       writer.write("# Search Param ");
       writer.write(name);
       writer.write(": use GraphQL Scalar type ");
@@ -444,11 +454,13 @@ public class GraphQLSchemaGenerator {
     }
     writer.write("\r\n");
   }
-  
+
   private String getJsonFormat(StructureDefinition sd) throws FHIRException {
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
-      if (!ed.getType().isEmpty() &&  ed.getType().get(0).getCodeElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type"))
-        return ed.getType().get(0).getCodeElement().getExtensionString("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type");
+      if (!ed.getType().isEmpty() && ed.getType().get(0).getCodeElement()
+          .hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type"))
+        return ed.getType().get(0).getCodeElement()
+            .getExtensionString("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type");
     }
     // all primitives but JSON_NUMBER_TYPES are represented as JSON strings
     if (JSON_NUMBER_TYPES.contains(sd.getName())) {
@@ -466,7 +478,7 @@ public class GraphQLSchemaGenerator {
     if (name.equals("boolean"))
       return "Boolean";
     if (name.equals("id"))
-      return "ID";    
+      return "ID";
     return name;
   }
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class FundsreserveEnumFactory implements EnumFactory<Fundsreserve> {
@@ -48,7 +44,7 @@ public class FundsreserveEnumFactory implements EnumFactory<Fundsreserve> {
       return Fundsreserve.PROVIDER;
     if ("none".equals(codeString))
       return Fundsreserve.NONE;
-    throw new IllegalArgumentException("Unknown Fundsreserve code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown Fundsreserve code '" + codeString + "'");
   }
 
   public String toCode(Fundsreserve code) {
@@ -61,8 +57,8 @@ public class FundsreserveEnumFactory implements EnumFactory<Fundsreserve> {
     return "?";
   }
 
-    public String toSystem(Fundsreserve code) {
-      return code.getSystem();
-      }
+  public String toSystem(Fundsreserve code) {
+    return code.getSystem();
+  }
 
 }

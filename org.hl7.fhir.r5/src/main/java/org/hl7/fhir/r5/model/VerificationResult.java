@@ -712,7 +712,7 @@ public class VerificationResult extends DomainResource {
           return this.validationStatus;
         }
         else if (name.equals("validationDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.primarySource.validationDate");
+          throw new FHIRException("Cannot call addChild on a singleton property VerificationResult.primarySource.validationDate");
         }
         else if (name.equals("canPushUpdates")) {
           this.canPushUpdates = new CodeableConcept();
@@ -1270,13 +1270,13 @@ public class VerificationResult extends DomainResource {
           return this.communicationMethod;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.attestation.date");
+          throw new FHIRException("Cannot call addChild on a singleton property VerificationResult.attestation.date");
         }
         else if (name.equals("sourceIdentityCertificate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.attestation.sourceIdentityCertificate");
+          throw new FHIRException("Cannot call addChild on a singleton property VerificationResult.attestation.sourceIdentityCertificate");
         }
         else if (name.equals("proxyIdentityCertificate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.attestation.proxyIdentityCertificate");
+          throw new FHIRException("Cannot call addChild on a singleton property VerificationResult.attestation.proxyIdentityCertificate");
         }
         else if (name.equals("proxySignature")) {
           this.proxySignature = new Signature();
@@ -1570,7 +1570,7 @@ public class VerificationResult extends DomainResource {
           return this.organization;
         }
         else if (name.equals("identityCertificate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.validator.identityCertificate");
+          throw new FHIRException("Cannot call addChild on a singleton property VerificationResult.validator.identityCertificate");
         }
         else if (name.equals("attestationSignature")) {
           this.attestationSignature = new Signature();
@@ -2530,17 +2530,17 @@ public class VerificationResult extends DomainResource {
           return addTarget();
         }
         else if (name.equals("targetLocation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.targetLocation");
+          throw new FHIRException("Cannot call addChild on a singleton property VerificationResult.targetLocation");
         }
         else if (name.equals("need")) {
           this.need = new CodeableConcept();
           return this.need;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.status");
+          throw new FHIRException("Cannot call addChild on a singleton property VerificationResult.status");
         }
         else if (name.equals("statusDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.statusDate");
+          throw new FHIRException("Cannot call addChild on a singleton property VerificationResult.statusDate");
         }
         else if (name.equals("validationType")) {
           this.validationType = new CodeableConcept();
@@ -2554,10 +2554,10 @@ public class VerificationResult extends DomainResource {
           return this.frequency;
         }
         else if (name.equals("lastPerformed")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.lastPerformed");
+          throw new FHIRException("Cannot call addChild on a singleton property VerificationResult.lastPerformed");
         }
         else if (name.equals("nextScheduled")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VerificationResult.nextScheduled");
+          throw new FHIRException("Cannot call addChild on a singleton property VerificationResult.nextScheduled");
         }
         else if (name.equals("failureAction")) {
           this.failureAction = new CodeableConcept();

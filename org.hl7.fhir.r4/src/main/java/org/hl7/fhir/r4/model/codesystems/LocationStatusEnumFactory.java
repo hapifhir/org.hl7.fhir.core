@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class LocationStatusEnumFactory implements EnumFactory<LocationStatus> {
@@ -48,7 +44,7 @@ public class LocationStatusEnumFactory implements EnumFactory<LocationStatus> {
       return LocationStatus.SUSPENDED;
     if ("inactive".equals(codeString))
       return LocationStatus.INACTIVE;
-    throw new IllegalArgumentException("Unknown LocationStatus code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown LocationStatus code '" + codeString + "'");
   }
 
   public String toCode(LocationStatus code) {
@@ -61,8 +57,8 @@ public class LocationStatusEnumFactory implements EnumFactory<LocationStatus> {
     return "?";
   }
 
-    public String toSystem(LocationStatus code) {
-      return code.getSystem();
-      }
+  public String toSystem(LocationStatus code) {
+    return code.getSystem();
+  }
 
 }

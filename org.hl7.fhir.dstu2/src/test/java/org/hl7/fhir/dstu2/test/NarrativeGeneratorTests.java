@@ -19,28 +19,30 @@ import org.junit.jupiter.api.Test;
 @Disabled // TODO Need to find and fix files referenced here
 public class NarrativeGeneratorTests {
 
-	private NarrativeGenerator gen;
-	
-	@BeforeEach
-	public void setUp() throws IOException, FHIRException {
-		if (gen == null)
-  		gen = new NarrativeGenerator("", null, SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation.zip"));
-	}
+  private NarrativeGenerator gen;
 
-	@AfterEach
-	public void tearDown() {
-	}
+  @BeforeEach
+  public void setUp() throws IOException, FHIRException {
+    if (gen == null)
+      gen = new NarrativeGenerator("", null,
+          SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation.zip"));
+  }
 
-	@Test
-	public void test() throws IOException, EOperationOutcome, FHIRException {
-		process("C:\\work\\org.hl7.fhir\\build\\source\\questionnaireresponse\\questionnaireresponse-example-f201-lifelines.xml");
-	}
+  @AfterEach
+  public void tearDown() {
+  }
 
-	private void process(String path) throws IOException, EOperationOutcome, FHIRException {
-	  XmlParser p = new XmlParser();
-	  DomainResource r = (DomainResource) p.parse(new FileInputStream(path));
-	  gen.generate(r);
-	  FileOutputStream s = new FileOutputStream(Utilities.path("[tmp]", "gen.xml"));
+  @Test
+  public void test() throws IOException, EOperationOutcome, FHIRException {
+    process(
+        "C:\\work\\org.hl7.fhir\\build\\source\\questionnaireresponse\\questionnaireresponse-example-f201-lifelines.xml");
+  }
+
+  private void process(String path) throws IOException, EOperationOutcome, FHIRException {
+    XmlParser p = new XmlParser();
+    DomainResource r = (DomainResource) p.parse(new FileInputStream(path));
+    gen.generate(r);
+    FileOutputStream s = new FileOutputStream(Utilities.path("[tmp]", "gen.xml"));
     new XmlParser().compose(s, r, true);
     s.close();
   }

@@ -420,7 +420,7 @@ public class Medication extends DomainResource {
           return this.item;
         }
         else if (name.equals("isActive")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Medication.isActive");
+          throw new FHIRException("Cannot call addChild on a singleton property Medication.isActive");
         }
         else if (name.equals("amount")) {
           this.amount = new Ratio();
@@ -1218,10 +1218,10 @@ public class Medication extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("lotNumber")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Medication.lotNumber");
+          throw new FHIRException("Cannot call addChild on a singleton property Medication.lotNumber");
         }
         else if (name.equals("expirationDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Medication.expirationDate");
+          throw new FHIRException("Cannot call addChild on a singleton property Medication.expirationDate");
         }
         else
           return super.addChild(name);
@@ -1860,13 +1860,13 @@ public class Medication extends DomainResource {
           return this.code;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Medication.status");
+          throw new FHIRException("Cannot call addChild on a singleton property Medication.status");
         }
         else if (name.equals("isBrand")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Medication.isBrand");
+          throw new FHIRException("Cannot call addChild on a singleton property Medication.isBrand");
         }
         else if (name.equals("isOverTheCounter")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Medication.isOverTheCounter");
+          throw new FHIRException("Cannot call addChild on a singleton property Medication.isOverTheCounter");
         }
         else if (name.equals("manufacturer")) {
           this.manufacturer = new Reference();

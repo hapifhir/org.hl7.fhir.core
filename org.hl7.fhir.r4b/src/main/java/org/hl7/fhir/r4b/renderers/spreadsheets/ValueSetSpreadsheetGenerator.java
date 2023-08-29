@@ -41,10 +41,10 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
     }
     for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
       genInclude(vs, exc, "Exclude");
-    }   
+    }
     if (vs.hasExpansion()) {
       if (vs.getExpansion().hasParameter()) {
-        genExpansionParams(vs.getExpansion().getParameter());        
+        genExpansionParams(vs.getExpansion().getParameter());
       }
       genExpansion(vs.getExpansion().getContains());
     }
@@ -59,26 +59,27 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
     Sheet sheet = makeSheet("Expansion Parameters");
     addHeaders(sheet, "Parameter", "Value");
     for (ValueSetExpansionParameterComponent p : params) {
-      addRow(sheet, p.getName(), dr.display(p.getValue()));          
-    }    
+      addRow(sheet, p.getName(), dr.display(p.getValue()));
+    }
   }
 
   private void genExpansion(List<ValueSetExpansionContainsComponent> list) {
     Sheet sheet = makeSheet("Expansion");
     addHeaders(sheet, "Level", "System", "version", "Code", "Display", "Abstract", "Inactive");
-    genExpansionEntry(1, list, sheet);    
+    genExpansionEntry(1, list, sheet);
   }
 
   public void genExpansionEntry(int level, List<ValueSetExpansionContainsComponent> list, Sheet sheet) {
     for (ValueSetExpansionContainsComponent p : list) {
-      addRow(sheet, Integer.toString(level), p.getSystem(), p.getVersion(), p.getCode(), p.getDisplay(), bool(p.getAbstract()), bool(p.getInactive()));  
+      addRow(sheet, Integer.toString(level), p.getSystem(), p.getVersion(), p.getCode(), p.getDisplay(),
+          bool(p.getAbstract()), bool(p.getInactive()));
       if (p.hasContains()) {
         genExpansionEntry(level + 1, p.getContains(), sheet);
       }
     }
   }
-  
-  private String bool(boolean value) {    
+
+  private String bool(boolean value) {
     return value ? "" : "false";
   }
 
@@ -86,7 +87,7 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
     if (inc.hasSystem()) {
       genIncludeSystem(vs, inc, mode);
     } else {
-      genIncludeValueSets(vs, inc, mode);      
+      genIncludeValueSets(vs, inc, mode);
     }
 //    String subname = inc.hasSystem() ?  : "ValueSets";
 //    
@@ -108,13 +109,13 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
   }
 
   private void genIncludeValueSets(ValueSet vs, ConceptSetComponent inc, String mode) {
-    Sheet sheet = makeSheet(mode+" ValueSets");
-    addValueSets(sheet, inc.getValueSet()); 
+    Sheet sheet = makeSheet(mode + " ValueSets");
+    addValueSets(sheet, inc.getValueSet());
     configureSheet(sheet);
   }
 
   private void genIncludeSystem(ValueSet vs, ConceptSetComponent inc, String mode) {
-    Sheet sheet = makeSheet(mode+" from "+dr.displaySystem(inc.getSystem()));
+    Sheet sheet = makeSheet(mode + " from " + dr.displaySystem(inc.getSystem()));
     if (inc.hasValueSet()) {
       addValueSets(sheet, inc.getValueSet());
     }
@@ -127,15 +128,15 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
     if (!inc.hasConcept() && !inc.hasFilter()) {
       addAllCodes(sheet);
     }
-    addRow(sheet, "", "");          
-    addRow(sheet, "System URI", inc.getSystem());          
-    
+    addRow(sheet, "", "");
+    addRow(sheet, "System URI", inc.getSystem());
+
     configureSheet(sheet);
   }
 
   private void addAllCodes(Sheet sheet) {
-    addHeaders(sheet, "Codes");     
-    addRow(sheet, "All codes");          
+    addHeaders(sheet, "Codes");
+    addRow(sheet, "All codes");
   }
 
   private void addValueSets(Sheet sheet, List<CanonicalType> valueSets) {
@@ -152,14 +153,14 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
   }
 
   private void addConcepts(Sheet sheet, List<ConceptReferenceComponent> concepts) {
-    addHeaders(sheet, "Concept", "Description"); // todo: designations    
+    addHeaders(sheet, "Concept", "Description"); // todo: designations
     for (ConceptReferenceComponent cd : concepts) {
-      addRow(sheet, cd.getCode(), cd.getDisplay());      
-    }    
+      addRow(sheet, cd.getCode(), cd.getDisplay());
+    }
   }
 
   private void addFilters(Sheet sheet, List<ConceptSetFilterComponent> filters) {
-    addHeaders(sheet, "Property", "Operation", "Value");    
+    addHeaders(sheet, "Property", "Operation", "Value");
     for (ConceptSetFilterComponent f : filters) {
       addRow(sheet, f.getProperty(), f.getOpElement().asStringValue(), f.getValue());
     }

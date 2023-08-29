@@ -42,7 +42,7 @@ public class LibraryRenderer extends ResourceRenderer {
   public LibraryRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
-  
+
   public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
     return render(x, (Library) dr);
   }
@@ -52,10 +52,14 @@ public class LibraryRenderer extends ResourceRenderer {
     PropertyWrapper editors = lib.getChildByName("editor");
     PropertyWrapper reviewers = lib.getChildByName("reviewer");
     PropertyWrapper endorsers = lib.getChildByName("endorser");
-    if ((authors != null && authors.hasValues()) || (editors != null && editors.hasValues()) || (reviewers != null && reviewers.hasValues()) || (endorsers != null && endorsers.hasValues())) {
-      boolean email = hasCT(authors, "email") || hasCT(editors, "email") || hasCT(reviewers, "email") || hasCT(endorsers, "email"); 
-      boolean phone = hasCT(authors, "phone") || hasCT(editors, "phone") || hasCT(reviewers, "phone") || hasCT(endorsers, "phone"); 
-      boolean url = hasCT(authors, "url") || hasCT(editors, "url") || hasCT(reviewers, "url") || hasCT(endorsers, "url"); 
+    if ((authors != null && authors.hasValues()) || (editors != null && editors.hasValues())
+        || (reviewers != null && reviewers.hasValues()) || (endorsers != null && endorsers.hasValues())) {
+      boolean email = hasCT(authors, "email") || hasCT(editors, "email") || hasCT(reviewers, "email")
+          || hasCT(endorsers, "email");
+      boolean phone = hasCT(authors, "phone") || hasCT(editors, "phone") || hasCT(reviewers, "phone")
+          || hasCT(endorsers, "phone");
+      boolean url = hasCT(authors, "url") || hasCT(editors, "url") || hasCT(reviewers, "url")
+          || hasCT(endorsers, "url");
       x.h2().tx("Participants");
       XhtmlNode t = x.table("grid");
       if (authors != null) {
@@ -93,7 +97,7 @@ public class LibraryRenderer extends ResourceRenderer {
       }
       for (BaseWrapper ra : artifacts.getValues()) {
         renderArtifact(t, ra, lib, label, display, citation);
-      }      
+      }
     }
     PropertyWrapper parameters = lib.getChildByName("parameter");
     if (parameters != null && parameters.hasValues()) {
@@ -105,18 +109,18 @@ public class LibraryRenderer extends ResourceRenderer {
       }
       for (BaseWrapper p : parameters.getValues()) {
         renderParameter(t, p, doco);
-      }      
+      }
     }
     PropertyWrapper dataRequirements = lib.getChildByName("dataRequirement");
     if (dataRequirements != null && dataRequirements.hasValues()) {
       x.h2().tx("Data Requirements");
       for (BaseWrapper p : dataRequirements.getValues()) {
         renderDataRequirement(x, (DataRequirement) p.getBase());
-      }      
+      }
     }
     PropertyWrapper contents = lib.getChildByName("content");
     if (contents != null) {
-      x.h2().tx("Contents");          
+      x.h2().tx("Contents");
       boolean isCql = false;
       int counter = 0;
       for (BaseWrapper p : contents.getValues()) {
@@ -128,8 +132,9 @@ public class LibraryRenderer extends ResourceRenderer {
     }
     return false;
   }
-    
-  private boolean hasCT(PropertyWrapper prop, String type) throws UnsupportedEncodingException, FHIRException, IOException {
+
+  private boolean hasCT(PropertyWrapper prop, String type)
+      throws UnsupportedEncodingException, FHIRException, IOException {
     if (prop != null) {
       for (BaseWrapper cd : prop.getValues()) {
         PropertyWrapper telecoms = cd.getChildByName("telecom");
@@ -152,12 +157,14 @@ public class LibraryRenderer extends ResourceRenderer {
     return false;
   }
 
-  
   public boolean render(XhtmlNode x, Library lib) throws FHIRFormatError, DefinitionException, IOException {
     if (lib.hasAuthor() || lib.hasEditor() || lib.hasReviewer() || lib.hasEndorser()) {
-      boolean email = hasCT(lib.getAuthor(), "email") || hasCT(lib.getEditor(), "email") || hasCT(lib.getReviewer(), "email") || hasCT(lib.getEndorser(), "email"); 
-      boolean phone = hasCT(lib.getAuthor(), "phone") || hasCT(lib.getEditor(), "phone") || hasCT(lib.getReviewer(), "phone") || hasCT(lib.getEndorser(), "phone"); 
-      boolean url = hasCT(lib.getAuthor(), "url") || hasCT(lib.getEditor(), "url") || hasCT(lib.getReviewer(), "url") || hasCT(lib.getEndorser(), "url"); 
+      boolean email = hasCT(lib.getAuthor(), "email") || hasCT(lib.getEditor(), "email")
+          || hasCT(lib.getReviewer(), "email") || hasCT(lib.getEndorser(), "email");
+      boolean phone = hasCT(lib.getAuthor(), "phone") || hasCT(lib.getEditor(), "phone")
+          || hasCT(lib.getReviewer(), "phone") || hasCT(lib.getEndorser(), "phone");
+      boolean url = hasCT(lib.getAuthor(), "url") || hasCT(lib.getEditor(), "url") || hasCT(lib.getReviewer(), "url")
+          || hasCT(lib.getEndorser(), "url");
       x.h2().tx("Participants");
       XhtmlNode t = x.table("grid");
       for (ContactDetail cd : lib.getAuthor()) {
@@ -186,7 +193,7 @@ public class LibraryRenderer extends ResourceRenderer {
       }
       for (RelatedArtifact ra : lib.getRelatedArtifact()) {
         renderArtifact(t, ra, lib, label, display, citation);
-      }      
+      }
     }
     if (lib.hasParameter()) {
       x.h2().tx("Parameters");
@@ -197,16 +204,16 @@ public class LibraryRenderer extends ResourceRenderer {
       }
       for (ParameterDefinition p : lib.getParameter()) {
         renderParameter(t, p, doco);
-      }      
+      }
     }
     if (lib.hasDataRequirement()) {
       x.h2().tx("Data Requirements");
       for (DataRequirement p : lib.getDataRequirement()) {
         renderDataRequirement(x, p);
-      }      
+      }
     }
     if (lib.hasContent()) {
-      x.h2().tx("Contents");          
+      x.h2().tx("Contents");
       boolean isCql = false;
       int counter = 0;
       for (Attachment att : lib.getContent()) {
@@ -218,7 +225,8 @@ public class LibraryRenderer extends ResourceRenderer {
     return false;
   }
 
-  private void renderParameter(XhtmlNode t, BaseWrapper p, boolean doco) throws UnsupportedEncodingException, FHIRException, IOException {
+  private void renderParameter(XhtmlNode t, BaseWrapper p, boolean doco)
+      throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode tr = t.tr();
     tr.td().tx(p.has("name") ? p.get("name").primitiveValue() : null);
     tr.td().tx(p.has("use") ? p.get("use").primitiveValue() : null);
@@ -242,7 +250,8 @@ public class LibraryRenderer extends ResourceRenderer {
     }
   }
 
-  private void renderArtifact(XhtmlNode t, BaseWrapper ra, ResourceWrapper lib, boolean label, boolean display, boolean citation) throws UnsupportedEncodingException, FHIRException, IOException {
+  private void renderArtifact(XhtmlNode t, BaseWrapper ra, ResourceWrapper lib, boolean label, boolean display,
+      boolean citation) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode tr = t.tr();
     tr.td().tx(ra.has("type") ? ra.get("type").primitiveValue() : null);
     if (label) {
@@ -261,7 +270,8 @@ public class LibraryRenderer extends ResourceRenderer {
     }
   }
 
-  private void renderArtifact(XhtmlNode t, RelatedArtifact ra, Resource lib, boolean label, boolean display, boolean citation) throws IOException {
+  private void renderArtifact(XhtmlNode t, RelatedArtifact ra, Resource lib, boolean label, boolean display,
+      boolean citation) throws IOException {
     XhtmlNode tr = t.tr();
     tr.td().tx(ra.getType().getDisplay());
     if (label) {
@@ -280,7 +290,8 @@ public class LibraryRenderer extends ResourceRenderer {
     }
   }
 
-  private void participantRow(XhtmlNode t, String label, BaseWrapper cd, boolean email, boolean phone, boolean url) throws UnsupportedEncodingException, FHIRException, IOException {
+  private void participantRow(XhtmlNode t, String label, BaseWrapper cd, boolean email, boolean phone, boolean url)
+      throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode tr = t.tr();
     tr.td().tx(label);
     tr.td().tx(cd.get("name") != null ? cd.get("name").primitiveValue() : null);
@@ -296,7 +307,8 @@ public class LibraryRenderer extends ResourceRenderer {
     }
   }
 
-  private ContactPoint getContactPoint(PropertyWrapper telecoms, String value) throws UnsupportedEncodingException, FHIRException, IOException {
+  private ContactPoint getContactPoint(PropertyWrapper telecoms, String value)
+      throws UnsupportedEncodingException, FHIRException, IOException {
     for (BaseWrapper t : telecoms.getValues()) {
       if (t.has("system")) {
         String system = t.get("system").primitiveValue();
@@ -304,7 +316,7 @@ public class LibraryRenderer extends ResourceRenderer {
           return (ContactPoint) t.getBase();
         }
       }
-    } 
+    }
     return null;
   }
 
@@ -378,16 +390,16 @@ public class LibraryRenderer extends ResourceRenderer {
           p.code().tx(att.getContentType());
           p.tx(lang(att));
           p.tx(")");
-        }
-        else {
-          p.code().tx(att.getContentType()+lang(att));
+        } else {
+          p.code().tx(att.getContentType() + lang(att));
         }
         if (att.getData().length < LibraryRenderer.DATA_IMG_SIZE_CUTOFF) {
-          x.img("data: "+att.getContentType()+">;base64,"+b64(att.getData()), "data");
+          x.img("data: " + att.getContentType() + ">;base64," + b64(att.getData()), "data");
         } else {
-          String filename = "Library-"+baseId+(counter == 0 ? "" : "-"+Integer.toString(counter))+"."+imgExtension(att.getContentType()); 
+          String filename = "Library-" + baseId + (counter == 0 ? "" : "-" + Integer.toString(counter)) + "."
+              + imgExtension(att.getContentType());
           x.img(filename, "data");
-        }        
+        }
       } else if (txt != null && !noShowData) {
         XhtmlNode p = x.para();
         if (att.hasTitle()) {
@@ -396,13 +408,12 @@ public class LibraryRenderer extends ResourceRenderer {
           p.code().tx(att.getContentType());
           p.tx(lang(att));
           p.tx(")");
-        }
-        else {
-          p.code().tx(att.getContentType()+lang(att));
+        } else {
+          p.code().tx(att.getContentType() + lang(att));
         }
         String prismCode = determinePrismCode(att);
         if (prismCode != null && !tooBig(txt)) {
-          x.pre().code().setAttribute("class", "language-"+prismCode).tx(txt);
+          x.pre().code().setAttribute("class", "language-" + prismCode).tx(txt);
         } else {
           x.pre().code().tx(txt);
         }
@@ -415,9 +426,9 @@ public class LibraryRenderer extends ResourceRenderer {
         p.code().tx("Content not shown - (");
         p.code().tx(att.getContentType());
         p.tx(lang(att));
-        p.tx(", size = "+Utilities.describeSize(att.getData().length)+")");
+        p.tx(", size = " + Utilities.describeSize(att.getData().length) + ")");
       }
-    }    
+    }
   }
 
   private boolean tooBig(String txt) {
@@ -447,7 +458,7 @@ public class LibraryRenderer extends ResourceRenderer {
 
   private String lang(Attachment att) {
     if (att.hasLanguage()) {
-      return ", language = "+describeLang(att.getLanguage());
+      return ", language = " + describeLang(att.getLanguage());
     }
     return "";
   }
@@ -478,7 +489,7 @@ public class LibraryRenderer extends ResourceRenderer {
       } catch (Exception e) {
         // ignore
       }
-      return null;      
+      return null;
     } catch (Exception e) {
       return null;
     }
@@ -500,28 +511,50 @@ public class LibraryRenderer extends ResourceRenderer {
         ct = ct.substring(0, ct.indexOf(";"));
       }
       switch (ct) {
-      case "text/html" : return "html";
-      case "text/xml" : return "xml";
-      case "application/xml" : return "xml";
-      case "text/markdown" : return "markdown";
-      case "application/js" : return "JavaScript";
-      case "application/css" : return "css";
-      case "text/x-csrc" : return "c";
-      case "text/x-csharp" : return "csharp";
-      case "text/x-c++src" : return "cpp";
-      case "application/graphql" : return "graphql";
-      case "application/x-java" : return "java";
-      case "application/json" : return "json";
-      case "text/json" : return "json";
-      case "application/liquid" : return "liquid";
-      case "text/x-pascal" : return "pascal";
-      case "text/x-python" : return "python";
-      case "text/x-rsrc" : return "r";
-      case "text/x-ruby" : return "ruby";
-      case "text/x-sas" : return "sas";
-      case "text/x-sql" : return "sql";
-      case "application/typescript" : return "typescript";
-      case "text/cql" : return "sql"; // not that bad...
+      case "text/html":
+        return "html";
+      case "text/xml":
+        return "xml";
+      case "application/xml":
+        return "xml";
+      case "text/markdown":
+        return "markdown";
+      case "application/js":
+        return "JavaScript";
+      case "application/css":
+        return "css";
+      case "text/x-csrc":
+        return "c";
+      case "text/x-csharp":
+        return "csharp";
+      case "text/x-c++src":
+        return "cpp";
+      case "application/graphql":
+        return "graphql";
+      case "application/x-java":
+        return "java";
+      case "application/json":
+        return "json";
+      case "text/json":
+        return "json";
+      case "application/liquid":
+        return "liquid";
+      case "text/x-pascal":
+        return "pascal";
+      case "text/x-python":
+        return "python";
+      case "text/x-rsrc":
+        return "r";
+      case "text/x-ruby":
+        return "ruby";
+      case "text/x-sas":
+        return "sas";
+      case "text/x-sql":
+        return "sql";
+      case "application/typescript":
+        return "typescript";
+      case "text/cql":
+        return "sql"; // not that bad...
       }
       if (att.getContentType().contains("json+") || att.getContentType().contains("+json")) {
         return "json";
@@ -532,6 +565,5 @@ public class LibraryRenderer extends ResourceRenderer {
     }
     return null;
   }
-  
-  
+
 }

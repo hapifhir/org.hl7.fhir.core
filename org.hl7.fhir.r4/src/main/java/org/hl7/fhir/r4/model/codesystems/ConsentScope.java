@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,99 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConsentScope {
 
-        /**
-         * Actions to be taken if they are no longer able to make decisions for themselves
-         */
-        ADR, 
-        /**
-         * Consent to participate in research protocol and information sharing required
-         */
-        RESEARCH, 
-        /**
-         * Agreement to collect, access, use or disclose (share) information
-         */
-        PATIENTPRIVACY, 
-        /**
-         * Consent to undergo a specific treatment
-         */
-        TREATMENT, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ConsentScope fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("adr".equals(codeString))
-          return ADR;
-        if ("research".equals(codeString))
-          return RESEARCH;
-        if ("patient-privacy".equals(codeString))
-          return PATIENTPRIVACY;
-        if ("treatment".equals(codeString))
-          return TREATMENT;
-        throw new FHIRException("Unknown ConsentScope code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ADR: return "adr";
-            case RESEARCH: return "research";
-            case PATIENTPRIVACY: return "patient-privacy";
-            case TREATMENT: return "treatment";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/consentscope";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ADR: return "Actions to be taken if they are no longer able to make decisions for themselves";
-            case RESEARCH: return "Consent to participate in research protocol and information sharing required";
-            case PATIENTPRIVACY: return "Agreement to collect, access, use or disclose (share) information";
-            case TREATMENT: return "Consent to undergo a specific treatment";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ADR: return "Advanced Care Directive";
-            case RESEARCH: return "Research";
-            case PATIENTPRIVACY: return "Privacy Consent";
-            case TREATMENT: return "Treatment";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Actions to be taken if they are no longer able to make decisions for
+   * themselves
+   */
+  ADR,
+  /**
+   * Consent to participate in research protocol and information sharing required
+   */
+  RESEARCH,
+  /**
+   * Agreement to collect, access, use or disclose (share) information
+   */
+  PATIENTPRIVACY,
+  /**
+   * Consent to undergo a specific treatment
+   */
+  TREATMENT,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ConsentScope fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("adr".equals(codeString))
+      return ADR;
+    if ("research".equals(codeString))
+      return RESEARCH;
+    if ("patient-privacy".equals(codeString))
+      return PATIENTPRIVACY;
+    if ("treatment".equals(codeString))
+      return TREATMENT;
+    throw new FHIRException("Unknown ConsentScope code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ADR:
+      return "adr";
+    case RESEARCH:
+      return "research";
+    case PATIENTPRIVACY:
+      return "patient-privacy";
+    case TREATMENT:
+      return "treatment";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/consentscope";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ADR:
+      return "Actions to be taken if they are no longer able to make decisions for themselves";
+    case RESEARCH:
+      return "Consent to participate in research protocol and information sharing required";
+    case PATIENTPRIVACY:
+      return "Agreement to collect, access, use or disclose (share) information";
+    case TREATMENT:
+      return "Consent to undergo a specific treatment";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ADR:
+      return "Advanced Care Directive";
+    case RESEARCH:
+      return "Research";
+    case PATIENTPRIVACY:
+      return "Privacy Consent";
+    case TREATMENT:
+      return "Treatment";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

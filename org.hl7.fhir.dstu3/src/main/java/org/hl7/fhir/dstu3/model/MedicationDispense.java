@@ -807,7 +807,7 @@ public class MedicationDispense extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("wasSubstituted")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicationDispense.wasSubstituted");
+          throw new FHIRException("Cannot call addChild on a singleton property MedicationDispense.wasSubstituted");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -2592,7 +2592,7 @@ public class MedicationDispense extends DomainResource {
           return addPartOf();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicationDispense.status");
+          throw new FHIRException("Cannot call addChild on a singleton property MedicationDispense.status");
         }
         else if (name.equals("category")) {
           this.category = new CodeableConcept();
@@ -2636,10 +2636,10 @@ public class MedicationDispense extends DomainResource {
           return this.daysSupply;
         }
         else if (name.equals("whenPrepared")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicationDispense.whenPrepared");
+          throw new FHIRException("Cannot call addChild on a singleton property MedicationDispense.whenPrepared");
         }
         else if (name.equals("whenHandedOver")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicationDispense.whenHandedOver");
+          throw new FHIRException("Cannot call addChild on a singleton property MedicationDispense.whenHandedOver");
         }
         else if (name.equals("destination")) {
           this.destination = new Reference();
@@ -2662,7 +2662,7 @@ public class MedicationDispense extends DomainResource {
           return addDetectedIssue();
         }
         else if (name.equals("notDone")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicationDispense.notDone");
+          throw new FHIRException("Cannot call addChild on a singleton property MedicationDispense.notDone");
         }
         else if (name.equals("notDoneReasonCodeableConcept")) {
           this.notDoneReason = new CodeableConcept();

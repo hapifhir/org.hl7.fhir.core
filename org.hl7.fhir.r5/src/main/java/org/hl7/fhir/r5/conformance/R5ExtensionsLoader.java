@@ -192,13 +192,17 @@ public class R5ExtensionsLoader {
         for (CanonicalType t : inc.getValueSet()) {
           loadValueSet(t.asStringValue(), context, valueSets, codeSystems);
         }
-        if (inc.hasSystem() && !inc.hasVersion()) {
-          if (codeSystems.containsKey(inc.getSystem())) {
-            CodeSystem cs = codeSystems.get(inc.getSystem()).getResource();
-            inc.setVersion(cs.getVersion());
-            context.cacheResourceFromPackage(cs, cs.getSourcePackage());
-          } else if (!context.hasResource(CodeSystem.class, inc.getSystem()) && codeSystems.containsKey(inc.getSystem())) {
-            CodeSystem cs1 = codeSystems.get(inc.getSystem()).getResource();
+        if (inc.hasSystem()) {
+          if (!inc.hasVersion()) {
+            if (codeSystems.containsKey(inc.getSystem())) {
+              CodeSystem cs = codeSystems.get(inc.getSystem()).getResource();
+              CodeSystem csAlready = context.fetchCodeSystem(inc.getSystem());
+              if (csAlready == null) {
+                context.cacheResourceFromPackage(cs, cs.getSourcePackage());
+              }
+            }
+          } else if (context.fetchResource(CodeSystem.class, inc.getSystem(), inc.getVersion()) == null && codeSystems.containsKey(inc.getSystem()+"|"+inc.getVersion())) {
+            CodeSystem cs1 = codeSystems.get(inc.getSystem()+"|"+inc.getVersion()).getResource();
             context.cacheResourceFromPackage(cs1, cs1.getSourcePackage());
           }
         }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 */
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
-
 
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
@@ -68,7 +64,7 @@ public class ReferencerangeMeaningEnumFactory implements EnumFactory<Referencera
       return ReferencerangeMeaning.LUTEAL;
     if ("postmeopausal".equals(codeString))
       return ReferencerangeMeaning.POSTMEOPAUSAL;
-    throw new IllegalArgumentException("Unknown ReferencerangeMeaning code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ReferencerangeMeaning code '" + codeString + "'");
   }
 
   public String toCode(ReferencerangeMeaning code) {
@@ -101,8 +97,8 @@ public class ReferencerangeMeaningEnumFactory implements EnumFactory<Referencera
     return "?";
   }
 
-    public String toSystem(ReferencerangeMeaning code) {
-      return code.getSystem();
-      }
+  public String toSystem(ReferencerangeMeaning code) {
+    return code.getSystem();
+  }
 
 }

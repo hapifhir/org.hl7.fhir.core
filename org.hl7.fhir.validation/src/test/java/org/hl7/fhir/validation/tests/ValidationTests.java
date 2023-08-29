@@ -8,20 +8,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
+
 import java.util.*;
+
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
-import org.hl7.fhir.utilities.*;
-import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
-
-import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -42,6 +38,8 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Patient;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -51,26 +49,33 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
+import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
+import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
@@ -211,14 +216,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (!VersionUtilities.isR5Plus(val.getContext().getVersion())) {
       val.getBaseOptions().setUseValueSetDisplays(true);
     }
-    val.getBaseOptions().getLanguages().clear();
-    if (content.has("languages")) {
-      for (String s : content.get("languages").getAsString().split("\\,")) {
-        String l = s.trim();
-        val.getBaseOptions().getLanguages().add(l);        
-      }
+    if (content.has("language")) {
+      val.getBaseOptions().setLanguages(content.get("language").getAsString());
+      val.setValidationLanguage(val.getBaseOptions().getLanguages().getChosen());
     } else {
-      
+      val.getBaseOptions().setLanguages(null);      
     }
     
     if (content.has("fetcher") && "standalone".equals(JsonUtilities.str(content, "fetcher"))) {
@@ -414,7 +416,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
 
   private ValidationEngine buildVersionEngine(String ver, String txLog) throws Exception {
-    String server = FhirSettings.getTxFhirDevelopment();
+    String server = FhirSettings.getTxFhirLocal();
     switch (ver) {
     case "1.0": return TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", server, txLog, FhirPublication.DSTU2, true, "1.0.2");
     case "1.4": return TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", server, txLog, FhirPublication.DSTU2016May, true, "1.4.0"); 
@@ -560,7 +562,12 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           JsonObject oj = JsonTrackingParser.parse(json, null);
           java.add("outcome", oj);
         }
-        JsonTrackingParser.write(manifest, new File(Utilities.path("[tmp]", "validator", "manifest.new.json")));
+
+        File newManifestFile = new File(Utilities.path("[tmp]", "validator", "manifest.new.json"));
+        if (!newManifestFile.getParentFile().exists()) {
+          newManifestFile.getParentFile().mkdir();
+        }
+        JsonTrackingParser.write(manifest, newManifestFile);
       }
       Assertions.fail("\r\n"+String.join("\r\n", fails));
     }
@@ -729,7 +736,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       return CodedContentValidationPolicy.VALUESET;
   }
   @Override
-  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type) throws IOException, FHIRException {
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical) throws IOException, FHIRException {
     return !url.contains("example.org") && !url.startsWith("http://hl7.org/fhir/invalid");
   }
 

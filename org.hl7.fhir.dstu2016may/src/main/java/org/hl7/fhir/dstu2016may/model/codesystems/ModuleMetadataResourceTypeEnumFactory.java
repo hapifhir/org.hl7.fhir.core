@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ModuleMetadataResourceTypeEnumFactory implements EnumFactory<ModuleMetadataResourceType> {
@@ -54,7 +50,7 @@ public class ModuleMetadataResourceTypeEnumFactory implements EnumFactory<Module
       return ModuleMetadataResourceType.SUCCESSOR;
     if ("derived-from".equals(codeString))
       return ModuleMetadataResourceType.DERIVEDFROM;
-    throw new IllegalArgumentException("Unknown ModuleMetadataResourceType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ModuleMetadataResourceType code '" + codeString + "'");
   }
 
   public String toCode(ModuleMetadataResourceType code) {
@@ -73,8 +69,8 @@ public class ModuleMetadataResourceTypeEnumFactory implements EnumFactory<Module
     return "?";
   }
 
-    public String toSystem(ModuleMetadataResourceType code) {
-      return code.getSystem();
-      }
+  public String toSystem(ModuleMetadataResourceType code) {
+    return code.getSystem();
+  }
 
 }

@@ -569,7 +569,7 @@ Not to be used when the patient is currently at the location
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Encounter.status");
+          throw new FHIRException("Cannot call addChild on a singleton property Encounter.status");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -1369,7 +1369,7 @@ Not to be used when the patient is currently at the location
           return this.role;
         }
         else if (name.equals("rank")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Encounter.rank");
+          throw new FHIRException("Cannot call addChild on a singleton property Encounter.rank");
         }
         else
           return super.addChild(name);
@@ -2346,7 +2346,7 @@ Not to be used when the patient is currently at the location
           return this.location;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Encounter.status");
+          throw new FHIRException("Cannot call addChild on a singleton property Encounter.status");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -3860,7 +3860,7 @@ This would be used for a case where an admission starts of as an emergency encou
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Encounter.status");
+          throw new FHIRException("Cannot call addChild on a singleton property Encounter.status");
         }
         else if (name.equals("statusHistory")) {
           return addStatusHistory();

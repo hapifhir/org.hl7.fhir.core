@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,111 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum Relationship {
 
-        /**
-         * The patient is the subscriber (policy holder)
-         */
-        _1, 
-        /**
-         * The patient is the spouse or equivalent of the subscriber (policy holder)
-         */
-        _2, 
-        /**
-         * The patient is the child of the subscriber (policy holder)
-         */
-        _3, 
-        /**
-         * The patient is the common law spouse of the subscriber (policy holder)
-         */
-        _4, 
-        /**
-         * The patient has some other relationship, such as parent, to the subscriber (policy holder)
-         */
-        _5, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static Relationship fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("1".equals(codeString))
-          return _1;
-        if ("2".equals(codeString))
-          return _2;
-        if ("3".equals(codeString))
-          return _3;
-        if ("4".equals(codeString))
-          return _4;
-        if ("5".equals(codeString))
-          return _5;
-        throw new FHIRException("Unknown Relationship code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case _1: return "1";
-            case _2: return "2";
-            case _3: return "3";
-            case _4: return "4";
-            case _5: return "5";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/relationship";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case _1: return "The patient is the subscriber (policy holder)";
-            case _2: return "The patient is the spouse or equivalent of the subscriber (policy holder)";
-            case _3: return "The patient is the child of the subscriber (policy holder)";
-            case _4: return "The patient is the common law spouse of the subscriber (policy holder)";
-            case _5: return "The patient has some other relationship, such as parent, to the subscriber (policy holder)";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case _1: return "Self";
-            case _2: return "Spouse";
-            case _3: return "Child";
-            case _4: return "Common Law Spouse";
-            case _5: return "Other";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The patient is the subscriber (policy holder)
+   */
+  _1,
+  /**
+   * The patient is the spouse or equivalent of the subscriber (policy holder)
+   */
+  _2,
+  /**
+   * The patient is the child of the subscriber (policy holder)
+   */
+  _3,
+  /**
+   * The patient is the common law spouse of the subscriber (policy holder)
+   */
+  _4,
+  /**
+   * The patient has some other relationship, such as parent, to the subscriber
+   * (policy holder)
+   */
+  _5,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static Relationship fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("1".equals(codeString))
+      return _1;
+    if ("2".equals(codeString))
+      return _2;
+    if ("3".equals(codeString))
+      return _3;
+    if ("4".equals(codeString))
+      return _4;
+    if ("5".equals(codeString))
+      return _5;
+    throw new FHIRException("Unknown Relationship code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case _1:
+      return "1";
+    case _2:
+      return "2";
+    case _3:
+      return "3";
+    case _4:
+      return "4";
+    case _5:
+      return "5";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/relationship";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case _1:
+      return "The patient is the subscriber (policy holder)";
+    case _2:
+      return "The patient is the spouse or equivalent of the subscriber (policy holder)";
+    case _3:
+      return "The patient is the child of the subscriber (policy holder)";
+    case _4:
+      return "The patient is the common law spouse of the subscriber (policy holder)";
+    case _5:
+      return "The patient has some other relationship, such as parent, to the subscriber (policy holder)";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case _1:
+      return "Self";
+    case _2:
+      return "Spouse";
+    case _3:
+      return "Child";
+    case _4:
+      return "Common Law Spouse";
+    case _5:
+      return "Other";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -9,7 +9,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identi
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Period30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Code30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
-import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Endpoint.EndpointPayloadComponent;
 

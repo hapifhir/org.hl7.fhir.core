@@ -24,7 +24,6 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageClient;
 import org.hl7.fhir.utilities.npm.PackageInfo;
 import org.hl7.fhir.utilities.npm.PackageServer;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

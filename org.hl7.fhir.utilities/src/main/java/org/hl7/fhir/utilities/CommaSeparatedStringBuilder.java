@@ -1,6 +1,10 @@
 package org.hl7.fhir.utilities;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -110,11 +114,32 @@ public class CommaSeparatedStringBuilder {
     
   }
 
-  public static String join(String sep, List<String> list) {
+  public static String join(String sep, Collection<String> list) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(sep);
     for (String s : list) {
       b.append(s);
     }
     return b.toString();
+  }
+
+  public static String build(List<String> list) {
+    CommaSeparatedStringBuilder self = new CommaSeparatedStringBuilder();
+    for (String s : list) {
+      self.append(s);
+    }
+    return self.toString();
+  }
+
+  public static Set<String> toSet(String source) {
+    if (source == null) {
+      return null;
+    }
+    Set<String> res = new HashSet<>();
+    if (!Utilities.noString(source)) {
+      for (String s : source.split("\\,")) {
+        res.add(s.trim());
+      }
+    }
+    return res;
   }
 }

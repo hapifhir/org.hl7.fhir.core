@@ -2,9 +2,7 @@ package org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50;
 
 import java.util.stream.Collectors;
 
-import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.BackboneElement43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Coding43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;

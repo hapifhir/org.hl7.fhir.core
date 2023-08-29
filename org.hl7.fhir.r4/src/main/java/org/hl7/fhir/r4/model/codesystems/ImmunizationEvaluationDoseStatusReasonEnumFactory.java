@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,10 +31,10 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
-public class ImmunizationEvaluationDoseStatusReasonEnumFactory implements EnumFactory<ImmunizationEvaluationDoseStatusReason> {
+public class ImmunizationEvaluationDoseStatusReasonEnumFactory
+    implements EnumFactory<ImmunizationEvaluationDoseStatusReason> {
 
   public ImmunizationEvaluationDoseStatusReason fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
@@ -52,7 +49,7 @@ public class ImmunizationEvaluationDoseStatusReasonEnumFactory implements EnumFa
       return ImmunizationEvaluationDoseStatusReason.OUTSIDESCHED;
     if ("prodrecall".equals(codeString))
       return ImmunizationEvaluationDoseStatusReason.PRODRECALL;
-    throw new IllegalArgumentException("Unknown ImmunizationEvaluationDoseStatusReason code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ImmunizationEvaluationDoseStatusReason code '" + codeString + "'");
   }
 
   public String toCode(ImmunizationEvaluationDoseStatusReason code) {
@@ -69,8 +66,8 @@ public class ImmunizationEvaluationDoseStatusReasonEnumFactory implements EnumFa
     return "?";
   }
 
-    public String toSystem(ImmunizationEvaluationDoseStatusReason code) {
-      return code.getSystem();
-      }
+  public String toSystem(ImmunizationEvaluationDoseStatusReason code) {
+    return code.getSystem();
+  }
 
 }

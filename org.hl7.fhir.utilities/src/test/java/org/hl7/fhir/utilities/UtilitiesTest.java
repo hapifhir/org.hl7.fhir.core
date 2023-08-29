@@ -293,7 +293,7 @@ class UtilitiesTest {
     RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
       Utilities.path(pathStrings);
     });
-    assertTrue(thrown.getMessage().endsWith(pathStrings[0]));
+    assertTrue(thrown.getMessage().endsWith(pathStrings[0]+", full path = "+String.join(", ", pathStrings)));
   }
 
   public static Stream<Arguments> macAndLinuxNonFirstElementStartPaths() {
@@ -384,7 +384,7 @@ class UtilitiesTest {
     RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
       Utilities.path(pathsStrings);
     });
-    assertEquals("First path entry cannot be null or empty",thrown.getMessage());
+    assertEquals("First entry in file path cannot be null or empty, full path = "+String.join(", ", pathsStrings),thrown.getMessage());
   }
 
   @Test
@@ -422,5 +422,46 @@ class UtilitiesTest {
     Assertions.assertFalse("\u0009\n\u000B\u000C\r\u0020\u0085\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u2028\u2029\u202F\u205F\u3000".matches(".+"));
     Assertions.assertFalse("\u0009\n\u000B\u000C\r\u0020\u0085\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u2028\u2029\u202F\u205F\u3000".matches("^.+$"));
   }
-  
+
+  @Test
+  @DisplayName("directory copy case tests")
+  void testFDirectoryCopy() throws IOException {
+    String src = Utilities.path("[tmp]", "test", "copy-source");
+    String dst = Utilities.path("[tmp]", "test", "copy-dest");
+    makeDir (src);
+    makeFile(Utilities.path(src, "Test.txt"), "source1");
+    makeDir (Utilities.path(src, "SUB"));
+    makeFile(Utilities.path(src, "SUB", "TEST.txt"), "source2");
+
+    makeDir (dst);
+    makeFile(Utilities.path(dst, "test.txt"), "dest1");
+    makeDir (Utilities.path(dst, "sub"));
+    makeFile(Utilities.path(dst, "sub", "test.txt"), "dest2");
+    
+    Utilities.copyDirectory(src, dst, null);
+    
+    checkDir (dst);
+    checkFile(Utilities.path(dst, "Test.txt"), "source1");
+    checkDir (Utilities.path(dst, "SUB"));
+    checkFile(Utilities.path(dst, "SUB", "TEST.txt"), "source2");
+  }
+
+  private void checkFile(String path, String content) throws IOException {
+    Assertions.assertTrue(new CSFile(path).exists());
+    Assertions.assertEquals(content, TextFile.fileToString(path));
+  }
+
+  private void checkDir(String path) throws IOException {
+    Assertions.assertTrue(new CSFile(path).exists());
+  }
+
+  private void makeFile(String path, String content) throws IOException {
+    TextFile.stringToFile(content, path);
+  }
+
+  private void makeDir(String path) throws IOException {
+    Utilities.createDirectory(path);
+    Utilities.clearDirectory(path);
+  }
 }
+

@@ -624,16 +624,16 @@ public class MessageDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.focus.code");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.focus.code");
         }
         else if (name.equals("profile")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.focus.profile");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.focus.profile");
         }
         else if (name.equals("min")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.focus.min");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.focus.min");
         }
         else if (name.equals("max")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.focus.max");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.focus.max");
         }
         else
           return super.addChild(name);
@@ -888,10 +888,10 @@ public class MessageDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("message")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.allowedResponse.message");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.allowedResponse.message");
         }
         else if (name.equals("situation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.allowedResponse.situation");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.allowedResponse.situation");
         }
         else
           return super.addChild(name);
@@ -2789,13 +2789,13 @@ public class MessageDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.url");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.version");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.version");
         }
         else if (name.equals("versionAlgorithmString")) {
           this.versionAlgorithm = new StringType();
@@ -2806,31 +2806,31 @@ public class MessageDefinition extends CanonicalResource {
           return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.name");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.title");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.title");
         }
         else if (name.equals("replaces")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.replaces");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.replaces");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.status");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.experimental");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.date");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.publisher");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.description");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -2839,19 +2839,19 @@ public class MessageDefinition extends CanonicalResource {
           return addJurisdiction();
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.purpose");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.purpose");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.copyright");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.copyright");
         }
         else if (name.equals("copyrightLabel")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.copyrightLabel");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.copyrightLabel");
         }
         else if (name.equals("base")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.base");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.base");
         }
         else if (name.equals("parent")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.parent");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.parent");
         }
         else if (name.equals("eventCoding")) {
           this.event = new Coding();
@@ -2862,19 +2862,19 @@ public class MessageDefinition extends CanonicalResource {
           return this.event;
         }
         else if (name.equals("category")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.category");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.category");
         }
         else if (name.equals("focus")) {
           return addFocus();
         }
         else if (name.equals("responseRequired")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.responseRequired");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.responseRequired");
         }
         else if (name.equals("allowedResponse")) {
           return addAllowedResponse();
         }
         else if (name.equals("graph")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MessageDefinition.graph");
+          throw new FHIRException("Cannot call addChild on a singleton property MessageDefinition.graph");
         }
         else
           return super.addChild(name);

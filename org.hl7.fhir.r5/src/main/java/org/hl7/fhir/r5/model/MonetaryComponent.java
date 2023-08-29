@@ -514,14 +514,14 @@ public class MonetaryComponent extends DataType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MonetaryComponent.type");
+          throw new FHIRException("Cannot call addChild on a singleton property MonetaryComponent.type");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
           return this.code;
         }
         else if (name.equals("factor")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MonetaryComponent.factor");
+          throw new FHIRException("Cannot call addChild on a singleton property MonetaryComponent.factor");
         }
         else if (name.equals("amount")) {
           this.amount = new Money();

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ResponseCodeEnumFactory implements EnumFactory<ResponseCode> {
@@ -48,7 +44,7 @@ public class ResponseCodeEnumFactory implements EnumFactory<ResponseCode> {
       return ResponseCode.TRANSIENTERROR;
     if ("fatal-error".equals(codeString))
       return ResponseCode.FATALERROR;
-    throw new IllegalArgumentException("Unknown ResponseCode code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ResponseCode code '" + codeString + "'");
   }
 
   public String toCode(ResponseCode code) {
@@ -61,8 +57,8 @@ public class ResponseCodeEnumFactory implements EnumFactory<ResponseCode> {
     return "?";
   }
 
-    public String toSystem(ResponseCode code) {
-      return code.getSystem();
-      }
+  public String toSystem(ResponseCode code) {
+    return code.getSystem();
+  }
 
 }

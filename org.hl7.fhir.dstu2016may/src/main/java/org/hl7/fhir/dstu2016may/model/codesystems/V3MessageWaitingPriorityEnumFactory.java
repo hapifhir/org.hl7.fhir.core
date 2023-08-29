@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class V3MessageWaitingPriorityEnumFactory implements EnumFactory<V3MessageWaitingPriority> {
@@ -48,7 +44,7 @@ public class V3MessageWaitingPriorityEnumFactory implements EnumFactory<V3Messag
       return V3MessageWaitingPriority.L;
     if ("M".equals(codeString))
       return V3MessageWaitingPriority.M;
-    throw new IllegalArgumentException("Unknown V3MessageWaitingPriority code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown V3MessageWaitingPriority code '" + codeString + "'");
   }
 
   public String toCode(V3MessageWaitingPriority code) {
@@ -61,8 +57,8 @@ public class V3MessageWaitingPriorityEnumFactory implements EnumFactory<V3Messag
     return "?";
   }
 
-    public String toSystem(V3MessageWaitingPriority code) {
-      return code.getSystem();
-      }
+  public String toSystem(V3MessageWaitingPriority code) {
+    return code.getSystem();
+  }
 
 }

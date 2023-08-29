@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AdjudicationError {
 
-        /**
-         * Missing Identifier
-         */
-        A001, 
-        /**
-         * Missing Creation Date
-         */
-        A002, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static AdjudicationError fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("a001".equals(codeString))
-          return A001;
-        if ("a002".equals(codeString))
-          return A002;
-        throw new FHIRException("Unknown AdjudicationError code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case A001: return "a001";
-            case A002: return "a002";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/adjudication-error";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case A001: return "Missing Identifier";
-            case A002: return "Missing Creation Date";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case A001: return "Missing Identifier";
-            case A002: return "Missing Creation Date";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Missing Identifier
+   */
+  A001,
+  /**
+   * Missing Creation Date
+   */
+  A002,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static AdjudicationError fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("a001".equals(codeString))
+      return A001;
+    if ("a002".equals(codeString))
+      return A002;
+    throw new FHIRException("Unknown AdjudicationError code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case A001:
+      return "a001";
+    case A002:
+      return "a002";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/adjudication-error";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case A001:
+      return "Missing Identifier";
+    case A002:
+      return "Missing Creation Date";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case A001:
+      return "Missing Identifier";
+    case A002:
+      return "Missing Creation Date";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

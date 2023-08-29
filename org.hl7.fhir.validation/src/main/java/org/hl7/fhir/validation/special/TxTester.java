@@ -10,11 +10,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -27,11 +25,10 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
@@ -42,7 +39,6 @@ import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
-import org.hl7.fhir.utilities.npm.NpmPackage;
 
 public class TxTester {
 
@@ -59,20 +55,22 @@ public class TxTester {
   private String output;
   private ITerminologyClient tx;
   private boolean tight;
+  private JsonObject externals;
   
 
-  public TxTester(ITxTesterLoader loader, String server, boolean tight) {
+  public TxTester(ITxTesterLoader loader, String server, boolean tight, JsonObject externals) {
     super();
     this.server = server;
     this.loader = loader;
     this.tight = tight;
+    this.externals = externals;
   }
 
   public static void main(String[] args) throws Exception {
-    new TxTester(new InternalTxLoader(args[0]), args[1], "true".equals(args[2])).execute(args[2], args[3]);
+    new TxTester(new InternalTxLoader(args[0]), args[1], "true".equals(args[2]), args.length == 5 ? JsonParser.parseObjectFromFile(args[4]) : null).execute(args[2], new ArrayList<>(), args[3]);
   }
   
-  public boolean execute(String version, String filter) throws IOException, URISyntaxException {
+  public boolean execute(String version, List<String> modes, String filter) throws IOException, URISyntaxException {
     if (output == null) {
       output = Utilities.path("[tmp]", serverId());
     }
@@ -81,6 +79,8 @@ public class TxTester {
     System.out.println("  Source for tests: "+loader.describe());
     System.out.println("  Output Directory: "+output);
     System.out.println("  Term Service Url: "+server);
+    System.out.println("  External Strings: "+(externals != null));
+    System.out.println("  Test  Exec Modes: "+modes.toString());
     if (version != null) {
       System.out.println("  Tx  FHIR Version: "+version);
     }
@@ -95,7 +95,7 @@ public class TxTester {
       ITerminologyClient tx = connectToServer();
       boolean ok = checkClient(tx);
       for (JsonObject suite : tests.getJsonObjects("suites")) {
-        ok = runSuite(suite, tx, filter, json.forceArray("suites")) && ok;
+        ok = runSuite(suite, tx, modes, filter, json.forceArray("suites")) && ok;
       }
       TextFile.stringToFile(JsonParser.compose(json, true), Utilities.path(output, "test-results.json"));
       if (ok) {
@@ -141,20 +141,20 @@ public class TxTester {
   }
 
 
-  public String executeTest(JsonObject suite, JsonObject test) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
+  public String executeTest(JsonObject suite, JsonObject test, List<String> modes) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
     error = null;
     if (tx == null) {
       tx = connectToServer();
       checkClient(tx);
     }
     List<Resource> setup = loadSetupResources(suite);
-    if (runTest(test, tx, setup, "*", null)) {
+    if (runTest(test, tx, setup, modes, "*", null)) {
       return null;      
     } else {
       return error;
     }
   }
-  private boolean runSuite(JsonObject suite, ITerminologyClient tx, String filter, JsonArray output) throws FHIRFormatError, FileNotFoundException, IOException {
+  private boolean runSuite(JsonObject suite, ITerminologyClient tx, List<String> modes, String filter, JsonArray output) throws FHIRFormatError, FileNotFoundException, IOException {
     System.out.println("Group "+suite.asString("name"));
     JsonObject outputS = new JsonObject();
     if (output != null) {
@@ -164,12 +164,12 @@ public class TxTester {
     List<Resource> setup = loadSetupResources(suite);
     boolean ok = true;
     for (JsonObject test : suite.getJsonObjects("tests")) {
-      ok = runTest(test, tx, setup, filter, outputS.forceArray("tests")) && ok;      
+      ok = runTest(test, tx, setup, modes, filter, outputS.forceArray("tests")) && ok;      
     }
     return ok;
   }
 
-  private boolean runTest(JsonObject test, ITerminologyClient tx, List<Resource> setup, String filter, JsonArray output) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
+  private boolean runTest(JsonObject test, ITerminologyClient tx, List<Resource> setup, List<String> modes, String filter, JsonArray output) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
     JsonObject outputT = new JsonObject();
     if (output != null) {
       output.add(outputT);
@@ -179,21 +179,23 @@ public class TxTester {
     if (Utilities.noString(filter) || filter.equals("*") || test.asString("name").contains(filter)) {
       System.out.print("  Test "+test.asString("name")+": ");
       try {
-        Parameters req = (Parameters) loader.loadResource(test.asString("request"));
+        Parameters req = (Parameters) loader.loadResource(chooseParam(test, "request", modes));
 
-        String fn = test.asString("response");
+        String fn = chooseParam(test, "response", modes);
         String resp = TextFile.bytesToString(loader.loadContent(fn));
         String fp = Utilities.path("[tmp]", serverId(), fn);
         File fo = new File(fp);
         if (fo.exists()) {
           fo.delete();
         }
+        JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
 
+        String lang = test.asString("Accept-Language");
         String msg = null;
         if (test.asString("operation").equals("expand")) {
-          msg = expand(tx, setup, req, resp, fp, profile);
+          msg = expand(tx, setup, req, resp, fp, lang, profile, ext);
         } else if (test.asString("operation").equals("validate-code")) {
-          msg = validate(tx, setup, req, resp, fp, profile);      
+          msg = validate(tx, setup, req, resp, fp, lang, profile, ext);      
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -221,6 +223,15 @@ public class TxTester {
     }
   }
 
+  private String chooseParam(JsonObject test, String name, List<String> modes) {
+    for (String mode : modes) {
+      if (test.has(name+":"+mode)) {
+        return test.asString(name+":"+mode);
+      }
+    }
+    return test.asString(name);
+  }
+
   private Parameters loadProfile(JsonObject test) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException {
     if (test.has("profile")) {        
       return (Parameters) loader.loadResource(test.asString("profile"));
@@ -233,10 +244,11 @@ public class TxTester {
     return new URI(server).getHost();
   }
 
-  private String expand(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, Parameters profile) throws IOException {
+  private String expand(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
+    tx.setLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
     String vsj;
     try {
@@ -245,11 +257,11 @@ public class TxTester {
       TxTesterSorters.sortValueSet(vs);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vs);
     } catch (EFhirClientException e) {
-      OperationOutcome oo = e.getServerErrors().get(0); 
+      OperationOutcome oo = e.getServerError(); 
       TxTesterScrubbers.scrubOO(oo, tight);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj);
+    String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj, false, ext);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(vsj, fp);        
@@ -257,11 +269,12 @@ public class TxTester {
     return diff;
   }
 
-  private String validate(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, Parameters profile) throws IOException {
+  private String validate(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
     p.getParameter().addAll(profile.getParameter());
+    tx.setLanguage(lang);
     String pj;
     try {
       Parameters po = tx.validateVS(p);
@@ -269,11 +282,11 @@ public class TxTester {
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
     } catch (EFhirClientException e) {
-      OperationOutcome oo = e.getServerErrors().get(0); 
+      OperationOutcome oo = e.getServerError(); 
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj);
+    String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, false, ext);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(pj, fp);        

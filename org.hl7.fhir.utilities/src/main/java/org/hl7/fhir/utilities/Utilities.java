@@ -17,7 +17,6 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -30,6 +29,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import javax.annotation.Nullable;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -65,8 +66,6 @@ import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FileNotifier.FileNotifier2;
 import org.hl7.fhir.utilities.settings.FhirSettings;
-
-import javax.annotation.Nullable;
 
 public class Utilities {
 
@@ -113,6 +112,9 @@ public class Utilities {
       return false;
     }
     String value = string.startsWith("-") ? string.substring(1) : string;
+    if (Utilities.noString(value)) {
+      return false;
+    }
     for (char next : value.toCharArray()) {
       if (!Character.isDigit(next)) {
         return false;
@@ -305,7 +307,18 @@ public class Utilities {
     CSFile src = new CSFile(sourceFolder);
     if (!src.exists())
       throw new FHIRException("Folder " + sourceFolder + " not found");
-    createDirectory(destFolder);
+    File dst = new File(destFolder);
+    if(!dst.getCanonicalFile().getName().equals(dst.getName())) {
+      File tmp = new File(destFolder+System.currentTimeMillis());
+      if (!dst.renameTo(tmp)) {
+        throw new IOException("fixing case from "+dst.getCanonicalFile().getName()+" to "+tmp.getName()+" failed");
+      }
+      if (!tmp.renameTo(dst)) {
+        throw new IOException("fixing case from "+tmp.getCanonicalFile().getName()+" to "+dst.getName()+" failed");
+      }
+    } else if (!dst.exists()) {    
+      createDirectory(destFolder);
+    }
 
     String[] files = src.list();
     for (String f : files) {
@@ -316,7 +329,7 @@ public class Utilities {
       } else {
         if (notifier != null)
           notifier.copyFile(sourceFolder + File.separator + f, destFolder + File.separator + f);
-        copyFile(new CSFile(sourceFolder + File.separator + f), new CSFile(destFolder + File.separator + f));
+        copyFile(new CSFile(sourceFolder + File.separator + f), new /*CS*/File(destFolder + File.separator + f)); // case doesn't have to match on the target
       }
     }
   }
@@ -355,6 +368,10 @@ public class Utilities {
       if (!new CSFile(destFile.getParent()).exists()) {
         createDirectory(destFile.getParent());
       }
+      destFile.createNewFile();
+    } else if (!destFile.getCanonicalFile().getName().equals(destFile.getName())) {
+      // case mismatch
+      destFile.delete();
       destFile.createNewFile();
     }
 
@@ -985,7 +1002,7 @@ public class Utilities {
       else if (isWhitespace(c)) {
         b.append("\\u"+Utilities.padLeft(Integer.toHexString(c), '0', 4));
       } else if (((int) c) < 32)
-        b.append("\\u" + Utilities.padLeft(String.valueOf((int) c), '0', 4));
+        b.append("\\u" + Utilities.padLeft(Integer.toHexString(c), '0', 4));
       else
         b.append(c);
     }
@@ -2108,6 +2125,10 @@ public class Utilities {
       return null;
     }
     return url.contains("/") ? url.substring(url.lastIndexOf("/")+1) : url;
+  }
+
+  public static String escapeSql(String s) {
+    return s.replace("'", "''");
   }
 
 }

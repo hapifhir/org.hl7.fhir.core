@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,95 +31,122 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CommunicationTopic {
 
-        /**
-         * The purpose or content of the communication is a prescription refill request.
-         */
-        PRESCRIPTIONREFILLREQUEST, 
-        /**
-         * The purpose or content of the communication is a progress update.
-         */
-        PROGRESSUPDATE, 
-        /**
-         * The purpose or content of the communication is to report labs.
-         */
-        REPORTLABS, 
-        /**
-         * The purpose or content of the communication is an appointment reminder.
-         */
-        APPOINTMENTREMINDER, 
-        /**
-         * The purpose or content of the communication is a phone consult.
-         */
-        PHONECONSULT, 
-        /**
-         * The purpose or content of the communication is a summary report.
-         */
-        SUMMARYREPORT, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static CommunicationTopic fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("prescription-refill-request".equals(codeString))
-          return PRESCRIPTIONREFILLREQUEST;
-        if ("progress-update".equals(codeString))
-          return PROGRESSUPDATE;
-        if ("report-labs".equals(codeString))
-          return REPORTLABS;
-        if ("appointment-reminder".equals(codeString))
-          return APPOINTMENTREMINDER;
-        if ("phone-consult".equals(codeString))
-          return PHONECONSULT;
-        if ("summary-report".equals(codeString))
-          return SUMMARYREPORT;
-        throw new FHIRException("Unknown CommunicationTopic code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PRESCRIPTIONREFILLREQUEST: return "prescription-refill-request";
-            case PROGRESSUPDATE: return "progress-update";
-            case REPORTLABS: return "report-labs";
-            case APPOINTMENTREMINDER: return "appointment-reminder";
-            case PHONECONSULT: return "phone-consult";
-            case SUMMARYREPORT: return "summary-report";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/communication-topic";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PRESCRIPTIONREFILLREQUEST: return "The purpose or content of the communication is a prescription refill request.";
-            case PROGRESSUPDATE: return "The purpose or content of the communication is a progress update.";
-            case REPORTLABS: return "The purpose or content of the communication is to report labs.";
-            case APPOINTMENTREMINDER: return "The purpose or content of the communication is an appointment reminder.";
-            case PHONECONSULT: return "The purpose or content of the communication is a phone consult.";
-            case SUMMARYREPORT: return "The purpose or content of the communication is a summary report.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PRESCRIPTIONREFILLREQUEST: return "Prescription Refill Request";
-            case PROGRESSUPDATE: return "Progress Update";
-            case REPORTLABS: return "Report Labs";
-            case APPOINTMENTREMINDER: return "Appointment Reminder";
-            case PHONECONSULT: return "Phone Consult";
-            case SUMMARYREPORT: return "Summary Report";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The purpose or content of the communication is a prescription refill request.
+   */
+  PRESCRIPTIONREFILLREQUEST,
+  /**
+   * The purpose or content of the communication is a progress update.
+   */
+  PROGRESSUPDATE,
+  /**
+   * The purpose or content of the communication is to report labs.
+   */
+  REPORTLABS,
+  /**
+   * The purpose or content of the communication is an appointment reminder.
+   */
+  APPOINTMENTREMINDER,
+  /**
+   * The purpose or content of the communication is a phone consult.
+   */
+  PHONECONSULT,
+  /**
+   * The purpose or content of the communication is a summary report.
+   */
+  SUMMARYREPORT,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static CommunicationTopic fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("prescription-refill-request".equals(codeString))
+      return PRESCRIPTIONREFILLREQUEST;
+    if ("progress-update".equals(codeString))
+      return PROGRESSUPDATE;
+    if ("report-labs".equals(codeString))
+      return REPORTLABS;
+    if ("appointment-reminder".equals(codeString))
+      return APPOINTMENTREMINDER;
+    if ("phone-consult".equals(codeString))
+      return PHONECONSULT;
+    if ("summary-report".equals(codeString))
+      return SUMMARYREPORT;
+    throw new FHIRException("Unknown CommunicationTopic code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PRESCRIPTIONREFILLREQUEST:
+      return "prescription-refill-request";
+    case PROGRESSUPDATE:
+      return "progress-update";
+    case REPORTLABS:
+      return "report-labs";
+    case APPOINTMENTREMINDER:
+      return "appointment-reminder";
+    case PHONECONSULT:
+      return "phone-consult";
+    case SUMMARYREPORT:
+      return "summary-report";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/communication-topic";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PRESCRIPTIONREFILLREQUEST:
+      return "The purpose or content of the communication is a prescription refill request.";
+    case PROGRESSUPDATE:
+      return "The purpose or content of the communication is a progress update.";
+    case REPORTLABS:
+      return "The purpose or content of the communication is to report labs.";
+    case APPOINTMENTREMINDER:
+      return "The purpose or content of the communication is an appointment reminder.";
+    case PHONECONSULT:
+      return "The purpose or content of the communication is a phone consult.";
+    case SUMMARYREPORT:
+      return "The purpose or content of the communication is a summary report.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PRESCRIPTIONREFILLREQUEST:
+      return "Prescription Refill Request";
+    case PROGRESSUPDATE:
+      return "Progress Update";
+    case REPORTLABS:
+      return "Report Labs";
+    case APPOINTMENTREMINDER:
+      return "Appointment Reminder";
+    case PHONECONSULT:
+      return "Phone Consult";
+    case SUMMARYREPORT:
+      return "Summary Report";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

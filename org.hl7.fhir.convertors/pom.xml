@@ -78,10 +78,14 @@
         <dependency>
             <groupId>org.fhir</groupId>
             <artifactId>ucum</artifactId>
-            <version>1.0.3</version>
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.ogce</groupId>
+            <artifactId>xpp3</artifactId>
+            <optional>true</optional>
+        </dependency>
         <!-- HTTP Client -->
         <dependency>
           <groupId>org.apache.httpcomponents</groupId>

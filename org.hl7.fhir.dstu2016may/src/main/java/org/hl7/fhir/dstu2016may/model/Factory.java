@@ -29,8 +29,6 @@ package org.hl7.fhir.dstu2016may.model;
   
  */
 
-
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
@@ -71,8 +69,6 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-
-
 public class Factory {
 
   public static IdType newId(String value) {
@@ -81,7 +77,7 @@ public class Factory {
     IdType res = new IdType();
     res.setValue(value);
     return res;
-	}
+  }
 
   public static StringType newString_(String value) {
     if (value == null)
@@ -124,7 +120,7 @@ public class Factory {
     res.setValue(value);
     return res;
   }
-  
+
   public static IntegerType newInteger(java.lang.Integer value) {
     if (value == null)
       return null;
@@ -132,81 +128,81 @@ public class Factory {
     res.setValue(value);
     return res;
   }
-  
+
   public static BooleanType newBoolean(boolean value) {
     BooleanType res = new BooleanType();
     res.setValue(value);
     return res;
   }
-  
+
   public static ContactPoint newContactPoint(ContactPointSystem system, String value) {
-  	ContactPoint res = new ContactPoint();
-	res.setSystem(system);
-	res.setValue(value);
-	return res;
+    ContactPoint res = new ContactPoint();
+    res.setSystem(system);
+    res.setValue(value);
+    return res;
   }
 
-	public static Extension newExtension(String uri, Type value, boolean evenIfNull) {
-		if (!evenIfNull && (value == null || value.isEmpty()))
-			return null;
-		Extension e = new Extension();
-		e.setUrl(uri);
-		e.setValue(value);
-	  return e;
+  public static Extension newExtension(String uri, Type value, boolean evenIfNull) {
+    if (!evenIfNull && (value == null || value.isEmpty()))
+      return null;
+    Extension e = new Extension();
+    e.setUrl(uri);
+    e.setValue(value);
+    return e;
   }
 
-	public static CodeableConcept newCodeableConcept(String code, String system, String display) {
-		CodeableConcept cc = new CodeableConcept();
-		Coding c = new Coding();
-		c.setCode(code);
-		c.setSystem(system);
-		c.setDisplay(display);
-		cc.getCoding().add(c);
-	  return cc;
+  public static CodeableConcept newCodeableConcept(String code, String system, String display) {
+    CodeableConcept cc = new CodeableConcept();
+    Coding c = new Coding();
+    c.setCode(code);
+    c.setSystem(system);
+    c.setDisplay(display);
+    cc.getCoding().add(c);
+    return cc;
   }
 
-	public static Reference makeReference(String url) {
-	  Reference rr = new Reference();
-	  rr.setReference(url);
-	  return rr;
-	}
+  public static Reference makeReference(String url) {
+    Reference rr = new Reference();
+    rr.setReference(url);
+    return rr;
+  }
 
-	public static Narrative newNarrative(NarrativeStatus status, String html) throws IOException, FHIRException {
-		Narrative n = new Narrative();
-		n.setStatus(status);
-		try {
-			n.setDiv(new XhtmlParser().parseFragment("<div>"+Utilities.escapeXml(html)+"</div>"));
-		} catch (org.hl7.fhir.exceptions.FHIRException e) {
-			throw new FHIRException(e.getMessage(), e);
-		}
-		return n;
-	}
+  public static Narrative newNarrative(NarrativeStatus status, String html) throws IOException, FHIRException {
+    Narrative n = new Narrative();
+    n.setStatus(status);
+    try {
+      n.setDiv(new XhtmlParser().parseFragment("<div>" + Utilities.escapeXml(html) + "</div>"));
+    } catch (org.hl7.fhir.exceptions.FHIRException e) {
+      throw new FHIRException(e.getMessage(), e);
+    }
+    return n;
+  }
 
-	public static Coding makeCoding(String code) throws FHIRException {
-		String[] parts = code.split("\\|");
-		Coding c = new Coding();
-		if (parts.length == 2) {
-			c.setSystem(parts[0]);
-			c.setCode(parts[1]);
-		} else if (parts.length == 3) {
-			c.setSystem(parts[0]);
-			c.setCode(parts[1]);
-			c.setDisplay(parts[2]);
-		} else 
-			throw new FHIRException("Unable to understand the code '"+code+"'. Use the format system|code(|display)");
-		return c;
-	}
+  public static Coding makeCoding(String code) throws FHIRException {
+    String[] parts = code.split("\\|");
+    Coding c = new Coding();
+    if (parts.length == 2) {
+      c.setSystem(parts[0]);
+      c.setCode(parts[1]);
+    } else if (parts.length == 3) {
+      c.setSystem(parts[0]);
+      c.setCode(parts[1]);
+      c.setDisplay(parts[2]);
+    } else
+      throw new FHIRException("Unable to understand the code '" + code + "'. Use the format system|code(|display)");
+    return c;
+  }
 
-	public static Reference makeReference(String url, String text) {
-		Reference rr = new Reference();
-		rr.setReference(url);
-		if (!Utilities.noString(text))
-			rr.setDisplay(text);
-		return rr;
-	}
+  public static Reference makeReference(String url, String text) {
+    Reference rr = new Reference();
+    rr.setReference(url);
+    if (!Utilities.noString(text))
+      rr.setDisplay(text);
+    return rr;
+  }
 
   public static String createUUID() {
-    return "urn:uuid:"+UUID.randomUUID().toString().toLowerCase();
+    return "urn:uuid:" + UUID.randomUUID().toString().toLowerCase();
   }
 
   public Type create(String name) throws FHIRException {
@@ -277,6 +273,6 @@ public class Factory {
     else if (name.equals("Meta"))
       return new Meta();
     else
-      throw new FHIRException("Unknown data type name "+name);
+      throw new FHIRException("Unknown data type name " + name);
   }
 }

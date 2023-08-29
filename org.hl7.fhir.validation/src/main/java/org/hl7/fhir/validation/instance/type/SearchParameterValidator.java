@@ -5,22 +5,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.ExpressionNode.Kind;
 import org.hl7.fhir.r5.model.ExpressionNode.Operation;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.TimeTracker;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class SearchParameterValidator extends BaseValidator {
@@ -36,19 +32,23 @@ public class SearchParameterValidator extends BaseValidator {
 
   private FHIRPathEngine fpe;
 
-  public SearchParameterValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, FHIRPathEngine fpe, XVerExtensionManager xverManager, Coding jurisdiction) {
-    super(context, xverManager, debug);
-    source = Source.InstanceValidator;
+  public SearchParameterValidator(BaseValidator parent, FHIRPathEngine fpe) {
+    super (parent);
     this.fpe = fpe;
-    this.timeTracker = timeTracker;
-    this.jurisdiction = jurisdiction;
   }
   
   public boolean validateSearchParameter(List<ValidationMessage> errors, Element cs, NodeStack stack) {
     boolean ok = true;
-    String url = cs.getNamedChildValue("url");
-    String master = cs.getNamedChildValue("derivedFrom");
+//    String url = cs.getNamedChildValue("url");
     
+    if (cs.hasChild("expression")) {
+      List<String> bases = new ArrayList<>();
+      for (Element b : cs.getChildrenByName("base")) {
+        bases.add(b.primitiveValue());
+      }
+      ok = checkExpression(errors, stack.push(cs.getNamedChild("expression"), -1, null, null), cs.getNamedChildValue("expression"), bases) && ok;
+    }
+    String master = cs.getNamedChildValue("derivedFrom");
     if (!Utilities.noString(master)) {
       SearchParameter sp = context.fetchResource(SearchParameter.class, master);
       if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE,stack.getLiteralPath(), sp != null, I18nConstants.SEARCHPARAMETER_NOTFOUND, master)) {
@@ -67,13 +67,33 @@ public class SearchParameterValidator extends BaseValidator {
           String expOther = canonicalise(sp.getExpression(), bases); 
           warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE,stack.getLiteralPath(), expThis.equals(expOther), I18nConstants.SEARCHPARAMETER_EXP_WRONG, master, sp.getExpression(), cs.getNamedChildValue("expression"));
         }
+        
         // todo: check compositions
       }
     }
     return ok;
   }
 
-  private String canonicalise(String path, List<String> bases) {   
+  private boolean checkExpression(List<ValidationMessage> errors, NodeStack stack, String expression, List<String> bases) {
+    boolean ok = true;
+    try {
+      List<String> warnings = new ArrayList<>();
+      fpe.checkOnTypes(null, null, bases, fpe.parse(expression), warnings);
+      for (String s : warnings) {
+        warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, false, s);
+      }
+    } catch (Exception e) {
+      if (debug) {
+        e.printStackTrace();
+      }
+      ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_SEARCH_EXPRESSION_ERROR, expression, e.getMessage()) && ok;
+    }   
+    return ok;
+  }
+
+  private String canonicalise(String path, List<String> bases) {  
+    
+    
     ExpressionNode exp = fpe.parse(path);
     List<ExpressionNode> pass = new ArrayList<>();
     while (exp != null) {

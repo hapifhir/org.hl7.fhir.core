@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,122 +31,159 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum GoalStatus {
 
-        /**
-         * A goal is proposed for this patient.
-         */
-        PROPOSED, 
-        /**
-         * A goal is planned for this patient.
-         */
-        PLANNED, 
-        /**
-         * A proposed goal was accepted or acknowledged.
-         */
-        ACCEPTED, 
-        /**
-         * The goal is being sought actively.
-         */
-        ACTIVE, 
-        /**
-         * The goal remains a long term objective but is no longer being actively pursued for a temporary period of time.
-         */
-        ONHOLD, 
-        /**
-         * The goal is no longer being sought.
-         */
-        COMPLETED, 
-        /**
-         * The goal has been abandoned.
-         */
-        CANCELLED, 
-        /**
-         * The goal was entered in error and voided.
-         */
-        ENTEREDINERROR, 
-        /**
-         * A proposed goal was rejected.
-         */
-        REJECTED, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static GoalStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("proposed".equals(codeString))
-          return PROPOSED;
-        if ("planned".equals(codeString))
-          return PLANNED;
-        if ("accepted".equals(codeString))
-          return ACCEPTED;
-        if ("active".equals(codeString))
-          return ACTIVE;
-        if ("on-hold".equals(codeString))
-          return ONHOLD;
-        if ("completed".equals(codeString))
-          return COMPLETED;
-        if ("cancelled".equals(codeString))
-          return CANCELLED;
-        if ("entered-in-error".equals(codeString))
-          return ENTEREDINERROR;
-        if ("rejected".equals(codeString))
-          return REJECTED;
-        throw new FHIRException("Unknown GoalStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PROPOSED: return "proposed";
-            case PLANNED: return "planned";
-            case ACCEPTED: return "accepted";
-            case ACTIVE: return "active";
-            case ONHOLD: return "on-hold";
-            case COMPLETED: return "completed";
-            case CANCELLED: return "cancelled";
-            case ENTEREDINERROR: return "entered-in-error";
-            case REJECTED: return "rejected";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/goal-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PROPOSED: return "A goal is proposed for this patient.";
-            case PLANNED: return "A goal is planned for this patient.";
-            case ACCEPTED: return "A proposed goal was accepted or acknowledged.";
-            case ACTIVE: return "The goal is being sought actively.";
-            case ONHOLD: return "The goal remains a long term objective but is no longer being actively pursued for a temporary period of time.";
-            case COMPLETED: return "The goal is no longer being sought.";
-            case CANCELLED: return "The goal has been abandoned.";
-            case ENTEREDINERROR: return "The goal was entered in error and voided.";
-            case REJECTED: return "A proposed goal was rejected.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PROPOSED: return "Proposed";
-            case PLANNED: return "Planned";
-            case ACCEPTED: return "Accepted";
-            case ACTIVE: return "Active";
-            case ONHOLD: return "On Hold";
-            case COMPLETED: return "Completed";
-            case CANCELLED: return "Cancelled";
-            case ENTEREDINERROR: return "Entered in Error";
-            case REJECTED: return "Rejected";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * A goal is proposed for this patient.
+   */
+  PROPOSED,
+  /**
+   * A goal is planned for this patient.
+   */
+  PLANNED,
+  /**
+   * A proposed goal was accepted or acknowledged.
+   */
+  ACCEPTED,
+  /**
+   * The goal is being sought actively.
+   */
+  ACTIVE,
+  /**
+   * The goal remains a long term objective but is no longer being actively
+   * pursued for a temporary period of time.
+   */
+  ONHOLD,
+  /**
+   * The goal is no longer being sought.
+   */
+  COMPLETED,
+  /**
+   * The goal has been abandoned.
+   */
+  CANCELLED,
+  /**
+   * The goal was entered in error and voided.
+   */
+  ENTEREDINERROR,
+  /**
+   * A proposed goal was rejected.
+   */
+  REJECTED,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static GoalStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("proposed".equals(codeString))
+      return PROPOSED;
+    if ("planned".equals(codeString))
+      return PLANNED;
+    if ("accepted".equals(codeString))
+      return ACCEPTED;
+    if ("active".equals(codeString))
+      return ACTIVE;
+    if ("on-hold".equals(codeString))
+      return ONHOLD;
+    if ("completed".equals(codeString))
+      return COMPLETED;
+    if ("cancelled".equals(codeString))
+      return CANCELLED;
+    if ("entered-in-error".equals(codeString))
+      return ENTEREDINERROR;
+    if ("rejected".equals(codeString))
+      return REJECTED;
+    throw new FHIRException("Unknown GoalStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PROPOSED:
+      return "proposed";
+    case PLANNED:
+      return "planned";
+    case ACCEPTED:
+      return "accepted";
+    case ACTIVE:
+      return "active";
+    case ONHOLD:
+      return "on-hold";
+    case COMPLETED:
+      return "completed";
+    case CANCELLED:
+      return "cancelled";
+    case ENTEREDINERROR:
+      return "entered-in-error";
+    case REJECTED:
+      return "rejected";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/goal-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PROPOSED:
+      return "A goal is proposed for this patient.";
+    case PLANNED:
+      return "A goal is planned for this patient.";
+    case ACCEPTED:
+      return "A proposed goal was accepted or acknowledged.";
+    case ACTIVE:
+      return "The goal is being sought actively.";
+    case ONHOLD:
+      return "The goal remains a long term objective but is no longer being actively pursued for a temporary period of time.";
+    case COMPLETED:
+      return "The goal is no longer being sought.";
+    case CANCELLED:
+      return "The goal has been abandoned.";
+    case ENTEREDINERROR:
+      return "The goal was entered in error and voided.";
+    case REJECTED:
+      return "A proposed goal was rejected.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PROPOSED:
+      return "Proposed";
+    case PLANNED:
+      return "Planned";
+    case ACCEPTED:
+      return "Accepted";
+    case ACTIVE:
+      return "Active";
+    case ONHOLD:
+      return "On Hold";
+    case COMPLETED:
+      return "Completed";
+    case CANCELLED:
+      return "Cancelled";
+    case ENTEREDINERROR:
+      return "Entered in Error";
+    case REJECTED:
+      return "Rejected";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

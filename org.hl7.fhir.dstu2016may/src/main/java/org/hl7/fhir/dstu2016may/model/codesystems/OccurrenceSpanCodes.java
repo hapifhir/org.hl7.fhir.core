@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum OccurrenceSpanCodes {
 
-        /**
-         * Occurrance Span 1001 description.
-         */
-        _1001, 
-        /**
-         * Occurrance Span 1002 description.
-         */
-        _1002, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static OccurrenceSpanCodes fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("1001".equals(codeString))
-          return _1001;
-        if ("1002".equals(codeString))
-          return _1002;
-        throw new FHIRException("Unknown OccurrenceSpanCodes code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case _1001: return "1001";
-            case _1002: return "1002";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/ex-claimoccurrancespan";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case _1001: return "Occurrance Span 1001 description.";
-            case _1002: return "Occurrance Span 1002 description.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case _1001: return "Occurrance Span 1001";
-            case _1002: return "Occurrance Span 1002";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Occurrance Span 1001 description.
+   */
+  _1001,
+  /**
+   * Occurrance Span 1002 description.
+   */
+  _1002,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static OccurrenceSpanCodes fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("1001".equals(codeString))
+      return _1001;
+    if ("1002".equals(codeString))
+      return _1002;
+    throw new FHIRException("Unknown OccurrenceSpanCodes code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case _1001:
+      return "1001";
+    case _1002:
+      return "1002";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/ex-claimoccurrancespan";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case _1001:
+      return "Occurrance Span 1001 description.";
+    case _1002:
+      return "Occurrance Span 1002 description.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case _1001:
+      return "Occurrance Span 1001";
+    case _1002:
+      return "Occurrance Span 1002";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

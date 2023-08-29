@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,95 +31,122 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum VerificationresultValidationProcess {
 
-        /**
-         * null
-         */
-        EDITCHECK, 
-        /**
-         * null
-         */
-        VALUESET, 
-        /**
-         * null
-         */
-        PRIMARY, 
-        /**
-         * null
-         */
-        MULTI, 
-        /**
-         * null
-         */
-        STANDALONE, 
-        /**
-         * null
-         */
-        INCONTEXT, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static VerificationresultValidationProcess fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("edit-check".equals(codeString))
-          return EDITCHECK;
-        if ("valueset".equals(codeString))
-          return VALUESET;
-        if ("primary".equals(codeString))
-          return PRIMARY;
-        if ("multi".equals(codeString))
-          return MULTI;
-        if ("standalone".equals(codeString))
-          return STANDALONE;
-        if ("in-context".equals(codeString))
-          return INCONTEXT;
-        throw new FHIRException("Unknown VerificationresultValidationProcess code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case EDITCHECK: return "edit-check";
-            case VALUESET: return "valueset";
-            case PRIMARY: return "primary";
-            case MULTI: return "multi";
-            case STANDALONE: return "standalone";
-            case INCONTEXT: return "in-context";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/validation-process";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case EDITCHECK: return "";
-            case VALUESET: return "";
-            case PRIMARY: return "";
-            case MULTI: return "";
-            case STANDALONE: return "";
-            case INCONTEXT: return "";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case EDITCHECK: return "edit check";
-            case VALUESET: return "value set";
-            case PRIMARY: return "primary source";
-            case MULTI: return "multiple sources";
-            case STANDALONE: return "standalone";
-            case INCONTEXT: return "in context";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * null
+   */
+  EDITCHECK,
+  /**
+   * null
+   */
+  VALUESET,
+  /**
+   * null
+   */
+  PRIMARY,
+  /**
+   * null
+   */
+  MULTI,
+  /**
+   * null
+   */
+  STANDALONE,
+  /**
+   * null
+   */
+  INCONTEXT,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static VerificationresultValidationProcess fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("edit-check".equals(codeString))
+      return EDITCHECK;
+    if ("valueset".equals(codeString))
+      return VALUESET;
+    if ("primary".equals(codeString))
+      return PRIMARY;
+    if ("multi".equals(codeString))
+      return MULTI;
+    if ("standalone".equals(codeString))
+      return STANDALONE;
+    if ("in-context".equals(codeString))
+      return INCONTEXT;
+    throw new FHIRException("Unknown VerificationresultValidationProcess code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case EDITCHECK:
+      return "edit-check";
+    case VALUESET:
+      return "valueset";
+    case PRIMARY:
+      return "primary";
+    case MULTI:
+      return "multi";
+    case STANDALONE:
+      return "standalone";
+    case INCONTEXT:
+      return "in-context";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/validation-process";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case EDITCHECK:
+      return "";
+    case VALUESET:
+      return "";
+    case PRIMARY:
+      return "";
+    case MULTI:
+      return "";
+    case STANDALONE:
+      return "";
+    case INCONTEXT:
+      return "";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case EDITCHECK:
+      return "edit check";
+    case VALUESET:
+      return "value set";
+    case PRIMARY:
+      return "primary source";
+    case MULTI:
+      return "multiple sources";
+    case STANDALONE:
+      return "standalone";
+    case INCONTEXT:
+      return "in context";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

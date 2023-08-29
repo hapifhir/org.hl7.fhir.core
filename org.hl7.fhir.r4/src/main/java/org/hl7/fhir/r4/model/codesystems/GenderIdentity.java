@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,104 +31,134 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum GenderIdentity {
 
-        /**
-         * the patient identifies as transgender male-to-female
-         */
-        TRANSGENDERFEMALE, 
-        /**
-         * the patient identifies as transgender female-to-male
-         */
-        TRANSGENDERMALE, 
-        /**
-         * the patient identifies with neither/both female and male
-         */
-        NONBINARY, 
-        /**
-         * the patient identifies as male
-         */
-        MALE, 
-        /**
-         * the patient identifies as female
-         */
-        FEMALE, 
-        /**
-         * other gender identity
-         */
-        OTHER, 
-        /**
-         * the patient does not wish to disclose his gender identity
-         */
-        NONDISCLOSE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static GenderIdentity fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("transgender-female".equals(codeString))
-          return TRANSGENDERFEMALE;
-        if ("transgender-male".equals(codeString))
-          return TRANSGENDERMALE;
-        if ("non-binary".equals(codeString))
-          return NONBINARY;
-        if ("male".equals(codeString))
-          return MALE;
-        if ("female".equals(codeString))
-          return FEMALE;
-        if ("other".equals(codeString))
-          return OTHER;
-        if ("non-disclose".equals(codeString))
-          return NONDISCLOSE;
-        throw new FHIRException("Unknown GenderIdentity code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case TRANSGENDERFEMALE: return "transgender-female";
-            case TRANSGENDERMALE: return "transgender-male";
-            case NONBINARY: return "non-binary";
-            case MALE: return "male";
-            case FEMALE: return "female";
-            case OTHER: return "other";
-            case NONDISCLOSE: return "non-disclose";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/gender-identity";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case TRANSGENDERFEMALE: return "the patient identifies as transgender male-to-female";
-            case TRANSGENDERMALE: return "the patient identifies as transgender female-to-male";
-            case NONBINARY: return "the patient identifies with neither/both female and male";
-            case MALE: return "the patient identifies as male";
-            case FEMALE: return "the patient identifies as female";
-            case OTHER: return "other gender identity";
-            case NONDISCLOSE: return "the patient does not wish to disclose his gender identity";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case TRANSGENDERFEMALE: return "transgender female";
-            case TRANSGENDERMALE: return "transgender male";
-            case NONBINARY: return "non-binary";
-            case MALE: return "male";
-            case FEMALE: return "female";
-            case OTHER: return "other";
-            case NONDISCLOSE: return "does not wish to disclose";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * the patient identifies as transgender male-to-female
+   */
+  TRANSGENDERFEMALE,
+  /**
+   * the patient identifies as transgender female-to-male
+   */
+  TRANSGENDERMALE,
+  /**
+   * the patient identifies with neither/both female and male
+   */
+  NONBINARY,
+  /**
+   * the patient identifies as male
+   */
+  MALE,
+  /**
+   * the patient identifies as female
+   */
+  FEMALE,
+  /**
+   * other gender identity
+   */
+  OTHER,
+  /**
+   * the patient does not wish to disclose his gender identity
+   */
+  NONDISCLOSE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static GenderIdentity fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("transgender-female".equals(codeString))
+      return TRANSGENDERFEMALE;
+    if ("transgender-male".equals(codeString))
+      return TRANSGENDERMALE;
+    if ("non-binary".equals(codeString))
+      return NONBINARY;
+    if ("male".equals(codeString))
+      return MALE;
+    if ("female".equals(codeString))
+      return FEMALE;
+    if ("other".equals(codeString))
+      return OTHER;
+    if ("non-disclose".equals(codeString))
+      return NONDISCLOSE;
+    throw new FHIRException("Unknown GenderIdentity code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case TRANSGENDERFEMALE:
+      return "transgender-female";
+    case TRANSGENDERMALE:
+      return "transgender-male";
+    case NONBINARY:
+      return "non-binary";
+    case MALE:
+      return "male";
+    case FEMALE:
+      return "female";
+    case OTHER:
+      return "other";
+    case NONDISCLOSE:
+      return "non-disclose";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/gender-identity";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case TRANSGENDERFEMALE:
+      return "the patient identifies as transgender male-to-female";
+    case TRANSGENDERMALE:
+      return "the patient identifies as transgender female-to-male";
+    case NONBINARY:
+      return "the patient identifies with neither/both female and male";
+    case MALE:
+      return "the patient identifies as male";
+    case FEMALE:
+      return "the patient identifies as female";
+    case OTHER:
+      return "other gender identity";
+    case NONDISCLOSE:
+      return "the patient does not wish to disclose his gender identity";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case TRANSGENDERFEMALE:
+      return "transgender female";
+    case TRANSGENDERMALE:
+      return "transgender male";
+    case NONBINARY:
+      return "non-binary";
+    case MALE:
+      return "male";
+    case FEMALE:
+      return "female";
+    case OTHER:
+      return "other";
+    case NONDISCLOSE:
+      return "does not wish to disclose";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,108 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ContractContentDerivative {
 
-        /**
-         * Content derivative that conveys sufficient information needed to register the source basal content from which it is derived.  This derivative content may be used to register the basal content as it changes status in its lifecycle.  For example, content registration may occur when the basal content is created, updated, inactive, or deleted.
-         */
-        REGISTRATION, 
-        /**
-         * A content derivative that conveys sufficient information to locate and retrieve the content.
-         */
-        RETRIEVAL, 
-        /**
-         * Content derivative that has less than full fidelity to the basal information source from which it was 'transcribed'. It provides recipients with the full content representation they may require for compliance purposes, and typically include a reference to or an attached unstructured representation for recipients needing an exact copy of the legal agreement.
-         */
-        STATEMENT, 
-        /**
-         * A Content Derivative that conveys sufficient information to determine the authorized entities with which the content may be shared.
-         */
-        SHAREABLE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ContractContentDerivative fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("registration".equals(codeString))
-          return REGISTRATION;
-        if ("retrieval".equals(codeString))
-          return RETRIEVAL;
-        if ("statement".equals(codeString))
-          return STATEMENT;
-        if ("shareable".equals(codeString))
-          return SHAREABLE;
-        throw new FHIRException("Unknown ContractContentDerivative code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case REGISTRATION: return "registration";
-            case RETRIEVAL: return "retrieval";
-            case STATEMENT: return "statement";
-            case SHAREABLE: return "shareable";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/contract-content-derivative";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case REGISTRATION: return "Content derivative that conveys sufficient information needed to register the source basal content from which it is derived.  This derivative content may be used to register the basal content as it changes status in its lifecycle.  For example, content registration may occur when the basal content is created, updated, inactive, or deleted.";
-            case RETRIEVAL: return "A content derivative that conveys sufficient information to locate and retrieve the content.";
-            case STATEMENT: return "Content derivative that has less than full fidelity to the basal information source from which it was 'transcribed'. It provides recipients with the full content representation they may require for compliance purposes, and typically include a reference to or an attached unstructured representation for recipients needing an exact copy of the legal agreement.";
-            case SHAREABLE: return "A Content Derivative that conveys sufficient information to determine the authorized entities with which the content may be shared.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case REGISTRATION: return "Content Registration";
-            case RETRIEVAL: return "Content Retrieval";
-            case STATEMENT: return "Content Statement";
-            case SHAREABLE: return "Shareable Content";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Content derivative that conveys sufficient information needed to register the
+   * source basal content from which it is derived. This derivative content may be
+   * used to register the basal content as it changes status in its lifecycle. For
+   * example, content registration may occur when the basal content is created,
+   * updated, inactive, or deleted.
+   */
+  REGISTRATION,
+  /**
+   * A content derivative that conveys sufficient information to locate and
+   * retrieve the content.
+   */
+  RETRIEVAL,
+  /**
+   * Content derivative that has less than full fidelity to the basal information
+   * source from which it was 'transcribed'. It provides recipients with the full
+   * content representation they may require for compliance purposes, and
+   * typically include a reference to or an attached unstructured representation
+   * for recipients needing an exact copy of the legal agreement.
+   */
+  STATEMENT,
+  /**
+   * A Content Derivative that conveys sufficient information to determine the
+   * authorized entities with which the content may be shared.
+   */
+  SHAREABLE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ContractContentDerivative fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("registration".equals(codeString))
+      return REGISTRATION;
+    if ("retrieval".equals(codeString))
+      return RETRIEVAL;
+    if ("statement".equals(codeString))
+      return STATEMENT;
+    if ("shareable".equals(codeString))
+      return SHAREABLE;
+    throw new FHIRException("Unknown ContractContentDerivative code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case REGISTRATION:
+      return "registration";
+    case RETRIEVAL:
+      return "retrieval";
+    case STATEMENT:
+      return "statement";
+    case SHAREABLE:
+      return "shareable";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/contract-content-derivative";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case REGISTRATION:
+      return "Content derivative that conveys sufficient information needed to register the source basal content from which it is derived.  This derivative content may be used to register the basal content as it changes status in its lifecycle.  For example, content registration may occur when the basal content is created, updated, inactive, or deleted.";
+    case RETRIEVAL:
+      return "A content derivative that conveys sufficient information to locate and retrieve the content.";
+    case STATEMENT:
+      return "Content derivative that has less than full fidelity to the basal information source from which it was 'transcribed'. It provides recipients with the full content representation they may require for compliance purposes, and typically include a reference to or an attached unstructured representation for recipients needing an exact copy of the legal agreement.";
+    case SHAREABLE:
+      return "A Content Derivative that conveys sufficient information to determine the authorized entities with which the content may be shared.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case REGISTRATION:
+      return "Content Registration";
+    case RETRIEVAL:
+      return "Content Retrieval";
+    case STATEMENT:
+      return "Content Statement";
+    case SHAREABLE:
+      return "Shareable Content";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

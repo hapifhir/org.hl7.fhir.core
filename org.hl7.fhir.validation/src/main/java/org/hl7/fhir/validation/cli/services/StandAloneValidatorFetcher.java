@@ -34,6 +34,9 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.validation.cli.utils.Common;
+
+import javax.annotation.Nonnull;
 
 
 public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IValidationPolicyAdvisor, IWorkerContextManager.ICanonicalResourceLocator {
@@ -78,7 +81,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   @Override
-  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type) throws IOException, FHIRException {
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical) throws IOException, FHIRException {
     if (!Utilities.isAbsoluteUrl(url)) {
       return false;
     }
@@ -258,12 +261,16 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   
     String root = getRoot(p, url);
     if (root != null) {
-      ITerminologyClient c;
-      c = TerminologyClientFactory.makeClient("source", root, "fhir/validator", context.getVersion());
-      return c.read(p[p.length - 2], p[p.length - 1]);
+      ITerminologyClient terminologyClient = getTerminologyClient(root);
+      return terminologyClient.read(p[p.length - 2], p[p.length - 1]);
     } else {
       throw new FHIRException("The URL '" + url + "' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
     }
+  }
+
+  @Nonnull
+  protected ITerminologyClient getTerminologyClient(String root) throws URISyntaxException {
+    return TerminologyClientFactory.makeClient("source", root, Common.getValidatorUserAgent(), context.getVersion());
   }
 
   private String getRoot(String[] p, String url) {
@@ -283,7 +290,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   @Override
   public void findResource(Object validator, String url) {
     try {
-      resolveURL((IResourceValidator) validator, null, null, url, null);
+      resolveURL((IResourceValidator) validator, null, null, url, null, false);
     } catch (Exception e) {
     }
   }

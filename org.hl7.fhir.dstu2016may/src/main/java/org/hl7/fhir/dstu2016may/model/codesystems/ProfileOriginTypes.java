@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Mon, Mar 21, 2016 12:03+1100 for FHIR v1.3.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ProfileOriginTypes {
 
-        /**
-         * General DSTU2 client initiating against a DSTU2 Server.
-         */
-        FHIRDSTU2CLIENT, 
-        /**
-         * DSTU2 client that serves as an SDC-FormFiller.
-         */
-        FHIRDSTU2SDCFORMFILLER, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ProfileOriginTypes fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("FHIR-DSTU2-Client".equals(codeString))
-          return FHIRDSTU2CLIENT;
-        if ("FHIR-DSTU2-SDC-FormFiller".equals(codeString))
-          return FHIRDSTU2SDCFORMFILLER;
-        throw new FHIRException("Unknown ProfileOriginTypes code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case FHIRDSTU2CLIENT: return "FHIR-DSTU2-Client";
-            case FHIRDSTU2SDCFORMFILLER: return "FHIR-DSTU2-SDC-FormFiller";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/profile-origin-types";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case FHIRDSTU2CLIENT: return "General DSTU2 client initiating against a DSTU2 Server.";
-            case FHIRDSTU2SDCFORMFILLER: return "DSTU2 client that serves as an SDC-FormFiller.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case FHIRDSTU2CLIENT: return "FHIR-DSTU2-Client";
-            case FHIRDSTU2SDCFORMFILLER: return "FHIR-DSTU2-SDC-FormFiller";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * General DSTU2 client initiating against a DSTU2 Server.
+   */
+  FHIRDSTU2CLIENT,
+  /**
+   * DSTU2 client that serves as an SDC-FormFiller.
+   */
+  FHIRDSTU2SDCFORMFILLER,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ProfileOriginTypes fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("FHIR-DSTU2-Client".equals(codeString))
+      return FHIRDSTU2CLIENT;
+    if ("FHIR-DSTU2-SDC-FormFiller".equals(codeString))
+      return FHIRDSTU2SDCFORMFILLER;
+    throw new FHIRException("Unknown ProfileOriginTypes code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case FHIRDSTU2CLIENT:
+      return "FHIR-DSTU2-Client";
+    case FHIRDSTU2SDCFORMFILLER:
+      return "FHIR-DSTU2-SDC-FormFiller";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/profile-origin-types";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case FHIRDSTU2CLIENT:
+      return "General DSTU2 client initiating against a DSTU2 Server.";
+    case FHIRDSTU2SDCFORMFILLER:
+      return "DSTU2 client that serves as an SDC-FormFiller.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case FHIRDSTU2CLIENT:
+      return "FHIR-DSTU2-Client";
+    case FHIRDSTU2SDCFORMFILLER:
+      return "FHIR-DSTU2-SDC-FormFiller";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

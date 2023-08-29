@@ -29,8 +29,6 @@ package org.hl7.fhir.r4.formats;
   
  */
 
-
-
 import java.io.IOException;
 import java.io.Writer;
 import java.math.BigDecimal;
@@ -38,7 +36,8 @@ import java.math.BigDecimal;
 import org.hl7.fhir.utilities.Utilities;
 
 /**
- * A little implementation of a json write to replace Gson .... because Gson screws up decimal values, and *we care*
+ * A little implementation of a json write to replace Gson .... because Gson
+ * screws up decimal values, and *we care*
  * 
  * @author Grahame Grieve
  *
@@ -50,7 +49,7 @@ public class JsonCreatorDirect implements JsonCreator {
   private boolean named;
   private boolean valued;
   private int indent;
-  
+
   public JsonCreatorDirect(Writer writer) {
     super();
     this.writer = writer;
@@ -102,7 +101,7 @@ public class JsonCreatorDirect implements JsonCreator {
         writer.write("\r\n");
         for (int i = 0; i < indent; i++) {
           writer.write("  ");
-        }        
+        }
       }
       valued = false;
     }
@@ -111,7 +110,7 @@ public class JsonCreatorDirect implements JsonCreator {
   @Override
   public void endObject() throws IOException {
     stepOut();
-    writer.write("}");    
+    writer.write("}");
   }
 
   @Override
@@ -124,14 +123,14 @@ public class JsonCreatorDirect implements JsonCreator {
   @Override
   public void name(String name) throws IOException {
     checkState();
-    writer.write("\""+name+"\"");
+    writer.write("\"" + name + "\"");
     named = true;
   }
 
   @Override
   public void value(String value) throws IOException {
     checkState();
-    writer.write("\""+Utilities.escapeJson(value)+"\"");    
+    writer.write("\"" + Utilities.escapeJson(value) + "\"");
     valued = true;
   }
 
@@ -152,8 +151,8 @@ public class JsonCreatorDirect implements JsonCreator {
     checkState();
     if (value == null)
       writer.write("null");
-    else 
-      writer.write(value.toString());    
+    else
+      writer.write(value.toString());
     valued = true;
   }
 
@@ -162,8 +161,8 @@ public class JsonCreatorDirect implements JsonCreator {
     checkState();
     if (value == null)
       writer.write("null");
-    else 
-      writer.write(value);    
+    else
+      writer.write(value);
     valued = true;
   }
 
@@ -172,20 +171,20 @@ public class JsonCreatorDirect implements JsonCreator {
     checkState();
     if (value == null)
       writer.write("null");
-    else 
-      writer.write(value.toString());    
+    else
+      writer.write(value.toString());
     valued = true;
   }
 
   @Override
   public void beginArray() throws IOException {
     checkState();
-    writer.write("[");    
+    writer.write("[");
   }
 
   @Override
   public void endArray() throws IOException {
-    writer.write("]");        
+    writer.write("]");
   }
 
   @Override
@@ -196,7 +195,7 @@ public class JsonCreatorDirect implements JsonCreator {
   @Override
   public void link(String href) {
     // not used
-    
+
   }
 
 }

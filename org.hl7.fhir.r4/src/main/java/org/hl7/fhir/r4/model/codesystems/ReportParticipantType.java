@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ReportParticipantType {
 
-        /**
-         * The test execution engine.
-         */
-        TESTENGINE, 
-        /**
-         * A FHIR Client.
-         */
-        CLIENT, 
-        /**
-         * A FHIR Server.
-         */
-        SERVER, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ReportParticipantType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("test-engine".equals(codeString))
-          return TESTENGINE;
-        if ("client".equals(codeString))
-          return CLIENT;
-        if ("server".equals(codeString))
-          return SERVER;
-        throw new FHIRException("Unknown ReportParticipantType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case TESTENGINE: return "test-engine";
-            case CLIENT: return "client";
-            case SERVER: return "server";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/report-participant-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case TESTENGINE: return "The test execution engine.";
-            case CLIENT: return "A FHIR Client.";
-            case SERVER: return "A FHIR Server.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case TESTENGINE: return "Test Engine";
-            case CLIENT: return "Client";
-            case SERVER: return "Server";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The test execution engine.
+   */
+  TESTENGINE,
+  /**
+   * A FHIR Client.
+   */
+  CLIENT,
+  /**
+   * A FHIR Server.
+   */
+  SERVER,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ReportParticipantType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("test-engine".equals(codeString))
+      return TESTENGINE;
+    if ("client".equals(codeString))
+      return CLIENT;
+    if ("server".equals(codeString))
+      return SERVER;
+    throw new FHIRException("Unknown ReportParticipantType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case TESTENGINE:
+      return "test-engine";
+    case CLIENT:
+      return "client";
+    case SERVER:
+      return "server";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/report-participant-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case TESTENGINE:
+      return "The test execution engine.";
+    case CLIENT:
+      return "A FHIR Client.";
+    case SERVER:
+      return "A FHIR Server.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case TESTENGINE:
+      return "Test Engine";
+    case CLIENT:
+      return "Client";
+    case SERVER:
+      return "Server";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -1,12 +1,12 @@
 package org.hl7.fhir.validation.cli.utils;
 
-import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.utilities.FhirPublication;
-
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidationEngine;
+
+import javax.annotation.Nonnull;
 
 public class Common {
 
@@ -72,18 +72,9 @@ public class Common {
     return defaultValue;
   }
 
-  /**
-   * Default validation engine will point to "http://tx.fhir.org" terminology server.
-   */
-  public static ValidationEngine getValidationEngine(String version, String definitions, String txLog, TimeTracker tt) throws Exception {
-    return getValidationEngine(version, FhirSettings.getTxFhirProduction(), definitions, txLog, tt);
-  }
-
-  public static ValidationEngine getValidationEngine(String version, String txServer, String definitions, String txLog, TimeTracker tt) throws Exception {
-    System.out.println("Loading (v = " + version + ", tx server -> " + txServer + ")");
-    ValidationEngine ve = new ValidationEngine.ValidationEngineBuilder().withVersion(version).withTimeTracker(tt).withUserAgent("fhir/validator").fromSource(definitions);
-    ve.connectToTSServer(txServer, txLog, FhirPublication.fromCode(version));
-    return ve;
+  @Nonnull
+  public static String getValidatorUserAgent() {
+    return "fhir/validator/" + VersionUtil.getVersion();
   }
 
   public static boolean isNetworkPath(String path) {

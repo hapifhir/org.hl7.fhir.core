@@ -420,10 +420,10 @@ Reflex | Repeat | Re-run.
           return this.observation;
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Observation.triggeredBy.type");
+          throw new FHIRException("Cannot call addChild on a singleton property Observation.triggeredBy.type");
         }
         else if (name.equals("reason")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Observation.triggeredBy.reason");
+          throw new FHIRException("Cannot call addChild on a singleton property Observation.triggeredBy.reason");
         }
         else
           return super.addChild(name);
@@ -907,7 +907,7 @@ Reflex | Repeat | Re-run.
           return this.age;
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Observation.referenceRange.text");
+          throw new FHIRException("Cannot call addChild on a singleton property Observation.referenceRange.text");
         }
         else
           return super.addChild(name);
@@ -3572,7 +3572,7 @@ Reflex | Repeat | Re-run.
           return addPartOf();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Observation.status");
+          throw new FHIRException("Cannot call addChild on a singleton property Observation.status");
         }
         else if (name.equals("category")) {
           return addCategory();
@@ -3609,7 +3609,7 @@ Reflex | Repeat | Re-run.
           return this.effective;
         }
         else if (name.equals("issued")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Observation.issued");
+          throw new FHIRException("Cannot call addChild on a singleton property Observation.issued");
         }
         else if (name.equals("performer")) {
           return addPerformer();

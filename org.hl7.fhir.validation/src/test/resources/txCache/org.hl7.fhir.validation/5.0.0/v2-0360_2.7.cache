@@ -3,7 +3,7 @@
   "system" : "http://terminology.hl7.org/CodeSystem/v2-0360|2.7",
   "code" : "BS",
   "display" : "Bachelor of Science"
-}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -14,6 +14,11 @@ v: {
   "display" : "Bachelor of Science",
   "code" : "BS",
   "system" : "http://terminology.hl7.org/CodeSystem/v2-0360|2.7",
-  "version" : "0360"
+  "version" : "0360",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
 }
 -------------------------------------------------------------------------------------

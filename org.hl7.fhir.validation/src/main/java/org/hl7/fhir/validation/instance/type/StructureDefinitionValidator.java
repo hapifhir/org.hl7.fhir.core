@@ -4,8 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,19 +16,18 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.extensions.ExtensionConstants;
-import org.hl7.fhir.r5.extensions.Extensions;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Resource;
@@ -38,16 +37,13 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.TimeTracker;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class StructureDefinitionValidator extends BaseValidator {
@@ -64,14 +60,10 @@ public class StructureDefinitionValidator extends BaseValidator {
   private FHIRPathEngine fpe;
   private boolean wantCheckSnapshotUnchanged;
 
-  public StructureDefinitionValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged, XVerExtensionManager xverManager, Coding jurisdiction, boolean forPublication) {
-    super(context, xverManager, debug);
-    source = Source.InstanceValidator;
+  public StructureDefinitionValidator(BaseValidator parent, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged) {
+    super(parent);
     this.fpe = fpe;
-    this.timeTracker = timeTracker;
     this.wantCheckSnapshotUnchanged = wantCheckSnapshotUnchanged;
-    this.jurisdiction = jurisdiction;
-    this.forPublication = forPublication;
   }
   
   public boolean validateStructureDefinition(List<ValidationMessage> errors, Element src, NodeStack stack)  {
@@ -79,6 +71,8 @@ public class StructureDefinitionValidator extends BaseValidator {
     StructureDefinition sd = null;
     String typeName = null;
     try {
+      String url = src.getNamedChildValue("url");
+      
       sd = loadAsSD(src);
       checkExtensionContext(errors, src, stack);
       
@@ -102,8 +96,8 @@ public class StructureDefinitionValidator extends BaseValidator {
               for (ValidationMessage msg : msgs) {
                 // we need to set the location for the context 
                 String loc = msg.getLocation();
-                if (loc.contains("#")) {
-                  msg.setLocation(stack.getLiteralPath()+".differential.element.where(path = '"+loc.substring(loc.indexOf("#")+1)+"')");
+                if (loc.startsWith("StructureDefinition.")) {
+                  msg.setLocation(stack.getLiteralPath()+loc.substring(loc.indexOf(".")));
                 } else {
                   msg.setLocation(stack.getLiteralPath());
                 }
@@ -133,10 +127,10 @@ public class StructureDefinitionValidator extends BaseValidator {
       boolean logical = "logical".equals(src.getNamedChildValue("kind"));
       boolean constraint = "constraint".equals(src.getNamedChildValue("derivation"));
       for (Element differential : differentials) {
-        ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint, src.getNamedChildValue("type"), src.getNamedChildValue("url")) && ok;
+        ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint, src.getNamedChildValue("type"), src.getNamedChildValue("url"), base) && ok;
       }
       for (Element snapshotE : snapshots) {
-        ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type"), src.getNamedChildValue("url")) && ok;
+        ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type"), src.getNamedChildValue("url"), base) && ok;
       }
       
       // obligation profile support
@@ -161,6 +155,20 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
         c++;
       }
+      
+      // if this is defining an extension, make sure that the extension fixed value matches the URL
+      String type = src.getNamedChildValue("type");
+      if ("Extension".equals(type)) {
+        String baseD = src.getNamedChildValue("baseDefinition");
+        if ("http://hl7.org/fhir/StructureDefinition/Extension".equals(baseD) && url != null) {
+          String fixedUrl = getFixedValue(src);
+          if (rule(errors, "2023-08-05", IssueType.INVALID, stack.getLiteralPath(), fixedUrl != null, I18nConstants.SD_EXTENSION_URL_MISSING, url)) {
+            ok = rule(errors, "2023-08-05", IssueType.INVALID, stack.getLiteralPath(), url.equals(fixedUrl), I18nConstants.SD_EXTENSION_URL_MISMATCH, url, fixedUrl) && ok;
+          } else {
+            ok = false;
+          }
+        }
+      }
     } catch (Exception e) {
       rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
       ok = false;
@@ -168,6 +176,19 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
   
+
+  private String getFixedValue(Element src) {
+    Element diff = src.getNamedChild("differential");
+    if (diff != null) {
+      for (Element ed : diff.getChildrenByName("element")) {
+        String path = ed.getNamedChildValue("path");
+        if ("Extension.url".equals(path)) {
+          return ed.getNamedChildValue("fixed");
+        }
+      }
+    }
+    return null;
+  }
 
   private boolean validateInheritsObligationProfile(List<ValidationMessage> errors, Element extension, NodeStack stack, Element src) {
     String tgt = extension.getNamedChildValue("value");
@@ -219,7 +240,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         NodeStack stack = push.push(child, c, null, null);
         if (child.getName().equals("extension")) {
           String url = child.getNamedChildValue("url");
-          if ("http://hl7.org/fhir/tools/StructureDefinition/obligation".equals(url)) {
+          if (Utilities.existsInList(url, ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
             // this is ok, and it doesn't matter what's in the obligation
           } else {
             ok = false;
@@ -334,19 +355,19 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
   }
 
-  private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, String rootPath, String profileUrl) {
+  private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, String rootPath, String profileUrl, StructureDefinition base) {
     Map<String, String> invariantMap = new HashMap<>();
     boolean ok = true;
     List<Element> elements = elementList.getChildrenByName("element");
     int cc = 0;
     for (Element element : elements) {
-      ok = validateElementDefinition(errors, elements, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical, constraint, invariantMap, rootPath, profileUrl) && ok;
+      ok = validateElementDefinition(errors, elements, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical, constraint, invariantMap, rootPath, profileUrl, base) && ok;
       cc++;
     }    
     return ok;
   }
 
-  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, String> invariantMap, String rootPath, String profileUrl) {
+  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, String> invariantMap, String rootPath, String profileUrl, StructureDefinition base) {
     boolean ok = true;
     boolean typeMustSupport = false;
     String path = element.getNamedChildValue("path");
@@ -471,61 +492,81 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       // if we see fixed[x] or pattern[x] applied to a repeating element, we'll give the user a hint
     }
-    if (snapshot) { // we just don't have enough information to figure out the context in a differential
-      List<Element> constraints = element.getChildrenByName("constraint");
-      int cc = 0;
-      for (Element invariant : constraints) {
-        ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path"), rootPath, profileUrl) && ok;
-        cc++;
-      }    
-    }
+    List<Element> constraints = element.getChildrenByName("constraint");
+    int cc = 0;
+    for (Element invariant : constraints) {
+      ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path"), rootPath, profileUrl, snapshot, base) && ok;
+      cc++;
+    }    
     return ok;
   }
   
-  private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, String> invariantMap, List<Element> elements, Element element, String path, String rootPath, String profileUrl) {
+  private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, String> invariantMap, List<Element> elements, Element element, 
+      String path, String rootPath, String profileUrl, boolean snapshot, StructureDefinition base) {
     boolean ok = true;
     String key = invariant.getNamedChildValue("key"); 
     String expression = invariant.getNamedChildValue("expression");
     String source = invariant.getNamedChildValue("source");
     if (warning(errors, "2023-06-19", IssueType.INFORMATIONAL, stack, !Utilities.noString(key), I18nConstants.ED_INVARIANT_NO_KEY)) {
       if (hint(errors, "2023-06-19", IssueType.INFORMATIONAL, stack, !Utilities.noString(expression) || VersionUtilities.isR5Plus(context.getVersion()), I18nConstants.ED_INVARIANT_NO_EXPRESSION, key)) { // not for R5 - there's an invariant
-        if (!Utilities.noString(expression)) {
-          if (invariantMap.containsKey(key)) {
-            // it's legal - and common - for a list of elemnts to contain the same invariant more than once, but it's not valid if it's not always the same 
-            ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)) || "ele-1".equals(key), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));
-          } else {
-            invariantMap.put(key, expression);
-          }
-          if (Utilities.noString(source) || (source.equals(profileUrl))) { // no need to revalidate FHIRPath from elsewhere 
-            try {
-              // we have to figure out the context, and we might be in type slicing. 
-              String exp = expression;
-              Element te = element;
-              List<String> types = getTypesForElement(elements, te);
-              while (types.size() == 0 && te != null) {
-                Element oldte = te;
-                te = getParent(elements, te);
-                if (te != null) {
-                  exp = tail(oldte, te)+".all("+exp+")";
-                  types = getTypesForElement(elements, te);
+        if (snapshot) {// we just don't have enough information to figure out the context in a differential
+          if (!Utilities.noString(expression)) {
+            if (invariantMap.containsKey(key)) {
+              // it's legal - and common - for a list of elements to contain the same invariant more than once, but it's not valid if it's not always the same 
+              ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, expression.equals(invariantMap.get(key)) || "ele-1".equals(key), I18nConstants.ED_INVARIANT_EXPRESSION_CONFLICT, key, expression, invariantMap.get(key));
+            } else {
+              invariantMap.put(key, expression);
+            }
+            if (Utilities.noString(source) || (source.equals(profileUrl))) { // no need to revalidate FHIRPath from elsewhere 
+              try {
+                // we have to figure out the context, and we might be in type slicing. 
+                String exp = expression;
+                Element te = element;
+                List<String> types = getTypesForElement(elements, te);
+                while (types.size() == 0 && te != null) {
+                  Element oldte = te;
+                  te = getParent(elements, te);
+                  if (te != null) {
+                    exp = tail(oldte, te)+".all("+exp+")";
+                    types = getTypesForElement(elements, te);
+                  }
                 }
-              }
-              if (types.size() == 0) {
-                // we got to the root before finding anything typed
-                types.add(elements.get(0).getNamedChildValue("path"));
-              }
-              fpe.checkOnTypes(invariant, rootPath, types, fpe.parse(exp));
-            } catch (Exception e) {
-              if (debug) {
-                e.printStackTrace();
-              }
-              ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
-            }         
-          }        
+                if (types.size() == 0) {
+                  // we got to the root before finding anything typed
+                  types.add(elements.get(0).getNamedChildValue("path"));
+                }
+                List<String> warnings = new ArrayList<>();
+                fpe.checkOnTypes(invariant, rootPath, types, fpe.parse(exp), warnings);
+                for (String s : warnings) {
+                  warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, false, key+": "+s);
+                }
+              } catch (Exception e) {
+                if (debug) {
+                  e.printStackTrace();
+                }
+                ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_INVARIANT_EXPRESSION_ERROR, key, expression, e.getMessage()) && ok;
+              }         
+            }        
+          }
+        } else {          
+          ok = rule(errors, "2023-07-27", IssueType.INVALID, stack, source == null || source.equals(profileUrl), I18nConstants.ED_INVARIANT_DIFF_NO_SOURCE, key, source) &&
+              rule(errors, "2023-07-27", IssueType.INVALID, stack, !haseHasInvariant(base, key), I18nConstants.ED_INVARIANT_KEY_ALREADY_USED, key, base.getVersionedUrl());
+          
         }
       }
     }
     return ok;
+  }
+
+  private boolean haseHasInvariant(StructureDefinition base, String key) {
+    for (ElementDefinition ed : base.getSnapshot().getElement()) {
+      for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+        if (key.equals(inv.getKey())) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   private String tail(Element te, Element newte) {
@@ -554,6 +595,9 @@ public class StructureDefinitionValidator extends BaseValidator {
     } else {
       for (Element tr : element.getChildrenByName("type")) {
         String t = tr.getNamedChildValue("code");
+        if (t.startsWith("http://hl7.org/fhirpath")) {
+          t = tr.getExtensionValue("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type").primitiveValue();
+        }
         if (t != null) {
           if (isAbstractType(t) && hasChildren(element, elements) ) {
             types.add(element.getNamedChildValue("path"));
@@ -780,7 +824,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         
       } else {
         for (Element profile : profiles) {
-          ok = validateTypeProfile(errors, profile, code, stack.push(profile, -1, null, null), path) && ok;
+          ok = validateTypeProfile(errors, profile, code, stack.push(profile, -1, null, null), path, sd) && ok;
         }
         profiles = type.getChildrenByName("targetProfile");
         for (Element profile : profiles) {
@@ -855,7 +899,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     return codes;
   }
 
-  private boolean validateTypeProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path) {
+  private boolean validateTypeProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path, StructureDefinition source) {
     boolean ok = true;
     String p = profile.primitiveValue();
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
@@ -870,6 +914,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path) && ok;
       } else {
         if (t.getType().equals("Extension")) {
+          checkDefinitionStatus(errors, profile, path, sd, source, context.formatMessage(I18nConstants.MSG_DEPENDS_ON_EXTENSION));
           boolean isModifierDefinition = checkIsModifierExtension(sd);
           boolean isModifierContext = path.endsWith(".modifierExtension");
           if (isModifierDefinition) {
@@ -877,6 +922,8 @@ public class StructureDefinitionValidator extends BaseValidator {
           } else {
             ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), !isModifierContext, I18nConstants.SD_ED_TYPE_PROFILE_IS_MODIFIER, p, t, code, path) && ok;
           }          
+        } else {
+          checkDefinitionStatus(errors, profile, path, sd, source, context.formatMessage(I18nConstants.MSG_DEPENDS_ON_PROFILE));
         }
       }
     }

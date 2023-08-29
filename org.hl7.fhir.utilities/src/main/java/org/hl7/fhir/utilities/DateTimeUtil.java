@@ -1,11 +1,12 @@
 package org.hl7.fhir.utilities;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-import org.apache.commons.lang3.time.FastDateFormat;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
+import org.apache.commons.lang3.time.FastDateFormat;
+
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 
 public class DateTimeUtil {
   private static final FastDateFormat ourHumanDateFormat = FastDateFormat.getDateInstance(FastDateFormat.MEDIUM);

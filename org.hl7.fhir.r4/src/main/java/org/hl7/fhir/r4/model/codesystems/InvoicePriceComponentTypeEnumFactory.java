@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class InvoicePriceComponentTypeEnumFactory implements EnumFactory<InvoicePriceComponentType> {
@@ -54,7 +50,7 @@ public class InvoicePriceComponentTypeEnumFactory implements EnumFactory<Invoice
       return InvoicePriceComponentType.TAX;
     if ("informational".equals(codeString))
       return InvoicePriceComponentType.INFORMATIONAL;
-    throw new IllegalArgumentException("Unknown InvoicePriceComponentType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown InvoicePriceComponentType code '" + codeString + "'");
   }
 
   public String toCode(InvoicePriceComponentType code) {
@@ -73,8 +69,8 @@ public class InvoicePriceComponentTypeEnumFactory implements EnumFactory<Invoice
     return "?";
   }
 
-    public String toSystem(InvoicePriceComponentType code) {
-      return code.getSystem();
-      }
+  public String toSystem(InvoicePriceComponentType code) {
+    return code.getSystem();
+  }
 
 }

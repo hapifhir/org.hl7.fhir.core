@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,98 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Mon, Mar 21, 2016 12:03+1100 for FHIR v1.3.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ProfileDestinationTypes {
 
-        /**
-         * General DSTU2 server.
-         */
-        FHIRDSTU2SERVER, 
-        /**
-         * DSTU2 server that serves as an SDC-FormManager.
-         */
-        FHIRDSTU2SDCFORMMANAGER, 
-        /**
-         * DSTU2 server that serves as an SDC-FormReceiver.
-         */
-        FHIRDSTU2SDCFORMRECEIVER, 
-        /**
-         * DSTU2 server that serves as an SDC-FormProcessor.
-         */
-        FHIRDSTU2SDCFORMPROCESSOR, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ProfileDestinationTypes fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("FHIR-DSTU2-Server".equals(codeString))
-          return FHIRDSTU2SERVER;
-        if ("FHIR-DSTU2-SDC-FormManager".equals(codeString))
-          return FHIRDSTU2SDCFORMMANAGER;
-        if ("FHIR-DSTU2-SDC-FormReceiver".equals(codeString))
-          return FHIRDSTU2SDCFORMRECEIVER;
-        if ("FHIR-DSTU2-SDC-FormProcessor".equals(codeString))
-          return FHIRDSTU2SDCFORMPROCESSOR;
-        throw new FHIRException("Unknown ProfileDestinationTypes code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case FHIRDSTU2SERVER: return "FHIR-DSTU2-Server";
-            case FHIRDSTU2SDCFORMMANAGER: return "FHIR-DSTU2-SDC-FormManager";
-            case FHIRDSTU2SDCFORMRECEIVER: return "FHIR-DSTU2-SDC-FormReceiver";
-            case FHIRDSTU2SDCFORMPROCESSOR: return "FHIR-DSTU2-SDC-FormProcessor";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/profile-destination-types";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case FHIRDSTU2SERVER: return "General DSTU2 server.";
-            case FHIRDSTU2SDCFORMMANAGER: return "DSTU2 server that serves as an SDC-FormManager.";
-            case FHIRDSTU2SDCFORMRECEIVER: return "DSTU2 server that serves as an SDC-FormReceiver.";
-            case FHIRDSTU2SDCFORMPROCESSOR: return "DSTU2 server that serves as an SDC-FormProcessor.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case FHIRDSTU2SERVER: return "FHIR-DSTU2-Server";
-            case FHIRDSTU2SDCFORMMANAGER: return "FHIR-DSTU2-SDC-FormManager";
-            case FHIRDSTU2SDCFORMRECEIVER: return "FHIR-DSTU2-SDC-FormReceiver";
-            case FHIRDSTU2SDCFORMPROCESSOR: return "FHIR-DSTU2-SDC-FormProcessor";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * General DSTU2 server.
+   */
+  FHIRDSTU2SERVER,
+  /**
+   * DSTU2 server that serves as an SDC-FormManager.
+   */
+  FHIRDSTU2SDCFORMMANAGER,
+  /**
+   * DSTU2 server that serves as an SDC-FormReceiver.
+   */
+  FHIRDSTU2SDCFORMRECEIVER,
+  /**
+   * DSTU2 server that serves as an SDC-FormProcessor.
+   */
+  FHIRDSTU2SDCFORMPROCESSOR,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ProfileDestinationTypes fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("FHIR-DSTU2-Server".equals(codeString))
+      return FHIRDSTU2SERVER;
+    if ("FHIR-DSTU2-SDC-FormManager".equals(codeString))
+      return FHIRDSTU2SDCFORMMANAGER;
+    if ("FHIR-DSTU2-SDC-FormReceiver".equals(codeString))
+      return FHIRDSTU2SDCFORMRECEIVER;
+    if ("FHIR-DSTU2-SDC-FormProcessor".equals(codeString))
+      return FHIRDSTU2SDCFORMPROCESSOR;
+    throw new FHIRException("Unknown ProfileDestinationTypes code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case FHIRDSTU2SERVER:
+      return "FHIR-DSTU2-Server";
+    case FHIRDSTU2SDCFORMMANAGER:
+      return "FHIR-DSTU2-SDC-FormManager";
+    case FHIRDSTU2SDCFORMRECEIVER:
+      return "FHIR-DSTU2-SDC-FormReceiver";
+    case FHIRDSTU2SDCFORMPROCESSOR:
+      return "FHIR-DSTU2-SDC-FormProcessor";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/profile-destination-types";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case FHIRDSTU2SERVER:
+      return "General DSTU2 server.";
+    case FHIRDSTU2SDCFORMMANAGER:
+      return "DSTU2 server that serves as an SDC-FormManager.";
+    case FHIRDSTU2SDCFORMRECEIVER:
+      return "DSTU2 server that serves as an SDC-FormReceiver.";
+    case FHIRDSTU2SDCFORMPROCESSOR:
+      return "DSTU2 server that serves as an SDC-FormProcessor.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case FHIRDSTU2SERVER:
+      return "FHIR-DSTU2-Server";
+    case FHIRDSTU2SDCFORMMANAGER:
+      return "FHIR-DSTU2-SDC-FormManager";
+    case FHIRDSTU2SDCFORMRECEIVER:
+      return "FHIR-DSTU2-SDC-FormReceiver";
+    case FHIRDSTU2SDCFORMPROCESSOR:
+      return "FHIR-DSTU2-SDC-FormProcessor";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

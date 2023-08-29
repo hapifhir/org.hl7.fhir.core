@@ -9,7 +9,6 @@ import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Stri
 import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
 import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAllEnumFactory;

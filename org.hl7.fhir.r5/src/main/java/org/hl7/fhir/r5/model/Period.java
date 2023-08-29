@@ -246,10 +246,10 @@ public class Period extends DataType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("start")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Period.start");
+          throw new FHIRException("Cannot call addChild on a singleton property Period.start");
         }
         else if (name.equals("end")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Period.end");
+          throw new FHIRException("Cannot call addChild on a singleton property Period.end");
         }
         else
           return super.addChild(name);

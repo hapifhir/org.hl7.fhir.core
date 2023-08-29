@@ -1,9 +1,27 @@
 package org.hl7.fhir.validation;
 
+import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.ByteProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,16 +31,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class IgLoaderTests {
@@ -56,8 +64,8 @@ public class IgLoaderTests {
     final byte[] dummyBytes = {};
     final String dummyKey = "dummyKey";
 
-    final Map<String, byte[]> dummyMap = new HashMap<>();
-    dummyMap.put(dummyKey, dummyBytes);
+    final Map<String, ByteProvider> dummyMap = new HashMap<>();
+    dummyMap.put(dummyKey, ByteProvider.forBytes(dummyBytes));
 
 
       IgLoader igLoader = Mockito.spy(new IgLoader(
@@ -129,10 +137,10 @@ public class IgLoaderTests {
       simpleWorkerContext,
       "4.0.1"
     ));
-    Map<String, byte[]> map = igLoader.readZip(IgLoaderTests.class.getResourceAsStream("/zip-slip/zip-normal.zip"));
+    Map<String, ByteProvider> map = igLoader.readZip(IgLoaderTests.class.getResourceAsStream("/zip-slip/zip-normal.zip"));
     final String testPath = "zip-normal/depth1/test.txt";
     assertTrue(map.containsKey(testPath));
-    String testFileContent = new String(map.get(testPath), StandardCharsets.UTF_8);
+    String testFileContent = new String(map.get(testPath).getBytes(), StandardCharsets.UTF_8);
     Assertions.assertEquals("dummy file content", testFileContent);
   }
 }

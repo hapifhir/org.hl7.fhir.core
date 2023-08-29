@@ -32,34 +32,13 @@
         <dependency>
             <groupId>org.fhir</groupId>
             <artifactId>ucum</artifactId>
-            <version>1.0.3</version>
             <optional>true</optional>
-            <exclusions>
-                <exclusion>
-                    <groupId>xpp3</groupId>
-                    <artifactId>xpp3</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>xpp3</groupId>
-                    <artifactId>xpp3_xpath</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>xpp3</groupId>
-                    <artifactId>xpp3_min</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- XML Parsers -->
         <dependency>
-            <groupId>xpp3</groupId>
+            <groupId>org.ogce</groupId>
             <artifactId>xpp3</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>xpp3</groupId>
-            <artifactId>xpp3_xpath</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <!-- JSON Parsers -->

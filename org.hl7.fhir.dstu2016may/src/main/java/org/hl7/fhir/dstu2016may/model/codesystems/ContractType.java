@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ContractType {
 
-        /**
-         * null
-         */
-        PRIVACY, 
-        /**
-         * null
-         */
-        DISCLOSURE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ContractType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("privacy".equals(codeString))
-          return PRIVACY;
-        if ("disclosure".equals(codeString))
-          return DISCLOSURE;
-        throw new FHIRException("Unknown ContractType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PRIVACY: return "privacy";
-            case DISCLOSURE: return "disclosure";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/contracttypecodes";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PRIVACY: return "";
-            case DISCLOSURE: return "";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PRIVACY: return "privacy";
-            case DISCLOSURE: return "disclosure";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * null
+   */
+  PRIVACY,
+  /**
+   * null
+   */
+  DISCLOSURE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ContractType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("privacy".equals(codeString))
+      return PRIVACY;
+    if ("disclosure".equals(codeString))
+      return DISCLOSURE;
+    throw new FHIRException("Unknown ContractType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PRIVACY:
+      return "privacy";
+    case DISCLOSURE:
+      return "disclosure";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/contracttypecodes";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PRIVACY:
+      return "";
+    case DISCLOSURE:
+      return "";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PRIVACY:
+      return "privacy";
+    case DISCLOSURE:
+      return "disclosure";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }
