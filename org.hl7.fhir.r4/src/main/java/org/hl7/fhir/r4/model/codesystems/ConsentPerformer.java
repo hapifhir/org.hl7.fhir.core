@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,86 +31,113 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConsentPerformer {
 
-        /**
-         * An entity or an entity's delegatee who is the grantee in an agreement such as a consent for services, advanced directive, or a privacy consent directive in accordance with jurisdictional, organizational, or patient policy.
-         */
-        CONSENTER, 
-        /**
-         * An entity which accepts certain rights or authority from a grantor.
-         */
-        GRANTEE, 
-        /**
-         * An entity which agrees to confer certain rights or authority to a grantee.
-         */
-        GRANTOR, 
-        /**
-         * A party to whom some right or authority is granted by a delegator.
-         */
-        DELEGATEE, 
-        /**
-         * A party that grants all or some portion its right or authority to another party.
-         */
-        DELEGATOR, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ConsentPerformer fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("consenter".equals(codeString))
-          return CONSENTER;
-        if ("grantee".equals(codeString))
-          return GRANTEE;
-        if ("grantor".equals(codeString))
-          return GRANTOR;
-        if ("delegatee".equals(codeString))
-          return DELEGATEE;
-        if ("delegator".equals(codeString))
-          return DELEGATOR;
-        throw new FHIRException("Unknown ConsentPerformer code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case CONSENTER: return "consenter";
-            case GRANTEE: return "grantee";
-            case GRANTOR: return "grantor";
-            case DELEGATEE: return "delegatee";
-            case DELEGATOR: return "delegator";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/consentperformer";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case CONSENTER: return "An entity or an entity's delegatee who is the grantee in an agreement such as a consent for services, advanced directive, or a privacy consent directive in accordance with jurisdictional, organizational, or patient policy.";
-            case GRANTEE: return "An entity which accepts certain rights or authority from a grantor.";
-            case GRANTOR: return "An entity which agrees to confer certain rights or authority to a grantee.";
-            case DELEGATEE: return "A party to whom some right or authority is granted by a delegator.";
-            case DELEGATOR: return "A party that grants all or some portion its right or authority to another party.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case CONSENTER: return "Consenter";
-            case GRANTEE: return "Grantee";
-            case GRANTOR: return "Grantor";
-            case DELEGATEE: return "Delegatee";
-            case DELEGATOR: return "Delegator";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * An entity or an entity's delegatee who is the grantee in an agreement such as
+   * a consent for services, advanced directive, or a privacy consent directive in
+   * accordance with jurisdictional, organizational, or patient policy.
+   */
+  CONSENTER,
+  /**
+   * An entity which accepts certain rights or authority from a grantor.
+   */
+  GRANTEE,
+  /**
+   * An entity which agrees to confer certain rights or authority to a grantee.
+   */
+  GRANTOR,
+  /**
+   * A party to whom some right or authority is granted by a delegator.
+   */
+  DELEGATEE,
+  /**
+   * A party that grants all or some portion its right or authority to another
+   * party.
+   */
+  DELEGATOR,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ConsentPerformer fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("consenter".equals(codeString))
+      return CONSENTER;
+    if ("grantee".equals(codeString))
+      return GRANTEE;
+    if ("grantor".equals(codeString))
+      return GRANTOR;
+    if ("delegatee".equals(codeString))
+      return DELEGATEE;
+    if ("delegator".equals(codeString))
+      return DELEGATOR;
+    throw new FHIRException("Unknown ConsentPerformer code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case CONSENTER:
+      return "consenter";
+    case GRANTEE:
+      return "grantee";
+    case GRANTOR:
+      return "grantor";
+    case DELEGATEE:
+      return "delegatee";
+    case DELEGATOR:
+      return "delegator";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/consentperformer";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case CONSENTER:
+      return "An entity or an entity's delegatee who is the grantee in an agreement such as a consent for services, advanced directive, or a privacy consent directive in accordance with jurisdictional, organizational, or patient policy.";
+    case GRANTEE:
+      return "An entity which accepts certain rights or authority from a grantor.";
+    case GRANTOR:
+      return "An entity which agrees to confer certain rights or authority to a grantee.";
+    case DELEGATEE:
+      return "A party to whom some right or authority is granted by a delegator.";
+    case DELEGATOR:
+      return "A party that grants all or some portion its right or authority to another party.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case CONSENTER:
+      return "Consenter";
+    case GRANTEE:
+      return "Grantee";
+    case GRANTOR:
+      return "Grantor";
+    case DELEGATEE:
+      return "Delegatee";
+    case DELEGATOR:
+      return "Delegator";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

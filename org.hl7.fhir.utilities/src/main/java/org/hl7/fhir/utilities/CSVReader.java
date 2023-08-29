@@ -34,7 +34,6 @@ package org.hl7.fhir.utilities;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +61,7 @@ public class CSVReader extends InputStreamReader {
   private String[] cells;
   private char delimiter = ',';
   private boolean multiline;
+  private boolean doingQuotes = true;
   
 	public void readHeaders() throws IOException, FHIRException {
     cols = parseLine();  
@@ -86,11 +86,13 @@ public class CSVReader extends InputStreamReader {
   public String cell(String name) {
     int index = -1;
     for (int i = 0; i < cols.length; i++) {
-      if (name.equals(cols[i].trim()))
+      if (name.equals(cols[i].trim())) {
         index = i;
+        break;
+      }
     }
     if (index == -1)
-      throw new FHIRException("no cell "+name);
+      throw new FHIRException("no cell "+name+" in "+cols);
     String s = cells.length > index ? cells[index] : null;
     if (Utilities.noString(s))
       return null;
@@ -143,7 +145,7 @@ public class CSVReader extends InputStreamReader {
 		while (more() && !finished(inQuote, res.size())) {
 			char c = peek();
 			next();
-			if (c == '"') {
+			if (c == '"' && doingQuotes) {
 				if (ready() && peek() == '"') {
 	        b.append(c);
           next();
@@ -236,6 +238,14 @@ public class CSVReader extends InputStreamReader {
 
   public void setMultiline(boolean multiline) {
     this.multiline = multiline;
+  }
+
+  public boolean isDoingQuotes() {
+    return doingQuotes;
+  }
+
+  public void setDoingQuotes(boolean doingQuotes) {
+    this.doingQuotes = doingQuotes;
   }
 
 

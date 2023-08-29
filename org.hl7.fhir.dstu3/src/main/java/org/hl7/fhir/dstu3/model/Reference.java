@@ -329,14 +329,14 @@ public class Reference extends BaseReference implements IBaseReference, IComposi
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("reference")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Reference.reference");
+          throw new FHIRException("Cannot call addChild on a singleton property Reference.reference");
         }
         else if (name.equals("identifier")) {
           this.identifier = new Identifier();
           return this.identifier;
         }
         else if (name.equals("display")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Reference.display");
+          throw new FHIRException("Cannot call addChild on a singleton property Reference.display");
         }
         else
           return super.addChild(name);

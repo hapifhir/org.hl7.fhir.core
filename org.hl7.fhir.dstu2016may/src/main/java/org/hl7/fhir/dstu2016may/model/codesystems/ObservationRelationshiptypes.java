@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,95 +31,132 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ObservationRelationshiptypes {
 
-        /**
-         * This observation is a group observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.
-         */
-        HASMEMBER, 
-        /**
-         * The target resource (Observation or QuestionnaireResponse) is part of the information from which this observation value is derived. (e.g. calculated anion gap, Apgar score)  NOTE:  "derived-from" is only logical choice when referencing QuestionnaireResponse.
-         */
-        DERIVEDFROM, 
-        /**
-         * This observation follows the target observation (e.g. timed tests such as Glucose Tolerance Test).
-         */
-        SEQUELTO, 
-        /**
-         * This observation replaces a previous observation (i.e. a revised value). The target observation is now obsolete.
-         */
-        REPLACES, 
-        /**
-         * The value of the target observation qualifies (refines) the semantics of the source observation (e.g. a lipemia measure target from a plasma measure).
-         */
-        QUALIFIEDBY, 
-        /**
-         * The value of the target observation interferes (degrades quality, or prevents valid observation) with the semantics of the source observation (e.g. a hemolysis measure target from a plasma potassium measure which has no value).
-         */
-        INTERFEREDBY, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ObservationRelationshiptypes fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("has-member".equals(codeString))
-          return HASMEMBER;
-        if ("derived-from".equals(codeString))
-          return DERIVEDFROM;
-        if ("sequel-to".equals(codeString))
-          return SEQUELTO;
-        if ("replaces".equals(codeString))
-          return REPLACES;
-        if ("qualified-by".equals(codeString))
-          return QUALIFIEDBY;
-        if ("interfered-by".equals(codeString))
-          return INTERFEREDBY;
-        throw new FHIRException("Unknown ObservationRelationshiptypes code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case HASMEMBER: return "has-member";
-            case DERIVEDFROM: return "derived-from";
-            case SEQUELTO: return "sequel-to";
-            case REPLACES: return "replaces";
-            case QUALIFIEDBY: return "qualified-by";
-            case INTERFEREDBY: return "interfered-by";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/observation-relationshiptypes";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case HASMEMBER: return "This observation is a group observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.";
-            case DERIVEDFROM: return "The target resource (Observation or QuestionnaireResponse) is part of the information from which this observation value is derived. (e.g. calculated anion gap, Apgar score)  NOTE:  \"derived-from\" is only logical choice when referencing QuestionnaireResponse.";
-            case SEQUELTO: return "This observation follows the target observation (e.g. timed tests such as Glucose Tolerance Test).";
-            case REPLACES: return "This observation replaces a previous observation (i.e. a revised value). The target observation is now obsolete.";
-            case QUALIFIEDBY: return "The value of the target observation qualifies (refines) the semantics of the source observation (e.g. a lipemia measure target from a plasma measure).";
-            case INTERFEREDBY: return "The value of the target observation interferes (degrades quality, or prevents valid observation) with the semantics of the source observation (e.g. a hemolysis measure target from a plasma potassium measure which has no value).";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case HASMEMBER: return "Has Member";
-            case DERIVEDFROM: return "Derived From";
-            case SEQUELTO: return "Sequel To";
-            case REPLACES: return "Replaces";
-            case QUALIFIEDBY: return "Qualified By";
-            case INTERFEREDBY: return "Interfered By";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * This observation is a group observation (e.g. a battery, a panel of tests, a
+   * set of vital sign measurements) that includes the target as a member of the
+   * group.
+   */
+  HASMEMBER,
+  /**
+   * The target resource (Observation or QuestionnaireResponse) is part of the
+   * information from which this observation value is derived. (e.g. calculated
+   * anion gap, Apgar score) NOTE: "derived-from" is only logical choice when
+   * referencing QuestionnaireResponse.
+   */
+  DERIVEDFROM,
+  /**
+   * This observation follows the target observation (e.g. timed tests such as
+   * Glucose Tolerance Test).
+   */
+  SEQUELTO,
+  /**
+   * This observation replaces a previous observation (i.e. a revised value). The
+   * target observation is now obsolete.
+   */
+  REPLACES,
+  /**
+   * The value of the target observation qualifies (refines) the semantics of the
+   * source observation (e.g. a lipemia measure target from a plasma measure).
+   */
+  QUALIFIEDBY,
+  /**
+   * The value of the target observation interferes (degrades quality, or prevents
+   * valid observation) with the semantics of the source observation (e.g. a
+   * hemolysis measure target from a plasma potassium measure which has no value).
+   */
+  INTERFEREDBY,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ObservationRelationshiptypes fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("has-member".equals(codeString))
+      return HASMEMBER;
+    if ("derived-from".equals(codeString))
+      return DERIVEDFROM;
+    if ("sequel-to".equals(codeString))
+      return SEQUELTO;
+    if ("replaces".equals(codeString))
+      return REPLACES;
+    if ("qualified-by".equals(codeString))
+      return QUALIFIEDBY;
+    if ("interfered-by".equals(codeString))
+      return INTERFEREDBY;
+    throw new FHIRException("Unknown ObservationRelationshiptypes code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case HASMEMBER:
+      return "has-member";
+    case DERIVEDFROM:
+      return "derived-from";
+    case SEQUELTO:
+      return "sequel-to";
+    case REPLACES:
+      return "replaces";
+    case QUALIFIEDBY:
+      return "qualified-by";
+    case INTERFEREDBY:
+      return "interfered-by";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/observation-relationshiptypes";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case HASMEMBER:
+      return "This observation is a group observation (e.g. a battery, a panel of tests, a set of vital sign measurements) that includes the target as a member of the group.";
+    case DERIVEDFROM:
+      return "The target resource (Observation or QuestionnaireResponse) is part of the information from which this observation value is derived. (e.g. calculated anion gap, Apgar score)  NOTE:  \"derived-from\" is only logical choice when referencing QuestionnaireResponse.";
+    case SEQUELTO:
+      return "This observation follows the target observation (e.g. timed tests such as Glucose Tolerance Test).";
+    case REPLACES:
+      return "This observation replaces a previous observation (i.e. a revised value). The target observation is now obsolete.";
+    case QUALIFIEDBY:
+      return "The value of the target observation qualifies (refines) the semantics of the source observation (e.g. a lipemia measure target from a plasma measure).";
+    case INTERFEREDBY:
+      return "The value of the target observation interferes (degrades quality, or prevents valid observation) with the semantics of the source observation (e.g. a hemolysis measure target from a plasma potassium measure which has no value).";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case HASMEMBER:
+      return "Has Member";
+    case DERIVEDFROM:
+      return "Derived From";
+    case SEQUELTO:
+      return "Sequel To";
+    case REPLACES:
+      return "Replaces";
+    case QUALIFIEDBY:
+      return "Qualified By";
+    case INTERFEREDBY:
+      return "Interfered By";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

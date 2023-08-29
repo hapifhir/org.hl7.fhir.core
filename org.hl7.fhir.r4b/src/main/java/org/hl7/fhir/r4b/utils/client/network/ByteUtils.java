@@ -42,7 +42,8 @@ public class ByteUtils {
     return byteArray;
   }
 
-  public static byte[] encodeFormSubmission(Map<String, String> parameters, String resourceName, Resource resource, String boundary) throws IOException {
+  public static byte[] encodeFormSubmission(Map<String, String> parameters, String resourceName, Resource resource,
+      String boundary) throws IOException {
     ByteArrayOutputStream b = new ByteArrayOutputStream();
     OutputStreamWriter w = new OutputStreamWriter(b, StandardCharsets.UTF_8);
     for (String name : parameters.keySet()) {

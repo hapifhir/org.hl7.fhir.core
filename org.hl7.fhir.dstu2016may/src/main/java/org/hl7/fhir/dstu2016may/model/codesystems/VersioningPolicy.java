@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,87 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum VersioningPolicy {
 
-        /**
-         * VersionId meta-property is not supported (server) or used (client).
-         */
-        NOVERSION, 
-        /**
-         * VersionId meta-property is supported (server) or used (client).
-         */
-        VERSIONED, 
-        /**
-         * VersionId is must be correct for updates (server) or will be specified (If-match header) for updates (client).
-         */
-        VERSIONEDUPDATE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static VersioningPolicy fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("no-version".equals(codeString))
-          return NOVERSION;
-        if ("versioned".equals(codeString))
-          return VERSIONED;
-        if ("versioned-update".equals(codeString))
-          return VERSIONEDUPDATE;
-        throw new FHIRException("Unknown VersioningPolicy code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case NOVERSION: return "no-version";
-            case VERSIONED: return "versioned";
-            case VERSIONEDUPDATE: return "versioned-update";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/versioning-policy";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case NOVERSION: return "VersionId meta-property is not supported (server) or used (client).";
-            case VERSIONED: return "VersionId meta-property is supported (server) or used (client).";
-            case VERSIONEDUPDATE: return "VersionId is must be correct for updates (server) or will be specified (If-match header) for updates (client).";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case NOVERSION: return "No VersionId Support";
-            case VERSIONED: return "Versioned";
-            case VERSIONEDUPDATE: return "VersionId tracked fully";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * VersionId meta-property is not supported (server) or used (client).
+   */
+  NOVERSION,
+  /**
+   * VersionId meta-property is supported (server) or used (client).
+   */
+  VERSIONED,
+  /**
+   * VersionId is must be correct for updates (server) or will be specified
+   * (If-match header) for updates (client).
+   */
+  VERSIONEDUPDATE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static VersioningPolicy fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("no-version".equals(codeString))
+      return NOVERSION;
+    if ("versioned".equals(codeString))
+      return VERSIONED;
+    if ("versioned-update".equals(codeString))
+      return VERSIONEDUPDATE;
+    throw new FHIRException("Unknown VersioningPolicy code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case NOVERSION:
+      return "no-version";
+    case VERSIONED:
+      return "versioned";
+    case VERSIONEDUPDATE:
+      return "versioned-update";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/versioning-policy";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case NOVERSION:
+      return "VersionId meta-property is not supported (server) or used (client).";
+    case VERSIONED:
+      return "VersionId meta-property is supported (server) or used (client).";
+    case VERSIONEDUPDATE:
+      return "VersionId is must be correct for updates (server) or will be specified (If-match header) for updates (client).";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case NOVERSION:
+      return "No VersionId Support";
+    case VERSIONED:
+      return "Versioned";
+    case VERSIONEDUPDATE:
+      return "VersionId tracked fully";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

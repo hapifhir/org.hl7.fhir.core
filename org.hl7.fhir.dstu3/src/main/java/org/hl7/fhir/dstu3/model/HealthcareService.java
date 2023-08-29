@@ -567,16 +567,16 @@ public class HealthcareService extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("daysOfWeek")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.daysOfWeek");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.daysOfWeek");
         }
         else if (name.equals("allDay")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.allDay");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.allDay");
         }
         else if (name.equals("availableStartTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.availableStartTime");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.availableStartTime");
         }
         else if (name.equals("availableEndTime")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.availableEndTime");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.availableEndTime");
         }
         else
           return super.addChild(name);
@@ -806,7 +806,7 @@ public class HealthcareService extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.description");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.description");
         }
         else if (name.equals("during")) {
           this.during = new Period();
@@ -2568,7 +2568,7 @@ public class HealthcareService extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("active")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.active");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.active");
         }
         else if (name.equals("providedBy")) {
           this.providedBy = new Reference();
@@ -2588,13 +2588,13 @@ public class HealthcareService extends DomainResource {
           return addLocation();
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.name");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.name");
         }
         else if (name.equals("comment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.comment");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.comment");
         }
         else if (name.equals("extraDetails")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.extraDetails");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.extraDetails");
         }
         else if (name.equals("photo")) {
           this.photo = new Attachment();
@@ -2614,10 +2614,10 @@ public class HealthcareService extends DomainResource {
           return this.eligibility;
         }
         else if (name.equals("eligibilityNote")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.eligibilityNote");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.eligibilityNote");
         }
         else if (name.equals("programName")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.programName");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.programName");
         }
         else if (name.equals("characteristic")) {
           return addCharacteristic();
@@ -2626,7 +2626,7 @@ public class HealthcareService extends DomainResource {
           return addReferralMethod();
         }
         else if (name.equals("appointmentRequired")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.appointmentRequired");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.appointmentRequired");
         }
         else if (name.equals("availableTime")) {
           return addAvailableTime();
@@ -2635,7 +2635,7 @@ public class HealthcareService extends DomainResource {
           return addNotAvailable();
         }
         else if (name.equals("availabilityExceptions")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HealthcareService.availabilityExceptions");
+          throw new FHIRException("Cannot call addChild on a singleton property HealthcareService.availabilityExceptions");
         }
         else if (name.equals("endpoint")) {
           return addEndpoint();

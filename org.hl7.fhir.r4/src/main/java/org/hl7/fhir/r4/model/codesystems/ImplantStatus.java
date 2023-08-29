@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,98 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ImplantStatus {
 
-        /**
-         * The implanted device is working normally.
-         */
-        FUNCTIONAL, 
-        /**
-         * The implanted device is not working.
-         */
-        NONFUNCTIONAL, 
-        /**
-         * The implanted device has been turned off.
-         */
-        DISABLED, 
-        /**
-         * the functional status of the implant has not been determined.
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ImplantStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("functional".equals(codeString))
-          return FUNCTIONAL;
-        if ("non-functional".equals(codeString))
-          return NONFUNCTIONAL;
-        if ("disabled".equals(codeString))
-          return DISABLED;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        throw new FHIRException("Unknown ImplantStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case FUNCTIONAL: return "functional";
-            case NONFUNCTIONAL: return "non-functional";
-            case DISABLED: return "disabled";
-            case UNKNOWN: return "unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/implantStatus";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case FUNCTIONAL: return "The implanted device is working normally.";
-            case NONFUNCTIONAL: return "The implanted device is not working.";
-            case DISABLED: return "The implanted device has been turned off.";
-            case UNKNOWN: return "the functional status of the implant has not been determined.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case FUNCTIONAL: return "Functional";
-            case NONFUNCTIONAL: return "Non-Functional";
-            case DISABLED: return "Disabled";
-            case UNKNOWN: return "Unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The implanted device is working normally.
+   */
+  FUNCTIONAL,
+  /**
+   * The implanted device is not working.
+   */
+  NONFUNCTIONAL,
+  /**
+   * The implanted device has been turned off.
+   */
+  DISABLED,
+  /**
+   * the functional status of the implant has not been determined.
+   */
+  UNKNOWN,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ImplantStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("functional".equals(codeString))
+      return FUNCTIONAL;
+    if ("non-functional".equals(codeString))
+      return NONFUNCTIONAL;
+    if ("disabled".equals(codeString))
+      return DISABLED;
+    if ("unknown".equals(codeString))
+      return UNKNOWN;
+    throw new FHIRException("Unknown ImplantStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case FUNCTIONAL:
+      return "functional";
+    case NONFUNCTIONAL:
+      return "non-functional";
+    case DISABLED:
+      return "disabled";
+    case UNKNOWN:
+      return "unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/implantStatus";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case FUNCTIONAL:
+      return "The implanted device is working normally.";
+    case NONFUNCTIONAL:
+      return "The implanted device is not working.";
+    case DISABLED:
+      return "The implanted device has been turned off.";
+    case UNKNOWN:
+      return "the functional status of the implant has not been determined.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case FUNCTIONAL:
+      return "Functional";
+    case NONFUNCTIONAL:
+      return "Non-Functional";
+    case DISABLED:
+      return "Disabled";
+    case UNKNOWN:
+      return "Unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

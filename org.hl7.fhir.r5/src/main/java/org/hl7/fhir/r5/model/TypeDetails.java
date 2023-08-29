@@ -42,6 +42,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
 
@@ -49,15 +50,15 @@ import org.hl7.fhir.utilities.Utilities;
 public class TypeDetails {
   public static final String FHIR_NS = "http://hl7.org/fhir/StructureDefinition/";
   public static final String FP_NS = "http://hl7.org/fhirpath/";
-  public static final String FP_String = "http://hl7.org/fhirpath/String";
-  public static final String FP_Boolean = "http://hl7.org/fhirpath/Boolean";
-  public static final String FP_Integer = "http://hl7.org/fhirpath/Integer";
-  public static final String FP_Decimal = "http://hl7.org/fhirpath/Decimal";
-  public static final String FP_Quantity = "http://hl7.org/fhirpath/Quantity";
-  public static final String FP_DateTime = "http://hl7.org/fhirpath/DateTime";
-  public static final String FP_Time = "http://hl7.org/fhirpath/Time";
-  public static final String FP_SimpleTypeInfo = "http://hl7.org/fhirpath/SimpleTypeInfo";
-  public static final String FP_ClassInfo = "http://hl7.org/fhirpath/ClassInfo";
+  public static final String FP_String = "http://hl7.org/fhirpath/System.String";
+  public static final String FP_Boolean = "http://hl7.org/fhirpath/System.Boolean";
+  public static final String FP_Integer = "http://hl7.org/fhirpath/System.Integer";
+  public static final String FP_Decimal = "http://hl7.org/fhirpath/System.Decimal";
+  public static final String FP_Quantity = "http://hl7.org/fhirpath/System.Quantity";
+  public static final String FP_DateTime = "http://hl7.org/fhirpath/System.DateTime";
+  public static final String FP_Time = "http://hl7.org/fhirpath/System.Time";
+  public static final String FP_SimpleTypeInfo = "http://hl7.org/fhirpath/System.SimpleTypeInfo";
+  public static final String FP_ClassInfo = "http://hl7.org/fhirpath/System.ClassInfo";
   public static final Set<String> FP_NUMBERS = new HashSet<String>(Arrays.asList(FP_Integer, FP_Decimal));
 
   public static class ProfiledType {
@@ -114,6 +115,16 @@ public class TypeDetails {
     }
     public boolean isSystemType() {
       return uri.startsWith(FP_NS);
+    }
+
+    public String describeMin() {
+      if (uri.startsWith(FP_NS)) {
+        return "System."+uri.substring(FP_NS.length());
+      }
+      if (uri.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
+        return "FHIR."+uri.substring("http://hl7.org/fhir/StructureDefinition/".length());
+      }
+      return uri;
     }
     
   }
@@ -217,9 +228,10 @@ public class TypeDetails {
       if (typesContains(t))
         return true;
       if (Utilities.existsInList(n, "boolean", "string", "integer", "decimal", "Quantity", "dateTime", "time", "ClassInfo", "SimpleTypeInfo")) {
-        t = FP_NS+Utilities.capitalize(n);
-        if (typesContains(t))
+        t = FP_NS+"System."+Utilities.capitalize(n);
+        if (typesContains(t)) {
           return true;
+        }
       }
     }
     for (String n: tn) {
@@ -248,6 +260,9 @@ public class TypeDetails {
             return true;
           if (tail != null && typesContains(sd.getUrl()+"#"+sd.getType()+tail))
             return true;
+          if ("http://hl7.org/fhir/StructureDefinition/string".equals(sd.getUrl()) && typesContains(FP_String)) {
+            return true; // this is work around for R3
+          }
           if (sd.hasBaseDefinition()) {
             if (sd.getType().equals("uri"))
               sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/string");
@@ -266,7 +281,7 @@ public class TypeDetails {
     if (url.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
       String code = url.substring(40);
       if (Utilities.existsInList(code, "string",  "boolean", "integer", "decimal", "dateTime", "time", "Quantity"))
-        return FP_NS+Utilities.capitalize(code);
+        return FP_NS+"System.."+Utilities.capitalize(code);
     }
     return null;
   }
@@ -281,7 +296,7 @@ public class TypeDetails {
   public void update(TypeDetails source) {
     for (ProfiledType pt : source.types)
       addType(pt);
-    if (collectionStatus == null)
+    if (collectionStatus == null || collectionStatus == CollectionStatus.SINGLETON)
       collectionStatus = source.collectionStatus;
     else if (source.collectionStatus == CollectionStatus.UNORDERED)
       collectionStatus = source.collectionStatus;
@@ -362,12 +377,17 @@ public class TypeDetails {
   public CollectionStatus getCollectionStatus() {
     return collectionStatus;
   }
+  
+  private boolean hasType(ProfiledType pt) {
+    return hasType(pt.uri);
+  }
+  
   public boolean hasType(String n) {
     String t = ProfiledType.ns(n);
     if (typesContains(t))
       return true;
     if (Utilities.existsInList(n, "boolean", "string", "integer", "decimal", "Quantity", "date", "dateTime", "time", "ClassInfo", "SimpleTypeInfo")) {
-      t = FP_NS+Utilities.capitalize(n);
+      t = FP_NS+"System."+Utilities.capitalize(n);
       if (typesContains(t))
         return true;
     }
@@ -380,7 +400,7 @@ public class TypeDetails {
       if (typesContains(t))
         return true;
       if (Utilities.existsInList(n, "boolean", "string", "integer", "decimal", "Quantity", "dateTime", "time", "ClassInfo", "SimpleTypeInfo")) {
-        t = FP_NS+Utilities.capitalize(n);
+        t = FP_NS+"System."+Utilities.capitalize(n);
         if (typesContains(t))
           return true;
       }
@@ -389,6 +409,12 @@ public class TypeDetails {
   }
   public String describe() {
     return getTypes().toString();
+  }
+  public String describeMin() {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (ProfiledType pt : types)
+      b.append(pt.describeMin());
+    return b.toString();
   }
   public String getType() {
     for (ProfiledType pt : types)
@@ -462,6 +488,53 @@ public class TypeDetails {
       td.targets.addAll(targets);
     }
     return td;
+  }
+  
+  public boolean matches(TypeDetails other) {
+    boolean result = collectionStatus == other.collectionStatus && types.equals(other.types);
+    if (targets == null) {
+      return result && other.targets == null;
+    } else {
+      return result && targets.equals(other.targets);
+    }
+    
+  }
+  public void addTypes(TypeDetails other) {
+    if (other.collectionStatus != CollectionStatus.SINGLETON) {
+      if (other.collectionStatus == CollectionStatus.UNORDERED || collectionStatus == CollectionStatus.UNORDERED) {
+        collectionStatus = CollectionStatus.UNORDERED;
+      } else {
+        collectionStatus = CollectionStatus.ORDERED;
+      }
+    }
+    for (ProfiledType pt : other.types) {
+      addType(pt);
+    }
+    if (other.targets != null) {
+      if (targets == null) {
+        targets = new HashSet<>();
+      }
+      targets.addAll(other.targets);
+    }
+  }
+  
+  public boolean contains(TypeDetails other) {
+    // TODO Auto-generated method stub
+    if (other.collectionStatus != collectionStatus) {
+      return false;
+    }
+    for (ProfiledType pt : other.types) {
+      if (!hasType(pt)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  public static TypeDetails empty() {
+    return new TypeDetails(CollectionStatus.SINGLETON);
+  }
+  public boolean isList() {
+    return collectionStatus != null && collectionStatus.isList();
   }
   
 }

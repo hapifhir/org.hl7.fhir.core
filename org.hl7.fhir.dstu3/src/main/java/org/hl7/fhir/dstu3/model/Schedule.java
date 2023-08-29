@@ -622,7 +622,7 @@ public class Schedule extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("active")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Schedule.active");
+          throw new FHIRException("Cannot call addChild on a singleton property Schedule.active");
         }
         else if (name.equals("serviceCategory")) {
           this.serviceCategory = new CodeableConcept();
@@ -642,7 +642,7 @@ public class Schedule extends DomainResource {
           return this.planningHorizon;
         }
         else if (name.equals("comment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Schedule.comment");
+          throw new FHIRException("Cannot call addChild on a singleton property Schedule.comment");
         }
         else
           return super.addChild(name);

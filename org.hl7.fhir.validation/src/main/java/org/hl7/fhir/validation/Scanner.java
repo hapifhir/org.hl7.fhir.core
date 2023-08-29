@@ -37,6 +37,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
+import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
 import org.hl7.fhir.validation.cli.model.ScanOutputItem;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 
@@ -75,22 +76,22 @@ public class Scanner {
   }
 
   protected List<ScanOutputItem> validateScan(List<String> sources, Set<String> guides) throws FHIRException, IOException, EOperationOutcome {
-    List<String> refs = new ArrayList<>();
+    List<SourceFile> refs = new ArrayList<>();
     ValidatorUtils.parseSources(sources, refs, getContext());
 
     List<ScanOutputItem> res = new ArrayList<>();
 
-    for (String ref : refs) {
-      Content cnt = getIgLoader().loadContent(ref, "validate", false);
+    for (SourceFile ref : refs) {
+      Content cnt = getIgLoader().loadContent(ref.getRef(), "validate", false, true);
       List<ValidationMessage> messages = new ArrayList<>();
       Element e = null;
       try {
         System.out.println("Validate " + ref);
         messages.clear();
-        e = getValidator().validate(null, messages, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());
-        res.add(new ScanOutputItem(ref, null, null, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
+        e = getValidator().validate(null, messages, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
+        res.add(new ScanOutputItem(ref.getRef(), null, null, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
       } catch (Exception ex) {
-        res.add(new ScanOutputItem(ref, null, null, exceptionToOutcome(ex)));
+        res.add(new ScanOutputItem(ref.getRef(), null, null, exceptionToOutcome(ex)));
       }
       if (e != null) {
         String rt = e.fhirType();
@@ -103,10 +104,10 @@ public class Scanner {
             try {
               System.out.println("Validate " + ref + " against " + ig.getUrl());
               messages.clear();
-              getValidator().validate(null, messages, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType(), url);
-              res.add(new ScanOutputItem(ref, ig, null, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
+              getValidator().validate(null, messages, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType(), url);
+              res.add(new ScanOutputItem(ref.getRef(), ig, null, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
             } catch (Exception ex) {
-              res.add(new ScanOutputItem(ref, ig, null, exceptionToOutcome(ex)));
+              res.add(new ScanOutputItem(ref.getRef(), ig, null, exceptionToOutcome(ex)));
             }
           }
           Set<String> done = new HashSet<>();
@@ -117,10 +118,10 @@ public class Scanner {
                 try {
                   System.out.println("Validate " + ref + " against " + sd.getUrl());
                   messages.clear();
-                  validator.validate(null, messages, new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType(), Collections.singletonList(sd));
-                  res.add(new ScanOutputItem(ref, ig, sd, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
+                  validator.validate(null, messages, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType(), Collections.singletonList(sd));
+                  res.add(new ScanOutputItem(ref.getRef(), ig, sd, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
                 } catch (Exception ex) {
-                  res.add(new ScanOutputItem(ref, ig, sd, exceptionToOutcome(ex)));
+                  res.add(new ScanOutputItem(ref.getRef(), ig, sd, exceptionToOutcome(ex)));
                 }
               }
             }

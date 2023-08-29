@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2.model;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -52,12 +49,13 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   /**
    * Source of the definition for the extension code - a logical name or a URL.
    */
-  @Child(name = "url", type = {UriType.class}, order = 0, min = 1, max = 1, modifier = false, summary = false)
+  @Child(name = "url", type = { UriType.class }, order = 0, min = 1, max = 1, modifier = false, summary = false)
   @Description(shortDefinition = "identifies the meaning of the extension", formalDefinition = "Source of the definition for the extension code - a logical name or a URL.")
   protected UriType url;
 
   /**
-   * Value of extension - may be a resource or one of a constrained set of the data types (see Extensibility in the spec for list).
+   * Value of extension - may be a resource or one of a constrained set of the
+   * data types (see Extensibility in the spec for list).
    */
   @Child(name = "value", type = {}, order = 1, min = 0, max = 1, modifier = false, summary = false)
   @Description(shortDefinition = "Value of extension", formalDefinition = "Value of extension - may be a resource or one of a constrained set of the data types (see Extensibility in the spec for list).")
@@ -81,7 +79,10 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   /**
-   * @return {@link #url} (Source of the definition for the extension code - a logical name or a URL.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+   * @return {@link #url} (Source of the definition for the extension code - a
+   *         logical name or a URL.). This is the underlying object with id, value
+   *         and extensions. The accessor "getUrl" gives direct access to the
+   *         value
    */
   public UriType getUrlElement() {
     if (this.url == null)
@@ -101,7 +102,10 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   /**
-   * @param value {@link #url} (Source of the definition for the extension code - a logical name or a URL.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+   * @param value {@link #url} (Source of the definition for the extension code -
+   *              a logical name or a URL.). This is the underlying object with
+   *              id, value and extensions. The accessor "getUrl" gives direct
+   *              access to the value
    */
   public Extension setUrlElement(UriType value) {
     this.url = value;
@@ -109,14 +113,16 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   /**
-   * @return Source of the definition for the extension code - a logical name or a URL.
+   * @return Source of the definition for the extension code - a logical name or a
+   *         URL.
    */
   public String getUrl() {
     return this.url == null ? null : this.url.getValue();
   }
 
   /**
-   * @param value Source of the definition for the extension code - a logical name or a URL.
+   * @param value Source of the definition for the extension code - a logical name
+   *              or a URL.
    */
   public Extension setUrl(String value) {
     if (this.url == null)
@@ -126,7 +132,9 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   /**
-   * @return {@link #value} (Value of extension - may be a resource or one of a constrained set of the data types (see Extensibility in the spec for list).)
+   * @return {@link #value} (Value of extension - may be a resource or one of a
+   *         constrained set of the data types (see Extensibility in the spec for
+   *         list).)
    */
   public org.hl7.fhir.dstu2.model.Type getValue() {
     return this.value;
@@ -137,7 +145,9 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   /**
-   * @param value {@link #value} (Value of extension - may be a resource or one of a constrained set of the data types (see Extensibility in the spec for list).)
+   * @param value {@link #value} (Value of extension - may be a resource or one of
+   *              a constrained set of the data types (see Extensibility in the
+   *              spec for list).)
    */
   public Extension setValue(org.hl7.fhir.dstu2.model.Type value) {
     this.value = value;
@@ -146,8 +156,12 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
 
   protected void listChildren(List<Property> childrenList) {
     super.listChildren(childrenList);
-    childrenList.add(new Property("url", "uri", "Source of the definition for the extension code - a logical name or a URL.", 0, java.lang.Integer.MAX_VALUE, url));
-    childrenList.add(new Property("value[x]", "*", "Value of extension - may be a resource or one of a constrained set of the data types (see Extensibility in the spec for list).", 0, java.lang.Integer.MAX_VALUE, value));
+    childrenList
+        .add(new Property("url", "uri", "Source of the definition for the extension code - a logical name or a URL.", 0,
+            java.lang.Integer.MAX_VALUE, url));
+    childrenList.add(new Property("value[x]", "*",
+        "Value of extension - may be a resource or one of a constrained set of the data types (see Extensibility in the spec for list).",
+        0, java.lang.Integer.MAX_VALUE, value));
   }
 
   @Override
@@ -163,7 +177,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("url")) {
-      throw new FHIRException("Cannot call addChild on a primitive type Extension.url");
+      throw new FHIRException("Cannot call addChild on a singleton property Extension.url");
     } else if (name.equals("valueBoolean")) {
       this.value = new BooleanType();
       return this.value;
@@ -305,9 +319,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
   }
 
   public boolean isEmpty() {
-    return super.isEmpty() && (url == null || url.isEmpty()) && (value == null || value.isEmpty())
-      ;
+    return super.isEmpty() && (url == null || url.isEmpty()) && (value == null || value.isEmpty());
   }
-
 
 }

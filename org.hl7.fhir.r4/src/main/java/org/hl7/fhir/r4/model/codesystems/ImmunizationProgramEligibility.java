@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ImmunizationProgramEligibility {
 
-        /**
-         * The patient is not eligible for the funding program.
-         */
-        INELIGIBLE, 
-        /**
-         * The patient is eligible for the funding program because they are uninsured.
-         */
-        UNINSURED, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ImmunizationProgramEligibility fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("ineligible".equals(codeString))
-          return INELIGIBLE;
-        if ("uninsured".equals(codeString))
-          return UNINSURED;
-        throw new FHIRException("Unknown ImmunizationProgramEligibility code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INELIGIBLE: return "ineligible";
-            case UNINSURED: return "uninsured";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/immunization-program-eligibility";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INELIGIBLE: return "The patient is not eligible for the funding program.";
-            case UNINSURED: return "The patient is eligible for the funding program because they are uninsured.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INELIGIBLE: return "Not Eligible";
-            case UNINSURED: return "Uninsured";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The patient is not eligible for the funding program.
+   */
+  INELIGIBLE,
+  /**
+   * The patient is eligible for the funding program because they are uninsured.
+   */
+  UNINSURED,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ImmunizationProgramEligibility fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("ineligible".equals(codeString))
+      return INELIGIBLE;
+    if ("uninsured".equals(codeString))
+      return UNINSURED;
+    throw new FHIRException("Unknown ImmunizationProgramEligibility code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INELIGIBLE:
+      return "ineligible";
+    case UNINSURED:
+      return "uninsured";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/immunization-program-eligibility";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INELIGIBLE:
+      return "The patient is not eligible for the funding program.";
+    case UNINSURED:
+      return "The patient is eligible for the funding program because they are uninsured.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INELIGIBLE:
+      return "Not Eligible";
+    case UNINSURED:
+      return "Uninsured";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -71,7 +71,9 @@ import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.R5Hacker;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.CSFileInputStream;
+import org.hl7.fhir.utilities.MagicResources;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
@@ -232,6 +234,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       context.initTS(terminologyCachePath);
       context.setUserAgent(userAgent);
       context.setLogger(loggingService);
+      context.cacheResource(new org.hl7.fhir.r5.formats.JsonParser().parse(MagicResources.spdxCodesAsData()));
       return context;
     }
 
@@ -242,12 +245,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       return build(context);
     }
 
-    public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader) throws IOException, FHIRException {
+    public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader, boolean genSnapshots) throws IOException, FHIRException {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
       context.setAllowLoadingDuplicates(allowLoadingDuplicates);      
       context.version = pi.getNpm().asString("version");
       context.loadFromPackage(pi, loader);
-      context.finishLoading();
+      context.finishLoading(genSnapshots);
       return build(context);
     }
 
@@ -289,11 +292,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       return build(context);
     }
 
-    public SimpleWorkerContext fromDefinitions(Map<String, byte[]> source, IContextResourceLoader loader, PackageInformation pi) throws IOException, FHIRException  {
+    public SimpleWorkerContext fromDefinitions(Map<String, ByteProvider> source, IContextResourceLoader loader, PackageInformation pi) throws IOException, FHIRException  {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
       for (String name : source.keySet()) {
         try {
-          context.loadDefinitionItem(name, new ByteArrayInputStream(source.get(name)), loader, null, pi);
+          context.loadDefinitionItem(name, new ByteArrayInputStream(source.get(name).getBytes()), loader, null, pi);
         } catch (Exception e) {
           System.out.println("Error loading "+name+": "+e.getMessage());
           throw new FHIRException("Error loading "+name+": "+e.getMessage(), e);
@@ -338,7 +341,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       setTxCaps(capabilityStatement);
       return capabilitiesStatementQuick.getSoftware().getVersion();
     } catch (Exception e) {
-      throw new FHIRException(formatMessage(canNoTS ? I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__ : I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER, e.getMessage()), e);
+      throw new FHIRException(formatMessage(canNoTS ? I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__ : I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER, e.getMessage(), client.getAddress()), e);
     }
   }
 
@@ -495,7 +498,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       for (PackageResourceInformation pri : pi.listIndexedResources(types)) {
         if (!pri.getFilename().contains("ig-r4") && (loader == null || loader.wantLoad(pi, pri))) {
           try {
-            registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageInformation(pi));
+            if (!pri.hasId()) {
+              loadDefinitionItem(pri.getFilename(), new FileInputStream(pri.getFilename()), loader, null, new PackageInformation(pi));
+            } else {
+              registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageInformation(pi));
+            }
             t++;
           } catch (FHIRException e) {
             throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, pri.getFilename(), pi.name(), pi.version(), e.getMessage()), e);
@@ -542,8 +549,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       if (s.startsWith("version=")) {
         if (version == null)
         version = s.substring(8);
-        else if (!version.equals(s.substring(8))) 
+        else if (!version.equals(s.substring(8))) {
           throw new DefinitionException(formatMessage(I18nConstants.VERSION_MISMATCH_THE_CONTEXT_HAS_VERSION__LOADED_AND_THE_NEW_CONTENT_BEING_LOADED_IS_VERSION_, version, s.substring(8)));
+        }
       }
       if (s.startsWith("revision="))
         revision = s.substring(9);
@@ -667,12 +675,18 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         new ContextUtilities(this).generateSnapshot(p);
       } catch (Exception e) {
         // not sure what to do in this case?
-        System.out.println("Unable to generate snapshot for "+uri+": "+e.getMessage());
+        System.out.println("Unable to generate snapshot @3 for "+uri+": "+e.getMessage());
         if (logger.isDebugLogging()) {
           e.printStackTrace();          
         }
       }
     }
+    return r;
+  }
+
+  @Override
+  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
+    T r = super.fetchResource(class_, uri);
     return r;
   }
 
@@ -697,7 +711,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
           }
         } catch (Exception e) {
           // not sure what to do in this case?
-          System.out.println("Unable to generate snapshot for "+p.getVersionedUrl()+": "+e.getMessage());
+          System.out.println("Unable to generate snapshot @4 for "+p.getVersionedUrl()+": "+e.getMessage());
           if (logger.isDebugLogging()) {
             e.printStackTrace();
           }

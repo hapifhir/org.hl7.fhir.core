@@ -1,7 +1,5 @@
 package org.hl7.fhir.utilities.json;
 
-import static org.junit.jupiter.api.DynamicContainer.dynamicContainer;
-
 import java.io.File;
 
 /*

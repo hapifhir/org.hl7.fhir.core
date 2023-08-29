@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ReferenceHandlingPolicyEnumFactory implements EnumFactory<ReferenceHandlingPolicy> {
@@ -52,7 +48,7 @@ public class ReferenceHandlingPolicyEnumFactory implements EnumFactory<Reference
       return ReferenceHandlingPolicy.ENFORCED;
     if ("local".equals(codeString))
       return ReferenceHandlingPolicy.LOCAL;
-    throw new IllegalArgumentException("Unknown ReferenceHandlingPolicy code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ReferenceHandlingPolicy code '" + codeString + "'");
   }
 
   public String toCode(ReferenceHandlingPolicy code) {
@@ -69,8 +65,8 @@ public class ReferenceHandlingPolicyEnumFactory implements EnumFactory<Reference
     return "?";
   }
 
-    public String toSystem(ReferenceHandlingPolicy code) {
-      return code.getSystem();
-      }
+  public String toSystem(ReferenceHandlingPolicy code) {
+    return code.getSystem();
+  }
 
 }

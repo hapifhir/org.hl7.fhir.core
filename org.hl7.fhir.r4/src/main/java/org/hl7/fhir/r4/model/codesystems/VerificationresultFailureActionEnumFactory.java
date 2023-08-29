@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class VerificationresultFailureActionEnumFactory implements EnumFactory<VerificationresultFailureAction> {
@@ -50,7 +46,7 @@ public class VerificationresultFailureActionEnumFactory implements EnumFactory<V
       return VerificationresultFailureAction.RECONLY;
     if ("none".equals(codeString))
       return VerificationresultFailureAction.NONE;
-    throw new IllegalArgumentException("Unknown VerificationresultFailureAction code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown VerificationresultFailureAction code '" + codeString + "'");
   }
 
   public String toCode(VerificationresultFailureAction code) {
@@ -65,8 +61,8 @@ public class VerificationresultFailureActionEnumFactory implements EnumFactory<V
     return "?";
   }
 
-    public String toSystem(VerificationresultFailureAction code) {
-      return code.getSystem();
-      }
+  public String toSystem(VerificationresultFailureAction code) {
+    return code.getSystem();
+  }
 
 }

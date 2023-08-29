@@ -1,5 +1,20 @@
 package org.hl7.fhir.utilities;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Map;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,15 +46,6 @@ package org.hl7.fhir.utilities;
 
 
 import net.sf.saxon.TransformerFactoryImpl;
-
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.URIResolver;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import java.io.*;
-import java.util.Map;
 
 /**
  * Utilities for working with XML
@@ -91,11 +97,11 @@ public class XsltUtilities {
     return res.getOutputStream().toString();
   }
 
-  public static void saxonTransform(String xsltDir, String source, String xslt, String dest, URIResolver alt) throws FileNotFoundException, TransformerException {
+  public static void saxonTransform(String xsltDir, String source, String xslt, String dest, URIResolver alt) throws TransformerException, IOException {
     saxonTransform(xsltDir, source, xslt, dest, alt, null);
   }
 
-  public static void saxonTransform(String xsltDir, String source, String xslt, String dest, URIResolver alt, Map<String, String> params) throws FileNotFoundException, TransformerException {
+  public static void saxonTransform(String xsltDir, String source, String xslt, String dest, URIResolver alt, Map<String, String> params) throws TransformerException, IOException {
     TransformerFactoryImpl f = new net.sf.saxon.TransformerFactoryImpl();
     f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
     StreamSource xsrc = new StreamSource(new FileInputStream(xslt));
@@ -108,12 +114,19 @@ public class XsltUtilities {
     }
 
     t.setURIResolver(new MyURIResolver(xsltDir, alt));
-    StreamSource src = new StreamSource(new FileInputStream(source));
-    StreamResult res = new StreamResult(new FileOutputStream(dest));
-    t.transform(src, res);
+    FileInputStream fso = new FileInputStream(source);
+    FileOutputStream fsr = new FileOutputStream(dest);
+    try {
+      StreamSource src = new StreamSource(fso);
+      StreamResult res = new StreamResult(fsr);
+      t.transform(src, res);
+    } finally {
+      fso.close();
+      fsr.close();
+    }
   }
 
-  public static void transform(String xsltDir, String source, String xslt, String dest, URIResolver alt) throws FileNotFoundException, TransformerException {
+  public static void transform(String xsltDir, String source, String xslt, String dest, URIResolver alt) throws TransformerException, IOException {
 
     TransformerFactory f = TransformerFactory.newInstance();
     StreamSource xsrc = new StreamSource(new FileInputStream(xslt));
@@ -121,9 +134,16 @@ public class XsltUtilities {
     Transformer t = f.newTransformer(xsrc);
 
     t.setURIResolver(new MyURIResolver(xsltDir, alt));
-    StreamSource src = new StreamSource(new FileInputStream(source));
-    StreamResult res = new StreamResult(new FileOutputStream(dest));
-    t.transform(src, res);
+    FileInputStream fss = new FileInputStream(source);
+    FileOutputStream fsr = new FileOutputStream(dest);
+    try {
+      StreamSource src = new StreamSource(fss);
+      StreamResult res = new StreamResult(fsr);
+      t.transform(src, res);
+    } finally {
+      fss.close();
+      fsr.close();
+    }
 
   }
 

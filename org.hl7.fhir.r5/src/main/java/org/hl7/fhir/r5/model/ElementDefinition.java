@@ -1356,13 +1356,13 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           return addDiscriminator();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.slicing.description");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.slicing.description");
         }
         else if (name.equals("ordered")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.slicing.ordered");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.slicing.ordered");
         }
         else if (name.equals("rules")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.slicing.rules");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.slicing.rules");
         }
         else
           return super.addChild(name);
@@ -1626,10 +1626,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.slicing.discriminator.type");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.slicing.discriminator.type");
         }
         else if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.slicing.discriminator.path");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.slicing.discriminator.path");
         }
         else
           return super.addChild(name);
@@ -1944,13 +1944,13 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.base.path");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.base.path");
         }
         else if (name.equals("min")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.base.min");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.base.min");
         }
         else if (name.equals("max")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.base.max");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.base.max");
         }
         else
           return super.addChild(name);
@@ -2444,19 +2444,19 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.type.code");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.type.code");
         }
         else if (name.equals("profile")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.type.profile");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.type.profile");
         }
         else if (name.equals("targetProfile")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.type.targetProfile");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.type.targetProfile");
         }
         else if (name.equals("aggregation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.type.aggregation");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.type.aggregation");
         }
         else if (name.equals("versioning")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.type.versioning");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.type.versioning");
         }
         else
           return super.addChild(name);
@@ -3648,7 +3648,7 @@ public boolean hasTarget() {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("label")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.example.label");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.example.label");
         }
         else if (name.equals("valueBase64Binary")) {
           this.value = new Base64BinaryType();
@@ -4437,25 +4437,25 @@ public boolean hasTarget() {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("key")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.constraint.key");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.constraint.key");
         }
         else if (name.equals("requirements")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.constraint.requirements");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.constraint.requirements");
         }
         else if (name.equals("severity")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.constraint.severity");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.constraint.severity");
         }
         else if (name.equals("suppress")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.constraint.suppress");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.constraint.suppress");
         }
         else if (name.equals("human")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.constraint.human");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.constraint.human");
         }
         else if (name.equals("expression")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.constraint.expression");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.constraint.expression");
         }
         else if (name.equals("source")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.constraint.source");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.constraint.source");
         }
         else
           return super.addChild(name);
@@ -4854,13 +4854,13 @@ public boolean hasTarget() {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("strength")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.binding.strength");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.binding.strength");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.binding.description");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.binding.description");
         }
         else if (name.equals("valueSet")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.binding.valueSet");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.binding.valueSet");
         }
         else if (name.equals("additional")) {
           return addAdditional();
@@ -5397,22 +5397,22 @@ public boolean hasTarget() {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.binding.additional.purpose");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.binding.additional.purpose");
         }
         else if (name.equals("valueSet")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.binding.additional.valueSet");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.binding.additional.valueSet");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.binding.additional.documentation");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.binding.additional.documentation");
         }
         else if (name.equals("shortDoco")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.binding.additional.shortDoco");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.binding.additional.shortDoco");
         }
         else if (name.equals("usage")) {
           return addUsage();
         }
         else if (name.equals("any")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.binding.additional.any");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.binding.additional.any");
         }
         else
           return super.addChild(name);
@@ -5804,16 +5804,16 @@ public boolean hasTarget() {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("identity")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.mapping.identity");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.mapping.identity");
         }
         else if (name.equals("language")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.mapping.language");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.mapping.language");
         }
         else if (name.equals("map")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.mapping.map");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.mapping.map");
         }
         else if (name.equals("comment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.mapping.comment");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.mapping.comment");
         }
         else
           return super.addChild(name);
@@ -11745,19 +11745,19 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.path");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.path");
         }
         else if (name.equals("representation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.representation");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.representation");
         }
         else if (name.equals("sliceName")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.sliceName");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.sliceName");
         }
         else if (name.equals("sliceIsConstraining")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.sliceIsConstraining");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.sliceIsConstraining");
         }
         else if (name.equals("label")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.label");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.label");
         }
         else if (name.equals("code")) {
           return addCode();
@@ -11767,32 +11767,32 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
           return this.slicing;
         }
         else if (name.equals("short")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.short");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.short");
         }
         else if (name.equals("definition")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.definition");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.definition");
         }
         else if (name.equals("comment")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.comment");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.comment");
         }
         else if (name.equals("requirements")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.requirements");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.requirements");
         }
         else if (name.equals("alias")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.alias");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.alias");
         }
         else if (name.equals("min")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.min");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.min");
         }
         else if (name.equals("max")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.max");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.max");
         }
         else if (name.equals("base")) {
           this.base = new ElementDefinitionBaseComponent();
           return this.base;
         }
         else if (name.equals("contentReference")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.contentReference");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.contentReference");
         }
         else if (name.equals("type")) {
           return addType();
@@ -12014,10 +12014,10 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
           return this.defaultValue;
         }
         else if (name.equals("meaningWhenMissing")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.meaningWhenMissing");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.meaningWhenMissing");
         }
         else if (name.equals("orderMeaning")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.orderMeaning");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.orderMeaning");
         }
         else if (name.equals("fixedBase64Binary")) {
           this.fixed = new Base64BinaryType();
@@ -12535,31 +12535,31 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
           return this.maxValue;
         }
         else if (name.equals("maxLength")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.maxLength");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.maxLength");
         }
         else if (name.equals("condition")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.condition");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.condition");
         }
         else if (name.equals("constraint")) {
           return addConstraint();
         }
         else if (name.equals("mustHaveValue")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.mustHaveValue");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.mustHaveValue");
         }
         else if (name.equals("valueAlternatives")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.valueAlternatives");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.valueAlternatives");
         }
         else if (name.equals("mustSupport")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.mustSupport");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.mustSupport");
         }
         else if (name.equals("isModifier")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.isModifier");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.isModifier");
         }
         else if (name.equals("isModifierReason")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.isModifierReason");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.isModifierReason");
         }
         else if (name.equals("isSummary")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.isSummary");
+          throw new FHIRException("Cannot call addChild on a singleton property ElementDefinition.isSummary");
         }
         else if (name.equals("binding")) {
           this.binding = new ElementDefinitionBindingComponent();
@@ -12748,6 +12748,15 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
     }
     return b.toString();
   }
+
+  public List<String> typeList() {
+    List<String> res = new ArrayList<>();
+    for (TypeRefComponent tr : getType()) {
+      if (tr.hasCode())
+        res.add(tr.getWorkingCode());
+    }
+    return res;
+  }
   
   public String typeSummaryVB() {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("|");
@@ -12851,6 +12860,13 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
 
   public boolean isRequired() { 
     return getMin() == 1; 
+  }
+
+  public CanonicalType addValueAlternative(CanonicalType t) { 
+    if (this.valueAlternatives == null)
+      this.valueAlternatives = new ArrayList<CanonicalType>();
+    this.valueAlternatives.add(t);
+    return t;
   }
 
 // end addition

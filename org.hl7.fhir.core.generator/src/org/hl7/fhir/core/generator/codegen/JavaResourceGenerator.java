@@ -33,7 +33,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +43,6 @@ import org.hl7.fhir.core.generator.analysis.EnumInfo;
 import org.hl7.fhir.core.generator.analysis.TypeInfo;
 import org.hl7.fhir.core.generator.engine.Definitions;
 import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CompartmentDefinition;
 import org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -1085,7 +1083,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     first = false;
     write(           "if (name.equals(\""+namet+"\")) {\r\n");
     if (isPrimitive(e.typeSummary()) || e.typeSummary().startsWith("canonical("))
-      write(indent+"      throw new FHIRException(\"Cannot call addChild on a primitive type "+parent+"."+e.getName()+"\");\r\n"); 
+      write(indent+"      throw new FHIRException(\"Cannot call addChild on a singleton property "+parent+"."+e.getName()+"\");\r\n"); 
     else if (isAbstract(e.typeSummary()))
       write(indent+"      throw new FHIRException(\"Cannot call addChild on an abstract type "+parent+"."+e.getName()+"\");\r\n"); 
     else if (e.unbounded()) {

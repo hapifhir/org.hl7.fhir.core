@@ -1619,13 +1619,13 @@ public class ActorDefinition extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.url");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.version");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.version");
         }
         else if (name.equals("versionAlgorithmString")) {
           this.versionAlgorithm = new StringType();
@@ -1636,28 +1636,28 @@ public class ActorDefinition extends CanonicalResource {
           return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.name");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.title");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.title");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.status");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.experimental");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.date");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.publisher");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.description");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -1666,28 +1666,28 @@ public class ActorDefinition extends CanonicalResource {
           return addJurisdiction();
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.purpose");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.purpose");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.copyright");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.copyright");
         }
         else if (name.equals("copyrightLabel")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.copyrightLabel");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.copyrightLabel");
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.type");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.type");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.documentation");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.documentation");
         }
         else if (name.equals("reference")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.reference");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.reference");
         }
         else if (name.equals("capabilities")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.capabilities");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.capabilities");
         }
         else if (name.equals("derivedFrom")) {
-          throw new FHIRException("Cannot call addChild on a primitive type ActorDefinition.derivedFrom");
+          throw new FHIRException("Cannot call addChild on a singleton property ActorDefinition.derivedFrom");
         }
         else
           return super.addChild(name);

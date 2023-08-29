@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -125,11 +126,14 @@ public abstract class ParserBase {
   public abstract List<NamedElement> parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException;
   
   public Element parseSingle(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+    if (errors == null) {
+      errors = new ArrayList<>();
+    }
     List<NamedElement> res = parse(stream);
     if (res == null) {
-      throw new FHIRException("Parsing FHIR content failed: "+errors.get(0).summary());      
+      throw new FHIRException("Parsing FHIR content failed: "+errorSummary());      
     } else if (res.size() == 0) {
-      throw new FHIRException("Parsing FHIR content returned no elements in a context where one element is required because: "+errors.get(0).summary());
+      throw new FHIRException("Parsing FHIR content returned no elements in a context where one element is required because: "+errorSummary());
     }
     if (res.size() != 1) {
       throw new FHIRException("Parsing FHIR content returned multiple elements in a context where only one element is allowed");
@@ -137,7 +141,15 @@ public abstract class ParserBase {
     return res.get(0).getElement();
   }
 
-	public abstract void compose(Element e, OutputStream destination, OutputStyle style, String base)  throws FHIRException, IOException;
+	private String errorSummary() {
+	  if (errors == null || errors.size() == 0) {
+	    return "(no error description)";
+	  } else {
+	    return errors.get(0).summary();
+	  }
+  }
+
+  public abstract void compose(Element e, OutputStream destination, OutputStyle style, String base)  throws FHIRException, IOException;
 
 	//FIXME: i18n should be done here
 	public void logError(String ruleDate, int line, int col, String path, IssueType type, String message, IssueSeverity level) throws FHIRFormatError {
@@ -161,17 +173,22 @@ public abstract class ParserBase {
       logError(ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
       return null;
   	}
-	  for (StructureDefinition sd : new ContextUtilities(context).allStructures()) {
+	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
 	    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
-	      if(name.equals(sd.getType()) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
+	      String type = urlTail(sd.getType());
+        if(name.equals(type) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
 	        return sd;
 	      String sns = ToolingExtensions.readStringExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
-	      if ((name.equals(sd.getType()) || name.equals(sd.getName())) && ns != null && ns.equals(sns))
+	      if ((name.equals(type) || name.equals(sd.getName())) && ns != null && ns.equals(sns))
 	        return sd;
 	    }
 	  }
 	  logError(ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAMESPACENAME_, ns, name), IssueSeverity.FATAL);
 	  return null;
+  }
+
+  private String urlTail(String type) {
+    return type == null || !type.contains("/") ? type : type.substring(type.lastIndexOf("/")+1);
   }
 
   protected StructureDefinition getDefinition(int line, int col, String name) throws FHIRFormatError {

@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
+import java.util.Arrays;
+
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_43_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Code43_50;
@@ -9,8 +11,6 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Extension43
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Meta43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Narrative43_50;
 import org.hl7.fhir.exceptions.FHIRException;
-
-import java.util.Arrays;
 
 public class Resource43_50 {
 

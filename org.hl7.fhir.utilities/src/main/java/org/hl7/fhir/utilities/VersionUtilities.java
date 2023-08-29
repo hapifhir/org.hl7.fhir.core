@@ -1,9 +1,8 @@
 package org.hl7.fhir.utilities;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.StringJoiner;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -40,6 +39,9 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 public class VersionUtilities {
 
+
+  public static final String[] SUPPORTED_MAJOR_VERSIONS = {"1.0", "1.4", "3.0", "4.0", "5.0", "6.0"};
+  public static final String[] SUPPORTED_VERSIONS = {"1.0.2", "1.4.0", "3.0.2", "4.0.1", "4.1.0", "4.3.0", "5.0.0", "6.0.0"};
 
   public static class VersionURLInfo {
     private String version;
@@ -138,11 +140,23 @@ public class VersionUtilities {
     if (version.contains("-")) {
       version = version.substring(0, version.indexOf("-"));
     }
-    return Utilities.existsInList(version, "1.0.2", "1.4.0", "3.0.2", "4.0.1", "4.1.0", "4.3.0", "5.0.0", "6.0.0");
+    return Utilities.existsInList(version, SUPPORTED_VERSIONS);
   }
 
   public static String listSupportedVersions() {
-    return "1.0.2, 1.4.0, 3.0.2, 4.0.1, 4.1.0, 4.3.0, 5.0, 6.0";
+    return listVersions(SUPPORTED_VERSIONS);
+  }
+
+  public static String listSupportedMajorVersions() {
+    return listVersions(SUPPORTED_MAJOR_VERSIONS);
+  }
+
+  private static String listVersions(String[] versions) {
+    StringJoiner stringJoiner = new StringJoiner(", ");
+    for (String supportedVersion : versions) {
+      stringJoiner.add(supportedVersion);
+    }
+    return stringJoiner.toString();
   }
 
   public static boolean isR6Ver(String ver) {

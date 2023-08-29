@@ -34,6 +34,19 @@ public class PackageHackerR5 {
      r.hack("http://terminology.hl7.org/CodeSystem/v2-0360-2.3.1", "2.3.1");
    }
 
+   if ("http://hl7.org/fhir/StructureDefinition/iso21090-nullFlavor".equals(r.getUrl()) && "4.0.1".equals(r.getVersion())) {
+     StructureDefinition sd = (StructureDefinition) r.getResource();
+     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+       if (ed.hasBinding() && "http://terminology.hl7.org/ValueSet/v3-NullFlavor|4.0.1".equals(ed.getBinding().getValueSet())) {
+         ed.getBinding().setValueSet("http://terminology.hl7.org/ValueSet/v3-NullFlavor");
+       }
+     }
+     for (ElementDefinition ed : sd.getDifferential().getElement()) {
+       if (ed.hasBinding() && "http://terminology.hl7.org/ValueSet/v3-NullFlavor|4.0.1".equals(ed.getBinding().getValueSet())) {
+         ed.getBinding().setValueSet("http://terminology.hl7.org/ValueSet/v3-NullFlavor");
+       }
+     }
+   }
    if ("http://hl7.org/fhir/StructureDefinition/DeviceUseStatement".equals(r.getUrl()) && "4.0.1".equals(r.getVersion())) {
      StructureDefinition sd = (StructureDefinition) r.getResource();
      for (ElementDefinition ed : sd.getSnapshot().getElement()) {

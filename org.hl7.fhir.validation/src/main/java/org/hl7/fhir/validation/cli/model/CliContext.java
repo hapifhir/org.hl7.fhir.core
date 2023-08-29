@@ -9,9 +9,9 @@ import java.util.Objects;
 
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
-
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.validation.cli.services.ValidatorWatchMode;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
@@ -53,7 +53,10 @@ public class CliContext {
   private boolean doImplicitFHIRPathStringConversion = false;
   @JsonProperty("htmlInMarkdownCheck")
   private HtmlInMarkdownCheck htmlInMarkdownCheck = HtmlInMarkdownCheck.WARNING;
-
+  @JsonProperty("allowDoubleQuotesInFHIRPath")  
+  private boolean allowDoubleQuotesInFHIRPath = false;
+  @JsonProperty("checkIPSCodes")  
+  private boolean checkIPSCodes;
   @JsonProperty("langTransform")
   private String langTransform = null;
   @JsonProperty("map")
@@ -98,6 +101,8 @@ public class CliContext {
   private List<String> sources = new ArrayList<String>();
   @JsonProperty("inputs")
   private List<String> inputs = new ArrayList<String>();
+  @JsonProperty("modeParams")
+  private List<String> modeParams = new ArrayList<String>();
 
   @JsonProperty("mode")
   private EngineMode mode = EngineMode.VALIDATION;
@@ -139,6 +144,15 @@ public class CliContext {
   @JsonProperty("fhirSettingsFile")
   private String fhirSettingsFile;
 
+  @JsonProperty("watchMode")
+  private ValidatorWatchMode watchMode = ValidatorWatchMode.NONE;
+  
+  @JsonProperty("watchScanDelay")
+  private int watchScanDelay = 1000;
+  
+  @JsonProperty("watchSettleTime")
+  private int watchSettleTime = 100;
+  
 
   @JsonProperty("map")
   public String getMap() {
@@ -294,6 +308,24 @@ public class CliContext {
     this.htmlInMarkdownCheck = htmlInMarkdownCheck;
   }
 
+  @JsonProperty("allowDoubleQuotesInFHIRPath")  
+  public boolean isAllowDoubleQuotesInFHIRPath() {
+    return allowDoubleQuotesInFHIRPath;
+  }
+
+  @JsonProperty("allowDoubleQuotesInFHIRPath")  
+  public void setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
+    this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
+  }
+
+  public boolean isCheckIPSCodes() {
+    return checkIPSCodes;
+  }
+
+  public void setCheckIPSCodes(boolean checkIPSCodes) {
+    this.checkIPSCodes = checkIPSCodes;
+  }
+
   @JsonProperty("locale")
   public String getLanguageCode() {
     return locale;
@@ -396,6 +428,12 @@ public class CliContext {
   @JsonProperty("inputs")
   public List<String> getInputs() {
     return inputs;
+  }
+  
+
+  @JsonProperty("modeParams")
+  public List<String> getModeParams() {
+    return modeParams;
   }
 
   @JsonProperty("sources")
@@ -705,8 +743,11 @@ public class CliContext {
       noInvariants == that.noInvariants &&
       displayWarnings == that.displayWarnings &&
       wantInvariantsInMessages == that.wantInvariantsInMessages &&
+      allowDoubleQuotesInFHIRPath == that.allowDoubleQuotesInFHIRPath &&
+      checkIPSCodes == that.checkIPSCodes &&
       Objects.equals(extensions, that.extensions) &&
       Objects.equals(map, that.map) &&
+      Objects.equals(htmlInMarkdownCheck, that.htmlInMarkdownCheck) &&
       Objects.equals(output, that.output) &&
       Objects.equals(outputSuffix, that.outputSuffix) &&
       Objects.equals(htmlOutput, that.htmlOutput) &&
@@ -727,21 +768,25 @@ public class CliContext {
       Objects.equals(profiles, that.profiles) &&
       Objects.equals(sources, that.sources) &&
       Objects.equals(crumbTrails, that.crumbTrails) &&
-      Objects.equals(forPublication, that.forPublication) &&
+      Objects.equals(forPublication, that.forPublication)&&
       Objects.equals(allowExampleUrls, that.allowExampleUrls) &&
       Objects.equals(showTimes, that.showTimes) &&
       mode == that.mode &&
       Objects.equals(locale, that.locale) &&
       Objects.equals(outputStyle, that.outputStyle) &&
       Objects.equals(jurisdiction, that.jurisdiction) &&
-      Objects.equals(locations, that.locations);
+      Objects.equals(locations, that.locations) &&
+      Objects.equals(watchMode, that.watchMode) &&
+      Objects.equals(watchScanDelay, that.watchScanDelay) &&
+      Objects.equals(watchSettleTime, that.watchSettleTime) ;
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
             noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
-            targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars);
+            targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars, watchMode, watchScanDelay, watchSettleTime,
+            htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
   }
 
   @Override
@@ -792,6 +837,12 @@ public class CliContext {
       ", locale='" + locale + '\'' +
       ", locations=" + locations +
       ", bundleValidationRules=" + bundleValidationRules +
+      ", htmlInMarkdownCheck=" + htmlInMarkdownCheck +
+      ", allowDoubleQuotesInFHIRPath=" + allowDoubleQuotesInFHIRPath +
+      ", checkIPSCodes=" + checkIPSCodes +
+      ", watchMode=" + watchMode +
+      ", watchSettleTime=" + watchSettleTime +
+      ", watchScanDelay=" + watchScanDelay +
       '}';
   }
 
@@ -805,4 +856,37 @@ public class CliContext {
   public String getFhirSettingsFile() {
     return fhirSettingsFile;
   }
+
+  @JsonProperty("watchMode")
+  public ValidatorWatchMode getWatchMode() {
+    return watchMode;
+  }
+
+  @JsonProperty("watchMode")
+  public CliContext setWatchMode(ValidatorWatchMode watchMode) {
+    this.watchMode = watchMode;
+    return this;
+  }
+
+  @JsonProperty("watchScanDelay")
+  public int getWatchScanDelay() {
+    return watchScanDelay;
+  }
+
+  @JsonProperty("watchScanDelay")
+  public void setWatchScanDelay(int watchScanDelay) {
+    this.watchScanDelay = watchScanDelay;
+  }
+
+  @JsonProperty("watchSettleTime")
+  public int getWatchSettleTime() {
+    return watchSettleTime;
+  }
+
+  @JsonProperty("watchSettleTime")
+  public void setWatchSettleTime(int watchSettleTime) {
+    this.watchSettleTime = watchSettleTime;
+  }
+  
+  
 }

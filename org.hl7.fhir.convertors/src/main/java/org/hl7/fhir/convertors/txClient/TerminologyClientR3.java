@@ -190,7 +190,9 @@ public class TerminologyClientR3 implements ITerminologyClient {
   @Override
   public ITerminologyClient setClientHeaders(ClientHeaders clientHeaders) {
     this.clientHeaders = clientHeaders;
-    this.client.setClientHeaders(this.clientHeaders.headers());
+    if (this.clientHeaders != null) {
+      this.client.setClientHeaders(this.clientHeaders.headers());
+    }
     return this;
   }
 
@@ -201,7 +203,18 @@ public class TerminologyClientR3 implements ITerminologyClient {
  }
 
   @Override
+  public String getUserAgent() {
+    return client.getUserAgent();
+  }
+
+  @Override
   public String getServerVersion() {
     return client.getServerVersion();
+  }
+
+  @Override
+  public ITerminologyClient setLanguage(String lang) {
+    client.setLanguage(lang);
+    return this;
   }
 }

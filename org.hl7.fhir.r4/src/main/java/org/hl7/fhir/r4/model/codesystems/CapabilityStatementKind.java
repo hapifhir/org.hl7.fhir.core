@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,91 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CapabilityStatementKind {
 
-        /**
-         * The CapabilityStatement instance represents the present capabilities of a specific system instance.  This is the kind returned by /metadata for a FHIR server end-point.
-         */
-        INSTANCE, 
-        /**
-         * The CapabilityStatement instance represents the capabilities of a system or piece of software, independent of a particular installation.
-         */
-        CAPABILITY, 
-        /**
-         * The CapabilityStatement instance represents a set of requirements for other systems to meet; e.g. as part of an implementation guide or 'request for proposal'.
-         */
-        REQUIREMENTS, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static CapabilityStatementKind fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("instance".equals(codeString))
-          return INSTANCE;
-        if ("capability".equals(codeString))
-          return CAPABILITY;
-        if ("requirements".equals(codeString))
-          return REQUIREMENTS;
-        throw new FHIRException("Unknown CapabilityStatementKind code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case INSTANCE: return "instance";
-            case CAPABILITY: return "capability";
-            case REQUIREMENTS: return "requirements";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/capability-statement-kind";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case INSTANCE: return "The CapabilityStatement instance represents the present capabilities of a specific system instance.  This is the kind returned by /metadata for a FHIR server end-point.";
-            case CAPABILITY: return "The CapabilityStatement instance represents the capabilities of a system or piece of software, independent of a particular installation.";
-            case REQUIREMENTS: return "The CapabilityStatement instance represents a set of requirements for other systems to meet; e.g. as part of an implementation guide or 'request for proposal'.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case INSTANCE: return "Instance";
-            case CAPABILITY: return "Capability";
-            case REQUIREMENTS: return "Requirements";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The CapabilityStatement instance represents the present capabilities of a
+   * specific system instance. This is the kind returned by /metadata for a FHIR
+   * server end-point.
+   */
+  INSTANCE,
+  /**
+   * The CapabilityStatement instance represents the capabilities of a system or
+   * piece of software, independent of a particular installation.
+   */
+  CAPABILITY,
+  /**
+   * The CapabilityStatement instance represents a set of requirements for other
+   * systems to meet; e.g. as part of an implementation guide or 'request for
+   * proposal'.
+   */
+  REQUIREMENTS,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static CapabilityStatementKind fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("instance".equals(codeString))
+      return INSTANCE;
+    if ("capability".equals(codeString))
+      return CAPABILITY;
+    if ("requirements".equals(codeString))
+      return REQUIREMENTS;
+    throw new FHIRException("Unknown CapabilityStatementKind code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case INSTANCE:
+      return "instance";
+    case CAPABILITY:
+      return "capability";
+    case REQUIREMENTS:
+      return "requirements";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/capability-statement-kind";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case INSTANCE:
+      return "The CapabilityStatement instance represents the present capabilities of a specific system instance.  This is the kind returned by /metadata for a FHIR server end-point.";
+    case CAPABILITY:
+      return "The CapabilityStatement instance represents the capabilities of a system or piece of software, independent of a particular installation.";
+    case REQUIREMENTS:
+      return "The CapabilityStatement instance represents a set of requirements for other systems to meet; e.g. as part of an implementation guide or 'request for proposal'.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case INSTANCE:
+      return "Instance";
+    case CAPABILITY:
+      return "Capability";
+    case REQUIREMENTS:
+      return "Requirements";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

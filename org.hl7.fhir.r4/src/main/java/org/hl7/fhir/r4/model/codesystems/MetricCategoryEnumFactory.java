@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class MetricCategoryEnumFactory implements EnumFactory<MetricCategory> {
@@ -50,7 +46,7 @@ public class MetricCategoryEnumFactory implements EnumFactory<MetricCategory> {
       return MetricCategory.CALCULATION;
     if ("unspecified".equals(codeString))
       return MetricCategory.UNSPECIFIED;
-    throw new IllegalArgumentException("Unknown MetricCategory code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown MetricCategory code '" + codeString + "'");
   }
 
   public String toCode(MetricCategory code) {
@@ -65,8 +61,8 @@ public class MetricCategoryEnumFactory implements EnumFactory<MetricCategory> {
     return "?";
   }
 
-    public String toSystem(MetricCategory code) {
-      return code.getSystem();
-      }
+  public String toSystem(MetricCategory code) {
+    return code.getSystem();
+  }
 
 }

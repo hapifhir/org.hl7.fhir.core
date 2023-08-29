@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class GoalRelationshipTypeEnumFactory implements EnumFactory<GoalRelationshipType> {
@@ -52,7 +48,7 @@ public class GoalRelationshipTypeEnumFactory implements EnumFactory<GoalRelation
       return GoalRelationshipType.COMPONENT;
     if ("other".equals(codeString))
       return GoalRelationshipType.OTHER;
-    throw new IllegalArgumentException("Unknown GoalRelationshipType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown GoalRelationshipType code '" + codeString + "'");
   }
 
   public String toCode(GoalRelationshipType code) {
@@ -69,8 +65,8 @@ public class GoalRelationshipTypeEnumFactory implements EnumFactory<GoalRelation
     return "?";
   }
 
-    public String toSystem(GoalRelationshipType code) {
-      return code.getSystem();
-      }
+  public String toSystem(GoalRelationshipType code) {
+    return code.getSystem();
+  }
 
 }

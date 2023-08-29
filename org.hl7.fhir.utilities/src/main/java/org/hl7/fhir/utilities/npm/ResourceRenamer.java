@@ -30,7 +30,12 @@ public class ResourceRenamer {
       String rt = r.asString("resourceType");
       String id = r.asString("id");
       String nn = Utilities.path(Utilities.getDirectoryForFile(f.getAbsolutePath()), rt+"-"+id+".json");
-      JsonParser.compose(r, new FileOutputStream(nn), true); 
+      FileOutputStream fs = new FileOutputStream(nn);
+      try {
+        JsonParser.compose(r, fs, true);
+      } finally {
+        fs.close();
+      }
     } 
   }
 

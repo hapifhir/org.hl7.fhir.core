@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,102 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ProtocolType {
 
-        /**
-         * The protocol describes the steps to manage a particular health condition including monitoring, treatment, mitigation and/or follow-up
-         */
-        CONDITION, 
-        /**
-         * The protocol describes the appropriate use of a particular device (medical device, software, etc.)
-         */
-        DEVICE, 
-        /**
-         * The protocol describes the appropriate use of a particular medication including indications for use, dosages, treatment cycles, etc.
-         */
-        DRUG, 
-        /**
-         * The protocol describes the set of steps to occur for study subjects enrolled in an interventional study
-         */
-        STUDY, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ProtocolType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("condition".equals(codeString))
-          return CONDITION;
-        if ("device".equals(codeString))
-          return DEVICE;
-        if ("drug".equals(codeString))
-          return DRUG;
-        if ("study".equals(codeString))
-          return STUDY;
-        throw new FHIRException("Unknown ProtocolType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case CONDITION: return "condition";
-            case DEVICE: return "device";
-            case DRUG: return "drug";
-            case STUDY: return "study";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/protocol-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case CONDITION: return "The protocol describes the steps to manage a particular health condition including monitoring, treatment, mitigation and/or follow-up";
-            case DEVICE: return "The protocol describes the appropriate use of a particular device (medical device, software, etc.)";
-            case DRUG: return "The protocol describes the appropriate use of a particular medication including indications for use, dosages, treatment cycles, etc.";
-            case STUDY: return "The protocol describes the set of steps to occur for study subjects enrolled in an interventional study";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case CONDITION: return "Condition";
-            case DEVICE: return "Device";
-            case DRUG: return "Drug";
-            case STUDY: return "Study";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The protocol describes the steps to manage a particular health condition
+   * including monitoring, treatment, mitigation and/or follow-up
+   */
+  CONDITION,
+  /**
+   * The protocol describes the appropriate use of a particular device (medical
+   * device, software, etc.)
+   */
+  DEVICE,
+  /**
+   * The protocol describes the appropriate use of a particular medication
+   * including indications for use, dosages, treatment cycles, etc.
+   */
+  DRUG,
+  /**
+   * The protocol describes the set of steps to occur for study subjects enrolled
+   * in an interventional study
+   */
+  STUDY,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ProtocolType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("condition".equals(codeString))
+      return CONDITION;
+    if ("device".equals(codeString))
+      return DEVICE;
+    if ("drug".equals(codeString))
+      return DRUG;
+    if ("study".equals(codeString))
+      return STUDY;
+    throw new FHIRException("Unknown ProtocolType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case CONDITION:
+      return "condition";
+    case DEVICE:
+      return "device";
+    case DRUG:
+      return "drug";
+    case STUDY:
+      return "study";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/protocol-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case CONDITION:
+      return "The protocol describes the steps to manage a particular health condition including monitoring, treatment, mitigation and/or follow-up";
+    case DEVICE:
+      return "The protocol describes the appropriate use of a particular device (medical device, software, etc.)";
+    case DRUG:
+      return "The protocol describes the appropriate use of a particular medication including indications for use, dosages, treatment cycles, etc.";
+    case STUDY:
+      return "The protocol describes the set of steps to occur for study subjects enrolled in an interventional study";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case CONDITION:
+      return "Condition";
+    case DEVICE:
+      return "Device";
+    case DRUG:
+      return "Drug";
+    case STUDY:
+      return "Study";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

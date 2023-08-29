@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NehtaNehtaProstateRadTumourType {
 
-        /**
-         * Adenocarcinoma (Acinar variant eg, foamy, pseudohyperplastic)
-         */
-        ACINARVARIANT, 
-        /**
-         * Prostatic ductal adenocarcinoma
-         */
-        PROSTATICDUCTALADENOCARCINOMA, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static NehtaNehtaProstateRadTumourType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("acinar_variant".equals(codeString))
-          return ACINARVARIANT;
-        if ("prostatic_ductal_adenocarcinoma".equals(codeString))
-          return PROSTATICDUCTALADENOCARCINOMA;
-        throw new FHIRException("Unknown NehtaNehtaProstateRadTumourType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACINARVARIANT: return "acinar_variant";
-            case PROSTATICDUCTALADENOCARCINOMA: return "prostatic_ductal_adenocarcinoma";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/nehta--prostate-rad-tumour-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACINARVARIANT: return "Adenocarcinoma (Acinar variant eg, foamy, pseudohyperplastic)";
-            case PROSTATICDUCTALADENOCARCINOMA: return "Prostatic ductal adenocarcinoma";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACINARVARIANT: return "Adenocarcinoma (Acinar variant eg, foamy, pseudohyperplastic)";
-            case PROSTATICDUCTALADENOCARCINOMA: return "Prostatic ductal adenocarcinoma";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Adenocarcinoma (Acinar variant eg, foamy, pseudohyperplastic)
+   */
+  ACINARVARIANT,
+  /**
+   * Prostatic ductal adenocarcinoma
+   */
+  PROSTATICDUCTALADENOCARCINOMA,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static NehtaNehtaProstateRadTumourType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("acinar_variant".equals(codeString))
+      return ACINARVARIANT;
+    if ("prostatic_ductal_adenocarcinoma".equals(codeString))
+      return PROSTATICDUCTALADENOCARCINOMA;
+    throw new FHIRException("Unknown NehtaNehtaProstateRadTumourType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ACINARVARIANT:
+      return "acinar_variant";
+    case PROSTATICDUCTALADENOCARCINOMA:
+      return "prostatic_ductal_adenocarcinoma";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/nehta--prostate-rad-tumour-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ACINARVARIANT:
+      return "Adenocarcinoma (Acinar variant eg, foamy, pseudohyperplastic)";
+    case PROSTATICDUCTALADENOCARCINOMA:
+      return "Prostatic ductal adenocarcinoma";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ACINARVARIANT:
+      return "Adenocarcinoma (Acinar variant eg, foamy, pseudohyperplastic)";
+    case PROSTATICDUCTALADENOCARCINOMA:
+      return "Prostatic ductal adenocarcinoma";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

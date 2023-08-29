@@ -66,6 +66,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -362,12 +363,20 @@ public class CodeSystemUtilities {
   }
   
   public static boolean isInactive(CodeSystem cs, ConceptDefinitionComponent def) throws FHIRException {
+    StandardsStatus ss = ToolingExtensions.getStandardsStatus(def);
+    if (ss == StandardsStatus.DEPRECATED || ss == StandardsStatus.WITHDRAWN) {
+      return true;
+    }
     for (ConceptPropertyComponent p : def.getProperty()) {
       if ("status".equals(p.getCode()) && p.hasValueStringType()) {
-        return "inactive".equals(p.getValueStringType().primitiveValue()) || "retired".equals(p.getValueStringType().primitiveValue());
+        return "inactive".equals(p.getValueStringType().primitiveValue()) || "retired".equals(p.getValueStringType().primitiveValue()) || "deprecated".equals(p.getValueStringType().primitiveValue());
       }
       if ("inactive".equals(p.getCode()) && p.hasValueBooleanType()) {
         return p.getValueBooleanType().getValue();
+      }
+      if ("inactive".equals(p.getCode()) && p.hasValueCodeType()) {
+        String code = p.getValueCodeType().primitiveValue();
+        return "true".equals(code);
       }
     }
     return false;
@@ -464,6 +473,31 @@ public class CodeSystemUtilities {
         return s;
     }
     return null;
+  }
+
+  public static ConceptDefinitionComponent findCodeOrAltCode(List<ConceptDefinitionComponent> list, String code, String use) {
+    for (ConceptDefinitionComponent c : list) {
+      if (c.getCode().equals(code))
+        return c;
+      for (ConceptPropertyComponent p : c.getProperty()) {
+        if ("alternateCode".equals(p.getCode()) && (use == null || hasUse(p, use)) && p.hasValue() && p.getValue().isPrimitive() && code.equals(p.getValue().primitiveValue())) {
+          return c;
+        }
+      }
+      ConceptDefinitionComponent s = findCodeOrAltCode(c.getConcept(), code, use);
+      if (s != null)
+        return s;
+    }
+    return null;
+  }
+
+  private static boolean hasUse(ConceptPropertyComponent p, String use) {
+    for (Extension ext : p.getExtensionsByUrl(ToolingExtensions.EXT_CS_ALTERNATE_USE)) {
+      if (ext.hasValueCoding() && use.equals(ext.getValueCoding().getCode())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public static void markStatus(CodeSystem cs, String wg, StandardsStatus status, String pckage, String fmm, String normativeVersion) throws FHIRException {
@@ -755,7 +789,7 @@ public class CodeSystemUtilities {
           } else {
             code = defineProperty(ret, p.getCode(), propertyTypeForType(p.getValue()));
           }
-          fdef.addProperty().setCode(code).setValue(p.getValue());
+          fdef.addProperty().setCode(code).setValue(p.getValue()).copyExtensions(p, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
         }
       }
       for (ConceptDefinitionComponent t : fdef.getConcept()) {
@@ -856,8 +890,41 @@ public class CodeSystemUtilities {
 
   public static DataType getProperty(CodeSystem cs, String code, String property) {
     ConceptDefinitionComponent def = getCode(cs, code);
+    return getProperty(cs, def, property);
+  }
+  
+  public static DataType getProperty(CodeSystem cs, ConceptDefinitionComponent def, String property) {
     ConceptPropertyComponent cp = getProperty(def, property);
     return cp == null ? null : cp.getValue();
+  }
+
+  public static boolean hasMarkdownInDefinitions(CodeSystem cs, MarkDownProcessor md) {
+    return hasMarkdownInDefinitions(cs.getConcept(), md);
+  }
+
+  private static boolean hasMarkdownInDefinitions(List<ConceptDefinitionComponent> concepts, MarkDownProcessor md) {
+    for (ConceptDefinitionComponent c : concepts) {
+      if (c.hasDefinition() && md.isProbablyMarkdown(c.getDefinition(), true)) {
+        return true;
+      }
+      if (c.hasConcept() && hasMarkdownInDefinitions(c.getConcept(), md)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static String getStatus(CodeSystem cs, ConceptDefinitionComponent cc) {
+    StandardsStatus ss = ToolingExtensions.getStandardsStatus(cc);
+    if (ss == StandardsStatus.DEPRECATED || ss == StandardsStatus.WITHDRAWN) {
+      return ss.toCode();
+    }
+    DataType v = getProperty(cs, cc, "status");
+    if (v == null || !v.isPrimitive()) {
+      return null;
+    } else {
+      return v.primitiveValue();
+    }
   }
 }
 

@@ -1,9 +1,5 @@
 package org.hl7.fhir.dstu2.utils.client;
 
-
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -41,14 +37,17 @@ import org.hl7.fhir.dstu2.model.OperationOutcome;
 /**
  * FHIR client exception.
  * 
- * FHIR API exception will be wrapped in FHIR client exceptions. OperationOutcome errors
- * resulting from the server can be access by calling:
- * <pre><code>
+ * FHIR API exception will be wrapped in FHIR client exceptions.
+ * OperationOutcome errors resulting from the server can be access by calling:
+ * 
+ * <pre>
+ * <code>
  * if(e.hasServerErrors()) {
  * 	List<OperationOutcome> errors = e.getServerErrors();
  *  //process errors...
  * }
- * </code></pre>
+ * </code>
+ * </pre>
  * 
  * 
  * 
@@ -56,76 +55,80 @@ import org.hl7.fhir.dstu2.model.OperationOutcome;
  *
  */
 public class EFhirClientException extends RuntimeException {
-	private static final long serialVersionUID = 1L;
-	private List<OperationOutcome> errors = new ArrayList<OperationOutcome>();
-	 
-	public EFhirClientException(String message) {
-		super(message);
-	}
-	
-	public EFhirClientException(String message, List<OperationOutcome> serverErrors) {
-		super(message);
-		if(serverErrors != null && serverErrors.size() > 0) {
-			errors.addAll(serverErrors);
-		}
-	}
+  private static final long serialVersionUID = 1L;
+  private List<OperationOutcome> errors = new ArrayList<OperationOutcome>();
 
-	public EFhirClientException(Exception cause) {
-		super(cause);
-	}
-	
-	public EFhirClientException(String message, Exception cause) {
-		super(message, cause);
-	}
-	
-	/**
-	 * Generate EFhirClientException which include a message indicating the cause of the exception
-	 * along with any OperationOutcome server error that may have resulted.
-	 * 
-	 * @param message
-	 * @param serverError
-	 */
-	public EFhirClientException(String message, OperationOutcome serverError) {
-		super(message);
-		if(serverError != null) {
-			errors.add(serverError);
-		}
-	}
-	
-	/**
-	 * Generate EFhirClientException indicating the cause of the exception
-	 * along with any OperationOutcome server error the server may have generated.
-	 * 
-	 * A default message of "One or more server side errors have occurred during this operation. Refer to e.getServerErrors() for additional details."
-	 * will be returned to users.
-	 * 
-	 * @param message
-	 * @param serverError
-	 */
-	public EFhirClientException(OperationOutcome serverError) {
-		super("Error on the server: "+serverError.getText().getDiv().allText()+". Refer to e.getServerErrors() for additional details.");
-		if(serverError != null) {
-			errors.add(serverError);
-		}
-	}
-	
-	/**
-	 * Method returns all OperationOutcome server errors that are 
-	 * associated with this exception.
-	 * 
-	 * @return
-	 */
-	public List<OperationOutcome> getServerErrors() {
-		return errors;
-	}
-	
-	/**
-	 * Method returns true if exception contains server OperationOutcome errors in payload.
-	 * 
-	 * @return
-	 */
-	public boolean hasServerErrors() {
-		return errors.size() > 0;
-	}
+  public EFhirClientException(String message) {
+    super(message);
+  }
+
+  public EFhirClientException(String message, List<OperationOutcome> serverErrors) {
+    super(message);
+    if (serverErrors != null && serverErrors.size() > 0) {
+      errors.addAll(serverErrors);
+    }
+  }
+
+  public EFhirClientException(Exception cause) {
+    super(cause);
+  }
+
+  public EFhirClientException(String message, Exception cause) {
+    super(message, cause);
+  }
+
+  /**
+   * Generate EFhirClientException which include a message indicating the cause of
+   * the exception along with any OperationOutcome server error that may have
+   * resulted.
+   * 
+   * @param message
+   * @param serverError
+   */
+  public EFhirClientException(String message, OperationOutcome serverError) {
+    super(message);
+    if (serverError != null) {
+      errors.add(serverError);
+    }
+  }
+
+  /**
+   * Generate EFhirClientException indicating the cause of the exception along
+   * with any OperationOutcome server error the server may have generated.
+   * 
+   * A default message of "One or more server side errors have occurred during
+   * this operation. Refer to e.getServerErrors() for additional details." will be
+   * returned to users.
+   * 
+   * @param message
+   * @param serverError
+   */
+  public EFhirClientException(OperationOutcome serverError) {
+    super("Error on the server: " + serverError.getText().getDiv().allText()
+        + ". Refer to e.getServerErrors() for additional details.");
+    if (serverError != null) {
+      errors.add(serverError);
+    }
+  }
+
+  /**
+   * Method returns all OperationOutcome server errors that are associated with
+   * this exception.
+   * 
+   * @return
+   */
+  public List<OperationOutcome> getServerErrors() {
+    return errors;
+  }
+
+  /**
+   * Method returns true if exception contains server OperationOutcome errors in
+   * payload.
+   * 
+   * @return
+   */
+  public boolean hasServerErrors() {
+    return errors.size() > 0;
+  }
 
 }

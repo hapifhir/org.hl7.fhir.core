@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,97 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ActionGroupingBehavior {
 
-        /**
-         * Any group marked with this behavior should be displayed as a visual group to the end user
-         */
-        VISUALGROUP, 
-        /**
-         * A group with this behavior logically groups its sub-elements, and may be shown as a visual group to the end user, but it is not required to do so
-         */
-        LOGICALGROUP, 
-        /**
-         * A group of related alternative actions is a sentence group if the target referenced by the action is the same in all the actions and each action simply constitutes a different variation on how to specify the details for the target. For example, two actions that could be in a SentenceGroup are "aspirin, 500 mg, 2 times per day" and "aspirin, 300 mg, 3 times per day". In both cases, aspirin is the target referenced by the action, and the two actions represent different options for how aspirin might be ordered for the patient. Note that a SentenceGroup would almost always have an associated selection behavior of "AtMostOne", unless it's a required action, in which case, it would be "ExactlyOne"
-         */
-        SENTENCEGROUP, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ActionGroupingBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("visual-group".equals(codeString))
-          return VISUALGROUP;
-        if ("logical-group".equals(codeString))
-          return LOGICALGROUP;
-        if ("sentence-group".equals(codeString))
-          return SENTENCEGROUP;
-        throw new FHIRException("Unknown ActionGroupingBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case VISUALGROUP: return "visual-group";
-            case LOGICALGROUP: return "logical-group";
-            case SENTENCEGROUP: return "sentence-group";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/action-grouping-behavior";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case VISUALGROUP: return "Any group marked with this behavior should be displayed as a visual group to the end user";
-            case LOGICALGROUP: return "A group with this behavior logically groups its sub-elements, and may be shown as a visual group to the end user, but it is not required to do so";
-            case SENTENCEGROUP: return "A group of related alternative actions is a sentence group if the target referenced by the action is the same in all the actions and each action simply constitutes a different variation on how to specify the details for the target. For example, two actions that could be in a SentenceGroup are \"aspirin, 500 mg, 2 times per day\" and \"aspirin, 300 mg, 3 times per day\". In both cases, aspirin is the target referenced by the action, and the two actions represent different options for how aspirin might be ordered for the patient. Note that a SentenceGroup would almost always have an associated selection behavior of \"AtMostOne\", unless it's a required action, in which case, it would be \"ExactlyOne\"";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case VISUALGROUP: return "Visual Group";
-            case LOGICALGROUP: return "Logical Group";
-            case SENTENCEGROUP: return "Sentence Group";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Any group marked with this behavior should be displayed as a visual group to
+   * the end user
+   */
+  VISUALGROUP,
+  /**
+   * A group with this behavior logically groups its sub-elements, and may be
+   * shown as a visual group to the end user, but it is not required to do so
+   */
+  LOGICALGROUP,
+  /**
+   * A group of related alternative actions is a sentence group if the target
+   * referenced by the action is the same in all the actions and each action
+   * simply constitutes a different variation on how to specify the details for
+   * the target. For example, two actions that could be in a SentenceGroup are
+   * "aspirin, 500 mg, 2 times per day" and "aspirin, 300 mg, 3 times per day". In
+   * both cases, aspirin is the target referenced by the action, and the two
+   * actions represent different options for how aspirin might be ordered for the
+   * patient. Note that a SentenceGroup would almost always have an associated
+   * selection behavior of "AtMostOne", unless it's a required action, in which
+   * case, it would be "ExactlyOne"
+   */
+  SENTENCEGROUP,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ActionGroupingBehavior fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("visual-group".equals(codeString))
+      return VISUALGROUP;
+    if ("logical-group".equals(codeString))
+      return LOGICALGROUP;
+    if ("sentence-group".equals(codeString))
+      return SENTENCEGROUP;
+    throw new FHIRException("Unknown ActionGroupingBehavior code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case VISUALGROUP:
+      return "visual-group";
+    case LOGICALGROUP:
+      return "logical-group";
+    case SENTENCEGROUP:
+      return "sentence-group";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/action-grouping-behavior";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case VISUALGROUP:
+      return "Any group marked with this behavior should be displayed as a visual group to the end user";
+    case LOGICALGROUP:
+      return "A group with this behavior logically groups its sub-elements, and may be shown as a visual group to the end user, but it is not required to do so";
+    case SENTENCEGROUP:
+      return "A group of related alternative actions is a sentence group if the target referenced by the action is the same in all the actions and each action simply constitutes a different variation on how to specify the details for the target. For example, two actions that could be in a SentenceGroup are \"aspirin, 500 mg, 2 times per day\" and \"aspirin, 300 mg, 3 times per day\". In both cases, aspirin is the target referenced by the action, and the two actions represent different options for how aspirin might be ordered for the patient. Note that a SentenceGroup would almost always have an associated selection behavior of \"AtMostOne\", unless it's a required action, in which case, it would be \"ExactlyOne\"";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case VISUALGROUP:
+      return "Visual Group";
+    case LOGICALGROUP:
+      return "Logical Group";
+    case SENTENCEGROUP:
+      return "Sentence Group";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

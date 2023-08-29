@@ -1,0 +1,13 @@
+You can use the validator to convert a resource or logical model. To do this,
+you must provide a specific parameter:
+
+ -convert
+
+-convert requires the parameters -source and one of {-output, -outputSuffix}.
+-ig may be used to provide a logical model.
+
+If the -source maps to one or more resources, e.g. when using a wildcard,
+use -outputSuffix <suffix>, to obtain multiple result files with a
+`<sourcefilename>.<suffix>` filename.
+Example: `-source *.xml -convert -outputSuffix convert.json` outputs:
+`source1.xml.convert.json`, `source2.xml.convert.json`, etc. .

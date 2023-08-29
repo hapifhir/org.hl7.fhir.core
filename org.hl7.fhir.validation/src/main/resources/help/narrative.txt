@@ -1,0 +1,7 @@
+You can use the validator to generate narrative for a resource. To do this, you
+must provide a specific parameter:
+
+ -narrative
+
+-narrative requires the parameters -defn, -txserver, -source, and -output. ig
+and profile may be used

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,104 +31,145 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ContactPointSystem {
 
-        /**
-         * The value is a telephone number used for voice calls. Use of full international numbers starting with + is recommended to enable automatic dialing support but not required.
-         */
-        PHONE, 
-        /**
-         * The value is a fax machine. Use of full international numbers starting with + is recommended to enable automatic dialing support but not required.
-         */
-        FAX, 
-        /**
-         * The value is an email address.
-         */
-        EMAIL, 
-        /**
-         * The value is a pager number. These may be local pager numbers that are only usable on a particular pager system.
-         */
-        PAGER, 
-        /**
-         * A contact that is not a phone, fax, pager or email address and is expressed as a URL.  This is intended for various institutional or personal contacts including web sites, blogs, Skype, Twitter, Facebook, etc. Do not use for email addresses.
-         */
-        URL, 
-        /**
-         * A contact that can be used for sending an sms message (e.g. mobile phones, some landlines).
-         */
-        SMS, 
-        /**
-         * A contact that is not a phone, fax, page or email address and is not expressible as a URL.  E.g. Internal mail address.  This SHOULD NOT be used for contacts that are expressible as a URL (e.g. Skype, Twitter, Facebook, etc.)  Extensions may be used to distinguish "other" contact types.
-         */
-        OTHER, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ContactPointSystem fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("phone".equals(codeString))
-          return PHONE;
-        if ("fax".equals(codeString))
-          return FAX;
-        if ("email".equals(codeString))
-          return EMAIL;
-        if ("pager".equals(codeString))
-          return PAGER;
-        if ("url".equals(codeString))
-          return URL;
-        if ("sms".equals(codeString))
-          return SMS;
-        if ("other".equals(codeString))
-          return OTHER;
-        throw new FHIRException("Unknown ContactPointSystem code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PHONE: return "phone";
-            case FAX: return "fax";
-            case EMAIL: return "email";
-            case PAGER: return "pager";
-            case URL: return "url";
-            case SMS: return "sms";
-            case OTHER: return "other";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/contact-point-system";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PHONE: return "The value is a telephone number used for voice calls. Use of full international numbers starting with + is recommended to enable automatic dialing support but not required.";
-            case FAX: return "The value is a fax machine. Use of full international numbers starting with + is recommended to enable automatic dialing support but not required.";
-            case EMAIL: return "The value is an email address.";
-            case PAGER: return "The value is a pager number. These may be local pager numbers that are only usable on a particular pager system.";
-            case URL: return "A contact that is not a phone, fax, pager or email address and is expressed as a URL.  This is intended for various institutional or personal contacts including web sites, blogs, Skype, Twitter, Facebook, etc. Do not use for email addresses.";
-            case SMS: return "A contact that can be used for sending an sms message (e.g. mobile phones, some landlines).";
-            case OTHER: return "A contact that is not a phone, fax, page or email address and is not expressible as a URL.  E.g. Internal mail address.  This SHOULD NOT be used for contacts that are expressible as a URL (e.g. Skype, Twitter, Facebook, etc.)  Extensions may be used to distinguish \"other\" contact types.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PHONE: return "Phone";
-            case FAX: return "Fax";
-            case EMAIL: return "Email";
-            case PAGER: return "Pager";
-            case URL: return "URL";
-            case SMS: return "SMS";
-            case OTHER: return "Other";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The value is a telephone number used for voice calls. Use of full
+   * international numbers starting with + is recommended to enable automatic
+   * dialing support but not required.
+   */
+  PHONE,
+  /**
+   * The value is a fax machine. Use of full international numbers starting with +
+   * is recommended to enable automatic dialing support but not required.
+   */
+  FAX,
+  /**
+   * The value is an email address.
+   */
+  EMAIL,
+  /**
+   * The value is a pager number. These may be local pager numbers that are only
+   * usable on a particular pager system.
+   */
+  PAGER,
+  /**
+   * A contact that is not a phone, fax, pager or email address and is expressed
+   * as a URL. This is intended for various institutional or personal contacts
+   * including web sites, blogs, Skype, Twitter, Facebook, etc. Do not use for
+   * email addresses.
+   */
+  URL,
+  /**
+   * A contact that can be used for sending an sms message (e.g. mobile phones,
+   * some landlines).
+   */
+  SMS,
+  /**
+   * A contact that is not a phone, fax, page or email address and is not
+   * expressible as a URL. E.g. Internal mail address. This SHOULD NOT be used for
+   * contacts that are expressible as a URL (e.g. Skype, Twitter, Facebook, etc.)
+   * Extensions may be used to distinguish "other" contact types.
+   */
+  OTHER,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ContactPointSystem fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("phone".equals(codeString))
+      return PHONE;
+    if ("fax".equals(codeString))
+      return FAX;
+    if ("email".equals(codeString))
+      return EMAIL;
+    if ("pager".equals(codeString))
+      return PAGER;
+    if ("url".equals(codeString))
+      return URL;
+    if ("sms".equals(codeString))
+      return SMS;
+    if ("other".equals(codeString))
+      return OTHER;
+    throw new FHIRException("Unknown ContactPointSystem code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PHONE:
+      return "phone";
+    case FAX:
+      return "fax";
+    case EMAIL:
+      return "email";
+    case PAGER:
+      return "pager";
+    case URL:
+      return "url";
+    case SMS:
+      return "sms";
+    case OTHER:
+      return "other";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/contact-point-system";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PHONE:
+      return "The value is a telephone number used for voice calls. Use of full international numbers starting with + is recommended to enable automatic dialing support but not required.";
+    case FAX:
+      return "The value is a fax machine. Use of full international numbers starting with + is recommended to enable automatic dialing support but not required.";
+    case EMAIL:
+      return "The value is an email address.";
+    case PAGER:
+      return "The value is a pager number. These may be local pager numbers that are only usable on a particular pager system.";
+    case URL:
+      return "A contact that is not a phone, fax, pager or email address and is expressed as a URL.  This is intended for various institutional or personal contacts including web sites, blogs, Skype, Twitter, Facebook, etc. Do not use for email addresses.";
+    case SMS:
+      return "A contact that can be used for sending an sms message (e.g. mobile phones, some landlines).";
+    case OTHER:
+      return "A contact that is not a phone, fax, page or email address and is not expressible as a URL.  E.g. Internal mail address.  This SHOULD NOT be used for contacts that are expressible as a URL (e.g. Skype, Twitter, Facebook, etc.)  Extensions may be used to distinguish \"other\" contact types.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PHONE:
+      return "Phone";
+    case FAX:
+      return "Fax";
+    case EMAIL:
+      return "Email";
+    case PAGER:
+      return "Pager";
+    case URL:
+      return "URL";
+    case SMS:
+      return "SMS";
+    case OTHER:
+      return "Other";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

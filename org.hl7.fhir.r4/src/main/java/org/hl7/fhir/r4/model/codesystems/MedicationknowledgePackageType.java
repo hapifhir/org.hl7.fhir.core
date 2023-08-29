@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,239 +31,314 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MedicationknowledgePackageType {
 
-        /**
-         * null
-         */
-        AMP, 
-        /**
-         * null
-         */
-        BAG, 
-        /**
-         * null
-         */
-        BLSTRPK, 
-        /**
-         * null
-         */
-        BOT, 
-        /**
-         * null
-         */
-        BOX, 
-        /**
-         * null
-         */
-        CAN, 
-        /**
-         * null
-         */
-        CART, 
-        /**
-         * null
-         */
-        DISK, 
-        /**
-         * null
-         */
-        DOSET, 
-        /**
-         * null
-         */
-        JAR, 
-        /**
-         * null
-         */
-        JUG, 
-        /**
-         * null
-         */
-        MINIM, 
-        /**
-         * null
-         */
-        NEBAMP, 
-        /**
-         * null
-         */
-        OVUL, 
-        /**
-         * null
-         */
-        PCH, 
-        /**
-         * null
-         */
-        PKT, 
-        /**
-         * null
-         */
-        SASH, 
-        /**
-         * null
-         */
-        STRIP, 
-        /**
-         * null
-         */
-        TIN, 
-        /**
-         * null
-         */
-        TUB, 
-        /**
-         * null
-         */
-        TUBE, 
-        /**
-         * null
-         */
-        VIAL, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static MedicationknowledgePackageType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("amp".equals(codeString))
-          return AMP;
-        if ("bag".equals(codeString))
-          return BAG;
-        if ("blstrpk".equals(codeString))
-          return BLSTRPK;
-        if ("bot".equals(codeString))
-          return BOT;
-        if ("box".equals(codeString))
-          return BOX;
-        if ("can".equals(codeString))
-          return CAN;
-        if ("cart".equals(codeString))
-          return CART;
-        if ("disk".equals(codeString))
-          return DISK;
-        if ("doset".equals(codeString))
-          return DOSET;
-        if ("jar".equals(codeString))
-          return JAR;
-        if ("jug".equals(codeString))
-          return JUG;
-        if ("minim".equals(codeString))
-          return MINIM;
-        if ("nebamp".equals(codeString))
-          return NEBAMP;
-        if ("ovul".equals(codeString))
-          return OVUL;
-        if ("pch".equals(codeString))
-          return PCH;
-        if ("pkt".equals(codeString))
-          return PKT;
-        if ("sash".equals(codeString))
-          return SASH;
-        if ("strip".equals(codeString))
-          return STRIP;
-        if ("tin".equals(codeString))
-          return TIN;
-        if ("tub".equals(codeString))
-          return TUB;
-        if ("tube".equals(codeString))
-          return TUBE;
-        if ("vial".equals(codeString))
-          return VIAL;
-        throw new FHIRException("Unknown MedicationknowledgePackageType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case AMP: return "amp";
-            case BAG: return "bag";
-            case BLSTRPK: return "blstrpk";
-            case BOT: return "bot";
-            case BOX: return "box";
-            case CAN: return "can";
-            case CART: return "cart";
-            case DISK: return "disk";
-            case DOSET: return "doset";
-            case JAR: return "jar";
-            case JUG: return "jug";
-            case MINIM: return "minim";
-            case NEBAMP: return "nebamp";
-            case OVUL: return "ovul";
-            case PCH: return "pch";
-            case PKT: return "pkt";
-            case SASH: return "sash";
-            case STRIP: return "strip";
-            case TIN: return "tin";
-            case TUB: return "tub";
-            case TUBE: return "tube";
-            case VIAL: return "vial";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/medicationknowledge-package-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case AMP: return "";
-            case BAG: return "";
-            case BLSTRPK: return "";
-            case BOT: return "";
-            case BOX: return "";
-            case CAN: return "";
-            case CART: return "";
-            case DISK: return "";
-            case DOSET: return "";
-            case JAR: return "";
-            case JUG: return "";
-            case MINIM: return "";
-            case NEBAMP: return "";
-            case OVUL: return "";
-            case PCH: return "";
-            case PKT: return "";
-            case SASH: return "";
-            case STRIP: return "";
-            case TIN: return "";
-            case TUB: return "";
-            case TUBE: return "";
-            case VIAL: return "";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case AMP: return "Ampule";
-            case BAG: return "Bag";
-            case BLSTRPK: return "Blister Pack";
-            case BOT: return "Bottle";
-            case BOX: return "Box";
-            case CAN: return "Can";
-            case CART: return "Cartridge";
-            case DISK: return "Disk";
-            case DOSET: return "Dosette";
-            case JAR: return "Jar";
-            case JUG: return "Jug";
-            case MINIM: return "Minim";
-            case NEBAMP: return "Nebule Amp";
-            case OVUL: return "Ovule";
-            case PCH: return "Pouch";
-            case PKT: return "Packet";
-            case SASH: return "Sashet";
-            case STRIP: return "Strip";
-            case TIN: return "Tin";
-            case TUB: return "Tub";
-            case TUBE: return "Tube";
-            case VIAL: return "Vial";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * null
+   */
+  AMP,
+  /**
+   * null
+   */
+  BAG,
+  /**
+   * null
+   */
+  BLSTRPK,
+  /**
+   * null
+   */
+  BOT,
+  /**
+   * null
+   */
+  BOX,
+  /**
+   * null
+   */
+  CAN,
+  /**
+   * null
+   */
+  CART,
+  /**
+   * null
+   */
+  DISK,
+  /**
+   * null
+   */
+  DOSET,
+  /**
+   * null
+   */
+  JAR,
+  /**
+   * null
+   */
+  JUG,
+  /**
+   * null
+   */
+  MINIM,
+  /**
+   * null
+   */
+  NEBAMP,
+  /**
+   * null
+   */
+  OVUL,
+  /**
+   * null
+   */
+  PCH,
+  /**
+   * null
+   */
+  PKT,
+  /**
+   * null
+   */
+  SASH,
+  /**
+   * null
+   */
+  STRIP,
+  /**
+   * null
+   */
+  TIN,
+  /**
+   * null
+   */
+  TUB,
+  /**
+   * null
+   */
+  TUBE,
+  /**
+   * null
+   */
+  VIAL,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static MedicationknowledgePackageType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("amp".equals(codeString))
+      return AMP;
+    if ("bag".equals(codeString))
+      return BAG;
+    if ("blstrpk".equals(codeString))
+      return BLSTRPK;
+    if ("bot".equals(codeString))
+      return BOT;
+    if ("box".equals(codeString))
+      return BOX;
+    if ("can".equals(codeString))
+      return CAN;
+    if ("cart".equals(codeString))
+      return CART;
+    if ("disk".equals(codeString))
+      return DISK;
+    if ("doset".equals(codeString))
+      return DOSET;
+    if ("jar".equals(codeString))
+      return JAR;
+    if ("jug".equals(codeString))
+      return JUG;
+    if ("minim".equals(codeString))
+      return MINIM;
+    if ("nebamp".equals(codeString))
+      return NEBAMP;
+    if ("ovul".equals(codeString))
+      return OVUL;
+    if ("pch".equals(codeString))
+      return PCH;
+    if ("pkt".equals(codeString))
+      return PKT;
+    if ("sash".equals(codeString))
+      return SASH;
+    if ("strip".equals(codeString))
+      return STRIP;
+    if ("tin".equals(codeString))
+      return TIN;
+    if ("tub".equals(codeString))
+      return TUB;
+    if ("tube".equals(codeString))
+      return TUBE;
+    if ("vial".equals(codeString))
+      return VIAL;
+    throw new FHIRException("Unknown MedicationknowledgePackageType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case AMP:
+      return "amp";
+    case BAG:
+      return "bag";
+    case BLSTRPK:
+      return "blstrpk";
+    case BOT:
+      return "bot";
+    case BOX:
+      return "box";
+    case CAN:
+      return "can";
+    case CART:
+      return "cart";
+    case DISK:
+      return "disk";
+    case DOSET:
+      return "doset";
+    case JAR:
+      return "jar";
+    case JUG:
+      return "jug";
+    case MINIM:
+      return "minim";
+    case NEBAMP:
+      return "nebamp";
+    case OVUL:
+      return "ovul";
+    case PCH:
+      return "pch";
+    case PKT:
+      return "pkt";
+    case SASH:
+      return "sash";
+    case STRIP:
+      return "strip";
+    case TIN:
+      return "tin";
+    case TUB:
+      return "tub";
+    case TUBE:
+      return "tube";
+    case VIAL:
+      return "vial";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/medicationknowledge-package-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case AMP:
+      return "";
+    case BAG:
+      return "";
+    case BLSTRPK:
+      return "";
+    case BOT:
+      return "";
+    case BOX:
+      return "";
+    case CAN:
+      return "";
+    case CART:
+      return "";
+    case DISK:
+      return "";
+    case DOSET:
+      return "";
+    case JAR:
+      return "";
+    case JUG:
+      return "";
+    case MINIM:
+      return "";
+    case NEBAMP:
+      return "";
+    case OVUL:
+      return "";
+    case PCH:
+      return "";
+    case PKT:
+      return "";
+    case SASH:
+      return "";
+    case STRIP:
+      return "";
+    case TIN:
+      return "";
+    case TUB:
+      return "";
+    case TUBE:
+      return "";
+    case VIAL:
+      return "";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case AMP:
+      return "Ampule";
+    case BAG:
+      return "Bag";
+    case BLSTRPK:
+      return "Blister Pack";
+    case BOT:
+      return "Bottle";
+    case BOX:
+      return "Box";
+    case CAN:
+      return "Can";
+    case CART:
+      return "Cartridge";
+    case DISK:
+      return "Disk";
+    case DOSET:
+      return "Dosette";
+    case JAR:
+      return "Jar";
+    case JUG:
+      return "Jug";
+    case MINIM:
+      return "Minim";
+    case NEBAMP:
+      return "Nebule Amp";
+    case OVUL:
+      return "Ovule";
+    case PCH:
+      return "Pouch";
+    case PKT:
+      return "Packet";
+    case SASH:
+      return "Sashet";
+    case STRIP:
+      return "Strip";
+    case TIN:
+      return "Tin";
+    case TUB:
+      return "Tub";
+    case TUBE:
+      return "Tube";
+    case VIAL:
+      return "Vial";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

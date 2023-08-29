@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum VaccinationProtocolDoseStatus {
 
-        /**
-         * null
-         */
-        COUNT, 
-        /**
-         * null
-         */
-        NOCOUNT, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static VaccinationProtocolDoseStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("count".equals(codeString))
-          return COUNT;
-        if ("nocount".equals(codeString))
-          return NOCOUNT;
-        throw new FHIRException("Unknown VaccinationProtocolDoseStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case COUNT: return "count";
-            case NOCOUNT: return "nocount";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/vaccination-protocol-dose-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case COUNT: return "";
-            case NOCOUNT: return "";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case COUNT: return "Counts";
-            case NOCOUNT: return "Does not Count";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * null
+   */
+  COUNT,
+  /**
+   * null
+   */
+  NOCOUNT,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static VaccinationProtocolDoseStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("count".equals(codeString))
+      return COUNT;
+    if ("nocount".equals(codeString))
+      return NOCOUNT;
+    throw new FHIRException("Unknown VaccinationProtocolDoseStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case COUNT:
+      return "count";
+    case NOCOUNT:
+      return "nocount";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/vaccination-protocol-dose-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case COUNT:
+      return "";
+    case NOCOUNT:
+      return "";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case COUNT:
+      return "Counts";
+    case NOCOUNT:
+      return "Does not Count";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

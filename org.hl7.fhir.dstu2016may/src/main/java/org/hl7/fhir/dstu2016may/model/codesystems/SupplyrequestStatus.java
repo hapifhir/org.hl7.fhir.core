@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,99 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum SupplyrequestStatus {
 
-        /**
-         * Supply has been requested, but not dispensed.
-         */
-        REQUESTED, 
-        /**
-         * Supply has been received by the requestor.
-         */
-        COMPLETED, 
-        /**
-         * The supply will not be completed because the supplier was unable or unwilling to supply the item.
-         */
-        FAILED, 
-        /**
-         * The orderer of the supply cancelled the request.
-         */
-        CANCELLED, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static SupplyrequestStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("requested".equals(codeString))
-          return REQUESTED;
-        if ("completed".equals(codeString))
-          return COMPLETED;
-        if ("failed".equals(codeString))
-          return FAILED;
-        if ("cancelled".equals(codeString))
-          return CANCELLED;
-        throw new FHIRException("Unknown SupplyrequestStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case REQUESTED: return "requested";
-            case COMPLETED: return "completed";
-            case FAILED: return "failed";
-            case CANCELLED: return "cancelled";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/supplyrequest-status";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case REQUESTED: return "Supply has been requested, but not dispensed.";
-            case COMPLETED: return "Supply has been received by the requestor.";
-            case FAILED: return "The supply will not be completed because the supplier was unable or unwilling to supply the item.";
-            case CANCELLED: return "The orderer of the supply cancelled the request.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case REQUESTED: return "Requested";
-            case COMPLETED: return "Received";
-            case FAILED: return "Failed";
-            case CANCELLED: return "Cancelled";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Supply has been requested, but not dispensed.
+   */
+  REQUESTED,
+  /**
+   * Supply has been received by the requestor.
+   */
+  COMPLETED,
+  /**
+   * The supply will not be completed because the supplier was unable or unwilling
+   * to supply the item.
+   */
+  FAILED,
+  /**
+   * The orderer of the supply cancelled the request.
+   */
+  CANCELLED,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static SupplyrequestStatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("requested".equals(codeString))
+      return REQUESTED;
+    if ("completed".equals(codeString))
+      return COMPLETED;
+    if ("failed".equals(codeString))
+      return FAILED;
+    if ("cancelled".equals(codeString))
+      return CANCELLED;
+    throw new FHIRException("Unknown SupplyrequestStatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case REQUESTED:
+      return "requested";
+    case COMPLETED:
+      return "completed";
+    case FAILED:
+      return "failed";
+    case CANCELLED:
+      return "cancelled";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/supplyrequest-status";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case REQUESTED:
+      return "Supply has been requested, but not dispensed.";
+    case COMPLETED:
+      return "Supply has been received by the requestor.";
+    case FAILED:
+      return "The supply will not be completed because the supplier was unable or unwilling to supply the item.";
+    case CANCELLED:
+      return "The orderer of the supply cancelled the request.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case REQUESTED:
+      return "Requested";
+    case COMPLETED:
+      return "Received";
+    case FAILED:
+      return "Failed";
+    case CANCELLED:
+      return "Cancelled";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

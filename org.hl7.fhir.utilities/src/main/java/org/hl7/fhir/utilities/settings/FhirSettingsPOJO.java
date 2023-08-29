@@ -1,11 +1,11 @@
 package org.hl7.fhir.utilities.settings;
 
+import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
-
-import java.util.Map;
 
 @Data
 @Builder
@@ -39,6 +39,8 @@ public class FhirSettingsPOJO {
   private String txFhirDevelopment;
   private String txFhirLocal;
 
+  private PackageManagementPOJO packageManagement;
+
   protected FhirSettingsPOJO() {
     apiKeys = null;
     npmPath = null;
@@ -50,5 +52,7 @@ public class FhirSettingsPOJO {
     txFhirProduction = TX_SERVER_PROD;
     txFhirDevelopment = TX_SERVER_DEV;
     txFhirLocal = TX_SERVER_LOCAL;
+
+    packageManagement = null;
   }
 }

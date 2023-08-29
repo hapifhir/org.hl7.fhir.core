@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv43_50.resources43_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
+import org.hl7.fhir.convertors.conv43_50.Utilities43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDetail43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
@@ -13,7 +14,6 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.MarkDown4
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.String43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAll;
 import org.hl7.fhir.r5.model.Enumerations.VersionIndependentResourceTypesAllEnumFactory;
@@ -220,8 +220,9 @@ public class OperationDefinition43_50 {
       tgt.setMaxElement(String43_50.convertString(src.getMaxElement()));
     if (src.hasDocumentation())
       tgt.setDocumentationElement(String43_50.convertStringToMarkdown(src.getDocumentationElement()));
-    if (src.hasType())
-      tgt.getTypeElement().setValue(org.hl7.fhir.r5.model.Enumerations.FHIRTypes.fromCode(src.getType().toCode()));
+    if (src.hasType()) {
+      Utilities43_50.convertType(src.getTypeElement(), tgt.getTypeElement());   
+    }
     for (org.hl7.fhir.r4b.model.CanonicalType t : src.getTargetProfile())
       tgt.getTargetProfile().add(Canonical43_50.convertCanonical(t));
     if (src.hasSearchType())
@@ -250,8 +251,9 @@ public class OperationDefinition43_50 {
       tgt.setMaxElement(String43_50.convertString(src.getMaxElement()));
     if (src.hasDocumentation())
       tgt.setDocumentationElement(String43_50.convertString(src.getDocumentationElement()));
-    if (src.hasType())
-      tgt.getTypeElement().setValueAsString(src.getType().toCode());
+    if (src.hasType()) {
+      Utilities43_50.convertType(src.getTypeElement(), tgt.getTypeElement());   
+    }
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getTargetProfile())
       tgt.getTargetProfile().add(Canonical43_50.convertCanonical(t));
     if (src.hasSearchType())

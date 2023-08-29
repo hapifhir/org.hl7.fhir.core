@@ -14,20 +14,20 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SimpleWorkerContextTests {
-  public static Stream<Arguments> zipSlipData()  {
+  public static Stream<Arguments> zipSlipData() {
 
-    return Stream.of(
-      Arguments.of("zip-slip/zip-slip.zip", "Entry with an illegal path: ../evil.txt"),
-      Arguments.of("zip-slip/zip-slip-2.zip", "Entry with an illegal path: child/../../evil.txt"),
-      Arguments.of("zip-slip/zip-slip-peer.zip", "Entry with an illegal path: ../childpeer/evil.txt"),
-      Arguments.of("zip-slip/zip-slip-win.zip", "Entry with an illegal path: ../evil.txt")
-    );
+    return Stream.of(Arguments.of("zip-slip/zip-slip.zip", "Entry with an illegal path: ../evil.txt"),
+        Arguments.of("zip-slip/zip-slip-2.zip", "Entry with an illegal path: child/../../evil.txt"),
+        Arguments.of("zip-slip/zip-slip-peer.zip", "Entry with an illegal path: ../childpeer/evil.txt"),
+        Arguments.of("zip-slip/zip-slip-win.zip", "Entry with an illegal path: ../evil.txt"));
   }
 
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("zipSlipData")
   public void testLoadFromClasspathZipSlip(String classPath, String expectedMessage) {
-    RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {SimpleWorkerContext.fromClassPath(classPath);});
+    RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+      SimpleWorkerContext.fromClassPath(classPath);
+    });
     assertNotNull(thrown);
     assertEquals(expectedMessage, thrown.getMessage());
   }

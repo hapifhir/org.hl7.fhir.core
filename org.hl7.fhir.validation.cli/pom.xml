@@ -33,7 +33,6 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>${byte_buddy_version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -60,7 +59,6 @@
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
-            <version>${junit_platform_launcher_version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -222,6 +220,14 @@
             <scope>compile</scope>
         </dependency>
 
+        <!--
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf</artifactId>
+            <version>3.1.2.RELEASE</version>
+            <scope>compile</scope>
+        </dependency>-->
+
         <dependency>
             <groupId>org.everit.json</groupId>
             <artifactId>org.everit.json.schema</artifactId>
@@ -232,7 +238,20 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>mockwebserver</artifactId>
-            <version>${okhttp.version}</version>
+            <optional>false</optional>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio</artifactId>
+            <optional>false</optional>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio-jvm</artifactId>
             <optional>false</optional>
             <scope>compile</scope>
         </dependency>
@@ -267,20 +286,15 @@
         <dependency>
             <groupId>org.fhir</groupId>
             <artifactId>ucum</artifactId>
-            <version>1.0.3</version>
         </dependency>
         <dependency>
-            <groupId>xpp3</groupId>
+            <groupId>org.ogce</groupId>
             <artifactId>xpp3</artifactId>
         </dependency>
-        <dependency>
-            <groupId>xpp3</groupId>
-            <artifactId>xpp3_xpath</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>${okhttp.version}</version>
       </dependency>
         <dependency>
             <groupId>com.atlassian.commonmark</groupId>
@@ -417,6 +431,24 @@
                     <artifactId>maven-deploy-plugin</artifactId>
                     <configuration>
                         <skip>true</skip>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <configuration>
+                        <suppressionFiles>
+                            <suppressionFile>cve-suppression.xml</suppressionFile>
+                        </suppressionFiles>
+                        <excludes>
+                            <!-- These are our own modules, and contain test archives for zip-slip, which break owasp
+                            archive extraction -->
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.convertors</exclude>
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.r4b</exclude>
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.r5</exclude>
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.utilities</exclude>
+                            <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.validation</exclude>
+                        </excludes>
                     </configuration>
                 </plugin>
         	</plugins>

@@ -15,4 +15,19 @@ public class Uri14_50 {
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     return tgt;
   }
+  
+
+  public static org.hl7.fhir.r5.model.CanonicalType convertCanonical(org.hl7.fhir.dstu2016may.model.UriType src) throws FHIRException {
+    org.hl7.fhir.r5.model.CanonicalType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.CanonicalType(src.getValueAsString()) : new org.hl7.fhir.r5.model.CanonicalType();
+    ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
+    return tgt;
+  }
+
+  public static org.hl7.fhir.dstu2016may.model.UriType convertCanonical(org.hl7.fhir.r5.model.CanonicalType src) throws FHIRException {
+    org.hl7.fhir.dstu2016may.model.UriType tgt = src.hasValue() ? new org.hl7.fhir.dstu2016may.model.UriType(src.getValueAsString()) : new org.hl7.fhir.dstu2016may.model.UriType();
+    ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
+    return tgt;
+  }
+  
+  
 }

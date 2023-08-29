@@ -27,7 +27,6 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class ExtensionExtractor {
@@ -40,12 +39,12 @@ public class ExtensionExtractor {
     Set<String> ids = new HashSet<>();
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true);
     NpmPackage r5 = pcm.loadPackage("hl7.fhir.r5.core",  "current");
-    CanonicalResourceManager<CodeSystem> cslist = new CanonicalResourceManager<CodeSystem>(true);
+    CanonicalResourceManager<CodeSystem> cslist = new CanonicalResourceManager<CodeSystem>(true, false);
     for (String r : r5.listResources("CodeSystem")) {
       CodeSystem cs = (CodeSystem) new JsonParser().parse(r5.load(r));
       cslist.see(cs, null);
     }
-    CanonicalResourceManager<ValueSet> vslist = new CanonicalResourceManager<ValueSet>(true);
+    CanonicalResourceManager<ValueSet> vslist = new CanonicalResourceManager<ValueSet>(true, false);
     for (String r : r5.listResources("ValueSet")) {
       ValueSet vs = (ValueSet) new JsonParser().parse(r5.load(r));
       vslist.see(vs, null);

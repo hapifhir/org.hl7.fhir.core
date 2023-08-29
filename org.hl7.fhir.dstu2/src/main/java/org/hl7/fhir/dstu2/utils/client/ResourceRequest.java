@@ -1,9 +1,5 @@
 package org.hl7.fhir.dstu2.utils.client;
 
-
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,77 +29,77 @@ package org.hl7.fhir.dstu2.utils.client;
   
 */
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.dstu2.model.Resource;
 
 public class ResourceRequest<T extends Resource> {
-	private T payload;
-	private int httpStatus = -1;
-	private String location;
-	private List<Integer> successfulStatuses = new ArrayList<Integer>();
-	private List<Integer> errorStatuses = new ArrayList<Integer>();
-	
-	public ResourceRequest(T payload, int httpStatus, List<Integer> successfulStatuses, List<Integer> errorStatuses, String location) {
-		this.payload = payload;
-		this.httpStatus = httpStatus;
-		if(successfulStatuses != null) {
-			this.successfulStatuses.addAll(successfulStatuses);
-		}
-		if(errorStatuses != null) {
-			this.errorStatuses.addAll(errorStatuses);
-		}
+  private T payload;
+  private int httpStatus = -1;
+  private String location;
+  private List<Integer> successfulStatuses = new ArrayList<Integer>();
+  private List<Integer> errorStatuses = new ArrayList<Integer>();
+
+  public ResourceRequest(T payload, int httpStatus, List<Integer> successfulStatuses, List<Integer> errorStatuses,
+      String location) {
+    this.payload = payload;
+    this.httpStatus = httpStatus;
+    if (successfulStatuses != null) {
+      this.successfulStatuses.addAll(successfulStatuses);
+    }
+    if (errorStatuses != null) {
+      this.errorStatuses.addAll(errorStatuses);
+    }
     this.location = location;
-	}
-	
-	public ResourceRequest(T payload, int httpStatus, String location) {
-		this.payload = payload;
-		this.httpStatus = httpStatus;
+  }
+
+  public ResourceRequest(T payload, int httpStatus, String location) {
+    this.payload = payload;
+    this.httpStatus = httpStatus;
     this.location = location;
-	}
-	
-	public ResourceRequest(T payload, int httpStatus, int successfulStatus, String location) {
-		this.payload = payload;
-		this.httpStatus = httpStatus;
-		this.successfulStatuses.add(successfulStatus);
-		this.location = location;
-	}
+  }
 
-	public int getHttpStatus() {
-		return httpStatus;
-	}
+  public ResourceRequest(T payload, int httpStatus, int successfulStatus, String location) {
+    this.payload = payload;
+    this.httpStatus = httpStatus;
+    this.successfulStatuses.add(successfulStatus);
+    this.location = location;
+  }
 
-	public T getPayload() {
-		return payload;
-	}
-	
-	public T getReference() {
-		T payloadResource = null;
-		if(payload != null) {
-			payloadResource = payload;
-		}
-		return payloadResource;
-	}
-	
-	public boolean isSuccessfulRequest() {
-		return successfulStatuses.contains(httpStatus) && !errorStatuses.contains(httpStatus) && httpStatus > 0;
-	}
-	
-	public boolean isUnsuccessfulRequest() {
-		return !isSuccessfulRequest();
-	}
-	
-	public void addSuccessStatus(int status) {
-		this.successfulStatuses.add(status);
-	}
-	
-	public void addErrorStatus(int status) {
-		this.errorStatuses.add(status);
-	}
+  public int getHttpStatus() {
+    return httpStatus;
+  }
 
-	public String getLocation() {
-	  return location;
-	}
+  public T getPayload() {
+    return payload;
+  }
+
+  public T getReference() {
+    T payloadResource = null;
+    if (payload != null) {
+      payloadResource = payload;
+    }
+    return payloadResource;
+  }
+
+  public boolean isSuccessfulRequest() {
+    return successfulStatuses.contains(httpStatus) && !errorStatuses.contains(httpStatus) && httpStatus > 0;
+  }
+
+  public boolean isUnsuccessfulRequest() {
+    return !isSuccessfulRequest();
+  }
+
+  public void addSuccessStatus(int status) {
+    this.successfulStatuses.add(status);
+  }
+
+  public void addErrorStatus(int status) {
+    this.errorStatuses.add(status);
+  }
+
+  public String getLocation() {
+    return location;
+  }
 }

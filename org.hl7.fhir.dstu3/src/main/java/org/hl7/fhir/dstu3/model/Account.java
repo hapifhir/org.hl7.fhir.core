@@ -379,7 +379,7 @@ A coverage may only be resposible for specific types of charges, and the sequenc
           return this.coverage;
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.priority");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.priority");
         }
         else
           return super.addChild(name);
@@ -665,7 +665,7 @@ A coverage may only be resposible for specific types of charges, and the sequenc
           return this.party;
         }
         else if (name.equals("onHold")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.onHold");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.onHold");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -1488,14 +1488,14 @@ This period may be different to the coveragePeriod which is the duration of time
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.status");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.status");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
           return this.type;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.name");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.name");
         }
         else if (name.equals("subject")) {
           this.subject = new Reference();
@@ -1521,7 +1521,7 @@ This period may be different to the coveragePeriod which is the duration of time
           return this.owner;
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Account.description");
+          throw new FHIRException("Cannot call addChild on a singleton property Account.description");
         }
         else if (name.equals("guarantor")) {
           return addGuarantor();

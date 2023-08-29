@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum RemittanceOutcome {
 
-        /**
-         * The processing completed without errors.
-         */
-        COMPLETE, 
-        /**
-         * The processing identified errors.
-         */
-        ERROR, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static RemittanceOutcome fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("complete".equals(codeString))
-          return COMPLETE;
-        if ("error".equals(codeString))
-          return ERROR;
-        throw new FHIRException("Unknown RemittanceOutcome code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case COMPLETE: return "complete";
-            case ERROR: return "error";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/remittance-outcome";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case COMPLETE: return "The processing completed without errors.";
-            case ERROR: return "The processing identified errors.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case COMPLETE: return "Complete";
-            case ERROR: return "Error";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The processing completed without errors.
+   */
+  COMPLETE,
+  /**
+   * The processing identified errors.
+   */
+  ERROR,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static RemittanceOutcome fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("complete".equals(codeString))
+      return COMPLETE;
+    if ("error".equals(codeString))
+      return ERROR;
+    throw new FHIRException("Unknown RemittanceOutcome code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case COMPLETE:
+      return "complete";
+    case ERROR:
+      return "error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/remittance-outcome";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case COMPLETE:
+      return "The processing completed without errors.";
+    case ERROR:
+      return "The processing identified errors.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case COMPLETE:
+      return "Complete";
+    case ERROR:
+      return "Error";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

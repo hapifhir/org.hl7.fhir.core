@@ -22,7 +22,6 @@ import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R5ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R6ToR5Loader;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.renderers.RendererFactory;
@@ -31,6 +30,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
+import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -43,8 +43,38 @@ import org.xml.sax.SAXException;
 //TODO find a home for these and clean it up
 public class ValidatorUtils {
 
-  protected static void grabNatives(Map<String, byte[]> source, Map<String, byte[]> binaries, String prefix) {
-    for (Map.Entry<String, byte[]> e : source.entrySet()) {
+  public static class SourceFile {
+    private String ref;
+    private long date;
+    private boolean process;
+    private Content cnt;
+    
+    public boolean isProcess() {
+      return process;
+    }
+    public void setProcess(boolean process) {
+      this.process = process;
+      this.cnt = null;
+    }
+    public String getRef() {
+      return ref;
+    }
+    public long getDate() {
+      return date;
+    }
+    public Content getCnt() {
+      return cnt;
+    }
+    public void setCnt(Content cnt) {
+      this.cnt = cnt;
+    }
+    public boolean isKnownToBeMissing () { 
+      return date == 0;  // File::lastModified() returns 0 if the file is missing
+    }
+  }
+  
+  protected static void grabNatives(Map<String, ByteProvider> source, Map<String, ByteProvider> binaries, String prefix) {
+    for (Map.Entry<String, ByteProvider> e : source.entrySet()) {
       if (e.getKey().endsWith(".zip"))
         binaries.put(prefix + "#" + e.getKey(), e.getValue());
     }
@@ -129,14 +159,15 @@ public class ValidatorUtils {
    *
    * @return {@link Boolean#TRUE} if more than one reference is found.
    */
-  static boolean extractReferences(String name, List<String> refs, SimpleWorkerContext context) throws IOException {
+  static boolean extractReferences(String name, List<SourceFile> refs, SimpleWorkerContext context) throws IOException {
     if (Common.isNetworkPath(name)) {
-      refs.add(name);
+      SourceFile src = addSourceFile(refs, name);
+      src.date = Long.MAX_VALUE;
     } else if (Common.isWildcardPath(name)) {
       AsteriskFilter filter = new AsteriskFilter(name);
       File[] files = new File(filter.getDir()).listFiles(filter);
       for (File file : files) {
-        refs.add(file.getPath());
+        addSourceFile(refs, file);
       }
     } else {
       File file = new File(name);
@@ -150,16 +181,40 @@ public class ValidatorUtils {
       }
 
       if (file.isFile()) {
-        refs.add(name);
+        addSourceFile(refs, file);
       } else {
-        for (int i = 0; i < file.listFiles().length; i++) {
-          File[] fileList = file.listFiles();
-          if (fileList[i].isFile())
-            refs.add(fileList[i].getPath());
+        for (File fileInDirectory : file.listFiles()) {
+          if (fileInDirectory.isFile()) {
+            if (!Utilities.isIgnorableFile(fileInDirectory)) {
+              addSourceFile(refs, fileInDirectory);
+            }
+          }
         }
       }
     }
     return refs.size() > 1;
+  }
+
+  private static SourceFile addSourceFile(List<SourceFile> refs, File file) {
+    SourceFile src = addSourceFile(refs, file.getPath());
+    long l = file.lastModified();  // returns 0 if the file is missing
+    if (src.date != l) {
+      src.setProcess(l != 0);  // process only if not missing
+    }
+    src.date = l;
+    return src;
+  }
+
+  private static SourceFile addSourceFile(List<SourceFile> refs, String path) {
+    for (SourceFile t : refs) {
+      if (t.ref.equals(path)) {
+        return t;
+      }
+    }
+    SourceFile src = new SourceFile();
+    src.ref = path;
+    refs.add(src);
+    return src;
   }
 
   /**
@@ -167,7 +222,7 @@ public class ValidatorUtils {
    *
    * @return {@link Boolean#TRUE} if more than one reference is found.
    */
-  public static boolean parseSources(List<String> sources, List<String> refs, SimpleWorkerContext context) throws IOException {
+  public static boolean parseSources(List<String> sources, List<SourceFile> refs, SimpleWorkerContext context) throws IOException {
     boolean multipleRefsFound = sources.size() > 1;
     for (String source : sources) {
       multipleRefsFound |= extractReferences(source, refs, context);

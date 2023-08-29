@@ -35,16 +35,13 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IBaseXhtml;
-import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
 
 import ca.uhn.fhir.model.primitive.XhtmlDt;
@@ -366,6 +363,10 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return hasAttributes() && getAttributes().containsKey(name);
   }
 
+  public boolean hasAttribute(String name, String value) {
+    return hasAttributes() && getAttributes().containsKey(name) && value.equals(getAttributes().get(name));
+  }
+
   public String getAttribute(String name) {
     return hasAttributes() ? getAttributes().get(name) : null;
   }
@@ -572,18 +573,25 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     throw new UnsupportedOperationException();
   }
 
-  /**
-   * NOT SUPPORTED - Throws {@link UnsupportedOperationException}
-   */
+  private Map<String, Object> userData;
+  
   public Object getUserData(String theName) {
-    throw new UnsupportedOperationException();
+    if (hasUserData(theName)) {
+      return userData.get(theName);
+    } else {
+      return null;
+    }
   }
 
-  /**
-   * NOT SUPPORTED - Throws {@link UnsupportedOperationException}
-   */
+  public boolean hasUserData(String theName) {
+    return userData != null && userData.containsKey(theName);
+  }
+
   public void setUserData(String theName, Object theValue) {
-    throw new UnsupportedOperationException();
+    if (userData == null) {
+      userData = new HashMap<>();
+    }
+    userData.put(theName, theValue);
   }
 
 
@@ -870,4 +878,48 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return res;
   }
 
+
+  public XhtmlNode strikethrough() {
+    return addTag("s");
+  }
+
+
+  public XhtmlNode svg() {
+    return addTag("svg");
+  }
+
+
+  public XhtmlNode path(String value) {
+    return addTag("path").attribute("d", value);
+    
+  }
+
+
+  public void copyAllContent(XhtmlNode other) {
+    getChildNodes().addAll(other.getChildNodes());
+    getAttributes().putAll(other.getAttributes());
+    if (!Utilities.noString(other.getContent())) {
+      tx(other.getContent());
+    }    
+  }
+
+  public boolean isClass(String name) {
+    return hasAttribute("class", name);
+  }
+
+
+  public void styleCells(XhtmlNode x) {
+    setUserData("cells", x);    
+  }
+
+
+  public XhtmlNode td() {
+    XhtmlNode x = addTag("td");
+    XhtmlNode t = (XhtmlNode) getUserData("cells");
+    if (t != null) {
+      x.copyAllContent(t);
+    }
+    return x;
+  }
+  
 }

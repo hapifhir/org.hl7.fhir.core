@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,104 +31,134 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum EffectEstimateType {
 
-        /**
-         * relative risk (a type of relative effect estimate).
-         */
-        RELATIVERR, 
-        /**
-         * odds ratio (a type of relative effect estimate).
-         */
-        RELATIVEOR, 
-        /**
-         * hazard ratio (a type of relative effect estimate).
-         */
-        RELATIVEHR, 
-        /**
-         * absolute risk difference (a type of absolute effect estimate).
-         */
-        ABSOLUTEARD, 
-        /**
-         * mean difference (a type of absolute effect estimate).
-         */
-        ABSOLUTEMEANDIFF, 
-        /**
-         * standardized mean difference (a type of absolute effect estimate).
-         */
-        ABSOLUTESMD, 
-        /**
-         * median difference (a type of absolute effect estimate).
-         */
-        ABSOLUTEMEDIANDIFF, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static EffectEstimateType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("relative-RR".equals(codeString))
-          return RELATIVERR;
-        if ("relative-OR".equals(codeString))
-          return RELATIVEOR;
-        if ("relative-HR".equals(codeString))
-          return RELATIVEHR;
-        if ("absolute-ARD".equals(codeString))
-          return ABSOLUTEARD;
-        if ("absolute-MeanDiff".equals(codeString))
-          return ABSOLUTEMEANDIFF;
-        if ("absolute-SMD".equals(codeString))
-          return ABSOLUTESMD;
-        if ("absolute-MedianDiff".equals(codeString))
-          return ABSOLUTEMEDIANDIFF;
-        throw new FHIRException("Unknown EffectEstimateType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case RELATIVERR: return "relative-RR";
-            case RELATIVEOR: return "relative-OR";
-            case RELATIVEHR: return "relative-HR";
-            case ABSOLUTEARD: return "absolute-ARD";
-            case ABSOLUTEMEANDIFF: return "absolute-MeanDiff";
-            case ABSOLUTESMD: return "absolute-SMD";
-            case ABSOLUTEMEDIANDIFF: return "absolute-MedianDiff";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/effect-estimate-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case RELATIVERR: return "relative risk (a type of relative effect estimate).";
-            case RELATIVEOR: return "odds ratio (a type of relative effect estimate).";
-            case RELATIVEHR: return "hazard ratio (a type of relative effect estimate).";
-            case ABSOLUTEARD: return "absolute risk difference (a type of absolute effect estimate).";
-            case ABSOLUTEMEANDIFF: return "mean difference (a type of absolute effect estimate).";
-            case ABSOLUTESMD: return "standardized mean difference (a type of absolute effect estimate).";
-            case ABSOLUTEMEDIANDIFF: return "median difference (a type of absolute effect estimate).";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case RELATIVERR: return "relative risk";
-            case RELATIVEOR: return "odds ratio";
-            case RELATIVEHR: return "hazard ratio";
-            case ABSOLUTEARD: return "absolute risk difference";
-            case ABSOLUTEMEANDIFF: return "mean difference";
-            case ABSOLUTESMD: return "standardized mean difference";
-            case ABSOLUTEMEDIANDIFF: return "median difference";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * relative risk (a type of relative effect estimate).
+   */
+  RELATIVERR,
+  /**
+   * odds ratio (a type of relative effect estimate).
+   */
+  RELATIVEOR,
+  /**
+   * hazard ratio (a type of relative effect estimate).
+   */
+  RELATIVEHR,
+  /**
+   * absolute risk difference (a type of absolute effect estimate).
+   */
+  ABSOLUTEARD,
+  /**
+   * mean difference (a type of absolute effect estimate).
+   */
+  ABSOLUTEMEANDIFF,
+  /**
+   * standardized mean difference (a type of absolute effect estimate).
+   */
+  ABSOLUTESMD,
+  /**
+   * median difference (a type of absolute effect estimate).
+   */
+  ABSOLUTEMEDIANDIFF,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static EffectEstimateType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("relative-RR".equals(codeString))
+      return RELATIVERR;
+    if ("relative-OR".equals(codeString))
+      return RELATIVEOR;
+    if ("relative-HR".equals(codeString))
+      return RELATIVEHR;
+    if ("absolute-ARD".equals(codeString))
+      return ABSOLUTEARD;
+    if ("absolute-MeanDiff".equals(codeString))
+      return ABSOLUTEMEANDIFF;
+    if ("absolute-SMD".equals(codeString))
+      return ABSOLUTESMD;
+    if ("absolute-MedianDiff".equals(codeString))
+      return ABSOLUTEMEDIANDIFF;
+    throw new FHIRException("Unknown EffectEstimateType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case RELATIVERR:
+      return "relative-RR";
+    case RELATIVEOR:
+      return "relative-OR";
+    case RELATIVEHR:
+      return "relative-HR";
+    case ABSOLUTEARD:
+      return "absolute-ARD";
+    case ABSOLUTEMEANDIFF:
+      return "absolute-MeanDiff";
+    case ABSOLUTESMD:
+      return "absolute-SMD";
+    case ABSOLUTEMEDIANDIFF:
+      return "absolute-MedianDiff";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/effect-estimate-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case RELATIVERR:
+      return "relative risk (a type of relative effect estimate).";
+    case RELATIVEOR:
+      return "odds ratio (a type of relative effect estimate).";
+    case RELATIVEHR:
+      return "hazard ratio (a type of relative effect estimate).";
+    case ABSOLUTEARD:
+      return "absolute risk difference (a type of absolute effect estimate).";
+    case ABSOLUTEMEANDIFF:
+      return "mean difference (a type of absolute effect estimate).";
+    case ABSOLUTESMD:
+      return "standardized mean difference (a type of absolute effect estimate).";
+    case ABSOLUTEMEDIANDIFF:
+      return "median difference (a type of absolute effect estimate).";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case RELATIVERR:
+      return "relative risk";
+    case RELATIVEOR:
+      return "odds ratio";
+    case RELATIVEHR:
+      return "hazard ratio";
+    case ABSOLUTEARD:
+      return "absolute risk difference";
+    case ABSOLUTEMEANDIFF:
+      return "mean difference";
+    case ABSOLUTESMD:
+      return "standardized mean difference";
+    case ABSOLUTEMEDIANDIFF:
+      return "median difference";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

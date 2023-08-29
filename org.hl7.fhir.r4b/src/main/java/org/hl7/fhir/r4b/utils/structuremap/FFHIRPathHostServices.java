@@ -37,7 +37,8 @@ public class FFHIRPathHostServices implements FHIRPathEngine.IEvaluationContext 
   @Override
   public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
     if (!(appContext instanceof VariablesForProfiling))
-      throw new Error("Internal Logic Error (wrong type '" + appContext.getClass().getName() + "' in resolveConstantType)");
+      throw new Error(
+          "Internal Logic Error (wrong type '" + appContext.getClass().getName() + "' in resolveConstantType)");
     VariablesForProfiling vars = (VariablesForProfiling) appContext;
     VariableForProfiling v = vars.get(null, name);
     if (v == null)
@@ -56,12 +57,14 @@ public class FFHIRPathHostServices implements FHIRPathEngine.IEvaluationContext 
   }
 
   @Override
-  public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
+  public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters)
+      throws PathEngineException {
     throw new Error("Not Implemented Yet");
   }
 
   @Override
-  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName,
+      List<List<Base>> parameters) {
     throw new Error("Not Implemented Yet");
   }
 
@@ -91,7 +94,8 @@ public class FFHIRPathHostServices implements FHIRPathEngine.IEvaluationContext 
       val.validate(appContext, valerrors, null, (Element) item, url);
       return noErrorValidationMessages(valerrors);
     }
-    throw new NotImplementedException("Not done yet (FFHIRPathHostServices.conformsToProfile), when item is not element or not resource");
+    throw new NotImplementedException(
+        "Not done yet (FFHIRPathHostServices.conformsToProfile), when item is not element or not resource");
   }
 
   @Override

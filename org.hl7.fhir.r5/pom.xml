@@ -44,23 +44,11 @@
 
 		<!-- XML Parsers -->
 		<dependency>
-			<groupId>xpp3</groupId>
+			<groupId>org.ogce</groupId>
 			<artifactId>xpp3</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>xpp3</groupId>
-			<artifactId>xpp3_xpath</artifactId>
-			<optional>true</optional>
-		</dependency>
 
-		<!-- ShEx -->
-		<dependency>
-			<groupId>es.weso</groupId>
-			<artifactId>shexs_2.12</artifactId>
-			<version>0.2.31</version>
-			<optional>true</optional>
-		</dependency>
 
 		<!-- JSON Parsers -->
 		<dependency>
@@ -107,20 +95,27 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
-			<version>${okhttp.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>logging-interceptor</artifactId>
-			<version>${okhttp.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okio</groupId>
+			<artifactId>okio</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okio</groupId>
+			<artifactId>okio-jvm</artifactId>
 			<optional>true</optional>
 		</dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>${lombok_version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -177,7 +172,13 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>net.sourceforge.plantuml</groupId>
+            <artifactId>plantuml-mit</artifactId>
+            <version>1.2023.9</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

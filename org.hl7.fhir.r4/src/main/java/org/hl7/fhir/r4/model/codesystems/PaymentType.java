@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum PaymentType {
 
-        /**
-         * The amount is partial or complete settlement of the amounts due.
-         */
-        PAYMENT, 
-        /**
-         * The amount is an adjustment regarding claims already paid.
-         */
-        ADJUSTMENT, 
-        /**
-         * The amount is an advance against future claims.
-         */
-        ADVANCE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static PaymentType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("payment".equals(codeString))
-          return PAYMENT;
-        if ("adjustment".equals(codeString))
-          return ADJUSTMENT;
-        if ("advance".equals(codeString))
-          return ADVANCE;
-        throw new FHIRException("Unknown PaymentType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PAYMENT: return "payment";
-            case ADJUSTMENT: return "adjustment";
-            case ADVANCE: return "advance";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/payment-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PAYMENT: return "The amount is partial or complete settlement of the amounts due.";
-            case ADJUSTMENT: return "The amount is an adjustment regarding claims already paid.";
-            case ADVANCE: return "The amount is an advance against future claims.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PAYMENT: return "Payment";
-            case ADJUSTMENT: return "Adjustment";
-            case ADVANCE: return "Advance";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The amount is partial or complete settlement of the amounts due.
+   */
+  PAYMENT,
+  /**
+   * The amount is an adjustment regarding claims already paid.
+   */
+  ADJUSTMENT,
+  /**
+   * The amount is an advance against future claims.
+   */
+  ADVANCE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static PaymentType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("payment".equals(codeString))
+      return PAYMENT;
+    if ("adjustment".equals(codeString))
+      return ADJUSTMENT;
+    if ("advance".equals(codeString))
+      return ADVANCE;
+    throw new FHIRException("Unknown PaymentType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PAYMENT:
+      return "payment";
+    case ADJUSTMENT:
+      return "adjustment";
+    case ADVANCE:
+      return "advance";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/payment-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PAYMENT:
+      return "The amount is partial or complete settlement of the amounts due.";
+    case ADJUSTMENT:
+      return "The amount is an adjustment regarding claims already paid.";
+    case ADVANCE:
+      return "The amount is an advance against future claims.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PAYMENT:
+      return "Payment";
+    case ADJUSTMENT:
+      return "Adjustment";
+    case ADVANCE:
+      return "Advance";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

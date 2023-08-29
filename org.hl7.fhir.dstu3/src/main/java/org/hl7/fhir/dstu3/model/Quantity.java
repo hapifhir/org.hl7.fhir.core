@@ -2,8 +2,6 @@ package org.hl7.fhir.dstu3.model;
 
 import java.math.BigDecimal;
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -642,19 +640,19 @@ public class Quantity extends Type implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Quantity.value");
+          throw new FHIRException("Cannot call addChild on a singleton property Quantity.value");
         }
         else if (name.equals("comparator")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Quantity.comparator");
+          throw new FHIRException("Cannot call addChild on a singleton property Quantity.comparator");
         }
         else if (name.equals("unit")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Quantity.unit");
+          throw new FHIRException("Cannot call addChild on a singleton property Quantity.unit");
         }
         else if (name.equals("system")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Quantity.system");
+          throw new FHIRException("Cannot call addChild on a singleton property Quantity.system");
         }
         else if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Quantity.code");
+          throw new FHIRException("Cannot call addChild on a singleton property Quantity.code");
         }
         else
           return super.addChild(name);

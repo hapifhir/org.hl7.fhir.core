@@ -1109,23 +1109,23 @@ public class EvidenceVariable extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.linkId");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.characteristic.linkId");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.description");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.characteristic.description");
         }
         else if (name.equals("note")) {
           return addNote();
         }
         else if (name.equals("exclude")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.exclude");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.characteristic.exclude");
         }
         else if (name.equals("definitionReference")) {
           this.definitionReference = new Reference();
           return this.definitionReference;
         }
         else if (name.equals("definitionCanonical")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.definitionCanonical");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.characteristic.definitionCanonical");
         }
         else if (name.equals("definitionCodeableConcept")) {
           this.definitionCodeableConcept = new CodeableConcept();
@@ -1136,7 +1136,7 @@ public class EvidenceVariable extends MetadataResource {
           return this.definitionExpression;
         }
         else if (name.equals("definitionId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.definitionId");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.characteristic.definitionId");
         }
         else if (name.equals("definitionByTypeAndValue")) {
           this.definitionByTypeAndValue = new EvidenceVariableCharacteristicDefinitionByTypeAndValueComponent();
@@ -2014,10 +2014,10 @@ public class EvidenceVariable extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.definitionByCombination.code");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.characteristic.definitionByCombination.code");
         }
         else if (name.equals("threshold")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.definitionByCombination.threshold");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.characteristic.definitionByCombination.threshold");
         }
         else if (name.equals("characteristic")) {
           return addCharacteristic();
@@ -2464,7 +2464,7 @@ public class EvidenceVariable extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.characteristic.timeFromEvent.description");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.characteristic.timeFromEvent.description");
         }
         else if (name.equals("note")) {
           return addNote();
@@ -2768,7 +2768,7 @@ public class EvidenceVariable extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.category.name");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.category.name");
         }
         else if (name.equals("valueCodeableConcept")) {
           this.value = new CodeableConcept();
@@ -4980,13 +4980,13 @@ See guidance around (not) making local changes to elements [here](canonicalresou
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.url");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.version");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.version");
         }
         else if (name.equals("versionAlgorithmString")) {
           this.versionAlgorithm = new StringType();
@@ -4997,31 +4997,31 @@ See guidance around (not) making local changes to elements [here](canonicalresou
           return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.name");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.title");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.title");
         }
         else if (name.equals("shortTitle")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.shortTitle");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.shortTitle");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.status");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.experimental");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.date");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.publisher");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.description");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.description");
         }
         else if (name.equals("note")) {
           return addNote();
@@ -5030,19 +5030,19 @@ See guidance around (not) making local changes to elements [here](canonicalresou
           return addUseContext();
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.purpose");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.purpose");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.copyright");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.copyright");
         }
         else if (name.equals("copyrightLabel")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.copyrightLabel");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.copyrightLabel");
         }
         else if (name.equals("approvalDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.approvalDate");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.approvalDate");
         }
         else if (name.equals("lastReviewDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.lastReviewDate");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.lastReviewDate");
         }
         else if (name.equals("effectivePeriod")) {
           this.effectivePeriod = new Period();
@@ -5064,13 +5064,13 @@ See guidance around (not) making local changes to elements [here](canonicalresou
           return addRelatedArtifact();
         }
         else if (name.equals("actual")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.actual");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.actual");
         }
         else if (name.equals("characteristic")) {
           return addCharacteristic();
         }
         else if (name.equals("handling")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.handling");
+          throw new FHIRException("Cannot call addChild on a singleton property EvidenceVariable.handling");
         }
         else if (name.equals("category")) {
           return addCategory();

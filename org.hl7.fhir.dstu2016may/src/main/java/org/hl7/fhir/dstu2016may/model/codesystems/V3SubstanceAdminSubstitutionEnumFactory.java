@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class V3SubstanceAdminSubstitutionEnumFactory implements EnumFactory<V3SubstanceAdminSubstitution> {
@@ -62,7 +58,7 @@ public class V3SubstanceAdminSubstitutionEnumFactory implements EnumFactory<V3Su
       return V3SubstanceAdminSubstitution.F;
     if ("N".equals(codeString))
       return V3SubstanceAdminSubstitution.N;
-    throw new IllegalArgumentException("Unknown V3SubstanceAdminSubstitution code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown V3SubstanceAdminSubstitution code '" + codeString + "'");
   }
 
   public String toCode(V3SubstanceAdminSubstitution code) {
@@ -89,8 +85,8 @@ public class V3SubstanceAdminSubstitutionEnumFactory implements EnumFactory<V3Su
     return "?";
   }
 
-    public String toSystem(V3SubstanceAdminSubstitution code) {
-      return code.getSystem();
-      }
+  public String toSystem(V3SubstanceAdminSubstitution code) {
+    return code.getSystem();
+  }
 
 }

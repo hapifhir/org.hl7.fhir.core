@@ -25,6 +25,9 @@ public class FHIRPathExpressionFixer {
     if ("generated='generated' implies source.empty()".equals(expr)) {
       return "generation='generated' implies source.empty()";
     }
+    if (expr.equals("binding.empty() or type.code.empty() or type.code.contains(\":\") or type.select((code = 'code') or (code = 'Coding') or (code='CodeableConcept') or (code = 'Quantity') or (code = 'string') or (code = 'uri') or (code = 'Duration')).exists()")) {
+      return "binding.empty() or type.code.empty() or type.code.contains(':') or type.select((code = 'code') or (code = 'Coding') or (code='CodeableConcept') or (code = 'Quantity') or (code = 'string') or (code = 'uri') or (code = 'Duration')).exists()";
+    }
     // fixes to string functions in FHIRPath
     // ref-1
     if (expr.equals("reference.startsWith('#').not() or (reference.substring(1).trace('url') in %rootResource.contained.id.trace('ids')) or (reference='#' and %rootResource!=%resource)")) { // R5

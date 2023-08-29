@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
-
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -82,7 +78,7 @@ public class V3ConfidentialityEnumFactory implements EnumFactory<V3Confidentiali
       return V3Confidentiality.S;
     if ("T".equals(codeString))
       return V3Confidentiality.T;
-    throw new IllegalArgumentException("Unknown V3Confidentiality code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown V3Confidentiality code '" + codeString + "'");
   }
 
   public String toCode(V3Confidentiality code) {
@@ -129,8 +125,8 @@ public class V3ConfidentialityEnumFactory implements EnumFactory<V3Confidentiali
     return "?";
   }
 
-    public String toSystem(V3Confidentiality code) {
-      return code.getSystem();
-      }
+  public String toSystem(V3Confidentiality code) {
+    return code.getSystem();
+  }
 
 }

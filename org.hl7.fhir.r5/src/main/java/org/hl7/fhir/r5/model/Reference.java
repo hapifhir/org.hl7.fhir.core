@@ -395,17 +395,17 @@ The type is the Canonical URL of Resource Definition that is the type this refer
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("reference")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Reference.reference");
+          throw new FHIRException("Cannot call addChild on a singleton property Reference.reference");
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Reference.type");
+          throw new FHIRException("Cannot call addChild on a singleton property Reference.type");
         }
         else if (name.equals("identifier")) {
           this.identifier = new Identifier();
           return this.identifier;
         }
         else if (name.equals("display")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Reference.display");
+          throw new FHIRException("Cannot call addChild on a singleton property Reference.display");
         }
         else
           return super.addChild(name);
@@ -489,6 +489,29 @@ The type is the Canonical URL of Resource Definition that is the type this refer
     } 
     return this; 
   }
+  
+
+  public boolean matches(Reference value) {
+    if (value.hasReference() || hasReference()) {
+      if (!(value.hasReference() && hasReference())) {
+        return false;
+      }
+      if (!reference.matches(value.getReference())) {
+        return true;
+      }
+    }
+    if (value.hasIdentifier() || hasIdentifier()) {
+      if (!(value.hasIdentifier() && hasIdentifier())) {
+        return false;
+      }
+      if (!identifier.matches(value.getIdentifier())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
 // end addition
 
 }

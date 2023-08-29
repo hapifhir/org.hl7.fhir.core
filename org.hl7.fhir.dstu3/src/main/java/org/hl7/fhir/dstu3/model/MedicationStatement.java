@@ -1684,7 +1684,7 @@ public class MedicationStatement extends DomainResource {
           return this.context;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicationStatement.status");
+          throw new FHIRException("Cannot call addChild on a singleton property MedicationStatement.status");
         }
         else if (name.equals("category")) {
           this.category = new CodeableConcept();
@@ -1707,7 +1707,7 @@ public class MedicationStatement extends DomainResource {
           return this.effective;
         }
         else if (name.equals("dateAsserted")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicationStatement.dateAsserted");
+          throw new FHIRException("Cannot call addChild on a singleton property MedicationStatement.dateAsserted");
         }
         else if (name.equals("informationSource")) {
           this.informationSource = new Reference();
@@ -1721,7 +1721,7 @@ public class MedicationStatement extends DomainResource {
           return addDerivedFrom();
         }
         else if (name.equals("taken")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MedicationStatement.taken");
+          throw new FHIRException("Cannot call addChild on a singleton property MedicationStatement.taken");
         }
         else if (name.equals("reasonNotTaken")) {
           return addReasonNotTaken();

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,95 +31,122 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum DeviceNametype {
 
-        /**
-         * UDI Label name.
-         */
-        UDILABELNAME, 
-        /**
-         * User Friendly name.
-         */
-        USERFRIENDLYNAME, 
-        /**
-         * Patient Reported name.
-         */
-        PATIENTREPORTEDNAME, 
-        /**
-         * Manufacturer name.
-         */
-        MANUFACTURERNAME, 
-        /**
-         * Model name.
-         */
-        MODELNAME, 
-        /**
-         * other.
-         */
-        OTHER, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static DeviceNametype fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("udi-label-name".equals(codeString))
-          return UDILABELNAME;
-        if ("user-friendly-name".equals(codeString))
-          return USERFRIENDLYNAME;
-        if ("patient-reported-name".equals(codeString))
-          return PATIENTREPORTEDNAME;
-        if ("manufacturer-name".equals(codeString))
-          return MANUFACTURERNAME;
-        if ("model-name".equals(codeString))
-          return MODELNAME;
-        if ("other".equals(codeString))
-          return OTHER;
-        throw new FHIRException("Unknown DeviceNametype code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case UDILABELNAME: return "udi-label-name";
-            case USERFRIENDLYNAME: return "user-friendly-name";
-            case PATIENTREPORTEDNAME: return "patient-reported-name";
-            case MANUFACTURERNAME: return "manufacturer-name";
-            case MODELNAME: return "model-name";
-            case OTHER: return "other";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/device-nametype";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case UDILABELNAME: return "UDI Label name.";
-            case USERFRIENDLYNAME: return "User Friendly name.";
-            case PATIENTREPORTEDNAME: return "Patient Reported name.";
-            case MANUFACTURERNAME: return "Manufacturer name.";
-            case MODELNAME: return "Model name.";
-            case OTHER: return "other.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case UDILABELNAME: return "UDI Label name";
-            case USERFRIENDLYNAME: return "User Friendly name";
-            case PATIENTREPORTEDNAME: return "Patient Reported name";
-            case MANUFACTURERNAME: return "Manufacturer name";
-            case MODELNAME: return "Model name";
-            case OTHER: return "other";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * UDI Label name.
+   */
+  UDILABELNAME,
+  /**
+   * User Friendly name.
+   */
+  USERFRIENDLYNAME,
+  /**
+   * Patient Reported name.
+   */
+  PATIENTREPORTEDNAME,
+  /**
+   * Manufacturer name.
+   */
+  MANUFACTURERNAME,
+  /**
+   * Model name.
+   */
+  MODELNAME,
+  /**
+   * other.
+   */
+  OTHER,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static DeviceNametype fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("udi-label-name".equals(codeString))
+      return UDILABELNAME;
+    if ("user-friendly-name".equals(codeString))
+      return USERFRIENDLYNAME;
+    if ("patient-reported-name".equals(codeString))
+      return PATIENTREPORTEDNAME;
+    if ("manufacturer-name".equals(codeString))
+      return MANUFACTURERNAME;
+    if ("model-name".equals(codeString))
+      return MODELNAME;
+    if ("other".equals(codeString))
+      return OTHER;
+    throw new FHIRException("Unknown DeviceNametype code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case UDILABELNAME:
+      return "udi-label-name";
+    case USERFRIENDLYNAME:
+      return "user-friendly-name";
+    case PATIENTREPORTEDNAME:
+      return "patient-reported-name";
+    case MANUFACTURERNAME:
+      return "manufacturer-name";
+    case MODELNAME:
+      return "model-name";
+    case OTHER:
+      return "other";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/device-nametype";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case UDILABELNAME:
+      return "UDI Label name.";
+    case USERFRIENDLYNAME:
+      return "User Friendly name.";
+    case PATIENTREPORTEDNAME:
+      return "Patient Reported name.";
+    case MANUFACTURERNAME:
+      return "Manufacturer name.";
+    case MODELNAME:
+      return "Model name.";
+    case OTHER:
+      return "other.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case UDILABELNAME:
+      return "UDI Label name";
+    case USERFRIENDLYNAME:
+      return "User Friendly name";
+    case PATIENTREPORTEDNAME:
+      return "Patient Reported name";
+    case MANUFACTURERNAME:
+      return "Manufacturer name";
+    case MODELNAME:
+      return "Model name";
+    case OTHER:
+      return "other";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

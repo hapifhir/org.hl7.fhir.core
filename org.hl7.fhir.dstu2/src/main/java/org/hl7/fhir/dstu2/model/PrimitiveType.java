@@ -29,8 +29,6 @@ package org.hl7.fhir.dstu2.model;
   
  */
 
-
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -39,136 +37,134 @@ import org.hl7.fhir.instance.model.api.IPrimitiveType;
 
 public abstract class PrimitiveType<T> extends Type implements IPrimitiveType<T>, IBaseHasExtensions {
 
-	private static final long serialVersionUID = 3L;
+  private static final long serialVersionUID = 3L;
 
-	private T myCoercedValue;
-	private String myStringValue;
+  private T myCoercedValue;
+  private String myStringValue;
 
-	public T getValue() {
-		return myCoercedValue;
-	}
+  public T getValue() {
+    return myCoercedValue;
+  }
 
-	public String asStringValue() {
-		return myStringValue;
-	}
+  public String asStringValue() {
+    return myStringValue;
+  }
 
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(getValue()).toHashCode();
-	}
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder().append(getValue()).toHashCode();
+  }
 
-	public PrimitiveType<T> setValue(T theValue) {
-		myCoercedValue = theValue;
-		updateStringValue();
-		return this;
-	}
+  public PrimitiveType<T> setValue(T theValue) {
+    myCoercedValue = theValue;
+    updateStringValue();
+    return this;
+  }
 
-	protected void updateStringValue() {
-		if (myCoercedValue == null) {
-			myStringValue = null;
-		} else {
-			// NB this might be null
-			myStringValue = encode(myCoercedValue);
-		}
-	}
+  protected void updateStringValue() {
+    if (myCoercedValue == null) {
+      myStringValue = null;
+    } else {
+      // NB this might be null
+      myStringValue = encode(myCoercedValue);
+    }
+  }
 
-	@Override
-	public boolean isEmpty() {
-		return super.isEmpty() && StringUtils.isBlank(getValueAsString());
-	}
+  @Override
+  public boolean isEmpty() {
+    return super.isEmpty() && StringUtils.isBlank(getValueAsString());
+  }
 
-	public void fromStringValue(String theValue) {
-		if (theValue == null) {
-			myCoercedValue = null;
-		} else {
-			// NB this might be null
-			myCoercedValue = parse(theValue);
-		}
-		myStringValue = theValue;
-	}
+  public void fromStringValue(String theValue) {
+    if (theValue == null) {
+      myCoercedValue = null;
+    } else {
+      // NB this might be null
+      myCoercedValue = parse(theValue);
+    }
+    myStringValue = theValue;
+  }
 
-	/**
-	 * Subclasses must override to convert an encoded representation of this datatype into a "coerced" one
-	 * 
-	 * @param theValue
-	 *            Will not be null
-	 * @return May return null if the value does not correspond to anything
-	 */
-	protected abstract T parse(String theValue);
+  /**
+   * Subclasses must override to convert an encoded representation of this
+   * datatype into a "coerced" one
+   * 
+   * @param theValue Will not be null
+   * @return May return null if the value does not correspond to anything
+   */
+  protected abstract T parse(String theValue);
 
-	/**
-	 * Subclasses must override to convert a "coerced" value into an encoded one.
-	 * 
-	 * @param theValue
-	 *            Will not be null
-	 * @return May return null if the value does not correspond to anything
-	 */
-	protected abstract String encode(T theValue);
+  /**
+   * Subclasses must override to convert a "coerced" value into an encoded one.
+   * 
+   * @param theValue Will not be null
+   * @return May return null if the value does not correspond to anything
+   */
+  protected abstract String encode(T theValue);
 
-	public boolean isPrimitive() {
-		return true;
-	}
-	
-	public String primitiveValue() {
-		return asStringValue();
-	}
+  public boolean isPrimitive() {
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + "[" + asStringValue() + "]";
-	}
+  public String primitiveValue() {
+    return asStringValue();
+  }
 
-	public boolean hasValue() {
-  	  return !StringUtils.isBlank(getValueAsString());
-	}
+  @Override
+  public String toString() {
+    return getClass().getSimpleName() + "[" + asStringValue() + "]";
+  }
 
-	public String getValueAsString() {
-		return asStringValue();
-	}
+  public boolean hasValue() {
+    return !StringUtils.isBlank(getValueAsString());
+  }
 
-	public void setValueAsString(String theValue) {
-		fromStringValue(theValue);
-	}
+  public String getValueAsString() {
+    return asStringValue();
+  }
 
-	protected Type typedCopy() {
-		return copy();
-	}
+  public void setValueAsString(String theValue) {
+    fromStringValue(theValue);
+  }
 
-	public abstract Type copy();
+  protected Type typedCopy() {
+    return copy();
+  }
 
-	@Override
-	public boolean equalsDeep(Base obj) {
-		if (!super.equalsDeep(obj))
-			return false;
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj.getClass() == getClass())) {
-			return false;
-		}
+  public abstract Type copy();
 
-		PrimitiveType<?> o = (PrimitiveType<?>) obj;
+  @Override
+  public boolean equalsDeep(Base obj) {
+    if (!super.equalsDeep(obj))
+      return false;
+    if (obj == null) {
+      return false;
+    }
+    if (!(obj.getClass() == getClass())) {
+      return false;
+    }
 
-		EqualsBuilder b = new EqualsBuilder();
-		b.append(getValue(), o.getValue());
-		return b.isEquals();
-	}
+    PrimitiveType<?> o = (PrimitiveType<?>) obj;
 
-	@Override
-	public boolean equalsShallow(Base obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj.getClass() == getClass())) {
-			return false;
-		}
+    EqualsBuilder b = new EqualsBuilder();
+    b.append(getValue(), o.getValue());
+    return b.isEquals();
+  }
 
-		PrimitiveType<?> o = (PrimitiveType<?>) obj;
+  @Override
+  public boolean equalsShallow(Base obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (!(obj.getClass() == getClass())) {
+      return false;
+    }
 
-		EqualsBuilder b = new EqualsBuilder();
-		b.append(getValue(), o.getValue());
-		return b.isEquals();
-	}
+    PrimitiveType<?> o = (PrimitiveType<?>) obj;
 
+    EqualsBuilder b = new EqualsBuilder();
+    b.append(getValue(), o.getValue());
+    return b.isEquals();
+  }
 
 }

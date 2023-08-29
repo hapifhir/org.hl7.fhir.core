@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,75 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ServiceModifiers {
 
-        /**
-         * Services provided on the side of the raod or such other non-conventional setting.
-         */
-        SR, 
-        /**
-         * Services provided outside or normal business hours.
-         */
-        AH, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ServiceModifiers fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("SR".equals(codeString))
-          return SR;
-        if ("AH".equals(codeString))
-          return AH;
-        throw new FHIRException("Unknown ServiceModifiers code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SR: return "SR";
-            case AH: return "AH";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/ex-servicemodifier";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SR: return "Services provided on the side of the raod or such other non-conventional setting.";
-            case AH: return "Services provided outside or normal business hours.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SR: return "Side of the Road";
-            case AH: return "After hours";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Services provided on the side of the raod or such other non-conventional
+   * setting.
+   */
+  SR,
+  /**
+   * Services provided outside or normal business hours.
+   */
+  AH,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ServiceModifiers fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("SR".equals(codeString))
+      return SR;
+    if ("AH".equals(codeString))
+      return AH;
+    throw new FHIRException("Unknown ServiceModifiers code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case SR:
+      return "SR";
+    case AH:
+      return "AH";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/ex-servicemodifier";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case SR:
+      return "Services provided on the side of the raod or such other non-conventional setting.";
+    case AH:
+      return "Services provided outside or normal business hours.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case SR:
+      return "Side of the Road";
+    case AH:
+      return "After hours";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

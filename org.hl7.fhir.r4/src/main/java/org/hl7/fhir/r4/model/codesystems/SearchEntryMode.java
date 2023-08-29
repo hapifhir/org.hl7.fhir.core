@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,88 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum SearchEntryMode {
 
-        /**
-         * This resource matched the search specification.
-         */
-        MATCH, 
-        /**
-         * This resource is returned because it is referred to from another resource in the search set.
-         */
-        INCLUDE, 
-        /**
-         * An OperationOutcome that provides additional information about the processing of a search.
-         */
-        OUTCOME, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static SearchEntryMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("match".equals(codeString))
-          return MATCH;
-        if ("include".equals(codeString))
-          return INCLUDE;
-        if ("outcome".equals(codeString))
-          return OUTCOME;
-        throw new FHIRException("Unknown SearchEntryMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case MATCH: return "match";
-            case INCLUDE: return "include";
-            case OUTCOME: return "outcome";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/search-entry-mode";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case MATCH: return "This resource matched the search specification.";
-            case INCLUDE: return "This resource is returned because it is referred to from another resource in the search set.";
-            case OUTCOME: return "An OperationOutcome that provides additional information about the processing of a search.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case MATCH: return "Match";
-            case INCLUDE: return "Include";
-            case OUTCOME: return "Outcome";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * This resource matched the search specification.
+   */
+  MATCH,
+  /**
+   * This resource is returned because it is referred to from another resource in
+   * the search set.
+   */
+  INCLUDE,
+  /**
+   * An OperationOutcome that provides additional information about the processing
+   * of a search.
+   */
+  OUTCOME,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static SearchEntryMode fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("match".equals(codeString))
+      return MATCH;
+    if ("include".equals(codeString))
+      return INCLUDE;
+    if ("outcome".equals(codeString))
+      return OUTCOME;
+    throw new FHIRException("Unknown SearchEntryMode code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case MATCH:
+      return "match";
+    case INCLUDE:
+      return "include";
+    case OUTCOME:
+      return "outcome";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/search-entry-mode";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case MATCH:
+      return "This resource matched the search specification.";
+    case INCLUDE:
+      return "This resource is returned because it is referred to from another resource in the search set.";
+    case OUTCOME:
+      return "An OperationOutcome that provides additional information about the processing of a search.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case MATCH:
+      return "Match";
+    case INCLUDE:
+      return "Include";
+    case OUTCOME:
+      return "Outcome";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

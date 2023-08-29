@@ -879,7 +879,7 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.group.linkId");
+          throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.group.linkId");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -1368,14 +1368,14 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.group.population.linkId");
+          throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.group.population.linkId");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
           return this.code;
         }
         else if (name.equals("count")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.group.population.count");
+          throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.group.population.count");
         }
         else if (name.equals("subjectResults")) {
           this.subjectResults = new Reference();
@@ -1689,7 +1689,7 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.group.stratifier.linkId");
+          throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.group.stratifier.linkId");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -2624,7 +2624,7 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.group.stratifier.stratum.component.linkId");
+          throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.group.stratifier.stratum.component.linkId");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -3086,14 +3086,14 @@ public class MeasureReport extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.group.stratifier.stratum.population.linkId");
+          throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.group.stratifier.stratum.population.linkId");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
           return this.code;
         }
         else if (name.equals("count")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.group.stratifier.stratum.population.count");
+          throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.group.stratifier.stratum.population.count");
         }
         else if (name.equals("subjectResults")) {
           this.subjectResults = new Reference();
@@ -4181,23 +4181,23 @@ public class MeasureReport extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.status");
+          throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.status");
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.type");
+          throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.type");
         }
         else if (name.equals("dataUpdateType")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.dataUpdateType");
+          throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.dataUpdateType");
         }
         else if (name.equals("measure")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.measure");
+          throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.measure");
         }
         else if (name.equals("subject")) {
           this.subject = new Reference();
           return this.subject;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a primitive type MeasureReport.date");
+          throw new FHIRException("Cannot call addChild on a singleton property MeasureReport.date");
         }
         else if (name.equals("reporter")) {
           this.reporter = new Reference();

@@ -1923,46 +1923,46 @@ Normal practice is to use the 'mo' code as a calendar month when calculating the
           return this.bounds;
         }
         else if (name.equals("count")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.count");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.repeat.count");
         }
         else if (name.equals("countMax")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.countMax");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.repeat.countMax");
         }
         else if (name.equals("duration")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.duration");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.repeat.duration");
         }
         else if (name.equals("durationMax")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.durationMax");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.repeat.durationMax");
         }
         else if (name.equals("durationUnit")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.durationUnit");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.repeat.durationUnit");
         }
         else if (name.equals("frequency")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.frequency");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.repeat.frequency");
         }
         else if (name.equals("frequencyMax")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.frequencyMax");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.repeat.frequencyMax");
         }
         else if (name.equals("period")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.period");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.repeat.period");
         }
         else if (name.equals("periodMax")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.periodMax");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.repeat.periodMax");
         }
         else if (name.equals("periodUnit")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.periodUnit");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.repeat.periodUnit");
         }
         else if (name.equals("dayOfWeek")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.dayOfWeek");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.repeat.dayOfWeek");
         }
         else if (name.equals("timeOfDay")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.timeOfDay");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.repeat.timeOfDay");
         }
         else if (name.equals("when")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.when");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.repeat.when");
         }
         else if (name.equals("offset")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.repeat.offset");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.repeat.offset");
         }
         else
           return super.addChild(name);
@@ -2272,7 +2272,7 @@ Normal practice is to use the 'mo' code as a calendar month when calculating the
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("event")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Timing.event");
+          throw new FHIRException("Cannot call addChild on a singleton property Timing.event");
         }
         else if (name.equals("repeat")) {
           this.repeat = new TimingRepeatComponent();

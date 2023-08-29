@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ReportParticipantTypeEnumFactory implements EnumFactory<ReportParticipantType> {
@@ -48,7 +44,7 @@ public class ReportParticipantTypeEnumFactory implements EnumFactory<ReportParti
       return ReportParticipantType.CLIENT;
     if ("server".equals(codeString))
       return ReportParticipantType.SERVER;
-    throw new IllegalArgumentException("Unknown ReportParticipantType code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ReportParticipantType code '" + codeString + "'");
   }
 
   public String toCode(ReportParticipantType code) {
@@ -61,8 +57,8 @@ public class ReportParticipantTypeEnumFactory implements EnumFactory<ReportParti
     return "?";
   }
 
-    public String toSystem(ReportParticipantType code) {
-      return code.getSystem();
-      }
+  public String toSystem(ReportParticipantType code) {
+    return code.getSystem();
+  }
 
 }

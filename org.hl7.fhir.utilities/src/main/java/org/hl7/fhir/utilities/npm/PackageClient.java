@@ -4,12 +4,18 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
@@ -23,8 +29,6 @@ import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 public class PackageClient {
-
-
 
   private PackageServer server;
   private String address;
@@ -47,24 +51,32 @@ public class PackageClient {
   }
 
   public InputStream fetch(String id, String ver) throws IOException {
-    return fetchCached(Utilities.pathURL(address, id, ver));
+    return fetchCached(getPackageTarballUrl(id, ver));
+  }
+
+  private String getPackageTarballUrl(String id, String ver) throws IOException {
+    if (server.getServerType() == PackageServer.PackageServerType.NPM) {
+      return getNpmServerTarballUrl(id, ver);
+    }
+    return Utilities.pathURL(address, id, ver);
+  }
+
+  private String getNpmServerTarballUrl(String id, String ver) throws IOException {
+    String packageDescriptorUrl = Utilities.pathURL(address, id, ver);
+    JsonObject json;
+
+      json = fetchJson(packageDescriptorUrl);
+      JsonObject dist = json.getJsonObject("dist");
+      return dist.getJsonString("tarball").asString();
+
   }
 
   public InputStream fetch(PackageInfo info) throws IOException {
-    return fetchCached(Utilities.pathURL(address, info.getId(), info.getVersion()));
-  }
-
-  public InputStream fetchNpm(String id, String ver) throws IOException {
-    return fetchCached(Utilities.pathURL(address, id, "-", id+"-"+ver+".tgz"));
+    return fetchCached(getPackageTarballUrl(info.getId(), info.getVersion()));
   }
 
   public InputStream fetchCached(String url) throws IOException, FileNotFoundException {
     return fetchUrl(url, null);
-  }
-
-  protected String fn(String url) {
-    String[] p = url.split("\\/");
-    return p[2]+"-"+p[p.length-2]+"-"+p[p.length-1]+".tgz";
   }
 
   public List<PackageInfo> getVersions(String id) throws IOException {
@@ -78,7 +90,7 @@ public class PackageClient {
       if (versions != null) {
         for (JsonProperty v : versions.getProperties()) {
           JsonObject obj = versions.getJsonObject(v.getName());
-          Instant d = obj.hasString("date") ? obj.asDate("date") : null;
+          Instant d = getInstantFromPackageDate(obj);
           if (d == null) {
             hasDates = false;
           }
@@ -101,7 +113,21 @@ public class PackageClient {
     }
     return res;    
   }
-   
+
+  @Nullable
+  private static Instant getInstantFromPackageDate(JsonObject obj) {
+    try {
+      return obj.hasString("date") ? obj.asDate("date") : null;
+    } catch (DateTimeParseException e) {
+      //FIXME Some IGs use an older date format:
+      try {
+        return new SimpleDateFormat("yyyyMMddhhmmss").parse(obj.getJsonString("date").asString()).toInstant();
+      } catch (ParseException ex) {
+        throw new RuntimeException(ex);
+      }
+    }
+  }
+
   public List<PackageInfo> search(String name, String canonical, String fhirVersion, boolean preRelease) throws IOException {
     CommaSeparatedStringBuilder params = new CommaSeparatedStringBuilder("&");
     if (!Utilities.noString(name)) {
@@ -148,12 +174,22 @@ public class PackageClient {
   }
  
   private InputStream fetchUrl(String source, String accept) throws IOException {
-    SimpleHTTPClient http = new SimpleHTTPClient();
+    SimpleHTTPClient http = getSimpleHTTPClient();
     HTTPResult res = http.get(source, accept);
     res.checkThrowException();
     return new ByteArrayInputStream(res.getContent());
   }
-  
+
+  @Nonnull
+  private SimpleHTTPClient getSimpleHTTPClient() {
+    SimpleHTTPClient client = new SimpleHTTPClient();
+    client.setAuthenticationMode(server.getAuthenticationMode());
+    client.setUsername(server.getUsername());
+    client.setPassword(server.getPassword());
+    client.setToken(server.getToken());
+    return client;
+  }
+
   private JsonObject fetchJson(String source) throws IOException {
     String src = TextFile.streamToString(fetchUrl(source, "application/json"));
     //System.out.println(src);

@@ -7,7 +7,7 @@ public interface IMarkdownProcessor {
 
   @SuppressWarnings("rawtypes")
   public String processMarkdown(String location, PrimitiveType md) throws FHIRException;
-  
+
   public String processMarkdown(String location, String text) throws FHIRException;
 
 }

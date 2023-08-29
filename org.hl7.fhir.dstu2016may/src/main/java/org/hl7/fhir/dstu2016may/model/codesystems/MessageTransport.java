@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,88 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MessageTransport {
 
-        /**
-         * The application sends or receives messages using HTTP POST (may be over http: or https:).
-         */
-        HTTP, 
-        /**
-         * The application sends or receives messages using File Transfer Protocol.
-         */
-        FTP, 
-        /**
-         * The application sends or receives messages using HL7's Minimal Lower Level Protocol.
-         */
-        MLLP, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static MessageTransport fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("http".equals(codeString))
-          return HTTP;
-        if ("ftp".equals(codeString))
-          return FTP;
-        if ("mllp".equals(codeString))
-          return MLLP;
-        throw new FHIRException("Unknown MessageTransport code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case HTTP: return "http";
-            case FTP: return "ftp";
-            case MLLP: return "mllp";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/message-transport";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case HTTP: return "The application sends or receives messages using HTTP POST (may be over http: or https:).";
-            case FTP: return "The application sends or receives messages using File Transfer Protocol.";
-            case MLLP: return "The application sends or receives messages using HL7's Minimal Lower Level Protocol.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case HTTP: return "HTTP";
-            case FTP: return "FTP";
-            case MLLP: return "MLLP";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The application sends or receives messages using HTTP POST (may be over http:
+   * or https:).
+   */
+  HTTP,
+  /**
+   * The application sends or receives messages using File Transfer Protocol.
+   */
+  FTP,
+  /**
+   * The application sends or receives messages using HL7's Minimal Lower Level
+   * Protocol.
+   */
+  MLLP,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static MessageTransport fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("http".equals(codeString))
+      return HTTP;
+    if ("ftp".equals(codeString))
+      return FTP;
+    if ("mllp".equals(codeString))
+      return MLLP;
+    throw new FHIRException("Unknown MessageTransport code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case HTTP:
+      return "http";
+    case FTP:
+      return "ftp";
+    case MLLP:
+      return "mllp";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/message-transport";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case HTTP:
+      return "The application sends or receives messages using HTTP POST (may be over http: or https:).";
+    case FTP:
+      return "The application sends or receives messages using File Transfer Protocol.";
+    case MLLP:
+      return "The application sends or receives messages using HL7's Minimal Lower Level Protocol.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case HTTP:
+      return "HTTP";
+    case FTP:
+      return "FTP";
+    case MLLP:
+      return "MLLP";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

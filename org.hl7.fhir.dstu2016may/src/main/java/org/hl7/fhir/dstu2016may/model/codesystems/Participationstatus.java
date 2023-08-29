@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,102 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum Participationstatus {
 
-        /**
-         * The participant has accepted the appointment.
-         */
-        ACCEPTED, 
-        /**
-         * The participant has declined the appointment and will not participate in the appointment.
-         */
-        DECLINED, 
-        /**
-         * The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur.
-         */
-        TENTATIVE, 
-        /**
-         * The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses.
-         */
-        NEEDSACTION, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static Participationstatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("accepted".equals(codeString))
-          return ACCEPTED;
-        if ("declined".equals(codeString))
-          return DECLINED;
-        if ("tentative".equals(codeString))
-          return TENTATIVE;
-        if ("needs-action".equals(codeString))
-          return NEEDSACTION;
-        throw new FHIRException("Unknown Participationstatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACCEPTED: return "accepted";
-            case DECLINED: return "declined";
-            case TENTATIVE: return "tentative";
-            case NEEDSACTION: return "needs-action";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/participationstatus";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACCEPTED: return "The participant has accepted the appointment.";
-            case DECLINED: return "The participant has declined the appointment and will not participate in the appointment.";
-            case TENTATIVE: return "The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur.";
-            case NEEDSACTION: return "The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACCEPTED: return "Accepted";
-            case DECLINED: return "Declined";
-            case TENTATIVE: return "Tentative";
-            case NEEDSACTION: return "Needs Action";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The participant has accepted the appointment.
+   */
+  ACCEPTED,
+  /**
+   * The participant has declined the appointment and will not participate in the
+   * appointment.
+   */
+  DECLINED,
+  /**
+   * The participant has tentatively accepted the appointment. This could be
+   * automatically created by a system and requires further processing before it
+   * can be accepted. There is no commitment that attendance will occur.
+   */
+  TENTATIVE,
+  /**
+   * The participant needs to indicate if they accept the appointment by changing
+   * this status to one of the other statuses.
+   */
+  NEEDSACTION,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static Participationstatus fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("accepted".equals(codeString))
+      return ACCEPTED;
+    if ("declined".equals(codeString))
+      return DECLINED;
+    if ("tentative".equals(codeString))
+      return TENTATIVE;
+    if ("needs-action".equals(codeString))
+      return NEEDSACTION;
+    throw new FHIRException("Unknown Participationstatus code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ACCEPTED:
+      return "accepted";
+    case DECLINED:
+      return "declined";
+    case TENTATIVE:
+      return "tentative";
+    case NEEDSACTION:
+      return "needs-action";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/participationstatus";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ACCEPTED:
+      return "The participant has accepted the appointment.";
+    case DECLINED:
+      return "The participant has declined the appointment and will not participate in the appointment.";
+    case TENTATIVE:
+      return "The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur.";
+    case NEEDSACTION:
+      return "The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ACCEPTED:
+      return "Accepted";
+    case DECLINED:
+      return "Declined";
+    case TENTATIVE:
+      return "Tentative";
+    case NEEDSACTION:
+      return "Needs Action";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

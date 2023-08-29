@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class AdjudicationErrorEnumFactory implements EnumFactory<AdjudicationError> {
@@ -46,7 +42,7 @@ public class AdjudicationErrorEnumFactory implements EnumFactory<AdjudicationErr
       return AdjudicationError.A001;
     if ("a002".equals(codeString))
       return AdjudicationError.A002;
-    throw new IllegalArgumentException("Unknown AdjudicationError code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown AdjudicationError code '" + codeString + "'");
   }
 
   public String toCode(AdjudicationError code) {
@@ -57,8 +53,8 @@ public class AdjudicationErrorEnumFactory implements EnumFactory<AdjudicationErr
     return "?";
   }
 
-    public String toSystem(AdjudicationError code) {
-      return code.getSystem();
-      }
+  public String toSystem(AdjudicationError code) {
+    return code.getSystem();
+  }
 
 }

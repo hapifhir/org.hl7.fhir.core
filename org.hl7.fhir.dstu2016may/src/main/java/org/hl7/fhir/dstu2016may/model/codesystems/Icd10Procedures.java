@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum Icd10Procedures {
 
-        /**
-         * Procedure 1
-         */
-        _123001, 
-        /**
-         * Procedure 2
-         */
-        _123002, 
-        /**
-         * Procedure 3
-         */
-        _123003, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static Icd10Procedures fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("123001".equals(codeString))
-          return _123001;
-        if ("123002".equals(codeString))
-          return _123002;
-        if ("123003".equals(codeString))
-          return _123003;
-        throw new FHIRException("Unknown Icd10Procedures code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case _123001: return "123001";
-            case _123002: return "123002";
-            case _123003: return "123003";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/sid/ex-icd-10-procedures";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case _123001: return "Procedure 1";
-            case _123002: return "Procedure 2";
-            case _123003: return "Procedure 3";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case _123001: return "PROC-1";
-            case _123002: return "PROC-2";
-            case _123003: return "PROC-3";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Procedure 1
+   */
+  _123001,
+  /**
+   * Procedure 2
+   */
+  _123002,
+  /**
+   * Procedure 3
+   */
+  _123003,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static Icd10Procedures fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("123001".equals(codeString))
+      return _123001;
+    if ("123002".equals(codeString))
+      return _123002;
+    if ("123003".equals(codeString))
+      return _123003;
+    throw new FHIRException("Unknown Icd10Procedures code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case _123001:
+      return "123001";
+    case _123002:
+      return "123002";
+    case _123003:
+      return "123003";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/sid/ex-icd-10-procedures";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case _123001:
+      return "Procedure 1";
+    case _123002:
+      return "Procedure 2";
+    case _123003:
+      return "Procedure 3";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case _123001:
+      return "PROC-1";
+    case _123002:
+      return "PROC-2";
+    case _123003:
+      return "PROC-3";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

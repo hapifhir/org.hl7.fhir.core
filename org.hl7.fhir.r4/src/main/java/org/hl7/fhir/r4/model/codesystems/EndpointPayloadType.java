@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,80 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum EndpointPayloadType {
 
-        /**
-         * Any payload type can be used with this endpoint, it is either a payload agnostic infrastructure (such as a storage repository), or some other type of endpoint where payload considerations are internally handled, and not available
-         */
-        ANY, 
-        /**
-         * This endpoint does not require any content to be sent; simply connecting to the endpoint is enough notification. This can be used as a 'ping' to wakeup a service to retrieve content, which could be to ensure security considerations are correctly handled
-         */
-        NONE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static EndpointPayloadType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("any".equals(codeString))
-          return ANY;
-        if ("none".equals(codeString))
-          return NONE;
-        throw new FHIRException("Unknown EndpointPayloadType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ANY: return "any";
-            case NONE: return "none";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/endpoint-payload-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ANY: return "Any payload type can be used with this endpoint, it is either a payload agnostic infrastructure (such as a storage repository), or some other type of endpoint where payload considerations are internally handled, and not available";
-            case NONE: return "This endpoint does not require any content to be sent; simply connecting to the endpoint is enough notification. This can be used as a 'ping' to wakeup a service to retrieve content, which could be to ensure security considerations are correctly handled";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ANY: return "Any";
-            case NONE: return "None";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Any payload type can be used with this endpoint, it is either a payload
+   * agnostic infrastructure (such as a storage repository), or some other type of
+   * endpoint where payload considerations are internally handled, and not
+   * available
+   */
+  ANY,
+  /**
+   * This endpoint does not require any content to be sent; simply connecting to
+   * the endpoint is enough notification. This can be used as a 'ping' to wakeup a
+   * service to retrieve content, which could be to ensure security considerations
+   * are correctly handled
+   */
+  NONE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static EndpointPayloadType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("any".equals(codeString))
+      return ANY;
+    if ("none".equals(codeString))
+      return NONE;
+    throw new FHIRException("Unknown EndpointPayloadType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ANY:
+      return "any";
+    case NONE:
+      return "none";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/endpoint-payload-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ANY:
+      return "Any payload type can be used with this endpoint, it is either a payload agnostic infrastructure (such as a storage repository), or some other type of endpoint where payload considerations are internally handled, and not available";
+    case NONE:
+      return "This endpoint does not require any content to be sent; simply connecting to the endpoint is enough notification. This can be used as a 'ping' to wakeup a service to retrieve content, which could be to ensure security considerations are correctly handled";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ANY:
+      return "Any";
+    case NONE:
+      return "None";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

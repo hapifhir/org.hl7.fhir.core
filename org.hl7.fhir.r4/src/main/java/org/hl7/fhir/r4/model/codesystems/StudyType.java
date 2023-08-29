@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,104 +31,134 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum StudyType {
 
-        /**
-         * randomized controlled trial.
-         */
-        RCT, 
-        /**
-         * controlled (but not randomized) trial.
-         */
-        CCT, 
-        /**
-         * observational study comparing cohorts.
-         */
-        COHORT, 
-        /**
-         * case-control study.
-         */
-        CASECONTROL, 
-        /**
-         * uncontrolled cohort or case series.
-         */
-        SERIES, 
-        /**
-         * a single case report.
-         */
-        CASEREPORT, 
-        /**
-         * a combination of 1 or more types of studies.
-         */
-        MIXED, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static StudyType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("RCT".equals(codeString))
-          return RCT;
-        if ("CCT".equals(codeString))
-          return CCT;
-        if ("cohort".equals(codeString))
-          return COHORT;
-        if ("case-control".equals(codeString))
-          return CASECONTROL;
-        if ("series".equals(codeString))
-          return SERIES;
-        if ("case-report".equals(codeString))
-          return CASEREPORT;
-        if ("mixed".equals(codeString))
-          return MIXED;
-        throw new FHIRException("Unknown StudyType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case RCT: return "RCT";
-            case CCT: return "CCT";
-            case COHORT: return "cohort";
-            case CASECONTROL: return "case-control";
-            case SERIES: return "series";
-            case CASEREPORT: return "case-report";
-            case MIXED: return "mixed";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/study-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case RCT: return "randomized controlled trial.";
-            case CCT: return "controlled (but not randomized) trial.";
-            case COHORT: return "observational study comparing cohorts.";
-            case CASECONTROL: return "case-control study.";
-            case SERIES: return "uncontrolled cohort or case series.";
-            case CASEREPORT: return "a single case report.";
-            case MIXED: return "a combination of 1 or more types of studies.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case RCT: return "randomized trial";
-            case CCT: return "controlled trial (non-randomized)";
-            case COHORT: return "comparative cohort study";
-            case CASECONTROL: return "case-control study";
-            case SERIES: return "uncontrolled cohort or case series";
-            case CASEREPORT: return "case report";
-            case MIXED: return "mixed methods";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * randomized controlled trial.
+   */
+  RCT,
+  /**
+   * controlled (but not randomized) trial.
+   */
+  CCT,
+  /**
+   * observational study comparing cohorts.
+   */
+  COHORT,
+  /**
+   * case-control study.
+   */
+  CASECONTROL,
+  /**
+   * uncontrolled cohort or case series.
+   */
+  SERIES,
+  /**
+   * a single case report.
+   */
+  CASEREPORT,
+  /**
+   * a combination of 1 or more types of studies.
+   */
+  MIXED,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static StudyType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("RCT".equals(codeString))
+      return RCT;
+    if ("CCT".equals(codeString))
+      return CCT;
+    if ("cohort".equals(codeString))
+      return COHORT;
+    if ("case-control".equals(codeString))
+      return CASECONTROL;
+    if ("series".equals(codeString))
+      return SERIES;
+    if ("case-report".equals(codeString))
+      return CASEREPORT;
+    if ("mixed".equals(codeString))
+      return MIXED;
+    throw new FHIRException("Unknown StudyType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case RCT:
+      return "RCT";
+    case CCT:
+      return "CCT";
+    case COHORT:
+      return "cohort";
+    case CASECONTROL:
+      return "case-control";
+    case SERIES:
+      return "series";
+    case CASEREPORT:
+      return "case-report";
+    case MIXED:
+      return "mixed";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/study-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case RCT:
+      return "randomized controlled trial.";
+    case CCT:
+      return "controlled (but not randomized) trial.";
+    case COHORT:
+      return "observational study comparing cohorts.";
+    case CASECONTROL:
+      return "case-control study.";
+    case SERIES:
+      return "uncontrolled cohort or case series.";
+    case CASEREPORT:
+      return "a single case report.";
+    case MIXED:
+      return "a combination of 1 or more types of studies.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case RCT:
+      return "randomized trial";
+    case CCT:
+      return "controlled trial (non-randomized)";
+    case COHORT:
+      return "comparative cohort study";
+    case CASECONTROL:
+      return "case-control study";
+    case SERIES:
+      return "uncontrolled cohort or case series";
+    case CASEREPORT:
+      return "case report";
+    case MIXED:
+      return "mixed methods";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

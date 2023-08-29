@@ -8,10 +8,17 @@ import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 public class VSCheckerException extends FHIRException {
 
   private List<OperationOutcomeIssueComponent> issues;
+  private boolean warning;
 
   public VSCheckerException(String message, List<OperationOutcomeIssueComponent> issues) {
     super(message);
     this.issues = issues;
+  }
+
+  public VSCheckerException(String message, List<OperationOutcomeIssueComponent> issues, boolean warning) {
+    super(message);
+    this.issues = issues;
+    this.warning = warning;
   }
 
   public List<OperationOutcomeIssueComponent> getIssues() {
@@ -19,5 +26,9 @@ public class VSCheckerException extends FHIRException {
   }
 
   private static final long serialVersionUID = -5889505119633054187L;
+
+  public boolean isWarning() {
+    return warning;
+  }
   
 }

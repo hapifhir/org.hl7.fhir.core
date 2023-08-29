@@ -23,7 +23,8 @@ public class ValidationTestConvertor {
    * @throws FileNotFoundException
    */
   public static void main(String[] args) throws FileNotFoundException, IOException, FHIRException {
-    SimpleWorkerContext context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
+    SimpleWorkerContext context = SimpleWorkerContext
+        .fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
     for (File f : new File("C:\\work\\org.hl7.fhir\\build\\tests\\validation-examples").listFiles()) {
       if (f.getAbsolutePath().endsWith(".xml")) {
         File t = new File(Utilities.changeFileExt(f.getAbsolutePath(), ".ttl"));

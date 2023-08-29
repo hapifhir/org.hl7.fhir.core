@@ -29,8 +29,6 @@ package org.hl7.fhir.r4b.model;
   
  */
 
-
-
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 import java.net.URI;

@@ -32,6 +32,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     private String version;
     private String supplements;
     private CanonicalResource resource;
+    private boolean hacked;
     
     public CanonicalResourceProxy(String type, String id, String url, String version, String supplements) {
       super();
@@ -77,6 +78,9 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     public CanonicalResource getResource() throws FHIRException {
       if (resource == null) {
         resource = loadResource();
+        if (hacked) {
+          resource.setUrl(url).setVersion(version);
+        }
         if (resource instanceof CodeSystem) {
           CodeSystemUtilities.crossLinkCodeSystem((CodeSystem) resource);
         }
@@ -98,7 +102,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     public void hack(String url, String version) {
       this.url = url;
       this.version = version;
-      getResource().setUrl(url).setVersion(version);
+      this.hacked = true;
 
     }      
   }
@@ -200,18 +204,25 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
   }
 
+  private boolean minimalMemory;
   private boolean enforceUniqueId; 
   private List<CachedCanonicalResource<T>> list = new ArrayList<>();
-  private Map<String, List<CachedCanonicalResource<T>>> listForId = new HashMap<>();
-  private Map<String, List<CachedCanonicalResource<T>>> listForUrl = new HashMap<>();
-  private Map<String, CachedCanonicalResource<T>> map = new HashMap<>();
-  private Map<String, List<CachedCanonicalResource<T>>> supplements = new HashMap<>(); // general index based on CodeSystem.supplements
+  private Map<String, List<CachedCanonicalResource<T>>> listForId;
+  private Map<String, List<CachedCanonicalResource<T>>> listForUrl;
+  private Map<String, CachedCanonicalResource<T>> map;
+  private Map<String, List<CachedCanonicalResource<T>>> supplements; // general index based on CodeSystem.supplements
   private String version; // for debugging purposes
   
   
-  public CanonicalResourceManager(boolean enforceUniqueId) {
+  public CanonicalResourceManager(boolean enforceUniqueId, boolean minimalMemory) {
     super();
     this.enforceUniqueId = enforceUniqueId;
+    this.minimalMemory = minimalMemory;
+    list = new ArrayList<>();
+    listForId = new HashMap<>();
+    listForUrl = new HashMap<>();
+    map = new HashMap<>();
+    supplements = new HashMap<>(); // general index based on CodeSystem.supplements
   }
 
   
@@ -583,7 +594,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     if (list != null) {
       for (CanonicalResourceManager<T>.CachedCanonicalResource<T> t : list) {
         possibleMatches = true;
-        if (pvlist == null || pvlist.contains(t.getPackageInfo().getVID())) {
+        if (pvlist == null || t.getPackageInfo() == null || pvlist.contains(t.getPackageInfo().getVID())) {
           res.add(t.getResource());
         }
       }

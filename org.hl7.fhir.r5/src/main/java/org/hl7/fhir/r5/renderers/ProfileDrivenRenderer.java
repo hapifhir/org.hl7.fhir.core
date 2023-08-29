@@ -377,9 +377,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       x.addText(((InstantType) e).toHumanDisplay());
     else if (e instanceof DateTimeType) {
       renderDateTime(x, e);
-    } else if (e instanceof Base64BinaryType)
-      x.addText(new Base64().encodeAsString(((Base64BinaryType) e).getValue()));
-    else if (e instanceof org.hl7.fhir.r5.model.DateType) {
+    } else if (e instanceof Base64BinaryType) {
+      Base64BinaryType b64 = (Base64BinaryType) e;
+      x.addText("(base64 data - "+(b64.getValue() == null ? "0" : b64.getValue().length)+" bytes)");
+    } else if (e instanceof org.hl7.fhir.r5.model.DateType) {
       org.hl7.fhir.r5.model.DateType dt = ((org.hl7.fhir.r5.model.DateType) e);
       renderDate(x, dt);
     } else if (e instanceof Enumeration) {
@@ -484,14 +485,17 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (e instanceof Resource) {
       return;
     } else if (e instanceof DataRequirement) {
-      DataRequirement p = (DataRequirement) e;
+      DataRequirement p  = (DataRequirement) e;
       renderDataRequirement(x, p);
+    } else if (e instanceof UsageContext) {
+      UsageContext p  = (UsageContext) e;
+      renderUsageContext(x, p);
     } else if (e instanceof PrimitiveType) {
       x.tx(((PrimitiveType) e).primitiveValue());
     } else if (e instanceof ElementDefinition) {
       x.tx("todo-bundle");
     } else if (e != null && !(e instanceof Attachment) && !(e instanceof Narrative) && !(e instanceof Meta) && !(e instanceof ProductShelfLife)  && !(e instanceof RelatedArtifact)) {
-      throw new NotImplementedException("type "+e.getClass().getName()+" not handled - should not be here");
+      throw new NotImplementedException("type "+e.fhirType()+" not handled. This may be due to unresolved inter-version compatibility issues");
     }
   }
 
@@ -853,12 +857,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
           XhtmlNode tbl = new XhtmlNode(NodeType.Element, "table"); 
           tbl.setAttribute("class", "grid");
           XhtmlNode tr = tbl.tr();
-          tr.td().tx("-"); // work around problem with empty table rows
+          tr.td().style("display: none").tx("-"); // work around problem with empty table rows
           boolean add = addColumnHeadings(tr, grandChildren);          
           for (BaseWrapper v : p.getValues()) {
             if (v != null) {
               tr = tbl.tr();
-              tr.td().tx("*"); // work around problem with empty table rows
+              tr.td().style("display: none").tx("*"); // work around problem with empty table rows
               add = addColumnValues(res, tr, grandChildren, v, showCodeDetails, displayHints, path, indent) || add;
             }
           }

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,77 +31,98 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ResearchStudyReasonStopped {
 
-        /**
-         * The study prematurely ended because the accrual goal was met.
-         */
-        ACCRUALGOALMET, 
-        /**
-         * The study prematurely ended due to toxicity.
-         */
-        CLOSEDDUETOTOXICITY, 
-        /**
-         * The study prematurely ended due to lack of study progress.
-         */
-        CLOSEDDUETOLACKOFSTUDYPROGRESS, 
-        /**
-         * The study prematurely ended temporarily per study design.
-         */
-        TEMPORARILYCLOSEDPERSTUDYDESIGN, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ResearchStudyReasonStopped fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("accrual-goal-met".equals(codeString))
-          return ACCRUALGOALMET;
-        if ("closed-due-to-toxicity".equals(codeString))
-          return CLOSEDDUETOTOXICITY;
-        if ("closed-due-to-lack-of-study-progress".equals(codeString))
-          return CLOSEDDUETOLACKOFSTUDYPROGRESS;
-        if ("temporarily-closed-per-study-design".equals(codeString))
-          return TEMPORARILYCLOSEDPERSTUDYDESIGN;
-        throw new FHIRException("Unknown ResearchStudyReasonStopped code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case ACCRUALGOALMET: return "accrual-goal-met";
-            case CLOSEDDUETOTOXICITY: return "closed-due-to-toxicity";
-            case CLOSEDDUETOLACKOFSTUDYPROGRESS: return "closed-due-to-lack-of-study-progress";
-            case TEMPORARILYCLOSEDPERSTUDYDESIGN: return "temporarily-closed-per-study-design";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/research-study-reason-stopped";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case ACCRUALGOALMET: return "The study prematurely ended because the accrual goal was met.";
-            case CLOSEDDUETOTOXICITY: return "The study prematurely ended due to toxicity.";
-            case CLOSEDDUETOLACKOFSTUDYPROGRESS: return "The study prematurely ended due to lack of study progress.";
-            case TEMPORARILYCLOSEDPERSTUDYDESIGN: return "The study prematurely ended temporarily per study design.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case ACCRUALGOALMET: return "Accrual Goal Met";
-            case CLOSEDDUETOTOXICITY: return "Closed due to toxicity";
-            case CLOSEDDUETOLACKOFSTUDYPROGRESS: return "Closed due to lack of study progress";
-            case TEMPORARILYCLOSEDPERSTUDYDESIGN: return "Temporarily closed per study design";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The study prematurely ended because the accrual goal was met.
+   */
+  ACCRUALGOALMET,
+  /**
+   * The study prematurely ended due to toxicity.
+   */
+  CLOSEDDUETOTOXICITY,
+  /**
+   * The study prematurely ended due to lack of study progress.
+   */
+  CLOSEDDUETOLACKOFSTUDYPROGRESS,
+  /**
+   * The study prematurely ended temporarily per study design.
+   */
+  TEMPORARILYCLOSEDPERSTUDYDESIGN,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ResearchStudyReasonStopped fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("accrual-goal-met".equals(codeString))
+      return ACCRUALGOALMET;
+    if ("closed-due-to-toxicity".equals(codeString))
+      return CLOSEDDUETOTOXICITY;
+    if ("closed-due-to-lack-of-study-progress".equals(codeString))
+      return CLOSEDDUETOLACKOFSTUDYPROGRESS;
+    if ("temporarily-closed-per-study-design".equals(codeString))
+      return TEMPORARILYCLOSEDPERSTUDYDESIGN;
+    throw new FHIRException("Unknown ResearchStudyReasonStopped code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case ACCRUALGOALMET:
+      return "accrual-goal-met";
+    case CLOSEDDUETOTOXICITY:
+      return "closed-due-to-toxicity";
+    case CLOSEDDUETOLACKOFSTUDYPROGRESS:
+      return "closed-due-to-lack-of-study-progress";
+    case TEMPORARILYCLOSEDPERSTUDYDESIGN:
+      return "temporarily-closed-per-study-design";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/research-study-reason-stopped";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case ACCRUALGOALMET:
+      return "The study prematurely ended because the accrual goal was met.";
+    case CLOSEDDUETOTOXICITY:
+      return "The study prematurely ended due to toxicity.";
+    case CLOSEDDUETOLACKOFSTUDYPROGRESS:
+      return "The study prematurely ended due to lack of study progress.";
+    case TEMPORARILYCLOSEDPERSTUDYDESIGN:
+      return "The study prematurely ended temporarily per study design.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case ACCRUALGOALMET:
+      return "Accrual Goal Met";
+    case CLOSEDDUETOTOXICITY:
+      return "Closed due to toxicity";
+    case CLOSEDDUETOLACKOFSTUDYPROGRESS:
+      return "Closed due to lack of study progress";
+    case TEMPORARILYCLOSEDPERSTUDYDESIGN:
+      return "Temporarily closed per study design";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

@@ -4,18 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.Property;
-import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupComponent;
@@ -32,7 +28,6 @@ import org.hl7.fhir.r5.terminologies.ConceptMapUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.structuremap.ResolvedGroup;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -41,9 +36,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.TimeTracker;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class StructureMapValidator extends BaseValidator {
@@ -303,15 +296,11 @@ public class StructureMapValidator extends BaseValidator {
   private ContextUtilities cu;
   private List<StructureMap> imports = new ArrayList<>();
 
-  public StructureMapValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, XVerExtensionManager xverManager, ProfileUtilities profileUtilities, Coding jurisdiction) {
-    super(context, xverManager);
-    source = Source.InstanceValidator;
+  public StructureMapValidator(BaseValidator parent, FHIRPathEngine fpe, ProfileUtilities profileUtilities) {
+    super(parent);
     this.fpe = fpe;
-    this.timeTracker = timeTracker;
-    this.jurisdiction = jurisdiction;
     this.profileUtilities = profileUtilities;
     this.cu = new ContextUtilities(context);
-
   }
   
   public boolean isAbstractType(List<TypeRefComponent> list) {
@@ -470,14 +459,20 @@ public class StructureMapValidator extends BaseValidator {
 
   private boolean validateInput(List<ValidationMessage> errors, Element src, Element group, Element input, NodeStack stack, List<Element> structures, VariableSet variables, VariableSet pvars) {
     boolean ok = false;
+    String gname = group.getChildValue("name"); 
     String name = input.getChildValue("name"); 
     String mode = input.getChildValue("mode"); 
     String type = input.getChildValue("type");
     VariableDefn pv = null;
     if (type == null && pvars != null) {
-      pv = pvars.getVariable(name, mode.equals("source"));
+      pv = pvars.getVariable(name, mode.equals("source")); 
       if (pv != null) {
         type = pv.getWorkingType();
+      } else {
+        pv = pvars.getVariable(name, mode.equals("target")); // target can become source
+        if (pv != null) {
+          type = pv.getWorkingType();
+        }
       }
     }
 
@@ -485,7 +480,7 @@ public class StructureMapValidator extends BaseValidator {
         rule(errors, "2023-03-01", IssueType.DUPLICATE, input.line(), input.col(), stack.getLiteralPath(), !variables.hasVariable(name), I18nConstants.SM_GROUP_INPUT_DUPLICATE, name)) {  // the name {0} is not valid)      
       VariableDefn v = variables.add(name, mode);
       if (rule(errors, "2023-03-01", IssueType.INVALID, input.line(), input.col(), stack.getLiteralPath(), Utilities.existsInList(mode, "source", "target"), I18nConstants.SM_GROUP_INPUT_MODE_INVALID, name, mode) && // the group parameter {0} mode {1} isn't valid
-          warning(errors, "2023-03-01", IssueType.NOTSUPPORTED, input.line(), input.col(), stack.getLiteralPath(), type != null, I18nConstants.SM_GROUP_INPUT_NO_TYPE, name)) { // the group parameter {0} has no type, so the paths cannot be validated
+          warning(errors, "2023-03-01", IssueType.NOTSUPPORTED, input.line(), input.col(), stack.getLiteralPath(), type != null, I18nConstants.SM_GROUP_INPUT_NO_TYPE, name, gname)) { // the group parameter {0} has no type, so the paths cannot be validated
         String smode = null;
         StructureDefinition sd = null;
         ElementDefinition ed = null;
@@ -514,7 +509,7 @@ public class StructureMapValidator extends BaseValidator {
             ed = sd.getSnapshot().getElementFirstRep();
           }
         }
-        if (rule(errors, "2023-03-01", IssueType.NOTSUPPORTED, input.line(), input.col(), stack.getLiteralPath(), smode == null || mode.equals(smode), I18nConstants.SM_GROUP_INPUT_MODE_MISMATCH, type, mode, smode)) { // the type {0} has mode {1} which doesn't match the structure definition {2}
+        if (rule(errors, "2023-03-01", IssueType.NOTSUPPORTED, input.line(), input.col(), stack.getLiteralPath(), smode == null || mode.equals(smode) || (smode.equals("target") && mode.equals("source")), I18nConstants.SM_GROUP_INPUT_MODE_MISMATCH, type, mode, smode)) { // the type {0} has mode {1} which doesn't match the structure definition {2}
           v.setType(1, sd, ed, null);
           ok = true;
         }
@@ -840,7 +835,16 @@ public class StructureMapValidator extends BaseValidator {
                 // it's just a warning: maybe this'll work out at run time?
                 warning(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), type != null, I18nConstants.SM_TARGET_TYPE_MULTIPLE_POSSIBLE, el.getEd().typeSummary());
 
-                vn.setType(ruleInfo.getMaxCount(), el.getSd(), el.getEd(), type); // may overwrite
+                if (ProfileUtilities.isResourceBoundary(el.getEd()) && type != null) {
+                  StructureDefinition sdt = this.context.fetchTypeDefinition(type);
+                  if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), sdt != null, I18nConstants.SM_TARGET_TRANSFORM_TYPE_UNKNOWN, type)) {
+                    vn.setType(ruleInfo.getMaxCount(), sdt, sdt.getSnapshot().getElementFirstRep(), null); // may overwrite
+                  } else {
+                    vn.setType(ruleInfo.getMaxCount(), el.getSd(), el.getEd(), type); // may overwrite
+                  }
+                } else {
+                  vn.setType(ruleInfo.getMaxCount(), el.getSd(), el.getEd(), type); // may overwrite
+                }
               }
 
             }
@@ -1143,8 +1147,13 @@ public class StructureMapValidator extends BaseValidator {
             String iType = resolveType(grp, input, src);
             String pname = input.getName();
             VariableDefn v = getParameter(errors, param, pstack, variables, input.getMode());
-            if (v != null) {
-              if (rule(errors, "2023-03-01", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), v.mode.equals(input.getMode().toCode()), I18nConstants.SM_DEPENDENT_PARAM_MODE_MISMATCH, param.getChildValue("name"), v.mode, input.getMode().toCode(), grp.getTargetGroup().getName()) &&
+            if (v == null && input.getMode() == StructureMapInputMode.SOURCE) {
+              // target can transition to the source
+              v = getParameter(errors, param, pstack, variables, StructureMapInputMode.TARGET);
+            }
+            if (rule(errors, "2023-06-27", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), v != null, I18nConstants.SM_DEPENDENT_PARAM_NOT_FOUND, pname, input.getMode().toCode())) {
+              if (rule(errors, "2023-03-01", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(),
+                    v.mode.equals(input.getMode().toCode()) || (v.mode.equals("target") && input.getMode() == StructureMapInputMode.SOURCE), I18nConstants.SM_DEPENDENT_PARAM_MODE_MISMATCH, param.getChildValue("name"), v.mode, input.getMode().toCode(), grp.getTargetGroup().getName()) &&
                 rule(errors, "2023-03-01", IssueType.INVALID, param.line(), param.col(), pstack.getLiteralPath(), typesMatch(v, iType), I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH, 
                     pname, v.summary(), input.getType(), grp.getTargetGroup().getName(), input.getType(), grp.getTargetMap() == null ? "$this" : grp.getTargetMap().getVersionedUrl())) {
                 lvars.add(pname, v);  

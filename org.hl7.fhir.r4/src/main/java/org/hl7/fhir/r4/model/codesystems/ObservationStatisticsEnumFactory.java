@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
-
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -84,7 +80,7 @@ public class ObservationStatisticsEnumFactory implements EnumFactory<Observation
       return ObservationStatistics.KURTOSIS;
     if ("regression".equals(codeString))
       return ObservationStatistics.REGRESSION;
-    throw new IllegalArgumentException("Unknown ObservationStatistics code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown ObservationStatistics code '" + codeString + "'");
   }
 
   public String toCode(ObservationStatistics code) {
@@ -133,8 +129,8 @@ public class ObservationStatisticsEnumFactory implements EnumFactory<Observation
     return "?";
   }
 
-    public String toSystem(ObservationStatistics code) {
-      return code.getSystem();
-      }
+  public String toSystem(ObservationStatistics code) {
+    return code.getSystem();
+  }
 
 }

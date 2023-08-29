@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,80 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum PrecheckBehavior {
 
-        /**
-         * An item with this behavior is one of the most frequent items that is, or should be, included by an end user, for the particular context in which the item occurs. The system displaying the item to the end user should consider "pre-checking" such an item as a convenience for the user
-         */
-        YES, 
-        /**
-         * An item with this behavior is one of the less frequent items included by the end user, for the particular context in which the item occurs. The system displaying the items to the end user would typically not "pre-check" such an item
-         */
-        NO, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static PrecheckBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("yes".equals(codeString))
-          return YES;
-        if ("no".equals(codeString))
-          return NO;
-        throw new FHIRException("Unknown PrecheckBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case YES: return "yes";
-            case NO: return "no";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/precheck-behavior";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case YES: return "An item with this behavior is one of the most frequent items that is, or should be, included by an end user, for the particular context in which the item occurs. The system displaying the item to the end user should consider \"pre-checking\" such an item as a convenience for the user";
-            case NO: return "An item with this behavior is one of the less frequent items included by the end user, for the particular context in which the item occurs. The system displaying the items to the end user would typically not \"pre-check\" such an item";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case YES: return "Yes";
-            case NO: return "No";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * An item with this behavior is one of the most frequent items that is, or
+   * should be, included by an end user, for the particular context in which the
+   * item occurs. The system displaying the item to the end user should consider
+   * "pre-checking" such an item as a convenience for the user
+   */
+  YES,
+  /**
+   * An item with this behavior is one of the less frequent items included by the
+   * end user, for the particular context in which the item occurs. The system
+   * displaying the items to the end user would typically not "pre-check" such an
+   * item
+   */
+  NO,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static PrecheckBehavior fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("yes".equals(codeString))
+      return YES;
+    if ("no".equals(codeString))
+      return NO;
+    throw new FHIRException("Unknown PrecheckBehavior code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case YES:
+      return "yes";
+    case NO:
+      return "no";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/precheck-behavior";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case YES:
+      return "An item with this behavior is one of the most frequent items that is, or should be, included by an end user, for the particular context in which the item occurs. The system displaying the item to the end user should consider \"pre-checking\" such an item as a convenience for the user";
+    case NO:
+      return "An item with this behavior is one of the less frequent items included by the end user, for the particular context in which the item occurs. The system displaying the items to the end user would typically not \"pre-check\" such an item";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case YES:
+      return "Yes";
+    case NO:
+      return "No";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

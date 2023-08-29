@@ -3,7 +3,6 @@ package org.hl7.fhir.validation.instance.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -11,21 +10,31 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.TimeTracker;
+import org.hl7.fhir.validation.codesystem.CodeSystemChecker;
+import org.hl7.fhir.validation.codesystem.GeneralCodeSystemChecker;
+import org.hl7.fhir.validation.codesystem.SnomedCTChecker;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class ValueSetValidator extends BaseValidator {
 
+  private CodeSystemChecker getSystemValidator(String system, List<ValidationMessage> errors) {
+    if (system == null) {
+      return new GeneralCodeSystemChecker(context, xverManager, debug, errors);
+    }
+    switch (system) {
+    case "http://snomed.info/sct" :return new SnomedCTChecker(context, xverManager, debug, errors);
+    default: return new GeneralCodeSystemChecker(context, xverManager, debug, errors);
+    }
+  }
+  
   public class VSCodingValidationRequest extends CodingValidationRequest {
 
     private NodeStack stack;
@@ -41,15 +50,8 @@ public class ValueSetValidator extends BaseValidator {
     
   }
 
-  private InstanceValidator parent;
-
-  public ValueSetValidator(IWorkerContext context, TimeTracker timeTracker, InstanceValidator parent, XVerExtensionManager xverManager, Coding jurisdiction, boolean allowExamples) {
-    super(context, xverManager);
-    source = Source.InstanceValidator;
-    this.timeTracker = timeTracker;
-    this.parent = parent;
-    this.jurisdiction = jurisdiction;
-    this.allowExamples = allowExamples;
+  public ValueSetValidator(InstanceValidator parent) {
+    super(parent);
   }
   
   public boolean validateValueSet(List<ValidationMessage> errors, Element vs, NodeStack stack) {
@@ -58,7 +60,7 @@ public class ValueSetValidator extends BaseValidator {
       List<Element> composes = vs.getChildrenByName("compose");
       int cc = 0;
       for (Element compose : composes) {
-        ok = validateValueSetCompose(errors, compose, stack.push(compose, cc, null, null), vs.getNamedChildValue("url"), "retired".equals(vs.getNamedChildValue("url"))) & ok;
+        ok = validateValueSetCompose(errors, compose, stack.push(compose, composes.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url"), "retired".equals(vs.getNamedChildValue("url"))) & ok;
         cc++;
       }
     }
@@ -139,6 +141,8 @@ public class ValueSetValidator extends BaseValidator {
     }
     List<Element> concepts = include.getChildrenByName("concept");
     List<Element> filters = include.getChildrenByName("filter");
+
+    CodeSystemChecker slv = getSystemValidator(system, errors);
     if (!Utilities.noString(system)) {
       boolean systemOk = true;
       int cc = 0;
@@ -147,14 +151,14 @@ public class ValueSetValidator extends BaseValidator {
       for (Element concept : concepts) {
         // we treat the first differently because we want to know if tbe system is worth validating. if it is, then we batch the rest
         if (first) {
-          systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version);
+          systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version, slv);
           first = false;
         } else if (systemOk) {
-          batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version));
+          batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version, slv));
         }
         cc++;
       }    
-      if (parent.isValidateValueSetCodesOnTxServer() && batch.size() > 0 & !context.isNoTerminologyServer()) {
+      if (((InstanceValidator) parent).isValidateValueSetCodesOnTxServer() && batch.size() > 0 & !context.isNoTerminologyServer()) {
         long t = System.currentTimeMillis();
         if (parent.isDebug()) {
           System.out.println("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
@@ -180,19 +184,24 @@ public class ValueSetValidator extends BaseValidator {
       
       int cf = 0;
       for (Element filter : filters) {
-        if (systemOk && !validateValueSetIncludeFilter(errors, include, stack.push(filter, cf, null, null), system, version)) {
+        if (systemOk && !validateValueSetIncludeFilter(errors, include, stack.push(filter, cf, null, null), system, version, slv)) {
           systemOk = false;          
         }
         cf++;
       }    
+      slv.finish(include, stack);
     } else {
       warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), filters.size() == 0 && concepts.size() == 0, I18nConstants.VALUESET_NO_SYSTEM_WARNING);      
     }
     return ok;
   }
 
-  private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stackInc, NodeStack stack, String system, String version) {
+
+  private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stackInc, NodeStack stack, String system, String version, CodeSystemChecker slv) {
     String code = concept.getChildValue("code");
+    String display = concept.getChildValue("display");
+    slv.checkConcept(code, display);
+    
     if (version == null) {
       ValidationResult vv = context.validateCode(ValidationOptions.defaults(), new Coding(system, code, null), null);
       if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
@@ -229,8 +238,11 @@ public class ValueSetValidator extends BaseValidator {
     return true;
   }
 
-  private VSCodingValidationRequest prepareValidateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String system, String version) {
+  private VSCodingValidationRequest prepareValidateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String system, String version, CodeSystemChecker slv) {
     String code = concept.getChildValue("code");
+    String display = concept.getChildValue("display");
+    slv.checkConcept(code, display);
+    
     Coding c = new Coding(system, code, null);
     if (version != null) {
        c.setVersion(version);
@@ -238,7 +250,11 @@ public class ValueSetValidator extends BaseValidator {
     return new VSCodingValidationRequest(stack, c);
   }
 
-  private boolean validateValueSetIncludeFilter(List<ValidationMessage> errors, Element include, NodeStack push, String system, String version) {
+  private boolean validateValueSetIncludeFilter(List<ValidationMessage> errors, Element filter, NodeStack push, String system, String version, CodeSystemChecker slv) {
+//
+//    String display = concept.getChildValue("display");
+//    slv.checkConcept(code, display);
+    
     return true;
   }
 }

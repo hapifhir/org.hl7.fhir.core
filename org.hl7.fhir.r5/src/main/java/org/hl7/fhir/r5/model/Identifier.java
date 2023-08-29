@@ -583,17 +583,17 @@ public class Identifier extends DataType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("use")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Identifier.use");
+          throw new FHIRException("Cannot call addChild on a singleton property Identifier.use");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
           return this.type;
         }
         else if (name.equals("system")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Identifier.system");
+          throw new FHIRException("Cannot call addChild on a singleton property Identifier.system");
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Identifier.value");
+          throw new FHIRException("Cannot call addChild on a singleton property Identifier.value");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -658,6 +658,10 @@ public class Identifier extends DataType implements ICompositeType {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(use, type, system, value
           , period, assigner);
+      }
+
+      public boolean matches(Identifier other) {
+        return hasSystem() && hasValue() && getSystem().matches(other.getSystem()) && getValue().matches(other.getValue());
       }
 
 

@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,104 +31,134 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MedicationknowledgeCharacteristic {
 
-        /**
-         * Identyifying marks on product
-         */
-        IMPRINTCD, 
-        /**
-         * Description of size of the product
-         */
-        SIZE, 
-        /**
-         * Description of the shape of the product
-         */
-        SHAPE, 
-        /**
-         * Description of the color of the product
-         */
-        COLOR, 
-        /**
-         * Description of the coating of the product
-         */
-        COATING, 
-        /**
-         * Description of the scoring of the product
-         */
-        SCORING, 
-        /**
-         * Description of the Logo of the product
-         */
-        LOGO, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static MedicationknowledgeCharacteristic fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("imprintcd".equals(codeString))
-          return IMPRINTCD;
-        if ("size".equals(codeString))
-          return SIZE;
-        if ("shape".equals(codeString))
-          return SHAPE;
-        if ("color".equals(codeString))
-          return COLOR;
-        if ("coating".equals(codeString))
-          return COATING;
-        if ("scoring".equals(codeString))
-          return SCORING;
-        if ("logo".equals(codeString))
-          return LOGO;
-        throw new FHIRException("Unknown MedicationknowledgeCharacteristic code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case IMPRINTCD: return "imprintcd";
-            case SIZE: return "size";
-            case SHAPE: return "shape";
-            case COLOR: return "color";
-            case COATING: return "coating";
-            case SCORING: return "scoring";
-            case LOGO: return "logo";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/medicationknowledge-characteristic";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case IMPRINTCD: return "Identyifying marks on product";
-            case SIZE: return "Description of size of the product";
-            case SHAPE: return "Description of the shape of the product";
-            case COLOR: return "Description of the color of the product";
-            case COATING: return "Description of the coating of the product";
-            case SCORING: return "Description of the scoring of the product";
-            case LOGO: return "Description of the Logo of the product";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case IMPRINTCD: return "Imprint Code";
-            case SIZE: return "Size";
-            case SHAPE: return "Shape";
-            case COLOR: return "Color";
-            case COATING: return "Coating";
-            case SCORING: return "Scoring";
-            case LOGO: return "Logo";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Identyifying marks on product
+   */
+  IMPRINTCD,
+  /**
+   * Description of size of the product
+   */
+  SIZE,
+  /**
+   * Description of the shape of the product
+   */
+  SHAPE,
+  /**
+   * Description of the color of the product
+   */
+  COLOR,
+  /**
+   * Description of the coating of the product
+   */
+  COATING,
+  /**
+   * Description of the scoring of the product
+   */
+  SCORING,
+  /**
+   * Description of the Logo of the product
+   */
+  LOGO,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static MedicationknowledgeCharacteristic fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("imprintcd".equals(codeString))
+      return IMPRINTCD;
+    if ("size".equals(codeString))
+      return SIZE;
+    if ("shape".equals(codeString))
+      return SHAPE;
+    if ("color".equals(codeString))
+      return COLOR;
+    if ("coating".equals(codeString))
+      return COATING;
+    if ("scoring".equals(codeString))
+      return SCORING;
+    if ("logo".equals(codeString))
+      return LOGO;
+    throw new FHIRException("Unknown MedicationknowledgeCharacteristic code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case IMPRINTCD:
+      return "imprintcd";
+    case SIZE:
+      return "size";
+    case SHAPE:
+      return "shape";
+    case COLOR:
+      return "color";
+    case COATING:
+      return "coating";
+    case SCORING:
+      return "scoring";
+    case LOGO:
+      return "logo";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/medicationknowledge-characteristic";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case IMPRINTCD:
+      return "Identyifying marks on product";
+    case SIZE:
+      return "Description of size of the product";
+    case SHAPE:
+      return "Description of the shape of the product";
+    case COLOR:
+      return "Description of the color of the product";
+    case COATING:
+      return "Description of the coating of the product";
+    case SCORING:
+      return "Description of the scoring of the product";
+    case LOGO:
+      return "Description of the Logo of the product";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case IMPRINTCD:
+      return "Imprint Code";
+    case SIZE:
+      return "Size";
+    case SHAPE:
+      return "Shape";
+    case COLOR:
+      return "Color";
+    case COATING:
+      return "Coating";
+    case SCORING:
+      return "Scoring";
+    case LOGO:
+      return "Logo";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

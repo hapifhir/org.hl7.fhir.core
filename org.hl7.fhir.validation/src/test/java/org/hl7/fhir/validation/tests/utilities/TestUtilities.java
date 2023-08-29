@@ -1,13 +1,13 @@
 package org.hl7.fhir.validation.tests.utilities;
 
+import java.nio.file.Paths;
+
 import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.tests.TestConfig;
 import org.hl7.fhir.utilities.tests.TestConstants;
 import org.hl7.fhir.validation.ValidationEngine;
-
-import java.nio.file.Paths;
 
 public class TestUtilities {
 
@@ -46,13 +46,22 @@ public class TestUtilities {
   }
   public static ValidationEngine getValidationEngine(java.lang.String src, java.lang.String txServer, FhirPublication version, java.lang.String vString) throws Exception {
     TestingUtilities.injectCorePackageLoader();
-    final ValidationEngine validationEngine = new ValidationEngine.ValidationEngineBuilder()
-      .withVersion(vString)
-      .withUserAgent(TestConstants.USER_AGENT)
-      .withTerminologyCachePath(getTerminologyCacheDirectory(vString))
-      .withTxServer(txServer, TestConstants.TX_CACHE_LOG, version)
-      .fromSource(src);
-    TerminologyCache.setCacheErrors(true);
+    ValidationEngine validationEngine = null;
+    if ("n/a".equals(txServer)) {
+      validationEngine = new ValidationEngine.ValidationEngineBuilder()
+          .withVersion(vString)
+          .withUserAgent(TestConstants.USER_AGENT)
+          .withNoTerminologyServer()
+          .fromSource(src);      
+    } else {
+      validationEngine = new ValidationEngine.ValidationEngineBuilder()
+        .withVersion(vString)
+        .withUserAgent(TestConstants.USER_AGENT)
+        .withTerminologyCachePath(getTerminologyCacheDirectory(vString))
+        .withTxServer(txServer, TestConstants.TX_CACHE_LOG, version)
+        .fromSource(src);
+      TerminologyCache.setCacheErrors(true);
+    }
 
     return validationEngine;
   }

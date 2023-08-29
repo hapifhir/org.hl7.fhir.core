@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,89 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ResearchStudyObjectiveType {
 
-        /**
-         * The main question to be answered, and the one that drives any statistical planning for the study—e.g., calculation of the sample size to provide the appropriate power for statistical testing.
-         */
-        PRIMARY, 
-        /**
-         * Question to be answered in the study that is of lesser importance than the primary objective.
-         */
-        SECONDARY, 
-        /**
-         * Exploratory questions to be answered in the study.
-         */
-        EXPLORATORY, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ResearchStudyObjectiveType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("primary".equals(codeString))
-          return PRIMARY;
-        if ("secondary".equals(codeString))
-          return SECONDARY;
-        if ("exploratory".equals(codeString))
-          return EXPLORATORY;
-        throw new FHIRException("Unknown ResearchStudyObjectiveType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case PRIMARY: return "primary";
-            case SECONDARY: return "secondary";
-            case EXPLORATORY: return "exploratory";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/research-study-objective-type";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case PRIMARY: return "The main question to be answered, and the one that drives any statistical planning for the study—e.g., calculation of the sample size to provide the appropriate power for statistical testing.";
-            case SECONDARY: return "Question to be answered in the study that is of lesser importance than the primary objective.";
-            case EXPLORATORY: return "Exploratory questions to be answered in the study.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case PRIMARY: return "Primary";
-            case SECONDARY: return "Secondary";
-            case EXPLORATORY: return "Exploratory";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The main question to be answered, and the one that drives any statistical
+   * planning for the study—e.g., calculation of the sample size to provide the
+   * appropriate power for statistical testing.
+   */
+  PRIMARY,
+  /**
+   * Question to be answered in the study that is of lesser importance than the
+   * primary objective.
+   */
+  SECONDARY,
+  /**
+   * Exploratory questions to be answered in the study.
+   */
+  EXPLORATORY,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ResearchStudyObjectiveType fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("primary".equals(codeString))
+      return PRIMARY;
+    if ("secondary".equals(codeString))
+      return SECONDARY;
+    if ("exploratory".equals(codeString))
+      return EXPLORATORY;
+    throw new FHIRException("Unknown ResearchStudyObjectiveType code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case PRIMARY:
+      return "primary";
+    case SECONDARY:
+      return "secondary";
+    case EXPLORATORY:
+      return "exploratory";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/research-study-objective-type";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case PRIMARY:
+      return "The main question to be answered, and the one that drives any statistical planning for the study—e.g., calculation of the sample size to provide the appropriate power for statistical testing.";
+    case SECONDARY:
+      return "Question to be answered in the study that is of lesser importance than the primary objective.";
+    case EXPLORATORY:
+      return "Exploratory questions to be answered in the study.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case PRIMARY:
+      return "Primary";
+    case SECONDARY:
+      return "Secondary";
+    case EXPLORATORY:
+      return "Exploratory";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

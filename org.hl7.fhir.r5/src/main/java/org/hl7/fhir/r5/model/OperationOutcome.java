@@ -1268,23 +1268,23 @@ For resource issues, this will be a simple XPath limited to element names, repet
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("severity")) {
-          throw new FHIRException("Cannot call addChild on a primitive type OperationOutcome.issue.severity");
+          throw new FHIRException("Cannot call addChild on a singleton property OperationOutcome.issue.severity");
         }
         else if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a primitive type OperationOutcome.issue.code");
+          throw new FHIRException("Cannot call addChild on a singleton property OperationOutcome.issue.code");
         }
         else if (name.equals("details")) {
           this.details = new CodeableConcept();
           return this.details;
         }
         else if (name.equals("diagnostics")) {
-          throw new FHIRException("Cannot call addChild on a primitive type OperationOutcome.issue.diagnostics");
+          throw new FHIRException("Cannot call addChild on a singleton property OperationOutcome.issue.diagnostics");
         }
         else if (name.equals("location")) {
-          throw new FHIRException("Cannot call addChild on a primitive type OperationOutcome.issue.location");
+          throw new FHIRException("Cannot call addChild on a singleton property OperationOutcome.issue.location");
         }
         else if (name.equals("expression")) {
-          throw new FHIRException("Cannot call addChild on a primitive type OperationOutcome.issue.expression");
+          throw new FHIRException("Cannot call addChild on a singleton property OperationOutcome.issue.expression");
         }
         else
           return super.addChild(name);

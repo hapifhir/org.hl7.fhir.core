@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
+import org.hl7.fhir.convertors.conv43_50.Utilities43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.Coding43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.PositiveInt43_50;
@@ -12,8 +13,9 @@ public class DataRequirement43_50 {
     if (src == null) return null;
     org.hl7.fhir.r5.model.DataRequirement tgt = new org.hl7.fhir.r5.model.DataRequirement();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    if (src.hasType())
-      tgt.setType(org.hl7.fhir.r5.model.Enumerations.FHIRTypes.fromCode(convertResourceName4to5(src.getType().toCode())));
+    if (src.hasType()) {
+      Utilities43_50.convertType(src.getTypeElement(), tgt.getTypeElement());   
+    }
     for (org.hl7.fhir.r4b.model.CanonicalType t : src.getProfile())
       tgt.getProfile().add(Canonical43_50.convertCanonical(t));
     if (src.hasSubject())
@@ -34,7 +36,9 @@ public class DataRequirement43_50 {
     if (src == null) return null;
     org.hl7.fhir.r4b.model.DataRequirement tgt = new org.hl7.fhir.r4b.model.DataRequirement();
     ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(src, tgt);
-    if (src.hasType()) tgt.getTypeElement().setValueAsString(convertResourceName5to4(src.getType().toCode()));
+    if (src.hasType()) {
+      Utilities43_50.convertType(src.getTypeElement(), tgt.getTypeElement());   
+    }
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getProfile())
       tgt.getProfile().add(Canonical43_50.convertCanonical(t));
     if (src.hasSubject())
@@ -49,22 +53,6 @@ public class DataRequirement43_50 {
     for (org.hl7.fhir.r5.model.DataRequirement.DataRequirementSortComponent t : src.getSort())
       tgt.addSort(convertDataRequirementSortComponent(t));
     return tgt;
-  }
-
-  private static String convertResourceName4to5(String name) {
-    if (name == null) return null;
-    if (name.equals("DeviceUseStatement")) {
-      return "DeviceUsage";
-    }
-    return name;
-  }
-
-  private static String convertResourceName5to4(String name) {
-    if (name == null) return null;
-    if (name.equals("DeviceUsage")) {
-      return "DeviceUseStatement";
-    }
-    return name;
   }
 
   public static org.hl7.fhir.r5.model.DataRequirement.DataRequirementCodeFilterComponent convertDataRequirementCodeFilterComponent(org.hl7.fhir.r4b.model.DataRequirement.DataRequirementCodeFilterComponent src) throws FHIRException {

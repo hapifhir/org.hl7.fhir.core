@@ -68,7 +68,6 @@ public class PackageScanner {
           }
         }
       }
-      System.out.println("!");
     }
   }
 

@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,75 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NehtaNehtaCrcPeritoneumInvasion {
 
-        /**
-         * Tumour invades to the peritoneal surface
-         */
-        TUMOURINVADESTOPERITONEALSURFACE, 
-        /**
-         * Tumour has formed nodule(s) discrete from the tumour mass along the serosal surface
-         */
-        TUMOURFORMEDNODULE_S_DISCRETEFROMTUMOURMASSALONGTHESEROSALSURFACE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static NehtaNehtaCrcPeritoneumInvasion fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("tumour_invades_to_peritoneal_surface".equals(codeString))
-          return TUMOURINVADESTOPERITONEALSURFACE;
-        if ("tumour_formed_nodule(s)_discrete_from_tumour_mass_along_the_serosal_surface".equals(codeString))
-          return TUMOURFORMEDNODULE_S_DISCRETEFROMTUMOURMASSALONGTHESEROSALSURFACE;
-        throw new FHIRException("Unknown NehtaNehtaCrcPeritoneumInvasion code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case TUMOURINVADESTOPERITONEALSURFACE: return "tumour_invades_to_peritoneal_surface";
-            case TUMOURFORMEDNODULE_S_DISCRETEFROMTUMOURMASSALONGTHESEROSALSURFACE: return "tumour_formed_nodule(s)_discrete_from_tumour_mass_along_the_serosal_surface";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/nehta-crc-peritoneum-invasion";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case TUMOURINVADESTOPERITONEALSURFACE: return "Tumour invades to the peritoneal surface";
-            case TUMOURFORMEDNODULE_S_DISCRETEFROMTUMOURMASSALONGTHESEROSALSURFACE: return "Tumour has formed nodule(s) discrete from the tumour mass along the serosal surface";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case TUMOURINVADESTOPERITONEALSURFACE: return "Tumour invades to the peritoneal surface";
-            case TUMOURFORMEDNODULE_S_DISCRETEFROMTUMOURMASSALONGTHESEROSALSURFACE: return "Tumour has formed nodule(s) discrete from the tumour mass along the serosal surface";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Tumour invades to the peritoneal surface
+   */
+  TUMOURINVADESTOPERITONEALSURFACE,
+  /**
+   * Tumour has formed nodule(s) discrete from the tumour mass along the serosal
+   * surface
+   */
+  TUMOURFORMEDNODULE_S_DISCRETEFROMTUMOURMASSALONGTHESEROSALSURFACE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static NehtaNehtaCrcPeritoneumInvasion fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("tumour_invades_to_peritoneal_surface".equals(codeString))
+      return TUMOURINVADESTOPERITONEALSURFACE;
+    if ("tumour_formed_nodule(s)_discrete_from_tumour_mass_along_the_serosal_surface".equals(codeString))
+      return TUMOURFORMEDNODULE_S_DISCRETEFROMTUMOURMASSALONGTHESEROSALSURFACE;
+    throw new FHIRException("Unknown NehtaNehtaCrcPeritoneumInvasion code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case TUMOURINVADESTOPERITONEALSURFACE:
+      return "tumour_invades_to_peritoneal_surface";
+    case TUMOURFORMEDNODULE_S_DISCRETEFROMTUMOURMASSALONGTHESEROSALSURFACE:
+      return "tumour_formed_nodule(s)_discrete_from_tumour_mass_along_the_serosal_surface";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/nehta-crc-peritoneum-invasion";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case TUMOURINVADESTOPERITONEALSURFACE:
+      return "Tumour invades to the peritoneal surface";
+    case TUMOURFORMEDNODULE_S_DISCRETEFROMTUMOURMASSALONGTHESEROSALSURFACE:
+      return "Tumour has formed nodule(s) discrete from the tumour mass along the serosal surface";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case TUMOURINVADESTOPERITONEALSURFACE:
+      return "Tumour invades to the peritoneal surface";
+    case TUMOURFORMEDNODULE_S_DISCRETEFROMTUMOURMASSALONGTHESEROSALSURFACE:
+      return "Tumour has formed nodule(s) discrete from the tumour mass along the serosal surface";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

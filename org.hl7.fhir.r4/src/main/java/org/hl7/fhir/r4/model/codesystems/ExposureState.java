@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,76 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ExposureState {
 
-        /**
-         * used when the results by exposure is describing the results for the primary exposure of interest.
-         */
-        EXPOSURE, 
-        /**
-         * used when the results by exposure is describing the results for the alternative exposure state, control state or comparator state.
-         */
-        EXPOSUREALTERNATIVE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ExposureState fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("exposure".equals(codeString))
-          return EXPOSURE;
-        if ("exposure-alternative".equals(codeString))
-          return EXPOSUREALTERNATIVE;
-        throw new FHIRException("Unknown ExposureState code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case EXPOSURE: return "exposure";
-            case EXPOSUREALTERNATIVE: return "exposure-alternative";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/exposure-state";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case EXPOSURE: return "used when the results by exposure is describing the results for the primary exposure of interest.";
-            case EXPOSUREALTERNATIVE: return "used when the results by exposure is describing the results for the alternative exposure state, control state or comparator state.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case EXPOSURE: return "Exposure";
-            case EXPOSUREALTERNATIVE: return "Exposure Alternative";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * used when the results by exposure is describing the results for the primary
+   * exposure of interest.
+   */
+  EXPOSURE,
+  /**
+   * used when the results by exposure is describing the results for the
+   * alternative exposure state, control state or comparator state.
+   */
+  EXPOSUREALTERNATIVE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ExposureState fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("exposure".equals(codeString))
+      return EXPOSURE;
+    if ("exposure-alternative".equals(codeString))
+      return EXPOSUREALTERNATIVE;
+    throw new FHIRException("Unknown ExposureState code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case EXPOSURE:
+      return "exposure";
+    case EXPOSUREALTERNATIVE:
+      return "exposure-alternative";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/exposure-state";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case EXPOSURE:
+      return "used when the results by exposure is describing the results for the primary exposure of interest.";
+    case EXPOSUREALTERNATIVE:
+      return "used when the results by exposure is describing the results for the alternative exposure state, control state or comparator state.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case EXPOSURE:
+      return "Exposure";
+    case EXPOSUREALTERNATIVE:
+      return "Exposure Alternative";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

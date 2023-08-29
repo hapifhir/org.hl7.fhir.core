@@ -458,14 +458,24 @@ public class XMLUtil {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(false);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    return builder.parse(new FileInputStream(filename));
+    FileInputStream fs = new FileInputStream(filename);
+    try {
+      return builder.parse(fs);
+    } finally {
+      fs.close();
+    }  
   }
 
   public static Document parseFileToDom(String filename, boolean ns) throws ParserConfigurationException, SAXException, IOException  {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(ns);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    return builder.parse(new FileInputStream(filename));
+    FileInputStream fs = new FileInputStream(filename);
+    try {
+      return builder.parse(fs);
+    } finally {
+      fs.close();
+    }
   }
 
   public static Element getLastChild(Element e) {

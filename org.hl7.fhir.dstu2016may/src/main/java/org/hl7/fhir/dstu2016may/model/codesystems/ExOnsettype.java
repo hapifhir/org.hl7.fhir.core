@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,68 +31,86 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ExOnsettype {
 
-        /**
-         * Date of last examination.
-         */
-        LXM, 
-        /**
-         * Date when symptoms were first noticed..
-         */
-        SYM, 
-        /**
-         * Start date of last menstruation.
-         */
-        LMN, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ExOnsettype fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("LXM".equals(codeString))
-          return LXM;
-        if ("SYM".equals(codeString))
-          return SYM;
-        if ("LMN".equals(codeString))
-          return LMN;
-        throw new FHIRException("Unknown ExOnsettype code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case LXM: return "LXM";
-            case SYM: return "SYM";
-            case LMN: return "LMN";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/ex-onsettype";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case LXM: return "Date of last examination.";
-            case SYM: return "Date when symptoms were first noticed..";
-            case LMN: return "Start date of last menstruation.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case LXM: return "Last Exam";
-            case SYM: return "Start of Symptoms";
-            case LMN: return "Last Menstruation";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * Date of last examination.
+   */
+  LXM,
+  /**
+   * Date when symptoms were first noticed..
+   */
+  SYM,
+  /**
+   * Start date of last menstruation.
+   */
+  LMN,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ExOnsettype fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("LXM".equals(codeString))
+      return LXM;
+    if ("SYM".equals(codeString))
+      return SYM;
+    if ("LMN".equals(codeString))
+      return LMN;
+    throw new FHIRException("Unknown ExOnsettype code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case LXM:
+      return "LXM";
+    case SYM:
+      return "SYM";
+    case LMN:
+      return "LMN";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/ex-onsettype";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case LXM:
+      return "Date of last examination.";
+    case SYM:
+      return "Date when symptoms were first noticed..";
+    case LMN:
+      return "Start date of last menstruation.";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case LXM:
+      return "Last Exam";
+    case SYM:
+      return "Start of Symptoms";
+    case LMN:
+      return "Last Menstruation";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

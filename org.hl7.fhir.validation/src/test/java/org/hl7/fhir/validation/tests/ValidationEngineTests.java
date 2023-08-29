@@ -1,29 +1,28 @@
 package org.hl7.fhir.validation.tests;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.utilities.FhirPublication;
-
-import org.hl7.fhir.utilities.settings.FhirSettings;
-import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class ValidationEngineTests {
 
-  private static final String DEF_TX = FhirSettings.getTxFhirDevelopment();
-//  private static final String DEF_TX = FhirSettings.getTxFhirLocal();
+//  private static final String DEF_TX = FhirSettings.getTxFhirDevelopment();
+  private static final String DEF_TX = FhirSettings.getTxFhirLocal();
 
   public static boolean inbuild;
 
@@ -251,6 +250,34 @@ public class ValidationEngineTests {
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
   }
 
+
+  @Test
+  public void test401USCore() throws Exception {
+    if (!TestUtilities.silent)
+      System.out.println("Test401USCore: Validate observation401_ucum.json against US-Core with no terminology server");
+    ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", "n/a", FhirPublication.R4, "4.0.1");
+    CacheVerificationLogger logger = new CacheVerificationLogger();
+    IgLoader igLoader = new IgLoader(ve.getPcm(), ve.getContext(), ve.getVersion(), true);
+    if (!TestUtilities.silent)
+      System.out.println("  .. load USCore");
+    igLoader.loadIg(ve.getIgs(), ve.getBinaries(), "hl7.fhir.us.core#3.1.1", false);
+    List<String> profiles = new ArrayList<>();
+    OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "observation401_ucum.json"), profiles);
+    if (!TestUtilities.silent)
+      for (OperationOutcomeIssueComponent issue : op.getIssue())
+        System.out.println("  - " + issue.getDetails().getText());
+    int e = errors(op);
+    int w = warnings(op);
+    int h = hints(op);
+    Assertions.assertEquals(0, e);
+    Assertions.assertEquals(2, w);
+    Assertions.assertEquals(0, h);
+    assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
+    if (!TestUtilities.silent)
+      System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
+  }
+
+  
   private int errors(OperationOutcome op) {
     int i = 0;
     for (OperationOutcomeIssueComponent vm : op.getIssue()) {

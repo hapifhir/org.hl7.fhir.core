@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ActionCardinalityBehavior {
 
-        /**
-         * The action may only be selected one time
-         */
-        SINGLE, 
-        /**
-         * The action may be selected multiple times
-         */
-        MULTIPLE, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static ActionCardinalityBehavior fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("single".equals(codeString))
-          return SINGLE;
-        if ("multiple".equals(codeString))
-          return MULTIPLE;
-        throw new FHIRException("Unknown ActionCardinalityBehavior code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SINGLE: return "single";
-            case MULTIPLE: return "multiple";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/action-cardinality-behavior";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SINGLE: return "The action may only be selected one time";
-            case MULTIPLE: return "The action may be selected multiple times";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SINGLE: return "Single";
-            case MULTIPLE: return "Multiple";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The action may only be selected one time
+   */
+  SINGLE,
+  /**
+   * The action may be selected multiple times
+   */
+  MULTIPLE,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static ActionCardinalityBehavior fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("single".equals(codeString))
+      return SINGLE;
+    if ("multiple".equals(codeString))
+      return MULTIPLE;
+    throw new FHIRException("Unknown ActionCardinalityBehavior code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case SINGLE:
+      return "single";
+    case MULTIPLE:
+      return "multiple";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/action-cardinality-behavior";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case SINGLE:
+      return "The action may only be selected one time";
+    case MULTIPLE:
+      return "The action may be selected multiple times";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case SINGLE:
+      return "Single";
+    case MULTIPLE:
+      return "Multiple";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

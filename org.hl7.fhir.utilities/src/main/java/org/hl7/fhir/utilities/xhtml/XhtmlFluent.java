@@ -5,8 +5,8 @@ import java.io.IOException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.MarkDownProcessor;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
+import org.hl7.fhir.utilities.Utilities;
 
 public abstract class XhtmlFluent {
 
@@ -54,7 +54,8 @@ public abstract class XhtmlFluent {
   }
   
   public XhtmlNode td() {
-    return addTag("td");
+    XhtmlNode x = addTag("td");
+    return x;
   }
   
   public XhtmlNode td(String clss) {
@@ -63,6 +64,13 @@ public abstract class XhtmlFluent {
   
   public XhtmlNode div() {
     return addTag("div");
+  }
+
+  public XhtmlNode div(String style) {
+    XhtmlNode x = addTag("div");
+    if (!Utilities.noString(style))
+      x.attribute("style", style);
+    return x;
   }
 
   public XhtmlNode para() {
@@ -110,7 +118,15 @@ public abstract class XhtmlFluent {
   }
 
   public XhtmlNode ah(String href) {
-    return addTag("a").attribute("href", href);
+    if (href == null) {
+      if (this instanceof XhtmlNode) {
+        return (XhtmlNode) this;
+      } else {
+        return addTag("span");
+      }
+    } else {
+      return addTag("a").attribute("href", href);
+    }
   }
 
   public XhtmlNode ah(String href, String title) {
@@ -119,6 +135,37 @@ public abstract class XhtmlFluent {
       x.attribute("title", title);
     }
     return x;
+  }
+
+  public XhtmlNode ahWithText(String preText, String href, String title, String text, String postText) {
+    tx(preText);
+    XhtmlNode x = addTag("a").attribute("href", href);
+    if (title != null) {
+      x.attribute("title", title);
+    }
+    x.tx(text);
+    tx(postText);
+    return x;
+  }
+
+  /**
+   * make it a code if it's not a link
+   * @param href
+   * @param title
+   * @return
+   */
+  public XhtmlNode ahOrCode(String href, String title) {
+    if (href != null) {
+      return ah(href, title);
+    } else if (title != null) {
+      return code().setAttribute("title", title);
+    } else {
+      return code();
+    }
+  }
+  
+  public XhtmlNode ahOrCode(String href) {
+    return ahOrCode(href, null);
   }
 
   public XhtmlNode img(String src, String alt) {
@@ -148,7 +195,32 @@ public abstract class XhtmlFluent {
     return res;
   }
 
+  public XhtmlNode span(String style) {
+    XhtmlNode res = addTag("span");
+    if (!Utilities.noString(style))
+      res.attribute("style", style);
+    return res;
+  }
 
+  public XhtmlNode span() {
+    return addTag("span");
+  }
+
+  public XhtmlNode spanClss(String clssName) {
+    XhtmlNode res = addTag("span");
+    if (!Utilities.noString(clssName))
+      res.attribute("class", clssName);
+    return res;
+  }
+
+  public void codeWithText(String preText, String text, String postText) {
+    tx(preText);
+    XhtmlNode code = addTag("code");
+    code.tx(text);
+    tx(postText);
+  }
+
+  
   public XhtmlNode code(String text) {
     XhtmlNode code = addTag("code");
     code.tx(text);

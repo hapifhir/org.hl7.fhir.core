@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
@@ -49,7 +48,12 @@ public class JsonLangFileProducer extends LanguageFileProducer {
 
     @Override
     public void finish() throws IOException {
-      JsonParser.compose(json, new FileOutputStream(getFileName(id, baseLang)));
+      FileOutputStream fs = new FileOutputStream(getFileName(id, baseLang));
+      try {
+        JsonParser.compose(json, fs);
+      } finally {
+        fs.close();
+      }
     }
   }
 

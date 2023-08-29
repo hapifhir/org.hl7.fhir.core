@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,75 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum TypeDerivationRule {
 
-        /**
-         * This definition defines a new type that adds additional elements to the base type
-         */
-        SPECIALIZATION, 
-        /**
-         * This definition adds additional rules to an existing concrete type
-         */
-        CONSTRAINT, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static TypeDerivationRule fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("specialization".equals(codeString))
-          return SPECIALIZATION;
-        if ("constraint".equals(codeString))
-          return CONSTRAINT;
-        throw new FHIRException("Unknown TypeDerivationRule code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SPECIALIZATION: return "specialization";
-            case CONSTRAINT: return "constraint";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/type-derivation-rule";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SPECIALIZATION: return "This definition defines a new type that adds additional elements to the base type";
-            case CONSTRAINT: return "This definition adds additional rules to an existing concrete type";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SPECIALIZATION: return "Specialization";
-            case CONSTRAINT: return "Constraint";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * This definition defines a new type that adds additional elements to the base
+   * type
+   */
+  SPECIALIZATION,
+  /**
+   * This definition adds additional rules to an existing concrete type
+   */
+  CONSTRAINT,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static TypeDerivationRule fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("specialization".equals(codeString))
+      return SPECIALIZATION;
+    if ("constraint".equals(codeString))
+      return CONSTRAINT;
+    throw new FHIRException("Unknown TypeDerivationRule code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case SPECIALIZATION:
+      return "specialization";
+    case CONSTRAINT:
+      return "constraint";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/type-derivation-rule";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case SPECIALIZATION:
+      return "This definition defines a new type that adds additional elements to the base type";
+    case CONSTRAINT:
+      return "This definition adds additional rules to an existing concrete type";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case SPECIALIZATION:
+      return "Specialization";
+    case CONSTRAINT:
+      return "Constraint";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

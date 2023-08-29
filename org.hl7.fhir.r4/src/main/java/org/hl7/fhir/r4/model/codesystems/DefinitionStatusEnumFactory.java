@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class DefinitionStatusEnumFactory implements EnumFactory<DefinitionStatus> {
@@ -50,7 +46,7 @@ public class DefinitionStatusEnumFactory implements EnumFactory<DefinitionStatus
       return DefinitionStatus.WITHDRAWN;
     if ("unknown".equals(codeString))
       return DefinitionStatus.UNKNOWN;
-    throw new IllegalArgumentException("Unknown DefinitionStatus code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown DefinitionStatus code '" + codeString + "'");
   }
 
   public String toCode(DefinitionStatus code) {
@@ -65,8 +61,8 @@ public class DefinitionStatusEnumFactory implements EnumFactory<DefinitionStatus
     return "?";
   }
 
-    public String toSystem(DefinitionStatus code) {
-      return code.getSystem();
-      }
+  public String toSystem(DefinitionStatus code) {
+    return code.getSystem();
+  }
 
 }

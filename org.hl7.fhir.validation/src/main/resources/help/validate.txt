@@ -1,0 +1,131 @@
+Usage: java -jar [validator].jar (parameters)
+
+The FHIR validation tool validates a FHIR resource or bundle.
+The validation tool compares a resource against the base definitions and any
+profiles declared in the resource (Resource.meta.profile) or specified on the 
+command line
+
+The FHIR validation tool validates a FHIR resource or bundle. Syntax and content is checked 
+against the specification and other profiles as specified. 
+
+* XML & Json (FHIR versions {{XML_AND_JSON_FHIR_VERSIONS}})
+* Turtle (FHIR versions {{TURTLE_FHIR_VERSIONS}})
+
+If requested, instances will also be verified against the appropriate schema W3C
+XML Schema, JSON schema or ShEx, as appropriate
+
+The following parameters are supported:
+
+[source]: a file, url, directory or pattern for resources to validate.
+       At least one source must be declared. If there is more than one source or
+    if the source is other than a single file or url and the output parameter is
+    used, results will be provided as a Bundle.
+       Patterns are limited to a directory followed by a filename with an
+    embedded asterisk.  E.g. foo*-examples.xml or someresource.*, etc.
+-version [ver]: The FHIR version to use.
+       This can only appear once.
+       valid values {{FHIR_MAJOR_VERSIONS}} or {{FHIR_MINOR_VERSIONS}}
+       Default value is {{FHIR_CURRENT_VERSION}}
+-ig [package|file|folder|url]: an IG or profile definition to load.
+       Can be the URL of an implementation guide or a package ([id]-[ver]) for a
+    built implementation guide or a local folder that contains a set of
+    conformance resources.
+       If you would like to load the latest unreleased version of the
+    implementation guide or package, please define the version as '#current'.
+       If no version is provided, the latest version in the package cache will
+    be used, or if no such cached package is available, the PackageCacheManager
+    will load the latest from the the online package repo.
+       If you want the implementation guide to be loaded for a specific version
+    of FHIR, you can prefix the IG with the appropriate version in square
+    brackets ([[fhirVer]][id]-[igVer]).
+       No default value. This parameter can appear any number of times
+-tx [url]: the [base] url of a FHIR terminology service
+      Default value is http://tx.fhir.org. This parameter can appear once
+      To run without terminology value, specific n/a as the URL
+-txLog [file]: Produce a log of the terminology server operations in [file]
+       Default value is not to produce a log
+-profile [url]: the canonical URL to validate against (same as if it was 
+     specified in Resource.meta.profile).
+        If no profile is specified, the resource is validated against the base
+     specification. This parameter can appear any number of times.
+        Note: the profile (and it's dependencies) have to be made available
+     through one of the -ig parameters. Note that package dependencies will 
+     automatically be resolved
+-showReferenceMessages
+        Includes validation messages resulting from validating target resources
+     against profiles defined on a reference.  This increases the volume of 
+     validation messages, but may allow easier debugging.  If not specified,
+     then only a high-level message indicating that the referenced item wasn't
+     valid against the listed profile(s) will be provided.
+-questionnaire mode: what to do when validating QuestionnaireResponse resources
+     * none (default): just ignore the questionnaire reference
+     * required: check that the QuestionnaireResponse has a questionnaire and
+       validate against it
+     * check: if the QuestionnaireResponse has a questionnaire, validate
+       against it
+        The questionnaire must be loaded using the -ig parameter
+     which specifies the location of a questionnaire. If provided, then the
+     validator will validate any QuestionnaireResponse that claims to match the
+     Questionnaire against it no default value. This parameter can appear any
+     number of times
+-output [file]: a filename for the results (OperationOutcome)
+        Default: results are sent to the std out.
+-outputSuffix [string]: used in -convert and -snapshot to deal with
+        one or more result files (where -output can only have one)
+-watch-mode [mode]:
+        Specify that the validator remain running and re-validate when any 
+     of the validated files changes. The validator has to be terminated with 
+     ctrl-c etc in this mode.
+     This parameter can have one of the following values:
+      * none: the default - don't wait, just stop when finished
+      * single: when any of the validated files changes, re-validate it
+      * all: when any of the validated files changes, re-validate all of them
+     All is useful when the content includes internal dependencies e.g. 
+     a profile and it's value sets. Watch Mode has two additional parameters:
+-watch-scan-delay (ms)
+       Control how often the validator looks at the content to decide to run again
+     Default 1000 
+-watch-settle-time (ms)
+       Control how long the validator waits before seeing a change, and revalidating
+     Default 100
+         
+-debug
+        Produce additional information about the loading/validation process
+-recurse
+        Look in subfolders when -ig refers to a folder
+-locale
+        Specifies the locale/language of the validation result messages (eg.:
+     de-DE
+-sct
+     Specify the edition of SNOMED CT to use. Valid Choices:
+       intl | us | uk | au | nl | ca | se | dk | es
+     tx.fhir.org only supports a subset. To add to this list or tx.fhir.org ask
+     on https://chat.fhir.org/#narrow/stream/179202-terminology
+-native: use schema for validation as well
+     * XML: w3c schema+schematron
+     * JSON: json.schema
+     * RDF: SHEX
+     Default: false
+-language: [lang] The language to use when validating coding displays - same
+    value as for xml:lang
+       Not used if the resource specifies language
+    Default: no specified language
+-extension: Controls how extensions are validated by the validator. The value
+    for this parameter is a URL for a domain from which extensions will be
+    allowed. By default, unknown extensions are prohibited, but can be allowed
+    by using the value 'any' (e.g. -extension any). This parameter can repeat
+    any number of times.
+-hintAboutNonMustSupport: If present, raise hints if the instance contains data
+    elements that are not marked as mustSupport=true.  Useful to identify
+    elements included that may be ignored by recipients
+-assumeValidRestReferences: If present, assume that URLs that reference
+    resources follow the RESTful URI pattern and it is safe to infer the type
+    from the URL
+-security-checks: If present, check that string content doesn't include any html
+    -like tags that might create problems downstream (though all external input
+    must always be santized by escaping for either html or sql)
+
+The validator also supports the param -proxy=[address]:[port] for if you use a
+proxy
+
+Parameters can appear in any order

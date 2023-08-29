@@ -51,11 +51,13 @@ public class ProfileValidator extends BaseValidator {
 
   private boolean checkAggregation = false;
   private boolean checkMustSupport = false;
+  private boolean allowDoubleQuotesInFHIRPath = false;
   private FHIRPathEngine fpe;
 
   public ProfileValidator(IWorkerContext context, XVerExtensionManager xverManager) {
-    super(context, xverManager);
+    super(context, xverManager, false);
     fpe = new FHIRPathEngine(context);
+    fpe.setAllowDoubleQuotes(allowDoubleQuotesInFHIRPath);
   }
 
   public boolean isCheckAggregation() {
@@ -72,6 +74,14 @@ public class ProfileValidator extends BaseValidator {
 
   public void setCheckMustSupport(boolean checkMustSupport) {
     this.checkMustSupport = checkMustSupport;
+  }
+
+  public boolean isAllowDoubleQuotesInFHIRPath() {
+    return allowDoubleQuotesInFHIRPath;
+  }
+
+  public void setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
+    this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
   }
 
   protected boolean rule(List<ValidationMessage> errors, IssueType type, String path, boolean b, String msg) {

@@ -496,17 +496,17 @@ public class CorePackageVersionConvertor {
               try {
                 cnt = conv.convert(cnt);
               } catch (Exception e) {
-                throw new Exception("Error processing "+folder.getName()+"/"+s+": "+e.getMessage(), e);
+                throw new Exception("Error processing "+folder.getFolderName()+"/"+s+": "+e.getMessage(), e);
               }
             } else {
               // nothing
             }
           }        
           if (cnt != null) {
-            dst.addFile(folder.getName(), s, cnt, null);
+            dst.addFile(folder.getFolderName(), s, cnt, null);
           }
         } else {
-          dst.addFile(folder.getName(), s, cnt, null);
+          dst.addFile(folder.getFolderName(), s, cnt, null);
         }
       }
     }

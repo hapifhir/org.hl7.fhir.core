@@ -29,111 +29,28 @@ package org.hl7.fhir.dstu2.model;
   
  */
 
-
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 // Generated on Wed, Jul 13, 2016 05:32+1000 for FHIR v1.0.2
 
 public enum ResourceType {
-    Account,
-    AllergyIntolerance,
-    Appointment,
-    AppointmentResponse,
-    AuditEvent,
-    Basic,
-    Binary,
-    BodySite,
-    Bundle,
-    CarePlan,
-    Claim,
-    ClaimResponse,
-    ClinicalImpression,
-    Communication,
-    CommunicationRequest,
-    Composition,
-    ConceptMap,
-    Condition,
-    Conformance,
-    Contract,
-    Coverage,
-    DataElement,
-    DetectedIssue,
-    Device,
-    DeviceComponent,
-    DeviceMetric,
-    DeviceUseRequest,
-    DeviceUseStatement,
-    DiagnosticOrder,
-    DiagnosticReport,
-    DocumentManifest,
-    DocumentReference,
-    EligibilityRequest,
-    EligibilityResponse,
-    Encounter,
-    EnrollmentRequest,
-    EnrollmentResponse,
-    EpisodeOfCare,
-    ExplanationOfBenefit,
-    FamilyMemberHistory,
-    Flag,
-    Goal,
-    Group,
-    HealthcareService,
-    ImagingObjectSelection,
-    ImagingStudy,
-    Immunization,
-    ImmunizationRecommendation,
-    ImplementationGuide,
-    List,
-    Location,
-    Media,
-    Medication,
-    MedicationAdministration,
-    MedicationDispense,
-    MedicationOrder,
-    MedicationStatement,
-    MessageHeader,
-    NamingSystem,
-    NutritionOrder,
-    Observation,
-    OperationDefinition,
-    OperationOutcome,
-    Order,
-    OrderResponse,
-    Organization,
-    Parameters,
-    Patient,
-    PaymentNotice,
-    PaymentReconciliation,
-    Person,
-    Practitioner,
-    Procedure,
-    ProcedureRequest,
-    ProcessRequest,
-    ProcessResponse,
-    Provenance,
-    Questionnaire,
-    QuestionnaireResponse,
-    ReferralRequest,
-    RelatedPerson,
-    RiskAssessment,
-    Schedule,
-    SearchParameter,
-    Slot,
-    Specimen,
-    StructureDefinition,
-    Subscription,
-    Substance,
-    SupplyDelivery,
-    SupplyRequest,
-    TestScript,
-    ValueSet,
-    VisionPrescription;
+  Account, AllergyIntolerance, Appointment, AppointmentResponse, AuditEvent, Basic, Binary, BodySite, Bundle, CarePlan,
+  Claim, ClaimResponse, ClinicalImpression, Communication, CommunicationRequest, Composition, ConceptMap, Condition,
+  Conformance, Contract, Coverage, DataElement, DetectedIssue, Device, DeviceComponent, DeviceMetric, DeviceUseRequest,
+  DeviceUseStatement, DiagnosticOrder, DiagnosticReport, DocumentManifest, DocumentReference, EligibilityRequest,
+  EligibilityResponse, Encounter, EnrollmentRequest, EnrollmentResponse, EpisodeOfCare, ExplanationOfBenefit,
+  FamilyMemberHistory, Flag, Goal, Group, HealthcareService, ImagingObjectSelection, ImagingStudy, Immunization,
+  ImmunizationRecommendation, ImplementationGuide, List, Location, Media, Medication, MedicationAdministration,
+  MedicationDispense, MedicationOrder, MedicationStatement, MessageHeader, NamingSystem, NutritionOrder, Observation,
+  OperationDefinition, OperationOutcome, Order, OrderResponse, Organization, Parameters, Patient, PaymentNotice,
+  PaymentReconciliation, Person, Practitioner, Procedure, ProcedureRequest, ProcessRequest, ProcessResponse, Provenance,
+  Questionnaire, QuestionnaireResponse, ReferralRequest, RelatedPerson, RiskAssessment, Schedule, SearchParameter, Slot,
+  Specimen, StructureDefinition, Subscription, Substance, SupplyDelivery, SupplyRequest, TestScript, ValueSet,
+  VisionPrescription;
 
-
-    public String getPath() {;
-      switch (this) {
+  public String getPath() {
+    ;
+    switch (this) {
     case Account:
       return "account";
     case AllergyIntolerance:
@@ -323,11 +240,11 @@ public enum ResourceType {
     case VisionPrescription:
       return "visionprescription";
     }
-      return null;
+    return null;
   }
 
-
-    public static ResourceType fromCode(String code) throws FHIRException {;
+  public static ResourceType fromCode(String code) throws FHIRException {
+    ;
     if ("Account".equals(code))
       return Account;
     if ("AllergyIntolerance".equals(code))
@@ -517,7 +434,7 @@ public enum ResourceType {
     if ("VisionPrescription".equals(code))
       return VisionPrescription;
 
-    throw new FHIRException("Unknown resource type "+code);
+    throw new FHIRException("Unknown resource type " + code);
   }
 
 }

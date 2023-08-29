@@ -2,12 +2,10 @@ package org.hl7.fhir.validation.cli.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 
 import org.apache.commons.io.IOUtils;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 
 /**
  * Class for displaying output to the cli user.
@@ -21,7 +19,7 @@ public class Display {
     return Long.toString(maxMemory / (1024 * 1024));
   }
 
-  public static void printCliArgumentsAndInfo(String[] args) throws IOException {
+  public static void printCliParamsAndInfo(String[] args) throws IOException {
     System.out.println("  Paths:  Current = " + System.getProperty("user.dir") + ", Package Cache = " + new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER).getFolder());
     System.out.print("  Params:");
     for (String s : args) {
@@ -37,29 +35,30 @@ public class Display {
     return CURLY_START + string + CURLY_END;
   }
 
-  final static String[][] PLACEHOLDERS = {
-    { getMoustacheString("XML_AND_JSON_FHIR_VERSIONS"), "1.0, 1.4, 3.0, 4.0," + Constants.VERSION_MM },
-    { getMoustacheString("TURTLE_FHIR_VERSIONS"), "3.0, 4.0, " + Constants.VERSION_MM },
-  };
+
 
   final static String replacePlaceholders(final String input, final String[][] placeholders) {
     String output = input;
     for (String[] placeholder : placeholders) {
-      output = output.replaceAll(placeholder[0], placeholder[1]);
+      output = output.replaceAll(getMoustacheString(placeholder[0]), placeholder[1]);
     }
     return output;
   }
 
+  public static void displayHelpDetails(PrintStream out, String file) {
+    displayHelpDetails(out, file, new String[][]{});
+  }
   /**
-   * Loads the help details from resources/help.txt, and displays them on the command line to the user.
+   * Loads the help details from a file, and displays them on the out stream.
+   * @param file
    */
-  public static void displayHelpDetails() {
+  public static void displayHelpDetails(PrintStream out, String file, final String[][] placeholders) {
     ClassLoader classLoader = Display.class.getClassLoader();
-    InputStream help = classLoader.getResourceAsStream("help.txt");
+    InputStream help = classLoader.getResourceAsStream(file);
     try {
       String data = IOUtils.toString(help, "UTF-8");
 
-      System.out.println(replacePlaceholders(data, PLACEHOLDERS));
+      out.println(replacePlaceholders(data, placeholders));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -70,8 +69,8 @@ public class Display {
   /**
    * Prints out system info to the command line.
    */
-  public static void displaySystemInfo() {
-    System.out.println("  Java:   " + System.getProperty("java.version")
+  public static void displaySystemInfo(PrintStream out) {
+    out.println("  Java:   " + System.getProperty("java.version")
       + " from " + System.getProperty("java.home")
       + " on " + System.getProperty("os.arch")
       + " (" + System.getProperty("sun.arch.data.model") + "bit). "
@@ -81,7 +80,7 @@ public class Display {
   /**
    * Prints current version of the validator.
    */
-  public static void displayVersion() {
-    System.out.println("FHIR Validation tool " + VersionUtil.getVersionString());
+  public static void displayVersion(PrintStream out) {
+    out.println("FHIR Validation tool " + VersionUtil.getVersionString());
   }
 }

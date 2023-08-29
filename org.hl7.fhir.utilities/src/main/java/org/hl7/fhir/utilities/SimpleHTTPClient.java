@@ -1,6 +1,5 @@
 package org.hl7.fhir.utilities;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -13,14 +12,20 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
-import org.hl7.fhir.utilities.SimpleHTTPClient.Header;
-import org.hl7.fhir.utilities.npm.SSLCertTruster;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class SimpleHTTPClient {
-  
-  public class Header {
+
+  public enum AuthenticationMode {
+    NONE,
+    BASIC,
+    TOKEN
+  }
+
+	public class Header {
     private String name;
     private String value;
     public Header(String name, String value) {
@@ -89,37 +94,23 @@ public class SimpleHTTPClient {
   }
 
   private List<Header> headers = new ArrayList<>();
+
+  @Getter @Setter
+  private AuthenticationMode authenticationMode;
+
+  @Getter @Setter
   private String username;
+
+  @Getter @Setter
   private String password;
+
+  @Getter @Setter
+  private String token;
   
   public void addHeader(String name, String value) {
     headers.add(new Header(name, value));
   }
 
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-
-  private boolean trustAll = false;
-  
-  public void trustAllhosts() {
-    trustAll  = true;
-    SSLCertTruster.trustAllHosts();    
-  }
- 
   public HTTPResult get(String url) throws IOException {
     return get(url, null);    
   }
@@ -150,10 +141,7 @@ public class SimpleHTTPClient {
         c.setRequestProperty("Accept", accept);
       }
       setHeaders(c);
-      c.setInstanceFollowRedirects(false); 
-      if (trustAll && url.startsWith("https://")) {
-        ((javax.net.ssl.HttpsURLConnection) c).setHostnameVerifier(SSLCertTruster.DO_NOT_VERIFY);
-      }
+      c.setInstanceFollowRedirects(false);
 
       switch (c.getResponseCode()) {
       case HttpURLConnection.HTTP_MOVED_PERM:
@@ -173,15 +161,27 @@ public class SimpleHTTPClient {
   }
 
   private void setHeaders(HttpURLConnection c) {
-    for (Header h : headers) {
-      c.setRequestProperty(h.getName(), h.getValue());        
+    if (headers != null) {
+      for (Header h : headers) {
+        c.setRequestProperty(h.getName(), h.getValue());        
+      }
     }
     c.setConnectTimeout(15000);
     c.setReadTimeout(15000);
-    if (username != null) {
+    setAuthenticationHeader(c);
+  }
+
+  private void setAuthenticationHeader(HttpURLConnection c) {
+    String authHeaderValue = null;
+    if (authenticationMode == AuthenticationMode.TOKEN) {
+      authHeaderValue = "Bearer " + new String(token);
+    } else if (authenticationMode == AuthenticationMode.BASIC) {
       String auth = username+":"+password;
       byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
-      String authHeaderValue = "Basic " + new String(encodedAuth);
+      authHeaderValue = "Basic " + new String(encodedAuth);
+    }
+
+    if (authHeaderValue != null) {
       c.setRequestProperty("Authorization", authHeaderValue);
     }
   }

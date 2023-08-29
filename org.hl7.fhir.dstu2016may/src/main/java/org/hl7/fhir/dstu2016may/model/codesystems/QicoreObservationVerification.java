@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,59 +31,74 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum QicoreObservationVerification {
 
-        /**
-         * The observation was reviewed and verified by a person
-         */
-        _1, 
-        /**
-         * The observation was verified against a sliding average
-         */
-        _2, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static QicoreObservationVerification fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("1".equals(codeString))
-          return _1;
-        if ("2".equals(codeString))
-          return _2;
-        throw new FHIRException("Unknown QicoreObservationVerification code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case _1: return "1";
-            case _2: return "2";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://hl7.org/fhir/qicore-observation-verification-method";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case _1: return "The observation was reviewed and verified by a person";
-            case _2: return "The observation was verified against a sliding average";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case _1: return "Human review";
-            case _2: return "Sliding average";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * The observation was reviewed and verified by a person
+   */
+  _1,
+  /**
+   * The observation was verified against a sliding average
+   */
+  _2,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static QicoreObservationVerification fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("1".equals(codeString))
+      return _1;
+    if ("2".equals(codeString))
+      return _2;
+    throw new FHIRException("Unknown QicoreObservationVerification code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case _1:
+      return "1";
+    case _2:
+      return "2";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://hl7.org/fhir/qicore-observation-verification-method";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case _1:
+      return "The observation was reviewed and verified by a person";
+    case _2:
+      return "The observation was verified against a sliding average";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case _1:
+      return "Human review";
+    case _2:
+      return "Sliding average";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

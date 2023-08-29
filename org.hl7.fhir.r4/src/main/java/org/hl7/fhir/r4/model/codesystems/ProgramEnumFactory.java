@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,7 +30,6 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
-
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -132,7 +128,7 @@ public class ProgramEnumFactory implements EnumFactory<Program> {
       return Program._44;
     if ("45".equals(codeString))
       return Program._45;
-    throw new IllegalArgumentException("Unknown Program code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown Program code '" + codeString + "'");
   }
 
   public String toCode(Program code) {
@@ -229,8 +225,8 @@ public class ProgramEnumFactory implements EnumFactory<Program> {
     return "?";
   }
 
-    public String toSystem(Program code) {
-      return code.getSystem();
-      }
+  public String toSystem(Program code) {
+    return code.getSystem();
+  }
 
 }

@@ -29,7 +29,6 @@ package org.hl7.fhir.r4b.model;
   
  */
 
-
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import org.hl7.fhir.instance.model.api.IBaseIntegerDatatype;
 
@@ -66,7 +65,8 @@ public class IntegerType extends PrimitiveType<Integer> implements IBaseIntegerD
    * Constructor
    *
    * @param theIntegerAsString A string representation of an integer
-   * @throws IllegalArgumentException If the string is not a valid integer representation
+   * @throws IllegalArgumentException If the string is not a valid integer
+   *                                  representation
    */
   public IntegerType(String theIntegerAsString) {
     setValueAsString(theIntegerAsString);
@@ -76,12 +76,12 @@ public class IntegerType extends PrimitiveType<Integer> implements IBaseIntegerD
    * Constructor
    *
    * @param theValue The value
-   * @throws IllegalArgumentException If the value is too large to fit in a signed integer
+   * @throws IllegalArgumentException If the value is too large to fit in a signed
+   *                                  integer
    */
   public IntegerType(Long theValue) {
     if (theValue < java.lang.Integer.MIN_VALUE || theValue > java.lang.Integer.MAX_VALUE) {
-      throw new IllegalArgumentException
-        (theValue + " cannot be cast to int without changing its value.");
+      throw new IllegalArgumentException(theValue + " cannot be cast to int without changing its value.");
     }
     if (theValue != null) {
       setValue((int) theValue.longValue());

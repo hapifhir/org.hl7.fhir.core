@@ -65,7 +65,6 @@ import java.text.SimpleDateFormat;
 
 import java.util.Comparator;
 import java.util.Date;
-import java.util.EnumMap;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -523,6 +522,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private Date ruleDate;
   public static final String NO_RULE_DATE = null;
   private boolean matched; // internal use counting matching filters
+  private boolean ignorableError;
 
 
   /**
@@ -850,6 +850,59 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   public void setMatched(boolean matched) {
     this.matched = matched;
   }
+
+  public boolean isIgnorableError() {
+    return ignorableError;
+  }
+
+  public ValidationMessage setIgnorableError(boolean ignorableError) {
+    this.ignorableError = ignorableError;
+    return this;
+  }
+
+  public boolean matches(ValidationMessage other) {
+    if (location == null) {
+      if (other.location != null) {
+        return false;
+      }
+    } else {
+      String l1 = preprocessLocation(location);
+      String l2 = preprocessLocation(other.location);
+      if (!l1.equals(l2)) {
+        return false;
+      }
+    }
+    if (message == null) {
+      if (other.message != null) {
+        return false;
+      }
+    } else if (!message.equals(other.message)) {
+      return false;
+    }
+    if (messageId == null) {
+      if (other.messageId != null) {
+        return false;
+      }
+    } else if (!messageId.equals(other.messageId)) {
+      return false;
+    }
+    if (type != other.type) {
+      return false;
+    }
+    if (level != other.level) {
+      return false;
+    }
+    return true;
+  }
+
+  private String preprocessLocation(String loc) {
+    // some locations are prefixes with a location but they're not different since the location is fixed where .match is called from 
+    if (loc.contains(": ")) {
+      return loc.substring(loc.indexOf(": ")+2);
+    }
+    return loc;
+  }
+  
   
   
 }

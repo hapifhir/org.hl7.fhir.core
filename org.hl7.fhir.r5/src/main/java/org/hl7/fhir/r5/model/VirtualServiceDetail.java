@@ -486,13 +486,13 @@ public class VirtualServiceDetail extends DataType implements ICompositeType {
           return this.address;
         }
         else if (name.equals("additionalInfo")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VirtualServiceDetail.additionalInfo");
+          throw new FHIRException("Cannot call addChild on a singleton property VirtualServiceDetail.additionalInfo");
         }
         else if (name.equals("maxParticipants")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VirtualServiceDetail.maxParticipants");
+          throw new FHIRException("Cannot call addChild on a singleton property VirtualServiceDetail.maxParticipants");
         }
         else if (name.equals("sessionKey")) {
-          throw new FHIRException("Cannot call addChild on a primitive type VirtualServiceDetail.sessionKey");
+          throw new FHIRException("Cannot call addChild on a singleton property VirtualServiceDetail.sessionKey");
         }
         else
           return super.addChild(name);

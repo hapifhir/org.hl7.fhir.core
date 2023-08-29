@@ -1,8 +1,5 @@
 package org.hl7.fhir.r4.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,95 +31,122 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AdverseEventOutcome {
 
-        /**
-         * null
-         */
-        RESOLVED, 
-        /**
-         * null
-         */
-        RECOVERING, 
-        /**
-         * null
-         */
-        ONGOING, 
-        /**
-         * null
-         */
-        RESOLVEDWITHSEQUELAE, 
-        /**
-         * null
-         */
-        FATAL, 
-        /**
-         * null
-         */
-        UNKNOWN, 
-        /**
-         * added to help the parsers
-         */
-        NULL;
-        public static AdverseEventOutcome fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("resolved".equals(codeString))
-          return RESOLVED;
-        if ("recovering".equals(codeString))
-          return RECOVERING;
-        if ("ongoing".equals(codeString))
-          return ONGOING;
-        if ("resolvedWithSequelae".equals(codeString))
-          return RESOLVEDWITHSEQUELAE;
-        if ("fatal".equals(codeString))
-          return FATAL;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        throw new FHIRException("Unknown AdverseEventOutcome code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case RESOLVED: return "resolved";
-            case RECOVERING: return "recovering";
-            case ONGOING: return "ongoing";
-            case RESOLVEDWITHSEQUELAE: return "resolvedWithSequelae";
-            case FATAL: return "fatal";
-            case UNKNOWN: return "unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          return "http://terminology.hl7.org/CodeSystem/adverse-event-outcome";
-        }
-        public String getDefinition() {
-          switch (this) {
-            case RESOLVED: return "";
-            case RECOVERING: return "";
-            case ONGOING: return "";
-            case RESOLVEDWITHSEQUELAE: return "";
-            case FATAL: return "";
-            case UNKNOWN: return "";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case RESOLVED: return "Resolved";
-            case RECOVERING: return "Recovering";
-            case ONGOING: return "Ongoing";
-            case RESOLVEDWITHSEQUELAE: return "Resolved with Sequelae";
-            case FATAL: return "Fatal";
-            case UNKNOWN: return "Unknown";
-            case NULL: return null;
-            default: return "?";
-          }
-    }
+  /**
+   * null
+   */
+  RESOLVED,
+  /**
+   * null
+   */
+  RECOVERING,
+  /**
+   * null
+   */
+  ONGOING,
+  /**
+   * null
+   */
+  RESOLVEDWITHSEQUELAE,
+  /**
+   * null
+   */
+  FATAL,
+  /**
+   * null
+   */
+  UNKNOWN,
+  /**
+   * added to help the parsers
+   */
+  NULL;
 
+  public static AdverseEventOutcome fromCode(String codeString) throws FHIRException {
+    if (codeString == null || "".equals(codeString))
+      return null;
+    if ("resolved".equals(codeString))
+      return RESOLVED;
+    if ("recovering".equals(codeString))
+      return RECOVERING;
+    if ("ongoing".equals(codeString))
+      return ONGOING;
+    if ("resolvedWithSequelae".equals(codeString))
+      return RESOLVEDWITHSEQUELAE;
+    if ("fatal".equals(codeString))
+      return FATAL;
+    if ("unknown".equals(codeString))
+      return UNKNOWN;
+    throw new FHIRException("Unknown AdverseEventOutcome code '" + codeString + "'");
+  }
+
+  public String toCode() {
+    switch (this) {
+    case RESOLVED:
+      return "resolved";
+    case RECOVERING:
+      return "recovering";
+    case ONGOING:
+      return "ongoing";
+    case RESOLVEDWITHSEQUELAE:
+      return "resolvedWithSequelae";
+    case FATAL:
+      return "fatal";
+    case UNKNOWN:
+      return "unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getSystem() {
+    return "http://terminology.hl7.org/CodeSystem/adverse-event-outcome";
+  }
+
+  public String getDefinition() {
+    switch (this) {
+    case RESOLVED:
+      return "";
+    case RECOVERING:
+      return "";
+    case ONGOING:
+      return "";
+    case RESOLVEDWITHSEQUELAE:
+      return "";
+    case FATAL:
+      return "";
+    case UNKNOWN:
+      return "";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
+
+  public String getDisplay() {
+    switch (this) {
+    case RESOLVED:
+      return "Resolved";
+    case RECOVERING:
+      return "Recovering";
+    case ONGOING:
+      return "Ongoing";
+    case RESOLVEDWITHSEQUELAE:
+      return "Resolved with Sequelae";
+    case FATAL:
+      return "Fatal";
+    case UNKNOWN:
+      return "Unknown";
+    case NULL:
+      return null;
+    default:
+      return "?";
+    }
+  }
 
 }

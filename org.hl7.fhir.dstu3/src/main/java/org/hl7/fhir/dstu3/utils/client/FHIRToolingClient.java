@@ -1,17 +1,5 @@
 package org.hl7.fhir.dstu3.utils.client;
 
-import okhttp3.Headers;
-import okhttp3.internal.http2.Header;
-import org.hl7.fhir.dstu3.model.*;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.dstu3.utils.client.network.ByteUtils;
-import org.hl7.fhir.dstu3.utils.client.network.Client;
-import org.hl7.fhir.dstu3.utils.client.network.ResourceRequest;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.ToolingClientLogger;
-import org.hl7.fhir.utilities.Utilities;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -20,6 +8,30 @@ import java.util.Base64;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.hl7.fhir.dstu3.model.Bundle;
+import org.hl7.fhir.dstu3.model.CapabilityStatement;
+import org.hl7.fhir.dstu3.model.CodeSystem;
+import org.hl7.fhir.dstu3.model.Coding;
+import org.hl7.fhir.dstu3.model.ConceptMap;
+import org.hl7.fhir.dstu3.model.ExpansionProfile;
+import org.hl7.fhir.dstu3.model.OperationOutcome;
+import org.hl7.fhir.dstu3.model.Parameters;
+import org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.dstu3.model.PrimitiveType;
+import org.hl7.fhir.dstu3.model.Resource;
+import org.hl7.fhir.dstu3.model.StringType;
+import org.hl7.fhir.dstu3.model.ValueSet;
+import org.hl7.fhir.dstu3.utils.client.network.ByteUtils;
+import org.hl7.fhir.dstu3.utils.client.network.Client;
+import org.hl7.fhir.dstu3.utils.client.network.ResourceRequest;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.Utilities;
+
+import okhttp3.Headers;
+import okhttp3.internal.http2.Header;
 
 /**
  * Very Simple RESTful client. This is purely for use in the standalone
@@ -70,6 +82,7 @@ public class FHIRToolingClient {
   private String password;
   private String userAgent;
   private EnumSet<FhirPublication> allowedVersions;
+  private String acceptLang;
 
   //Pass endpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
@@ -81,6 +94,7 @@ public class FHIRToolingClient {
 
   public void initialize(String baseServiceUrl) throws URISyntaxException {
     base = baseServiceUrl;
+    client.setBase(base);
     resourceAddress = new ResourceAddress(baseServiceUrl);
     this.allowedVersions = supportableVersions();
     this.maxResultSetSize = -1;
@@ -580,6 +594,9 @@ public class FHIRToolingClient {
     }
     if (!Utilities.noString(userAgent)) {
       builder.add("User-Agent: "+userAgent);
+    } 
+    if (!Utilities.noString(acceptLang)) {
+      builder.add("Accept-Language: "+acceptLang);
     }
     return builder.build();
   }
@@ -605,6 +622,10 @@ public class FHIRToolingClient {
   public String getServerVersion() {
     checkCapabilities();
     return capabilities == null ? null : capabilities.getSoftware().getVersion();
+  }
+
+  public void setLanguage(String lang) {
+    this.acceptLang = lang;
   }
 }
 

@@ -32,6 +32,7 @@ import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -156,8 +157,10 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   public Set<String> getTypeNameSet() {
     Set<String> result = new HashSet<String>();
     for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
-      if (sd.getKind() != StructureDefinitionKind.LOGICAL && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
+      if (sd.getKind() != StructureDefinitionKind.LOGICAL && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && 
+          VersionUtilities.versionsCompatible(context.getVersion(), sd.getFhirVersion().toCode())) {
         result.add(sd.getName());
+      }
     }
     return result;
   }
@@ -227,7 +230,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
             // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
           } catch (Exception e) {
             if (!isSuppressDebugMessages()) {
-              System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
+              System.out.println("Unable to generate snapshot @2 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
               if (context.getLogger().isDebugLogging()) {
                 e.printStackTrace();
               }
@@ -288,8 +291,13 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       }
       pu.generateSnapshot(sd, p, p.getUrl(), sd.getUserString("webroot"), p.getName());
       for (ValidationMessage msg : msgs) {
-        if ((!ignoreProfileErrors && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL)
-          throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE___ELEMENT__ERROR_GENERATING_SNAPSHOT_, p.getName(), p.getUrl(), msg.getLocation(), msg.getMessage()));
+        if ((!ignoreProfileErrors && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL) {
+          if (!msg.isIgnorableError()) {
+            throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE___ELEMENT__ERROR_GENERATING_SNAPSHOT_, p.getName(), p.getUrl(), msg.getLocation(), msg.getMessage()));
+          } else {
+            System.err.println(msg.getMessage());
+          }
+        }
       }
       if (!p.hasSnapshot())
         throw new FHIRException(context.formatMessage(I18nConstants.PROFILE___ERROR_GENERATING_SNAPSHOT, p.getName(), p.getUrl()));
@@ -415,6 +423,23 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       }
     }
     return res;
+  }
+
+  public StructureDefinition findType(String typeName) {
+    StructureDefinition t = context.fetchTypeDefinition(typeName);
+    if (t != null) {
+      return t;
+    }
+    List<StructureDefinition> candidates = new ArrayList<>();
+    for (StructureDefinition sd : getStructures()) {
+      if (sd.getType().equals(typeName)) {
+        candidates.add(sd);
+      }
+    }
+    if (candidates.size() == 1) {
+      return candidates.get(0);
+    }
+    return null;
   }
 
 }

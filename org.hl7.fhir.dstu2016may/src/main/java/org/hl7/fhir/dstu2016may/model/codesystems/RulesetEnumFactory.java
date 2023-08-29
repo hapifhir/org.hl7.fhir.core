@@ -1,8 +1,5 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
-
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -34,7 +31,6 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
-
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class RulesetEnumFactory implements EnumFactory<Ruleset> {
@@ -54,7 +50,7 @@ public class RulesetEnumFactory implements EnumFactory<Ruleset> {
       return Ruleset.CDANETV4;
     if ("cpha-3".equals(codeString))
       return Ruleset.CPHA3;
-    throw new IllegalArgumentException("Unknown Ruleset code '"+codeString+"'");
+    throw new IllegalArgumentException("Unknown Ruleset code '" + codeString + "'");
   }
 
   public String toCode(Ruleset code) {
@@ -73,8 +69,8 @@ public class RulesetEnumFactory implements EnumFactory<Ruleset> {
     return "?";
   }
 
-    public String toSystem(Ruleset code) {
-      return code.getSystem();
-      }
+  public String toSystem(Ruleset code) {
+    return code.getSystem();
+  }
 
 }

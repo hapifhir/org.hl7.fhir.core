@@ -668,13 +668,18 @@ public class HumanName extends Type implements ICompositeType {
   }
 
   /**
-   * Returns all of the components of the name (prefix, given, family, suffix) as a single string with a single spaced
-   * string separating each part.
-   * <p>
-   * If none of the parts are populated, returns the {@link #getTextElement() text} element value instead.
-   * </p>
+   * <p>Returns the {@link #getTextElement() text} element value if it is not null.</p>
+
+   * <p>If the {@link #getTextElement() text} element value is null, returns all the components of the name (prefix,
+   * given, family, suffix) as a single string with a single spaced string separating each part. </p>
+   *
+   * @return the human name as a single string
    */
   public String getNameAsSingleString() {
+    if (hasText()) {
+      return getText().toString();
+    }
+
     List<StringType> nameParts = new ArrayList<StringType>();
     nameParts.addAll(getPrefix());
     nameParts.addAll(getGiven());
@@ -833,22 +838,22 @@ public class HumanName extends Type implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("use")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HumanName.use");
+          throw new FHIRException("Cannot call addChild on a singleton property HumanName.use");
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HumanName.text");
+          throw new FHIRException("Cannot call addChild on a singleton property HumanName.text");
         }
         else if (name.equals("family")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HumanName.family");
+          throw new FHIRException("Cannot call addChild on a singleton property HumanName.family");
         }
         else if (name.equals("given")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HumanName.given");
+          throw new FHIRException("Cannot call addChild on a singleton property HumanName.given");
         }
         else if (name.equals("prefix")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HumanName.prefix");
+          throw new FHIRException("Cannot call addChild on a singleton property HumanName.prefix");
         }
         else if (name.equals("suffix")) {
-          throw new FHIRException("Cannot call addChild on a primitive type HumanName.suffix");
+          throw new FHIRException("Cannot call addChild on a singleton property HumanName.suffix");
         }
         else if (name.equals("period")) {
           this.period = new Period();

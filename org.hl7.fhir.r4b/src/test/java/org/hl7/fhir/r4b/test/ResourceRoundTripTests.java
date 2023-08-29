@@ -34,11 +34,15 @@ public class ResourceRoundTripTests {
 
   @Test
   public void test() throws IOException, FHIRException, EOperationOutcome {
-    DomainResource res = (DomainResource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"));
-    RenderingContext rc = new RenderingContext(TestingUtilities.context(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
+    DomainResource res = (DomainResource) new XmlParser()
+        .parse(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"));
+    RenderingContext rc = new RenderingContext(TestingUtilities.context(), null, null, "http://hl7.org/fhir", "", null,
+        ResourceRendererMode.END_USER);
     RendererFactory.factory(res, rc).render(res);
-    IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"), new FileOutputStream(TestingUtilities.tempFile("gen", "unicode.xml")));
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("gen", "unicode.out.xml")), res);
+    IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"),
+        new FileOutputStream(TestingUtilities.tempFile("gen", "unicode.xml")));
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY)
+        .compose(new FileOutputStream(TestingUtilities.tempFile("gen", "unicode.out.xml")), res);
   }
 
   @Test
@@ -60,23 +64,23 @@ public class ResourceRoundTripTests {
     if (result == null)
       throw new FHIRException("Bundle was null");
   }
-  
+
   @Test
   /**
    * verify that umlaut like äö etc are not encoded in UTF-8 in attributes
    */
   public void testSerializeUmlaut() throws IOException {
-    Element xml = Manager.parseSingle(TestingUtilities.context(), TestingUtilities.loadTestResourceStream("r5", "unicode.xml"),
-        FhirFormat.XML);
+    Element xml = Manager.parseSingle(TestingUtilities.context(),
+        TestingUtilities.loadTestResourceStream("r5", "unicode.xml"), FhirFormat.XML);
     List<Element> concept = xml.getChildrenByName("concept");
-    assertTrue(concept!=null && concept.size()==1);
+    assertTrue(concept != null && concept.size() == 1);
     List<Element> code = concept.get(0).getChildrenByName("code");
-    assertTrue(code!=null && code.size()==1);
+    assertTrue(code != null && code.size() == 1);
     code.get(0).setValue("ö");
-    ByteArrayOutputStream baosXml = new  ByteArrayOutputStream();
+    ByteArrayOutputStream baosXml = new ByteArrayOutputStream();
     Manager.compose(TestingUtilities.context(), xml, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);
     String cdaSerialised = baosXml.toString("UTF-8");
-    assertTrue(cdaSerialised.indexOf("ö")>0); 
+    assertTrue(cdaSerialised.indexOf("ö") > 0);
   }
 
 }

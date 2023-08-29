@@ -1,0 +1,31 @@
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+      "concept" : [{
+        "code" : "LL"
+      },
+      {
+        "code" : "HH"
+      },
+      {
+        "code" : "L",
+        "display" : "Extra Low"
+      },
+      {
+        "code" : "H",
+        "display" : "higher"
+      },
+      {
+        "code" : "P"
+      }]
+    }]
+  }
+}}####
+e: {
+  "error" : "Cannot invoke \"org.hl7.fhir.r5.terminologies.client.ITerminologyClient.expandValueset(org.hl7.fhir.r5.model.ValueSet, org.hl7.fhir.r5.model.Parameters, java.util.Map)\" because the return value of \"org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.getClient()\" is null"
+}
+-------------------------------------------------------------------------------------
