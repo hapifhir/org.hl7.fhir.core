@@ -1,3 +1,21 @@
+# Is not included in the dependency but is GNU Lesser GPL. See: https://code.google.com/archive/p/javaparser/
 (Unknown license) javaparser (com.google.code.javaparser:javaparser:1.0.11 - http://code.google.com/p/javaparser/)
-# IGNORE ME
+# Because of parsing issues, FHIR R4 shows up as a license. I really need to redo this script in Python for cleaner parsing. -dotasek
 (Apache Software License 2.0) HAPI FHIR - Validation Resources (FHIR R4) (ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4:6.4.1 - https://hapifhir.io/hapi-deployable-pom/hapi-fhir-validation-resources-r4)
+# The following can be licensed with either license, of which the Apache is compatible
+(Apache Software License, version 1.1) (Indiana University Extreme! Lab Software License, vesion 1.1.1) (Public Domain) MXP1: Xml Pull Parser 3rd Edition (XPP3) (xpp3:xpp3:1.1.4c - http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/)
+(Indiana University Extreme! Lab Software License, vesion 1.1.1) MXP1: Xml Pull Parser 3rd Edition (XPP3) (xpp3:xpp3_xpath:1.1.4c - http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/)
+# Aggregator is incorrectly parsed as a license.
+(Eclipse Public License v2.0) JUnit Jupiter (Aggregator) (org.junit.jupiter:junit-jupiter:5.9.1 - https://junit.org/junit5/)
+# https://www.jcp.org/en/jsr/detail?id=374 specifies this as an OR relationship between possible licenses, of which CDDL is compatible
+(Dual license consisting of the CDDL v1.1 and GPL v2) JSR 353 (JSON Processing) Default Provider (org.glassfish:javax.json:1.0.4 - http://jsonp.java.net)
+# javax.xml.bind is incorrectly interpreted as a license name.
+(The Apache Software License, Version 2.0) Jackson module: Old JAXB Annotations (javax.xml.bind) (com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.15.2 - https://github.com/FasterXML/jackson-modules-base)
+# full is incorrectly interpreted as a license name
+(Apache License, Version 2.0) Apache POI - OOXML schemas (full) (org.apache.poi:poi-ooxml-full:5.2.1 - https://poi.apache.org/)
+# Actually a BSD license https://mvnrepository.com/artifact/org.antlr/ST4/4.1
+(Unknown license) StringTemplate 4 (org.antlr:ST4:4.1 - http://nexus.sonatype.org/oss-repository-hosting.html/ST4)
+# without dependencies is incorrectly intepreted as a license name
+(Apache License, Version 2.0) Byte Buddy (without dependencies) (net.bytebuddy:byte-buddy:1.12.14 - https://bytebuddy.net/byte-buddy)
+# Appears to be Apache 2.0: https://github.com/NCIP/lexevs/blob/master/lgSharedLibraries/apache/commons/jakarta-regexp-1.4.license.txt
+(Unknown license) jakarta-regexp (jakarta-regexp:jakarta-regexp:1.4 - no url defined)

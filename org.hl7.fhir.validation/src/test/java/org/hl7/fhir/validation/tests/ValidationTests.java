@@ -214,14 +214,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (!VersionUtilities.isR5Plus(val.getContext().getVersion())) {
       val.getBaseOptions().setUseValueSetDisplays(true);
     }
-    val.getBaseOptions().getLanguages().clear();
-    if (content.has("languages")) {
-      for (String s : content.get("languages").getAsString().split("\\,")) {
-        String l = s.trim();
-        val.getBaseOptions().getLanguages().add(l);        
-      }
+    if (content.has("language")) {
+      val.getBaseOptions().setLanguages(content.get("language").getAsString());
+      val.setValidationLanguage(val.getBaseOptions().getLanguages().getChosen());
     } else {
-      
+      val.getBaseOptions().setLanguages(null);      
     }
     
     if (content.has("fetcher") && "standalone".equals(JsonUtilities.str(content, "fetcher"))) {
@@ -417,7 +414,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
 
   private ValidationEngine buildVersionEngine(String ver, String txLog) throws Exception {
-    String server = FhirSettings.getTxFhirDevelopment();
+    String server = FhirSettings.getTxFhirLocal();
     switch (ver) {
     case "1.0": return TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", server, txLog, FhirPublication.DSTU2, true, "1.0.2");
     case "1.4": return TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", server, txLog, FhirPublication.DSTU2016May, true, "1.4.0"); 

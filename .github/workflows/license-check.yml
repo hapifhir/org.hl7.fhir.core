@@ -3,6 +3,12 @@
 name: License Check
 
 on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+    
   workflow_dispatch:
    
 
@@ -27,4 +33,4 @@ jobs:
       run: chmod u+x .github/workflows/license-check/license-check.sh
     - name: Run script
       run: .github/workflows/license-check/license-check.sh
-      continue-on-error: true
+      #continue-on-error: true

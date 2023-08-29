@@ -35,6 +35,7 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
+import org.hl7.fhir.validation.cli.utils.VersionUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -228,8 +229,10 @@ class ValidationServiceTest  {
     return cliContext;
   }
 
-  /* This is a particularly long way to test that a single field in ValidationEngine was set.
-     However, it does provide example code to test other parts of the buildValidationEngine method as well.
+  /*  This is a particularly long way to test that fields in ValidationEngine are
+      set to expected default values.
+
+      It also provides example code to test other parts of the buildValidationEngine method as well.
   */
   @Test
   public void buildValidationEngineTest() throws IOException, URISyntaxException {
@@ -241,12 +244,11 @@ class ValidationServiceTest  {
     final ValidationEngine validationEngine = mock(ValidationEngine.class);
     when(validationEngine.getContext()).thenReturn(workerContext);
 
+   final ValidationEngine.ValidationEngineBuilder validationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);;
+
     final ValidationService validationService = new ValidationService() {
       @Override
       protected ValidationEngine.ValidationEngineBuilder getValidationEngineBuilder() {
-
-        ValidationEngine.ValidationEngineBuilder validationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);
-
         when(validationEngineBuilder.withTHO(anyBoolean())).thenReturn(validationEngineBuilder);
         when(validationEngineBuilder.withVersion(isNull())).thenReturn(validationEngineBuilder);
         when(validationEngineBuilder.withTimeTracker(any())).thenReturn(validationEngineBuilder);
@@ -267,10 +269,10 @@ class ValidationServiceTest  {
       }
     };
 
-
-
     CliContext cliContext = new CliContext();
 
     validationService.buildValidationEngine(cliContext, null, timeTracker);
+
+    verify(validationEngineBuilder).withUserAgent(eq("fhir/validator/" + VersionUtil.getVersion()));
   }
 }

@@ -1326,8 +1326,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private void setTerminologyOptions(ValidationOptions options, Parameters pIn) {
-    for (String s : options.getLanguages()) {
-      pIn.addParameter("displayLanguage", s);
+    if (options.hasLanguages()) {
+      pIn.addParameter("displayLanguage", options.getLanguages().toString());
     }
     if (options.getValueSetMode() != ValueSetMode.ALL_CHECKS) {
       pIn.addParameter("valueSetMode", options.getValueSetMode().toString());
@@ -1553,6 +1553,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     boolean inactive = false;
     String status = null;
     List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
+    Set<String> unknownSystems = new HashSet<>();
 
     TerminologyServiceErrorClass err = TerminologyServiceErrorClass.UNKNOWN;
     for (ParametersParameterComponent p : pOut.getParameter()) {
@@ -1575,6 +1576,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           status = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("x-caused-by-unknown-system")) {
           err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
+          unknownSystems.add(((PrimitiveType<?>) p.getValue()).asStringValue());      
         } else if (p.getName().equals("warning-withdrawn")) {
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
           iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_WITHDRAWN : I18nConstants.MSG_WITHDRAWN_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
@@ -1624,6 +1626,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     res.setIssues(issues);
     res.setStatus(inactive, status);
+    res.setUnknownSystems(unknownSystems);
     return res;
   }
 
