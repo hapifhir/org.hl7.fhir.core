@@ -6310,7 +6310,6 @@ public class FHIRPathEngine {
         List<ElementDefinition> childDefinitions = profileUtilities.getChildMap(sd, element.getElement());
         for (ElementDefinition t : childDefinitions) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
-            System.out.println("t: " + t.getId());
             StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty()
                 || t.getType().get(0).getProfile().isEmpty()) ? null
                     : worker.fetchResource(StructureDefinition.class,

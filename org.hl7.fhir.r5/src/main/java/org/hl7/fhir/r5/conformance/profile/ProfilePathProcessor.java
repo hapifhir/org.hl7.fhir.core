@@ -200,9 +200,6 @@ public class ProfilePathProcessor {
           "diff = " + cursors.diffCursor + " (" + profileUtilities.descED(getDifferential().getElement(), cursors.diffCursor) + ") to " + getDiffLimit() + " (" + profileUtilities.descED(getDifferential().getElement(), getDiffLimit()) + ") " +
         "(slicingDone = " + getSlicing().isDone() + ") (diffpath= " + (getDifferential().getElement().size() > cursors.diffCursor ? getDifferential().getElement().get(cursors.diffCursor).getPath() : "n/a") + ")");
       String path = cursors.diffCursor >=0 && cursors.diffCursor < getDifferential().getElement().size() ? getDifferential().getElement().get(cursors.diffCursor).present() : null;
-//      if (path != null && path.contains(":populationBasis")) {
-//        System.out.println("!");
-//      }
     }
 
   }
@@ -547,9 +544,6 @@ public class ProfilePathProcessor {
               iter.remove();
             }
           }
-//                System.out.println("!!: Extension Error at "+cpath+": Allowed Types not sliced = "+allowedTypes+". !Extension!!");
-//                throw new Error("Extension Error at "+cpath+": Allowed Types not sliced = "+allowedTypes+". !Extension!!");
-
         } else {
           elementDefinition.getSlicing().setRules(ElementDefinition.SlicingRules.OPEN);
         }
@@ -914,7 +908,7 @@ public class ProfilePathProcessor {
             int newBaseLimit = newBaseCursor;
             while (newBaseLimit < cursors.base.getElement().size() && cursors.base.getElement().get(newBaseLimit).getPath().startsWith(tgt.getElement().getPath() + "."))
               newBaseLimit++;
-            System.out.println("Test!");
+//            System.out.println("Test!");
 
               this
                 .incrementDebugIndent()
