@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,62 +34,50 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NehtaNehtaReceivedNotreceived {
 
-  /**
-   * Specimen not received
-   */
-  NOTRECEIVED,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static NehtaNehtaReceivedNotreceived fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("not_received".equals(codeString))
-      return NOTRECEIVED;
-    throw new FHIRException("Unknown NehtaNehtaReceivedNotreceived code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NOTRECEIVED:
-      return "not_received";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Specimen not received
+         */
+        NOTRECEIVED, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static NehtaNehtaReceivedNotreceived fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("not_received".equals(codeString))
+          return NOTRECEIVED;
+        throw new FHIRException("Unknown NehtaNehtaReceivedNotreceived code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NOTRECEIVED: return "not_received";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/nehta-received-notreceived";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NOTRECEIVED: return "Specimen not received";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NOTRECEIVED: return "Specimen not received";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/nehta-received-notreceived";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NOTRECEIVED:
-      return "Specimen not received";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NOTRECEIVED:
-      return "Specimen not received";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

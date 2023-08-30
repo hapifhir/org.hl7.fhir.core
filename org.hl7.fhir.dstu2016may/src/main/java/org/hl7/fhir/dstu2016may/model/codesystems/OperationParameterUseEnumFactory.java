@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class OperationParameterUseEnumFactory implements EnumFactory<OperationParameterUse> {
@@ -42,7 +46,7 @@ public class OperationParameterUseEnumFactory implements EnumFactory<OperationPa
       return OperationParameterUse.IN;
     if ("out".equals(codeString))
       return OperationParameterUse.OUT;
-    throw new IllegalArgumentException("Unknown OperationParameterUse code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown OperationParameterUse code '"+codeString+"'");
   }
 
   public String toCode(OperationParameterUse code) {
@@ -53,8 +57,8 @@ public class OperationParameterUseEnumFactory implements EnumFactory<OperationPa
     return "?";
   }
 
-  public String toSystem(OperationParameterUse code) {
-    return code.getSystem();
-  }
+    public String toSystem(OperationParameterUse code) {
+      return code.getSystem();
+      }
 
 }

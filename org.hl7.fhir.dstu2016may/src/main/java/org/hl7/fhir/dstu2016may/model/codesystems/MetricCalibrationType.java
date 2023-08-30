@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MetricCalibrationType {
 
-  /**
-   * TODO
-   */
-  UNSPECIFIED,
-  /**
-   * TODO
-   */
-  OFFSET,
-  /**
-   * TODO
-   */
-  GAIN,
-  /**
-   * TODO
-   */
-  TWOPOINT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MetricCalibrationType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("unspecified".equals(codeString))
-      return UNSPECIFIED;
-    if ("offset".equals(codeString))
-      return OFFSET;
-    if ("gain".equals(codeString))
-      return GAIN;
-    if ("two-point".equals(codeString))
-      return TWOPOINT;
-    throw new FHIRException("Unknown MetricCalibrationType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case UNSPECIFIED:
-      return "unspecified";
-    case OFFSET:
-      return "offset";
-    case GAIN:
-      return "gain";
-    case TWOPOINT:
-      return "two-point";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * TODO
+         */
+        UNSPECIFIED, 
+        /**
+         * TODO
+         */
+        OFFSET, 
+        /**
+         * TODO
+         */
+        GAIN, 
+        /**
+         * TODO
+         */
+        TWOPOINT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MetricCalibrationType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("unspecified".equals(codeString))
+          return UNSPECIFIED;
+        if ("offset".equals(codeString))
+          return OFFSET;
+        if ("gain".equals(codeString))
+          return GAIN;
+        if ("two-point".equals(codeString))
+          return TWOPOINT;
+        throw new FHIRException("Unknown MetricCalibrationType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case UNSPECIFIED: return "unspecified";
+            case OFFSET: return "offset";
+            case GAIN: return "gain";
+            case TWOPOINT: return "two-point";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/metric-calibration-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case UNSPECIFIED: return "TODO";
+            case OFFSET: return "TODO";
+            case GAIN: return "TODO";
+            case TWOPOINT: return "TODO";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case UNSPECIFIED: return "Unspecified";
+            case OFFSET: return "Offset";
+            case GAIN: return "Gain";
+            case TWOPOINT: return "Two Point";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/metric-calibration-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case UNSPECIFIED:
-      return "TODO";
-    case OFFSET:
-      return "TODO";
-    case GAIN:
-      return "TODO";
-    case TWOPOINT:
-      return "TODO";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case UNSPECIFIED:
-      return "Unspecified";
-    case OFFSET:
-      return "Offset";
-    case GAIN:
-      return "Gain";
-    case TWOPOINT:
-      return "Two Point";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class CodesystemHierarchyMeaningEnumFactory implements EnumFactory<CodesystemHierarchyMeaning> {
@@ -46,7 +50,7 @@ public class CodesystemHierarchyMeaningEnumFactory implements EnumFactory<Codesy
       return CodesystemHierarchyMeaning.PARTOF;
     if ("classified-with".equals(codeString))
       return CodesystemHierarchyMeaning.CLASSIFIEDWITH;
-    throw new IllegalArgumentException("Unknown CodesystemHierarchyMeaning code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown CodesystemHierarchyMeaning code '"+codeString+"'");
   }
 
   public String toCode(CodesystemHierarchyMeaning code) {
@@ -61,8 +65,8 @@ public class CodesystemHierarchyMeaningEnumFactory implements EnumFactory<Codesy
     return "?";
   }
 
-  public String toSystem(CodesystemHierarchyMeaning code) {
-    return code.getSystem();
-  }
+    public String toSystem(CodesystemHierarchyMeaning code) {
+      return code.getSystem();
+      }
 
 }

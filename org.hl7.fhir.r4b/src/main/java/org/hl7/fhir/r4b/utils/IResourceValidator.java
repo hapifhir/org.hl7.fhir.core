@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.utils;
   
  */
 
+
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -50,121 +52,117 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import com.google.gson.JsonObject;
 
 /**
- * Interface to the instance validator. This takes a resource, in one of many
- * forms, and checks whether it is valid
- * 
- * @author Grahame Grieve
- *
- */
+ * Interface to the instance validator. This takes a resource, in one of many forms, and 
+ * checks whether it is valid
+   *  
+   * @author Grahame Grieve
+   *
+   */
 public interface IResourceValidator {
 
   public class BundleValidationRule {
     private String rule;
     private String profile;
     private boolean checked;
-
+    
     public BundleValidationRule(String rule, String profile) {
       super();
       this.rule = rule;
       this.profile = profile;
     }
-
     public String getRule() {
       return rule;
     }
-
     public String getProfile() {
       return profile;
     }
-
     public boolean isChecked() {
       return checked;
     }
-
     public void setChecked(boolean checked) {
       this.checked = checked;
-    }
+    }    
   }
 
   public enum ReferenceValidationPolicy {
     IGNORE, CHECK_TYPE_IF_EXISTS, CHECK_EXISTS, CHECK_EXISTS_AND_TYPE, CHECK_VALID;
-
+    
     public boolean checkExists() {
-      return this == CHECK_EXISTS_AND_TYPE || this == CHECK_EXISTS || this == CHECK_VALID
-          || this == CHECK_TYPE_IF_EXISTS;
+      return this == CHECK_EXISTS_AND_TYPE || this == CHECK_EXISTS || this == CHECK_VALID || this == CHECK_TYPE_IF_EXISTS;
     }
-
+    
     public boolean checkType() {
       return this == CHECK_TYPE_IF_EXISTS || this == CHECK_EXISTS_AND_TYPE || this == CHECK_VALID;
     }
-
+    
     public boolean checkValid() {
       return this == CHECK_VALID;
     }
   }
-
+  
   public interface IValidationProfileUsageTracker {
     void recordProfileUsage(StructureDefinition profile, Object appContext, Element element);
   }
+  
 
   public interface IValidatorResourceFetcher {
 
-    Element fetch(Object appContext, String url)
-        throws FHIRFormatError, DefinitionException, FHIRException, IOException;
-
+    Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException;
     ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url);
-
     boolean resolveURL(Object appContext, String path, String url, String type) throws IOException, FHIRException;
 
     byte[] fetchRaw(String url) throws MalformedURLException, IOException; // for attachment checking
 
     IValidatorResourceFetcher setLocale(Locale locale);
-
+    
+    
     /**
-     * this is used when the validator encounters a reference to a structure
-     * definition, value set or code system at some random URL reference while
-     * validating.
+     * this is used when the validator encounters a reference to a structure definition, value set or code system at some random URL reference 
+     * while validating. 
      *
-     * Added in v5.2.2. return null to leave functionality as it was before then.
-     * 
+     *  Added in v5.2.2. return null to leave functionality as it was before then.
+     *  
      * @param primitiveValue
      * @return an R5 version of the resource
-     * @throws URISyntaxException
+     * @throws URISyntaxException 
      */
     CanonicalResource fetchCanonicalResource(String url) throws URISyntaxException;
-
+    
     /**
-     * Whether to try calling fetchCanonicalResource for this reference (not whether
-     * it will succeed - just throw an exception from fetchCanonicalResource if it
-     * doesn't resolve. This is a policy thing.
+     * Whether to try calling fetchCanonicalResource for this reference (not whether it will succeed - just throw an exception from fetchCanonicalResource if it doesn't resolve. This is a policy thing.
      * 
-     * Added in v5.2.2. return false to leave functionality as it was before then.
-     * 
+     *  Added in v5.2.2. return false to leave functionality as it was before then.
+     *  
      * @param url
      * @return
      */
     boolean fetchesCanonicalResource(String url);
   }
-
+  
   public enum BestPracticeWarningLevel {
-    Ignore, Hint, Warning, Error
+    Ignore,
+    Hint,
+    Warning,
+    Error
   }
 
   public enum CheckDisplayOption {
-    Ignore, Check, CheckCaseAndSpace, CheckCase, CheckSpace
+    Ignore,
+    Check,
+    CheckCaseAndSpace,
+    CheckCase,
+    CheckSpace
   }
 
   enum IdStatus {
     OPTIONAL, REQUIRED, PROHIBITED
   }
-
+  
   /**
-   * how much to check displays for coded elements
-   * 
+   * how much to check displays for coded elements 
    * @return
    */
   CheckDisplayOption getCheckDisplay();
-
   void setCheckDisplay(CheckDisplayOption checkDisplay);
 
   /**
@@ -173,191 +171,136 @@ public interface IResourceValidator {
    * @return
    */
 
-  IdStatus getResourceIdRule();
-
-  void setResourceIdRule(IdStatus resourceIdRule);
-
+	IdStatus getResourceIdRule();
+	void setResourceIdRule(IdStatus resourceIdRule);
+  
   /**
-   * whether the validator should enforce best practice guidelines as defined by
-   * various HL7 committees
-   * 
+   * whether the validator should enforce best practice guidelines
+   * as defined by various HL7 committees 
+   *  
    */
   BestPracticeWarningLevel getBestPracticeWarningLevel();
-
   IResourceValidator setBestPracticeWarningLevel(BestPracticeWarningLevel value);
 
   IValidatorResourceFetcher getFetcher();
-
   IResourceValidator setFetcher(IValidatorResourceFetcher value);
 
   IValidationProfileUsageTracker getTracker();
-
   IResourceValidator setTracker(IValidationProfileUsageTracker value);
 
   boolean isNoBindingMsgSuppressed();
-
   IResourceValidator setNoBindingMsgSuppressed(boolean noBindingMsgSuppressed);
-
+  
   public boolean isNoInvariantChecks();
-
-  public IResourceValidator setNoInvariantChecks(boolean value);
-
+  public IResourceValidator setNoInvariantChecks(boolean value) ;
+  
   public boolean isNoTerminologyChecks();
-
   public IResourceValidator setNoTerminologyChecks(boolean noTerminologyChecks);
 
   public boolean isNoExtensibleWarnings();
-
   public IResourceValidator setNoExtensibleWarnings(boolean noExtensibleWarnings);
-
+  
   /**
-   * Whether being unable to resolve a profile in found in Resource.meta.profile
-   * or ElementDefinition.type.profile or targetProfile is an error or just a
-   * warning
-   * 
+   * Whether being unable to resolve a profile in found in Resource.meta.profile or ElementDefinition.type.profile or targetProfile is an error or just a warning
    * @return
    */
   public boolean isErrorForUnknownProfiles();
-
   public void setErrorForUnknownProfiles(boolean errorForUnknownProfiles);
 
   public boolean isShowMessagesFromReferences();
-
   public void setShowMessagesFromReferences(boolean value);
 
-  /**
-   * this is used internally in the publishing stack to ensure that everything is
-   * water tight, but this check is not necessary or appropriate at run time when
-   * the validator is hosted in HAPI
-   * 
+  /** 
+   * this is used internally in the publishing stack to ensure that everything is water tight, but 
+   * this check is not necessary or appropriate at run time when the validator is hosted in HAPI
    * @return
    */
   public boolean isWantCheckSnapshotUnchanged();
-
   public void setWantCheckSnapshotUnchanged(boolean wantCheckSnapshotUnchanged);
-
-  // FIXME: don't need that, gets never used?
+  
+  //FIXME: don't need that, gets never used?
 //  public String getValidationLanguage();
 //  public void setValidationLanguage(String value);
-
+  
   /**
-   * It's common to see references such as Patient/234234 - these usually mean a
-   * reference to a Patient resource. But there's no actual technical rule that it
-   * does, so the validator doesn't enforce that unless this setting is set to
-   * true
+   * It's common to see references such as Patient/234234 - these usually mean a reference to a Patient resource. 
+   * But there's no actual technical rule that it does, so the validator doesn't enforce that unless this setting is 
+   * set to true
    * 
    * @return
    */
   public boolean isAssumeValidRestReferences();
-
   public void setAssumeValidRestReferences(boolean value);
-
-  /**
-   * if this is true, the validator will accept extensions and references to
-   * example.org and acme.com as valid, on the basis that they are understood to
-   * be references to content that could exist in priniple but can't in practice
+  
+  /** 
+   * if this is true, the validator will accept extensions and references to example.org and acme.com as 
+   * valid, on the basis that they are understood to be references to content that could exist in priniple but can't in practice
    */
   public boolean isAllowExamples();
-
-  public void setAllowExamples(boolean value);
-
+  public void setAllowExamples(boolean value) ;
+ 
   public boolean isNoCheckAggregation();
-
   public void setNoCheckAggregation(boolean value);
-
   /**
-   * CrumbTrail - whether the validator creates hints to
-   * 
+   * CrumbTrail - whether the validator creates hints to 
    * @return
    */
   public boolean isCrumbTrails();
-
   public void setCrumbTrails(boolean crumbTrails);
 
   public boolean isValidateValueSetCodesOnTxServer();
-
   public void setValidateValueSetCodesOnTxServer(boolean value);
 
-  /**
-   * Bundle validation rules allow for requesting particular entries in a bundle
-   * get validated against particular profiles Typically this is used from the
-   * command line to avoid having to construct profile just to validate a
-   * particular resource in a bundle against a particular profile
-   * 
+  /** 
+   * Bundle validation rules allow for requesting particular entries in a bundle get validated against particular profiles
+   * Typically this is used from the command line to avoid having to construct profile just to validate a particular resource 
+   * in a bundle against a particular profile 
+   *  
    * @return
    */
   public List<BundleValidationRule> getBundleValidationRules();
-
+  
   /**
    * Validate suite
-   * 
+   *  
    * you can validate one of the following representations of resources:
-   * 
+   *  
    * stream - provide a format - this is the preferred choice
    * 
-   * Use one of these two if the content is known to be valid XML/JSON, and
-   * already parsed - a DOM element or Document - a Json Object
+   * Use one of these two if the content is known to be valid XML/JSON, and already parsed
+   * - a DOM element or Document
+   * - a Json Object
+   *  
+   * In order to use these, the content must already be parsed - e.g. it must syntactically valid    
+   * - a native resource
+   * - a elementmodel resource  
    * 
-   * In order to use these, the content must already be parsed - e.g. it must
-   * syntactically valid - a native resource - a elementmodel resource
-   * 
-   * in addition, you can pass one or more profiles ti validate beyond the base
-   * standard - as structure definitions or canonical URLs
-   * 
-   * @throws IOException
+   * in addition, you can pass one or more profiles ti validate beyond the base standard - as structure definitions or canonical URLs 
+   * @throws IOException 
    */
-  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r4b.elementmodel.Element element)
-      throws FHIRException;
+  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r4b.elementmodel.Element element) throws FHIRException;
+  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r4b.elementmodel.Element element, String profile) throws FHIRException;
+  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r4b.elementmodel.Element element, List<StructureDefinition> profiles) throws FHIRException;
+  
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format) throws FHIRException;
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format, String profile) throws FHIRException;
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format, List<StructureDefinition> profiles) throws FHIRException;
 
-  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r4b.elementmodel.Element element,
-      String profile) throws FHIRException;
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r4b.model.Resource resource) throws FHIRException;
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r4b.model.Resource resource, String profile) throws FHIRException;
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r4b.model.Resource resource, List<StructureDefinition> profiles) throws FHIRException;
 
-  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r4b.elementmodel.Element element,
-      List<StructureDefinition> profiles) throws FHIRException;
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Element element) throws FHIRException;
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Element element, String profile) throws FHIRException;
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Element element, List<StructureDefinition> profile) throws FHIRException;
 
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream,
-      FhirFormat format) throws FHIRException;
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Document document) throws FHIRException;
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Document document, String profile) throws FHIRException;
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.w3c.dom.Document document, List<StructureDefinition> profile) throws FHIRException;
 
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream,
-      FhirFormat format, String profile) throws FHIRException;
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object) throws FHIRException;
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, String profile) throws FHIRException;
+  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, List<StructureDefinition> profile) throws FHIRException; 
 
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream,
-      FhirFormat format, List<StructureDefinition> profiles) throws FHIRException;
-
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors,
-      org.hl7.fhir.r4b.model.Resource resource) throws FHIRException;
-
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors,
-      org.hl7.fhir.r4b.model.Resource resource, String profile) throws FHIRException;
-
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors,
-      org.hl7.fhir.r4b.model.Resource resource, List<StructureDefinition> profiles) throws FHIRException;
-
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors,
-      org.w3c.dom.Element element) throws FHIRException;
-
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors,
-      org.w3c.dom.Element element, String profile) throws FHIRException;
-
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors,
-      org.w3c.dom.Element element, List<StructureDefinition> profile) throws FHIRException;
-
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors,
-      org.w3c.dom.Document document) throws FHIRException;
-
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors,
-      org.w3c.dom.Document document, String profile) throws FHIRException;
-
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors,
-      org.w3c.dom.Document document, List<StructureDefinition> profile) throws FHIRException;
-
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object)
-      throws FHIRException;
-
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object,
-      String profile) throws FHIRException;
-
-  org.hl7.fhir.r4b.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object,
-      List<StructureDefinition> profile) throws FHIRException;
 
 }

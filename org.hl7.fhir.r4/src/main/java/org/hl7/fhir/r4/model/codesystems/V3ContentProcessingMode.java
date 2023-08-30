@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3ContentProcessingMode {
 
-  /**
-   * Description:The content should be processed in a sequential fashion.
-   */
-  SEQL,
-  /**
-   * Description:The content may be processed in any order.
-   */
-  UNOR,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static V3ContentProcessingMode fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("SEQL".equals(codeString))
-      return SEQL;
-    if ("UNOR".equals(codeString))
-      return UNOR;
-    throw new FHIRException("Unknown V3ContentProcessingMode code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case SEQL:
-      return "SEQL";
-    case UNOR:
-      return "UNOR";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Description:The content should be processed in a sequential fashion.
+         */
+        SEQL, 
+        /**
+         * Description:The content may be processed in any order.
+         */
+        UNOR, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static V3ContentProcessingMode fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("SEQL".equals(codeString))
+          return SEQL;
+        if ("UNOR".equals(codeString))
+          return UNOR;
+        throw new FHIRException("Unknown V3ContentProcessingMode code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case SEQL: return "SEQL";
+            case UNOR: return "UNOR";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/v3-ContentProcessingMode";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case SEQL: return "Description:The content should be processed in a sequential fashion.";
+            case UNOR: return "Description:The content may be processed in any order.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case SEQL: return "Sequential";
+            case UNOR: return "Unordered";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/v3-ContentProcessingMode";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case SEQL:
-      return "Description:The content should be processed in a sequential fashion.";
-    case UNOR:
-      return "Description:The content may be processed in any order.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case SEQL:
-      return "Sequential";
-    case UNOR:
-      return "Unordered";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

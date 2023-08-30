@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Element;
@@ -66,12 +67,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
 
     @Override
     protected String summary() {
-      String res = "ValueSet: "+left.present()+" vs "+right.present();
-      String ch = changeSummary();
-      if (ch != null) {
-        res = res + ". "+ch;
-      }
-      return res;
+      return "ValueSet: "+left.present()+" vs "+right.present();
     }
 
     @Override
@@ -122,40 +118,28 @@ public class ValueSetComparer extends CanonicalResourceComparer {
     vs1.setStatus(left.getStatus());
     vs1.setDate(new Date());
    
-    List<String> chMetadata = new ArrayList<>();
-    var ch = compareMetadata(left, right, res.getMetadata(), res, chMetadata, right);
-    var def = false;
-    if (comparePrimitives("immutable", left.getImmutableElement(), right.getImmutableElement(), res.getMetadata(), IssueSeverity.WARNING, res)) {
-      ch = true;
-      chMetadata.add("immutable");
-    }
+    compareMetadata(left, right, res.getMetadata(), res);
+    comparePrimitives("immutable", left.getImmutableElement(), right.getImmutableElement(), res.getMetadata(), IssueSeverity.WARNING, res);
     if (left.hasCompose() || right.hasCompose()) {
-      if (comparePrimitives("compose.lockedDate", left.getCompose().getLockedDateElement(), right.getCompose().getLockedDateElement(), res.getMetadata(), IssueSeverity.WARNING, res)) {
-        ch = true;
-        chMetadata.add("compose.lockedDate");
-      }
-      def = comparePrimitives("compose.inactive", left.getCompose().getInactiveElement(), right.getCompose().getInactiveElement(), res.getMetadata(), IssueSeverity.WARNING, res) || def;      
+      comparePrimitives("compose.lockedDate", left.getCompose().getLockedDateElement(), right.getCompose().getLockedDateElement(), res.getMetadata(), IssueSeverity.WARNING, res);
+      comparePrimitives("compose.inactive", left.getCompose().getInactiveElement(), right.getCompose().getInactiveElement(), res.getMetadata(), IssueSeverity.WARNING, res);      
     }
-    res.updatedMetadataState(ch, chMetadata);
-        
-    def = compareCompose(left.getCompose(), right.getCompose(), res, res.getUnion().getCompose(), res.getIntersection().getCompose()) || def;
-    res.updateDefinitionsState(def);
-//    compareExpansions(left, right, res);
-    session.annotate(right, res);
+    
+    compareCompose(left.getCompose(), right.getCompose(), res, res.getUnion().getCompose(), res.getIntersection().getCompose());
+    compareExpansions(left, right, res);
     return res;
   }
 
-  private boolean compareCompose(ValueSetComposeComponent left, ValueSetComposeComponent right, ValueSetComparison res, ValueSetComposeComponent union, ValueSetComposeComponent intersection) {
-    boolean def = false;
+
+
+  private void compareCompose(ValueSetComposeComponent left, ValueSetComposeComponent right, ValueSetComparison res, ValueSetComposeComponent union, ValueSetComposeComponent intersection) {
     // first, the includes
     List<ConceptSetComponent> matchR = new ArrayList<>();
     for (ConceptSetComponent l : left.getInclude()) {
       ConceptSetComponent r = findInList(right.getInclude(), l, left.getInclude());
       if (r == null) {
         union.getInclude().add(l);
-        res.updateContentState(true);
         res.getIncludes().getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.INFORMATION, "Removed Include", "ValueSet.compose.include")));
-        session.markDeleted(right,  "include", l);
       } else {
         matchR.add(r);
         ConceptSetComponent csM = new ConceptSetComponent();
@@ -164,15 +148,13 @@ public class ValueSetComparer extends CanonicalResourceComparer {
         intersection.getInclude().add(csI);
         StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r);
         res.getIncludes().getChildren().add(sm);
-        def = compareDefinitions("ValueSet.compose.exclude["+right.getInclude().indexOf(r)+"]", l, r, sm, csM, csI, res) || def;
+        compareDefinitions(l, r, sm, csM, csI);
       }
     }
     for (ConceptSetComponent r : right.getInclude()) {
       if (!matchR.contains(r)) {
         union.getInclude().add(r);
-        res.updateContentState(true);
-        res.getIncludes().getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added Include", "ValueSet.compose.include"), r));  
-        session.markAdded(r);
+        res.getIncludes().getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added Include", "ValueSet.compose.include"), r));        
       }
     }
     
@@ -182,7 +164,6 @@ public class ValueSetComparer extends CanonicalResourceComparer {
       ConceptSetComponent r = findInList(right.getExclude(), l, left.getExclude());
       if (r == null) {
         union.getExclude().add(l);
-        res.updateContentState(true);
         res.getExcludes().getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.INFORMATION, "Removed Exclude", "ValueSet.compose.exclude")));
       } else {
         matchR.add(r);
@@ -192,17 +173,15 @@ public class ValueSetComparer extends CanonicalResourceComparer {
         intersection.getExclude().add(csI);
         StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r);
         res.getExcludes().getChildren().add(sm);
-        def = compareDefinitions("ValueSet.compose.exclude["+right.getExclude().indexOf(r)+"]", l, r, sm, csM, csI, res) || def;
+        compareDefinitions(l, r, sm, csM, csI);
       }
     }
     for (ConceptSetComponent r : right.getExclude()) {
       if (!matchR.contains(r)) {
         union.getExclude().add(r);
-        res.updateContentState(true);
         res.getExcludes().getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added Exclude", "ValueSet.compose.exclude"), r));        
       }
     }
-    return def;
   }
 
   private ConceptSetComponent findInList(List<ConceptSetComponent> matches, ConceptSetComponent item, List<ConceptSetComponent> source) {
@@ -239,19 +218,14 @@ public class ValueSetComparer extends CanonicalResourceComparer {
   }
 
 
-  private boolean compareDefinitions(String path, ConceptSetComponent left, ConceptSetComponent right, StructuralMatch<Element> combined, ConceptSetComponent union, ConceptSetComponent intersection, ValueSetComparison res) {
-    boolean def = false;
+  private void compareDefinitions(ConceptSetComponent left, ConceptSetComponent right, StructuralMatch<Element> combined, ConceptSetComponent union, ConceptSetComponent intersection) {
     // system must match, but the rest might not. we're going to do the full comparison whatever, so the outcome looks consistent to the user    
     List<CanonicalType> matchVSR = new ArrayList<>();
     for (CanonicalType l : left.getValueSet()) {
       CanonicalType r = findInList(right.getValueSet(), l, left.getValueSet());
       if (r == null) {
         union.getValueSet().add(l);
-        res.updateContentState(true);
-        combined.getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.ERROR, "Removed ValueSet", "ValueSet.compose.include.valueSet")));
-        if (session.isAnnotate()) {
-          session.markDeleted(right,  "valueset", l);
-        }
+        combined.getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.INFORMATION, "Removed ValueSet", "ValueSet.compose.include.valueSet")));
       } else {
         matchVSR.add(r);
         if (l.getValue().equals(r.getValue())) {
@@ -260,25 +234,17 @@ public class ValueSetComparer extends CanonicalResourceComparer {
           StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r, null);
           combined.getChildren().add(sm);          
         } else {
-          // it's not possible to get here?
           union.getValueSet().add(l);
           union.getValueSet().add(r);
-          res.updateContentState(true);
-          StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r, vmI(IssueSeverity.WARNING, "Values are different", "ValueSet.compose.include.valueSet"));
-          combined.getChildren().add(sm);            
-          if (session.isAnnotate()) {
-            session.markChanged(r,  l);
-          }           
-
+          StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r, vmI(IssueSeverity.INFORMATION, "Values are different", "ValueSet.compose.include.valueSet"));
+          combined.getChildren().add(sm);
         }
       }
     }
     for (CanonicalType r : right.getValueSet()) {
       if (!matchVSR.contains(r)) {
         union.getValueSet().add(r);
-        res.updateContentState(true);
-        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.ERROR, "Add ValueSet", "ValueSet.compose.include.valueSet"), r));  
-        session.markAdded(r);
+        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Add ValueSet", "ValueSet.compose.include.valueSet"), r));        
       }
     }
     
@@ -287,10 +253,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
       ConceptReferenceComponent r = findInList(right.getConcept(), l, left.getConcept());
       if (r == null) {
         union.getConcept().add(l);
-        res.updateContentState(true);
-        combined.getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.ERROR, "Removed this Concept", "ValueSet.compose.include.concept")));
-        res.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path, "Code "+l.getCode()+" removed", IssueSeverity.ERROR));
-        session.markDeleted(right,"concept", l);
+        combined.getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.INFORMATION, "Removed this Concept", "ValueSet.compose.include.concept")));
       } else {
         matchCR.add(r);
         if (l.getCode().equals(r.getCode())) {
@@ -300,26 +263,20 @@ public class ValueSetComparer extends CanonicalResourceComparer {
           intersection.getConcept().add(ci);
           StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r);
           combined.getChildren().add(sm);
-          def = compareConcepts(path+".concept["+right.getConcept().indexOf(r)+"]", l, r, sm, cu, ci, res) || def;
+          compareConcepts(l, r, sm, cu, ci);
         } else {
-          // not that it's possible to get here?
           union.getConcept().add(l);
           union.getConcept().add(r);
-          StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r, vmI(IssueSeverity.WARNING, "Concepts are different", "ValueSet.compose.include.concept"));
+          StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r, vmI(IssueSeverity.INFORMATION, "Concepts are different", "ValueSet.compose.include.concept"));
           combined.getChildren().add(sm);
-          res.updateContentState(true);
-          compareConcepts(path+".concept["+right.getConcept().indexOf(r)+"]", l, r, sm, null, null, res);
-          session.markChanged(r, l);
+          compareConcepts(l, r, sm, null, null);
         }
       }
     }
     for (ConceptReferenceComponent r : right.getConcept()) {
       if (!matchCR.contains(r)) {
         union.getConcept().add(r);
-        res.updateContentState(true);
-        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.ERROR, "Added this Concept", "ValueSet.compose.include.concept"), r)); 
-        res.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path, "Code "+r.getCode()+" added", IssueSeverity.ERROR));
-        session.markAdded(r);
+        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added this Concept", "ValueSet.compose.include.concept"), r));        
       }
     }
     
@@ -328,9 +285,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
       ConceptSetFilterComponent r = findInList(right.getFilter(), l, left.getFilter());
       if (r == null) {
         union.getFilter().add(l);
-        res.updateContentState(true);
-        combined.getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.ERROR, "Removed this item", "ValueSet.compose.include.filter")));
-        session.markDeleted(right, "filter", l);
+        combined.getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.INFORMATION, "Removed this item", "ValueSet.compose.include.filter")));
       } else {
         matchFR.add(r);
         if (l.getProperty().equals(r.getProperty()) && l.getOp().equals(r.getOp())) {
@@ -340,15 +295,11 @@ public class ValueSetComparer extends CanonicalResourceComparer {
           intersection.getFilter().add(ci);
           StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r);
           combined.getChildren().add(sm);
-          if (!compareFilters(l, r, sm, cu, ci)) {
-            res.updateContentState(true);       
-            session.markChanged(r, l);
-          }
+          compareFilters(l, r, sm, cu, ci);
         } else {
           union.getFilter().add(l);
           union.getFilter().add(r);
-          StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r, vmI(IssueSeverity.WARNING, "Codes are different", "ValueSet.compose.include.filter"));
-          res.updateContentState(true);            
+          StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r, vmI(IssueSeverity.INFORMATION, "Codes are different", "ValueSet.compose.include.filter"));
           combined.getChildren().add(sm);
           compareFilters(l, r, sm, null, null);
         }
@@ -357,16 +308,12 @@ public class ValueSetComparer extends CanonicalResourceComparer {
     for (ConceptSetFilterComponent r : right.getFilter()) {
       if (!matchFR.contains(r)) {
         union.getFilter().add(r);
-        res.updateContentState(true);
-        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.ERROR, "Added this item", "ValueSet.compose.include.filter"), r));  
-        session.markAdded(r);
+        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added this item", "ValueSet.compose.include.filter"), r));        
       }
     }
-    return def;
   }
 
-  private boolean compareConcepts(String path, ConceptReferenceComponent l, ConceptReferenceComponent r, StructuralMatch<Element> sm, ConceptReferenceComponent cu,  ConceptReferenceComponent ci, ValueSetComparison res) {
-    boolean def = false;
+  private void compareConcepts(ConceptReferenceComponent l, ConceptReferenceComponent r, StructuralMatch<Element> sm, ConceptReferenceComponent cu,  ConceptReferenceComponent ci) {
     sm.getChildren().add(new StructuralMatch<Element>(l.getCodeElement(), r.getCodeElement(), l.getCode().equals(r.getCode()) ? null : vmI(IssueSeverity.INFORMATION, "Codes do not match", "ValueSet.compose.include.concept")));
     if (ci != null) {
       ci.setCode(l.getCode());
@@ -378,36 +325,24 @@ public class ValueSetComparer extends CanonicalResourceComparer {
         ci.setDisplay(r.getDisplay());
         cu.setDisplay(r.getDisplay());
       }
-      def = !l.getDisplay().equals(r.getDisplay());
-      if (def) {
-        res.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path, "Code "+l.getCode()+" display changed from '"+l.getDisplay()+"' to '"+r.getDisplay()+"'", IssueSeverity.WARNING));
-        session.markChanged(r.getDisplayElement(),  l.getDisplayElement());
-      }
     } else if (l.hasDisplay()) {
-      session.markDeleted(r, "display", l.getDisplayElement());
-      res.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path, "Code "+l.getCode()+" display '"+l.getDisplay()+"' removed", IssueSeverity.WARNING));
       sm.getChildren().add(new StructuralMatch<Element>(l.getDisplayElement(), null, vmI(IssueSeverity.INFORMATION, "Display Removed", "ValueSet.compose.include.concept")));
       if (ci != null) {
         ci.setDisplay(l.getDisplay());
         cu.setDisplay(l.getDisplay());
       }
-      def = true;
     } else if (r.hasDisplay()) {
-      session.markAdded(r.getDisplayElement());
-      res.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path, "Code "+l.getCode()+" display '"+r.getDisplay()+"' added", IssueSeverity.WARNING));
       sm.getChildren().add(new StructuralMatch<Element>(null, r.getDisplayElement(), vmI(IssueSeverity.INFORMATION, "Display added", "ValueSet.compose.include.concept")));
       if (ci != null) {
         ci.setDisplay(r.getDisplay());
         cu.setDisplay(r.getDisplay());
       }
-      def = true;
     } else {
       sm.getChildren().add(new StructuralMatch<Element>(null, null, vmI(IssueSeverity.INFORMATION, "No Display", "ValueSet.compose.include.concept")));
     }
-    return def;
   }
 
-  private boolean compareFilters(ConceptSetFilterComponent l, ConceptSetFilterComponent r, StructuralMatch<Element> sm, ConceptSetFilterComponent cu,  ConceptSetFilterComponent ci) {
+  private void compareFilters(ConceptSetFilterComponent l, ConceptSetFilterComponent r, StructuralMatch<Element> sm, ConceptSetFilterComponent cu,  ConceptSetFilterComponent ci) {
     sm.getChildren().add(new StructuralMatch<Element>(l.getPropertyElement(), r.getPropertyElement(), l.getProperty().equals(r.getProperty()) ? null : vmI(IssueSeverity.INFORMATION, "Properties do not match", "ValueSet.compose.include.concept")));
     sm.getChildren().add(new StructuralMatch<Element>(l.getOpElement(), r.getOpElement(), l.getOp().equals(r.getOp()) ? null : vmI(IssueSeverity.INFORMATION, "Filter Operations do not match", "ValueSet.compose.include.concept")));
     sm.getChildren().add(new StructuralMatch<Element>(l.getValueElement(), r.getValueElement(), l.getValue().equals(r.getValue()) ? null : vmI(IssueSeverity.INFORMATION, "Values do not match", "ValueSet.compose.include.concept")));
@@ -419,7 +354,6 @@ public class ValueSetComparer extends CanonicalResourceComparer {
       cu.setOp(l.getOp());
       cu.setValue(l.getValue());
     }
-    return !l.getProperty().equals(r.getProperty());
   }
   
   private CanonicalType findInList(List<CanonicalType> matches, CanonicalType item, List<CanonicalType> source) {

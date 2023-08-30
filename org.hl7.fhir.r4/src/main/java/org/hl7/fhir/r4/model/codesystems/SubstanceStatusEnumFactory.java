@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class SubstanceStatusEnumFactory implements EnumFactory<SubstanceStatus> {
@@ -44,7 +48,7 @@ public class SubstanceStatusEnumFactory implements EnumFactory<SubstanceStatus> 
       return SubstanceStatus.INACTIVE;
     if ("entered-in-error".equals(codeString))
       return SubstanceStatus.ENTEREDINERROR;
-    throw new IllegalArgumentException("Unknown SubstanceStatus code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown SubstanceStatus code '"+codeString+"'");
   }
 
   public String toCode(SubstanceStatus code) {
@@ -57,8 +61,8 @@ public class SubstanceStatusEnumFactory implements EnumFactory<SubstanceStatus> 
     return "?";
   }
 
-  public String toSystem(SubstanceStatus code) {
-    return code.getSystem();
-  }
+    public String toSystem(SubstanceStatus code) {
+      return code.getSystem();
+      }
 
 }

@@ -17,35 +17,89 @@ public class RendererFactory {
         return new LiquidRenderer(context, liquidTemplate);
       }
     }
-    switch (resourceName) {
-    case "ActorDefinition": return new ActorDefinitionRenderer(context);
-    case "Bundle": return new BundleRenderer(context);
-    case "CapabilityStatement": return new CapabilityStatementRenderer(context);
-    case "CodeSystem": return new CodeSystemRenderer(context);
-    case "CompartmentDefinition":  return new CompartmentDefinitionRenderer(context);
-    case "ConceptMap": return new ConceptMapRenderer(context);
-    case "DiagnosticReport": return new DiagnosticReportRenderer(context);
-    case "Encounter": return new EncounterRenderer(context);
-    case "ExampleScenario": return new ExampleScenarioRenderer(context);
-    case "ImplementationGuide": return new ImplementationGuideRenderer(context);
-    case "Library": return new LibraryRenderer(context);
-    case "List": return new ListRenderer(context);
-    case "NamingSystem": return new NamingSystemRenderer(context);
-    case "OperationDefinition": return new OperationDefinitionRenderer(context);
-    case "OperationOutcome": return new OperationOutcomeRenderer(context);
-    case "Parameters": return new ParametersRenderer(context);
-    case "Patient": return new PatientRenderer(context);
-    case "Provenance": return new ProvenanceRenderer(context);
-    case "Questionnaire": return new QuestionnaireRenderer(context);
-    case "QuestionnaireResponse": return new QuestionnaireResponseRenderer(context);
-    case "Requirements": return new RequirementsRenderer(context);
-    case "SearchParameter": return new SearchParameterRenderer(context);
-    case "StructureDefinition": return new StructureDefinitionRenderer(context);
-    case "StructureMap": return new StructureMapRenderer(context);
-    case "SubscriptionTopic": return new SubscriptionTopicRenderer(context);
-    case "TestPlan": return new TestPlanRenderer(context);
-    case "ValueSet": return new ValueSetRenderer(context);
+
+    if ("CodeSystem".equals(resourceName)) {
+      return new CodeSystemRenderer(context);
     }
+    if ("ValueSet".equals(resourceName)) {
+      return new ValueSetRenderer(context);
+    }
+    if ("ConceptMap".equals(resourceName)) {
+      return new ConceptMapRenderer(context);
+    }
+
+    if ("CapabilityStatement".equals(resourceName)) {
+      return new CapabilityStatementRenderer(context);
+    }
+    if ("StructureDefinition".equals(resourceName)) {
+      return new StructureDefinitionRenderer(context);
+    }
+    if ("OperationDefinition".equals(resourceName)) {
+      return new OperationDefinitionRenderer(context);
+    }
+    if ("SearchParameter".equals(resourceName)) {
+      return new SearchParameterRenderer(context);
+    }
+    if ("CompartmentDefinition".equals(resourceName)) {
+      return new CompartmentDefinitionRenderer(context);
+    }
+    if ("ImplementationGuide".equals(resourceName)) {
+      return new ImplementationGuideRenderer(context);
+    }
+    if ("NamingSystem".equals(resourceName)) {
+      return new NamingSystemRenderer(context);
+    }
+    if ("Questionnaire".equals(resourceName)) {
+      return new QuestionnaireRenderer(context);
+    }
+
+    if ("QuestionnaireResponse".equals(resourceName)) {
+      return new QuestionnaireResponseRenderer(context);
+    }
+
+    if ("Patient".equals(resourceName)) {
+      return new PatientRenderer(context);
+    }
+    if ("Encounter".equals(resourceName)) {
+      return new EncounterRenderer(context);
+    }
+    if ("Library".equals(resourceName)) {
+      return new LibraryRenderer(context);
+    }
+    if ("List".equals(resourceName)) {
+      return new ListRenderer(context);
+    }
+    if ("DiagnosticReport".equals(resourceName)) {
+      return new DiagnosticReportRenderer(context);
+    }
+
+    if ("Provenance".equals(resourceName)) {
+      return new ProvenanceRenderer(context);
+    }
+    if ("OperationOutcome".equals(resourceName)) {
+      return new OperationOutcomeRenderer(context);
+    }
+    if ("Parameters".equals(resourceName)) {
+      return new ParametersRenderer(context);
+    }
+    if ("Bundle".equals(resourceName)) {
+      return new BundleRenderer(context);
+    }
+    if ("ActorDefinition".equals(resourceName)) {
+      return new ActorDefinitionRenderer(context);
+    }
+    if ("Requirements".equals(resourceName)) {
+      return new RequirementsRenderer(context);
+    }
+    if ("SubscriptionTopic".equals(resourceName)) {
+      return new SubscriptionTopicRenderer(context);
+    }
+    if ("StructureMap".equals(resourceName)) {
+      return new StructureMapRenderer(context);
+    }
+    if ("TestPlan".equals(resourceName)) {
+        return new TestPlanRenderer(context);
+      }
     return new ProfileDrivenRenderer(context);    
   }
 
@@ -69,12 +123,21 @@ public class RendererFactory {
         return new LiquidRenderer(context, liquidTemplate);
       }
     }
-    switch (resource.getName()) {
-    case "DiagnosticReport": return new DiagnosticReportRenderer(context);
-    case "Library": return new LibraryRenderer(context);
-    case "List": return new ListRenderer(context);
-    case "Patient": return new PatientRenderer(context);
-    case "QuestionnaireResponse": return new QuestionnaireResponseRenderer(context);
+
+    if ("List".equals(resource.getName())) {
+      return new ListRenderer(context);
+    }
+    if ("Library".equals(resource.getName())) {
+      return new LibraryRenderer(context);
+    }
+    if ("Patient".equals(resource.getName())) {
+      return new PatientRenderer(context);
+    }
+    if ("DiagnosticReport".equals(resource.getName())) {
+      return new DiagnosticReportRenderer(context);
+    }
+    if ("QuestionnaireResponse".equals(resource.getName())) {
+      return new QuestionnaireResponseRenderer(context);
     }
 
     return new ProfileDrivenRenderer(context, resourceContext);    
@@ -89,7 +152,7 @@ public class RendererFactory {
     return Utilities.existsInList(rt, 
         "CodeSystem", "ValueSet", "ConceptMap", 
         "CapabilityStatement", "CompartmentDefinition", "ImplementationGuide", "Library", "NamingSystem", "OperationDefinition", 
-        "Questionnaire", "SearchParameter", "StructureDefinition", "ActorDefinition", "Requirements", "TestPlan", "ExampleScenario");
+        "Questionnaire", "SearchParameter", "StructureDefinition", "ActorDefinition", "Requirements", "TestPlan");
   }
 
   /**

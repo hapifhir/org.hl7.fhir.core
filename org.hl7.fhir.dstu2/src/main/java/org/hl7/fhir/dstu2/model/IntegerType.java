@@ -29,6 +29,8 @@ package org.hl7.fhir.dstu2.model;
   
  */
 
+
+
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import org.hl7.fhir.instance.model.api.IBaseIntegerDatatype;
 
@@ -38,72 +40,73 @@ import org.hl7.fhir.instance.model.api.IBaseIntegerDatatype;
 @DatatypeDef(name = "integer")
 public class IntegerType extends PrimitiveType<Integer> implements IBaseIntegerDatatype {
 
-  private static final long serialVersionUID = 3L;
+	private static final long serialVersionUID = 3L;
 
-  /**
-   * Constructor
-   */
-  public IntegerType() {
-    // nothing
-  }
+	/**
+	 * Constructor
+	 */
+	public IntegerType() {
+		// nothing
+	}
 
-  /**
-   * Constructor
-   */
-  public IntegerType(int theInteger) {
-    setValue(theInteger);
-  }
+	/**
+	 * Constructor
+	 */
+	public IntegerType(int theInteger) {
+		setValue(theInteger);
+	}
 
-  /**
-   * Constructor
-   * 
-   * @param theIntegerAsString A string representation of an integer
-   * @throws IllegalArgumentException If the string is not a valid integer
-   *                                  representation
-   */
-  public IntegerType(String theIntegerAsString) {
-    setValueAsString(theIntegerAsString);
-  }
+	/**
+	 * Constructor
+	 * 
+	 * @param theIntegerAsString
+	 *            A string representation of an integer
+	 * @throws IllegalArgumentException
+	 *             If the string is not a valid integer representation
+	 */
+	public IntegerType(String theIntegerAsString) {
+		setValueAsString(theIntegerAsString);
+	}
 
-  /**
-   * Constructor
-   * 
-   * @param theValue The value
-   * @throws IllegalArgumentException If the value is too large to fit in a signed
-   *                                  integer
-   */
-  public IntegerType(Long theValue) {
-    if (theValue < java.lang.Integer.MIN_VALUE || theValue > java.lang.Integer.MAX_VALUE) {
-      throw new IllegalArgumentException(theValue + " cannot be cast to int without changing its value.");
-    }
-    if (theValue != null) {
-      setValue((int) theValue.longValue());
-    }
-  }
+	/**
+	 * Constructor
+	 * 
+	 * @param theValue The value
+	 * @throws IllegalArgumentException If the value is too large to fit in a signed integer
+	 */
+	public IntegerType(Long theValue) {
+	    if (theValue < java.lang.Integer.MIN_VALUE || theValue > java.lang.Integer.MAX_VALUE) {
+	        throw new IllegalArgumentException
+	            (theValue + " cannot be cast to int without changing its value.");
+	    }
+	    if(theValue!=null) {
+	    	setValue((int)theValue.longValue());
+	    }
+	}
 
-  @Override
-  protected Integer parse(String theValue) {
-    try {
-      return Integer.parseInt(theValue);
-    } catch (NumberFormatException e) {
-      throw new IllegalArgumentException(e);
-    }
-  }
+	@Override
+	protected Integer parse(String theValue) {
+		try {
+			return Integer.parseInt(theValue);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
 
-  @Override
-  protected String encode(Integer theValue) {
-    return Integer.toString(theValue);
-  }
+	@Override
+	protected String encode(Integer theValue) {
+		return Integer.toString(theValue);
+	}
 
-  @Override
-  public IntegerType copy() {
+	@Override
+	public IntegerType copy() {
     Integer value = getValue();
     IntegerType ret = value == null ? new IntegerType() : new IntegerType(value);
     copyValues(ret);
     return ret;
-  }
+	}
 
-  public String fhirType() {
-    return "integer";
-  }
+	public String fhirType() {
+		return "integer";		
+	}
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -86,7 +90,7 @@ public class Hl7WorkGroupEnumFactory implements EnumFactory<Hl7WorkGroup> {
       return Hl7WorkGroup.VOCAB;
     if ("aid".equals(codeString))
       return Hl7WorkGroup.AID;
-    throw new IllegalArgumentException("Unknown Hl7WorkGroup code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown Hl7WorkGroup code '"+codeString+"'");
   }
 
   public String toCode(Hl7WorkGroup code) {
@@ -141,8 +145,8 @@ public class Hl7WorkGroupEnumFactory implements EnumFactory<Hl7WorkGroup> {
     return "?";
   }
 
-  public String toSystem(Hl7WorkGroup code) {
-    return code.getSystem();
-  }
+    public String toSystem(Hl7WorkGroup code) {
+      return code.getSystem();
+      }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class CodesystemContentModeEnumFactory implements EnumFactory<CodesystemContentMode> {
@@ -46,7 +50,7 @@ public class CodesystemContentModeEnumFactory implements EnumFactory<CodesystemC
       return CodesystemContentMode.FRAGMENT;
     if ("complete".equals(codeString))
       return CodesystemContentMode.COMPLETE;
-    throw new IllegalArgumentException("Unknown CodesystemContentMode code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown CodesystemContentMode code '"+codeString+"'");
   }
 
   public String toCode(CodesystemContentMode code) {
@@ -61,8 +65,8 @@ public class CodesystemContentModeEnumFactory implements EnumFactory<CodesystemC
     return "?";
   }
 
-  public String toSystem(CodesystemContentMode code) {
-    return code.getSystem();
-  }
+    public String toSystem(CodesystemContentMode code) {
+      return code.getSystem();
+      }
 
 }

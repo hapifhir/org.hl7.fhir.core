@@ -22,7 +22,7 @@ public class ImplementationGuideRenderer extends ResourceRenderer {
   public ImplementationGuideRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
-
+  
   public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
     return render(x, (ImplementationGuide) dr);
   }

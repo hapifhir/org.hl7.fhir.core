@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,88 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ResearchElementType {
 
-  /**
-   * The element defines the population that forms the basis for research.
-   */
-  POPULATION,
-  /**
-   * The element defines an exposure within the population that is being
-   * researched.
-   */
-  EXPOSURE,
-  /**
-   * The element defines an outcome within the population that is being
-   * researched.
-   */
-  OUTCOME,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ResearchElementType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("population".equals(codeString))
-      return POPULATION;
-    if ("exposure".equals(codeString))
-      return EXPOSURE;
-    if ("outcome".equals(codeString))
-      return OUTCOME;
-    throw new FHIRException("Unknown ResearchElementType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case POPULATION:
-      return "population";
-    case EXPOSURE:
-      return "exposure";
-    case OUTCOME:
-      return "outcome";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The element defines the population that forms the basis for research.
+         */
+        POPULATION, 
+        /**
+         * The element defines an exposure within the population that is being researched.
+         */
+        EXPOSURE, 
+        /**
+         * The element defines an outcome within the population that is being researched.
+         */
+        OUTCOME, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ResearchElementType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("population".equals(codeString))
+          return POPULATION;
+        if ("exposure".equals(codeString))
+          return EXPOSURE;
+        if ("outcome".equals(codeString))
+          return OUTCOME;
+        throw new FHIRException("Unknown ResearchElementType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case POPULATION: return "population";
+            case EXPOSURE: return "exposure";
+            case OUTCOME: return "outcome";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/research-element-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case POPULATION: return "The element defines the population that forms the basis for research.";
+            case EXPOSURE: return "The element defines an exposure within the population that is being researched.";
+            case OUTCOME: return "The element defines an outcome within the population that is being researched.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case POPULATION: return "Population";
+            case EXPOSURE: return "Exposure";
+            case OUTCOME: return "Outcome";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/research-element-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case POPULATION:
-      return "The element defines the population that forms the basis for research.";
-    case EXPOSURE:
-      return "The element defines an exposure within the population that is being researched.";
-    case OUTCOME:
-      return "The element defines an outcome within the population that is being researched.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case POPULATION:
-      return "Population";
-    case EXPOSURE:
-      return "Exposure";
-    case OUTCOME:
-      return "Outcome";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

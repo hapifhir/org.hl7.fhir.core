@@ -29,6 +29,8 @@ package org.hl7.fhir.dstu2.model;
   
  */
 
+
+
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
@@ -36,42 +38,42 @@ import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 /**
  * Primitive type "code" in FHIR, when not bound to an enumerated list of codes
  */
-@DatatypeDef(name = "markdown", profileOf = StringType.class)
-public class MarkdownType extends StringType implements Comparable<MarkdownType> {
+@DatatypeDef(name="markdown", profileOf=StringType.class)
+public class MarkdownType extends StringType implements Comparable<MarkdownType>  {
 
-  private static final long serialVersionUID = 3L;
+	private static final long serialVersionUID = 3L;
 
-  public MarkdownType() {
-    super();
-  }
+	public MarkdownType() {
+		super();
+	}
 
-  public MarkdownType(String theCode) {
-    setValue(theCode);
-  }
+	public MarkdownType(String theCode) {
+		setValue(theCode);
+	}
 
-  public int compareTo(MarkdownType theCode) {
-    if (theCode == null) {
-      return 1;
-    }
-    return defaultString(getValue()).compareTo(defaultString(theCode.getValue()));
-  }
+	public int compareTo(MarkdownType theCode) {
+		if (theCode == null) {
+			return 1;
+		}
+		return defaultString(getValue()).compareTo(defaultString(theCode.getValue()));
+	}	
 
-  @Override
-  protected String parse(String theValue) {
-    return theValue.trim();
-  }
+	@Override
+	protected String parse(String theValue) {
+		return theValue.trim();
+	}
 
-  @Override
-  protected String encode(String theValue) {
-    return theValue;
-  }
+	@Override
+	protected String encode(String theValue) {
+		return theValue;
+	}
 
-  @Override
-  public MarkdownType copy() {
-    return new MarkdownType(getValue());
-  }
+	@Override
+	public MarkdownType copy() {
+		return new MarkdownType(getValue());
+	}
 
-  public String fhirType() {
-    return "markdown";
-  }
+	public String fhirType() {
+		return "markdown";		
+	}
 }

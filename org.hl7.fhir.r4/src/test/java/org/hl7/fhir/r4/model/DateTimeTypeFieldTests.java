@@ -1,10 +1,9 @@
 package org.hl7.fhir.r4.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.junit.jupiter.api.Test;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DateTimeTypeFieldTests {
   @Test
@@ -24,7 +23,7 @@ public class DateTimeTypeFieldTests {
     dateTimeDayFirst.setYear(YEAR);
     dateTimeDayFirst.setMonth(MONTH);
 
-    assertEquals("1979-01-23", dateTimeDayFirst.asStringValue());
-    assertEquals("1979-01-23", dateTimeYearFirst.asStringValue());
+    assertEquals("1979-01-23",dateTimeDayFirst.asStringValue());
+    assertEquals("1979-01-23",dateTimeYearFirst.asStringValue());
   }
 }

@@ -580,7 +580,7 @@ public class MedicinalProductDefinition extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("productName")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MedicinalProductDefinition.name.productName");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductDefinition.name.productName");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -829,7 +829,7 @@ public class MedicinalProductDefinition extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("part")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MedicinalProductDefinition.name.part.part");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductDefinition.name.part.part");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -3933,17 +3933,17 @@ public class MedicinalProductDefinition extends DomainResource {
           return this.domain;
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MedicinalProductDefinition.version");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductDefinition.version");
         }
         else if (name.equals("status")) {
           this.status = new CodeableConcept();
           return this.status;
         }
         else if (name.equals("statusDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MedicinalProductDefinition.statusDate");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductDefinition.statusDate");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MedicinalProductDefinition.description");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductDefinition.description");
         }
         else if (name.equals("combinedPharmaceuticalDoseForm")) {
           this.combinedPharmaceuticalDoseForm = new CodeableConcept();
@@ -3953,7 +3953,7 @@ public class MedicinalProductDefinition extends DomainResource {
           return addRoute();
         }
         else if (name.equals("indication")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MedicinalProductDefinition.indication");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicinalProductDefinition.indication");
         }
         else if (name.equals("legalStatusOfSupply")) {
           this.legalStatusOfSupply = new CodeableConcept();

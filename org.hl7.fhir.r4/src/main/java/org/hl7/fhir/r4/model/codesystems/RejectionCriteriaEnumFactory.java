@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class RejectionCriteriaEnumFactory implements EnumFactory<RejectionCriteria> {
@@ -48,7 +52,7 @@ public class RejectionCriteriaEnumFactory implements EnumFactory<RejectionCriter
       return RejectionCriteria.CLOTTED;
     if ("wrong-temperature".equals(codeString))
       return RejectionCriteria.WRONGTEMPERATURE;
-    throw new IllegalArgumentException("Unknown RejectionCriteria code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown RejectionCriteria code '"+codeString+"'");
   }
 
   public String toCode(RejectionCriteria code) {
@@ -65,8 +69,8 @@ public class RejectionCriteriaEnumFactory implements EnumFactory<RejectionCriter
     return "?";
   }
 
-  public String toSystem(RejectionCriteria code) {
-    return code.getSystem();
-  }
+    public String toSystem(RejectionCriteria code) {
+      return code.getSystem();
+      }
 
 }

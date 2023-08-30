@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CopyNumberEvent {
 
-  /**
-   * amplification.
-   */
-  AMP,
-  /**
-   * deletion.
-   */
-  DEL,
-  /**
-   * loss of function.
-   */
-  LOF,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static CopyNumberEvent fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("amp".equals(codeString))
-      return AMP;
-    if ("del".equals(codeString))
-      return DEL;
-    if ("lof".equals(codeString))
-      return LOF;
-    throw new FHIRException("Unknown CopyNumberEvent code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case AMP:
-      return "amp";
-    case DEL:
-      return "del";
-    case LOF:
-      return "lof";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * amplification.
+         */
+        AMP, 
+        /**
+         * deletion.
+         */
+        DEL, 
+        /**
+         * loss of function.
+         */
+        LOF, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static CopyNumberEvent fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("amp".equals(codeString))
+          return AMP;
+        if ("del".equals(codeString))
+          return DEL;
+        if ("lof".equals(codeString))
+          return LOF;
+        throw new FHIRException("Unknown CopyNumberEvent code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case AMP: return "amp";
+            case DEL: return "del";
+            case LOF: return "lof";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/copy-number-event";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case AMP: return "amplification.";
+            case DEL: return "deletion.";
+            case LOF: return "loss of function.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case AMP: return "amplification";
+            case DEL: return "deletion";
+            case LOF: return "loss of function";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/copy-number-event";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case AMP:
-      return "amplification.";
-    case DEL:
-      return "deletion.";
-    case LOF:
-      return "loss of function.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case AMP:
-      return "amplification";
-    case DEL:
-      return "deletion";
-    case LOF:
-      return "loss of function";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

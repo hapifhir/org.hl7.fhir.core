@@ -2,8 +2,9 @@ package org.hl7.fhir.convertors.conv40_50.datatypes40_50;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.Enumerations.FHIRTypes;
 import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Enumerations.FHIRTypes;
 import org.hl7.fhir.utilities.Utilities;
 
 public class Utilities40_50 {

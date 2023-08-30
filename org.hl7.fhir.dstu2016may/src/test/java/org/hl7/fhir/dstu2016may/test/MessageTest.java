@@ -14,24 +14,24 @@ import org.junit.jupiter.api.Test;
 
 public class MessageTest {
 
-  @Test
-  public void test() throws FHIRException, IOException {
-    // Create new Atom Feed
-    Bundle feed = new Bundle();
-
-    // Serialize Atom Feed
-    IParser comp = new JsonParser();
-    ByteArrayOutputStream os = new ByteArrayOutputStream();
-    comp.compose(os, feed);
-    os.close();
-    String json = os.toString();
-
-    // Deserialize Atom Feed
-    JsonParser parser = new JsonParser();
-    InputStream is = new ByteArrayInputStream(json.getBytes("UTF-8"));
-    Resource result = parser.parse(is);
-    if (result == null)
-      throw new FHIRException("Bundle was null");
-  }
+	@Test
+	public void test() throws FHIRException, IOException {
+		// Create new Atom Feed
+		Bundle feed = new Bundle();
+		
+		// Serialize Atom Feed
+		IParser comp = new JsonParser();
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		comp.compose(os, feed);
+		os.close();
+		String json = os.toString();
+		
+		// Deserialize Atom Feed
+		JsonParser parser = new JsonParser();
+		InputStream is = new ByteArrayInputStream(json.getBytes("UTF-8"));
+		Resource result = parser.parse(is);
+		if (result == null)
+			throw new FHIRException("Bundle was null");
+	}
 
 }

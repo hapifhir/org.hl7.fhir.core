@@ -1,5 +1,7 @@
 package org.hl7.fhir.r4.model;
 
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -29,59 +31,61 @@ package org.hl7.fhir.r4.model;
   
 */
 
+
 // Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
-
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
- * A measured amount (or an amount that can potentially be measured). Note that
- * measured amounts include amounts that are not precisely quantified, including
- * amounts involving arbitrary units and floating currencies.
+ * A measured amount (or an amount that can potentially be measured). Note that measured amounts include amounts that are not precisely quantified, including amounts involving arbitrary units and floating currencies.
  */
-@DatatypeDef(name = "SimpleQuantity", profileOf = Quantity.class)
+@DatatypeDef(name="SimpleQuantity", profileOf=Quantity.class)
 public class SimpleQuantity extends Quantity {
 
-  private static final long serialVersionUID = 1069574054L;
+    private static final long serialVersionUID = 1069574054L;
 
-  public SimpleQuantity copy() {
-    SimpleQuantity dst = new SimpleQuantity();
-    copyValues(dst);
-    return dst;
-  }
+      public SimpleQuantity copy() {
+        SimpleQuantity dst = new SimpleQuantity();
+        copyValues(dst);
+        return dst;
+      }
 
-  public void copyValues(SimpleQuantity dst) {
-    super.copyValues(dst);
-  }
+      public void copyValues(SimpleQuantity dst) {
+        super.copyValues(dst);        
+      }
 
-  protected SimpleQuantity typedCopy() {
-    return copy();
-  }
+      protected SimpleQuantity typedCopy() {
+        return copy();
+      }
 
-  @Override
-  public boolean equalsDeep(Base other_) {
-    if (!super.equalsDeep(other_))
-      return false;
-    if (!(other_ instanceof SimpleQuantity))
-      return false;
-    SimpleQuantity o = (SimpleQuantity) other_;
-    return compareDeep(value, o.value, true) && compareDeep(comparator, o.comparator, true)
-        && compareDeep(unit, o.unit, true) && compareDeep(system, o.system, true) && compareDeep(code, o.code, true);
-  }
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof SimpleQuantity))
+          return false;
+        SimpleQuantity o = (SimpleQuantity) other_;
+        return compareDeep(value, o.value, true) && compareDeep(comparator, o.comparator, true) && compareDeep(unit, o.unit, true)
+           && compareDeep(system, o.system, true) && compareDeep(code, o.code, true);
+      }
 
-  @Override
-  public boolean equalsShallow(Base other_) {
-    if (!super.equalsShallow(other_))
-      return false;
-    if (!(other_ instanceof SimpleQuantity))
-      return false;
-    SimpleQuantity o = (SimpleQuantity) other_;
-    return compareValues(value, o.value, true) && compareValues(comparator, o.comparator, true)
-        && compareValues(unit, o.unit, true) && compareValues(system, o.system, true)
-        && compareValues(code, o.code, true);
-  }
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof SimpleQuantity))
+          return false;
+        SimpleQuantity o = (SimpleQuantity) other_;
+        return compareValues(value, o.value, true) && compareValues(comparator, o.comparator, true) && compareValues(unit, o.unit, true)
+           && compareValues(system, o.system, true) && compareValues(code, o.code, true);
+      }
 
-  public boolean isEmpty() {
-    return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(value, comparator, unit, system, code);
-  }
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(value, comparator, unit
+          , system, code);
+      }
+
 
 }

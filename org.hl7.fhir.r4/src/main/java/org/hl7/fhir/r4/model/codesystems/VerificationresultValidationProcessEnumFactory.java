@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,10 +34,10 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
-public class VerificationresultValidationProcessEnumFactory
-    implements EnumFactory<VerificationresultValidationProcess> {
+public class VerificationresultValidationProcessEnumFactory implements EnumFactory<VerificationresultValidationProcess> {
 
   public VerificationresultValidationProcess fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
@@ -51,7 +54,7 @@ public class VerificationresultValidationProcessEnumFactory
       return VerificationresultValidationProcess.STANDALONE;
     if ("in-context".equals(codeString))
       return VerificationresultValidationProcess.INCONTEXT;
-    throw new IllegalArgumentException("Unknown VerificationresultValidationProcess code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown VerificationresultValidationProcess code '"+codeString+"'");
   }
 
   public String toCode(VerificationresultValidationProcess code) {
@@ -70,8 +73,8 @@ public class VerificationresultValidationProcessEnumFactory
     return "?";
   }
 
-  public String toSystem(VerificationresultValidationProcess code) {
-    return code.getSystem();
-  }
+    public String toSystem(VerificationresultValidationProcess code) {
+      return code.getSystem();
+      }
 
 }

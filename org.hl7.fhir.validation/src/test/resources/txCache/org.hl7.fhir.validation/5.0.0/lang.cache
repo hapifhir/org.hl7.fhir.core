@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "urn:ietf:bcp:47",
   "code" : "fr-CA"
-}, "url": "http://hl7.org/fhir/ValueSet/all-languages--0", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages--0", "version": "5.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -12,18 +12,13 @@
 v: {
   "display" : "French (Region=Canada)",
   "code" : "fr-CA",
-  "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "urn:ietf:bcp:47",
   "code" : "fr-CA"
-}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -33,18 +28,13 @@ v: {
 v: {
   "display" : "French (Region=Canada)",
   "code" : "fr-CA",
-  "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "urn:ietf:bcp:47",
   "code" : "fr-CA"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -54,11 +44,6 @@ v: {
 v: {
   "display" : "French (Region=Canada)",
   "code" : "fr-CA",
-  "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------

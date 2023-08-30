@@ -225,7 +225,7 @@ public class TestPlan extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.dependency.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.dependency.description");
         }
         else if (name.equals("predecessor")) {
           this.predecessor = new Reference();
@@ -756,7 +756,7 @@ public class TestPlan extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.testCase.sequence");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.testCase.sequence");
         }
         else if (name.equals("scope")) {
           return addScope();
@@ -1019,7 +1019,7 @@ public class TestPlan extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.testCase.dependency.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.testCase.dependency.description");
         }
         else if (name.equals("predecessor")) {
           this.predecessor = new Reference();
@@ -1245,7 +1245,7 @@ public class TestPlan extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("narrative")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.testCase.testRun.narrative");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.testCase.testRun.narrative");
         }
         else if (name.equals("script")) {
           this.script = new TestPlanTestCaseTestRunScriptComponent();
@@ -3794,13 +3794,13 @@ public class TestPlan extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.url");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.version");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.version");
         }
         else if (name.equals("versionAlgorithmString")) {
           this.versionAlgorithm = new StringType();
@@ -3811,28 +3811,28 @@ public class TestPlan extends CanonicalResource {
           return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.name");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.title");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.title");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.status");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.experimental");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.date");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.publisher");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -3841,13 +3841,13 @@ public class TestPlan extends CanonicalResource {
           return addJurisdiction();
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.purpose");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.purpose");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.copyright");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.copyright");
         }
         else if (name.equals("copyrightLabel")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.copyrightLabel");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.copyrightLabel");
         }
         else if (name.equals("category")) {
           return addCategory();
@@ -3856,13 +3856,13 @@ public class TestPlan extends CanonicalResource {
           return addScope();
         }
         else if (name.equals("testTools")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.testTools");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.testTools");
         }
         else if (name.equals("dependency")) {
           return addDependency();
         }
         else if (name.equals("exitCriteria")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestPlan.exitCriteria");
+          throw new FHIRException("Cannot call addChild on a primitive type TestPlan.exitCriteria");
         }
         else if (name.equals("testCase")) {
           return addTestCase();

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class AdditionalmaterialsEnumFactory implements EnumFactory<Additionalmaterials> {
@@ -50,7 +54,7 @@ public class AdditionalmaterialsEnumFactory implements EnumFactory<Additionalmat
       return Additionalmaterials.DOCUMENT;
     if ("other".equals(codeString))
       return Additionalmaterials.OTHER;
-    throw new IllegalArgumentException("Unknown Additionalmaterials code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown Additionalmaterials code '"+codeString+"'");
   }
 
   public String toCode(Additionalmaterials code) {
@@ -69,8 +73,8 @@ public class AdditionalmaterialsEnumFactory implements EnumFactory<Additionalmat
     return "?";
   }
 
-  public String toSystem(Additionalmaterials code) {
-    return code.getSystem();
-  }
+    public String toSystem(Additionalmaterials code) {
+      return code.getSystem();
+      }
 
 }

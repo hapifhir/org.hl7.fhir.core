@@ -13,8 +13,7 @@ class Base64BinaryTypeTest {
 
   static final String NON_BASE_64 = "Picard was the best starship captain.";
   static final String VALID_BASE_64 = "dGhpcyBpcyB2YWxpZCBiYXNlNjQ=";
-  static final byte[] VALID_BASE_64_BYTES = Base64
-      .decodeBase64(VALID_BASE_64.getBytes(ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8));
+  static final byte[] VALID_BASE_64_BYTES = Base64.decodeBase64(VALID_BASE_64.getBytes(ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8));
 
   @Test
   @DisplayName("Passing a non Base64 encoded String to constructor causes exception.")

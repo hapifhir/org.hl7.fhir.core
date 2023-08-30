@@ -102,8 +102,8 @@ import ca.uhn.fhir.model.api.annotation.DatatypeDef;
  * </li>
  * </ul>
  * <p>
- * Note that the 64 character limit applies only to the ID portion ("123" in the
- * examples above).
+ * Note that the 64 character
+ * limit applies only to the ID portion ("123" in the examples above).
  * </p>
  * <p>
  * In most situations, you only need to populate the resource's ID (e.g.
@@ -253,7 +253,7 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
 
   /**
    * @deprecated Use {@link #getIdPartAsBigDecimal()} instead (this method was
-   *             deprocated because its name is ambiguous)
+   * deprocated because its name is ambiguous)
    */
   @Deprecated
   public BigDecimal asBigDecimal() {
@@ -288,8 +288,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
       return isEmpty();
     }
     return ObjectUtils.equals(getResourceType(), theId.getResourceType())
-        && ObjectUtils.equals(getIdPart(), theId.getIdPart())
-        && ObjectUtils.equals(getVersionIdPart(), theId.getVersionIdPart());
+      && ObjectUtils.equals(getIdPart(), theId.getIdPart())
+      && ObjectUtils.equals(getVersionIdPart(), theId.getVersionIdPart());
   }
 
   public String fhirType() {
@@ -297,8 +297,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   }
 
   /**
-   * Returns the portion of this resource ID which corresponds to the server base
-   * URL. For example given the resource ID
+   * Returns the portion of this resource ID which corresponds to the server
+   * base URL. For example given the resource ID
    * <code>http://example.com/fhir/Patient/123</code> the base URL would be
    * <code>http://example.com/fhir</code>.
    * <p>
@@ -312,8 +312,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
 
   /**
    * Returns only the logical ID part of this ID. For example, given the ID
-   * "http://example,.com/fhir/Patient/123/_history/456", this method would return
-   * "123".
+   * "http://example,.com/fhir/Patient/123/_history/456", this method would
+   * return "123".
    */
   @Override
   public String getIdPart() {
@@ -356,8 +356,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
 
   /**
    * Returns the value of this ID. Note that this value may be a fully qualified
-   * URL, a relative/partial URL, or a simple ID. Use {@link #getIdPart()} to get
-   * just the ID portion.
+   * URL, a relative/partial URL, or a simple ID. Use {@link #getIdPart()} to
+   * get just the ID portion.
    *
    * @see #getIdPart()
    */
@@ -467,10 +467,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
           }
           if (typeIndex >= idIndex) {
             // e.g. http://example.org/foo
-            // 'foo' was the id but we're making that the resource type. Nullify the id part
-            // because we don't have an id.
-            // Also set null value to the super.setValue() and enable myHaveComponentParts
-            // so it forces getValue() to properly
+            // 'foo' was the id but we're making that the resource type. Nullify the id part because we don't have an id.
+            // Also set null value to the super.setValue() and enable myHaveComponentParts so it forces getValue() to properly
             // recreate the url
             myResourceType = myUnqualifiedId;
             myUnqualifiedId = null;
@@ -490,7 +488,6 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
     }
     return this;
   }
-
   @Override
   public String getValueAsString() {
     return getValue();
@@ -608,8 +605,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   }
 
   /**
-   * Returns <code>true</code> if the unqualified ID is a valid {@link Long} value
-   * (in other words, it consists only of digits)
+   * Returns <code>true</code> if the unqualified ID is a valid {@link Long}
+   * value (in other words, it consists only of digits)
    */
   @Override
   public boolean isIdPartValidLong() {
@@ -617,8 +614,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   }
 
   /**
-   * Returns <code>true</code> if the ID is a local reference (in other words, it
-   * begins with the '#' character)
+   * Returns <code>true</code> if the ID is a local reference (in other words,
+   * it begins with the '#' character)
    */
   @Override
   public boolean isLocal() {
@@ -637,13 +634,11 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   @Override
   public IIdType setParts(String theBaseUrl, String theResourceType, String theIdPart, String theVersionIdPart) {
     if (isNotBlank(theVersionIdPart)) {
-      Validate.notBlank(theResourceType,
-          "If theVersionIdPart is populated, theResourceType and theIdPart must be populated");
+      Validate.notBlank(theResourceType, "If theVersionIdPart is populated, theResourceType and theIdPart must be populated");
       Validate.notBlank(theIdPart, "If theVersionIdPart is populated, theResourceType and theIdPart must be populated");
     }
     if (isNotBlank(theBaseUrl) && isNotBlank(theIdPart)) {
-      Validate.notBlank(theResourceType,
-          "If theBaseUrl is populated and theIdPart is populated, theResourceType must be populated");
+      Validate.notBlank(theResourceType, "If theBaseUrl is populated and theIdPart is populated, theResourceType must be populated");
     }
 
     setValue(null);
@@ -663,10 +658,10 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   }
 
   /**
-   * Returns a new IdType containing this IdType's values but with no server base
-   * URL if one is present in this IdType. For example, if this IdType contains
-   * the ID "http://foo/Patient/1", this method will return a new IdType
-   * containing ID "Patient/1".
+   * Returns a new IdType containing this IdType's values but with no server
+   * base URL if one is present in this IdType. For example, if this IdType
+   * contains the ID "http://foo/Patient/1", this method will return a new
+   * IdType containing ID "Patient/1".
    */
   @Override
   public IdType toUnqualified() {
@@ -710,7 +705,7 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * @param theServerBase   The server base (e.g. "http://example.com/fhir")
    * @param theResourceType The resource name (e.g. "Patient")
    * @return A fully qualified URL for this ID (e.g.
-   *         "http://example.com/fhir/Patient/1")
+   * "http://example.com/fhir/Patient/1")
    */
   @Override
   public IdType withServerBase(String theServerBase, String theResourceType) {
@@ -724,10 +719,9 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * Creates a new instance of this ID which is identical, but refers to the
    * specific version of this resource ID noted by theVersion.
    *
-   * @param theVersion The actual version string, e.g. "1". If theVersion is blank
-   *                   or null, returns the same as {@link #toVersionless()}}
+   * @param theVersion The actual version string, e.g. "1". If theVersion is blank or null, returns the same as {@link #toVersionless()}}
    * @return A new instance of IdType which is identical, but refers to the
-   *         specific version of this resource ID noted by theVersion.
+   * specific version of this resource ID noted by theVersion.
    */
   @Override
   public IdType withVersion(String theVersion) {

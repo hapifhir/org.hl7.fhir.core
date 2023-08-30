@@ -35,14 +35,14 @@ public class SearchParameterRenderer extends TerminologyRenderer {
   public SearchParameterRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
-
+  
   public boolean render(XhtmlNode x, Resource dr) throws IOException, FHIRException, EOperationOutcome {
     return render(x, (OperationDefinition) dr);
   }
 
   public boolean render(XhtmlNode x, SearchParameter spd) throws IOException, FHIRException, EOperationOutcome {
     x.h2().addText(spd.getName());
-    XhtmlNode p = x.para();
+    XhtmlNode p =  x.para();
     p.tx("Parameter ");
     p.code().tx(spd.getCode());
     p.tx(":");
@@ -71,12 +71,12 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     if (spd.hasXpathUsage()) {
       tr = tbl.tr();
       tr.td().tx("Usage");
-      tr.td().tx(spd.getXpathUsage().getDisplay());
+      tr.td().tx(spd.getXpathUsage().getDisplay());      
     }
     if (spd.hasXpath()) {
       tr = tbl.tr();
       tr.td().tx("XPath");
-      tr.td().code().tx(spd.getXpath());
+      tr.td().code().tx(spd.getXpath());      
     }
     if (spd.hasTarget()) {
       tr = tbl.tr();
@@ -94,12 +94,12 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     tr = tbl.tr();
     tr.td().tx("Multiples");
     if (spd.getMultipleAnd() && spd.getMultipleOr()) {
-      tr.td().tx("The parameter can repeat (and) and can have repeating values (or)");
+      tr.td().tx("The parameter can repeat (and) and can have repeating values (or)");      
     } else if (spd.getMultipleOr()) {
-      tr.td().tx("The parameter can repeat (and) but each repeat can only have one value");
+      tr.td().tx("The parameter can repeat (and) but each repeat can only have one value");      
     } else if (spd.getMultipleAnd()) {
-      tr.td().tx("The parameter cannot repeat (and) but the single parameter can have multiple values (or)");
-    } else {
+      tr.td().tx("The parameter cannot repeat (and) but the single parameter can have multiple values (or)");      
+    } else { 
       tr.td().tx("The parameter cannot repeat or have multiple values");
     }
     if (spd.hasComparator()) {
@@ -108,7 +108,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       td = tr.td().tx("Allowed: ");
       for (Enumeration<SearchComparator> t : spd.getComparator()) {
         td.sep(", ").tx(t.asStringValue());
-      }
+      }      
     }
     if (spd.hasModifier()) {
       tr = tbl.tr();
@@ -116,7 +116,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       td = tr.td().tx("Allowed: ");
       for (Enumeration<SearchModifierCode> t : spd.getModifier()) {
         td.sep(", ").tx(t.asStringValue());
-      }
+      }      
     }
     if (spd.hasChain()) {
       tr = tbl.tr();
@@ -124,9 +124,9 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       td = tr.td().tx("Allowed: ");
       for (StringType t : spd.getChain()) {
         td.sep(", ").tx(t.asStringValue());
-      }
+      }      
     }
-
+    
     if (spd.hasComponent()) {
       x.para().b().tx("Components");
       tbl = x.table("grid");
@@ -134,7 +134,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
         tr = tbl.tr();
         SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition());
         if (tsp != null && tsp.hasUserData("path")) {
-          tr.td().ah(tsp.getUserString("path")).tx(tsp.present());
+          tr.td().ah(tsp.getUserString("path")).tx(tsp.present());          
         } else {
           tr.td().tx(t.getDefinition());
         }

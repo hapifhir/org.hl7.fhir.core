@@ -18,14 +18,12 @@ import org.junit.jupiter.api.Test;
 public class ShexGeneratorTests {
 
   private void doTest(String name) throws FileNotFoundException, IOException, FHIRException, UcumException {
-    StructureDefinition sd = TestingUtilities.context().fetchResource(StructureDefinition.class,
-        ProfileUtilities.sdNs(name, null));
+    StructureDefinition sd = TestingUtilities.context().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
     if (sd == null) {
       throw new FHIRException("StructuredDefinition for " + name + "was null");
     }
     Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
-    TextFile.stringToFile(new ShExGenerator(TestingUtilities.context()).generate(HTMLLinkPolicy.NONE, sd),
-        outPath.toString());
+    TextFile.stringToFile(new ShExGenerator(TestingUtilities.context()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
   }
 
   @Test

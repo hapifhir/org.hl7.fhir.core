@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class V3ObservationCategoryEnumFactory implements EnumFactory<V3ObservationCategory> {
@@ -54,7 +58,7 @@ public class V3ObservationCategoryEnumFactory implements EnumFactory<V3Observati
       return V3ObservationCategory.THERAPY;
     if ("vital-signs".equals(codeString))
       return V3ObservationCategory.VITALSIGNS;
-    throw new IllegalArgumentException("Unknown V3ObservationCategory code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3ObservationCategory code '"+codeString+"'");
   }
 
   public String toCode(V3ObservationCategory code) {
@@ -77,8 +81,8 @@ public class V3ObservationCategoryEnumFactory implements EnumFactory<V3Observati
     return "?";
   }
 
-  public String toSystem(V3ObservationCategory code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3ObservationCategory code) {
+      return code.getSystem();
+      }
 
 }

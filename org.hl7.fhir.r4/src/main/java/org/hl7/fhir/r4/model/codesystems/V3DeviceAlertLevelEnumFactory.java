@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class V3DeviceAlertLevelEnumFactory implements EnumFactory<V3DeviceAlertLevel> {
@@ -46,7 +50,7 @@ public class V3DeviceAlertLevelEnumFactory implements EnumFactory<V3DeviceAlertL
       return V3DeviceAlertLevel.S;
     if ("W".equals(codeString))
       return V3DeviceAlertLevel.W;
-    throw new IllegalArgumentException("Unknown V3DeviceAlertLevel code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3DeviceAlertLevel code '"+codeString+"'");
   }
 
   public String toCode(V3DeviceAlertLevel code) {
@@ -61,8 +65,8 @@ public class V3DeviceAlertLevelEnumFactory implements EnumFactory<V3DeviceAlertL
     return "?";
   }
 
-  public String toSystem(V3DeviceAlertLevel code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3DeviceAlertLevel code) {
+      return code.getSystem();
+      }
 
 }

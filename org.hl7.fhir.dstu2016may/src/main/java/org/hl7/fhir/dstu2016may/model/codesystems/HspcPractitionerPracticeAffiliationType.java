@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,63 +34,50 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcPractitionerPracticeAffiliationType {
 
-  /**
-   * The provider's connection with the organization as a practitioner is in an
-   * educaitonal manner, i.e. as an educator or student.
-   */
-  _5B595190ACEB48DEB0D68950A8829183,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static HspcPractitionerPracticeAffiliationType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("5b595190-aceb-48de-b0d6-8950a8829183".equals(codeString))
-      return _5B595190ACEB48DEB0D68950A8829183;
-    throw new FHIRException("Unknown HspcPractitionerPracticeAffiliationType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case _5B595190ACEB48DEB0D68950A8829183:
-      return "5b595190-aceb-48de-b0d6-8950a8829183";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The provider's connection with the organization as a practitioner is in an educaitonal manner, i.e. as an educator or student.
+         */
+        _5B595190ACEB48DEB0D68950A8829183, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static HspcPractitionerPracticeAffiliationType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("5b595190-aceb-48de-b0d6-8950a8829183".equals(codeString))
+          return _5B595190ACEB48DEB0D68950A8829183;
+        throw new FHIRException("Unknown HspcPractitionerPracticeAffiliationType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case _5B595190ACEB48DEB0D68950A8829183: return "5b595190-aceb-48de-b0d6-8950a8829183";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/practitioner-hspc-practiceAffiliationType";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case _5B595190ACEB48DEB0D68950A8829183: return "The provider's connection with the organization as a practitioner is in an educaitonal manner, i.e. as an educator or student.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case _5B595190ACEB48DEB0D68950A8829183: return "School affiliation";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/practitioner-hspc-practiceAffiliationType";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case _5B595190ACEB48DEB0D68950A8829183:
-      return "The provider's connection with the organization as a practitioner is in an educaitonal manner, i.e. as an educator or student.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case _5B595190ACEB48DEB0D68950A8829183:
-      return "School affiliation";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

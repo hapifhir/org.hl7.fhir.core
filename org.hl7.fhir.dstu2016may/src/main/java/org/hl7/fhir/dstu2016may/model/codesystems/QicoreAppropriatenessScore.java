@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,160 +34,122 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum QicoreAppropriatenessScore {
 
-  /**
-   * The procedure is extremely inappropriate
-   */
-  EXTREMELYINAPPROPRIATE,
-  /**
-   * The procedure is inappropriate
-   */
-  INAPPROPRIATE,
-  /**
-   * The procedure is probably inappropriate
-   */
-  PROBABLYINAPPROPRIATE,
-  /**
-   * The appropriateness of the procedure is uncertain, leaning towards
-   * inappropriate
-   */
-  UNCERTAININAPPROPRIATE,
-  /**
-   * The appropriateness of the procedure is uncertain
-   */
-  UNCERTAIN,
-  /**
-   * The appropriateness of the procedure is uncertain, leaning towards
-   * appropriate
-   */
-  UNCERTAINAPPROPRIATE,
-  /**
-   * The procedure is probably appropriate
-   */
-  PROBABLYAPPROPRIATE,
-  /**
-   * The procedure is appropriate
-   */
-  APPROPRIATE,
-  /**
-   * The procedure is extremely appropriate
-   */
-  EXTREMELYAPPROPRIATE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static QicoreAppropriatenessScore fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("extremely-inappropriate".equals(codeString))
-      return EXTREMELYINAPPROPRIATE;
-    if ("inappropriate".equals(codeString))
-      return INAPPROPRIATE;
-    if ("probably-inappropriate".equals(codeString))
-      return PROBABLYINAPPROPRIATE;
-    if ("uncertain-inappropriate".equals(codeString))
-      return UNCERTAININAPPROPRIATE;
-    if ("uncertain".equals(codeString))
-      return UNCERTAIN;
-    if ("uncertain-appropriate".equals(codeString))
-      return UNCERTAINAPPROPRIATE;
-    if ("probably-appropriate".equals(codeString))
-      return PROBABLYAPPROPRIATE;
-    if ("appropriate".equals(codeString))
-      return APPROPRIATE;
-    if ("extremely-appropriate".equals(codeString))
-      return EXTREMELYAPPROPRIATE;
-    throw new FHIRException("Unknown QicoreAppropriatenessScore code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case EXTREMELYINAPPROPRIATE:
-      return "extremely-inappropriate";
-    case INAPPROPRIATE:
-      return "inappropriate";
-    case PROBABLYINAPPROPRIATE:
-      return "probably-inappropriate";
-    case UNCERTAININAPPROPRIATE:
-      return "uncertain-inappropriate";
-    case UNCERTAIN:
-      return "uncertain";
-    case UNCERTAINAPPROPRIATE:
-      return "uncertain-appropriate";
-    case PROBABLYAPPROPRIATE:
-      return "probably-appropriate";
-    case APPROPRIATE:
-      return "appropriate";
-    case EXTREMELYAPPROPRIATE:
-      return "extremely-appropriate";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The procedure is extremely inappropriate
+         */
+        EXTREMELYINAPPROPRIATE, 
+        /**
+         * The procedure is inappropriate
+         */
+        INAPPROPRIATE, 
+        /**
+         * The procedure is probably inappropriate
+         */
+        PROBABLYINAPPROPRIATE, 
+        /**
+         * The appropriateness of the procedure is uncertain, leaning towards inappropriate
+         */
+        UNCERTAININAPPROPRIATE, 
+        /**
+         * The appropriateness of the procedure is uncertain
+         */
+        UNCERTAIN, 
+        /**
+         * The appropriateness of the procedure is uncertain, leaning towards appropriate
+         */
+        UNCERTAINAPPROPRIATE, 
+        /**
+         * The procedure is probably appropriate
+         */
+        PROBABLYAPPROPRIATE, 
+        /**
+         * The procedure is appropriate
+         */
+        APPROPRIATE, 
+        /**
+         * The procedure is extremely appropriate
+         */
+        EXTREMELYAPPROPRIATE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static QicoreAppropriatenessScore fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("extremely-inappropriate".equals(codeString))
+          return EXTREMELYINAPPROPRIATE;
+        if ("inappropriate".equals(codeString))
+          return INAPPROPRIATE;
+        if ("probably-inappropriate".equals(codeString))
+          return PROBABLYINAPPROPRIATE;
+        if ("uncertain-inappropriate".equals(codeString))
+          return UNCERTAININAPPROPRIATE;
+        if ("uncertain".equals(codeString))
+          return UNCERTAIN;
+        if ("uncertain-appropriate".equals(codeString))
+          return UNCERTAINAPPROPRIATE;
+        if ("probably-appropriate".equals(codeString))
+          return PROBABLYAPPROPRIATE;
+        if ("appropriate".equals(codeString))
+          return APPROPRIATE;
+        if ("extremely-appropriate".equals(codeString))
+          return EXTREMELYAPPROPRIATE;
+        throw new FHIRException("Unknown QicoreAppropriatenessScore code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case EXTREMELYINAPPROPRIATE: return "extremely-inappropriate";
+            case INAPPROPRIATE: return "inappropriate";
+            case PROBABLYINAPPROPRIATE: return "probably-inappropriate";
+            case UNCERTAININAPPROPRIATE: return "uncertain-inappropriate";
+            case UNCERTAIN: return "uncertain";
+            case UNCERTAINAPPROPRIATE: return "uncertain-appropriate";
+            case PROBABLYAPPROPRIATE: return "probably-appropriate";
+            case APPROPRIATE: return "appropriate";
+            case EXTREMELYAPPROPRIATE: return "extremely-appropriate";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/appropriateness-score";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case EXTREMELYINAPPROPRIATE: return "The procedure is extremely inappropriate";
+            case INAPPROPRIATE: return "The procedure is inappropriate";
+            case PROBABLYINAPPROPRIATE: return "The procedure is probably inappropriate";
+            case UNCERTAININAPPROPRIATE: return "The appropriateness of the procedure is uncertain, leaning towards inappropriate";
+            case UNCERTAIN: return "The appropriateness of the procedure is uncertain";
+            case UNCERTAINAPPROPRIATE: return "The appropriateness of the procedure is uncertain, leaning towards appropriate";
+            case PROBABLYAPPROPRIATE: return "The procedure is probably appropriate";
+            case APPROPRIATE: return "The procedure is appropriate";
+            case EXTREMELYAPPROPRIATE: return "The procedure is extremely appropriate";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case EXTREMELYINAPPROPRIATE: return "Extremely Inappropriate";
+            case INAPPROPRIATE: return "Inappropriate";
+            case PROBABLYINAPPROPRIATE: return "Probably Inappropriate";
+            case UNCERTAININAPPROPRIATE: return "Uncertain Inappropriate";
+            case UNCERTAIN: return "Uncertain";
+            case UNCERTAINAPPROPRIATE: return "Uncertain Appropriate";
+            case PROBABLYAPPROPRIATE: return "Probably Appropriate";
+            case APPROPRIATE: return "Appropriate";
+            case EXTREMELYAPPROPRIATE: return "Extremely Appropriate";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/appropriateness-score";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case EXTREMELYINAPPROPRIATE:
-      return "The procedure is extremely inappropriate";
-    case INAPPROPRIATE:
-      return "The procedure is inappropriate";
-    case PROBABLYINAPPROPRIATE:
-      return "The procedure is probably inappropriate";
-    case UNCERTAININAPPROPRIATE:
-      return "The appropriateness of the procedure is uncertain, leaning towards inappropriate";
-    case UNCERTAIN:
-      return "The appropriateness of the procedure is uncertain";
-    case UNCERTAINAPPROPRIATE:
-      return "The appropriateness of the procedure is uncertain, leaning towards appropriate";
-    case PROBABLYAPPROPRIATE:
-      return "The procedure is probably appropriate";
-    case APPROPRIATE:
-      return "The procedure is appropriate";
-    case EXTREMELYAPPROPRIATE:
-      return "The procedure is extremely appropriate";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case EXTREMELYINAPPROPRIATE:
-      return "Extremely Inappropriate";
-    case INAPPROPRIATE:
-      return "Inappropriate";
-    case PROBABLYINAPPROPRIATE:
-      return "Probably Inappropriate";
-    case UNCERTAININAPPROPRIATE:
-      return "Uncertain Inappropriate";
-    case UNCERTAIN:
-      return "Uncertain";
-    case UNCERTAINAPPROPRIATE:
-      return "Uncertain Appropriate";
-    case PROBABLYAPPROPRIATE:
-      return "Probably Appropriate";
-    case APPROPRIATE:
-      return "Appropriate";
-    case EXTREMELYAPPROPRIATE:
-      return "Extremely Appropriate";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

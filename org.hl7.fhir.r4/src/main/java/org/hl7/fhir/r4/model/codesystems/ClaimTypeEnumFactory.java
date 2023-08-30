@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ClaimTypeEnumFactory implements EnumFactory<ClaimType> {
@@ -48,7 +52,7 @@ public class ClaimTypeEnumFactory implements EnumFactory<ClaimType> {
       return ClaimType.PROFESSIONAL;
     if ("vision".equals(codeString))
       return ClaimType.VISION;
-    throw new IllegalArgumentException("Unknown ClaimType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ClaimType code '"+codeString+"'");
   }
 
   public String toCode(ClaimType code) {
@@ -65,8 +69,8 @@ public class ClaimTypeEnumFactory implements EnumFactory<ClaimType> {
     return "?";
   }
 
-  public String toSystem(ClaimType code) {
-    return code.getSystem();
-  }
+    public String toSystem(ClaimType code) {
+      return code.getSystem();
+      }
 
 }

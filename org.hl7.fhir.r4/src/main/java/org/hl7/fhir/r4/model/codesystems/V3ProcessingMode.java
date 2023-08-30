@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3ProcessingMode {
 
-  /**
-   * Identifies archive mode of processing.
-   */
-  A,
-  /**
-   * Identifies initial load mode of processing.
-   */
-  I,
-  /**
-   * Identifies restore mode of processing.
-   */
-  R,
-  /**
-   * Identifies on-line mode of processing.
-   */
-  T,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static V3ProcessingMode fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("A".equals(codeString))
-      return A;
-    if ("I".equals(codeString))
-      return I;
-    if ("R".equals(codeString))
-      return R;
-    if ("T".equals(codeString))
-      return T;
-    throw new FHIRException("Unknown V3ProcessingMode code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case A:
-      return "A";
-    case I:
-      return "I";
-    case R:
-      return "R";
-    case T:
-      return "T";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Identifies archive mode of processing.
+         */
+        A, 
+        /**
+         * Identifies initial load mode of processing.
+         */
+        I, 
+        /**
+         * Identifies restore mode of processing.
+         */
+        R, 
+        /**
+         * Identifies on-line mode of processing.
+         */
+        T, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static V3ProcessingMode fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("A".equals(codeString))
+          return A;
+        if ("I".equals(codeString))
+          return I;
+        if ("R".equals(codeString))
+          return R;
+        if ("T".equals(codeString))
+          return T;
+        throw new FHIRException("Unknown V3ProcessingMode code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case A: return "A";
+            case I: return "I";
+            case R: return "R";
+            case T: return "T";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/v3-ProcessingMode";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case A: return "Identifies archive mode of processing.";
+            case I: return "Identifies initial load mode of processing.";
+            case R: return "Identifies restore mode of processing.";
+            case T: return "Identifies on-line mode of processing.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case A: return "Archive";
+            case I: return "Initial load";
+            case R: return "Restore from archive";
+            case T: return "Current processing";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/v3-ProcessingMode";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case A:
-      return "Identifies archive mode of processing.";
-    case I:
-      return "Identifies initial load mode of processing.";
-    case R:
-      return "Identifies restore mode of processing.";
-    case T:
-      return "Identifies on-line mode of processing.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case A:
-      return "Archive";
-    case I:
-      return "Initial load";
-    case R:
-      return "Restore from archive";
-    case T:
-      return "Current processing";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

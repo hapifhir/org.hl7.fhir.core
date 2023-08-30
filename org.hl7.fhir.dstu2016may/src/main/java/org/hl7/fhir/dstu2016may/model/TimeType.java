@@ -29,50 +29,50 @@ package org.hl7.fhir.dstu2016may.model;
   
  */
 
+
+
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
- * Represents a Time datatype, per the FHIR specification. A time is a
- * specification of hours and minutes (and optionally milliseconds), with NO
- * date and NO timezone information attached. It is expressed as a string in the
- * form <code>HH:mm:ss[.SSSS]</code>
+ * Represents a Time datatype, per the FHIR specification. A time is a specification of hours and minutes (and optionally milliseconds), with NO date and NO timezone information attached. It is
+ * expressed as a string in the form <code>HH:mm:ss[.SSSS]</code>
  */
-@DatatypeDef(name = "time")
+@DatatypeDef(name="time")
 public class TimeType extends PrimitiveType<String> {
 
-  private static final long serialVersionUID = 3L;
+	private static final long serialVersionUID = 3L;
 
-  /**
-   * Constructor
-   */
-  public TimeType() {
-    // nothing
-  }
+	/**
+	 * Constructor
+	 */
+	public TimeType() {
+		// nothing
+	}
+	
+	/**
+	 * Constructor
+	 */
+	public TimeType(String theValue) {
+		setValue(theValue);
+	}
 
-  /**
-   * Constructor
-   */
-  public TimeType(String theValue) {
-    setValue(theValue);
-  }
+	@Override
+	protected String parse(String theValue) {
+		return theValue;
+	}
 
-  @Override
-  protected String parse(String theValue) {
-    return theValue;
-  }
+	@Override
+	protected String encode(String theValue) {
+		return theValue;
+	}
 
-  @Override
-  protected String encode(String theValue) {
-    return theValue;
-  }
+	@Override
+	public TimeType copy() {
+		return new TimeType(getValue());
+	}
 
-  @Override
-  public TimeType copy() {
-    return new TimeType(getValue());
-  }
-
-  public String fhirType() {
-    return "time";
-  }
+	public String fhirType() {
+		return "time";
+	}
 
 }

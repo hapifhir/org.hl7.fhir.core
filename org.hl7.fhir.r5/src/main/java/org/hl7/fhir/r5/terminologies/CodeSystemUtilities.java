@@ -66,7 +66,6 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -363,20 +362,12 @@ public class CodeSystemUtilities {
   }
   
   public static boolean isInactive(CodeSystem cs, ConceptDefinitionComponent def) throws FHIRException {
-    StandardsStatus ss = ToolingExtensions.getStandardsStatus(def);
-    if (ss == StandardsStatus.DEPRECATED || ss == StandardsStatus.WITHDRAWN) {
-      return true;
-    }
     for (ConceptPropertyComponent p : def.getProperty()) {
       if ("status".equals(p.getCode()) && p.hasValueStringType()) {
-        return "inactive".equals(p.getValueStringType().primitiveValue()) || "retired".equals(p.getValueStringType().primitiveValue()) || "deprecated".equals(p.getValueStringType().primitiveValue());
+        return "inactive".equals(p.getValueStringType().primitiveValue()) || "retired".equals(p.getValueStringType().primitiveValue());
       }
       if ("inactive".equals(p.getCode()) && p.hasValueBooleanType()) {
         return p.getValueBooleanType().getValue();
-      }
-      if ("inactive".equals(p.getCode()) && p.hasValueCodeType()) {
-        String code = p.getValueCodeType().primitiveValue();
-        return "true".equals(code);
       }
     }
     return false;
@@ -890,41 +881,8 @@ public class CodeSystemUtilities {
 
   public static DataType getProperty(CodeSystem cs, String code, String property) {
     ConceptDefinitionComponent def = getCode(cs, code);
-    return getProperty(cs, def, property);
-  }
-  
-  public static DataType getProperty(CodeSystem cs, ConceptDefinitionComponent def, String property) {
     ConceptPropertyComponent cp = getProperty(def, property);
     return cp == null ? null : cp.getValue();
-  }
-
-  public static boolean hasMarkdownInDefinitions(CodeSystem cs, MarkDownProcessor md) {
-    return hasMarkdownInDefinitions(cs.getConcept(), md);
-  }
-
-  private static boolean hasMarkdownInDefinitions(List<ConceptDefinitionComponent> concepts, MarkDownProcessor md) {
-    for (ConceptDefinitionComponent c : concepts) {
-      if (c.hasDefinition() && md.isProbablyMarkdown(c.getDefinition(), true)) {
-        return true;
-      }
-      if (c.hasConcept() && hasMarkdownInDefinitions(c.getConcept(), md)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public static String getStatus(CodeSystem cs, ConceptDefinitionComponent cc) {
-    StandardsStatus ss = ToolingExtensions.getStandardsStatus(cc);
-    if (ss == StandardsStatus.DEPRECATED || ss == StandardsStatus.WITHDRAWN) {
-      return ss.toCode();
-    }
-    DataType v = getProperty(cs, cc, "status");
-    if (v == null || !v.isPrimitive()) {
-      return null;
-    } else {
-      return v.primitiveValue();
-    }
   }
 }
 

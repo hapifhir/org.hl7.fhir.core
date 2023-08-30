@@ -32,14 +32,12 @@ public class RenderingContext {
   // provides liquid templates, if they are available for the content
   public interface ILiquidTemplateProvider {
     String findTemplate(RenderingContext rcontext, DomainResource r);
-
     String findTemplate(RenderingContext rcontext, String resourceName);
   }
 
-  // parses xml to an XML instance. Whatever codes provides this needs to provide
-  // something that parses the right version
+  // parses xml to an XML instance. Whatever codes provides this needs to provide something that parses the right version 
   public interface ITypeParser {
-    Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException;
+    Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException ;
   }
 
   /**
@@ -52,48 +50,41 @@ public class RenderingContext {
    */
   public enum ResourceRendererMode {
     /**
-     * The user has no interest in the contents of the FHIR resource, and just wants
-     * to see the data
+     * The user has no interest in the contents of the FHIR resource, and just wants to see the data
      * 
      */
     END_USER,
-
+    
     /**
-     * The user wants to see the resource, but a technical view so they can see
-     * what's going on with the content
+     * The user wants to see the resource, but a technical view so they can see what's going on with the content
      */
     TECHNICAL
   }
 
   public enum QuestionnaireRendererMode {
     /**
-     * A visual presentation of the questionnaire, with a set of property panes that
-     * can be toggled on and off. Note that this is not the same as how the
-     * questionnaire would like on a form filler, since all dynamic behavior is
-     * ignored
+     * A visual presentation of the questionnaire, with a set of property panes that can be toggled on and off.
+     * Note that this is not the same as how the questionnaire would like on a form filler, since all dynamic behavior is ignored
      */
     FORM,
 
     /**
-     * a structured tree that presents the content of the questionnaire in a logical
-     * fashion
+     * a structured tree that presents the content of the questionnaire in a logical fashion
      */
-    TREE,
+    TREE,   
 
     /**
-     * A structured tree that presents the enableWhen, terminology and expression
-     * bindings for the questionnaire
+     * A structured tree that presents the enableWhen, terminology and expression bindings for the questionnaire 
      */
     LOGIC,
 
     /**
-     * A presentation that lists all the items, with full details about them
+     * A presentation that lists all the items, with full details about them 
      */
-    DEFNS,
+    DEFNS, 
 
     /**
-     * Rendered links to various openly available Form Filler applications that know
-     * how to render a questionnaire published in a package
+     * Rendered links to various openly available Form Filler applications that know how to render a questionnaire published in a package 
      */
     LINKS
   }
@@ -109,8 +100,7 @@ public class RenderingContext {
   private String lang;
   private String localPrefix; // relative link within local context
   private String specificationLink;
-  private String selfLink; // absolute link to where the content is to be found (only used in a few
-                           // circumstances when making external references to tools)
+  private String selfLink; // absolute link to where the content is to be found (only used in a few circumstances when making external references to tools)
   private int headerLevelContext;
   private boolean canonicalUrlsAsLinks;
   private boolean pretty;
@@ -140,19 +130,16 @@ public class RenderingContext {
   private DateTimeFormatter dateFormat;
   private DateTimeFormatter dateYearFormat;
   private DateTimeFormatter dateYearMonthFormat;
-
+  
   /**
    * 
-   * @param context                   - access to all related resources that might
-   *                                  be needed
-   * @param markdown                  - appropriate markdown processing engine
+   * @param context - access to all related resources that might be needed
+   * @param markdown - appropriate markdown processing engine 
    * @param terminologyServiceOptions - options to use when looking up codes
-   * @param specLink                  - path to FHIR specification
-   * @param lang                      - langauage to render in
+   * @param specLink - path to FHIR specification
+   * @param lang - langauage to render in
    */
-  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown,
-      ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, String lang,
-      ResourceRendererMode mode) {
+  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, String lang, ResourceRendererMode mode) {
     super();
     this.worker = worker;
     this.markdown = markdown;
@@ -163,15 +150,12 @@ public class RenderingContext {
     if (terminologyServiceOptions != null) {
       this.terminologyServiceOptions = terminologyServiceOptions;
     }
-    // default to US locale - discussion here:
-    // https://github.com/hapifhir/org.hl7.fhir.core/issues/666
-    this.locale = new Locale.Builder().setLanguageTag("en-US").build();
+ // default to US locale - discussion here: https://github.com/hapifhir/org.hl7.fhir.core/issues/666
+    this.locale = new Locale.Builder().setLanguageTag("en-US").build(); 
     profileUtilities = new ProfileUtilities(worker, null, null);
   }
-
   public RenderingContext copy() {
-    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, specificationLink,
-        localPrefix, lang, mode);
+    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, specificationLink, localPrefix, lang, mode);
 
     res.resolver = resolver;
     res.templateProvider = templateProvider;
@@ -182,7 +166,7 @@ public class RenderingContext {
     res.canonicalUrlsAsLinks = canonicalUrlsAsLinks;
     res.pretty = pretty;
     res.contained = contained;
-
+    
     res.noSlowLookup = noSlowLookup;
     res.tooCostlyNoteEmpty = tooCostlyNoteEmpty;
     res.tooCostlyNoteNotEmpty = tooCostlyNoteNotEmpty;
@@ -209,13 +193,13 @@ public class RenderingContext {
     res.terminologyServiceOptions = terminologyServiceOptions.copy();
     return res;
   }
+  
 
   public IWorkerContext getContext() {
     return worker;
   }
 
-  // -- 2. Markdown support
-  // -------------------------------------------------------
+  // -- 2. Markdown support -------------------------------------------------------
 
   public ProfileUtilities getProfileUtilities() {
     return profileUtilities;
@@ -256,6 +240,7 @@ public class RenderingContext {
   public ValidationOptions getTerminologyServiceOptions() {
     return terminologyServiceOptions;
   }
+
 
   public String getTooCostlyNoteEmpty() {
     return tooCostlyNoteEmpty;
@@ -384,6 +369,7 @@ public class RenderingContext {
     return this;
   }
 
+
   public List<String> getCodeSystemPropList() {
     return codeSystemPropList;
   }
@@ -392,6 +378,7 @@ public class RenderingContext {
     this.codeSystemPropList = codeSystemPropList;
     return this;
   }
+
 
   public boolean isInlineGraphics() {
     return inlineGraphics;
@@ -431,10 +418,10 @@ public class RenderingContext {
 
   public String fixReference(String ref) {
     if (!Utilities.isAbsoluteUrl(ref)) {
-      return (localPrefix == null ? "" : localPrefix) + ref;
+      return (localPrefix == null ? "" : localPrefix)+ref;
     }
     if (ref.startsWith("http://hl7.org/fhir") && !ref.substring(20).contains("/")) {
-      return specificationLink + ref.substring(20);
+      return specificationLink+ref.substring(20);
     }
     return ref;
   }
@@ -456,7 +443,7 @@ public class RenderingContext {
   public RenderingContext setAddGeneratedNarrativeHeader(boolean addGeneratedNarrativeHeader) {
     this.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
     return this;
-  }
+   }
 
   public FhirPublication getTargetVersion() {
     return targetVersion;
@@ -473,11 +460,11 @@ public class RenderingContext {
   public boolean hasLocale() {
     return locale != null;
   }
-
+  
   public Locale getLocale() {
     if (locale == null) {
       return Locale.getDefault();
-    } else {
+    } else { 
       return locale;
     }
   }
@@ -486,14 +473,15 @@ public class RenderingContext {
     this.locale = locale;
   }
 
+
   /**
-   * if the timezone is null, the rendering will default to the source timezone in
-   * the resource
+   * if the timezone is null, the rendering will default to the source timezone
+   * in the resource
    * 
    * Note that if you're working server side, the FHIR project recommends the use
    * of the Date header so that clients know what timezone the server defaults to,
    * 
-   * There is no standard way for the server to know what the client timezone is.
+   * There is no standard way for the server to know what the client timezone is. 
    * In the case where the client timezone is unknown, the timezone should be null
    *
    * @return the specified timezone to render in
@@ -506,9 +494,10 @@ public class RenderingContext {
     this.timeZoneId = timeZoneId;
   }
 
+
   /**
-   * In the absence of a specified format, the renderers will default to the
-   * FormatStyle.MEDIUM for the current locale.
+   * In the absence of a specified format, the renderers will default to 
+   * the FormatStyle.MEDIUM for the current locale.
    * 
    * @return the format to use
    */
@@ -525,8 +514,8 @@ public class RenderingContext {
   }
 
   /**
-   * In the absence of a specified format, the renderers will default to the
-   * FormatStyle.MEDIUM for the current locale.
+   * In the absence of a specified format, the renderers will default to 
+   * the FormatStyle.MEDIUM for the current locale.
    * 
    * @return the format to use
    */
@@ -581,5 +570,6 @@ public class RenderingContext {
   public void setContained(boolean contained) {
     this.contained = contained;
   }
-
+  
+  
 }

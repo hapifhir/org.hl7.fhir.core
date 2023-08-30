@@ -2,6 +2,8 @@ package org.hl7.fhir.dstu3.model;
 
 import java.math.BigDecimal;
 
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -1156,7 +1158,7 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.sequence");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.sequence");
         }
         else if (name.equals("category")) {
           this.category = new CodeableConcept();
@@ -1587,14 +1589,14 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.sequence");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.sequence");
         }
         else if (name.equals("provider")) {
           this.provider = new Reference();
           return this.provider;
         }
         else if (name.equals("responsible")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.responsible");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.responsible");
         }
         else if (name.equals("role")) {
           this.role = new CodeableConcept();
@@ -1975,7 +1977,7 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.sequence");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.sequence");
         }
         else if (name.equals("diagnosisCodeableConcept")) {
           this.diagnosis = new CodeableConcept();
@@ -2318,10 +2320,10 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.sequence");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.sequence");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.date");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.date");
         }
         else if (name.equals("procedureCodeableConcept")) {
           this.procedure = new CodeableConcept();
@@ -2590,7 +2592,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return this.coverage;
         }
         else if (name.equals("preAuthRef")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.preAuthRef");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.preAuthRef");
         }
         else
           return super.addChild(name);
@@ -2884,7 +2886,7 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.date");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.date");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -4551,19 +4553,19 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.sequence");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.sequence");
         }
         else if (name.equals("careTeamLinkId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.careTeamLinkId");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.careTeamLinkId");
         }
         else if (name.equals("diagnosisLinkId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.diagnosisLinkId");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.diagnosisLinkId");
         }
         else if (name.equals("procedureLinkId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.procedureLinkId");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.procedureLinkId");
         }
         else if (name.equals("informationLinkId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.informationLinkId");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.informationLinkId");
         }
         else if (name.equals("revenue")) {
           this.revenue = new CodeableConcept();
@@ -4612,7 +4614,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return this.unitPrice;
         }
         else if (name.equals("factor")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.factor");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.factor");
         }
         else if (name.equals("net")) {
           this.net = new Money();
@@ -4632,7 +4634,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return addEncounter();
         }
         else if (name.equals("noteNumber")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.noteNumber");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.noteNumber");
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -5060,7 +5062,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return this.amount;
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.value");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.value");
         }
         else
           return super.addChild(name);
@@ -6077,7 +6079,7 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.sequence");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.sequence");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -6110,7 +6112,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return this.unitPrice;
         }
         else if (name.equals("factor")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.factor");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.factor");
         }
         else if (name.equals("net")) {
           this.net = new Money();
@@ -6120,7 +6122,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return addUdi();
         }
         else if (name.equals("noteNumber")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.noteNumber");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.noteNumber");
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -7114,7 +7116,7 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.sequence");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.sequence");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -7147,7 +7149,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return this.unitPrice;
         }
         else if (name.equals("factor")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.factor");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.factor");
         }
         else if (name.equals("net")) {
           this.net = new Money();
@@ -7157,7 +7159,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return addUdi();
         }
         else if (name.equals("noteNumber")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.noteNumber");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.noteNumber");
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -7844,7 +7846,7 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequenceLinkId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.sequenceLinkId");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.sequenceLinkId");
         }
         else if (name.equals("revenue")) {
           this.revenue = new CodeableConcept();
@@ -7866,7 +7868,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return this.fee;
         }
         else if (name.equals("noteNumber")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.noteNumber");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.noteNumber");
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -8419,7 +8421,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return this.fee;
         }
         else if (name.equals("noteNumber")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.noteNumber");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.noteNumber");
         }
         else if (name.equals("adjudication")) {
           return addAdjudication();
@@ -8837,7 +8839,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return this.adjustmentReason;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.date");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.date");
         }
         else if (name.equals("amount")) {
           this.amount = new Money();
@@ -9174,14 +9176,14 @@ public class ExplanationOfBenefit extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("number")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.number");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.number");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
           return this.type;
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.text");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.text");
         }
         else if (name.equals("language")) {
           this.language = new CodeableConcept();
@@ -9789,13 +9791,13 @@ public class ExplanationOfBenefit extends DomainResource {
           return this.subCategory;
         }
         else if (name.equals("excluded")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.excluded");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.excluded");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.name");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.name");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.description");
         }
         else if (name.equals("network")) {
           this.network = new CodeableConcept();
@@ -12571,7 +12573,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.status");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.status");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -12589,7 +12591,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return this.billablePeriod;
         }
         else if (name.equals("created")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.created");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.created");
         }
         else if (name.equals("enterer")) {
           this.enterer = new Reference();
@@ -12628,7 +12630,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return this.outcome;
         }
         else if (name.equals("disposition")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.disposition");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.disposition");
         }
         else if (name.equals("related")) {
           return addRelated();
@@ -12658,7 +12660,7 @@ public class ExplanationOfBenefit extends DomainResource {
           return addProcedure();
         }
         else if (name.equals("precedence")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ExplanationOfBenefit.precedence");
+          throw new FHIRException("Cannot call addChild on a primitive type ExplanationOfBenefit.precedence");
         }
         else if (name.equals("insurance")) {
           this.insurance = new InsuranceComponent();

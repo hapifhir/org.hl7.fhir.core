@@ -88,17 +88,6 @@ public abstract class Base implements Serializable, IBase, IElement {
 
   }
 
-  private static ThreadLocal<Boolean> copyUserData = new ThreadLocal<>();
-  
-  public static boolean isCopyUserData() {
-    Boolean res = copyUserData.get();
-    return res != null && res;
-  }
-  
-  public static void setCopyUserData(boolean value) {
-    copyUserData.set(value);
-  }
-  
   /**
    * User appended data items - allow users to add extra information to the class
    */
@@ -467,11 +456,7 @@ public abstract class Base implements Serializable, IBase, IElement {
 
   public abstract Base copy();
   
-  public void copyValues(Base dst) {  
-    if (isCopyUserData() && userData != null) {
-      dst.userData = new HashMap<>();
-      dst.userData.putAll(userData);
-    }
+  public void copyValues(Base dst) {   
   }
 
   /**

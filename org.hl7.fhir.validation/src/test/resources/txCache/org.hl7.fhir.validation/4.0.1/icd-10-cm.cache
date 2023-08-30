@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "http://hl7.org/fhir/sid/icd-10-cm",
   "code" : "E10.3211+TT1.2"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -11,12 +11,7 @@
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown Code 'E10.3211+TT1.2' in the system 'http://hl7.org/fhir/sid/icd-10-cm'; The provided code 'http://hl7.org/fhir/sid/icd-10-cm#E10.3211+TT1.2' is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "Unknown Code 'E10.3211+TT1.2' in the system 'http://hl7.org/fhir/sid/icd-10-cm'; The provided code http://hl7.org/fhir/sid/icd-10-cm#E10.3211+TT1.2 is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------

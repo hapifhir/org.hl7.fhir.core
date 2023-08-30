@@ -34,6 +34,7 @@ package org.hl7.fhir.dstu3.model;
 // Generated on Fri, Mar 16, 2018 15:21+1100 for FHIR v3.0.x
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseElement;
@@ -295,7 +296,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   @Override
   public Base addChild(String name) throws FHIRException {
     if (name.equals("id")) {
-      throw new FHIRException("Cannot call addChild on a singleton property Element.id");
+      throw new FHIRException("Cannot call addChild on a primitive type Element.id");
     }
     else if (name.equals("extension")) {
       return addExtension();

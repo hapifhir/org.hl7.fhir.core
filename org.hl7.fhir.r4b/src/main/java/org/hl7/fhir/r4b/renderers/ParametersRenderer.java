@@ -30,7 +30,7 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ParametersRenderer extends ResourceRenderer {
-
+  
   public ParametersRenderer(RenderingContext context) {
     super(context);
   }
@@ -40,8 +40,7 @@ public class ParametersRenderer extends ResourceRenderer {
   }
 
   @Override
-  public boolean render(XhtmlNode x, Resource r)
-      throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     x.h2().tx("Parameters");
     XhtmlNode tbl = x.table("grid");
     params(tbl, ((Parameters) r).getParameter(), 0);
@@ -59,8 +58,7 @@ public class ParametersRenderer extends ResourceRenderer {
   }
 
   @Override
-  public boolean render(XhtmlNode x, ResourceWrapper params)
-      throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public boolean render(XhtmlNode x, ResourceWrapper params) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     x.h2().tx("Parameters");
     XhtmlNode tbl = x.table("grid");
     PropertyWrapper pw = getProperty(params, "parameter");
@@ -69,14 +67,13 @@ public class ParametersRenderer extends ResourceRenderer {
     }
     return false;
   }
-
-  private void paramsW(XhtmlNode tbl, List<BaseWrapper> list, int indent)
-      throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
+ 
+  private void paramsW(XhtmlNode tbl, List<BaseWrapper> list, int indent) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
     for (BaseWrapper p : list) {
       XhtmlNode tr = tbl.tr();
       XhtmlNode td = tr.td();
       for (int i = 0; i < indent; i++) {
-        td.tx(XhtmlNode.NBSP);
+        td.tx(XhtmlNode.NBSP);        
       }
       if (p.has("name")) {
         td.tx(p.get("name").primitiveValue());
@@ -89,8 +86,8 @@ public class ParametersRenderer extends ResourceRenderer {
         ResourceWrapper rw = p.getChildByName("resource").getAsResource();
         td = tr.td();
         XhtmlNode para = td.para();
-        para.tx(rw.fhirType() + "/" + rw.getId());
-        para.an(rw.fhirType() + "_" + rw.getId()).tx(" ");
+        para.tx(rw.fhirType()+"/"+rw.getId());
+        para.an(rw.fhirType()+"_"+rw.getId()).tx(" ");
         XhtmlNode x = rw.getNarrative();
         if (x != null) {
           td.addChildren(x);
@@ -105,9 +102,8 @@ public class ParametersRenderer extends ResourceRenderer {
       }
     }
   }
-
-  public XhtmlNode render(Parameters params)
-      throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  
+  public XhtmlNode render(Parameters params) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
     div.h2().tx("Parameters");
     XhtmlNode tbl = div.table("grid");
@@ -115,13 +111,12 @@ public class ParametersRenderer extends ResourceRenderer {
     return div;
   }
 
-  private void params(XhtmlNode tbl, List<ParametersParameterComponent> list, int indent)
-      throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
+  private void params(XhtmlNode tbl, List<ParametersParameterComponent> list, int indent) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
     for (ParametersParameterComponent p : list) {
       XhtmlNode tr = tbl.tr();
       XhtmlNode td = tr.td();
       for (int i = 0; i < indent; i++) {
-        td.tx(XhtmlNode.NBSP);
+        td.tx(XhtmlNode.NBSP);        
       }
       td.tx(p.getName());
       if (p.hasValue()) {
@@ -130,8 +125,8 @@ public class ParametersRenderer extends ResourceRenderer {
         Resource r = p.getResource();
         td = tr.td();
         XhtmlNode para = td.para();
-        para.tx(r.fhirType() + "/" + r.getId());
-        para.an(r.fhirType() + "_" + r.getId()).tx(" ");
+        para.tx(r.fhirType()+"/"+r.getId());
+        para.an(r.fhirType()+"_"+r.getId()).tx(" ");
         ResourceRenderer rr = RendererFactory.factory(r, context);
         rr.render(td, r);
       } else if (p.hasPart()) {

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class FormsEnumFactory implements EnumFactory<Forms> {
@@ -42,7 +46,7 @@ public class FormsEnumFactory implements EnumFactory<Forms> {
       return Forms._1;
     if ("2".equals(codeString))
       return Forms._2;
-    throw new IllegalArgumentException("Unknown Forms code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown Forms code '"+codeString+"'");
   }
 
   public String toCode(Forms code) {
@@ -53,8 +57,8 @@ public class FormsEnumFactory implements EnumFactory<Forms> {
     return "?";
   }
 
-  public String toSystem(Forms code) {
-    return code.getSystem();
-  }
+    public String toSystem(Forms code) {
+      return code.getSystem();
+      }
 
 }

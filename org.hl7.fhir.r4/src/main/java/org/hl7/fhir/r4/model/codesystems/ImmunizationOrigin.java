@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,114 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ImmunizationOrigin {
 
-  /**
-   * The data for the immunization event originated with another provider.
-   */
-  PROVIDER,
-  /**
-   * The data for the immunization event originated with a written record for the
-   * patient.
-   */
-  RECORD,
-  /**
-   * The data for the immunization event originated from the recollection of the
-   * patient or parent/guardian of the patient.
-   */
-  RECALL,
-  /**
-   * The data for the immunization event originated with a school record for the
-   * patient.
-   */
-  SCHOOL,
-  /**
-   * The data for the immunization event originated with an immunization
-   * information system (IIS) or registry operating within the jurisdiction.
-   */
-  JURISDICTION,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ImmunizationOrigin fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("provider".equals(codeString))
-      return PROVIDER;
-    if ("record".equals(codeString))
-      return RECORD;
-    if ("recall".equals(codeString))
-      return RECALL;
-    if ("school".equals(codeString))
-      return SCHOOL;
-    if ("jurisdiction".equals(codeString))
-      return JURISDICTION;
-    throw new FHIRException("Unknown ImmunizationOrigin code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PROVIDER:
-      return "provider";
-    case RECORD:
-      return "record";
-    case RECALL:
-      return "recall";
-    case SCHOOL:
-      return "school";
-    case JURISDICTION:
-      return "jurisdiction";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The data for the immunization event originated with another provider.
+         */
+        PROVIDER, 
+        /**
+         * The data for the immunization event originated with a written record for the patient.
+         */
+        RECORD, 
+        /**
+         * The data for the immunization event originated from the recollection of the patient or parent/guardian of the patient.
+         */
+        RECALL, 
+        /**
+         * The data for the immunization event originated with a school record for the patient.
+         */
+        SCHOOL, 
+        /**
+         * The data for the immunization event originated with an immunization information system (IIS) or registry operating within the jurisdiction.
+         */
+        JURISDICTION, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ImmunizationOrigin fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("provider".equals(codeString))
+          return PROVIDER;
+        if ("record".equals(codeString))
+          return RECORD;
+        if ("recall".equals(codeString))
+          return RECALL;
+        if ("school".equals(codeString))
+          return SCHOOL;
+        if ("jurisdiction".equals(codeString))
+          return JURISDICTION;
+        throw new FHIRException("Unknown ImmunizationOrigin code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PROVIDER: return "provider";
+            case RECORD: return "record";
+            case RECALL: return "recall";
+            case SCHOOL: return "school";
+            case JURISDICTION: return "jurisdiction";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/immunization-origin";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PROVIDER: return "The data for the immunization event originated with another provider.";
+            case RECORD: return "The data for the immunization event originated with a written record for the patient.";
+            case RECALL: return "The data for the immunization event originated from the recollection of the patient or parent/guardian of the patient.";
+            case SCHOOL: return "The data for the immunization event originated with a school record for the patient.";
+            case JURISDICTION: return "The data for the immunization event originated with an immunization information system (IIS) or registry operating within the jurisdiction.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PROVIDER: return "Other Provider";
+            case RECORD: return "Written Record";
+            case RECALL: return "Parent/Guardian/Patient Recall";
+            case SCHOOL: return "School Record";
+            case JURISDICTION: return "Jurisdictional IIS";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/immunization-origin";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PROVIDER:
-      return "The data for the immunization event originated with another provider.";
-    case RECORD:
-      return "The data for the immunization event originated with a written record for the patient.";
-    case RECALL:
-      return "The data for the immunization event originated from the recollection of the patient or parent/guardian of the patient.";
-    case SCHOOL:
-      return "The data for the immunization event originated with a school record for the patient.";
-    case JURISDICTION:
-      return "The data for the immunization event originated with an immunization information system (IIS) or registry operating within the jurisdiction.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PROVIDER:
-      return "Other Provider";
-    case RECORD:
-      return "Written Record";
-    case RECALL:
-      return "Parent/Guardian/Patient Recall";
-    case SCHOOL:
-      return "School Record";
-    case JURISDICTION:
-      return "Jurisdictional IIS";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

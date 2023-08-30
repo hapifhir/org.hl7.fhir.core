@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.formats.JsonParser;
+
 import org.hl7.fhir.r5.model.CodeSystem;
 
 public class BigCodeSystemGenerator {

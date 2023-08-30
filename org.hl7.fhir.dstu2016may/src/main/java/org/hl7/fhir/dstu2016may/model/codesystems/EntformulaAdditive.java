@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,110 +34,86 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum EntformulaAdditive {
 
-  /**
-   * null
-   */
-  LIPID,
-  /**
-   * null
-   */
-  PROTEIN,
-  /**
-   * null
-   */
-  CARBOHYDRATE,
-  /**
-   * null
-   */
-  FIBER,
-  /**
-   * null
-   */
-  WATER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static EntformulaAdditive fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("lipid".equals(codeString))
-      return LIPID;
-    if ("protein".equals(codeString))
-      return PROTEIN;
-    if ("carbohydrate".equals(codeString))
-      return CARBOHYDRATE;
-    if ("fiber".equals(codeString))
-      return FIBER;
-    if ("water".equals(codeString))
-      return WATER;
-    throw new FHIRException("Unknown EntformulaAdditive code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case LIPID:
-      return "lipid";
-    case PROTEIN:
-      return "protein";
-    case CARBOHYDRATE:
-      return "carbohydrate";
-    case FIBER:
-      return "fiber";
-    case WATER:
-      return "water";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * null
+         */
+        LIPID, 
+        /**
+         * null
+         */
+        PROTEIN, 
+        /**
+         * null
+         */
+        CARBOHYDRATE, 
+        /**
+         * null
+         */
+        FIBER, 
+        /**
+         * null
+         */
+        WATER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static EntformulaAdditive fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("lipid".equals(codeString))
+          return LIPID;
+        if ("protein".equals(codeString))
+          return PROTEIN;
+        if ("carbohydrate".equals(codeString))
+          return CARBOHYDRATE;
+        if ("fiber".equals(codeString))
+          return FIBER;
+        if ("water".equals(codeString))
+          return WATER;
+        throw new FHIRException("Unknown EntformulaAdditive code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case LIPID: return "lipid";
+            case PROTEIN: return "protein";
+            case CARBOHYDRATE: return "carbohydrate";
+            case FIBER: return "fiber";
+            case WATER: return "water";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/entformula-additive";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case LIPID: return "";
+            case PROTEIN: return "";
+            case CARBOHYDRATE: return "";
+            case FIBER: return "";
+            case WATER: return "";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case LIPID: return "Modular lipid enteral formula component";
+            case PROTEIN: return "Modular protein enteral formula component";
+            case CARBOHYDRATE: return "Modular carbohydrate enteral formula component";
+            case FIBER: return "Modular fiber enteral formula component";
+            case WATER: return "Added water";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/entformula-additive";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case LIPID:
-      return "";
-    case PROTEIN:
-      return "";
-    case CARBOHYDRATE:
-      return "";
-    case FIBER:
-      return "";
-    case WATER:
-      return "";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case LIPID:
-      return "Modular lipid enteral formula component";
-    case PROTEIN:
-      return "Modular protein enteral formula component";
-    case CARBOHYDRATE:
-      return "Modular carbohydrate enteral formula component";
-    case FIBER:
-      return "Modular fiber enteral formula component";
-    case WATER:
-      return "Added water";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -409,7 +409,7 @@ public class EpisodeOfCare extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EpisodeOfCare.statusHistory.status");
+          throw new FHIRException("Cannot call addChild on a primitive type EpisodeOfCare.statusHistory.status");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -1797,7 +1797,7 @@ public class EpisodeOfCare extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EpisodeOfCare.status");
+          throw new FHIRException("Cannot call addChild on a primitive type EpisodeOfCare.status");
         }
         else if (name.equals("statusHistory")) {
           return addStatusHistory();

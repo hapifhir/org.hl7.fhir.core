@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,140 +34,104 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MedicationAdminStatus {
 
-  /**
-   * The administration has started but has not yet completed.
-   */
-  INPROGRESS,
-  /**
-   * The administration was terminated prior to any impact on the subject (though
-   * preparatory actions may have been taken)
-   */
-  NOTDONE,
-  /**
-   * Actions implied by the administration have been temporarily halted, but are
-   * expected to continue later. May also be called 'suspended'.
-   */
-  ONHOLD,
-  /**
-   * All actions that are implied by the administration have occurred.
-   */
-  COMPLETED,
-  /**
-   * The administration was entered in error and therefore nullified.
-   */
-  ENTEREDINERROR,
-  /**
-   * Actions implied by the administration have been permanently halted, before
-   * all of them occurred.
-   */
-  STOPPED,
-  /**
-   * The authoring system does not know which of the status values currently
-   * applies for this request. Note: This concept is not to be used for 'other' -
-   * one of the listed statuses is presumed to apply, it's just not known which
-   * one.
-   */
-  UNKNOWN,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MedicationAdminStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("in-progress".equals(codeString))
-      return INPROGRESS;
-    if ("not-done".equals(codeString))
-      return NOTDONE;
-    if ("on-hold".equals(codeString))
-      return ONHOLD;
-    if ("completed".equals(codeString))
-      return COMPLETED;
-    if ("entered-in-error".equals(codeString))
-      return ENTEREDINERROR;
-    if ("stopped".equals(codeString))
-      return STOPPED;
-    if ("unknown".equals(codeString))
-      return UNKNOWN;
-    throw new FHIRException("Unknown MedicationAdminStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INPROGRESS:
-      return "in-progress";
-    case NOTDONE:
-      return "not-done";
-    case ONHOLD:
-      return "on-hold";
-    case COMPLETED:
-      return "completed";
-    case ENTEREDINERROR:
-      return "entered-in-error";
-    case STOPPED:
-      return "stopped";
-    case UNKNOWN:
-      return "unknown";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The administration has started but has not yet completed.
+         */
+        INPROGRESS, 
+        /**
+         * The administration was terminated prior to any impact on the subject (though preparatory actions may have been taken)
+         */
+        NOTDONE, 
+        /**
+         * Actions implied by the administration have been temporarily halted, but are expected to continue later. May also be called 'suspended'.
+         */
+        ONHOLD, 
+        /**
+         * All actions that are implied by the administration have occurred.
+         */
+        COMPLETED, 
+        /**
+         * The administration was entered in error and therefore nullified.
+         */
+        ENTEREDINERROR, 
+        /**
+         * Actions implied by the administration have been permanently halted, before all of them occurred.
+         */
+        STOPPED, 
+        /**
+         * The authoring system does not know which of the status values currently applies for this request. Note: This concept is not to be used for 'other' - one of the listed statuses is presumed to apply, it's just not known which one.
+         */
+        UNKNOWN, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MedicationAdminStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("in-progress".equals(codeString))
+          return INPROGRESS;
+        if ("not-done".equals(codeString))
+          return NOTDONE;
+        if ("on-hold".equals(codeString))
+          return ONHOLD;
+        if ("completed".equals(codeString))
+          return COMPLETED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        if ("stopped".equals(codeString))
+          return STOPPED;
+        if ("unknown".equals(codeString))
+          return UNKNOWN;
+        throw new FHIRException("Unknown MedicationAdminStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INPROGRESS: return "in-progress";
+            case NOTDONE: return "not-done";
+            case ONHOLD: return "on-hold";
+            case COMPLETED: return "completed";
+            case ENTEREDINERROR: return "entered-in-error";
+            case STOPPED: return "stopped";
+            case UNKNOWN: return "unknown";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INPROGRESS: return "The administration has started but has not yet completed.";
+            case NOTDONE: return "The administration was terminated prior to any impact on the subject (though preparatory actions may have been taken)";
+            case ONHOLD: return "Actions implied by the administration have been temporarily halted, but are expected to continue later. May also be called 'suspended'.";
+            case COMPLETED: return "All actions that are implied by the administration have occurred.";
+            case ENTEREDINERROR: return "The administration was entered in error and therefore nullified.";
+            case STOPPED: return "Actions implied by the administration have been permanently halted, before all of them occurred.";
+            case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this request. Note: This concept is not to be used for 'other' - one of the listed statuses is presumed to apply, it's just not known which one.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INPROGRESS: return "In Progress";
+            case NOTDONE: return "Not Done";
+            case ONHOLD: return "On Hold";
+            case COMPLETED: return "Completed";
+            case ENTEREDINERROR: return "Entered in Error";
+            case STOPPED: return "Stopped";
+            case UNKNOWN: return "Unknown";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INPROGRESS:
-      return "The administration has started but has not yet completed.";
-    case NOTDONE:
-      return "The administration was terminated prior to any impact on the subject (though preparatory actions may have been taken)";
-    case ONHOLD:
-      return "Actions implied by the administration have been temporarily halted, but are expected to continue later. May also be called 'suspended'.";
-    case COMPLETED:
-      return "All actions that are implied by the administration have occurred.";
-    case ENTEREDINERROR:
-      return "The administration was entered in error and therefore nullified.";
-    case STOPPED:
-      return "Actions implied by the administration have been permanently halted, before all of them occurred.";
-    case UNKNOWN:
-      return "The authoring system does not know which of the status values currently applies for this request. Note: This concept is not to be used for 'other' - one of the listed statuses is presumed to apply, it's just not known which one.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INPROGRESS:
-      return "In Progress";
-    case NOTDONE:
-      return "Not Done";
-    case ONHOLD:
-      return "On Hold";
-    case COMPLETED:
-      return "Completed";
-    case ENTEREDINERROR:
-      return "Entered in Error";
-    case STOPPED:
-      return "Stopped";
-    case UNKNOWN:
-      return "Unknown";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

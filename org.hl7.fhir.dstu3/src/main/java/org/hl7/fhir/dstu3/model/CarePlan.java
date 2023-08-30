@@ -2160,13 +2160,13 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return addGoal();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.status");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.status");
         }
         else if (name.equals("statusReason")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.statusReason");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.statusReason");
         }
         else if (name.equals("prohibited")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.prohibited");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.prohibited");
         }
         else if (name.equals("scheduledTiming")) {
           this.scheduled = new Timing();
@@ -2204,7 +2204,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return this.quantity;
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.description");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.description");
         }
         else
           return super.addChild(name);
@@ -3918,19 +3918,19 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return addPartOf();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.status");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.status");
         }
         else if (name.equals("intent")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.intent");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.intent");
         }
         else if (name.equals("category")) {
           return addCategory();
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.title");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.title");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.description");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.description");
         }
         else if (name.equals("subject")) {
           this.subject = new Reference();

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class NehtaNehtaFocalNonFocalEnumFactory implements EnumFactory<NehtaNehtaFocalNonFocal> {
@@ -40,7 +44,7 @@ public class NehtaNehtaFocalNonFocalEnumFactory implements EnumFactory<NehtaNeht
       return null;
     if ("non_focal".equals(codeString))
       return NehtaNehtaFocalNonFocal.NONFOCAL;
-    throw new IllegalArgumentException("Unknown NehtaNehtaFocalNonFocal code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown NehtaNehtaFocalNonFocal code '"+codeString+"'");
   }
 
   public String toCode(NehtaNehtaFocalNonFocal code) {
@@ -49,8 +53,8 @@ public class NehtaNehtaFocalNonFocalEnumFactory implements EnumFactory<NehtaNeht
     return "?";
   }
 
-  public String toSystem(NehtaNehtaFocalNonFocal code) {
-    return code.getSystem();
-  }
+    public String toSystem(NehtaNehtaFocalNonFocal code) {
+      return code.getSystem();
+      }
 
 }

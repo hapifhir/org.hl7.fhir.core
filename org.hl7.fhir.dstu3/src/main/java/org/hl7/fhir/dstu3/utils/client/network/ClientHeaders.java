@@ -1,12 +1,11 @@
 package org.hl7.fhir.dstu3.utils.client.network;
 
+import okhttp3.internal.http2.Header;
+import org.hl7.fhir.exceptions.FHIRException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.hl7.fhir.exceptions.FHIRException;
-
-import okhttp3.internal.http2.Header;
 
 /**
  * Generic Implementation of Client Headers.

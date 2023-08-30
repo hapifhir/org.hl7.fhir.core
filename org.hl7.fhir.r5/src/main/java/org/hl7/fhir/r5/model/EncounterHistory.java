@@ -1069,7 +1069,7 @@ public class EncounterHistory extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EncounterHistory.status");
+          throw new FHIRException("Cannot call addChild on a primitive type EncounterHistory.status");
         }
         else if (name.equals("class")) {
           this.class_ = new CodeableConcept();
@@ -1094,10 +1094,10 @@ public class EncounterHistory extends DomainResource {
           return this.actualPeriod;
         }
         else if (name.equals("plannedStartDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EncounterHistory.plannedStartDate");
+          throw new FHIRException("Cannot call addChild on a primitive type EncounterHistory.plannedStartDate");
         }
         else if (name.equals("plannedEndDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EncounterHistory.plannedEndDate");
+          throw new FHIRException("Cannot call addChild on a primitive type EncounterHistory.plannedEndDate");
         }
         else if (name.equals("length")) {
           this.length = new Duration();

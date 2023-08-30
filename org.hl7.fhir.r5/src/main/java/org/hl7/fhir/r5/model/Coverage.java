@@ -349,7 +349,7 @@ public class Coverage extends DomainResource {
           return this.party;
         }
         else if (name.equals("responsibility")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.paymentBy.responsibility");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.paymentBy.responsibility");
         }
         else
           return super.addChild(name);
@@ -630,7 +630,7 @@ public class Coverage extends DomainResource {
           return this.value;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.class.name");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.class.name");
         }
         else
           return super.addChild(name);
@@ -2609,10 +2609,10 @@ public class Coverage extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.status");
         }
         else if (name.equals("kind")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.kind");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.kind");
         }
         else if (name.equals("paymentBy")) {
           return addPaymentBy();
@@ -2637,7 +2637,7 @@ public class Coverage extends DomainResource {
           return this.beneficiary;
         }
         else if (name.equals("dependent")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.dependent");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.dependent");
         }
         else if (name.equals("relationship")) {
           this.relationship = new CodeableConcept();
@@ -2655,16 +2655,16 @@ public class Coverage extends DomainResource {
           return addClass_();
         }
         else if (name.equals("order")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.order");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.order");
         }
         else if (name.equals("network")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.network");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.network");
         }
         else if (name.equals("costToBeneficiary")) {
           return addCostToBeneficiary();
         }
         else if (name.equals("subrogation")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.subrogation");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.subrogation");
         }
         else if (name.equals("contract")) {
           return addContract();

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,151 +34,113 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum OrganizationRole {
 
-  /**
-   * null
-   */
-  PROVIDER,
-  /**
-   * An organization such as a public health agency, community/social services
-   * provider, etc.
-   */
-  AGENCY,
-  /**
-   * An organization providing research-related services such as conducting
-   * research, recruiting research participants, analyzing data, etc.
-   */
-  RESEARCH,
-  /**
-   * An organization providing reimbursement, payment, or related services
-   */
-  PAYER,
-  /**
-   * An organization providing diagnostic testing/laboratory services
-   */
-  DIAGNOSTICS,
-  /**
-   * An organization that provides medical supplies (e.g. medical devices,
-   * equipment, pharmaceutical products, etc.)
-   */
-  SUPPLIER,
-  /**
-   * An organization that facilitates electronic clinical data exchange between
-   * entities
-   */
-  HIE_HIO,
-  /**
-   * A type of non-ownership relationship between entities (encompasses
-   * partnerships, collaboration, joint ventures, etc.)
-   */
-  MEMBER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static OrganizationRole fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("provider".equals(codeString))
-      return PROVIDER;
-    if ("agency".equals(codeString))
-      return AGENCY;
-    if ("research".equals(codeString))
-      return RESEARCH;
-    if ("payer".equals(codeString))
-      return PAYER;
-    if ("diagnostics".equals(codeString))
-      return DIAGNOSTICS;
-    if ("supplier".equals(codeString))
-      return SUPPLIER;
-    if ("HIE/HIO".equals(codeString))
-      return HIE_HIO;
-    if ("member".equals(codeString))
-      return MEMBER;
-    throw new FHIRException("Unknown OrganizationRole code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PROVIDER:
-      return "provider";
-    case AGENCY:
-      return "agency";
-    case RESEARCH:
-      return "research";
-    case PAYER:
-      return "payer";
-    case DIAGNOSTICS:
-      return "diagnostics";
-    case SUPPLIER:
-      return "supplier";
-    case HIE_HIO:
-      return "HIE/HIO";
-    case MEMBER:
-      return "member";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * null
+         */
+        PROVIDER, 
+        /**
+         * An organization such as a public health agency, community/social services provider, etc.
+         */
+        AGENCY, 
+        /**
+         * An organization providing research-related services such as conducting research, recruiting research participants, analyzing data, etc.
+         */
+        RESEARCH, 
+        /**
+         * An organization providing reimbursement, payment, or related services
+         */
+        PAYER, 
+        /**
+         * An organization providing diagnostic testing/laboratory services
+         */
+        DIAGNOSTICS, 
+        /**
+         * An organization that provides medical supplies (e.g. medical devices, equipment, pharmaceutical products, etc.)
+         */
+        SUPPLIER, 
+        /**
+         * An organization that facilitates electronic clinical data exchange between entities
+         */
+        HIE_HIO, 
+        /**
+         * A type of non-ownership relationship between entities (encompasses partnerships, collaboration, joint ventures, etc.)
+         */
+        MEMBER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static OrganizationRole fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("provider".equals(codeString))
+          return PROVIDER;
+        if ("agency".equals(codeString))
+          return AGENCY;
+        if ("research".equals(codeString))
+          return RESEARCH;
+        if ("payer".equals(codeString))
+          return PAYER;
+        if ("diagnostics".equals(codeString))
+          return DIAGNOSTICS;
+        if ("supplier".equals(codeString))
+          return SUPPLIER;
+        if ("HIE/HIO".equals(codeString))
+          return HIE_HIO;
+        if ("member".equals(codeString))
+          return MEMBER;
+        throw new FHIRException("Unknown OrganizationRole code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PROVIDER: return "provider";
+            case AGENCY: return "agency";
+            case RESEARCH: return "research";
+            case PAYER: return "payer";
+            case DIAGNOSTICS: return "diagnostics";
+            case SUPPLIER: return "supplier";
+            case HIE_HIO: return "HIE/HIO";
+            case MEMBER: return "member";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/organization-role";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PROVIDER: return "";
+            case AGENCY: return "An organization such as a public health agency, community/social services provider, etc.";
+            case RESEARCH: return "An organization providing research-related services such as conducting research, recruiting research participants, analyzing data, etc.";
+            case PAYER: return "An organization providing reimbursement, payment, or related services";
+            case DIAGNOSTICS: return "An organization providing diagnostic testing/laboratory services";
+            case SUPPLIER: return "An organization that provides medical supplies (e.g. medical devices, equipment, pharmaceutical products, etc.)";
+            case HIE_HIO: return "An organization that facilitates electronic clinical data exchange between entities";
+            case MEMBER: return "A type of non-ownership relationship between entities (encompasses partnerships, collaboration, joint ventures, etc.)";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PROVIDER: return "Provider";
+            case AGENCY: return "Agency";
+            case RESEARCH: return "Research";
+            case PAYER: return "Payer";
+            case DIAGNOSTICS: return "Diagnostics";
+            case SUPPLIER: return "Supplier";
+            case HIE_HIO: return "HIE/HIO";
+            case MEMBER: return "Member";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/organization-role";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PROVIDER:
-      return "";
-    case AGENCY:
-      return "An organization such as a public health agency, community/social services provider, etc.";
-    case RESEARCH:
-      return "An organization providing research-related services such as conducting research, recruiting research participants, analyzing data, etc.";
-    case PAYER:
-      return "An organization providing reimbursement, payment, or related services";
-    case DIAGNOSTICS:
-      return "An organization providing diagnostic testing/laboratory services";
-    case SUPPLIER:
-      return "An organization that provides medical supplies (e.g. medical devices, equipment, pharmaceutical products, etc.)";
-    case HIE_HIO:
-      return "An organization that facilitates electronic clinical data exchange between entities";
-    case MEMBER:
-      return "A type of non-ownership relationship between entities (encompasses partnerships, collaboration, joint ventures, etc.)";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PROVIDER:
-      return "Provider";
-    case AGENCY:
-      return "Agency";
-    case RESEARCH:
-      return "Research";
-    case PAYER:
-      return "Payer";
-    case DIAGNOSTICS:
-      return "Diagnostics";
-    case SUPPLIER:
-      return "Supplier";
-    case HIE_HIO:
-      return "HIE/HIO";
-    case MEMBER:
-      return "Member";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

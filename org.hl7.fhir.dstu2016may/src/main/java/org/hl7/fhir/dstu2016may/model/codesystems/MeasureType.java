@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MeasureType {
 
-  /**
-   * The measure is a process measure
-   */
-  PROCESS,
-  /**
-   * The measure is an outcome measure
-   */
-  OUTCOME,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MeasureType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("process".equals(codeString))
-      return PROCESS;
-    if ("outcome".equals(codeString))
-      return OUTCOME;
-    throw new FHIRException("Unknown MeasureType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PROCESS:
-      return "process";
-    case OUTCOME:
-      return "outcome";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The measure is a process measure
+         */
+        PROCESS, 
+        /**
+         * The measure is an outcome measure
+         */
+        OUTCOME, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MeasureType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("process".equals(codeString))
+          return PROCESS;
+        if ("outcome".equals(codeString))
+          return OUTCOME;
+        throw new FHIRException("Unknown MeasureType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PROCESS: return "process";
+            case OUTCOME: return "outcome";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/measure-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PROCESS: return "The measure is a process measure";
+            case OUTCOME: return "The measure is an outcome measure";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PROCESS: return "Process";
+            case OUTCOME: return "Outcome";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/measure-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PROCESS:
-      return "The measure is a process measure";
-    case OUTCOME:
-      return "The measure is an outcome measure";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PROCESS:
-      return "Process";
-    case OUTCOME:
-      return "Outcome";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

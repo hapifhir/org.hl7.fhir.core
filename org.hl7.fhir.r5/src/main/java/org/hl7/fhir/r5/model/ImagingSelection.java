@@ -1156,17 +1156,17 @@ public class ImagingSelection extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("uid")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ImagingSelection.instance.uid");
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.instance.uid");
         }
         else if (name.equals("number")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ImagingSelection.instance.number");
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.instance.number");
         }
         else if (name.equals("sopClass")) {
           this.sopClass = new Coding();
           return this.sopClass;
         }
         else if (name.equals("subset")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ImagingSelection.instance.subset");
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.instance.subset");
         }
         else if (name.equals("imageRegion2D")) {
           return addImageRegion2D();
@@ -1463,10 +1463,10 @@ public class ImagingSelection extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("regionType")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ImagingSelection.instance.imageRegion2D.regionType");
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.instance.imageRegion2D.regionType");
         }
         else if (name.equals("coordinate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ImagingSelection.instance.imageRegion2D.coordinate");
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.instance.imageRegion2D.coordinate");
         }
         else
           return super.addChild(name);
@@ -1738,10 +1738,10 @@ public class ImagingSelection extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("regionType")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ImagingSelection.instance.imageRegion3D.regionType");
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.instance.imageRegion3D.regionType");
         }
         else if (name.equals("coordinate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ImagingSelection.instance.imageRegion3D.coordinate");
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.instance.imageRegion3D.coordinate");
         }
         else
           return super.addChild(name);
@@ -2948,14 +2948,14 @@ public class ImagingSelection extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ImagingSelection.status");
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.status");
         }
         else if (name.equals("subject")) {
           this.subject = new Reference();
           return this.subject;
         }
         else if (name.equals("issued")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ImagingSelection.issued");
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.issued");
         }
         else if (name.equals("performer")) {
           return addPerformer();
@@ -2971,7 +2971,7 @@ public class ImagingSelection extends DomainResource {
           return this.code;
         }
         else if (name.equals("studyUid")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ImagingSelection.studyUid");
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.studyUid");
         }
         else if (name.equals("derivedFrom")) {
           return addDerivedFrom();
@@ -2980,13 +2980,13 @@ public class ImagingSelection extends DomainResource {
           return addEndpoint();
         }
         else if (name.equals("seriesUid")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ImagingSelection.seriesUid");
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.seriesUid");
         }
         else if (name.equals("seriesNumber")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ImagingSelection.seriesNumber");
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.seriesNumber");
         }
         else if (name.equals("frameOfReferenceUid")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ImagingSelection.frameOfReferenceUid");
+          throw new FHIRException("Cannot call addChild on a primitive type ImagingSelection.frameOfReferenceUid");
         }
         else if (name.equals("bodySite")) {
           this.bodySite = new CodeableReference();

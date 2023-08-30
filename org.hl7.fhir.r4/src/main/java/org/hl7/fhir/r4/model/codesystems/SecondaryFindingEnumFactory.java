@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class SecondaryFindingEnumFactory implements EnumFactory<SecondaryFinding> {
@@ -42,7 +46,7 @@ public class SecondaryFindingEnumFactory implements EnumFactory<SecondaryFinding
       return SecondaryFinding.ACMGVERSION1;
     if ("acmg-version2".equals(codeString))
       return SecondaryFinding.ACMGVERSION2;
-    throw new IllegalArgumentException("Unknown SecondaryFinding code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown SecondaryFinding code '"+codeString+"'");
   }
 
   public String toCode(SecondaryFinding code) {
@@ -53,8 +57,8 @@ public class SecondaryFindingEnumFactory implements EnumFactory<SecondaryFinding
     return "?";
   }
 
-  public String toSystem(SecondaryFinding code) {
-    return code.getSystem();
-  }
+    public String toSystem(SecondaryFinding code) {
+      return code.getSystem();
+      }
 
 }

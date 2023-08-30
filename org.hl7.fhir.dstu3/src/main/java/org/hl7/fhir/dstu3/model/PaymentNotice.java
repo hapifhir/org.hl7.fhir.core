@@ -875,7 +875,7 @@ public class PaymentNotice extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property PaymentNotice.status");
+          throw new FHIRException("Cannot call addChild on a primitive type PaymentNotice.status");
         }
         else if (name.equals("request")) {
           this.request = new Reference();
@@ -886,10 +886,10 @@ public class PaymentNotice extends DomainResource {
           return this.response;
         }
         else if (name.equals("statusDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property PaymentNotice.statusDate");
+          throw new FHIRException("Cannot call addChild on a primitive type PaymentNotice.statusDate");
         }
         else if (name.equals("created")) {
-          throw new FHIRException("Cannot call addChild on a singleton property PaymentNotice.created");
+          throw new FHIRException("Cannot call addChild on a primitive type PaymentNotice.created");
         }
         else if (name.equals("target")) {
           this.target = new Reference();

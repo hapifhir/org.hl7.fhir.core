@@ -254,7 +254,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("id")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Element.id");
+          throw new FHIRException("Cannot call addChild on a primitive type Element.id");
         }
         else if (name.equals("extension")) {
           return addExtension();
@@ -407,28 +407,6 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
      return java.util.Collections.unmodifiableList(retVal);
    }
    
-   public List<Extension> getExtensionsByUrl(String... theUrls) {
-     
-     ArrayList<Extension> retVal = new ArrayList<>();
-     for (Extension next : getExtension()) {
-       if (Utilities.existsInList(next.getUrl(), theUrls)) {
-         retVal.add(next);
-       }
-     }
-     return java.util.Collections.unmodifiableList(retVal);
-   }
-   
-
-   public boolean hasExtension(String... theUrls) {
-     for (Extension next : getExtension()) {
-       if (Utilities.existsInList(next.getUrl(), theUrls)) {
-         return true;
-       }
-     }
-     return false;
-   }
-
-
    /**
     * Returns an true if this element has an extension that matchs the given URL.
     * 
@@ -498,14 +476,6 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     }    
   }
 
-  public void copyNewExtensions(org.hl7.fhir.r5.model.Element src, String... urls) {
-    for (Extension e : src.getExtension()) {
-      if (Utilities.existsInList(e.getUrl(), urls) && !!hasExtension(e.getUrl())) {
-        addExtension(e.copy());
-      }
-    }    
-  }
-  
   
 // end addition
 

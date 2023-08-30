@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,87 +34,68 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ModuleMetadataStatus {
 
-  /**
-   * The module is in draft state
-   */
-  DRAFT,
-  /**
-   * The module is active
-   */
-  ACTIVE,
-  /**
-   * The module is inactive, either rejected before publication, or retired after
-   * publication
-   */
-  INACTIVE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ModuleMetadataStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("draft".equals(codeString))
-      return DRAFT;
-    if ("active".equals(codeString))
-      return ACTIVE;
-    if ("inactive".equals(codeString))
-      return INACTIVE;
-    throw new FHIRException("Unknown ModuleMetadataStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case DRAFT:
-      return "draft";
-    case ACTIVE:
-      return "active";
-    case INACTIVE:
-      return "inactive";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The module is in draft state
+         */
+        DRAFT, 
+        /**
+         * The module is active
+         */
+        ACTIVE, 
+        /**
+         * The module is inactive, either rejected before publication, or retired after publication
+         */
+        INACTIVE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ModuleMetadataStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("draft".equals(codeString))
+          return DRAFT;
+        if ("active".equals(codeString))
+          return ACTIVE;
+        if ("inactive".equals(codeString))
+          return INACTIVE;
+        throw new FHIRException("Unknown ModuleMetadataStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case DRAFT: return "draft";
+            case ACTIVE: return "active";
+            case INACTIVE: return "inactive";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/module-metadata-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case DRAFT: return "The module is in draft state";
+            case ACTIVE: return "The module is active";
+            case INACTIVE: return "The module is inactive, either rejected before publication, or retired after publication";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case DRAFT: return "Draft";
+            case ACTIVE: return "Active";
+            case INACTIVE: return "Inactive";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/module-metadata-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case DRAFT:
-      return "The module is in draft state";
-    case ACTIVE:
-      return "The module is active";
-    case INACTIVE:
-      return "The module is inactive, either rejected before publication, or retired after publication";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case DRAFT:
-      return "Draft";
-    case ACTIVE:
-      return "Active";
-    case INACTIVE:
-      return "Inactive";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

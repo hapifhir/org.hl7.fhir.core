@@ -34,7 +34,7 @@ public class ProfileUtilitiesTests {
   private String root;
   private SimpleWorkerContext context;
   private ProfileComparer comp;
-
+  
   public ProfileUtilitiesTests(String root) {
     super();
     this.root = root;
@@ -43,59 +43,45 @@ public class ProfileUtilitiesTests {
   public static void main(String[] args) throws EOperationOutcome, Exception {
     // new ProfileUtilitiesTests().execute(args);
     new ProfileUtilitiesTests("C:\\work\\org.hl7.fhir\\build\\publish").testSnapshotGeneration();
-    // StructureDefinition p = (StructureDefinition) new XmlParser().parse(new
-    // FileInputStream("C:\\work\\org.hl7.fhir\\build\\publish\\lipid-report-cholesterol.profile.xml"));
-    // new ProfileUtilities(context, messages, null).generateSchematrons(new
-    // FileOutputStream(Utilities.path("[tmp]", "test.sch"), p);
+    //    StructureDefinition p = (StructureDefinition) new XmlParser().parse(new FileInputStream("C:\\work\\org.hl7.fhir\\build\\publish\\lipid-report-cholesterol.profile.xml"));
+    //    new ProfileUtilities(context, messages, null).generateSchematrons(new FileOutputStream(Utilities.path("[tmp]", "test.sch"), p);
   }
-
+  
   public void execute(String[] args) throws FileNotFoundException, IOException, FHIRException {
     System.out.println("loading context");
     context = SimpleWorkerContext.fromPack(Utilities.path(root, "validation.zip"));
     comp = new ProfileComparer(context);
-
+    
     compare("patient-daf-dafpatient.profile.xml", "patient-qicore-qicore-patient.profile.xml");
     compare("encounter-daf-dafencounter.profile.xml", "encounter-qicore-qicore-encounter.profile.xml");
     compare("substance-daf-dafsubstance.profile.xml", "substance-qicore-qicore-substance.profile.xml");
     compare("medication-daf-dafmedication.profile.xml", "medication-qicore-qicore-medication.profile.xml");
     compare("procedure-daf-dafprocedure.profile.xml", "procedure-qicore-qicore-procedure.profile.xml");
-    compare("familymemberhistory-daf-daffamilymemberhistory.profile.xml",
-        "familymemberhistory-qicore-qicore-familymemberhistory.profile.xml");
+    compare("familymemberhistory-daf-daffamilymemberhistory.profile.xml", "familymemberhistory-qicore-qicore-familymemberhistory.profile.xml");
     compare("immunization-daf-dafimmunization.profile.xml", "immunization-qicore-qicore-immunization.profile.xml");
     compare("condition-daf-dafcondition.profile.xml", "condition-qicore-qicore-condition.profile.xml");
-    compare("allergyintolerance-daf-dafallergyintolerance.profile.xml",
-        "allergyintolerance-qicore-qicore-allergyintolerance.profile.xml");
-    compare("medicationadministration-daf-dafmedicationadministration.profile.xml",
-        "medicationadministration-qicore-qicore-medicationadministration.profile.xml");
-    compare("medicationdispense-daf-dafmedicationdispense.profile.xml",
-        "medicationdispense-qicore-qicore-medicationdispense.profile.xml");
-    compare("medicationprescription-daf-dafmedicationprescription.profile.xml",
-        "medicationprescription-qicore-qicore-medicationprescription.profile.xml");
-    compare("medicationstatement-daf-dafmedicationstatement.profile.xml",
-        "medicationstatement-qicore-qicore-medicationstatement.profile.xml");
-    compare("observation-daf-smokingstatus-dafsmokingstatus.profile.xml",
-        "observation-qicore-qicore-observation.profile.xml");
-    compare("observation-daf-vitalsigns-dafvitalsigns.profile.xml",
-        "observation-qicore-qicore-observation.profile.xml");
+    compare("allergyintolerance-daf-dafallergyintolerance.profile.xml", "allergyintolerance-qicore-qicore-allergyintolerance.profile.xml");
+    compare("medicationadministration-daf-dafmedicationadministration.profile.xml", "medicationadministration-qicore-qicore-medicationadministration.profile.xml");
+    compare("medicationdispense-daf-dafmedicationdispense.profile.xml", "medicationdispense-qicore-qicore-medicationdispense.profile.xml");
+    compare("medicationprescription-daf-dafmedicationprescription.profile.xml", "medicationprescription-qicore-qicore-medicationprescription.profile.xml");
+    compare("medicationstatement-daf-dafmedicationstatement.profile.xml", "medicationstatement-qicore-qicore-medicationstatement.profile.xml");
+    compare("observation-daf-smokingstatus-dafsmokingstatus.profile.xml", "observation-qicore-qicore-observation.profile.xml");
+    compare("observation-daf-vitalsigns-dafvitalsigns.profile.xml", "observation-qicore-qicore-observation.profile.xml");
 //    compare("observation-daf-results-dafresultobs.profile.xml", "observation-qicore-qicore-observation.profile.xml");
 //    compare("diagnosticorder-daf-dafdiagnosticorder.profile.xml", "diagnosticorder-qicore-qicore-diagnosticorder.profile.xml");
 //    compare("diagnosticreport-daf-dafdiagnosticreport.profile.xml", "diagnosticreport-qicore-qicore-diagnosticreport.profile.xml");
-
+    
     System.out.println("processing output");
-    for (ProfileComparison outcome : comp.getComparisons()) {
+    for (ProfileComparison outcome : comp.getComparisons()) { 
       if (outcome.getSubset() != null)
-        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(
-            new FileOutputStream(Utilities.path("[tmp]", "intersection-" + outcome.getId() + ".xml")),
-            outcome.getSubset());
+        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "intersection-"+outcome.getId()+".xml")), outcome.getSubset());
       if (outcome.getSuperset() != null)
-        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(
-            new FileOutputStream(Utilities.path("[tmp]", "union-" + outcome.getId() + ".xml")), outcome.getSuperset());
-
-      System.out.println("\r\n" + outcome.getId() + ": Comparison of " + outcome.getLeft().getUrl() + " and "
-          + outcome.getRight().getUrl());
+        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "union-"+outcome.getId()+".xml")), outcome.getSuperset());
+    
+      System.out.println("\r\n"+outcome.getId()+": Comparison of "+outcome.getLeft().getUrl()+" and "+outcome.getRight().getUrl());
       for (ValidationMessage vm : outcome.getMessages())
         if (vm.getLevel() == IssueSeverity.INFORMATION)
-          System.out.println(vm.summary());
+      System.out.println(vm.summary());
       for (ValidationMessage vm : outcome.getMessages())
         if (vm.getLevel() == IssueSeverity.WARNING)
           System.out.println(vm.summary());
@@ -105,29 +91,26 @@ public class ProfileUtilitiesTests {
       for (ValidationMessage vm : outcome.getMessages())
         if (vm.getLevel() == IssueSeverity.FATAL)
           System.out.println(vm.summary());
-      System.out.println("done. " + Integer.toString(outcome.getMessages().size()) + " messages");
+      System.out.println("done. "+Integer.toString(outcome.getMessages().size())+" messages");
       System.out.println("=================================================================");
     }
-  }
+	}
 
-  private void compare(String fn1, String fn2)
-      throws FHIRFormatError, FileNotFoundException, IOException, DefinitionException {
-    System.out.println("Compare " + fn1 + " to " + fn2);
+  private void compare(String fn1, String fn2) throws FHIRFormatError, FileNotFoundException, IOException, DefinitionException {
+    System.out.println("Compare "+fn1+" to "+fn2);
     System.out.println("  .. load");
-    StructureDefinition left = (StructureDefinition) new XmlParser()
-        .parse(new FileInputStream(Utilities.path(root, fn1)));
-    StructureDefinition right = (StructureDefinition) new XmlParser()
-        .parse(new FileInputStream(Utilities.path(root, fn2)));
+    StructureDefinition left = (StructureDefinition) new XmlParser().parse(new FileInputStream(Utilities.path(root, fn1)));
+    StructureDefinition right = (StructureDefinition) new XmlParser().parse(new FileInputStream(Utilities.path(root, fn2)));
     System.out.println(" .. compare");
     comp.compareProfiles(left, right);
-
+    
   }
-
+  
   public void testSnapshotGeneration() throws EOperationOutcome, Exception {
     System.out.println("Loading");
     context = SimpleWorkerContext.fromPack(Utilities.path(root, "validation.xml.zip"));
-    System.out.println("Loaded " + Integer.toString(context.totalCount()) + " resources");
-
+    System.out.println("Loaded "+Integer.toString(context.totalCount())+" resources"); 
+    
     // simple tests
     testSimple();
     testSimple2();
@@ -136,11 +119,11 @@ public class ProfileUtilitiesTests {
     textTypeNarrowing1();
     textTypeNarrowing2();
     testMapping();
-
+    
     // ok, now we test walking into a new type:
     testTypeWalk();
-    // todo: testTypeWalk2();
-
+     // todo: testTypeWalk2();  
+    
     // slicing tests
     testSlicingSimple();
     testSlicingExtension(false);
@@ -148,19 +131,17 @@ public class ProfileUtilitiesTests {
     testSlicingExtensionComplex(true);
     testSlicingExtensionComplex(false);
     testSlicingTask8742();
-    System.out.println("Success");
+    System.out.println("Success"); 
   }
 
   /**
-   * This is simple: we just create an empty differential, generate the snapshot,
-   * and then insist it must match the base
+   * This is simple: we just create an empty differential, generate the snapshot, and then insist it must match the base 
    *
-   * @throws EOperationOutcome
+   * @throws EOperationOutcome 
    */
   private void testSimple() throws EOperationOutcome, Exception {
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = context
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBase(base.getUrl());
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
@@ -171,7 +152,7 @@ public class ProfileUtilitiesTests {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
-        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath()))
+        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath())) 
           ok = false;
         else {
           f.setBase(null);
@@ -179,37 +160,35 @@ public class ProfileUtilitiesTests {
         }
       }
     }
-
+    
     if (!ok) {
       compareXml(base, focus);
       throw new FHIRException("Snap shot generation simple test failed");
-    } else
+    } else 
       System.out.println("Snap shot generation simple test passed");
   }
 
   /**
-   * This is simple: we just create an empty differential, generate the snapshot,
-   * and then insist it must match the base. for a different resource with
-   * recursion
+   * This is simple: we just create an empty differential, generate the snapshot, and then insist it must match the base. for a different resource with recursion 
    * 
    * @param context2
-   * @ @throws EOperationOutcome
+   * @
+   * @throws EOperationOutcome 
    */
   private void testSimple2() throws EOperationOutcome, Exception {
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = context
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet").copy();
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBase(base.getUrl());
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
-        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath()))
+        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath())) 
           ok = false;
         else {
           f.setBase(null);
@@ -217,11 +196,11 @@ public class ProfileUtilitiesTests {
         }
       }
     }
-
+    
     if (!ok) {
       compareXml(base, focus);
       throw new FHIRException("Snap shot generation simple test failed");
-    } else
+    } else 
       System.out.println("Snap shot generation simple test passed");
   }
 
@@ -229,26 +208,26 @@ public class ProfileUtilitiesTests {
    * Change one cardinality.
    * 
    * @param context2
-   * @ @throws EOperationOutcome
+   * @
+   * @throws EOperationOutcome 
    */
   private void testCardinalityChange() throws EOperationOutcome, Exception {
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = context
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBase(base.getUrl());
     ElementDefinition id = focus.getDifferential().addElement();
     id.setPath("Patient.identifier");
     id.setMin(1);
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
-        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath()))
+        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath())) 
           ok = false;
         else {
           f.setBase(null);
@@ -261,11 +240,11 @@ public class ProfileUtilitiesTests {
         }
       }
     }
-
+    
     if (!ok) {
       compareXml(base, focus);
       throw new FHIRException("Snap shot generation chenge cardinality test failed");
-    } else
+    } else 
       System.out.println("Snap shot generation chenge cardinality test passed");
   }
 
@@ -273,26 +252,26 @@ public class ProfileUtilitiesTests {
    * check that documentation appending is working
    * 
    * @param context2
-   * @ @throws EOperationOutcome
+   * @
+   * @throws EOperationOutcome 
    */
   private void testDocumentationAppend() throws EOperationOutcome, Exception {
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = context
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBase(base.getUrl());
     ElementDefinition id = focus.getDifferential().addElement();
     id.setPath("Patient.identifier");
     id.setDefinition("... some more doco");
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
-        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath()))
+        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath())) 
           ok = false;
         else {
           f.setBase(null);
@@ -307,38 +286,40 @@ public class ProfileUtilitiesTests {
         }
       }
     }
-
+    
     if (!ok) {
       compareXml(base, focus);
       throw new FHIRException("Snap shot generation documentation append failed");
-    } else
+    } else 
       System.out.println("Snap shot generation documentation append test passed");
   }
 
+  
   /**
-   * check that narrowing types is working this one doesn't rename the path
+   * check that narrowing types is working
+   * this one doesn't rename the path
    * 
    * @param context2
-   * @ @throws EOperationOutcome
+   * @
+   * @throws EOperationOutcome 
    */
   private void textTypeNarrowing1() throws EOperationOutcome, Exception {
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = context
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBase(base.getUrl());
     ElementDefinition id = focus.getDifferential().addElement();
     id.setPath("Patient.deceased[x]");
     id.addType().setCode("dateTime");
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
-        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath()))
+        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath())) 
           ok = false;
         else {
           f.setBase(null);
@@ -354,38 +335,39 @@ public class ProfileUtilitiesTests {
         }
       }
     }
-
+    
     if (!ok) {
       compareXml(base, focus);
       throw new FHIRException("Snap shot generation narrow type 1 failed");
-    } else
+    } else 
       System.out.println("Snap shot generation narrow type 1 test passed");
   }
-
+  
   /**
-   * check that narrowing types is working this one renames the path
+   * check that narrowing types is working
+   * this one renames the path
    * 
    * @param context2
-   * @ @throws EOperationOutcome
+   * @
+   * @throws EOperationOutcome 
    */
   private void textTypeNarrowing2() throws EOperationOutcome, Exception {
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = context
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBase(base.getUrl());
     ElementDefinition id = focus.getDifferential().addElement();
     id.setPath("Patient.deceasedDateTime");
     id.addType().setCode("dateTime");
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
-        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath()))
+        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath())) 
           ok = false;
         else {
           f.setBase(null);
@@ -401,11 +383,11 @@ public class ProfileUtilitiesTests {
         }
       }
     }
-
+    
     if (!ok) {
       compareXml(base, focus);
       throw new FHIRException("Snap shot generation narrow type 2 failed");
-    } else
+    } else 
       System.out.println("Snap shot generation narrow type 2 test passed");
   }
 
@@ -413,26 +395,26 @@ public class ProfileUtilitiesTests {
    * check that mapping resolution is working
    * 
    * @param context2
-   * @ @throws EOperationOutcome
+   * @
+   * @throws EOperationOutcome 
    */
   private void testMapping() throws EOperationOutcome, Exception {
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = context
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBase(base.getUrl());
     ElementDefinition id = focus.getDifferential().addElement();
     id.setPath("Patient.identifier");
     id.addMapping().setIdentity("rim").setMap("test");
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
-        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath()))
+        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath())) 
           ok = false;
         else {
           f.setBase(null);
@@ -447,24 +429,24 @@ public class ProfileUtilitiesTests {
         }
       }
     }
-
+    
     if (!ok) {
       compareXml(base, focus);
       throw new FHIRException("Snap shot generation mapping changes failed");
-    } else
+    } else 
       System.out.println("Snap shot generation mapping changes test passed");
   }
 
   /**
-   * Walking into a type
+   * Walking into a type 
    * 
    * @param context2
-   * @ @throws EOperationOutcome
+   * @
+   * @throws EOperationOutcome 
    */
   private void testTypeWalk() throws EOperationOutcome, Exception {
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = context
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBase(base.getUrl());
     ElementDefinition id = focus.getDifferential().addElement();
@@ -474,7 +456,7 @@ public class ProfileUtilitiesTests {
     id.setPath("Patient.identifier.system");
     id.setMustSupport(true);
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
 
     // the derived should be 8 longer
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size() - 8;
@@ -482,7 +464,7 @@ public class ProfileUtilitiesTests {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i <= 9 ? i : i + 8);
-        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath()))
+        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath())) 
           ok = false;
         else {
           f.setBase(null);
@@ -496,33 +478,33 @@ public class ProfileUtilitiesTests {
         }
       }
     }
-
+    
     if (!ok) {
       compareXml(base, focus);
       throw new FHIRException("Snap shot generation simple test failed");
-    } else
+    } else 
       System.out.println("Snap shot generation simple test passed");
   }
 
   /**
-   * Walking into a type, without explicitly doing so
+   * Walking into a type, without explicitly doing so 
    * 
    * note: this currently fails.
    * 
    * @param context2
-   * @ @throws EOperationOutcome
+   * @
+   * @throws EOperationOutcome 
    */
   private void testTypeWalk2() throws EOperationOutcome, Exception {
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = context
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBase(base.getUrl());
     ElementDefinition id = focus.getDifferential().addElement();
     id.setPath("Patient.identifier.system");
     id.setMustSupport(true);
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
 
     // the derived should be 8 longer
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size() - 8;
@@ -530,7 +512,7 @@ public class ProfileUtilitiesTests {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i <= 9 ? i : i + 8);
-        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath()))
+        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath())) 
           ok = false;
         else {
           f.setBase(null);
@@ -544,38 +526,38 @@ public class ProfileUtilitiesTests {
         }
       }
     }
-
+    
     if (!ok) {
       compareXml(base, focus);
       throw new FHIRException("Snap shot generation simple test failed");
-    } else
+    } else 
       System.out.println("Snap shot generation simple test passed");
   }
 
+  
   /**
    * we're going to slice Patient.identifier
    */
   private void testSlicingSimple() throws EOperationOutcome, Exception {
-
+    
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = context
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBase(base.getUrl());
-
+    
     // set the slice up
     ElementDefinition id = focus.getDifferential().addElement();
     id.setPath("Patient.identifier");
     id.getSlicing().setOrdered(false).setRules(SlicingRules.OPEN).addDiscriminator("use");
-
-    // first slice:
+    
+    // first slice: 
     id = focus.getDifferential().addElement();
     id.setPath("Patient.identifier");
     id.setName("name1");
     id = focus.getDifferential().addElement();
     id.setPath("Patient.identifier.use");
     id.setFixed(new CodeType("usual"));
-
+    
     // second slice:
     id = focus.getDifferential().addElement();
     id.setPath("Patient.identifier");
@@ -583,17 +565,18 @@ public class ProfileUtilitiesTests {
     id = focus.getDifferential().addElement();
     id.setPath("Patient.identifier.use");
     id.setFixed(new CodeType("official"));
-
+    
+    
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
 
-    // 18 different: identifier + 8 inner children * 2
+    // 18 different: identifier + 8 inner children * 2 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size() - 18;
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i <= 9 ? i : i + 18);
-        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath()))
+        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath())) 
           ok = false;
         else {
           f.setBase(null);
@@ -601,7 +584,7 @@ public class ProfileUtilitiesTests {
             ok = f.hasSlicing();
             if (ok)
               f.setSlicing(null);
-          }
+          }            
           ok = Base.compareDeep(b, f, true);
         }
       }
@@ -610,7 +593,7 @@ public class ProfileUtilitiesTests {
     for (int i = 10; i <= 18; i++) {
       if (ok) {
         ElementDefinition d1 = focus.getSnapshot().getElement().get(i);
-        ElementDefinition d2 = focus.getSnapshot().getElement().get(i + 9);
+        ElementDefinition d2 = focus.getSnapshot().getElement().get(i+9);
         if (d1.getPath().equals("Patient.identifier.use")) {
           ok = d1.hasFixed() && d2.hasFixed() && !Base.compareDeep(d1.getFixed(), d2.getFixed(), true);
           if (ok) {
@@ -628,15 +611,14 @@ public class ProfileUtilitiesTests {
         ok = Base.compareDeep(d1, d2, true);
       }
     }
-    // for throughness, we could check against identifier too, but this is not done
-    // now.
-
+    // for throughness, we could check against identifier too, but this is not done now.
+    
     if (!ok) {
       compareXml(base, focus);
       throw new FHIRException("Snap shot generation slicing failed");
-    } else
+    } else 
       System.out.println("Snap shot generation slicing passed");
-
+    
   }
 
   /**
@@ -645,13 +627,12 @@ public class ProfileUtilitiesTests {
    * implicit: whether to rely on implicit extension slicing
    */
   private void testSlicingExtension(boolean implicit) throws EOperationOutcome, Exception {
-
+    
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = context
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBase(base.getUrl());
-
+    
     // set the slice up
     ElementDefinition id;
     if (!implicit) {
@@ -660,30 +641,30 @@ public class ProfileUtilitiesTests {
       id.getSlicing().setOrdered(false).setRules(SlicingRules.OPEN).addDiscriminator("url");
       id.setMax("3");
     }
-    // first slice:
+    // first slice: 
     id = focus.getDifferential().addElement();
     id.setPath("Patient.extension");
     id.setName("name1");
     id.addType().setCode("Extension").addProfile("http://hl7.org/fhir/StructureDefinition/patient-birthTime");
     id.setMin(1);
-
+    
     // second slice:
     id = focus.getDifferential().addElement();
     id.setPath("Patient.extension");
     id.setName("name2");
-    id.addType().setCode("Extension").addProfile("http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName");
-
+    id.addType().setCode("Extension").addProfile("http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName");    
+    
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     ProfileUtilities pu = new ProfileUtilities(context, messages, null);
-    pu.generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    pu.generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
 
-    // 2 different: extension slices
+    // 2 different: extension slices 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size() - 2;
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i <= 7 ? i : i + 2);
-        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath()))
+        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath())) 
           ok = false;
         else {
           f.setBase(null);
@@ -693,8 +674,8 @@ public class ProfileUtilitiesTests {
               f.setSlicing(null);
               f.setMaxElement(b.getMaxElement());
             }
-          }
-          if (!f.getPath().equals("Patient.extension")) // no compare that because the definitions get overwritten
+          }            
+          if (!f.getPath().equals("Patient.extension")) // no compare that because the definitions get overwritten 
             ok = Base.compareDeep(b, f, true);
         }
       }
@@ -703,9 +684,8 @@ public class ProfileUtilitiesTests {
     if (ok) {
       ElementDefinition d1 = focus.getSnapshot().getElement().get(8);
       ElementDefinition d2 = focus.getSnapshot().getElement().get(9);
-      ok = d1.hasType() && d1.getType().get(0).hasProfile() && d2.hasType() && d2.getType().get(0).hasProfile()
-          && !Base.compareDeep(d1.getType(), d2.getType(), true) && d1.getMin() == 1 && d2.getMin() == 0
-          && d1.getMax().equals("1") && d2.getMax().equals("1");
+      ok = d1.hasType() && d1.getType().get(0).hasProfile() && d2.hasType() && d2.getType().get(0).hasProfile() && !Base.compareDeep(d1.getType(), d2.getType(), true) &&
+            d1.getMin() == 1 && d2.getMin() == 0 && d1.getMax().equals("1") && d2.getMax().equals("1");
       if (ok) {
         d1.getType().clear();
         d2.getType().clear();
@@ -714,34 +694,29 @@ public class ProfileUtilitiesTests {
         d1.setMin(0);
       }
       ok = Base.compareDeep(d1, d2, true);
-      // for throughness, we could check against extension too, but this is not done
-      // now.
+      // for throughness, we could check against extension too, but this is not done now.
     }
-
+    
     if (!ok) {
       compareXml(base, focus);
-      throw new FHIRException(
-          "Snap shot generation slicing extensions simple (" + (implicit ? "implicit" : "not implicit") + ") failed");
-    } else
-      System.out.println(
-          "Snap shot generation slicing extensions simple (" + (implicit ? "implicit" : "not implicit") + ") passed");
+      throw new FHIRException("Snap shot generation slicing extensions simple ("+(implicit ? "implicit" : "not implicit")+") failed");
+    } else 
+      System.out.println("Snap shot generation slicing extensions simple ("+(implicit ? "implicit" : "not implicit")+") passed");
   }
 
   /**
-   * we're going to slice Patient.extension and refer to extension by profile. one
-   * of the extensions is complex, and we're going to walk into it and make it
-   * must support
+   * we're going to slice Patient.extension and refer to extension by profile. one of the extensions is complex, and we're going to walk into 
+   * it and make it must support
    * 
    * implicit: whether to rely on implicit extension slicing
    */
   private void testSlicingExtensionComplex(boolean implicit) throws EOperationOutcome, Exception {
-
+    
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = context
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBase(base.getUrl());
-
+    
     // set the slice up
     ElementDefinition id;
     if (!implicit) {
@@ -749,12 +724,12 @@ public class ProfileUtilitiesTests {
       id.setPath("Patient.extension");
       id.getSlicing().setOrdered(false).setRules(SlicingRules.OPEN).addDiscriminator("url");
     }
-    // first slice - a simple one to get us going:
+    // first slice  - a simple one to get us going: 
     id = focus.getDifferential().addElement();
     id.setPath("Patient.extension");
     id.setName("simple");
     id.addType().setCode("Extension").addProfile("http://hl7.org/fhir/StructureDefinition/patient-birthTime");
-
+    
     // second slice - the complex one
     // we walk into this and fix properties on the inner extensions
     id = focus.getDifferential().addElement();
@@ -771,75 +746,50 @@ public class ProfileUtilitiesTests {
     id.setName("code");
     id.setMustSupport(true);
     id.addType().setCode("Extension").addProfile("http://hl7.org/fhir/StructureDefinition/patient-nationality#code");
-
+    
     id = focus.getDifferential().addElement();
     id.setPath("Patient.extension.extension");
     id.setName("period");
     id.addType().setCode("Extension").addProfile("http://hl7.org/fhir/StructureDefinition/patient-nationality#period");
     id.setMax("0"); // prohibit this one....
-
+        
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
 
-    // ok, there's going to 1 (simple) + complex: 1 + id + extnesion.slice +
-    // extension.code + (4 inside from that) + extension.period + (4 inside from
-    // that) + value + url = 16
+    // ok, there's going to 1 (simple) + complex: 1 + id + extnesion.slice + extension.code + (4 inside from that) + extension.period + (4 inside from that) + value + url = 16
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size() - 16;
-
+    
     // custom checks
-    ok = ok
-        && rule(focus.getSnapshot().getElement().get(7).getPath().equals("Patient.extension"), "element 7 (base) path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(7).getPath().equals("Patient.extension"), "element 7 (base) path");
     ok = ok && rule(focus.getSnapshot().getElement().get(7).hasSlicing(), "element 7 slicing");
-    ok = ok && rule(focus.getSnapshot().getElement().get(8).getPath().equals("Patient.extension"),
-        "element 8 (1st slice) path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(8).getPath().equals("Patient.extension"), "element 8 (1st slice) path");
     ok = ok && rule(focus.getSnapshot().getElement().get(8).getName().equals("simple"), "element 8 (1st slice) name");
-    ok = ok && rule(focus.getSnapshot().getElement().get(8).getType().get(0).getProfile().get(0).getValue()
-        .equals("http://hl7.org/fhir/StructureDefinition/patient-birthTime"), "element 9 (2nd slice) profile name");
-    ok = ok && rule(focus.getSnapshot().getElement().get(9).getPath().equals("Patient.extension"),
-        "element 9 (2nd slice) path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(8).getType().get(0).getProfile().get(0).getValue().equals("http://hl7.org/fhir/StructureDefinition/patient-birthTime"), "element 9 (2nd slice) profile name");
+    ok = ok && rule(focus.getSnapshot().getElement().get(9).getPath().equals("Patient.extension"), "element 9 (2nd slice) path");
     ok = ok && rule(focus.getSnapshot().getElement().get(9).getName().equals("complex"), "element 8 (1st slice) name");
-    ok = ok && rule(focus.getSnapshot().getElement().get(9).getType().get(0).getProfile().get(0).getValue()
-        .equals("http://hl7.org/fhir/StructureDefinition/patient-nationality"), "element 9 (2nd slice) profile name");
-    ok = ok && rule(focus.getSnapshot().getElement().get(10).getPath().equals("Patient.extension.id"),
-        "element 10 (2nd slice).id path");
-    ok = ok && rule(focus.getSnapshot().getElement().get(11).getPath().equals("Patient.extension.extension"),
-        "element 11 (2nd slice).extension path");
-    ok = ok && rule(focus.getSnapshot().getElement().get(12).getPath().equals("Patient.extension.extension"),
-        "element 12 (2nd slice).extension path");
-    ok = ok && rule(focus.getSnapshot().getElement().get(12).getMustSupport(),
-        "element 12 (2nd slice).extension must support");
-    ok = ok && rule(focus.getSnapshot().getElement().get(13).getPath().equals("Patient.extension.extension.id"),
-        "element 13 (2nd slice).extension.id path");
-    ok = ok && rule(focus.getSnapshot().getElement().get(14).getPath().equals("Patient.extension.extension.extension"),
-        "element 14 (2nd slice).extension.extension path");
-    ok = ok && rule(focus.getSnapshot().getElement().get(15).getPath().equals("Patient.extension.extension.url"),
-        "element 15 (2nd slice).extension.url path");
-    ok = ok && rule(
-        focus.getSnapshot().getElement().get(16).getPath().equals("Patient.extension.extension.valueCodeableConcept"),
-        "element 16 (2nd slice).extension.valueCodeableConcept path");
-    ok = ok && rule(focus.getSnapshot().getElement().get(17).getPath().equals("Patient.extension.extension"),
-        "element 17 (2nd slice).extension path");
-    ok = ok && rule(focus.getSnapshot().getElement().get(17).getMax().equals("0"),
-        "element 17 (2nd slice).extension cardinality");
-    ok = ok && rule(focus.getSnapshot().getElement().get(18).getPath().equals("Patient.extension.extension.id"),
-        "element 18 (2nd slice).extension.id path");
-    ok = ok && rule(focus.getSnapshot().getElement().get(19).getPath().equals("Patient.extension.extension.extension"),
-        "element 19 (2nd slice).extension.extension path");
-    ok = ok && rule(focus.getSnapshot().getElement().get(20).getPath().equals("Patient.extension.extension.url"),
-        "element 20 (2nd slice).extension.url path");
-    ok = ok
-        && rule(focus.getSnapshot().getElement().get(21).getPath().equals("Patient.extension.extension.valuePeriod"),
-            "element 21 (2nd slice).extension.valuePeriod path");
-    ok = ok && rule(focus.getSnapshot().getElement().get(22).getPath().equals("Patient.extension.url"),
-        "element 22 (2nd slice).url path");
-    ok = ok && rule(focus.getSnapshot().getElement().get(23).getPath().equals("Patient.extension.value[x]"),
-        "element 23 (2nd slice).url path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(9).getType().get(0).getProfile().get(0).getValue().equals("http://hl7.org/fhir/StructureDefinition/patient-nationality"), "element 9 (2nd slice) profile name");
+    ok = ok && rule(focus.getSnapshot().getElement().get(10).getPath().equals("Patient.extension.id"), "element 10 (2nd slice).id path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(11).getPath().equals("Patient.extension.extension"), "element 11 (2nd slice).extension path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(12).getPath().equals("Patient.extension.extension"), "element 12 (2nd slice).extension path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(12).getMustSupport(), "element 12 (2nd slice).extension must support");
+    ok = ok && rule(focus.getSnapshot().getElement().get(13).getPath().equals("Patient.extension.extension.id"), "element 13 (2nd slice).extension.id path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(14).getPath().equals("Patient.extension.extension.extension"), "element 14 (2nd slice).extension.extension path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(15).getPath().equals("Patient.extension.extension.url"), "element 15 (2nd slice).extension.url path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(16).getPath().equals("Patient.extension.extension.valueCodeableConcept"), "element 16 (2nd slice).extension.valueCodeableConcept path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(17).getPath().equals("Patient.extension.extension"), "element 17 (2nd slice).extension path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(17).getMax().equals("0"), "element 17 (2nd slice).extension cardinality");
+    ok = ok && rule(focus.getSnapshot().getElement().get(18).getPath().equals("Patient.extension.extension.id"), "element 18 (2nd slice).extension.id path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(19).getPath().equals("Patient.extension.extension.extension"), "element 19 (2nd slice).extension.extension path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(20).getPath().equals("Patient.extension.extension.url"), "element 20 (2nd slice).extension.url path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(21).getPath().equals("Patient.extension.extension.valuePeriod"), "element 21 (2nd slice).extension.valuePeriod path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(22).getPath().equals("Patient.extension.url"), "element 22 (2nd slice).url path");
+    ok = ok && rule(focus.getSnapshot().getElement().get(23).getPath().equals("Patient.extension.value[x]"), "element 23 (2nd slice).url path");
 
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i <= 7 ? i : i + 16);
-        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath()))
+        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath())) 
           ok = false;
         else {
           f.setBase(null);
@@ -847,35 +797,32 @@ public class ProfileUtilitiesTests {
             ok = f.hasSlicing();
             if (ok)
               f.setSlicing(null);
-          }
-          if (!f.getPath().equals("Patient.extension")) // no compare that because the definitions get overwritten
+          }            
+          if (!f.getPath().equals("Patient.extension")) // no compare that because the definitions get overwritten 
             ok = Base.compareDeep(b, f, true);
         }
       }
     }
-
+    
     if (!ok) {
       compareXml(base, focus);
-      throw new FHIRException(
-          "Snap shot generation slicing extensions complex (" + (implicit ? "implicit" : "not implicit") + ") failed");
-    } else
-      System.out.println(
-          "Snap shot generation slicing extensions complex (" + (implicit ? "implicit" : "not implicit") + ") passed");
+      throw new FHIRException("Snap shot generation slicing extensions complex ("+(implicit ? "implicit" : "not implicit")+") failed");
+    } else 
+      System.out.println("Snap shot generation slicing extensions complex ("+(implicit ? "implicit" : "not implicit")+") passed");
   }
 
   private void testSlicingTask8742() throws EOperationOutcome, Exception {
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = context
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Organization").copy();
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Organization").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBase(base.getUrl());
-
+    
     ElementDefinition id = focus.getDifferential().addElement();
     id.setPath("Organization.address");
     id.setMin(1);
     id.setMax("1");
     id.setMustSupport(true);
-
+        
     id = focus.getDifferential().addElement();
     id.setPath("Organization.address.extension");
     id.setName("USLabCountycodes");
@@ -887,22 +834,21 @@ public class ProfileUtilitiesTests {
     id.setMax("1");
     id.addType().setCode("Extension").addProfile("http://hl7.org/fhir/StructureDefinition/us-core-county");
     id.setMustSupport(true);
-    id.getBinding().setStrength(BindingStrength.REQUIRED)
-        .setDescription("FIPS codes for US counties and county equivalent entities.")
-        .setValueSet(new Reference().setReference("http://hl7.org/fhir/ValueSet/fips-county"));
+    id.getBinding().setStrength(BindingStrength.REQUIRED).setDescription("FIPS codes for US counties and county equivalent entities.").setValueSet(new Reference().setReference("http://hl7.org/fhir/ValueSet/fips-county"));
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-
-    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test");
+    
+    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
 
     // 14 for address with one sliced extension
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size() - 13;
-
+    
     if (!ok) {
       compareXml(base, focus);
       throw new FHIRException("Snap shot generation test 8742 failed");
-    } else
+    } else 
       System.out.println("Snap shot generation test 8742 passed");
   }
+
 
   private boolean rule(boolean ok, String message) {
     if (!ok)
@@ -910,18 +856,15 @@ public class ProfileUtilitiesTests {
     return ok;
   }
 
-  private void compareXml(StructureDefinition base, StructureDefinition focus)
-      throws FileNotFoundException, IOException {
+  private void compareXml(StructureDefinition base, StructureDefinition focus) throws FileNotFoundException, IOException {
     base.setText(null);
     focus.setText(null);
     base.setDifferential(null);
 //    focus.setDifferential(null);
     String f1 = Utilities.path("c:", "temp", "base.xml");
     String f2 = Utilities.path("c:", "temp", "derived.xml");
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f1), base);
-    ;
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f2), focus);
-    ;
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f1), base);;
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f2), focus);;
     String diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
     List<String> command = new ArrayList<String>();
     command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
@@ -931,5 +874,7 @@ public class ProfileUtilitiesTests {
     builder.start();
 
   }
-
+  
+  
+  
 }

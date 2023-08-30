@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,62 +34,50 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ContractExpirationType {
 
-  /**
-   * To be completed
-   */
-  BREACH,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ContractExpirationType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("breach".equals(codeString))
-      return BREACH;
-    throw new FHIRException("Unknown ContractExpirationType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case BREACH:
-      return "breach";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * To be completed
+         */
+        BREACH, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ContractExpirationType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("breach".equals(codeString))
+          return BREACH;
+        throw new FHIRException("Unknown ContractExpirationType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case BREACH: return "breach";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/contract-expiration-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case BREACH: return "To be completed";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case BREACH: return "Breach";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/contract-expiration-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case BREACH:
-      return "To be completed";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case BREACH:
-      return "Breach";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

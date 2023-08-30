@@ -29,6 +29,8 @@ package org.hl7.fhir.dstu2.terminologies;
   
  */
 
+
+
 import java.util.List;
 
 import org.hl7.fhir.dstu2.model.UriType;
@@ -57,9 +59,8 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
 
   @Override
   public boolean codeInValueSet(String system, String code) throws EOperationOutcome, Exception {
-    if (valueset.hasCodeSystem() && system.equals(valueset.getCodeSystem().getSystem())
-        && codeInDefine(valueset.getCodeSystem().getConcept(), code, valueset.getCodeSystem().getCaseSensitive()))
-      return true;
+    if (valueset.hasCodeSystem() && system.equals(valueset.getCodeSystem().getSystem()) && codeInDefine(valueset.getCodeSystem().getConcept(), code, valueset.getCodeSystem().getCaseSensitive()))
+     return true;
 
     if (valueset.hasCompose()) {
       boolean ok = false;
@@ -73,26 +74,25 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
         ok = ok && !inComponent(vsi, system, code);
       }
     }
-
+    
     return false;
   }
 
   private boolean inImport(String uri, String system, String code) throws EOperationOutcome, Exception {
     ValueSet vs = context.fetchResource(ValueSet.class, uri);
-    if (vs == null)
-      return false; // we can't tell
+    if (vs == null) 
+      return false ; // we can't tell
     return codeInExpansion(factory.getExpander().expand(vs), system, code);
   }
 
-  private boolean codeInExpansion(ValueSetExpansionOutcome vso, String system, String code)
-      throws EOperationOutcome, Exception {
+  private boolean codeInExpansion(ValueSetExpansionOutcome vso, String system, String code) throws EOperationOutcome, Exception {
     if (vso.getService() != null) {
       return vso.getService().codeInValueSet(system, code);
     } else {
       for (ValueSetExpansionContainsComponent c : vso.getValueset().getExpansion().getContains()) {
         if (code.equals(c.getCode()) && (system == null || system.equals(c.getSystem())))
           return true;
-        if (codeinExpansion(c, system, code))
+        if (codeinExpansion(c, system, code)) 
           return true;
       }
     }
@@ -103,22 +103,22 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     for (ValueSetExpansionContainsComponent c : cnt.getContains()) {
       if (code.equals(c.getCode()) && system.equals(c.getSystem().toString()))
         return true;
-      if (codeinExpansion(c, system, code))
+      if (codeinExpansion(c, system, code)) 
         return true;
     }
     return false;
   }
 
+
   private boolean inComponent(ConceptSetComponent vsi, String system, String code) {
     if (!vsi.getSystem().equals(system))
-      return false;
-    // whether we know the system or not, we'll accept the stated codes at face
-    // value
+      return false; 
+    // whether we know the system or not, we'll accept the stated codes at face value
     for (ConceptReferenceComponent cc : vsi.getConcept())
       if (cc.getCode().equals(code)) {
         return true;
       }
-
+      
     ValueSet def = context.fetchCodeSystem(system);
     if (def != null) {
       if (!def.getCodeSystem().getCaseSensitive()) {
@@ -131,8 +131,8 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       if (vsi.getConcept().isEmpty() && vsi.getFilter().isEmpty()) {
         return codeInDefine(def.getCodeSystem().getConcept(), code, def.getCodeSystem().getCaseSensitive());
       }
-      for (ConceptSetFilterComponent f : vsi.getFilter())
-        throw new Error("not done yet: " + f.getValue());
+      for (ConceptSetFilterComponent f: vsi.getFilter())
+        throw new Error("not done yet: "+f.getValue());
 
       return false;
     } else if (context.supportsSystem(system)) {

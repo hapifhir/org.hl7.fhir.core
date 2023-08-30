@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,100 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum SupplydeliveryStatus {
 
-  /**
-   * Supply has been requested, but not delivered.
-   */
-  INPROGRESS,
-  /**
-   * Supply has been delivered ("completed").
-   */
-  COMPLETED,
-  /**
-   * Delivery was not completed.
-   */
-  ABANDONED,
-  /**
-   * This electronic record should never have existed, though it is possible that
-   * real-world decisions were based on it. (If real-world activity has occurred,
-   * the status should be "cancelled" rather than "entered-in-error".).
-   */
-  ENTEREDINERROR,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static SupplydeliveryStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("in-progress".equals(codeString))
-      return INPROGRESS;
-    if ("completed".equals(codeString))
-      return COMPLETED;
-    if ("abandoned".equals(codeString))
-      return ABANDONED;
-    if ("entered-in-error".equals(codeString))
-      return ENTEREDINERROR;
-    throw new FHIRException("Unknown SupplydeliveryStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INPROGRESS:
-      return "in-progress";
-    case COMPLETED:
-      return "completed";
-    case ABANDONED:
-      return "abandoned";
-    case ENTEREDINERROR:
-      return "entered-in-error";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Supply has been requested, but not delivered.
+         */
+        INPROGRESS, 
+        /**
+         * Supply has been delivered ("completed").
+         */
+        COMPLETED, 
+        /**
+         * Delivery was not completed.
+         */
+        ABANDONED, 
+        /**
+         * This electronic record should never have existed, though it is possible that real-world decisions were based on it. (If real-world activity has occurred, the status should be "cancelled" rather than "entered-in-error".).
+         */
+        ENTEREDINERROR, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static SupplydeliveryStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("in-progress".equals(codeString))
+          return INPROGRESS;
+        if ("completed".equals(codeString))
+          return COMPLETED;
+        if ("abandoned".equals(codeString))
+          return ABANDONED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        throw new FHIRException("Unknown SupplydeliveryStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INPROGRESS: return "in-progress";
+            case COMPLETED: return "completed";
+            case ABANDONED: return "abandoned";
+            case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/supplydelivery-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INPROGRESS: return "Supply has been requested, but not delivered.";
+            case COMPLETED: return "Supply has been delivered (\"completed\").";
+            case ABANDONED: return "Delivery was not completed.";
+            case ENTEREDINERROR: return "This electronic record should never have existed, though it is possible that real-world decisions were based on it. (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INPROGRESS: return "In Progress";
+            case COMPLETED: return "Delivered";
+            case ABANDONED: return "Abandoned";
+            case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/supplydelivery-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INPROGRESS:
-      return "Supply has been requested, but not delivered.";
-    case COMPLETED:
-      return "Supply has been delivered (\"completed\").";
-    case ABANDONED:
-      return "Delivery was not completed.";
-    case ENTEREDINERROR:
-      return "This electronic record should never have existed, though it is possible that real-world decisions were based on it. (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INPROGRESS:
-      return "In Progress";
-    case COMPLETED:
-      return "Delivered";
-    case ABANDONED:
-      return "Abandoned";
-    case ENTEREDINERROR:
-      return "Entered In Error";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

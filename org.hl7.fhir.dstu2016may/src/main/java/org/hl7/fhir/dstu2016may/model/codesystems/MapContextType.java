@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MapContextType {
 
-  /**
-   * The context specifies a type
-   */
-  TYPE,
-  /**
-   * The context specifies a variable
-   */
-  VARIABLE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MapContextType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("type".equals(codeString))
-      return TYPE;
-    if ("variable".equals(codeString))
-      return VARIABLE;
-    throw new FHIRException("Unknown MapContextType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case TYPE:
-      return "type";
-    case VARIABLE:
-      return "variable";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The context specifies a type
+         */
+        TYPE, 
+        /**
+         * The context specifies a variable
+         */
+        VARIABLE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MapContextType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("type".equals(codeString))
+          return TYPE;
+        if ("variable".equals(codeString))
+          return VARIABLE;
+        throw new FHIRException("Unknown MapContextType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case TYPE: return "type";
+            case VARIABLE: return "variable";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/map-context-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case TYPE: return "The context specifies a type";
+            case VARIABLE: return "The context specifies a variable";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case TYPE: return "Type";
+            case VARIABLE: return "Variable";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/map-context-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case TYPE:
-      return "The context specifies a type";
-    case VARIABLE:
-      return "The context specifies a variable";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case TYPE:
-      return "Type";
-    case VARIABLE:
-      return "Variable";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

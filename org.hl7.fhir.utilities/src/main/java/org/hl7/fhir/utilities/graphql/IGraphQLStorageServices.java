@@ -1,7 +1,5 @@
 package org.hl7.fhir.utilities.graphql;
 
-import java.util.List;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -36,6 +34,8 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.instance.model.api.IBaseReference;
 import org.hl7.fhir.instance.model.api.IBaseResource;
+
+import java.util.List;
 
 public interface IGraphQLStorageServices {
 

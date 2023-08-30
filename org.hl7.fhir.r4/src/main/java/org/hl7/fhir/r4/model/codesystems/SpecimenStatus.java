@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,100 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum SpecimenStatus {
 
-  /**
-   * The physical specimen is present and in good condition.
-   */
-  AVAILABLE,
-  /**
-   * There is no physical specimen because it is either lost, destroyed or
-   * consumed.
-   */
-  UNAVAILABLE,
-  /**
-   * The specimen cannot be used because of a quality issue such as a broken
-   * container, contamination, or too old.
-   */
-  UNSATISFACTORY,
-  /**
-   * The specimen was entered in error and therefore nullified.
-   */
-  ENTEREDINERROR,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static SpecimenStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("available".equals(codeString))
-      return AVAILABLE;
-    if ("unavailable".equals(codeString))
-      return UNAVAILABLE;
-    if ("unsatisfactory".equals(codeString))
-      return UNSATISFACTORY;
-    if ("entered-in-error".equals(codeString))
-      return ENTEREDINERROR;
-    throw new FHIRException("Unknown SpecimenStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case AVAILABLE:
-      return "available";
-    case UNAVAILABLE:
-      return "unavailable";
-    case UNSATISFACTORY:
-      return "unsatisfactory";
-    case ENTEREDINERROR:
-      return "entered-in-error";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The physical specimen is present and in good condition.
+         */
+        AVAILABLE, 
+        /**
+         * There is no physical specimen because it is either lost, destroyed or consumed.
+         */
+        UNAVAILABLE, 
+        /**
+         * The specimen cannot be used because of a quality issue such as a broken container, contamination, or too old.
+         */
+        UNSATISFACTORY, 
+        /**
+         * The specimen was entered in error and therefore nullified.
+         */
+        ENTEREDINERROR, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static SpecimenStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("available".equals(codeString))
+          return AVAILABLE;
+        if ("unavailable".equals(codeString))
+          return UNAVAILABLE;
+        if ("unsatisfactory".equals(codeString))
+          return UNSATISFACTORY;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        throw new FHIRException("Unknown SpecimenStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case AVAILABLE: return "available";
+            case UNAVAILABLE: return "unavailable";
+            case UNSATISFACTORY: return "unsatisfactory";
+            case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/specimen-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case AVAILABLE: return "The physical specimen is present and in good condition.";
+            case UNAVAILABLE: return "There is no physical specimen because it is either lost, destroyed or consumed.";
+            case UNSATISFACTORY: return "The specimen cannot be used because of a quality issue such as a broken container, contamination, or too old.";
+            case ENTEREDINERROR: return "The specimen was entered in error and therefore nullified.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case AVAILABLE: return "Available";
+            case UNAVAILABLE: return "Unavailable";
+            case UNSATISFACTORY: return "Unsatisfactory";
+            case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/specimen-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case AVAILABLE:
-      return "The physical specimen is present and in good condition.";
-    case UNAVAILABLE:
-      return "There is no physical specimen because it is either lost, destroyed or consumed.";
-    case UNSATISFACTORY:
-      return "The specimen cannot be used because of a quality issue such as a broken container, contamination, or too old.";
-    case ENTEREDINERROR:
-      return "The specimen was entered in error and therefore nullified.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case AVAILABLE:
-      return "Available";
-    case UNAVAILABLE:
-      return "Unavailable";
-    case UNSATISFACTORY:
-      return "Unsatisfactory";
-    case ENTEREDINERROR:
-      return "Entered in Error";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

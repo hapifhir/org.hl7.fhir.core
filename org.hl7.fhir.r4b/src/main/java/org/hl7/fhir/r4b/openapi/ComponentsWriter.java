@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.openapi;
   
  */
 
+
+
 import com.google.gson.JsonObject;
 
 public class ComponentsWriter extends BaseWriter {
@@ -41,7 +43,7 @@ public class ComponentsWriter extends BaseWriter {
     ensureMapObject("schemas", name).add("$ref", jsonSchema);
     return this;
   }
-
+  
   public ComponentsWriter schemaRef(String name, String uri) {
     ensureMapObject("schemas", name).addProperty("$ref", uri);
     return this;

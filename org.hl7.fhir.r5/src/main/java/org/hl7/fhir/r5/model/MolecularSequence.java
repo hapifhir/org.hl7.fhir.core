@@ -690,7 +690,7 @@ public class MolecularSequence extends DomainResource {
           return this.coordinateSystem;
         }
         else if (name.equals("ordinalPosition")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MolecularSequence.relative.ordinalPosition");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.relative.ordinalPosition");
         }
         else if (name.equals("sequenceRange")) {
           this.sequenceRange = new Range();
@@ -1279,16 +1279,16 @@ public class MolecularSequence extends DomainResource {
           return this.sequence;
         }
         else if (name.equals("windowStart")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MolecularSequence.relative.startingSequence.windowStart");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.relative.startingSequence.windowStart");
         }
         else if (name.equals("windowEnd")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MolecularSequence.relative.startingSequence.windowEnd");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.relative.startingSequence.windowEnd");
         }
         else if (name.equals("orientation")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MolecularSequence.relative.startingSequence.orientation");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.relative.startingSequence.orientation");
         }
         else if (name.equals("strand")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MolecularSequence.relative.startingSequence.strand");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.relative.startingSequence.strand");
         }
         else
           return super.addChild(name);
@@ -1667,16 +1667,16 @@ public class MolecularSequence extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("start")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MolecularSequence.relative.edit.start");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.relative.edit.start");
         }
         else if (name.equals("end")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MolecularSequence.relative.edit.end");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.relative.edit.end");
         }
         else if (name.equals("replacementSequence")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MolecularSequence.relative.edit.replacementSequence");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.relative.edit.replacementSequence");
         }
         else if (name.equals("replacedSequence")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MolecularSequence.relative.edit.replacedSequence");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.relative.edit.replacedSequence");
         }
         else
           return super.addChild(name);
@@ -2375,7 +2375,7 @@ public class MolecularSequence extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MolecularSequence.type");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.type");
         }
         else if (name.equals("subject")) {
           this.subject = new Reference();
@@ -2397,7 +2397,7 @@ public class MolecularSequence extends DomainResource {
           return this.performer;
         }
         else if (name.equals("literal")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MolecularSequence.literal");
+          throw new FHIRException("Cannot call addChild on a primitive type MolecularSequence.literal");
         }
         else if (name.equals("formatted")) {
           return addFormatted();

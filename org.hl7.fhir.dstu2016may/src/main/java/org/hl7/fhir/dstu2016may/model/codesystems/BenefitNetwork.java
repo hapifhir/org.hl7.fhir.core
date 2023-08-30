@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum BenefitNetwork {
 
-  /**
-   * Services rendered by a Network provider
-   */
-  IN,
-  /**
-   * Services rendered by a provider who is not in the Network
-   */
-  OUT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static BenefitNetwork fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("in".equals(codeString))
-      return IN;
-    if ("out".equals(codeString))
-      return OUT;
-    throw new FHIRException("Unknown BenefitNetwork code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case IN:
-      return "in";
-    case OUT:
-      return "out";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Services rendered by a Network provider
+         */
+        IN, 
+        /**
+         * Services rendered by a provider who is not in the Network
+         */
+        OUT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static BenefitNetwork fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("in".equals(codeString))
+          return IN;
+        if ("out".equals(codeString))
+          return OUT;
+        throw new FHIRException("Unknown BenefitNetwork code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case IN: return "in";
+            case OUT: return "out";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/benefit-network";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case IN: return "Services rendered by a Network provider";
+            case OUT: return "Services rendered by a provider who is not in the Network";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case IN: return "In Network";
+            case OUT: return "Out of Network";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/benefit-network";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case IN:
-      return "Services rendered by a Network provider";
-    case OUT:
-      return "Services rendered by a provider who is not in the Network";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case IN:
-      return "In Network";
-    case OUT:
-      return "Out of Network";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

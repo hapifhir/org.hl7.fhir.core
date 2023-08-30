@@ -569,7 +569,7 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
           return this.amountType;
         }
         else if (name.equals("amountText")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SubstanceAmount.amountText");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstanceAmount.amountText");
         }
         else if (name.equals("referenceRange")) {
           this.referenceRange = new SubstanceAmountReferenceRangeComponent();

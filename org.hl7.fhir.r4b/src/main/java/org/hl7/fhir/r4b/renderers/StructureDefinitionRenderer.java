@@ -22,15 +22,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   public StructureDefinitionRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
-
+  
   public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
     return render(x, (StructureDefinition) dr);
   }
 
   public boolean render(XhtmlNode x, StructureDefinition sd) throws FHIRFormatError, DefinitionException, IOException {
-    x.getChildNodes()
-        .add(context.getProfileUtilities().generateTable(context.getDefinitionsTarget(), sd, true, context.getDestDir(),
-            false, sd.getId(), false, context.getSpecificationLink(), "", false, false, null, false, false, context));
+    x.getChildNodes().add(context.getProfileUtilities().generateTable(context.getDefinitionsTarget(), sd, true, context.getDestDir(), false, sd.getId(), false, context.getSpecificationLink(), "", false, false, null, false, false, context));
     return true;
   }
 

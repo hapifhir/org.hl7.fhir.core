@@ -24,12 +24,12 @@ public class ValidationProcessInfo {
   public void setErr(TerminologyServiceErrorClass err) {
     this.err = err;
   }
-  
+
   public List<OperationOutcomeIssueComponent> getIssues() {
     return issues;
   }
   public void addIssue(List<OperationOutcomeIssueComponent> issues) {
-    this.issues.addAll(issues);
+    issues.addAll(issues);
     
   }
   public boolean hasErrors() {

@@ -1,5 +1,9 @@
 package org.hl7.fhir.r4b.formats;
 
+
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -29,6 +33,7 @@ package org.hl7.fhir.r4b.formats;
   
 */
 
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -49,26 +54,25 @@ import org.hl7.fhir.utilities.Utilities;
 
 public abstract class ParserBase extends FormatUtilities implements IParser {
 
-  // -- implementation of variant type methods from the interface
-  // --------------------------------
-
+  // -- implementation of variant type methods from the interface --------------------------------
+  
   public Resource parse(String input) throws FHIRFormatError, IOException {
-    return parse(input.getBytes(StandardCharsets.UTF_8));
+  	return parse(input.getBytes(StandardCharsets.UTF_8));
   }
-
+  
   public Resource parse(byte[] bytes) throws FHIRFormatError, IOException {
-    ByteArrayInputStream bi = new ByteArrayInputStream(bytes);
-    return parse(bi);
+  	ByteArrayInputStream bi = new ByteArrayInputStream(bytes);
+  	return parse(bi);
   }
 
   public DataType parseType(String input, String typeName) throws FHIRFormatError, IOException {
     return parseType(input.getBytes(StandardCharsets.UTF_8), typeName);
   }
-
+  
   public DataType parseAnyType(String input, String typeName) throws FHIRFormatError, IOException {
     return parseAnyType(input.getBytes(StandardCharsets.UTF_8), typeName);
   }
-
+  
   public DataType parseType(byte[] bytes, String typeName) throws FHIRFormatError, IOException {
     ByteArrayInputStream bi = new ByteArrayInputStream(bytes);
     return parseType(bi, typeName);
@@ -101,18 +105,19 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     return bytes.toByteArray();
   }
 
+
   // -- Parser Configuration --------------------------------
 
   protected String xhtmlMessage;
-
-  @Override
+  
+	@Override
   public IParser setSuppressXhtml(String message) {
     xhtmlMessage = message;
     return this;
   }
-
+  
   protected boolean handleComments = false;
-
+  
   public boolean getHandleComments() {
     return handleComments;
   }
@@ -121,34 +126,31 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     this.handleComments = value;
     return this;
   }
-
+  
   /**
    * Whether to throw an exception if unknown content is found (or just skip it)
    */
   protected boolean allowUnknownContent;
-
+  
   /**
    * whether to allow comments in the json (special case for IG publisher source)
    */
   protected boolean allowComments;
-
+  
   /**
-   * @return Whether to throw an exception if unknown content is found (or just
-   *         skip it)
+   * @return Whether to throw an exception if unknown content is found (or just skip it) 
    */
   public boolean isAllowUnknownContent() {
     return allowUnknownContent;
   }
-
   /**
-   * @param allowUnknownContent Whether to throw an exception if unknown content
-   *                            is found (or just skip it)
+   * @param allowUnknownContent Whether to throw an exception if unknown content is found (or just skip it)
    */
   public IParser setAllowUnknownContent(boolean allowUnknownContent) {
     this.allowUnknownContent = allowUnknownContent;
     return this;
   }
-
+    
   public boolean isAllowComments() {
     return allowComments;
   }
@@ -158,7 +160,7 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   }
 
   protected OutputStyle style = OutputStyle.NORMAL;
-
+  
   public OutputStyle getOutputStyle() {
     return style;
   }
@@ -167,23 +169,26 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     this.style = style;
     return this;
   }
-
+  
   // -- Parser Utilities --------------------------------
+ 	
 
   protected Map<String, Object> idMap = new HashMap<String, Object>();
+
 
   protected int parseIntegerPrimitive(String value) {
     if (value.startsWith("+") && Utilities.isInteger(value.substring(1)))
       value = value.substring(1);
-    return java.lang.Integer.parseInt(value);
+	return java.lang.Integer.parseInt(value);
   }
-
   protected int parseIntegerPrimitive(java.lang.Long value) {
     if (value < java.lang.Integer.MIN_VALUE || value > java.lang.Integer.MAX_VALUE) {
-      throw new IllegalArgumentException(value + " cannot be cast to int without changing its value.");
+        throw new IllegalArgumentException
+            (value + " cannot be cast to int without changing its value.");
     }
     return value.intValue();
   }
+
 
   protected String parseCodePrimitive(String value) {
     return value;
@@ -202,13 +207,13 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   }
 
   protected String parseUriPrimitive(String value) {
-    return value;
+  	 return value;
   }
 
   protected byte[] parseBase64BinaryPrimitive(String value) {
     return Base64.decodeBase64(value.getBytes());
   }
-
+  
   protected String parseOidPrimitive(String value) {
     return value;
   }
@@ -216,11 +221,11 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
   protected Boolean parseBooleanPrimitive(String value) {
     return java.lang.Boolean.valueOf(value);
   }
-
+  
   protected Boolean parseBooleanPrimitive(Boolean value) {
     return java.lang.Boolean.valueOf(value);
   }
-
+  
   protected String parseIdPrimitive(String value) {
     return value;
   }
@@ -241,5 +246,6 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
       input.close();
     }
   }
+
 
 }

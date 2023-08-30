@@ -1,5 +1,6 @@
 package org.hl7.fhir.r4b.model;
 
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -44,222 +45,212 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for Range Type: A set of ordered Quantities defined
- * by a low and high limit.
+ * Base StructureDefinition for Range Type: A set of ordered Quantities defined by a low and high limit.
  */
-@DatatypeDef(name = "Range")
+@DatatypeDef(name="Range")
 public class Range extends DataType implements ICompositeType {
 
-  /**
-   * The low limit. The boundary is inclusive.
-   */
-  @Child(name = "low", type = { Quantity.class }, order = 0, min = 0, max = 1, modifier = false, summary = true)
-  @Description(shortDefinition = "Low limit", formalDefinition = "The low limit. The boundary is inclusive.")
-  protected Quantity low;
+    /**
+     * The low limit. The boundary is inclusive.
+     */
+    @Child(name = "low", type = {Quantity.class}, order=0, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Low limit", formalDefinition="The low limit. The boundary is inclusive." )
+    protected Quantity low;
 
-  /**
-   * The high limit. The boundary is inclusive.
-   */
-  @Child(name = "high", type = { Quantity.class }, order = 1, min = 0, max = 1, modifier = false, summary = true)
-  @Description(shortDefinition = "High limit", formalDefinition = "The high limit. The boundary is inclusive.")
-  protected Quantity high;
+    /**
+     * The high limit. The boundary is inclusive.
+     */
+    @Child(name = "high", type = {Quantity.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="High limit", formalDefinition="The high limit. The boundary is inclusive." )
+    protected Quantity high;
 
-  private static final long serialVersionUID = -474933350L;
+    private static final long serialVersionUID = -474933350L;
 
   /**
    * Constructor
    */
-  public Range() {
-    super();
-  }
-
-  /**
-   * @return {@link #low} (The low limit. The boundary is inclusive.)
-   */
-  public Quantity getLow() {
-    if (this.low == null)
-      if (Configuration.errorOnAutoCreate())
-        throw new Error("Attempt to auto-create Range.low");
-      else if (Configuration.doAutoCreate())
-        this.low = new Quantity(); // cc
-    return this.low;
-  }
-
-  public boolean hasLow() {
-    return this.low != null && !this.low.isEmpty();
-  }
-
-  /**
-   * @param value {@link #low} (The low limit. The boundary is inclusive.)
-   */
-  public Range setLow(Quantity value) {
-    this.low = value;
-    return this;
-  }
-
-  /**
-   * @return {@link #high} (The high limit. The boundary is inclusive.)
-   */
-  public Quantity getHigh() {
-    if (this.high == null)
-      if (Configuration.errorOnAutoCreate())
-        throw new Error("Attempt to auto-create Range.high");
-      else if (Configuration.doAutoCreate())
-        this.high = new Quantity(); // cc
-    return this.high;
-  }
-
-  public boolean hasHigh() {
-    return this.high != null && !this.high.isEmpty();
-  }
-
-  /**
-   * @param value {@link #high} (The high limit. The boundary is inclusive.)
-   */
-  public Range setHigh(Quantity value) {
-    this.high = value;
-    return this;
-  }
-
-  protected void listChildren(List<Property> children) {
-    super.listChildren(children);
-    children.add(new Property("low", "Quantity", "The low limit. The boundary is inclusive.", 0, 1, low));
-    children.add(new Property("high", "Quantity", "The high limit. The boundary is inclusive.", 0, 1, high));
-  }
-
-  @Override
-  public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-    switch (_hash) {
-    case 107348:
-      /* low */ return new Property("low", "Quantity", "The low limit. The boundary is inclusive.", 0, 1, low);
-    case 3202466:
-      /* high */ return new Property("high", "Quantity", "The high limit. The boundary is inclusive.", 0, 1, high);
-    default:
-      return super.getNamedProperty(_hash, _name, _checkValid);
+    public Range() {
+      super();
     }
 
-  }
-
-  @Override
-  public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-    switch (hash) {
-    case 107348:
-      /* low */ return this.low == null ? new Base[0] : new Base[] { this.low }; // Quantity
-    case 3202466:
-      /* high */ return this.high == null ? new Base[0] : new Base[] { this.high }; // Quantity
-    default:
-      return super.getProperty(hash, name, checkValid);
-    }
-
-  }
-
-  @Override
-  public Base setProperty(int hash, String name, Base value) throws FHIRException {
-    switch (hash) {
-    case 107348: // low
-      this.low = TypeConvertor.castToQuantity(value); // Quantity
-      return value;
-    case 3202466: // high
-      this.high = TypeConvertor.castToQuantity(value); // Quantity
-      return value;
-    default:
-      return super.setProperty(hash, name, value);
-    }
-
-  }
-
-  @Override
-  public Base setProperty(String name, Base value) throws FHIRException {
-    if (name.equals("low")) {
-      this.low = TypeConvertor.castToQuantity(value); // Quantity
-    } else if (name.equals("high")) {
-      this.high = TypeConvertor.castToQuantity(value); // Quantity
-    } else
-      return super.setProperty(name, value);
-    return value;
-  }
-
-  @Override
-  public Base makeProperty(int hash, String name) throws FHIRException {
-    switch (hash) {
-    case 107348:
-      return getLow();
-    case 3202466:
-      return getHigh();
-    default:
-      return super.makeProperty(hash, name);
-    }
-
-  }
-
-  @Override
-  public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-    switch (hash) {
-    case 107348:
-      /* low */ return new String[] { "Quantity" };
-    case 3202466:
-      /* high */ return new String[] { "Quantity" };
-    default:
-      return super.getTypesForProperty(hash, name);
-    }
-
-  }
-
-  @Override
-  public Base addChild(String name) throws FHIRException {
-    if (name.equals("low")) {
-      this.low = new Quantity();
+    /**
+     * @return {@link #low} (The low limit. The boundary is inclusive.)
+     */
+    public Quantity getLow() { 
+      if (this.low == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Range.low");
+        else if (Configuration.doAutoCreate())
+          this.low = new Quantity(); // cc
       return this.low;
-    } else if (name.equals("high")) {
-      this.high = new Quantity();
+    }
+
+    public boolean hasLow() { 
+      return this.low != null && !this.low.isEmpty();
+    }
+
+    /**
+     * @param value {@link #low} (The low limit. The boundary is inclusive.)
+     */
+    public Range setLow(Quantity value) { 
+      this.low = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #high} (The high limit. The boundary is inclusive.)
+     */
+    public Quantity getHigh() { 
+      if (this.high == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Range.high");
+        else if (Configuration.doAutoCreate())
+          this.high = new Quantity(); // cc
       return this.high;
-    } else
-      return super.addChild(name);
-  }
+    }
+
+    public boolean hasHigh() { 
+      return this.high != null && !this.high.isEmpty();
+    }
+
+    /**
+     * @param value {@link #high} (The high limit. The boundary is inclusive.)
+     */
+    public Range setHigh(Quantity value) { 
+      this.high = value;
+      return this;
+    }
+
+      protected void listChildren(List<Property> children) {
+        super.listChildren(children);
+        children.add(new Property("low", "Quantity", "The low limit. The boundary is inclusive.", 0, 1, low));
+        children.add(new Property("high", "Quantity", "The high limit. The boundary is inclusive.", 0, 1, high));
+      }
+
+      @Override
+      public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+        switch (_hash) {
+        case 107348: /*low*/  return new Property("low", "Quantity", "The low limit. The boundary is inclusive.", 0, 1, low);
+        case 3202466: /*high*/  return new Property("high", "Quantity", "The high limit. The boundary is inclusive.", 0, 1, high);
+        default: return super.getNamedProperty(_hash, _name, _checkValid);
+        }
+
+      }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 107348: /*low*/ return this.low == null ? new Base[0] : new Base[] {this.low}; // Quantity
+        case 3202466: /*high*/ return this.high == null ? new Base[0] : new Base[] {this.high}; // Quantity
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 107348: // low
+          this.low = TypeConvertor.castToQuantity(value); // Quantity
+          return value;
+        case 3202466: // high
+          this.high = TypeConvertor.castToQuantity(value); // Quantity
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("low")) {
+          this.low = TypeConvertor.castToQuantity(value); // Quantity
+        } else if (name.equals("high")) {
+          this.high = TypeConvertor.castToQuantity(value); // Quantity
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 107348:  return getLow();
+        case 3202466:  return getHigh();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 107348: /*low*/ return new String[] {"Quantity"};
+        case 3202466: /*high*/ return new String[] {"Quantity"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("low")) {
+          this.low = new Quantity();
+          return this.low;
+        }
+        else if (name.equals("high")) {
+          this.high = new Quantity();
+          return this.high;
+        }
+        else
+          return super.addChild(name);
+      }
 
   public String fhirType() {
     return "Range";
 
   }
 
-  public Range copy() {
-    Range dst = new Range();
-    copyValues(dst);
-    return dst;
-  }
+      public Range copy() {
+        Range dst = new Range();
+        copyValues(dst);
+        return dst;
+      }
 
-  public void copyValues(Range dst) {
-    super.copyValues(dst);
-    dst.low = low == null ? null : low.copy();
-    dst.high = high == null ? null : high.copy();
-  }
+      public void copyValues(Range dst) {
+        super.copyValues(dst);
+        dst.low = low == null ? null : low.copy();
+        dst.high = high == null ? null : high.copy();
+      }
 
-  protected Range typedCopy() {
-    return copy();
-  }
+      protected Range typedCopy() {
+        return copy();
+      }
 
-  @Override
-  public boolean equalsDeep(Base other_) {
-    if (!super.equalsDeep(other_))
-      return false;
-    if (!(other_ instanceof Range))
-      return false;
-    Range o = (Range) other_;
-    return compareDeep(low, o.low, true) && compareDeep(high, o.high, true);
-  }
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof Range))
+          return false;
+        Range o = (Range) other_;
+        return compareDeep(low, o.low, true) && compareDeep(high, o.high, true);
+      }
 
-  @Override
-  public boolean equalsShallow(Base other_) {
-    if (!super.equalsShallow(other_))
-      return false;
-    if (!(other_ instanceof Range))
-      return false;
-    Range o = (Range) other_;
-    return true;
-  }
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof Range))
+          return false;
+        Range o = (Range) other_;
+        return true;
+      }
 
-  public boolean isEmpty() {
-    return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(low, high);
-  }
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(low, high);
+      }
+
 
 }
+

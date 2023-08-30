@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,87 +34,68 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NehtaGlobalStatementValues {
 
-  /**
-   * No information about taking any medication is known.
-   */
-  _01,
-  /**
-   * No information about taking any medication is available because the patient
-   * was not asked or not able to be asked.
-   */
-  _02,
-  /**
-   * No information about taking any medication is supplied.
-   */
-  _03,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static NehtaGlobalStatementValues fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("01".equals(codeString))
-      return _01;
-    if ("02".equals(codeString))
-      return _02;
-    if ("03".equals(codeString))
-      return _03;
-    throw new FHIRException("Unknown NehtaGlobalStatementValues code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case _01:
-      return "01";
-    case _02:
-      return "02";
-    case _03:
-      return "03";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * No information about taking any medication is known.
+         */
+        _01, 
+        /**
+         * No information about taking any medication is available because the patient was not asked or not able to be asked.
+         */
+        _02, 
+        /**
+         * No information about taking any medication is supplied.
+         */
+        _03, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static NehtaGlobalStatementValues fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("01".equals(codeString))
+          return _01;
+        if ("02".equals(codeString))
+          return _02;
+        if ("03".equals(codeString))
+          return _03;
+        throw new FHIRException("Unknown NehtaGlobalStatementValues code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case _01: return "01";
+            case _02: return "02";
+            case _03: return "03";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/global-statement-values";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case _01: return "No information about taking any medication is known.";
+            case _02: return "No information about taking any medication is available because the patient was not asked or not able to be asked.";
+            case _03: return "No information about taking any medication is supplied.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case _01: return "None known";
+            case _02: return "Not asked";
+            case _03: return "None supplied";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/global-statement-values";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case _01:
-      return "No information about taking any medication is known.";
-    case _02:
-      return "No information about taking any medication is available because the patient was not asked or not able to be asked.";
-    case _03:
-      return "No information about taking any medication is supplied.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case _01:
-      return "None known";
-    case _02:
-      return "Not asked";
-    case _03:
-      return "None supplied";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

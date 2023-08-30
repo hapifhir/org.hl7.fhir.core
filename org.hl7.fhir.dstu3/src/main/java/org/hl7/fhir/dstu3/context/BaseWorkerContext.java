@@ -37,15 +37,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import ca.uhn.fhir.rest.api.Constants;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu3.formats.JsonParser;
 import org.hl7.fhir.dstu3.model.BooleanType;
@@ -99,8 +102,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-
-import ca.uhn.fhir.rest.api.Constants;
 
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 

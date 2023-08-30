@@ -14,10 +14,8 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
 import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
-import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -30,7 +28,6 @@ import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ExtensionHelper;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent;
@@ -58,7 +55,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.ibm.icu.impl.locale.StringTokenIterator;
 
 public class ValueSetRenderer extends TerminologyRenderer {
 
@@ -80,7 +76,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return render(x, (ValueSet) dr, false);
   }
   
-
   public boolean render(XhtmlNode x, ValueSet vs, boolean header) throws FHIRFormatError, DefinitionException, IOException {
     List<UsedConceptMap> maps = findReleventMaps(vs);
     
@@ -203,6 +198,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     generateContentModeNotices(x, vs.getExpansion(), vs);
     generateVersionNotice(x, vs.getExpansion(), vs);
 
+    CodeSystem allCS = null;
     boolean doLevel = false;
     for (ValueSetExpansionContainsComponent cc : vs.getExpansion().getContains()) {
       if (cc.hasContains()) {
@@ -210,9 +206,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
         break;
       }
     }
-    boolean doInactive = checkDoInactive(vs.getExpansion().getContains());    
-    boolean doDefinition = checkDoDefinition(vs.getExpansion().getContains());
     
+    boolean doDefinition = checkDoDefinition(vs.getExpansion().getContains());
     XhtmlNode t = x.table( "codes");
     XhtmlNode tr = t.tr();
     if (doLevel)
@@ -226,9 +221,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
       scanForDesignations(c, langs, designations);
     }
     scanForProperties(vs.getExpansion(), langs, properties);
-    if (doInactive) {
-      tr.td().b().tx("Inactive");
-    }
     if (doDefinition) {
       tr.td().b().tx("Definition");
       doDesignations = false;
@@ -258,7 +250,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     
     addMapHeaders(tr, maps);
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
-      addExpansionRowToTable(t, vs, c, 1, doLevel, doDefinition, doInactive, maps, langs, designations, doDesignations, properties);
+      addExpansionRowToTable(t, vs, c, 1, doLevel, true, doDefinition, maps, allCS, langs, designations, doDesignations, properties);
     }
 
     // now, build observed languages
@@ -447,18 +439,17 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private void generateVersionNotice(XhtmlNode x, ValueSetExpansionComponent expansion, Resource vs) {
     Multimap<String, String> versions = HashMultimap.create();
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
-      if (p.getName().startsWith("used-") || p.getName().equals("version")) {
-        String name = p.getName().equals("version") ? "system" : p.getName().substring(5);
+      if (p.getName().equals("version")) {
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
         if (parts.length == 2 && !Utilities.noString(parts[0]))
-          versions.put(name+"|"+parts[0], parts[1]);
+          versions.put(parts[0], parts[1]);
       }
     }
     if (versions.size() > 0) {
       XhtmlNode div = null;
       XhtmlNode ul = null;
       boolean first = true;
-      for (String s : Utilities.sorted(versions.keySet())) {
+      for (String s : versions.keySet()) {
         if (versions.size() == 1 && versions.get(s).size() == 1) {
           for (String v : versions.get(s)) { // though there'll only be one
             XhtmlNode p = x.para().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
@@ -481,8 +472,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private void expRef(XhtmlNode x, String u, String v, Resource source) {
-    String t = u.contains("|") ? u.substring(0, u.indexOf("|")) : u;
-    u = u.substring(u.indexOf("|")+1);
     // TODO Auto-generated method stub
     if (u.equals("http://snomed.info/sct")) {
       String[] parts = v.split("\\/");
@@ -507,23 +496,23 @@ public class ValueSetRenderer extends TerminologyRenderer {
       CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, source);
       if (cr != null) {
         if (cr.hasWebPath()) {
-          x.ah(cr.getWebPath()).tx(t+" "+cr.present()+" (no version) ("+cr.fhirType()+")");          
+          x.ah(cr.getWebPath()).tx(cr.present()+" (no version) ("+cr.fhirType()+")");          
         } else {
-          x.tx(t+" "+describeSystem(u)+" (no version) ("+cr.fhirType()+")");
+          x.tx(describeSystem(u)+" (no version) ("+cr.fhirType()+")");
         }
       } else {
-        x.tx(t+" "+describeSystem(u)+" (no version)");
+        x.tx(describeSystem(u)+" (no version)");
       }
     } else {
       CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u+"|"+v, source);
       if (cr != null) {
         if (cr.hasWebPath()) {
-          x.ah(cr.getWebPath()).tx(t+" "+cr.present()+" v"+v+" ("+cr.fhirType()+")");          
+          x.ah(cr.getWebPath()).tx(cr.present()+" v"+v+" ("+cr.fhirType()+")");          
         } else {
-          x.tx(t+" "+describeSystem(u)+" v"+v+" ("+cr.fhirType()+")");
+          x.tx(describeSystem(u)+" v"+v+" ("+cr.fhirType()+")");
         }
       } else {
-        x.tx(t+" "+describeSystem(u)+" version "+v);
+        x.tx(describeSystem(u)+" version "+v);
       }
     }
   }
@@ -684,17 +673,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return false;
   }
 
-  private boolean checkDoInactive(List<ValueSetExpansionContainsComponent> contains) {
-    for (ValueSetExpansionContainsComponent c : contains) {
-      if (c.hasInactive()) {
-        return true;
-      }
-      if (checkDoInactive(c.getContains()))
-        return true;
-    }
-    return false;
-  }
-
 
   private boolean allFromOneSystem(ValueSet vs) {
     if (vs.getExpansion().getContains().isEmpty())
@@ -776,7 +754,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }    
   }
 
-  private void addExpansionRowToTable(XhtmlNode t, ValueSet vs, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doDefinition, boolean doInactive, List<UsedConceptMap> maps, List<String> langs, Map<String, String> designations, boolean doDesignations, Map<String, String> properties) throws FHIRFormatError, DefinitionException, IOException {
+  private void addExpansionRowToTable(XhtmlNode t, ValueSet vs, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doSystem, boolean doDefinition, List<UsedConceptMap> maps, CodeSystem allCS, List<String> langs, Map<String, String> designations, boolean doDesignations, Map<String, String> properties) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode tr = t.tr();
     if (ValueSetUtilities.isDeprecated(vs, c)) {
       tr.setAttribute("style", "background-color: #ffeeee");
@@ -794,21 +772,19 @@ public class ValueSetRenderer extends TerminologyRenderer {
     String s = Utilities.padLeft("", '\u00A0', i*2);
     td.attribute("style", "white-space:nowrap").addText(s);
     addCodeToTable(c.getAbstract(), c.getSystem(), c.getCode(), c.getDisplay(), td);
-    td = tr.td();
-    td.addText(c.getSystem());
+    if (doSystem) {
+      td = tr.td();
+      td.addText(c.getSystem());
+    }
     td = tr.td();
     if (c.hasDisplayElement())
       td.addText(c.getDisplay());
 
-    if (doInactive) {
-      td = tr.td();
-      if (c.getInactive()) {
-        td.tx("inactive");
-      }
-    }
     if (doDefinition) {
+      CodeSystem cs = allCS;
+      if (cs == null)
+        cs = getContext().getWorker().fetchCodeSystem(c.getSystem());
       td = tr.td();
-      CodeSystem cs = getContext().getWorker().fetchCodeSystem(c.getSystem());
       if (cs != null) {
         String defn = CodeSystemUtilities.getCodeDefinition(cs, c.getCode());
         addMarkdown(td, defn, cs.getWebPath());
@@ -841,7 +817,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       addLangaugesToRow(c, langs, tr);
     }
     for (ValueSetExpansionContainsComponent cc : c.getContains()) {
-      addExpansionRowToTable(t, vs, cc, i+1, doLevel, doDefinition, doInactive, maps, langs, designations, doDesignations, properties);
+      addExpansionRowToTable(t, vs, cc, i+1, doLevel, doSystem, doDefinition, maps, allCS, langs, designations, doDesignations, properties);
     }
   }
 
@@ -931,7 +907,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         generateCopyright(x, vs);
     }
     int index = 0;
-    if (vs.getCompose().getInclude().size() == 1 && vs.getCompose().getExclude().size() == 0 && !VersionComparisonAnnotation.hasDeleted(vs.getCompose(), "include", "exclude")) {
+    if (vs.getCompose().getInclude().size() == 1 && vs.getCompose().getExclude().size() == 0) {
       hasExtensions = genInclude(x.ul(), vs.getCompose().getInclude().get(0), "Include", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
     } else {
       XhtmlNode p = x.para();
@@ -941,20 +917,12 @@ public class ValueSetRenderer extends TerminologyRenderer {
         hasExtensions = genInclude(ul, inc, "Include", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
         index++;
       }
-      for (Base inc : VersionComparisonAnnotation.getDeleted(vs.getCompose(), "include")) {
-        genInclude(ul, (ConceptSetComponent) inc, "Include", langs, doDesignations, maps, designations, index, vs);
-        index++;
-      }
-      if (vs.getCompose().hasExclude() || VersionComparisonAnnotation.hasDeleted(vs.getCompose(), "exclude")) {
+      if (vs.getCompose().hasExclude()) {
         p = x.para();
         p.tx("This value set excludes codes based on the following rules:");
         ul = x.ul();
         for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
           hasExtensions = genInclude(ul, exc, "Exclude", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
-          index++;
-        }
-        for (Base inc : VersionComparisonAnnotation.getDeleted(vs.getCompose(), "exclude")) {
-          genInclude(ul, (ConceptSetComponent) inc, "Exclude", langs, doDesignations, maps, designations, index, vs);
           index++;
         }
       }
@@ -1146,12 +1114,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
     boolean hasExtensions = false;
     XhtmlNode li;
     li = ul.li();
-    li = renderStatus(inc, li);
-
+    CodeSystem e = getContext().getWorker().fetchCodeSystem(inc.getSystem());
     Map<String, ConceptDefinitionComponent> definitions = new HashMap<>();
     
     if (inc.hasSystem()) {
-      CodeSystem e = getContext().getWorker().fetchCodeSystem(inc.getSystem());
       if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
         li.addText(type+" all codes defined in ");
         addCsRef(inc, li, e);
@@ -1161,7 +1127,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           addCsRef(inc, li, e);
           if (inc.hasVersion()) {
             li.addText(" version ");
-            li.code(inc.getVersion());  
+            li.code(inc.getVersion()); 
           }
 
           // for performance reasons, we do all the fetching in one batch
@@ -1180,10 +1146,50 @@ public class ValueSetRenderer extends TerminologyRenderer {
             hasExtensions = true;
           addMapHeaders(addTableHeaderRowStandard(t, false, true, hasDefinition, hasComments, false, false, null, langs, designations, doDesignations), maps);
           for (ConceptReferenceComponent c : inc.getConcept()) {
-            renderConcept(inc, langs, doDesignations, maps, designations, definitions, t, hasComments, hasDefinition, c);
-          }
-          for (Base b : VersionComparisonAnnotation.getDeleted(inc, "concept" )) {
-            renderConcept(inc, langs, doDesignations, maps, designations, definitions, t, hasComments, hasDefinition, (ConceptReferenceComponent) b);            
+            XhtmlNode tr = t.tr();
+            XhtmlNode td = tr.td();
+            ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
+            addCodeToTable(false, inc.getSystem(), c.getCode(), c.hasDisplay()? c.getDisplay() : cc != null ? cc.getDisplay() : "", td);
+
+            td = tr.td();
+            if (!Utilities.noString(c.getDisplay()))
+              td.addText(c.getDisplay());
+            else if (cc != null && !Utilities.noString(cc.getDisplay()))
+              td.addText(cc.getDisplay());
+
+            if (hasDefinition) {
+              td = tr.td();
+              if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION)) {
+                smartAddText(td, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
+              } else if (cc != null && !Utilities.noString(cc.getDefinition())) {
+                smartAddText(td, cc.getDefinition());
+              }
+            }
+            if (hasComments) {
+              td = tr.td();
+              if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT)) {
+                smartAddText(td, "Note: "+ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT));
+              }
+            }
+            if (doDesignations) {
+              addDesignationsToRow(c, designations, tr);
+              addLangaugesToRow(c, langs, tr);
+            }
+            for (UsedConceptMap m : maps) {
+              td = tr.td();
+              List<TargetElementComponentWrapper> mappings = findMappingsForCode(c.getCode(), m.getMap());
+              boolean first = true;
+              for (TargetElementComponentWrapper mapping : mappings) {
+                if (!first)
+                    td.br();
+                first = false;
+                XhtmlNode span = td.span(null, mapping.comp.getRelationship().toString());
+                span.addText(getCharForRelationship(mapping.comp));
+                addRefToCode(td, mapping.group.getTarget(), m.getLink(), mapping.comp.getCode()); 
+                if (!Utilities.noString(mapping.comp.getComment()))
+                  td.i().tx("("+mapping.comp.getComment()+")");
+              }
+            }
           }
         }
         if (inc.getFilter().size() > 0) {
@@ -1199,34 +1205,33 @@ public class ValueSetRenderer extends TerminologyRenderer {
                 li.tx(", ");
               }
             }
-            XhtmlNode wli = renderStatus(f, li);
             if (f.getOp() == FilterOperator.EXISTS) {
               if (f.getValue().equals("true")) {
-                wli.tx(f.getProperty()+" exists");
+                li.tx(f.getProperty()+" exists");
               } else {
-                wli.tx(f.getProperty()+" doesn't exist");
+                li.tx(f.getProperty()+" doesn't exist");
               }
             } else {
-              wli.tx(f.getProperty()+" "+describe(f.getOp())+" ");
+              li.tx(f.getProperty()+" "+describe(f.getOp())+" ");
               if (e != null && codeExistsInValueSet(e, f.getValue())) {
                 String href = getContext().fixReference(getCsRef(e));
                 if (href.contains("#"))
                   href = href + "-"+Utilities.nmtokenize(f.getValue());
                 else
                   href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(f.getValue());
-                wli.ah(href).addText(f.getValue());
+                li.ah(href).addText(f.getValue());
               } else if ("concept".equals(f.getProperty()) && inc.hasSystem()) {
-                wli.addText(f.getValue());
+                li.addText(f.getValue());
                 ValidationResult vr = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), inc.getVersion(), f.getValue(), null);
                 if (vr.isOk()) {
-                  wli.tx(" ("+vr.getDisplay()+")");
+                  li.tx(" ("+vr.getDisplay()+")");
                 }
               }
               else
-                wli.addText(f.getValue());
+                li.addText(f.getValue());
               String disp = ToolingExtensions.getDisplayHint(f);
               if (disp != null)
-                wli.tx(" ("+disp+")");
+                li.tx(" ("+disp+")");
             }
           }
         }
@@ -1239,8 +1244,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
             first = false;
           else
             li.tx(", ");
-          XhtmlNode wli = renderStatus(vs, li);
-          AddVsRef(vs.asStringValue(), wli, vsRes);
+          AddVsRef(vs.asStringValue(), li, vsRes);
         }
       }
       if (inc.hasExtension(ToolingExtensions.EXT_EXPAND_RULES) || inc.hasExtension(ToolingExtensions.EXT_EXPAND_GROUP)) {
@@ -1256,71 +1260,17 @@ public class ValueSetRenderer extends TerminologyRenderer {
             first = false;
           else
             li.tx(", ");
-          XhtmlNode wli = renderStatus(vs, li);
-          AddVsRef(vs.asStringValue(), wli, vsRes);
+          AddVsRef(vs.asStringValue(), li, vsRes);
         }
       } else {
         XhtmlNode xul = li.ul();
         for (UriType vs : inc.getValueSet()) {
-          XhtmlNode wli = renderStatus(vs,  xul.li());
-          AddVsRef(vs.asStringValue(), wli, vsRes);
+          AddVsRef(vs.asStringValue(), xul.li(), vsRes);
         }
         
       }
     }
     return hasExtensions;
-  }
-
-  private void renderConcept(ConceptSetComponent inc, List<String> langs, boolean doDesignations,
-      List<UsedConceptMap> maps, Map<String, String> designations, Map<String, ConceptDefinitionComponent> definitions,
-      XhtmlNode t, boolean hasComments, boolean hasDefinition, ConceptReferenceComponent c) {
-    XhtmlNode tr = t.tr();
-    XhtmlNode td = renderStatusRow(c, t, tr);
-    ConceptDefinitionComponent cc = definitions == null ? null : definitions.get(c.getCode()); 
-    addCodeToTable(false, inc.getSystem(), c.getCode(), c.hasDisplay()? c.getDisplay() : cc != null ? cc.getDisplay() : "", td);
-
-    td = tr.td();
-    if (!Utilities.noString(c.getDisplay()))
-      renderStatus(c.getDisplayElement(), td).addText(c.getDisplay());
-    else if (VersionComparisonAnnotation.hasDeleted(c, "display")) {
-      StringType d = (StringType) VersionComparisonAnnotation.getDeletedItem(c, "display"); 
-      renderStatus(d, td).addText(d.primitiveValue());
-    } else if (cc != null && !Utilities.noString(cc.getDisplay()))
-      td.style("color: #cccccc").addText(cc.getDisplay());
-
-    if (hasDefinition) {
-      td = tr.td();
-      if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION)) {
-        smartAddText(td, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
-      } else if (cc != null && !Utilities.noString(cc.getDefinition())) {
-        smartAddText(td, cc.getDefinition());
-      }
-    }
-    if (hasComments) {
-      td = tr.td();
-      if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT)) {
-        smartAddText(td, "Note: "+ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT));
-      }
-    }
-    if (doDesignations) {
-      addDesignationsToRow(c, designations, tr);
-      addLangaugesToRow(c, langs, tr);
-    }
-    for (UsedConceptMap m : maps) {
-      td = tr.td();
-      List<TargetElementComponentWrapper> mappings = findMappingsForCode(c.getCode(), m.getMap());
-      boolean first = true;
-      for (TargetElementComponentWrapper mapping : mappings) {
-        if (!first)
-            td.br();
-        first = false;
-        XhtmlNode span = td.span(null, mapping.comp.getRelationship().toString());
-        span.addText(getCharForRelationship(mapping.comp));
-        addRefToCode(td, mapping.group.getTarget(), m.getLink(), mapping.comp.getCode()); 
-        if (!Utilities.noString(mapping.comp.getComment()))
-          td.i().tx("("+mapping.comp.getComment()+")");
-      }
-    }
   }
 
   public void addDesignationsToRow(ConceptReferenceComponent c, Map<String, String> designations, XhtmlNode tr) {

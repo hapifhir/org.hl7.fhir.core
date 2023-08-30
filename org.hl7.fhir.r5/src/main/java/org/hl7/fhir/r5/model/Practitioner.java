@@ -570,7 +570,7 @@ public class Practitioner extends DomainResource {
           return this.language;
         }
         else if (name.equals("preferred")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Practitioner.communication.preferred");
+          throw new FHIRException("Cannot call addChild on a primitive type Practitioner.communication.preferred");
         }
         else
           return super.addChild(name);
@@ -1454,7 +1454,7 @@ The `PractitionerRole.communication` property should be used for publishing the 
           return addIdentifier();
         }
         else if (name.equals("active")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Practitioner.active");
+          throw new FHIRException("Cannot call addChild on a primitive type Practitioner.active");
         }
         else if (name.equals("name")) {
           return addName();
@@ -1463,10 +1463,10 @@ The `PractitionerRole.communication` property should be used for publishing the 
           return addTelecom();
         }
         else if (name.equals("gender")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Practitioner.gender");
+          throw new FHIRException("Cannot call addChild on a primitive type Practitioner.gender");
         }
         else if (name.equals("birthDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Practitioner.birthDate");
+          throw new FHIRException("Cannot call addChild on a primitive type Practitioner.birthDate");
         }
         else if (name.equals("deceasedBoolean")) {
           this.deceased = new BooleanType();

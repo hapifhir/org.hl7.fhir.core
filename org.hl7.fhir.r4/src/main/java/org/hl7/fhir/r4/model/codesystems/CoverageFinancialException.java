@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CoverageFinancialException {
 
-  /**
-   * Retired persons have all copays and deductibles reduced.
-   */
-  RETIRED,
-  /**
-   * Children in the foster care have all copays and deductibles waived.
-   */
-  FOSTER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static CoverageFinancialException fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("retired".equals(codeString))
-      return RETIRED;
-    if ("foster".equals(codeString))
-      return FOSTER;
-    throw new FHIRException("Unknown CoverageFinancialException code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case RETIRED:
-      return "retired";
-    case FOSTER:
-      return "foster";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Retired persons have all copays and deductibles reduced.
+         */
+        RETIRED, 
+        /**
+         * Children in the foster care have all copays and deductibles waived.
+         */
+        FOSTER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static CoverageFinancialException fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("retired".equals(codeString))
+          return RETIRED;
+        if ("foster".equals(codeString))
+          return FOSTER;
+        throw new FHIRException("Unknown CoverageFinancialException code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case RETIRED: return "retired";
+            case FOSTER: return "foster";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/ex-coverage-financial-exception";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case RETIRED: return "Retired persons have all copays and deductibles reduced.";
+            case FOSTER: return "Children in the foster care have all copays and deductibles waived.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case RETIRED: return "Retired";
+            case FOSTER: return "Foster child";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/ex-coverage-financial-exception";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case RETIRED:
-      return "Retired persons have all copays and deductibles reduced.";
-    case FOSTER:
-      return "Children in the foster care have all copays and deductibles waived.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case RETIRED:
-      return "Retired";
-    case FOSTER:
-      return "Foster child";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

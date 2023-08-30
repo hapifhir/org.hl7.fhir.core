@@ -4,19 +4,6 @@ package org.hl7.fhir.dstu3.utils.client;
 
 
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -52,6 +39,13 @@ import org.apache.http.client.utils.URIBuilder;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.model.ResourceType;
 import org.hl7.fhir.utilities.Utilities;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //Make resources address subclass of URI
 

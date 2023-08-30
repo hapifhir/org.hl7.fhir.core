@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,62 +34,50 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ContractAssetcontext {
 
-  /**
-   * To be completed
-   */
-  CUSTODIAN,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ContractAssetcontext fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("custodian".equals(codeString))
-      return CUSTODIAN;
-    throw new FHIRException("Unknown ContractAssetcontext code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case CUSTODIAN:
-      return "custodian";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * To be completed
+         */
+        CUSTODIAN, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ContractAssetcontext fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("custodian".equals(codeString))
+          return CUSTODIAN;
+        throw new FHIRException("Unknown ContractAssetcontext code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case CUSTODIAN: return "custodian";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/contract-asset-context";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case CUSTODIAN: return "To be completed";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case CUSTODIAN: return "Custodian";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/contract-asset-context";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case CUSTODIAN:
-      return "To be completed";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case CUSTODIAN:
-      return "Custodian";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

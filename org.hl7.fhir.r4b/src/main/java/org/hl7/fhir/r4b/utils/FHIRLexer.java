@@ -36,6 +36,8 @@ import org.hl7.fhir.exceptions.FHIRException;
   
  */
 
+
+
 import org.hl7.fhir.r4b.model.ExpressionNode;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.SourceLocation;
@@ -48,31 +50,20 @@ import org.hl7.fhir.utilities.Utilities;
 public class FHIRLexer {
   public class FHIRLexerException extends FHIRException {
 
-    private SourceLocation location;
-
-//    public FHIRLexerException() {
-//      super();
-//    }
-//
-//    public FHIRLexerException(String message, Throwable cause) {
-//      super(message, cause);
-//    }
-//
-//    public FHIRLexerException(String message) {
-//      super(message);
-//    }
-//
-//    public FHIRLexerException(Throwable cause) {
-//      super(cause);
-//    }
-
-    public FHIRLexerException(String message, SourceLocation location) {
-      super(message);
-      this.location = location;
+    public FHIRLexerException() {
+      super();
     }
 
-    public SourceLocation getLocation() {
-      return location;
+    public FHIRLexerException(String message, Throwable cause) {
+      super(message, cause);
+    }
+
+    public FHIRLexerException(String message) {
+      super(message);
+    }
+
+    public FHIRLexerException(Throwable cause) {
+      super(cause);
     }
 
   }
@@ -86,9 +77,6 @@ public class FHIRLexer {
   private int id;
   private String name;
   private boolean liquidMode; // in liquid mode, || terminates the expression and hands the parser back to the host
-  private SourceLocation commentLocation;
-  private boolean metadataFormat;
-  private boolean allowDoubleQuotes;
 
   public FHIRLexer(String source, String name) throws FHIRLexerException {
     this.source = source == null ? "" : source;
@@ -102,21 +90,6 @@ public class FHIRLexer {
     currentLocation = new SourceLocation(1, 1);
     next();
   }
-  public FHIRLexer(String source, int i, boolean allowDoubleQuotes) throws FHIRLexerException {
-    this.source = source;
-    this.cursor = i;
-    this.allowDoubleQuotes =  allowDoubleQuotes;
-    currentLocation = new SourceLocation(1, 1);
-    next();
-  }
-  public FHIRLexer(String source, String name, boolean metadataFormat, boolean allowDoubleQuotes) throws FHIRLexerException {
-    this.source = source == null ? "" : source;
-    this.name = name == null ? "??" : name;
-    this.metadataFormat = metadataFormat;
-    this.allowDoubleQuotes =  allowDoubleQuotes;
-    currentLocation = new SourceLocation(1, 1);
-    next();
-  }
   public String getCurrent() {
     return current;
   }
@@ -125,15 +98,17 @@ public class FHIRLexer {
   }
 
   public boolean isConstant() {
-    return FHIRPathConstant.isFHIRPathConstant(current);
+    return !Utilities.noString(current) && ((current.charAt(0) == '\'' || current.charAt(0) == '"') || current.charAt(0) == '@' || current.charAt(0) == '%' || 
+        current.charAt(0) == '-' || current.charAt(0) == '+' || (current.charAt(0) >= '0' && current.charAt(0) <= '9') || 
+        current.equals("true") || current.equals("false") || current.equals("{}"));
   }
 
   public boolean isFixedName() {
-    return FHIRPathConstant.isFHIRPathFixedName(current);
+    return current != null && (current.charAt(0) == '`');
   }
 
   public boolean isStringConstant() {
-    return FHIRPathConstant.isFHIRPathStringConstant(current);
+    return current.charAt(0) == '\'' || current.charAt(0) == '"' || current.charAt(0) == '`';
   }
 
   public String take() throws FHIRLexerException {
@@ -171,11 +146,11 @@ public class FHIRLexer {
   }
 
   public FHIRLexerException error(String msg) {
-    return error(msg, currentLocation.toString(), currentLocation);
+    return error(msg, currentLocation.toString());
   }
 
-  public FHIRLexerException error(String msg, String location, SourceLocation loc) {
-    return new FHIRLexerException("Error @"+location+": "+msg, loc);
+  public FHIRLexerException error(String msg, String location) {
+    return new FHIRLexerException("Error @"+location+": "+msg);
   }
 
   public void next() throws FHIRLexerException {
@@ -226,13 +201,10 @@ public class FHIRLexer {
       } else if (ch == '/') {
         cursor++;
         if (cursor < source.length() && (source.charAt(cursor) == '/')) {
-          // we've run into metadata
-          cursor++;
-          cursor++;
-          current = source.substring(currentStart, cursor);
-        } else {
-          current = source.substring(currentStart, cursor);
+          // this is en error - should already have been skipped
+          error("This shouldn't happen?");
         }
+        current = source.substring(currentStart, cursor);
       } else if (ch == '$') {
         cursor++;
         while (cursor < source.length() && (source.charAt(cursor) >= 'a' && source.charAt(cursor) <= 'z'))
@@ -244,7 +216,7 @@ public class FHIRLexer {
         if (ch == '}')
           cursor++;
         current = source.substring(currentStart, cursor);
-      } else if (ch == '"' && allowDoubleQuotes) {
+      } else if (ch == '"') {
         cursor++;
         boolean escape = false;
         while (cursor < source.length() && (escape || source.charAt(cursor) != '"')) {
@@ -324,23 +296,16 @@ public class FHIRLexer {
 
   private void skipWhitespaceAndComments() {
     comments.clear();
-    commentLocation = null;
     boolean last13 = false;
     boolean done = false;
     while (cursor < source.length() && !done) {
-      if (cursor < source.length() -1 && "//".equals(source.substring(cursor, cursor+2)) && !isMetadataStart()) {
-        if (commentLocation == null) {
-          commentLocation = currentLocation.copy();
-        }
+      if (cursor < source.length() -1 && "//".equals(source.substring(cursor, cursor+2))) {
         int start = cursor+2;
         while (cursor < source.length() && !((source.charAt(cursor) == '\r') || source.charAt(cursor) == '\n')) { 
           cursor++;        
         }
         comments.add(source.substring(start, cursor).trim());
       } else if (cursor < source.length() - 1 && "/*".equals(source.substring(cursor, cursor+2))) {
-        if (commentLocation == null) {
-          commentLocation = currentLocation.copy();
-        }
         int start = cursor+2;
         while (cursor < source.length() - 1 && !"*/".equals(source.substring(cursor, cursor+2))) { 
           last13 = currentLocation.checkChar(source.charAt(cursor), last13);
@@ -352,17 +317,13 @@ public class FHIRLexer {
           comments.add(source.substring(start, cursor).trim());
           cursor = cursor + 2;
         }
-      } else if (Utilities.isWhitespace(source.charAt(cursor))) {
+      } else if (Character.isWhitespace(source.charAt(cursor))) {
         last13 = currentLocation.checkChar(source.charAt(cursor), last13);
         cursor++;
       } else {
         done = true;
       }
     }
-  }
-  
-  private boolean isMetadataStart() {
-    return metadataFormat && cursor < source.length() - 2 && "///".equals(source.substring(cursor, cursor+3));
   }
   
   private boolean isDateChar(char ch,int start) {
@@ -488,7 +449,7 @@ public class FHIRLexer {
           i = i + 4;
           break;
         default:
-          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i), currentLocation);
+          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i));
         }
       } else {
         b.append(ch);
@@ -537,7 +498,7 @@ public class FHIRLexer {
           i = i + 4;
           break;
         default:
-          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i), currentLocation);
+          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i));
         }
       } else {
         b.append(ch);
@@ -574,30 +535,5 @@ public class FHIRLexer {
   public void setLiquidMode(boolean liquidMode) {
     this.liquidMode = liquidMode;
   }
-  public SourceLocation getCommentLocation() {
-    return this.commentLocation;
-  }
-  public boolean isMetadataFormat() {
-    return metadataFormat;
-  }
-  public void setMetadataFormat(boolean metadataFormat) {
-    this.metadataFormat = metadataFormat;
-  }
-  public List<String> cloneComments() {
-    List<String> res = new ArrayList<>();
-    res.addAll(getComments());
-    return res;
-  }
-  public String tokenWithTrailingComment(String token) {
-    int line = getCurrentLocation().getLine();
-    token(token);
-    if (getComments().size() > 0 && getCommentLocation().getLine() == line) {
-      return getFirstComment();
-    } else {
-      return null;
-    }
-  }
-  public boolean isAllowDoubleQuotes() {
-    return allowDoubleQuotes;
-  }
+
 }

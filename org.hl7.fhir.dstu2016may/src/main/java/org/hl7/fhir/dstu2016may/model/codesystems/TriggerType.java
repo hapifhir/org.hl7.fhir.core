@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,135 +34,104 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum TriggerType {
 
-  /**
-   * The trigger occurs in response to a specific named event
-   */
-  NAMEDEVENT,
-  /**
-   * The trigger occurs at a specific time or periodically as described by a
-   * timing or schedule
-   */
-  PERIODIC,
-  /**
-   * The trigger occurs whenever data of a particular type is added
-   */
-  DATAADDED,
-  /**
-   * The trigger occurs whenever data of a particular type is modified
-   */
-  DATAMODIFIED,
-  /**
-   * The trigger occurs whenever data of a particular type is removed
-   */
-  DATAREMOVED,
-  /**
-   * The trigger occurs whenever data of a particular type is accessed
-   */
-  DATAACCESSED,
-  /**
-   * The trigger occurs whenever access to data of a particular type is completed
-   */
-  DATAACCESSENDED,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static TriggerType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("named-event".equals(codeString))
-      return NAMEDEVENT;
-    if ("periodic".equals(codeString))
-      return PERIODIC;
-    if ("data-added".equals(codeString))
-      return DATAADDED;
-    if ("data-modified".equals(codeString))
-      return DATAMODIFIED;
-    if ("data-removed".equals(codeString))
-      return DATAREMOVED;
-    if ("data-accessed".equals(codeString))
-      return DATAACCESSED;
-    if ("data-access-ended".equals(codeString))
-      return DATAACCESSENDED;
-    throw new FHIRException("Unknown TriggerType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NAMEDEVENT:
-      return "named-event";
-    case PERIODIC:
-      return "periodic";
-    case DATAADDED:
-      return "data-added";
-    case DATAMODIFIED:
-      return "data-modified";
-    case DATAREMOVED:
-      return "data-removed";
-    case DATAACCESSED:
-      return "data-accessed";
-    case DATAACCESSENDED:
-      return "data-access-ended";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The trigger occurs in response to a specific named event
+         */
+        NAMEDEVENT, 
+        /**
+         * The trigger occurs at a specific time or periodically as described by a timing or schedule
+         */
+        PERIODIC, 
+        /**
+         * The trigger occurs whenever data of a particular type is added
+         */
+        DATAADDED, 
+        /**
+         * The trigger occurs whenever data of a particular type is modified
+         */
+        DATAMODIFIED, 
+        /**
+         * The trigger occurs whenever data of a particular type is removed
+         */
+        DATAREMOVED, 
+        /**
+         * The trigger occurs whenever data of a particular type is accessed
+         */
+        DATAACCESSED, 
+        /**
+         * The trigger occurs whenever access to data of a particular type is completed
+         */
+        DATAACCESSENDED, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static TriggerType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("named-event".equals(codeString))
+          return NAMEDEVENT;
+        if ("periodic".equals(codeString))
+          return PERIODIC;
+        if ("data-added".equals(codeString))
+          return DATAADDED;
+        if ("data-modified".equals(codeString))
+          return DATAMODIFIED;
+        if ("data-removed".equals(codeString))
+          return DATAREMOVED;
+        if ("data-accessed".equals(codeString))
+          return DATAACCESSED;
+        if ("data-access-ended".equals(codeString))
+          return DATAACCESSENDED;
+        throw new FHIRException("Unknown TriggerType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NAMEDEVENT: return "named-event";
+            case PERIODIC: return "periodic";
+            case DATAADDED: return "data-added";
+            case DATAMODIFIED: return "data-modified";
+            case DATAREMOVED: return "data-removed";
+            case DATAACCESSED: return "data-accessed";
+            case DATAACCESSENDED: return "data-access-ended";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/trigger-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NAMEDEVENT: return "The trigger occurs in response to a specific named event";
+            case PERIODIC: return "The trigger occurs at a specific time or periodically as described by a timing or schedule";
+            case DATAADDED: return "The trigger occurs whenever data of a particular type is added";
+            case DATAMODIFIED: return "The trigger occurs whenever data of a particular type is modified";
+            case DATAREMOVED: return "The trigger occurs whenever data of a particular type is removed";
+            case DATAACCESSED: return "The trigger occurs whenever data of a particular type is accessed";
+            case DATAACCESSENDED: return "The trigger occurs whenever access to data of a particular type is completed";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NAMEDEVENT: return "Named Event";
+            case PERIODIC: return "Periodic";
+            case DATAADDED: return "Data Added";
+            case DATAMODIFIED: return "Data Modified";
+            case DATAREMOVED: return "Data Removed";
+            case DATAACCESSED: return "Data Accessed";
+            case DATAACCESSENDED: return "Data Access Ended";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/trigger-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NAMEDEVENT:
-      return "The trigger occurs in response to a specific named event";
-    case PERIODIC:
-      return "The trigger occurs at a specific time or periodically as described by a timing or schedule";
-    case DATAADDED:
-      return "The trigger occurs whenever data of a particular type is added";
-    case DATAMODIFIED:
-      return "The trigger occurs whenever data of a particular type is modified";
-    case DATAREMOVED:
-      return "The trigger occurs whenever data of a particular type is removed";
-    case DATAACCESSED:
-      return "The trigger occurs whenever data of a particular type is accessed";
-    case DATAACCESSENDED:
-      return "The trigger occurs whenever access to data of a particular type is completed";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NAMEDEVENT:
-      return "Named Event";
-    case PERIODIC:
-      return "Periodic";
-    case DATAADDED:
-      return "Data Added";
-    case DATAMODIFIED:
-      return "Data Modified";
-    case DATAREMOVED:
-      return "Data Removed";
-    case DATAACCESSED:
-      return "Data Accessed";
-    case DATAACCESSENDED:
-      return "Data Access Ended";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -79,32 +79,8 @@ public class RenderingContext {
     SUMMARY, // 5 cells: tree/name | flags | cardinality | type | details
     BINDINGS, // tree/name + column for each kind of binding found, cells are lists of bindings 
     OBLIGATIONS, // tree/name + column for each actor that has obligations
-    DATA_DICT,  // detailed element view 
   }
-
-  public enum ExampleScenarioRendererMode {
-    /**
-     * A visual presentation of the questionnaire, with a set of property panes that can be toggled on and off.
-     * Note that this is not the same as how the questionnaire would like on a form filler, since all dynamic behavior is ignored
-     */
-    ACTORS,
-
-    /**
-     * A table listing all the instances (and versions there-of) used in a scenario
-     */
-    INSTANCES,
-
-    /**
-     * Information about the processes (and sub-processes) defined in a scenario
-     */
-    PROCESSES,
-
-    /**
-     * A diagram showing interactions between the actors as part of the process steps
-     */
-    DIAGRAM
-  }
-
+  
   public enum QuestionnaireRendererMode {
     /**
      * A visual presentation of the questionnaire, with a set of property panes that can be toggled on and off.
@@ -132,7 +108,6 @@ public class RenderingContext {
      */
     LINKS
   }
-
 
   public enum KnownLinkType {
     SELF,  // absolute link to where the content is to be found (only used in a few circumstances when making external references to tools)
@@ -171,7 +146,6 @@ public class RenderingContext {
   private boolean inlineGraphics;
   private StandardsStatus defaultStandardsStatus;
 
-  private ExampleScenarioRendererMode scenarioMode = null;
   private QuestionnaireRendererMode questionnaireMode = QuestionnaireRendererMode.FORM;
   private StructureDefinitionRendererMode structureMode = StructureDefinitionRendererMode.SUMMARY;
   
@@ -187,7 +161,6 @@ public class RenderingContext {
   private DateTimeFormatter dateYearMonthFormat;
   private boolean copyButton;
   private ProfileKnowledgeProvider pkp;
-  private String changeVersion;
   
   private Map<KnownLinkType, String> links = new HashMap<>();
   /**
@@ -238,7 +211,6 @@ public class RenderingContext {
     res.definitionsTarget = definitionsTarget;
     res.destDir = destDir;
     res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
-    res.scenarioMode = scenarioMode;
     res.questionnaireMode = questionnaireMode;
     res.structureMode = structureMode;
     res.header = header;
@@ -255,7 +227,6 @@ public class RenderingContext {
     res.copyButton = copyButton;
     res.pkp = pkp;
     res.defaultStandardsStatus = defaultStandardsStatus;
-    res.changeVersion = changeVersion;
 
     res.terminologyServiceOptions = terminologyServiceOptions.copy();
     return res;
@@ -466,15 +437,6 @@ public class RenderingContext {
 
   public RenderingContext setHeader(boolean header) {
     this.header = header;
-    return this;
-  }
-
-  public ExampleScenarioRendererMode getScenarioMode() {
-    return scenarioMode;
-  }
-
-  public RenderingContext setScenarioMode(ExampleScenarioRendererMode scenarioMode) {
-    this.scenarioMode = scenarioMode;
     return this;
   }
 
@@ -711,14 +673,4 @@ public class RenderingContext {
     return this;
   }
 
-  public String getChangeVersion() {
-    return changeVersion;
-  }
-
-  public RenderingContext setChangeVersion(String changeVersion) {
-    this.changeVersion = changeVersion;
-    return this;
-  }
-
-  
 }

@@ -395,17 +395,17 @@ The type is the Canonical URL of Resource Definition that is the type this refer
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("reference")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Reference.reference");
+          throw new FHIRException("Cannot call addChild on a primitive type Reference.reference");
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Reference.type");
+          throw new FHIRException("Cannot call addChild on a primitive type Reference.type");
         }
         else if (name.equals("identifier")) {
           this.identifier = new Identifier();
           return this.identifier;
         }
         else if (name.equals("display")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Reference.display");
+          throw new FHIRException("Cannot call addChild on a primitive type Reference.display");
         }
         else
           return super.addChild(name);

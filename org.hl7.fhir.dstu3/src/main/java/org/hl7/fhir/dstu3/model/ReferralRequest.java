@@ -2482,17 +2482,17 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return this.groupIdentifier;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ReferralRequest.status");
+          throw new FHIRException("Cannot call addChild on a primitive type ReferralRequest.status");
         }
         else if (name.equals("intent")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ReferralRequest.intent");
+          throw new FHIRException("Cannot call addChild on a primitive type ReferralRequest.intent");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
           return this.type;
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ReferralRequest.priority");
+          throw new FHIRException("Cannot call addChild on a primitive type ReferralRequest.priority");
         }
         else if (name.equals("serviceRequested")) {
           return addServiceRequested();
@@ -2514,7 +2514,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return this.occurrence;
         }
         else if (name.equals("authoredOn")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ReferralRequest.authoredOn");
+          throw new FHIRException("Cannot call addChild on a primitive type ReferralRequest.authoredOn");
         }
         else if (name.equals("requester")) {
           this.requester = new ReferralRequestRequesterComponent();
@@ -2534,7 +2534,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return addReasonReference();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ReferralRequest.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ReferralRequest.description");
         }
         else if (name.equals("supportingInfo")) {
           return addSupportingInfo();

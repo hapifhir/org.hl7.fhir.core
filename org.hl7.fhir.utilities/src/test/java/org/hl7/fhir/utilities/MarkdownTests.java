@@ -1,6 +1,6 @@
 package org.hl7.fhir.utilities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.junit.jupiter.api.Assertions;

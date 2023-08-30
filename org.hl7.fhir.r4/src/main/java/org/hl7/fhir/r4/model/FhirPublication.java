@@ -29,18 +29,24 @@ package org.hl7.fhir.r4.model;
   
  */
 
+
+
 import org.hl7.fhir.r4.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.r4.test.utils.ToolsHelper;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 /**
- * This enumreation is special, and hand crafted. It only supports a subset of
- * the actual published FHIR versions, those that are still supported.
- * 
+ * This enumreation is special, and hand crafted. It only supports a subset of the actual published FHIR versions, those that are still supported.
  * @author graha
  *
  */
 public enum FhirPublication {
-  NULL, DSTU1, DSTU2, DSTU2016May, STU3, R4;
+  NULL,
+  DSTU1,
+  DSTU2,
+  DSTU2016May,
+  STU3,
+  R4;
 
   public static FhirPublication fromCode(String v) {
     if (VersionUtilities.isR2Ver(v))
@@ -72,16 +78,11 @@ public enum FhirPublication {
 
   public String toCode() {
     switch (this) {
-    case DSTU1:
-      return "0.01";
-    case DSTU2:
-      return "1.0.2";
-    case DSTU2016May:
-      return "1.4.0";
-    case STU3:
-      return "3.0.1";
-    case R4:
-      return Constants.VERSION;
+    case DSTU1: return "0.01";
+    case DSTU2: return "1.0.2";
+    case DSTU2016May: return "1.4.0";
+    case STU3: return "3.0.1";
+    case R4: return Constants.VERSION;
     default:
       return "??";
     }
@@ -90,5 +91,6 @@ public enum FhirPublication {
   public static FhirPublication fromVersion(FHIRVersion v) {
     return fromCode(v.toCode());
   }
+
 
 }

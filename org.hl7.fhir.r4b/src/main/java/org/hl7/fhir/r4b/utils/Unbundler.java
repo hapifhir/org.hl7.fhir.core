@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.utils;
   
  */
 
+
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -53,7 +55,7 @@ public class Unbundler {
     for (BundleEntryComponent be : bnd.getEntry()) {
       Resource r = be.getResource();
       if (r != null) {
-        String tgt = Utilities.path(folder, r.fhirType() + "-" + r.getId() + ".json");
+        String tgt = Utilities.path(folder, r.fhirType()+"-"+r.getId()+".json");
         new JsonParser().compose(new FileOutputStream(tgt), r);
       }
     }

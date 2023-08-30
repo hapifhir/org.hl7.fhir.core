@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,122 +34,95 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum PractitionerRole {
 
-  /**
-   * A qualified/registered medical practitioner
-   */
-  DOCTOR,
-  /**
-   * A practitioner with nursing experience that may be qualified/registered
-   */
-  NURSE,
-  /**
-   * A qualified/registered/licensed pharmacist
-   */
-  PHARMACIST,
-  /**
-   * A practitioner that may perform research
-   */
-  RESEARCHER,
-  /**
-   * Someone who is able to provide educational services
-   */
-  TEACHER,
-  /**
-   * Someone who is qualified in Information and Communication Technologies
-   */
-  ICT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static PractitionerRole fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("doctor".equals(codeString))
-      return DOCTOR;
-    if ("nurse".equals(codeString))
-      return NURSE;
-    if ("pharmacist".equals(codeString))
-      return PHARMACIST;
-    if ("researcher".equals(codeString))
-      return RESEARCHER;
-    if ("teacher".equals(codeString))
-      return TEACHER;
-    if ("ict".equals(codeString))
-      return ICT;
-    throw new FHIRException("Unknown PractitionerRole code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case DOCTOR:
-      return "doctor";
-    case NURSE:
-      return "nurse";
-    case PHARMACIST:
-      return "pharmacist";
-    case RESEARCHER:
-      return "researcher";
-    case TEACHER:
-      return "teacher";
-    case ICT:
-      return "ict";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A qualified/registered medical practitioner
+         */
+        DOCTOR, 
+        /**
+         * A practitioner with nursing experience that may be qualified/registered
+         */
+        NURSE, 
+        /**
+         * A qualified/registered/licensed pharmacist
+         */
+        PHARMACIST, 
+        /**
+         * A practitioner that may perform research
+         */
+        RESEARCHER, 
+        /**
+         * Someone who is able to provide educational services
+         */
+        TEACHER, 
+        /**
+         * Someone who is qualified in Information and Communication Technologies
+         */
+        ICT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static PractitionerRole fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("doctor".equals(codeString))
+          return DOCTOR;
+        if ("nurse".equals(codeString))
+          return NURSE;
+        if ("pharmacist".equals(codeString))
+          return PHARMACIST;
+        if ("researcher".equals(codeString))
+          return RESEARCHER;
+        if ("teacher".equals(codeString))
+          return TEACHER;
+        if ("ict".equals(codeString))
+          return ICT;
+        throw new FHIRException("Unknown PractitionerRole code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case DOCTOR: return "doctor";
+            case NURSE: return "nurse";
+            case PHARMACIST: return "pharmacist";
+            case RESEARCHER: return "researcher";
+            case TEACHER: return "teacher";
+            case ICT: return "ict";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/practitioner-role";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case DOCTOR: return "A qualified/registered medical practitioner";
+            case NURSE: return "A practitioner with nursing experience that may be qualified/registered";
+            case PHARMACIST: return "A qualified/registered/licensed pharmacist";
+            case RESEARCHER: return "A practitioner that may perform research";
+            case TEACHER: return "Someone who is able to provide educational services";
+            case ICT: return "Someone who is qualified in Information and Communication Technologies";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case DOCTOR: return "Doctor";
+            case NURSE: return "Nurse";
+            case PHARMACIST: return "Pharmacist";
+            case RESEARCHER: return "Researcher";
+            case TEACHER: return "Teacher/educator";
+            case ICT: return "ICT professional";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/practitioner-role";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case DOCTOR:
-      return "A qualified/registered medical practitioner";
-    case NURSE:
-      return "A practitioner with nursing experience that may be qualified/registered";
-    case PHARMACIST:
-      return "A qualified/registered/licensed pharmacist";
-    case RESEARCHER:
-      return "A practitioner that may perform research";
-    case TEACHER:
-      return "Someone who is able to provide educational services";
-    case ICT:
-      return "Someone who is qualified in Information and Communication Technologies";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case DOCTOR:
-      return "Doctor";
-    case NURSE:
-      return "Nurse";
-    case PHARMACIST:
-      return "Pharmacist";
-    case RESEARCHER:
-      return "Researcher";
-    case TEACHER:
-      return "Teacher/educator";
-    case ICT:
-      return "ICT professional";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

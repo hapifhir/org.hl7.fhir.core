@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AnimalGenderstatus {
 
-  /**
-   * The animal has been sterilized, castrated or otherwise made infertile.
-   */
-  NEUTERED,
-  /**
-   * The animal's reproductive organs are intact.
-   */
-  INTACT,
-  /**
-   * Unable to determine whether the animal has been neutered.
-   */
-  UNKNOWN,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static AnimalGenderstatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("neutered".equals(codeString))
-      return NEUTERED;
-    if ("intact".equals(codeString))
-      return INTACT;
-    if ("unknown".equals(codeString))
-      return UNKNOWN;
-    throw new FHIRException("Unknown AnimalGenderstatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NEUTERED:
-      return "neutered";
-    case INTACT:
-      return "intact";
-    case UNKNOWN:
-      return "unknown";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The animal has been sterilized, castrated or otherwise made infertile.
+         */
+        NEUTERED, 
+        /**
+         * The animal's reproductive organs are intact.
+         */
+        INTACT, 
+        /**
+         * Unable to determine whether the animal has been neutered.
+         */
+        UNKNOWN, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static AnimalGenderstatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("neutered".equals(codeString))
+          return NEUTERED;
+        if ("intact".equals(codeString))
+          return INTACT;
+        if ("unknown".equals(codeString))
+          return UNKNOWN;
+        throw new FHIRException("Unknown AnimalGenderstatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NEUTERED: return "neutered";
+            case INTACT: return "intact";
+            case UNKNOWN: return "unknown";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/animal-genderstatus";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NEUTERED: return "The animal has been sterilized, castrated or otherwise made infertile.";
+            case INTACT: return "The animal's reproductive organs are intact.";
+            case UNKNOWN: return "Unable to determine whether the animal has been neutered.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NEUTERED: return "Neutered";
+            case INTACT: return "Intact";
+            case UNKNOWN: return "Unknown";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/animal-genderstatus";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NEUTERED:
-      return "The animal has been sterilized, castrated or otherwise made infertile.";
-    case INTACT:
-      return "The animal's reproductive organs are intact.";
-    case UNKNOWN:
-      return "Unable to determine whether the animal has been neutered.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NEUTERED:
-      return "Neutered";
-    case INTACT:
-      return "Intact";
-    case UNKNOWN:
-      return "Unknown";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

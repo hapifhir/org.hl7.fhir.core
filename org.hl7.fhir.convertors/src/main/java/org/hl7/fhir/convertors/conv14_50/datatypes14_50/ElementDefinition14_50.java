@@ -15,8 +15,13 @@ import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Mark
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.String14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Uri14_50;
 import org.hl7.fhir.convertors.conv14_50.resources14_50.Enumerations14_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Boolean43_50;
 import org.hl7.fhir.dstu2016may.model.ElementDefinition;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 

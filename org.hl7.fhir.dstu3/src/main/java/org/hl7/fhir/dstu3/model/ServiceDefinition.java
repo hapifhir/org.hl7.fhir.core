@@ -1696,46 +1696,46 @@ public class ServiceDefinition extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ServiceDefinition.url");
+          throw new FHIRException("Cannot call addChild on a primitive type ServiceDefinition.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ServiceDefinition.version");
+          throw new FHIRException("Cannot call addChild on a primitive type ServiceDefinition.version");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ServiceDefinition.name");
+          throw new FHIRException("Cannot call addChild on a primitive type ServiceDefinition.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ServiceDefinition.title");
+          throw new FHIRException("Cannot call addChild on a primitive type ServiceDefinition.title");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ServiceDefinition.status");
+          throw new FHIRException("Cannot call addChild on a primitive type ServiceDefinition.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ServiceDefinition.experimental");
+          throw new FHIRException("Cannot call addChild on a primitive type ServiceDefinition.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ServiceDefinition.date");
+          throw new FHIRException("Cannot call addChild on a primitive type ServiceDefinition.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ServiceDefinition.publisher");
+          throw new FHIRException("Cannot call addChild on a primitive type ServiceDefinition.publisher");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ServiceDefinition.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ServiceDefinition.description");
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ServiceDefinition.purpose");
+          throw new FHIRException("Cannot call addChild on a primitive type ServiceDefinition.purpose");
         }
         else if (name.equals("usage")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ServiceDefinition.usage");
+          throw new FHIRException("Cannot call addChild on a primitive type ServiceDefinition.usage");
         }
         else if (name.equals("approvalDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ServiceDefinition.approvalDate");
+          throw new FHIRException("Cannot call addChild on a primitive type ServiceDefinition.approvalDate");
         }
         else if (name.equals("lastReviewDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ServiceDefinition.lastReviewDate");
+          throw new FHIRException("Cannot call addChild on a primitive type ServiceDefinition.lastReviewDate");
         }
         else if (name.equals("effectivePeriod")) {
           this.effectivePeriod = new Period();
@@ -1757,7 +1757,7 @@ public class ServiceDefinition extends MetadataResource {
           return addContact();
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ServiceDefinition.copyright");
+          throw new FHIRException("Cannot call addChild on a primitive type ServiceDefinition.copyright");
         }
         else if (name.equals("relatedArtifact")) {
           return addRelatedArtifact();

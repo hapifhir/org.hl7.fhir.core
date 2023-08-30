@@ -1963,46 +1963,46 @@ public class Timing extends Type implements ICompositeType {
           return this.bounds;
         }
         else if (name.equals("count")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.count");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.count");
         }
         else if (name.equals("countMax")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.countMax");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.countMax");
         }
         else if (name.equals("duration")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.duration");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.duration");
         }
         else if (name.equals("durationMax")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.durationMax");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.durationMax");
         }
         else if (name.equals("durationUnit")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.durationUnit");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.durationUnit");
         }
         else if (name.equals("frequency")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.frequency");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.frequency");
         }
         else if (name.equals("frequencyMax")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.frequencyMax");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.frequencyMax");
         }
         else if (name.equals("period")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.period");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.period");
         }
         else if (name.equals("periodMax")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.periodMax");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.periodMax");
         }
         else if (name.equals("periodUnit")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.periodUnit");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.periodUnit");
         }
         else if (name.equals("dayOfWeek")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.dayOfWeek");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.dayOfWeek");
         }
         else if (name.equals("timeOfDay")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.timeOfDay");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.timeOfDay");
         }
         else if (name.equals("when")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.when");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.when");
         }
         else if (name.equals("offset")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.offset");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.offset");
         }
         else
           return super.addChild(name);
@@ -2308,7 +2308,7 @@ public class Timing extends Type implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("event")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Timing.event");
+          throw new FHIRException("Cannot call addChild on a primitive type Timing.event");
         }
         else if (name.equals("repeat")) {
           this.repeat = new TimingRepeatComponent();

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class NehtaGlobalStatementValuesEnumFactory implements EnumFactory<NehtaGlobalStatementValues> {
@@ -44,7 +48,7 @@ public class NehtaGlobalStatementValuesEnumFactory implements EnumFactory<NehtaG
       return NehtaGlobalStatementValues._02;
     if ("03".equals(codeString))
       return NehtaGlobalStatementValues._03;
-    throw new IllegalArgumentException("Unknown NehtaGlobalStatementValues code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown NehtaGlobalStatementValues code '"+codeString+"'");
   }
 
   public String toCode(NehtaGlobalStatementValues code) {
@@ -57,8 +61,8 @@ public class NehtaGlobalStatementValuesEnumFactory implements EnumFactory<NehtaG
     return "?";
   }
 
-  public String toSystem(NehtaGlobalStatementValues code) {
-    return code.getSystem();
-  }
+    public String toSystem(NehtaGlobalStatementValues code) {
+      return code.getSystem();
+      }
 
 }

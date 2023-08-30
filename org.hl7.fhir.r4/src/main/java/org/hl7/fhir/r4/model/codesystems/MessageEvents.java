@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,50 +34,41 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MessageEvents {
 
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MessageEvents fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    throw new FHIRException("Unknown MessageEvents code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MessageEvents fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        throw new FHIRException("Unknown MessageEvents code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/message-events";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/message-events";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

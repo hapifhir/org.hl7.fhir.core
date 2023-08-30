@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ReferenceVersionRules {
 
-  /**
-   * The reference may be either version independent or version specific
-   */
-  EITHER,
-  /**
-   * The reference must be version independent
-   */
-  INDEPENDENT,
-  /**
-   * The reference must be version specific
-   */
-  SPECIFIC,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ReferenceVersionRules fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("either".equals(codeString))
-      return EITHER;
-    if ("independent".equals(codeString))
-      return INDEPENDENT;
-    if ("specific".equals(codeString))
-      return SPECIFIC;
-    throw new FHIRException("Unknown ReferenceVersionRules code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case EITHER:
-      return "either";
-    case INDEPENDENT:
-      return "independent";
-    case SPECIFIC:
-      return "specific";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The reference may be either version independent or version specific
+         */
+        EITHER, 
+        /**
+         * The reference must be version independent
+         */
+        INDEPENDENT, 
+        /**
+         * The reference must be version specific
+         */
+        SPECIFIC, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ReferenceVersionRules fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("either".equals(codeString))
+          return EITHER;
+        if ("independent".equals(codeString))
+          return INDEPENDENT;
+        if ("specific".equals(codeString))
+          return SPECIFIC;
+        throw new FHIRException("Unknown ReferenceVersionRules code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case EITHER: return "either";
+            case INDEPENDENT: return "independent";
+            case SPECIFIC: return "specific";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/reference-version-rules";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case EITHER: return "The reference may be either version independent or version specific";
+            case INDEPENDENT: return "The reference must be version independent";
+            case SPECIFIC: return "The reference must be version specific";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case EITHER: return "Either Specific or independent";
+            case INDEPENDENT: return "Version independent";
+            case SPECIFIC: return "Version Specific";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/reference-version-rules";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case EITHER:
-      return "The reference may be either version independent or version specific";
-    case INDEPENDENT:
-      return "The reference must be version independent";
-    case SPECIFIC:
-      return "The reference must be version specific";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case EITHER:
-      return "Either Specific or independent";
-    case INDEPENDENT:
-      return "Version independent";
-    case SPECIFIC:
-      return "Version Specific";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

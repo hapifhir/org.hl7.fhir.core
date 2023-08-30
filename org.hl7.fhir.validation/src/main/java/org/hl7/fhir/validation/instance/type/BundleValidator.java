@@ -33,10 +33,13 @@ import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 public class BundleValidator extends BaseValidator {
   public final static String URI_REGEX3 = "((http|https)://([A-Za-z0-9\\\\\\.\\:\\%\\$]*\\/)*)?(Account|ActivityDefinition|AllergyIntolerance|AdverseEvent|Appointment|AppointmentResponse|AuditEvent|Basic|Binary|BodySite|Bundle|CapabilityStatement|CarePlan|CareTeam|ChargeItem|Claim|ClaimResponse|ClinicalImpression|CodeSystem|Communication|CommunicationRequest|CompartmentDefinition|Composition|ConceptMap|Condition (aka Problem)|Consent|Contract|Coverage|DataElement|DetectedIssue|Device|DeviceComponent|DeviceMetric|DeviceRequest|DeviceUseStatement|DiagnosticReport|DocumentManifest|DocumentReference|EligibilityRequest|EligibilityResponse|Encounter|Endpoint|EnrollmentRequest|EnrollmentResponse|EpisodeOfCare|ExpansionProfile|ExplanationOfBenefit|FamilyMemberHistory|Flag|Goal|GraphDefinition|Group|GuidanceResponse|HealthcareService|ImagingManifest|ImagingStudy|Immunization|ImmunizationRecommendation|ImplementationGuide|Library|Linkage|List|Location|Measure|MeasureReport|Media|Medication|MedicationAdministration|MedicationDispense|MedicationRequest|MedicationStatement|MessageDefinition|MessageHeader|NamingSystem|NutritionOrder|Observation|OperationDefinition|OperationOutcome|Organization|Parameters|Patient|PaymentNotice|PaymentReconciliation|Person|PlanDefinition|Practitioner|PractitionerRole|Procedure|ProcedureRequest|ProcessRequest|ProcessResponse|Provenance|Questionnaire|QuestionnaireResponse|ReferralRequest|RelatedPerson|RequestGroup|ResearchStudy|ResearchSubject|RiskAssessment|Schedule|SearchParameter|Sequence|ServiceDefinition|Slot|Specimen|StructureDefinition|StructureMap|Subscription|Substance|SupplyDelivery|SupplyRequest|Task|TestScript|TestReport|ValueSet|VisionPrescription)\\/[A-Za-z0-9\\-\\.]{1,64}(\\/_history\\/[A-Za-z0-9\\-\\.]{1,64})?";
   private String serverBase;
+  private InstanceValidator validator;
 
-  public BundleValidator(BaseValidator parent, String serverBase) {
-    super(parent);
+  public BundleValidator(IWorkerContext context, boolean debug, String serverBase, InstanceValidator validator, XVerExtensionManager xverManager, Coding jurisdiction) {
+    super(context, xverManager, debug);
     this.serverBase = serverBase;
+    this.validator = validator;
+    this.jurisdiction = jurisdiction;
   }
 
   public boolean validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidatorHostContext hostContext, PercentageTracker pct, ValidationMode mode) {
@@ -115,19 +118,19 @@ public class BundleValidator extends BaseValidator {
         String rtype = entry.getNamedChild(RESOURCE).fhirType();
         int rcount = counter.containsKey(rtype) ? counter.get(rtype)+1 : 0;
         counter.put(rtype, rcount);
-        for (BundleValidationRule bvr : validator().getBundleValidationRules()) {
+        for (BundleValidationRule bvr : validator.getBundleValidationRules()) {
           if (meetsRule(bvr, rtype, rcount, count)) {
-            StructureDefinition defn = context.fetchResource(StructureDefinition.class, bvr.getProfile());
+            StructureDefinition defn = validator.getContext().fetchResource(StructureDefinition.class, bvr.getProfile());
             if (defn == null) {
-              throw new Error(context.formatMessage(I18nConstants.BUNDLE_RULE_PROFILE_UNKNOWN, bvr.getRule(), bvr.getProfile()));
+              throw new Error(validator.getContext().formatMessage(I18nConstants.BUNDLE_RULE_PROFILE_UNKNOWN, bvr.getRule(), bvr.getProfile()));
             } else {
               Element res = entry.getNamedChild(RESOURCE);
               NodeStack rstack = estack.push(res, -1, null, null);
-              if (validator().isCrumbTrails()) {
+              if (validator.isCrumbTrails()) {
                 res.addMessage(signpost(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, res.line(), res.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM, defn.getUrl()));
               }
               stack.resetIds();
-              ok = validator().startInner(hostContext, errors, res, res, defn, rstack, false, pct, mode) && ok;
+              ok = validator.startInner(hostContext, errors, res, res, defn, rstack, false, pct, mode) && ok;
             }
           }
         }      
@@ -137,10 +140,6 @@ public class BundleValidator extends BaseValidator {
       count++;
     }
     return ok;
-  }
-
-  private InstanceValidator validator() {
-    return (InstanceValidator) parent;
   }
 
   private boolean validateLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack, String type, List<Element> entries) {
@@ -803,22 +802,22 @@ public class BundleValidator extends BaseValidator {
 
   public boolean meetsRule(BundleValidationRule bvr, String rtype, int rcount, int count) {
     if (bvr.getRule() == null) {
-      throw new Error(context.formatMessage(I18nConstants.BUNDLE_RULE_NONE));
+      throw new Error(validator.getContext().formatMessage(I18nConstants.BUNDLE_RULE_NONE));
     }
     String rule =  bvr.getRule();
     String t = rule.contains(":") ? rule.substring(0, rule.indexOf(":")) : Utilities.isInteger(rule) ? null : rule; 
     String index = rule.contains(":") ? rule.substring(rule.indexOf(":")+1) : Utilities.isInteger(rule) ? rule : null;
     if (Utilities.noString(t) && Utilities.noString(index)) {
-      throw new Error(context.formatMessage(I18nConstants.BUNDLE_RULE_NONE));
+      throw new Error(validator.getContext().formatMessage(I18nConstants.BUNDLE_RULE_NONE));
     }
     if (!Utilities.noString(t)) {
-      if (!context.getResourceNames().contains(t)) {
-        throw new Error(context.formatMessage(I18nConstants.BUNDLE_RULE_UNKNOWN, t));
+      if (!validator.getContext().getResourceNames().contains(t)) {
+        throw new Error(validator.getContext().formatMessage(I18nConstants.BUNDLE_RULE_UNKNOWN, t));
       }
     }
     if (!Utilities.noString(index)) {
       if (!Utilities.isInteger(index)) {
-        throw new Error(context.formatMessage(I18nConstants.BUNDLE_RULE_INVALID_INDEX, index));
+        throw new Error(validator.getContext().formatMessage(I18nConstants.BUNDLE_RULE_INVALID_INDEX, index));
       }
     }
     if (t == null) {

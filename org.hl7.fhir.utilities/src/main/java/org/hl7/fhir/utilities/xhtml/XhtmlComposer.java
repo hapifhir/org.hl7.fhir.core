@@ -371,13 +371,9 @@ public class XhtmlComposer {
     }
   }
 
-  public String compose(XhtmlNodeList nodes) throws IOException {
-    StringWriter sdst = new StringWriter();
-    dst = sdst;
-    for (XhtmlNode node : nodes) {
-      writeNode("", node, false);
-    }
-    return sdst.toString();
+  public String compose(XhtmlNodeList childNodes) {
+    // TODO Auto-generated method stub
+    return null;
   }
   
 }

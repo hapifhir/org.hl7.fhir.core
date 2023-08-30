@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,119 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CodesystemContentMode {
 
-  /**
-   * None of the concepts defined by the code system are included in the code
-   * system resource.
-   */
-  NOTPRESENT,
-  /**
-   * A few representative concepts are included in the code system resource. There
-   * is no useful intent in the subset choice and there's no process to make it
-   * workable: it's not intended to be workable.
-   */
-  EXAMPLE,
-  /**
-   * A subset of the code system concepts are included in the code system
-   * resource. This is a curated subset released for a specific purpose under the
-   * governance of the code system steward, and that the intent, bounds and
-   * consequences of the fragmentation are clearly defined in the fragment or the
-   * code system documentation. Fragments are also known as partitions.
-   */
-  FRAGMENT,
-  /**
-   * All the concepts defined by the code system are included in the code system
-   * resource.
-   */
-  COMPLETE,
-  /**
-   * The resource doesn't define any new concepts; it just provides additional
-   * designations and properties to another code system.
-   */
-  SUPPLEMENT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static CodesystemContentMode fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("not-present".equals(codeString))
-      return NOTPRESENT;
-    if ("example".equals(codeString))
-      return EXAMPLE;
-    if ("fragment".equals(codeString))
-      return FRAGMENT;
-    if ("complete".equals(codeString))
-      return COMPLETE;
-    if ("supplement".equals(codeString))
-      return SUPPLEMENT;
-    throw new FHIRException("Unknown CodesystemContentMode code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NOTPRESENT:
-      return "not-present";
-    case EXAMPLE:
-      return "example";
-    case FRAGMENT:
-      return "fragment";
-    case COMPLETE:
-      return "complete";
-    case SUPPLEMENT:
-      return "supplement";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * None of the concepts defined by the code system are included in the code system resource.
+         */
+        NOTPRESENT, 
+        /**
+         * A few representative concepts are included in the code system resource. There is no useful intent in the subset choice and there's no process to make it workable: it's not intended to be workable.
+         */
+        EXAMPLE, 
+        /**
+         * A subset of the code system concepts are included in the code system resource. This is a curated subset released for a specific purpose under the governance of the code system steward, and that the intent, bounds and consequences of the fragmentation are clearly defined in the fragment or the code system documentation. Fragments are also known as partitions.
+         */
+        FRAGMENT, 
+        /**
+         * All the concepts defined by the code system are included in the code system resource.
+         */
+        COMPLETE, 
+        /**
+         * The resource doesn't define any new concepts; it just provides additional designations and properties to another code system.
+         */
+        SUPPLEMENT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static CodesystemContentMode fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("not-present".equals(codeString))
+          return NOTPRESENT;
+        if ("example".equals(codeString))
+          return EXAMPLE;
+        if ("fragment".equals(codeString))
+          return FRAGMENT;
+        if ("complete".equals(codeString))
+          return COMPLETE;
+        if ("supplement".equals(codeString))
+          return SUPPLEMENT;
+        throw new FHIRException("Unknown CodesystemContentMode code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NOTPRESENT: return "not-present";
+            case EXAMPLE: return "example";
+            case FRAGMENT: return "fragment";
+            case COMPLETE: return "complete";
+            case SUPPLEMENT: return "supplement";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/codesystem-content-mode";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NOTPRESENT: return "None of the concepts defined by the code system are included in the code system resource.";
+            case EXAMPLE: return "A few representative concepts are included in the code system resource. There is no useful intent in the subset choice and there's no process to make it workable: it's not intended to be workable.";
+            case FRAGMENT: return "A subset of the code system concepts are included in the code system resource. This is a curated subset released for a specific purpose under the governance of the code system steward, and that the intent, bounds and consequences of the fragmentation are clearly defined in the fragment or the code system documentation. Fragments are also known as partitions.";
+            case COMPLETE: return "All the concepts defined by the code system are included in the code system resource.";
+            case SUPPLEMENT: return "The resource doesn't define any new concepts; it just provides additional designations and properties to another code system.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NOTPRESENT: return "Not Present";
+            case EXAMPLE: return "Example";
+            case FRAGMENT: return "Fragment";
+            case COMPLETE: return "Complete";
+            case SUPPLEMENT: return "Supplement";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/codesystem-content-mode";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NOTPRESENT:
-      return "None of the concepts defined by the code system are included in the code system resource.";
-    case EXAMPLE:
-      return "A few representative concepts are included in the code system resource. There is no useful intent in the subset choice and there's no process to make it workable: it's not intended to be workable.";
-    case FRAGMENT:
-      return "A subset of the code system concepts are included in the code system resource. This is a curated subset released for a specific purpose under the governance of the code system steward, and that the intent, bounds and consequences of the fragmentation are clearly defined in the fragment or the code system documentation. Fragments are also known as partitions.";
-    case COMPLETE:
-      return "All the concepts defined by the code system are included in the code system resource.";
-    case SUPPLEMENT:
-      return "The resource doesn't define any new concepts; it just provides additional designations and properties to another code system.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NOTPRESENT:
-      return "Not Present";
-    case EXAMPLE:
-      return "Example";
-    case FRAGMENT:
-      return "Fragment";
-    case COMPLETE:
-      return "Complete";
-    case SUPPLEMENT:
-      return "Supplement";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

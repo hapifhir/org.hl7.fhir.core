@@ -44,11 +44,15 @@
 
 		<!-- XML Parsers -->
 		<dependency>
-			<groupId>org.ogce</groupId>
+			<groupId>xpp3</groupId>
 			<artifactId>xpp3</artifactId>
 			<optional>true</optional>
 		</dependency>
-
+		<dependency>
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3_xpath</artifactId>
+			<optional>true</optional>
+		</dependency>
 
 		<!-- JSON Parsers -->
 		<dependency>
@@ -100,16 +104,6 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>logging-interceptor</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.squareup.okio</groupId>
-			<artifactId>okio</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.squareup.okio</groupId>
-			<artifactId>okio-jvm</artifactId>
 			<optional>true</optional>
 		</dependency>
 
@@ -172,13 +166,7 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>net.sourceforge.plantuml</groupId>
-            <artifactId>plantuml-mit</artifactId>
-            <version>1.2023.9</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>

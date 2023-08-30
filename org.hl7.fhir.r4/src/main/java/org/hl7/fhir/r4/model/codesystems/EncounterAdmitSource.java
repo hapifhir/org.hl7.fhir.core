@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,175 +34,131 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum EncounterAdmitSource {
 
-  /**
-   * The Patient has been transferred from another hospital for this encounter.
-   */
-  HOSPTRANS,
-  /**
-   * The patient has been transferred from the emergency department within the
-   * hospital. This is typically used in the transition to an inpatient encounter
-   */
-  EMD,
-  /**
-   * The patient has been transferred from an outpatient department within the
-   * hospital.
-   */
-  OUTP,
-  /**
-   * The patient is a newborn and the encounter will track the baby related
-   * activities (as opposed to the Mothers encounter - that may be associated
-   * using the newborn encounters partof property)
-   */
-  BORN,
-  /**
-   * The patient has been admitted due to a referred from a General Practitioner.
-   */
-  GP,
-  /**
-   * The patient has been admitted due to a referred from a Specialist (as opposed
-   * to a General Practitioner).
-   */
-  MP,
-  /**
-   * The patient has been transferred from a nursing home.
-   */
-  NURSING,
-  /**
-   * The patient has been transferred from a psychiatric facility.
-   */
-  PSYCH,
-  /**
-   * The patient has been transferred from a rehabilitation facility or clinic.
-   */
-  REHAB,
-  /**
-   * The patient has been admitted from a source otherwise not specified here.
-   */
-  OTHER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static EncounterAdmitSource fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("hosp-trans".equals(codeString))
-      return HOSPTRANS;
-    if ("emd".equals(codeString))
-      return EMD;
-    if ("outp".equals(codeString))
-      return OUTP;
-    if ("born".equals(codeString))
-      return BORN;
-    if ("gp".equals(codeString))
-      return GP;
-    if ("mp".equals(codeString))
-      return MP;
-    if ("nursing".equals(codeString))
-      return NURSING;
-    if ("psych".equals(codeString))
-      return PSYCH;
-    if ("rehab".equals(codeString))
-      return REHAB;
-    if ("other".equals(codeString))
-      return OTHER;
-    throw new FHIRException("Unknown EncounterAdmitSource code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case HOSPTRANS:
-      return "hosp-trans";
-    case EMD:
-      return "emd";
-    case OUTP:
-      return "outp";
-    case BORN:
-      return "born";
-    case GP:
-      return "gp";
-    case MP:
-      return "mp";
-    case NURSING:
-      return "nursing";
-    case PSYCH:
-      return "psych";
-    case REHAB:
-      return "rehab";
-    case OTHER:
-      return "other";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The Patient has been transferred from another hospital for this encounter.
+         */
+        HOSPTRANS, 
+        /**
+         * The patient has been transferred from the emergency department within the hospital. This is typically used in the transition to an inpatient encounter
+         */
+        EMD, 
+        /**
+         * The patient has been transferred from an outpatient department within the hospital.
+         */
+        OUTP, 
+        /**
+         * The patient is a newborn and the encounter will track the baby related activities (as opposed to the Mothers encounter - that may be associated using the newborn encounters partof property)
+         */
+        BORN, 
+        /**
+         * The patient has been admitted due to a referred from a General Practitioner.
+         */
+        GP, 
+        /**
+         * The patient has been admitted due to a referred from a Specialist (as opposed to a General Practitioner).
+         */
+        MP, 
+        /**
+         * The patient has been transferred from a nursing home.
+         */
+        NURSING, 
+        /**
+         * The patient has been transferred from a psychiatric facility.
+         */
+        PSYCH, 
+        /**
+         * The patient has been transferred from a rehabilitation facility or clinic.
+         */
+        REHAB, 
+        /**
+         * The patient has been admitted from a source otherwise not specified here.
+         */
+        OTHER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static EncounterAdmitSource fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("hosp-trans".equals(codeString))
+          return HOSPTRANS;
+        if ("emd".equals(codeString))
+          return EMD;
+        if ("outp".equals(codeString))
+          return OUTP;
+        if ("born".equals(codeString))
+          return BORN;
+        if ("gp".equals(codeString))
+          return GP;
+        if ("mp".equals(codeString))
+          return MP;
+        if ("nursing".equals(codeString))
+          return NURSING;
+        if ("psych".equals(codeString))
+          return PSYCH;
+        if ("rehab".equals(codeString))
+          return REHAB;
+        if ("other".equals(codeString))
+          return OTHER;
+        throw new FHIRException("Unknown EncounterAdmitSource code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case HOSPTRANS: return "hosp-trans";
+            case EMD: return "emd";
+            case OUTP: return "outp";
+            case BORN: return "born";
+            case GP: return "gp";
+            case MP: return "mp";
+            case NURSING: return "nursing";
+            case PSYCH: return "psych";
+            case REHAB: return "rehab";
+            case OTHER: return "other";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/admit-source";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case HOSPTRANS: return "The Patient has been transferred from another hospital for this encounter.";
+            case EMD: return "The patient has been transferred from the emergency department within the hospital. This is typically used in the transition to an inpatient encounter";
+            case OUTP: return "The patient has been transferred from an outpatient department within the hospital.";
+            case BORN: return "The patient is a newborn and the encounter will track the baby related activities (as opposed to the Mothers encounter - that may be associated using the newborn encounters partof property)";
+            case GP: return "The patient has been admitted due to a referred from a General Practitioner.";
+            case MP: return "The patient has been admitted due to a referred from a Specialist (as opposed to a General Practitioner).";
+            case NURSING: return "The patient has been transferred from a nursing home.";
+            case PSYCH: return "The patient has been transferred from a psychiatric facility.";
+            case REHAB: return "The patient has been transferred from a rehabilitation facility or clinic.";
+            case OTHER: return "The patient has been admitted from a source otherwise not specified here.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case HOSPTRANS: return "Transferred from other hospital";
+            case EMD: return "From accident/emergency department";
+            case OUTP: return "From outpatient department";
+            case BORN: return "Born in hospital";
+            case GP: return "General Practitioner referral";
+            case MP: return "Medical Practitioner/physician referral";
+            case NURSING: return "From nursing home";
+            case PSYCH: return "From psychiatric hospital";
+            case REHAB: return "From rehabilitation facility";
+            case OTHER: return "Other";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/admit-source";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case HOSPTRANS:
-      return "The Patient has been transferred from another hospital for this encounter.";
-    case EMD:
-      return "The patient has been transferred from the emergency department within the hospital. This is typically used in the transition to an inpatient encounter";
-    case OUTP:
-      return "The patient has been transferred from an outpatient department within the hospital.";
-    case BORN:
-      return "The patient is a newborn and the encounter will track the baby related activities (as opposed to the Mothers encounter - that may be associated using the newborn encounters partof property)";
-    case GP:
-      return "The patient has been admitted due to a referred from a General Practitioner.";
-    case MP:
-      return "The patient has been admitted due to a referred from a Specialist (as opposed to a General Practitioner).";
-    case NURSING:
-      return "The patient has been transferred from a nursing home.";
-    case PSYCH:
-      return "The patient has been transferred from a psychiatric facility.";
-    case REHAB:
-      return "The patient has been transferred from a rehabilitation facility or clinic.";
-    case OTHER:
-      return "The patient has been admitted from a source otherwise not specified here.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case HOSPTRANS:
-      return "Transferred from other hospital";
-    case EMD:
-      return "From accident/emergency department";
-    case OUTP:
-      return "From outpatient department";
-    case BORN:
-      return "Born in hospital";
-    case GP:
-      return "General Practitioner referral";
-    case MP:
-      return "Medical Practitioner/physician referral";
-    case NURSING:
-      return "From nursing home";
-    case PSYCH:
-      return "From psychiatric hospital";
-    case REHAB:
-      return "From rehabilitation facility";
-    case OTHER:
-      return "Other";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

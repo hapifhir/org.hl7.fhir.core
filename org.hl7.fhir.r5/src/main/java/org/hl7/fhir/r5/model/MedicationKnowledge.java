@@ -939,7 +939,7 @@ public class MedicationKnowledge extends DomainResource {
           return this.type;
         }
         else if (name.equals("source")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.cost.source");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.cost.source");
         }
         else if (name.equals("costMoney")) {
           this.cost = new Money();
@@ -1180,7 +1180,7 @@ public class MedicationKnowledge extends DomainResource {
           return this.type;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.monitoringProgram.name");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.monitoringProgram.name");
         }
         else
           return super.addChild(name);
@@ -3232,7 +3232,7 @@ public class MedicationKnowledge extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("reference")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.storageGuideline.reference");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.storageGuideline.reference");
         }
         else if (name.equals("note")) {
           return addNote();
@@ -4116,7 +4116,7 @@ public class MedicationKnowledge extends DomainResource {
           return this.type;
         }
         else if (name.equals("allowed")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.regulatory.substitution.allowed");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.regulatory.substitution.allowed");
         }
         else
           return super.addChild(name);
@@ -6843,7 +6843,7 @@ public class MedicationKnowledge extends DomainResource {
           return this.code;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.status");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.status");
         }
         else if (name.equals("author")) {
           this.author = new Reference();
@@ -6853,7 +6853,7 @@ public class MedicationKnowledge extends DomainResource {
           return addIntendedJurisdiction();
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.name");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.name");
         }
         else if (name.equals("relatedMedicationKnowledge")) {
           return addRelatedMedicationKnowledge();
@@ -6868,7 +6868,7 @@ public class MedicationKnowledge extends DomainResource {
           return addMonograph();
         }
         else if (name.equals("preparationInstruction")) {
-          throw new FHIRException("Cannot call addChild on a singleton property MedicationKnowledge.preparationInstruction");
+          throw new FHIRException("Cannot call addChild on a primitive type MedicationKnowledge.preparationInstruction");
         }
         else if (name.equals("cost")) {
           return addCost();

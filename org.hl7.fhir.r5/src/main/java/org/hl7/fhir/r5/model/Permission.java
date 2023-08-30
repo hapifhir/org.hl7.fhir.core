@@ -952,7 +952,7 @@ public class Permission extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Permission.rule.type");
+          throw new FHIRException("Cannot call addChild on a primitive type Permission.rule.type");
         }
         else if (name.equals("data")) {
           return addData();
@@ -1597,7 +1597,7 @@ public class Permission extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("meaning")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Permission.rule.data.resource.meaning");
+          throw new FHIRException("Cannot call addChild on a primitive type Permission.rule.data.resource.meaning");
         }
         else if (name.equals("reference")) {
           this.reference = new Reference();
@@ -2469,14 +2469,14 @@ public class Permission extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Permission.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Permission.status");
         }
         else if (name.equals("asserter")) {
           this.asserter = new Reference();
           return this.asserter;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Permission.date");
+          throw new FHIRException("Cannot call addChild on a primitive type Permission.date");
         }
         else if (name.equals("validity")) {
           this.validity = new Period();
@@ -2487,7 +2487,7 @@ public class Permission extends DomainResource {
           return this.justification;
         }
         else if (name.equals("combining")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Permission.combining");
+          throw new FHIRException("Cannot call addChild on a primitive type Permission.combining");
         }
         else if (name.equals("rule")) {
           return addRule();

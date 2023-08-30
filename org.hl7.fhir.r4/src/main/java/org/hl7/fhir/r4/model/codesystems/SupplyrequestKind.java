@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,75 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum SupplyrequestKind {
 
-  /**
-   * Supply is stored and requested from central supply.
-   */
-  CENTRAL,
-  /**
-   * Supply is not onsite and must be requested from an outside vendor using a
-   * non-stock requisition.
-   */
-  NONSTOCK,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static SupplyrequestKind fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("central".equals(codeString))
-      return CENTRAL;
-    if ("nonstock".equals(codeString))
-      return NONSTOCK;
-    throw new FHIRException("Unknown SupplyrequestKind code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case CENTRAL:
-      return "central";
-    case NONSTOCK:
-      return "nonstock";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Supply is stored and requested from central supply.
+         */
+        CENTRAL, 
+        /**
+         * Supply is not onsite and must be requested from an outside vendor using a non-stock requisition.
+         */
+        NONSTOCK, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static SupplyrequestKind fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("central".equals(codeString))
+          return CENTRAL;
+        if ("nonstock".equals(codeString))
+          return NONSTOCK;
+        throw new FHIRException("Unknown SupplyrequestKind code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case CENTRAL: return "central";
+            case NONSTOCK: return "nonstock";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/supply-kind";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case CENTRAL: return "Supply is stored and requested from central supply.";
+            case NONSTOCK: return "Supply is not onsite and must be requested from an outside vendor using a non-stock requisition.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case CENTRAL: return "Central Supply";
+            case NONSTOCK: return "Non-Stock";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/supply-kind";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case CENTRAL:
-      return "Supply is stored and requested from central supply.";
-    case NONSTOCK:
-      return "Supply is not onsite and must be requested from an outside vendor using a non-stock requisition.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case CENTRAL:
-      return "Central Supply";
-    case NONSTOCK:
-      return "Non-Stock";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

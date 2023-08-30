@@ -458,7 +458,7 @@ public class NutritionIntake extends DomainResource {
           return this.rate;
         }
         else if (name.equals("notConsumed")) {
-          throw new FHIRException("Cannot call addChild on a singleton property NutritionIntake.consumedItem.notConsumed");
+          throw new FHIRException("Cannot call addChild on a primitive type NutritionIntake.consumedItem.notConsumed");
         }
         else if (name.equals("notConsumedReason")) {
           this.notConsumedReason = new CodeableConcept();
@@ -2315,10 +2315,10 @@ public class NutritionIntake extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("instantiatesCanonical")) {
-          throw new FHIRException("Cannot call addChild on a singleton property NutritionIntake.instantiatesCanonical");
+          throw new FHIRException("Cannot call addChild on a primitive type NutritionIntake.instantiatesCanonical");
         }
         else if (name.equals("instantiatesUri")) {
-          throw new FHIRException("Cannot call addChild on a singleton property NutritionIntake.instantiatesUri");
+          throw new FHIRException("Cannot call addChild on a primitive type NutritionIntake.instantiatesUri");
         }
         else if (name.equals("basedOn")) {
           return addBasedOn();
@@ -2327,7 +2327,7 @@ public class NutritionIntake extends DomainResource {
           return addPartOf();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property NutritionIntake.status");
+          throw new FHIRException("Cannot call addChild on a primitive type NutritionIntake.status");
         }
         else if (name.equals("statusReason")) {
           return addStatusReason();
@@ -2353,7 +2353,7 @@ public class NutritionIntake extends DomainResource {
           return this.occurrence;
         }
         else if (name.equals("recorded")) {
-          throw new FHIRException("Cannot call addChild on a singleton property NutritionIntake.recorded");
+          throw new FHIRException("Cannot call addChild on a primitive type NutritionIntake.recorded");
         }
         else if (name.equals("reportedBoolean")) {
           this.reported = new BooleanType();

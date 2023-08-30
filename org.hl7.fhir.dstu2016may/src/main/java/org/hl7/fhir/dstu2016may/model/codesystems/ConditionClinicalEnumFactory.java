@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ConditionClinicalEnumFactory implements EnumFactory<ConditionClinical> {
@@ -46,7 +50,7 @@ public class ConditionClinicalEnumFactory implements EnumFactory<ConditionClinic
       return ConditionClinical.REMISSION;
     if ("resolved".equals(codeString))
       return ConditionClinical.RESOLVED;
-    throw new IllegalArgumentException("Unknown ConditionClinical code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ConditionClinical code '"+codeString+"'");
   }
 
   public String toCode(ConditionClinical code) {
@@ -61,8 +65,8 @@ public class ConditionClinicalEnumFactory implements EnumFactory<ConditionClinic
     return "?";
   }
 
-  public String toSystem(ConditionClinical code) {
-    return code.getSystem();
-  }
+    public String toSystem(ConditionClinical code) {
+      return code.getSystem();
+      }
 
 }

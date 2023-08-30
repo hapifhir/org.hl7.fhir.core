@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class CardinalityBehaviorEnumFactory implements EnumFactory<CardinalityBehavior> {
@@ -42,7 +46,7 @@ public class CardinalityBehaviorEnumFactory implements EnumFactory<CardinalityBe
       return CardinalityBehavior.SINGLE;
     if ("multiple".equals(codeString))
       return CardinalityBehavior.MULTIPLE;
-    throw new IllegalArgumentException("Unknown CardinalityBehavior code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown CardinalityBehavior code '"+codeString+"'");
   }
 
   public String toCode(CardinalityBehavior code) {
@@ -53,8 +57,8 @@ public class CardinalityBehaviorEnumFactory implements EnumFactory<CardinalityBe
     return "?";
   }
 
-  public String toSystem(CardinalityBehavior code) {
-    return code.getSystem();
-  }
+    public String toSystem(CardinalityBehavior code) {
+      return code.getSystem();
+      }
 
 }

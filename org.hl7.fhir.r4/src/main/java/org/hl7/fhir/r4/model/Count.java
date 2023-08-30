@@ -1,5 +1,7 @@
 package org.hl7.fhir.r4.model;
 
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -29,131 +31,129 @@ package org.hl7.fhir.r4.model;
   
 */
 
+
 // Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
+import java.util.*;
 
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
-
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
- * A measured amount (or an amount that can potentially be measured). Note that
- * measured amounts include amounts that are not precisely quantified, including
- * amounts involving arbitrary units and floating currencies.
+ * A measured amount (or an amount that can potentially be measured). Note that measured amounts include amounts that are not precisely quantified, including amounts involving arbitrary units and floating currencies.
  */
-@DatatypeDef(name = "Count")
+@DatatypeDef(name="Count")
 public class Count extends Quantity implements ICompositeType {
 
-  private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 0L;
 
   /**
    * Constructor
    */
-  public Count() {
-    super();
-  }
-
-  protected void listChildren(List<Property> children) {
-    super.listChildren(children);
-  }
-
-  @Override
-  public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-    switch (_hash) {
-    default:
-      return super.getNamedProperty(_hash, _name, _checkValid);
+    public Count() {
+      super();
     }
 
-  }
+      protected void listChildren(List<Property> children) {
+        super.listChildren(children);
+      }
 
-  @Override
-  public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-    switch (hash) {
-    default:
-      return super.getProperty(hash, name, checkValid);
-    }
+      @Override
+      public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+        switch (_hash) {
+        default: return super.getNamedProperty(_hash, _name, _checkValid);
+        }
 
-  }
+      }
 
-  @Override
-  public Base setProperty(int hash, String name, Base value) throws FHIRException {
-    switch (hash) {
-    default:
-      return super.setProperty(hash, name, value);
-    }
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        default: return super.getProperty(hash, name, checkValid);
+        }
 
-  }
+      }
 
-  @Override
-  public Base setProperty(String name, Base value) throws FHIRException {
-    return super.setProperty(name, value);
-  }
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        default: return super.setProperty(hash, name, value);
+        }
 
-  @Override
-  public Base makeProperty(int hash, String name) throws FHIRException {
-    switch (hash) {
-    default:
-      return super.makeProperty(hash, name);
-    }
+      }
 
-  }
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+          return super.setProperty(name, value);
+      }
 
-  @Override
-  public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-    switch (hash) {
-    default:
-      return super.getTypesForProperty(hash, name);
-    }
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        default: return super.makeProperty(hash, name);
+        }
 
-  }
+      }
 
-  @Override
-  public Base addChild(String name) throws FHIRException {
-    return super.addChild(name);
-  }
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+          return super.addChild(name);
+      }
 
   public String fhirType() {
     return "Count";
 
   }
 
-  public Count copy() {
-    Count dst = new Count();
-    copyValues(dst);
-    return dst;
-  }
+      public Count copy() {
+        Count dst = new Count();
+        copyValues(dst);
+        return dst;
+      }
 
-  public void copyValues(Count dst) {
-    super.copyValues(dst);
-  }
+      public void copyValues(Count dst) {
+        super.copyValues(dst);
+      }
 
-  protected Count typedCopy() {
-    return copy();
-  }
+      protected Count typedCopy() {
+        return copy();
+      }
 
-  @Override
-  public boolean equalsDeep(Base other_) {
-    if (!super.equalsDeep(other_))
-      return false;
-    if (!(other_ instanceof Count))
-      return false;
-    Count o = (Count) other_;
-    return true;
-  }
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof Count))
+          return false;
+        Count o = (Count) other_;
+        return true;
+      }
 
-  @Override
-  public boolean equalsShallow(Base other_) {
-    if (!super.equalsShallow(other_))
-      return false;
-    if (!(other_ instanceof Count))
-      return false;
-    Count o = (Count) other_;
-    return true;
-  }
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof Count))
+          return false;
+        Count o = (Count) other_;
+        return true;
+      }
 
-  public boolean isEmpty() {
-    return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty();
-  }
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty();
+      }
+
 
 }

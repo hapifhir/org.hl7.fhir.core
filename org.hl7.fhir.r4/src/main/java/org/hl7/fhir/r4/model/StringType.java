@@ -29,72 +29,75 @@ package org.hl7.fhir.r4.model;
   
  */
 
+
+
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
+
 /**
- * Primitive type "string" in FHIR - any sequence of unicode characters less
- * than 1MB in length
+ * Primitive type "string" in FHIR - any sequence of unicode characters less than 1MB in length
  */
 @DatatypeDef(name = "string")
 public class StringType extends PrimitiveType<String> {
 
-  private static final long serialVersionUID = 3L;
+	private static final long serialVersionUID = 3L;
 
-  /**
-   * Create a new String
-   */
-  public StringType() {
-    super();
-  }
+	/**
+	 * Create a new String
+	 */
+	public StringType() {
+		super();
+	}
 
-  /**
-   * Create a new String
-   */
-  public StringType(String theValue) {
-    setValue(theValue);
-  }
+	/**
+	 * Create a new String
+	 */
+	public StringType(String theValue) {
+		setValue(theValue);
+	}
 
-  /**
-   * Returns the value of this StringType, or an empty string ("") if the value is
-   * <code>null</code>. This method is provided as a convenience to users of this
-   * API.
-   */
-  public String getValueNotNull() {
-    return StringUtils.defaultString(getValue());
-  }
+	/**
+	 * Returns the value of this StringType, or an empty string ("") if the
+	 * value is <code>null</code>. This method is provided as a convenience to
+	 * users of this API.
+	 */
+	public String getValueNotNull() {
+		return StringUtils.defaultString(getValue());
+	}
 
-  /**
-   * Returns the value of this string, or <code>null</code> if no value is present
-   */
-  @Override
-  public String toString() {
-    return getValue();
-  }
+	/**
+	 * Returns the value of this string, or <code>null</code> if no value
+	 * is present
+	 */
+	@Override
+	public String toString() {
+		return getValue();
+	}
 
-  @Override
-  protected String parse(String theValue) {
-    return theValue;
-  }
+	@Override
+	protected String parse(String theValue) {
+		return theValue;
+	}
 
-  @Override
-  protected String encode(String theValue) {
-    return theValue;
-  }
+	@Override
+	protected String encode(String theValue) {
+		return theValue;
+	}
 
-  @Override
-  public StringType copy() {
-    StringType ret = new StringType(getValue());
+	@Override
+	public StringType copy() {
+		StringType ret = new StringType(getValue());
     copyValues(ret);
     return ret;
-  }
+	}
 
-  public String fhirType() {
-    return "string";
-  }
+	public String fhirType() {
+		return "string";
+	}
 
   public String getTranslation(String l) throws FHIRException {
     for (Extension e : getExtension()) {

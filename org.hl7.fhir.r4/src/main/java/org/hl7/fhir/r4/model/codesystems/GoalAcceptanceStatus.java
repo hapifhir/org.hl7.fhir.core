@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum GoalAcceptanceStatus {
 
-  /**
-   * Stakeholder supports pursuit of the goal.
-   */
-  AGREE,
-  /**
-   * Stakeholder is not in support of the pursuit of the goal.
-   */
-  DISAGREE,
-  /**
-   * Stakeholder has not yet made a decision on whether they support the goal.
-   */
-  PENDING,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static GoalAcceptanceStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("agree".equals(codeString))
-      return AGREE;
-    if ("disagree".equals(codeString))
-      return DISAGREE;
-    if ("pending".equals(codeString))
-      return PENDING;
-    throw new FHIRException("Unknown GoalAcceptanceStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case AGREE:
-      return "agree";
-    case DISAGREE:
-      return "disagree";
-    case PENDING:
-      return "pending";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Stakeholder supports pursuit of the goal.
+         */
+        AGREE, 
+        /**
+         * Stakeholder is not in support of the pursuit of the goal.
+         */
+        DISAGREE, 
+        /**
+         * Stakeholder has not yet made a decision on whether they support the goal.
+         */
+        PENDING, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static GoalAcceptanceStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("agree".equals(codeString))
+          return AGREE;
+        if ("disagree".equals(codeString))
+          return DISAGREE;
+        if ("pending".equals(codeString))
+          return PENDING;
+        throw new FHIRException("Unknown GoalAcceptanceStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case AGREE: return "agree";
+            case DISAGREE: return "disagree";
+            case PENDING: return "pending";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/goal-acceptance-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case AGREE: return "Stakeholder supports pursuit of the goal.";
+            case DISAGREE: return "Stakeholder is not in support of the pursuit of the goal.";
+            case PENDING: return "Stakeholder has not yet made a decision on whether they support the goal.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case AGREE: return "Agree";
+            case DISAGREE: return "Disagree";
+            case PENDING: return "Pending";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/goal-acceptance-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case AGREE:
-      return "Stakeholder supports pursuit of the goal.";
-    case DISAGREE:
-      return "Stakeholder is not in support of the pursuit of the goal.";
-    case PENDING:
-      return "Stakeholder has not yet made a decision on whether they support the goal.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case AGREE:
-      return "Agree";
-    case DISAGREE:
-      return "Disagree";
-    case PENDING:
-      return "Pending";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

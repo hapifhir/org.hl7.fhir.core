@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class DiagnosisRoleEnumFactory implements EnumFactory<DiagnosisRole> {
@@ -52,7 +56,7 @@ public class DiagnosisRoleEnumFactory implements EnumFactory<DiagnosisRole> {
       return DiagnosisRole.POSTOP;
     if ("billing".equals(codeString))
       return DiagnosisRole.BILLING;
-    throw new IllegalArgumentException("Unknown DiagnosisRole code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown DiagnosisRole code '"+codeString+"'");
   }
 
   public String toCode(DiagnosisRole code) {
@@ -73,8 +77,8 @@ public class DiagnosisRoleEnumFactory implements EnumFactory<DiagnosisRole> {
     return "?";
   }
 
-  public String toSystem(DiagnosisRole code) {
-    return code.getSystem();
-  }
+    public String toSystem(DiagnosisRole code) {
+      return code.getSystem();
+      }
 
 }

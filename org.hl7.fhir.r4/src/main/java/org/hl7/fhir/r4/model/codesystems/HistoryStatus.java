@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,100 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HistoryStatus {
 
-  /**
-   * Some health information is known and captured, but not complete - see notes
-   * for details.
-   */
-  PARTIAL,
-  /**
-   * All available related health information is captured as of the date (and
-   * possibly time) when the family member history was taken.
-   */
-  COMPLETED,
-  /**
-   * This instance should not have been part of this patient's medical record.
-   */
-  ENTEREDINERROR,
-  /**
-   * Health information for this family member is unavailable/unknown.
-   */
-  HEALTHUNKNOWN,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static HistoryStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("partial".equals(codeString))
-      return PARTIAL;
-    if ("completed".equals(codeString))
-      return COMPLETED;
-    if ("entered-in-error".equals(codeString))
-      return ENTEREDINERROR;
-    if ("health-unknown".equals(codeString))
-      return HEALTHUNKNOWN;
-    throw new FHIRException("Unknown HistoryStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PARTIAL:
-      return "partial";
-    case COMPLETED:
-      return "completed";
-    case ENTEREDINERROR:
-      return "entered-in-error";
-    case HEALTHUNKNOWN:
-      return "health-unknown";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Some health information is known and captured, but not complete - see notes for details.
+         */
+        PARTIAL, 
+        /**
+         * All available related health information is captured as of the date (and possibly time) when the family member history was taken.
+         */
+        COMPLETED, 
+        /**
+         * This instance should not have been part of this patient's medical record.
+         */
+        ENTEREDINERROR, 
+        /**
+         * Health information for this family member is unavailable/unknown.
+         */
+        HEALTHUNKNOWN, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static HistoryStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("partial".equals(codeString))
+          return PARTIAL;
+        if ("completed".equals(codeString))
+          return COMPLETED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        if ("health-unknown".equals(codeString))
+          return HEALTHUNKNOWN;
+        throw new FHIRException("Unknown HistoryStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PARTIAL: return "partial";
+            case COMPLETED: return "completed";
+            case ENTEREDINERROR: return "entered-in-error";
+            case HEALTHUNKNOWN: return "health-unknown";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/history-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PARTIAL: return "Some health information is known and captured, but not complete - see notes for details.";
+            case COMPLETED: return "All available related health information is captured as of the date (and possibly time) when the family member history was taken.";
+            case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
+            case HEALTHUNKNOWN: return "Health information for this family member is unavailable/unknown.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PARTIAL: return "Partial";
+            case COMPLETED: return "Completed";
+            case ENTEREDINERROR: return "Entered in Error";
+            case HEALTHUNKNOWN: return "Health Unknown";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/history-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PARTIAL:
-      return "Some health information is known and captured, but not complete - see notes for details.";
-    case COMPLETED:
-      return "All available related health information is captured as of the date (and possibly time) when the family member history was taken.";
-    case ENTEREDINERROR:
-      return "This instance should not have been part of this patient's medical record.";
-    case HEALTHUNKNOWN:
-      return "Health information for this family member is unavailable/unknown.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PARTIAL:
-      return "Partial";
-    case COMPLETED:
-      return "Completed";
-    case ENTEREDINERROR:
-      return "Entered in Error";
-    case HEALTHUNKNOWN:
-      return "Health Unknown";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

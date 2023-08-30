@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,89 +34,68 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum Referralcategory {
 
-  /**
-   * The referral request represents a suggestion or recommendation that a
-   * referral be made.
-   */
-  PROPOSAL,
-  /**
-   * The referral request represents an intention by the author to make a
-   * referral, but no actual referral has yet been made/authorized.
-   */
-  PLAN,
-  /**
-   * This is an actual referral request which, when active, will have the
-   * authorizations needed to allow it to be actioned.
-   */
-  REQUEST,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static Referralcategory fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("proposal".equals(codeString))
-      return PROPOSAL;
-    if ("plan".equals(codeString))
-      return PLAN;
-    if ("request".equals(codeString))
-      return REQUEST;
-    throw new FHIRException("Unknown Referralcategory code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PROPOSAL:
-      return "proposal";
-    case PLAN:
-      return "plan";
-    case REQUEST:
-      return "request";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The referral request represents a suggestion or recommendation that a referral be made.
+         */
+        PROPOSAL, 
+        /**
+         * The referral request represents an intention by the author to make a referral, but no actual referral has yet been made/authorized.
+         */
+        PLAN, 
+        /**
+         * This is an actual referral request which, when active, will have the authorizations needed to allow it to be actioned.
+         */
+        REQUEST, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static Referralcategory fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("proposal".equals(codeString))
+          return PROPOSAL;
+        if ("plan".equals(codeString))
+          return PLAN;
+        if ("request".equals(codeString))
+          return REQUEST;
+        throw new FHIRException("Unknown Referralcategory code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PROPOSAL: return "proposal";
+            case PLAN: return "plan";
+            case REQUEST: return "request";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/referralcategory";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PROPOSAL: return "The referral request represents a suggestion or recommendation that a referral be made.";
+            case PLAN: return "The referral request represents an intention by the author to make a referral, but no actual referral has yet been made/authorized.";
+            case REQUEST: return "This is an actual referral request which, when active, will have the authorizations needed to allow it to be actioned.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PROPOSAL: return "Proposal";
+            case PLAN: return "Plan";
+            case REQUEST: return "Request";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/referralcategory";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PROPOSAL:
-      return "The referral request represents a suggestion or recommendation that a referral be made.";
-    case PLAN:
-      return "The referral request represents an intention by the author to make a referral, but no actual referral has yet been made/authorized.";
-    case REQUEST:
-      return "This is an actual referral request which, when active, will have the authorizations needed to allow it to be actioned.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PROPOSAL:
-      return "Proposal";
-    case PLAN:
-      return "Plan";
-    case REQUEST:
-      return "Request";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

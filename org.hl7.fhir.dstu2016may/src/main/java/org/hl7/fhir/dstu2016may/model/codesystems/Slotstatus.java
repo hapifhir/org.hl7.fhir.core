@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,101 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum Slotstatus {
 
-  /**
-   * Indicates that the time interval is busy because one or more events have been
-   * scheduled for that interval.
-   */
-  BUSY,
-  /**
-   * Indicates that the time interval is free for scheduling.
-   */
-  FREE,
-  /**
-   * Indicates that the time interval is busy and that the interval can not be
-   * scheduled.
-   */
-  BUSYUNAVAILABLE,
-  /**
-   * Indicates that the time interval is busy because one or more events have been
-   * tentatively scheduled for that interval.
-   */
-  BUSYTENTATIVE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static Slotstatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("busy".equals(codeString))
-      return BUSY;
-    if ("free".equals(codeString))
-      return FREE;
-    if ("busy-unavailable".equals(codeString))
-      return BUSYUNAVAILABLE;
-    if ("busy-tentative".equals(codeString))
-      return BUSYTENTATIVE;
-    throw new FHIRException("Unknown Slotstatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case BUSY:
-      return "busy";
-    case FREE:
-      return "free";
-    case BUSYUNAVAILABLE:
-      return "busy-unavailable";
-    case BUSYTENTATIVE:
-      return "busy-tentative";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Indicates that the time interval is busy because one  or more events have been scheduled for that interval.
+         */
+        BUSY, 
+        /**
+         * Indicates that the time interval is free for scheduling.
+         */
+        FREE, 
+        /**
+         * Indicates that the time interval is busy and that the interval can not be scheduled.
+         */
+        BUSYUNAVAILABLE, 
+        /**
+         * Indicates that the time interval is busy because one or more events have been tentatively scheduled for that interval.
+         */
+        BUSYTENTATIVE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static Slotstatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("busy".equals(codeString))
+          return BUSY;
+        if ("free".equals(codeString))
+          return FREE;
+        if ("busy-unavailable".equals(codeString))
+          return BUSYUNAVAILABLE;
+        if ("busy-tentative".equals(codeString))
+          return BUSYTENTATIVE;
+        throw new FHIRException("Unknown Slotstatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case BUSY: return "busy";
+            case FREE: return "free";
+            case BUSYUNAVAILABLE: return "busy-unavailable";
+            case BUSYTENTATIVE: return "busy-tentative";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/slotstatus";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case BUSY: return "Indicates that the time interval is busy because one  or more events have been scheduled for that interval.";
+            case FREE: return "Indicates that the time interval is free for scheduling.";
+            case BUSYUNAVAILABLE: return "Indicates that the time interval is busy and that the interval can not be scheduled.";
+            case BUSYTENTATIVE: return "Indicates that the time interval is busy because one or more events have been tentatively scheduled for that interval.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case BUSY: return "Busy";
+            case FREE: return "Free";
+            case BUSYUNAVAILABLE: return "Busy (Unavailable)";
+            case BUSYTENTATIVE: return "Busy (Tentative)";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/slotstatus";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case BUSY:
-      return "Indicates that the time interval is busy because one  or more events have been scheduled for that interval.";
-    case FREE:
-      return "Indicates that the time interval is free for scheduling.";
-    case BUSYUNAVAILABLE:
-      return "Indicates that the time interval is busy and that the interval can not be scheduled.";
-    case BUSYTENTATIVE:
-      return "Indicates that the time interval is busy because one or more events have been tentatively scheduled for that interval.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case BUSY:
-      return "Busy";
-    case FREE:
-      return "Free";
-    case BUSYUNAVAILABLE:
-      return "Busy (Unavailable)";
-    case BUSYTENTATIVE:
-      return "Busy (Tentative)";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

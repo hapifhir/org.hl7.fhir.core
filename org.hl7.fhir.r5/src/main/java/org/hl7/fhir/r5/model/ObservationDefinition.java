@@ -1181,7 +1181,7 @@ public class ObservationDefinition extends DomainResource {
           return addAppliesTo();
         }
         else if (name.equals("gender")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.qualifiedValue.gender");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedValue.gender");
         }
         else if (name.equals("age")) {
           this.age = new Range();
@@ -1192,26 +1192,26 @@ public class ObservationDefinition extends DomainResource {
           return this.gestationalAge;
         }
         else if (name.equals("condition")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.qualifiedValue.condition");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedValue.condition");
         }
         else if (name.equals("rangeCategory")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.qualifiedValue.rangeCategory");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedValue.rangeCategory");
         }
         else if (name.equals("range")) {
           this.range = new Range();
           return this.range;
         }
         else if (name.equals("validCodedValueSet")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.qualifiedValue.validCodedValueSet");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedValue.validCodedValueSet");
         }
         else if (name.equals("normalCodedValueSet")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.qualifiedValue.normalCodedValueSet");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedValue.normalCodedValueSet");
         }
         else if (name.equals("abnormalCodedValueSet")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.qualifiedValue.abnormalCodedValueSet");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedValue.abnormalCodedValueSet");
         }
         else if (name.equals("criticalCodedValueSet")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.qualifiedValue.criticalCodedValueSet");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.qualifiedValue.criticalCodedValueSet");
         }
         else
           return super.addChild(name);
@@ -1624,7 +1624,7 @@ public class ObservationDefinition extends DomainResource {
           return this.code;
         }
         else if (name.equals("permittedDataType")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.component.permittedDataType");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.component.permittedDataType");
         }
         else if (name.equals("permittedUnit")) {
           return addPermittedUnit();
@@ -4147,14 +4147,14 @@ public class ObservationDefinition extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.url");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.url");
         }
         else if (name.equals("identifier")) {
           this.identifier = new Identifier();
           return this.identifier;
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.version");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.version");
         }
         else if (name.equals("versionAlgorithmString")) {
           this.versionAlgorithm = new StringType();
@@ -4165,28 +4165,28 @@ public class ObservationDefinition extends DomainResource {
           return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.name");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.title");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.title");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.status");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.experimental");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.date");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.publisher");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -4195,29 +4195,29 @@ public class ObservationDefinition extends DomainResource {
           return addJurisdiction();
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.purpose");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.purpose");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.copyright");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.copyright");
         }
         else if (name.equals("copyrightLabel")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.copyrightLabel");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.copyrightLabel");
         }
         else if (name.equals("approvalDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.approvalDate");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.approvalDate");
         }
         else if (name.equals("lastReviewDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.lastReviewDate");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.lastReviewDate");
         }
         else if (name.equals("effectivePeriod")) {
           this.effectivePeriod = new Period();
           return this.effectivePeriod;
         }
         else if (name.equals("derivedFromCanonical")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.derivedFromCanonical");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.derivedFromCanonical");
         }
         else if (name.equals("derivedFromUri")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.derivedFromUri");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.derivedFromUri");
         }
         else if (name.equals("subject")) {
           return addSubject();
@@ -4234,10 +4234,10 @@ public class ObservationDefinition extends DomainResource {
           return this.code;
         }
         else if (name.equals("permittedDataType")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.permittedDataType");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.permittedDataType");
         }
         else if (name.equals("multipleResultsAllowed")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.multipleResultsAllowed");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.multipleResultsAllowed");
         }
         else if (name.equals("bodySite")) {
           this.bodySite = new CodeableConcept();
@@ -4254,7 +4254,7 @@ public class ObservationDefinition extends DomainResource {
           return addDevice();
         }
         else if (name.equals("preferredReportName")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ObservationDefinition.preferredReportName");
+          throw new FHIRException("Cannot call addChild on a primitive type ObservationDefinition.preferredReportName");
         }
         else if (name.equals("permittedUnit")) {
           return addPermittedUnit();

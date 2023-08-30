@@ -2045,13 +2045,13 @@ public class ChargeItem extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("definitionUri")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.definitionUri");
+          throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.definitionUri");
         }
         else if (name.equals("definitionCanonical")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.definitionCanonical");
+          throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.definitionCanonical");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.status");
+          throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.status");
         }
         else if (name.equals("partOf")) {
           return addPartOf();
@@ -2119,7 +2119,7 @@ public class ChargeItem extends DomainResource {
           return this.enterer;
         }
         else if (name.equals("enteredDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ChargeItem.enteredDate");
+          throw new FHIRException("Cannot call addChild on a primitive type ChargeItem.enteredDate");
         }
         else if (name.equals("reason")) {
           return addReason();

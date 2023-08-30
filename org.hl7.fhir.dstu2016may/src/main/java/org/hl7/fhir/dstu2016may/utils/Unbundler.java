@@ -29,6 +29,8 @@ package org.hl7.fhir.dstu2016may.utils;
   
  */
 
+
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -60,7 +62,7 @@ public class Unbundler {
             r.setId(tail((ValueSet) r));
         }
         if (!StringUtils.isBlank(r.getId())) {
-          String tgt = Utilities.path(folder, r.fhirType() + "-" + r.getId() + ".json");
+          String tgt = Utilities.path(folder, r.fhirType()+"-"+r.getId()+".json");
           new JsonParser().compose(new FileOutputStream(tgt), r);
         }
       }
@@ -68,7 +70,7 @@ public class Unbundler {
   }
 
   private static String tail(ValueSet r) {
-    return r.getUrl().contains("/") ? r.getUrl().substring(r.getUrl().lastIndexOf("/") + 1) : null;
+    return r.getUrl().contains("/") ? r.getUrl().substring(r.getUrl().lastIndexOf("/")+1) : null;
   }
 
 }

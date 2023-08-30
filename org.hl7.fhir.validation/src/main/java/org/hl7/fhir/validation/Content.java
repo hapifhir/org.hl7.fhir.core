@@ -1,19 +1,19 @@
 package org.hl7.fhir.validation;
 
 import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.utilities.ByteProvider;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 
 public class Content {
-  private ByteProvider focus = null;
+  private byte[] focus = null;
   private Manager.FhirFormat cntType = null;
 
-  public ByteProvider getFocus() {
+  public byte[] getFocus() {
     return focus;
   }
   public Manager.FhirFormat getCntType() {
     return cntType;
   }
-  public void setFocus(ByteProvider focus) {
+  public void setFocus(byte[] focus) {
     this.focus = focus;
   }
   public void setCntType(Manager.FhirFormat cntType) {

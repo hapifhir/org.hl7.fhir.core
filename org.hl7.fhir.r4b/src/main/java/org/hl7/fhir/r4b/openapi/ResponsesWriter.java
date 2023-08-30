@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.openapi;
   
  */
 
+
+
 import com.google.gson.JsonObject;
 
 public class ResponsesWriter extends BaseWriter {
@@ -40,9 +42,9 @@ public class ResponsesWriter extends BaseWriter {
   public ResponseObjectWriter defaultResponse() {
     return new ResponseObjectWriter(ensureObject("default"));
   }
-
+  
   public ResponseObjectWriter httpResponse(String code) {
     return new ResponseObjectWriter(ensureMapObject(code));
   }
-
+  
 }

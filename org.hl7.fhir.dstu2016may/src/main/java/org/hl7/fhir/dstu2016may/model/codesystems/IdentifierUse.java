@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,101 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum IdentifierUse {
 
-  /**
-   * The identifier recommended for display and use in real-world interactions.
-   */
-  USUAL,
-  /**
-   * The identifier considered to be most trusted for the identification of this
-   * item.
-   */
-  OFFICIAL,
-  /**
-   * A temporary identifier.
-   */
-  TEMP,
-  /**
-   * An identifier that was assigned in secondary use - it serves to identify the
-   * object in a relative context, but cannot be consistently assigned to the same
-   * object again in a different context.
-   */
-  SECONDARY,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static IdentifierUse fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("usual".equals(codeString))
-      return USUAL;
-    if ("official".equals(codeString))
-      return OFFICIAL;
-    if ("temp".equals(codeString))
-      return TEMP;
-    if ("secondary".equals(codeString))
-      return SECONDARY;
-    throw new FHIRException("Unknown IdentifierUse code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case USUAL:
-      return "usual";
-    case OFFICIAL:
-      return "official";
-    case TEMP:
-      return "temp";
-    case SECONDARY:
-      return "secondary";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The identifier recommended for display and use in real-world interactions.
+         */
+        USUAL, 
+        /**
+         * The identifier considered to be most trusted for the identification of this item.
+         */
+        OFFICIAL, 
+        /**
+         * A temporary identifier.
+         */
+        TEMP, 
+        /**
+         * An identifier that was assigned in secondary use - it serves to identify the object in a relative context, but cannot be consistently assigned to the same object again in a different context.
+         */
+        SECONDARY, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static IdentifierUse fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("usual".equals(codeString))
+          return USUAL;
+        if ("official".equals(codeString))
+          return OFFICIAL;
+        if ("temp".equals(codeString))
+          return TEMP;
+        if ("secondary".equals(codeString))
+          return SECONDARY;
+        throw new FHIRException("Unknown IdentifierUse code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case USUAL: return "usual";
+            case OFFICIAL: return "official";
+            case TEMP: return "temp";
+            case SECONDARY: return "secondary";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/identifier-use";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case USUAL: return "The identifier recommended for display and use in real-world interactions.";
+            case OFFICIAL: return "The identifier considered to be most trusted for the identification of this item.";
+            case TEMP: return "A temporary identifier.";
+            case SECONDARY: return "An identifier that was assigned in secondary use - it serves to identify the object in a relative context, but cannot be consistently assigned to the same object again in a different context.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case USUAL: return "Usual";
+            case OFFICIAL: return "Official";
+            case TEMP: return "Temp";
+            case SECONDARY: return "Secondary";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/identifier-use";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case USUAL:
-      return "The identifier recommended for display and use in real-world interactions.";
-    case OFFICIAL:
-      return "The identifier considered to be most trusted for the identification of this item.";
-    case TEMP:
-      return "A temporary identifier.";
-    case SECONDARY:
-      return "An identifier that was assigned in secondary use - it serves to identify the object in a relative context, but cannot be consistently assigned to the same object again in a different context.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case USUAL:
-      return "Usual";
-    case OFFICIAL:
-      return "Official";
-    case TEMP:
-      return "Temp";
-    case SECONDARY:
-      return "Secondary";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

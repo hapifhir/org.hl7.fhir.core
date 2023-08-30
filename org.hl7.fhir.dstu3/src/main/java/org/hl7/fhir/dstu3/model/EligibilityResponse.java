@@ -1062,13 +1062,13 @@ public class EligibilityResponse extends DomainResource {
           return this.subCategory;
         }
         else if (name.equals("excluded")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EligibilityResponse.excluded");
+          throw new FHIRException("Cannot call addChild on a primitive type EligibilityResponse.excluded");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EligibilityResponse.name");
+          throw new FHIRException("Cannot call addChild on a primitive type EligibilityResponse.name");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EligibilityResponse.description");
+          throw new FHIRException("Cannot call addChild on a primitive type EligibilityResponse.description");
         }
         else if (name.equals("network")) {
           this.network = new CodeableConcept();
@@ -2534,10 +2534,10 @@ public class EligibilityResponse extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EligibilityResponse.status");
+          throw new FHIRException("Cannot call addChild on a primitive type EligibilityResponse.status");
         }
         else if (name.equals("created")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EligibilityResponse.created");
+          throw new FHIRException("Cannot call addChild on a primitive type EligibilityResponse.created");
         }
         else if (name.equals("requestProvider")) {
           this.requestProvider = new Reference();
@@ -2556,14 +2556,14 @@ public class EligibilityResponse extends DomainResource {
           return this.outcome;
         }
         else if (name.equals("disposition")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EligibilityResponse.disposition");
+          throw new FHIRException("Cannot call addChild on a primitive type EligibilityResponse.disposition");
         }
         else if (name.equals("insurer")) {
           this.insurer = new Reference();
           return this.insurer;
         }
         else if (name.equals("inforce")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EligibilityResponse.inforce");
+          throw new FHIRException("Cannot call addChild on a primitive type EligibilityResponse.inforce");
         }
         else if (name.equals("insurance")) {
           return addInsurance();

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class NoteTypeEnumFactory implements EnumFactory<NoteType> {
@@ -44,7 +48,7 @@ public class NoteTypeEnumFactory implements EnumFactory<NoteType> {
       return NoteType.PRINT;
     if ("printoper".equals(codeString))
       return NoteType.PRINTOPER;
-    throw new IllegalArgumentException("Unknown NoteType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown NoteType code '"+codeString+"'");
   }
 
   public String toCode(NoteType code) {
@@ -57,8 +61,8 @@ public class NoteTypeEnumFactory implements EnumFactory<NoteType> {
     return "?";
   }
 
-  public String toSystem(NoteType code) {
-    return code.getSystem();
-  }
+    public String toSystem(NoteType code) {
+      return code.getSystem();
+      }
 
 }

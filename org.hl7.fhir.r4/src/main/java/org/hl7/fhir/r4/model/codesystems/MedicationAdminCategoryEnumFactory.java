@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class MedicationAdminCategoryEnumFactory implements EnumFactory<MedicationAdminCategory> {
@@ -44,7 +48,7 @@ public class MedicationAdminCategoryEnumFactory implements EnumFactory<Medicatio
       return MedicationAdminCategory.OUTPATIENT;
     if ("community".equals(codeString))
       return MedicationAdminCategory.COMMUNITY;
-    throw new IllegalArgumentException("Unknown MedicationAdminCategory code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown MedicationAdminCategory code '"+codeString+"'");
   }
 
   public String toCode(MedicationAdminCategory code) {
@@ -57,8 +61,8 @@ public class MedicationAdminCategoryEnumFactory implements EnumFactory<Medicatio
     return "?";
   }
 
-  public String toSystem(MedicationAdminCategory code) {
-    return code.getSystem();
-  }
+    public String toSystem(MedicationAdminCategory code) {
+      return code.getSystem();
+      }
 
 }

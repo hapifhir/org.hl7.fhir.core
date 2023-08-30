@@ -1035,40 +1035,40 @@ public class Coverage extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("group")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.group");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.group");
         }
         else if (name.equals("groupDisplay")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.groupDisplay");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.groupDisplay");
         }
         else if (name.equals("subGroup")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.subGroup");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.subGroup");
         }
         else if (name.equals("subGroupDisplay")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.subGroupDisplay");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.subGroupDisplay");
         }
         else if (name.equals("plan")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.plan");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.plan");
         }
         else if (name.equals("planDisplay")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.planDisplay");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.planDisplay");
         }
         else if (name.equals("subPlan")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.subPlan");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.subPlan");
         }
         else if (name.equals("subPlanDisplay")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.subPlanDisplay");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.subPlanDisplay");
         }
         else if (name.equals("class")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.class");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.class");
         }
         else if (name.equals("classDisplay")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.classDisplay");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.classDisplay");
         }
         else if (name.equals("subClass")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.subClass");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.subClass");
         }
         else if (name.equals("subClassDisplay")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.subClassDisplay");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.subClassDisplay");
         }
         else
           return super.addChild(name);
@@ -2200,7 +2200,7 @@ public class Coverage extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.status");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -2215,7 +2215,7 @@ public class Coverage extends DomainResource {
           return this.subscriber;
         }
         else if (name.equals("subscriberId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.subscriberId");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.subscriberId");
         }
         else if (name.equals("beneficiary")) {
           this.beneficiary = new Reference();
@@ -2237,16 +2237,16 @@ public class Coverage extends DomainResource {
           return this.grouping;
         }
         else if (name.equals("dependent")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.dependent");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.dependent");
         }
         else if (name.equals("sequence")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.sequence");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.sequence");
         }
         else if (name.equals("order")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.order");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.order");
         }
         else if (name.equals("network")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Coverage.network");
+          throw new FHIRException("Cannot call addChild on a primitive type Coverage.network");
         }
         else if (name.equals("contract")) {
           return addContract();

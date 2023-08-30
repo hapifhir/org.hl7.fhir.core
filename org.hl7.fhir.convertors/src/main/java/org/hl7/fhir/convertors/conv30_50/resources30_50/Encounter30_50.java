@@ -7,6 +7,7 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Coding
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Duration30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Period30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.PositiveInt30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Encounter.ReasonComponent;

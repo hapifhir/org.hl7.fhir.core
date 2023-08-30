@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,122 +34,95 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HttpVerb {
 
-  /**
-   * HTTP GET Command.
-   */
-  GET,
-  /**
-   * HTTP HEAD Command.
-   */
-  HEAD,
-  /**
-   * HTTP POST Command.
-   */
-  POST,
-  /**
-   * HTTP PUT Command.
-   */
-  PUT,
-  /**
-   * HTTP DELETE Command.
-   */
-  DELETE,
-  /**
-   * HTTP PATCH Command.
-   */
-  PATCH,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static HttpVerb fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("GET".equals(codeString))
-      return GET;
-    if ("HEAD".equals(codeString))
-      return HEAD;
-    if ("POST".equals(codeString))
-      return POST;
-    if ("PUT".equals(codeString))
-      return PUT;
-    if ("DELETE".equals(codeString))
-      return DELETE;
-    if ("PATCH".equals(codeString))
-      return PATCH;
-    throw new FHIRException("Unknown HttpVerb code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case GET:
-      return "GET";
-    case HEAD:
-      return "HEAD";
-    case POST:
-      return "POST";
-    case PUT:
-      return "PUT";
-    case DELETE:
-      return "DELETE";
-    case PATCH:
-      return "PATCH";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * HTTP GET Command.
+         */
+        GET, 
+        /**
+         * HTTP HEAD Command.
+         */
+        HEAD, 
+        /**
+         * HTTP POST Command.
+         */
+        POST, 
+        /**
+         * HTTP PUT Command.
+         */
+        PUT, 
+        /**
+         * HTTP DELETE Command.
+         */
+        DELETE, 
+        /**
+         * HTTP PATCH Command.
+         */
+        PATCH, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static HttpVerb fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("GET".equals(codeString))
+          return GET;
+        if ("HEAD".equals(codeString))
+          return HEAD;
+        if ("POST".equals(codeString))
+          return POST;
+        if ("PUT".equals(codeString))
+          return PUT;
+        if ("DELETE".equals(codeString))
+          return DELETE;
+        if ("PATCH".equals(codeString))
+          return PATCH;
+        throw new FHIRException("Unknown HttpVerb code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case GET: return "GET";
+            case HEAD: return "HEAD";
+            case POST: return "POST";
+            case PUT: return "PUT";
+            case DELETE: return "DELETE";
+            case PATCH: return "PATCH";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/http-verb";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case GET: return "HTTP GET Command.";
+            case HEAD: return "HTTP HEAD Command.";
+            case POST: return "HTTP POST Command.";
+            case PUT: return "HTTP PUT Command.";
+            case DELETE: return "HTTP DELETE Command.";
+            case PATCH: return "HTTP PATCH Command.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case GET: return "GET";
+            case HEAD: return "HEAD";
+            case POST: return "POST";
+            case PUT: return "PUT";
+            case DELETE: return "DELETE";
+            case PATCH: return "PATCH";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/http-verb";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case GET:
-      return "HTTP GET Command.";
-    case HEAD:
-      return "HTTP HEAD Command.";
-    case POST:
-      return "HTTP POST Command.";
-    case PUT:
-      return "HTTP PUT Command.";
-    case DELETE:
-      return "HTTP DELETE Command.";
-    case PATCH:
-      return "HTTP PATCH Command.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case GET:
-      return "GET";
-    case HEAD:
-      return "HEAD";
-    case POST:
-      return "POST";
-    case PUT:
-      return "PUT";
-    case DELETE:
-      return "DELETE";
-    case PATCH:
-      return "PATCH";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

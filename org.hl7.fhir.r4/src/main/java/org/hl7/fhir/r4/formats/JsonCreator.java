@@ -29,6 +29,8 @@ package org.hl7.fhir.r4.formats;
   
  */
 
+
+
 import java.io.IOException;
 import java.math.BigDecimal;
 
@@ -55,7 +57,6 @@ public interface JsonCreator {
   void value(Boolean value) throws IOException;
 
   void value(BigDecimal value) throws IOException;
-
   void valueNum(String value) throws IOException; // allow full control of representation
 
   void value(Integer value) throws IOException;

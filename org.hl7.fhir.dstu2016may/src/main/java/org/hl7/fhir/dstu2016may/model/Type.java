@@ -29,21 +29,22 @@ package org.hl7.fhir.dstu2016may.model;
   
  */
 
+
+
 import org.hl7.fhir.instance.model.api.IBaseDatatype;
 
 import ca.uhn.fhir.model.api.IElement;
 
 /**
- * An element that is a type. Used when the element type in FHIR is a choice of
- * more than one data type
+ * An element that is a type. Used when the element type in FHIR is a choice of more than one data type
  */
 public abstract class Type extends Element implements IBaseDatatype, IElement {
 
   private static final long serialVersionUID = 4623040030733049991L;
 
-  public Type copy() {
-    return typedCopy();
-  }
+	public Type copy() {
+		return typedCopy();
+	}
 
-  protected abstract Type typedCopy();
+	protected abstract Type typedCopy();
 }

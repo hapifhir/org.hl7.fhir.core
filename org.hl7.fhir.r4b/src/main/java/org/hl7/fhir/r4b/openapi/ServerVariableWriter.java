@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.openapi;
   
  */
 
+
+
 import java.util.List;
 
 import com.google.gson.JsonArray;
@@ -45,17 +47,17 @@ public class ServerVariableWriter extends BaseWriter {
     JsonArray enums = forceArray("enum");
     for (String s : values)
       enums.add(new JsonPrimitive(s));
-    return this;
+    return this;            
   }
-
+  
   public ServerVariableWriter defaultValue(String value) {
     object.addProperty("default", value);
-    return this;
+    return this;            
   }
-
+  
   public ServerVariableWriter description(String value) {
     object.addProperty("description", value);
-    return this;
+    return this;            
   }
-
+  
 }

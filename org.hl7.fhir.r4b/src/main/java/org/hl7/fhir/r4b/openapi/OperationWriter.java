@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.openapi;
   
  */
 
+
+
 import com.google.gson.JsonObject;
 
 public class OperationWriter extends BaseWriter {
@@ -36,35 +38,37 @@ public class OperationWriter extends BaseWriter {
   public OperationWriter(JsonObject object) {
     super(object);
   }
-
+  
   public OperationWriter summary(String value) {
     object.addProperty("summary", value);
-    return this;
+    return this;            
   }
-
+  
   public OperationWriter description(String value) {
     object.addProperty("description", value);
-    return this;
+    return this;            
   }
+  
 
   public ExternalDocsWriter variable(String name) {
-    return new ExternalDocsWriter(ensureObject("externalDocs"));
+    return new ExternalDocsWriter(ensureObject("externalDocs"));            
   }
-
+  
   public OperationWriter operationId(String value) {
     object.addProperty("operationId", value);
-    return this;
+    return this;            
   }
-
+  
   public OperationWriter deprecated(boolean value) {
     object.addProperty("deprecated", value);
-    return this;
+    return this;            
   }
+  
 
   public ServerWriter server(String url) {
-    return new ServerWriter(ensureArrayObject("servers", "url", url));
+    return new ServerWriter(ensureArrayObject("servers", "url", url)); 
   }
-
+  
   public ParameterWriter parameter(String name) {
     JsonObject obj = forceArrayObject("parameters");
     obj.addProperty("name", name);
@@ -75,6 +79,7 @@ public class OperationWriter extends BaseWriter {
     forceArrayObject("parameters").addProperty("$ref", url);
     return this;
   }
+  
 
   public RequestBodyWriter request() {
     return new RequestBodyWriter(ensureObject("requestBody"));

@@ -8,7 +8,6 @@ import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.ElementVisitor;
-import org.hl7.fhir.r5.utils.ElementVisitor.ElementVisitorInstruction;
 import org.hl7.fhir.r5.utils.ElementVisitor.IElementVisitor;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -54,29 +53,23 @@ public class TxTesterScrubbers {
     }
     
     @Override
-    public ElementVisitorInstruction visit(Object context, Resource resource) {
+    public void visit(Resource resource) {
       if (resource instanceof DomainResource) {
         DomainResource dr = (DomainResource) resource;
         dr.getExtension().removeIf(ext -> !isManagedExtension(ext));
       } 
-      return ElementVisitorInstruction.VISIT_CHILDREN;
     }
 
     @Override
-    public ElementVisitorInstruction visit(Object context, Element element) {
+    public void visit(Element element) {
       element.getExtension().removeIf(ext -> !isManagedExtension(ext));
-      if (element.fhirType().equals("ValueSet.compose")) {
-        return ElementVisitorInstruction.NO_VISIT_CHILDREN;
-      } else {
-        return ElementVisitorInstruction.VISIT_CHILDREN;
-      }
     }
   }
   
   public static void scrubDR(DomainResource dr, boolean tight) {
     dr.setText(null);
     dr.setMeta(null);  
-    new ElementVisitor(new TxTesterScrubberVisitor(tight)).visit(null, dr);
+    new ElementVisitor(new TxTesterScrubberVisitor(tight)).visit(dr);
   }
 
   public static void scrubVS(ValueSet vs, boolean tight) {

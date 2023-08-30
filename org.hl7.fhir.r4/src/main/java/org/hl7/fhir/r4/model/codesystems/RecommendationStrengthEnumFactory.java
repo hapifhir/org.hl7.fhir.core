@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class RecommendationStrengthEnumFactory implements EnumFactory<RecommendationStrength> {
@@ -42,7 +46,7 @@ public class RecommendationStrengthEnumFactory implements EnumFactory<Recommenda
       return RecommendationStrength.STRONG;
     if ("weak".equals(codeString))
       return RecommendationStrength.WEAK;
-    throw new IllegalArgumentException("Unknown RecommendationStrength code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown RecommendationStrength code '"+codeString+"'");
   }
 
   public String toCode(RecommendationStrength code) {
@@ -53,8 +57,8 @@ public class RecommendationStrengthEnumFactory implements EnumFactory<Recommenda
     return "?";
   }
 
-  public String toSystem(RecommendationStrength code) {
-    return code.getSystem();
-  }
+    public String toSystem(RecommendationStrength code) {
+      return code.getSystem();
+      }
 
 }

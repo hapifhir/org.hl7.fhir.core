@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,91 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MedAdminPerformFunction {
 
-  /**
-   * A person, non-person living subject, organization or device that who actually
-   * and principally carries out the action
-   */
-  PERFORMER,
-  /**
-   * A person who verifies the correctness and appropriateness of the service
-   * (plan, order, event, etc.) and hence takes on accountability.
-   */
-  VERIFIER,
-  /**
-   * A person witnessing the action happening without doing anything. A witness is
-   * not necessarily aware, much less approves of anything stated in the service
-   * event. Example for a witness is students watching an operation or an advanced
-   * directive witness.
-   */
-  WITNESS,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MedAdminPerformFunction fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("performer".equals(codeString))
-      return PERFORMER;
-    if ("verifier".equals(codeString))
-      return VERIFIER;
-    if ("witness".equals(codeString))
-      return WITNESS;
-    throw new FHIRException("Unknown MedAdminPerformFunction code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PERFORMER:
-      return "performer";
-    case VERIFIER:
-      return "verifier";
-    case WITNESS:
-      return "witness";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A person, non-person living subject, organization or device that who actually and principally carries out the action
+         */
+        PERFORMER, 
+        /**
+         * A person who verifies the correctness and appropriateness of the service (plan, order, event, etc.) and hence takes on accountability.
+         */
+        VERIFIER, 
+        /**
+         * A person witnessing the action happening without doing anything. A witness is not necessarily aware, much less approves of anything stated in the service event. Example for a witness is students watching an operation or an advanced directive witness.
+         */
+        WITNESS, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MedAdminPerformFunction fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("performer".equals(codeString))
+          return PERFORMER;
+        if ("verifier".equals(codeString))
+          return VERIFIER;
+        if ("witness".equals(codeString))
+          return WITNESS;
+        throw new FHIRException("Unknown MedAdminPerformFunction code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PERFORMER: return "performer";
+            case VERIFIER: return "verifier";
+            case WITNESS: return "witness";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/med-admin-perform-function";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PERFORMER: return "A person, non-person living subject, organization or device that who actually and principally carries out the action";
+            case VERIFIER: return "A person who verifies the correctness and appropriateness of the service (plan, order, event, etc.) and hence takes on accountability.";
+            case WITNESS: return "A person witnessing the action happening without doing anything. A witness is not necessarily aware, much less approves of anything stated in the service event. Example for a witness is students watching an operation or an advanced directive witness.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PERFORMER: return "Performer";
+            case VERIFIER: return "Verifier";
+            case WITNESS: return "Witness";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/med-admin-perform-function";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PERFORMER:
-      return "A person, non-person living subject, organization or device that who actually and principally carries out the action";
-    case VERIFIER:
-      return "A person who verifies the correctness and appropriateness of the service (plan, order, event, etc.) and hence takes on accountability.";
-    case WITNESS:
-      return "A person witnessing the action happening without doing anything. A witness is not necessarily aware, much less approves of anything stated in the service event. Example for a witness is students watching an operation or an advanced directive witness.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PERFORMER:
-      return "Performer";
-    case VERIFIER:
-      return "Verifier";
-    case WITNESS:
-      return "Witness";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

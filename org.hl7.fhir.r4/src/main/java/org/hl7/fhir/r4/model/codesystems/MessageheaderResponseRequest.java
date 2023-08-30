@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MessageheaderResponseRequest {
 
-  /**
-   * initiator expects a response for this message.
-   */
-  ALWAYS,
-  /**
-   * initiator expects a response only if in error.
-   */
-  ONERROR,
-  /**
-   * initiator does not expect a response.
-   */
-  NEVER,
-  /**
-   * initiator expects a response only if successful.
-   */
-  ONSUCCESS,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MessageheaderResponseRequest fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("always".equals(codeString))
-      return ALWAYS;
-    if ("on-error".equals(codeString))
-      return ONERROR;
-    if ("never".equals(codeString))
-      return NEVER;
-    if ("on-success".equals(codeString))
-      return ONSUCCESS;
-    throw new FHIRException("Unknown MessageheaderResponseRequest code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ALWAYS:
-      return "always";
-    case ONERROR:
-      return "on-error";
-    case NEVER:
-      return "never";
-    case ONSUCCESS:
-      return "on-success";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * initiator expects a response for this message.
+         */
+        ALWAYS, 
+        /**
+         * initiator expects a response only if in error.
+         */
+        ONERROR, 
+        /**
+         * initiator does not expect a response.
+         */
+        NEVER, 
+        /**
+         * initiator expects a response only if successful.
+         */
+        ONSUCCESS, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MessageheaderResponseRequest fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("always".equals(codeString))
+          return ALWAYS;
+        if ("on-error".equals(codeString))
+          return ONERROR;
+        if ("never".equals(codeString))
+          return NEVER;
+        if ("on-success".equals(codeString))
+          return ONSUCCESS;
+        throw new FHIRException("Unknown MessageheaderResponseRequest code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ALWAYS: return "always";
+            case ONERROR: return "on-error";
+            case NEVER: return "never";
+            case ONSUCCESS: return "on-success";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/messageheader-response-request";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ALWAYS: return "initiator expects a response for this message.";
+            case ONERROR: return "initiator expects a response only if in error.";
+            case NEVER: return "initiator does not expect a response.";
+            case ONSUCCESS: return "initiator expects a response only if successful.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ALWAYS: return "Always";
+            case ONERROR: return "Error/reject conditions only";
+            case NEVER: return "Never";
+            case ONSUCCESS: return "Successful completion only";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/messageheader-response-request";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ALWAYS:
-      return "initiator expects a response for this message.";
-    case ONERROR:
-      return "initiator expects a response only if in error.";
-    case NEVER:
-      return "initiator does not expect a response.";
-    case ONSUCCESS:
-      return "initiator expects a response only if successful.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ALWAYS:
-      return "Always";
-    case ONERROR:
-      return "Error/reject conditions only";
-    case NEVER:
-      return "Never";
-    case ONSUCCESS:
-      return "Successful completion only";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

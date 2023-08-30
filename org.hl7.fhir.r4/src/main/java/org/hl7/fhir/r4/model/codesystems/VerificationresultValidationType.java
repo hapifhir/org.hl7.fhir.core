@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum VerificationresultValidationType {
 
-  /**
-   * null
-   */
-  NOTHING,
-  /**
-   * null
-   */
-  PRIMARY,
-  /**
-   * null
-   */
-  MULTIPLE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static VerificationresultValidationType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("nothing".equals(codeString))
-      return NOTHING;
-    if ("primary".equals(codeString))
-      return PRIMARY;
-    if ("multiple".equals(codeString))
-      return MULTIPLE;
-    throw new FHIRException("Unknown VerificationresultValidationType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NOTHING:
-      return "nothing";
-    case PRIMARY:
-      return "primary";
-    case MULTIPLE:
-      return "multiple";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * null
+         */
+        NOTHING, 
+        /**
+         * null
+         */
+        PRIMARY, 
+        /**
+         * null
+         */
+        MULTIPLE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static VerificationresultValidationType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("nothing".equals(codeString))
+          return NOTHING;
+        if ("primary".equals(codeString))
+          return PRIMARY;
+        if ("multiple".equals(codeString))
+          return MULTIPLE;
+        throw new FHIRException("Unknown VerificationresultValidationType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NOTHING: return "nothing";
+            case PRIMARY: return "primary";
+            case MULTIPLE: return "multiple";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/validation-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NOTHING: return "";
+            case PRIMARY: return "";
+            case MULTIPLE: return "";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NOTHING: return "Nothing";
+            case PRIMARY: return "Primary Source";
+            case MULTIPLE: return "Multiple Sources";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/validation-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NOTHING:
-      return "";
-    case PRIMARY:
-      return "";
-    case MULTIPLE:
-      return "";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NOTHING:
-      return "Nothing";
-    case PRIMARY:
-      return "Primary Source";
-    case MULTIPLE:
-      return "Multiple Sources";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

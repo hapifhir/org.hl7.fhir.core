@@ -29,25 +29,25 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
   public OperationDefinitionRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
-
+  
   public boolean render(XhtmlNode x, Resource dr) throws IOException, FHIRException, EOperationOutcome {
     return render(x, (OperationDefinition) dr);
   }
 
   public boolean render(XhtmlNode x, OperationDefinition opd) throws IOException, FHIRException, EOperationOutcome {
     x.h2().addText(opd.getName());
-    x.para().addText(Utilities.capitalize(opd.getKind().toString()) + ": " + opd.getName());
+    x.para().addText(Utilities.capitalize(opd.getKind().toString())+": "+opd.getName());
     x.para().tx("The official URL for this operation definition is: ");
     x.pre().tx(opd.getUrl());
     addMarkdown(x, opd.getDescription());
 
     if (opd.getSystem())
-      x.para().tx("URL: [base]/$" + opd.getCode());
+      x.para().tx("URL: [base]/$"+opd.getCode());
     for (CodeType c : opd.getResource()) {
       if (opd.getType())
-        x.para().tx("URL: [base]/" + c.getValue() + "/$" + opd.getCode());
+        x.para().tx("URL: [base]/"+c.getValue()+"/$"+opd.getCode());
       if (opd.getInstance())
-        x.para().tx("URL: [base]/" + c.getValue() + "/[id]/$" + opd.getCode());
+        x.para().tx("URL: [base]/"+c.getValue()+"/[id]/$"+opd.getCode());
     }
 
     if (opd.hasInputProfile()) {
@@ -55,23 +55,23 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       p.tx("Input parameters Profile: ");
       StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getInputProfile());
       if (sd == null) {
-        p.pre().tx(opd.getInputProfile());
+        p.pre().tx(opd.getInputProfile());        
       } else {
-        p.ah(sd.getUserString("path")).tx(sd.present());
-      }
+        p.ah(sd.getUserString("path")).tx(sd.present());                 
+      }      
     }
     if (opd.hasOutputProfile()) {
       XhtmlNode p = x.para();
       p.tx("Output parameters Profile: ");
       StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getOutputProfile());
       if (sd == null) {
-        p.pre().tx(opd.getOutputProfile());
+        p.pre().tx(opd.getOutputProfile());        
       } else {
-        p.ah(sd.getUserString("path")).tx(sd.present());
-      }
+        p.ah(sd.getUserString("path")).tx(sd.present());                 
+      }      
     }
     x.para().tx("Parameters");
-    XhtmlNode tbl = x.table("grid");
+    XhtmlNode tbl = x.table( "grid");
     XhtmlNode tr = tbl.tr();
     tr.td().b().tx("Use");
     tr.td().b().tx("Name");
@@ -99,13 +99,12 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     return ((OperationDefinition) r).present();
   }
 
-  private void genOpParam(XhtmlNode tbl, String path, OperationDefinitionParameterComponent p)
-      throws EOperationOutcome, FHIRException, IOException {
+  private void genOpParam(XhtmlNode tbl, String path, OperationDefinitionParameterComponent p) throws EOperationOutcome, FHIRException, IOException {
     XhtmlNode tr;
     tr = tbl.tr();
     tr.td().addText(p.getUse().toString());
-    tr.td().addText(path + p.getName());
-    tr.td().addText(Integer.toString(p.getMin()) + ".." + p.getMax());
+    tr.td().addText(path+p.getName());
+    tr.td().addText(Integer.toString(p.getMin())+".."+p.getMax());
     XhtmlNode td = tr.td();
     StructureDefinition sd = p.getType() != null ? context.getWorker().fetchTypeDefinition(p.getType().toCode()) : null;
     if (sd == null)
@@ -113,36 +112,31 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     else if (sd.getAbstract() && p.hasExtension(ToolingExtensions.EXT_ALLOWED_TYPE)) {
       boolean first = true;
       for (Extension ex : p.getExtensionsByUrl(ToolingExtensions.EXT_ALLOWED_TYPE)) {
-        if (first)
-          first = false;
-        else
-          td.tx(" | ");
+        if (first) first = false; else td.tx(" | ");
         String s = ex.getValue().primitiveValue();
         StructureDefinition sdt = context.getWorker().fetchTypeDefinition(s);
         if (sdt == null)
           td.tx(p.hasType() ? p.getType().toCode() : "");
         else
-          td.ah(sdt.getUserString("path")).tx(s);
+          td.ah(sdt.getUserString("path")).tx(s);         
       }
     } else
       td.ah(sd.getUserString("path")).tx(p.hasType() ? p.getType().toCode() : "");
     if (p.hasSearchType()) {
       td.br();
       td.tx("(");
-      td.ah(context.getSpecificationLink() == null ? "search.html#" + p.getSearchType().toCode()
-          : Utilities.pathURL(context.getSpecificationLink(), "search.html#" + p.getSearchType().toCode()))
-          .tx(p.getSearchType().toCode());
+      td.ah( context.getSpecificationLink() == null ? "search.html#"+p.getSearchType().toCode() : Utilities.pathURL(context.getSpecificationLink(), "search.html#"+p.getSearchType().toCode())).tx(p.getSearchType().toCode());       
       td.tx(")");
     }
     td = tr.td();
     if (p.hasBinding() && p.getBinding().hasValueSet()) {
       AddVsRef(p.getBinding().getValueSet(), td);
-      td.tx(" (" + p.getBinding().getStrength().getDisplay() + ")");
+      td.tx(" ("+p.getBinding().getStrength().getDisplay()+")");
     }
     addMarkdown(tr.td(), p.getDocumentation());
     if (!p.hasType()) {
       for (OperationDefinitionParameterComponent pp : p.getPart()) {
-        genOpParam(tbl, path + p.getName() + ".", pp);
+        genOpParam(tbl, path+p.getName()+".", pp);
       }
     }
   }

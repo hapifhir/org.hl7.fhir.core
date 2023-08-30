@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,62 +34,50 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CoverageSelfpay {
 
-  /**
-   * An individual or organization is paying directly for goods and services.
-   */
-  PAY,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static CoverageSelfpay fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("pay".equals(codeString))
-      return PAY;
-    throw new FHIRException("Unknown CoverageSelfpay code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PAY:
-      return "pay";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * An individual or organization is paying directly for goods and services.
+         */
+        PAY, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static CoverageSelfpay fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("pay".equals(codeString))
+          return PAY;
+        throw new FHIRException("Unknown CoverageSelfpay code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PAY: return "pay";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/coverage-selfpay";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PAY: return "An individual or organization is paying directly for goods and services.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PAY: return "Pay";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/coverage-selfpay";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PAY:
-      return "An individual or organization is paying directly for goods and services.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PAY:
-      return "Pay";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

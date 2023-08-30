@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,75 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum GraphCompartmentUse {
 
-  /**
-   * This compartment rule is a condition for whether the rule applies.
-   */
-  CONDITION,
-  /**
-   * This compartment rule is enforced on any relationships that meet the
-   * conditions.
-   */
-  REQUIREMENT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static GraphCompartmentUse fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("condition".equals(codeString))
-      return CONDITION;
-    if ("requirement".equals(codeString))
-      return REQUIREMENT;
-    throw new FHIRException("Unknown GraphCompartmentUse code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case CONDITION:
-      return "condition";
-    case REQUIREMENT:
-      return "requirement";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * This compartment rule is a condition for whether the rule applies.
+         */
+        CONDITION, 
+        /**
+         * This compartment rule is enforced on any relationships that meet the conditions.
+         */
+        REQUIREMENT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static GraphCompartmentUse fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("condition".equals(codeString))
+          return CONDITION;
+        if ("requirement".equals(codeString))
+          return REQUIREMENT;
+        throw new FHIRException("Unknown GraphCompartmentUse code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case CONDITION: return "condition";
+            case REQUIREMENT: return "requirement";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/graph-compartment-use";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case CONDITION: return "This compartment rule is a condition for whether the rule applies.";
+            case REQUIREMENT: return "This compartment rule is enforced on any relationships that meet the conditions.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case CONDITION: return "Condition";
+            case REQUIREMENT: return "Requirement";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/graph-compartment-use";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case CONDITION:
-      return "This compartment rule is a condition for whether the rule applies.";
-    case REQUIREMENT:
-      return "This compartment rule is enforced on any relationships that meet the conditions.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case CONDITION:
-      return "Condition";
-    case REQUIREMENT:
-      return "Requirement";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

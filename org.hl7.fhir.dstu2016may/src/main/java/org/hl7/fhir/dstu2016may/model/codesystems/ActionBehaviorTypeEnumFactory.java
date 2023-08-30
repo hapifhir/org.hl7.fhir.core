@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ActionBehaviorTypeEnumFactory implements EnumFactory<ActionBehaviorType> {
@@ -48,7 +52,7 @@ public class ActionBehaviorTypeEnumFactory implements EnumFactory<ActionBehavior
       return ActionBehaviorType.PRECHECK;
     if ("cardinality".equals(codeString))
       return ActionBehaviorType.CARDINALITY;
-    throw new IllegalArgumentException("Unknown ActionBehaviorType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ActionBehaviorType code '"+codeString+"'");
   }
 
   public String toCode(ActionBehaviorType code) {
@@ -65,8 +69,8 @@ public class ActionBehaviorTypeEnumFactory implements EnumFactory<ActionBehavior
     return "?";
   }
 
-  public String toSystem(ActionBehaviorType code) {
-    return code.getSystem();
-  }
+    public String toSystem(ActionBehaviorType code) {
+      return code.getSystem();
+      }
 
 }

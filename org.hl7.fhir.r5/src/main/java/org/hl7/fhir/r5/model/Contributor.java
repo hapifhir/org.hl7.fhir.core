@@ -448,10 +448,10 @@ public class Contributor extends DataType implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Contributor.type");
+          throw new FHIRException("Cannot call addChild on a primitive type Contributor.type");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Contributor.name");
+          throw new FHIRException("Cannot call addChild on a primitive type Contributor.name");
         }
         else if (name.equals("contact")) {
           return addContact();

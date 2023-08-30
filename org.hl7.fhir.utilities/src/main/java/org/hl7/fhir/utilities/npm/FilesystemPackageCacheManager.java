@@ -9,11 +9,10 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,8 +22,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-
-import javax.annotation.Nonnull;
 
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -42,6 +39,8 @@ import org.hl7.fhir.utilities.npm.PackageList.PackageListEntry;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nonnull;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -88,8 +87,6 @@ import org.slf4j.LoggerFactory;
  */
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
 
-
-  public static final String INI_TIMESTAMP_FORMAT = "yyyyMMddHHmmss";
 
   public enum FilesystemPackageCacheMode {
     USER, SYSTEM, TESTING, CUSTOM
@@ -489,8 +486,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           Utilities.renameDirectory(tempDir, packRoot);          
 
           IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
-          ini.setTimeStampFormat(INI_TIMESTAMP_FORMAT);
-          ini.setTimestampProperty("packages", id + "#" + v, ZonedDateTime.now(), null);
+          ini.setTimeStampFormat("yyyyMMddhhmmss");
+          ini.setTimestampProperty("packages", id + "#" + v, Timestamp.from(Instant.now()), null);
           ini.setIntegerProperty("package-sizes", id + "#" + v, npm.getSize(), null);
           ini.save();
           if (progress)

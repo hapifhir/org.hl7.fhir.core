@@ -28,7 +28,7 @@ public class ListRenderer extends ResourceRenderer {
   public ListRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
-
+  
   public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
     return render(x, (ListResource) dr);
   }
@@ -41,17 +41,17 @@ public class ListRenderer extends ResourceRenderer {
     XhtmlNode tr = t.tr();
     XhtmlNode td = tr.td();
     if (list.has("date")) {
-      td.tx("Date: " + list.get("date").dateTimeValue().toHumanDisplay());
+      td.tx("Date: "+list.get("date").dateTimeValue().toHumanDisplay());
     }
     if (list.has("mode")) {
-      td.tx("Mode: " + list.get("mode").primitiveValue());
+      td.tx("Mode: "+list.get("mode").primitiveValue());
     }
     if (list.has("status")) {
-      td.tx("Status: " + list.get("status").primitiveValue());
+      td.tx("Status: "+list.get("status").primitiveValue());
     }
     if (list.has("code")) {
-      td.tx("Code: " + displayBase(list.get("code")));
-    }
+      td.tx("Code: "+displayBase(list.get("code")));
+    }    
     tr = t.tr();
     td = tr.td();
     if (list.has("subject")) {
@@ -67,11 +67,11 @@ public class ListRenderer extends ResourceRenderer {
       shortForRef(td, list.get("encounter"));
     }
     if (list.has("orderedBy")) {
-      td.tx("Order: " + displayBase(list.get("orderedBy")));
+      td.tx("Order: "+displayBase(list.get("orderedBy")));
     }
-    // for (Annotation a : list.getNote()) {
-    // renderAnnotation(a, x);
-    // }
+    //    for (Annotation a : list.getNote()) {
+    //      renderAnnotation(a, x);
+    //    }
     boolean flag = false;
     boolean deleted = false;
     boolean date = false;
@@ -84,30 +84,29 @@ public class ListRenderer extends ResourceRenderer {
     tr = t.tr().style("backgound-color: #eeeeee");
     tr.td().b().tx("Items");
     if (date) {
-      tr.td().tx("Date");
+      tr.td().tx("Date");      
     }
     if (flag) {
-      tr.td().tx("Flag");
+      tr.td().tx("Flag");      
     }
     if (deleted) {
-      tr.td().tx("Deleted");
+      tr.td().tx("Deleted");      
     }
     for (BaseWrapper e : list.children("entry")) {
       tr = t.tr();
       shortForRef(tr.td(), e.get("item"));
       if (date) {
-        tr.td().tx(e.has("date") ? e.get("date").dateTimeValue().toHumanDisplay() : "");
+        tr.td().tx(e.has("date") ? e.get("date").dateTimeValue().toHumanDisplay() : "");      
       }
       if (flag) {
-        tr.td().tx(e.has("flag") ? displayBase(e.get("flag")) : "");
+        tr.td().tx(e.has("flag") ? displayBase(e.get("flag")) : "");      
       }
       if (deleted) {
         tr.td().tx(e.has("deleted") ? e.get("deleted").primitiveValue() : "");
       }
-    }
+    }    
     return false;
   }
-
   public boolean render(XhtmlNode x, ListResource list) throws FHIRFormatError, DefinitionException, IOException {
     if (list.hasTitle()) {
       x.h2().tx(list.getTitle());
@@ -115,17 +114,17 @@ public class ListRenderer extends ResourceRenderer {
     XhtmlNode t = x.table("clstu");
     XhtmlNode tr = t.tr();
     if (list.hasDate()) {
-      tr.td().tx("Date: " + list.getDate().toLocaleString());
+      tr.td().tx("Date: "+list.getDate().toLocaleString());
     }
     if (list.hasMode()) {
-      tr.td().tx("Mode: " + list.getMode().getDisplay());
+      tr.td().tx("Mode: "+list.getMode().getDisplay());
     }
     if (list.hasStatus()) {
-      tr.td().tx("Status: " + list.getStatus().getDisplay());
+      tr.td().tx("Status: "+list.getStatus().getDisplay());
     }
     if (list.hasCode()) {
-      tr.td().tx("Code: " + display(list.getCode()));
-    }
+      tr.td().tx("Code: "+display(list.getCode()));
+    }    
     tr = t.tr();
     if (list.hasSubject()) {
       shortForRef(tr.td().txN("Subject: "), list.getSubject());
@@ -137,7 +136,7 @@ public class ListRenderer extends ResourceRenderer {
       shortForRef(tr.td().txN("Source: "), list.getEncounter());
     }
     if (list.hasOrderedBy()) {
-      tr.td().tx("Order: " + display(list.getOrderedBy()));
+      tr.td().tx("Order: "+display(list.getOrderedBy()));
     }
     for (Annotation a : list.getNote()) {
       renderAnnotation(x, a);
@@ -154,27 +153,27 @@ public class ListRenderer extends ResourceRenderer {
     tr = t.tr().style("backgound-color: #eeeeee");
     tr.td().b().tx("Items");
     if (date) {
-      tr.td().tx("Date");
+      tr.td().tx("Date");      
     }
     if (flag) {
-      tr.td().tx("Flag");
+      tr.td().tx("Flag");      
     }
     if (deleted) {
-      tr.td().tx("Deleted");
+      tr.td().tx("Deleted");      
     }
     for (ListResourceEntryComponent e : list.getEntry()) {
       tr = t.tr();
       shortForRef(tr.td(), e.getItem());
       if (date) {
-        tr.td().tx(e.hasDate() ? e.getDate().toLocaleString() : "");
+        tr.td().tx(e.hasDate() ? e.getDate().toLocaleString() : "");      
       }
       if (flag) {
-        tr.td().tx(e.hasFlag() ? display(e.getFlag()) : "");
+        tr.td().tx(e.hasFlag() ? display(e.getFlag()) : "");      
       }
       if (deleted) {
         tr.td().tx(e.hasDeleted() ? Boolean.toString(e.getDeleted()) : "");
       }
-    }
+    }    
     return false;
   }
 
@@ -208,13 +207,12 @@ public class ListRenderer extends ResourceRenderer {
     }
   }
 
+
   private XhtmlNode shortForRef(XhtmlNode x, Base ref) throws UnsupportedEncodingException, IOException {
     if (ref == null) {
       x.tx("(null)");
     } else {
-      String disp = ref.getChildByName("display") != null && ref.getChildByName("display").hasValues()
-          ? ref.getChildByName("display").getValues().get(0).primitiveValue()
-          : null;
+      String disp = ref.getChildByName("display") != null && ref.getChildByName("display").hasValues() ? ref.getChildByName("display").getValues().get(0).primitiveValue() : null;
       if (ref.getChildByName("reference").hasValues()) {
         String url = ref.getChildByName("reference").getValues().get(0).primitiveValue();
         ResourceWithReference r = context.getResolver().resolve(context, url);
@@ -224,16 +222,15 @@ public class ListRenderer extends ResourceRenderer {
           }
           x.tx(disp);
         } else if (r.getResource() != null) {
-          RendererFactory.factory(r.getResource().getName(), context).renderReference(r.getResource(), x,
-              (Reference) ref);
+          RendererFactory.factory(r.getResource().getName(), context).renderReference(r.getResource(), x, (Reference) ref);
         } else {
           RendererFactory.factory(url, context).renderReference(r.getResource(), x, (Reference) ref);
         }
       } else if (disp != null) {
-        x.tx(disp);
+        x.tx(disp);      
       } else {
         x.tx("?ngen-16?");
-      }
+      }     
     }
     return x;
   }

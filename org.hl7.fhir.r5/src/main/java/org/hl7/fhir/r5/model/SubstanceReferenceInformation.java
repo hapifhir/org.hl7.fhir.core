@@ -1520,7 +1520,7 @@ public class SubstanceReferenceInformation extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("comment")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SubstanceReferenceInformation.comment");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstanceReferenceInformation.comment");
         }
         else if (name.equals("gene")) {
           return addGene();

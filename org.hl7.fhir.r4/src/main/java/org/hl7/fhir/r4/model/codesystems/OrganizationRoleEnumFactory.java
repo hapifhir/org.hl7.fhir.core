@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class OrganizationRoleEnumFactory implements EnumFactory<OrganizationRole> {
@@ -54,7 +58,7 @@ public class OrganizationRoleEnumFactory implements EnumFactory<OrganizationRole
       return OrganizationRole.HIE_HIO;
     if ("member".equals(codeString))
       return OrganizationRole.MEMBER;
-    throw new IllegalArgumentException("Unknown OrganizationRole code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown OrganizationRole code '"+codeString+"'");
   }
 
   public String toCode(OrganizationRole code) {
@@ -77,8 +81,8 @@ public class OrganizationRoleEnumFactory implements EnumFactory<OrganizationRole
     return "?";
   }
 
-  public String toSystem(OrganizationRole code) {
-    return code.getSystem();
-  }
+    public String toSystem(OrganizationRole code) {
+      return code.getSystem();
+      }
 
 }

@@ -29,6 +29,8 @@ package org.hl7.fhir.dstu2016may.utils;
   
  */
 
+
+
 /*
 Copyright (c) 2011+, HL7, Inc
 All rights reserved.
@@ -61,12 +63,12 @@ POSSIBILITY OF SUCH DAMAGE.
 /** this is the version of the library, as opposed to the version of FHIR */
 
 public class Version {
-
+  
   /*
    * Version History
    * 
-   * 0.9 2014/11/30 - major breaking change to the API, see
-   * org.hl7.fhir.dstu2.model.Configuration
+   * 0.9  2014/11/30 - major breaking change to the API, see 
+   *    org.hl7.fhir.dstu2.model.Configuration
    */
   public static final String VERSION = "1.0";
 }

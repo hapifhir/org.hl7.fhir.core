@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,111 +34,86 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ClaimTypeLink {
 
-  /**
-   * A claim for Institution based, typically in-patient, goods and services.
-   */
-  INSTITUTIONAL,
-  /**
-   * A claim for Oral Health (Dentist, Denturist, Hygienist) goods and services.
-   */
-  ORAL,
-  /**
-   * A claim for Pharmacy based goods and services.
-   */
-  PHARMACY,
-  /**
-   * A claim for Professional, typically out-patient, goods and services.
-   */
-  PROFESSIONAL,
-  /**
-   * A claim for Vision (Opthamologist, Optometrist and Optician) goods and
-   * services.
-   */
-  VISION,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ClaimTypeLink fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("institutional".equals(codeString))
-      return INSTITUTIONAL;
-    if ("oral".equals(codeString))
-      return ORAL;
-    if ("pharmacy".equals(codeString))
-      return PHARMACY;
-    if ("professional".equals(codeString))
-      return PROFESSIONAL;
-    if ("vision".equals(codeString))
-      return VISION;
-    throw new FHIRException("Unknown ClaimTypeLink code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INSTITUTIONAL:
-      return "institutional";
-    case ORAL:
-      return "oral";
-    case PHARMACY:
-      return "pharmacy";
-    case PROFESSIONAL:
-      return "professional";
-    case VISION:
-      return "vision";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A claim for Institution based, typically in-patient, goods and services.
+         */
+        INSTITUTIONAL, 
+        /**
+         * A claim for Oral Health (Dentist, Denturist, Hygienist) goods and services.
+         */
+        ORAL, 
+        /**
+         * A claim for Pharmacy based goods and services.
+         */
+        PHARMACY, 
+        /**
+         * A claim for Professional, typically out-patient, goods and services.
+         */
+        PROFESSIONAL, 
+        /**
+         * A claim for Vision (Opthamologist, Optometrist and Optician) goods and services.
+         */
+        VISION, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ClaimTypeLink fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("institutional".equals(codeString))
+          return INSTITUTIONAL;
+        if ("oral".equals(codeString))
+          return ORAL;
+        if ("pharmacy".equals(codeString))
+          return PHARMACY;
+        if ("professional".equals(codeString))
+          return PROFESSIONAL;
+        if ("vision".equals(codeString))
+          return VISION;
+        throw new FHIRException("Unknown ClaimTypeLink code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INSTITUTIONAL: return "institutional";
+            case ORAL: return "oral";
+            case PHARMACY: return "pharmacy";
+            case PROFESSIONAL: return "professional";
+            case VISION: return "vision";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/claim-type-link";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INSTITUTIONAL: return "A claim for Institution based, typically in-patient, goods and services.";
+            case ORAL: return "A claim for Oral Health (Dentist, Denturist, Hygienist) goods and services.";
+            case PHARMACY: return "A claim for Pharmacy based goods and services.";
+            case PROFESSIONAL: return "A claim for Professional, typically out-patient, goods and services.";
+            case VISION: return "A claim for Vision (Opthamologist, Optometrist and Optician) goods and services.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INSTITUTIONAL: return "Institutional";
+            case ORAL: return "Oral Health";
+            case PHARMACY: return "Pharmacy";
+            case PROFESSIONAL: return "Professional";
+            case VISION: return "Vision";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/claim-type-link";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INSTITUTIONAL:
-      return "A claim for Institution based, typically in-patient, goods and services.";
-    case ORAL:
-      return "A claim for Oral Health (Dentist, Denturist, Hygienist) goods and services.";
-    case PHARMACY:
-      return "A claim for Pharmacy based goods and services.";
-    case PROFESSIONAL:
-      return "A claim for Professional, typically out-patient, goods and services.";
-    case VISION:
-      return "A claim for Vision (Opthamologist, Optometrist and Optician) goods and services.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INSTITUTIONAL:
-      return "Institutional";
-    case ORAL:
-      return "Oral Health";
-    case PHARMACY:
-      return "Pharmacy";
-    case PROFESSIONAL:
-      return "Professional";
-    case VISION:
-      return "Vision";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

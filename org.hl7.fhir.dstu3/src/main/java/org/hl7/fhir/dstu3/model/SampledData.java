@@ -2,6 +2,8 @@ package org.hl7.fhir.dstu3.model;
 
 import java.math.BigDecimal;
 
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -621,22 +623,22 @@ public class SampledData extends Type implements ICompositeType {
           return this.origin;
         }
         else if (name.equals("period")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.period");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.period");
         }
         else if (name.equals("factor")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.factor");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.factor");
         }
         else if (name.equals("lowerLimit")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.lowerLimit");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.lowerLimit");
         }
         else if (name.equals("upperLimit")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.upperLimit");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.upperLimit");
         }
         else if (name.equals("dimensions")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.dimensions");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.dimensions");
         }
         else if (name.equals("data")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.data");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.data");
         }
         else
           return super.addChild(name);

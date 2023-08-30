@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.context;
   
  */
 
+
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
@@ -41,7 +43,7 @@ import org.hl7.fhir.utilities.Utilities;
 public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger {
 
   private static final boolean DEBUG = false;
-
+  
   private boolean req = false;
   private PrintStream file;
 
@@ -57,17 +59,17 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
   @Override
   public void logRequest(String method, String url, List<String> headers, byte[] body) {
     if (DEBUG) {
-      System.out.println(" txlog req: " + method + " " + url + " " + present(body));
+      System.out.println(" txlog req: " +method+" "+url+" "+present(body));
     }
     if (file == null)
       return;
     String id = nextId();
-    file.println("<hr/><a name=\"l" + id + "\"> </a>");
-    file.println("<p>#" + id + "</p>");
+    file.println("<hr/><a name=\"l"+id+"\"> </a>");
+    file.println("<p>#"+id+"</p>");
     file.println("<pre>");
-    file.println(method + " " + url + " HTTP/1.0");
+    file.println(method+" "+url+" HTTP/1.0");
     if (headers != null) {
-      for (String s : headers) {
+      for (String s : headers) {  
         file.println(Utilities.escapeXml(s));
       }
     }
@@ -85,7 +87,7 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
   @Override
   public void logResponse(String outcome, List<String> headers, byte[] body) {
     if (DEBUG) {
-      System.out.println(" txlog resp: " + outcome + " " + present(body));
+      System.out.println(" txlog resp: " +outcome+" "+present(body));
     }
 
     if (file == null)
@@ -96,7 +98,7 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
     req = false;
     file.println("<pre>");
     file.println(outcome);
-    for (String s : headers)
+    for (String s : headers)  
       file.println(Utilities.escapeXml(s));
     if (body != null) {
       file.println("");
@@ -115,10 +117,11 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
     String cnt = new String(body);
     cnt = cnt.replace("\n", " ").replace("\r", "");
     if (cnt.length() > 800) {
-      return cnt.substring(0, 798) + "...";
+      return cnt.substring(0, 798)+"...";
     } else {
       return cnt;
     }
   }
+
 
 }

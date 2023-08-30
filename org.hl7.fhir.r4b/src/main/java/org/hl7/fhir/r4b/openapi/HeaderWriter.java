@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.openapi;
   
  */
 
+
+
 import com.google.gson.JsonObject;
 
 public class HeaderWriter extends ParameterWriter {
@@ -42,5 +44,5 @@ public class HeaderWriter extends ParameterWriter {
       throw new Error("Invalid value for header");
     super.in(value);
     return this;
-  }
+  }  
 }

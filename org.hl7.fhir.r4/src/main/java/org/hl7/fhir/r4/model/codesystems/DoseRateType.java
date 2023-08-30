@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum DoseRateType {
 
-  /**
-   * The dose specified is calculated by the prescriber or the system.
-   */
-  CALCULATED,
-  /**
-   * The dose specified is as ordered by the prescriber.
-   */
-  ORDERED,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static DoseRateType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("calculated".equals(codeString))
-      return CALCULATED;
-    if ("ordered".equals(codeString))
-      return ORDERED;
-    throw new FHIRException("Unknown DoseRateType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case CALCULATED:
-      return "calculated";
-    case ORDERED:
-      return "ordered";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The dose specified is calculated by the prescriber or the system.
+         */
+        CALCULATED, 
+        /**
+         * The dose specified is as ordered by the prescriber.
+         */
+        ORDERED, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static DoseRateType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("calculated".equals(codeString))
+          return CALCULATED;
+        if ("ordered".equals(codeString))
+          return ORDERED;
+        throw new FHIRException("Unknown DoseRateType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case CALCULATED: return "calculated";
+            case ORDERED: return "ordered";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/dose-rate-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case CALCULATED: return "The dose specified is calculated by the prescriber or the system.";
+            case ORDERED: return "The dose specified is as ordered by the prescriber.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case CALCULATED: return "Calculated";
+            case ORDERED: return "Ordered";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/dose-rate-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case CALCULATED:
-      return "The dose specified is calculated by the prescriber or the system.";
-    case ORDERED:
-      return "The dose specified is as ordered by the prescriber.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case CALCULATED:
-      return "Calculated";
-    case ORDERED:
-      return "Ordered";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

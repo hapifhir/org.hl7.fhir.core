@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3EquipmentAlertLevel {
 
-  /**
-   * Shut Down, Fix Problem and Re-init
-   */
-  C,
-  /**
-   * No Corrective Action Needed
-   */
-  N,
-  /**
-   * Corrective Action Required
-   */
-  S,
-  /**
-   * Corrective Action Anticipated
-   */
-  W,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static V3EquipmentAlertLevel fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("C".equals(codeString))
-      return C;
-    if ("N".equals(codeString))
-      return N;
-    if ("S".equals(codeString))
-      return S;
-    if ("W".equals(codeString))
-      return W;
-    throw new FHIRException("Unknown V3EquipmentAlertLevel code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case C:
-      return "C";
-    case N:
-      return "N";
-    case S:
-      return "S";
-    case W:
-      return "W";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Shut Down, Fix Problem and Re-init
+         */
+        C, 
+        /**
+         * No Corrective Action Needed
+         */
+        N, 
+        /**
+         * Corrective Action Required
+         */
+        S, 
+        /**
+         * Corrective Action Anticipated
+         */
+        W, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static V3EquipmentAlertLevel fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("C".equals(codeString))
+          return C;
+        if ("N".equals(codeString))
+          return N;
+        if ("S".equals(codeString))
+          return S;
+        if ("W".equals(codeString))
+          return W;
+        throw new FHIRException("Unknown V3EquipmentAlertLevel code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case C: return "C";
+            case N: return "N";
+            case S: return "S";
+            case W: return "W";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/v3/EquipmentAlertLevel";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case C: return "Shut Down, Fix Problem and Re-init";
+            case N: return "No Corrective Action Needed";
+            case S: return "Corrective Action Required";
+            case W: return "Corrective Action Anticipated";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case C: return "Critical";
+            case N: return "Normal";
+            case S: return "Serious";
+            case W: return "Warning";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/v3/EquipmentAlertLevel";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case C:
-      return "Shut Down, Fix Problem and Re-init";
-    case N:
-      return "No Corrective Action Needed";
-    case S:
-      return "Corrective Action Required";
-    case W:
-      return "Corrective Action Anticipated";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case C:
-      return "Critical";
-    case N:
-      return "Normal";
-    case S:
-      return "Serious";
-    case W:
-      return "Warning";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

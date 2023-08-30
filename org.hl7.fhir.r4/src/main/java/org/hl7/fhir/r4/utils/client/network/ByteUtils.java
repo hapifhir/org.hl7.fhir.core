@@ -1,16 +1,16 @@
 package org.hl7.fhir.r4.utils.client.network;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
-
 import org.hl7.fhir.r4.formats.IParser;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.utils.client.EFhirClientException;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 public class ByteUtils {
 
@@ -41,8 +41,7 @@ public class ByteUtils {
     return byteArray;
   }
 
-  public static byte[] encodeFormSubmission(Map<String, String> parameters, String resourceName, Resource resource,
-      String boundary) throws IOException {
+  public static byte[] encodeFormSubmission(Map<String, String> parameters, String resourceName, Resource resource, String boundary) throws IOException {
     ByteArrayOutputStream b = new ByteArrayOutputStream();
     OutputStreamWriter w = new OutputStreamWriter(b, StandardCharsets.UTF_8);
     for (String name : parameters.keySet()) {

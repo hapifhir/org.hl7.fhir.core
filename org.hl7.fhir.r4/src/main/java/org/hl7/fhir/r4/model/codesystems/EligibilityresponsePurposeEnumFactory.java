@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class EligibilityresponsePurposeEnumFactory implements EnumFactory<EligibilityresponsePurpose> {
@@ -46,7 +50,7 @@ public class EligibilityresponsePurposeEnumFactory implements EnumFactory<Eligib
       return EligibilityresponsePurpose.DISCOVERY;
     if ("validation".equals(codeString))
       return EligibilityresponsePurpose.VALIDATION;
-    throw new IllegalArgumentException("Unknown EligibilityresponsePurpose code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown EligibilityresponsePurpose code '"+codeString+"'");
   }
 
   public String toCode(EligibilityresponsePurpose code) {
@@ -61,8 +65,8 @@ public class EligibilityresponsePurposeEnumFactory implements EnumFactory<Eligib
     return "?";
   }
 
-  public String toSystem(EligibilityresponsePurpose code) {
-    return code.getSystem();
-  }
+    public String toSystem(EligibilityresponsePurpose code) {
+      return code.getSystem();
+      }
 
 }

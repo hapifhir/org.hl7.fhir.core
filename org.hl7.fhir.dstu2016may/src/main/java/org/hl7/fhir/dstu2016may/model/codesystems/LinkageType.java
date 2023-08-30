@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,90 +34,68 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum LinkageType {
 
-  /**
-   * The record represents the "source of truth" (from the perspective of this
-   * Linkage resource) for the underlying event/condition/etc.
-   */
-  SOURCE,
-  /**
-   * The record represents the alternative view of the underlying
-   * event/condition/etc. The record may still be actively maintained, even though
-   * it is not considered to be the source of truth.
-   */
-  ALTERNATE,
-  /**
-   * The record represents an obsolete record of the underlyng
-   * event/condition/etc. It is not expected to be actively maintained.
-   */
-  HISTORICAL,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static LinkageType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("source".equals(codeString))
-      return SOURCE;
-    if ("alternate".equals(codeString))
-      return ALTERNATE;
-    if ("historical".equals(codeString))
-      return HISTORICAL;
-    throw new FHIRException("Unknown LinkageType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case SOURCE:
-      return "source";
-    case ALTERNATE:
-      return "alternate";
-    case HISTORICAL:
-      return "historical";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The record represents the "source of truth" (from the perspective of this Linkage resource) for the underlying event/condition/etc.
+         */
+        SOURCE, 
+        /**
+         * The record represents the alternative view of the underlying event/condition/etc.  The record may still be actively maintained, even though it is not considered to be the source of truth.
+         */
+        ALTERNATE, 
+        /**
+         * The record represents an obsolete record of the underlyng event/condition/etc.  It is not expected to be actively maintained.
+         */
+        HISTORICAL, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static LinkageType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("source".equals(codeString))
+          return SOURCE;
+        if ("alternate".equals(codeString))
+          return ALTERNATE;
+        if ("historical".equals(codeString))
+          return HISTORICAL;
+        throw new FHIRException("Unknown LinkageType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case SOURCE: return "source";
+            case ALTERNATE: return "alternate";
+            case HISTORICAL: return "historical";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/linkage-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case SOURCE: return "The record represents the \"source of truth\" (from the perspective of this Linkage resource) for the underlying event/condition/etc.";
+            case ALTERNATE: return "The record represents the alternative view of the underlying event/condition/etc.  The record may still be actively maintained, even though it is not considered to be the source of truth.";
+            case HISTORICAL: return "The record represents an obsolete record of the underlyng event/condition/etc.  It is not expected to be actively maintained.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case SOURCE: return "Source of truth";
+            case ALTERNATE: return "Alternate record";
+            case HISTORICAL: return "Historical/obsolete record";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/linkage-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case SOURCE:
-      return "The record represents the \"source of truth\" (from the perspective of this Linkage resource) for the underlying event/condition/etc.";
-    case ALTERNATE:
-      return "The record represents the alternative view of the underlying event/condition/etc.  The record may still be actively maintained, even though it is not considered to be the source of truth.";
-    case HISTORICAL:
-      return "The record represents an obsolete record of the underlyng event/condition/etc.  It is not expected to be actively maintained.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case SOURCE:
-      return "Source of truth";
-    case ALTERNATE:
-      return "Alternate record";
-    case HISTORICAL:
-      return "Historical/obsolete record";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

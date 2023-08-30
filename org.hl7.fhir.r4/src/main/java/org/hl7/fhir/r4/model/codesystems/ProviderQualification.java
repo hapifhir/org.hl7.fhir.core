@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ProviderQualification {
 
-  /**
-   * Dentist General Practitioner (DDS, DDM).
-   */
-  _311405,
-  /**
-   * Ophthalmologist.
-   */
-  _604215,
-  /**
-   * Optometrist.
-   */
-  _604210,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ProviderQualification fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("311405".equals(codeString))
-      return _311405;
-    if ("604215".equals(codeString))
-      return _604215;
-    if ("604210".equals(codeString))
-      return _604210;
-    throw new FHIRException("Unknown ProviderQualification code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case _311405:
-      return "311405";
-    case _604215:
-      return "604215";
-    case _604210:
-      return "604210";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Dentist General Practitioner (DDS, DDM).
+         */
+        _311405, 
+        /**
+         * Ophthalmologist.
+         */
+        _604215, 
+        /**
+         * Optometrist.
+         */
+        _604210, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ProviderQualification fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("311405".equals(codeString))
+          return _311405;
+        if ("604215".equals(codeString))
+          return _604215;
+        if ("604210".equals(codeString))
+          return _604210;
+        throw new FHIRException("Unknown ProviderQualification code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case _311405: return "311405";
+            case _604215: return "604215";
+            case _604210: return "604210";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/ex-providerqualification";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case _311405: return "Dentist General Practitioner (DDS, DDM).";
+            case _604215: return "Ophthalmologist.";
+            case _604210: return "Optometrist.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case _311405: return "Dentist";
+            case _604215: return "Ophthalmologist";
+            case _604210: return "Optometrist";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/ex-providerqualification";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case _311405:
-      return "Dentist General Practitioner (DDS, DDM).";
-    case _604215:
-      return "Ophthalmologist.";
-    case _604210:
-      return "Optometrist.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case _311405:
-      return "Dentist";
-    case _604215:
-      return "Ophthalmologist";
-    case _604210:
-      return "Optometrist";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -286,7 +290,7 @@ public class V3ActClassEnumFactory implements EnumFactory<V3ActClass> {
       return V3ActClass.THEAD;
     if ("unordered".equals(codeString))
       return V3ActClass.UNORDERED;
-    throw new IllegalArgumentException("Unknown V3ActClass code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3ActClass code '"+codeString+"'");
   }
 
   public String toCode(V3ActClass code) {
@@ -541,8 +545,8 @@ public class V3ActClassEnumFactory implements EnumFactory<V3ActClass> {
     return "?";
   }
 
-  public String toSystem(V3ActClass code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3ActClass code) {
+      return code.getSystem();
+      }
 
 }

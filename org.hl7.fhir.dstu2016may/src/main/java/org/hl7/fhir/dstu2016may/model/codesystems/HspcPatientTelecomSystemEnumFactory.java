@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class HspcPatientTelecomSystemEnumFactory implements EnumFactory<HspcPatientTelecomSystem> {
@@ -44,7 +48,7 @@ public class HspcPatientTelecomSystemEnumFactory implements EnumFactory<HspcPati
       return HspcPatientTelecomSystem.EMAIL;
     if ("phone".equals(codeString))
       return HspcPatientTelecomSystem.PHONE;
-    throw new IllegalArgumentException("Unknown HspcPatientTelecomSystem code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown HspcPatientTelecomSystem code '"+codeString+"'");
   }
 
   public String toCode(HspcPatientTelecomSystem code) {
@@ -57,8 +61,8 @@ public class HspcPatientTelecomSystemEnumFactory implements EnumFactory<HspcPati
     return "?";
   }
 
-  public String toSystem(HspcPatientTelecomSystem code) {
-    return code.getSystem();
-  }
+    public String toSystem(HspcPatientTelecomSystem code) {
+      return code.getSystem();
+      }
 
 }

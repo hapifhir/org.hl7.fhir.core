@@ -4,17 +4,12 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.utils.ElementVisitor.ElementVisitorInstruction;
 
 public class ElementVisitor {
 
-  public enum ElementVisitorInstruction {
-    VISIT_CHILDREN, NO_VISIT_CHILDREN;
-  }
-
   public interface IElementVisitor {
-    public ElementVisitorInstruction visit(Object context, Resource resource);
-    public ElementVisitorInstruction visit(Object context, Element element);
+    public void visit(Resource resource);
+    public void visit(Element element);
   }
 
   private IElementVisitor visitor;
@@ -23,32 +18,28 @@ public class ElementVisitor {
     this.visitor = visitor;
   }
 
-  private void visitBase(Object context, Base base) {
+  private void visitBase(Base base) {
     for (Property p : base.children()) {
       if (p.hasValues()) {
         for (Base b : p.getValues()) {
           if (b instanceof Resource) {
-            visit(context, (Resource) b);
+            visit((Resource) b);
           } else {
-            visit(context, (Element) b);
+            visit((Element) b);
           }
         }
       }
     }
   }
 
-  public void visit(Object context, Resource res) {
-    ElementVisitorInstruction c = visitor.visit(context, res);
-    if (c == ElementVisitorInstruction.VISIT_CHILDREN) {
-      visitBase(context, res);
-    }
+  public void visit(Resource res) {
+    visitor.visit(res);
+    visitBase(res);
   }
 
-  public void visit(Object context, Element e) {
-    ElementVisitorInstruction c = visitor.visit(context, e);
-    if (c == ElementVisitorInstruction.VISIT_CHILDREN) {
-      visitBase(context, e);
-    }
+  public void visit(Element e) {
+    visitor.visit(e);
+    visitBase(e);
   }
 
 }

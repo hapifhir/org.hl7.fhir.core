@@ -29,6 +29,8 @@ package org.hl7.fhir.r4.utils;
   
  */
 
+
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -62,7 +64,7 @@ public class NarrativeRemover {
         }
       }
     }
-
+    
   }
 
 }

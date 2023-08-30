@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,17 +34,17 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
-public class HspcLocationServiceDeliveryLocationNameUseEnumFactory
-    implements EnumFactory<HspcLocationServiceDeliveryLocationNameUse> {
+public class HspcLocationServiceDeliveryLocationNameUseEnumFactory implements EnumFactory<HspcLocationServiceDeliveryLocationNameUse> {
 
   public HspcLocationServiceDeliveryLocationNameUse fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
       return null;
     if ("ABR".equals(codeString))
       return HspcLocationServiceDeliveryLocationNameUse.ABR;
-    throw new IllegalArgumentException("Unknown HspcLocationServiceDeliveryLocationNameUse code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown HspcLocationServiceDeliveryLocationNameUse code '"+codeString+"'");
   }
 
   public String toCode(HspcLocationServiceDeliveryLocationNameUse code) {
@@ -50,8 +53,8 @@ public class HspcLocationServiceDeliveryLocationNameUseEnumFactory
     return "?";
   }
 
-  public String toSystem(HspcLocationServiceDeliveryLocationNameUse code) {
-    return code.getSystem();
-  }
+    public String toSystem(HspcLocationServiceDeliveryLocationNameUse code) {
+      return code.getSystem();
+      }
 
 }

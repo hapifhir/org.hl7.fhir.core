@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,121 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ExtraSecurityRoleType {
 
-  /**
-   * An entity providing authorization services to enable the electronic sharing
-   * of health-related information based on resource owner's preapproved
-   * permissions. For example, an UMA Authorization Server[UMA]
-   */
-  AUTHSERVER,
-  /**
-   * An entity that collects information over which the data subject may have
-   * certain rights under policy or law to control that information's management
-   * and distribution by data collectors, including the right to access, retrieve,
-   * distribute, or delete that information.
-   */
-  DATACOLLECTOR,
-  /**
-   * An entity that processes collected information over which the data subject
-   * may have certain rights under policy or law to control that information's
-   * management and distribution by data processors, including the right to
-   * access, retrieve, distribute, or delete that information.
-   */
-  DATAPROCESSOR,
-  /**
-   * A person whose personal information is collected or processed, and who may
-   * have certain rights under policy or law to control that information's
-   * management and distribution by data collectors or processors, including the
-   * right to access, retrieve, distribute, or delete that information.
-   */
-  DATASUBJECT,
-  /**
-   * The human user that has participated.
-   */
-  HUMANUSER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ExtraSecurityRoleType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("authserver".equals(codeString))
-      return AUTHSERVER;
-    if ("datacollector".equals(codeString))
-      return DATACOLLECTOR;
-    if ("dataprocessor".equals(codeString))
-      return DATAPROCESSOR;
-    if ("datasubject".equals(codeString))
-      return DATASUBJECT;
-    if ("humanuser".equals(codeString))
-      return HUMANUSER;
-    throw new FHIRException("Unknown ExtraSecurityRoleType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case AUTHSERVER:
-      return "authserver";
-    case DATACOLLECTOR:
-      return "datacollector";
-    case DATAPROCESSOR:
-      return "dataprocessor";
-    case DATASUBJECT:
-      return "datasubject";
-    case HUMANUSER:
-      return "humanuser";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * An entity providing authorization services to enable the electronic sharing of health-related information based on resource owner's preapproved permissions. For example, an UMA Authorization Server[UMA]
+         */
+        AUTHSERVER, 
+        /**
+         * An entity that collects information over which the data subject may have certain rights under policy or law to control that information's management and distribution by data collectors, including the right to access, retrieve, distribute, or delete that information. 
+         */
+        DATACOLLECTOR, 
+        /**
+         * An entity that processes collected information over which the data subject may have certain rights under policy or law to control that information's management and distribution by data processors, including the right to access, retrieve, distribute, or delete that information.
+         */
+        DATAPROCESSOR, 
+        /**
+         * A person whose personal information is collected or processed, and who may have certain rights under policy or law to control that information's management and distribution by data collectors or processors, including the right to access, retrieve, distribute, or delete that information.
+         */
+        DATASUBJECT, 
+        /**
+         * The human user that has participated.
+         */
+        HUMANUSER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ExtraSecurityRoleType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("authserver".equals(codeString))
+          return AUTHSERVER;
+        if ("datacollector".equals(codeString))
+          return DATACOLLECTOR;
+        if ("dataprocessor".equals(codeString))
+          return DATAPROCESSOR;
+        if ("datasubject".equals(codeString))
+          return DATASUBJECT;
+        if ("humanuser".equals(codeString))
+          return HUMANUSER;
+        throw new FHIRException("Unknown ExtraSecurityRoleType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case AUTHSERVER: return "authserver";
+            case DATACOLLECTOR: return "datacollector";
+            case DATAPROCESSOR: return "dataprocessor";
+            case DATASUBJECT: return "datasubject";
+            case HUMANUSER: return "humanuser";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/extra-security-role-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case AUTHSERVER: return "An entity providing authorization services to enable the electronic sharing of health-related information based on resource owner's preapproved permissions. For example, an UMA Authorization Server[UMA]";
+            case DATACOLLECTOR: return "An entity that collects information over which the data subject may have certain rights under policy or law to control that information's management and distribution by data collectors, including the right to access, retrieve, distribute, or delete that information. ";
+            case DATAPROCESSOR: return "An entity that processes collected information over which the data subject may have certain rights under policy or law to control that information's management and distribution by data processors, including the right to access, retrieve, distribute, or delete that information.";
+            case DATASUBJECT: return "A person whose personal information is collected or processed, and who may have certain rights under policy or law to control that information's management and distribution by data collectors or processors, including the right to access, retrieve, distribute, or delete that information.";
+            case HUMANUSER: return "The human user that has participated.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case AUTHSERVER: return "authorization server";
+            case DATACOLLECTOR: return "data collector";
+            case DATAPROCESSOR: return "data processor";
+            case DATASUBJECT: return "data subject";
+            case HUMANUSER: return "human user";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/extra-security-role-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case AUTHSERVER:
-      return "An entity providing authorization services to enable the electronic sharing of health-related information based on resource owner's preapproved permissions. For example, an UMA Authorization Server[UMA]";
-    case DATACOLLECTOR:
-      return "An entity that collects information over which the data subject may have certain rights under policy or law to control that information's management and distribution by data collectors, including the right to access, retrieve, distribute, or delete that information. ";
-    case DATAPROCESSOR:
-      return "An entity that processes collected information over which the data subject may have certain rights under policy or law to control that information's management and distribution by data processors, including the right to access, retrieve, distribute, or delete that information.";
-    case DATASUBJECT:
-      return "A person whose personal information is collected or processed, and who may have certain rights under policy or law to control that information's management and distribution by data collectors or processors, including the right to access, retrieve, distribute, or delete that information.";
-    case HUMANUSER:
-      return "The human user that has participated.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case AUTHSERVER:
-      return "authorization server";
-    case DATACOLLECTOR:
-      return "data collector";
-    case DATAPROCESSOR:
-      return "data processor";
-    case DATASUBJECT:
-      return "data subject";
-    case HUMANUSER:
-      return "human user";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

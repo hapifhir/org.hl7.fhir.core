@@ -873,7 +873,7 @@ public class EvidenceReport extends MetadataResource {
           return this.value;
         }
         else if (name.equals("exclude")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.subject.characteristic.exclude");
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.subject.characteristic.exclude");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -1110,7 +1110,7 @@ public class EvidenceReport extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.relatesTo.code");
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.relatesTo.code");
         }
         else if (name.equals("target")) {
           this.target = new EvidenceReportRelatesToTargetComponent();
@@ -1442,14 +1442,14 @@ public class EvidenceReport extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.relatesTo.target.url");
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.relatesTo.target.url");
         }
         else if (name.equals("identifier")) {
           this.identifier = new Identifier();
           return this.identifier;
         }
         else if (name.equals("display")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.relatesTo.target.display");
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.relatesTo.target.display");
         }
         else if (name.equals("resource")) {
           this.resource = new Reference();
@@ -2265,7 +2265,7 @@ public class EvidenceReport extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.section.title");
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.section.title");
         }
         else if (name.equals("focus")) {
           this.focus = new CodeableConcept();
@@ -2283,7 +2283,7 @@ public class EvidenceReport extends MetadataResource {
           return this.text;
         }
         else if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.section.mode");
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.section.mode");
         }
         else if (name.equals("orderedBy")) {
           this.orderedBy = new CodeableConcept();
@@ -4182,10 +4182,10 @@ public class EvidenceReport extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.url");
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.url");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.status");
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.status");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -4219,7 +4219,7 @@ public class EvidenceReport extends MetadataResource {
           return this.subject;
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EvidenceReport.publisher");
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceReport.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();

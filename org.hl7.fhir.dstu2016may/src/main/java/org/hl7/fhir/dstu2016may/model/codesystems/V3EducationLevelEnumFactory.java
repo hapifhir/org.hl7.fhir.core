@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class V3EducationLevelEnumFactory implements EnumFactory<V3EducationLevel> {
@@ -56,7 +60,7 @@ public class V3EducationLevelEnumFactory implements EnumFactory<V3EducationLevel
       return V3EducationLevel.SCOL;
     if ("SEC".equals(codeString))
       return V3EducationLevel.SEC;
-    throw new IllegalArgumentException("Unknown V3EducationLevel code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3EducationLevel code '"+codeString+"'");
   }
 
   public String toCode(V3EducationLevel code) {
@@ -81,8 +85,8 @@ public class V3EducationLevelEnumFactory implements EnumFactory<V3EducationLevel
     return "?";
   }
 
-  public String toSystem(V3EducationLevel code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3EducationLevel code) {
+      return code.getSystem();
+      }
 
 }

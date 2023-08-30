@@ -946,31 +946,31 @@ public class Requirements extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("key")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.statement.key");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.statement.key");
         }
         else if (name.equals("label")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.statement.label");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.statement.label");
         }
         else if (name.equals("conformance")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.statement.conformance");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.statement.conformance");
         }
         else if (name.equals("conditionality")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.statement.conditionality");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.statement.conditionality");
         }
         else if (name.equals("requirement")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.statement.requirement");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.statement.requirement");
         }
         else if (name.equals("derivedFrom")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.statement.derivedFrom");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.statement.derivedFrom");
         }
         else if (name.equals("parent")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.statement.parent");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.statement.parent");
         }
         else if (name.equals("satisfiedBy")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.statement.satisfiedBy");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.statement.satisfiedBy");
         }
         else if (name.equals("reference")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.statement.reference");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.statement.reference");
         }
         else if (name.equals("source")) {
           return addSource();
@@ -2570,13 +2570,13 @@ public class Requirements extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.url");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.version");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.version");
         }
         else if (name.equals("versionAlgorithmString")) {
           this.versionAlgorithm = new StringType();
@@ -2587,28 +2587,28 @@ public class Requirements extends CanonicalResource {
           return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.name");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.title");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.title");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.experimental");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.date");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.publisher");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.description");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -2617,22 +2617,22 @@ public class Requirements extends CanonicalResource {
           return addJurisdiction();
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.purpose");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.purpose");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.copyright");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.copyright");
         }
         else if (name.equals("copyrightLabel")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.copyrightLabel");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.copyrightLabel");
         }
         else if (name.equals("derivedFrom")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.derivedFrom");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.derivedFrom");
         }
         else if (name.equals("reference")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.reference");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.reference");
         }
         else if (name.equals("actor")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Requirements.actor");
+          throw new FHIRException("Cannot call addChild on a primitive type Requirements.actor");
         }
         else if (name.equals("statement")) {
           return addStatement();

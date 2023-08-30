@@ -1550,7 +1550,7 @@ public class DeviceUsage extends DomainResource {
           return addBasedOn();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DeviceUsage.status");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceUsage.status");
         }
         else if (name.equals("category")) {
           return addCategory();
@@ -1579,7 +1579,7 @@ public class DeviceUsage extends DomainResource {
           return this.timing;
         }
         else if (name.equals("dateAsserted")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DeviceUsage.dateAsserted");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceUsage.dateAsserted");
         }
         else if (name.equals("usageStatus")) {
           this.usageStatus = new CodeableConcept();

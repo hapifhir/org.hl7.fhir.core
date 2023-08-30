@@ -230,7 +230,7 @@ public class ResearchStudy extends DomainResource {
           return this.type;
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.label.value");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.label.value");
         }
         else
           return super.addChild(name);
@@ -642,7 +642,7 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.associatedParty.name");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.associatedParty.name");
         }
         else if (name.equals("role")) {
           this.role = new CodeableConcept();
@@ -940,7 +940,7 @@ public class ResearchStudy extends DomainResource {
           return this.state;
         }
         else if (name.equals("actual")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.progressStatus.actual");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.progressStatus.actual");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -1266,10 +1266,10 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("targetNumber")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.recruitment.targetNumber");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.recruitment.targetNumber");
         }
         else if (name.equals("actualNumber")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.recruitment.actualNumber");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.recruitment.actualNumber");
         }
         else if (name.equals("eligibility")) {
           this.eligibility = new Reference();
@@ -1752,17 +1752,17 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.comparisonGroup.linkId");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.comparisonGroup.linkId");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.comparisonGroup.name");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.comparisonGroup.name");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
           return this.type;
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.comparisonGroup.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.comparisonGroup.description");
         }
         else if (name.equals("intendedExposure")) {
           return addIntendedExposure();
@@ -2069,14 +2069,14 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.objective.name");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.objective.name");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
           return this.type;
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.objective.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.objective.description");
         }
         else
           return super.addChild(name);
@@ -2437,13 +2437,13 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.outcomeMeasure.name");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.outcomeMeasure.name");
         }
         else if (name.equals("type")) {
           return addType();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.outcomeMeasure.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.outcomeMeasure.description");
         }
         else if (name.equals("reference")) {
           this.reference = new Reference();
@@ -4645,19 +4645,19 @@ public class ResearchStudy extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.url");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.version");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.version");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.name");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.title");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.title");
         }
         else if (name.equals("label")) {
           return addLabel();
@@ -4672,10 +4672,10 @@ public class ResearchStudy extends DomainResource {
           return addRelatedArtifact();
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.date");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.date");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.status");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.status");
         }
         else if (name.equals("primaryPurposeType")) {
           this.primaryPurposeType = new CodeableConcept();
@@ -4701,10 +4701,10 @@ public class ResearchStudy extends DomainResource {
           return addRegion();
         }
         else if (name.equals("descriptionSummary")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.descriptionSummary");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.descriptionSummary");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchStudy.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchStudy.description");
         }
         else if (name.equals("period")) {
           this.period = new Period();

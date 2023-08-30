@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,90 +34,68 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NehtaNehtaResidualTumourStatus {
 
-  /**
-   * R0: Complete resection, margins histologically negative, no residual tumour
-   * left after resection (primary tumour, regional nodes)
-   */
-  R0,
-  /**
-   * R1: Incomplete resection, margins histologically involved, microscopic tumour
-   * remains after resection of gross disease (primary tumour, regional nodes)
-   */
-  R1,
-  /**
-   * R2: Incomplete resection, margins macroscopically involved or gross disease
-   * remains after subtotal resection (eg primary tumour, regional nodes, or liver
-   * metastasis).
-   */
-  R2,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static NehtaNehtaResidualTumourStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("r0".equals(codeString))
-      return R0;
-    if ("r1".equals(codeString))
-      return R1;
-    if ("r2".equals(codeString))
-      return R2;
-    throw new FHIRException("Unknown NehtaNehtaResidualTumourStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case R0:
-      return "r0";
-    case R1:
-      return "r1";
-    case R2:
-      return "r2";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * R0: Complete resection, margins histologically negative, no residual tumour left after resection (primary tumour, regional nodes)
+         */
+        R0, 
+        /**
+         * R1: Incomplete resection, margins histologically involved, microscopic tumour remains after resection of gross disease (primary tumour, regional nodes)
+         */
+        R1, 
+        /**
+         * R2: Incomplete resection, margins macroscopically involved or gross disease remains after subtotal resection (eg primary tumour, regional nodes, or liver metastasis).
+         */
+        R2, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static NehtaNehtaResidualTumourStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("r0".equals(codeString))
+          return R0;
+        if ("r1".equals(codeString))
+          return R1;
+        if ("r2".equals(codeString))
+          return R2;
+        throw new FHIRException("Unknown NehtaNehtaResidualTumourStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case R0: return "r0";
+            case R1: return "r1";
+            case R2: return "r2";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/nehta-residual-tumour-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case R0: return "R0: Complete resection, margins histologically negative, no residual tumour left after resection (primary tumour, regional nodes)";
+            case R1: return "R1: Incomplete resection, margins histologically involved, microscopic tumour remains after resection of gross disease (primary tumour, regional nodes)";
+            case R2: return "R2: Incomplete resection, margins macroscopically involved or gross disease remains after subtotal resection (eg primary tumour, regional nodes, or liver metastasis).";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case R0: return "R0: Complete resection, margins histologically negative, no residual tumour left after resection (primary tumour, regional nodes)";
+            case R1: return "R1: Incomplete resection, margins histologically involved, microscopic tumour remains after resection of gross disease (primary tumour, regional nodes)";
+            case R2: return "R2: Incomplete resection, margins macroscopically involved or gross disease remains after subtotal resection (eg primary tumour, regional nodes, or liver metastasis).";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/nehta-residual-tumour-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case R0:
-      return "R0: Complete resection, margins histologically negative, no residual tumour left after resection (primary tumour, regional nodes)";
-    case R1:
-      return "R1: Incomplete resection, margins histologically involved, microscopic tumour remains after resection of gross disease (primary tumour, regional nodes)";
-    case R2:
-      return "R2: Incomplete resection, margins macroscopically involved or gross disease remains after subtotal resection (eg primary tumour, regional nodes, or liver metastasis).";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case R0:
-      return "R0: Complete resection, margins histologically negative, no residual tumour left after resection (primary tumour, regional nodes)";
-    case R1:
-      return "R1: Incomplete resection, margins histologically involved, microscopic tumour remains after resection of gross disease (primary tumour, regional nodes)";
-    case R2:
-      return "R2: Incomplete resection, margins macroscopically involved or gross disease remains after subtotal resection (eg primary tumour, regional nodes, or liver metastasis).";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

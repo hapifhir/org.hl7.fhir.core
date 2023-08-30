@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,117 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ProvenanceEntityRole {
 
-  /**
-   * A transformation of an entity into another, an update of an entity resulting
-   * in a new one, or the construction of a new entity based on a pre-existing
-   * entity.
-   */
-  DERIVATION,
-  /**
-   * A derivation for which the resulting entity is a revised version of some
-   * original.
-   */
-  REVISION,
-  /**
-   * The repeat of (some or all of) an entity, such as text or image, by someone
-   * who might or might not be its original author.
-   */
-  QUOTATION,
-  /**
-   * A primary source for a topic refers to something produced by some agent with
-   * direct experience and knowledge about the topic, at the time of the topic's
-   * study, without benefit from hindsight.
-   */
-  SOURCE,
-  /**
-   * A derivation for which the entity is removed from accessibility usually
-   * through the use of the Delete operation.
-   */
-  REMOVAL,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ProvenanceEntityRole fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("derivation".equals(codeString))
-      return DERIVATION;
-    if ("revision".equals(codeString))
-      return REVISION;
-    if ("quotation".equals(codeString))
-      return QUOTATION;
-    if ("source".equals(codeString))
-      return SOURCE;
-    if ("removal".equals(codeString))
-      return REMOVAL;
-    throw new FHIRException("Unknown ProvenanceEntityRole code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case DERIVATION:
-      return "derivation";
-    case REVISION:
-      return "revision";
-    case QUOTATION:
-      return "quotation";
-    case SOURCE:
-      return "source";
-    case REMOVAL:
-      return "removal";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity.
+         */
+        DERIVATION, 
+        /**
+         * A derivation for which the resulting entity is a revised version of some original.
+         */
+        REVISION, 
+        /**
+         * The repeat of (some or all of) an entity, such as text or image, by someone who might or might not be its original author.
+         */
+        QUOTATION, 
+        /**
+         * A primary source for a topic refers to something produced by some agent with direct experience and knowledge about the topic, at the time of the topic's study, without benefit from hindsight.
+         */
+        SOURCE, 
+        /**
+         * A derivation for which the entity is removed from accessibility usually through the use of the Delete operation.
+         */
+        REMOVAL, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ProvenanceEntityRole fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("derivation".equals(codeString))
+          return DERIVATION;
+        if ("revision".equals(codeString))
+          return REVISION;
+        if ("quotation".equals(codeString))
+          return QUOTATION;
+        if ("source".equals(codeString))
+          return SOURCE;
+        if ("removal".equals(codeString))
+          return REMOVAL;
+        throw new FHIRException("Unknown ProvenanceEntityRole code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case DERIVATION: return "derivation";
+            case REVISION: return "revision";
+            case QUOTATION: return "quotation";
+            case SOURCE: return "source";
+            case REMOVAL: return "removal";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/provenance-entity-role";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case DERIVATION: return "A transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity.";
+            case REVISION: return "A derivation for which the resulting entity is a revised version of some original.";
+            case QUOTATION: return "The repeat of (some or all of) an entity, such as text or image, by someone who might or might not be its original author.";
+            case SOURCE: return "A primary source for a topic refers to something produced by some agent with direct experience and knowledge about the topic, at the time of the topic's study, without benefit from hindsight.";
+            case REMOVAL: return "A derivation for which the entity is removed from accessibility usually through the use of the Delete operation.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case DERIVATION: return "Derivation";
+            case REVISION: return "Revision";
+            case QUOTATION: return "Quotation";
+            case SOURCE: return "Source";
+            case REMOVAL: return "Removal";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/provenance-entity-role";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case DERIVATION:
-      return "A transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity.";
-    case REVISION:
-      return "A derivation for which the resulting entity is a revised version of some original.";
-    case QUOTATION:
-      return "The repeat of (some or all of) an entity, such as text or image, by someone who might or might not be its original author.";
-    case SOURCE:
-      return "A primary source for a topic refers to something produced by some agent with direct experience and knowledge about the topic, at the time of the topic's study, without benefit from hindsight.";
-    case REMOVAL:
-      return "A derivation for which the entity is removed from accessibility usually through the use of the Delete operation.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case DERIVATION:
-      return "Derivation";
-    case REVISION:
-      return "Revision";
-    case QUOTATION:
-      return "Quotation";
-    case SOURCE:
-      return "Source";
-    case REMOVAL:
-      return "Removal";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

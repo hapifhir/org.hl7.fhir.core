@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MetricCalibrationType {
 
-  /**
-   * Metric calibration method has not been identified.
-   */
-  UNSPECIFIED,
-  /**
-   * Offset metric calibration method.
-   */
-  OFFSET,
-  /**
-   * Gain metric calibration method.
-   */
-  GAIN,
-  /**
-   * Two-point metric calibration method.
-   */
-  TWOPOINT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MetricCalibrationType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("unspecified".equals(codeString))
-      return UNSPECIFIED;
-    if ("offset".equals(codeString))
-      return OFFSET;
-    if ("gain".equals(codeString))
-      return GAIN;
-    if ("two-point".equals(codeString))
-      return TWOPOINT;
-    throw new FHIRException("Unknown MetricCalibrationType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case UNSPECIFIED:
-      return "unspecified";
-    case OFFSET:
-      return "offset";
-    case GAIN:
-      return "gain";
-    case TWOPOINT:
-      return "two-point";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Metric calibration method has not been identified.
+         */
+        UNSPECIFIED, 
+        /**
+         * Offset metric calibration method.
+         */
+        OFFSET, 
+        /**
+         * Gain metric calibration method.
+         */
+        GAIN, 
+        /**
+         * Two-point metric calibration method.
+         */
+        TWOPOINT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MetricCalibrationType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("unspecified".equals(codeString))
+          return UNSPECIFIED;
+        if ("offset".equals(codeString))
+          return OFFSET;
+        if ("gain".equals(codeString))
+          return GAIN;
+        if ("two-point".equals(codeString))
+          return TWOPOINT;
+        throw new FHIRException("Unknown MetricCalibrationType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case UNSPECIFIED: return "unspecified";
+            case OFFSET: return "offset";
+            case GAIN: return "gain";
+            case TWOPOINT: return "two-point";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/metric-calibration-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case UNSPECIFIED: return "Metric calibration method has not been identified.";
+            case OFFSET: return "Offset metric calibration method.";
+            case GAIN: return "Gain metric calibration method.";
+            case TWOPOINT: return "Two-point metric calibration method.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case UNSPECIFIED: return "Unspecified";
+            case OFFSET: return "Offset";
+            case GAIN: return "Gain";
+            case TWOPOINT: return "Two Point";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/metric-calibration-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case UNSPECIFIED:
-      return "Metric calibration method has not been identified.";
-    case OFFSET:
-      return "Offset metric calibration method.";
-    case GAIN:
-      return "Gain metric calibration method.";
-    case TWOPOINT:
-      return "Two-point metric calibration method.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case UNSPECIFIED:
-      return "Unspecified";
-    case OFFSET:
-      return "Offset";
-    case GAIN:
-      return "Gain";
-    case TWOPOINT:
-      return "Two Point";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

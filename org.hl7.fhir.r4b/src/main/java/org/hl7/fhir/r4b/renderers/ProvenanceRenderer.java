@@ -15,7 +15,7 @@ import org.hl7.fhir.r4b.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ProvenanceRenderer extends ResourceRenderer {
-
+  
   public ProvenanceRenderer(RenderingContext context) {
     super(context);
   }
@@ -23,7 +23,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
   public boolean render(XhtmlNode x, Resource prv) throws UnsupportedEncodingException, IOException {
     return render(x, (Provenance) prv);
   }
-
+  
   public boolean render(XhtmlNode x, Provenance prv) throws UnsupportedEncodingException, IOException {
     boolean hasExtensions = false;
 
@@ -50,7 +50,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
       if (prv.hasOccurredPeriod()) {
         renderPeriod(tr.td(), prv.getOccurredPeriod());
       } else {
-        renderDateTime(tr.td(), prv.getOccurredDateTimeType());
+        renderDateTime(tr.td(), prv.getOccurredDateTimeType());        
       }
     }
     if (prv.hasRecorded()) {
@@ -73,7 +73,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
     if (prv.hasLocation()) {
       tr = t.tr();
       tr.td().tx("Location");
-      renderReference(prv, tr.td(), prv.getLocation());
+      renderReference(prv, tr.td(), prv.getLocation());      
     }
     if (prv.hasActivity()) {
       tr = t.tr();
@@ -85,10 +85,10 @@ public class ProvenanceRenderer extends ResourceRenderer {
     boolean hasRole = false;
     boolean hasOnBehalfOf = false;
     for (ProvenanceAgentComponent a : prv.getAgent()) {
-      hasType = hasType || a.hasType();
-      hasRole = hasRole || a.hasRole();
-      hasOnBehalfOf = hasOnBehalfOf || a.hasOnBehalfOf();
-    }
+      hasType = hasType || a.hasType(); 
+      hasRole = hasRole || a.hasRole(); 
+      hasOnBehalfOf = hasOnBehalfOf || a.hasOnBehalfOf(); 
+    }    
     x.para().b().tx("Agents");
     t = x.table("grid");
     tr = t.tr();
@@ -106,11 +106,11 @@ public class ProvenanceRenderer extends ResourceRenderer {
       tr = t.tr();
       if (hasType) {
         if (a.hasType()) {
-          renderCodeableConcept(tr.td(), a.getType(), false);
+          renderCodeableConcept(tr.td(), a.getType(), false);         
         } else {
           tr.td();
         }
-      }
+      }        
       if (hasRole) {
         if (a.hasRole()) {
           if (a.getRole().size() == 1) {
@@ -126,13 +126,13 @@ public class ProvenanceRenderer extends ResourceRenderer {
         }
       }
       if (a.hasWho()) {
-        renderReference(prv, tr.td(), a.getWho());
+        renderReference(prv, tr.td(), a.getWho());         
       } else {
         tr.td();
       }
       if (hasOnBehalfOf) {
         if (a.hasOnBehalfOf()) {
-          renderReference(prv, tr.td(), a.getOnBehalfOf());
+          renderReference(prv, tr.td(), a.getOnBehalfOf());         
         } else {
           tr.td();
         }
@@ -140,7 +140,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
     }
     // agent table
 
-    return hasExtensions;
+    return hasExtensions; 
   }
 
   public String display(Resource dr) throws UnsupportedEncodingException, IOException {
@@ -148,9 +148,9 @@ public class ProvenanceRenderer extends ResourceRenderer {
   }
 
   public String display(Provenance prv) throws UnsupportedEncodingException, IOException {
-    return "Provenance for " + displayReference(prv, prv.getTargetFirstRep());
+    return "Provenance for "+displayReference(prv, prv.getTargetFirstRep());
   }
-
+ 
   @Override
   public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return "Not done yet";

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,149 +34,113 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum TaskPerformerType {
 
-  /**
-   * A workflow participant that requests services.
-   */
-  REQUESTER,
-  /**
-   * A workflow participant that dispatches services (assigns another task to a
-   * participant).
-   */
-  DISPATCHER,
-  /**
-   * A workflow participant that schedules (dispatches and sets the time or date
-   * for performance of) services.
-   */
-  SCHEDULER,
-  /**
-   * A workflow participant that performs services.
-   */
-  PERFORMER,
-  /**
-   * A workflow participant that monitors task activity.
-   */
-  MONITOR,
-  /**
-   * A workflow participant that manages task activity.
-   */
-  MANAGER,
-  /**
-   * A workflow participant that acquires resources (specimens, images, etc)
-   * necessary to perform the task.
-   */
-  ACQUIRER,
-  /**
-   * A workflow participant that reviews task inputs or outputs.
-   */
-  REVIEWER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static TaskPerformerType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("requester".equals(codeString))
-      return REQUESTER;
-    if ("dispatcher".equals(codeString))
-      return DISPATCHER;
-    if ("scheduler".equals(codeString))
-      return SCHEDULER;
-    if ("performer".equals(codeString))
-      return PERFORMER;
-    if ("monitor".equals(codeString))
-      return MONITOR;
-    if ("manager".equals(codeString))
-      return MANAGER;
-    if ("acquirer".equals(codeString))
-      return ACQUIRER;
-    if ("reviewer".equals(codeString))
-      return REVIEWER;
-    throw new FHIRException("Unknown TaskPerformerType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case REQUESTER:
-      return "requester";
-    case DISPATCHER:
-      return "dispatcher";
-    case SCHEDULER:
-      return "scheduler";
-    case PERFORMER:
-      return "performer";
-    case MONITOR:
-      return "monitor";
-    case MANAGER:
-      return "manager";
-    case ACQUIRER:
-      return "acquirer";
-    case REVIEWER:
-      return "reviewer";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A workflow participant that requests services.
+         */
+        REQUESTER, 
+        /**
+         * A workflow participant that dispatches services (assigns another task to a participant).
+         */
+        DISPATCHER, 
+        /**
+         * A workflow participant that schedules (dispatches and sets the time or date for performance of) services.
+         */
+        SCHEDULER, 
+        /**
+         * A workflow participant that performs services.
+         */
+        PERFORMER, 
+        /**
+         * A workflow participant that monitors task activity.
+         */
+        MONITOR, 
+        /**
+         * A workflow participant that manages task activity.
+         */
+        MANAGER, 
+        /**
+         * A workflow participant that acquires resources (specimens, images, etc) necessary to perform the task.
+         */
+        ACQUIRER, 
+        /**
+         * A workflow participant that reviews task inputs or outputs.
+         */
+        REVIEWER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static TaskPerformerType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("requester".equals(codeString))
+          return REQUESTER;
+        if ("dispatcher".equals(codeString))
+          return DISPATCHER;
+        if ("scheduler".equals(codeString))
+          return SCHEDULER;
+        if ("performer".equals(codeString))
+          return PERFORMER;
+        if ("monitor".equals(codeString))
+          return MONITOR;
+        if ("manager".equals(codeString))
+          return MANAGER;
+        if ("acquirer".equals(codeString))
+          return ACQUIRER;
+        if ("reviewer".equals(codeString))
+          return REVIEWER;
+        throw new FHIRException("Unknown TaskPerformerType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case REQUESTER: return "requester";
+            case DISPATCHER: return "dispatcher";
+            case SCHEDULER: return "scheduler";
+            case PERFORMER: return "performer";
+            case MONITOR: return "monitor";
+            case MANAGER: return "manager";
+            case ACQUIRER: return "acquirer";
+            case REVIEWER: return "reviewer";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/task-performer-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case REQUESTER: return "A workflow participant that requests services.";
+            case DISPATCHER: return "A workflow participant that dispatches services (assigns another task to a participant).";
+            case SCHEDULER: return "A workflow participant that schedules (dispatches and sets the time or date for performance of) services.";
+            case PERFORMER: return "A workflow participant that performs services.";
+            case MONITOR: return "A workflow participant that monitors task activity.";
+            case MANAGER: return "A workflow participant that manages task activity.";
+            case ACQUIRER: return "A workflow participant that acquires resources (specimens, images, etc) necessary to perform the task.";
+            case REVIEWER: return "A workflow participant that reviews task inputs or outputs.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case REQUESTER: return "Requester";
+            case DISPATCHER: return "Dispatcher";
+            case SCHEDULER: return "Scheduler";
+            case PERFORMER: return "Performer";
+            case MONITOR: return "Monitor";
+            case MANAGER: return "Manager";
+            case ACQUIRER: return "Acquirer";
+            case REVIEWER: return "Reviewer";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/task-performer-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case REQUESTER:
-      return "A workflow participant that requests services.";
-    case DISPATCHER:
-      return "A workflow participant that dispatches services (assigns another task to a participant).";
-    case SCHEDULER:
-      return "A workflow participant that schedules (dispatches and sets the time or date for performance of) services.";
-    case PERFORMER:
-      return "A workflow participant that performs services.";
-    case MONITOR:
-      return "A workflow participant that monitors task activity.";
-    case MANAGER:
-      return "A workflow participant that manages task activity.";
-    case ACQUIRER:
-      return "A workflow participant that acquires resources (specimens, images, etc) necessary to perform the task.";
-    case REVIEWER:
-      return "A workflow participant that reviews task inputs or outputs.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case REQUESTER:
-      return "Requester";
-    case DISPATCHER:
-      return "Dispatcher";
-    case SCHEDULER:
-      return "Scheduler";
-    case PERFORMER:
-      return "Performer";
-    case MONITOR:
-      return "Monitor";
-    case MANAGER:
-      return "Manager";
-    case ACQUIRER:
-      return "Acquirer";
-    case REVIEWER:
-      return "Reviewer";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

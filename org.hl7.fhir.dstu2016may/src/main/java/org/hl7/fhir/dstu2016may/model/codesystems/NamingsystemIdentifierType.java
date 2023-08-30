@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,101 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NamingsystemIdentifierType {
 
-  /**
-   * An ISO object identifier; e.g. 1.2.3.4.5.
-   */
-  OID,
-  /**
-   * A universally unique identifier of the form
-   * a5afddf4-e880-459b-876e-e4591b0acc11.
-   */
-  UUID,
-  /**
-   * A uniform resource identifier (ideally a URL - uniform resource locator);
-   * e.g. http://unitsofmeasure.org.
-   */
-  URI,
-  /**
-   * Some other type of unique identifier; e.g. HL7-assigned reserved string such
-   * as LN for LOINC.
-   */
-  OTHER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static NamingsystemIdentifierType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("oid".equals(codeString))
-      return OID;
-    if ("uuid".equals(codeString))
-      return UUID;
-    if ("uri".equals(codeString))
-      return URI;
-    if ("other".equals(codeString))
-      return OTHER;
-    throw new FHIRException("Unknown NamingsystemIdentifierType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case OID:
-      return "oid";
-    case UUID:
-      return "uuid";
-    case URI:
-      return "uri";
-    case OTHER:
-      return "other";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * An ISO object identifier; e.g. 1.2.3.4.5.
+         */
+        OID, 
+        /**
+         * A universally unique identifier of the form a5afddf4-e880-459b-876e-e4591b0acc11.
+         */
+        UUID, 
+        /**
+         * A uniform resource identifier (ideally a URL - uniform resource locator); e.g. http://unitsofmeasure.org.
+         */
+        URI, 
+        /**
+         * Some other type of unique identifier; e.g. HL7-assigned reserved string such as LN for LOINC.
+         */
+        OTHER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static NamingsystemIdentifierType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("oid".equals(codeString))
+          return OID;
+        if ("uuid".equals(codeString))
+          return UUID;
+        if ("uri".equals(codeString))
+          return URI;
+        if ("other".equals(codeString))
+          return OTHER;
+        throw new FHIRException("Unknown NamingsystemIdentifierType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case OID: return "oid";
+            case UUID: return "uuid";
+            case URI: return "uri";
+            case OTHER: return "other";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/namingsystem-identifier-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case OID: return "An ISO object identifier; e.g. 1.2.3.4.5.";
+            case UUID: return "A universally unique identifier of the form a5afddf4-e880-459b-876e-e4591b0acc11.";
+            case URI: return "A uniform resource identifier (ideally a URL - uniform resource locator); e.g. http://unitsofmeasure.org.";
+            case OTHER: return "Some other type of unique identifier; e.g. HL7-assigned reserved string such as LN for LOINC.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case OID: return "OID";
+            case UUID: return "UUID";
+            case URI: return "URI";
+            case OTHER: return "Other";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/namingsystem-identifier-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case OID:
-      return "An ISO object identifier; e.g. 1.2.3.4.5.";
-    case UUID:
-      return "A universally unique identifier of the form a5afddf4-e880-459b-876e-e4591b0acc11.";
-    case URI:
-      return "A uniform resource identifier (ideally a URL - uniform resource locator); e.g. http://unitsofmeasure.org.";
-    case OTHER:
-      return "Some other type of unique identifier; e.g. HL7-assigned reserved string such as LN for LOINC.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case OID:
-      return "OID";
-    case UUID:
-      return "UUID";
-    case URI:
-      return "URI";
-    case OTHER:
-      return "Other";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

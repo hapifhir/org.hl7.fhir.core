@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class CoverageSelfpayEnumFactory implements EnumFactory<CoverageSelfpay> {
@@ -40,7 +44,7 @@ public class CoverageSelfpayEnumFactory implements EnumFactory<CoverageSelfpay> 
       return null;
     if ("pay".equals(codeString))
       return CoverageSelfpay.PAY;
-    throw new IllegalArgumentException("Unknown CoverageSelfpay code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown CoverageSelfpay code '"+codeString+"'");
   }
 
   public String toCode(CoverageSelfpay code) {
@@ -49,8 +53,8 @@ public class CoverageSelfpayEnumFactory implements EnumFactory<CoverageSelfpay> 
     return "?";
   }
 
-  public String toSystem(CoverageSelfpay code) {
-    return code.getSystem();
-  }
+    public String toSystem(CoverageSelfpay code) {
+      return code.getSystem();
+      }
 
 }

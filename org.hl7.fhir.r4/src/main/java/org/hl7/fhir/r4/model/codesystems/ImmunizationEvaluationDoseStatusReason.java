@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,114 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ImmunizationEvaluationDoseStatusReason {
 
-  /**
-   * The product was stored in a manner inconsistent with manufacturer guidelines
-   * potentially reducing the effectiveness of the product.
-   */
-  ADVSTORAGE,
-  /**
-   * The product was stored at a temperature inconsistent with manufacturer
-   * guidelines potentially reducing the effectiveness of the product.
-   */
-  COLDCHBRK,
-  /**
-   * The product was administered after the expiration date associated with lot of
-   * vaccine.
-   */
-  EXPLOT,
-  /**
-   * The product was administered at a time inconsistent with the documented
-   * schedule.
-   */
-  OUTSIDESCHED,
-  /**
-   * The product administered has been recalled by the manufacturer.
-   */
-  PRODRECALL,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ImmunizationEvaluationDoseStatusReason fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("advstorage".equals(codeString))
-      return ADVSTORAGE;
-    if ("coldchbrk".equals(codeString))
-      return COLDCHBRK;
-    if ("explot".equals(codeString))
-      return EXPLOT;
-    if ("outsidesched".equals(codeString))
-      return OUTSIDESCHED;
-    if ("prodrecall".equals(codeString))
-      return PRODRECALL;
-    throw new FHIRException("Unknown ImmunizationEvaluationDoseStatusReason code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ADVSTORAGE:
-      return "advstorage";
-    case COLDCHBRK:
-      return "coldchbrk";
-    case EXPLOT:
-      return "explot";
-    case OUTSIDESCHED:
-      return "outsidesched";
-    case PRODRECALL:
-      return "prodrecall";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The product was stored in a manner inconsistent with manufacturer guidelines potentially reducing the effectiveness of the product.
+         */
+        ADVSTORAGE, 
+        /**
+         * The product was stored at a temperature inconsistent with manufacturer guidelines potentially reducing the effectiveness of the product.
+         */
+        COLDCHBRK, 
+        /**
+         * The product was administered after the expiration date associated with lot of vaccine.
+         */
+        EXPLOT, 
+        /**
+         * The product was administered at a time inconsistent with the documented schedule.
+         */
+        OUTSIDESCHED, 
+        /**
+         * The product administered has been recalled by the manufacturer.
+         */
+        PRODRECALL, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ImmunizationEvaluationDoseStatusReason fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("advstorage".equals(codeString))
+          return ADVSTORAGE;
+        if ("coldchbrk".equals(codeString))
+          return COLDCHBRK;
+        if ("explot".equals(codeString))
+          return EXPLOT;
+        if ("outsidesched".equals(codeString))
+          return OUTSIDESCHED;
+        if ("prodrecall".equals(codeString))
+          return PRODRECALL;
+        throw new FHIRException("Unknown ImmunizationEvaluationDoseStatusReason code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ADVSTORAGE: return "advstorage";
+            case COLDCHBRK: return "coldchbrk";
+            case EXPLOT: return "explot";
+            case OUTSIDESCHED: return "outsidesched";
+            case PRODRECALL: return "prodrecall";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status-reason";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ADVSTORAGE: return "The product was stored in a manner inconsistent with manufacturer guidelines potentially reducing the effectiveness of the product.";
+            case COLDCHBRK: return "The product was stored at a temperature inconsistent with manufacturer guidelines potentially reducing the effectiveness of the product.";
+            case EXPLOT: return "The product was administered after the expiration date associated with lot of vaccine.";
+            case OUTSIDESCHED: return "The product was administered at a time inconsistent with the documented schedule.";
+            case PRODRECALL: return "The product administered has been recalled by the manufacturer.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ADVSTORAGE: return "Adverse storage condition";
+            case COLDCHBRK: return "Cold chain break";
+            case EXPLOT: return "Expired lot";
+            case OUTSIDESCHED: return "Administered outside recommended schedule";
+            case PRODRECALL: return "Product recall";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status-reason";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ADVSTORAGE:
-      return "The product was stored in a manner inconsistent with manufacturer guidelines potentially reducing the effectiveness of the product.";
-    case COLDCHBRK:
-      return "The product was stored at a temperature inconsistent with manufacturer guidelines potentially reducing the effectiveness of the product.";
-    case EXPLOT:
-      return "The product was administered after the expiration date associated with lot of vaccine.";
-    case OUTSIDESCHED:
-      return "The product was administered at a time inconsistent with the documented schedule.";
-    case PRODRECALL:
-      return "The product administered has been recalled by the manufacturer.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ADVSTORAGE:
-      return "Adverse storage condition";
-    case COLDCHBRK:
-      return "Cold chain break";
-    case EXPLOT:
-      return "Expired lot";
-    case OUTSIDESCHED:
-      return "Administered outside recommended schedule";
-    case PRODRECALL:
-      return "Product recall";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

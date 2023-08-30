@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum DocumentMode {
 
-  /**
-   * The application produces documents of the specified type.
-   */
-  PRODUCER,
-  /**
-   * The application consumes documents of the specified type.
-   */
-  CONSUMER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static DocumentMode fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("producer".equals(codeString))
-      return PRODUCER;
-    if ("consumer".equals(codeString))
-      return CONSUMER;
-    throw new FHIRException("Unknown DocumentMode code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PRODUCER:
-      return "producer";
-    case CONSUMER:
-      return "consumer";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The application produces documents of the specified type.
+         */
+        PRODUCER, 
+        /**
+         * The application consumes documents of the specified type.
+         */
+        CONSUMER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static DocumentMode fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("producer".equals(codeString))
+          return PRODUCER;
+        if ("consumer".equals(codeString))
+          return CONSUMER;
+        throw new FHIRException("Unknown DocumentMode code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PRODUCER: return "producer";
+            case CONSUMER: return "consumer";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/document-mode";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PRODUCER: return "The application produces documents of the specified type.";
+            case CONSUMER: return "The application consumes documents of the specified type.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PRODUCER: return "Producer";
+            case CONSUMER: return "Consumer";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/document-mode";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PRODUCER:
-      return "The application produces documents of the specified type.";
-    case CONSUMER:
-      return "The application consumes documents of the specified type.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PRODUCER:
-      return "Producer";
-    case CONSUMER:
-      return "Consumer";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

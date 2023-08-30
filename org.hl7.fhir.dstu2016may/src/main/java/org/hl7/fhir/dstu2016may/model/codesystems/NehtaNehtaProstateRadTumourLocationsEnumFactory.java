@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,17 +34,17 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
-public class NehtaNehtaProstateRadTumourLocationsEnumFactory
-    implements EnumFactory<NehtaNehtaProstateRadTumourLocations> {
+public class NehtaNehtaProstateRadTumourLocationsEnumFactory implements EnumFactory<NehtaNehtaProstateRadTumourLocations> {
 
   public NehtaNehtaProstateRadTumourLocations fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
       return null;
     if ("other".equals(codeString))
       return NehtaNehtaProstateRadTumourLocations.OTHER;
-    throw new IllegalArgumentException("Unknown NehtaNehtaProstateRadTumourLocations code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown NehtaNehtaProstateRadTumourLocations code '"+codeString+"'");
   }
 
   public String toCode(NehtaNehtaProstateRadTumourLocations code) {
@@ -50,8 +53,8 @@ public class NehtaNehtaProstateRadTumourLocationsEnumFactory
     return "?";
   }
 
-  public String toSystem(NehtaNehtaProstateRadTumourLocations code) {
-    return code.getSystem();
-  }
+    public String toSystem(NehtaNehtaProstateRadTumourLocations code) {
+      return code.getSystem();
+      }
 
 }

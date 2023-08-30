@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcAbnIntNumericNom {
 
-  /**
-   * The results were lower than the technical limits of the test procedure
-   */
-  HIGHER,
-  /**
-   * The results were higher than the technical limits of the test procedure
-   */
-  LOWER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static HspcAbnIntNumericNom fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("higher".equals(codeString))
-      return HIGHER;
-    if ("lower".equals(codeString))
-      return LOWER;
-    throw new FHIRException("Unknown HspcAbnIntNumericNom code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case HIGHER:
-      return "higher";
-    case LOWER:
-      return "lower";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The results were lower than the technical limits of the test procedure
+         */
+        HIGHER, 
+        /**
+         * The results were higher than the technical limits of the test procedure
+         */
+        LOWER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static HspcAbnIntNumericNom fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("higher".equals(codeString))
+          return HIGHER;
+        if ("lower".equals(codeString))
+          return LOWER;
+        throw new FHIRException("Unknown HspcAbnIntNumericNom code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case HIGHER: return "higher";
+            case LOWER: return "lower";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://healthcaresoa.org/fhir/hspc-abnInt-NumericNom";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case HIGHER: return "The results were lower than the technical limits of the test procedure";
+            case LOWER: return "The results were higher than the technical limits of the test procedure";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case HIGHER: return "Higher than technical";
+            case LOWER: return "Lower than technical";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://healthcaresoa.org/fhir/hspc-abnInt-NumericNom";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case HIGHER:
-      return "The results were lower than the technical limits of the test procedure";
-    case LOWER:
-      return "The results were higher than the technical limits of the test procedure";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case HIGHER:
-      return "Higher than technical";
-    case LOWER:
-      return "Lower than technical";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

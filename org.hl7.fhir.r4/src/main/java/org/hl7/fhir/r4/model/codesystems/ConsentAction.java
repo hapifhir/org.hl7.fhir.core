@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,112 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConsentAction {
 
-  /**
-   * Gather retrieved information for storage
-   */
-  COLLECT,
-  /**
-   * Retrieval without permitting collection, use or disclosure. e.g., no
-   * screen-scraping for collection, use or disclosure (view-only access)
-   */
-  ACCESS,
-  /**
-   * Utilize the retrieved information
-   */
-  USE,
-  /**
-   * Transfer retrieved information
-   */
-  DISCLOSE,
-  /**
-   * Allow retrieval of a patient's information for the purpose of update or
-   * rectify
-   */
-  CORRECT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ConsentAction fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("collect".equals(codeString))
-      return COLLECT;
-    if ("access".equals(codeString))
-      return ACCESS;
-    if ("use".equals(codeString))
-      return USE;
-    if ("disclose".equals(codeString))
-      return DISCLOSE;
-    if ("correct".equals(codeString))
-      return CORRECT;
-    throw new FHIRException("Unknown ConsentAction code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case COLLECT:
-      return "collect";
-    case ACCESS:
-      return "access";
-    case USE:
-      return "use";
-    case DISCLOSE:
-      return "disclose";
-    case CORRECT:
-      return "correct";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Gather retrieved information for storage
+         */
+        COLLECT, 
+        /**
+         * Retrieval without permitting collection, use or disclosure. e.g., no screen-scraping for collection, use or disclosure (view-only access)
+         */
+        ACCESS, 
+        /**
+         * Utilize the retrieved information
+         */
+        USE, 
+        /**
+         * Transfer retrieved information
+         */
+        DISCLOSE, 
+        /**
+         * Allow retrieval of a patient's information for the purpose of update or rectify
+         */
+        CORRECT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ConsentAction fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("collect".equals(codeString))
+          return COLLECT;
+        if ("access".equals(codeString))
+          return ACCESS;
+        if ("use".equals(codeString))
+          return USE;
+        if ("disclose".equals(codeString))
+          return DISCLOSE;
+        if ("correct".equals(codeString))
+          return CORRECT;
+        throw new FHIRException("Unknown ConsentAction code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case COLLECT: return "collect";
+            case ACCESS: return "access";
+            case USE: return "use";
+            case DISCLOSE: return "disclose";
+            case CORRECT: return "correct";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/consentaction";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case COLLECT: return "Gather retrieved information for storage";
+            case ACCESS: return "Retrieval without permitting collection, use or disclosure. e.g., no screen-scraping for collection, use or disclosure (view-only access)";
+            case USE: return "Utilize the retrieved information";
+            case DISCLOSE: return "Transfer retrieved information";
+            case CORRECT: return "Allow retrieval of a patient's information for the purpose of update or rectify";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case COLLECT: return "Collect";
+            case ACCESS: return "Access";
+            case USE: return "Use";
+            case DISCLOSE: return "Disclose";
+            case CORRECT: return "Access and Correct";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/consentaction";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case COLLECT:
-      return "Gather retrieved information for storage";
-    case ACCESS:
-      return "Retrieval without permitting collection, use or disclosure. e.g., no screen-scraping for collection, use or disclosure (view-only access)";
-    case USE:
-      return "Utilize the retrieved information";
-    case DISCLOSE:
-      return "Transfer retrieved information";
-    case CORRECT:
-      return "Allow retrieval of a patient's information for the purpose of update or rectify";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case COLLECT:
-      return "Collect";
-    case ACCESS:
-      return "Access";
-    case USE:
-      return "Use";
-    case DISCLOSE:
-      return "Disclose";
-    case CORRECT:
-      return "Access and Correct";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

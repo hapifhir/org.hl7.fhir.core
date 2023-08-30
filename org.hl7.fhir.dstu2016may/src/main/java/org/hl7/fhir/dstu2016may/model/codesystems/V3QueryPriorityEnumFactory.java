@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class V3QueryPriorityEnumFactory implements EnumFactory<V3QueryPriority> {
@@ -42,7 +46,7 @@ public class V3QueryPriorityEnumFactory implements EnumFactory<V3QueryPriority> 
       return V3QueryPriority.D;
     if ("I".equals(codeString))
       return V3QueryPriority.I;
-    throw new IllegalArgumentException("Unknown V3QueryPriority code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3QueryPriority code '"+codeString+"'");
   }
 
   public String toCode(V3QueryPriority code) {
@@ -53,8 +57,8 @@ public class V3QueryPriorityEnumFactory implements EnumFactory<V3QueryPriority> 
     return "?";
   }
 
-  public String toSystem(V3QueryPriority code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3QueryPriority code) {
+      return code.getSystem();
+      }
 
 }

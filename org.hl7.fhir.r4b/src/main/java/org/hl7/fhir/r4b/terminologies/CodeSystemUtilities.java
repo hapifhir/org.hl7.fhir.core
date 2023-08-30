@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.terminologies;
   
  */
 
+
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -156,9 +158,10 @@ public class CodeSystemUtilities {
     }
   }
 
+
   public static boolean isNotSelectable(CodeSystem cs, ConceptDefinitionComponent def) {
     for (ConceptPropertyComponent p : def.getProperty()) {
-      if ("notSelectable".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType)
+      if ("notSelectable".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
         return ((BooleanType) p.getValue()).getValue();
     }
     return false;
@@ -170,81 +173,65 @@ public class CodeSystemUtilities {
     if (p != null)
       p.setValue(new BooleanType(true));
     else
-      concept.addProperty().setCode("notSelectable").setValue(new BooleanType(true));
+      concept.addProperty().setCode("notSelectable").setValue(new BooleanType(true));    
   }
 
   public static void defineNotSelectableProperty(CodeSystem cs) {
-    defineCodeSystemProperty(cs, "notSelectable",
-        "Indicates that the code is abstract - only intended to be used as a selector for other concepts",
-        PropertyType.BOOLEAN);
+    defineCodeSystemProperty(cs, "notSelectable", "Indicates that the code is abstract - only intended to be used as a selector for other concepts", PropertyType.BOOLEAN);
   }
+
 
   public enum ConceptStatus {
     Active, Experimental, Deprecated, Retired;
 
     public String toCode() {
       switch (this) {
-      case Active:
-        return "active";
-      case Experimental:
-        return "experimental";
-      case Deprecated:
-        return "deprecated";
-      case Retired:
-        return "retired";
-      default:
-        return null;
+      case Active: return "active";
+      case Experimental: return "experimental";
+      case Deprecated: return "deprecated";
+      case Retired: return "retired";
+      default: return null;
       }
     }
   }
 
-  public static void setStatus(CodeSystem cs, ConceptDefinitionComponent concept, ConceptStatus status)
-      throws FHIRFormatError {
+  public static void setStatus(CodeSystem cs, ConceptDefinitionComponent concept, ConceptStatus status) throws FHIRFormatError {
     defineStatusProperty(cs);
     ConceptPropertyComponent p = getProperty(concept, "status");
     if (p != null)
       p.setValue(new CodeType(status.toCode()));
     else
-      concept.addProperty().setCode("status").setValue(new CodeType(status.toCode()));
+      concept.addProperty().setCode("status").setValue(new CodeType(status.toCode()));    
   }
 
   public static void defineStatusProperty(CodeSystem cs) {
-    defineCodeSystemProperty(cs, "status",
-        "A property that indicates the status of the concept. One of active, experimental, deprecated, retired",
-        PropertyType.CODE);
+    defineCodeSystemProperty(cs, "status", "A property that indicates the status of the concept. One of active, experimental, deprecated, retired", PropertyType.CODE);
   }
 
   private static void defineDeprecatedProperty(CodeSystem cs) {
-    defineCodeSystemProperty(cs, "deprecationDate",
-        "The date at which a concept was deprecated. Concepts that are deprecated but not inactive can still be used, but their use is discouraged",
-        PropertyType.DATETIME);
+    defineCodeSystemProperty(cs, "deprecationDate", "The date at which a concept was deprecated. Concepts that are deprecated but not inactive can still be used, but their use is discouraged", PropertyType.DATETIME);
   }
 
   public static void defineParentProperty(CodeSystem cs) {
-    defineCodeSystemProperty(cs, "parent",
-        "The concept identified in this property is a parent of the concept on which it is a property. The property type will be 'code'. The meaning of parent/child relationships is defined by the hierarchyMeaning attribute",
-        PropertyType.CODE);
+    defineCodeSystemProperty(cs, "parent", "The concept identified in this property is a parent of the concept on which it is a property. The property type will be 'code'. The meaning of parent/child relationships is defined by the hierarchyMeaning attribute", PropertyType.CODE);
   }
 
   public static void defineChildProperty(CodeSystem cs) {
-    defineCodeSystemProperty(cs, "child",
-        "The concept identified in this property is a child of the concept on which it is a property. The property type will be 'code'. The meaning of parent/child relationships is defined by the hierarchyMeaning attribute",
-        PropertyType.CODE);
+    defineCodeSystemProperty(cs, "child", "The concept identified in this property is a child of the concept on which it is a property. The property type will be 'code'. The meaning of parent/child relationships is defined by the hierarchyMeaning attribute", PropertyType.CODE);
   }
 
-  public static boolean isDeprecated(CodeSystem cs, ConceptDefinitionComponent def, boolean ignoreStatus) {
+  public static boolean isDeprecated(CodeSystem cs, ConceptDefinitionComponent def, boolean ignoreStatus)  {
     try {
       for (ConceptPropertyComponent p : def.getProperty()) {
         if (!ignoreStatus) {
-          if ("status".equals(p.getCode()) && p.hasValue() && p.hasValueCodeType()
-              && "deprecated".equals(p.getValueCodeType().getCode()))
+          if ("status".equals(p.getCode()) && p.hasValue() && p.hasValueCodeType() && "deprecated".equals(p.getValueCodeType().getCode()))
             return true;
         }
         // this, though status should also be set
-        if ("deprecationDate".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof DateTimeType)
+        if ("deprecationDate".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof DateTimeType) 
           return ((DateTimeType) p.getValue()).before(new DateTimeType(Calendar.getInstance()));
-        // legacy
-        if ("deprecated".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType)
+        // legacy  
+        if ("deprecated".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
           return ((BooleanType) p.getValue()).getValue();
       }
       return false;
@@ -253,21 +240,20 @@ public class CodeSystemUtilities {
     }
   }
 
-  public static void setDeprecated(CodeSystem cs, ConceptDefinitionComponent concept, DateTimeType date)
-      throws FHIRFormatError {
+  public static void setDeprecated(CodeSystem cs, ConceptDefinitionComponent concept, DateTimeType date) throws FHIRFormatError {
     setStatus(cs, concept, ConceptStatus.Deprecated);
     defineDeprecatedProperty(cs);
-    concept.addProperty().setCode("deprecationDate").setValue(date);
+    concept.addProperty().setCode("deprecationDate").setValue(date);    
   }
-
+  
   public static boolean isInactive(CodeSystem cs, ConceptDefinitionComponent def) throws FHIRException {
     for (ConceptPropertyComponent p : def.getProperty()) {
-      if ("status".equals(p.getCode()) && p.hasValueStringType())
+      if ("status".equals(p.getCode()) && p.hasValueStringType()) 
         return "inactive".equals(p.getValueStringType());
     }
     return false;
   }
-
+  
   public static boolean isInactive(CodeSystem cs, String code) throws FHIRException {
     ConceptDefinitionComponent def = findCode(cs.getConcept(), code);
     if (def == null)
@@ -280,8 +266,7 @@ public class CodeSystemUtilities {
       if (p.getCode().equals(code))
         return;
     }
-    cs.addProperty().setCode(code).setDescription(description).setType(type)
-        .setUri("http://hl7.org/fhir/concept-properties#" + code);
+    cs.addProperty().setCode(code).setDescription(description).setType(type).setUri("http://hl7.org/fhir/concept-properties#"+code);
   }
 
   public static String getCodeDefinition(CodeSystem cs, String code) {
@@ -290,7 +275,7 @@ public class CodeSystemUtilities {
 
   private static String getCodeDefinition(List<ConceptDefinitionComponent> list, String code) {
     for (ConceptDefinitionComponent c : list) {
-      if (c.hasCode() && c.getCode().equals(code))
+      if (c.hasCode() &&  c.getCode().equals(code))
         return c.getDefinition();
       String s = getCodeDefinition(c.getConcept(), code);
       if (s != null)
@@ -306,7 +291,7 @@ public class CodeSystemUtilities {
 
     if (!cs.hasMeta())
       cs.setMeta(new Meta());
-    for (UriType t : cs.getMeta().getProfile())
+    for (UriType t : cs.getMeta().getProfile()) 
       if ("http://hl7.org/fhir/StructureDefinition/shareablecodesystem".equals(t.getValue()))
         return cs;
     cs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablecodesystem"));
@@ -316,7 +301,7 @@ public class CodeSystemUtilities {
   public static boolean makeCSShareable(CodeSystem cs) {
     if (!cs.hasMeta())
       cs.setMeta(new Meta());
-    for (UriType t : cs.getMeta().getProfile())
+    for (UriType t : cs.getMeta().getProfile()) 
       if ("http://hl7.org/fhir/StructureDefinition/shareablecodesystem".equals(t.getValue()))
         return false;
     cs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablecodesystem"));
@@ -325,15 +310,14 @@ public class CodeSystemUtilities {
 
   public static void setOID(CodeSystem cs, String oid) {
     if (!oid.startsWith("urn:oid:"))
-      oid = "urn:oid:" + oid;
+       oid = "urn:oid:" + oid;
     if (!cs.hasIdentifier())
       cs.addIdentifier(new Identifier().setSystem("urn:ietf:rfc:3986").setValue(oid));
-    else if ("urn:ietf:rfc:3986".equals(cs.getIdentifierFirstRep().getSystem()) && cs.getIdentifierFirstRep().hasValue()
-        && cs.getIdentifierFirstRep().getValue().startsWith("urn:oid:"))
+    else if ("urn:ietf:rfc:3986".equals(cs.getIdentifierFirstRep().getSystem()) && cs.getIdentifierFirstRep().hasValue() && cs.getIdentifierFirstRep().getValue().startsWith("urn:oid:"))
       cs.getIdentifierFirstRep().setValue(oid);
     else
       throw new Error("unable to set OID on code system");
-
+    
   }
 
   public static boolean hasOID(CanonicalResource cs) {
@@ -341,9 +325,8 @@ public class CodeSystemUtilities {
   }
 
   public static String getOID(CanonicalResource cs) {
-    if (cs.hasIdentifier() && "urn:ietf:rfc:3986".equals(cs.getIdentifierFirstRep().getSystem())
-        && cs.getIdentifierFirstRep().hasValue() && cs.getIdentifierFirstRep().getValue().startsWith("urn:oid:"))
-      return cs.getIdentifierFirstRep().getValue().substring(8);
+    if (cs.hasIdentifier() && "urn:ietf:rfc:3986".equals(cs.getIdentifierFirstRep().getSystem()) && cs.getIdentifierFirstRep().hasValue() && cs.getIdentifierFirstRep().getValue().startsWith("urn:oid:"))
+        return cs.getIdentifierFirstRep().getValue().substring(8);
     return null;
   }
 
@@ -358,26 +341,23 @@ public class CodeSystemUtilities {
     return null;
   }
 
-  public static void markStatus(CodeSystem cs, String wg, StandardsStatus status, String pckage, String fmm,
-      String normativeVersion) throws FHIRException {
+  public static void markStatus(CodeSystem cs, String wg, StandardsStatus status, String pckage, String fmm, String normativeVersion) throws FHIRException {
     if (wg != null) {
-      if (!ToolingExtensions.hasExtension(cs, ToolingExtensions.EXT_WORKGROUP)
-          || (Utilities.existsInList(ToolingExtensions.readStringExtension(cs, ToolingExtensions.EXT_WORKGROUP), "fhir",
-              "vocab") && !Utilities.existsInList(wg, "fhir", "vocab"))) {
+      if (!ToolingExtensions.hasExtension(cs, ToolingExtensions.EXT_WORKGROUP) || 
+          (Utilities.existsInList(ToolingExtensions.readStringExtension(cs, ToolingExtensions.EXT_WORKGROUP), "fhir", "vocab") && !Utilities.existsInList(wg, "fhir", "vocab"))) {
         ToolingExtensions.setCodeExtension(cs, ToolingExtensions.EXT_WORKGROUP, wg);
       }
     }
     if (status != null) {
       StandardsStatus ss = ToolingExtensions.getStandardsStatus(cs);
-      if (ss == null || ss.isLowerThan(status))
+      if (ss == null || ss.isLowerThan(status)) 
         ToolingExtensions.setStandardsStatus(cs, status, normativeVersion);
       if (pckage != null) {
         if (!cs.hasUserData("ballot.package"))
           cs.setUserData("ballot.package", pckage);
         else if (!pckage.equals(cs.getUserString("ballot.package")))
           if (!"infrastructure".equals(cs.getUserString("ballot.package")))
-            System.out.println("Code System " + cs.getUrl() + ": ownership clash " + pckage + " vs "
-                + cs.getUserString("ballot.package"));
+            System.out.println("Code System "+cs.getUrl()+": ownership clash "+pckage+" vs "+cs.getUserString("ballot.package"));
       }
       if (status == StandardsStatus.NORMATIVE) {
         cs.setExperimental(false);
@@ -386,7 +366,7 @@ public class CodeSystemUtilities {
     }
     if (fmm != null) {
       String sfmm = ToolingExtensions.readStringExtension(cs, ToolingExtensions.EXT_FMM_LEVEL);
-      if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm)) {
+      if (Utilities.noString(sfmm) || Integer.parseInt(sfmm) < Integer.parseInt(fmm)) { 
         ToolingExtensions.setIntegerExtension(cs, ToolingExtensions.EXT_FMM_LEVEL, Integer.parseInt(fmm));
       }
       if (Integer.parseInt(fmm) <= 1) {
@@ -395,29 +375,31 @@ public class CodeSystemUtilities {
     }
   }
 
+ 
   public static DataType readProperty(ConceptDefinitionComponent concept, String code) {
     for (ConceptPropertyComponent p : concept.getProperty())
       if (p.getCode().equals(code))
-        return p.getValue();
+        return p.getValue(); 
     return null;
   }
 
   public static ConceptPropertyComponent getProperty(ConceptDefinitionComponent concept, String code) {
     for (ConceptPropertyComponent p : concept.getProperty())
       if (p.getCode().equals(code))
-        return p;
+        return p; 
     return null;
   }
-
+  
   public static List<ConceptPropertyComponent> getPropertyValues(ConceptDefinitionComponent concept, String code) {
     List<ConceptPropertyComponent> res = new ArrayList<>();
     for (ConceptPropertyComponent p : concept.getProperty()) {
       if (p.getCode().equals(code)) {
-        res.add(p);
+        res.add(p); 
       }
     }
     return res;
   }
+
 
   // see http://hl7.org/fhir/R4/codesystem.html#hierachy
   // returns additional parents not in the heirarchy
@@ -509,8 +491,7 @@ public class CodeSystemUtilities {
     return null;
   }
 
-  private static void crossLinkConcepts(List<ConceptDefinitionComponent> root, List<ConceptDefinitionComponent> focus,
-      String parent) {
+  private static void crossLinkConcepts(List<ConceptDefinitionComponent> root, List<ConceptDefinitionComponent> focus, String parent) {
     for (ConceptDefinitionComponent def : focus) {
       List<ConceptPropertyComponent> pcl = getPropertyValues(def, parent);
       for (ConceptPropertyComponent pc : pcl) {
@@ -520,15 +501,14 @@ public class CodeSystemUtilities {
           tgt.setUserData(USER_DATA_CROSS_LINK, new ArrayList<>());
         }
         @SuppressWarnings("unchecked")
-        List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) tgt
-            .getUserData(USER_DATA_CROSS_LINK);
+        List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) tgt.getUserData(USER_DATA_CROSS_LINK);
         children.add(def);
-      }
+      }      
       if (def.hasConcept()) {
         crossLinkConcepts(root, def.getConcept(), parent);
       }
     }
-
+    
   }
 
   public static boolean hasHierarchy(CodeSystem cs) {
@@ -550,7 +530,7 @@ public class CodeSystemUtilities {
       if (cd.hasConcept()) {
         sortAllCodes(cd.getConcept());
       }
-    }
+    }    
   }
-
+  
 }

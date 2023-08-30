@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import java.io.PrintStream;
-
+import ca.uhn.fhir.context.FhirVersionEnum;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -10,7 +9,10 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
+import org.hl7.fhir.validation.cli.services.ValidatorWatchMode;
 import org.hl7.fhir.validation.cli.utils.Display;
+
+import java.io.PrintStream;
 
 public class ValidateTask extends ValidationEngineTask {
 

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum VisionBaseCodes {
 
-  /**
-   * top.
-   */
-  UP,
-  /**
-   * bottom.
-   */
-  DOWN,
-  /**
-   * inner edge.
-   */
-  IN,
-  /**
-   * outer edge.
-   */
-  OUT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static VisionBaseCodes fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("up".equals(codeString))
-      return UP;
-    if ("down".equals(codeString))
-      return DOWN;
-    if ("in".equals(codeString))
-      return IN;
-    if ("out".equals(codeString))
-      return OUT;
-    throw new FHIRException("Unknown VisionBaseCodes code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case UP:
-      return "up";
-    case DOWN:
-      return "down";
-    case IN:
-      return "in";
-    case OUT:
-      return "out";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * top.
+         */
+        UP, 
+        /**
+         * bottom.
+         */
+        DOWN, 
+        /**
+         * inner edge.
+         */
+        IN, 
+        /**
+         * outer edge.
+         */
+        OUT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static VisionBaseCodes fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("up".equals(codeString))
+          return UP;
+        if ("down".equals(codeString))
+          return DOWN;
+        if ("in".equals(codeString))
+          return IN;
+        if ("out".equals(codeString))
+          return OUT;
+        throw new FHIRException("Unknown VisionBaseCodes code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case UP: return "up";
+            case DOWN: return "down";
+            case IN: return "in";
+            case OUT: return "out";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/vision-base-codes";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case UP: return "top.";
+            case DOWN: return "bottom.";
+            case IN: return "inner edge.";
+            case OUT: return "outer edge.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case UP: return "Up";
+            case DOWN: return "Down";
+            case IN: return "In";
+            case OUT: return "Out";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/vision-base-codes";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case UP:
-      return "top.";
-    case DOWN:
-      return "bottom.";
-    case IN:
-      return "inner edge.";
-    case OUT:
-      return "outer edge.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case UP:
-      return "Up";
-    case DOWN:
-      return "Down";
-    case IN:
-      return "In";
-    case OUT:
-      return "Out";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

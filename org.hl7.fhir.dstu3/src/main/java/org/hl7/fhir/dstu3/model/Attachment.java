@@ -636,28 +636,28 @@ public class Attachment extends Type implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("contentType")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Attachment.contentType");
+          throw new FHIRException("Cannot call addChild on a primitive type Attachment.contentType");
         }
         else if (name.equals("language")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Attachment.language");
+          throw new FHIRException("Cannot call addChild on a primitive type Attachment.language");
         }
         else if (name.equals("data")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Attachment.data");
+          throw new FHIRException("Cannot call addChild on a primitive type Attachment.data");
         }
         else if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Attachment.url");
+          throw new FHIRException("Cannot call addChild on a primitive type Attachment.url");
         }
         else if (name.equals("size")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Attachment.size");
+          throw new FHIRException("Cannot call addChild on a primitive type Attachment.size");
         }
         else if (name.equals("hash")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Attachment.hash");
+          throw new FHIRException("Cannot call addChild on a primitive type Attachment.hash");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Attachment.title");
+          throw new FHIRException("Cannot call addChild on a primitive type Attachment.title");
         }
         else if (name.equals("creation")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Attachment.creation");
+          throw new FHIRException("Cannot call addChild on a primitive type Attachment.creation");
         }
         else
           return super.addChild(name);

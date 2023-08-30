@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ContractAssettypeEnumFactory implements EnumFactory<ContractAssettype> {
@@ -40,7 +44,7 @@ public class ContractAssettypeEnumFactory implements EnumFactory<ContractAssetty
       return null;
     if ("participation".equals(codeString))
       return ContractAssettype.PARTICIPATION;
-    throw new IllegalArgumentException("Unknown ContractAssettype code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ContractAssettype code '"+codeString+"'");
   }
 
   public String toCode(ContractAssettype code) {
@@ -49,8 +53,8 @@ public class ContractAssettypeEnumFactory implements EnumFactory<ContractAssetty
     return "?";
   }
 
-  public String toSystem(ContractAssettype code) {
-    return code.getSystem();
-  }
+    public String toSystem(ContractAssettype code) {
+      return code.getSystem();
+      }
 
 }

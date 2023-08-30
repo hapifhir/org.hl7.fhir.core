@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,87 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ObservationRangeCategory {
 
-  /**
-   * Reference (Normal) Range for Ordinal and Continuous Observations.
-   */
-  REFERENCE,
-  /**
-   * Critical Range for Ordinal and Continuous Observations.
-   */
-  CRITICAL,
-  /**
-   * Absolute Range for Ordinal and Continuous Observations. Results outside this
-   * range are not possible.
-   */
-  ABSOLUTE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ObservationRangeCategory fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("reference".equals(codeString))
-      return REFERENCE;
-    if ("critical".equals(codeString))
-      return CRITICAL;
-    if ("absolute".equals(codeString))
-      return ABSOLUTE;
-    throw new FHIRException("Unknown ObservationRangeCategory code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case REFERENCE:
-      return "reference";
-    case CRITICAL:
-      return "critical";
-    case ABSOLUTE:
-      return "absolute";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Reference (Normal) Range for Ordinal and Continuous Observations.
+         */
+        REFERENCE, 
+        /**
+         * Critical Range for Ordinal and Continuous Observations.
+         */
+        CRITICAL, 
+        /**
+         * Absolute Range for Ordinal and Continuous Observations. Results outside this range are not possible.
+         */
+        ABSOLUTE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ObservationRangeCategory fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("reference".equals(codeString))
+          return REFERENCE;
+        if ("critical".equals(codeString))
+          return CRITICAL;
+        if ("absolute".equals(codeString))
+          return ABSOLUTE;
+        throw new FHIRException("Unknown ObservationRangeCategory code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case REFERENCE: return "reference";
+            case CRITICAL: return "critical";
+            case ABSOLUTE: return "absolute";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/observation-range-category";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case REFERENCE: return "Reference (Normal) Range for Ordinal and Continuous Observations.";
+            case CRITICAL: return "Critical Range for Ordinal and Continuous Observations.";
+            case ABSOLUTE: return "Absolute Range for Ordinal and Continuous Observations. Results outside this range are not possible.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case REFERENCE: return "reference range";
+            case CRITICAL: return "critical range";
+            case ABSOLUTE: return "absolute range";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/observation-range-category";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case REFERENCE:
-      return "Reference (Normal) Range for Ordinal and Continuous Observations.";
-    case CRITICAL:
-      return "Critical Range for Ordinal and Continuous Observations.";
-    case ABSOLUTE:
-      return "Absolute Range for Ordinal and Continuous Observations. Results outside this range are not possible.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case REFERENCE:
-      return "reference range";
-    case CRITICAL:
-      return "critical range";
-    case ABSOLUTE:
-      return "absolute range";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

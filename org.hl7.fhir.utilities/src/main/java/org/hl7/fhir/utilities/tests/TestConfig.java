@@ -1,9 +1,9 @@
 package org.hl7.fhir.utilities.tests;
 
-import java.nio.file.Paths;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import java.nio.file.Paths;
 
 public class TestConfig {
 

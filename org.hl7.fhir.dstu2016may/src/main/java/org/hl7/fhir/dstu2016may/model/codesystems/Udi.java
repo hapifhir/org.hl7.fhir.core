@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,62 +34,50 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum Udi {
 
-  /**
-   * GUDID (FDA) US Repository
-   */
-  GUDID,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static Udi fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("gudid".equals(codeString))
-      return GUDID;
-    throw new FHIRException("Unknown Udi code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case GUDID:
-      return "gudid";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * GUDID (FDA) US Repository
+         */
+        GUDID, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static Udi fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("gudid".equals(codeString))
+          return GUDID;
+        throw new FHIRException("Unknown Udi code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case GUDID: return "gudid";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/ex-udi";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case GUDID: return "GUDID (FDA) US Repository";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case GUDID: return "GUDID (FDA)";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/ex-udi";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case GUDID:
-      return "GUDID (FDA) US Repository";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case GUDID:
-      return "GUDID (FDA)";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

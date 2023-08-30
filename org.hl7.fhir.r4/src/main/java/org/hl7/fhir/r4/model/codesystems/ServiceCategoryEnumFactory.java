@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -114,7 +118,7 @@ public class ServiceCategoryEnumFactory implements EnumFactory<ServiceCategory> 
       return ServiceCategory._37;
     if ("33".equals(codeString))
       return ServiceCategory._33;
-    throw new IllegalArgumentException("Unknown ServiceCategory code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ServiceCategory code '"+codeString+"'");
   }
 
   public String toCode(ServiceCategory code) {
@@ -197,8 +201,8 @@ public class ServiceCategoryEnumFactory implements EnumFactory<ServiceCategory> 
     return "?";
   }
 
-  public String toSystem(ServiceCategory code) {
-    return code.getSystem();
-  }
+    public String toSystem(ServiceCategory code) {
+      return code.getSystem();
+      }
 
 }

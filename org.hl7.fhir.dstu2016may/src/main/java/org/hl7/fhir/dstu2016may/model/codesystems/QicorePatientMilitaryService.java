@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,125 +34,95 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum QicorePatientMilitaryService {
 
-  /**
-   * The military status is not indicated
-   */
-  NOTINDICATED,
-  /**
-   * The subject has no history of military service
-   */
-  NOMILITARYSERVICE,
-  /**
-   * The subject is has served in the military but is no longer active
-   */
-  VETERAN,
-  /**
-   * The subject is not a reserve member and is currently engaged in full-time
-   * military activity
-   */
-  ACTIVEDUTY,
-  /**
-   * The subject is a reserve member and is currently engaged in full-time
-   * military activity
-   */
-  ACTIVERESERVE,
-  /**
-   * The subject is a reserve member and is not currently engaged in full-time
-   * military activity
-   */
-  INACTIVERESERVE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static QicorePatientMilitaryService fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("not-indicated".equals(codeString))
-      return NOTINDICATED;
-    if ("no-military-service".equals(codeString))
-      return NOMILITARYSERVICE;
-    if ("veteran".equals(codeString))
-      return VETERAN;
-    if ("active-duty".equals(codeString))
-      return ACTIVEDUTY;
-    if ("active-reserve".equals(codeString))
-      return ACTIVERESERVE;
-    if ("inactive-reserve".equals(codeString))
-      return INACTIVERESERVE;
-    throw new FHIRException("Unknown QicorePatientMilitaryService code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NOTINDICATED:
-      return "not-indicated";
-    case NOMILITARYSERVICE:
-      return "no-military-service";
-    case VETERAN:
-      return "veteran";
-    case ACTIVEDUTY:
-      return "active-duty";
-    case ACTIVERESERVE:
-      return "active-reserve";
-    case INACTIVERESERVE:
-      return "inactive-reserve";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The military status is not indicated
+         */
+        NOTINDICATED, 
+        /**
+         * The subject has no history of military service
+         */
+        NOMILITARYSERVICE, 
+        /**
+         * The subject is has served in the military but is no longer active
+         */
+        VETERAN, 
+        /**
+         * The subject is not a reserve member and is currently engaged in full-time military activity
+         */
+        ACTIVEDUTY, 
+        /**
+         * The subject is a reserve member and is currently engaged in full-time military activity
+         */
+        ACTIVERESERVE, 
+        /**
+         * The subject is a reserve member and is not currently engaged in full-time military activity
+         */
+        INACTIVERESERVE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static QicorePatientMilitaryService fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("not-indicated".equals(codeString))
+          return NOTINDICATED;
+        if ("no-military-service".equals(codeString))
+          return NOMILITARYSERVICE;
+        if ("veteran".equals(codeString))
+          return VETERAN;
+        if ("active-duty".equals(codeString))
+          return ACTIVEDUTY;
+        if ("active-reserve".equals(codeString))
+          return ACTIVERESERVE;
+        if ("inactive-reserve".equals(codeString))
+          return INACTIVERESERVE;
+        throw new FHIRException("Unknown QicorePatientMilitaryService code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NOTINDICATED: return "not-indicated";
+            case NOMILITARYSERVICE: return "no-military-service";
+            case VETERAN: return "veteran";
+            case ACTIVEDUTY: return "active-duty";
+            case ACTIVERESERVE: return "active-reserve";
+            case INACTIVERESERVE: return "inactive-reserve";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/qicore-military-service";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NOTINDICATED: return "The military status is not indicated";
+            case NOMILITARYSERVICE: return "The subject has no history of military service";
+            case VETERAN: return "The subject is has served in the military but is no longer active";
+            case ACTIVEDUTY: return "The subject is not a reserve member and is currently engaged in full-time military activity";
+            case ACTIVERESERVE: return "The subject is a reserve member and is currently engaged in full-time military activity";
+            case INACTIVERESERVE: return "The subject is a reserve member and is not currently engaged in full-time military activity";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NOTINDICATED: return "Not Indicated";
+            case NOMILITARYSERVICE: return "No Military Service";
+            case VETERAN: return "Veteran";
+            case ACTIVEDUTY: return "Active Duty";
+            case ACTIVERESERVE: return "Active Reserve";
+            case INACTIVERESERVE: return "Inactive Reserve";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/qicore-military-service";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NOTINDICATED:
-      return "The military status is not indicated";
-    case NOMILITARYSERVICE:
-      return "The subject has no history of military service";
-    case VETERAN:
-      return "The subject is has served in the military but is no longer active";
-    case ACTIVEDUTY:
-      return "The subject is not a reserve member and is currently engaged in full-time military activity";
-    case ACTIVERESERVE:
-      return "The subject is a reserve member and is currently engaged in full-time military activity";
-    case INACTIVERESERVE:
-      return "The subject is a reserve member and is not currently engaged in full-time military activity";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NOTINDICATED:
-      return "Not Indicated";
-    case NOMILITARYSERVICE:
-      return "No Military Service";
-    case VETERAN:
-      return "Veteran";
-    case ACTIVEDUTY:
-      return "Active Duty";
-    case ACTIVERESERVE:
-      return "Active Reserve";
-    case INACTIVERESERVE:
-      return "Inactive Reserve";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

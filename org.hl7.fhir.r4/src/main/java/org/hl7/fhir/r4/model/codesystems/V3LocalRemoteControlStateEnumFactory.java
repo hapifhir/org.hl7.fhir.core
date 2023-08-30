@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class V3LocalRemoteControlStateEnumFactory implements EnumFactory<V3LocalRemoteControlState> {
@@ -42,7 +46,7 @@ public class V3LocalRemoteControlStateEnumFactory implements EnumFactory<V3Local
       return V3LocalRemoteControlState.L;
     if ("R".equals(codeString))
       return V3LocalRemoteControlState.R;
-    throw new IllegalArgumentException("Unknown V3LocalRemoteControlState code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3LocalRemoteControlState code '"+codeString+"'");
   }
 
   public String toCode(V3LocalRemoteControlState code) {
@@ -53,8 +57,8 @@ public class V3LocalRemoteControlStateEnumFactory implements EnumFactory<V3Local
     return "?";
   }
 
-  public String toSystem(V3LocalRemoteControlState code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3LocalRemoteControlState code) {
+      return code.getSystem();
+      }
 
 }

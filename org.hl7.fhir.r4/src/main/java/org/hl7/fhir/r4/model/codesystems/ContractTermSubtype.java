@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,87 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ContractTermSubtype {
 
-  /**
-   * Terms that go to the very root of a contract.
-   */
-  CONDITION,
-  /**
-   * Less imperative than a condition, so the contract will survive a breach
-   */
-  WARRANTY,
-  /**
-   * Breach of which might or might not go to the root of the contract depending
-   * upon the nature of the breach
-   */
-  INNOMINATE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ContractTermSubtype fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("condition".equals(codeString))
-      return CONDITION;
-    if ("warranty".equals(codeString))
-      return WARRANTY;
-    if ("innominate".equals(codeString))
-      return INNOMINATE;
-    throw new FHIRException("Unknown ContractTermSubtype code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case CONDITION:
-      return "condition";
-    case WARRANTY:
-      return "warranty";
-    case INNOMINATE:
-      return "innominate";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Terms that go to the very root of a contract.
+         */
+        CONDITION, 
+        /**
+         * Less imperative than a condition, so the contract will survive a breach
+         */
+        WARRANTY, 
+        /**
+         * Breach of which might or might not go to the root of the contract depending upon the nature of the breach
+         */
+        INNOMINATE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ContractTermSubtype fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("condition".equals(codeString))
+          return CONDITION;
+        if ("warranty".equals(codeString))
+          return WARRANTY;
+        if ("innominate".equals(codeString))
+          return INNOMINATE;
+        throw new FHIRException("Unknown ContractTermSubtype code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case CONDITION: return "condition";
+            case WARRANTY: return "warranty";
+            case INNOMINATE: return "innominate";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/contracttermsubtypecodes";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case CONDITION: return "Terms that go to the very root of a contract.";
+            case WARRANTY: return "Less imperative than a condition, so the contract will survive a breach";
+            case INNOMINATE: return "Breach of which might or might not go to the root of the contract depending upon the nature of the breach";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case CONDITION: return "Condition";
+            case WARRANTY: return "Warranty";
+            case INNOMINATE: return "Innominate";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/contracttermsubtypecodes";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case CONDITION:
-      return "Terms that go to the very root of a contract.";
-    case WARRANTY:
-      return "Less imperative than a condition, so the contract will survive a breach";
-    case INNOMINATE:
-      return "Breach of which might or might not go to the root of the contract depending upon the nature of the breach";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case CONDITION:
-      return "Condition";
-    case WARRANTY:
-      return "Warranty";
-    case INNOMINATE:
-      return "Innominate";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

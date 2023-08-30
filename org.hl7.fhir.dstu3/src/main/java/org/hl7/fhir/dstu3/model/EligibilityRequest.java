@@ -1175,7 +1175,7 @@ public class EligibilityRequest extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EligibilityRequest.status");
+          throw new FHIRException("Cannot call addChild on a primitive type EligibilityRequest.status");
         }
         else if (name.equals("priority")) {
           this.priority = new CodeableConcept();
@@ -1194,7 +1194,7 @@ public class EligibilityRequest extends DomainResource {
           return this.serviced;
         }
         else if (name.equals("created")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EligibilityRequest.created");
+          throw new FHIRException("Cannot call addChild on a primitive type EligibilityRequest.created");
         }
         else if (name.equals("enterer")) {
           this.enterer = new Reference();
@@ -1221,7 +1221,7 @@ public class EligibilityRequest extends DomainResource {
           return this.coverage;
         }
         else if (name.equals("businessArrangement")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EligibilityRequest.businessArrangement");
+          throw new FHIRException("Cannot call addChild on a primitive type EligibilityRequest.businessArrangement");
         }
         else if (name.equals("benefitCategory")) {
           this.benefitCategory = new CodeableConcept();

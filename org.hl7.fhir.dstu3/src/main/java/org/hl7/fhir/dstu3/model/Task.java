@@ -1133,7 +1133,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("repetitions")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Task.repetitions");
+          throw new FHIRException("Cannot call addChild on a primitive type Task.repetitions");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -3690,7 +3690,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return addPartOf();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Task.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Task.status");
         }
         else if (name.equals("statusReason")) {
           this.statusReason = new CodeableConcept();
@@ -3701,17 +3701,17 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return this.businessStatus;
         }
         else if (name.equals("intent")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Task.intent");
+          throw new FHIRException("Cannot call addChild on a primitive type Task.intent");
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Task.priority");
+          throw new FHIRException("Cannot call addChild on a primitive type Task.priority");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
           return this.code;
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Task.description");
+          throw new FHIRException("Cannot call addChild on a primitive type Task.description");
         }
         else if (name.equals("focus")) {
           this.focus = new Reference();
@@ -3730,10 +3730,10 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return this.executionPeriod;
         }
         else if (name.equals("authoredOn")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Task.authoredOn");
+          throw new FHIRException("Cannot call addChild on a primitive type Task.authoredOn");
         }
         else if (name.equals("lastModified")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Task.lastModified");
+          throw new FHIRException("Cannot call addChild on a primitive type Task.lastModified");
         }
         else if (name.equals("requester")) {
           this.requester = new TaskRequesterComponent();

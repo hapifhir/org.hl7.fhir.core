@@ -58,33 +58,32 @@ public class NarrativeGenerationTests {
 
     @Override
     public boolean isDatatype(String typeSimple) {
-      throw new NotImplementedException();
+      throw new NotImplementedException();      
     }
 
     @Override
     public boolean isResource(String typeSimple) {
-      throw new NotImplementedException();
+      throw new NotImplementedException();      
     }
 
     @Override
     public boolean hasLinkFor(String typeSimple) {
-      throw new NotImplementedException();
+      throw new NotImplementedException();      
     }
 
     @Override
     public String getLinkFor(String corePath, String typeSimple) {
-      throw new NotImplementedException();
+      throw new NotImplementedException();      
     }
 
     @Override
-    public BindingResolution resolveBinding(StructureDefinition def, ElementDefinitionBindingComponent binding,
-        String path) throws FHIRException {
-      throw new NotImplementedException();
+    public BindingResolution resolveBinding(StructureDefinition def, ElementDefinitionBindingComponent binding, String path) throws FHIRException {
+      throw new NotImplementedException();      
     }
 
     @Override
     public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
-      throw new NotImplementedException();
+      throw new NotImplementedException();      
     }
 
     @Override
@@ -92,17 +91,17 @@ public class NarrativeGenerationTests {
       if ("http://hl7.org/fhir/StructureDefinition/Composition".equals(url)) {
         return "http://hl7.org/fhir/composition.html|TestComposition";
       }
-      throw new NotImplementedException();
+      throw new NotImplementedException();      
     }
 
     @Override
     public boolean prependLinks() {
-      throw new NotImplementedException();
+      throw new NotImplementedException();      
     }
 
     @Override
     public String getLinkForUrl(String corePath, String s) {
-      throw new NotImplementedException();
+      throw new NotImplementedException();      
     }
 
   }
@@ -111,22 +110,22 @@ public class NarrativeGenerationTests {
 
     @Override
     public Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException {
-      return new org.hl7.fhir.r4b.formats.XmlParser().parseType(xml, type);
+      return new org.hl7.fhir.r4b.formats.XmlParser().parseType(xml, type); 
     }
   }
 
   public static final String WINDOWS = "WINDOWS";
 
-  private static final String HEADER = "<html><head>"
-      + "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/fhir.css\"/>"
-      + "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/dist/css/bootstrap.css\"/>"
-      + "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/assets/css/bootstrap-fhir.css\"/>"
-      + "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/assets/css/project.css\"/>"
-      + "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/assets/css/pygments-manni.css\"/>"
-      + "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/jquery-ui.css\"/>"
-      + "</head><body>\r\n<div id=\"segment-content\" class=\"segment\"><div class=\"container\"><div class=\"row\"><div class=\"inner-wrapper\"><div class=\"col-12\">\r\n<p>Narrative</p>";
+  private static final String HEADER = "<html><head>"+
+     "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/fhir.css\"/>"+
+     "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/dist/css/bootstrap.css\"/>"+
+     "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/assets/css/bootstrap-fhir.css\"/>"+
+     "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/assets/css/project.css\"/>"+
+     "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/assets/css/pygments-manni.css\"/>"+
+     "<link rel=\"stylesheet\" href=\"http://hl7.org/fhir/jquery-ui.css\"/>"+
+     "</head><body>\r\n<div id=\"segment-content\" class=\"segment\"><div class=\"container\"><div class=\"row\"><div class=\"inner-wrapper\"><div class=\"col-12\">\r\n<p>Narrative</p>";
   private static final String FOOTER = "\r\n</div></div></div></div></div></body></html>";
-
+  
   private static IWorkerContext context;
 
   public static class TestDetails {
@@ -153,12 +152,11 @@ public class NarrativeGenerationTests {
 
     public boolean isMeta() {
       return meta;
-    }
-
+    } 
+    
   }
 
-  public static Stream<Arguments> data()
-      throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
+  public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
     Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r4b", "narrative", "manifest.xml"));
     Element test = XMLUtil.getFirstChild(tests.getDocumentElement());
     List<Arguments> objects = new ArrayList<>();
@@ -178,16 +176,14 @@ public class NarrativeGenerationTests {
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
   public void test(String id, TestDetails test) throws Exception {
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null,
-        ResourceRendererMode.END_USER);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
     rc.setDestDir(Utilities.path("[tmp]", "narrative"));
     rc.setHeader(test.isHeader());
     rc.setDefinitionsTarget("test.html");
     rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
     rc.setParser(new TestTypeParser());
-
-    // getting timezones correct (well, at least consistent, so tests pass on any
-    // computer)
+    
+    // getting timezones correct (well, at least consistent, so tests pass on any computer)
     rc.setLocale(new java.util.Locale("en", "AU"));
     rc.setTimeZoneId(ZoneId.of("Australia/Sydney"));
 
@@ -195,42 +191,37 @@ public class NarrativeGenerationTests {
     rc.setDateFormatString("yyyy-MM-dd");
 
     rc.setMode(test.technical ? ResourceRendererMode.TECHNICAL : ResourceRendererMode.END_USER);
-    rc.setProfileUtilities(
-        new ProfileUtilities(rc.getContext(), null, new TestProfileKnowledgeProvider(rc.getContext())));
-
+    rc.setProfileUtilities(new ProfileUtilities(rc.getContext(), null, new TestProfileKnowledgeProvider(rc.getContext())));
+        
+    
     Resource source;
     if (TestingUtilities.findTestResource("r4b", "narrative", test.getId() + ".json")) {
-      source = (Resource) new JsonParser()
-          .parse(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + ".json"));
+      source = (Resource) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + ".json"));
     } else {
-      source = (Resource) new XmlParser()
-          .parse(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + ".xml"));
+      source = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + ".xml"));      
     }
-
+    
     XhtmlNode x = RendererFactory.factory(source, rc).build(source);
-    String target = TextFile
-        .streamToString(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + ".html"));
-    String output = HEADER + new XhtmlComposer(true, true).compose(x) + FOOTER;
+    String target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + ".html"));
+    String output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
     String tfn = TestingUtilities.tempFile("narrative", test.getId() + ".target.html");
     String ofn = TestingUtilities.tempFile("narrative", test.getId() + ".output.html");
     TextFile.stringToFile(target, tfn);
     TextFile.stringToFile(output, ofn);
     String msg = TestingUtilities.checkXMLIsSame(ofn, tfn);
-    Assertions.assertTrue(msg == null, "Output does not match expected: " + msg);
-
+    Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
+    
     if (test.isMeta()) {
-      org.hl7.fhir.r4b.elementmodel.Element e = Manager.parseSingle(context,
-          TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + ".xml"), FhirFormat.XML);
+      org.hl7.fhir.r4b.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
       x = RendererFactory.factory(source, rc).render(new ElementWrappers.ResourceWrapperMetaElement(rc, e));
 
-      target = TextFile
-          .streamToString(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + "-meta.html"));
-      output = HEADER + new XhtmlComposer(true, true).compose(x) + FOOTER;
+      target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r4b", "narrative", test.getId() + "-meta.html"));
+      output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
       ofn = TestingUtilities.tempFile("narrative", test.getId() + "-meta.output.html");
       TextFile.stringToFile(output, ofn);
       msg = TestingUtilities.checkXMLIsSame(ofn, tfn);
-      Assertions.assertTrue(msg == null, "Meta output does not match expected: " + msg);
+      Assertions.assertTrue(msg == null, "Meta output does not match expected: "+msg);
     }
   }
-
+  
 }

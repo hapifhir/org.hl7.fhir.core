@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MapInputMode {
 
-  /**
-   * Names an input instance used a source for mapping.
-   */
-  SOURCE,
-  /**
-   * Names an instance that is being populated.
-   */
-  TARGET,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MapInputMode fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("source".equals(codeString))
-      return SOURCE;
-    if ("target".equals(codeString))
-      return TARGET;
-    throw new FHIRException("Unknown MapInputMode code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case SOURCE:
-      return "source";
-    case TARGET:
-      return "target";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Names an input instance used a source for mapping.
+         */
+        SOURCE, 
+        /**
+         * Names an instance that is being populated.
+         */
+        TARGET, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MapInputMode fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("source".equals(codeString))
+          return SOURCE;
+        if ("target".equals(codeString))
+          return TARGET;
+        throw new FHIRException("Unknown MapInputMode code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case SOURCE: return "source";
+            case TARGET: return "target";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/map-input-mode";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case SOURCE: return "Names an input instance used a source for mapping.";
+            case TARGET: return "Names an instance that is being populated.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case SOURCE: return "Source Instance";
+            case TARGET: return "Target Instance";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/map-input-mode";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case SOURCE:
-      return "Names an input instance used a source for mapping.";
-    case TARGET:
-      return "Names an instance that is being populated.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case SOURCE:
-      return "Source Instance";
-    case TARGET:
-      return "Target Instance";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

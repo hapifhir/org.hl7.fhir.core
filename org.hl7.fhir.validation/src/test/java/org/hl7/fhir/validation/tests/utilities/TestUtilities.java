@@ -1,13 +1,13 @@
 package org.hl7.fhir.validation.tests.utilities;
 
-import java.nio.file.Paths;
-
 import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.tests.TestConfig;
 import org.hl7.fhir.utilities.tests.TestConstants;
 import org.hl7.fhir.validation.ValidationEngine;
+
+import java.nio.file.Paths;
 
 public class TestUtilities {
 

@@ -82,8 +82,12 @@
             <artifactId>Saxon-HE</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.ogce</groupId>
+            <groupId>xpp3</groupId>
             <artifactId>xpp3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>xpp3</groupId>
+            <artifactId>xpp3_xpath</artifactId>
         </dependency>
 
         <!-- JSON Utilities -->
@@ -116,7 +120,7 @@
         <dependency>
             <groupId>org.fhir</groupId>
             <artifactId>ucum</artifactId>
-            <optional>true</optional>
+            <version>1.0.3</version>
         </dependency>
 
         <!-- CQL-to-ELM -->
@@ -169,18 +173,6 @@
             <optional>true</optional>
         </dependency>
 
-        <dependency>
-            <groupId>com.squareup.okio</groupId>
-            <artifactId>okio</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>com.squareup.okio</groupId>
-            <artifactId>okio-jvm</artifactId>
-            <optional>true</optional>
-        </dependency>
-
         <!-- Lombok Until I get Around to Rewriting Everything in Kotlin -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -202,12 +194,7 @@
             <optional>true</optional>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.atlassian.commonmark</groupId>
-            <artifactId>commonmark-ext-gfm-tables</artifactId>
-            <optional>true</optional>
-            <scope>test</scope>
-        </dependency>
+
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -224,6 +211,7 @@
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
+            <version>3.1.1.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>

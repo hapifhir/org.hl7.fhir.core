@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class MeasureScoringEnumFactory implements EnumFactory<MeasureScoring> {
@@ -46,7 +50,7 @@ public class MeasureScoringEnumFactory implements EnumFactory<MeasureScoring> {
       return MeasureScoring.CONTINUOUSVARIABLE;
     if ("cohort".equals(codeString))
       return MeasureScoring.COHORT;
-    throw new IllegalArgumentException("Unknown MeasureScoring code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown MeasureScoring code '"+codeString+"'");
   }
 
   public String toCode(MeasureScoring code) {
@@ -61,8 +65,8 @@ public class MeasureScoringEnumFactory implements EnumFactory<MeasureScoring> {
     return "?";
   }
 
-  public String toSystem(MeasureScoring code) {
-    return code.getSystem();
-  }
+    public String toSystem(MeasureScoring code) {
+      return code.getSystem();
+      }
 
 }

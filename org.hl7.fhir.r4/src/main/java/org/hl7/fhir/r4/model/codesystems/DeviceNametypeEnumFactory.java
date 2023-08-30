@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class DeviceNametypeEnumFactory implements EnumFactory<DeviceNametype> {
@@ -50,7 +54,7 @@ public class DeviceNametypeEnumFactory implements EnumFactory<DeviceNametype> {
       return DeviceNametype.MODELNAME;
     if ("other".equals(codeString))
       return DeviceNametype.OTHER;
-    throw new IllegalArgumentException("Unknown DeviceNametype code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown DeviceNametype code '"+codeString+"'");
   }
 
   public String toCode(DeviceNametype code) {
@@ -69,8 +73,8 @@ public class DeviceNametypeEnumFactory implements EnumFactory<DeviceNametype> {
     return "?";
   }
 
-  public String toSystem(DeviceNametype code) {
-    return code.getSystem();
-  }
+    public String toSystem(DeviceNametype code) {
+      return code.getSystem();
+      }
 
 }

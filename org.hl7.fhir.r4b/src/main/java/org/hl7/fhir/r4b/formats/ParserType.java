@@ -29,30 +29,32 @@ package org.hl7.fhir.r4b.formats;
   
  */
 
+
+
 /**
- * Used in factory methods for parsers, for requesting a parser of a particular
- * type (see IWorkerContext)
+ * Used in factory methods for parsers, for requesting a parser of a particular type 
+ * (see IWorkerContext)
  * 
  * @author Grahame
  *
  */
 public enum ParserType {
   /**
-   * XML as specified in specification
+   * XML as specified in specification 
    */
-  XML,
+  XML, 
 
   /**
    * JSON as specified in the specification
    */
   JSON,
 
-  /**
+  /** 
    * XHTML - write narrative (generate if necessary). No read
    */
   XHTML,
 
-  /**
+   /**
    * RDF is not supported yet
    */
   RDF_TURTLE

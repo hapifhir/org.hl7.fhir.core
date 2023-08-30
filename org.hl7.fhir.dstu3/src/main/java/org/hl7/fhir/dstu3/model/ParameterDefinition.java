@@ -669,22 +669,22 @@ public class ParameterDefinition extends Type implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ParameterDefinition.name");
+          throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.name");
         }
         else if (name.equals("use")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ParameterDefinition.use");
+          throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.use");
         }
         else if (name.equals("min")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ParameterDefinition.min");
+          throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.min");
         }
         else if (name.equals("max")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ParameterDefinition.max");
+          throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.max");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ParameterDefinition.documentation");
+          throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.documentation");
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ParameterDefinition.type");
+          throw new FHIRException("Cannot call addChild on a primitive type ParameterDefinition.type");
         }
         else if (name.equals("profile")) {
           this.profile = new Reference();

@@ -1,5 +1,9 @@
 package org.hl7.fhir.r4.utils.client;
 
+
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -29,6 +33,7 @@ package org.hl7.fhir.r4.utils.client;
   
 */
 
+
 /**
  * Enumeration for preferred FHIR resource formats.
  * 
@@ -37,7 +42,9 @@ package org.hl7.fhir.r4.utils.client;
  */
 public enum ResourceFormat {
 
-  RESOURCE_XML("application/fhir+xml"), RESOURCE_JSON("application/fhir+json");
+  RESOURCE_XML("application/fhir+xml"),
+  RESOURCE_JSON("application/fhir+json");
+
 
   private String header;
 

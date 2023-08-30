@@ -1238,13 +1238,13 @@ public class AllergyIntolerance extends DomainResource {
           return addManifestation();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AllergyIntolerance.description");
+          throw new FHIRException("Cannot call addChild on a primitive type AllergyIntolerance.description");
         }
         else if (name.equals("onset")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AllergyIntolerance.onset");
+          throw new FHIRException("Cannot call addChild on a primitive type AllergyIntolerance.onset");
         }
         else if (name.equals("severity")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AllergyIntolerance.severity");
+          throw new FHIRException("Cannot call addChild on a primitive type AllergyIntolerance.severity");
         }
         else if (name.equals("exposureRoute")) {
           this.exposureRoute = new CodeableConcept();
@@ -2433,19 +2433,19 @@ public class AllergyIntolerance extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("clinicalStatus")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AllergyIntolerance.clinicalStatus");
+          throw new FHIRException("Cannot call addChild on a primitive type AllergyIntolerance.clinicalStatus");
         }
         else if (name.equals("verificationStatus")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AllergyIntolerance.verificationStatus");
+          throw new FHIRException("Cannot call addChild on a primitive type AllergyIntolerance.verificationStatus");
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AllergyIntolerance.type");
+          throw new FHIRException("Cannot call addChild on a primitive type AllergyIntolerance.type");
         }
         else if (name.equals("category")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AllergyIntolerance.category");
+          throw new FHIRException("Cannot call addChild on a primitive type AllergyIntolerance.category");
         }
         else if (name.equals("criticality")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AllergyIntolerance.criticality");
+          throw new FHIRException("Cannot call addChild on a primitive type AllergyIntolerance.criticality");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -2476,7 +2476,7 @@ public class AllergyIntolerance extends DomainResource {
           return this.onset;
         }
         else if (name.equals("assertedDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AllergyIntolerance.assertedDate");
+          throw new FHIRException("Cannot call addChild on a primitive type AllergyIntolerance.assertedDate");
         }
         else if (name.equals("recorder")) {
           this.recorder = new Reference();
@@ -2487,7 +2487,7 @@ public class AllergyIntolerance extends DomainResource {
           return this.asserter;
         }
         else if (name.equals("lastOccurrence")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AllergyIntolerance.lastOccurrence");
+          throw new FHIRException("Cannot call addChild on a primitive type AllergyIntolerance.lastOccurrence");
         }
         else if (name.equals("note")) {
           return addNote();

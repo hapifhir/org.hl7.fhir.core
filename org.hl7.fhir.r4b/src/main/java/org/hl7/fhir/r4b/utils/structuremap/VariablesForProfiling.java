@@ -23,8 +23,7 @@ public class VariablesForProfiling {
     add(mode, name, new PropertyWithType(path, property, null, types));
   }
 
-  public void add(VariableMode mode, String name, String path, Property baseProperty, Property profileProperty,
-      TypeDetails types) {
+  public void add(VariableMode mode, String name, String path, Property baseProperty, Property profileProperty, TypeDetails types) {
     add(mode, name, new PropertyWithType(path, baseProperty, profileProperty, types));
   }
 

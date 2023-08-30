@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -66,7 +70,7 @@ public class ClaimInformationcategoryEnumFactory implements EnumFactory<ClaimInf
       return ClaimInformationcategory.EXTERNALCAUSE;
     if ("patientreasonforvisit".equals(codeString))
       return ClaimInformationcategory.PATIENTREASONFORVISIT;
-    throw new IllegalArgumentException("Unknown ClaimInformationcategory code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ClaimInformationcategory code '"+codeString+"'");
   }
 
   public String toCode(ClaimInformationcategory code) {
@@ -101,8 +105,8 @@ public class ClaimInformationcategoryEnumFactory implements EnumFactory<ClaimInf
     return "?";
   }
 
-  public String toSystem(ClaimInformationcategory code) {
-    return code.getSystem();
-  }
+    public String toSystem(ClaimInformationcategory code) {
+      return code.getSystem();
+      }
 
 }

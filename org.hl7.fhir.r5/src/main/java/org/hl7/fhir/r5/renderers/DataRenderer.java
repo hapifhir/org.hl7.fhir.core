@@ -67,7 +67,6 @@ import org.hl7.fhir.r5.model.Timing.EventTiming;
 import org.hl7.fhir.r5.model.Timing.TimingRepeatComponent;
 import org.hl7.fhir.r5.model.Timing.UnitsOfTime;
 import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
@@ -1516,12 +1515,6 @@ public class DataRenderer extends Renderer implements CodeResolver {
     x.addText(!p.hasStart() ? "??" : displayDateTime(p.getStartElement()));
     x.tx(" --> ");
     x.addText(!p.hasEnd() ? "(ongoing)" : displayDateTime(p.getEndElement()));
-  }
-  
-  public void renderUsageContext(XhtmlNode x, UsageContext u) throws FHIRFormatError, DefinitionException, IOException {
-    renderCoding(x,  u.getCode());
-    x.tx(": ");
-    render(x, u.getValue());    
   }
   
   public void renderDataRequirement(XhtmlNode x, DataRequirement dr) throws FHIRFormatError, DefinitionException, IOException {

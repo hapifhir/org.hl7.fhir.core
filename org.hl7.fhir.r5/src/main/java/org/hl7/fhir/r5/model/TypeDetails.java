@@ -42,7 +42,6 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
 
@@ -115,16 +114,6 @@ public class TypeDetails {
     }
     public boolean isSystemType() {
       return uri.startsWith(FP_NS);
-    }
-
-    public String describeMin() {
-      if (uri.startsWith(FP_NS)) {
-        return "System."+uri.substring(FP_NS.length());
-      }
-      if (uri.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
-        return "FHIR."+uri.substring("http://hl7.org/fhir/StructureDefinition/".length());
-      }
-      return uri;
     }
     
   }
@@ -296,7 +285,7 @@ public class TypeDetails {
   public void update(TypeDetails source) {
     for (ProfiledType pt : source.types)
       addType(pt);
-    if (collectionStatus == null || collectionStatus == CollectionStatus.SINGLETON)
+    if (collectionStatus == null)
       collectionStatus = source.collectionStatus;
     else if (source.collectionStatus == CollectionStatus.UNORDERED)
       collectionStatus = source.collectionStatus;
@@ -409,12 +398,6 @@ public class TypeDetails {
   }
   public String describe() {
     return getTypes().toString();
-  }
-  public String describeMin() {
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-    for (ProfiledType pt : types)
-      b.append(pt.describeMin());
-    return b.toString();
   }
   public String getType() {
     for (ProfiledType pt : types)
@@ -532,9 +515,6 @@ public class TypeDetails {
   }
   public static TypeDetails empty() {
     return new TypeDetails(CollectionStatus.SINGLETON);
-  }
-  public boolean isList() {
-    return collectionStatus != null && collectionStatus.isList();
   }
   
 }

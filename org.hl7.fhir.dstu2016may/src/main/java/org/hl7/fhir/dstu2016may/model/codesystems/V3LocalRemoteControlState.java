@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,75 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3LocalRemoteControlState {
 
-  /**
-   * An equipment can either work autonomously ('Local' control state).
-   */
-  L,
-  /**
-   * An equipment can be controlled by another system, e.g., LAS computer
-   * ('Remote' control state).
-   */
-  R,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static V3LocalRemoteControlState fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("L".equals(codeString))
-      return L;
-    if ("R".equals(codeString))
-      return R;
-    throw new FHIRException("Unknown V3LocalRemoteControlState code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case L:
-      return "L";
-    case R:
-      return "R";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * An equipment can either work autonomously ('Local' control state).
+         */
+        L, 
+        /**
+         * An equipment can be controlled by another system, e.g., LAS computer ('Remote' control state).
+         */
+        R, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static V3LocalRemoteControlState fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("L".equals(codeString))
+          return L;
+        if ("R".equals(codeString))
+          return R;
+        throw new FHIRException("Unknown V3LocalRemoteControlState code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case L: return "L";
+            case R: return "R";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/v3/LocalRemoteControlState";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case L: return "An equipment can either work autonomously ('Local' control state).";
+            case R: return "An equipment can be controlled by another system, e.g., LAS computer ('Remote' control state).";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case L: return "Local";
+            case R: return "Remote";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/v3/LocalRemoteControlState";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case L:
-      return "An equipment can either work autonomously ('Local' control state).";
-    case R:
-      return "An equipment can be controlled by another system, e.g., LAS computer ('Remote' control state).";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case L:
-      return "Local";
-    case R:
-      return "Remote";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

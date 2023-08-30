@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ActionConditionKind {
 
-  /**
-   * The condition describes whether or not a given action is applicable.
-   */
-  APPLICABILITY,
-  /**
-   * The condition is a starting condition for the action.
-   */
-  START,
-  /**
-   * The condition is a stop, or exit condition for the action.
-   */
-  STOP,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ActionConditionKind fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("applicability".equals(codeString))
-      return APPLICABILITY;
-    if ("start".equals(codeString))
-      return START;
-    if ("stop".equals(codeString))
-      return STOP;
-    throw new FHIRException("Unknown ActionConditionKind code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case APPLICABILITY:
-      return "applicability";
-    case START:
-      return "start";
-    case STOP:
-      return "stop";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The condition describes whether or not a given action is applicable.
+         */
+        APPLICABILITY, 
+        /**
+         * The condition is a starting condition for the action.
+         */
+        START, 
+        /**
+         * The condition is a stop, or exit condition for the action.
+         */
+        STOP, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ActionConditionKind fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("applicability".equals(codeString))
+          return APPLICABILITY;
+        if ("start".equals(codeString))
+          return START;
+        if ("stop".equals(codeString))
+          return STOP;
+        throw new FHIRException("Unknown ActionConditionKind code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case APPLICABILITY: return "applicability";
+            case START: return "start";
+            case STOP: return "stop";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/action-condition-kind";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case APPLICABILITY: return "The condition describes whether or not a given action is applicable.";
+            case START: return "The condition is a starting condition for the action.";
+            case STOP: return "The condition is a stop, or exit condition for the action.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case APPLICABILITY: return "Applicability";
+            case START: return "Start";
+            case STOP: return "Stop";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/action-condition-kind";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case APPLICABILITY:
-      return "The condition describes whether or not a given action is applicable.";
-    case START:
-      return "The condition is a starting condition for the action.";
-    case STOP:
-      return "The condition is a stop, or exit condition for the action.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case APPLICABILITY:
-      return "Applicability";
-    case START:
-      return "Start";
-    case STOP:
-      return "Stop";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

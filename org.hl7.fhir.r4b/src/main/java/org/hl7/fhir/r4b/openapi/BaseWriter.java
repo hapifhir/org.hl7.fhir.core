@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.openapi;
   
  */
 
+
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -50,7 +52,7 @@ public class BaseWriter {
     }
     return child;
   }
-
+  
   protected JsonObject ensureArrayObject(String arrayName, String propertyName, String value) {
     JsonArray arr = forceArray(arrayName);
     for (JsonElement e : arr) {
@@ -72,7 +74,7 @@ public class BaseWriter {
     }
     return arr;
   }
-
+  
   protected JsonObject forceArrayObject(String arrayName) {
     JsonArray arr = object.getAsJsonArray(arrayName);
     if (arr == null) {
@@ -83,6 +85,7 @@ public class BaseWriter {
     arr.add(obj);
     return obj;
   }
+  
 
   protected JsonObject ensureMapObject(String mapName, String value) {
     JsonObject map = object.getAsJsonObject(mapName);
@@ -96,6 +99,7 @@ public class BaseWriter {
     map.add(value, e);
     return e;
   }
+  
 
   protected JsonObject ensureMapObject(String value) {
     if (object.has(value))
@@ -104,5 +108,5 @@ public class BaseWriter {
     object.add(value, e);
     return e;
   }
-
+  
 }

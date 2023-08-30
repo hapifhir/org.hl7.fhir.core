@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,134 +34,104 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NehtaServiceBookingStatusValues {
 
-  /**
-   * Planned act for specific time and place
-   */
-  APT,
-  /**
-   * Request for Booking of an Appointment
-   */
-  ARQ,
-  /**
-   * Service actually happens or happened or is ongoing
-   */
-  EVN,
-  /**
-   * Plan to perform a service
-   */
-  INT,
-  /**
-   * An intent to perform a service
-   */
-  PRMS,
-  /**
-   * Non-mandated intent to perform an act
-   */
-  PRP,
-  /**
-   * Request or Order for a service
-   */
-  RQO,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static NehtaServiceBookingStatusValues fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("APT".equals(codeString))
-      return APT;
-    if ("ARQ".equals(codeString))
-      return ARQ;
-    if ("EVN".equals(codeString))
-      return EVN;
-    if ("INT".equals(codeString))
-      return INT;
-    if ("PRMS".equals(codeString))
-      return PRMS;
-    if ("PRP".equals(codeString))
-      return PRP;
-    if ("RQO".equals(codeString))
-      return RQO;
-    throw new FHIRException("Unknown NehtaServiceBookingStatusValues code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case APT:
-      return "APT";
-    case ARQ:
-      return "ARQ";
-    case EVN:
-      return "EVN";
-    case INT:
-      return "INT";
-    case PRMS:
-      return "PRMS";
-    case PRP:
-      return "PRP";
-    case RQO:
-      return "RQO";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Planned act for specific time and place
+         */
+        APT, 
+        /**
+         * Request for Booking of an Appointment
+         */
+        ARQ, 
+        /**
+         * Service actually happens or happened or is ongoing
+         */
+        EVN, 
+        /**
+         * Plan to perform a service
+         */
+        INT, 
+        /**
+         * An intent to perform a service
+         */
+        PRMS, 
+        /**
+         * Non-mandated intent to perform an act
+         */
+        PRP, 
+        /**
+         * Request or Order for a service
+         */
+        RQO, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static NehtaServiceBookingStatusValues fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("APT".equals(codeString))
+          return APT;
+        if ("ARQ".equals(codeString))
+          return ARQ;
+        if ("EVN".equals(codeString))
+          return EVN;
+        if ("INT".equals(codeString))
+          return INT;
+        if ("PRMS".equals(codeString))
+          return PRMS;
+        if ("PRP".equals(codeString))
+          return PRP;
+        if ("RQO".equals(codeString))
+          return RQO;
+        throw new FHIRException("Unknown NehtaServiceBookingStatusValues code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case APT: return "APT";
+            case ARQ: return "ARQ";
+            case EVN: return "EVN";
+            case INT: return "INT";
+            case PRMS: return "PRMS";
+            case PRP: return "PRP";
+            case RQO: return "RQO";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/service-booking-status-values";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case APT: return "Planned act for specific time and place";
+            case ARQ: return "Request for Booking of an Appointment";
+            case EVN: return "Service actually happens or happened or is ongoing";
+            case INT: return "Plan to perform a service";
+            case PRMS: return "An intent to perform a service";
+            case PRP: return "Non-mandated intent to perform an act";
+            case RQO: return "Request or Order for a service";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case APT: return "Appointment";
+            case ARQ: return "Appointment Request";
+            case EVN: return "Event";
+            case INT: return "Intent";
+            case PRMS: return "Promise";
+            case PRP: return "Proposal";
+            case RQO: return "Request";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/service-booking-status-values";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case APT:
-      return "Planned act for specific time and place";
-    case ARQ:
-      return "Request for Booking of an Appointment";
-    case EVN:
-      return "Service actually happens or happened or is ongoing";
-    case INT:
-      return "Plan to perform a service";
-    case PRMS:
-      return "An intent to perform a service";
-    case PRP:
-      return "Non-mandated intent to perform an act";
-    case RQO:
-      return "Request or Order for a service";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case APT:
-      return "Appointment";
-    case ARQ:
-      return "Appointment Request";
-    case EVN:
-      return "Event";
-    case INT:
-      return "Intent";
-    case PRMS:
-      return "Promise";
-    case PRP:
-      return "Proposal";
-    case RQO:
-      return "Request";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

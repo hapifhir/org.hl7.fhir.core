@@ -2135,13 +2135,13 @@ public class EventDefinition extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.url");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.version");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.version");
         }
         else if (name.equals("versionAlgorithmString")) {
           this.versionAlgorithm = new StringType();
@@ -2152,19 +2152,19 @@ public class EventDefinition extends MetadataResource {
           return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.name");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.title");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.title");
         }
         else if (name.equals("subtitle")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.subtitle");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.subtitle");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.status");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.experimental");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.experimental");
         }
         else if (name.equals("subjectCodeableConcept")) {
           this.subject = new CodeableConcept();
@@ -2175,16 +2175,16 @@ public class EventDefinition extends MetadataResource {
           return this.subject;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.date");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.publisher");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.description");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -2193,22 +2193,22 @@ public class EventDefinition extends MetadataResource {
           return addJurisdiction();
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.purpose");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.purpose");
         }
         else if (name.equals("usage")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.usage");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.usage");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.copyright");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.copyright");
         }
         else if (name.equals("copyrightLabel")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.copyrightLabel");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.copyrightLabel");
         }
         else if (name.equals("approvalDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.approvalDate");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.approvalDate");
         }
         else if (name.equals("lastReviewDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property EventDefinition.lastReviewDate");
+          throw new FHIRException("Cannot call addChild on a primitive type EventDefinition.lastReviewDate");
         }
         else if (name.equals("effectivePeriod")) {
           this.effectivePeriod = new Period();

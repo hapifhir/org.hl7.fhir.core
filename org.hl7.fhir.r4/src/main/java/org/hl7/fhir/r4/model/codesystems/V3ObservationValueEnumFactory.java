@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -538,7 +542,7 @@ public class V3ObservationValueEnumFactory implements EnumFactory<V3ObservationV
       return V3ObservationValue._INDIVIDUALCASESAFETYREPORTVALUEDOMAINS;
     if ("_IndicationValue".equals(codeString))
       return V3ObservationValue._INDICATIONVALUE;
-    throw new IllegalArgumentException("Unknown V3ObservationValue code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3ObservationValue code '"+codeString+"'");
   }
 
   public String toCode(V3ObservationValue code) {
@@ -1045,8 +1049,8 @@ public class V3ObservationValueEnumFactory implements EnumFactory<V3ObservationV
     return "?";
   }
 
-  public String toSystem(V3ObservationValue code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3ObservationValue code) {
+      return code.getSystem();
+      }
 
 }

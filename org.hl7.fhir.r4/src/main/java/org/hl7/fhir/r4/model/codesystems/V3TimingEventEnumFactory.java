@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -74,7 +78,7 @@ public class V3TimingEventEnumFactory implements EnumFactory<V3TimingEvent> {
       return V3TimingEvent.PCV;
     if ("WAKE".equals(codeString))
       return V3TimingEvent.WAKE;
-    throw new IllegalArgumentException("Unknown V3TimingEvent code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3TimingEvent code '"+codeString+"'");
   }
 
   public String toCode(V3TimingEvent code) {
@@ -117,8 +121,8 @@ public class V3TimingEventEnumFactory implements EnumFactory<V3TimingEvent> {
     return "?";
   }
 
-  public String toSystem(V3TimingEvent code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3TimingEvent code) {
+      return code.getSystem();
+      }
 
 }

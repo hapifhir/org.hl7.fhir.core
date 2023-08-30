@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AllergyIntoleranceCategory {
 
-  /**
-   * Any substance consumed to provide nutritional support for the body.
-   */
-  FOOD,
-  /**
-   * Substances administered to achieve a physiological effect.
-   */
-  MEDICATION,
-  /**
-   * Substances that are encountered in the environment.
-   */
-  ENVIRONMENT,
-  /**
-   * Other substances that are not covered by any other category.
-   */
-  OTHER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static AllergyIntoleranceCategory fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("food".equals(codeString))
-      return FOOD;
-    if ("medication".equals(codeString))
-      return MEDICATION;
-    if ("environment".equals(codeString))
-      return ENVIRONMENT;
-    if ("other".equals(codeString))
-      return OTHER;
-    throw new FHIRException("Unknown AllergyIntoleranceCategory code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case FOOD:
-      return "food";
-    case MEDICATION:
-      return "medication";
-    case ENVIRONMENT:
-      return "environment";
-    case OTHER:
-      return "other";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Any substance consumed to provide nutritional support for the body.
+         */
+        FOOD, 
+        /**
+         * Substances administered to achieve a physiological effect.
+         */
+        MEDICATION, 
+        /**
+         * Substances that are encountered in the environment.
+         */
+        ENVIRONMENT, 
+        /**
+         * Other substances that are not covered by any other category.
+         */
+        OTHER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static AllergyIntoleranceCategory fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("food".equals(codeString))
+          return FOOD;
+        if ("medication".equals(codeString))
+          return MEDICATION;
+        if ("environment".equals(codeString))
+          return ENVIRONMENT;
+        if ("other".equals(codeString))
+          return OTHER;
+        throw new FHIRException("Unknown AllergyIntoleranceCategory code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case FOOD: return "food";
+            case MEDICATION: return "medication";
+            case ENVIRONMENT: return "environment";
+            case OTHER: return "other";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/allergy-intolerance-category";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case FOOD: return "Any substance consumed to provide nutritional support for the body.";
+            case MEDICATION: return "Substances administered to achieve a physiological effect.";
+            case ENVIRONMENT: return "Substances that are encountered in the environment.";
+            case OTHER: return "Other substances that are not covered by any other category.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case FOOD: return "Food";
+            case MEDICATION: return "Medication";
+            case ENVIRONMENT: return "Environment";
+            case OTHER: return "Other";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/allergy-intolerance-category";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case FOOD:
-      return "Any substance consumed to provide nutritional support for the body.";
-    case MEDICATION:
-      return "Substances administered to achieve a physiological effect.";
-    case ENVIRONMENT:
-      return "Substances that are encountered in the environment.";
-    case OTHER:
-      return "Other substances that are not covered by any other category.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case FOOD:
-      return "Food";
-    case MEDICATION:
-      return "Medication";
-    case ENVIRONMENT:
-      return "Environment";
-    case OTHER:
-      return "Other";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

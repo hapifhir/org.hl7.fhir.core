@@ -1,8 +1,5 @@
 package org.hl7.fhir.validation.cli.tasks;
 
-import java.io.File;
-import java.io.PrintStream;
-
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.CommonPackages;
@@ -12,6 +9,9 @@ import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.utils.Display;
 import org.hl7.fhir.validation.cli.utils.Params;
+
+import java.io.File;
+import java.io.PrintStream;
 
 public class CompareTask extends ValidationEngineTask {
   @Override

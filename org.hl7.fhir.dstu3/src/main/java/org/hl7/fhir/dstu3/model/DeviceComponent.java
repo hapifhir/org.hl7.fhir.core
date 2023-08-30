@@ -513,7 +513,7 @@ public class DeviceComponent extends DomainResource {
           return this.componentId;
         }
         else if (name.equals("productionSpec")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DeviceComponent.productionSpec");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceComponent.productionSpec");
         }
         else
           return super.addChild(name);
@@ -1216,7 +1216,7 @@ public class DeviceComponent extends DomainResource {
           return this.type;
         }
         else if (name.equals("lastSystemChange")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DeviceComponent.lastSystemChange");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceComponent.lastSystemChange");
         }
         else if (name.equals("source")) {
           this.source = new Reference();
@@ -1234,7 +1234,7 @@ public class DeviceComponent extends DomainResource {
           return this.parameterGroup;
         }
         else if (name.equals("measurementPrinciple")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DeviceComponent.measurementPrinciple");
+          throw new FHIRException("Cannot call addChild on a primitive type DeviceComponent.measurementPrinciple");
         }
         else if (name.equals("productionSpecification")) {
           return addProductionSpecification();

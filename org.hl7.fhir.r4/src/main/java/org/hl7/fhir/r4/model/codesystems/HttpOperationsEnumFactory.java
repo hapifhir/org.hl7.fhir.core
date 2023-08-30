@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class HttpOperationsEnumFactory implements EnumFactory<HttpOperations> {
@@ -52,7 +56,7 @@ public class HttpOperationsEnumFactory implements EnumFactory<HttpOperations> {
       return HttpOperations.PUT;
     if ("head".equals(codeString))
       return HttpOperations.HEAD;
-    throw new IllegalArgumentException("Unknown HttpOperations code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown HttpOperations code '"+codeString+"'");
   }
 
   public String toCode(HttpOperations code) {
@@ -73,8 +77,8 @@ public class HttpOperationsEnumFactory implements EnumFactory<HttpOperations> {
     return "?";
   }
 
-  public String toSystem(HttpOperations code) {
-    return code.getSystem();
-  }
+    public String toSystem(HttpOperations code) {
+      return code.getSystem();
+      }
 
 }

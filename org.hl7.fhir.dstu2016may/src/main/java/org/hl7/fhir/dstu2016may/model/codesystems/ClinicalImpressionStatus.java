@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,87 +34,68 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ClinicalImpressionStatus {
 
-  /**
-   * The assessment is still on-going and results are not yet final.
-   */
-  INPROGRESS,
-  /**
-   * The assessment is done and the results are final.
-   */
-  COMPLETED,
-  /**
-   * This assessment was never actually done and the record is erroneous (e.g.
-   * Wrong patient).
-   */
-  ENTEREDINERROR,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ClinicalImpressionStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("in-progress".equals(codeString))
-      return INPROGRESS;
-    if ("completed".equals(codeString))
-      return COMPLETED;
-    if ("entered-in-error".equals(codeString))
-      return ENTEREDINERROR;
-    throw new FHIRException("Unknown ClinicalImpressionStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INPROGRESS:
-      return "in-progress";
-    case COMPLETED:
-      return "completed";
-    case ENTEREDINERROR:
-      return "entered-in-error";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The assessment is still on-going and results are not yet final.
+         */
+        INPROGRESS, 
+        /**
+         * The assessment is done and the results are final.
+         */
+        COMPLETED, 
+        /**
+         * This assessment was never actually done and the record is erroneous (e.g. Wrong patient).
+         */
+        ENTEREDINERROR, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ClinicalImpressionStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("in-progress".equals(codeString))
+          return INPROGRESS;
+        if ("completed".equals(codeString))
+          return COMPLETED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        throw new FHIRException("Unknown ClinicalImpressionStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INPROGRESS: return "in-progress";
+            case COMPLETED: return "completed";
+            case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/clinical-impression-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INPROGRESS: return "The assessment is still on-going and results are not yet final.";
+            case COMPLETED: return "The assessment is done and the results are final.";
+            case ENTEREDINERROR: return "This assessment was never actually done and the record is erroneous (e.g. Wrong patient).";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INPROGRESS: return "In progress";
+            case COMPLETED: return "Completed";
+            case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/clinical-impression-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INPROGRESS:
-      return "The assessment is still on-going and results are not yet final.";
-    case COMPLETED:
-      return "The assessment is done and the results are final.";
-    case ENTEREDINERROR:
-      return "This assessment was never actually done and the record is erroneous (e.g. Wrong patient).";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INPROGRESS:
-      return "In progress";
-    case COMPLETED:
-      return "Completed";
-    case ENTEREDINERROR:
-      return "Entered in Error";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

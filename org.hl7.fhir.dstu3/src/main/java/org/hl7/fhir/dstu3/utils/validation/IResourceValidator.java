@@ -1,18 +1,5 @@
 package org.hl7.fhir.dstu3.utils.validation;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
-import org.hl7.fhir.dstu3.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.dstu3.model.StructureDefinition;
-import org.hl7.fhir.dstu3.utils.ValidationProfileSet;
-import org.hl7.fhir.dstu3.utils.validation.constants.BestPracticeWarningLevel;
-import org.hl7.fhir.dstu3.utils.validation.constants.CheckDisplayOption;
-import org.hl7.fhir.dstu3.utils.validation.constants.IdStatus;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -44,6 +31,18 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 
 import com.google.gson.JsonObject;
+import org.hl7.fhir.dstu3.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.dstu3.model.StructureDefinition;
+import org.hl7.fhir.dstu3.utils.ValidationProfileSet;
+import org.hl7.fhir.dstu3.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.dstu3.utils.validation.constants.CheckDisplayOption;
+import org.hl7.fhir.dstu3.utils.validation.constants.IdStatus;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * Interface to the instance validator. This takes a resource, in one of many forms, and 

@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.misc;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;

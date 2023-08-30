@@ -29,6 +29,8 @@ package org.hl7.fhir.r4.model;
 
  */
 
+
+
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -68,55 +70,53 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 /**
- * Primitive type "code" in FHIR, where the code is tied to an enumerated list
- * of possible values
+ * Primitive type "code" in FHIR, where the code is tied to an enumerated list of possible values
  *
  */
 @DatatypeDef(name = "code", isSpecialization = true)
 public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements IBaseEnumeration<T>, ICoding {
 
-  private static final long serialVersionUID = 1L;
-  private EnumFactory<T> myEnumFactory;
+	private static final long serialVersionUID = 1L;
+	private EnumFactory<T> myEnumFactory;
 
-  /**
-   * Constructor
-   *
-   * @deprecated This no-arg constructor is provided for serialization only - Do
-   *             not use
-   */
-  @Deprecated
-  public Enumeration() {
-    // nothing
-  }
+	/**
+	 * Constructor
+	 *
+	 * @deprecated This no-arg constructor is provided for serialization only - Do not use
+	 */
+	@Deprecated
+	public Enumeration() {
+		// nothing
+	}
 
-  /**
-   * Constructor
-   */
-  public Enumeration(EnumFactory<T> theEnumFactory) {
-    if (theEnumFactory == null)
-      throw new IllegalArgumentException("An enumeration factory must be provided");
-    myEnumFactory = theEnumFactory;
-  }
+	/**
+	 * Constructor
+	 */
+	public Enumeration(EnumFactory<T> theEnumFactory) {
+		if (theEnumFactory == null)
+			throw new IllegalArgumentException("An enumeration factory must be provided");
+		myEnumFactory = theEnumFactory;
+	}
 
-  /**
-   * Constructor
-   */
-  public Enumeration(EnumFactory<T> theEnumFactory, String theValue) {
-    if (theEnumFactory == null)
-      throw new IllegalArgumentException("An enumeration factory must be provided");
-    myEnumFactory = theEnumFactory;
-    setValueAsString(theValue);
-  }
+	/**
+	 * Constructor
+	 */
+	public Enumeration(EnumFactory<T> theEnumFactory, String theValue) {
+		if (theEnumFactory == null)
+			throw new IllegalArgumentException("An enumeration factory must be provided");
+		myEnumFactory = theEnumFactory;
+		setValueAsString(theValue);
+	}
 
-  /**
-   * Constructor
-   */
-  public Enumeration(EnumFactory<T> theEnumFactory, T theValue) {
-    if (theEnumFactory == null)
-      throw new IllegalArgumentException("An enumeration factory must be provided");
-    myEnumFactory = theEnumFactory;
-    setValue(theValue);
-  }
+	/**
+	 * Constructor
+	 */
+	public Enumeration(EnumFactory<T> theEnumFactory, T theValue) {
+		if (theEnumFactory == null)
+			throw new IllegalArgumentException("An enumeration factory must be provided");
+		myEnumFactory = theEnumFactory;
+		setValue(theValue);
+	}	
 
   /**
    * Constructor
@@ -132,57 +132,56 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
 
   @Override
   public Enumeration<T> copy() {
-    Enumeration dst = new Enumeration(this.myEnumFactory, (Enum) this.getValue());
-    // Copy the Extension
+    Enumeration dst= new Enumeration(this.myEnumFactory, (Enum)this.getValue());
+    //Copy the Extension
     if (extension != null) {
       dst.extension = new ArrayList();
       for (Extension i : extension)
         dst.extension.add(i.copy());
-    }
-    ;
+    };
     return dst;
   }
 
-  @Override
-  protected String encode(T theValue) {
-    return myEnumFactory.toCode(theValue);
-  }
+	@Override
+	protected String encode(T theValue) {
+		return myEnumFactory.toCode(theValue);
+	}
 
-  public String fhirType() {
-    return "code";
-  }
+	public String fhirType() {
+		return "code";
+	}
 
-  /**
-   * Provides the enum factory which binds this enumeration to a specific ValueSet
-   */
-  public EnumFactory<T> getEnumFactory() {
-    return myEnumFactory;
-  }
+	/**
+	 * Provides the enum factory which binds this enumeration to a specific ValueSet
+	 */
+	public EnumFactory<T> getEnumFactory() {
+		return myEnumFactory;
+	}
 
-  @Override
-  protected T parse(String theValue) {
-    if (myEnumFactory != null) {
-      return myEnumFactory.fromCode(theValue);
-    }
-    return null;
-  }
+	@Override
+	protected T parse(String theValue) {
+		if (myEnumFactory != null) {
+			return myEnumFactory.fromCode(theValue);
+		}
+		return null;
+	}
 
-  @SuppressWarnings("unchecked")
-  @Override
-  public void readExternal(ObjectInput theIn) throws IOException, ClassNotFoundException {
-    myEnumFactory = (EnumFactory<T>) theIn.readObject();
-    super.readExternal(theIn);
-  }
+	@SuppressWarnings("unchecked")
+	@Override
+	public void readExternal(ObjectInput theIn) throws IOException, ClassNotFoundException {
+		myEnumFactory = (EnumFactory<T>) theIn.readObject();
+		super.readExternal(theIn);
+	}
 
-  public String toSystem() {
-    return getEnumFactory().toSystem(getValue());
-  }
+	public String toSystem() {
+		return getEnumFactory().toSystem(getValue());
+	}
 
-  @Override
-  public void writeExternal(ObjectOutput theOut) throws IOException {
-    theOut.writeObject(myEnumFactory);
-    super.writeExternal(theOut);
-  }
+	@Override
+	public void writeExternal(ObjectOutput theOut) throws IOException {
+		theOut.writeObject(myEnumFactory);
+		super.writeExternal(theOut);
+	}
 
   @Override
   public String getSystem() {

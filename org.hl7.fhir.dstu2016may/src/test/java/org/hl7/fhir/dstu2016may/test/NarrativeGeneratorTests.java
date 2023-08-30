@@ -27,19 +27,15 @@ public class NarrativeGeneratorTests {
   @BeforeAll
   public void setUp() throws FileNotFoundException, IOException, FHIRException {
     if (gen == null)
-      gen = new NarrativeGenerator("", null,
-          SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation.zip"));
+      gen = new NarrativeGenerator("", null, SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation.zip"));
   }
 
   @Test
-  public void test()
-      throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
-    process(
-        "C:\\work\\org.hl7.fhir\\build\\source\\questionnaireresponse\\questionnaireresponse-example-f201-lifelines.xml");
+  public void test() throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
+    process("C:\\work\\org.hl7.fhir\\build\\source\\questionnaireresponse\\questionnaireresponse-example-f201-lifelines.xml");
   }
 
-  private void process(String path)
-      throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
+  private void process(String path) throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
     XmlParser p = new XmlParser();
     DomainResource r = (DomainResource) p.parse(new FileInputStream(path));
     gen.generate(r);

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class SupplydeliveryTypeEnumFactory implements EnumFactory<SupplydeliveryType> {
@@ -42,7 +46,7 @@ public class SupplydeliveryTypeEnumFactory implements EnumFactory<Supplydelivery
       return SupplydeliveryType.MEDICATION;
     if ("device".equals(codeString))
       return SupplydeliveryType.DEVICE;
-    throw new IllegalArgumentException("Unknown SupplydeliveryType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown SupplydeliveryType code '"+codeString+"'");
   }
 
   public String toCode(SupplydeliveryType code) {
@@ -53,8 +57,8 @@ public class SupplydeliveryTypeEnumFactory implements EnumFactory<Supplydelivery
     return "?";
   }
 
-  public String toSystem(SupplydeliveryType code) {
-    return code.getSystem();
-  }
+    public String toSystem(SupplydeliveryType code) {
+      return code.getSystem();
+      }
 
 }

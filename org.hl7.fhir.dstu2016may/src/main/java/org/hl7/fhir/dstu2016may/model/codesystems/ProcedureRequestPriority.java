@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ProcedureRequestPriority {
 
-  /**
-   * The request has a normal priority.
-   */
-  ROUTINE,
-  /**
-   * The request should be done urgently.
-   */
-  URGENT,
-  /**
-   * The request is time-critical.
-   */
-  STAT,
-  /**
-   * The request should be acted on as soon as possible.
-   */
-  ASAP,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ProcedureRequestPriority fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("routine".equals(codeString))
-      return ROUTINE;
-    if ("urgent".equals(codeString))
-      return URGENT;
-    if ("stat".equals(codeString))
-      return STAT;
-    if ("asap".equals(codeString))
-      return ASAP;
-    throw new FHIRException("Unknown ProcedureRequestPriority code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ROUTINE:
-      return "routine";
-    case URGENT:
-      return "urgent";
-    case STAT:
-      return "stat";
-    case ASAP:
-      return "asap";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The request has a normal priority.
+         */
+        ROUTINE, 
+        /**
+         * The request should be done urgently.
+         */
+        URGENT, 
+        /**
+         * The request is time-critical.
+         */
+        STAT, 
+        /**
+         * The request should be acted on as soon as possible.
+         */
+        ASAP, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ProcedureRequestPriority fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("routine".equals(codeString))
+          return ROUTINE;
+        if ("urgent".equals(codeString))
+          return URGENT;
+        if ("stat".equals(codeString))
+          return STAT;
+        if ("asap".equals(codeString))
+          return ASAP;
+        throw new FHIRException("Unknown ProcedureRequestPriority code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ROUTINE: return "routine";
+            case URGENT: return "urgent";
+            case STAT: return "stat";
+            case ASAP: return "asap";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/procedure-request-priority";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ROUTINE: return "The request has a normal priority.";
+            case URGENT: return "The request should be done urgently.";
+            case STAT: return "The request is time-critical.";
+            case ASAP: return "The request should be acted on as soon as possible.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ROUTINE: return "Routine";
+            case URGENT: return "Urgent";
+            case STAT: return "Stat";
+            case ASAP: return "ASAP";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/procedure-request-priority";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ROUTINE:
-      return "The request has a normal priority.";
-    case URGENT:
-      return "The request should be done urgently.";
-    case STAT:
-      return "The request is time-critical.";
-    case ASAP:
-      return "The request should be acted on as soon as possible.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ROUTINE:
-      return "Routine";
-    case URGENT:
-      return "Urgent";
-    case STAT:
-      return "Stat";
-    case ASAP:
-      return "ASAP";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

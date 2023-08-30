@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ExDiagnosisrelatedgroupEnumFactory implements EnumFactory<ExDiagnosisrelatedgroup> {
@@ -46,7 +50,7 @@ public class ExDiagnosisrelatedgroupEnumFactory implements EnumFactory<ExDiagnos
       return ExDiagnosisrelatedgroup._300;
     if ("400".equals(codeString))
       return ExDiagnosisrelatedgroup._400;
-    throw new IllegalArgumentException("Unknown ExDiagnosisrelatedgroup code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ExDiagnosisrelatedgroup code '"+codeString+"'");
   }
 
   public String toCode(ExDiagnosisrelatedgroup code) {
@@ -61,8 +65,8 @@ public class ExDiagnosisrelatedgroupEnumFactory implements EnumFactory<ExDiagnos
     return "?";
   }
 
-  public String toSystem(ExDiagnosisrelatedgroup code) {
-    return code.getSystem();
-  }
+    public String toSystem(ExDiagnosisrelatedgroup code) {
+      return code.getSystem();
+      }
 
 }

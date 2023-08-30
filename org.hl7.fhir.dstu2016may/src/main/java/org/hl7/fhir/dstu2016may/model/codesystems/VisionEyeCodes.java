@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum VisionEyeCodes {
 
-  /**
-   * Right Eye
-   */
-  RIGHT,
-  /**
-   * Left Eye
-   */
-  LEFT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static VisionEyeCodes fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("right".equals(codeString))
-      return RIGHT;
-    if ("left".equals(codeString))
-      return LEFT;
-    throw new FHIRException("Unknown VisionEyeCodes code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case RIGHT:
-      return "right";
-    case LEFT:
-      return "left";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Right Eye
+         */
+        RIGHT, 
+        /**
+         * Left Eye
+         */
+        LEFT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static VisionEyeCodes fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("right".equals(codeString))
+          return RIGHT;
+        if ("left".equals(codeString))
+          return LEFT;
+        throw new FHIRException("Unknown VisionEyeCodes code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case RIGHT: return "right";
+            case LEFT: return "left";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/vision-eye-codes";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case RIGHT: return "Right Eye";
+            case LEFT: return "Left Eye";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case RIGHT: return "Right Eye";
+            case LEFT: return "Left Eye";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/vision-eye-codes";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case RIGHT:
-      return "Right Eye";
-    case LEFT:
-      return "Left Eye";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case RIGHT:
-      return "Right Eye";
-    case LEFT:
-      return "Left Eye";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

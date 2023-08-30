@@ -5,7 +5,7 @@ public enum BindingKind {
    * The primary binding e.g. ElementDefinition.binding.valueSet
    */
   PRIMARY,
-
+  
   /**
    * The max value set
    */

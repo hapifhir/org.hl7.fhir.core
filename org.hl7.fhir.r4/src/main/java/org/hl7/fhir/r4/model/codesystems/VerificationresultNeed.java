@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum VerificationresultNeed {
 
-  /**
-   * ***TODO***
-   */
-  NONE,
-  /**
-   * ***TODO***
-   */
-  INITIAL,
-  /**
-   * ***TODO***
-   */
-  PERIODIC,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static VerificationresultNeed fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("none".equals(codeString))
-      return NONE;
-    if ("initial".equals(codeString))
-      return INITIAL;
-    if ("periodic".equals(codeString))
-      return PERIODIC;
-    throw new FHIRException("Unknown VerificationresultNeed code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NONE:
-      return "none";
-    case INITIAL:
-      return "initial";
-    case PERIODIC:
-      return "periodic";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * ***TODO***
+         */
+        NONE, 
+        /**
+         * ***TODO***
+         */
+        INITIAL, 
+        /**
+         * ***TODO***
+         */
+        PERIODIC, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static VerificationresultNeed fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("none".equals(codeString))
+          return NONE;
+        if ("initial".equals(codeString))
+          return INITIAL;
+        if ("periodic".equals(codeString))
+          return PERIODIC;
+        throw new FHIRException("Unknown VerificationresultNeed code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NONE: return "none";
+            case INITIAL: return "initial";
+            case PERIODIC: return "periodic";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/need";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NONE: return "***TODO***";
+            case INITIAL: return "***TODO***";
+            case PERIODIC: return "***TODO***";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NONE: return "None";
+            case INITIAL: return "Initial";
+            case PERIODIC: return "Periodic";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/need";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NONE:
-      return "***TODO***";
-    case INITIAL:
-      return "***TODO***";
-    case PERIODIC:
-      return "***TODO***";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NONE:
-      return "None";
-    case INITIAL:
-      return "Initial";
-    case PERIODIC:
-      return "Periodic";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

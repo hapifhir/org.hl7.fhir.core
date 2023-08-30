@@ -29,6 +29,8 @@ package org.hl7.fhir.dstu2.model;
   
  */
 
+
+
 /*
 Copyright (c) 2011+, HL7, Inc
 All rights reserved.
@@ -65,23 +67,19 @@ import org.hl7.fhir.instance.model.api.IBaseEnumFactory;
  */
 public interface EnumFactory<T extends Enum<?>> extends IBaseEnumFactory<T> {
 
-  /**
-   * Read an enumeration value from the string that represents it on the XML or
-   * JSON
-   * 
-   * @param codeString the value found in the XML or JSON
-   * @return the enumeration value
-   * @is the value is not known
-   */
+	/**
+	 * Read an enumeration value from the string that represents it on the XML or JSON
+	 * @param codeString the value found in the XML or JSON
+	 * @return the enumeration value
+	 * @is the value is not known
+	 */
   public T fromCode(String codeString) throws IllegalArgumentException;
-
+  
   /**
    * Get the XML/JSON representation for an enumerated value
-   * 
    * @param code - the enumeration value
    * @return the XML/JSON representation
-   * @if the enumeration is not valid (would usually indicate a code generation
-   *     bug)
+   * @if the enumeration is not valid (would usually indicate a code generation bug)
    */
   public String toCode(T code);
 

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MedicationknowledgeStatus {
 
-  /**
-   * The medication is available for use.
-   */
-  ACTIVE,
-  /**
-   * The medication is not available for use.
-   */
-  INACTIVE,
-  /**
-   * The medication was entered in error.
-   */
-  ENTEREDINERROR,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MedicationknowledgeStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("active".equals(codeString))
-      return ACTIVE;
-    if ("inactive".equals(codeString))
-      return INACTIVE;
-    if ("entered-in-error".equals(codeString))
-      return ENTEREDINERROR;
-    throw new FHIRException("Unknown MedicationknowledgeStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ACTIVE:
-      return "active";
-    case INACTIVE:
-      return "inactive";
-    case ENTEREDINERROR:
-      return "entered-in-error";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The medication is available for use.
+         */
+        ACTIVE, 
+        /**
+         * The medication is not available for use.
+         */
+        INACTIVE, 
+        /**
+         * The medication was entered in error.
+         */
+        ENTEREDINERROR, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MedicationknowledgeStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("active".equals(codeString))
+          return ACTIVE;
+        if ("inactive".equals(codeString))
+          return INACTIVE;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        throw new FHIRException("Unknown MedicationknowledgeStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ACTIVE: return "active";
+            case INACTIVE: return "inactive";
+            case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/medicationknowledge-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ACTIVE: return "The medication is available for use.";
+            case INACTIVE: return "The medication is not available for use.";
+            case ENTEREDINERROR: return "The medication was entered in error.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ACTIVE: return "Active";
+            case INACTIVE: return "Inactive";
+            case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/medicationknowledge-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ACTIVE:
-      return "The medication is available for use.";
-    case INACTIVE:
-      return "The medication is not available for use.";
-    case ENTEREDINERROR:
-      return "The medication was entered in error.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ACTIVE:
-      return "Active";
-    case INACTIVE:
-      return "Inactive";
-    case ENTEREDINERROR:
-      return "Entered in Error";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

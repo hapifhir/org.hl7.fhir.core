@@ -124,9 +124,7 @@ public interface IWorkerContext {
     private List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
     private CodeableConcept codeableConcept;
     private Set<String> unknownSystems;
-    private boolean inactive;
-    private String status;
-    
+
     @Override
     public String toString() {
       return "ValidationResult [definition=" + definition + ", system=" + system + ", severity=" + severity + ", message=" + message + ", errorClass="
@@ -317,67 +315,16 @@ public interface IWorkerContext {
       }
     }
 
-    public void setIssues(List<OperationOutcomeIssueComponent> issues) {
-      if (this.issues != null) {
-        issues.addAll(this.issues);
-      }
-      this.issues = issues;
-      
-    }
-
-    public void trimPath(String prefix) {
-      if (issues != null) {
-        for (OperationOutcomeIssueComponent iss : issues) {
-          for (int i = iss.getLocation().size() -1; i >= 0; i--) {
-            var s = iss.getLocation().get(i).primitiveValue();
-            if (prefix.equals(s)) {
-              iss.getLocation().remove(i);
-            } else if (s.startsWith(prefix+".")) {
-              iss.getLocation().get(i).setValueAsString(s.substring(prefix.length()+1));                
-            }            
-          }
-        }
-      }      
-      
-    }
-
-    public boolean isInactive() {
-      return inactive;
-    }
-
-    public String getStatus() {
-      return status;
-    }
-
-    public ValidationResult setStatus(boolean inactive, String status) {
-      this.inactive = inactive;
-      if (!"inactive".equals(status)) {
-        this.status = status;
-      }
-      return this;
-    }
-
   }
 
   public class CodingValidationRequest {
     private Coding coding;
     private ValidationResult result;
     private CacheToken cacheToken;
-    private String vs;
 
     public CodingValidationRequest(Coding coding) {
       super();
       this.coding = coding;
-    }
-
-    public CodingValidationRequest(Coding coding, String vs) {
-      super();
-      this.coding = coding;
-      this.vs = vs;
-    }
-
-    public String getVs() {
-      return vs;
     }
 
     public ValidationResult getResult() {
@@ -879,7 +826,6 @@ public interface IWorkerContext {
    * @param vs
    */
   public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
-  public void validateCodeBatchByRef(ValidationOptions options, List<? extends CodingValidationRequest> codes, String vsUrl);
 
 
   // todo: figure these out

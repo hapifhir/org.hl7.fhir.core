@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class SubscriptionChannelTypeEnumFactory implements EnumFactory<SubscriptionChannelType> {
@@ -48,7 +52,7 @@ public class SubscriptionChannelTypeEnumFactory implements EnumFactory<Subscript
       return SubscriptionChannelType.SMS;
     if ("message".equals(codeString))
       return SubscriptionChannelType.MESSAGE;
-    throw new IllegalArgumentException("Unknown SubscriptionChannelType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown SubscriptionChannelType code '"+codeString+"'");
   }
 
   public String toCode(SubscriptionChannelType code) {
@@ -65,8 +69,8 @@ public class SubscriptionChannelTypeEnumFactory implements EnumFactory<Subscript
     return "?";
   }
 
-  public String toSystem(SubscriptionChannelType code) {
-    return code.getSystem();
-  }
+    public String toSystem(SubscriptionChannelType code) {
+      return code.getSystem();
+      }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,128 +34,95 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum SynthesisType {
 
-  /**
-   * A meta-analysis of the summary data of estimates from individual studies or
-   * data sets.
-   */
-  STDMA,
-  /**
-   * A meta-analysis of the individual participant data from individual studies or
-   * data sets.
-   */
-  IPDMA,
-  /**
-   * An indirect meta-analysis derived from 2 or more direct comparisons in a
-   * network meta-analysis.
-   */
-  INDIRECTNMA,
-  /**
-   * An composite meta-analysis derived from direct comparisons and indirect
-   * comparisons in a network meta-analysis.
-   */
-  COMBINEDNMA,
-  /**
-   * A range of results across a body of evidence.
-   */
-  RANGE,
-  /**
-   * An approach describing a body of evidence by categorically classifying
-   * individual studies (eg 3 studies showed beneft and 2 studied found no
-   * effect).
-   */
-  CLASSIFICATION,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static SynthesisType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("std-MA".equals(codeString))
-      return STDMA;
-    if ("IPD-MA".equals(codeString))
-      return IPDMA;
-    if ("indirect-NMA".equals(codeString))
-      return INDIRECTNMA;
-    if ("combined-NMA".equals(codeString))
-      return COMBINEDNMA;
-    if ("range".equals(codeString))
-      return RANGE;
-    if ("classification".equals(codeString))
-      return CLASSIFICATION;
-    throw new FHIRException("Unknown SynthesisType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case STDMA:
-      return "std-MA";
-    case IPDMA:
-      return "IPD-MA";
-    case INDIRECTNMA:
-      return "indirect-NMA";
-    case COMBINEDNMA:
-      return "combined-NMA";
-    case RANGE:
-      return "range";
-    case CLASSIFICATION:
-      return "classification";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A meta-analysis of the summary data of estimates from individual studies or data sets.
+         */
+        STDMA, 
+        /**
+         * A meta-analysis of the individual participant data from individual studies or data sets.
+         */
+        IPDMA, 
+        /**
+         * An indirect meta-analysis derived from 2 or more direct comparisons in a network meta-analysis.
+         */
+        INDIRECTNMA, 
+        /**
+         * An composite meta-analysis derived from direct comparisons and indirect comparisons in a network meta-analysis.
+         */
+        COMBINEDNMA, 
+        /**
+         * A range of results across a body of evidence.
+         */
+        RANGE, 
+        /**
+         * An approach describing a body of evidence by categorically classifying individual studies (eg 3 studies showed beneft and 2 studied found no effect).
+         */
+        CLASSIFICATION, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static SynthesisType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("std-MA".equals(codeString))
+          return STDMA;
+        if ("IPD-MA".equals(codeString))
+          return IPDMA;
+        if ("indirect-NMA".equals(codeString))
+          return INDIRECTNMA;
+        if ("combined-NMA".equals(codeString))
+          return COMBINEDNMA;
+        if ("range".equals(codeString))
+          return RANGE;
+        if ("classification".equals(codeString))
+          return CLASSIFICATION;
+        throw new FHIRException("Unknown SynthesisType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case STDMA: return "std-MA";
+            case IPDMA: return "IPD-MA";
+            case INDIRECTNMA: return "indirect-NMA";
+            case COMBINEDNMA: return "combined-NMA";
+            case RANGE: return "range";
+            case CLASSIFICATION: return "classification";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/synthesis-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case STDMA: return "A meta-analysis of the summary data of estimates from individual studies or data sets.";
+            case IPDMA: return "A meta-analysis of the individual participant data from individual studies or data sets.";
+            case INDIRECTNMA: return "An indirect meta-analysis derived from 2 or more direct comparisons in a network meta-analysis.";
+            case COMBINEDNMA: return "An composite meta-analysis derived from direct comparisons and indirect comparisons in a network meta-analysis.";
+            case RANGE: return "A range of results across a body of evidence.";
+            case CLASSIFICATION: return "An approach describing a body of evidence by categorically classifying individual studies (eg 3 studies showed beneft and 2 studied found no effect).";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case STDMA: return "summary data meta-analysis";
+            case IPDMA: return "individual patient data meta-analysis";
+            case INDIRECTNMA: return "indirect network meta-analysis";
+            case COMBINEDNMA: return "combined direct plus indirect network meta-analysis";
+            case RANGE: return "range of results";
+            case CLASSIFICATION: return "classifcation of results";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/synthesis-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case STDMA:
-      return "A meta-analysis of the summary data of estimates from individual studies or data sets.";
-    case IPDMA:
-      return "A meta-analysis of the individual participant data from individual studies or data sets.";
-    case INDIRECTNMA:
-      return "An indirect meta-analysis derived from 2 or more direct comparisons in a network meta-analysis.";
-    case COMBINEDNMA:
-      return "An composite meta-analysis derived from direct comparisons and indirect comparisons in a network meta-analysis.";
-    case RANGE:
-      return "A range of results across a body of evidence.";
-    case CLASSIFICATION:
-      return "An approach describing a body of evidence by categorically classifying individual studies (eg 3 studies showed beneft and 2 studied found no effect).";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case STDMA:
-      return "summary data meta-analysis";
-    case IPDMA:
-      return "individual patient data meta-analysis";
-    case INDIRECTNMA:
-      return "indirect network meta-analysis";
-    case COMBINEDNMA:
-      return "combined direct plus indirect network meta-analysis";
-    case RANGE:
-      return "range of results";
-    case CLASSIFICATION:
-      return "classifcation of results";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

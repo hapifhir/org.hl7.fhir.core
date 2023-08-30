@@ -453,10 +453,10 @@ public class ListResource extends DomainResource {
           return this.flag;
         }
         else if (name.equals("deleted")) {
-          throw new FHIRException("Cannot call addChild on a singleton property List.entry.deleted");
+          throw new FHIRException("Cannot call addChild on a primitive type List.entry.deleted");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property List.entry.date");
+          throw new FHIRException("Cannot call addChild on a primitive type List.entry.date");
         }
         else if (name.equals("item")) {
           this.item = new Reference();
@@ -1338,13 +1338,13 @@ public class ListResource extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property List.status");
+          throw new FHIRException("Cannot call addChild on a primitive type List.status");
         }
         else if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a singleton property List.mode");
+          throw new FHIRException("Cannot call addChild on a primitive type List.mode");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property List.title");
+          throw new FHIRException("Cannot call addChild on a primitive type List.title");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -1358,7 +1358,7 @@ public class ListResource extends DomainResource {
           return this.encounter;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property List.date");
+          throw new FHIRException("Cannot call addChild on a primitive type List.date");
         }
         else if (name.equals("source")) {
           this.source = new Reference();

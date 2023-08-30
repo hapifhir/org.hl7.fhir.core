@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,116 +34,86 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum IdentifierType {
 
-  /**
-   * A identifier assigned to a device using the Universal Device Identifier
-   * framework as defined by FDA
-   * (http://www.fda.gov/MedicalDevices/DeviceRegulationandGuidance/UniqueDeviceIdentification/).
-   */
-  UDI,
-  /**
-   * An identifier affixed to an item by the manufacturer when it is first made,
-   * where each item has a different identifier.
-   */
-  SNO,
-  /**
-   * An identifier issued by a governmental organization to an individual for the
-   * purpose of the receipt of social services and benefits.
-   */
-  SB,
-  /**
-   * The identifier associated with the person or service that requests or places
-   * an order.
-   */
-  PLAC,
-  /**
-   * The Identifier associated with the person, or service, who produces the
-   * observations or fulfills the order requested by the requestor.
-   */
-  FILL,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static IdentifierType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("UDI".equals(codeString))
-      return UDI;
-    if ("SNO".equals(codeString))
-      return SNO;
-    if ("SB".equals(codeString))
-      return SB;
-    if ("PLAC".equals(codeString))
-      return PLAC;
-    if ("FILL".equals(codeString))
-      return FILL;
-    throw new FHIRException("Unknown IdentifierType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case UDI:
-      return "UDI";
-    case SNO:
-      return "SNO";
-    case SB:
-      return "SB";
-    case PLAC:
-      return "PLAC";
-    case FILL:
-      return "FILL";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A identifier assigned to a device using the Universal Device Identifier framework as defined by FDA (http://www.fda.gov/MedicalDevices/DeviceRegulationandGuidance/UniqueDeviceIdentification/).
+         */
+        UDI, 
+        /**
+         * An identifier affixed to an item by the manufacturer when it is first made, where each item has a different identifier.
+         */
+        SNO, 
+        /**
+         * An identifier issued by a governmental organization to an individual for the purpose of the receipt of social services and benefits.
+         */
+        SB, 
+        /**
+         * The identifier associated with the person or service that requests or places an order.
+         */
+        PLAC, 
+        /**
+         * The Identifier associated with the person, or service, who produces the observations or fulfills the order requested by the requestor.
+         */
+        FILL, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static IdentifierType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("UDI".equals(codeString))
+          return UDI;
+        if ("SNO".equals(codeString))
+          return SNO;
+        if ("SB".equals(codeString))
+          return SB;
+        if ("PLAC".equals(codeString))
+          return PLAC;
+        if ("FILL".equals(codeString))
+          return FILL;
+        throw new FHIRException("Unknown IdentifierType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case UDI: return "UDI";
+            case SNO: return "SNO";
+            case SB: return "SB";
+            case PLAC: return "PLAC";
+            case FILL: return "FILL";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/identifier-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case UDI: return "A identifier assigned to a device using the Universal Device Identifier framework as defined by FDA (http://www.fda.gov/MedicalDevices/DeviceRegulationandGuidance/UniqueDeviceIdentification/).";
+            case SNO: return "An identifier affixed to an item by the manufacturer when it is first made, where each item has a different identifier.";
+            case SB: return "An identifier issued by a governmental organization to an individual for the purpose of the receipt of social services and benefits.";
+            case PLAC: return "The identifier associated with the person or service that requests or places an order.";
+            case FILL: return "The Identifier associated with the person, or service, who produces the observations or fulfills the order requested by the requestor.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case UDI: return "Universal Device Identifier";
+            case SNO: return "Serial Number";
+            case SB: return "Social Beneficiary Identifier";
+            case PLAC: return "Placer Identifier";
+            case FILL: return "Filler Identifier";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/identifier-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case UDI:
-      return "A identifier assigned to a device using the Universal Device Identifier framework as defined by FDA (http://www.fda.gov/MedicalDevices/DeviceRegulationandGuidance/UniqueDeviceIdentification/).";
-    case SNO:
-      return "An identifier affixed to an item by the manufacturer when it is first made, where each item has a different identifier.";
-    case SB:
-      return "An identifier issued by a governmental organization to an individual for the purpose of the receipt of social services and benefits.";
-    case PLAC:
-      return "The identifier associated with the person or service that requests or places an order.";
-    case FILL:
-      return "The Identifier associated with the person, or service, who produces the observations or fulfills the order requested by the requestor.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case UDI:
-      return "Universal Device Identifier";
-    case SNO:
-      return "Serial Number";
-    case SB:
-      return "Social Beneficiary Identifier";
-    case PLAC:
-      return "Placer Identifier";
-    case FILL:
-      return "Filler Identifier";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

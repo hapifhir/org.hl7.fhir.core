@@ -1658,7 +1658,7 @@ public class Encounter extends DomainResource {
           return this.location;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Encounter.location.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Encounter.location.status");
         }
         else if (name.equals("form")) {
           this.form = new CodeableConcept();
@@ -3516,7 +3516,7 @@ public class Encounter extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Encounter.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Encounter.status");
         }
         else if (name.equals("class")) {
           return addClass_();
@@ -3570,10 +3570,10 @@ public class Encounter extends DomainResource {
           return this.actualPeriod;
         }
         else if (name.equals("plannedStartDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Encounter.plannedStartDate");
+          throw new FHIRException("Cannot call addChild on a primitive type Encounter.plannedStartDate");
         }
         else if (name.equals("plannedEndDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Encounter.plannedEndDate");
+          throw new FHIRException("Cannot call addChild on a primitive type Encounter.plannedEndDate");
         }
         else if (name.equals("length")) {
           this.length = new Duration();

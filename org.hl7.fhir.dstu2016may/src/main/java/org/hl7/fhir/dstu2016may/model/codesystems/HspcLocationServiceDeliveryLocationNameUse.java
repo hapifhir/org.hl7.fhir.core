@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,63 +34,50 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcLocationServiceDeliveryLocationNameUse {
 
-  /**
-   * A name or word display that has had a number of letters removed in order to
-   * fit into limited fields or spaces
-   */
-  ABR,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static HspcLocationServiceDeliveryLocationNameUse fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("ABR".equals(codeString))
-      return ABR;
-    throw new FHIRException("Unknown HspcLocationServiceDeliveryLocationNameUse code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ABR:
-      return "ABR";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A name or word display that has had a number of letters removed in order to fit into limited fields or spaces
+         */
+        ABR, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static HspcLocationServiceDeliveryLocationNameUse fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("ABR".equals(codeString))
+          return ABR;
+        throw new FHIRException("Unknown HspcLocationServiceDeliveryLocationNameUse code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ABR: return "ABR";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/location-hspc-serviceDeliveryLocationNameUse";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ABR: return "A name or word display that has had a number of letters removed in order to fit into limited fields or spaces";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ABR: return "Abbreviation";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/location-hspc-serviceDeliveryLocationNameUse";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ABR:
-      return "A name or word display that has had a number of letters removed in order to fit into limited fields or spaces";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ABR:
-      return "Abbreviation";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

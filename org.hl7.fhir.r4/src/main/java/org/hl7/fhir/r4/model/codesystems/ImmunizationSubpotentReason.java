@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ImmunizationSubpotentReason {
 
-  /**
-   * The full volume of the dose was not administered to the patient.
-   */
-  PARTIAL,
-  /**
-   * The vaccine experienced a cold chain break.
-   */
-  COLDCHAINBREAK,
-  /**
-   * The vaccine was recalled by the manufacturer.
-   */
-  RECALL,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ImmunizationSubpotentReason fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("partial".equals(codeString))
-      return PARTIAL;
-    if ("coldchainbreak".equals(codeString))
-      return COLDCHAINBREAK;
-    if ("recall".equals(codeString))
-      return RECALL;
-    throw new FHIRException("Unknown ImmunizationSubpotentReason code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PARTIAL:
-      return "partial";
-    case COLDCHAINBREAK:
-      return "coldchainbreak";
-    case RECALL:
-      return "recall";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The full volume of the dose was not administered to the patient.
+         */
+        PARTIAL, 
+        /**
+         * The vaccine experienced a cold chain break.
+         */
+        COLDCHAINBREAK, 
+        /**
+         * The vaccine was recalled by the manufacturer.
+         */
+        RECALL, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ImmunizationSubpotentReason fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("partial".equals(codeString))
+          return PARTIAL;
+        if ("coldchainbreak".equals(codeString))
+          return COLDCHAINBREAK;
+        if ("recall".equals(codeString))
+          return RECALL;
+        throw new FHIRException("Unknown ImmunizationSubpotentReason code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PARTIAL: return "partial";
+            case COLDCHAINBREAK: return "coldchainbreak";
+            case RECALL: return "recall";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/immunization-subpotent-reason";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PARTIAL: return "The full volume of the dose was not administered to the patient.";
+            case COLDCHAINBREAK: return "The vaccine experienced a cold chain break.";
+            case RECALL: return "The vaccine was recalled by the manufacturer.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PARTIAL: return "Partial Dose";
+            case COLDCHAINBREAK: return "Cold Chain Break";
+            case RECALL: return "Manufacturer Recall";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/immunization-subpotent-reason";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PARTIAL:
-      return "The full volume of the dose was not administered to the patient.";
-    case COLDCHAINBREAK:
-      return "The vaccine experienced a cold chain break.";
-    case RECALL:
-      return "The vaccine was recalled by the manufacturer.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PARTIAL:
-      return "Partial Dose";
-    case COLDCHAINBREAK:
-      return "Cold Chain Break";
-    case RECALL:
-      return "Manufacturer Recall";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

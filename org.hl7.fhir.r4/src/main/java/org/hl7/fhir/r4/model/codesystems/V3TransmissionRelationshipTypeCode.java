@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,63 +34,50 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3TransmissionRelationshipTypeCode {
 
-  /**
-   * Description:A transmission relationship indicating that the source
-   * transmission follows the target transmission.
-   */
-  SEQL,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static V3TransmissionRelationshipTypeCode fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("SEQL".equals(codeString))
-      return SEQL;
-    throw new FHIRException("Unknown V3TransmissionRelationshipTypeCode code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case SEQL:
-      return "SEQL";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Description:A transmission relationship indicating that the source transmission follows the target transmission.
+         */
+        SEQL, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static V3TransmissionRelationshipTypeCode fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("SEQL".equals(codeString))
+          return SEQL;
+        throw new FHIRException("Unknown V3TransmissionRelationshipTypeCode code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case SEQL: return "SEQL";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/v3-TransmissionRelationshipTypeCode";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case SEQL: return "Description:A transmission relationship indicating that the source transmission follows the target transmission.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case SEQL: return "sequence";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/v3-TransmissionRelationshipTypeCode";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case SEQL:
-      return "Description:A transmission relationship indicating that the source transmission follows the target transmission.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case SEQL:
-      return "sequence";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

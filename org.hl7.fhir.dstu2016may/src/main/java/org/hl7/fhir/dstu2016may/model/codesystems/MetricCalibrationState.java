@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MetricCalibrationState {
 
-  /**
-   * The metric has not been calibrated.
-   */
-  NOTCALIBRATED,
-  /**
-   * The metric needs to be calibrated.
-   */
-  CALIBRATIONREQUIRED,
-  /**
-   * The metric has been calibrated.
-   */
-  CALIBRATED,
-  /**
-   * The state of calibration of this metric is unspecified.
-   */
-  UNSPECIFIED,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MetricCalibrationState fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("not-calibrated".equals(codeString))
-      return NOTCALIBRATED;
-    if ("calibration-required".equals(codeString))
-      return CALIBRATIONREQUIRED;
-    if ("calibrated".equals(codeString))
-      return CALIBRATED;
-    if ("unspecified".equals(codeString))
-      return UNSPECIFIED;
-    throw new FHIRException("Unknown MetricCalibrationState code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NOTCALIBRATED:
-      return "not-calibrated";
-    case CALIBRATIONREQUIRED:
-      return "calibration-required";
-    case CALIBRATED:
-      return "calibrated";
-    case UNSPECIFIED:
-      return "unspecified";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The metric has not been calibrated.
+         */
+        NOTCALIBRATED, 
+        /**
+         * The metric needs to be calibrated.
+         */
+        CALIBRATIONREQUIRED, 
+        /**
+         * The metric has been calibrated.
+         */
+        CALIBRATED, 
+        /**
+         * The state of calibration of this metric is unspecified.
+         */
+        UNSPECIFIED, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MetricCalibrationState fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("not-calibrated".equals(codeString))
+          return NOTCALIBRATED;
+        if ("calibration-required".equals(codeString))
+          return CALIBRATIONREQUIRED;
+        if ("calibrated".equals(codeString))
+          return CALIBRATED;
+        if ("unspecified".equals(codeString))
+          return UNSPECIFIED;
+        throw new FHIRException("Unknown MetricCalibrationState code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NOTCALIBRATED: return "not-calibrated";
+            case CALIBRATIONREQUIRED: return "calibration-required";
+            case CALIBRATED: return "calibrated";
+            case UNSPECIFIED: return "unspecified";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/metric-calibration-state";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NOTCALIBRATED: return "The metric has not been calibrated.";
+            case CALIBRATIONREQUIRED: return "The metric needs to be calibrated.";
+            case CALIBRATED: return "The metric has been calibrated.";
+            case UNSPECIFIED: return "The state of calibration of this metric is unspecified.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NOTCALIBRATED: return "Not Calibrated";
+            case CALIBRATIONREQUIRED: return "Calibration Required";
+            case CALIBRATED: return "Calibrated";
+            case UNSPECIFIED: return "Unspecified";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/metric-calibration-state";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NOTCALIBRATED:
-      return "The metric has not been calibrated.";
-    case CALIBRATIONREQUIRED:
-      return "The metric needs to be calibrated.";
-    case CALIBRATED:
-      return "The metric has been calibrated.";
-    case UNSPECIFIED:
-      return "The state of calibration of this metric is unspecified.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NOTCALIBRATED:
-      return "Not Calibrated";
-    case CALIBRATIONREQUIRED:
-      return "Calibration Required";
-    case CALIBRATED:
-      return "Calibrated";
-    case UNSPECIFIED:
-      return "Unspecified";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

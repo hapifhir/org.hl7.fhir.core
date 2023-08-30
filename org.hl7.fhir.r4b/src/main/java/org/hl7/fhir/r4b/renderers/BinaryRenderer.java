@@ -32,8 +32,7 @@ public class BinaryRenderer {
   }
 
   public static String getBinContentAsString(Binary bin) {
-    // for now, assume UTF8. To do: extract character encoding from mime type if
-    // possible (charset)
+    // for now, assume UTF8. To do: extract character encoding from mime type if possible (charset)
     return new String(bin.getContent(), StandardCharsets.UTF_8);
   }
 
@@ -42,7 +41,8 @@ public class BinaryRenderer {
     render(div, bin);
     return new XhtmlComposer(false, true).compose(div);
   }
-
+  
+  
   public void render(XhtmlNode x, Binary bin) throws IOException {
     filenames.clear();
     if (!bin.hasContentType()) {
@@ -52,15 +52,16 @@ public class BinaryRenderer {
     } else if (isXml(bin.getContentType())) {
       xml(x, bin);
     } else if (isJson(bin.getContentType())) {
-      json(x, bin);
+      json(x, bin);      
     } else if (isTtl(bin.getContentType())) {
-      ttl(x, bin);
+      ttl(x, bin);      
     } else if (isText(bin.getContentType())) {
-      text(x, bin);
+      text(x, bin);      
     } else {
-      error(x, "The Content Type '" + bin.getContentType() + "' is not rendered in this context");
+      error(x, "The Content Type '"+bin.getContentType()+"' is not rendered in this context");
     }
   }
+
 
   private void image(XhtmlNode x, Binary bin) throws IOException {
     String ext = null;
@@ -73,19 +74,19 @@ public class BinaryRenderer {
     } else if (bin.getContentType().startsWith("image/svg")) {
       ext = ".svg";
     }
-
+    
     if (ext == null) {
-      error(x, "The Image Type '" + bin.getContentType() + "' is not rendered in this context");
+      error(x, "The Image Type '"+bin.getContentType()+"' is not rendered in this context");
     } else {
-      String fn = "Binary-Native-" + bin.getId() + ext;
+      String fn = "Binary-Native-"+bin.getId()+ext;
       TextFile.bytesToFile(bin.getContent(), Utilities.path(folder, fn));
       filenames.add(fn);
-      x.img("Binary-Native-" + bin.getId() + ext, "Binary");
+      x.img("Binary-Native-"+bin.getId()+ext, "Binary");
     }
   }
 
   private void error(XhtmlNode x, String message) {
-    x.tx("[" + message + "]");
+    x.tx("["+message+"]");
   }
 
   private boolean isXml(String ct) {
@@ -93,39 +94,41 @@ public class BinaryRenderer {
   }
 
   private void xml(XhtmlNode x, Binary bin) {
-    String content = "\r\n" + getBinContentAsString(bin);
+    String content = "\r\n"+getBinContentAsString(bin);
     XhtmlNode pre = x.pre("xml");
-    pre.code(content);
+    pre.code(content);    
   }
-
+  
   private boolean isJson(String ct) {
     return ct.startsWith("text/json") || ct.startsWith("application/json") || ct.contains("+json");
   }
-
+  
   private void json(XhtmlNode x, Binary bin) {
-    String content = "\r\n" + getBinContentAsString(bin);
+    String content = "\r\n"+getBinContentAsString(bin);
     XhtmlNode pre = x.pre("json");
-    pre.code(content);
+    pre.code(content);    
   }
-
+  
   private boolean isTtl(String ct) {
     return ct.startsWith("text/rdf") || ct.contains("+turtle");
   }
-
+  
   private void ttl(XhtmlNode x, Binary bin) {
-    String content = "\r\n" + getBinContentAsString(bin);
+    String content = "\r\n"+getBinContentAsString(bin);
     XhtmlNode pre = x.pre("rdf language-turtle");
-    pre.code(content);
+    pre.code(content);    
   }
+  
 
   private boolean isText(String ct) {
     return ct.startsWith("text/");
   }
-
+  
   private void text(XhtmlNode x, Binary bin) {
-    String content = "\r\n" + getBinContentAsString(bin);
+    String content = "\r\n"+getBinContentAsString(bin);
     XhtmlNode pre = x.pre();
-    pre.code(content);
+    pre.code(content);    
   }
+  
 
 }

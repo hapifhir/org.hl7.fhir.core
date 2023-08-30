@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -72,7 +76,7 @@ public class MapTransformEnumFactory implements EnumFactory<MapTransform> {
       return MapTransform.ID;
     if ("cp".equals(codeString))
       return MapTransform.CP;
-    throw new IllegalArgumentException("Unknown MapTransform code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown MapTransform code '"+codeString+"'");
   }
 
   public String toCode(MapTransform code) {
@@ -113,8 +117,8 @@ public class MapTransformEnumFactory implements EnumFactory<MapTransform> {
     return "?";
   }
 
-  public String toSystem(MapTransform code) {
-    return code.getSystem();
-  }
+    public String toSystem(MapTransform code) {
+      return code.getSystem();
+      }
 
 }

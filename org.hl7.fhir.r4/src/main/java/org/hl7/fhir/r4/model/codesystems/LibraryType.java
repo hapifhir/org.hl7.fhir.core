@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,99 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum LibraryType {
 
-  /**
-   * The resource is a shareable library of formalized knowledge.
-   */
-  LOGICLIBRARY,
-  /**
-   * The resource is a definition of an information model.
-   */
-  MODELDEFINITION,
-  /**
-   * The resource is a collection of knowledge assets.
-   */
-  ASSETCOLLECTION,
-  /**
-   * The resource defines the dependencies, parameters, and data requirements for
-   * a particular module or evaluation context.
-   */
-  MODULEDEFINITION,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static LibraryType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("logic-library".equals(codeString))
-      return LOGICLIBRARY;
-    if ("model-definition".equals(codeString))
-      return MODELDEFINITION;
-    if ("asset-collection".equals(codeString))
-      return ASSETCOLLECTION;
-    if ("module-definition".equals(codeString))
-      return MODULEDEFINITION;
-    throw new FHIRException("Unknown LibraryType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case LOGICLIBRARY:
-      return "logic-library";
-    case MODELDEFINITION:
-      return "model-definition";
-    case ASSETCOLLECTION:
-      return "asset-collection";
-    case MODULEDEFINITION:
-      return "module-definition";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The resource is a shareable library of formalized knowledge.
+         */
+        LOGICLIBRARY, 
+        /**
+         * The resource is a definition of an information model.
+         */
+        MODELDEFINITION, 
+        /**
+         * The resource is a collection of knowledge assets.
+         */
+        ASSETCOLLECTION, 
+        /**
+         * The resource defines the dependencies, parameters, and data requirements for a particular module or evaluation context.
+         */
+        MODULEDEFINITION, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static LibraryType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("logic-library".equals(codeString))
+          return LOGICLIBRARY;
+        if ("model-definition".equals(codeString))
+          return MODELDEFINITION;
+        if ("asset-collection".equals(codeString))
+          return ASSETCOLLECTION;
+        if ("module-definition".equals(codeString))
+          return MODULEDEFINITION;
+        throw new FHIRException("Unknown LibraryType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case LOGICLIBRARY: return "logic-library";
+            case MODELDEFINITION: return "model-definition";
+            case ASSETCOLLECTION: return "asset-collection";
+            case MODULEDEFINITION: return "module-definition";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/library-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case LOGICLIBRARY: return "The resource is a shareable library of formalized knowledge.";
+            case MODELDEFINITION: return "The resource is a definition of an information model.";
+            case ASSETCOLLECTION: return "The resource is a collection of knowledge assets.";
+            case MODULEDEFINITION: return "The resource defines the dependencies, parameters, and data requirements for a particular module or evaluation context.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case LOGICLIBRARY: return "Logic Library";
+            case MODELDEFINITION: return "Model Definition";
+            case ASSETCOLLECTION: return "Asset Collection";
+            case MODULEDEFINITION: return "Module Definition";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/library-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case LOGICLIBRARY:
-      return "The resource is a shareable library of formalized knowledge.";
-    case MODELDEFINITION:
-      return "The resource is a definition of an information model.";
-    case ASSETCOLLECTION:
-      return "The resource is a collection of knowledge assets.";
-    case MODULEDEFINITION:
-      return "The resource defines the dependencies, parameters, and data requirements for a particular module or evaluation context.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case LOGICLIBRARY:
-      return "Logic Library";
-    case MODELDEFINITION:
-      return "Model Definition";
-    case ASSETCOLLECTION:
-      return "Asset Collection";
-    case MODULEDEFINITION:
-      return "Module Definition";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

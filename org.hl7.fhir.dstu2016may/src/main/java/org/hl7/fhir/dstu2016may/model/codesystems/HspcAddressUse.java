@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,182 +34,140 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcAddressUse {
 
-  /**
-   * null
-   */
-  BAD,
-  /**
-   * null
-   */
-  PHYS,
-  /**
-   * null
-   */
-  PST,
-  /**
-   * null
-   */
-  HP,
-  /**
-   * null
-   */
-  PUB,
-  /**
-   * null
-   */
-  TMP,
-  /**
-   * null
-   */
-  HV,
-  /**
-   * null
-   */
-  WP,
-  /**
-   * null
-   */
-  H,
-  /**
-   * null
-   */
-  DIR,
-  /**
-   * null
-   */
-  CONF,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static HspcAddressUse fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("BAD".equals(codeString))
-      return BAD;
-    if ("PHYS".equals(codeString))
-      return PHYS;
-    if ("PST".equals(codeString))
-      return PST;
-    if ("HP".equals(codeString))
-      return HP;
-    if ("PUB".equals(codeString))
-      return PUB;
-    if ("TMP".equals(codeString))
-      return TMP;
-    if ("HV".equals(codeString))
-      return HV;
-    if ("WP".equals(codeString))
-      return WP;
-    if ("H".equals(codeString))
-      return H;
-    if ("DIR".equals(codeString))
-      return DIR;
-    if ("CONF".equals(codeString))
-      return CONF;
-    throw new FHIRException("Unknown HspcAddressUse code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case BAD:
-      return "BAD";
-    case PHYS:
-      return "PHYS";
-    case PST:
-      return "PST";
-    case HP:
-      return "HP";
-    case PUB:
-      return "PUB";
-    case TMP:
-      return "TMP";
-    case HV:
-      return "HV";
-    case WP:
-      return "WP";
-    case H:
-      return "H";
-    case DIR:
-      return "DIR";
-    case CONF:
-      return "CONF";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * null
+         */
+        BAD, 
+        /**
+         * null
+         */
+        PHYS, 
+        /**
+         * null
+         */
+        PST, 
+        /**
+         * null
+         */
+        HP, 
+        /**
+         * null
+         */
+        PUB, 
+        /**
+         * null
+         */
+        TMP, 
+        /**
+         * null
+         */
+        HV, 
+        /**
+         * null
+         */
+        WP, 
+        /**
+         * null
+         */
+        H, 
+        /**
+         * null
+         */
+        DIR, 
+        /**
+         * null
+         */
+        CONF, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static HspcAddressUse fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("BAD".equals(codeString))
+          return BAD;
+        if ("PHYS".equals(codeString))
+          return PHYS;
+        if ("PST".equals(codeString))
+          return PST;
+        if ("HP".equals(codeString))
+          return HP;
+        if ("PUB".equals(codeString))
+          return PUB;
+        if ("TMP".equals(codeString))
+          return TMP;
+        if ("HV".equals(codeString))
+          return HV;
+        if ("WP".equals(codeString))
+          return WP;
+        if ("H".equals(codeString))
+          return H;
+        if ("DIR".equals(codeString))
+          return DIR;
+        if ("CONF".equals(codeString))
+          return CONF;
+        throw new FHIRException("Unknown HspcAddressUse code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case BAD: return "BAD";
+            case PHYS: return "PHYS";
+            case PST: return "PST";
+            case HP: return "HP";
+            case PUB: return "PUB";
+            case TMP: return "TMP";
+            case HV: return "HV";
+            case WP: return "WP";
+            case H: return "H";
+            case DIR: return "DIR";
+            case CONF: return "CONF";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/addressUse";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case BAD: return "";
+            case PHYS: return "";
+            case PST: return "";
+            case HP: return "";
+            case PUB: return "";
+            case TMP: return "";
+            case HV: return "";
+            case WP: return "";
+            case H: return "";
+            case DIR: return "";
+            case CONF: return "";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case BAD: return "Bad address";
+            case PHYS: return "Physical visit address";
+            case PST: return "Postal address";
+            case HP: return "Primary home";
+            case PUB: return "Public";
+            case TMP: return "Temporary address";
+            case HV: return "Vacation home";
+            case WP: return "Work place";
+            case H: return "Home address";
+            case DIR: return "Direct address";
+            case CONF: return "Conficential address";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/addressUse";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case BAD:
-      return "";
-    case PHYS:
-      return "";
-    case PST:
-      return "";
-    case HP:
-      return "";
-    case PUB:
-      return "";
-    case TMP:
-      return "";
-    case HV:
-      return "";
-    case WP:
-      return "";
-    case H:
-      return "";
-    case DIR:
-      return "";
-    case CONF:
-      return "";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case BAD:
-      return "Bad address";
-    case PHYS:
-      return "Physical visit address";
-    case PST:
-      return "Postal address";
-    case HP:
-      return "Primary home";
-    case PUB:
-      return "Public";
-    case TMP:
-      return "Temporary address";
-    case HV:
-      return "Vacation home";
-    case WP:
-      return "Work place";
-    case H:
-      return "Home address";
-    case DIR:
-      return "Direct address";
-    case CONF:
-      return "Conficential address";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

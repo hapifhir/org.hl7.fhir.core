@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,126 +34,95 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcSpecialArrangement {
 
-  /**
-   * A device, comprising a chair with wheels, used for individuals that cannot
-   * walk.
-   */
-  _182850,
-  /**
-   * An individual that translates spoken language to a language that is
-   * understood by the receiver.
-   */
-  _528123036,
-  /**
-   * A device used to convey an individual from one place to another where the
-   * individual is in a lying position and is carried by others.
-   */
-  _182847,
-  /**
-   * A canine that has been trained to lead an idividual that is blind.
-   */
-  _528123037,
-  /**
-   * A suuplimental substance given to patients who cannot obtain appropriate
-   * level of environmental oxygen through natural breathing.
-   */
-  _30719,
-  /**
-   * A device that monitors an idividual's heart rate.
-   */
-  _528123038,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static HspcSpecialArrangement fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("182850".equals(codeString))
-      return _182850;
-    if ("528123036".equals(codeString))
-      return _528123036;
-    if ("182847".equals(codeString))
-      return _182847;
-    if ("528123037".equals(codeString))
-      return _528123037;
-    if ("30719".equals(codeString))
-      return _30719;
-    if ("528123038".equals(codeString))
-      return _528123038;
-    throw new FHIRException("Unknown HspcSpecialArrangement code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case _182850:
-      return "182850";
-    case _528123036:
-      return "528123036";
-    case _182847:
-      return "182847";
-    case _528123037:
-      return "528123037";
-    case _30719:
-      return "30719";
-    case _528123038:
-      return "528123038";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A device, comprising a chair with wheels, used for individuals that cannot walk.
+         */
+        _182850, 
+        /**
+         * An individual that translates spoken language to a language that is understood by the receiver.
+         */
+        _528123036, 
+        /**
+         * A device used to convey an individual from one place to another where the individual is in a lying position and is carried by others.
+         */
+        _182847, 
+        /**
+         * A canine that has been trained to lead an idividual that is blind.
+         */
+        _528123037, 
+        /**
+         * A suuplimental substance given to patients who cannot obtain appropriate level of environmental oxygen through natural breathing.
+         */
+        _30719, 
+        /**
+         * A device that monitors an idividual's heart rate.
+         */
+        _528123038, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static HspcSpecialArrangement fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("182850".equals(codeString))
+          return _182850;
+        if ("528123036".equals(codeString))
+          return _528123036;
+        if ("182847".equals(codeString))
+          return _182847;
+        if ("528123037".equals(codeString))
+          return _528123037;
+        if ("30719".equals(codeString))
+          return _30719;
+        if ("528123038".equals(codeString))
+          return _528123038;
+        throw new FHIRException("Unknown HspcSpecialArrangement code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case _182850: return "182850";
+            case _528123036: return "528123036";
+            case _182847: return "182847";
+            case _528123037: return "528123037";
+            case _30719: return "30719";
+            case _528123038: return "528123038";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/hspc-specialArrangement";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case _182850: return "A device, comprising a chair with wheels, used for individuals that cannot walk.";
+            case _528123036: return "An individual that translates spoken language to a language that is understood by the receiver.";
+            case _182847: return "A device used to convey an individual from one place to another where the individual is in a lying position and is carried by others.";
+            case _528123037: return "A canine that has been trained to lead an idividual that is blind.";
+            case _30719: return "A suuplimental substance given to patients who cannot obtain appropriate level of environmental oxygen through natural breathing.";
+            case _528123038: return "A device that monitors an idividual's heart rate.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case _182850: return "Wheelchair";
+            case _528123036: return "Interpreter";
+            case _182847: return "Stretcher";
+            case _528123037: return "Seeing eye dog";
+            case _30719: return "Oxygen";
+            case _528123038: return "Heart monitor";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/hspc-specialArrangement";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case _182850:
-      return "A device, comprising a chair with wheels, used for individuals that cannot walk.";
-    case _528123036:
-      return "An individual that translates spoken language to a language that is understood by the receiver.";
-    case _182847:
-      return "A device used to convey an individual from one place to another where the individual is in a lying position and is carried by others.";
-    case _528123037:
-      return "A canine that has been trained to lead an idividual that is blind.";
-    case _30719:
-      return "A suuplimental substance given to patients who cannot obtain appropriate level of environmental oxygen through natural breathing.";
-    case _528123038:
-      return "A device that monitors an idividual's heart rate.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case _182850:
-      return "Wheelchair";
-    case _528123036:
-      return "Interpreter";
-    case _182847:
-      return "Stretcher";
-    case _528123037:
-      return "Seeing eye dog";
-    case _30719:
-      return "Oxygen";
-    case _528123038:
-      return "Heart monitor";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.utils;
   
  */
 
+
+
 import org.hl7.fhir.r4b.model.OperationOutcome;
 
 public class EOperationOutcome extends Exception {
@@ -45,5 +47,6 @@ public class EOperationOutcome extends Exception {
   public OperationOutcome getOutcome() {
     return outcome;
   }
-
+  
+  
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ActionlistEnumFactory implements EnumFactory<Actionlist> {
@@ -46,7 +50,7 @@ public class ActionlistEnumFactory implements EnumFactory<Actionlist> {
       return Actionlist.REPROCESS;
     if ("status".equals(codeString))
       return Actionlist.STATUS;
-    throw new IllegalArgumentException("Unknown Actionlist code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown Actionlist code '"+codeString+"'");
   }
 
   public String toCode(Actionlist code) {
@@ -61,8 +65,8 @@ public class ActionlistEnumFactory implements EnumFactory<Actionlist> {
     return "?";
   }
 
-  public String toSystem(Actionlist code) {
-    return code.getSystem();
-  }
+    public String toSystem(Actionlist code) {
+      return code.getSystem();
+      }
 
 }

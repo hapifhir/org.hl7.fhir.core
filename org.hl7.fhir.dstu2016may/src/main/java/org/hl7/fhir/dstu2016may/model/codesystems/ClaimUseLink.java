@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,100 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ClaimUseLink {
 
-  /**
-   * The treatment is complete and this represents a Claim for the services.
-   */
-  COMPLETE,
-  /**
-   * The treatment is proposed and this represents a Pre-authorization for the
-   * services.
-   */
-  PROPOSED,
-  /**
-   * The treatment is proposed and this represents a Pre-determination for the
-   * services.
-   */
-  EXPLORATORY,
-  /**
-   * A locally defined or otherwise resolved status.
-   */
-  OTHER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ClaimUseLink fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("complete".equals(codeString))
-      return COMPLETE;
-    if ("proposed".equals(codeString))
-      return PROPOSED;
-    if ("exploratory".equals(codeString))
-      return EXPLORATORY;
-    if ("other".equals(codeString))
-      return OTHER;
-    throw new FHIRException("Unknown ClaimUseLink code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case COMPLETE:
-      return "complete";
-    case PROPOSED:
-      return "proposed";
-    case EXPLORATORY:
-      return "exploratory";
-    case OTHER:
-      return "other";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The treatment is complete and this represents a Claim for the services.
+         */
+        COMPLETE, 
+        /**
+         * The treatment is proposed and this represents a Pre-authorization for the services.
+         */
+        PROPOSED, 
+        /**
+         * The treatment is proposed and this represents a Pre-determination for the services.
+         */
+        EXPLORATORY, 
+        /**
+         * A locally defined or otherwise resolved status.
+         */
+        OTHER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ClaimUseLink fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("complete".equals(codeString))
+          return COMPLETE;
+        if ("proposed".equals(codeString))
+          return PROPOSED;
+        if ("exploratory".equals(codeString))
+          return EXPLORATORY;
+        if ("other".equals(codeString))
+          return OTHER;
+        throw new FHIRException("Unknown ClaimUseLink code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case COMPLETE: return "complete";
+            case PROPOSED: return "proposed";
+            case EXPLORATORY: return "exploratory";
+            case OTHER: return "other";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/claim-use-link";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case COMPLETE: return "The treatment is complete and this represents a Claim for the services.";
+            case PROPOSED: return "The treatment is proposed and this represents a Pre-authorization for the services.";
+            case EXPLORATORY: return "The treatment is proposed and this represents a Pre-determination for the services.";
+            case OTHER: return "A locally defined or otherwise resolved status.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case COMPLETE: return "Complete";
+            case PROPOSED: return "Proposed";
+            case EXPLORATORY: return "Exploratory";
+            case OTHER: return "Other";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/claim-use-link";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case COMPLETE:
-      return "The treatment is complete and this represents a Claim for the services.";
-    case PROPOSED:
-      return "The treatment is proposed and this represents a Pre-authorization for the services.";
-    case EXPLORATORY:
-      return "The treatment is proposed and this represents a Pre-determination for the services.";
-    case OTHER:
-      return "A locally defined or otherwise resolved status.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case COMPLETE:
-      return "Complete";
-    case PROPOSED:
-      return "Proposed";
-    case EXPLORATORY:
-      return "Exploratory";
-    case OTHER:
-      return "Other";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

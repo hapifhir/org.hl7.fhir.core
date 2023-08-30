@@ -1761,7 +1761,7 @@ public class BodyStructure extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("active")) {
-          throw new FHIRException("Cannot call addChild on a singleton property BodyStructure.active");
+          throw new FHIRException("Cannot call addChild on a primitive type BodyStructure.active");
         }
         else if (name.equals("morphology")) {
           this.morphology = new CodeableConcept();
@@ -1774,7 +1774,7 @@ public class BodyStructure extends DomainResource {
           return addExcludedStructure();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property BodyStructure.description");
+          throw new FHIRException("Cannot call addChild on a primitive type BodyStructure.description");
         }
         else if (name.equals("image")) {
           return addImage();

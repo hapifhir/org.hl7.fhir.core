@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,10 +34,10 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
-public class VerificationresultCommunicationMethodEnumFactory
-    implements EnumFactory<VerificationresultCommunicationMethod> {
+public class VerificationresultCommunicationMethodEnumFactory implements EnumFactory<VerificationresultCommunicationMethod> {
 
   public VerificationresultCommunicationMethod fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
@@ -47,7 +50,7 @@ public class VerificationresultCommunicationMethodEnumFactory
       return VerificationresultCommunicationMethod.PULL;
     if ("push".equals(codeString))
       return VerificationresultCommunicationMethod.PUSH;
-    throw new IllegalArgumentException("Unknown VerificationresultCommunicationMethod code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown VerificationresultCommunicationMethod code '"+codeString+"'");
   }
 
   public String toCode(VerificationresultCommunicationMethod code) {
@@ -62,8 +65,8 @@ public class VerificationresultCommunicationMethodEnumFactory
     return "?";
   }
 
-  public String toSystem(VerificationresultCommunicationMethod code) {
-    return code.getSystem();
-  }
+    public String toSystem(VerificationresultCommunicationMethod code) {
+      return code.getSystem();
+      }
 
 }

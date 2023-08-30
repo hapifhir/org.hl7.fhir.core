@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.model;
   
  */
 
+
+
 import org.hl7.fhir.instance.model.api.IBaseBooleanDatatype;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
@@ -40,69 +42,70 @@ import ca.uhn.fhir.parser.DataFormatException;
 @DatatypeDef(name = "boolean")
 public class BooleanType extends PrimitiveType<Boolean> implements IBaseBooleanDatatype {
 
-  private static final long serialVersionUID = 3L;
+	private static final long serialVersionUID = 3L;
 
-  public BooleanType() {
-    super();
-  }
+	public BooleanType() {
+		super();
+	}
 
-  public BooleanType(boolean theBoolean) {
-    super();
-    setValue(theBoolean);
-  }
+	public BooleanType(boolean theBoolean) {
+		super();
+		setValue(theBoolean);
+	}
 
-  public BooleanType(Boolean theBoolean) {
-    super();
-    setValue(theBoolean);
-  }
+	public BooleanType(Boolean theBoolean) {
+		super();
+		setValue(theBoolean);
+	}
 
-  public BooleanType(String value) {
-    super();
-    setValueAsString(value);
-  }
+	public BooleanType(String value) {
+		super();
+		setValueAsString(value);
+	}
 
-  /**
-   * Returns the value of this type as a primitive boolean.
-   * 
-   * @return Returns the value of this type as a primitive boolean.
-   * @throws NullPointerException If the value is not set
-   */
-  public boolean booleanValue() {
-    return getValue().booleanValue();
-  }
+	/**
+	 * Returns the value of this type as a primitive boolean.
+	 * 
+	 * @return Returns the value of this type as a primitive boolean.
+	 * @throws NullPointerException
+	 *            If the value is not set
+	 */
+	public boolean booleanValue() {
+		return getValue().booleanValue();
+	}
 
-  public BooleanType copy() {
-    BooleanType ret = new BooleanType(getValue());
+	public BooleanType copy() {
+		BooleanType ret = new BooleanType(getValue());
     copyValues(ret);
     return ret;
-  }
+	}
 
-  protected String encode(Boolean theValue) {
-    if (Boolean.TRUE.equals(theValue)) {
-      return "true";
-    } else {
-      return "false";
-    }
-  }
+	protected String encode(Boolean theValue) {
+		if (Boolean.TRUE.equals(theValue)) {
+			return "true";
+		} else {
+			return "false";
+		}
+	}
 
-  public String fhirType() {
-    return "boolean";
-  }
+	public String fhirType() {
+		return "boolean";
+	}
 
-  protected Boolean parse(String theValue) {
-    String value = theValue.trim();
-    if ("true".equals(value)) {
-      return Boolean.TRUE;
-    } else if ("false".equals(value)) {
-      return Boolean.FALSE;
-    } else {
-      throw new DataFormatException("Invalid boolean string: '" + theValue + "'");
-    }
-  }
-
+	protected Boolean parse(String theValue) {
+		String value = theValue.trim();
+		if ("true".equals(value)) {
+			return Boolean.TRUE;
+		} else if ("false".equals(value)) {
+			return Boolean.FALSE;
+		} else {
+			throw new DataFormatException("Invalid boolean string: '" + theValue + "'");
+		}
+	}
+	
   @Override
   public boolean isBooleanPrimitive() {
     return true;
   }
-
+ 
 }

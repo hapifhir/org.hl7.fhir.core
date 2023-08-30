@@ -2077,10 +2077,10 @@ public class CarePlan extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("instantiatesCanonical")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.instantiatesCanonical");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.instantiatesCanonical");
         }
         else if (name.equals("instantiatesUri")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.instantiatesUri");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.instantiatesUri");
         }
         else if (name.equals("basedOn")) {
           return addBasedOn();
@@ -2092,19 +2092,19 @@ public class CarePlan extends DomainResource {
           return addPartOf();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.status");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.status");
         }
         else if (name.equals("intent")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.intent");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.intent");
         }
         else if (name.equals("category")) {
           return addCategory();
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.title");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.title");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.description");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.description");
         }
         else if (name.equals("subject")) {
           this.subject = new Reference();
@@ -2119,7 +2119,7 @@ public class CarePlan extends DomainResource {
           return this.period;
         }
         else if (name.equals("created")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CarePlan.created");
+          throw new FHIRException("Cannot call addChild on a primitive type CarePlan.created");
         }
         else if (name.equals("custodian")) {
           this.custodian = new Reference();

@@ -32,7 +32,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public abstract class TerminologyRenderer extends ResourceRenderer {
-
+  
   public TerminologyRenderer(RenderingContext context) {
     super(context);
   }
@@ -58,7 +58,6 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   protected class TargetElementComponentWrapper {
     protected ConceptMapGroupComponent group;
     protected TargetElementComponent comp;
-
     protected TargetElementComponentWrapper(ConceptMapGroupComponent group, TargetElementComponent comp) {
       super();
       this.group = group;
@@ -72,58 +71,50 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     private ConceptMapRenderInstructions details;
     private String link;
     private ConceptMap map;
-
     public UsedConceptMap(ConceptMapRenderInstructions details, String link, ConceptMap map) {
       super();
       this.details = details;
       this.link = link;
       this.map = map;
     }
-
     public ConceptMapRenderInstructions getDetails() {
       return details;
     }
-
     public ConceptMap getMap() {
       return map;
     }
-
     public String getLink() {
       return link;
-    }
+    }    
   }
 
   public class ConceptMapRenderInstructions {
     private String name;
     private String url;
     private boolean doDescription;
-
     public ConceptMapRenderInstructions(String name, String url, boolean doDescription) {
       super();
       this.name = name;
       this.url = url;
       this.doDescription = doDescription;
     }
-
     public String getName() {
       return name;
     }
-
     public String getUrl() {
       return url;
     }
-
     public boolean isDoDescription() {
       return doDescription;
     }
   }
 
-  protected void addMapHeaders(XhtmlNode tr, List<UsedConceptMap> maps)
-      throws FHIRFormatError, DefinitionException, IOException {
+
+  protected void addMapHeaders(XhtmlNode tr, List<UsedConceptMap> maps) throws FHIRFormatError, DefinitionException, IOException {
     for (UsedConceptMap m : maps) {
       XhtmlNode td = tr.td();
       XhtmlNode b = td.b();
-      XhtmlNode a = b.ah(getContext().getSpecificationLink() + m.getLink());
+      XhtmlNode a = b.ah(getContext().getSpecificationLink()+m.getLink());
       a.addText(m.getDetails().getName());
       if (m.getDetails().isDoDescription() && m.getMap().hasDescription())
         addMarkdown(td, m.getMap().getDescription());
@@ -136,7 +127,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       i++;
     if (i > 6)
       i = 6;
-    return "h" + Integer.toString(i);
+    return "h"+Integer.toString(i);
   }
 
   protected List<TargetElementComponentWrapper> findMappingsForCode(String code, ConceptMap map) {
@@ -152,20 +143,17 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     return mappings;
   }
 
+
+
   protected String getCharForRelationship(TargetElementComponent mapping) {
     if (!mapping.hasEquivalence())
       return "";
     switch (mapping.getEquivalence()) {
-    case EQUIVALENT:
-      return "~";
-    case WIDER:
-      return "<";
-    case NARROWER:
-      return ">";
-    case DISJOINT:
-      return "!=";
-    default:
-      return "?";
+    case EQUIVALENT : return "~";
+    case WIDER : return "<";
+    case NARROWER : return ">";
+    case DISJOINT : return "!=";
+    default: return "?";
     }
   }
 
@@ -200,50 +188,39 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     }
   }
 
+
   private String getSpecialReference(String system) {
     if ("http://snomed.info/sct".equals(system))
       return "http://www.snomed.org/";
-    if (Utilities.existsInList(system, "http://loinc.org", "http://unitsofmeasure.org",
-        "http://www.nlm.nih.gov/research/umls/rxnorm", "http://ncimeta.nci.nih.gov", "http://fdasis.nlm.nih.gov",
-        "http://www.radlex.org", "http://www.whocc.no/atc", "http://dicom.nema.org/resources/ontology/DCM",
-        "http://www.genenames.org", "http://www.ensembl.org", "http://www.ncbi.nlm.nih.gov/nuccore",
-        "http://www.ncbi.nlm.nih.gov/clinvar", "http://sequenceontology.org", "http://www.hgvs.org/mutnomen",
-        "http://www.ncbi.nlm.nih.gov/projects/SNP", "http://cancer.sanger.ac.uk/cancergenome/projects/cosmic",
-        "http://www.lrg-sequence.org", "http://www.omim.org", "http://www.ncbi.nlm.nih.gov/pubmed",
-        "http://www.pharmgkb.org", "http://clinicaltrials.gov", "http://www.ebi.ac.uk/ipd/imgt/hla/"))
+    if (Utilities.existsInList(system, "http://loinc.org", "http://unitsofmeasure.org", "http://www.nlm.nih.gov/research/umls/rxnorm", "http://ncimeta.nci.nih.gov", "http://fdasis.nlm.nih.gov", 
+        "http://www.radlex.org", "http://www.whocc.no/atc", "http://dicom.nema.org/resources/ontology/DCM", "http://www.genenames.org", "http://www.ensembl.org", "http://www.ncbi.nlm.nih.gov/nuccore", 
+        "http://www.ncbi.nlm.nih.gov/clinvar", "http://sequenceontology.org", "http://www.hgvs.org/mutnomen", "http://www.ncbi.nlm.nih.gov/projects/SNP", "http://cancer.sanger.ac.uk/cancergenome/projects/cosmic", 
+        "http://www.lrg-sequence.org", "http://www.omim.org", "http://www.ncbi.nlm.nih.gov/pubmed", "http://www.pharmgkb.org", "http://clinicaltrials.gov", "http://www.ebi.ac.uk/ipd/imgt/hla/")) 
       return system;
 
     return null;
   }
 
-  protected XhtmlNode addTableHeaderRowStandard(XhtmlNode t, boolean hasHierarchy, boolean hasDisplay,
-      boolean definitions, boolean comments, boolean version, boolean deprecated, List<PropertyComponent> properties,
-      List<String> langs, boolean doLangs) {
+  protected XhtmlNode addTableHeaderRowStandard(XhtmlNode t, boolean hasHierarchy, boolean hasDisplay, boolean definitions, boolean comments, boolean version, boolean deprecated, List<PropertyComponent> properties, List<String> langs, boolean doLangs) {
     XhtmlNode tr = t.tr();
     if (hasHierarchy) {
       tr.td().b().tx("Lvl");
     }
-    tr.td().attribute("style", "white-space:nowrap").b()
-        .tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Code", getContext().getLang()));
+    tr.td().attribute("style", "white-space:nowrap").b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Code", getContext().getLang()));
     if (hasDisplay) {
-      tr.td().b()
-          .tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Display", getContext().getLang()));
+      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Display", getContext().getLang()));
     }
     if (definitions) {
-      tr.td().b()
-          .tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Definition", getContext().getLang()));
+      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Definition", getContext().getLang()));
     }
     if (deprecated) {
-      tr.td().b()
-          .tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Deprecated", getContext().getLang()));
+      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Deprecated", getContext().getLang()));
     }
     if (comments) {
-      tr.td().b()
-          .tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Comments", getContext().getLang()));
+      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Comments", getContext().getLang()));
     }
     if (version) {
-      tr.td().b()
-          .tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Version", getContext().getLang()));
+      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Version", getContext().getLang()));
     }
     if (properties != null) {
       for (PropertyComponent pc : properties) {
@@ -254,8 +231,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
             display = pc.getCode();
           }
         }
-        tr.td().b()
-            .tx(getContext().getWorker().translator().translate("xhtml-gen-cs", display, getContext().getLang()));
+        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", display, getContext().getLang()));      
       }
     }
     if (doLangs) {
@@ -266,13 +242,14 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     return tr;
   }
 
+
   protected String getDisplayForProperty(String uri) {
-    if (Utilities.noString(uri)) {
+    if (Utilities.noString(uri)){
       return null;
     }
     String code = null;
     if (uri.contains("#")) {
-      code = uri.substring(uri.indexOf("#") + 1);
+      code = uri.substring(uri.indexOf("#")+1);
       uri = uri.substring(0, uri.indexOf("#"));
     }
     CodeSystem cs = getContext().getWorker().fetchCodeSystem(uri);
@@ -283,25 +260,26 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     return cc == null ? null : cc.getDisplay();
   }
 
+
   protected void AddVsRef(String value, XhtmlNode li) {
     Resource res = null;
     if (rcontext != null) {
       BundleEntryComponent be = rcontext.resolve(value);
       if (be != null) {
-        res = be.getResource();
+        res = be.getResource(); 
       }
     }
     if (res != null && !(res instanceof CanonicalResource)) {
       li.addText(value);
-      return;
-    }
+      return;      
+    }      
     CanonicalResource vs = (CanonicalResource) res;
     if (vs == null)
       vs = getContext().getWorker().fetchResource(ValueSet.class, value);
     if (vs == null)
       vs = getContext().getWorker().fetchResource(StructureDefinition.class, value);
-    // if (vs == null)
-    // vs = context.getWorker().fetchResource(DataElement.class, value);
+    //    if (vs == null)
+    //      vs = context.getWorker().fetchResource(DataElement.class, value);
     if (vs == null)
       vs = getContext().getWorker().fetchResource(Questionnaire.class, value);
     if (vs != null) {
@@ -320,19 +298,21 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       } else if (value.equals("http://snomed.info/sct") || value.equals("http://snomed.info/id")) {
         XhtmlNode a = li.ah(value);
         a.tx("SNOMED-CT");
-      } else {
+      }
+      else {
         if (value.startsWith("http://hl7.org") && !Utilities.existsInList(value, "http://hl7.org/fhir/sid/icd-10-us"))
-          System.out.println("Unable to resolve value set " + value);
+          System.out.println("Unable to resolve value set "+value);
         li.addText(value);
       }
     }
   }
 
+
+
   protected String getDisplayForConcept(String system, String version, String value) {
     if (value == null || system == null)
       return null;
-    ValidationResult cl = getContext().getWorker().validateCode(
-        getContext().getTerminologyServiceOptions().withVersionFlexible(true), system, version, value, null);
+    ValidationResult cl = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().withVersionFlexible(true), system, version, value, null);
     return cl == null ? null : cl.getDisplay();
   }
 

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ExpressionLanguage {
 
-  /**
-   * Clinical Quality Language.
-   */
-  TEXT_CQL,
-  /**
-   * FHIRPath.
-   */
-  TEXT_FHIRPATH,
-  /**
-   * FHIR's RESTful query syntax - typically independent of base URL.
-   */
-  APPLICATION_XFHIRQUERY,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ExpressionLanguage fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("text/cql".equals(codeString))
-      return TEXT_CQL;
-    if ("text/fhirpath".equals(codeString))
-      return TEXT_FHIRPATH;
-    if ("application/x-fhir-query".equals(codeString))
-      return APPLICATION_XFHIRQUERY;
-    throw new FHIRException("Unknown ExpressionLanguage code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case TEXT_CQL:
-      return "text/cql";
-    case TEXT_FHIRPATH:
-      return "text/fhirpath";
-    case APPLICATION_XFHIRQUERY:
-      return "application/x-fhir-query";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Clinical Quality Language.
+         */
+        TEXT_CQL, 
+        /**
+         * FHIRPath.
+         */
+        TEXT_FHIRPATH, 
+        /**
+         * FHIR's RESTful query syntax - typically independent of base URL.
+         */
+        APPLICATION_XFHIRQUERY, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ExpressionLanguage fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("text/cql".equals(codeString))
+          return TEXT_CQL;
+        if ("text/fhirpath".equals(codeString))
+          return TEXT_FHIRPATH;
+        if ("application/x-fhir-query".equals(codeString))
+          return APPLICATION_XFHIRQUERY;
+        throw new FHIRException("Unknown ExpressionLanguage code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case TEXT_CQL: return "text/cql";
+            case TEXT_FHIRPATH: return "text/fhirpath";
+            case APPLICATION_XFHIRQUERY: return "application/x-fhir-query";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/expression-language";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case TEXT_CQL: return "Clinical Quality Language.";
+            case TEXT_FHIRPATH: return "FHIRPath.";
+            case APPLICATION_XFHIRQUERY: return "FHIR's RESTful query syntax - typically independent of base URL.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case TEXT_CQL: return "CQL";
+            case TEXT_FHIRPATH: return "FHIRPath";
+            case APPLICATION_XFHIRQUERY: return "FHIR Query";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/expression-language";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case TEXT_CQL:
-      return "Clinical Quality Language.";
-    case TEXT_FHIRPATH:
-      return "FHIRPath.";
-    case APPLICATION_XFHIRQUERY:
-      return "FHIR's RESTful query syntax - typically independent of base URL.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case TEXT_CQL:
-      return "CQL";
-    case TEXT_FHIRPATH:
-      return "FHIRPath";
-    case APPLICATION_XFHIRQUERY:
-      return "FHIR Query";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

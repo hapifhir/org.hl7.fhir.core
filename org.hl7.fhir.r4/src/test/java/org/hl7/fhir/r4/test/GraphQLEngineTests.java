@@ -1,15 +1,5 @@
 package org.hl7.fhir.r4.test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseReference;
 import org.hl7.fhir.instance.model.api.IBaseResource;
@@ -24,12 +14,7 @@ import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.GraphQLEngine;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.graphql.Argument;
-import org.hl7.fhir.utilities.graphql.EGraphEngine;
-import org.hl7.fhir.utilities.graphql.EGraphQLException;
-import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices;
-import org.hl7.fhir.utilities.graphql.NameValue;
-import org.hl7.fhir.utilities.graphql.Parser;
+import org.hl7.fhir.utilities.graphql.*;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -41,17 +26,25 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
+
 public class GraphQLEngineTests implements IGraphQLStorageServices {
 
-  public static Stream<Arguments> data()
-      throws FileNotFoundException, IOException, ParserConfigurationException, SAXException {
+  public static Stream<Arguments> data() throws FileNotFoundException, IOException, ParserConfigurationException, SAXException {
     Document tests = XMLUtil.parseFileToDom(TestingUtilities.resourceNameToFile("graphql", "manifest.xml"));
     Element test = XMLUtil.getFirstChild(tests.getDocumentElement());
     List<Arguments> objects = new ArrayList<>();
     while (test != null && test.getNodeName().equals("test")) {
-      objects.add(Arguments
-          .of(new Object[] { test.getAttribute("name"), test.getAttribute("source"), test.getAttribute("output"),
-              test.getAttribute("context"), test.getAttribute("resource"), test.getAttribute("operation") }));
+      objects.add(Arguments.of(new Object[]{test.getAttribute("name"), test.getAttribute("source"), test.getAttribute("output"),
+        test.getAttribute("context"), test.getAttribute("resource"), test.getAttribute("operation")}));
       test = XMLUtil.getNextSibling(test);
     }
     return objects.stream();
@@ -60,8 +53,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
   @Disabled
   @ParameterizedTest(name = "{index}: {0}")
   @MethodSource("data")
-  public void test(String name, String source, String output, String context, String resource, String operation)
-      throws Exception {
+  public void test(String name, String source, String output, String context, String resource, String operation) throws Exception {
     String filename = null;
     if (!Utilities.noString(context)) {
       String[] parts = context.split("/");
@@ -73,8 +65,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
         filename = TestingUtilities.resourceNameToFile(parts[0].toLowerCase() + "-" + parts[1].toLowerCase() + ".xml");
     }
 
-    Resource parsedResource = !Utilities.noString(filename) ? new XmlParser().parse(new FileInputStream(filename))
-        : null;
+    Resource parsedResource = !Utilities.noString( filename ) ? new XmlParser().parse(new FileInputStream(filename)) : null;
 
     testResource(parsedResource, output, source);
   }
@@ -84,11 +75,10 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
 
     String context = "Patient/example/$graphql";
     String source = "reference-reverse.gql";
-    String output = "reference-reverse-history.json";
+    String output= "reference-reverse-history.json";
 
     String[] parts = context.split("/");
-    String filename = TestingUtilities
-        .resourceNameToFile(parts[0].toLowerCase() + "-" + parts[1].toLowerCase() + ".xml");
+    String filename = TestingUtilities.resourceNameToFile(parts[0].toLowerCase() + "-" + parts[1].toLowerCase() + ".xml");
 
     Resource parsedResource = new XmlParser().parse(new FileInputStream(filename));
     parsedResource.setId("example/_history/1");
@@ -96,8 +86,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     testResource(parsedResource, output, source);
   }
 
-  private void testResource(Resource resource, String output, String source)
-      throws IOException, EGraphEngine, EGraphQLException {
+  private void testResource(Resource resource, String output, String source) throws IOException, EGraphEngine, EGraphQLException {
     GraphQLEngine gql = new GraphQLEngine(TestingUtilities.context());
     gql.setServices(this);
     if (resource != null) {
@@ -145,8 +134,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
   }
 
   @Override
-  public ReferenceResolution lookup(Object appInfo, IBaseResource context, IBaseReference reference)
-      throws FHIRException {
+  public ReferenceResolution lookup(Object appInfo, IBaseResource context, IBaseReference reference) throws FHIRException {
     try {
       if (reference.getReferenceElement().isLocal()) {
         if (!(context instanceof DomainResource))
@@ -158,8 +146,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
         }
       } else {
         String[] parts = reference.getReferenceElement().getValue().split("/");
-        String filename = TestingUtilities
-            .resourceNameToFile(parts[0].toLowerCase() + '-' + parts[1].toLowerCase() + ".xml");
+        String filename = TestingUtilities.resourceNameToFile(parts[0].toLowerCase() + '-' + parts[1].toLowerCase() + ".xml");
         if (new File(filename).exists())
           return new ReferenceResolution(null, new XmlParser().parse(new FileInputStream(filename)));
       }
@@ -170,18 +157,14 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
   }
 
   @Override
-  public void listResources(Object appInfo, String type, List<Argument> searchParams, List<IBaseResource> matches)
-      throws FHIRException {
+  public void listResources(Object appInfo, String type, List<Argument> searchParams, List<IBaseResource> matches) throws FHIRException {
 
     try {
       if (type.equals("Condition") && searchParams.get(0).hasValue("Patient/example"))
-        matches.add(
-            new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("condition-example.xml"))));
+        matches.add(new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("condition-example.xml"))));
       else if (type.equals("Patient")) {
-        matches.add(
-            new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("patient-example.xml"))));
-        matches.add(
-            new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("patient-example-xds.xml"))));
+        matches.add(new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("patient-example.xml"))));
+        matches.add(new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("patient-example-xds.xml"))));
       }
     } catch (Exception e) {
       throw new FHIRException(e);
@@ -194,20 +177,16 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       Bundle bnd = new Bundle();
       BundleLinkComponent bl = bnd.addLink();
       bl.setRelation("next");
-      bl.setUrl(
-          "http://test.fhir.org/r4/Patient?_format=text/xhtml&search-id=77c97e03-8a6c-415f-a63d-11c80cf73f&&active=true&_sort=_id&search-offset=50&_count=50");
+      bl.setUrl("http://test.fhir.org/r4/Patient?_format=text/xhtml&search-id=77c97e03-8a6c-415f-a63d-11c80cf73f&&active=true&_sort=_id&search-offset=50&_count=50");
       bl = bnd.addLink();
       bl.setRelation("self");
-      bl.setUrl(
-          "http://test.fhir.org/r4/Patient?_format=text/xhtml&search-id=77c97e03-8a6c-415f-a63d-11c80cf73f&&active=true&_sort=_id&search-offset=0&_count=50");
+      bl.setUrl("http://test.fhir.org/r4/Patient?_format=text/xhtml&search-id=77c97e03-8a6c-415f-a63d-11c80cf73f&&active=true&_sort=_id&search-offset=0&_count=50");
       BundleEntryComponent be = bnd.addEntry();
       be.setFullUrl("http://hl7.org/fhir/Patient/example");
-      be.setResource(new XmlParser()
-          .parse(new FileInputStream(Utilities.path(TestingUtilities.resourceNameToFile("patient-example.xml")))));
+      be.setResource(new XmlParser().parse(new FileInputStream(Utilities.path(TestingUtilities.resourceNameToFile("patient-example.xml")))));
       be = bnd.addEntry();
       be.setFullUrl("http://hl7.org/fhir/Patient/example");
-      be.setResource(new XmlParser()
-          .parse(new FileInputStream(Utilities.path(TestingUtilities.resourceNameToFile("patient-example-xds.xml")))));
+      be.setResource(new XmlParser().parse(new FileInputStream(Utilities.path(TestingUtilities.resourceNameToFile("patient-example-xds.xml")))));
       be.getSearch().setScore(0.5);
       be.getSearch().setMode(SearchEntryMode.MATCH);
       bnd.setTotal(50);

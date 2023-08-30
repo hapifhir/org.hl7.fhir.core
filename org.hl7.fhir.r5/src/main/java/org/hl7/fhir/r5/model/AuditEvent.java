@@ -1210,14 +1210,14 @@ public class AuditEvent extends DomainResource {
           return this.who;
         }
         else if (name.equals("requestor")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AuditEvent.agent.requestor");
+          throw new FHIRException("Cannot call addChild on a primitive type AuditEvent.agent.requestor");
         }
         else if (name.equals("location")) {
           this.location = new Reference();
           return this.location;
         }
         else if (name.equals("policy")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AuditEvent.agent.policy");
+          throw new FHIRException("Cannot call addChild on a primitive type AuditEvent.agent.policy");
         }
         else if (name.equals("networkReference")) {
           this.network = new Reference();
@@ -2027,7 +2027,7 @@ public class AuditEvent extends DomainResource {
           return addSecurityLabel();
         }
         else if (name.equals("query")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AuditEvent.entity.query");
+          throw new FHIRException("Cannot call addChild on a primitive type AuditEvent.entity.query");
         }
         else if (name.equals("detail")) {
           return addDetail();
@@ -3438,10 +3438,10 @@ public class AuditEvent extends DomainResource {
           return this.code;
         }
         else if (name.equals("action")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AuditEvent.action");
+          throw new FHIRException("Cannot call addChild on a primitive type AuditEvent.action");
         }
         else if (name.equals("severity")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AuditEvent.severity");
+          throw new FHIRException("Cannot call addChild on a primitive type AuditEvent.severity");
         }
         else if (name.equals("occurredPeriod")) {
           this.occurred = new Period();
@@ -3452,7 +3452,7 @@ public class AuditEvent extends DomainResource {
           return this.occurred;
         }
         else if (name.equals("recorded")) {
-          throw new FHIRException("Cannot call addChild on a singleton property AuditEvent.recorded");
+          throw new FHIRException("Cannot call addChild on a primitive type AuditEvent.recorded");
         }
         else if (name.equals("outcome")) {
           this.outcome = new AuditEventOutcomeComponent();

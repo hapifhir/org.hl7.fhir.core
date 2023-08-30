@@ -1667,37 +1667,37 @@ Any information provided in these elements on a Questionnaire Item overrides the
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.linkId");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.linkId");
         }
         else if (name.equals("definition")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.definition");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.definition");
         }
         else if (name.equals("code")) {
           return addCode();
         }
         else if (name.equals("prefix")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.prefix");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.prefix");
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.text");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.text");
         }
         else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.type");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.type");
         }
         else if (name.equals("enableWhen")) {
           return addEnableWhen();
         }
         else if (name.equals("required")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.required");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.required");
         }
         else if (name.equals("repeats")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.repeats");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.repeats");
         }
         else if (name.equals("readOnly")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.readOnly");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.readOnly");
         }
         else if (name.equals("maxLength")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.maxLength");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.maxLength");
         }
         else if (name.equals("options")) {
           this.options = new Reference();
@@ -2269,10 +2269,10 @@ Any information provided in these elements on a Questionnaire Item overrides the
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("question")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.question");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.question");
         }
         else if (name.equals("hasAnswer")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.hasAnswer");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.hasAnswer");
         }
         else if (name.equals("answerBoolean")) {
           this.answer = new BooleanType();
@@ -4003,43 +4003,43 @@ Any information provided in these elements on a Questionnaire Item overrides the
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.url");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.version");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.version");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.name");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.title");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.title");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.experimental");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.date");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.publisher");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.publisher");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.description");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.description");
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.purpose");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.purpose");
         }
         else if (name.equals("approvalDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.approvalDate");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.approvalDate");
         }
         else if (name.equals("lastReviewDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.lastReviewDate");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.lastReviewDate");
         }
         else if (name.equals("effectivePeriod")) {
           this.effectivePeriod = new Period();
@@ -4055,13 +4055,13 @@ Any information provided in these elements on a Questionnaire Item overrides the
           return addContact();
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.copyright");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.copyright");
         }
         else if (name.equals("code")) {
           return addCode();
         }
         else if (name.equals("subjectType")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Questionnaire.subjectType");
+          throw new FHIRException("Cannot call addChild on a primitive type Questionnaire.subjectType");
         }
         else if (name.equals("item")) {
           return addItem();

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3QueryPriority {
 
-  /**
-   * Query response is deferred.
-   */
-  D,
-  /**
-   * Query response is immediate.
-   */
-  I,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static V3QueryPriority fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("D".equals(codeString))
-      return D;
-    if ("I".equals(codeString))
-      return I;
-    throw new FHIRException("Unknown V3QueryPriority code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case D:
-      return "D";
-    case I:
-      return "I";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Query response is deferred.
+         */
+        D, 
+        /**
+         * Query response is immediate.
+         */
+        I, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static V3QueryPriority fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("D".equals(codeString))
+          return D;
+        if ("I".equals(codeString))
+          return I;
+        throw new FHIRException("Unknown V3QueryPriority code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case D: return "D";
+            case I: return "I";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/v3/QueryPriority";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case D: return "Query response is deferred.";
+            case I: return "Query response is immediate.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case D: return "Deferred";
+            case I: return "Immediate";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/v3/QueryPriority";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case D:
-      return "Query response is deferred.";
-    case I:
-      return "Query response is immediate.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case D:
-      return "Deferred";
-    case I:
-      return "Immediate";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

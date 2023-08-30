@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ConsentScopeEnumFactory implements EnumFactory<ConsentScope> {
@@ -46,7 +50,7 @@ public class ConsentScopeEnumFactory implements EnumFactory<ConsentScope> {
       return ConsentScope.PATIENTPRIVACY;
     if ("treatment".equals(codeString))
       return ConsentScope.TREATMENT;
-    throw new IllegalArgumentException("Unknown ConsentScope code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ConsentScope code '"+codeString+"'");
   }
 
   public String toCode(ConsentScope code) {
@@ -61,8 +65,8 @@ public class ConsentScopeEnumFactory implements EnumFactory<ConsentScope> {
     return "?";
   }
 
-  public String toSystem(ConsentScope code) {
-    return code.getSystem();
-  }
+    public String toSystem(ConsentScope code) {
+      return code.getSystem();
+      }
 
 }

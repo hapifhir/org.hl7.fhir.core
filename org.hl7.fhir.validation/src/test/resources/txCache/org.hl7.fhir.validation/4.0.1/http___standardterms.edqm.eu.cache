@@ -3,7 +3,7 @@
   "system" : "http://standardterms.edqm.eu",
   "code" : "20049000",
   "display" : "Nasal use"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -14,11 +14,6 @@ v: {
   "display" : "Nasal use",
   "code" : "20049000",
   "system" : "http://standardterms.edqm.eu",
-  "version" : "5 March 2019",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "5 March 2019"
 }
 -------------------------------------------------------------------------------------

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 */
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
+
 
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
@@ -64,7 +68,7 @@ public class HspcObservationWeightPrecondEnumFactory implements EnumFactory<Hspc
       return HspcObservationWeightPrecond._84136;
     if ("84137".equals(codeString))
       return HspcObservationWeightPrecond._84137;
-    throw new IllegalArgumentException("Unknown HspcObservationWeightPrecond code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown HspcObservationWeightPrecond code '"+codeString+"'");
   }
 
   public String toCode(HspcObservationWeightPrecond code) {
@@ -97,8 +101,8 @@ public class HspcObservationWeightPrecondEnumFactory implements EnumFactory<Hspc
     return "?";
   }
 
-  public String toSystem(HspcObservationWeightPrecond code) {
-    return code.getSystem();
-  }
+    public String toSystem(HspcObservationWeightPrecond code) {
+      return code.getSystem();
+      }
 
 }

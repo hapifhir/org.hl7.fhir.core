@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 import org.apache.commons.io.IOUtils;
+import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 
 /**

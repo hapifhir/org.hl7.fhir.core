@@ -1,26 +1,20 @@
 package org.hl7.fhir.dstu3.utils.client.network;
 
-import java.io.IOException;
-
+import okhttp3.*;
 import org.hl7.fhir.dstu3.formats.IParser;
+
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.AdditionalMatchers;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.ArgumentMatchers;
 
-import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.io.IOException;
 
 @ExtendWith(MockitoExtension.class)
 public class FhirRequestBuilderTests {
@@ -47,7 +41,7 @@ public class FhirRequestBuilderTests {
   final Request.Builder requestBuilder = new Request.Builder()
     .url(DUMMY_URL);
 
-  final FhirRequestBuilder fhirRequestBuilder = Mockito.spy(new FhirRequestBuilder(requestBuilder, "http://local/local"));
+  final FhirRequestBuilder fhirRequestBuilder = Mockito.spy(new FhirRequestBuilder(requestBuilder));
 
   @Mock
   OkHttpClient client;

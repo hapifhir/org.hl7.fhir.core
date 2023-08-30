@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class EncounterDischargeDispositionEnumFactory implements EnumFactory<EncounterDischargeDisposition> {
@@ -60,7 +64,7 @@ public class EncounterDischargeDispositionEnumFactory implements EnumFactory<Enc
       return EncounterDischargeDisposition.SNF;
     if ("oth".equals(codeString))
       return EncounterDischargeDisposition.OTH;
-    throw new IllegalArgumentException("Unknown EncounterDischargeDisposition code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown EncounterDischargeDisposition code '"+codeString+"'");
   }
 
   public String toCode(EncounterDischargeDisposition code) {
@@ -89,8 +93,8 @@ public class EncounterDischargeDispositionEnumFactory implements EnumFactory<Enc
     return "?";
   }
 
-  public String toSystem(EncounterDischargeDisposition code) {
-    return code.getSystem();
-  }
+    public String toSystem(EncounterDischargeDisposition code) {
+      return code.getSystem();
+      }
 
 }

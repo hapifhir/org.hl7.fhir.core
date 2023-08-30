@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,75 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ImmunizationEvaluationDoseStatus {
 
-  /**
-   * The dose counts toward fulfilling a path to immunity for a patient, providing
-   * protection against the target disease.
-   */
-  VALID,
-  /**
-   * The dose does not count toward fulfilling a path to immunity for a patient.
-   */
-  NOTVALID,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ImmunizationEvaluationDoseStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("valid".equals(codeString))
-      return VALID;
-    if ("notvalid".equals(codeString))
-      return NOTVALID;
-    throw new FHIRException("Unknown ImmunizationEvaluationDoseStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case VALID:
-      return "valid";
-    case NOTVALID:
-      return "notvalid";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The dose counts toward fulfilling a path to immunity for a patient, providing protection against the target disease.
+         */
+        VALID, 
+        /**
+         * The dose does not count toward fulfilling a path to immunity for a patient.
+         */
+        NOTVALID, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ImmunizationEvaluationDoseStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("valid".equals(codeString))
+          return VALID;
+        if ("notvalid".equals(codeString))
+          return NOTVALID;
+        throw new FHIRException("Unknown ImmunizationEvaluationDoseStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case VALID: return "valid";
+            case NOTVALID: return "notvalid";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case VALID: return "The dose counts toward fulfilling a path to immunity for a patient, providing protection against the target disease.";
+            case NOTVALID: return "The dose does not count toward fulfilling a path to immunity for a patient.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case VALID: return "Valid";
+            case NOTVALID: return "Not valid";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case VALID:
-      return "The dose counts toward fulfilling a path to immunity for a patient, providing protection against the target disease.";
-    case NOTVALID:
-      return "The dose does not count toward fulfilling a path to immunity for a patient.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case VALID:
-      return "Valid";
-    case NOTVALID:
-      return "Not valid";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

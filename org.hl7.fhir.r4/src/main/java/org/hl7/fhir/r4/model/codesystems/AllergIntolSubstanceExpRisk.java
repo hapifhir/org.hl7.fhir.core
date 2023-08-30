@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,76 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AllergIntolSubstanceExpRisk {
 
-  /**
-   * Known risk of allergy or intolerance reaction upon exposure to the specified
-   * substance.
-   */
-  KNOWNREACTIONRISK,
-  /**
-   * No known risk of allergy or intolerance reaction upon exposure to the
-   * specified substance.
-   */
-  NOKNOWNREACTIONRISK,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static AllergIntolSubstanceExpRisk fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("known-reaction-risk".equals(codeString))
-      return KNOWNREACTIONRISK;
-    if ("no-known-reaction-risk".equals(codeString))
-      return NOKNOWNREACTIONRISK;
-    throw new FHIRException("Unknown AllergIntolSubstanceExpRisk code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case KNOWNREACTIONRISK:
-      return "known-reaction-risk";
-    case NOKNOWNREACTIONRISK:
-      return "no-known-reaction-risk";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Known risk of allergy or intolerance reaction upon exposure to the specified substance.
+         */
+        KNOWNREACTIONRISK, 
+        /**
+         * No known risk of allergy or intolerance reaction upon exposure to the specified substance.
+         */
+        NOKNOWNREACTIONRISK, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static AllergIntolSubstanceExpRisk fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("known-reaction-risk".equals(codeString))
+          return KNOWNREACTIONRISK;
+        if ("no-known-reaction-risk".equals(codeString))
+          return NOKNOWNREACTIONRISK;
+        throw new FHIRException("Unknown AllergIntolSubstanceExpRisk code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case KNOWNREACTIONRISK: return "known-reaction-risk";
+            case NOKNOWNREACTIONRISK: return "no-known-reaction-risk";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/allerg-intol-substance-exp-risk";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case KNOWNREACTIONRISK: return "Known risk of allergy or intolerance reaction upon exposure to the specified substance.";
+            case NOKNOWNREACTIONRISK: return "No known risk of allergy or intolerance reaction upon exposure to the specified substance.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case KNOWNREACTIONRISK: return "Known Reaction Risk";
+            case NOKNOWNREACTIONRISK: return "No Known Reaction Risk";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/allerg-intol-substance-exp-risk";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case KNOWNREACTIONRISK:
-      return "Known risk of allergy or intolerance reaction upon exposure to the specified substance.";
-    case NOKNOWNREACTIONRISK:
-      return "No known risk of allergy or intolerance reaction upon exposure to the specified substance.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case KNOWNREACTIONRISK:
-      return "Known Reaction Risk";
-    case NOKNOWNREACTIONRISK:
-      return "No Known Reaction Risk";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

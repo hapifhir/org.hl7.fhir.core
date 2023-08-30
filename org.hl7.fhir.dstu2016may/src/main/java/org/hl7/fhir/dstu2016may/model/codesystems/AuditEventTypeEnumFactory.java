@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class AuditEventTypeEnumFactory implements EnumFactory<AuditEventType> {
@@ -40,7 +44,7 @@ public class AuditEventTypeEnumFactory implements EnumFactory<AuditEventType> {
       return null;
     if ("rest".equals(codeString))
       return AuditEventType.REST;
-    throw new IllegalArgumentException("Unknown AuditEventType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown AuditEventType code '"+codeString+"'");
   }
 
   public String toCode(AuditEventType code) {
@@ -49,8 +53,8 @@ public class AuditEventTypeEnumFactory implements EnumFactory<AuditEventType> {
     return "?";
   }
 
-  public String toSystem(AuditEventType code) {
-    return code.getSystem();
-  }
+    public String toSystem(AuditEventType code) {
+      return code.getSystem();
+      }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConsentProvisionType {
 
-  /**
-   * Consent is denied for actions meeting these rules.
-   */
-  DENY,
-  /**
-   * Consent is provided for actions meeting these rules.
-   */
-  PERMIT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ConsentProvisionType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("deny".equals(codeString))
-      return DENY;
-    if ("permit".equals(codeString))
-      return PERMIT;
-    throw new FHIRException("Unknown ConsentProvisionType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case DENY:
-      return "deny";
-    case PERMIT:
-      return "permit";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Consent is denied for actions meeting these rules.
+         */
+        DENY, 
+        /**
+         * Consent is provided for actions meeting these rules.
+         */
+        PERMIT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ConsentProvisionType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("deny".equals(codeString))
+          return DENY;
+        if ("permit".equals(codeString))
+          return PERMIT;
+        throw new FHIRException("Unknown ConsentProvisionType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case DENY: return "deny";
+            case PERMIT: return "permit";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/consent-provision-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case DENY: return "Consent is denied for actions meeting these rules.";
+            case PERMIT: return "Consent is provided for actions meeting these rules.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case DENY: return "Opt Out";
+            case PERMIT: return "Opt In";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/consent-provision-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case DENY:
-      return "Consent is denied for actions meeting these rules.";
-    case PERMIT:
-      return "Consent is provided for actions meeting these rules.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case DENY:
-      return "Opt Out";
-    case PERMIT:
-      return "Opt In";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

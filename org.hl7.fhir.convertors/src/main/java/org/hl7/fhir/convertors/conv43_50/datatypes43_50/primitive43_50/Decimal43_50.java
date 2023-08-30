@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50;
 
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4b.model.DecimalType;
 
 public class Decimal43_50 {
   public static org.hl7.fhir.r5.model.DecimalType convertDecimal(org.hl7.fhir.r4b.model.DecimalType src) throws FHIRException {

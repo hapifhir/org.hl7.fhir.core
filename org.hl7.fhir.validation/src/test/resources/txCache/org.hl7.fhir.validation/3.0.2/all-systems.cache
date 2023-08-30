@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "fi"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "3.0.2", "langs":"fi", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "3.0.2", "langs":"[fi]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -9,18 +9,14 @@
   }]
 }}####
 v: {
+  "display" : "Finnish",
   "code" : "fi",
-  "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "d"
-}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "3.0.2", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "3.0.2", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -31,12 +27,7 @@ v: {
   "display" : "day",
   "code" : "d",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -48,7 +39,7 @@ v: {
       "system" : "urn:ietf:bcp:13"
     }]
   }
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -58,12 +49,7 @@ v: {
 v: {
   "display" : "image/jpg",
   "code" : "image/jpg",
-  "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -75,7 +61,7 @@ v: {
       "system" : "urn:ietf:bcp:13"
     }]
   }
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -85,17 +71,12 @@ v: {
 v: {
   "display" : "application/pdf",
   "code" : "application/pdf",
-  "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "de-CH"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "3.0.2", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "3.0.2", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -105,19 +86,14 @@ v: {
 v: {
   "display" : "German (Switzerland)",
   "code" : "de-CH",
-  "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "urn:iso:std:iso:3166",
   "code" : "US",
   "display" : "United States of America"
-}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "3.0.2", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "3.0.2", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -128,17 +104,12 @@ v: {
   "display" : "United States of America",
   "code" : "US",
   "system" : "urn:iso:std:iso:3166",
-  "version" : "2018",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2018"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "en"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "3.0.2", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "3.0.2", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -148,11 +119,6 @@ v: {
 v: {
   "display" : "English",
   "code" : "en",
-  "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------

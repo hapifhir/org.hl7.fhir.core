@@ -1,16 +1,16 @@
 package org.hl7.fhir.utilities.npm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.apache.commons.io.IOUtils;
+import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import org.apache.commons.io.IOUtils;
-import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class NpmPackageTests implements ResourceLoaderTests {
   @Test

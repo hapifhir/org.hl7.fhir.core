@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ContractDataMeaningEnumFactory implements EnumFactory<ContractDataMeaning> {
@@ -46,7 +50,7 @@ public class ContractDataMeaningEnumFactory implements EnumFactory<ContractDataM
       return ContractDataMeaning.DEPENDENTS;
     if ("authoredby".equals(codeString))
       return ContractDataMeaning.AUTHOREDBY;
-    throw new IllegalArgumentException("Unknown ContractDataMeaning code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ContractDataMeaning code '"+codeString+"'");
   }
 
   public String toCode(ContractDataMeaning code) {
@@ -61,8 +65,8 @@ public class ContractDataMeaningEnumFactory implements EnumFactory<ContractDataM
     return "?";
   }
 
-  public String toSystem(ContractDataMeaning code) {
-    return code.getSystem();
-  }
+    public String toSystem(ContractDataMeaning code) {
+      return code.getSystem();
+      }
 
 }

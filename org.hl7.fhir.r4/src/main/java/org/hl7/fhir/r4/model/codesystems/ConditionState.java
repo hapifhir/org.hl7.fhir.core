@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConditionState {
 
-  /**
-   * The condition is active.
-   */
-  ACTIVE,
-  /**
-   * The condition is inactive, but not resolved.
-   */
-  INACTIVE,
-  /**
-   * The condition is resolved.
-   */
-  RESOLVED,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ConditionState fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("active".equals(codeString))
-      return ACTIVE;
-    if ("inactive".equals(codeString))
-      return INACTIVE;
-    if ("resolved".equals(codeString))
-      return RESOLVED;
-    throw new FHIRException("Unknown ConditionState code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ACTIVE:
-      return "active";
-    case INACTIVE:
-      return "inactive";
-    case RESOLVED:
-      return "resolved";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The condition is active.
+         */
+        ACTIVE, 
+        /**
+         * The condition is inactive, but not resolved.
+         */
+        INACTIVE, 
+        /**
+         * The condition is resolved.
+         */
+        RESOLVED, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ConditionState fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("active".equals(codeString))
+          return ACTIVE;
+        if ("inactive".equals(codeString))
+          return INACTIVE;
+        if ("resolved".equals(codeString))
+          return RESOLVED;
+        throw new FHIRException("Unknown ConditionState code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ACTIVE: return "active";
+            case INACTIVE: return "inactive";
+            case RESOLVED: return "resolved";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/condition-state";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ACTIVE: return "The condition is active.";
+            case INACTIVE: return "The condition is inactive, but not resolved.";
+            case RESOLVED: return "The condition is resolved.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ACTIVE: return "Active";
+            case INACTIVE: return "Inactive";
+            case RESOLVED: return "Resolved";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/condition-state";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ACTIVE:
-      return "The condition is active.";
-    case INACTIVE:
-      return "The condition is inactive, but not resolved.";
-    case RESOLVED:
-      return "The condition is resolved.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ACTIVE:
-      return "Active";
-    case INACTIVE:
-      return "Inactive";
-    case RESOLVED:
-      return "Resolved";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

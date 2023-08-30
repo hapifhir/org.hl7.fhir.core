@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ExRevenueCenterEnumFactory implements EnumFactory<ExRevenueCenter> {
@@ -56,7 +60,7 @@ public class ExRevenueCenterEnumFactory implements EnumFactory<ExRevenueCenter> 
       return ExRevenueCenter._0452;
     if ("0010".equals(codeString))
       return ExRevenueCenter._0010;
-    throw new IllegalArgumentException("Unknown ExRevenueCenter code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ExRevenueCenter code '"+codeString+"'");
   }
 
   public String toCode(ExRevenueCenter code) {
@@ -81,8 +85,8 @@ public class ExRevenueCenterEnumFactory implements EnumFactory<ExRevenueCenter> 
     return "?";
   }
 
-  public String toSystem(ExRevenueCenter code) {
-    return code.getSystem();
-  }
+    public String toSystem(ExRevenueCenter code) {
+      return code.getSystem();
+      }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AnimalBreeds {
 
-  /**
-   * null
-   */
-  GSD,
-  /**
-   * null
-   */
-  IRT,
-  /**
-   * null
-   */
-  TIBMAS,
-  /**
-   * null
-   */
-  GRET,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static AnimalBreeds fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("gsd".equals(codeString))
-      return GSD;
-    if ("irt".equals(codeString))
-      return IRT;
-    if ("tibmas".equals(codeString))
-      return TIBMAS;
-    if ("gret".equals(codeString))
-      return GRET;
-    throw new FHIRException("Unknown AnimalBreeds code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case GSD:
-      return "gsd";
-    case IRT:
-      return "irt";
-    case TIBMAS:
-      return "tibmas";
-    case GRET:
-      return "gret";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * null
+         */
+        GSD, 
+        /**
+         * null
+         */
+        IRT, 
+        /**
+         * null
+         */
+        TIBMAS, 
+        /**
+         * null
+         */
+        GRET, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static AnimalBreeds fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("gsd".equals(codeString))
+          return GSD;
+        if ("irt".equals(codeString))
+          return IRT;
+        if ("tibmas".equals(codeString))
+          return TIBMAS;
+        if ("gret".equals(codeString))
+          return GRET;
+        throw new FHIRException("Unknown AnimalBreeds code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case GSD: return "gsd";
+            case IRT: return "irt";
+            case TIBMAS: return "tibmas";
+            case GRET: return "gret";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/animal-breed";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case GSD: return "";
+            case IRT: return "";
+            case TIBMAS: return "";
+            case GRET: return "";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case GSD: return "German Shepherd Dog";
+            case IRT: return "Irish Terrier";
+            case TIBMAS: return "Tibetan Mastiff";
+            case GRET: return "Golden Retriever";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/animal-breed";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case GSD:
-      return "";
-    case IRT:
-      return "";
-    case TIBMAS:
-      return "";
-    case GRET:
-      return "";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case GSD:
-      return "German Shepherd Dog";
-    case IRT:
-      return "Irish Terrier";
-    case TIBMAS:
-      return "Tibetan Mastiff";
-    case GRET:
-      return "Golden Retriever";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

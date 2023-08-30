@@ -1113,7 +1113,7 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("index")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.index");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.index");
         }
         else if (name.equals("profile")) {
           this.profile = new Coding();
@@ -1340,7 +1340,7 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("index")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.index");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.index");
         }
         else if (name.equals("profile")) {
           this.profile = new Coding();
@@ -1851,10 +1851,10 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.url");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.url");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.description");
         }
         else
           return super.addChild(name);
@@ -2446,22 +2446,22 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("required")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.required");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.required");
         }
         else if (name.equals("validated")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.validated");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.validated");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.description");
         }
         else if (name.equals("origin")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.origin");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.origin");
         }
         else if (name.equals("destination")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.destination");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.destination");
         }
         else if (name.equals("link")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.link");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.link");
         }
         else if (name.equals("capabilities")) {
           this.capabilities = new Reference();
@@ -2778,10 +2778,10 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("autocreate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.autocreate");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.autocreate");
         }
         else if (name.equals("autodelete")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.autodelete");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.autodelete");
         }
         else if (name.equals("resource")) {
           this.resource = new Reference();
@@ -3431,28 +3431,28 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.name");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.name");
         }
         else if (name.equals("defaultValue")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.defaultValue");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.defaultValue");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.description");
         }
         else if (name.equals("expression")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.expression");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.expression");
         }
         else if (name.equals("headerField")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.headerField");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.headerField");
         }
         else if (name.equals("hint")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.hint");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.hint");
         }
         else if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.path");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.path");
         }
         else if (name.equals("sourceId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.sourceId");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.sourceId");
         }
         else
           return super.addChild(name);
@@ -3968,10 +3968,10 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.name");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.name");
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.value");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.value");
         }
         else
           return super.addChild(name);
@@ -4478,7 +4478,7 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("ruleId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.ruleId");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.ruleId");
         }
         else if (name.equals("param")) {
           return addParam();
@@ -4731,10 +4731,10 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.name");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.name");
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.value");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.value");
         }
         else
           return super.addChild(name);
@@ -6259,49 +6259,49 @@ public class TestScript extends MetadataResource {
           return this.type;
         }
         else if (name.equals("resource")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.resource");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.resource");
         }
         else if (name.equals("label")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.label");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.label");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.description");
         }
         else if (name.equals("accept")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.accept");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.accept");
         }
         else if (name.equals("contentType")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.contentType");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.contentType");
         }
         else if (name.equals("destination")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.destination");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.destination");
         }
         else if (name.equals("encodeRequestUrl")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.encodeRequestUrl");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.encodeRequestUrl");
         }
         else if (name.equals("origin")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.origin");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.origin");
         }
         else if (name.equals("params")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.params");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.params");
         }
         else if (name.equals("requestHeader")) {
           return addRequestHeader();
         }
         else if (name.equals("requestId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.requestId");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.requestId");
         }
         else if (name.equals("responseId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.responseId");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.responseId");
         }
         else if (name.equals("sourceId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.sourceId");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.sourceId");
         }
         else if (name.equals("targetId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.targetId");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.targetId");
         }
         else if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.url");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.url");
         }
         else
           return super.addChild(name);
@@ -6574,10 +6574,10 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("field")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.field");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.field");
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.value");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.value");
         }
         else
           return super.addChild(name);
@@ -8229,58 +8229,58 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("label")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.label");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.label");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.description");
         }
         else if (name.equals("direction")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.direction");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.direction");
         }
         else if (name.equals("compareToSourceId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.compareToSourceId");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.compareToSourceId");
         }
         else if (name.equals("compareToSourceExpression")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.compareToSourceExpression");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.compareToSourceExpression");
         }
         else if (name.equals("compareToSourcePath")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.compareToSourcePath");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.compareToSourcePath");
         }
         else if (name.equals("contentType")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.contentType");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.contentType");
         }
         else if (name.equals("expression")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.expression");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.expression");
         }
         else if (name.equals("headerField")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.headerField");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.headerField");
         }
         else if (name.equals("minimumId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.minimumId");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.minimumId");
         }
         else if (name.equals("navigationLinks")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.navigationLinks");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.navigationLinks");
         }
         else if (name.equals("operator")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.operator");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.operator");
         }
         else if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.path");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.path");
         }
         else if (name.equals("requestMethod")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.requestMethod");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.requestMethod");
         }
         else if (name.equals("requestURL")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.requestURL");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.requestURL");
         }
         else if (name.equals("resource")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.resource");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.resource");
         }
         else if (name.equals("response")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.response");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.response");
         }
         else if (name.equals("responseCode")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.responseCode");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.responseCode");
         }
         else if (name.equals("rule")) {
           this.rule = new ActionAssertRuleComponent();
@@ -8291,16 +8291,16 @@ public class TestScript extends MetadataResource {
           return this.ruleset;
         }
         else if (name.equals("sourceId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.sourceId");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.sourceId");
         }
         else if (name.equals("validateProfileId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.validateProfileId");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.validateProfileId");
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.value");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.value");
         }
         else if (name.equals("warningOnly")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.warningOnly");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.warningOnly");
         }
         else
           return super.addChild(name);
@@ -8593,7 +8593,7 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("ruleId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.ruleId");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.ruleId");
         }
         else if (name.equals("param")) {
           return addParam();
@@ -8843,10 +8843,10 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.name");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.name");
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.value");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.value");
         }
         else
           return super.addChild(name);
@@ -9096,7 +9096,7 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("rulesetId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.rulesetId");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.rulesetId");
         }
         else if (name.equals("rule")) {
           return addRule();
@@ -9353,7 +9353,7 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("ruleId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.ruleId");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.ruleId");
         }
         else if (name.equals("param")) {
           return addParam();
@@ -9603,10 +9603,10 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.name");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.name");
         }
         else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.value");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.value");
         }
         else
           return super.addChild(name);
@@ -9918,10 +9918,10 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.name");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.name");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.description");
         }
         else if (name.equals("action")) {
           return addAction();
@@ -12165,38 +12165,38 @@ public class TestScript extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.url");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.url");
         }
         else if (name.equals("identifier")) {
           this.identifier = new Identifier();
           return this.identifier;
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.version");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.version");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.name");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.title");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.title");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.status");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.experimental");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.date");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.publisher");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -12205,10 +12205,10 @@ public class TestScript extends MetadataResource {
           return addJurisdiction();
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.purpose");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.purpose");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TestScript.copyright");
+          throw new FHIRException("Cannot call addChild on a primitive type TestScript.copyright");
         }
         else if (name.equals("origin")) {
           return addOrigin();

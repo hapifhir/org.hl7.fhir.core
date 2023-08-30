@@ -4,9 +4,6 @@ package org.hl7.fhir.dstu3.utils.client;
 
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -37,6 +34,9 @@ import java.util.List;
 */
 
 import org.hl7.fhir.dstu3.model.OperationOutcome;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * FHIR client exception.

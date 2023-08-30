@@ -1715,7 +1715,7 @@ public class Goal extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Goal.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Goal.status");
         }
         else if (name.equals("category")) {
           return addCategory();
@@ -1745,10 +1745,10 @@ public class Goal extends DomainResource {
           return this.target;
         }
         else if (name.equals("statusDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Goal.statusDate");
+          throw new FHIRException("Cannot call addChild on a primitive type Goal.statusDate");
         }
         else if (name.equals("statusReason")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Goal.statusReason");
+          throw new FHIRException("Cannot call addChild on a primitive type Goal.statusReason");
         }
         else if (name.equals("expressedBy")) {
           this.expressedBy = new Reference();

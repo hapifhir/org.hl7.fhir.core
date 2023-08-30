@@ -362,7 +362,7 @@ public class Person extends DomainResource {
           return this.language;
         }
         else if (name.equals("preferred")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Person.communication.preferred");
+          throw new FHIRException("Cannot call addChild on a primitive type Person.communication.preferred");
         }
         else
           return super.addChild(name);
@@ -598,7 +598,7 @@ public class Person extends DomainResource {
           return this.target;
         }
         else if (name.equals("assurance")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Person.link.assurance");
+          throw new FHIRException("Cannot call addChild on a primitive type Person.link.assurance");
         }
         else
           return super.addChild(name);
@@ -1555,7 +1555,7 @@ public class Person extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("active")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Person.active");
+          throw new FHIRException("Cannot call addChild on a primitive type Person.active");
         }
         else if (name.equals("name")) {
           return addName();
@@ -1564,10 +1564,10 @@ public class Person extends DomainResource {
           return addTelecom();
         }
         else if (name.equals("gender")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Person.gender");
+          throw new FHIRException("Cannot call addChild on a primitive type Person.gender");
         }
         else if (name.equals("birthDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Person.birthDate");
+          throw new FHIRException("Cannot call addChild on a primitive type Person.birthDate");
         }
         else if (name.equals("deceasedBoolean")) {
           this.deceased = new BooleanType();

@@ -675,7 +675,7 @@ public class PaymentReconciliation extends DomainResource {
           return this.payee;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.date");
+          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.date");
         }
         else if (name.equals("amount")) {
           this.amount = new Money();
@@ -909,7 +909,7 @@ public class PaymentReconciliation extends DomainResource {
           return this.type;
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.text");
+          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.text");
         }
         else
           return super.addChild(name);
@@ -1861,14 +1861,14 @@ public class PaymentReconciliation extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.status");
+          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.status");
         }
         else if (name.equals("period")) {
           this.period = new Period();
           return this.period;
         }
         else if (name.equals("created")) {
-          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.created");
+          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.created");
         }
         else if (name.equals("organization")) {
           this.organization = new Reference();
@@ -1883,7 +1883,7 @@ public class PaymentReconciliation extends DomainResource {
           return this.outcome;
         }
         else if (name.equals("disposition")) {
-          throw new FHIRException("Cannot call addChild on a singleton property PaymentReconciliation.disposition");
+          throw new FHIRException("Cannot call addChild on a primitive type PaymentReconciliation.disposition");
         }
         else if (name.equals("requestProvider")) {
           this.requestProvider = new Reference();

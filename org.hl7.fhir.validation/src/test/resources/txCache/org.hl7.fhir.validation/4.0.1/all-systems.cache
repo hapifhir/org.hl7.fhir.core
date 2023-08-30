@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "application/octet-stream"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -11,17 +11,12 @@
 v: {
   "display" : "application/octet-stream",
   "code" : "application/octet-stream",
-  "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "de-CH"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"de-CH", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[de-CH]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -29,18 +24,14 @@ v: {
   }]
 }}####
 v: {
+  "display" : "German (Switzerland)",
   "code" : "de-CH",
-  "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "application/pdf"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -50,19 +41,14 @@ v: {
 v: {
   "display" : "application/pdf",
   "code" : "application/pdf",
-  "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "59284-0",
   "display" : "Patient Authorization Signature"
-}, "url": "http://hl7.org/fhir/ValueSet/consent-category", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/consent-category", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -71,18 +57,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Wrong Display Name 'Patient Authorization Signature' for http://loinc.org#59284-0 - should be one of 2 choices: 'Consent Document' or 'Consent' (for the language(s) 'en') (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "Wrong Display Name 'Patient Authorization Signature' for http://loinc.org#59284-0 - should be one of 29 choices: 'Consent Document, \"Consent\", \"临床文档型\" (zh-CN), \"临床文档\" (zh-CN), \"文档\" (zh-CN), \"文书\" (zh-CN), \"医疗文书\" (zh-CN), \"临床医疗文书 事件发生的地方\" (zh-CN), \"场景\" (zh-CN), \"环境\" (zh-CN), \"背景 医疗服务对象\" (zh-CN), \"客户\" (zh-CN), \"病人\" (zh-CN), \"超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。\" (zh-CN), \"发现物\" (zh-CN), \"所见\" (zh-CN), \"结果\" (zh-CN), \"结论 同意书\" (zh-CN), \"知情同意\" (zh-CN), \"知情同意书 文档本体\" (zh-CN), \"临床文档本体\" (zh-CN), \"文档本体\" (zh-CN), \"文书本体\" (zh-CN), \"医疗文书本体\" (zh-CN), \"临床医疗文书本体 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间\" (zh-CN), \"Documentazione dell'ontologia Osservazione Punto nel tempo (episodio)\" (it-IT)' for the language(s) '--' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "image/*"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -92,17 +73,12 @@ v: {
 v: {
   "display" : "image/*",
   "code" : "image/*",
-  "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "d"
-}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -113,17 +89,12 @@ v: {
   "display" : "day",
   "code" : "d",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "en-IN"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"en-IN", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en-IN]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -131,18 +102,14 @@ v: {
   }]
 }}####
 v: {
+  "display" : "English (India)",
   "code" : "en-IN",
-  "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "image/jpg"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -152,17 +119,12 @@ v: {
 v: {
   "display" : "image/jpg",
   "code" : "image/jpg",
-  "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "min"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -173,17 +135,12 @@ v: {
   "display" : "min",
   "code" : "min",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "mmol/L"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -194,17 +151,12 @@ v: {
   "display" : "mmol/L",
   "code" : "mmol/L",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "%"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -215,17 +167,12 @@ v: {
   "display" : "%",
   "code" : "%",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -236,17 +183,12 @@ v: {
   "display" : "kg",
   "code" : "kg",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "cm"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -255,18 +197,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#cm' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#cm is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "cm"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -277,17 +214,12 @@ v: {
   "display" : "cm",
   "code" : "cm",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg/m2"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -296,20 +228,15 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#kg/m2' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#kg/m2 is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "112144000",
   "display" : "Blood group A (finding)"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-bloodGroup", "version": "0.5.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-bloodGroup", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -320,17 +247,12 @@ v: {
   "display" : "Blood group A",
   "code" : "112144000",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230131"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -339,18 +261,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#kg' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#kg is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg/m2"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -359,18 +276,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#kg/m2' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#kg/m2 is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "wk"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -381,19 +293,14 @@ v: {
   "display" : "wk",
   "code" : "wk",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "722446000",
   "display" : "Allergy record (record artifact)"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.4", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -404,19 +311,14 @@ v: {
   "display" : "Allergy record (record artifact)",
   "code" : "722446000",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230131"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "371531000",
   "display" : "Report of clinical encounter (record artifact)"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -427,19 +329,14 @@ v: {
   "display" : "Encounter report",
   "code" : "371531000",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230131"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "4241000179101",
   "display" : "Laboratory report (record artifact)"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.4", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -450,19 +347,14 @@ v: {
   "display" : "Laboratory report (record artifact)",
   "code" : "4241000179101",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230131"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "422735006",
   "display" : "Summary clinical document (record artifact)"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -473,17 +365,12 @@ v: {
   "display" : "Summary clinical document (record artifact)",
   "code" : "422735006",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230131"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "min"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -492,18 +379,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#min' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#min is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "min"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -512,18 +394,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#min' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#min is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "min"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -532,18 +409,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#min' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#min is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "mmol/L"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -552,18 +424,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#mmol/L' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#mmol/L is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "mmol/L"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -572,18 +439,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#mmol/L' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#mmol/L is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "mmol/L"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -592,18 +454,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#mmol/L' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#mmol/L is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "%"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -612,18 +469,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#%' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#% is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "%"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -632,18 +484,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#%' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#% is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "%"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -652,18 +499,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#%' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#% is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -672,18 +514,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#wk' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#wk is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -692,18 +529,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#wk' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#wk is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -712,18 +544,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#kg' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#kg is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -734,17 +561,12 @@ v: {
   "display" : "kg",
   "code" : "kg",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "cm"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -753,18 +575,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#cm' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#cm is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "cm"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -775,17 +592,12 @@ v: {
   "display" : "cm",
   "code" : "cm",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg/m2"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -794,18 +606,13 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#kg/m2' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The provided code http://unitsofmeasure.org#kg/m2 is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg/m2"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -816,17 +623,12 @@ v: {
   "display" : "kg/m2",
   "code" : "kg/m2",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-units", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -837,17 +639,12 @@ v: {
   "display" : "wk",
   "code" : "wk",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "json"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -857,17 +654,12 @@ v: {
 v: {
   "display" : "json",
   "code" : "json",
-  "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "xml"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -877,17 +669,12 @@ v: {
 v: {
   "display" : "xml",
   "code" : "xml",
-  "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "application/fhir+json"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -897,17 +684,12 @@ v: {
 v: {
   "display" : "application/fhir+json",
   "code" : "application/fhir+json",
-  "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "text/plain"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -917,19 +699,14 @@ v: {
 v: {
   "display" : "text/plain",
   "code" : "text/plain",
-  "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "371532007",
   "display" : "Progress note"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.typeCode", "version": "2.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -938,20 +715,15 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Wrong Display Name 'Progress note' for http://snomed.info/sct#371532007 - should be one of 3 choices: 'Progress report', 'Report of subsequent visit' or 'Progress report (record artifact)' (for the language(s) '--') (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "Wrong Display Name 'Progress note' for http://snomed.info/sct#371532007 - should be one of 3 choices: 'Progress report, \"Report of subsequent visit\", \"Progress report (record artifact)\"' for the language(s) '--' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "371525003",
   "display" : "Clinical procedure report"
-}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://fhir.ch/ig/ch-epr-term/ValueSet/DocumentEntry.classCode", "version": "2.0.4", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -962,17 +734,12 @@ v: {
   "display" : "Clinical procedure report",
   "code" : "371525003",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230131"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "text/css"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -982,17 +749,12 @@ v: {
 v: {
   "display" : "text/css",
   "code" : "text/css",
-  "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "de-CH"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1002,19 +764,14 @@ v: {
 v: {
   "display" : "German (Switzerland)",
   "code" : "de-CH",
-  "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "34133-9",
   "display" : "Summary of episode note"
-}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-documentreference-type", "version": "3.1.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/us/core/ValueSet/us-core-documentreference-type", "version": "3.1.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1025,17 +782,12 @@ v: {
   "display" : "Summary of episode note",
   "code" : "34133-9",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "en-US"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1045,17 +797,12 @@ v: {
 v: {
   "display" : "English (United States)",
   "code" : "en-US",
-  "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "application/xml"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1065,17 +812,12 @@ v: {
 v: {
   "display" : "application/xml",
   "code" : "application/xml",
-  "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "text/xml"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1085,19 +827,14 @@ v: {
 v: {
   "display" : "text/xml",
   "code" : "text/xml",
-  "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "urn:iso:std:iso:3166",
   "code" : "US",
   "display" : "United States of America"
-}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1108,17 +845,12 @@ v: {
   "display" : "United States of America",
   "code" : "US",
   "system" : "urn:iso:std:iso:3166",
-  "version" : "2018",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2018"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "text/cql.identifier"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1128,12 +860,7 @@ v: {
 v: {
   "display" : "text/cql.identifier",
   "code" : "text/cql.identifier",
-  "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:13"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1162,7 +889,7 @@ v: {
       }]
     }]
   }
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1173,12 +900,7 @@ v: {
   "display" : "Not at all",
   "code" : "Not-at-all",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
-  "version" : "3.0.0",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "3.0.0"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1207,7 +929,7 @@ v: {
       }]
     }]
   }
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1218,12 +940,7 @@ v: {
   "display" : "Several days",
   "code" : "Several-days",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
-  "version" : "3.0.0",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "3.0.0"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1252,7 +969,7 @@ v: {
       }]
     }]
   }
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1263,12 +980,7 @@ v: {
   "display" : "More than half the days",
   "code" : "More than half the days",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
-  "version" : "3.0.0",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "3.0.0"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
@@ -1297,7 +1009,7 @@ v: {
       }]
     }]
   }
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1308,38 +1020,12 @@ v: {
   "display" : "Nearly every day",
   "code" : "Nearly every day",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
-  "version" : "3.0.0",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "kg"
-}, "url": "http://fhir.de/ValueSet/VitalSignDE_Body_Weigth_UCUM", "version": "0.9.13", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "kilogram",
-  "code" : "kg",
-  "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "3.0.0"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "en-AU"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en-AU]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1347,18 +1033,14 @@ v: {
   }]
 }}####
 v: {
+  "display" : "English (Australia)",
   "code" : "en-AU",
-  "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "en"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1368,17 +1050,12 @@ v: {
 v: {
   "display" : "English",
   "code" : "en",
-  "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "en-US"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"[en-US]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1386,18 +1063,14 @@ v: {
   }]
 }}####
 v: {
+  "display" : "English (United States)",
   "code" : "en-US",
-  "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "system" : "urn:ietf:bcp:47"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1408,18 +1081,13 @@ v: {
   "display" : "week",
   "code" : "wk",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "urn:iso:std:iso:3166",
   "code" : "US"
-}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1430,17 +1098,12 @@ v: {
   "display" : "United States of America",
   "code" : "US",
   "system" : "urn:iso:std:iso:3166",
-  "version" : "2018",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2018"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "[%payloadFormat%]"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1449,12 +1112,59 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown Code '[%payloadFormat%]' in the system 'urn:ietf:bcp:13'; The provided code 'urn:ietf:bcp:13#[%payloadFormat%]' is not in the value set 'http://hl7.org/fhir/ValueSet/mimetypes|4.0.1' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
+  "error" : "Unknown Code '[%payloadFormat%]' in the system 'urn:ietf:bcp:13'; The provided code urn:ietf:bcp:13#[%payloadFormat%] is not in the value set 'http://hl7.org/fhir/ValueSet/mimetypes' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
-
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "77176002",
+  "display" : "Smoker"
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-bloodGroup", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Smoker",
+  "code" : "77176002",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230131"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "38341003",
+  "display" : "Hypertensive disorder, systemic arterial (disorder)"
+}, "url": "https://mednet.swiss/fhir/ValueSet/mni-obs-bloodGroup", "version": "0.5.0", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "High blood pressure",
+  "code" : "38341003",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230131"
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "kg"
+}, "url": "http://fhir.de/ValueSet/VitalSignDE_Body_Weigth_UCUM", "version": "0.9.13", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "kilogram",
+  "code" : "kg",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1"
 }
 -------------------------------------------------------------------------------------

@@ -32,10 +32,9 @@ public class LiquidRenderer extends ResourceRenderer {
     this.rcontext = rcontext;
     this.liquidTemplate = liquidTemplate;
   }
-
+  
   @Override
-  public boolean render(XhtmlNode x, Resource r)
-      throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     LiquidEngine engine = new LiquidEngine(context.getWorker(), context.getServices());
     XhtmlNode xn;
     try {
@@ -46,7 +45,7 @@ public class LiquidRenderer extends ResourceRenderer {
         throw new FHIRException("Error in template: Root element is not 'div'");
     } catch (FHIRException | IOException e) {
       xn = new XhtmlNode(NodeType.Element, "div");
-      xn.para().b().style("color: maroon").tx("Exception generating Narrative: " + e.getMessage());
+      xn.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
     }
     x.getChildNodes().addAll(xn.getChildNodes());
     return true;
@@ -68,8 +67,7 @@ public class LiquidRenderer extends ResourceRenderer {
   }
 
   @Override
-  public boolean render(XhtmlNode x, ResourceWrapper r)
-      throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     LiquidEngine engine = new LiquidEngine(context.getWorker(), context.getServices());
     XhtmlNode xn;
     try {
@@ -80,7 +78,7 @@ public class LiquidRenderer extends ResourceRenderer {
         throw new FHIRException("Error in template: Root element is not 'div'");
     } catch (FHIRException | IOException e) {
       xn = new XhtmlNode(NodeType.Element, "div");
-      xn.para().b().style("color: maroon").tx("Exception generating Narrative: " + e.getMessage());
+      xn.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
     }
     x.getChildNodes().addAll(xn.getChildNodes());
     return true;

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum VisionProduct {
 
-  /**
-   * A lens to be fitted to a frame to comprise a pair of glasses.
-   */
-  LENS,
-  /**
-   * A lens to be fitted for wearing directly on an eye.
-   */
-  CONTACT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static VisionProduct fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("lens".equals(codeString))
-      return LENS;
-    if ("contact".equals(codeString))
-      return CONTACT;
-    throw new FHIRException("Unknown VisionProduct code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case LENS:
-      return "lens";
-    case CONTACT:
-      return "contact";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A lens to be fitted to a frame to comprise a pair of glasses.
+         */
+        LENS, 
+        /**
+         * A lens to be fitted for wearing directly on an eye.
+         */
+        CONTACT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static VisionProduct fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("lens".equals(codeString))
+          return LENS;
+        if ("contact".equals(codeString))
+          return CONTACT;
+        throw new FHIRException("Unknown VisionProduct code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case LENS: return "lens";
+            case CONTACT: return "contact";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/ex-visionprescriptionproduct";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case LENS: return "A lens to be fitted to a frame to comprise a pair of glasses.";
+            case CONTACT: return "A lens to be fitted for wearing directly on an eye.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case LENS: return "Lens";
+            case CONTACT: return "Contact Lens";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/ex-visionprescriptionproduct";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case LENS:
-      return "A lens to be fitted to a frame to comprise a pair of glasses.";
-    case CONTACT:
-      return "A lens to be fitted for wearing directly on an eye.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case LENS:
-      return "Lens";
-    case CONTACT:
-      return "Contact Lens";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -1,13 +1,13 @@
 package org.hl7.fhir.convertors.conv30_40;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CapabilityStatement30_40Test {
   @Test

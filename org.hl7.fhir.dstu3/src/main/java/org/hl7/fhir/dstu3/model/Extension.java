@@ -270,7 +270,7 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Extension.url");
+          throw new FHIRException("Cannot call addChild on a primitive type Extension.url");
         }
         else if (name.equals("valueBoolean")) {
           this.value = new BooleanType();

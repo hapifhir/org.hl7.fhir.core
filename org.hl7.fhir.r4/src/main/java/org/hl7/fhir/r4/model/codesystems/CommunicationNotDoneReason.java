@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,122 +34,95 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CommunicationNotDoneReason {
 
-  /**
-   * The communication was not done due to an unknown reason.
-   */
-  UNKNOWN,
-  /**
-   * The communication was not done due to a system error.
-   */
-  SYSTEMERROR,
-  /**
-   * The communication was not done due to an invalid phone number.
-   */
-  INVALIDPHONENUMBER,
-  /**
-   * The communication was not done due to the recipient being unavailable.
-   */
-  RECIPIENTUNAVAILABLE,
-  /**
-   * The communication was not done due to a family objection.
-   */
-  FAMILYOBJECTION,
-  /**
-   * The communication was not done due to a patient objection.
-   */
-  PATIENTOBJECTION,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static CommunicationNotDoneReason fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("unknown".equals(codeString))
-      return UNKNOWN;
-    if ("system-error".equals(codeString))
-      return SYSTEMERROR;
-    if ("invalid-phone-number".equals(codeString))
-      return INVALIDPHONENUMBER;
-    if ("recipient-unavailable".equals(codeString))
-      return RECIPIENTUNAVAILABLE;
-    if ("family-objection".equals(codeString))
-      return FAMILYOBJECTION;
-    if ("patient-objection".equals(codeString))
-      return PATIENTOBJECTION;
-    throw new FHIRException("Unknown CommunicationNotDoneReason code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case UNKNOWN:
-      return "unknown";
-    case SYSTEMERROR:
-      return "system-error";
-    case INVALIDPHONENUMBER:
-      return "invalid-phone-number";
-    case RECIPIENTUNAVAILABLE:
-      return "recipient-unavailable";
-    case FAMILYOBJECTION:
-      return "family-objection";
-    case PATIENTOBJECTION:
-      return "patient-objection";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The communication was not done due to an unknown reason.
+         */
+        UNKNOWN, 
+        /**
+         * The communication was not done due to a system error.
+         */
+        SYSTEMERROR, 
+        /**
+         * The communication was not done due to an invalid phone number.
+         */
+        INVALIDPHONENUMBER, 
+        /**
+         * The communication was not done due to the recipient being unavailable.
+         */
+        RECIPIENTUNAVAILABLE, 
+        /**
+         * The communication was not done due to a family objection.
+         */
+        FAMILYOBJECTION, 
+        /**
+         * The communication was not done due to a patient objection.
+         */
+        PATIENTOBJECTION, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static CommunicationNotDoneReason fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("unknown".equals(codeString))
+          return UNKNOWN;
+        if ("system-error".equals(codeString))
+          return SYSTEMERROR;
+        if ("invalid-phone-number".equals(codeString))
+          return INVALIDPHONENUMBER;
+        if ("recipient-unavailable".equals(codeString))
+          return RECIPIENTUNAVAILABLE;
+        if ("family-objection".equals(codeString))
+          return FAMILYOBJECTION;
+        if ("patient-objection".equals(codeString))
+          return PATIENTOBJECTION;
+        throw new FHIRException("Unknown CommunicationNotDoneReason code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case UNKNOWN: return "unknown";
+            case SYSTEMERROR: return "system-error";
+            case INVALIDPHONENUMBER: return "invalid-phone-number";
+            case RECIPIENTUNAVAILABLE: return "recipient-unavailable";
+            case FAMILYOBJECTION: return "family-objection";
+            case PATIENTOBJECTION: return "patient-objection";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/communication-not-done-reason";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case UNKNOWN: return "The communication was not done due to an unknown reason.";
+            case SYSTEMERROR: return "The communication was not done due to a system error.";
+            case INVALIDPHONENUMBER: return "The communication was not done due to an invalid phone number.";
+            case RECIPIENTUNAVAILABLE: return "The communication was not done due to the recipient being unavailable.";
+            case FAMILYOBJECTION: return "The communication was not done due to a family objection.";
+            case PATIENTOBJECTION: return "The communication was not done due to a patient objection.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case UNKNOWN: return "Unknown";
+            case SYSTEMERROR: return "System Error";
+            case INVALIDPHONENUMBER: return "Invalid Phone Number";
+            case RECIPIENTUNAVAILABLE: return "Recipient Unavailable";
+            case FAMILYOBJECTION: return "Family Objection";
+            case PATIENTOBJECTION: return "Patient Objection";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/communication-not-done-reason";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case UNKNOWN:
-      return "The communication was not done due to an unknown reason.";
-    case SYSTEMERROR:
-      return "The communication was not done due to a system error.";
-    case INVALIDPHONENUMBER:
-      return "The communication was not done due to an invalid phone number.";
-    case RECIPIENTUNAVAILABLE:
-      return "The communication was not done due to the recipient being unavailable.";
-    case FAMILYOBJECTION:
-      return "The communication was not done due to a family objection.";
-    case PATIENTOBJECTION:
-      return "The communication was not done due to a patient objection.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case UNKNOWN:
-      return "Unknown";
-    case SYSTEMERROR:
-      return "System Error";
-    case INVALIDPHONENUMBER:
-      return "Invalid Phone Number";
-    case RECIPIENTUNAVAILABLE:
-      return "Recipient Unavailable";
-    case FAMILYOBJECTION:
-      return "Family Objection";
-    case PATIENTOBJECTION:
-      return "Patient Objection";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

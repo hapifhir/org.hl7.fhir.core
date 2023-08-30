@@ -1,16 +1,16 @@
 package org.hl7.fhir.dstu3.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.stream.Stream;
-
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import ca.uhn.fhir.parser.DataFormatException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import java.lang.reflect.InvocationTargetException;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BaseDateTimeTypeTests {
   

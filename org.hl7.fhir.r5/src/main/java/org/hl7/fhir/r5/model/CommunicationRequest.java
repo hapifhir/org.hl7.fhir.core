@@ -1734,23 +1734,23 @@ public class CommunicationRequest extends DomainResource {
           return this.groupIdentifier;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CommunicationRequest.status");
+          throw new FHIRException("Cannot call addChild on a primitive type CommunicationRequest.status");
         }
         else if (name.equals("statusReason")) {
           this.statusReason = new CodeableConcept();
           return this.statusReason;
         }
         else if (name.equals("intent")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CommunicationRequest.intent");
+          throw new FHIRException("Cannot call addChild on a primitive type CommunicationRequest.intent");
         }
         else if (name.equals("category")) {
           return addCategory();
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CommunicationRequest.priority");
+          throw new FHIRException("Cannot call addChild on a primitive type CommunicationRequest.priority");
         }
         else if (name.equals("doNotPerform")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CommunicationRequest.doNotPerform");
+          throw new FHIRException("Cannot call addChild on a primitive type CommunicationRequest.doNotPerform");
         }
         else if (name.equals("medium")) {
           return addMedium();
@@ -1778,7 +1778,7 @@ public class CommunicationRequest extends DomainResource {
           return this.occurrence;
         }
         else if (name.equals("authoredOn")) {
-          throw new FHIRException("Cannot call addChild on a singleton property CommunicationRequest.authoredOn");
+          throw new FHIRException("Cannot call addChild on a primitive type CommunicationRequest.authoredOn");
         }
         else if (name.equals("requester")) {
           this.requester = new Reference();

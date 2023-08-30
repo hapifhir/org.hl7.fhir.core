@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,76 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConditionCategory {
 
-  /**
-   * An item on a problem list that can be managed over time and can be expressed
-   * by a practitioner (e.g. physician, nurse), patient, or related person.
-   */
-  PROBLEMLISTITEM,
-  /**
-   * A point in time diagnosis (e.g. from a physician or nurse) in context of an
-   * encounter.
-   */
-  ENCOUNTERDIAGNOSIS,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ConditionCategory fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("problem-list-item".equals(codeString))
-      return PROBLEMLISTITEM;
-    if ("encounter-diagnosis".equals(codeString))
-      return ENCOUNTERDIAGNOSIS;
-    throw new FHIRException("Unknown ConditionCategory code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PROBLEMLISTITEM:
-      return "problem-list-item";
-    case ENCOUNTERDIAGNOSIS:
-      return "encounter-diagnosis";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * An item on a problem list that can be managed over time and can be expressed by a practitioner (e.g. physician, nurse), patient, or related person.
+         */
+        PROBLEMLISTITEM, 
+        /**
+         * A point in time diagnosis (e.g. from a physician or nurse) in context of an encounter.
+         */
+        ENCOUNTERDIAGNOSIS, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ConditionCategory fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("problem-list-item".equals(codeString))
+          return PROBLEMLISTITEM;
+        if ("encounter-diagnosis".equals(codeString))
+          return ENCOUNTERDIAGNOSIS;
+        throw new FHIRException("Unknown ConditionCategory code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PROBLEMLISTITEM: return "problem-list-item";
+            case ENCOUNTERDIAGNOSIS: return "encounter-diagnosis";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/condition-category";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PROBLEMLISTITEM: return "An item on a problem list that can be managed over time and can be expressed by a practitioner (e.g. physician, nurse), patient, or related person.";
+            case ENCOUNTERDIAGNOSIS: return "A point in time diagnosis (e.g. from a physician or nurse) in context of an encounter.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PROBLEMLISTITEM: return "Problem List Item";
+            case ENCOUNTERDIAGNOSIS: return "Encounter Diagnosis";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/condition-category";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PROBLEMLISTITEM:
-      return "An item on a problem list that can be managed over time and can be expressed by a practitioner (e.g. physician, nurse), patient, or related person.";
-    case ENCOUNTERDIAGNOSIS:
-      return "A point in time diagnosis (e.g. from a physician or nurse) in context of an encounter.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PROBLEMLISTITEM:
-      return "Problem List Item";
-    case ENCOUNTERDIAGNOSIS:
-      return "Encounter Diagnosis";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

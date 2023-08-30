@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,100 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum RequestPriority {
 
-  /**
-   * The request has normal priority.
-   */
-  ROUTINE,
-  /**
-   * The request should be actioned promptly - higher priority than routine.
-   */
-  URGENT,
-  /**
-   * The request should be actioned as soon as possible - higher priority than
-   * urgent.
-   */
-  ASAP,
-  /**
-   * The request should be actioned immediately - highest possible priority. E.g.
-   * an emergency.
-   */
-  STAT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static RequestPriority fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("routine".equals(codeString))
-      return ROUTINE;
-    if ("urgent".equals(codeString))
-      return URGENT;
-    if ("asap".equals(codeString))
-      return ASAP;
-    if ("stat".equals(codeString))
-      return STAT;
-    throw new FHIRException("Unknown RequestPriority code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ROUTINE:
-      return "routine";
-    case URGENT:
-      return "urgent";
-    case ASAP:
-      return "asap";
-    case STAT:
-      return "stat";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The request has normal priority.
+         */
+        ROUTINE, 
+        /**
+         * The request should be actioned promptly - higher priority than routine.
+         */
+        URGENT, 
+        /**
+         * The request should be actioned as soon as possible - higher priority than urgent.
+         */
+        ASAP, 
+        /**
+         * The request should be actioned immediately - highest possible priority.  E.g. an emergency.
+         */
+        STAT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static RequestPriority fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("routine".equals(codeString))
+          return ROUTINE;
+        if ("urgent".equals(codeString))
+          return URGENT;
+        if ("asap".equals(codeString))
+          return ASAP;
+        if ("stat".equals(codeString))
+          return STAT;
+        throw new FHIRException("Unknown RequestPriority code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ROUTINE: return "routine";
+            case URGENT: return "urgent";
+            case ASAP: return "asap";
+            case STAT: return "stat";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/request-priority";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ROUTINE: return "The request has normal priority.";
+            case URGENT: return "The request should be actioned promptly - higher priority than routine.";
+            case ASAP: return "The request should be actioned as soon as possible - higher priority than urgent.";
+            case STAT: return "The request should be actioned immediately - highest possible priority.  E.g. an emergency.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ROUTINE: return "Routine";
+            case URGENT: return "Urgent";
+            case ASAP: return "ASAP";
+            case STAT: return "STAT";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/request-priority";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ROUTINE:
-      return "The request has normal priority.";
-    case URGENT:
-      return "The request should be actioned promptly - higher priority than routine.";
-    case ASAP:
-      return "The request should be actioned as soon as possible - higher priority than urgent.";
-    case STAT:
-      return "The request should be actioned immediately - highest possible priority.  E.g. an emergency.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ROUTINE:
-      return "Routine";
-    case URGENT:
-      return "Urgent";
-    case ASAP:
-      return "ASAP";
-    case STAT:
-      return "STAT";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

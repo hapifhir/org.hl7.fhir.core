@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ImmunizationFundingSourceEnumFactory implements EnumFactory<ImmunizationFundingSource> {
@@ -42,7 +46,7 @@ public class ImmunizationFundingSourceEnumFactory implements EnumFactory<Immuniz
       return ImmunizationFundingSource.PRIVATE;
     if ("public".equals(codeString))
       return ImmunizationFundingSource.PUBLIC;
-    throw new IllegalArgumentException("Unknown ImmunizationFundingSource code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ImmunizationFundingSource code '"+codeString+"'");
   }
 
   public String toCode(ImmunizationFundingSource code) {
@@ -53,8 +57,8 @@ public class ImmunizationFundingSourceEnumFactory implements EnumFactory<Immuniz
     return "?";
   }
 
-  public String toSystem(ImmunizationFundingSource code) {
-    return code.getSystem();
-  }
+    public String toSystem(ImmunizationFundingSource code) {
+      return code.getSystem();
+      }
 
 }

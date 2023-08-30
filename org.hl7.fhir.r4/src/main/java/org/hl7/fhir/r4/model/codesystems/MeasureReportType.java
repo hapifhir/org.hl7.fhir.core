@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,101 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MeasureReportType {
 
-  /**
-   * An individual report that provides information on the performance for a given
-   * measure with respect to a single subject.
-   */
-  INDIVIDUAL,
-  /**
-   * A subject list report that includes a listing of subjects that satisfied each
-   * population criteria in the measure.
-   */
-  SUBJECTLIST,
-  /**
-   * A summary report that returns the number of members in each population
-   * criteria for the measure.
-   */
-  SUMMARY,
-  /**
-   * A data collection report that contains data-of-interest for the measure.
-   */
-  DATACOLLECTION,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MeasureReportType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("individual".equals(codeString))
-      return INDIVIDUAL;
-    if ("subject-list".equals(codeString))
-      return SUBJECTLIST;
-    if ("summary".equals(codeString))
-      return SUMMARY;
-    if ("data-collection".equals(codeString))
-      return DATACOLLECTION;
-    throw new FHIRException("Unknown MeasureReportType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INDIVIDUAL:
-      return "individual";
-    case SUBJECTLIST:
-      return "subject-list";
-    case SUMMARY:
-      return "summary";
-    case DATACOLLECTION:
-      return "data-collection";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * An individual report that provides information on the performance for a given measure with respect to a single subject.
+         */
+        INDIVIDUAL, 
+        /**
+         * A subject list report that includes a listing of subjects that satisfied each population criteria in the measure.
+         */
+        SUBJECTLIST, 
+        /**
+         * A summary report that returns the number of members in each population criteria for the measure.
+         */
+        SUMMARY, 
+        /**
+         * A data collection report that contains data-of-interest for the measure.
+         */
+        DATACOLLECTION, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MeasureReportType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("individual".equals(codeString))
+          return INDIVIDUAL;
+        if ("subject-list".equals(codeString))
+          return SUBJECTLIST;
+        if ("summary".equals(codeString))
+          return SUMMARY;
+        if ("data-collection".equals(codeString))
+          return DATACOLLECTION;
+        throw new FHIRException("Unknown MeasureReportType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INDIVIDUAL: return "individual";
+            case SUBJECTLIST: return "subject-list";
+            case SUMMARY: return "summary";
+            case DATACOLLECTION: return "data-collection";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/measure-report-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INDIVIDUAL: return "An individual report that provides information on the performance for a given measure with respect to a single subject.";
+            case SUBJECTLIST: return "A subject list report that includes a listing of subjects that satisfied each population criteria in the measure.";
+            case SUMMARY: return "A summary report that returns the number of members in each population criteria for the measure.";
+            case DATACOLLECTION: return "A data collection report that contains data-of-interest for the measure.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INDIVIDUAL: return "Individual";
+            case SUBJECTLIST: return "Subject List";
+            case SUMMARY: return "Summary";
+            case DATACOLLECTION: return "Data Collection";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/measure-report-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INDIVIDUAL:
-      return "An individual report that provides information on the performance for a given measure with respect to a single subject.";
-    case SUBJECTLIST:
-      return "A subject list report that includes a listing of subjects that satisfied each population criteria in the measure.";
-    case SUMMARY:
-      return "A summary report that returns the number of members in each population criteria for the measure.";
-    case DATACOLLECTION:
-      return "A data collection report that contains data-of-interest for the measure.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INDIVIDUAL:
-      return "Individual";
-    case SUBJECTLIST:
-      return "Subject List";
-    case SUMMARY:
-      return "Summary";
-    case DATACOLLECTION:
-      return "Data Collection";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -12,11 +12,11 @@
     "url" : "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown",
     "valueCode" : "both"
   }],
-  "url" : "http://localhost/r2/metadata",
-  "version" : "1.0.2-3.0.0",
+  "url" : "http://tx.fhir.org/r2/metadata",
+  "version" : "1.0.2-2.1.0",
   "name" : "FHIR Reference Server Conformance Statement",
   "status" : "active",
-  "date" : "2023-08-28T13:43:40.282Z",
+  "date" : "2023-05-17T01:02:17.467Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -27,12 +27,12 @@
   "kind" : "instance",
   "software" : {
     "name" : "Reference Server",
-    "version" : "3.0.0",
-    "releaseDate" : "2023-06-19T19:50:55.040Z"
+    "version" : "2.1.0",
+    "releaseDate" : "2022-05-13T19:50:55.040Z"
   },
   "implementation" : {
-    "description" : "FHIR Server running at http://localhost/r2",
-    "url" : "http://localhost/r2"
+    "description" : "FHIR Server running at http://tx.fhir.org/r2",
+    "url" : "http://tx.fhir.org/r2"
   },
   "fhirVersion" : "1.0.2",
   "format" : ["application/xml+fhir",

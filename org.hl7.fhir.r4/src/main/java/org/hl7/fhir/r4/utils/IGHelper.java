@@ -29,6 +29,8 @@ package org.hl7.fhir.r4.utils;
   
  */
 
+
+
 import org.hl7.fhir.r4.model.ImplementationGuide.GuideParameterCode;
 import org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionComponent;
 import org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionParameterComponent;
@@ -44,8 +46,7 @@ public class IGHelper {
     return null;
   }
 
-  public static boolean getBooleanParameter(ImplementationGuideDefinitionComponent ig, GuideParameterCode name,
-      boolean defaultValue) {
+  public static boolean getBooleanParameter(ImplementationGuideDefinitionComponent ig, GuideParameterCode name, boolean defaultValue) {
     String v = readStringParameter(ig, name);
     return v == null ? false : Boolean.parseBoolean(v);
   }
@@ -61,7 +62,7 @@ public class IGHelper {
     p.setCode(name.toCode());
     p.setValue(value);
   }
-
+  
   public static void setParameter(ImplementationGuideDefinitionComponent ig, GuideParameterCode name, boolean value) {
     setParameter(ig, name, Boolean.toString(value));
   }

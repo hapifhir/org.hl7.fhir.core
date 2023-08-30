@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ChoiceListOrientationEnumFactory implements EnumFactory<ChoiceListOrientation> {
@@ -42,7 +46,7 @@ public class ChoiceListOrientationEnumFactory implements EnumFactory<ChoiceListO
       return ChoiceListOrientation.HORIZONTAL;
     if ("vertical".equals(codeString))
       return ChoiceListOrientation.VERTICAL;
-    throw new IllegalArgumentException("Unknown ChoiceListOrientation code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ChoiceListOrientation code '"+codeString+"'");
   }
 
   public String toCode(ChoiceListOrientation code) {
@@ -53,8 +57,8 @@ public class ChoiceListOrientationEnumFactory implements EnumFactory<ChoiceListO
     return "?";
   }
 
-  public String toSystem(ChoiceListOrientation code) {
-    return code.getSystem();
-  }
+    public String toSystem(ChoiceListOrientation code) {
+      return code.getSystem();
+      }
 
 }

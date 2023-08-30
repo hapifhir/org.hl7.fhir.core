@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class DeviceStatusEnumFactory implements EnumFactory<DeviceStatus> {
@@ -46,7 +50,7 @@ public class DeviceStatusEnumFactory implements EnumFactory<DeviceStatus> {
       return DeviceStatus.ENTEREDINERROR;
     if ("unknown".equals(codeString))
       return DeviceStatus.UNKNOWN;
-    throw new IllegalArgumentException("Unknown DeviceStatus code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown DeviceStatus code '"+codeString+"'");
   }
 
   public String toCode(DeviceStatus code) {
@@ -61,8 +65,8 @@ public class DeviceStatusEnumFactory implements EnumFactory<DeviceStatus> {
     return "?";
   }
 
-  public String toSystem(DeviceStatus code) {
-    return code.getSystem();
-  }
+    public String toSystem(DeviceStatus code) {
+      return code.getSystem();
+      }
 
 }

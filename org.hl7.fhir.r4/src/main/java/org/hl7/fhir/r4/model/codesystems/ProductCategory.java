@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,112 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ProductCategory {
 
-  /**
-   * A collection of tissues joined in a structural unit to serve a common
-   * function.
-   */
-  ORGAN,
-  /**
-   * An ensemble of similar cells and their extracellular matrix from the same
-   * origin that together carry out a specific function.
-   */
-  TISSUE,
-  /**
-   * Body fluid.
-   */
-  FLUID,
-  /**
-   * Collection of cells.
-   */
-  CELLS,
-  /**
-   * Biological agent of unspecified type.
-   */
-  BIOLOGICALAGENT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ProductCategory fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("organ".equals(codeString))
-      return ORGAN;
-    if ("tissue".equals(codeString))
-      return TISSUE;
-    if ("fluid".equals(codeString))
-      return FLUID;
-    if ("cells".equals(codeString))
-      return CELLS;
-    if ("biologicalAgent".equals(codeString))
-      return BIOLOGICALAGENT;
-    throw new FHIRException("Unknown ProductCategory code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ORGAN:
-      return "organ";
-    case TISSUE:
-      return "tissue";
-    case FLUID:
-      return "fluid";
-    case CELLS:
-      return "cells";
-    case BIOLOGICALAGENT:
-      return "biologicalAgent";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A collection of tissues joined in a structural unit to serve a common function.
+         */
+        ORGAN, 
+        /**
+         * An ensemble of similar cells and their extracellular matrix from the same origin that together carry out a specific function.
+         */
+        TISSUE, 
+        /**
+         * Body fluid.
+         */
+        FLUID, 
+        /**
+         * Collection of cells.
+         */
+        CELLS, 
+        /**
+         * Biological agent of unspecified type.
+         */
+        BIOLOGICALAGENT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ProductCategory fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("organ".equals(codeString))
+          return ORGAN;
+        if ("tissue".equals(codeString))
+          return TISSUE;
+        if ("fluid".equals(codeString))
+          return FLUID;
+        if ("cells".equals(codeString))
+          return CELLS;
+        if ("biologicalAgent".equals(codeString))
+          return BIOLOGICALAGENT;
+        throw new FHIRException("Unknown ProductCategory code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ORGAN: return "organ";
+            case TISSUE: return "tissue";
+            case FLUID: return "fluid";
+            case CELLS: return "cells";
+            case BIOLOGICALAGENT: return "biologicalAgent";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/product-category";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ORGAN: return "A collection of tissues joined in a structural unit to serve a common function.";
+            case TISSUE: return "An ensemble of similar cells and their extracellular matrix from the same origin that together carry out a specific function.";
+            case FLUID: return "Body fluid.";
+            case CELLS: return "Collection of cells.";
+            case BIOLOGICALAGENT: return "Biological agent of unspecified type.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ORGAN: return "Organ";
+            case TISSUE: return "Tissue";
+            case FLUID: return "Fluid";
+            case CELLS: return "Cells";
+            case BIOLOGICALAGENT: return "BiologicalAgent";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/product-category";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ORGAN:
-      return "A collection of tissues joined in a structural unit to serve a common function.";
-    case TISSUE:
-      return "An ensemble of similar cells and their extracellular matrix from the same origin that together carry out a specific function.";
-    case FLUID:
-      return "Body fluid.";
-    case CELLS:
-      return "Collection of cells.";
-    case BIOLOGICALAGENT:
-      return "Biological agent of unspecified type.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ORGAN:
-      return "Organ";
-    case TISSUE:
-      return "Tissue";
-    case FLUID:
-      return "Fluid";
-    case CELLS:
-      return "Cells";
-    case BIOLOGICALAGENT:
-      return "BiologicalAgent";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

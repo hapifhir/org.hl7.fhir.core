@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,110 +34,86 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ActionBehaviorType {
 
-  /**
-   * Specifies grouping behavior using the action-group-behavior valueset
-   */
-  GROUPING,
-  /**
-   * Specifies selection behavior using the action-selection-behavior valueset
-   */
-  SELECTION,
-  /**
-   * Specifies required behavior using the action-required-behavior valueset
-   */
-  REQUIRED,
-  /**
-   * Specifies precheck behavior using the action-precheck-behavior valueset
-   */
-  PRECHECK,
-  /**
-   * Specifies cardinality behavior using the action-cardinality behavior valueset
-   */
-  CARDINALITY,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ActionBehaviorType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("grouping".equals(codeString))
-      return GROUPING;
-    if ("selection".equals(codeString))
-      return SELECTION;
-    if ("required".equals(codeString))
-      return REQUIRED;
-    if ("precheck".equals(codeString))
-      return PRECHECK;
-    if ("cardinality".equals(codeString))
-      return CARDINALITY;
-    throw new FHIRException("Unknown ActionBehaviorType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case GROUPING:
-      return "grouping";
-    case SELECTION:
-      return "selection";
-    case REQUIRED:
-      return "required";
-    case PRECHECK:
-      return "precheck";
-    case CARDINALITY:
-      return "cardinality";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Specifies grouping behavior using the action-group-behavior valueset
+         */
+        GROUPING, 
+        /**
+         * Specifies selection behavior using the action-selection-behavior valueset
+         */
+        SELECTION, 
+        /**
+         * Specifies required behavior using the action-required-behavior valueset
+         */
+        REQUIRED, 
+        /**
+         * Specifies precheck behavior using the action-precheck-behavior valueset
+         */
+        PRECHECK, 
+        /**
+         * Specifies cardinality behavior using the action-cardinality behavior valueset
+         */
+        CARDINALITY, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ActionBehaviorType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("grouping".equals(codeString))
+          return GROUPING;
+        if ("selection".equals(codeString))
+          return SELECTION;
+        if ("required".equals(codeString))
+          return REQUIRED;
+        if ("precheck".equals(codeString))
+          return PRECHECK;
+        if ("cardinality".equals(codeString))
+          return CARDINALITY;
+        throw new FHIRException("Unknown ActionBehaviorType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case GROUPING: return "grouping";
+            case SELECTION: return "selection";
+            case REQUIRED: return "required";
+            case PRECHECK: return "precheck";
+            case CARDINALITY: return "cardinality";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/action-behavior-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case GROUPING: return "Specifies grouping behavior using the action-group-behavior valueset";
+            case SELECTION: return "Specifies selection behavior using the action-selection-behavior valueset";
+            case REQUIRED: return "Specifies required behavior using the action-required-behavior valueset";
+            case PRECHECK: return "Specifies precheck behavior using the action-precheck-behavior valueset";
+            case CARDINALITY: return "Specifies cardinality behavior using the action-cardinality behavior valueset";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case GROUPING: return "Grouping Behavior";
+            case SELECTION: return "Selection Behavior";
+            case REQUIRED: return "Required Behavior";
+            case PRECHECK: return "Precheck Behavior";
+            case CARDINALITY: return "Cardinality Behavior";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/action-behavior-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case GROUPING:
-      return "Specifies grouping behavior using the action-group-behavior valueset";
-    case SELECTION:
-      return "Specifies selection behavior using the action-selection-behavior valueset";
-    case REQUIRED:
-      return "Specifies required behavior using the action-required-behavior valueset";
-    case PRECHECK:
-      return "Specifies precheck behavior using the action-precheck-behavior valueset";
-    case CARDINALITY:
-      return "Specifies cardinality behavior using the action-cardinality behavior valueset";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case GROUPING:
-      return "Grouping Behavior";
-    case SELECTION:
-      return "Selection Behavior";
-    case REQUIRED:
-      return "Required Behavior";
-    case PRECHECK:
-      return "Precheck Behavior";
-    case CARDINALITY:
-      return "Cardinality Behavior";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

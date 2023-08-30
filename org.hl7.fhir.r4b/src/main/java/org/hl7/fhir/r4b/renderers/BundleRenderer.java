@@ -32,6 +32,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class BundleRenderer extends ResourceRenderer {
 
+  
   public BundleRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
@@ -41,8 +42,7 @@ public class BundleRenderer extends ResourceRenderer {
   }
 
   @Override
-  public boolean render(XhtmlNode x, Resource r)
-      throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     XhtmlNode n = render((Bundle) r);
     x.addChildren(n.getChildNodes());
     return false;
@@ -59,14 +59,11 @@ public class BundleRenderer extends ResourceRenderer {
   }
 
   @Override
-  public boolean render(XhtmlNode x, ResourceWrapper b)
-      throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public boolean render(XhtmlNode x, ResourceWrapper b) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     List<BaseWrapper> entries = b.children("entry");
     if ("document".equals(b.get("type").primitiveValue())) {
-      if (entries.isEmpty()
-          || (entries.get(0).has("resource") && !"Composition".equals(entries.get(0).get("resource").fhirType())))
-        throw new FHIRException("Invalid document '" + b.getId() + "' - first entry is not a Composition ('"
-            + entries.get(0).get("resource").fhirType() + "')");
+      if (entries.isEmpty() || (entries.get(0).has("resource") && !"Composition".equals(entries.get(0).get("resource").fhirType())))
+        throw new FHIRException("Invalid document '"+b.getId()+"' - first entry is not a Composition ('"+entries.get(0).get("resource").fhirType()+"')");
       return renderDocument(x, b, entries);
     } else if ("collection".equals(b.get("type").primitiveValue()) && allEntriesAreHistoryProvenance(entries)) {
       // nothing
@@ -80,13 +77,11 @@ public class BundleRenderer extends ResourceRenderer {
           root.an(makeInternalBundleLink(be.get("fullUrl").primitiveValue()));
         }
         if (be.has("resource") && be.getChildByName("resource").getValues().get(0).has("id")) {
-          root.an(be.get("resource").fhirType() + "_"
-              + be.getChildByName("resource").getValues().get(0).get("id").primitiveValue());
+          root.an(be.get("resource").fhirType() + "_" + be.getChildByName("resource").getValues().get(0).get("id").primitiveValue());
         }
         root.hr();
         if (be.has("fullUrl")) {
-          root.para().addText(
-              formatMessage(RENDER_BUNDLE_HEADER_ENTRY_URL, Integer.toString(i), be.get("fullUrl").primitiveValue()));
+          root.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ENTRY_URL, Integer.toString(i), be.get("fullUrl").primitiveValue()));
         } else {
           root.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ENTRY, Integer.toString(i)));
         }
@@ -106,7 +101,7 @@ public class BundleRenderer extends ResourceRenderer {
               xn = rr.render(rw);
             } catch (Exception e) {
               xn = new XhtmlNode();
-              xn.para().b().tx("Exception generating narrative: " + e.getMessage());
+              xn.para().b().tx("Exception generating narrative: "+e.getMessage());
             }
           }
           root.blockquote().addChildren(xn);
@@ -115,13 +110,12 @@ public class BundleRenderer extends ResourceRenderer {
     }
     return false;
   }
+ 
 
-  private boolean renderDocument(XhtmlNode x, ResourceWrapper b, List<BaseWrapper> entries)
-      throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome {
+  private boolean renderDocument(XhtmlNode x, ResourceWrapper b, List<BaseWrapper> entries) throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome {
     // from the spec:
     //
-    // When the document is presented for human consumption, applications SHOULD
-    // present the collated narrative portions in order:
+    // When the document is presented for human consumption, applications SHOULD present the collated narrative portions in order:
     // * The subject resource Narrative
     // * The Composition resource Narrative
     // * The section.text Narratives
@@ -129,7 +123,7 @@ public class BundleRenderer extends ResourceRenderer {
     ResourceWrapper subject = resolveReference(entries, comp.get("subject"));
     if (subject != null) {
       if (subject.hasNarrative()) {
-        x.addChildren(subject.getNarrative());
+        x.addChildren(subject.getNarrative());        
       } else {
         RendererFactory.factory(subject, context).render(x, subject);
       }
@@ -146,35 +140,33 @@ public class BundleRenderer extends ResourceRenderer {
     return false;
   }
 
-  private void addSection(XhtmlNode x, BaseWrapper section, int level, boolean nested)
-      throws UnsupportedEncodingException, FHIRException, IOException {
+  private void addSection(XhtmlNode x, BaseWrapper section, int level, boolean nested) throws UnsupportedEncodingException, FHIRException, IOException {
     if (section.has("title") || section.has("code") || section.has("text") || section.has("section")) {
       XhtmlNode div = x.div();
       if (section.has("title")) {
-        div.h(level).tx(section.get("title").primitiveValue());
+        div.h(level).tx(section.get("title").primitiveValue());        
       } else if (section.has("code")) {
-        renderBase(div.h(level), section.get("code"));
+        renderBase(div.h(level), section.get("code"));                
       }
       if (section.has("text")) {
         Base narrative = section.get("text");
         x.addChildren(narrative.getXhtml());
-      }
+      }      
       if (section.has("section")) {
         List<BaseWrapper> sections = section.children("section");
         for (BaseWrapper child : sections) {
           if (nested) {
-            addSection(x.blockquote(), child, level + 1, true);
+            addSection(x.blockquote(), child, level+1, true);
           } else {
-            addSection(x, child, level + 1, true);
+            addSection(x, child, level+1, true);
           }
         }
-      }
+      }      
     }
     // children
   }
 
-  private ResourceWrapper resolveReference(List<BaseWrapper> entries, Base base)
-      throws UnsupportedEncodingException, FHIRException, IOException {
+  private ResourceWrapper resolveReference(List<BaseWrapper> entries, Base base) throws UnsupportedEncodingException, FHIRException, IOException {
     Property prop = base.getChildByName("reference");
     if (prop.hasValues()) {
       String ref = prop.getValues().get(0).primitiveValue();
@@ -192,12 +184,10 @@ public class BundleRenderer extends ResourceRenderer {
     return null;
   }
 
-  private boolean renderDocument(XhtmlNode x, Bundle b)
-      throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome {
+  private boolean renderDocument(XhtmlNode x, Bundle b) throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome {
     // from the spec:
     //
-    // When the document is presented for human consumption, applications SHOULD
-    // present the collated narrative portions in order:
+    // When the document is presented for human consumption, applications SHOULD present the collated narrative portions in order:
     // * The subject resource Narrative
     // * The Composition resource Narrative
     // * The section.text Narratives
@@ -206,7 +196,7 @@ public class BundleRenderer extends ResourceRenderer {
     if (subject != null) {
       XhtmlNode nx = (subject instanceof DomainResource) ? ((DomainResource) subject).getText().getDiv() : null;
       if (nx != null) {
-        x.addChildren(nx);
+        x.addChildren(nx);        
       } else {
         RendererFactory.factory(subject, context).render(x, subject);
       }
@@ -214,7 +204,7 @@ public class BundleRenderer extends ResourceRenderer {
     x.hr();
     if (comp.getText().hasDiv()) {
       x.addChildren(comp.getText().getDiv());
-      x.hr();
+      x.hr();    
     }
     for (SectionComponent section : comp.getSection()) {
       addSection(x, section, 2, false);
@@ -235,37 +225,36 @@ public class BundleRenderer extends ResourceRenderer {
     return null;
   }
 
-  private void addSection(XhtmlNode x, SectionComponent section, int level, boolean nested)
-      throws UnsupportedEncodingException, FHIRException, IOException {
+
+  private void addSection(XhtmlNode x, SectionComponent section, int level, boolean nested) throws UnsupportedEncodingException, FHIRException, IOException {
     if (section.hasTitle() || section.hasCode() || section.hasText() || section.hasSection()) {
       XhtmlNode div = x.div();
       if (section.hasTitle()) {
-        div.h(level).tx(section.getTitle());
+        div.h(level).tx(section.getTitle());        
       } else if (section.hasCode()) {
-        renderBase(div.h(level), section.getCode());
+        renderBase(div.h(level), section.getCode());                
       }
       if (section.hasText()) {
         x.addChildren(section.getText().getDiv());
-      }
+      }      
       if (section.hasSection()) {
         List<SectionComponent> sections = section.getSection();
         for (SectionComponent child : sections) {
           if (nested) {
-            addSection(x.blockquote(), child, level + 1, true);
+            addSection(x.blockquote(), child, level+1, true);
           } else {
-            addSection(x, child, level + 1, true);
+            addSection(x, child, level+1, true);            
           }
         }
-      }
+      }      
     }
     // children
   }
 
-  public XhtmlNode render(Bundle b)
-      throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  
+  public XhtmlNode render(Bundle b) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (b.getType() == BundleType.DOCUMENT) {
-      if (!b.hasEntry()
-          || !(b.getEntryFirstRep().hasResource() && b.getEntryFirstRep().getResource() instanceof Composition)) {
+      if (!b.hasEntry() || !(b.getEntryFirstRep().hasResource() && b.getEntryFirstRep().getResource() instanceof Composition)) {
         throw new FHIRException("Invalid document - first entry is not a Composition");
       }
       XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
@@ -319,8 +308,7 @@ public class BundleRenderer extends ResourceRenderer {
     }
   }
 
-  public static boolean allEntriesAreHistoryProvenance(List<BaseWrapper> entries)
-      throws UnsupportedEncodingException, FHIRException, IOException {
+  public static boolean allEntriesAreHistoryProvenance(List<BaseWrapper> entries) throws UnsupportedEncodingException, FHIRException, IOException {
     for (BaseWrapper be : entries) {
       if (!"Provenance".equals(be.get("resource").fhirType())) {
         return false;
@@ -328,7 +316,8 @@ public class BundleRenderer extends ResourceRenderer {
     }
     return !entries.isEmpty();
   }
-
+  
+ 
   private boolean allEntresAreHistoryProvenance(Bundle b) {
     for (BundleEntryComponent be : b.getEntry()) {
       if (!(be.getResource() instanceof Provenance)) {
@@ -360,7 +349,7 @@ public class BundleRenderer extends ResourceRenderer {
       }
     }
     if (fix) {
-      n.setAttribute("href", "#" + makeInternalBundleLink(n.getAttribute("href")));
+      n.setAttribute("href", "#"+makeInternalBundleLink(n.getAttribute("href")));
     }
   }
 
@@ -374,36 +363,37 @@ public class BundleRenderer extends ResourceRenderer {
         b.append(",");
       b.append(formatMessage(RENDER_BUNDLE_SEARCH_SCORE, search.getScore()));
     }
-    root.para().addText(b.toString());
+    root.para().addText(b.toString());    
   }
 
   private void renderResponse(XhtmlNode root, BundleEntryResponseComponent response) {
     root.para().addText(formatMessage(RENDER_BUNDLE_RESPONSE));
     StringBuilder b = new StringBuilder();
-    b.append(response.getStatus() + "\r\n");
+    b.append(response.getStatus()+"\r\n");
     if (response.hasLocation())
-      b.append(formatMessage(RENDER_BUNDLE_LOCATION, response.getLocation()) + "\r\n");
+      b.append(formatMessage(RENDER_BUNDLE_LOCATION, response.getLocation())+"\r\n");
     if (response.hasEtag())
-      b.append(formatMessage(RENDER_BUNDLE_ETAG, response.getEtag()) + "\r\n");
+      b.append(formatMessage(RENDER_BUNDLE_ETAG, response.getEtag())+"\r\n");
     if (response.hasLastModified())
-      b.append(formatMessage(RENDER_BUNDLE_LAST_MOD, response.getEtag()) + "\r\n");
-    root.pre().addText(b.toString());
+      b.append(formatMessage(RENDER_BUNDLE_LAST_MOD, response.getEtag())+"\r\n");
+    root.pre().addText(b.toString());    
   }
 
   private void renderRequest(XhtmlNode root, BundleEntryRequestComponent request) {
     root.para().addText(formatMessage(RENDER_BUNDLE_REQUEST));
     StringBuilder b = new StringBuilder();
-    b.append(request.getMethod() + " " + request.getUrl() + "\r\n");
+    b.append(request.getMethod()+" "+request.getUrl()+"\r\n");
     if (request.hasIfNoneMatch())
-      b.append(formatMessage(RENDER_BUNDLE_IF_NON_MATCH, request.getIfNoneMatch()) + "\r\n");
+      b.append(formatMessage(RENDER_BUNDLE_IF_NON_MATCH, request.getIfNoneMatch())+"\r\n");
     if (request.hasIfModifiedSince())
-      b.append(formatMessage(RENDER_BUNDLE_IF_MOD, request.getIfModifiedSince()) + "\r\n");
+      b.append(formatMessage(RENDER_BUNDLE_IF_MOD, request.getIfModifiedSince())+"\r\n");
     if (request.hasIfMatch())
-      b.append(formatMessage(RENDER_BUNDLE_IF_MATCH, request.getIfMatch()) + "\r\n");
+      b.append(formatMessage(RENDER_BUNDLE_IF_MATCH, request.getIfMatch())+"\r\n");
     if (request.hasIfNoneExist())
-      b.append(formatMessage(RENDER_BUNDLE_IF_NONE, request.getIfNoneExist()) + "\r\n");
-    root.pre().addText(b.toString());
+      b.append(formatMessage(RENDER_BUNDLE_IF_NONE, request.getIfNoneExist())+"\r\n");
+    root.pre().addText(b.toString());    
   }
+
 
   public String display(Bundle bundle) throws UnsupportedEncodingException, IOException {
     return "??";
@@ -411,7 +401,7 @@ public class BundleRenderer extends ResourceRenderer {
 
   public boolean canRender(Bundle b) {
     for (BundleEntryComponent be : b.getEntry()) {
-      if (be.hasResource()) {
+      if (be.hasResource()) {          
         ResourceRenderer rr = RendererFactory.factory(be.getResource(), context);
         if (!rr.canRender(be.getResource())) {
           return false;

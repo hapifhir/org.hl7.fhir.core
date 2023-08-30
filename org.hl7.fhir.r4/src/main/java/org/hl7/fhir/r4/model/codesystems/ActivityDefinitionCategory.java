@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,89 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ActivityDefinitionCategory {
 
-  /**
-   * The activity is intended to provide or is related to treatment of the
-   * patient.
-   */
-  TREATMENT,
-  /**
-   * The activity is intended to provide or is related to education of the
-   * patient.
-   */
-  EDUCATION,
-  /**
-   * The activity is intended to perform or is related to assessment of the
-   * patient.
-   */
-  ASSESSMENT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ActivityDefinitionCategory fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("treatment".equals(codeString))
-      return TREATMENT;
-    if ("education".equals(codeString))
-      return EDUCATION;
-    if ("assessment".equals(codeString))
-      return ASSESSMENT;
-    throw new FHIRException("Unknown ActivityDefinitionCategory code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case TREATMENT:
-      return "treatment";
-    case EDUCATION:
-      return "education";
-    case ASSESSMENT:
-      return "assessment";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The activity is intended to provide or is related to treatment of the patient.
+         */
+        TREATMENT, 
+        /**
+         * The activity is intended to provide or is related to education of the patient.
+         */
+        EDUCATION, 
+        /**
+         * The activity is intended to perform or is related to assessment of the patient.
+         */
+        ASSESSMENT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ActivityDefinitionCategory fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("treatment".equals(codeString))
+          return TREATMENT;
+        if ("education".equals(codeString))
+          return EDUCATION;
+        if ("assessment".equals(codeString))
+          return ASSESSMENT;
+        throw new FHIRException("Unknown ActivityDefinitionCategory code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case TREATMENT: return "treatment";
+            case EDUCATION: return "education";
+            case ASSESSMENT: return "assessment";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/activity-definition-category";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case TREATMENT: return "The activity is intended to provide or is related to treatment of the patient.";
+            case EDUCATION: return "The activity is intended to provide or is related to education of the patient.";
+            case ASSESSMENT: return "The activity is intended to perform or is related to assessment of the patient.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case TREATMENT: return "Treatment";
+            case EDUCATION: return "Education";
+            case ASSESSMENT: return "Assessment";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/activity-definition-category";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case TREATMENT:
-      return "The activity is intended to provide or is related to treatment of the patient.";
-    case EDUCATION:
-      return "The activity is intended to provide or is related to education of the patient.";
-    case ASSESSMENT:
-      return "The activity is intended to perform or is related to assessment of the patient.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case TREATMENT:
-      return "Treatment";
-    case EDUCATION:
-      return "Education";
-    case ASSESSMENT:
-      return "Assessment";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

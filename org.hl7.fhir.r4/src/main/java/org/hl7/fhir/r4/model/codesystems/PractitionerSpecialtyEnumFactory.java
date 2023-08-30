@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class PractitionerSpecialtyEnumFactory implements EnumFactory<PractitionerSpecialty> {
@@ -48,7 +52,7 @@ public class PractitionerSpecialtyEnumFactory implements EnumFactory<Practitione
       return PractitionerSpecialty.MIDW;
     if ("sysarch".equals(codeString))
       return PractitionerSpecialty.SYSARCH;
-    throw new IllegalArgumentException("Unknown PractitionerSpecialty code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown PractitionerSpecialty code '"+codeString+"'");
   }
 
   public String toCode(PractitionerSpecialty code) {
@@ -65,8 +69,8 @@ public class PractitionerSpecialtyEnumFactory implements EnumFactory<Practitione
     return "?";
   }
 
-  public String toSystem(PractitionerSpecialty code) {
-    return code.getSystem();
-  }
+    public String toSystem(PractitionerSpecialty code) {
+      return code.getSystem();
+      }
 
 }

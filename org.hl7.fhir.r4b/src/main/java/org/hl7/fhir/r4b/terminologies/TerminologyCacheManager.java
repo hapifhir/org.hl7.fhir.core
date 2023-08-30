@@ -31,9 +31,9 @@ import org.hl7.fhir.utilities.VersionUtilities;
 
 public class TerminologyCacheManager {
 
-  // if either the CACHE_VERSION of the stated maj/min server versions change, the
-  // cache will be blown. Note that the stated terminology server version is
-  // the CapabilityStatement.software.version
+  // if either the CACHE_VERSION of the stated maj/min server versions change, the 
+  // cache will be blown. Note that the stated terminology server version is 
+  // the CapabilityStatement.software.version 
   private static final String CACHE_VERSION = "1";
 
   private String cacheFolder;
@@ -42,15 +42,14 @@ public class TerminologyCacheManager {
   private String ghRepo;
   private String ghBranch;
 
-  public TerminologyCacheManager(String serverVersion, String rootDir, String ghOrg, String ghRepo, String ghBranch)
-      throws IOException {
+  public TerminologyCacheManager(String serverVersion, String rootDir, String ghOrg, String ghRepo, String ghBranch) throws IOException {
     super();
-    // this.rootDir = rootDir;
+    //    this.rootDir = rootDir;
     this.ghOrg = ghOrg;
     this.ghRepo = ghRepo;
     this.ghBranch = ghBranch;
 
-    version = CACHE_VERSION + "/" + VersionUtilities.getMajMin(serverVersion);
+    version = CACHE_VERSION+"/"+VersionUtilities.getMajMin(serverVersion);
 
     if (Utilities.noString(ghOrg) || Utilities.noString(ghRepo) || Utilities.noString(ghBranch)) {
       cacheFolder = Utilities.path(rootDir, "temp", "tx-cache");
@@ -62,15 +61,15 @@ public class TerminologyCacheManager {
   public void initialize() throws IOException {
     File f = new File(cacheFolder);
     if (!f.exists()) {
-      Utilities.createDirectory(cacheFolder);
+      Utilities.createDirectory(cacheFolder);      
     }
     if (!version.equals(getCacheVersion())) {
       clearCache();
-      fillCache("https://tx.fhir.org/tx-cache/" + ghOrg + "/" + ghRepo + "/" + ghBranch + ".zip");
+      fillCache("https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip");
     }
     if (!version.equals(getCacheVersion())) {
       clearCache();
-      fillCache("https://tx.fhir.org/tx-cache/" + ghOrg + "/" + ghRepo + "/default.zip");
+      fillCache("https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/default.zip");
     }
     if (!version.equals(getCacheVersion())) {
       clearCache();
@@ -84,20 +83,20 @@ public class TerminologyCacheManager {
 
   private void fillCache(String source) throws IOException {
     try {
-      System.out.println("Initialise terminology cache from " + source);
+      System.out.println("Initialise terminology cache from "+source);
 
       SimpleHTTPClient http = new SimpleHTTPClient();
-      HTTPResult res = http.get(source + "?nocache=" + System.currentTimeMillis());
+      HTTPResult res = http.get(source+"?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       unzip(new ByteArrayInputStream(res.getContent()), cacheFolder);
     } catch (Exception e) {
-      System.out.println("No - can't initialise cache from " + source + ": " + e.getMessage());
+      System.out.println("No - can't initialise cache from "+source+": "+e.getMessage());
     }
   }
 
   public static void unzip(InputStream is, String targetDir) throws IOException {
     try (ZipInputStream zipIn = new ZipInputStream(is)) {
-      for (ZipEntry ze; (ze = zipIn.getNextEntry()) != null;) {
+      for (ZipEntry ze; (ze = zipIn.getNextEntry()) != null; ) {
         Path path = Path.of(Utilities.path(targetDir, ze.getName())).normalize();
         String pathString = path.toFile().getAbsolutePath();
         if (!path.startsWith(Path.of(targetDir).normalize())) {
@@ -115,7 +114,7 @@ public class TerminologyCacheManager {
   }
 
   private void clearCache() throws IOException {
-    Utilities.clearDirectory(cacheFolder);
+    Utilities.clearDirectory(cacheFolder);    
   }
 
   private String getCacheVersion() throws IOException {
@@ -130,7 +129,8 @@ public class TerminologyCacheManager {
   private void zipDirectory(OutputStream outputStream) throws IOException {
     try (ZipOutputStream zs = new ZipOutputStream(outputStream)) {
       Path pp = Paths.get(cacheFolder);
-      Files.walk(pp).forEach(path -> {
+      Files.walk(pp)
+      .forEach(path -> {
         try {
           if (Files.isDirectory(path)) {
             zs.putNextEntry(new ZipEntry(pp.relativize(path).toString() + "/"));
@@ -147,23 +147,24 @@ public class TerminologyCacheManager {
     }
   }
 
+  
   public void commit(String token) throws IOException {
-    // create a zip of all the files
+    // create a zip of all the files 
     ByteArrayOutputStream bs = new ByteArrayOutputStream();
     zipDirectory(bs);
 
     // post it to
-    String url = "https://tx.fhir.org/post/tx-cache/" + ghOrg + "/" + ghRepo + "/" + ghBranch + ".zip";
-    System.out.println("Sending tx-cache to " + url + " (" + Utilities.describeSize(bs.toByteArray().length) + ")");
+    String url = "https://tx.fhir.org/post/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip";
+    System.out.println("Sending tx-cache to "+url+" ("+Utilities.describeSize(bs.toByteArray().length)+")");
     SimpleHTTPClient http = new SimpleHTTPClient();
     http.setAuthenticationMode(SimpleHTTPClient.AuthenticationMode.BASIC);
     http.setUsername(token.substring(0, token.indexOf(':')));
-    http.setPassword(token.substring(token.indexOf(':') + 1));
+    http.setPassword(token.substring(token.indexOf(':')+1));
     HTTPResult res = http.put(url, "application/zip", bs.toByteArray(), null); // accept doesn't matter
     if (res.getCode() >= 300) {
-      System.out.println("sending cache failed: " + res.getCode());
+      System.out.println("sending cache failed: "+res.getCode());
     } else {
-      System.out.println("Sent cache");
+      System.out.println("Sent cache");      
     }
   }
 

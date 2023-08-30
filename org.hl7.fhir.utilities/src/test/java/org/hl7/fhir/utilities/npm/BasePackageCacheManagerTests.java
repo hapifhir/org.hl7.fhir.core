@@ -1,17 +1,16 @@
 package org.hl7.fhir.utilities.npm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.io.InputStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BasePackageCacheManagerTests {
 

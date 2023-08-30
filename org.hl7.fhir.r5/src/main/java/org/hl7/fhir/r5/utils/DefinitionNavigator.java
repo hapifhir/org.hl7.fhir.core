@@ -38,7 +38,6 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Resource;
@@ -49,39 +48,28 @@ public class DefinitionNavigator {
   private IWorkerContext context;
   private StructureDefinition structure;
   private int index;
-  private boolean indexMatches; // 
   private List<DefinitionNavigator> children;
   private List<DefinitionNavigator> typeChildren;
   private List<DefinitionNavigator> slices;
   private List<String> names = new ArrayList<String>();
   private TypeRefComponent typeOfChildren;
   private String path;
-  private boolean diff;
   
-  public DefinitionNavigator(IWorkerContext context, StructureDefinition structure, boolean diff) throws DefinitionException {
-    if (!diff && !structure.hasSnapshot())
+  public DefinitionNavigator(IWorkerContext context, StructureDefinition structure) throws DefinitionException {
+    if (!structure.hasSnapshot())
       throw new DefinitionException("Snapshot required");
     this.context = context;
     this.structure = structure;
     this.index = 0;
-    this.diff = diff;
-    if (diff) {
-      this.path = structure.getType(); // fragile?
-      indexMatches = this.path.equals(list().get(0).getPath());
-    } else {
-      indexMatches = true;
-      this.path = current().getPath(); // first element
-    }
+    this.path = current().getPath();
     names.add(nameTail());
   }
   
-  private DefinitionNavigator(IWorkerContext context, StructureDefinition structure, boolean diff, int index, String path, List<String> names, String type) {
+  private DefinitionNavigator(IWorkerContext context, StructureDefinition structure, int index, String path, List<String> names, String type) {
     this.path = path;
     this.context = context;
     this.structure = structure;
-    this.diff = diff;
     this.index = index;
-    this.indexMatches = true;
     if (type == null)
       for (String name : names)
         this.names.add(name+"."+nameTail());
@@ -108,16 +96,8 @@ public class DefinitionNavigator {
   public List<String> getNames() {
     return names;
   }
-  
-  private List<ElementDefinition> list() {
-    if (diff) {
-      return structure.getDifferential().getElement();      
-    } else {
-      return structure.getSnapshot().getElement();
-    }    
-  }
   public ElementDefinition current() {
-   return indexMatches ? list().get(index) : null;      
+    return structure.getSnapshot().getElement().get(index);
   }
   
   public List<DefinitionNavigator> slices() throws DefinitionException {
@@ -136,40 +116,22 @@ public class DefinitionNavigator {
 
   private void loadChildren() throws DefinitionException {
     children = new ArrayList<DefinitionNavigator>();
-    String prefix = path+".";
+    String prefix = current().getPath()+".";
     Map<String, DefinitionNavigator> nameMap = new HashMap<String, DefinitionNavigator>();
 
-    DefinitionNavigator last = null;
-    for (int i = indexMatches ? index + 1 : index; i < list().size(); i++) {
-      String path = list().get(i).getPath();
-      if (path.startsWith(prefix)) {
-        if (!path.substring(prefix.length()).contains(".")) {
-          // immediate child
-          DefinitionNavigator dn = new DefinitionNavigator(context, structure, diff, i, this.path+"."+tail(path), names, null);
-          last = dn;
-
-          if (nameMap.containsKey(path)) {
-            DefinitionNavigator master = nameMap.get(path);
-            ElementDefinition cm = master.current();
-            if (diff) { 
-              // slice name - jumped straight into slicing
-              children.add(dn);
-            } else {
-              if (!cm.hasSlicing()) {
-                throw new DefinitionException("Found slices with no slicing details at "+dn.current().getPath());
-              }
-              if (master.slices == null) {
-                master.slices = new ArrayList<DefinitionNavigator>();
-              }
-              master.slices.add(dn);
-            }
-          } else {
-            nameMap.put(path, dn);
-            children.add(dn);
-          }
-        } else if (last == null || !path.startsWith(last.path)) {
-          // implied child
-          DefinitionNavigator dn = new DefinitionNavigator(context, structure, diff, i, this.path+"."+tail(path), names, null);
+    for (int i = index + 1; i < structure.getSnapshot().getElement().size(); i++) {
+      String path = structure.getSnapshot().getElement().get(i).getPath();
+      if (path.startsWith(prefix) && !path.substring(prefix.length()).contains(".")) {
+        DefinitionNavigator dn = new DefinitionNavigator(context, structure, i, this.path+"."+tail(path), names, null);
+        
+        if (nameMap.containsKey(path)) {
+          DefinitionNavigator master = nameMap.get(path);
+          if (!master.current().hasSlicing()) 
+            throw new DefinitionException("Found slices with no slicing details at "+dn.current().getPath());
+          if (master.slices == null) 
+            master.slices = new ArrayList<DefinitionNavigator>();
+          master.slices.add(dn);
+        } else {
           nameMap.put(path, dn);
           children.add(dn);
         }
@@ -218,7 +180,7 @@ public class DefinitionNavigator {
     typeOfChildren = null;
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, /* GF#13465 : this somehow needs to be revisited type.hasProfile() ? type.getProfile() : */ type.getWorkingCode(), src);
     if (sd != null) {
-      DefinitionNavigator dn = new DefinitionNavigator(context, sd, diff, 0, path, names, sd.getType());
+      DefinitionNavigator dn = new DefinitionNavigator(context, sd, 0, path, names, sd.getType());
       typeChildren = dn.children();
     } else
       throw new DefinitionException("Unable to find definition for "+type.getWorkingCode()+(type.hasProfile() ? "("+type.getProfile()+")" : ""));
@@ -245,16 +207,7 @@ public class DefinitionNavigator {
 
   @Override
   public String toString() {
-    return getId();
-  }
-
-  public String getId() {
-    return current() == null ? path : current().hasSliceName() ? current().getPath()+":"+current().getSliceName() : current().getPath();
-  }
-
-  public Base parent() {
-    // TODO Auto-generated method stub
-    return null;
+    return current().getId();
   }
   
 

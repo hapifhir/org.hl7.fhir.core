@@ -29,6 +29,8 @@ package org.hl7.fhir.dstu2016may.model;
   
  */
 
+
+
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
@@ -36,42 +38,42 @@ import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 /**
  * Primitive type "code" in FHIR, when not bound to an enumerated list of codes
  */
-@DatatypeDef(name = "code", profileOf = StringType.class)
-public class CodeType extends StringType implements Comparable<CodeType> {
+@DatatypeDef(name="code", profileOf=StringType.class)
+public class CodeType extends StringType implements Comparable<CodeType>  {
 
-  private static final long serialVersionUID = 3L;
+	private static final long serialVersionUID = 3L;
 
-  public CodeType() {
-    super();
-  }
+	public CodeType() {
+		super();
+	}
 
-  public CodeType(String theCode) {
-    setValue(theCode);
-  }
+	public CodeType(String theCode) {
+		setValue(theCode);
+	}
 
-  public int compareTo(CodeType theCode) {
-    if (theCode == null) {
-      return 1;
-    }
-    return defaultString(getValue()).compareTo(defaultString(theCode.getValue()));
-  }
+	public int compareTo(CodeType theCode) {
+		if (theCode == null) {
+			return 1;
+		}
+		return defaultString(getValue()).compareTo(defaultString(theCode.getValue()));
+	}	
 
-  @Override
-  protected String parse(String theValue) {
-    return theValue.trim();
-  }
+	@Override
+	protected String parse(String theValue) {
+		return theValue.trim();
+	}
 
-  @Override
-  protected String encode(String theValue) {
-    return theValue;
-  }
+	@Override
+	protected String encode(String theValue) {
+		return theValue;
+	}
 
-  @Override
-  public CodeType copy() {
-    return new CodeType(getValue());
-  }
+	@Override
+	public CodeType copy() {
+		return new CodeType(getValue());
+	}
 
-  public String fhirType() {
-    return "code";
-  }
+	public String fhirType() {
+		return "code";		
+	}
 }

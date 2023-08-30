@@ -29,6 +29,8 @@ package org.hl7.fhir.r4.model;
   
  */
 
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +50,7 @@ public class Tuple extends Base {
   protected void listChildren(List<Property> result) {
     for (String s : properties.keySet()) {
       result.add(new Property(s, "Base", null, 0, 1, properties.get(s)));
-    }
+    }    
   }
 
   @Override
@@ -61,9 +63,9 @@ public class Tuple extends Base {
   }
 
   public void addProperty(String s, List<Base> list) {
-    properties.put(s, list);
+    properties.put(s, list); 
   }
-
+  
   public Base[] listChildrenByName(String name, boolean checkValid) throws FHIRException {
     if (name.equals("*")) {
       List<Property> children = new ArrayList<Property>();
@@ -75,7 +77,7 @@ public class Tuple extends Base {
     } else if (properties.containsKey(name)) {
       return properties.get(name).toArray(new Base[0]);
     }
-    return getProperty(name.hashCode(), name, checkValid);
+      return getProperty(name.hashCode(), name, checkValid);
   }
 
   @Override

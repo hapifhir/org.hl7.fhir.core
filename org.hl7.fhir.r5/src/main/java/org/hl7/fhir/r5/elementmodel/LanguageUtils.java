@@ -18,8 +18,6 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
-import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerLanguageSession;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
@@ -203,47 +201,8 @@ public class LanguageUtils {
     return res;
   }
 
-  public static boolean langsMatchExact(AcceptLanguageHeader langs, String srcLang) {
-    if (langs == null) {
-      return false;
-    }
-    for (LanguagePreference lang : langs.getLangs()) {
-      if (lang.getValue() > 0) {
-        if ("*".equals(lang.getLang())) {
-          return true;
-        } else {
-          return langsMatch(lang.getLang(), srcLang);
-        }
-      }
-    }
-    return false;
-  }
-
-  public static boolean langsMatch(AcceptLanguageHeader langs, String srcLang) {
-    if (langs == null) {
-      return false;
-    }
-    for (LanguagePreference lang : langs.getLangs()) {
-      if (lang.getValue() > 0) {
-        if ("*".equals(lang.getLang())) {
-          return true;
-        } else {
-          boolean ok = langsMatch(lang.getLang(), srcLang);
-          if (ok) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
-
-  public static boolean langsMatchExact(String dstLang, String srcLang) {
-    return dstLang == null ? false : dstLang.equals(srcLang);
-  }
-
   public static boolean langsMatch(String dstLang, String srcLang) {
-    return dstLang == null || srcLang == null ? false : dstLang.startsWith(srcLang) || "*".equals(srcLang);
+    return dstLang == null ? false : dstLang.equals(srcLang);
   }
 
   public static void fillSupplement(CodeSystem cs, List<TranslationUnit> list) {

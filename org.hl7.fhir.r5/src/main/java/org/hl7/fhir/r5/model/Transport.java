@@ -659,7 +659,7 @@ public class Transport extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("repetitions")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Transport.restriction.repetitions");
+          throw new FHIRException("Cannot call addChild on a primitive type Transport.restriction.repetitions");
         }
         else if (name.equals("period")) {
           this.period = new Period();
@@ -5174,10 +5174,10 @@ public class Transport extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("instantiatesCanonical")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Transport.instantiatesCanonical");
+          throw new FHIRException("Cannot call addChild on a primitive type Transport.instantiatesCanonical");
         }
         else if (name.equals("instantiatesUri")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Transport.instantiatesUri");
+          throw new FHIRException("Cannot call addChild on a primitive type Transport.instantiatesUri");
         }
         else if (name.equals("basedOn")) {
           return addBasedOn();
@@ -5190,24 +5190,24 @@ public class Transport extends DomainResource {
           return addPartOf();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Transport.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Transport.status");
         }
         else if (name.equals("statusReason")) {
           this.statusReason = new CodeableConcept();
           return this.statusReason;
         }
         else if (name.equals("intent")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Transport.intent");
+          throw new FHIRException("Cannot call addChild on a primitive type Transport.intent");
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Transport.priority");
+          throw new FHIRException("Cannot call addChild on a primitive type Transport.priority");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
           return this.code;
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Transport.description");
+          throw new FHIRException("Cannot call addChild on a primitive type Transport.description");
         }
         else if (name.equals("focus")) {
           this.focus = new Reference();
@@ -5222,13 +5222,13 @@ public class Transport extends DomainResource {
           return this.encounter;
         }
         else if (name.equals("completionTime")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Transport.completionTime");
+          throw new FHIRException("Cannot call addChild on a primitive type Transport.completionTime");
         }
         else if (name.equals("authoredOn")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Transport.authoredOn");
+          throw new FHIRException("Cannot call addChild on a primitive type Transport.authoredOn");
         }
         else if (name.equals("lastModified")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Transport.lastModified");
+          throw new FHIRException("Cannot call addChild on a primitive type Transport.lastModified");
         }
         else if (name.equals("requester")) {
           this.requester = new Reference();

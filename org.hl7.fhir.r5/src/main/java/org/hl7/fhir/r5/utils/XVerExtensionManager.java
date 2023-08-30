@@ -83,7 +83,6 @@ public class XVerExtensionManager {
     String verSource = url.substring(20, 23);
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);
-    String r = e.contains(".") ? e.substring(0, e.indexOf(".")) : e;
     JsonObject root = lists.get(verSource);
     JsonObject path = root.getJsonObject(e);
     if (path == null) {
@@ -92,11 +91,7 @@ public class XVerExtensionManager {
     
     StructureDefinition sd = new StructureDefinition();
     sd.setUserData(XVER_EXT_MARKER, "true");
-    if (context.getResourceNamesAsSet().contains(r)) {
-      sd.setWebPath(Utilities.pathURL(context.getSpecUrl(), r.toLowerCase()+"-definitions.html#"+e));
-    } else {
-      sd.setWebPath(PackageHacker.fixPackageUrl("https://hl7.org/fhir/versions.html#extensions"));
-    }
+    sd.setWebPath(PackageHacker.fixPackageUrl("https://hl7.org/fhir/versions.html#extensions"));
     sd.setUrl(url);
     sd.setVersion(context.getVersion());
     sd.setFhirVersion(FHIRVersion.fromCode(context.getVersion()));
@@ -259,36 +254,6 @@ public class XVerExtensionManager {
 
   private boolean isVersionPattern(String v) {
     return v.length() == 3 && Character.isDigit(v.charAt(0)) && v.charAt(1) == '.' && Character.isDigit(v.charAt(2));
-  }
-
-  public String getReference(String url) {
-    String version = getVersion(url);
-    String base = VersionUtilities.getSpecUrl(version);
-    if (base == null) {
-      return null;
-    } else {
-      String path = url.substring(url.indexOf("-")+1);
-      if (!path.contains(".")) {
-        return null;
-      }
-      String type = path.substring(0, path.indexOf("."));
-      if (Utilities.existsInList(type, "Annotation", "Attachment", "Identifier", "CodeableConcept", "Coding", "Quantity", "Duration", "Range", "Period", "Ratio", "RatioRange", "SampledData", "Signature", "HumanName", "Address", "ContactPoint", "Timing")) {
-        return Utilities.pathURL(base, "datatypes-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      if (Utilities.existsInList(type, "Element", "BackboneElement", "BackboneType", "PrimitiveType", "DataType", "Base")) {
-        return Utilities.pathURL(base, "types-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      if (Utilities.existsInList(type, "UsageContext", "RelatedArtifact", "DataRequirement", "ParameterDefinition", "TriggerDefinition", "Expression", "ContactDetail", "ExtendedContactDetail", "VirtualServiceDetail", "Availability", "MonetaryComponent", "Contributor")) {
-        return Utilities.pathURL(base, "metadatatypes-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      if (Utilities.existsInList(type, "Reference", "CodeableReference")) {
-        return Utilities.pathURL(base, "references-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      if (Utilities.existsInList(type, "Meta")) {
-        return Utilities.pathURL(base, "resource-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-      }
-      return Utilities.pathURL(base, type.toLowerCase()+"-definitions.html#"+path+"|"+VersionUtilities.getNameForVersion(version)+" "+path);
-    }
   }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class BenefitTermEnumFactory implements EnumFactory<BenefitTerm> {
@@ -42,7 +46,7 @@ public class BenefitTermEnumFactory implements EnumFactory<BenefitTerm> {
       return BenefitTerm.ANNUAL;
     if ("lifetime".equals(codeString))
       return BenefitTerm.LIFETIME;
-    throw new IllegalArgumentException("Unknown BenefitTerm code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown BenefitTerm code '"+codeString+"'");
   }
 
   public String toCode(BenefitTerm code) {
@@ -53,8 +57,8 @@ public class BenefitTermEnumFactory implements EnumFactory<BenefitTerm> {
     return "?";
   }
 
-  public String toSystem(BenefitTerm code) {
-    return code.getSystem();
-  }
+    public String toSystem(BenefitTerm code) {
+      return code.getSystem();
+      }
 
 }

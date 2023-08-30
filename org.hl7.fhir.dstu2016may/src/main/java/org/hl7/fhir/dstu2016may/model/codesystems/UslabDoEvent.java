@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,100 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum UslabDoEvent {
 
-  /**
-   * a Provider (.orderer) orders one or more new laboratory tests or scheduled
-   * laboratory tests (including future tests) to be performed by a laboratory.
-   */
-  NEWREQUEST,
-  /**
-   * a Provider (.orderer) adds one or more additional tests to a previously
-   * transmitted test requisition.
-   */
-  ADDONREQUEST,
-  /**
-   * The Provider (orderer) requests cancelation of previously ordered test.
-   */
-  ORDERERCANCEL,
-  /**
-   * The laboratory cancels a previously ordered test.
-   */
-  LABCANCEL,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static UslabDoEvent fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("new-request".equals(codeString))
-      return NEWREQUEST;
-    if ("add-on-request".equals(codeString))
-      return ADDONREQUEST;
-    if ("orderer-cancel".equals(codeString))
-      return ORDERERCANCEL;
-    if ("lab-cancel".equals(codeString))
-      return LABCANCEL;
-    throw new FHIRException("Unknown UslabDoEvent code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NEWREQUEST:
-      return "new-request";
-    case ADDONREQUEST:
-      return "add-on-request";
-    case ORDERERCANCEL:
-      return "orderer-cancel";
-    case LABCANCEL:
-      return "lab-cancel";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * a Provider (.orderer) orders one or more new laboratory tests or scheduled laboratory tests (including future tests) to be performed by a laboratory. 
+         */
+        NEWREQUEST, 
+        /**
+         * a Provider (.orderer) adds one or more additional tests to a previously transmitted test requisition.
+         */
+        ADDONREQUEST, 
+        /**
+         * The Provider (orderer) requests cancelation of previously ordered test.
+         */
+        ORDERERCANCEL, 
+        /**
+         * The laboratory cancels a previously ordered test.
+         */
+        LABCANCEL, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static UslabDoEvent fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("new-request".equals(codeString))
+          return NEWREQUEST;
+        if ("add-on-request".equals(codeString))
+          return ADDONREQUEST;
+        if ("orderer-cancel".equals(codeString))
+          return ORDERERCANCEL;
+        if ("lab-cancel".equals(codeString))
+          return LABCANCEL;
+        throw new FHIRException("Unknown UslabDoEvent code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NEWREQUEST: return "new-request";
+            case ADDONREQUEST: return "add-on-request";
+            case ORDERERCANCEL: return "orderer-cancel";
+            case LABCANCEL: return "lab-cancel";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/uslab-event";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NEWREQUEST: return "a Provider (.orderer) orders one or more new laboratory tests or scheduled laboratory tests (including future tests) to be performed by a laboratory. ";
+            case ADDONREQUEST: return "a Provider (.orderer) adds one or more additional tests to a previously transmitted test requisition.";
+            case ORDERERCANCEL: return "The Provider (orderer) requests cancelation of previously ordered test.";
+            case LABCANCEL: return "The laboratory cancels a previously ordered test.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NEWREQUEST: return "new request";
+            case ADDONREQUEST: return "add-on request";
+            case ORDERERCANCEL: return "orderer cancel";
+            case LABCANCEL: return "laboratory cancel";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/uslab-event";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NEWREQUEST:
-      return "a Provider (.orderer) orders one or more new laboratory tests or scheduled laboratory tests (including future tests) to be performed by a laboratory. ";
-    case ADDONREQUEST:
-      return "a Provider (.orderer) adds one or more additional tests to a previously transmitted test requisition.";
-    case ORDERERCANCEL:
-      return "The Provider (orderer) requests cancelation of previously ordered test.";
-    case LABCANCEL:
-      return "The laboratory cancels a previously ordered test.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NEWREQUEST:
-      return "new request";
-    case ADDONREQUEST:
-      return "add-on request";
-    case ORDERERCANCEL:
-      return "orderer cancel";
-    case LABCANCEL:
-      return "laboratory cancel";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

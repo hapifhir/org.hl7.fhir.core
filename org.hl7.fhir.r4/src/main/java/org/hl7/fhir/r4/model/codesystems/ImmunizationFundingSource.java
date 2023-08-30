@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ImmunizationFundingSource {
 
-  /**
-   * The vaccine was purchased with private funds.
-   */
-  PRIVATE,
-  /**
-   * The vaccine was purchased with public funds.
-   */
-  PUBLIC,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ImmunizationFundingSource fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("private".equals(codeString))
-      return PRIVATE;
-    if ("public".equals(codeString))
-      return PUBLIC;
-    throw new FHIRException("Unknown ImmunizationFundingSource code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PRIVATE:
-      return "private";
-    case PUBLIC:
-      return "public";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The vaccine was purchased with private funds.
+         */
+        PRIVATE, 
+        /**
+         * The vaccine was purchased with public funds.
+         */
+        PUBLIC, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ImmunizationFundingSource fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("private".equals(codeString))
+          return PRIVATE;
+        if ("public".equals(codeString))
+          return PUBLIC;
+        throw new FHIRException("Unknown ImmunizationFundingSource code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PRIVATE: return "private";
+            case PUBLIC: return "public";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/immunization-funding-source";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PRIVATE: return "The vaccine was purchased with private funds.";
+            case PUBLIC: return "The vaccine was purchased with public funds.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PRIVATE: return "Private";
+            case PUBLIC: return "Public";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/immunization-funding-source";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PRIVATE:
-      return "The vaccine was purchased with private funds.";
-    case PUBLIC:
-      return "The vaccine was purchased with public funds.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PRIVATE:
-      return "Private";
-    case PUBLIC:
-      return "Public";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

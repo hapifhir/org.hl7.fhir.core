@@ -33,8 +33,7 @@ public class FluentPathTests {
 
   @BeforeAll
   public void setup() throws IOException {
-    TestingUtilities.context = SimpleWorkerContext
-        .fromPack("C:\\work\\org.hl7.fhir.dstu2\\build\\publish\\validation-min.xml.zip");
+    TestingUtilities.context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir.dstu2\\build\\publish\\validation-min.xml.zip");
     this.fp = new FHIRPathEngine(TestingUtilities.context);
   }
 
@@ -54,8 +53,7 @@ public class FluentPathTests {
       if (Utilities.noString(input))
         fp.check(null, null, null, node);
       else {
-        res = new XmlParser()
-            .parse(new FileInputStream(Utilities.path("C:\\work\\org.hl7.fhir.dstu2\\build\\publish", input)));
+        res = new XmlParser().parse(new FileInputStream(Utilities.path("C:\\work\\org.hl7.fhir.dstu2\\build\\publish", input)));
         fp.check(res, res.getResourceType().toString(), res.getResourceType().toString(), node);
       }
       outcome = fp.evaluate(res, node);
@@ -74,20 +72,16 @@ public class FluentPathTests {
 
     List<Element> expected = new ArrayList<Element>();
     XMLUtil.getNamedChildren(element, "output", expected);
-    Assertions.assertTrue(outcome.size() == expected.size(),
-        String.format("Expected %d objects but found %d", expected.size(), outcome.size()));
+    Assertions.assertTrue(outcome.size() == expected.size(), String.format("Expected %d objects but found %d", expected.size(), outcome.size()));
     for (int i = 0; i < Math.min(outcome.size(), expected.size()); i++) {
       String tn = expected.get(i).getAttribute("type");
       if (!Utilities.noString(tn)) {
-        Assertions.assertTrue(tn.equals(outcome.get(i).fhirType()),
-            String.format("Outcome %d: Type should be %s but was %s", i, tn, outcome.get(i).fhirType()));
+        Assertions.assertTrue(tn.equals(outcome.get(i).fhirType()), String.format("Outcome %d: Type should be %s but was %s", i, tn, outcome.get(i).fhirType()));
       }
       String v = expected.get(i).getTextContent();
       if (!Utilities.noString(v)) {
-        Assertions.assertTrue(outcome.get(i) instanceof PrimitiveType,
-            String.format("Outcome %d: Value should be a primitive type but was %s", i, outcome.get(i).fhirType()));
-        Assertions.assertTrue(v.equals(((PrimitiveType) outcome.get(i)).asStringValue()),
-            String.format("Outcome %d: Value should be %s but was %s", i, v, outcome.get(i).toString()));
+        Assertions.assertTrue(outcome.get(i) instanceof PrimitiveType, String.format("Outcome %d: Value should be a primitive type but was %s", i, outcome.get(i).fhirType()));
+        Assertions.assertTrue(v.equals(((PrimitiveType) outcome.get(i)).asStringValue()), String.format("Outcome %d: Value should be %s but was %s", i, v, outcome.get(i).toString()));
       }
     }
   }
@@ -95,8 +89,7 @@ public class FluentPathTests {
   @Test
   public void testDefinitions() throws FileNotFoundException, IOException, FHIRException {
     if (TestingUtilities.context == null)
-      TestingUtilities.context = SimpleWorkerContext
-          .fromPack("C:\\work\\org.hl7.fhir.dstu2\\build\\publish\\validation-min.xml.zip");
+      TestingUtilities.context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir.dstu2\\build\\publish\\validation-min.xml.zip");
     if (fp == null)
       fp = new FHIRPathEngine(TestingUtilities.context);
     for (StructureDefinition sd : TestingUtilities.context.allStructures()) {
@@ -147,8 +140,7 @@ public class FluentPathTests {
     return s;
   }
 
-  private void testExpression(StructureDefinition sd, ElementDefinition ed, ElementDefinitionConstraintComponent inv)
-      throws FHIRException {
+  private void testExpression(StructureDefinition sd, ElementDefinition ed, ElementDefinitionConstraintComponent inv) throws FHIRException {
     String expr = inv.getExtensionString("http://hl7.org/fhir/StructureDefinition/structuredefinition-expression");
     try {
       ExpressionNode n = (ExpressionNode) inv.getUserData("validator.expression.cache");
@@ -156,13 +148,9 @@ public class FluentPathTests {
         n = fp.parse(expr);
         inv.setUserData("validator.expression.cache", n);
       }
-      fp.check(null,
-          sd.getKind() == org.hl7.fhir.dstu2.model.StructureDefinition.StructureDefinitionKind.RESOURCE ? sd.getId()
-              : "DomainResource",
-          ed.getPath(), n);
+      fp.check(null, sd.getKind() == org.hl7.fhir.dstu2.model.StructureDefinition.StructureDefinitionKind.RESOURCE ? sd.getId() : "DomainResource", ed.getPath(), n);
     } catch (Exception e) {
-      System.out.println("FluentPath Error on " + sd.getUrl() + ":" + ed.getPath() + ":" + inv.getKey() + " ('" + expr
-          + "'): " + e.getMessage());
+      System.out.println("FluentPath Error on " + sd.getUrl() + ":" + ed.getPath() + ":" + inv.getKey() + " ('" + expr + "'): " + e.getMessage());
     }
   }
 

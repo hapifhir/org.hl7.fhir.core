@@ -1,5 +1,6 @@
 package org.hl7.fhir.r4b.model;
 
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -44,33 +45,33 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 import org.hl7.fhir.instance.model.api.IBaseDatatype;
-import ca.uhn.fhir.model.api.IElement;
-
+import  ca.uhn.fhir.model.api.IElement;
 /**
- * Base StructureDefinition for DataType Type: The base class for all re-useable
- * types defined as part of the FHIR Specification.
+ * Base StructureDefinition for DataType Type: The base class for all re-useable types defined as part of the FHIR Specification.
  */
-@DatatypeDef(name = "DataType")
+@DatatypeDef(name="DataType")
 public abstract class DataType extends Element implements IBaseDatatype, IElement {
 
-  private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 0L;
 
   /**
    * Constructor
    */
-  public DataType() {
-    super();
-  }
+    public DataType() {
+      super();
+    }
 
   public String fhirType() {
     return "DataType";
 
   }
 
-  public abstract DataType copy();
+      public abstract DataType copy();
 
-  public void copyValues(DataType dst) {
-    super.copyValues(dst);
-  }
+      public void copyValues(DataType dst) {
+        super.copyValues(dst);
+      }
+
 
 }
+

@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "http://www.ncbi.nlm.nih.gov/clinvar",
   "code" : "619728"
-}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0", "version": "1.0.0", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0", "version": "1.0.0", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -11,12 +11,7 @@
 }}####
 v: {
   "severity" : "error",
-  "error" : "The CodeSystem http://www.ncbi.nlm.nih.gov/clinvar is unknown; Unable to check whether the code is in the value set http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0 (from Tx-Server)",
-  "class" : "CODESYSTEM_UNSUPPORTED",
-  "unknown-systems" : "http://www.ncbi.nlm.nih.gov/clinvar",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "The CodeSystem http://www.ncbi.nlm.nih.gov/clinvar is unknown; The provided code http://www.ncbi.nlm.nih.gov/clinvar#619728 is not in the value set 'http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------

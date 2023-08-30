@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum Fundsreserve {
 
-  /**
-   * null
-   */
-  PATIENT,
-  /**
-   * null
-   */
-  PROVIDER,
-  /**
-   * null
-   */
-  NONE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static Fundsreserve fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("patient".equals(codeString))
-      return PATIENT;
-    if ("provider".equals(codeString))
-      return PROVIDER;
-    if ("none".equals(codeString))
-      return NONE;
-    throw new FHIRException("Unknown Fundsreserve code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PATIENT:
-      return "patient";
-    case PROVIDER:
-      return "provider";
-    case NONE:
-      return "none";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * null
+         */
+        PATIENT, 
+        /**
+         * null
+         */
+        PROVIDER, 
+        /**
+         * null
+         */
+        NONE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static Fundsreserve fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("patient".equals(codeString))
+          return PATIENT;
+        if ("provider".equals(codeString))
+          return PROVIDER;
+        if ("none".equals(codeString))
+          return NONE;
+        throw new FHIRException("Unknown Fundsreserve code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PATIENT: return "patient";
+            case PROVIDER: return "provider";
+            case NONE: return "none";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/fundsreserve";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PATIENT: return "";
+            case PROVIDER: return "";
+            case NONE: return "";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PATIENT: return "patient";
+            case PROVIDER: return "provider";
+            case NONE: return "none";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/fundsreserve";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PATIENT:
-      return "";
-    case PROVIDER:
-      return "";
-    case NONE:
-      return "";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PATIENT:
-      return "patient";
-    case PROVIDER:
-      return "provider";
-    case NONE:
-      return "none";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

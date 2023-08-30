@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,158 +34,113 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ResearchStudyPrimPurpType {
 
-  /**
-   * One or more interventions are being evaluated for treating a disease,
-   * syndrome, or condition.
-   */
-  TREATMENT,
-  /**
-   * One or more interventions are being assessed for preventing the development
-   * of a specific disease or health condition.
-   */
-  PREVENTION,
-  /**
-   * One or more interventions are being evaluated for identifying a disease or
-   * health condition.
-   */
-  DIAGNOSTIC,
-  /**
-   * One or more interventions are evaluated for maximizing comfort, minimizing
-   * side effects, or mitigating against a decline in the participant's health or
-   * function.
-   */
-  SUPPORTIVECARE,
-  /**
-   * One or more interventions are assessed or examined for identifying a
-   * condition, or risk factors for a condition, in people who are not yet known
-   * to have the condition or risk factor.
-   */
-  SCREENING,
-  /**
-   * One or more interventions for evaluating the delivery, processes, management,
-   * organization, or financing of healthcare.
-   */
-  HEALTHSERVICESRESEARCH,
-  /**
-   * One or more interventions for examining the basic mechanism of action (for
-   * example, physiology or biomechanics of an intervention).
-   */
-  BASICSCIENCE,
-  /**
-   * An intervention of a device product is being evaluated to determine the
-   * feasibility of the product or to test a prototype device and not health
-   * outcomes. Such studies are conducted to confirm the design and operating
-   * specifications of a device before beginning a full clinical trial.
-   */
-  DEVICEFEASIBILITY,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ResearchStudyPrimPurpType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("treatment".equals(codeString))
-      return TREATMENT;
-    if ("prevention".equals(codeString))
-      return PREVENTION;
-    if ("diagnostic".equals(codeString))
-      return DIAGNOSTIC;
-    if ("supportive-care".equals(codeString))
-      return SUPPORTIVECARE;
-    if ("screening".equals(codeString))
-      return SCREENING;
-    if ("health-services-research".equals(codeString))
-      return HEALTHSERVICESRESEARCH;
-    if ("basic-science".equals(codeString))
-      return BASICSCIENCE;
-    if ("device-feasibility".equals(codeString))
-      return DEVICEFEASIBILITY;
-    throw new FHIRException("Unknown ResearchStudyPrimPurpType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case TREATMENT:
-      return "treatment";
-    case PREVENTION:
-      return "prevention";
-    case DIAGNOSTIC:
-      return "diagnostic";
-    case SUPPORTIVECARE:
-      return "supportive-care";
-    case SCREENING:
-      return "screening";
-    case HEALTHSERVICESRESEARCH:
-      return "health-services-research";
-    case BASICSCIENCE:
-      return "basic-science";
-    case DEVICEFEASIBILITY:
-      return "device-feasibility";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * One or more interventions are being evaluated for treating a disease, syndrome, or condition.
+         */
+        TREATMENT, 
+        /**
+         * One or more interventions are being assessed for preventing the development of a specific disease or health condition.
+         */
+        PREVENTION, 
+        /**
+         * One or more interventions are being evaluated for identifying a disease or health condition.
+         */
+        DIAGNOSTIC, 
+        /**
+         * One or more interventions are evaluated for maximizing comfort, minimizing side effects, or mitigating against a decline in the participant's health or function.
+         */
+        SUPPORTIVECARE, 
+        /**
+         * One or more interventions are assessed or examined for identifying a condition, or risk factors for a condition, in people who are not yet known to have the condition or risk factor.
+         */
+        SCREENING, 
+        /**
+         * One or more interventions for evaluating the delivery, processes, management, organization, or financing of healthcare.
+         */
+        HEALTHSERVICESRESEARCH, 
+        /**
+         * One or more interventions for examining the basic mechanism of action (for example, physiology or biomechanics of an intervention).
+         */
+        BASICSCIENCE, 
+        /**
+         * An intervention of a device product is being evaluated to determine the feasibility of the product or to test a prototype device and not health outcomes. Such studies are conducted to confirm the design and operating specifications of a device before beginning a full clinical trial.
+         */
+        DEVICEFEASIBILITY, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ResearchStudyPrimPurpType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("treatment".equals(codeString))
+          return TREATMENT;
+        if ("prevention".equals(codeString))
+          return PREVENTION;
+        if ("diagnostic".equals(codeString))
+          return DIAGNOSTIC;
+        if ("supportive-care".equals(codeString))
+          return SUPPORTIVECARE;
+        if ("screening".equals(codeString))
+          return SCREENING;
+        if ("health-services-research".equals(codeString))
+          return HEALTHSERVICESRESEARCH;
+        if ("basic-science".equals(codeString))
+          return BASICSCIENCE;
+        if ("device-feasibility".equals(codeString))
+          return DEVICEFEASIBILITY;
+        throw new FHIRException("Unknown ResearchStudyPrimPurpType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case TREATMENT: return "treatment";
+            case PREVENTION: return "prevention";
+            case DIAGNOSTIC: return "diagnostic";
+            case SUPPORTIVECARE: return "supportive-care";
+            case SCREENING: return "screening";
+            case HEALTHSERVICESRESEARCH: return "health-services-research";
+            case BASICSCIENCE: return "basic-science";
+            case DEVICEFEASIBILITY: return "device-feasibility";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/research-study-prim-purp-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case TREATMENT: return "One or more interventions are being evaluated for treating a disease, syndrome, or condition.";
+            case PREVENTION: return "One or more interventions are being assessed for preventing the development of a specific disease or health condition.";
+            case DIAGNOSTIC: return "One or more interventions are being evaluated for identifying a disease or health condition.";
+            case SUPPORTIVECARE: return "One or more interventions are evaluated for maximizing comfort, minimizing side effects, or mitigating against a decline in the participant's health or function.";
+            case SCREENING: return "One or more interventions are assessed or examined for identifying a condition, or risk factors for a condition, in people who are not yet known to have the condition or risk factor.";
+            case HEALTHSERVICESRESEARCH: return "One or more interventions for evaluating the delivery, processes, management, organization, or financing of healthcare.";
+            case BASICSCIENCE: return "One or more interventions for examining the basic mechanism of action (for example, physiology or biomechanics of an intervention).";
+            case DEVICEFEASIBILITY: return "An intervention of a device product is being evaluated to determine the feasibility of the product or to test a prototype device and not health outcomes. Such studies are conducted to confirm the design and operating specifications of a device before beginning a full clinical trial.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case TREATMENT: return "Treatment";
+            case PREVENTION: return "Prevention";
+            case DIAGNOSTIC: return "Diagnostic";
+            case SUPPORTIVECARE: return "Supportive Care";
+            case SCREENING: return "Screening";
+            case HEALTHSERVICESRESEARCH: return "Health Services Research";
+            case BASICSCIENCE: return "Basic Science";
+            case DEVICEFEASIBILITY: return "Device Feasibility";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/research-study-prim-purp-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case TREATMENT:
-      return "One or more interventions are being evaluated for treating a disease, syndrome, or condition.";
-    case PREVENTION:
-      return "One or more interventions are being assessed for preventing the development of a specific disease or health condition.";
-    case DIAGNOSTIC:
-      return "One or more interventions are being evaluated for identifying a disease or health condition.";
-    case SUPPORTIVECARE:
-      return "One or more interventions are evaluated for maximizing comfort, minimizing side effects, or mitigating against a decline in the participant's health or function.";
-    case SCREENING:
-      return "One or more interventions are assessed or examined for identifying a condition, or risk factors for a condition, in people who are not yet known to have the condition or risk factor.";
-    case HEALTHSERVICESRESEARCH:
-      return "One or more interventions for evaluating the delivery, processes, management, organization, or financing of healthcare.";
-    case BASICSCIENCE:
-      return "One or more interventions for examining the basic mechanism of action (for example, physiology or biomechanics of an intervention).";
-    case DEVICEFEASIBILITY:
-      return "An intervention of a device product is being evaluated to determine the feasibility of the product or to test a prototype device and not health outcomes. Such studies are conducted to confirm the design and operating specifications of a device before beginning a full clinical trial.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case TREATMENT:
-      return "Treatment";
-    case PREVENTION:
-      return "Prevention";
-    case DIAGNOSTIC:
-      return "Diagnostic";
-    case SUPPORTIVECARE:
-      return "Supportive Care";
-    case SCREENING:
-      return "Screening";
-    case HEALTHSERVICESRESEARCH:
-      return "Health Services Research";
-    case BASICSCIENCE:
-      return "Basic Science";
-    case DEVICEFEASIBILITY:
-      return "Device Feasibility";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -1162,7 +1162,7 @@ public class SupplyDelivery extends DomainResource {
           return addPartOf();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SupplyDelivery.status");
+          throw new FHIRException("Cannot call addChild on a primitive type SupplyDelivery.status");
         }
         else if (name.equals("patient")) {
           this.patient = new Reference();

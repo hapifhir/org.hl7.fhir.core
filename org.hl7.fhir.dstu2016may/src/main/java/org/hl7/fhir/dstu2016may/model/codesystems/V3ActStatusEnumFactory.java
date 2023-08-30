@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class V3ActStatusEnumFactory implements EnumFactory<V3ActStatus> {
@@ -58,7 +62,7 @@ public class V3ActStatusEnumFactory implements EnumFactory<V3ActStatus> {
       return V3ActStatus.NULLIFIED;
     if ("obsolete".equals(codeString))
       return V3ActStatus.OBSOLETE;
-    throw new IllegalArgumentException("Unknown V3ActStatus code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3ActStatus code '"+codeString+"'");
   }
 
   public String toCode(V3ActStatus code) {
@@ -85,8 +89,8 @@ public class V3ActStatusEnumFactory implements EnumFactory<V3ActStatus> {
     return "?";
   }
 
-  public String toSystem(V3ActStatus code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3ActStatus code) {
+      return code.getSystem();
+      }
 
 }

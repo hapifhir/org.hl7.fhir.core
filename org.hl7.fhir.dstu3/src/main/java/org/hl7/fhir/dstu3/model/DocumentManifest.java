@@ -1330,7 +1330,7 @@ public class DocumentManifest extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DocumentManifest.status");
+          throw new FHIRException("Cannot call addChild on a primitive type DocumentManifest.status");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -1341,7 +1341,7 @@ public class DocumentManifest extends DomainResource {
           return this.subject;
         }
         else if (name.equals("created")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DocumentManifest.created");
+          throw new FHIRException("Cannot call addChild on a primitive type DocumentManifest.created");
         }
         else if (name.equals("author")) {
           return addAuthor();
@@ -1350,10 +1350,10 @@ public class DocumentManifest extends DomainResource {
           return addRecipient();
         }
         else if (name.equals("source")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DocumentManifest.source");
+          throw new FHIRException("Cannot call addChild on a primitive type DocumentManifest.source");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DocumentManifest.description");
+          throw new FHIRException("Cannot call addChild on a primitive type DocumentManifest.description");
         }
         else if (name.equals("content")) {
           return addContent();

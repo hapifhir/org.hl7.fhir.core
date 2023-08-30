@@ -29,6 +29,7 @@ package org.hl7.fhir.dstu2016may.model;
   
  */
 
+
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -67,8 +68,7 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 /**
- * Primitive type "code" in FHIR, where the code is tied to an enumerated list
- * of possible values
+ * Primitive type "code" in FHIR, where the code is tied to an enumerated list of possible values
  *
  */
 @DatatypeDef(name = "code", isSpecialization = true)
@@ -80,8 +80,7 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
   /**
    * Constructor
    *
-   * @deprecated This no-arg constructor is provided for serialization only - Do
-   *             not use
+   * @deprecated This no-arg constructor is provided for serialization only - Do not use
    */
   @Deprecated
   public Enumeration() {

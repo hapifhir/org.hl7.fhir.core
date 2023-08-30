@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MissingToothReason {
 
-  /**
-   * Extraction
-   */
-  E,
-  /**
-   * Congenital
-   */
-  C,
-  /**
-   * Unknown
-   */
-  U,
-  /**
-   * Other
-   */
-  O,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MissingToothReason fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("e".equals(codeString))
-      return E;
-    if ("c".equals(codeString))
-      return C;
-    if ("u".equals(codeString))
-      return U;
-    if ("o".equals(codeString))
-      return O;
-    throw new FHIRException("Unknown MissingToothReason code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case E:
-      return "e";
-    case C:
-      return "c";
-    case U:
-      return "u";
-    case O:
-      return "o";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Extraction
+         */
+        E, 
+        /**
+         * Congenital
+         */
+        C, 
+        /**
+         * Unknown
+         */
+        U, 
+        /**
+         * Other
+         */
+        O, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MissingToothReason fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("e".equals(codeString))
+          return E;
+        if ("c".equals(codeString))
+          return C;
+        if ("u".equals(codeString))
+          return U;
+        if ("o".equals(codeString))
+          return O;
+        throw new FHIRException("Unknown MissingToothReason code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case E: return "e";
+            case C: return "c";
+            case U: return "u";
+            case O: return "o";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/missingtoothreason";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case E: return "Extraction";
+            case C: return "Congenital";
+            case U: return "Unknown";
+            case O: return "Other";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case E: return "E";
+            case C: return "C";
+            case U: return "U";
+            case O: return "O";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/missingtoothreason";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case E:
-      return "Extraction";
-    case C:
-      return "Congenital";
-    case U:
-      return "Unknown";
-    case O:
-      return "Other";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case E:
-      return "E";
-    case C:
-      return "C";
-    case U:
-      return "U";
-    case O:
-      return "O";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

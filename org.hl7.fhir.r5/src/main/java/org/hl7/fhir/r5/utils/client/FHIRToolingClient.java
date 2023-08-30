@@ -103,9 +103,6 @@ public class FHIRToolingClient {
   private String password;
   private String userAgent;
 
-
-  private String acceptLang;
-
   //Pass endpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_JSON;
@@ -115,7 +112,6 @@ public class FHIRToolingClient {
 
   public void initialize(String baseServiceUrl) throws URISyntaxException {
     base = baseServiceUrl;
-    client.setBase(base);
     resourceAddress = new ResourceAddress(baseServiceUrl);
     this.maxResultSetSize = -1;
   }
@@ -424,16 +420,16 @@ public class FHIRToolingClient {
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand"),
-          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())),
-          getPreferredResourceFormat(),
-          generateHeaders(),
-          "ValueSet/$expand?url=" + source.getUrl(),
-          TIMEOUT_OPERATION_EXPAND);
+        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())),
+        getPreferredResourceFormat(),
+        generateHeaders(),
+        "ValueSet/$expand?url=" + source.getUrl(),
+        TIMEOUT_OPERATION_EXPAND);
+      if (result.isUnsuccessfulRequest()) {
+        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+      }
     } catch (IOException e) {
-      throw new FHIRException(e);
-    }
-    if (result.isUnsuccessfulRequest()) {
-      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+      e.printStackTrace();
     }
     return result == null ? null : (ValueSet) result.getPayload();
   }
@@ -587,11 +583,6 @@ public class FHIRToolingClient {
     if (!Utilities.noString(userAgent)) {
       builder.add("User-Agent: "+userAgent);
     }
-
-    if (!Utilities.noString(acceptLang)) {
-      builder.add("Accept-Language: "+acceptLang);
-    }
-    
     return builder.build();
   }
 
@@ -622,10 +613,6 @@ public class FHIRToolingClient {
       }
     }
     return capabilities == null ? null : capabilities.getSoftware().getVersion();
-  }
-
-  public void setLanguage(String lang) {
-    this.acceptLang = lang;
   }
   
   

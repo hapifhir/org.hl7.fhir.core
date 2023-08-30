@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class DaysOfWeekEnumFactory implements EnumFactory<DaysOfWeek> {
@@ -52,7 +56,7 @@ public class DaysOfWeekEnumFactory implements EnumFactory<DaysOfWeek> {
       return DaysOfWeek.SAT;
     if ("sun".equals(codeString))
       return DaysOfWeek.SUN;
-    throw new IllegalArgumentException("Unknown DaysOfWeek code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown DaysOfWeek code '"+codeString+"'");
   }
 
   public String toCode(DaysOfWeek code) {
@@ -73,8 +77,8 @@ public class DaysOfWeekEnumFactory implements EnumFactory<DaysOfWeek> {
     return "?";
   }
 
-  public String toSystem(DaysOfWeek code) {
-    return code.getSystem();
-  }
+    public String toSystem(DaysOfWeek code) {
+      return code.getSystem();
+      }
 
 }

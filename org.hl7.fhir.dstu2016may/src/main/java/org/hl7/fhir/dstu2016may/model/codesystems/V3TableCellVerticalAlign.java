@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3TableCellVerticalAlign {
 
-  /**
-   * baseline
-   */
-  BASELINE,
-  /**
-   * bottom
-   */
-  BOTTOM,
-  /**
-   * middle
-   */
-  MIDDLE,
-  /**
-   * top
-   */
-  TOP,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static V3TableCellVerticalAlign fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("baseline".equals(codeString))
-      return BASELINE;
-    if ("bottom".equals(codeString))
-      return BOTTOM;
-    if ("middle".equals(codeString))
-      return MIDDLE;
-    if ("top".equals(codeString))
-      return TOP;
-    throw new FHIRException("Unknown V3TableCellVerticalAlign code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case BASELINE:
-      return "baseline";
-    case BOTTOM:
-      return "bottom";
-    case MIDDLE:
-      return "middle";
-    case TOP:
-      return "top";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * baseline
+         */
+        BASELINE, 
+        /**
+         * bottom
+         */
+        BOTTOM, 
+        /**
+         * middle
+         */
+        MIDDLE, 
+        /**
+         * top
+         */
+        TOP, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static V3TableCellVerticalAlign fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("baseline".equals(codeString))
+          return BASELINE;
+        if ("bottom".equals(codeString))
+          return BOTTOM;
+        if ("middle".equals(codeString))
+          return MIDDLE;
+        if ("top".equals(codeString))
+          return TOP;
+        throw new FHIRException("Unknown V3TableCellVerticalAlign code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case BASELINE: return "baseline";
+            case BOTTOM: return "bottom";
+            case MIDDLE: return "middle";
+            case TOP: return "top";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/v3/TableCellVerticalAlign";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case BASELINE: return "baseline";
+            case BOTTOM: return "bottom";
+            case MIDDLE: return "middle";
+            case TOP: return "top";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case BASELINE: return "baseline";
+            case BOTTOM: return "bottom";
+            case MIDDLE: return "middle";
+            case TOP: return "top";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/v3/TableCellVerticalAlign";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case BASELINE:
-      return "baseline";
-    case BOTTOM:
-      return "bottom";
-    case MIDDLE:
-      return "middle";
-    case TOP:
-      return "top";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case BASELINE:
-      return "baseline";
-    case BOTTOM:
-      return "bottom";
-    case MIDDLE:
-      return "middle";
-    case TOP:
-      return "top";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

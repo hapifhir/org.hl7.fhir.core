@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.terminologies;
   
  */
 
+
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -55,65 +57,57 @@ import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlPullParserException;
 
 /**
- * This class converts the LOINC XML representation that the FHIR build tool
- * uses internally to a set of DataElements in an atom feed
+ * This class converts the LOINC XML representation that the FHIR build tool uses internally to a set of DataElements in an atom feed
  * 
  * @author Grahame
  *
  */
 public class LoincToDEConvertor {
 
-  public static void main(String[] args)
-      throws FHIRFormatError, IOException, XmlPullParserException, SAXException, ParserConfigurationException {
-    if (args.length == 0) {
-      System.out.println("FHIR LOINC to CDE convertor. ");
-      System.out.println("");
-      System.out.println("This tool converts from LOINC to A set of DataElement definitions.");
-      System.out.println("");
-      System.out.println("Usage: [jar(path?)] [dest] (-defn [definitions]) where: ");
-      System.out.println("* [dest] is a file name of the bundle to produce");
-      System.out.println(
-          "* [definitions] is the file name of a file produced by exporting the main LOINC table from the mdb to XML");
-      System.out.println("");
-    } else {
-      LoincToDEConvertor exe = new LoincToDEConvertor();
-      exe.setDest(args[0]);
-      for (int i = 1; i < args.length; i++) {
-        if (args[i].equals("-defn"))
-          exe.setDefinitions(args[i + 1]);
-      }
-      exe.process();
-    }
+	public static void main(String[] args) throws FHIRFormatError, IOException, XmlPullParserException, SAXException, ParserConfigurationException {
+		if (args.length == 0) {
+			System.out.println("FHIR LOINC to CDE convertor. ");
+			System.out.println("");
+			System.out.println("This tool converts from LOINC to A set of DataElement definitions.");
+			System.out.println("");
+			System.out.println("Usage: [jar(path?)] [dest] (-defn [definitions]) where: ");
+			System.out.println("* [dest] is a file name of the bundle to produce");
+			System.out.println("* [definitions] is the file name of a file produced by exporting the main LOINC table from the mdb to XML");
+			System.out.println("");
+		} else {
+			LoincToDEConvertor exe = new LoincToDEConvertor();
+			exe.setDest(args[0]);
+			for (int i = 1; i < args.length; i++) {
+				if (args[i].equals("-defn"))
+					exe.setDefinitions(args[i+1]);
+			}
+			exe.process();
+		}
 
-  }
+	}
 
-  private String dest;
-  private String definitions;
+	private String dest;
+	private String definitions;
+	public String getDest() {
+		return dest;
+	}
+	public void setDest(String dest) {
+		this.dest = dest;
+	}
+	public String getDefinitions() {
+		return definitions;
+	}
+	public void setDefinitions(String definitions) {
+		this.definitions = definitions;
+	}
 
-  public String getDest() {
-    return dest;
-  }
+	private Document xml;
+	private Bundle bundle;
+	private DateTimeType now;
 
-  public void setDest(String dest) {
-    this.dest = dest;
-  }
-
-  public String getDefinitions() {
-    return definitions;
-  }
-
-  public void setDefinitions(String definitions) {
-    this.definitions = definitions;
-  }
-
-  private Document xml;
-  private Bundle bundle;
-  private DateTimeType now;
-
-  public Bundle process(String sourceFile)
-      throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
+  public Bundle process(String sourceFile) throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
     this.definitions = sourceFile;
-    log("Begin. Produce Loinc CDEs in " + dest + " from " + definitions);
+    log("Begin. Produce Loinc CDEs in "+dest+" from "+definitions);
     loadLoinc();
     log("LOINC loaded");
 
@@ -127,69 +121,67 @@ public class LoincToDEConvertor {
     processLoincCodes();
     return bundle;
   }
+  
+	public void process() throws FHIRFormatError, IOException, XmlPullParserException, SAXException, ParserConfigurationException {
+		log("Begin. Produce Loinc CDEs in "+dest+" from "+definitions);
+		loadLoinc();
+		log("LOINC loaded");
 
-  public void process()
-      throws FHIRFormatError, IOException, XmlPullParserException, SAXException, ParserConfigurationException {
-    log("Begin. Produce Loinc CDEs in " + dest + " from " + definitions);
-    loadLoinc();
-    log("LOINC loaded");
+		now = DateTimeType.now();
 
-    now = DateTimeType.now();
-
-    bundle = new Bundle();
-    bundle.setId("http://hl7.org/fhir/commondataelement/loinc");
+		bundle = new Bundle();
+		bundle.setId("http://hl7.org/fhir/commondataelement/loinc");
     bundle.setMeta(new Meta().setLastUpdatedElement(InstantType.now()));
 
-    processLoincCodes();
-    if (dest != null) {
-      log("Saving...");
-      saveBundle();
-    }
-    log("Done");
+		processLoincCodes();
+		if (dest != null) {
+			log("Saving...");
+			saveBundle();
+		}
+		log("Done");
 
-  }
+	}
 
-  private void log(String string) {
-    System.out.println(string);
+	private void log(String string) {
+		System.out.println(string);
 
-  }
+	}
+	private void loadLoinc() throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
+		DocumentBuilder builder = factory.newDocumentBuilder();
 
-  private void loadLoinc() throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setNamespaceAware(true);
-    DocumentBuilder builder = factory.newDocumentBuilder();
+		xml = builder.parse(new FileInputStream(definitions)); 
+	}
 
-    xml = builder.parse(new FileInputStream(definitions));
-  }
-
-  private void saveBundle() throws FHIRFormatError, IOException, XmlPullParserException {
-    XmlParser xml = new XmlParser();
-    FileOutputStream s = new FileOutputStream(dest);
+	private void saveBundle() throws FHIRFormatError, IOException, XmlPullParserException {
+		XmlParser xml = new XmlParser();
+		FileOutputStream s = new FileOutputStream(dest);
     xml.compose(s, bundle, true);
     s.close();
-  }
+	}
 
-  private String col(Element row, String name) {
-    Element e = XMLUtil.getNamedChild(row, name);
-    if (e == null)
-      return null;
-    String text = e.getTextContent();
-    return text;
-  }
+	private String col(Element row, String name) {
+		Element e = XMLUtil.getNamedChild(row, name);
+		if (e == null)
+			return null;
+		String text = e.getTextContent();
+		return text;
+	}
 
-  private boolean hasCol(Element row, String name) {
-    return Utilities.noString(col(row, name));
-  }
+	private boolean hasCol(Element row, String name) {
+		return Utilities.noString(col(row, name));
+	}
 
-  private void processLoincCodes() {
-    Element row = XMLUtil.getFirstChild(xml.getDocumentElement());
-    int i = 0;
-    while (row != null) {
-      i++;
-      if (i % 1000 == 0)
-        System.out.print(".");
-      String code = col(row, "LOINC_NUM");
-      String comp = col(row, "COMPONENT");
+	private void processLoincCodes() {
+		Element row = XMLUtil.getFirstChild(xml.getDocumentElement());
+		int i = 0;
+		while (row != null) {
+			i++;
+			if (i % 1000 == 0)
+				System.out.print(".");
+				String code = col(row, "LOINC_NUM");
+				String comp = col(row, "COMPONENT");
 //				DataElement de = new DataElement();
 //				de.setId("loinc-"+code);
 //		    de.setMeta(new Meta().setLastUpdatedElement(InstantType.now()));
@@ -262,60 +254,59 @@ public class LoincToDEConvertor {
 //				// SUBMITTED_UNITS
 //				ToolingExtensions.setAllowableUnits(dee, makeUnits(col(row, "EXAMPLE_UNITS"), col(row, "EXAMPLE_UCUM_UNITS")));
 //				// EXAMPLE_SI_UCUM_UNITS	
+			
+			row = XMLUtil.getNextSibling(row);
+		}
+		System.out.println("done");
+	}
 
-      row = XMLUtil.getNextSibling(row);
-    }
-    System.out.println("done");
-  }
+	private String makeType(String type, String id) {
+		if (Utilities.noString(type))
+			return null;
+		if (type.equals("PQ"))
+			return "Quantity";
+		else if (type.equals("ED"))
+		  return "Attachment";
+		else if (type.equals("TS"))
+		  return "dateTime";
+		else if (type.equals("ST"))
+		  return "string";
+		else if (type.equals("II"))
+		  return "Identifier";
+		else if (type.equals("CWE"))
+		  return "CodeableConcept";
+		else if (type.equals("CD") || type.equals("CO"))
+		  return "CodeableConcept";
+		else if (type.equals("PN"))
+		  return "HumanName";
+		else if (type.equals("EN"))
+		  return "HumanName";
+		else if (type.equals("AD"))
+		  return "Address";
+		else if (type.equals("BL"))
+		  return "boolean";
+		else if (type.equals("GTS"))
+		  return "Schedule";
+		else if (type.equals("INT"))
+		  return "integer";
+		else if (type.equals("CS"))
+		  return "code";
+		else if (type.equals("IVL_TS"))
+		  return "Period";
+		else if (type.equals("MMAT") || type.equals("PRF") || type.equals("TX") || type.equals("DT") || type.equals("FT"))
+		  return null;
+		else
+			throw new Error("unmapped type "+type+" for LOINC code "+id);
+	} // 18606-4: MMAT.  18665-0: PRF. 18671-8: TX. 55400-6: DT; 8251-1: FT 
 
-  private String makeType(String type, String id) {
-    if (Utilities.noString(type))
-      return null;
-    if (type.equals("PQ"))
-      return "Quantity";
-    else if (type.equals("ED"))
-      return "Attachment";
-    else if (type.equals("TS"))
-      return "dateTime";
-    else if (type.equals("ST"))
-      return "string";
-    else if (type.equals("II"))
-      return "Identifier";
-    else if (type.equals("CWE"))
-      return "CodeableConcept";
-    else if (type.equals("CD") || type.equals("CO"))
-      return "CodeableConcept";
-    else if (type.equals("PN"))
-      return "HumanName";
-    else if (type.equals("EN"))
-      return "HumanName";
-    else if (type.equals("AD"))
-      return "Address";
-    else if (type.equals("BL"))
-      return "boolean";
-    else if (type.equals("GTS"))
-      return "Schedule";
-    else if (type.equals("INT"))
-      return "integer";
-    else if (type.equals("CS"))
-      return "code";
-    else if (type.equals("IVL_TS"))
-      return "Period";
-    else if (type.equals("MMAT") || type.equals("PRF") || type.equals("TX") || type.equals("DT") || type.equals("FT"))
-      return null;
-    else
-      throw new Error("unmapped type " + type + " for LOINC code " + id);
-  } // 18606-4: MMAT. 18665-0: PRF. 18671-8: TX. 55400-6: DT; 8251-1: FT
-
-  private CodeableConcept makeUnits(String text, String ucum) {
-    if (Utilities.noString(text) && Utilities.noString(ucum))
-      return null;
-    CodeableConcept cc = new CodeableConcept();
-    cc.setText(text);
-    cc.getCoding().add(new Coding().setCode(ucum).setSystem("http://unitsofmeasure.org"));
-    return cc;
-  }
-
+	private CodeableConcept makeUnits(String text, String ucum) {
+		if (Utilities.noString(text) && Utilities.noString(ucum))
+			return null;
+		CodeableConcept cc = new CodeableConcept();
+		cc.setText(text);
+		cc.getCoding().add(new Coding().setCode(ucum).setSystem("http://unitsofmeasure.org"));
+		return cc;
+	}
   public Bundle getBundle() {
     return bundle;
   }

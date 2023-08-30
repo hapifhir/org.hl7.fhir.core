@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -122,7 +126,7 @@ public class V3Hl7PublishingDomainEnumFactory implements EnumFactory<V3Hl7Publis
       return V3Hl7PublishingDomain.SP;
     if ("TD".equals(codeString))
       return V3Hl7PublishingDomain.TD;
-    throw new IllegalArgumentException("Unknown V3Hl7PublishingDomain code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3Hl7PublishingDomain code '"+codeString+"'");
   }
 
   public String toCode(V3Hl7PublishingDomain code) {
@@ -213,8 +217,8 @@ public class V3Hl7PublishingDomainEnumFactory implements EnumFactory<V3Hl7Publis
     return "?";
   }
 
-  public String toSystem(V3Hl7PublishingDomain code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3Hl7PublishingDomain code) {
+      return code.getSystem();
+      }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class MediaTypeEnumFactory implements EnumFactory<MediaType> {
@@ -44,7 +48,7 @@ public class MediaTypeEnumFactory implements EnumFactory<MediaType> {
       return MediaType.VIDEO;
     if ("audio".equals(codeString))
       return MediaType.AUDIO;
-    throw new IllegalArgumentException("Unknown MediaType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown MediaType code '"+codeString+"'");
   }
 
   public String toCode(MediaType code) {
@@ -57,8 +61,8 @@ public class MediaTypeEnumFactory implements EnumFactory<MediaType> {
     return "?";
   }
 
-  public String toSystem(MediaType code) {
-    return code.getSystem();
-  }
+    public String toSystem(MediaType code) {
+      return code.getSystem();
+      }
 
 }

@@ -1,10 +1,9 @@
 package org.hl7.fhir.dstu3.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.junit.jupiter.api.Test;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DateTimeTypeFieldTests {
   @Test

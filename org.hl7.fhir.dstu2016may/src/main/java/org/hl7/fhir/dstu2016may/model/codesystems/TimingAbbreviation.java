@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum TimingAbbreviation {
 
-  /**
-   * Every Day at institution specified times
-   */
-  QD,
-  /**
-   * Every Other Day at institution specified times
-   */
-  QOD,
-  /**
-   * Every 4 hours at institution specified times
-   */
-  Q4H,
-  /**
-   * Every 6 Hours at institution specified times
-   */
-  Q6H,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static TimingAbbreviation fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("QD".equals(codeString))
-      return QD;
-    if ("QOD".equals(codeString))
-      return QOD;
-    if ("Q4H".equals(codeString))
-      return Q4H;
-    if ("Q6H".equals(codeString))
-      return Q6H;
-    throw new FHIRException("Unknown TimingAbbreviation code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case QD:
-      return "QD";
-    case QOD:
-      return "QOD";
-    case Q4H:
-      return "Q4H";
-    case Q6H:
-      return "Q6H";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Every Day at institution specified times
+         */
+        QD, 
+        /**
+         * Every Other Day at institution specified times
+         */
+        QOD, 
+        /**
+         * Every 4 hours at institution specified times
+         */
+        Q4H, 
+        /**
+         * Every 6 Hours  at institution specified times
+         */
+        Q6H, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static TimingAbbreviation fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("QD".equals(codeString))
+          return QD;
+        if ("QOD".equals(codeString))
+          return QOD;
+        if ("Q4H".equals(codeString))
+          return Q4H;
+        if ("Q6H".equals(codeString))
+          return Q6H;
+        throw new FHIRException("Unknown TimingAbbreviation code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case QD: return "QD";
+            case QOD: return "QOD";
+            case Q4H: return "Q4H";
+            case Q6H: return "Q6H";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/timing-abbreviation";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case QD: return "Every Day at institution specified times";
+            case QOD: return "Every Other Day at institution specified times";
+            case Q4H: return "Every 4 hours at institution specified times";
+            case Q6H: return "Every 6 Hours  at institution specified times";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case QD: return "QD";
+            case QOD: return "QOD";
+            case Q4H: return "Q4H";
+            case Q6H: return "Q6H";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/timing-abbreviation";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case QD:
-      return "Every Day at institution specified times";
-    case QOD:
-      return "Every Other Day at institution specified times";
-    case Q4H:
-      return "Every 4 hours at institution specified times";
-    case Q6H:
-      return "Every 6 Hours  at institution specified times";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case QD:
-      return "QD";
-    case QOD:
-      return "QOD";
-    case Q4H:
-      return "Q4H";
-    case Q6H:
-      return "Q6H";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

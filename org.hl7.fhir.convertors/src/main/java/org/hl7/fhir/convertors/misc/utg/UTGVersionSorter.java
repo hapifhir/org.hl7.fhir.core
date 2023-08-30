@@ -32,6 +32,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
+import org.hl7.fhir.utilities.npm.ToolsVersion;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 

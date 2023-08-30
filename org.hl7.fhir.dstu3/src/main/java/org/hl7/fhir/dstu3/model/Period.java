@@ -35,10 +35,10 @@ package org.hl7.fhir.dstu3.model;
 import java.util.Date;
 import java.util.List;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
@@ -269,10 +269,10 @@ public class Period extends Type implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("start")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Period.start");
+          throw new FHIRException("Cannot call addChild on a primitive type Period.start");
         }
         else if (name.equals("end")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Period.end");
+          throw new FHIRException("Cannot call addChild on a primitive type Period.end");
         }
         else
           return super.addChild(name);

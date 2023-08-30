@@ -29,6 +29,8 @@ package org.hl7.fhir.dstu2016may.formats;
   
  */
 
+
+
 /*
 Copyright (c) 2011+, HL7, Inc
 All rights reserved.
@@ -68,23 +70,23 @@ public abstract class FormatUtilities {
   public static final String FHIR_NS = "http://hl7.org/fhir";
   public static final String XHTML_NS = "http://www.w3.org/1999/xhtml";
   public static final String NS_XSI = "http://www.w3.org/2001/XMLSchema-instance";
-
+ 
   protected String toString(String value) {
     return value;
   }
-
+  
   protected String toString(int value) {
     return java.lang.Integer.toString(value);
   }
-
+  
   protected String toString(boolean value) {
     return java.lang.Boolean.toString(value);
   }
-
+  
   protected String toString(BigDecimal value) {
     return value.toString();
   }
-
+  
   protected String toString(URI value) {
     return value.toString();
   }
@@ -93,9 +95,9 @@ public abstract class FormatUtilities {
     byte[] encodeBase64 = Base64.encodeBase64(value);
     return new String(encodeBase64);
   }
-
-  public static boolean isValidId(String tail) {
-    return tail.matches(ID_REGEX);
+  
+	public static boolean isValidId(String tail) {
+	  return tail.matches(ID_REGEX);
   }
 
   public static String makeId(String candidate) {
@@ -105,37 +107,29 @@ public abstract class FormatUtilities {
         b.append(c);
     return b.toString();
   }
+  
 
   public static ParserBase makeParser(FhirFormat format) {
     switch (format) {
-    case XML:
-      return new XmlParser();
-    case JSON:
-      return new JsonParser();
-    case TURTLE:
-      throw new Error("unsupported Format " + format.toString()); // return new TurtleParser();
-    case VBAR:
-      throw new Error("unsupported Format " + format.toString()); //
-    case TEXT:
-      throw new Error("unsupported Format " + format.toString()); //
+    case XML : return new XmlParser();
+    case JSON : return new JsonParser();
+    case TURTLE : throw new Error("unsupported Format "+format.toString()); // return new TurtleParser();
+    case VBAR : throw new Error("unsupported Format "+format.toString()); // 
+    case TEXT : throw new Error("unsupported Format "+format.toString()); // 
     }
-    throw new Error("unsupported Format " + format.toString());
+    throw new Error("unsupported Format "+format.toString());
   }
-
+  
   public static ParserBase makeParser(String format) {
-    if ("XML".equalsIgnoreCase(format))
-      return new XmlParser();
-    if ("JSON".equalsIgnoreCase(format))
-      return new JsonParser();
-    if ("TURTLE".equalsIgnoreCase(format))
-      throw new Error("unsupported Format " + format.toString()); // return new TurtleParser();
-    if ("JSONLD".equalsIgnoreCase(format))
-      throw new Error("unsupported Format " + format.toString()); // return new JsonLdParser();
-    if ("VBAR".equalsIgnoreCase(format))
-      throw new Error("unsupported Format " + format.toString()); //
-    if ("TEXT".equalsIgnoreCase(format))
-      throw new Error("unsupported Format " + format.toString()); //
-    throw new Error("unsupported Format " + format);
-  }
+    if ("XML".equalsIgnoreCase(format)) return new XmlParser();
+    if ("JSON".equalsIgnoreCase(format)) return new JsonParser();
+    if ("TURTLE".equalsIgnoreCase(format)) throw new Error("unsupported Format "+format.toString()); // return new TurtleParser();
+    if ("JSONLD".equalsIgnoreCase(format)) throw new Error("unsupported Format "+format.toString()); // return new JsonLdParser();
+    if ("VBAR".equalsIgnoreCase(format)) throw new Error("unsupported Format "+format.toString()); // 
+    if ("TEXT".equalsIgnoreCase(format)) throw new Error("unsupported Format "+format.toString()); // 
+    throw new Error("unsupported Format "+format);
+  }  
+
+
 
 }

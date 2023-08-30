@@ -1,5 +1,6 @@
 package org.hl7.fhir.r4b.model;
 
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -46,35 +47,37 @@ import ca.uhn.fhir.model.api.annotation.Block;
 /**
  * Base StructureDefinition for Duration Type: A length of time.
  */
-@DatatypeDef(name = "Duration")
+@DatatypeDef(name="Duration")
 public class Duration extends Quantity implements ICompositeType {
 
-  private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 0L;
 
   /**
    * Constructor
    */
-  public Duration() {
-    super();
-  }
+    public Duration() {
+      super();
+    }
 
   public String fhirType() {
     return "Duration";
 
   }
 
-  public Duration copy() {
-    Duration dst = new Duration();
-    copyValues(dst);
-    return dst;
-  }
+      public Duration copy() {
+        Duration dst = new Duration();
+        copyValues(dst);
+        return dst;
+      }
 
-  public void copyValues(Duration dst) {
-    super.copyValues(dst);
-  }
+      public void copyValues(Duration dst) {
+        super.copyValues(dst);
+      }
 
-  protected Duration typedCopy() {
-    return copy();
-  }
+      protected Duration typedCopy() {
+        return copy();
+      }
+
 
 }
+

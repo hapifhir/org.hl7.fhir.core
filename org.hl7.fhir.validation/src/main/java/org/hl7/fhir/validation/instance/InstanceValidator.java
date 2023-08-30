@@ -52,10 +52,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 import java.util.UUID;
-
-import javax.annotation.Nonnull;
 
 import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.lang3.NotImplementedException;
@@ -114,8 +111,6 @@ import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.model.Extension;
@@ -125,7 +120,6 @@ import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent;
 import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
@@ -174,7 +168,6 @@ import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.SIDUtilities;
-import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.UnicodeUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.Utilities.DecimalStatus;
@@ -192,7 +185,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
-import org.hl7.fhir.validation.codesystem.CodingsObserver;
 import org.hl7.fhir.validation.instance.type.BundleValidator;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
 import org.hl7.fhir.validation.instance.type.ConceptMapValidator;
@@ -512,9 +504,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private ValidationOptions baseOptions = new ValidationOptions();
   private Map<String, CanonicalResourceLookupResult> crLookups = new HashMap<>();
   private boolean logProgress;
-  private CodingsObserver codingObserver;
 
-  public InstanceValidator(@Nonnull IWorkerContext theContext, @Nonnull IEvaluationContext hostServices, @Nonnull XVerExtensionManager xverManager) {
+  public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices, XVerExtensionManager xverManager) {
     super(theContext, xverManager, false);
     start = System.currentTimeMillis();
     this.externalHostServices = hostServices;
@@ -527,7 +518,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     source = Source.InstanceValidator;
     fpe.setDoNotEnforceAsSingletonRule(!VersionUtilities.isR5VerOrLater(theContext.getVersion()));
     fpe.setAllowDoubleQuotes(allowDoubleQuotesInFHIRPath);
-    codingObserver = new CodingsObserver(theContext, xverManager, debug);
   }
 
   @Override
@@ -921,7 +911,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (hintAboutNonMustSupport) {
       checkElementUsage(errors, element, stack);
     }
-    codingObserver.finish(errors, stack);
     errors.removeAll(messagesToRemove);
     timeTracker.overall(t);
     if (DEBUG_ELEMENT) {
@@ -1025,15 +1014,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
       if (s == null)
         return true;
-      if (s != null && s.isOk()) {
-        for (OperationOutcomeIssueComponent iss : s.getIssues()) {
-          txIssue(errors, "2023-08-19", s.getTxLink(), element.line(), element.col(), path, iss);
-        }
-      }
       if (s.isOk()) {
         if (s.getMessage() != null)
           txWarning(errors, NO_RULE_DATE, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, I18nConstants.TERMINOLOGY_PASSTHROUGH_TX_MESSAGE, s.getMessage(), system, code);
-        
         return true;
       }
       if (s.getErrorClass() != null && s.getErrorClass().isInfrastructure())
@@ -1086,14 +1069,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }           
         } 
         if (!isAllowExamples() || !Utilities.startsWithInList(system, "http://example.org", "https://example.org")) {
-          CodeSystem cs = context.fetchCodeSystem(system);
-          if (cs == null) {
-            hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, done, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system);
-          } else {
-            if (hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, cs.getContent() != CodeSystemContentMode.NOTPRESENT, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOT_USABLE, system)) {
-              rule(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, false, "Error - this should not happen? (Consult GG)"); 
-            }
-          }
+          hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, done, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system);
         }
         return true;
       } catch (Exception e) {
@@ -1286,11 +1262,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     // ignore this since we can't validate but it doesn't matter..
                   } else {
                     ValidationResult vr = checkCodeOnServer(stack, valueset, cc, true); // we're going to validate the codings directly, so only check the valueset
-                    if (vr != null && vr.isOk()) {
-                      for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-                        txIssue(errors, "2023-08-19", vr.getTxLink(), element.line(), element.col(), path, iss);
-                      }
-                    }
                     if (!vr.isOk()) {
                       bindingsOk = false;
                       if (vr.getErrorClass() != null && vr.getErrorClass() == TerminologyServiceErrorClass.NOSERVICE) { 
@@ -1368,11 +1339,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public void checkBindings(List<ValidationMessage> errors, String path, Element element, NodeStack stack, ValueSet valueset, Coding nextCoding) {
     if (isNotBlank(nextCoding.getCode()) && isNotBlank(nextCoding.getSystem()) && context.supportsSystem(nextCoding.getSystem())) {
       ValidationResult vr = checkCodeOnServer(stack, valueset, nextCoding, false);
-      if (vr != null && vr.isOk()) {
-        for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-          txIssue(errors, "2023-08-19", vr.getTxLink(), element.line(), element.col(), path, iss);
-        }
-      }
       if (vr.getSeverity() != null/* && vr.hasMessage()*/) {
         if (vr.getSeverity() == IssueSeverity.INFORMATION) {
           txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
@@ -1433,11 +1399,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     // ignore this since we can't validate but it doesn't matter..
                   } else {
                     ValidationResult vr = checkCodeOnServer(stack, valueset, cc, false); // we're going to validate the codings directly
-                    if (vr != null && vr.isOk()) {
-                      for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-                        txIssue(errors, "2023-08-19", vr.getTxLink(), element.line(), element.col(), path, iss);
-                      }
-                    }
                     if (!vr.isOk()) {
                       bindingsOk = false;
                       if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
@@ -1487,11 +1448,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       String nextVersion = nextCoding.getVersion();
                       if (isNotBlank(nextCode) && isNotBlank(nextSystem) && context.supportsSystem(nextSystem)) {
                         ValidationResult vr = checkCodeOnServer(stack, nextCode, nextSystem, nextVersion, null, false);
-                        if (vr != null && vr.isOk()) {
-                          for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-                            txIssue(errors, "2023-08-19", vr.getTxLink(), element.line(), element.col(), path, iss);
-                          }
-                        }
                         if (!vr.isOk()) {
                           txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_NOTVALID, nextCode, nextSystem);
                         }
@@ -1555,11 +1511,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     if (binding.getStrength() == BindingStrength.REQUIRED) {
                       removeTrackedMessagesForLocation(errors, element, path);
                     }
-                    if (vr != null && vr.isOk()) {
-                      for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-                        txIssue(errors, "2023-08-19", vr.getTxLink(), element.line(), element.col(), path, iss);
-                      }
-                    }
+
                     timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
                     if (vr != null && !vr.isOk()) {
                       if (vr.IsNoService())
@@ -1702,11 +1654,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, cc, false);
-        if (vr != null && vr.isOk()) {
-          for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-            txIssue(errors, "2023-08-19", vr.getTxLink(), element.line(), element.col(), path, iss);
-          }
-        }
         timeTracker.tx(t, "vc "+cc.toString());
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -1744,12 +1691,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, c, true);
-        if (vr != null && vr.isOk()) {
-          for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-            txIssue(errors, "2023-08-19", vr.getTxLink(), element.line(), element.col(), path, iss);
-          }
-        }
-
         timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -1779,11 +1720,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, value, baseOptions.withLanguage(stack.getWorkingLang()));
-        if (vr != null && vr.isOk()) {
-          for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-            txIssue(errors, "2023-08-19", vr.getTxLink(), element.line(), element.col(), path, iss);
-          }
-        }
         timeTracker.tx(t, "vc "+value);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -1835,7 +1771,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (theSystem != null && theCode != null && !noTerminologyChecks) {
       ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, theSystem) && ok;
       try {
-        if (checkCode(errors, element, path, theCode, theSystem, theVersion, theDisplay, checkDisplay, stack)) {
+        if (checkCode(errors, element, path, theCode, theSystem, theVersion, theDisplay, checkDisplay, stack))
           if (theElementCntext != null && theElementCntext.hasBinding()) {
             ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
             if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING2, path)) {
@@ -1856,12 +1792,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     if (binding.getStrength() != BindingStrength.EXAMPLE) {
                       vr = checkCodeOnServer(stack, valueset, c, true);
                     }
-                    if (vr != null && vr.isOk()) {
-                      for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-                        txIssue(errors, "2023-08-19", vr.getTxLink(), element.line(), element.col(), path, iss);
-                      }
-                    }
-
                     timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
                     if (binding.getStrength() == BindingStrength.REQUIRED) {
                       removeTrackedMessagesForLocation(errors, element, path);
@@ -1915,9 +1845,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
             }
           }
-        } else {
-          ok = false;
-        }
       } catch (Exception e) {
         if (STACK_TRACE) e.printStackTrace();
         rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING2, e.getMessage(), e.toString());
@@ -1997,10 +1924,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else {
         rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", def.getIsModifier() == isModifier, I18nConstants.EXTENSION_EXT_MODIFIER_MISMATCHN);
       }
-
+      // two questions
       // 1. can this extension be used here?
       checkExtensionContext(hostContext.getAppContext(), errors, resource, container, ex, containerStack, hostContext, isModifier);
-      checkDefinitionStatus(errors, element, path, ex, profile, context.formatMessage(I18nConstants.MSG_DEPENDS_ON_EXTENSION));
 
       if (isModifier)
         rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", ex.getSnapshot().getElement().get(0).getIsModifier(), I18nConstants.EXTENSION_EXT_MODIFIER_Y, url);
@@ -2023,6 +1949,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     return ex;
   }
+
+ 
 
   private boolean hasExtensionSlice(StructureDefinition profile, String sliceName) {
     for (ElementDefinition ed : profile.getSnapshot().getElement()) {
@@ -2082,8 +2010,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return true;
       }
       plist.add(p);
+
     }
-    Collections.sort(plist); // logical paths are a set, but we want a predictable order for error messages
 
     for (StructureDefinitionContextComponent ctxt : fixContexts(extUrl, definition.getContext())) {
       if (ok) {
@@ -2096,45 +2024,36 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (en.contains("#")) {
           pu = en.substring(0, en.indexOf("#"));
           en = en.substring(en.indexOf("#")+1);          
-        } else {
-          //pu = en;
         }
         if (Utilities.existsInList(en, "Element", "Any")) {
           ok = true;
         } else if (en.equals("Resource") && container.isResource()) {
           ok = true;
-        } else if (en.equals("CanonicalResource") && VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(stack.getLiteralPath())) {
-          ok = true;
-        } else if (plist.contains(en) && pu == null) {
-          ok = true;
         }
-        
-        if (!ok) {
-          if (checkConformsToProfile(appContext, errors, resource, container, stack, extUrl, ctxt.getExpression(), pu)) {
-            for (String p : plist) {
-              if (ok) {
-                break;
+        if (checkConformsToProfile(appContext, errors, resource, container, stack, extUrl, ctxt.getExpression(), pu)) {
+          for (String p : plist) {
+            if (ok) {
+              break;
+            }
+            if (p.equals(en)) {
+              ok = true;
+            } else {
+              String pn = p;
+              String pt = "";
+              if (p.contains(".")) {
+                pn = p.substring(0, p.indexOf("."));
+                pt = p.substring(p.indexOf("."));
               }
-              if (p.equals(en)) {
-                ok = true;
-              } else {
-                String pn = p;
-                String pt = "";
-                if (p.contains(".")) {
-                  pn = p.substring(0, p.indexOf("."));
-                  pt = p.substring(p.indexOf("."));
+              StructureDefinition sd = context.fetchTypeDefinition(pn);
+              while (sd != null) {
+                if ((sd.getType() + pt).equals(en)) {
+                  ok = true;
+                  break;
                 }
-                StructureDefinition sd = context.fetchTypeDefinition(pn);
-                while (sd != null) {
-                  if ((sd.getType() + pt).equals(en)) {
-                    ok = true;
-                    break;
-                  }
-                  if (sd.getBaseDefinition() != null) {
-                    sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
-                  } else {
-                    sd = null;
-                  }
+                if (sd.getBaseDefinition() != null) {
+                  sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+                } else {
+                  sd = null;
                 }
               }
             }
@@ -2454,14 +2373,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = false;
         }
       }
-      Set<String> badChars = new HashSet<>();
-      for (char ch : e.primitiveValue().toCharArray()) {
-        if (ch < 32 && !(ch == '\r' || ch == '\n' || ch == '\t')) {
-          // can't get to here with xml - the parser fails if you try
-          badChars.add(Integer.toHexString(ch));
-        }        
-      }
-      warningPlural(errors, "2023-07-26", IssueType.INVALID, e.line(), e.col(), path, badChars.isEmpty(), badChars.size(), I18nConstants.UNICODE_XML_BAD_CHARS, badChars.toString());      
     }
     String regex = context.getExtensionString(ToolingExtensions.EXT_REGEX);
     // there's a messy history here - this extension snhould only be on the element definition itself, but for historical reasons 
@@ -2833,7 +2744,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) /* || (url.startsWith("http://hl7.org/fhir/tools")) */ || 
             SpecialExtensions.isKnownExtension(url) || isXverUrl(url);
         if (!found) {
-          found = fetcher.resolveURL(this, hostContext, path, url, type, type.equals("canonical"));
+          found = fetcher.resolveURL(this, hostContext, path, url, type);
         }
       } catch (IOException e1) {
         found = false;
@@ -3176,12 +3087,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
             vr = checkCodeOnServer(stack, vs, value, options);
           }
-          if (vr != null && vr.isOk()) {
-            for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-              txIssue(errors, "2023-08-19", vr.getTxLink(), element.line(), element.col(), path, iss);
-            }
-          }
-
           timeTracker.tx(t, "vc "+value+"");
           if (binding.getStrength() == BindingStrength.REQUIRED) {
             removeTrackedMessagesForLocation(errors, element, path);
@@ -5201,71 +5106,36 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean checkSpecials(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode) {
-    if (VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(element.getType())) {
-      Base base = element.getExtensionValue(ToolingExtensions.EXT_STANDARDS_STATUS);
-      String standardsStatus = base != null && base.isPrimitive() ? base.primitiveValue() : null;
-      String status = element.getNamedChildValue("status");
-      if (!Utilities.noString(status) && !Utilities.noString(standardsStatus)) {
-        if (warning(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT, status, standardsStatus)) {
-          hint(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesDeeplyConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT_HINT, status, standardsStatus);          
-        }
-      }
-    }
+    // specific known special validations
     if (element.getType().equals(BUNDLE)) {
-      return new BundleValidator(this, serverBase).validateBundle(errors, element, stack, checkSpecials, hostContext, pct, mode);
+      return new BundleValidator(context, debug, serverBase, this, xverManager, jurisdiction).validateBundle(errors, element, stack, checkSpecials, hostContext, pct, mode);
     } else if (element.getType().equals("Observation")) {
       return validateObservation(errors, element, stack);
     } else if (element.getType().equals("Questionnaire")) {
-      return new QuestionnaireValidator(this, myEnableWhenEvaluator, fpe, questionnaireMode).validateQuestionannaire(errors, element, element, stack);
+      return new QuestionnaireValidator(context, debug, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager, jurisdiction).validateQuestionannaire(errors, element, element, stack);
     } else if (element.getType().equals("QuestionnaireResponse")) {
-      return new QuestionnaireValidator(this, myEnableWhenEvaluator, fpe, questionnaireMode).validateQuestionannaireResponse(hostContext, errors, element, stack);
+      return new QuestionnaireValidator(context, debug, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager, jurisdiction).validateQuestionannaireResponse(hostContext, errors, element, stack);
     } else if (element.getType().equals("Measure")) {
-      return new MeasureValidator(this).validateMeasure(hostContext, errors, element, stack);      
+      return new MeasureValidator(context, debug, timeTracker, xverManager, jurisdiction, this).validateMeasure(hostContext, errors, element, stack);      
     } else if (element.getType().equals("MeasureReport")) {
-      return new MeasureValidator(this).validateMeasureReport(hostContext, errors, element, stack);
+      return new MeasureValidator(context, debug, timeTracker, xverManager, jurisdiction, this).validateMeasureReport(hostContext, errors, element, stack);
     } else if (element.getType().equals("CapabilityStatement")) {
       return validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
-      return new CodeSystemValidator(this).validateCodeSystem(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
+      return new CodeSystemValidator(context, debug, timeTracker, this, xverManager, jurisdiction).validateCodeSystem(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
     } else if (element.getType().equals("ConceptMap")) {
-      return new ConceptMapValidator(this).validateConceptMap(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
+      return new ConceptMapValidator(context, debug, timeTracker, this, xverManager, jurisdiction).validateConceptMap(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
     } else if (element.getType().equals("SearchParameter")) {
-      return new SearchParameterValidator(this, fpe).validateSearchParameter(errors, element, stack);
+      return new SearchParameterValidator(context, debug, timeTracker, fpe, xverManager, jurisdiction).validateSearchParameter(errors, element, stack);
     } else if (element.getType().equals("StructureDefinition")) {
-      return new StructureDefinitionValidator(this, fpe, wantCheckSnapshotUnchanged).validateStructureDefinition(errors, element, stack);
+      return new StructureDefinitionValidator(context, debug, timeTracker, fpe, wantCheckSnapshotUnchanged, xverManager, jurisdiction, forPublication).validateStructureDefinition(errors, element, stack);
     } else if (element.getType().equals("StructureMap")) {
-      return new StructureMapValidator(this, fpe, profileUtilities).validateStructureMap(errors, element, stack);
+      return new StructureMapValidator(context, debug, timeTracker, fpe, xverManager,profileUtilities, jurisdiction).validateStructureMap(errors, element, stack);
     } else if (element.getType().equals("ValueSet")) {
-      return new ValueSetValidator(this).validateValueSet(errors, element, stack);
+      return new ValueSetValidator(context, debug, timeTracker, this, xverManager, jurisdiction, allowExamples).validateValueSet(errors, element, stack);
     } else {
       return true;
     }
-  }
-
-  private boolean statusCodesConsistent(String status, String standardsStatus) {
-    switch (standardsStatus) {
-    case "draft": return Utilities.existsInList(status, "draft");
-    case "normative": return Utilities.existsInList(status, "active");
-    case "trial-use": return Utilities.existsInList(status, "draft", "active");
-    case "informative": return Utilities.existsInList(status, "draft", "active", "retired");
-    case "deprecated": return Utilities.existsInList(status, "retired");
-    case "withdrawn": return Utilities.existsInList(status, "retired");
-    case "external": return Utilities.existsInList(status, "draft", "active", "retired");
-    }
-    return true;
-  }
-
-  private boolean statusCodesDeeplyConsistent(String status, String standardsStatus) {
-    switch (standardsStatus) {
-    case "draft": return Utilities.existsInList(status, "draft");
-    case "normative": return Utilities.existsInList(status, "active");
-    case "trial-use": return Utilities.existsInList(status, "active");
-    case "informative": return Utilities.existsInList(status, "draft", "active");
-    case "deprecated": return Utilities.existsInList(status, "retired");
-    case "withdrawn": return Utilities.existsInList(status, "retired");
-    case "external": return Utilities.existsInList(status, "draft", "active");
-    }
-    return true;
   }
 
   private ResourceValidationTracker getResourceTracker(Element element) {
@@ -6068,7 +5938,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (ed.hasSlicing()) {
         if (slicer != null && slicer.getPath().equals(ed.getPath())) {
           String errorContext = "profile " + profile.getVersionedUrl();
-          if (resource.hasChild(ID) && !resource.getChildValue(ID).isEmpty()) {
+          if (!resource.getChildValue(ID).isEmpty()) {
             errorContext += "; instance " + resource.getChildValue("id");
           }
           throw new DefinitionException(context.formatMessage(I18nConstants.SLICE_ENCOUNTERED_MIDWAY_THROUGH_SET_PATH___ID___, slicer.getPath(), slicer.getId(), errorContext));
@@ -6592,6 +6462,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setValidationLanguage(String validationLanguage) {
     this.validationLanguage = validationLanguage;
+    if (this.validationLanguage == null) {
+      this.validationLanguage = "en";
+    }
   }
 
  
@@ -6624,7 +6497,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
 
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet vs, String value, ValidationOptions options) {
-    return checkForInctive(context.validateCode(options, value, vs));
+    return context.validateCode(options, value, vs);
   }
 
   // no delay on this one? 
@@ -6633,51 +6506,26 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (lang == null) {
       lang = validationLanguage;
     }
-    codingObserver.seeCode(stack, system, version, code, display);
-    return checkForInctive(context.validateCode(baseOptions.withLanguage(lang), system, version, code, checkDisplay ? display : null));
+    if (lang == null) {
+      lang = "en"; // ubiquitious default languauge
+    }
+    return context.validateCode(baseOptions.withLanguage(lang), system, version, code, checkDisplay ? display : null);
   }
 
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, Coding c, boolean checkMembership) {
-    codingObserver.seeCode(stack, c);
     if (checkMembership) {
-      return checkForInctive( context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), c, valueset));   
+      return context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), c, valueset);   
     } else {
-      return checkForInctive(context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withNoCheckValueSetMembership(), c, valueset));
+      return context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withNoCheckValueSetMembership(), c, valueset);
     }
   }
   
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc, boolean vsOnly) {
-    codingObserver.seeCode(stack, cc);
     if (vsOnly) {
-      return checkForInctive(context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), cc, valueset));
+      return context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), cc, valueset);
     } else {
-      return checkForInctive(context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), cc, valueset));
+      return context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), cc, valueset);
     }
-  }
-
-  private ValidationResult checkForInctive(ValidationResult res) {
-    if (res == null) {
-      return null;
-    }
-    if (!res.isInactive()) {
-      return res;
-    }
-    org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity lvl = org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION;
-    var status = "not active";
-    if (res.getStatus() != null) {
-      status = res.getStatus();
-    }
-    String code = res.getCode();
-    var op = new OperationOutcomeIssueComponent(lvl, org.hl7.fhir.r5.model.OperationOutcome.IssueType.INVALID);
-    String msgId = null;
-    if (code != null) {
-      msgId = res.isOk() ? I18nConstants.STATUS_CODE_WARNING_CODE : I18nConstants.STATUS_CODE_HINT_CODE;
-    } else {
-      msgId = res.isOk() ? I18nConstants.STATUS_CODE_WARNING : I18nConstants.STATUS_CODE_HINT;
-    }
-    op.getDetails().setText(context.formatMessage(msgId, status, code));
-    res.getIssues().add(op);
-    return res;
   }
 
   public boolean isSecurityChecks() {
@@ -6809,30 +6657,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     baseOptions.setDisplayWarningMode(displayWarnings);
   }
 
-  public boolean isCheckIPSCodes() {
-    return codingObserver.isCheckIPSCodes();
-  }
-
-  public void setCheckIPSCodes(boolean checkIPSCodes) {
-    codingObserver.setCheckIPSCodes(checkIPSCodes);
-  }
 
   public InstanceValidator setForPublication(boolean forPublication) {
     this.forPublication = forPublication;
-    if (forPublication) {
-      warnOnDraftOrExperimental = true;
-    }
     return this;
   }
-
-  public boolean isWarnOnDraftOrExperimental() {
-    return warnOnDraftOrExperimental;
-  }
-
-  public InstanceValidator setWarnOnDraftOrExperimental(boolean warnOnDraftOrExperimental) {
-    this.warnOnDraftOrExperimental = warnOnDraftOrExperimental;
-    return this;
-  }
-  
-  
 }

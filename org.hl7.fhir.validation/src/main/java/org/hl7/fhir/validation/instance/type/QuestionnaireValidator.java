@@ -8,11 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hl7.fhir.QuestionnaireItem;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateType;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Questionnaire;
@@ -20,11 +23,13 @@ import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemAnswerOptionComponen
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.r5.model.Reference;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -37,9 +42,12 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.TimeTracker;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
+import org.hl7.fhir.validation.instance.type.QuestionnaireValidator.QuestionnaireDerivation;
+import org.hl7.fhir.validation.instance.type.QuestionnaireValidator.QuestionnaireDerivationMode;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 
@@ -125,11 +133,14 @@ public class QuestionnaireValidator extends BaseValidator {
   private FHIRPathEngine fpe;
   private QuestionnaireMode questionnaireMode;
 
-  public QuestionnaireValidator(BaseValidator parent, EnableWhenEvaluator myEnableWhenEvaluator, FHIRPathEngine fpe, QuestionnaireMode questionnaireMode) {
-    super(parent);
+  public QuestionnaireValidator(IWorkerContext context, boolean debug, EnableWhenEvaluator myEnableWhenEvaluator, FHIRPathEngine fpe, TimeTracker timeTracker, QuestionnaireMode questionnaireMode, XVerExtensionManager xverManager, Coding jurisdiction) {
+    super(context, xverManager, debug);
+    source = Source.InstanceValidator;
     this.myEnableWhenEvaluator = myEnableWhenEvaluator;
     this.fpe = fpe;
+    this.timeTracker = timeTracker;
     this.questionnaireMode = questionnaireMode;
+    this.jurisdiction = jurisdiction;
   }
 
   public boolean validateQuestionannaire(List<ValidationMessage> errors, Element element, Element element2, NodeStack stack) {

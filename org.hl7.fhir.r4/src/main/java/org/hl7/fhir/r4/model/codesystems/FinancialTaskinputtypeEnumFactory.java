@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class FinancialTaskinputtypeEnumFactory implements EnumFactory<FinancialTaskinputtype> {
@@ -52,7 +56,7 @@ public class FinancialTaskinputtypeEnumFactory implements EnumFactory<FinancialT
       return FinancialTaskinputtype.PERIOD;
     if ("status".equals(codeString))
       return FinancialTaskinputtype.STATUS;
-    throw new IllegalArgumentException("Unknown FinancialTaskinputtype code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown FinancialTaskinputtype code '"+codeString+"'");
   }
 
   public String toCode(FinancialTaskinputtype code) {
@@ -73,8 +77,8 @@ public class FinancialTaskinputtypeEnumFactory implements EnumFactory<FinancialT
     return "?";
   }
 
-  public String toSystem(FinancialTaskinputtype code) {
-    return code.getSystem();
-  }
+    public String toSystem(FinancialTaskinputtype code) {
+      return code.getSystem();
+      }
 
 }

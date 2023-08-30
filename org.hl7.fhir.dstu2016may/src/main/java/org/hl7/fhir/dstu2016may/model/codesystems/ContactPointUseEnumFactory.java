@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ContactPointUseEnumFactory implements EnumFactory<ContactPointUse> {
@@ -48,7 +52,7 @@ public class ContactPointUseEnumFactory implements EnumFactory<ContactPointUse> 
       return ContactPointUse.OLD;
     if ("mobile".equals(codeString))
       return ContactPointUse.MOBILE;
-    throw new IllegalArgumentException("Unknown ContactPointUse code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ContactPointUse code '"+codeString+"'");
   }
 
   public String toCode(ContactPointUse code) {
@@ -65,8 +69,8 @@ public class ContactPointUseEnumFactory implements EnumFactory<ContactPointUse> 
     return "?";
   }
 
-  public String toSystem(ContactPointUse code) {
-    return code.getSystem();
-  }
+    public String toSystem(ContactPointUse code) {
+      return code.getSystem();
+      }
 
 }

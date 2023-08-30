@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,122 +34,95 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ClaimModifiers {
 
-  /**
-   * Repair of prior service or installation.
-   */
-  A,
-  /**
-   * Temporary service or installation.
-   */
-  B,
-  /**
-   * Treatment associated with TMJ.
-   */
-  C,
-  /**
-   * Implant or associated with an implant.
-   */
-  E,
-  /**
-   * A Rush service or service performed outside of normal office hours.
-   */
-  ROOH,
-  /**
-   * None.
-   */
-  X,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ClaimModifiers fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("a".equals(codeString))
-      return A;
-    if ("b".equals(codeString))
-      return B;
-    if ("c".equals(codeString))
-      return C;
-    if ("e".equals(codeString))
-      return E;
-    if ("rooh".equals(codeString))
-      return ROOH;
-    if ("x".equals(codeString))
-      return X;
-    throw new FHIRException("Unknown ClaimModifiers code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case A:
-      return "a";
-    case B:
-      return "b";
-    case C:
-      return "c";
-    case E:
-      return "e";
-    case ROOH:
-      return "rooh";
-    case X:
-      return "x";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Repair of prior service or installation.
+         */
+        A, 
+        /**
+         * Temporary service or installation.
+         */
+        B, 
+        /**
+         * Treatment associated with TMJ.
+         */
+        C, 
+        /**
+         * Implant or associated with an implant.
+         */
+        E, 
+        /**
+         * A Rush service or service performed outside of normal office hours.
+         */
+        ROOH, 
+        /**
+         * None.
+         */
+        X, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ClaimModifiers fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("a".equals(codeString))
+          return A;
+        if ("b".equals(codeString))
+          return B;
+        if ("c".equals(codeString))
+          return C;
+        if ("e".equals(codeString))
+          return E;
+        if ("rooh".equals(codeString))
+          return ROOH;
+        if ("x".equals(codeString))
+          return X;
+        throw new FHIRException("Unknown ClaimModifiers code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case A: return "a";
+            case B: return "b";
+            case C: return "c";
+            case E: return "e";
+            case ROOH: return "rooh";
+            case X: return "x";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/modifiers";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case A: return "Repair of prior service or installation.";
+            case B: return "Temporary service or installation.";
+            case C: return "Treatment associated with TMJ.";
+            case E: return "Implant or associated with an implant.";
+            case ROOH: return "A Rush service or service performed outside of normal office hours.";
+            case X: return "None.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case A: return "Repair of prior service or installation";
+            case B: return "Temporary service or installation";
+            case C: return "TMJ treatment";
+            case E: return "Implant or associated with an implant";
+            case ROOH: return "Rush or Outside of office hours";
+            case X: return "None";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/modifiers";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case A:
-      return "Repair of prior service or installation.";
-    case B:
-      return "Temporary service or installation.";
-    case C:
-      return "Treatment associated with TMJ.";
-    case E:
-      return "Implant or associated with an implant.";
-    case ROOH:
-      return "A Rush service or service performed outside of normal office hours.";
-    case X:
-      return "None.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case A:
-      return "Repair of prior service or installation";
-    case B:
-      return "Temporary service or installation";
-    case C:
-      return "TMJ treatment";
-    case E:
-      return "Implant or associated with an implant";
-    case ROOH:
-      return "Rush or Outside of office hours";
-    case X:
-      return "None";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

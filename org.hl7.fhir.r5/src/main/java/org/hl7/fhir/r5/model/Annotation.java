@@ -329,10 +329,10 @@ public class Annotation extends DataType implements ICompositeType {
           return this.author;
         }
         else if (name.equals("time")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Annotation.time");
+          throw new FHIRException("Cannot call addChild on a primitive type Annotation.time");
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Annotation.text");
+          throw new FHIRException("Cannot call addChild on a primitive type Annotation.text");
         }
         else
           return super.addChild(name);

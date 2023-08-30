@@ -855,7 +855,7 @@ public class DetectedIssue extends DomainResource {
           return this.action;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.mitigation.date");
+          throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.mitigation.date");
         }
         else if (name.equals("author")) {
           this.author = new Reference();
@@ -1847,7 +1847,7 @@ public class DetectedIssue extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.status");
+          throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.status");
         }
         else if (name.equals("category")) {
           return addCategory();
@@ -1857,7 +1857,7 @@ public class DetectedIssue extends DomainResource {
           return this.code;
         }
         else if (name.equals("severity")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.severity");
+          throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.severity");
         }
         else if (name.equals("subject")) {
           this.subject = new Reference();
@@ -1886,10 +1886,10 @@ public class DetectedIssue extends DomainResource {
           return addEvidence();
         }
         else if (name.equals("detail")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.detail");
+          throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.detail");
         }
         else if (name.equals("reference")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DetectedIssue.reference");
+          throw new FHIRException("Cannot call addChild on a primitive type DetectedIssue.reference");
         }
         else if (name.equals("mitigation")) {
           return addMitigation();

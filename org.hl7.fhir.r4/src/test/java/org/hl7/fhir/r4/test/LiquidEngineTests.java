@@ -1,14 +1,8 @@
 package org.hl7.fhir.r4.test;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
-
-import javax.xml.parsers.ParserConfigurationException;
-
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.apache.commons.collections4.map.HashedMap;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4.formats.XmlParser;
@@ -19,16 +13,22 @@ import org.hl7.fhir.r4.utils.LiquidEngine.ILiquidEngineIcludeResolver;
 import org.hl7.fhir.r4.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.TextFile;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.xml.sax.SAXException;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 @Disabled
 public class LiquidEngineTests implements ILiquidEngineIcludeResolver {
@@ -46,8 +46,7 @@ public class LiquidEngineTests implements ILiquidEngineIcludeResolver {
   }
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {
-    testdoc = (JsonObject) new com.google.gson.JsonParser()
-        .parse(TextFile.fileToString(TestingUtilities.resourceNameToFile("liquid", "liquid-tests.json")));
+    testdoc = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.fileToString(TestingUtilities.resourceNameToFile("liquid", "liquid-tests.json")));
     JsonArray tests = testdoc.getAsJsonArray("tests");
     List<Arguments> objects = new ArrayList<>();
     for (JsonElement n : tests) {

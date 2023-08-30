@@ -29,41 +29,41 @@ package org.hl7.fhir.dstu2.model;
   
  */
 
+
+
 import ca.uhn.fhir.parser.DataFormatException;
 import org.apache.commons.codec.binary.Base64;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
- * Primitive type "base64Binary" in FHIR: a sequence of bytes represented in
- * base64
+ * Primitive type "base64Binary" in FHIR: a sequence of bytes represented in base64
  */
-@DatatypeDef(name = "base64Binary")
+@DatatypeDef(name="base64Binary")
 public class Base64BinaryType extends PrimitiveType<byte[]> {
 
-  private static final long serialVersionUID = 3L;
+	private static final long serialVersionUID = 3L;
 
-  /**
-   * Constructor
-   */
-  public Base64BinaryType() {
-    super();
-  }
+	/**
+	 * Constructor
+	 */
+	public Base64BinaryType() {
+		super();
+	}
 
-  public Base64BinaryType(byte[] theBytes) {
-    super();
-    setValue(theBytes);
-  }
+	public Base64BinaryType(byte[] theBytes) {
+		super();
+		setValue(theBytes);
+	}
 
-  public Base64BinaryType(String theValue) {
-    super();
+	public Base64BinaryType(String theValue) {
+		super();
     // Null values still result in non-null instance being created
-    setValueAsString(theValue);
-  }
+		setValueAsString(theValue);
+	}
 
   @Override
   public void setValueAsString(String theValue) {
-    if (theValue != null)
-      checkValidBase64(theValue);
+    if (theValue != null) checkValidBase64(theValue);
     super.setValueAsString(theValue);
   }
 
@@ -82,18 +82,18 @@ public class Base64BinaryType extends PrimitiveType<byte[]> {
     return new String(Base64.encodeBase64(theValue), ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8);
   }
 
-  @Override
-  public Base64BinaryType copy() {
-    return new Base64BinaryType(getValue());
-  }
+	@Override
+	public Base64BinaryType copy() {
+		return new Base64BinaryType(getValue());
+	}
 
-  public String fhirType() {
-    return "base64Binary";
-  }
+	public String fhirType() {
+		return "base64Binary";
+	}
 
   /**
-   * Checks if the passed in String is a valid {@link Base64} encoded String. Will
-   * throw a {@link DataFormatException} if not formatted correctly.
+   * Checks if the passed in String is a valid {@link Base64} encoded String. Will throw a {@link DataFormatException} if not
+   * formatted correctly.
    *
    * @param toCheck {@link String} to check if valid {@link Base64}
    * @throws DataFormatException

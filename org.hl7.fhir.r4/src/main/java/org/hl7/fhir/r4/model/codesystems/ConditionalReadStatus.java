@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,100 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConditionalReadStatus {
 
-  /**
-   * No support for conditional reads.
-   */
-  NOTSUPPORTED,
-  /**
-   * Conditional reads are supported, but only with the If-Modified-Since HTTP
-   * Header.
-   */
-  MODIFIEDSINCE,
-  /**
-   * Conditional reads are supported, but only with the If-None-Match HTTP Header.
-   */
-  NOTMATCH,
-  /**
-   * Conditional reads are supported, with both If-Modified-Since and
-   * If-None-Match HTTP Headers.
-   */
-  FULLSUPPORT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ConditionalReadStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("not-supported".equals(codeString))
-      return NOTSUPPORTED;
-    if ("modified-since".equals(codeString))
-      return MODIFIEDSINCE;
-    if ("not-match".equals(codeString))
-      return NOTMATCH;
-    if ("full-support".equals(codeString))
-      return FULLSUPPORT;
-    throw new FHIRException("Unknown ConditionalReadStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NOTSUPPORTED:
-      return "not-supported";
-    case MODIFIEDSINCE:
-      return "modified-since";
-    case NOTMATCH:
-      return "not-match";
-    case FULLSUPPORT:
-      return "full-support";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * No support for conditional reads.
+         */
+        NOTSUPPORTED, 
+        /**
+         * Conditional reads are supported, but only with the If-Modified-Since HTTP Header.
+         */
+        MODIFIEDSINCE, 
+        /**
+         * Conditional reads are supported, but only with the If-None-Match HTTP Header.
+         */
+        NOTMATCH, 
+        /**
+         * Conditional reads are supported, with both If-Modified-Since and If-None-Match HTTP Headers.
+         */
+        FULLSUPPORT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ConditionalReadStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("not-supported".equals(codeString))
+          return NOTSUPPORTED;
+        if ("modified-since".equals(codeString))
+          return MODIFIEDSINCE;
+        if ("not-match".equals(codeString))
+          return NOTMATCH;
+        if ("full-support".equals(codeString))
+          return FULLSUPPORT;
+        throw new FHIRException("Unknown ConditionalReadStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NOTSUPPORTED: return "not-supported";
+            case MODIFIEDSINCE: return "modified-since";
+            case NOTMATCH: return "not-match";
+            case FULLSUPPORT: return "full-support";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/conditional-read-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NOTSUPPORTED: return "No support for conditional reads.";
+            case MODIFIEDSINCE: return "Conditional reads are supported, but only with the If-Modified-Since HTTP Header.";
+            case NOTMATCH: return "Conditional reads are supported, but only with the If-None-Match HTTP Header.";
+            case FULLSUPPORT: return "Conditional reads are supported, with both If-Modified-Since and If-None-Match HTTP Headers.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NOTSUPPORTED: return "Not Supported";
+            case MODIFIEDSINCE: return "If-Modified-Since";
+            case NOTMATCH: return "If-None-Match";
+            case FULLSUPPORT: return "Full Support";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/conditional-read-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NOTSUPPORTED:
-      return "No support for conditional reads.";
-    case MODIFIEDSINCE:
-      return "Conditional reads are supported, but only with the If-Modified-Since HTTP Header.";
-    case NOTMATCH:
-      return "Conditional reads are supported, but only with the If-None-Match HTTP Header.";
-    case FULLSUPPORT:
-      return "Conditional reads are supported, with both If-Modified-Since and If-None-Match HTTP Headers.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NOTSUPPORTED:
-      return "Not Supported";
-    case MODIFIEDSINCE:
-      return "If-Modified-Since";
-    case NOTMATCH:
-      return "If-None-Match";
-    case FULLSUPPORT:
-      return "Full Support";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -1961,22 +1961,22 @@ public class RequestOrchestration extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("linkId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.linkId");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.linkId");
         }
         else if (name.equals("prefix")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.prefix");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.prefix");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.title");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.title");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.description");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.description");
         }
         else if (name.equals("textEquivalent")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.textEquivalent");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.textEquivalent");
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.priority");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.priority");
         }
         else if (name.equals("code")) {
           return addCode();
@@ -2035,19 +2035,19 @@ public class RequestOrchestration extends DomainResource {
           return this.type;
         }
         else if (name.equals("groupingBehavior")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.groupingBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.groupingBehavior");
         }
         else if (name.equals("selectionBehavior")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.selectionBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.selectionBehavior");
         }
         else if (name.equals("requiredBehavior")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.requiredBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.requiredBehavior");
         }
         else if (name.equals("precheckBehavior")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.precheckBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.precheckBehavior");
         }
         else if (name.equals("cardinalityBehavior")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.cardinalityBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.cardinalityBehavior");
         }
         else if (name.equals("resource")) {
           this.resource = new Reference();
@@ -2062,7 +2062,7 @@ public class RequestOrchestration extends DomainResource {
           return this.definition;
         }
         else if (name.equals("transform")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.transform");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.transform");
         }
         else if (name.equals("dynamicValue")) {
           return addDynamicValue();
@@ -2380,7 +2380,7 @@ public class RequestOrchestration extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("kind")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.condition.kind");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.condition.kind");
         }
         else if (name.equals("expression")) {
           this.expression = new Expression();
@@ -2671,14 +2671,14 @@ public class RequestOrchestration extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.input.title");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.input.title");
         }
         else if (name.equals("requirement")) {
           this.requirement = new DataRequirement();
           return this.requirement;
         }
         else if (name.equals("relatedData")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.input.relatedData");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.input.relatedData");
         }
         else
           return super.addChild(name);
@@ -2968,14 +2968,14 @@ public class RequestOrchestration extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.output.title");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.output.title");
         }
         else if (name.equals("requirement")) {
           this.requirement = new DataRequirement();
           return this.requirement;
         }
         else if (name.equals("relatedData")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.output.relatedData");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.output.relatedData");
         }
         else
           return super.addChild(name);
@@ -3369,13 +3369,13 @@ public class RequestOrchestration extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("targetId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.relatedAction.targetId");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.relatedAction.targetId");
         }
         else if (name.equals("relationship")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.relatedAction.relationship");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.relatedAction.relationship");
         }
         else if (name.equals("endRelationship")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.relatedAction.endRelationship");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.relatedAction.endRelationship");
         }
         else if (name.equals("offsetDuration")) {
           this.offset = new Duration();
@@ -3835,10 +3835,10 @@ public class RequestOrchestration extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.participant.type");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.participant.type");
         }
         else if (name.equals("typeCanonical")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.participant.typeCanonical");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.participant.typeCanonical");
         }
         else if (name.equals("typeReference")) {
           this.typeReference = new Reference();
@@ -4086,7 +4086,7 @@ public class RequestOrchestration extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.action.dynamicValue.path");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.action.dynamicValue.path");
         }
         else if (name.equals("expression")) {
           this.expression = new Expression();
@@ -5332,10 +5332,10 @@ public class RequestOrchestration extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("instantiatesCanonical")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.instantiatesCanonical");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.instantiatesCanonical");
         }
         else if (name.equals("instantiatesUri")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.instantiatesUri");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.instantiatesUri");
         }
         else if (name.equals("basedOn")) {
           return addBasedOn();
@@ -5348,13 +5348,13 @@ public class RequestOrchestration extends DomainResource {
           return this.groupIdentifier;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.status");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.status");
         }
         else if (name.equals("intent")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.intent");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.intent");
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.priority");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.priority");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -5369,7 +5369,7 @@ public class RequestOrchestration extends DomainResource {
           return this.encounter;
         }
         else if (name.equals("authoredOn")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestOrchestration.authoredOn");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestOrchestration.authoredOn");
         }
         else if (name.equals("author")) {
           this.author = new Reference();

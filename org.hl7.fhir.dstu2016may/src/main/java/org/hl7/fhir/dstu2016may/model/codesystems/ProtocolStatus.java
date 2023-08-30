@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,125 +34,95 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ProtocolStatus {
 
-  /**
-   * This protocol is still under development
-   */
-  DRAFT,
-  /**
-   * This protocol was authored for testing purposes (or
-   * education/evaluation/marketing)
-   */
-  TESTING,
-  /**
-   * This protocol is undergoing review to check that it is ready for production
-   * use
-   */
-  REVIEW,
-  /**
-   * This protocol is ready for use in production systems
-   */
-  ACTIVE,
-  /**
-   * This protocol has been withdrawn and should no longer be used
-   */
-  WITHDRAWN,
-  /**
-   * This protocol has been replaced and a different protocol should be used in
-   * its place
-   */
-  SUPERSEDED,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ProtocolStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("draft".equals(codeString))
-      return DRAFT;
-    if ("testing".equals(codeString))
-      return TESTING;
-    if ("review".equals(codeString))
-      return REVIEW;
-    if ("active".equals(codeString))
-      return ACTIVE;
-    if ("withdrawn".equals(codeString))
-      return WITHDRAWN;
-    if ("superseded".equals(codeString))
-      return SUPERSEDED;
-    throw new FHIRException("Unknown ProtocolStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case DRAFT:
-      return "draft";
-    case TESTING:
-      return "testing";
-    case REVIEW:
-      return "review";
-    case ACTIVE:
-      return "active";
-    case WITHDRAWN:
-      return "withdrawn";
-    case SUPERSEDED:
-      return "superseded";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * This protocol is still under development
+         */
+        DRAFT, 
+        /**
+         * This protocol was authored for testing purposes (or education/evaluation/marketing)
+         */
+        TESTING, 
+        /**
+         * This protocol is undergoing review to check that it is ready for production use
+         */
+        REVIEW, 
+        /**
+         * This protocol is ready for use in production systems
+         */
+        ACTIVE, 
+        /**
+         * This protocol has been withdrawn and should no longer be used
+         */
+        WITHDRAWN, 
+        /**
+         * This protocol has been replaced and a different protocol should be used in its place
+         */
+        SUPERSEDED, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ProtocolStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("draft".equals(codeString))
+          return DRAFT;
+        if ("testing".equals(codeString))
+          return TESTING;
+        if ("review".equals(codeString))
+          return REVIEW;
+        if ("active".equals(codeString))
+          return ACTIVE;
+        if ("withdrawn".equals(codeString))
+          return WITHDRAWN;
+        if ("superseded".equals(codeString))
+          return SUPERSEDED;
+        throw new FHIRException("Unknown ProtocolStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case DRAFT: return "draft";
+            case TESTING: return "testing";
+            case REVIEW: return "review";
+            case ACTIVE: return "active";
+            case WITHDRAWN: return "withdrawn";
+            case SUPERSEDED: return "superseded";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/protocol-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case DRAFT: return "This protocol is still under development";
+            case TESTING: return "This protocol was authored for testing purposes (or education/evaluation/marketing)";
+            case REVIEW: return "This protocol is undergoing review to check that it is ready for production use";
+            case ACTIVE: return "This protocol is ready for use in production systems";
+            case WITHDRAWN: return "This protocol has been withdrawn and should no longer be used";
+            case SUPERSEDED: return "This protocol has been replaced and a different protocol should be used in its place";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case DRAFT: return "Draft";
+            case TESTING: return "Testing";
+            case REVIEW: return "Review";
+            case ACTIVE: return "Active";
+            case WITHDRAWN: return "Withdrawn";
+            case SUPERSEDED: return "Superseded";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/protocol-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case DRAFT:
-      return "This protocol is still under development";
-    case TESTING:
-      return "This protocol was authored for testing purposes (or education/evaluation/marketing)";
-    case REVIEW:
-      return "This protocol is undergoing review to check that it is ready for production use";
-    case ACTIVE:
-      return "This protocol is ready for use in production systems";
-    case WITHDRAWN:
-      return "This protocol has been withdrawn and should no longer be used";
-    case SUPERSEDED:
-      return "This protocol has been replaced and a different protocol should be used in its place";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case DRAFT:
-      return "Draft";
-    case TESTING:
-      return "Testing";
-    case REVIEW:
-      return "Review";
-    case ACTIVE:
-      return "Active";
-    case WITHDRAWN:
-      return "Withdrawn";
-    case SUPERSEDED:
-      return "Superseded";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

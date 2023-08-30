@@ -2071,10 +2071,10 @@ public class Condition extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("clinicalStatus")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Condition.clinicalStatus");
+          throw new FHIRException("Cannot call addChild on a primitive type Condition.clinicalStatus");
         }
         else if (name.equals("verificationStatus")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Condition.verificationStatus");
+          throw new FHIRException("Cannot call addChild on a primitive type Condition.verificationStatus");
         }
         else if (name.equals("category")) {
           return addCategory();
@@ -2143,7 +2143,7 @@ public class Condition extends DomainResource {
           return this.abatement;
         }
         else if (name.equals("assertedDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Condition.assertedDate");
+          throw new FHIRException("Cannot call addChild on a primitive type Condition.assertedDate");
         }
         else if (name.equals("asserter")) {
           this.asserter = new Reference();

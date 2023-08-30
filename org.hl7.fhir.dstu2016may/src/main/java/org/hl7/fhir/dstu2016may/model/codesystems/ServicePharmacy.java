@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ServicePharmacy {
 
-  /**
-   * Smoking cessation
-   */
-  SMOKECESS,
-  /**
-   * Flu Shot
-   */
-  FLUSHOT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ServicePharmacy fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("smokecess".equals(codeString))
-      return SMOKECESS;
-    if ("flushot".equals(codeString))
-      return FLUSHOT;
-    throw new FHIRException("Unknown ServicePharmacy code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case SMOKECESS:
-      return "smokecess";
-    case FLUSHOT:
-      return "flushot";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Smoking cessation
+         */
+        SMOKECESS, 
+        /**
+         * Flu Shot
+         */
+        FLUSHOT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ServicePharmacy fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("smokecess".equals(codeString))
+          return SMOKECESS;
+        if ("flushot".equals(codeString))
+          return FLUSHOT;
+        throw new FHIRException("Unknown ServicePharmacy code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case SMOKECESS: return "smokecess";
+            case FLUSHOT: return "flushot";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/ex-pharmaservice";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case SMOKECESS: return "Smoking cessation";
+            case FLUSHOT: return "Flu Shot";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case SMOKECESS: return "Smoking cessation";
+            case FLUSHOT: return "Flu Shot";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/ex-pharmaservice";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case SMOKECESS:
-      return "Smoking cessation";
-    case FLUSHOT:
-      return "Flu Shot";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case SMOKECESS:
-      return "Smoking cessation";
-    case FLUSHOT:
-      return "Flu Shot";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

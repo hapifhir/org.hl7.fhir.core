@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum SupplydeliveryStatus {
 
-  /**
-   * Supply has been requested, but not delivered.
-   */
-  INPROGRESS,
-  /**
-   * Supply has been delivered ("completed").
-   */
-  COMPLETED,
-  /**
-   * Dispensing was not completed.
-   */
-  ABANDONED,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static SupplydeliveryStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("in-progress".equals(codeString))
-      return INPROGRESS;
-    if ("completed".equals(codeString))
-      return COMPLETED;
-    if ("abandoned".equals(codeString))
-      return ABANDONED;
-    throw new FHIRException("Unknown SupplydeliveryStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INPROGRESS:
-      return "in-progress";
-    case COMPLETED:
-      return "completed";
-    case ABANDONED:
-      return "abandoned";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Supply has been requested, but not delivered.
+         */
+        INPROGRESS, 
+        /**
+         * Supply has been delivered ("completed").
+         */
+        COMPLETED, 
+        /**
+         * Dispensing was not completed.
+         */
+        ABANDONED, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static SupplydeliveryStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("in-progress".equals(codeString))
+          return INPROGRESS;
+        if ("completed".equals(codeString))
+          return COMPLETED;
+        if ("abandoned".equals(codeString))
+          return ABANDONED;
+        throw new FHIRException("Unknown SupplydeliveryStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INPROGRESS: return "in-progress";
+            case COMPLETED: return "completed";
+            case ABANDONED: return "abandoned";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/supplydelivery-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INPROGRESS: return "Supply has been requested, but not delivered.";
+            case COMPLETED: return "Supply has been delivered (\"completed\").";
+            case ABANDONED: return "Dispensing was not completed.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INPROGRESS: return "In Progress";
+            case COMPLETED: return "Delivered";
+            case ABANDONED: return "Abandoned";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/supplydelivery-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INPROGRESS:
-      return "Supply has been requested, but not delivered.";
-    case COMPLETED:
-      return "Supply has been delivered (\"completed\").";
-    case ABANDONED:
-      return "Dispensing was not completed.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INPROGRESS:
-      return "In Progress";
-    case COMPLETED:
-      return "Delivered";
-    case ABANDONED:
-      return "Abandoned";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

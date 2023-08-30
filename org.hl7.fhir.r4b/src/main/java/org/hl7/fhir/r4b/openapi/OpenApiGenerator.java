@@ -29,6 +29,7 @@ package org.hl7.fhir.r4b.openapi;
   
  */
 
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -54,6 +55,7 @@ import org.hl7.fhir.r4b.openapi.ParameterWriter.ParameterStyle;
 import org.hl7.fhir.r4b.openapi.SchemaWriter.SchemaType;
 import org.hl7.fhir.utilities.Utilities;
 
+
 public class OpenApiGenerator {
 
   private IWorkerContext context;
@@ -67,8 +69,7 @@ public class OpenApiGenerator {
   }
 
   public void generate(String license, String url) {
-    dest.info().title(source.present()).description(source.getDescription()).license(license, url)
-        .version(source.getVersion());
+    dest.info().title(source.present()).description(source.getDescription()).license(license, url).version(source.getVersion());
     for (ContactDetail cd : source.getContact()) {
       dest.info().contact(cd.getName(), email(cd.getTelecom()), url(cd.getTelecom()));
     }
@@ -89,35 +90,28 @@ public class OpenApiGenerator {
   }
 
   private void writeBaseParameters(ComponentsWriter components) {
-    components.parameter("rid").name("rid").in(ParameterLocation.path).description("id of the resource (=Resource.id)")
-        .required(true).allowEmptyValue(false).style(ParameterStyle.simple).schema().type(SchemaType.string);
+    components.parameter("rid").name("rid").in(ParameterLocation.path).description("id of the resource (=Resource.id)").required(true).allowEmptyValue(false).style(ParameterStyle.simple)
+    .schema().type(SchemaType.string);
+    
+    components.parameter("hid").name("hid").in(ParameterLocation.path).description("id of the history entry (=Resource.meta.versionId)").required(true).allowEmptyValue(false).style(ParameterStyle.simple)
+    .schema().type(SchemaType.string);
 
-    components.parameter("hid").name("hid").in(ParameterLocation.path)
-        .description("id of the history entry (=Resource.meta.versionId)").required(true).allowEmptyValue(false)
-        .style(ParameterStyle.simple).schema().type(SchemaType.string);
+    components.parameter("summary").name("_summary").in(ParameterLocation.query).description("Requests the server to return a designated subset of the resource").allowEmptyValue().style(ParameterStyle.form)
+    .schema().type(SchemaType.string).enums("true", "text", "data", "count", "false");
 
-    components.parameter("summary").name("_summary").in(ParameterLocation.query)
-        .description("Requests the server to return a designated subset of the resource").allowEmptyValue()
-        .style(ParameterStyle.form).schema().type(SchemaType.string).enums("true", "text", "data", "count", "false");
+    components.parameter("format").name("_format").in(ParameterLocation.query).description("Specify alternative response formats by their MIME-types (when a client is unable acccess accept: header)").allowEmptyValue().style(ParameterStyle.form)
+    .schema().type(SchemaType.string).format("mime-type");
 
-    components.parameter("format").name("_format").in(ParameterLocation.query)
-        .description(
-            "Specify alternative response formats by their MIME-types (when a client is unable acccess accept: header)")
-        .allowEmptyValue().style(ParameterStyle.form).schema().type(SchemaType.string).format("mime-type");
+    components.parameter("pretty").name("_pretty").in(ParameterLocation.query).description("Ask for a pretty printed response for human convenience").allowEmptyValue().style(ParameterStyle.form)
+    .schema().type(SchemaType.bool);
 
-    components.parameter("pretty").name("_pretty").in(ParameterLocation.query)
-        .description("Ask for a pretty printed response for human convenience").allowEmptyValue()
-        .style(ParameterStyle.form).schema().type(SchemaType.bool);
-
-    SchemaWriter p = components.parameter("elements").name("_elements").in(ParameterLocation.query)
-        .description("Requests the server to return a collection of elements from the resource").allowEmptyValue()
-        .style(ParameterStyle.form).explode(false).schema();
+    SchemaWriter p = components.parameter("elements").name("_elements").in(ParameterLocation.query).description("Requests the server to return a collection of elements from the resource").allowEmptyValue().style(ParameterStyle.form).explode(false)
+    .schema();
     p.type(SchemaType.array).format("string");
     p.items().format("string");
 
-    components.parameter("count").name("_count").in(ParameterLocation.query).description(
-        "The maximum number of search results on a page. The server is not bound to return the number requested, but cannot return more")
-        .schema().type(SchemaType.number);
+    components.parameter("count").name("_count").in(ParameterLocation.query).description("The maximum number of search results on a page. The server is not bound to return the number requested, but cannot return more")
+    .schema().type(SchemaType.number);
   }
 
   private void generatePaths(CapabilityStatementRestComponent csr) {
@@ -128,28 +122,28 @@ public class OpenApiGenerator {
       generateHistorySystem(csr);
     if (hasOp(csr, SystemRestfulInteraction.SEARCHSYSTEM))
       generateSearchSystem(csr);
-    if (hasOp(csr, SystemRestfulInteraction.BATCH) || hasOp(csr, SystemRestfulInteraction.TRANSACTION))
+    if (hasOp(csr, SystemRestfulInteraction.BATCH) || hasOp(csr, SystemRestfulInteraction.TRANSACTION) )
       generateBatchTransaction(csr);
   }
 
   private void generateResource(CapabilityStatementRestResourceComponent r) {
-    if (hasOp(r, TypeRestfulInteraction.SEARCHTYPE))
+    if (hasOp(r, TypeRestfulInteraction.SEARCHTYPE)) 
       generateSearch(r);
     if (hasOp(r, TypeRestfulInteraction.READ))
       generateRead(r);
-    if (hasOp(r, TypeRestfulInteraction.CREATE))
+    if (hasOp(r, TypeRestfulInteraction.CREATE)) 
       generateCreate(r);
-    if (hasOp(r, TypeRestfulInteraction.UPDATE))
+    if (hasOp(r, TypeRestfulInteraction.UPDATE)) 
       generateUpdate(r);
-    if (hasOp(r, TypeRestfulInteraction.PATCH))
+    if (hasOp(r, TypeRestfulInteraction.PATCH)) 
       generatePatch(r);
-    if (hasOp(r, TypeRestfulInteraction.DELETE))
+    if (hasOp(r, TypeRestfulInteraction.DELETE)) 
       generateDelete(r);
-    if (hasOp(r, TypeRestfulInteraction.HISTORYINSTANCE))
+    if (hasOp(r, TypeRestfulInteraction.HISTORYINSTANCE)) 
       generateHistoryInstance(r);
-    if (hasOp(r, TypeRestfulInteraction.VREAD))
+    if (hasOp(r, TypeRestfulInteraction.VREAD)) 
       generateVRead(r);
-    if (hasOp(r, TypeRestfulInteraction.HISTORYTYPE))
+    if (hasOp(r, TypeRestfulInteraction.HISTORYTYPE)) 
       generateHistoryType(r);
   }
 
@@ -161,9 +155,9 @@ public class OpenApiGenerator {
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("the capbility statement");
     if (isJson())
-      resp.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/CapabilityStatement");
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/CapabilityStatement");
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef() + "/CapabilityStatement.xsd");
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/CapabilityStatement.xsd");
 
     // parameters - but do they apply?
     op.paramRef("#/components/parameters/format");
@@ -175,17 +169,16 @@ public class OpenApiGenerator {
   private void generateRead(CapabilityStatementRestResourceComponent r) {
     OperationWriter op = makePathResId(r).operation("get");
     op.summary("Read the current state of the resource");
-    op.operationId("read" + r.getType());
+    op.operationId("read"+r.getType());
     opOutcome(op.responses().defaultResponse());
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("the resource being returned");
     if (r.getVersioning() != ResourceVersionPolicy.NOVERSION)
-      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag").schema()
-          .type(SchemaType.string);
+      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag").schema().type(SchemaType.string);
     if (isJson())
-      resp.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/" + r.getType());
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/"+r.getType());
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef() + "/" + r.getType() + ".xsd");
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
 
     // parameters:
     op.paramRef("#/components/parameters/rid");
@@ -197,16 +190,16 @@ public class OpenApiGenerator {
 
   private void generateSearch(CapabilityStatementRestResourceComponent r) {
     OperationWriter op = makePathResType(r).operation("get");
-    op.summary("Search all resources of type " + r.getType() + " based on a set of criteria");
-    op.operationId("search" + r.getType());
+    op.summary("Search all resources of type "+r.getType()+" based on a set of criteria");
+    op.operationId("search"+r.getType());
     opOutcome(op.responses().defaultResponse());
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("the resource being returned");
     if (isJson())
-      resp.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/Bundle");
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/Bundle");
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef() + "/Bundle.xsd");
-    // todo: how do we know that these apply?
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
+    // todo: how do we know that these apply? 
     op.paramRef("#/components/parameters/format");
     op.paramRef("#/components/parameters/pretty");
     op.paramRef("#/components/parameters/summary");
@@ -236,10 +229,10 @@ public class OpenApiGenerator {
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("the resource being returned");
     if (isJson())
-      resp.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/Bundle");
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/Bundle");
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef() + "/Bundle.xsd");
-    // todo: how do we know that these apply?
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
+    // todo: how do we know that these apply? 
     op.paramRef("#/components/parameters/format");
     op.paramRef("#/components/parameters/pretty");
     op.paramRef("#/components/parameters/summary");
@@ -268,20 +261,13 @@ public class OpenApiGenerator {
   private SchemaType getSchemaType(SearchParamType type) {
     switch (type) {
     // case COMPOSITE:
-    case DATE:
-      return SchemaType.dateTime;
-    case NUMBER:
-      return SchemaType.number;
-    case QUANTITY:
-      return SchemaType.string;
-    case REFERENCE:
-      return SchemaType.string;
-    case STRING:
-      return SchemaType.string;
-    case TOKEN:
-      return SchemaType.string;
-    case URI:
-      return SchemaType.string;
+    case DATE: return SchemaType.dateTime;
+    case NUMBER: return SchemaType.number; 
+    case QUANTITY: return SchemaType.string;
+    case REFERENCE: return SchemaType.string;
+    case STRING: return SchemaType.string;
+    case TOKEN: return SchemaType.string;
+    case URI: return SchemaType.string;
     }
     return null;
   }
@@ -289,42 +275,36 @@ public class OpenApiGenerator {
   private void generateHistoryType(CapabilityStatementRestResourceComponent r) {
     OperationWriter op = makePathResHistListType(r).operation("get");
     op.summary("Read the past states of the resource");
-    op.operationId("histtype" + r.getType());
+    op.operationId("histtype"+r.getType());
     opOutcome(op.responses().defaultResponse());
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("the resources being returned");
     if (isJson())
-      resp.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/Bundle");
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/Bundle");
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef() + "/Bundle.xsd");
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
     op.paramRef("#/components/parameters/summary");
     op.paramRef("#/components/parameters/format");
     op.paramRef("#/components/parameters/pretty");
     op.paramRef("#/components/parameters/elements");
     op.paramRef("#/components/parameters/count");
 
-    op.parameter("_since").in(ParameterLocation.query)
-        .description("Only include resource versions that were created at or after the given instant in time").schema()
-        .type(SchemaType.dateTime);
-    op.parameter("_at").in(ParameterLocation.query).description(
-        "Only include resource versions that were current at some point during the time period specified in the date time value (see Search notes on date searching)")
-        .schema().type(SchemaType.dateTime);
-    op.parameter("_list").in(ParameterLocation.query).description(
-        "Only include resource versions that are referenced in the specified list (current list references are allowed)")
-        .schema().type(SchemaType.string);
+    op.parameter("_since").in(ParameterLocation.query).description("Only include resource versions that were created at or after the given instant in time").schema().type(SchemaType.dateTime);
+    op.parameter("_at").in(ParameterLocation.query).description("Only include resource versions that were current at some point during the time period specified in the date time value (see Search notes on date searching)").schema().type(SchemaType.dateTime);
+    op.parameter("_list").in(ParameterLocation.query).description("Only include resource versions that are referenced in the specified list (current list references are allowed)").schema().type(SchemaType.string);
   }
 
   private void generateHistoryInstance(CapabilityStatementRestResourceComponent r) {
     OperationWriter op = makePathResHistListId(r).operation("get");
     op.summary("Read the past states of the resource");
-    op.operationId("histinst" + r.getType());
+    op.operationId("histinst"+r.getType());
     opOutcome(op.responses().defaultResponse());
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("the resources being returned");
     if (isJson())
-      resp.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/Bundle");
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/Bundle");
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef() + "/Bundle.xsd");
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
     op.paramRef("#/components/parameters/rid");
     op.paramRef("#/components/parameters/summary");
     op.paramRef("#/components/parameters/format");
@@ -332,15 +312,9 @@ public class OpenApiGenerator {
     op.paramRef("#/components/parameters/elements");
     op.paramRef("#/components/parameters/count");
 
-    op.parameter("_since").in(ParameterLocation.query)
-        .description("Only include resource versions that were created at or after the given instant in time").schema()
-        .type(SchemaType.dateTime);
-    op.parameter("_at").in(ParameterLocation.query).description(
-        "Only include resource versions that were current at some point during the time period specified in the date time value (see Search notes on date searching)")
-        .schema().type(SchemaType.dateTime);
-    op.parameter("_list").in(ParameterLocation.query).description(
-        "Only include resource versions that are referenced in the specified list (current list references are allowed)")
-        .schema().type(SchemaType.string);
+    op.parameter("_since").in(ParameterLocation.query).description("Only include resource versions that were created at or after the given instant in time").schema().type(SchemaType.dateTime);
+    op.parameter("_at").in(ParameterLocation.query).description("Only include resource versions that were current at some point during the time period specified in the date time value (see Search notes on date searching)").schema().type(SchemaType.dateTime);
+    op.parameter("_list").in(ParameterLocation.query).description("Only include resource versions that are referenced in the specified list (current list references are allowed)").schema().type(SchemaType.string);
   }
 
   private void generateHistorySystem(CapabilityStatementRestComponent csr) {
@@ -351,40 +325,33 @@ public class OpenApiGenerator {
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("the resources being returned");
     if (isJson())
-      resp.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/Bundle");
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/Bundle");
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef() + "/Bundle.xsd");
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
     op.paramRef("#/components/parameters/summary");
     op.paramRef("#/components/parameters/format");
     op.paramRef("#/components/parameters/pretty");
     op.paramRef("#/components/parameters/elements");
     op.paramRef("#/components/parameters/count");
 
-    op.parameter("_since").in(ParameterLocation.query)
-        .description("Only include resource versions that were created at or after the given instant in time").schema()
-        .type(SchemaType.dateTime);
-    op.parameter("_at").in(ParameterLocation.query).description(
-        "Only include resource versions that were current at some point during the time period specified in the date time value (see Search notes on date searching)")
-        .schema().type(SchemaType.dateTime);
-    op.parameter("_list").in(ParameterLocation.query).description(
-        "Only include resource versions that are referenced in the specified list (current list references are allowed)")
-        .schema().type(SchemaType.string);
+    op.parameter("_since").in(ParameterLocation.query).description("Only include resource versions that were created at or after the given instant in time").schema().type(SchemaType.dateTime);
+    op.parameter("_at").in(ParameterLocation.query).description("Only include resource versions that were current at some point during the time period specified in the date time value (see Search notes on date searching)").schema().type(SchemaType.dateTime);
+    op.parameter("_list").in(ParameterLocation.query).description("Only include resource versions that are referenced in the specified list (current list references are allowed)").schema().type(SchemaType.string);
   }
 
   private void generateVRead(CapabilityStatementRestResourceComponent r) {
     OperationWriter op = makePathResHistId(r).operation("get");
     op.summary("Read a past state of the resource");
-    op.operationId("vread" + r.getType());
+    op.operationId("vread"+r.getType());
     opOutcome(op.responses().defaultResponse());
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("the resource being returned");
     if (r.getVersioning() != ResourceVersionPolicy.NOVERSION)
-      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag for that version").schema()
-          .type(SchemaType.string);
+      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag for that version").schema().type(SchemaType.string);
     if (isJson())
-      resp.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/" + r.getType());
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/"+r.getType());
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef() + "/" + r.getType() + ".xsd");
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
     op.paramRef("#/components/parameters/rid");
     op.paramRef("#/components/parameters/hid");
     op.paramRef("#/components/parameters/summary");
@@ -400,24 +367,23 @@ public class OpenApiGenerator {
       op.summary("Update the current state of the resource (can create a new resource if it does not exist)");
     else
       op.summary("Update the current state of the resource");
-    op.operationId("update" + r.getType());
+    op.operationId("update"+r.getType());
     RequestBodyWriter req = op.request();
     req.description("The new state of the resource").required(true);
     if (isJson())
-      req.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/" + r.getType());
+      req.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/"+r.getType());
     if (isXml())
-      req.content("application/fhir+xml").schemaRef(specRef() + "/" + r.getType() + ".xsd");
+      req.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
 
     opOutcome(op.responses().defaultResponse());
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("the resource being returned after being updated");
     if (r.getVersioning() != ResourceVersionPolicy.NOVERSION)
-      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag").schema()
-          .type(SchemaType.string);
+      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag").schema().type(SchemaType.string);
     if (isJson())
-      resp.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/" + r.getType());
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/"+r.getType());
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef() + "/" + r.getType() + ".xsd");
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
     op.paramRef("#/components/parameters/rid");
     op.paramRef("#/components/parameters/summary");
     op.paramRef("#/components/parameters/format");
@@ -428,28 +394,27 @@ public class OpenApiGenerator {
   private void generatePatch(CapabilityStatementRestResourceComponent r) {
     OperationWriter op = makePathResId(r).operation("patch");
     op.summary("Change the current state of the resource by providing a patch - a series of change commands");
-    op.operationId("patch" + r.getType());
+    op.operationId("patch"+r.getType());
     RequestBodyWriter req = op.request();
     req.description("The new state of the resource").required(true);
     if (isJson()) {
-      req.content("application/json-patch+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/" + r.getType());
-      req.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/Parameters");
+      req.content("application/json-patch+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/"+r.getType());
+      req.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/Parameters");
     }
     if (isXml()) {
-      req.content("application/xml-patch+xml").schemaRef(specRef() + "/" + r.getType() + ".xsd");
-      req.content("application/fhir+xml").schemaRef(specRef() + "/Parameters.xsd");
+      req.content("application/xml-patch+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
+      req.content("application/fhir+xml").schemaRef(specRef()+"/Parameters.xsd");
     }
 
     opOutcome(op.responses().defaultResponse());
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("the resource being returned after being patched");
     if (r.getVersioning() != ResourceVersionPolicy.NOVERSION)
-      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag").schema()
-          .type(SchemaType.string);
+      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag").schema().type(SchemaType.string);
     if (isJson())
-      resp.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/" + r.getType());
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/"+r.getType());
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef() + "/" + r.getType() + ".xsd");
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
     op.paramRef("#/components/parameters/rid");
     op.paramRef("#/components/parameters/summary");
     op.paramRef("#/components/parameters/format");
@@ -460,37 +425,35 @@ public class OpenApiGenerator {
   private void generateDelete(CapabilityStatementRestResourceComponent r) {
     OperationWriter op = makePathResId(r).operation("delete");
     op.summary("Delete the resource so that it no exists (no read, search etc)");
-    op.operationId("delete" + r.getType());
+    op.operationId("delete"+r.getType());
     opOutcome(op.responses().defaultResponse());
     ResponseObjectWriter resp = op.responses().httpResponse("204");
     resp.description("If the resource is deleted - no content is returned");
     if (r.getVersioning() != ResourceVersionPolicy.NOVERSION)
-      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag").schema()
-          .type(SchemaType.string);
+      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag").schema().type(SchemaType.string);
     op.paramRef("#/components/parameters/rid");
   }
 
   private void generateCreate(CapabilityStatementRestResourceComponent r) {
     OperationWriter op = makePathRes(r).operation("post");
     op.summary("Create a new resource");
-    op.operationId("create" + r.getType());
+    op.operationId("create"+r.getType());
     RequestBodyWriter req = op.request();
     req.description("The new state of the resource").required(true);
     if (isJson())
-      req.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/" + r.getType());
+      req.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/"+r.getType());
     if (isXml())
-      req.content("application/fhir+xml").schemaRef(specRef() + "/" + r.getType() + ".xsd");
+      req.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
 
     opOutcome(op.responses().defaultResponse());
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("the resource being returned after being updated");
     if (r.getVersioning() != ResourceVersionPolicy.NOVERSION)
-      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag").schema()
-          .type(SchemaType.string);
+      resp.header("ETag").description("Version from Resource.meta.version as a weak ETag").schema().type(SchemaType.string);
     if (isJson())
-      resp.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/" + r.getType());
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/"+r.getType());
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef() + "/" + r.getType() + ".xsd");
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/"+r.getType()+".xsd");
     op.paramRef("#/components/parameters/summary");
     op.paramRef("#/components/parameters/format");
     op.paramRef("#/components/parameters/pretty");
@@ -504,17 +467,17 @@ public class OpenApiGenerator {
     RequestBodyWriter req = op.request();
     req.description("The batch or transaction").required(true);
     if (isJson())
-      req.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/Bundle");
+      req.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/Bundle");
     if (isXml())
-      req.content("application/fhir+xml").schemaRef(specRef() + "/Bundle.xsd");
+      req.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
 
     opOutcome(op.responses().defaultResponse());
     ResponseObjectWriter resp = op.responses().httpResponse("200");
     resp.description("Batch or Transaction response");
     if (isJson())
-      resp.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/Bundle");
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/Bundle");
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef() + "/Bundle.xsd");
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/Bundle.xsd");
     op.paramRef("#/components/parameters/format");
     op.paramRef("#/components/parameters/pretty");
   }
@@ -522,9 +485,9 @@ public class OpenApiGenerator {
   private void opOutcome(ResponseObjectWriter resp) {
     resp.description("Error, with details");
     if (isJson())
-      resp.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/OperationOutcome");
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/OperationOutcome");
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef() + "/OperationOutcome.xsd");
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/OperationOutcome.xsd");    
   }
 
   private String specRef() {
@@ -539,7 +502,7 @@ public class OpenApiGenerator {
       return "https://hl7.org/fhir/DSTU2";
     if (ver.startsWith("1.4"))
       return "https://hl7.org/fhir/2016May";
-    return "https://build.fhir.org";
+    return "https://build.fhir.org";    
   }
 
   private boolean isJson() {
@@ -573,45 +536,44 @@ public class OpenApiGenerator {
   }
 
   public PathItemWriter makePathRes(CapabilityStatementRestResourceComponent r) {
-    PathItemWriter p = dest.path("/" + r.getType());
-    p.summary("Manager for resources of type " + r.getType());
-    p.description("The Manager for resources of type " + r.getType()
-        + ": provides services to manage the collection of all the " + r.getType() + " instances");
+    PathItemWriter p = dest.path("/"+r.getType());
+    p.summary("Manager for resources of type "+r.getType());
+    p.description("The Manager for resources of type "+r.getType()+": provides services to manage the collection of all the "+r.getType()+" instances");
     return p;
   }
 
   public PathItemWriter makePathResId(CapabilityStatementRestResourceComponent r) {
-    PathItemWriter p = dest.path("/" + r.getType() + "/{rid}");
-    p.summary("Read/Write/etc resource instance of type " + r.getType());
-    p.description("Access to services to manage the state of a single resource of type " + r.getType());
+    PathItemWriter p = dest.path("/"+r.getType()+"/{rid}");
+    p.summary("Read/Write/etc resource instance of type "+r.getType());
+    p.description("Access to services to manage the state of a single resource of type "+r.getType());
     return p;
   }
 
   public PathItemWriter makePathResType(CapabilityStatementRestResourceComponent r) {
-    PathItemWriter p = dest.path("/" + r.getType());
-    p.summary("manage the collection of resources of type " + r.getType());
-    p.description("Access to services to manage the collection of all resources of type " + r.getType());
+    PathItemWriter p = dest.path("/"+r.getType());
+    p.summary("manage the collection of resources of type "+r.getType());
+    p.description("Access to services to manage the collection of all resources of type "+r.getType());
     return p;
   }
 
   public PathItemWriter makePathResHistListType(CapabilityStatementRestResourceComponent r) {
-    PathItemWriter p = dest.path("/" + r.getType() + "/_history");
-    p.summary("Read past versions of resources of type " + r.getType());
-    p.description("Access to previous versions of resourcez of type " + r.getType());
+    PathItemWriter p = dest.path("/"+r.getType()+"/_history");
+    p.summary("Read past versions of resources of type "+r.getType());
+    p.description("Access to previous versions of resourcez of type "+r.getType());
     return p;
   }
 
   public PathItemWriter makePathResHistListId(CapabilityStatementRestResourceComponent r) {
-    PathItemWriter p = dest.path("/" + r.getType() + "/{rid}/_history");
-    p.summary("Read past versions of resource instance of type " + r.getType());
-    p.description("Access to previous versions of a single resource of type " + r.getType());
+    PathItemWriter p = dest.path("/"+r.getType()+"/{rid}/_history");
+    p.summary("Read past versions of resource instance of type "+r.getType());
+    p.description("Access to previous versions of a single resource of type "+r.getType());
     return p;
   }
 
   public PathItemWriter makePathResHistId(CapabilityStatementRestResourceComponent r) {
-    PathItemWriter p = dest.path("/" + r.getType() + "/{rid}/_history/{hid}");
-    p.summary("Read a past version of resource instance of type " + r.getType());
-    p.description("Access a to specified previous version of a single resource of type " + r.getType());
+    PathItemWriter p = dest.path("/"+r.getType()+"/{rid}/_history/{hid}");
+    p.summary("Read a past version of resource instance of type "+r.getType());
+    p.description("Access a to specified previous version of a single resource of type "+r.getType());
     return p;
   }
 
@@ -624,7 +586,7 @@ public class OpenApiGenerator {
 
   private boolean hasOp(CapabilityStatementRestComponent r, SystemRestfulInteraction opCode) {
     for (SystemInteractionComponent op : r.getInteraction()) {
-      if (op.getCode() == opCode)
+      if (op.getCode() == opCode) 
         return true;
     }
     return false;
@@ -632,7 +594,7 @@ public class OpenApiGenerator {
 
   private boolean hasOp(CapabilityStatementRestResourceComponent r, TypeRestfulInteraction opCode) {
     for (ResourceInteractionComponent op : r.getInteraction()) {
-      if (op.getCode() == opCode)
+      if (op.getCode() == opCode) 
         return true;
     }
     return false;
@@ -646,6 +608,7 @@ public class OpenApiGenerator {
     return null;
   }
 
+
   private String email(List<ContactPoint> telecom) {
     for (ContactPoint cp : telecom) {
       if (cp.getSystem() == ContactPointSystem.EMAIL)
@@ -653,5 +616,7 @@ public class OpenApiGenerator {
     }
     return null;
   }
+
+
 
 }

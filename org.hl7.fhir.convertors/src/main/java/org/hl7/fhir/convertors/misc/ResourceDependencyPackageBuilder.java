@@ -1,10 +1,11 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hl7.fhir.convertors.conv40_50.VersionConvertor_40_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
@@ -19,6 +20,7 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.SimpleWorkerContextBuilder;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.utils.ResourceDependencyWalker;
 import org.hl7.fhir.r5.utils.ResourceDependencyWalker.IResourceDependencyNotifier;
 import org.hl7.fhir.r5.utils.ResourceMinifier;

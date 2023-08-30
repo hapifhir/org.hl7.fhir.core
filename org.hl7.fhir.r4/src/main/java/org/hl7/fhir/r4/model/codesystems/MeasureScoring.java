@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MeasureScoring {
 
-  /**
-   * The measure score is defined using a proportion.
-   */
-  PROPORTION,
-  /**
-   * The measure score is defined using a ratio.
-   */
-  RATIO,
-  /**
-   * The score is defined by a calculation of some quantity.
-   */
-  CONTINUOUSVARIABLE,
-  /**
-   * The measure is a cohort definition.
-   */
-  COHORT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MeasureScoring fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("proportion".equals(codeString))
-      return PROPORTION;
-    if ("ratio".equals(codeString))
-      return RATIO;
-    if ("continuous-variable".equals(codeString))
-      return CONTINUOUSVARIABLE;
-    if ("cohort".equals(codeString))
-      return COHORT;
-    throw new FHIRException("Unknown MeasureScoring code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PROPORTION:
-      return "proportion";
-    case RATIO:
-      return "ratio";
-    case CONTINUOUSVARIABLE:
-      return "continuous-variable";
-    case COHORT:
-      return "cohort";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The measure score is defined using a proportion.
+         */
+        PROPORTION, 
+        /**
+         * The measure score is defined using a ratio.
+         */
+        RATIO, 
+        /**
+         * The score is defined by a calculation of some quantity.
+         */
+        CONTINUOUSVARIABLE, 
+        /**
+         * The measure is a cohort definition.
+         */
+        COHORT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MeasureScoring fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("proportion".equals(codeString))
+          return PROPORTION;
+        if ("ratio".equals(codeString))
+          return RATIO;
+        if ("continuous-variable".equals(codeString))
+          return CONTINUOUSVARIABLE;
+        if ("cohort".equals(codeString))
+          return COHORT;
+        throw new FHIRException("Unknown MeasureScoring code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PROPORTION: return "proportion";
+            case RATIO: return "ratio";
+            case CONTINUOUSVARIABLE: return "continuous-variable";
+            case COHORT: return "cohort";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/measure-scoring";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PROPORTION: return "The measure score is defined using a proportion.";
+            case RATIO: return "The measure score is defined using a ratio.";
+            case CONTINUOUSVARIABLE: return "The score is defined by a calculation of some quantity.";
+            case COHORT: return "The measure is a cohort definition.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PROPORTION: return "Proportion";
+            case RATIO: return "Ratio";
+            case CONTINUOUSVARIABLE: return "Continuous Variable";
+            case COHORT: return "Cohort";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/measure-scoring";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PROPORTION:
-      return "The measure score is defined using a proportion.";
-    case RATIO:
-      return "The measure score is defined using a ratio.";
-    case CONTINUOUSVARIABLE:
-      return "The score is defined by a calculation of some quantity.";
-    case COHORT:
-      return "The measure is a cohort definition.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PROPORTION:
-      return "Proportion";
-    case RATIO:
-      return "Ratio";
-    case CONTINUOUSVARIABLE:
-      return "Continuous Variable";
-    case COHORT:
-      return "Cohort";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -1,14 +1,13 @@
 package org.hl7.fhir.utilities;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import org.hl7.fhir.utilities.settings.FhirSettings;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.With;
+import org.hl7.fhir.utilities.settings.FhirSettings;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class PathBuilder {
@@ -150,7 +149,7 @@ public class PathBuilder {
       return;
     }
     if (isPathRoot(args[0])) {
-      throw new RuntimeException("First entry in file path cannot be root: " + args[0]+", full path = "+String.join(", ", args));
+      throw new RuntimeException("First entry cannot be root: " + args[0]);
     }
   }
 
@@ -159,7 +158,7 @@ public class PathBuilder {
       return;
     }
     if (args[0] == null || Utilities.noString(args[0].trim())) {
-      throw new RuntimeException("First entry in file path cannot be null or empty, full path = "+String.join(", ", args));
+      throw new RuntimeException("First path entry cannot be null or empty");
     }
   }
 

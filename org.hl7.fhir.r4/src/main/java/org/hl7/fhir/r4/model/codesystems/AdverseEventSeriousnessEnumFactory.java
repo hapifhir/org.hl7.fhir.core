@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class AdverseEventSeriousnessEnumFactory implements EnumFactory<AdverseEventSeriousness> {
@@ -54,7 +58,7 @@ public class AdverseEventSeriousnessEnumFactory implements EnumFactory<AdverseEv
       return AdverseEventSeriousness.SERIOUSISBIRTHDEFECT;
     if ("SeriousRequiresPreventImpairment".equals(codeString))
       return AdverseEventSeriousness.SERIOUSREQUIRESPREVENTIMPAIRMENT;
-    throw new IllegalArgumentException("Unknown AdverseEventSeriousness code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown AdverseEventSeriousness code '"+codeString+"'");
   }
 
   public String toCode(AdverseEventSeriousness code) {
@@ -77,8 +81,8 @@ public class AdverseEventSeriousnessEnumFactory implements EnumFactory<AdverseEv
     return "?";
   }
 
-  public String toSystem(AdverseEventSeriousness code) {
-    return code.getSystem();
-  }
+    public String toSystem(AdverseEventSeriousness code) {
+      return code.getSystem();
+      }
 
 }

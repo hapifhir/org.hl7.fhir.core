@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum GuideDependencyType {
 
-  /**
-   * The guide is referred to by URL.
-   */
-  REFERENCE,
-  /**
-   * The guide is embedded in this guide when published.
-   */
-  INCLUSION,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static GuideDependencyType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("reference".equals(codeString))
-      return REFERENCE;
-    if ("inclusion".equals(codeString))
-      return INCLUSION;
-    throw new FHIRException("Unknown GuideDependencyType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case REFERENCE:
-      return "reference";
-    case INCLUSION:
-      return "inclusion";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The guide is referred to by URL.
+         */
+        REFERENCE, 
+        /**
+         * The guide is embedded in this guide when published.
+         */
+        INCLUSION, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static GuideDependencyType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("reference".equals(codeString))
+          return REFERENCE;
+        if ("inclusion".equals(codeString))
+          return INCLUSION;
+        throw new FHIRException("Unknown GuideDependencyType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case REFERENCE: return "reference";
+            case INCLUSION: return "inclusion";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/guide-dependency-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case REFERENCE: return "The guide is referred to by URL.";
+            case INCLUSION: return "The guide is embedded in this guide when published.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case REFERENCE: return "Reference";
+            case INCLUSION: return "Inclusion";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/guide-dependency-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case REFERENCE:
-      return "The guide is referred to by URL.";
-    case INCLUSION:
-      return "The guide is embedded in this guide when published.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case REFERENCE:
-      return "Reference";
-    case INCLUSION:
-      return "Inclusion";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

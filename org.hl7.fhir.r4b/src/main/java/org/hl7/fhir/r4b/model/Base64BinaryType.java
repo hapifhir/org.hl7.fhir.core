@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.model;
   
  */
 
+
+
 import ca.uhn.fhir.model.api.IElement;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.parser.DataFormatException;
@@ -42,12 +44,10 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 /**
- * Primitive type "base64Binary" in FHIR: a sequence of bytes represented in
- * base64
+ * Primitive type "base64Binary" in FHIR: a sequence of bytes represented in base64
  */
 @DatatypeDef(name = "base64Binary")
-public class Base64BinaryType extends PrimitiveType<byte[]>
-    implements IPrimitiveType<byte[]>, IBaseHasExtensions, IElement, Externalizable {
+public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiveType<byte[]>, IBaseHasExtensions, IElement, Externalizable {
 
   private static final long serialVersionUID = 3L;
   private byte[] myValue;
@@ -116,8 +116,7 @@ public class Base64BinaryType extends PrimitiveType<byte[]>
 
   @Override
   public void setValueAsString(String theValue) throws IllegalArgumentException {
-    if (theValue != null)
-      checkValidBase64(theValue);
+    if (theValue != null) checkValidBase64(theValue);
     fromStringValue(theValue);
     setValue(parse(theValue));
   }
@@ -140,8 +139,7 @@ public class Base64BinaryType extends PrimitiveType<byte[]>
 
   @Override
   public boolean isEmpty() {
-    // Custom isEmpty() in order to avoid generating the text representation
-    // unneccessarily
+    // Custom isEmpty() in order to avoid generating the text representation unneccessarily
     return ca.uhn.fhir.util.ElementUtil.isEmpty(id, extension) && !hasValue();
   }
 
@@ -151,8 +149,8 @@ public class Base64BinaryType extends PrimitiveType<byte[]>
   }
 
   /**
-   * Checks if the passed in String is a valid {@link Base64} encoded String. Will
-   * throw a {@link DataFormatException} if not formatted correctly.
+   * Checks if the passed in String is a valid {@link Base64} encoded String. Will throw a {@link DataFormatException} if not
+   * formatted correctly.
    *
    * @param toCheck {@link String} to check if valid {@link Base64}
    * @throws DataFormatException

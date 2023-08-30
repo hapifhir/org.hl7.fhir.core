@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class AuditSourceTypeEnumFactory implements EnumFactory<AuditSourceType> {
@@ -56,7 +60,7 @@ public class AuditSourceTypeEnumFactory implements EnumFactory<AuditSourceType> 
       return AuditSourceType._8;
     if ("9".equals(codeString))
       return AuditSourceType._9;
-    throw new IllegalArgumentException("Unknown AuditSourceType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown AuditSourceType code '"+codeString+"'");
   }
 
   public String toCode(AuditSourceType code) {
@@ -81,8 +85,8 @@ public class AuditSourceTypeEnumFactory implements EnumFactory<AuditSourceType> 
     return "?";
   }
 
-  public String toSystem(AuditSourceType code) {
-    return code.getSystem();
-  }
+    public String toSystem(AuditSourceType code) {
+      return code.getSystem();
+      }
 
 }

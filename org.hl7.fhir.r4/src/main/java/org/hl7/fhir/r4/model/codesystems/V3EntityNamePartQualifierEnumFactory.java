@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -96,7 +100,7 @@ public class V3EntityNamePartQualifierEnumFactory implements EnumFactory<V3Entit
       return V3EntityNamePartQualifier._PERSONNAMEPARTCHANGEQUALIFIER;
     if ("_PersonNamePartMiscQualifier".equals(codeString))
       return V3EntityNamePartQualifier._PERSONNAMEPARTMISCQUALIFIER;
-    throw new IllegalArgumentException("Unknown V3EntityNamePartQualifier code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3EntityNamePartQualifier code '"+codeString+"'");
   }
 
   public String toCode(V3EntityNamePartQualifier code) {
@@ -161,8 +165,8 @@ public class V3EntityNamePartQualifierEnumFactory implements EnumFactory<V3Entit
     return "?";
   }
 
-  public String toSystem(V3EntityNamePartQualifier code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3EntityNamePartQualifier code) {
+      return code.getSystem();
+      }
 
 }

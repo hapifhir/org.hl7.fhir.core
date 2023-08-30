@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,88 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ClaimUse {
 
-  /**
-   * The treatment is complete and this represents a Claim for the services.
-   */
-  CLAIM,
-  /**
-   * The treatment is proposed and this represents a Pre-authorization for the
-   * services.
-   */
-  PREAUTHORIZATION,
-  /**
-   * The treatment is proposed and this represents a Pre-determination for the
-   * services.
-   */
-  PREDETERMINATION,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ClaimUse fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("claim".equals(codeString))
-      return CLAIM;
-    if ("preauthorization".equals(codeString))
-      return PREAUTHORIZATION;
-    if ("predetermination".equals(codeString))
-      return PREDETERMINATION;
-    throw new FHIRException("Unknown ClaimUse code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case CLAIM:
-      return "claim";
-    case PREAUTHORIZATION:
-      return "preauthorization";
-    case PREDETERMINATION:
-      return "predetermination";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The treatment is complete and this represents a Claim for the services.
+         */
+        CLAIM, 
+        /**
+         * The treatment is proposed and this represents a Pre-authorization for the services.
+         */
+        PREAUTHORIZATION, 
+        /**
+         * The treatment is proposed and this represents a Pre-determination for the services.
+         */
+        PREDETERMINATION, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ClaimUse fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("claim".equals(codeString))
+          return CLAIM;
+        if ("preauthorization".equals(codeString))
+          return PREAUTHORIZATION;
+        if ("predetermination".equals(codeString))
+          return PREDETERMINATION;
+        throw new FHIRException("Unknown ClaimUse code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case CLAIM: return "claim";
+            case PREAUTHORIZATION: return "preauthorization";
+            case PREDETERMINATION: return "predetermination";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/claim-use";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case CLAIM: return "The treatment is complete and this represents a Claim for the services.";
+            case PREAUTHORIZATION: return "The treatment is proposed and this represents a Pre-authorization for the services.";
+            case PREDETERMINATION: return "The treatment is proposed and this represents a Pre-determination for the services.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case CLAIM: return "Claim";
+            case PREAUTHORIZATION: return "Preauthorization";
+            case PREDETERMINATION: return "Predetermination";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/claim-use";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case CLAIM:
-      return "The treatment is complete and this represents a Claim for the services.";
-    case PREAUTHORIZATION:
-      return "The treatment is proposed and this represents a Pre-authorization for the services.";
-    case PREDETERMINATION:
-      return "The treatment is proposed and this represents a Pre-determination for the services.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case CLAIM:
-      return "Claim";
-    case PREAUTHORIZATION:
-      return "Preauthorization";
-    case PREDETERMINATION:
-      return "Predetermination";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,194 +34,149 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum BenefitType {
 
-  /**
-   * Maximum benefit allowable.
-   */
-  BENEFIT,
-  /**
-   * Cost to be incurred before benefits are applied
-   */
-  DEDUCTIBLE,
-  /**
-   * Service visit
-   */
-  VISIT,
-  /**
-   * Type of room
-   */
-  ROOM,
-  /**
-   * Copayment per service
-   */
-  COPAY,
-  /**
-   * Copayment percentage per service
-   */
-  COPAYPERCENT,
-  /**
-   * Copayment maximum per service
-   */
-  COPAYMAXIMUM,
-  /**
-   * Vision Exam
-   */
-  VISIONEXAM,
-  /**
-   * Frames and lenses
-   */
-  VISIONGLASSES,
-  /**
-   * Contact Lenses
-   */
-  VISIONCONTACTS,
-  /**
-   * Medical Primary Health Coverage
-   */
-  MEDICALPRIMARYCARE,
-  /**
-   * Pharmacy Dispense Coverage
-   */
-  PHARMACYDISPENSE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static BenefitType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("benefit".equals(codeString))
-      return BENEFIT;
-    if ("deductible".equals(codeString))
-      return DEDUCTIBLE;
-    if ("visit".equals(codeString))
-      return VISIT;
-    if ("room".equals(codeString))
-      return ROOM;
-    if ("copay".equals(codeString))
-      return COPAY;
-    if ("copay-percent".equals(codeString))
-      return COPAYPERCENT;
-    if ("copay-maximum".equals(codeString))
-      return COPAYMAXIMUM;
-    if ("vision-exam".equals(codeString))
-      return VISIONEXAM;
-    if ("vision-glasses".equals(codeString))
-      return VISIONGLASSES;
-    if ("vision-contacts".equals(codeString))
-      return VISIONCONTACTS;
-    if ("medical-primarycare".equals(codeString))
-      return MEDICALPRIMARYCARE;
-    if ("pharmacy-dispense".equals(codeString))
-      return PHARMACYDISPENSE;
-    throw new FHIRException("Unknown BenefitType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case BENEFIT:
-      return "benefit";
-    case DEDUCTIBLE:
-      return "deductible";
-    case VISIT:
-      return "visit";
-    case ROOM:
-      return "room";
-    case COPAY:
-      return "copay";
-    case COPAYPERCENT:
-      return "copay-percent";
-    case COPAYMAXIMUM:
-      return "copay-maximum";
-    case VISIONEXAM:
-      return "vision-exam";
-    case VISIONGLASSES:
-      return "vision-glasses";
-    case VISIONCONTACTS:
-      return "vision-contacts";
-    case MEDICALPRIMARYCARE:
-      return "medical-primarycare";
-    case PHARMACYDISPENSE:
-      return "pharmacy-dispense";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Maximum benefit allowable.
+         */
+        BENEFIT, 
+        /**
+         * Cost to be incurred before benefits are applied
+         */
+        DEDUCTIBLE, 
+        /**
+         * Service visit
+         */
+        VISIT, 
+        /**
+         * Type of room
+         */
+        ROOM, 
+        /**
+         * Copayment per service
+         */
+        COPAY, 
+        /**
+         * Copayment percentage per service
+         */
+        COPAYPERCENT, 
+        /**
+         * Copayment maximum per service
+         */
+        COPAYMAXIMUM, 
+        /**
+         * Vision Exam
+         */
+        VISIONEXAM, 
+        /**
+         * Frames and lenses
+         */
+        VISIONGLASSES, 
+        /**
+         * Contact Lenses
+         */
+        VISIONCONTACTS, 
+        /**
+         * Medical Primary Health Coverage
+         */
+        MEDICALPRIMARYCARE, 
+        /**
+         * Pharmacy Dispense Coverage
+         */
+        PHARMACYDISPENSE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static BenefitType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("benefit".equals(codeString))
+          return BENEFIT;
+        if ("deductible".equals(codeString))
+          return DEDUCTIBLE;
+        if ("visit".equals(codeString))
+          return VISIT;
+        if ("room".equals(codeString))
+          return ROOM;
+        if ("copay".equals(codeString))
+          return COPAY;
+        if ("copay-percent".equals(codeString))
+          return COPAYPERCENT;
+        if ("copay-maximum".equals(codeString))
+          return COPAYMAXIMUM;
+        if ("vision-exam".equals(codeString))
+          return VISIONEXAM;
+        if ("vision-glasses".equals(codeString))
+          return VISIONGLASSES;
+        if ("vision-contacts".equals(codeString))
+          return VISIONCONTACTS;
+        if ("medical-primarycare".equals(codeString))
+          return MEDICALPRIMARYCARE;
+        if ("pharmacy-dispense".equals(codeString))
+          return PHARMACYDISPENSE;
+        throw new FHIRException("Unknown BenefitType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case BENEFIT: return "benefit";
+            case DEDUCTIBLE: return "deductible";
+            case VISIT: return "visit";
+            case ROOM: return "room";
+            case COPAY: return "copay";
+            case COPAYPERCENT: return "copay-percent";
+            case COPAYMAXIMUM: return "copay-maximum";
+            case VISIONEXAM: return "vision-exam";
+            case VISIONGLASSES: return "vision-glasses";
+            case VISIONCONTACTS: return "vision-contacts";
+            case MEDICALPRIMARYCARE: return "medical-primarycare";
+            case PHARMACYDISPENSE: return "pharmacy-dispense";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/benefit-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case BENEFIT: return "Maximum benefit allowable.";
+            case DEDUCTIBLE: return "Cost to be incurred before benefits are applied";
+            case VISIT: return "Service visit";
+            case ROOM: return "Type of room";
+            case COPAY: return "Copayment per service";
+            case COPAYPERCENT: return "Copayment percentage per service";
+            case COPAYMAXIMUM: return "Copayment maximum per service";
+            case VISIONEXAM: return "Vision Exam";
+            case VISIONGLASSES: return "Frames and lenses";
+            case VISIONCONTACTS: return "Contact Lenses";
+            case MEDICALPRIMARYCARE: return "Medical Primary Health Coverage";
+            case PHARMACYDISPENSE: return "Pharmacy Dispense Coverage";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case BENEFIT: return "Benefit";
+            case DEDUCTIBLE: return "Deductible";
+            case VISIT: return "Visit";
+            case ROOM: return "Room";
+            case COPAY: return "Copayment per service";
+            case COPAYPERCENT: return "Copayment Percent per service";
+            case COPAYMAXIMUM: return "Copayment maximum per service";
+            case VISIONEXAM: return "Vision Exam";
+            case VISIONGLASSES: return "Vision Glasses";
+            case VISIONCONTACTS: return "Vision Contacts Coverage";
+            case MEDICALPRIMARYCARE: return "Medical Primary Health Coverage";
+            case PHARMACYDISPENSE: return "Pharmacy Dispense Coverage";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/benefit-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case BENEFIT:
-      return "Maximum benefit allowable.";
-    case DEDUCTIBLE:
-      return "Cost to be incurred before benefits are applied";
-    case VISIT:
-      return "Service visit";
-    case ROOM:
-      return "Type of room";
-    case COPAY:
-      return "Copayment per service";
-    case COPAYPERCENT:
-      return "Copayment percentage per service";
-    case COPAYMAXIMUM:
-      return "Copayment maximum per service";
-    case VISIONEXAM:
-      return "Vision Exam";
-    case VISIONGLASSES:
-      return "Frames and lenses";
-    case VISIONCONTACTS:
-      return "Contact Lenses";
-    case MEDICALPRIMARYCARE:
-      return "Medical Primary Health Coverage";
-    case PHARMACYDISPENSE:
-      return "Pharmacy Dispense Coverage";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case BENEFIT:
-      return "Benefit";
-    case DEDUCTIBLE:
-      return "Deductible";
-    case VISIT:
-      return "Visit";
-    case ROOM:
-      return "Room";
-    case COPAY:
-      return "Copayment per service";
-    case COPAYPERCENT:
-      return "Copayment Percent per service";
-    case COPAYMAXIMUM:
-      return "Copayment maximum per service";
-    case VISIONEXAM:
-      return "Vision Exam";
-    case VISIONGLASSES:
-      return "Vision Glasses";
-    case VISIONCONTACTS:
-      return "Vision Contacts Coverage";
-    case MEDICALPRIMARYCARE:
-      return "Medical Primary Health Coverage";
-    case PHARMACYDISPENSE:
-      return "Pharmacy Dispense Coverage";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

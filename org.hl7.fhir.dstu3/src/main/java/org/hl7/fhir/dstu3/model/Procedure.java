@@ -2649,10 +2649,10 @@ public class Procedure extends DomainResource {
           return addPartOf();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Procedure.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Procedure.status");
         }
         else if (name.equals("notDone")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Procedure.notDone");
+          throw new FHIRException("Cannot call addChild on a primitive type Procedure.notDone");
         }
         else if (name.equals("notDoneReason")) {
           this.notDoneReason = new CodeableConcept();

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NehtaNehtaNewCancerOrRecurrence {
 
-  /**
-   * The cancer is a new primary cancer.
-   */
-  NEWPRIMARY,
-  /**
-   * The cancer is a regional (local) recurrence.
-   */
-  REGIONALRECURRENCE,
-  /**
-   * The cancer is a distant metastases.
-   */
-  DISTANTMETASTASES,
-  /**
-   * The cancer is indeterminate.
-   */
-  INDETERMINATE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static NehtaNehtaNewCancerOrRecurrence fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("new-primary".equals(codeString))
-      return NEWPRIMARY;
-    if ("regional_recurrence".equals(codeString))
-      return REGIONALRECURRENCE;
-    if ("distant_metastases".equals(codeString))
-      return DISTANTMETASTASES;
-    if ("indeterminate".equals(codeString))
-      return INDETERMINATE;
-    throw new FHIRException("Unknown NehtaNehtaNewCancerOrRecurrence code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NEWPRIMARY:
-      return "new-primary";
-    case REGIONALRECURRENCE:
-      return "regional_recurrence";
-    case DISTANTMETASTASES:
-      return "distant_metastases";
-    case INDETERMINATE:
-      return "indeterminate";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The cancer is a new primary cancer.
+         */
+        NEWPRIMARY, 
+        /**
+         * The cancer is a regional (local) recurrence.
+         */
+        REGIONALRECURRENCE, 
+        /**
+         * The cancer is a distant metastases.
+         */
+        DISTANTMETASTASES, 
+        /**
+         * The cancer is indeterminate.
+         */
+        INDETERMINATE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static NehtaNehtaNewCancerOrRecurrence fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("new-primary".equals(codeString))
+          return NEWPRIMARY;
+        if ("regional_recurrence".equals(codeString))
+          return REGIONALRECURRENCE;
+        if ("distant_metastases".equals(codeString))
+          return DISTANTMETASTASES;
+        if ("indeterminate".equals(codeString))
+          return INDETERMINATE;
+        throw new FHIRException("Unknown NehtaNehtaNewCancerOrRecurrence code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NEWPRIMARY: return "new-primary";
+            case REGIONALRECURRENCE: return "regional_recurrence";
+            case DISTANTMETASTASES: return "distant_metastases";
+            case INDETERMINATE: return "indeterminate";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/nehta-new-cancer-or-recurrence";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NEWPRIMARY: return "The cancer is a new primary cancer.";
+            case REGIONALRECURRENCE: return "The cancer is a regional (local) recurrence.";
+            case DISTANTMETASTASES: return "The cancer is a distant metastases.";
+            case INDETERMINATE: return "The cancer is indeterminate.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NEWPRIMARY: return "New primary";
+            case REGIONALRECURRENCE: return "Regional (local) recurrence";
+            case DISTANTMETASTASES: return "Distant metastases";
+            case INDETERMINATE: return "Indeterminate";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/nehta-new-cancer-or-recurrence";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NEWPRIMARY:
-      return "The cancer is a new primary cancer.";
-    case REGIONALRECURRENCE:
-      return "The cancer is a regional (local) recurrence.";
-    case DISTANTMETASTASES:
-      return "The cancer is a distant metastases.";
-    case INDETERMINATE:
-      return "The cancer is indeterminate.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NEWPRIMARY:
-      return "New primary";
-    case REGIONALRECURRENCE:
-      return "Regional (local) recurrence";
-    case DISTANTMETASTASES:
-      return "Distant metastases";
-    case INDETERMINATE:
-      return "Indeterminate";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

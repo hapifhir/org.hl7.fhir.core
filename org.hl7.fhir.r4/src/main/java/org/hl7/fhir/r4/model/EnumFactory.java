@@ -29,7 +29,10 @@ package org.hl7.fhir.r4.model;
   
  */
 
+
+
 import org.hl7.fhir.instance.model.api.IBaseEnumFactory;
+
 
 /*
 Copyright (c) 2011+, HL7, Inc
@@ -65,19 +68,16 @@ POSSIBILITY OF SUCH DAMAGE.
  */
 public interface EnumFactory<T extends Enum<?>> extends IBaseEnumFactory<T> {
 
-  /**
-   * Read an enumeration value from the string that represents it on the XML or
-   * JSON
-   * 
-   * @param codeString the value found in the XML or JSON
-   * @return the enumeration value
-   * @throws Exception is the value is not known
-   */
+	/**
+	 * Read an enumeration value from the string that represents it on the XML or JSON
+	 * @param codeString the value found in the XML or JSON
+	 * @return the enumeration value
+	 * @throws Exception is the value is not known
+	 */
   public T fromCode(String codeString) throws IllegalArgumentException;
-
+  
   /**
    * Get the XML/JSON representation for an enumerated value
-   * 
    * @param code - the enumeration value
    * @return the XML/JSON representation
    */
@@ -85,7 +85,6 @@ public interface EnumFactory<T extends Enum<?>> extends IBaseEnumFactory<T> {
 
   /**
    * Get the system URI for an enumerated value
-   * 
    * @param code - the enumeration value
    * @return the XML/JSON representation
    */

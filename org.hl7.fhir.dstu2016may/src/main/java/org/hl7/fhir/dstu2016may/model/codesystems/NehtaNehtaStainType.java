@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NehtaNehtaStainType {
 
-  /**
-   * The mismathch repair enzyne was not tested
-   */
-  NOTTESTED,
-  /**
-   * The mismatch repair enzyme had normal staining
-   */
-  NORMALSTAINING,
-  /**
-   * The gene mutation was not tested
-   */
-  LOSSOFSTAINING,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static NehtaNehtaStainType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("not_tested".equals(codeString))
-      return NOTTESTED;
-    if ("normal_staining".equals(codeString))
-      return NORMALSTAINING;
-    if ("loss_of_staining".equals(codeString))
-      return LOSSOFSTAINING;
-    throw new FHIRException("Unknown NehtaNehtaStainType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NOTTESTED:
-      return "not_tested";
-    case NORMALSTAINING:
-      return "normal_staining";
-    case LOSSOFSTAINING:
-      return "loss_of_staining";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The mismathch repair enzyne was not tested
+         */
+        NOTTESTED, 
+        /**
+         * The mismatch repair enzyme had normal staining
+         */
+        NORMALSTAINING, 
+        /**
+         * The gene mutation was not tested
+         */
+        LOSSOFSTAINING, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static NehtaNehtaStainType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("not_tested".equals(codeString))
+          return NOTTESTED;
+        if ("normal_staining".equals(codeString))
+          return NORMALSTAINING;
+        if ("loss_of_staining".equals(codeString))
+          return LOSSOFSTAINING;
+        throw new FHIRException("Unknown NehtaNehtaStainType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NOTTESTED: return "not_tested";
+            case NORMALSTAINING: return "normal_staining";
+            case LOSSOFSTAINING: return "loss_of_staining";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/nehta-stain-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NOTTESTED: return "The mismathch repair enzyne was not tested";
+            case NORMALSTAINING: return "The mismatch repair enzyme had normal staining";
+            case LOSSOFSTAINING: return "The gene mutation was not tested";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NOTTESTED: return "Not tested";
+            case NORMALSTAINING: return "Normal Staining";
+            case LOSSOFSTAINING: return "Not tested";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/nehta-stain-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NOTTESTED:
-      return "The mismathch repair enzyne was not tested";
-    case NORMALSTAINING:
-      return "The mismatch repair enzyme had normal staining";
-    case LOSSOFSTAINING:
-      return "The gene mutation was not tested";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NOTTESTED:
-      return "Not tested";
-    case NORMALSTAINING:
-      return "Normal Staining";
-    case LOSSOFSTAINING:
-      return "Not tested";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

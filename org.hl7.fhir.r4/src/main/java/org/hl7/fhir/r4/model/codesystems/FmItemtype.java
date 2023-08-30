@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,87 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum FmItemtype {
 
-  /**
-   * A group of products and/or Services, amount ar the summary or detail level
-   * products and services.
-   */
-  GROUP,
-  /**
-   * A billed product line item.
-   */
-  PRODUCT,
-  /**
-   * A billed service line item.
-   */
-  SERVICE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static FmItemtype fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("group".equals(codeString))
-      return GROUP;
-    if ("product".equals(codeString))
-      return PRODUCT;
-    if ("service".equals(codeString))
-      return SERVICE;
-    throw new FHIRException("Unknown FmItemtype code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case GROUP:
-      return "group";
-    case PRODUCT:
-      return "product";
-    case SERVICE:
-      return "service";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A group of products and/or Services, amount ar the summary or detail level products and services.
+         */
+        GROUP, 
+        /**
+         * A billed product line item.
+         */
+        PRODUCT, 
+        /**
+         * A billed service line item.
+         */
+        SERVICE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static FmItemtype fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("group".equals(codeString))
+          return GROUP;
+        if ("product".equals(codeString))
+          return PRODUCT;
+        if ("service".equals(codeString))
+          return SERVICE;
+        throw new FHIRException("Unknown FmItemtype code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case GROUP: return "group";
+            case PRODUCT: return "product";
+            case SERVICE: return "service";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/ex-claimitemtype";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case GROUP: return "A group of products and/or Services, amount ar the summary or detail level products and services.";
+            case PRODUCT: return "A billed product line item.";
+            case SERVICE: return "A billed service line item.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case GROUP: return "Group";
+            case PRODUCT: return "Product";
+            case SERVICE: return "Service";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/ex-claimitemtype";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case GROUP:
-      return "A group of products and/or Services, amount ar the summary or detail level products and services.";
-    case PRODUCT:
-      return "A billed product line item.";
-    case SERVICE:
-      return "A billed service line item.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case GROUP:
-      return "Group";
-    case PRODUCT:
-      return "Product";
-    case SERVICE:
-      return "Service";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

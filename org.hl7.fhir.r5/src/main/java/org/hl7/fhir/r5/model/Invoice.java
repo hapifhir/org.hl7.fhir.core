@@ -755,7 +755,7 @@ public class Invoice extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("sequence")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Invoice.lineItem.sequence");
+          throw new FHIRException("Cannot call addChild on a primitive type Invoice.lineItem.sequence");
         }
         else if (name.equals("servicedDate")) {
           this.serviced = new DateType();
@@ -1943,10 +1943,10 @@ public class Invoice extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Invoice.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Invoice.status");
         }
         else if (name.equals("cancelledReason")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Invoice.cancelledReason");
+          throw new FHIRException("Cannot call addChild on a primitive type Invoice.cancelledReason");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -1961,10 +1961,10 @@ public class Invoice extends DomainResource {
           return this.recipient;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Invoice.date");
+          throw new FHIRException("Cannot call addChild on a primitive type Invoice.date");
         }
         else if (name.equals("creation")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Invoice.creation");
+          throw new FHIRException("Cannot call addChild on a primitive type Invoice.creation");
         }
         else if (name.equals("periodDate")) {
           this.period = new DateType();
@@ -2000,7 +2000,7 @@ public class Invoice extends DomainResource {
           return this.totalGross;
         }
         else if (name.equals("paymentTerms")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Invoice.paymentTerms");
+          throw new FHIRException("Cannot call addChild on a primitive type Invoice.paymentTerms");
         }
         else if (name.equals("note")) {
           return addNote();

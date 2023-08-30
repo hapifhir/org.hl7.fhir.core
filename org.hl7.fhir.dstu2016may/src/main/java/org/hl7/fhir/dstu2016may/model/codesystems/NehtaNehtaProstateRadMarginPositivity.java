@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,62 +34,50 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NehtaNehtaProstateRadMarginPositivity {
 
-  /**
-   * Intraprostatic (capsular incision)
-   */
-  INTRAPROSTATIC,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static NehtaNehtaProstateRadMarginPositivity fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("intraprostatic".equals(codeString))
-      return INTRAPROSTATIC;
-    throw new FHIRException("Unknown NehtaNehtaProstateRadMarginPositivity code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INTRAPROSTATIC:
-      return "intraprostatic";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Intraprostatic (capsular incision)
+         */
+        INTRAPROSTATIC, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static NehtaNehtaProstateRadMarginPositivity fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("intraprostatic".equals(codeString))
+          return INTRAPROSTATIC;
+        throw new FHIRException("Unknown NehtaNehtaProstateRadMarginPositivity code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INTRAPROSTATIC: return "intraprostatic";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/nehta-prostate-rad-margin-positivity";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INTRAPROSTATIC: return "Intraprostatic (capsular incision)";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INTRAPROSTATIC: return "Intraprostatic (capsular incision)";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/nehta-prostate-rad-margin-positivity";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INTRAPROSTATIC:
-      return "Intraprostatic (capsular incision)";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INTRAPROSTATIC:
-      return "Intraprostatic (capsular incision)";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

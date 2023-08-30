@@ -838,22 +838,22 @@ public class HumanName extends Type implements ICompositeType {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("use")) {
-          throw new FHIRException("Cannot call addChild on a singleton property HumanName.use");
+          throw new FHIRException("Cannot call addChild on a primitive type HumanName.use");
         }
         else if (name.equals("text")) {
-          throw new FHIRException("Cannot call addChild on a singleton property HumanName.text");
+          throw new FHIRException("Cannot call addChild on a primitive type HumanName.text");
         }
         else if (name.equals("family")) {
-          throw new FHIRException("Cannot call addChild on a singleton property HumanName.family");
+          throw new FHIRException("Cannot call addChild on a primitive type HumanName.family");
         }
         else if (name.equals("given")) {
-          throw new FHIRException("Cannot call addChild on a singleton property HumanName.given");
+          throw new FHIRException("Cannot call addChild on a primitive type HumanName.given");
         }
         else if (name.equals("prefix")) {
-          throw new FHIRException("Cannot call addChild on a singleton property HumanName.prefix");
+          throw new FHIRException("Cannot call addChild on a primitive type HumanName.prefix");
         }
         else if (name.equals("suffix")) {
-          throw new FHIRException("Cannot call addChild on a singleton property HumanName.suffix");
+          throw new FHIRException("Cannot call addChild on a primitive type HumanName.suffix");
         }
         else if (name.equals("period")) {
           this.period = new Period();

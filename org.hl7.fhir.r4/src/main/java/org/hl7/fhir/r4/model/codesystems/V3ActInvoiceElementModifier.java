@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,99 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3ActInvoiceElementModifier {
 
-  /**
-   * Electronic form with supporting information to follow.
-   */
-  EFORM,
-  /**
-   * Fax with supporting information to follow.
-   */
-  FAX,
-  /**
-   * Represents the last invoice from the perspective of the provider.
-   */
-  LINV,
-  /**
-   * Paper documentation (or other physical format) with supporting information to
-   * follow.
-   */
-  PAPER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static V3ActInvoiceElementModifier fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("EFORM".equals(codeString))
-      return EFORM;
-    if ("FAX".equals(codeString))
-      return FAX;
-    if ("LINV".equals(codeString))
-      return LINV;
-    if ("PAPER".equals(codeString))
-      return PAPER;
-    throw new FHIRException("Unknown V3ActInvoiceElementModifier code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case EFORM:
-      return "EFORM";
-    case FAX:
-      return "FAX";
-    case LINV:
-      return "LINV";
-    case PAPER:
-      return "PAPER";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Electronic form with supporting information to follow.
+         */
+        EFORM, 
+        /**
+         * Fax with supporting information to follow.
+         */
+        FAX, 
+        /**
+         * Represents the last invoice from the perspective of the provider.
+         */
+        LINV, 
+        /**
+         * Paper documentation (or other physical format) with supporting information to follow.
+         */
+        PAPER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static V3ActInvoiceElementModifier fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("EFORM".equals(codeString))
+          return EFORM;
+        if ("FAX".equals(codeString))
+          return FAX;
+        if ("LINV".equals(codeString))
+          return LINV;
+        if ("PAPER".equals(codeString))
+          return PAPER;
+        throw new FHIRException("Unknown V3ActInvoiceElementModifier code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case EFORM: return "EFORM";
+            case FAX: return "FAX";
+            case LINV: return "LINV";
+            case PAPER: return "PAPER";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/v3-ActInvoiceElementModifier";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case EFORM: return "Electronic form with supporting information to follow.";
+            case FAX: return "Fax with supporting information to follow.";
+            case LINV: return "Represents the last invoice from the perspective of the provider.";
+            case PAPER: return "Paper documentation (or other physical format) with supporting information to follow.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case EFORM: return "Electronic Form To Follow";
+            case FAX: return "Fax To Follow";
+            case LINV: return "Last Invoice";
+            case PAPER: return "Paper Documentation To Follow";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/v3-ActInvoiceElementModifier";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case EFORM:
-      return "Electronic form with supporting information to follow.";
-    case FAX:
-      return "Fax with supporting information to follow.";
-    case LINV:
-      return "Represents the last invoice from the perspective of the provider.";
-    case PAPER:
-      return "Paper documentation (or other physical format) with supporting information to follow.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case EFORM:
-      return "Electronic Form To Follow";
-    case FAX:
-      return "Fax To Follow";
-    case LINV:
-      return "Last Invoice";
-    case PAPER:
-      return "Paper Documentation To Follow";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

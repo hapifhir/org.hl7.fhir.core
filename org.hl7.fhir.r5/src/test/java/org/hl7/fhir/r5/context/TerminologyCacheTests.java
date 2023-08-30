@@ -149,7 +149,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       assertCanonicalResourceEquals(terminologyCapabilities, terminologyCacheB.getTerminologyCapabilities());
       assertCanonicalResourceEquals(capabilityStatement, terminologyCacheB.getCapabilityStatement());
 
-      assertValidationResultEquals(codingResultA, terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters())));
+      assertValidationResultEquals(codingResultA, terminologyCacheB.getValidation(         terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters())));
       assertValidationResultEquals(codeableConceptResultA, terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, concept, valueSet, new Parameters())));
       assertExpansionOutcomeEquals(expansionOutcomeA,terminologyCacheB.getExpansion(terminologyCacheA.generateExpandToken(valueSet, true)));
     }

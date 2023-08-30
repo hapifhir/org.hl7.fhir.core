@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class HspcDeltaFlagNumericNomEnumFactory implements EnumFactory<HspcDeltaFlagNumericNom> {
@@ -40,7 +44,7 @@ public class HspcDeltaFlagNumericNomEnumFactory implements EnumFactory<HspcDelta
       return null;
     if ("unchanged".equals(codeString))
       return HspcDeltaFlagNumericNom.UNCHANGED;
-    throw new IllegalArgumentException("Unknown HspcDeltaFlagNumericNom code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown HspcDeltaFlagNumericNom code '"+codeString+"'");
   }
 
   public String toCode(HspcDeltaFlagNumericNom code) {
@@ -49,8 +53,8 @@ public class HspcDeltaFlagNumericNomEnumFactory implements EnumFactory<HspcDelta
     return "?";
   }
 
-  public String toSystem(HspcDeltaFlagNumericNom code) {
-    return code.getSystem();
-  }
+    public String toSystem(HspcDeltaFlagNumericNom code) {
+      return code.getSystem();
+      }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,124 +34,95 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum RiskEstimateType {
 
-  /**
-   * dichotomous measure (present or absent) reported as a ratio compared to the
-   * denominator of 1 (A percentage is a proportion with denominator of 100).
-   */
-  PROPORTION,
-  /**
-   * A special use case where the proportion is derived from a formula rather than
-   * derived from summary evidence.
-   */
-  DERIVEDPROPORTION,
-  /**
-   * continuous numerical measure reported as an average.
-   */
-  MEAN,
-  /**
-   * continuous numerical measure reported as the middle of the range.
-   */
-  MEDIAN,
-  /**
-   * descriptive measure reported as total number of items.
-   */
-  COUNT,
-  /**
-   * descriptive measure reported as narrative.
-   */
-  DESCRIPTIVE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static RiskEstimateType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("proportion".equals(codeString))
-      return PROPORTION;
-    if ("derivedProportion".equals(codeString))
-      return DERIVEDPROPORTION;
-    if ("mean".equals(codeString))
-      return MEAN;
-    if ("median".equals(codeString))
-      return MEDIAN;
-    if ("count".equals(codeString))
-      return COUNT;
-    if ("descriptive".equals(codeString))
-      return DESCRIPTIVE;
-    throw new FHIRException("Unknown RiskEstimateType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PROPORTION:
-      return "proportion";
-    case DERIVEDPROPORTION:
-      return "derivedProportion";
-    case MEAN:
-      return "mean";
-    case MEDIAN:
-      return "median";
-    case COUNT:
-      return "count";
-    case DESCRIPTIVE:
-      return "descriptive";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * dichotomous measure (present or absent) reported as a ratio compared to the denominator of 1 (A percentage is a proportion with denominator of 100).
+         */
+        PROPORTION, 
+        /**
+         * A special use case where the proportion is derived from a formula rather than derived from summary evidence.
+         */
+        DERIVEDPROPORTION, 
+        /**
+         * continuous numerical measure reported as an average.
+         */
+        MEAN, 
+        /**
+         * continuous numerical measure reported as the middle of the range.
+         */
+        MEDIAN, 
+        /**
+         * descriptive measure reported as total number of items.
+         */
+        COUNT, 
+        /**
+         * descriptive measure reported as narrative.
+         */
+        DESCRIPTIVE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static RiskEstimateType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("proportion".equals(codeString))
+          return PROPORTION;
+        if ("derivedProportion".equals(codeString))
+          return DERIVEDPROPORTION;
+        if ("mean".equals(codeString))
+          return MEAN;
+        if ("median".equals(codeString))
+          return MEDIAN;
+        if ("count".equals(codeString))
+          return COUNT;
+        if ("descriptive".equals(codeString))
+          return DESCRIPTIVE;
+        throw new FHIRException("Unknown RiskEstimateType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PROPORTION: return "proportion";
+            case DERIVEDPROPORTION: return "derivedProportion";
+            case MEAN: return "mean";
+            case MEDIAN: return "median";
+            case COUNT: return "count";
+            case DESCRIPTIVE: return "descriptive";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/risk-estimate-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PROPORTION: return "dichotomous measure (present or absent) reported as a ratio compared to the denominator of 1 (A percentage is a proportion with denominator of 100).";
+            case DERIVEDPROPORTION: return "A special use case where the proportion is derived from a formula rather than derived from summary evidence.";
+            case MEAN: return "continuous numerical measure reported as an average.";
+            case MEDIAN: return "continuous numerical measure reported as the middle of the range.";
+            case COUNT: return "descriptive measure reported as total number of items.";
+            case DESCRIPTIVE: return "descriptive measure reported as narrative.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PROPORTION: return "proportion";
+            case DERIVEDPROPORTION: return "derivedProportion";
+            case MEAN: return "mean";
+            case MEDIAN: return "median";
+            case COUNT: return "count";
+            case DESCRIPTIVE: return "descriptive";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/risk-estimate-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PROPORTION:
-      return "dichotomous measure (present or absent) reported as a ratio compared to the denominator of 1 (A percentage is a proportion with denominator of 100).";
-    case DERIVEDPROPORTION:
-      return "A special use case where the proportion is derived from a formula rather than derived from summary evidence.";
-    case MEAN:
-      return "continuous numerical measure reported as an average.";
-    case MEDIAN:
-      return "continuous numerical measure reported as the middle of the range.";
-    case COUNT:
-      return "descriptive measure reported as total number of items.";
-    case DESCRIPTIVE:
-      return "descriptive measure reported as narrative.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PROPORTION:
-      return "proportion";
-    case DERIVEDPROPORTION:
-      return "derivedProportion";
-    case MEAN:
-      return "mean";
-    case MEDIAN:
-      return "median";
-    case COUNT:
-      return "count";
-    case DESCRIPTIVE:
-      return "descriptive";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

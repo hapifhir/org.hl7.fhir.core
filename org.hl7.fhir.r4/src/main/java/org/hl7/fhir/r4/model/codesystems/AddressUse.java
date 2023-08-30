@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,112 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AddressUse {
 
-  /**
-   * A communication address at a home.
-   */
-  HOME,
-  /**
-   * An office address. First choice for business related contacts during business
-   * hours.
-   */
-  WORK,
-  /**
-   * A temporary address. The period can provide more detailed information.
-   */
-  TEMP,
-  /**
-   * This address is no longer in use (or was never correct but retained for
-   * records).
-   */
-  OLD,
-  /**
-   * An address to be used to send bills, invoices, receipts etc.
-   */
-  BILLING,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static AddressUse fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("home".equals(codeString))
-      return HOME;
-    if ("work".equals(codeString))
-      return WORK;
-    if ("temp".equals(codeString))
-      return TEMP;
-    if ("old".equals(codeString))
-      return OLD;
-    if ("billing".equals(codeString))
-      return BILLING;
-    throw new FHIRException("Unknown AddressUse code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case HOME:
-      return "home";
-    case WORK:
-      return "work";
-    case TEMP:
-      return "temp";
-    case OLD:
-      return "old";
-    case BILLING:
-      return "billing";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A communication address at a home.
+         */
+        HOME, 
+        /**
+         * An office address. First choice for business related contacts during business hours.
+         */
+        WORK, 
+        /**
+         * A temporary address. The period can provide more detailed information.
+         */
+        TEMP, 
+        /**
+         * This address is no longer in use (or was never correct but retained for records).
+         */
+        OLD, 
+        /**
+         * An address to be used to send bills, invoices, receipts etc.
+         */
+        BILLING, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static AddressUse fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("home".equals(codeString))
+          return HOME;
+        if ("work".equals(codeString))
+          return WORK;
+        if ("temp".equals(codeString))
+          return TEMP;
+        if ("old".equals(codeString))
+          return OLD;
+        if ("billing".equals(codeString))
+          return BILLING;
+        throw new FHIRException("Unknown AddressUse code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case HOME: return "home";
+            case WORK: return "work";
+            case TEMP: return "temp";
+            case OLD: return "old";
+            case BILLING: return "billing";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/address-use";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case HOME: return "A communication address at a home.";
+            case WORK: return "An office address. First choice for business related contacts during business hours.";
+            case TEMP: return "A temporary address. The period can provide more detailed information.";
+            case OLD: return "This address is no longer in use (or was never correct but retained for records).";
+            case BILLING: return "An address to be used to send bills, invoices, receipts etc.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case HOME: return "Home";
+            case WORK: return "Work";
+            case TEMP: return "Temporary";
+            case OLD: return "Old / Incorrect";
+            case BILLING: return "Billing";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/address-use";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case HOME:
-      return "A communication address at a home.";
-    case WORK:
-      return "An office address. First choice for business related contacts during business hours.";
-    case TEMP:
-      return "A temporary address. The period can provide more detailed information.";
-    case OLD:
-      return "This address is no longer in use (or was never correct but retained for records).";
-    case BILLING:
-      return "An address to be used to send bills, invoices, receipts etc.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case HOME:
-      return "Home";
-    case WORK:
-      return "Work";
-    case TEMP:
-      return "Temporary";
-    case OLD:
-      return "Old / Incorrect";
-    case BILLING:
-      return "Billing";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

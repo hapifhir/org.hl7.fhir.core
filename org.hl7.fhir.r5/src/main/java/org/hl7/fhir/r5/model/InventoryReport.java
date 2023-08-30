@@ -568,7 +568,7 @@ public class InventoryReport extends DomainResource {
           return this.itemStatus;
         }
         else if (name.equals("countingDateTime")) {
-          throw new FHIRException("Cannot call addChild on a singleton property InventoryReport.inventoryListing.countingDateTime");
+          throw new FHIRException("Cannot call addChild on a primitive type InventoryReport.inventoryListing.countingDateTime");
         }
         else if (name.equals("item")) {
           return addItem();
@@ -1528,10 +1528,10 @@ public class InventoryReport extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property InventoryReport.status");
+          throw new FHIRException("Cannot call addChild on a primitive type InventoryReport.status");
         }
         else if (name.equals("countType")) {
-          throw new FHIRException("Cannot call addChild on a singleton property InventoryReport.countType");
+          throw new FHIRException("Cannot call addChild on a primitive type InventoryReport.countType");
         }
         else if (name.equals("operationType")) {
           this.operationType = new CodeableConcept();
@@ -1542,7 +1542,7 @@ public class InventoryReport extends DomainResource {
           return this.operationTypeReason;
         }
         else if (name.equals("reportedDateTime")) {
-          throw new FHIRException("Cannot call addChild on a singleton property InventoryReport.reportedDateTime");
+          throw new FHIRException("Cannot call addChild on a primitive type InventoryReport.reportedDateTime");
         }
         else if (name.equals("reporter")) {
           this.reporter = new Reference();

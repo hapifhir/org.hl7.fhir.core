@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum SubstanceStatus {
 
-  /**
-   * The substance is considered for use or reference.
-   */
-  ACTIVE,
-  /**
-   * The substance is considered for reference, but not for use.
-   */
-  INACTIVE,
-  /**
-   * The substance was entered in error.
-   */
-  ENTEREDINERROR,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static SubstanceStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("active".equals(codeString))
-      return ACTIVE;
-    if ("inactive".equals(codeString))
-      return INACTIVE;
-    if ("entered-in-error".equals(codeString))
-      return ENTEREDINERROR;
-    throw new FHIRException("Unknown SubstanceStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ACTIVE:
-      return "active";
-    case INACTIVE:
-      return "inactive";
-    case ENTEREDINERROR:
-      return "entered-in-error";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The substance is considered for use or reference.
+         */
+        ACTIVE, 
+        /**
+         * The substance is considered for reference, but not for use.
+         */
+        INACTIVE, 
+        /**
+         * The substance was entered in error.
+         */
+        ENTEREDINERROR, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static SubstanceStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("active".equals(codeString))
+          return ACTIVE;
+        if ("inactive".equals(codeString))
+          return INACTIVE;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        throw new FHIRException("Unknown SubstanceStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ACTIVE: return "active";
+            case INACTIVE: return "inactive";
+            case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/substance-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ACTIVE: return "The substance is considered for use or reference.";
+            case INACTIVE: return "The substance is considered for reference, but not for use.";
+            case ENTEREDINERROR: return "The substance was entered in error.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ACTIVE: return "Active";
+            case INACTIVE: return "Inactive";
+            case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/substance-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ACTIVE:
-      return "The substance is considered for use or reference.";
-    case INACTIVE:
-      return "The substance is considered for reference, but not for use.";
-    case ENTEREDINERROR:
-      return "The substance was entered in error.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ACTIVE:
-      return "Active";
-    case INACTIVE:
-      return "Inactive";
-    case ENTEREDINERROR:
-      return "Entered in Error";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

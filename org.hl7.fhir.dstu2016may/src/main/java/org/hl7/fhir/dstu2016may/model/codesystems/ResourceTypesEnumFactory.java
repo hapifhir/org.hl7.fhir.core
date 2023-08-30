@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 */
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
+
 
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
@@ -268,7 +272,7 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
       return ResourceTypes.VALUESET;
     if ("VisionPrescription".equals(codeString))
       return ResourceTypes.VISIONPRESCRIPTION;
-    throw new IllegalArgumentException("Unknown ResourceTypes code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ResourceTypes code '"+codeString+"'");
   }
 
   public String toCode(ResourceTypes code) {
@@ -505,8 +509,8 @@ public class ResourceTypesEnumFactory implements EnumFactory<ResourceTypes> {
     return "?";
   }
 
-  public String toSystem(ResourceTypes code) {
-    return code.getSystem();
-  }
+    public String toSystem(ResourceTypes code) {
+      return code.getSystem();
+      }
 
 }

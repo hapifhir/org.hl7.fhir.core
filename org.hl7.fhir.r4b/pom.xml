@@ -38,13 +38,19 @@
 		<dependency>
 			<groupId>org.fhir</groupId>
 			<artifactId>ucum</artifactId>
+			<version>1.0.3</version>
 			<optional>true</optional>
 		</dependency>
 
 		<!-- XML Parsers -->
 		<dependency>
-			<groupId>org.ogce</groupId>
+			<groupId>xpp3</groupId>
 			<artifactId>xpp3</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3_xpath</artifactId>
 			<optional>true</optional>
 		</dependency>
 
@@ -72,17 +78,7 @@
 			<optional>true</optional>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.squareup.okio</groupId>
-			<artifactId>okio</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.squareup.okio</groupId>
-			<artifactId>okio-jvm</artifactId>
-			<optional>true</optional>
-		</dependency>
-
+		
 		<!-- Apache POI -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>

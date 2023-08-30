@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class SelectionBehaviorEnumFactory implements EnumFactory<SelectionBehavior> {
@@ -50,7 +54,7 @@ public class SelectionBehaviorEnumFactory implements EnumFactory<SelectionBehavi
       return SelectionBehavior.ATMOSTONE;
     if ("one-or-more".equals(codeString))
       return SelectionBehavior.ONEORMORE;
-    throw new IllegalArgumentException("Unknown SelectionBehavior code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown SelectionBehavior code '"+codeString+"'");
   }
 
   public String toCode(SelectionBehavior code) {
@@ -69,8 +73,8 @@ public class SelectionBehaviorEnumFactory implements EnumFactory<SelectionBehavi
     return "?";
   }
 
-  public String toSystem(SelectionBehavior code) {
-    return code.getSystem();
-  }
+    public String toSystem(SelectionBehavior code) {
+      return code.getSystem();
+      }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class QuestionnaireEnableOperatorEnumFactory implements EnumFactory<QuestionnaireEnableOperator> {
@@ -52,7 +56,7 @@ public class QuestionnaireEnableOperatorEnumFactory implements EnumFactory<Quest
       return QuestionnaireEnableOperator.GREATER_OR_EQUAL;
     if ("<=".equals(codeString))
       return QuestionnaireEnableOperator.LESS_OR_EQUAL;
-    throw new IllegalArgumentException("Unknown QuestionnaireEnableOperator code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown QuestionnaireEnableOperator code '"+codeString+"'");
   }
 
   public String toCode(QuestionnaireEnableOperator code) {
@@ -73,8 +77,8 @@ public class QuestionnaireEnableOperatorEnumFactory implements EnumFactory<Quest
     return "?";
   }
 
-  public String toSystem(QuestionnaireEnableOperator code) {
-    return code.getSystem();
-  }
+    public String toSystem(QuestionnaireEnableOperator code) {
+      return code.getSystem();
+      }
 
 }

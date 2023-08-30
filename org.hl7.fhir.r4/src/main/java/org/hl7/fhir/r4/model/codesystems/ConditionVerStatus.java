@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,126 +34,95 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConditionVerStatus {
 
-  /**
-   * There is not sufficient diagnostic and/or clinical evidence to treat this as
-   * a confirmed condition.
-   */
-  UNCONFIRMED,
-  /**
-   * This is a tentative diagnosis - still a candidate that is under
-   * consideration.
-   */
-  PROVISIONAL,
-  /**
-   * One of a set of potential (and typically mutually exclusive) diagnoses
-   * asserted to further guide the diagnostic process and preliminary treatment.
-   */
-  DIFFERENTIAL,
-  /**
-   * There is sufficient diagnostic and/or clinical evidence to treat this as a
-   * confirmed condition.
-   */
-  CONFIRMED,
-  /**
-   * This condition has been ruled out by diagnostic and clinical evidence.
-   */
-  REFUTED,
-  /**
-   * The statement was entered in error and is not valid.
-   */
-  ENTEREDINERROR,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ConditionVerStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("unconfirmed".equals(codeString))
-      return UNCONFIRMED;
-    if ("provisional".equals(codeString))
-      return PROVISIONAL;
-    if ("differential".equals(codeString))
-      return DIFFERENTIAL;
-    if ("confirmed".equals(codeString))
-      return CONFIRMED;
-    if ("refuted".equals(codeString))
-      return REFUTED;
-    if ("entered-in-error".equals(codeString))
-      return ENTEREDINERROR;
-    throw new FHIRException("Unknown ConditionVerStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case UNCONFIRMED:
-      return "unconfirmed";
-    case PROVISIONAL:
-      return "provisional";
-    case DIFFERENTIAL:
-      return "differential";
-    case CONFIRMED:
-      return "confirmed";
-    case REFUTED:
-      return "refuted";
-    case ENTEREDINERROR:
-      return "entered-in-error";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * There is not sufficient diagnostic and/or clinical evidence to treat this as a confirmed condition.
+         */
+        UNCONFIRMED, 
+        /**
+         * This is a tentative diagnosis - still a candidate that is under consideration.
+         */
+        PROVISIONAL, 
+        /**
+         * One of a set of potential (and typically mutually exclusive) diagnoses asserted to further guide the diagnostic process and preliminary treatment.
+         */
+        DIFFERENTIAL, 
+        /**
+         * There is sufficient diagnostic and/or clinical evidence to treat this as a confirmed condition.
+         */
+        CONFIRMED, 
+        /**
+         * This condition has been ruled out by diagnostic and clinical evidence.
+         */
+        REFUTED, 
+        /**
+         * The statement was entered in error and is not valid.
+         */
+        ENTEREDINERROR, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ConditionVerStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("unconfirmed".equals(codeString))
+          return UNCONFIRMED;
+        if ("provisional".equals(codeString))
+          return PROVISIONAL;
+        if ("differential".equals(codeString))
+          return DIFFERENTIAL;
+        if ("confirmed".equals(codeString))
+          return CONFIRMED;
+        if ("refuted".equals(codeString))
+          return REFUTED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        throw new FHIRException("Unknown ConditionVerStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case UNCONFIRMED: return "unconfirmed";
+            case PROVISIONAL: return "provisional";
+            case DIFFERENTIAL: return "differential";
+            case CONFIRMED: return "confirmed";
+            case REFUTED: return "refuted";
+            case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/condition-ver-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case UNCONFIRMED: return "There is not sufficient diagnostic and/or clinical evidence to treat this as a confirmed condition.";
+            case PROVISIONAL: return "This is a tentative diagnosis - still a candidate that is under consideration.";
+            case DIFFERENTIAL: return "One of a set of potential (and typically mutually exclusive) diagnoses asserted to further guide the diagnostic process and preliminary treatment.";
+            case CONFIRMED: return "There is sufficient diagnostic and/or clinical evidence to treat this as a confirmed condition.";
+            case REFUTED: return "This condition has been ruled out by diagnostic and clinical evidence.";
+            case ENTEREDINERROR: return "The statement was entered in error and is not valid.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case UNCONFIRMED: return "Unconfirmed";
+            case PROVISIONAL: return "Provisional";
+            case DIFFERENTIAL: return "Differential";
+            case CONFIRMED: return "Confirmed";
+            case REFUTED: return "Refuted";
+            case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/condition-ver-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case UNCONFIRMED:
-      return "There is not sufficient diagnostic and/or clinical evidence to treat this as a confirmed condition.";
-    case PROVISIONAL:
-      return "This is a tentative diagnosis - still a candidate that is under consideration.";
-    case DIFFERENTIAL:
-      return "One of a set of potential (and typically mutually exclusive) diagnoses asserted to further guide the diagnostic process and preliminary treatment.";
-    case CONFIRMED:
-      return "There is sufficient diagnostic and/or clinical evidence to treat this as a confirmed condition.";
-    case REFUTED:
-      return "This condition has been ruled out by diagnostic and clinical evidence.";
-    case ENTEREDINERROR:
-      return "The statement was entered in error and is not valid.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case UNCONFIRMED:
-      return "Unconfirmed";
-    case PROVISIONAL:
-      return "Provisional";
-    case DIFFERENTIAL:
-      return "Differential";
-    case CONFIRMED:
-      return "Confirmed";
-    case REFUTED:
-      return "Refuted";
-    case ENTEREDINERROR:
-      return "Entered in Error";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

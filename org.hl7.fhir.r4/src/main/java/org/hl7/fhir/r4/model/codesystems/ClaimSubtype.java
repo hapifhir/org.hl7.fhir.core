@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ClaimSubtype {
 
-  /**
-   * A claim for Orthodontic Services.
-   */
-  ORTHO,
-  /**
-   * A claim for emergency services.
-   */
-  EMERGENCY,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ClaimSubtype fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("ortho".equals(codeString))
-      return ORTHO;
-    if ("emergency".equals(codeString))
-      return EMERGENCY;
-    throw new FHIRException("Unknown ClaimSubtype code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ORTHO:
-      return "ortho";
-    case EMERGENCY:
-      return "emergency";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A claim for Orthodontic Services.
+         */
+        ORTHO, 
+        /**
+         * A claim for emergency services.
+         */
+        EMERGENCY, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ClaimSubtype fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("ortho".equals(codeString))
+          return ORTHO;
+        if ("emergency".equals(codeString))
+          return EMERGENCY;
+        throw new FHIRException("Unknown ClaimSubtype code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ORTHO: return "ortho";
+            case EMERGENCY: return "emergency";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/ex-claimsubtype";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ORTHO: return "A claim for Orthodontic Services.";
+            case EMERGENCY: return "A claim for emergency services.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ORTHO: return "Orthodontic Claim";
+            case EMERGENCY: return "Emergency Claim";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/ex-claimsubtype";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ORTHO:
-      return "A claim for Orthodontic Services.";
-    case EMERGENCY:
-      return "A claim for emergency services.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ORTHO:
-      return "Orthodontic Claim";
-    case EMERGENCY:
-      return "Emergency Claim";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

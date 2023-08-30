@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class StandardsStatusEnumFactory implements EnumFactory<StandardsStatus> {
@@ -50,7 +54,7 @@ public class StandardsStatusEnumFactory implements EnumFactory<StandardsStatus> 
       return StandardsStatus.DEPRECATED;
     if ("external".equals(codeString))
       return StandardsStatus.EXTERNAL;
-    throw new IllegalArgumentException("Unknown StandardsStatus code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown StandardsStatus code '"+codeString+"'");
   }
 
   public String toCode(StandardsStatus code) {
@@ -69,8 +73,8 @@ public class StandardsStatusEnumFactory implements EnumFactory<StandardsStatus> 
     return "?";
   }
 
-  public String toSystem(StandardsStatus code) {
-    return code.getSystem();
-  }
+    public String toSystem(StandardsStatus code) {
+      return code.getSystem();
+      }
 
 }

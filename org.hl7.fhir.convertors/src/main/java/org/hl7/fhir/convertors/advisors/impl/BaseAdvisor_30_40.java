@@ -1,5 +1,9 @@
 package org.hl7.fhir.convertors.advisors.impl;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import org.hl7.fhir.convertors.advisors.interfaces.BaseAdvisor40;

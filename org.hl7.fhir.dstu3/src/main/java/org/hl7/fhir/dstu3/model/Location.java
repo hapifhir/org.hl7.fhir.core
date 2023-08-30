@@ -579,13 +579,13 @@ public class Location extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("longitude")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Location.longitude");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.longitude");
         }
         else if (name.equals("latitude")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Location.latitude");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.latitude");
         }
         else if (name.equals("altitude")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Location.altitude");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.altitude");
         }
         else
           return super.addChild(name);
@@ -1625,23 +1625,23 @@ public class Location extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Location.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.status");
         }
         else if (name.equals("operationalStatus")) {
           this.operationalStatus = new Coding();
           return this.operationalStatus;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Location.name");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.name");
         }
         else if (name.equals("alias")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Location.alias");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.alias");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Location.description");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.description");
         }
         else if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Location.mode");
+          throw new FHIRException("Cannot call addChild on a primitive type Location.mode");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();

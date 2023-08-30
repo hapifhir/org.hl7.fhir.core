@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class V3SetOperatorEnumFactory implements EnumFactory<V3SetOperator> {
@@ -50,7 +54,7 @@ public class V3SetOperatorEnumFactory implements EnumFactory<V3SetOperator> {
       return V3SetOperator.H;
     if ("P".equals(codeString))
       return V3SetOperator.P;
-    throw new IllegalArgumentException("Unknown V3SetOperator code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3SetOperator code '"+codeString+"'");
   }
 
   public String toCode(V3SetOperator code) {
@@ -69,8 +73,8 @@ public class V3SetOperatorEnumFactory implements EnumFactory<V3SetOperator> {
     return "?";
   }
 
-  public String toSystem(V3SetOperator code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3SetOperator code) {
+      return code.getSystem();
+      }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ProcedureRelationshipType {
 
-  /**
-   * This procedure had to be performed because of the related one.
-   */
-  CAUSEDBY,
-  /**
-   * This procedure caused the related one to be performed.
-   */
-  BECAUSEOF,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ProcedureRelationshipType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("caused-by".equals(codeString))
-      return CAUSEDBY;
-    if ("because-of".equals(codeString))
-      return BECAUSEOF;
-    throw new FHIRException("Unknown ProcedureRelationshipType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case CAUSEDBY:
-      return "caused-by";
-    case BECAUSEOF:
-      return "because-of";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * This procedure had to be performed because of the related one.
+         */
+        CAUSEDBY, 
+        /**
+         * This procedure caused the related one to be performed.
+         */
+        BECAUSEOF, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ProcedureRelationshipType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("caused-by".equals(codeString))
+          return CAUSEDBY;
+        if ("because-of".equals(codeString))
+          return BECAUSEOF;
+        throw new FHIRException("Unknown ProcedureRelationshipType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case CAUSEDBY: return "caused-by";
+            case BECAUSEOF: return "because-of";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/procedure-relationship-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case CAUSEDBY: return "This procedure had to be performed because of the related one.";
+            case BECAUSEOF: return "This procedure caused the related one to be performed.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case CAUSEDBY: return "Caused By";
+            case BECAUSEOF: return "Because Of";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/procedure-relationship-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case CAUSEDBY:
-      return "This procedure had to be performed because of the related one.";
-    case BECAUSEOF:
-      return "This procedure caused the related one to be performed.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case CAUSEDBY:
-      return "Caused By";
-    case BECAUSEOF:
-      return "Because Of";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

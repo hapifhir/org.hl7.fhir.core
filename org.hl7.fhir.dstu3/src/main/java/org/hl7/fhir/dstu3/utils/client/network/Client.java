@@ -1,19 +1,18 @@
 package org.hl7.fhir.dstu3.utils.client.network;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 
-import okhttp3.Headers;
-import okhttp3.MediaType;
-import okhttp3.Request;
-import okhttp3.RequestBody;
+import java.io.IOException;
+import java.net.URI;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Client {
 
@@ -22,16 +21,6 @@ public class Client {
   private ToolingClientLogger logger;
   private int retryCount;
   private long timeout = DEFAULT_TIMEOUT;
-  private String base;
-  
-  public String getBase() {
-    return base;
-  }
-
-  public void setBase(String base) {
-    this.base = base;
-  }
-
 
   public ToolingClientLogger getLogger() {
     return logger;
@@ -177,7 +166,7 @@ public class Client {
                                                              String message,
                                                              int retryCount,
                                                              long timeout) throws IOException {
-    return new FhirRequestBuilder(request, base)
+    return new FhirRequestBuilder(request)
       .withLogger(logger)
       .withResourceFormat(resourceFormat)
       .withRetryCount(retryCount)
@@ -193,7 +182,7 @@ public class Client {
                                                                        String message,
                                                                        int retryCount,
                                                                        long timeout) throws IOException {
-    return new FhirRequestBuilder(request, base)
+    return new FhirRequestBuilder(request)
       .withLogger(logger)
       .withResourceFormat(resourceFormat)
       .withRetryCount(retryCount)

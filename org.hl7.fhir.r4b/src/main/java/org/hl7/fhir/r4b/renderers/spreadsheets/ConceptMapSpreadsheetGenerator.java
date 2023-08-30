@@ -12,6 +12,7 @@ import org.hl7.fhir.r4b.model.ConceptMap.TargetElementComponent;
 
 public class ConceptMapSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
 
+  
   public ConceptMapSpreadsheetGenerator(IWorkerContext context) {
     super(context);
   }
@@ -36,19 +37,18 @@ public class ConceptMapSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
     }
     if (cm.hasTarget()) {
       addMetadataRow(sheet, "Target", cm.getTarget().primitiveValue());
-    }
+    }    
   }
 
   private void renderGroup(ConceptMapGroupComponent grp, int i) {
-    Sheet sheet = makeSheet("Mapping Table " + Integer.toString(i));
+    Sheet sheet = makeSheet("Mapping Table "+Integer.toString(i));
     addHeaders(sheet, "Source", "Display", "Relationship", "Target", "Display");
     addRow(sheet, grp.getSource(), "", "", grp.getTarget(), "");
     for (SourceElementComponent s : grp.getElement()) {
       for (TargetElementComponent t : s.getTarget()) {
-        addRow(sheet, s.getCode(), s.getDisplay(), t.getEquivalenceElement().asStringValue(), t.getCode(),
-            t.getDisplay());
+        addRow(sheet, s.getCode(), s.getDisplay(), t.getEquivalenceElement().asStringValue(), t.getCode(), t.getDisplay());        
       }
-    }
+    }    
   }
 
 }

@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.formats;
   
  */
 
+
+
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
@@ -38,7 +40,7 @@ import com.google.gson.stream.JsonWriter;
 public class JsonCreatorGson implements JsonCreator {
 
   JsonWriter gson;
-
+  
   public JsonCreatorGson(OutputStreamWriter osw) {
     gson = new JsonWriter(osw);
   }
@@ -50,7 +52,7 @@ public class JsonCreatorGson implements JsonCreator {
 
   @Override
   public void beginObject() throws IOException {
-    gson.beginObject();
+    gson.beginObject();    
   }
 
   @Override
@@ -101,7 +103,7 @@ public class JsonCreatorGson implements JsonCreator {
   @Override
   public void finish() {
     // nothing to do here
-
+    
   }
 
   @Override
@@ -111,12 +113,12 @@ public class JsonCreatorGson implements JsonCreator {
 
   @Override
   public void valueNum(String value) throws IOException {
-    value(new BigDecimal(value));
+    value(new BigDecimal(value));    
   }
 
   @Override
   public void anchor(String name) {
     // not used
   }
-
+       
 }

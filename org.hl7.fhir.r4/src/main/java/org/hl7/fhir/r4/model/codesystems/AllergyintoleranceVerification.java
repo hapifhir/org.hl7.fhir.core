@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,104 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AllergyintoleranceVerification {
 
-  /**
-   * A low level of certainty about the propensity for a reaction to the
-   * identified substance.
-   */
-  UNCONFIRMED,
-  /**
-   * A high level of certainty about the propensity for a reaction to the
-   * identified substance, which may include clinical evidence by testing or
-   * rechallenge.
-   */
-  CONFIRMED,
-  /**
-   * A propensity for a reaction to the identified substance has been disputed or
-   * disproven with a sufficient level of clinical certainty to justify
-   * invalidating the assertion. This might or might not include testing or
-   * rechallenge.
-   */
-  REFUTED,
-  /**
-   * The statement was entered in error and is not valid.
-   */
-  ENTEREDINERROR,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static AllergyintoleranceVerification fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("unconfirmed".equals(codeString))
-      return UNCONFIRMED;
-    if ("confirmed".equals(codeString))
-      return CONFIRMED;
-    if ("refuted".equals(codeString))
-      return REFUTED;
-    if ("entered-in-error".equals(codeString))
-      return ENTEREDINERROR;
-    throw new FHIRException("Unknown AllergyintoleranceVerification code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case UNCONFIRMED:
-      return "unconfirmed";
-    case CONFIRMED:
-      return "confirmed";
-    case REFUTED:
-      return "refuted";
-    case ENTEREDINERROR:
-      return "entered-in-error";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A low level of certainty about the propensity for a reaction to the identified substance.
+         */
+        UNCONFIRMED, 
+        /**
+         * A high level of certainty about the propensity for a reaction to the identified substance, which may include clinical evidence by testing or rechallenge.
+         */
+        CONFIRMED, 
+        /**
+         * A propensity for a reaction to the identified substance has been disputed or disproven with a sufficient level of clinical certainty to justify invalidating the assertion. This might or might not include testing or rechallenge.
+         */
+        REFUTED, 
+        /**
+         * The statement was entered in error and is not valid.
+         */
+        ENTEREDINERROR, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static AllergyintoleranceVerification fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("unconfirmed".equals(codeString))
+          return UNCONFIRMED;
+        if ("confirmed".equals(codeString))
+          return CONFIRMED;
+        if ("refuted".equals(codeString))
+          return REFUTED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        throw new FHIRException("Unknown AllergyintoleranceVerification code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case UNCONFIRMED: return "unconfirmed";
+            case CONFIRMED: return "confirmed";
+            case REFUTED: return "refuted";
+            case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case UNCONFIRMED: return "A low level of certainty about the propensity for a reaction to the identified substance.";
+            case CONFIRMED: return "A high level of certainty about the propensity for a reaction to the identified substance, which may include clinical evidence by testing or rechallenge.";
+            case REFUTED: return "A propensity for a reaction to the identified substance has been disputed or disproven with a sufficient level of clinical certainty to justify invalidating the assertion. This might or might not include testing or rechallenge.";
+            case ENTEREDINERROR: return "The statement was entered in error and is not valid.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case UNCONFIRMED: return "Unconfirmed";
+            case CONFIRMED: return "Confirmed";
+            case REFUTED: return "Refuted";
+            case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case UNCONFIRMED:
-      return "A low level of certainty about the propensity for a reaction to the identified substance.";
-    case CONFIRMED:
-      return "A high level of certainty about the propensity for a reaction to the identified substance, which may include clinical evidence by testing or rechallenge.";
-    case REFUTED:
-      return "A propensity for a reaction to the identified substance has been disputed or disproven with a sufficient level of clinical certainty to justify invalidating the assertion. This might or might not include testing or rechallenge.";
-    case ENTEREDINERROR:
-      return "The statement was entered in error and is not valid.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case UNCONFIRMED:
-      return "Unconfirmed";
-    case CONFIRMED:
-      return "Confirmed";
-    case REFUTED:
-      return "Refuted";
-    case ENTEREDINERROR:
-      return "Entered in Error";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

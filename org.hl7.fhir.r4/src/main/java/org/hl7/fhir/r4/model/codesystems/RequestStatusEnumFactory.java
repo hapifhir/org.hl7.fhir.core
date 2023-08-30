@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class RequestStatusEnumFactory implements EnumFactory<RequestStatus> {
@@ -52,7 +56,7 @@ public class RequestStatusEnumFactory implements EnumFactory<RequestStatus> {
       return RequestStatus.ENTEREDINERROR;
     if ("unknown".equals(codeString))
       return RequestStatus.UNKNOWN;
-    throw new IllegalArgumentException("Unknown RequestStatus code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown RequestStatus code '"+codeString+"'");
   }
 
   public String toCode(RequestStatus code) {
@@ -73,8 +77,8 @@ public class RequestStatusEnumFactory implements EnumFactory<RequestStatus> {
     return "?";
   }
 
-  public String toSystem(RequestStatus code) {
-    return code.getSystem();
-  }
+    public String toSystem(RequestStatus code) {
+      return code.getSystem();
+      }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,77 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum LocationMode {
 
-  /**
-   * The Location resource represents a specific instance of a location (e.g.
-   * Operating Theatre 1A).
-   */
-  INSTANCE,
-  /**
-   * The Location represents a class of locations (e.g. Any Operating Theatre)
-   * although this class of locations could be constrained within a specific
-   * boundary (such as organization, or parent location, address etc.).
-   */
-  KIND,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static LocationMode fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("instance".equals(codeString))
-      return INSTANCE;
-    if ("kind".equals(codeString))
-      return KIND;
-    throw new FHIRException("Unknown LocationMode code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INSTANCE:
-      return "instance";
-    case KIND:
-      return "kind";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The Location resource represents a specific instance of a location (e.g. Operating Theatre 1A).
+         */
+        INSTANCE, 
+        /**
+         * The Location represents a class of locations (e.g. Any Operating Theatre) although this class of locations could be constrained within a specific boundary (such as organization, or parent location, address etc.).
+         */
+        KIND, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static LocationMode fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("instance".equals(codeString))
+          return INSTANCE;
+        if ("kind".equals(codeString))
+          return KIND;
+        throw new FHIRException("Unknown LocationMode code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INSTANCE: return "instance";
+            case KIND: return "kind";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/location-mode";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INSTANCE: return "The Location resource represents a specific instance of a location (e.g. Operating Theatre 1A).";
+            case KIND: return "The Location represents a class of locations (e.g. Any Operating Theatre) although this class of locations could be constrained within a specific boundary (such as organization, or parent location, address etc.).";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INSTANCE: return "Instance";
+            case KIND: return "Kind";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/location-mode";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INSTANCE:
-      return "The Location resource represents a specific instance of a location (e.g. Operating Theatre 1A).";
-    case KIND:
-      return "The Location represents a class of locations (e.g. Any Operating Theatre) although this class of locations could be constrained within a specific boundary (such as organization, or parent location, address etc.).";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INSTANCE:
-      return "Instance";
-    case KIND:
-      return "Kind";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

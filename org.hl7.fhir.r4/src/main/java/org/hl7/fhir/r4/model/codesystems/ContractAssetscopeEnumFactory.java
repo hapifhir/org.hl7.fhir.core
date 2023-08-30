@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ContractAssetscopeEnumFactory implements EnumFactory<ContractAssetscope> {
@@ -40,7 +44,7 @@ public class ContractAssetscopeEnumFactory implements EnumFactory<ContractAssets
       return null;
     if ("thing".equals(codeString))
       return ContractAssetscope.THING;
-    throw new IllegalArgumentException("Unknown ContractAssetscope code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ContractAssetscope code '"+codeString+"'");
   }
 
   public String toCode(ContractAssetscope code) {
@@ -49,8 +53,8 @@ public class ContractAssetscopeEnumFactory implements EnumFactory<ContractAssets
     return "?";
   }
 
-  public String toSystem(ContractAssetscope code) {
-    return code.getSystem();
-  }
+    public String toSystem(ContractAssetscope code) {
+      return code.getSystem();
+      }
 
 }

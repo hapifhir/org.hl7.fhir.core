@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum DWebType {
 
-  /**
-   * Web Access to DICOM Persistent Objects - RESTful Services
-   */
-  WADORS,
-  /**
-   * Web Access to DICOM Persistent Objects - URI
-   */
-  WADOURI,
-  /**
-   * IHE - Invoke Image Display Profile
-   */
-  IID,
-  /**
-   * Web Access to DICOM Persistent Objects - Web Services
-   */
-  WADOWS,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static DWebType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("WADO-RS".equals(codeString))
-      return WADORS;
-    if ("WADO-URI".equals(codeString))
-      return WADOURI;
-    if ("IID".equals(codeString))
-      return IID;
-    if ("WADO-WS".equals(codeString))
-      return WADOWS;
-    throw new FHIRException("Unknown DWebType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case WADORS:
-      return "WADO-RS";
-    case WADOURI:
-      return "WADO-URI";
-    case IID:
-      return "IID";
-    case WADOWS:
-      return "WADO-WS";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Web Access to DICOM Persistent Objects - RESTful Services
+         */
+        WADORS, 
+        /**
+         * Web Access to DICOM Persistent Objects - URI
+         */
+        WADOURI, 
+        /**
+         * IHE - Invoke Image Display Profile
+         */
+        IID, 
+        /**
+         * Web Access to DICOM Persistent Objects - Web Services
+         */
+        WADOWS, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static DWebType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("WADO-RS".equals(codeString))
+          return WADORS;
+        if ("WADO-URI".equals(codeString))
+          return WADOURI;
+        if ("IID".equals(codeString))
+          return IID;
+        if ("WADO-WS".equals(codeString))
+          return WADOWS;
+        throw new FHIRException("Unknown DWebType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case WADORS: return "WADO-RS";
+            case WADOURI: return "WADO-URI";
+            case IID: return "IID";
+            case WADOWS: return "WADO-WS";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/dWebType";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case WADORS: return "Web Access to DICOM Persistent Objects - RESTful Services";
+            case WADOURI: return "Web Access to DICOM Persistent Objects - URI";
+            case IID: return "IHE - Invoke Image Display Profile";
+            case WADOWS: return "Web Access to DICOM Persistent Objects - Web Services";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case WADORS: return "WADO-RS";
+            case WADOURI: return "WADO-URI";
+            case IID: return "IID";
+            case WADOWS: return "WADO-WS";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/dWebType";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case WADORS:
-      return "Web Access to DICOM Persistent Objects - RESTful Services";
-    case WADOURI:
-      return "Web Access to DICOM Persistent Objects - URI";
-    case IID:
-      return "IHE - Invoke Image Display Profile";
-    case WADOWS:
-      return "Web Access to DICOM Persistent Objects - Web Services";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case WADORS:
-      return "WADO-RS";
-    case WADOURI:
-      return "WADO-URI";
-    case IID:
-      return "IID";
-    case WADOWS:
-      return "WADO-WS";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

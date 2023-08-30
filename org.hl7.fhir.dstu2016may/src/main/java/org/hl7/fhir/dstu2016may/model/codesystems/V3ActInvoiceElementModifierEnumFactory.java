@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class V3ActInvoiceElementModifierEnumFactory implements EnumFactory<V3ActInvoiceElementModifier> {
@@ -46,7 +50,7 @@ public class V3ActInvoiceElementModifierEnumFactory implements EnumFactory<V3Act
       return V3ActInvoiceElementModifier.LINV;
     if ("PAPER".equals(codeString))
       return V3ActInvoiceElementModifier.PAPER;
-    throw new IllegalArgumentException("Unknown V3ActInvoiceElementModifier code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3ActInvoiceElementModifier code '"+codeString+"'");
   }
 
   public String toCode(V3ActInvoiceElementModifier code) {
@@ -61,8 +65,8 @@ public class V3ActInvoiceElementModifierEnumFactory implements EnumFactory<V3Act
     return "?";
   }
 
-  public String toSystem(V3ActInvoiceElementModifier code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3ActInvoiceElementModifier code) {
+      return code.getSystem();
+      }
 
 }

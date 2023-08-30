@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class CoverageClassEnumFactory implements EnumFactory<CoverageClass> {
@@ -60,7 +64,7 @@ public class CoverageClassEnumFactory implements EnumFactory<CoverageClass> {
       return CoverageClass.RXID;
     if ("rxgroup".equals(codeString))
       return CoverageClass.RXGROUP;
-    throw new IllegalArgumentException("Unknown CoverageClass code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown CoverageClass code '"+codeString+"'");
   }
 
   public String toCode(CoverageClass code) {
@@ -89,8 +93,8 @@ public class CoverageClassEnumFactory implements EnumFactory<CoverageClass> {
     return "?";
   }
 
-  public String toSystem(CoverageClass code) {
-    return code.getSystem();
-  }
+    public String toSystem(CoverageClass code) {
+      return code.getSystem();
+      }
 
 }

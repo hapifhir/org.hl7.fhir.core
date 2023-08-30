@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,194 +34,149 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ContainerCap {
 
-  /**
-   * red cap.
-   */
-  RED,
-  /**
-   * yellow cap.
-   */
-  YELLOW,
-  /**
-   * dark yellow cap.
-   */
-  DARKYELLOW,
-  /**
-   * grey cap.
-   */
-  GREY,
-  /**
-   * light blue cap.
-   */
-  LIGHTBLUE,
-  /**
-   * black cap.
-   */
-  BLACK,
-  /**
-   * green cap.
-   */
-  GREEN,
-  /**
-   * light green cap.
-   */
-  LIGHTGREEN,
-  /**
-   * lavender cap.
-   */
-  LAVENDER,
-  /**
-   * brown cap.
-   */
-  BROWN,
-  /**
-   * white cap.
-   */
-  WHITE,
-  /**
-   * pink cap.
-   */
-  PINK,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ContainerCap fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("red".equals(codeString))
-      return RED;
-    if ("yellow".equals(codeString))
-      return YELLOW;
-    if ("dark-yellow".equals(codeString))
-      return DARKYELLOW;
-    if ("grey".equals(codeString))
-      return GREY;
-    if ("light-blue".equals(codeString))
-      return LIGHTBLUE;
-    if ("black".equals(codeString))
-      return BLACK;
-    if ("green".equals(codeString))
-      return GREEN;
-    if ("light-green".equals(codeString))
-      return LIGHTGREEN;
-    if ("lavender".equals(codeString))
-      return LAVENDER;
-    if ("brown".equals(codeString))
-      return BROWN;
-    if ("white".equals(codeString))
-      return WHITE;
-    if ("pink".equals(codeString))
-      return PINK;
-    throw new FHIRException("Unknown ContainerCap code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case RED:
-      return "red";
-    case YELLOW:
-      return "yellow";
-    case DARKYELLOW:
-      return "dark-yellow";
-    case GREY:
-      return "grey";
-    case LIGHTBLUE:
-      return "light-blue";
-    case BLACK:
-      return "black";
-    case GREEN:
-      return "green";
-    case LIGHTGREEN:
-      return "light-green";
-    case LAVENDER:
-      return "lavender";
-    case BROWN:
-      return "brown";
-    case WHITE:
-      return "white";
-    case PINK:
-      return "pink";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * red cap.
+         */
+        RED, 
+        /**
+         * yellow cap.
+         */
+        YELLOW, 
+        /**
+         * dark yellow cap.
+         */
+        DARKYELLOW, 
+        /**
+         * grey cap.
+         */
+        GREY, 
+        /**
+         * light blue cap.
+         */
+        LIGHTBLUE, 
+        /**
+         * black cap.
+         */
+        BLACK, 
+        /**
+         * green cap.
+         */
+        GREEN, 
+        /**
+         * light green cap.
+         */
+        LIGHTGREEN, 
+        /**
+         * lavender cap.
+         */
+        LAVENDER, 
+        /**
+         * brown cap.
+         */
+        BROWN, 
+        /**
+         * white cap.
+         */
+        WHITE, 
+        /**
+         * pink cap.
+         */
+        PINK, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ContainerCap fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("red".equals(codeString))
+          return RED;
+        if ("yellow".equals(codeString))
+          return YELLOW;
+        if ("dark-yellow".equals(codeString))
+          return DARKYELLOW;
+        if ("grey".equals(codeString))
+          return GREY;
+        if ("light-blue".equals(codeString))
+          return LIGHTBLUE;
+        if ("black".equals(codeString))
+          return BLACK;
+        if ("green".equals(codeString))
+          return GREEN;
+        if ("light-green".equals(codeString))
+          return LIGHTGREEN;
+        if ("lavender".equals(codeString))
+          return LAVENDER;
+        if ("brown".equals(codeString))
+          return BROWN;
+        if ("white".equals(codeString))
+          return WHITE;
+        if ("pink".equals(codeString))
+          return PINK;
+        throw new FHIRException("Unknown ContainerCap code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case RED: return "red";
+            case YELLOW: return "yellow";
+            case DARKYELLOW: return "dark-yellow";
+            case GREY: return "grey";
+            case LIGHTBLUE: return "light-blue";
+            case BLACK: return "black";
+            case GREEN: return "green";
+            case LIGHTGREEN: return "light-green";
+            case LAVENDER: return "lavender";
+            case BROWN: return "brown";
+            case WHITE: return "white";
+            case PINK: return "pink";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/container-cap";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case RED: return "red cap.";
+            case YELLOW: return "yellow cap.";
+            case DARKYELLOW: return "dark yellow cap.";
+            case GREY: return "grey cap.";
+            case LIGHTBLUE: return "light blue cap.";
+            case BLACK: return "black cap.";
+            case GREEN: return "green cap.";
+            case LIGHTGREEN: return "light green cap.";
+            case LAVENDER: return "lavender cap.";
+            case BROWN: return "brown cap.";
+            case WHITE: return "white cap.";
+            case PINK: return "pink cap.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case RED: return "red cap";
+            case YELLOW: return "yellow cap";
+            case DARKYELLOW: return "dark yellow cap";
+            case GREY: return "grey cap";
+            case LIGHTBLUE: return "light blue cap";
+            case BLACK: return "black cap";
+            case GREEN: return "green cap";
+            case LIGHTGREEN: return "light green cap";
+            case LAVENDER: return "lavender cap";
+            case BROWN: return "brown cap";
+            case WHITE: return "white cap";
+            case PINK: return "pink cap";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/container-cap";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case RED:
-      return "red cap.";
-    case YELLOW:
-      return "yellow cap.";
-    case DARKYELLOW:
-      return "dark yellow cap.";
-    case GREY:
-      return "grey cap.";
-    case LIGHTBLUE:
-      return "light blue cap.";
-    case BLACK:
-      return "black cap.";
-    case GREEN:
-      return "green cap.";
-    case LIGHTGREEN:
-      return "light green cap.";
-    case LAVENDER:
-      return "lavender cap.";
-    case BROWN:
-      return "brown cap.";
-    case WHITE:
-      return "white cap.";
-    case PINK:
-      return "pink cap.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case RED:
-      return "red cap";
-    case YELLOW:
-      return "yellow cap";
-    case DARKYELLOW:
-      return "dark yellow cap";
-    case GREY:
-      return "grey cap";
-    case LIGHTBLUE:
-      return "light blue cap";
-    case BLACK:
-      return "black cap";
-    case GREEN:
-      return "green cap";
-    case LIGHTGREEN:
-      return "light green cap";
-    case LAVENDER:
-      return "lavender cap";
-    case BROWN:
-      return "brown cap";
-    case WHITE:
-      return "white cap";
-    case PINK:
-      return "pink cap";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

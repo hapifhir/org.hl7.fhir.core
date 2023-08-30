@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class EncounterAdmitSourceEnumFactory implements EnumFactory<EncounterAdmitSource> {
@@ -58,7 +62,7 @@ public class EncounterAdmitSourceEnumFactory implements EnumFactory<EncounterAdm
       return EncounterAdmitSource.REHAB;
     if ("other".equals(codeString))
       return EncounterAdmitSource.OTHER;
-    throw new IllegalArgumentException("Unknown EncounterAdmitSource code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown EncounterAdmitSource code '"+codeString+"'");
   }
 
   public String toCode(EncounterAdmitSource code) {
@@ -85,8 +89,8 @@ public class EncounterAdmitSourceEnumFactory implements EnumFactory<EncounterAdm
     return "?";
   }
 
-  public String toSystem(EncounterAdmitSource code) {
-    return code.getSystem();
-  }
+    public String toSystem(EncounterAdmitSource code) {
+      return code.getSystem();
+      }
 
 }

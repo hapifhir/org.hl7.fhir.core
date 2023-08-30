@@ -1541,14 +1541,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
           return addProcessingFacility();
         }
         else if (name.equals("division")) {
-          throw new FHIRException("Cannot call addChild on a singleton property BiologicallyDerivedProduct.division");
+          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.division");
         }
         else if (name.equals("productStatus")) {
           this.productStatus = new Coding();
           return this.productStatus;
         }
         else if (name.equals("expirationDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property BiologicallyDerivedProduct.expirationDate");
+          throw new FHIRException("Cannot call addChild on a primitive type BiologicallyDerivedProduct.expirationDate");
         }
         else if (name.equals("collection")) {
           this.collection = new BiologicallyDerivedProductCollectionComponent();

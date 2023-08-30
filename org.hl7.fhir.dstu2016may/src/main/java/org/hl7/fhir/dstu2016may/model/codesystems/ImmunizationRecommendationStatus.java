@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ImmunizationRecommendationStatus {
 
-  /**
-   * The patient is due for their next vaccination.
-   */
-  DUE,
-  /**
-   * The patient is considered overdue for their next vaccination.
-   */
-  OVERDUE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ImmunizationRecommendationStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("due".equals(codeString))
-      return DUE;
-    if ("overdue".equals(codeString))
-      return OVERDUE;
-    throw new FHIRException("Unknown ImmunizationRecommendationStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case DUE:
-      return "due";
-    case OVERDUE:
-      return "overdue";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The patient is due for their next vaccination.
+         */
+        DUE, 
+        /**
+         * The patient is considered overdue for their next vaccination.
+         */
+        OVERDUE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ImmunizationRecommendationStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("due".equals(codeString))
+          return DUE;
+        if ("overdue".equals(codeString))
+          return OVERDUE;
+        throw new FHIRException("Unknown ImmunizationRecommendationStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case DUE: return "due";
+            case OVERDUE: return "overdue";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/immunization-recommendation-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case DUE: return "The patient is due for their next vaccination.";
+            case OVERDUE: return "The patient is considered overdue for their next vaccination.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case DUE: return "Due";
+            case OVERDUE: return "Overdue";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/immunization-recommendation-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case DUE:
-      return "The patient is due for their next vaccination.";
-    case OVERDUE:
-      return "The patient is considered overdue for their next vaccination.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case DUE:
-      return "Due";
-    case OVERDUE:
-      return "Overdue";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

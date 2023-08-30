@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -1230,7 +1234,7 @@ public class ServiceTypeEnumFactory implements EnumFactory<ServiceType> {
       return ServiceType._628;
     if ("629".equals(codeString))
       return ServiceType._629;
-    throw new IllegalArgumentException("Unknown ServiceType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ServiceType code '"+codeString+"'");
   }
 
   public String toCode(ServiceType code) {
@@ -2429,8 +2433,8 @@ public class ServiceTypeEnumFactory implements EnumFactory<ServiceType> {
     return "?";
   }
 
-  public String toSystem(ServiceType code) {
-    return code.getSystem();
-  }
+    public String toSystem(ServiceType code) {
+      return code.getSystem();
+      }
 
 }

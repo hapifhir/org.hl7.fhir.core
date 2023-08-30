@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -146,7 +150,7 @@ public class V3ActSiteEnumFactory implements EnumFactory<V3ActSite> {
       return V3ActSite.RVG;
     if ("RVL".equals(codeString))
       return V3ActSite.RVL;
-    throw new IllegalArgumentException("Unknown V3ActSite code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3ActSite code '"+codeString+"'");
   }
 
   public String toCode(V3ActSite code) {
@@ -261,8 +265,8 @@ public class V3ActSiteEnumFactory implements EnumFactory<V3ActSite> {
     return "?";
   }
 
-  public String toSystem(V3ActSite code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3ActSite code) {
+      return code.getSystem();
+      }
 
 }

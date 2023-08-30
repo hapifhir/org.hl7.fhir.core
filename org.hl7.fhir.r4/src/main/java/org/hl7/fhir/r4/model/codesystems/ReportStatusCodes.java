@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,110 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ReportStatusCodes {
 
-  /**
-   * All test operations have completed.
-   */
-  COMPLETED,
-  /**
-   * A test operations is currently executing.
-   */
-  INPROGRESS,
-  /**
-   * A test operation is waiting for an external client request.
-   */
-  WAITING,
-  /**
-   * The test script execution was manually stopped.
-   */
-  STOPPED,
-  /**
-   * This test report was entered or created in error.
-   */
-  ENTEREDINERROR,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ReportStatusCodes fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("completed".equals(codeString))
-      return COMPLETED;
-    if ("in-progress".equals(codeString))
-      return INPROGRESS;
-    if ("waiting".equals(codeString))
-      return WAITING;
-    if ("stopped".equals(codeString))
-      return STOPPED;
-    if ("entered-in-error".equals(codeString))
-      return ENTEREDINERROR;
-    throw new FHIRException("Unknown ReportStatusCodes code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case COMPLETED:
-      return "completed";
-    case INPROGRESS:
-      return "in-progress";
-    case WAITING:
-      return "waiting";
-    case STOPPED:
-      return "stopped";
-    case ENTEREDINERROR:
-      return "entered-in-error";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * All test operations have completed.
+         */
+        COMPLETED, 
+        /**
+         * A test operations is currently executing.
+         */
+        INPROGRESS, 
+        /**
+         * A test operation is waiting for an external client request.
+         */
+        WAITING, 
+        /**
+         * The test script execution was manually stopped.
+         */
+        STOPPED, 
+        /**
+         * This test report was entered or created in error.
+         */
+        ENTEREDINERROR, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ReportStatusCodes fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("completed".equals(codeString))
+          return COMPLETED;
+        if ("in-progress".equals(codeString))
+          return INPROGRESS;
+        if ("waiting".equals(codeString))
+          return WAITING;
+        if ("stopped".equals(codeString))
+          return STOPPED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        throw new FHIRException("Unknown ReportStatusCodes code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case COMPLETED: return "completed";
+            case INPROGRESS: return "in-progress";
+            case WAITING: return "waiting";
+            case STOPPED: return "stopped";
+            case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/report-status-codes";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case COMPLETED: return "All test operations have completed.";
+            case INPROGRESS: return "A test operations is currently executing.";
+            case WAITING: return "A test operation is waiting for an external client request.";
+            case STOPPED: return "The test script execution was manually stopped.";
+            case ENTEREDINERROR: return "This test report was entered or created in error.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case COMPLETED: return "Completed";
+            case INPROGRESS: return "In Progress";
+            case WAITING: return "Waiting";
+            case STOPPED: return "Stopped";
+            case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/report-status-codes";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case COMPLETED:
-      return "All test operations have completed.";
-    case INPROGRESS:
-      return "A test operations is currently executing.";
-    case WAITING:
-      return "A test operation is waiting for an external client request.";
-    case STOPPED:
-      return "The test script execution was manually stopped.";
-    case ENTEREDINERROR:
-      return "This test report was entered or created in error.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case COMPLETED:
-      return "Completed";
-    case INPROGRESS:
-      return "In Progress";
-    case WAITING:
-      return "Waiting";
-    case STOPPED:
-      return "Stopped";
-    case ENTEREDINERROR:
-      return "Entered In Error";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

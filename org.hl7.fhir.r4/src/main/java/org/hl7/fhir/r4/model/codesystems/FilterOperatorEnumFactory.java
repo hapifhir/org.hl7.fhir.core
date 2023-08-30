@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class FilterOperatorEnumFactory implements EnumFactory<FilterOperator> {
@@ -56,7 +60,7 @@ public class FilterOperatorEnumFactory implements EnumFactory<FilterOperator> {
       return FilterOperator.GENERALIZES;
     if ("exists".equals(codeString))
       return FilterOperator.EXISTS;
-    throw new IllegalArgumentException("Unknown FilterOperator code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown FilterOperator code '"+codeString+"'");
   }
 
   public String toCode(FilterOperator code) {
@@ -81,8 +85,8 @@ public class FilterOperatorEnumFactory implements EnumFactory<FilterOperator> {
     return "?";
   }
 
-  public String toSystem(FilterOperator code) {
-    return code.getSystem();
-  }
+    public String toSystem(FilterOperator code) {
+      return code.getSystem();
+      }
 
 }

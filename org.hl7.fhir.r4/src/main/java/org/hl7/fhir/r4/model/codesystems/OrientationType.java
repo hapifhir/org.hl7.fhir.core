@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum OrientationType {
 
-  /**
-   * Sense orientation of reference sequence.
-   */
-  SENSE,
-  /**
-   * Antisense orientation of reference sequence.
-   */
-  ANTISENSE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static OrientationType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("sense".equals(codeString))
-      return SENSE;
-    if ("antisense".equals(codeString))
-      return ANTISENSE;
-    throw new FHIRException("Unknown OrientationType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case SENSE:
-      return "sense";
-    case ANTISENSE:
-      return "antisense";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Sense orientation of reference sequence.
+         */
+        SENSE, 
+        /**
+         * Antisense orientation of reference sequence.
+         */
+        ANTISENSE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static OrientationType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("sense".equals(codeString))
+          return SENSE;
+        if ("antisense".equals(codeString))
+          return ANTISENSE;
+        throw new FHIRException("Unknown OrientationType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case SENSE: return "sense";
+            case ANTISENSE: return "antisense";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/orientation-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case SENSE: return "Sense orientation of reference sequence.";
+            case ANTISENSE: return "Antisense orientation of reference sequence.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case SENSE: return "Sense orientation of referenceSeq";
+            case ANTISENSE: return "Antisense orientation of referenceSeq";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/orientation-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case SENSE:
-      return "Sense orientation of reference sequence.";
-    case ANTISENSE:
-      return "Antisense orientation of reference sequence.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case SENSE:
-      return "Sense orientation of referenceSeq";
-    case ANTISENSE:
-      return "Antisense orientation of referenceSeq";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

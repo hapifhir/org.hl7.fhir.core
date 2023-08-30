@@ -2088,10 +2088,10 @@ public class ManufacturedItemDefinition extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ManufacturedItemDefinition.status");
+          throw new FHIRException("Cannot call addChild on a primitive type ManufacturedItemDefinition.status");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ManufacturedItemDefinition.name");
+          throw new FHIRException("Cannot call addChild on a primitive type ManufacturedItemDefinition.name");
         }
         else if (name.equals("manufacturedDoseForm")) {
           this.manufacturedDoseForm = new CodeableConcept();

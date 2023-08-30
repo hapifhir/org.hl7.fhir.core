@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class MedicationrequestCourseOfTherapyEnumFactory implements EnumFactory<MedicationrequestCourseOfTherapy> {
@@ -44,7 +48,7 @@ public class MedicationrequestCourseOfTherapyEnumFactory implements EnumFactory<
       return MedicationrequestCourseOfTherapy.ACUTE;
     if ("seasonal".equals(codeString))
       return MedicationrequestCourseOfTherapy.SEASONAL;
-    throw new IllegalArgumentException("Unknown MedicationrequestCourseOfTherapy code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown MedicationrequestCourseOfTherapy code '"+codeString+"'");
   }
 
   public String toCode(MedicationrequestCourseOfTherapy code) {
@@ -57,8 +61,8 @@ public class MedicationrequestCourseOfTherapyEnumFactory implements EnumFactory<
     return "?";
   }
 
-  public String toSystem(MedicationrequestCourseOfTherapy code) {
-    return code.getSystem();
-  }
+    public String toSystem(MedicationrequestCourseOfTherapy code) {
+      return code.getSystem();
+      }
 
 }

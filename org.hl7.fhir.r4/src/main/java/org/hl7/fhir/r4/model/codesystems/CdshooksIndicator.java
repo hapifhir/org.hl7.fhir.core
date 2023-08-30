@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CdshooksIndicator {
 
-  /**
-   * null
-   */
-  INFO,
-  /**
-   * null
-   */
-  WARNING,
-  /**
-   * null
-   */
-  CRITICAL,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static CdshooksIndicator fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("info".equals(codeString))
-      return INFO;
-    if ("warning".equals(codeString))
-      return WARNING;
-    if ("critical".equals(codeString))
-      return CRITICAL;
-    throw new FHIRException("Unknown CdshooksIndicator code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INFO:
-      return "info";
-    case WARNING:
-      return "warning";
-    case CRITICAL:
-      return "critical";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * null
+         */
+        INFO, 
+        /**
+         * null
+         */
+        WARNING, 
+        /**
+         * null
+         */
+        CRITICAL, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static CdshooksIndicator fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("info".equals(codeString))
+          return INFO;
+        if ("warning".equals(codeString))
+          return WARNING;
+        if ("critical".equals(codeString))
+          return CRITICAL;
+        throw new FHIRException("Unknown CdshooksIndicator code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INFO: return "info";
+            case WARNING: return "warning";
+            case CRITICAL: return "critical";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://cds-hooks.hl7.org/CodeSystem/indicator";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INFO: return "";
+            case WARNING: return "";
+            case CRITICAL: return "";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INFO: return "The response is informational";
+            case WARNING: return "The response is a warning";
+            case CRITICAL: return "The response is critical and indicates the workflow should not be allowed to proceed";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://cds-hooks.hl7.org/CodeSystem/indicator";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INFO:
-      return "";
-    case WARNING:
-      return "";
-    case CRITICAL:
-      return "";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INFO:
-      return "The response is informational";
-    case WARNING:
-      return "The response is a warning";
-    case CRITICAL:
-      return "The response is critical and indicates the workflow should not be allowed to proceed";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

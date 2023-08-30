@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class CompositeMeasureScoringEnumFactory implements EnumFactory<CompositeMeasureScoring> {
@@ -46,7 +50,7 @@ public class CompositeMeasureScoringEnumFactory implements EnumFactory<Composite
       return CompositeMeasureScoring.LINEAR;
     if ("weighted".equals(codeString))
       return CompositeMeasureScoring.WEIGHTED;
-    throw new IllegalArgumentException("Unknown CompositeMeasureScoring code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown CompositeMeasureScoring code '"+codeString+"'");
   }
 
   public String toCode(CompositeMeasureScoring code) {
@@ -61,8 +65,8 @@ public class CompositeMeasureScoringEnumFactory implements EnumFactory<Composite
     return "?";
   }
 
-  public String toSystem(CompositeMeasureScoring code) {
-    return code.getSystem();
-  }
+    public String toSystem(CompositeMeasureScoring code) {
+      return code.getSystem();
+      }
 
 }

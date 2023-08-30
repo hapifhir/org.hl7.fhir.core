@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcArrivalStatus {
 
-  /**
-   * The patient is present at the service delivery location.
-   */
-  _2000000339,
-  /**
-   * The patient is currently travelling to the service delivery location.
-   */
-  _51084650,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static HspcArrivalStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("2000000339".equals(codeString))
-      return _2000000339;
-    if ("51084650".equals(codeString))
-      return _51084650;
-    throw new FHIRException("Unknown HspcArrivalStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case _2000000339:
-      return "2000000339";
-    case _51084650:
-      return "51084650";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The patient is present at the service delivery location.
+         */
+        _2000000339, 
+        /**
+         * The patient is currently travelling to the service delivery location.
+         */
+        _51084650, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static HspcArrivalStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("2000000339".equals(codeString))
+          return _2000000339;
+        if ("51084650".equals(codeString))
+          return _51084650;
+        throw new FHIRException("Unknown HspcArrivalStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case _2000000339: return "2000000339";
+            case _51084650: return "51084650";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/hspc-arrivalStatus";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case _2000000339: return "The patient is present at the service delivery location.";
+            case _51084650: return "The patient is currently travelling to the service delivery location.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case _2000000339: return "Arrived";
+            case _51084650: return "In transit";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/hspc-arrivalStatus";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case _2000000339:
-      return "The patient is present at the service delivery location.";
-    case _51084650:
-      return "The patient is currently travelling to the service delivery location.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case _2000000339:
-      return "Arrived";
-    case _51084650:
-      return "In transit";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcVitalsignassociatedprecond {
 
-  /**
-   * Occurred after the cardioversion procedure
-   */
-  _1942,
-  /**
-   * Occurred before the cardioversion procedure
-   */
-  _1966,
-  /**
-   * Occurred during the cardioversion procedure
-   */
-  _2029,
-  /**
-   * Occurred at birth
-   */
-  _219101,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static HspcVitalsignassociatedprecond fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("1942".equals(codeString))
-      return _1942;
-    if ("1966".equals(codeString))
-      return _1966;
-    if ("2029".equals(codeString))
-      return _2029;
-    if ("219101".equals(codeString))
-      return _219101;
-    throw new FHIRException("Unknown HspcVitalsignassociatedprecond code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case _1942:
-      return "1942";
-    case _1966:
-      return "1966";
-    case _2029:
-      return "2029";
-    case _219101:
-      return "219101";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Occurred after the cardioversion procedure
+         */
+        _1942, 
+        /**
+         * Occurred before the cardioversion procedure
+         */
+        _1966, 
+        /**
+         * Occurred during the cardioversion procedure
+         */
+        _2029, 
+        /**
+         * Occurred at birth
+         */
+        _219101, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static HspcVitalsignassociatedprecond fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("1942".equals(codeString))
+          return _1942;
+        if ("1966".equals(codeString))
+          return _1966;
+        if ("2029".equals(codeString))
+          return _2029;
+        if ("219101".equals(codeString))
+          return _219101;
+        throw new FHIRException("Unknown HspcVitalsignassociatedprecond code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case _1942: return "1942";
+            case _1966: return "1966";
+            case _2029: return "2029";
+            case _219101: return "219101";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/hspc-vitalsignassociatedprecond";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case _1942: return "Occurred after the cardioversion procedure";
+            case _1966: return "Occurred before the cardioversion procedure";
+            case _2029: return "Occurred during the cardioversion procedure";
+            case _219101: return "Occurred at birth";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case _1942: return "After cardioversion";
+            case _1966: return "Before cardioversion";
+            case _2029: return "During cardioversion";
+            case _219101: return "At birth";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/hspc-vitalsignassociatedprecond";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case _1942:
-      return "Occurred after the cardioversion procedure";
-    case _1966:
-      return "Occurred before the cardioversion procedure";
-    case _2029:
-      return "Occurred during the cardioversion procedure";
-    case _219101:
-      return "Occurred at birth";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case _1942:
-      return "After cardioversion";
-    case _1966:
-      return "Before cardioversion";
-    case _2029:
-      return "During cardioversion";
-    case _219101:
-      return "At birth";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

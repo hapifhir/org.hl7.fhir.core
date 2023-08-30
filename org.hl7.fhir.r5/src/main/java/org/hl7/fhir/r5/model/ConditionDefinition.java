@@ -920,7 +920,7 @@ public class ConditionDefinition extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.precondition.type");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.precondition.type");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();
@@ -1163,7 +1163,7 @@ public class ConditionDefinition extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.questionnaire.purpose");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.questionnaire.purpose");
         }
         else if (name.equals("reference")) {
           this.reference = new Reference();
@@ -3771,13 +3771,13 @@ public class ConditionDefinition extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.url");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.version");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.version");
         }
         else if (name.equals("versionAlgorithmString")) {
           this.versionAlgorithm = new StringType();
@@ -3788,31 +3788,31 @@ public class ConditionDefinition extends MetadataResource {
           return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.name");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.title");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.title");
         }
         else if (name.equals("subtitle")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.subtitle");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.subtitle");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.status");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.experimental");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.date");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.publisher");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -3837,16 +3837,16 @@ public class ConditionDefinition extends MetadataResource {
           return this.stage;
         }
         else if (name.equals("hasSeverity")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.hasSeverity");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.hasSeverity");
         }
         else if (name.equals("hasBodySite")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.hasBodySite");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.hasBodySite");
         }
         else if (name.equals("hasStage")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.hasStage");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.hasStage");
         }
         else if (name.equals("definition")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ConditionDefinition.definition");
+          throw new FHIRException("Cannot call addChild on a primitive type ConditionDefinition.definition");
         }
         else if (name.equals("observation")) {
           return addObservation();

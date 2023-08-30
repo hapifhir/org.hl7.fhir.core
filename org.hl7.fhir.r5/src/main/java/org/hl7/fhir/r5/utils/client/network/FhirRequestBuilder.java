@@ -50,11 +50,9 @@ public class FhirRequestBuilder {
    * {@link FhirLoggingInterceptor} for log output.
    */
   private FhirLoggingInterceptor logger = null;
-  private String source;
 
-  public FhirRequestBuilder(Request.Builder httpRequest, String source) {
+  public FhirRequestBuilder(Request.Builder httpRequest) {
     this.httpRequest = httpRequest;
-    this.source = source;
   }
 
   /**
@@ -251,14 +249,14 @@ public class FhirRequestBuilder {
           error = (OperationOutcome) resource;
         }
       } catch (IOException ioe) {
-        throw new EFhirClientException("Error reading Http Response from "+source+": " + ioe.getMessage(), ioe);
+        throw new EFhirClientException("Error reading Http Response: " + ioe.getMessage(), ioe);
       } catch (Exception e) {
-        throw new EFhirClientException("Error parsing response message from "+source+": " + e.getMessage(), e);
+        throw new EFhirClientException("Error parsing response message: " + e.getMessage(), e);
       }
     }
 
     if (error != null) {
-      throw new EFhirClientException("Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
+      throw new EFhirClientException("Error from server: " + ResourceUtilities.getErrorDescription(error), error);
     }
 
     return resource;
@@ -286,12 +284,12 @@ public class FhirRequestBuilder {
         }
       }
     } catch (IOException ioe) {
-      throw new EFhirClientException("Error reading Http Response from "+source+":"+ioe.getMessage(), ioe);
+      throw new EFhirClientException("Error reading Http Response", ioe);
     } catch (Exception e) {
-      throw new EFhirClientException("Error parsing response message from "+source+": "+e.getMessage(), e);
+      throw new EFhirClientException("Error parsing response message", e);
     }
     if (error != null) {
-      throw new EFhirClientException("Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
+      throw new EFhirClientException("Error from server: " + ResourceUtilities.getErrorDescription(error), error);
     }
     return feed;
   }

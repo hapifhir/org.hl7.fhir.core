@@ -32,6 +32,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     private List<ObservationNode> contained;
   }
 
+
   public DiagnosticReportRenderer(RenderingContext context) {
     super(context);
   }
@@ -39,7 +40,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
   public DiagnosticReportRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
-
+  
   public boolean render(XhtmlNode x, Resource dr) throws IOException, FHIRException, EOperationOutcome {
     return render(x, (DiagnosticReport) dr);
   }
@@ -53,10 +54,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       h2.tx("(");
       boolean first = true;
       for (BaseWrapper b : pw.getValues()) {
-        if (first)
-          first = false;
-        else
-          h2.tx(", ");
+        if (first) first = false; else h2.tx(", ");
         render(h2, b);
       }
       h2.tx(") ");
@@ -64,14 +62,14 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     XhtmlNode tbl = x.table("grid");
     XhtmlNode tr;
     if (dr.has("subject")) {
-      tr = tbl.tr();
-      tr.td().tx("Subject");
-      populateSubjectSummary(tr.td(), getProperty(dr, "subject").value());
+       tr = tbl.tr();
+       tr.td().tx("Subject");
+       populateSubjectSummary(tr.td(), getProperty(dr, "subject").value());
     }
-
+    
     DataType eff = null;
     DataType iss = null;
-
+    
     if (dr.has("effective[x]")) {
       tr = tbl.tr();
       tr.td().tx("When For");
@@ -98,7 +96,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     pw = getProperty(dr, "identifier");
     if (valued(pw)) {
       tr = tbl.tr();
-      tr.td().tx(Utilities.pluralize("Identifier", pw.getValues().size()) + ":");
+      tr.td().tx(Utilities.pluralize("Identifier", pw.getValues().size())+":");
       XhtmlNode tdr = tr.td();
       for (BaseWrapper v : pw.getValues()) {
         tdr.tx(" ");
@@ -108,7 +106,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     pw = getProperty(dr, "request");
     if (valued(pw)) {
       tr = tbl.tr();
-      tr.td().tx(Utilities.pluralize("Request", pw.getValues().size()) + ":");
+      tr.td().tx(Utilities.pluralize("Request", pw.getValues().size())+":");
       XhtmlNode tdr = tr.td();
       for (BaseWrapper v : pw.getValues()) {
         tdr.tx(" ");
@@ -117,6 +115,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       tdr.br();
     }
 
+    
     x.para().b().tx("Report Details");
 
     pw = getProperty(dr, "result");
@@ -132,7 +131,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
     pw = getProperty(dr, "conclusionCode");
     if (!valued(pw)) {
-      pw = getProperty(dr, "codedDiagnosis");
+      pw = getProperty(dr, "codedDiagnosis");    
     }
     if (valued(pw)) {
       XhtmlNode p = x.para();
@@ -169,8 +168,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     return "Not done yet";
   }
 
-  private void populateSubjectSummary(XhtmlNode container, BaseWrapper subject)
-      throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome {
+  private void populateSubjectSummary(XhtmlNode container, BaseWrapper subject) throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome {
     ResourceWrapper r = fetchResource(subject);
     if (r == null)
       container.tx("Unable to get Patient Details");
@@ -180,13 +178,11 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       container.tx("Not done yet");
   }
 
-  private void generatePatientSummary(XhtmlNode c, ResourceWrapper r)
-      throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
+  private void generatePatientSummary(XhtmlNode c, ResourceWrapper r) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
     new PatientRenderer(context).describe(c, r);
   }
-
-  private List<ObservationNode> fetchObservations(List<BaseWrapper> list, ResourceWrapper rw)
-      throws UnsupportedEncodingException, FHIRException, IOException {
+  
+  private List<ObservationNode> fetchObservations(List<BaseWrapper> list, ResourceWrapper rw) throws UnsupportedEncodingException, FHIRException, IOException {
     List<ObservationNode> res = new ArrayList<ObservationNode>();
     for (BaseWrapper b : list) {
       if (b.has("reference")) {
@@ -205,25 +201,19 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     return res;
   }
 
-  private void buildObservationsTable(XhtmlNode root, List<ObservationNode> observations, DataType eff, DataType iss)
-      throws UnsupportedEncodingException, FHIRException, IOException {
+  private void buildObservationsTable(XhtmlNode root, List<ObservationNode> observations, DataType eff, DataType iss) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode tbl = root.table("grid");
     boolean refRange = scanObsForRefRange(observations);
-    boolean flags = scanObsForFlags(observations);
+    boolean flags = scanObsForFlags(observations); 
     boolean note = scanObsForNote(observations);
     boolean effectiveTime = scanObsForEffective(observations, eff);
     boolean issued = scanObsForIssued(observations, iss);
     int cs = 2;
-    if (refRange)
-      cs++;
-    if (flags)
-      cs++;
-    if (note)
-      cs++;
-    if (issued)
-      cs++;
-    if (effectiveTime)
-      cs++;
+    if (refRange) cs++;
+    if (flags) cs++;
+    if (note) cs++;
+    if (issued) cs++;
+    if (effectiveTime) cs++;
     XhtmlNode tr = tbl.tr();
     tr.td().b().tx("Code");
     tr.td().b().tx("Value");
@@ -253,14 +243,14 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
         PropertyWrapper pw = getProperty(o.obs.getResource(), "referenceRange");
         if (valued(pw)) {
           return true;
-        }
+        }        
       }
       if (o.contained != null) {
         if (scanObsForRefRange(o.contained)) {
           return true;
         }
       }
-    }
+    }      
     return false;
   }
 
@@ -270,19 +260,18 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
         PropertyWrapper pw = getProperty(o.obs.getResource(), "note");
         if (valued(pw)) {
           return true;
-        }
+        }        
       }
       if (o.contained != null) {
         if (scanObsForNote(o.contained)) {
           return true;
         }
       }
-    }
+    }      
     return false;
   }
 
-  private boolean scanObsForIssued(List<ObservationNode> observations, DataType iss)
-      throws UnsupportedEncodingException, FHIRException, IOException {
+  private boolean scanObsForIssued(List<ObservationNode> observations, DataType iss) throws UnsupportedEncodingException, FHIRException, IOException {
     for (ObservationNode o : observations) {
       if (o.obs != null && o.obs.getResource() != null) {
         PropertyWrapper pw = getProperty(o.obs.getResource(), "issued");
@@ -290,19 +279,18 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
           if (!Base.compareDeep(pw.value().getBase(), iss, true)) {
             return true;
           }
-        }
+        }        
       }
       if (o.contained != null) {
         if (scanObsForIssued(o.contained, iss)) {
           return true;
         }
       }
-    }
+    }      
     return false;
   }
 
-  private boolean scanObsForEffective(List<ObservationNode> observations, DataType eff)
-      throws UnsupportedEncodingException, FHIRException, IOException {
+  private boolean scanObsForEffective(List<ObservationNode> observations, DataType eff) throws UnsupportedEncodingException, FHIRException, IOException {
     for (ObservationNode o : observations) {
       if (o.obs != null && o.obs.getResource() != null) {
         PropertyWrapper pw = getProperty(o.obs.getResource(), "effective[x]");
@@ -310,19 +298,18 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
           if (!Base.compareDeep(pw.value().getBase(), eff, true)) {
             return true;
           }
-        }
+        }        
       }
       if (o.contained != null) {
         if (scanObsForEffective(o.contained, eff)) {
           return true;
         }
       }
-    }
+    }      
     return false;
   }
 
-  private boolean scanObsForFlags(List<ObservationNode> observations)
-      throws UnsupportedEncodingException, FHIRException, IOException {
+  private boolean scanObsForFlags(List<ObservationNode> observations) throws UnsupportedEncodingException, FHIRException, IOException {
     for (ObservationNode o : observations) {
       if (o.obs != null && o.obs.getResource() != null) {
         PropertyWrapper pw = getProperty(o.obs.getResource(), "interpretation");
@@ -335,43 +322,38 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
             return true;
           }
         }
-
+        
       }
       if (o.contained != null) {
         if (scanObsForFlags(o.contained)) {
           return true;
         }
       }
-    }
+    }      
     return false;
   }
 
-  private void addObservationToTable(XhtmlNode tbl, ObservationNode o, int i, String cs, boolean refRange,
-      boolean flags, boolean note, boolean effectiveTime, boolean issued, DataType eff, DataType iss)
-      throws UnsupportedEncodingException, FHIRException, IOException {
+  private void addObservationToTable(XhtmlNode tbl, ObservationNode o, int i, String cs, boolean refRange, boolean flags, boolean note, boolean effectiveTime, boolean issued, DataType eff, DataType iss) throws UnsupportedEncodingException, FHIRException, IOException {
     XhtmlNode tr = tbl.tr();
-    if (o.obs != null && o.obs.getReference() == null) {
+    if (o.obs != null && o.obs.getReference()  == null) {
       XhtmlNode td = tr.td().colspan(cs);
       td.i().tx("This Observation could not be resolved");
     } else {
       if (o.obs != null && o.obs.getResource() != null) {
-        addObservationToTable(tr, o.obs.getResource(), i, o.obs.getReference(), refRange, flags, note, effectiveTime,
-            issued, eff, iss);
+        addObservationToTable(tr, o.obs.getResource(), i, o.obs.getReference(), refRange, flags, note, effectiveTime, issued, eff, iss);
       } else {
         XhtmlNode td = tr.td().colspan(cs);
         td.i().tx("Observation");
       }
       if (o.contained != null) {
         for (ObservationNode c : o.contained) {
-          addObservationToTable(tbl, c, i + 1, cs, refRange, flags, note, effectiveTime, issued, eff, iss);
+          addObservationToTable(tbl, c, i+1, cs, refRange, flags, note, effectiveTime, issued, eff, iss);
         }
       }
-    }
+    } 
   }
 
-  private void addObservationToTable(XhtmlNode tr, ResourceWrapper obs, int i, String ref, boolean refRange,
-      boolean flags, boolean note, boolean effectiveTime, boolean issued, DataType eff, DataType iss)
-      throws UnsupportedEncodingException, FHIRException, IOException {
+  private void addObservationToTable(XhtmlNode tr, ResourceWrapper obs, int i, String ref, boolean refRange, boolean flags, boolean note, boolean effectiveTime, boolean issued, DataType eff, DataType iss) throws UnsupportedEncodingException, FHIRException, IOException {
 
     // code (+bodysite)
     XhtmlNode td = tr.td();
@@ -406,21 +388,18 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       if (valued(pw)) {
         boolean first = true;
         for (BaseWrapper v : pw.getValues()) {
-          if (first)
-            first = false;
-          else
-            td.br();
-          PropertyWrapper pwr = getProperty(v, "type");
+          if (first) first = false; else td.br();
+          PropertyWrapper pwr = getProperty(v, "type"); 
           if (valued(pwr)) {
             render(td, pwr.value());
             td.tx(": ");
           }
-          PropertyWrapper pwt = getProperty(v, "text");
+          PropertyWrapper pwt = getProperty(v, "text"); 
           if (valued(pwt)) {
             render(td, pwt.value());
           } else {
-            PropertyWrapper pwl = getProperty(v, "low");
-            PropertyWrapper pwh = getProperty(v, "high");
+            PropertyWrapper pwl = getProperty(v, "low"); 
+            PropertyWrapper pwh = getProperty(v, "high"); 
             if (valued(pwl) && valued(pwh)) {
               render(td, pwl.value());
               td.tx(" - ");
@@ -435,31 +414,25 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
               td.tx("??");
             }
           }
-          pwr = getProperty(v, "appliesTo");
-          PropertyWrapper pwrA = getProperty(v, "age");
+          pwr = getProperty(v, "appliesTo"); 
+          PropertyWrapper pwrA = getProperty(v, "age"); 
           if (valued(pwr) || valued(pwrA)) {
             boolean firstA = true;
             td.tx(" for ");
             if (valued(pwr)) {
               for (BaseWrapper va : pwr.getValues()) {
-                if (firstA)
-                  firstA = false;
-                else
-                  td.tx(", ");
+                if (firstA) firstA = false; else td.tx(", ");
                 render(td, va);
               }
             }
             if (valued(pwrA)) {
-              if (firstA)
-                firstA = false;
-              else
-                td.tx(", ");
+              if (firstA) firstA = false; else td.tx(", ");
               td.tx("Age ");
               render(td, pwrA.value());
             }
           }
-        }
-      }
+        }        
+      }      
     }
     if (flags) {
       // flags (status other than F, interpretation, )
@@ -468,20 +441,14 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       pw = getProperty(obs, "status");
       if (valued(pw)) {
         if (!pw.value().getBase().primitiveValue().equals("final")) {
-          if (first)
-            first = false;
-          else
-            td.br();
+          if (first) first = false; else td.br();
           render(td, pw.value());
         }
       }
       pw = getProperty(obs, "interpretation");
       if (valued(pw)) {
         for (BaseWrapper v : pw.getValues()) {
-          if (first)
-            first = false;
-          else
-            td.br();
+          if (first) first = false; else td.br();
           render(td, v);
         }
       }

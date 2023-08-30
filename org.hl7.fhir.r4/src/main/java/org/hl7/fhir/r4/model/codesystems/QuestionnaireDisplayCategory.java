@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,92 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum QuestionnaireDisplayCategory {
 
-  /**
-   * The text provides guidance on how to populate or use a portion of the
-   * questionnaire (or the questionnaire as a whole).
-   */
-  INSTRUCTIONS,
-  /**
-   * The text provides guidance on how the information should be or will be
-   * handled from a security/confidentiality/access control perspective when
-   * completed
-   */
-  SECURITY,
-  /**
-   * The text provides additional guidance on populating the containing item. Help
-   * text isn't necessarily expected to be rendered as part of the form, but may
-   * instead be made available through fly-over, pop-up button, link to a "help"
-   * page, etc.
-   */
-  HELP,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static QuestionnaireDisplayCategory fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("instructions".equals(codeString))
-      return INSTRUCTIONS;
-    if ("security".equals(codeString))
-      return SECURITY;
-    if ("help".equals(codeString))
-      return HELP;
-    throw new FHIRException("Unknown QuestionnaireDisplayCategory code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INSTRUCTIONS:
-      return "instructions";
-    case SECURITY:
-      return "security";
-    case HELP:
-      return "help";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The text provides guidance on how to populate or use a portion of the questionnaire (or the questionnaire as a whole).
+         */
+        INSTRUCTIONS, 
+        /**
+         * The text provides guidance on how the information should be or will be handled from a security/confidentiality/access control perspective when completed
+         */
+        SECURITY, 
+        /**
+         * The text provides additional guidance on populating the containing item.  Help text isn't necessarily expected to be rendered as part of the form, but may instead be made available through fly-over, pop-up button, link to a "help" page, etc.
+         */
+        HELP, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static QuestionnaireDisplayCategory fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("instructions".equals(codeString))
+          return INSTRUCTIONS;
+        if ("security".equals(codeString))
+          return SECURITY;
+        if ("help".equals(codeString))
+          return HELP;
+        throw new FHIRException("Unknown QuestionnaireDisplayCategory code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INSTRUCTIONS: return "instructions";
+            case SECURITY: return "security";
+            case HELP: return "help";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/questionnaire-display-category";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INSTRUCTIONS: return "The text provides guidance on how to populate or use a portion of the questionnaire (or the questionnaire as a whole).";
+            case SECURITY: return "The text provides guidance on how the information should be or will be handled from a security/confidentiality/access control perspective when completed";
+            case HELP: return "The text provides additional guidance on populating the containing item.  Help text isn't necessarily expected to be rendered as part of the form, but may instead be made available through fly-over, pop-up button, link to a \"help\" page, etc.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INSTRUCTIONS: return "Instructions";
+            case SECURITY: return "Security";
+            case HELP: return "Help";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/questionnaire-display-category";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INSTRUCTIONS:
-      return "The text provides guidance on how to populate or use a portion of the questionnaire (or the questionnaire as a whole).";
-    case SECURITY:
-      return "The text provides guidance on how the information should be or will be handled from a security/confidentiality/access control perspective when completed";
-    case HELP:
-      return "The text provides additional guidance on populating the containing item.  Help text isn't necessarily expected to be rendered as part of the form, but may instead be made available through fly-over, pop-up button, link to a \"help\" page, etc.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INSTRUCTIONS:
-      return "Instructions";
-    case SECURITY:
-      return "Security";
-    case HELP:
-      return "Help";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ListItemFlagEnumFactory implements EnumFactory<ListItemFlag> {
@@ -50,7 +54,7 @@ public class ListItemFlagEnumFactory implements EnumFactory<ListItemFlag> {
       return ListItemFlag._05;
     if ("06".equals(codeString))
       return ListItemFlag._06;
-    throw new IllegalArgumentException("Unknown ListItemFlag code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ListItemFlag code '"+codeString+"'");
   }
 
   public String toCode(ListItemFlag code) {
@@ -69,8 +73,8 @@ public class ListItemFlagEnumFactory implements EnumFactory<ListItemFlag> {
     return "?";
   }
 
-  public String toSystem(ListItemFlag code) {
-    return code.getSystem();
-  }
+    public String toSystem(ListItemFlag code) {
+      return code.getSystem();
+      }
 
 }

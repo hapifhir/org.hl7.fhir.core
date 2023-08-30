@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,62 +34,50 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NehtaNehtaNoneIdentifiedPresent {
 
-  /**
-   * None identified
-   */
-  NONEIDENTIFIED,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static NehtaNehtaNoneIdentifiedPresent fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("none_identified".equals(codeString))
-      return NONEIDENTIFIED;
-    throw new FHIRException("Unknown NehtaNehtaNoneIdentifiedPresent code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NONEIDENTIFIED:
-      return "none_identified";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * None identified
+         */
+        NONEIDENTIFIED, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static NehtaNehtaNoneIdentifiedPresent fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("none_identified".equals(codeString))
+          return NONEIDENTIFIED;
+        throw new FHIRException("Unknown NehtaNehtaNoneIdentifiedPresent code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NONEIDENTIFIED: return "none_identified";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/nehta-none-identified-present";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NONEIDENTIFIED: return "None identified";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NONEIDENTIFIED: return "None identified";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/nehta-none-identified-present";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NONEIDENTIFIED:
-      return "None identified";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NONEIDENTIFIED:
-      return "None identified";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

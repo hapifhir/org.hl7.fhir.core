@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ProductStatusEnumFactory implements EnumFactory<ProductStatus> {
@@ -42,7 +46,7 @@ public class ProductStatusEnumFactory implements EnumFactory<ProductStatus> {
       return ProductStatus.AVAILABLE;
     if ("unavailable".equals(codeString))
       return ProductStatus.UNAVAILABLE;
-    throw new IllegalArgumentException("Unknown ProductStatus code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ProductStatus code '"+codeString+"'");
   }
 
   public String toCode(ProductStatus code) {
@@ -53,8 +57,8 @@ public class ProductStatusEnumFactory implements EnumFactory<ProductStatus> {
     return "?";
   }
 
-  public String toSystem(ProductStatus code) {
-    return code.getSystem();
-  }
+    public String toSystem(ProductStatus code) {
+      return code.getSystem();
+      }
 
 }

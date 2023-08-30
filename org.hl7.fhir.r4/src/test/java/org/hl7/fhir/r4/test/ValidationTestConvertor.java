@@ -1,11 +1,5 @@
 package org.hl7.fhir.r4.test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.SimpleWorkerContext;
 import org.hl7.fhir.r4.elementmodel.Element;
@@ -13,6 +7,8 @@ import org.hl7.fhir.r4.elementmodel.Manager;
 import org.hl7.fhir.r4.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.Utilities;
+
+import java.io.*;
 
 public class ValidationTestConvertor {
 
@@ -23,8 +19,7 @@ public class ValidationTestConvertor {
    * @throws FileNotFoundException
    */
   public static void main(String[] args) throws FileNotFoundException, IOException, FHIRException {
-    SimpleWorkerContext context = SimpleWorkerContext
-        .fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
+    SimpleWorkerContext context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
     for (File f : new File("C:\\work\\org.hl7.fhir\\build\\tests\\validation-examples").listFiles()) {
       if (f.getAbsolutePath().endsWith(".xml")) {
         File t = new File(Utilities.changeFileExt(f.getAbsolutePath(), ".ttl"));

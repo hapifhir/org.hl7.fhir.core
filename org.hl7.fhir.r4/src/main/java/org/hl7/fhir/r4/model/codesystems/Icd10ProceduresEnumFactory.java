@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class Icd10ProceduresEnumFactory implements EnumFactory<Icd10Procedures> {
@@ -44,7 +48,7 @@ public class Icd10ProceduresEnumFactory implements EnumFactory<Icd10Procedures> 
       return Icd10Procedures._123002;
     if ("123003".equals(codeString))
       return Icd10Procedures._123003;
-    throw new IllegalArgumentException("Unknown Icd10Procedures code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown Icd10Procedures code '"+codeString+"'");
   }
 
   public String toCode(Icd10Procedures code) {
@@ -57,8 +61,8 @@ public class Icd10ProceduresEnumFactory implements EnumFactory<Icd10Procedures> 
     return "?";
   }
 
-  public String toSystem(Icd10Procedures code) {
-    return code.getSystem();
-  }
+    public String toSystem(Icd10Procedures code) {
+      return code.getSystem();
+      }
 
 }

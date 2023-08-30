@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AdverseEventSeverity {
 
-  /**
-   * null
-   */
-  MILD,
-  /**
-   * null
-   */
-  MODERATE,
-  /**
-   * null
-   */
-  SEVERE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static AdverseEventSeverity fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("mild".equals(codeString))
-      return MILD;
-    if ("moderate".equals(codeString))
-      return MODERATE;
-    if ("severe".equals(codeString))
-      return SEVERE;
-    throw new FHIRException("Unknown AdverseEventSeverity code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case MILD:
-      return "mild";
-    case MODERATE:
-      return "moderate";
-    case SEVERE:
-      return "severe";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * null
+         */
+        MILD, 
+        /**
+         * null
+         */
+        MODERATE, 
+        /**
+         * null
+         */
+        SEVERE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static AdverseEventSeverity fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("mild".equals(codeString))
+          return MILD;
+        if ("moderate".equals(codeString))
+          return MODERATE;
+        if ("severe".equals(codeString))
+          return SEVERE;
+        throw new FHIRException("Unknown AdverseEventSeverity code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case MILD: return "mild";
+            case MODERATE: return "moderate";
+            case SEVERE: return "severe";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/adverse-event-severity";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case MILD: return "";
+            case MODERATE: return "";
+            case SEVERE: return "";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case MILD: return "Mild";
+            case MODERATE: return "Moderate";
+            case SEVERE: return "Severe";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/adverse-event-severity";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case MILD:
-      return "";
-    case MODERATE:
-      return "";
-    case SEVERE:
-      return "";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case MILD:
-      return "Mild";
-    case MODERATE:
-      return "Moderate";
-    case SEVERE:
-      return "Severe";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

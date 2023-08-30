@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,170 +34,131 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum InsuranceplanType {
 
-  /**
-   * null
-   */
-  MEDICAL,
-  /**
-   * null
-   */
-  DENTAL,
-  /**
-   * null
-   */
-  MENTAL,
-  /**
-   * null
-   */
-  SUBSTAB,
-  /**
-   * null
-   */
-  VISION,
-  /**
-   * null
-   */
-  DRUG,
-  /**
-   * null
-   */
-  SHORTTERM,
-  /**
-   * null
-   */
-  LONGTERM,
-  /**
-   * null
-   */
-  HOSPICE,
-  /**
-   * null
-   */
-  HOME,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static InsuranceplanType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("medical".equals(codeString))
-      return MEDICAL;
-    if ("dental".equals(codeString))
-      return DENTAL;
-    if ("mental".equals(codeString))
-      return MENTAL;
-    if ("subst-ab".equals(codeString))
-      return SUBSTAB;
-    if ("vision".equals(codeString))
-      return VISION;
-    if ("Drug".equals(codeString))
-      return DRUG;
-    if ("short-term".equals(codeString))
-      return SHORTTERM;
-    if ("long-term".equals(codeString))
-      return LONGTERM;
-    if ("hospice".equals(codeString))
-      return HOSPICE;
-    if ("home".equals(codeString))
-      return HOME;
-    throw new FHIRException("Unknown InsuranceplanType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case MEDICAL:
-      return "medical";
-    case DENTAL:
-      return "dental";
-    case MENTAL:
-      return "mental";
-    case SUBSTAB:
-      return "subst-ab";
-    case VISION:
-      return "vision";
-    case DRUG:
-      return "Drug";
-    case SHORTTERM:
-      return "short-term";
-    case LONGTERM:
-      return "long-term";
-    case HOSPICE:
-      return "hospice";
-    case HOME:
-      return "home";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * null
+         */
+        MEDICAL, 
+        /**
+         * null
+         */
+        DENTAL, 
+        /**
+         * null
+         */
+        MENTAL, 
+        /**
+         * null
+         */
+        SUBSTAB, 
+        /**
+         * null
+         */
+        VISION, 
+        /**
+         * null
+         */
+        DRUG, 
+        /**
+         * null
+         */
+        SHORTTERM, 
+        /**
+         * null
+         */
+        LONGTERM, 
+        /**
+         * null
+         */
+        HOSPICE, 
+        /**
+         * null
+         */
+        HOME, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static InsuranceplanType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("medical".equals(codeString))
+          return MEDICAL;
+        if ("dental".equals(codeString))
+          return DENTAL;
+        if ("mental".equals(codeString))
+          return MENTAL;
+        if ("subst-ab".equals(codeString))
+          return SUBSTAB;
+        if ("vision".equals(codeString))
+          return VISION;
+        if ("Drug".equals(codeString))
+          return DRUG;
+        if ("short-term".equals(codeString))
+          return SHORTTERM;
+        if ("long-term".equals(codeString))
+          return LONGTERM;
+        if ("hospice".equals(codeString))
+          return HOSPICE;
+        if ("home".equals(codeString))
+          return HOME;
+        throw new FHIRException("Unknown InsuranceplanType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case MEDICAL: return "medical";
+            case DENTAL: return "dental";
+            case MENTAL: return "mental";
+            case SUBSTAB: return "subst-ab";
+            case VISION: return "vision";
+            case DRUG: return "Drug";
+            case SHORTTERM: return "short-term";
+            case LONGTERM: return "long-term";
+            case HOSPICE: return "hospice";
+            case HOME: return "home";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/insurance-plan-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case MEDICAL: return "";
+            case DENTAL: return "";
+            case MENTAL: return "";
+            case SUBSTAB: return "";
+            case VISION: return "";
+            case DRUG: return "";
+            case SHORTTERM: return "";
+            case LONGTERM: return "";
+            case HOSPICE: return "";
+            case HOME: return "";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case MEDICAL: return "Medical";
+            case DENTAL: return "Dental";
+            case MENTAL: return "Mental Health";
+            case SUBSTAB: return "Substance Abuse";
+            case VISION: return "Vision";
+            case DRUG: return "Drug";
+            case SHORTTERM: return "Short Term";
+            case LONGTERM: return "Long Term Care";
+            case HOSPICE: return "Hospice";
+            case HOME: return "Home Health";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/insurance-plan-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case MEDICAL:
-      return "";
-    case DENTAL:
-      return "";
-    case MENTAL:
-      return "";
-    case SUBSTAB:
-      return "";
-    case VISION:
-      return "";
-    case DRUG:
-      return "";
-    case SHORTTERM:
-      return "";
-    case LONGTERM:
-      return "";
-    case HOSPICE:
-      return "";
-    case HOME:
-      return "";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case MEDICAL:
-      return "Medical";
-    case DENTAL:
-      return "Dental";
-    case MENTAL:
-      return "Mental Health";
-    case SUBSTAB:
-      return "Substance Abuse";
-    case VISION:
-      return "Vision";
-    case DRUG:
-      return "Drug";
-    case SHORTTERM:
-      return "Short Term";
-    case LONGTERM:
-      return "Long Term Care";
-    case HOSPICE:
-      return "Hospice";
-    case HOME:
-      return "Home Health";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

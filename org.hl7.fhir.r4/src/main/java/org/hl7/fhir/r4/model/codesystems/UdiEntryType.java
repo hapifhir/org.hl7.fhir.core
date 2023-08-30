@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,125 +34,95 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum UdiEntryType {
 
-  /**
-   * a barcodescanner captured the data from the device label.
-   */
-  BARCODE,
-  /**
-   * An RFID chip reader captured the data from the device label.
-   */
-  RFID,
-  /**
-   * The data was read from the label by a person and manually entered. (e.g. via
-   * a keyboard).
-   */
-  MANUAL,
-  /**
-   * The data originated from a patient's implant card and was read by an
-   * operator.
-   */
-  CARD,
-  /**
-   * The data originated from a patient source and was not directly scanned or
-   * read from a label or card.
-   */
-  SELFREPORTED,
-  /**
-   * The method of data capture has not been determined.
-   */
-  UNKNOWN,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static UdiEntryType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("barcode".equals(codeString))
-      return BARCODE;
-    if ("rfid".equals(codeString))
-      return RFID;
-    if ("manual".equals(codeString))
-      return MANUAL;
-    if ("card".equals(codeString))
-      return CARD;
-    if ("self-reported".equals(codeString))
-      return SELFREPORTED;
-    if ("unknown".equals(codeString))
-      return UNKNOWN;
-    throw new FHIRException("Unknown UdiEntryType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case BARCODE:
-      return "barcode";
-    case RFID:
-      return "rfid";
-    case MANUAL:
-      return "manual";
-    case CARD:
-      return "card";
-    case SELFREPORTED:
-      return "self-reported";
-    case UNKNOWN:
-      return "unknown";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * a barcodescanner captured the data from the device label.
+         */
+        BARCODE, 
+        /**
+         * An RFID chip reader captured the data from the device label.
+         */
+        RFID, 
+        /**
+         * The data was read from the label by a person and manually entered. (e.g.  via a keyboard).
+         */
+        MANUAL, 
+        /**
+         * The data originated from a patient's implant card and was read by an operator.
+         */
+        CARD, 
+        /**
+         * The data originated from a patient source and was not directly scanned or read from a label or card.
+         */
+        SELFREPORTED, 
+        /**
+         * The method of data capture has not been determined.
+         */
+        UNKNOWN, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static UdiEntryType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("barcode".equals(codeString))
+          return BARCODE;
+        if ("rfid".equals(codeString))
+          return RFID;
+        if ("manual".equals(codeString))
+          return MANUAL;
+        if ("card".equals(codeString))
+          return CARD;
+        if ("self-reported".equals(codeString))
+          return SELFREPORTED;
+        if ("unknown".equals(codeString))
+          return UNKNOWN;
+        throw new FHIRException("Unknown UdiEntryType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case BARCODE: return "barcode";
+            case RFID: return "rfid";
+            case MANUAL: return "manual";
+            case CARD: return "card";
+            case SELFREPORTED: return "self-reported";
+            case UNKNOWN: return "unknown";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/udi-entry-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case BARCODE: return "a barcodescanner captured the data from the device label.";
+            case RFID: return "An RFID chip reader captured the data from the device label.";
+            case MANUAL: return "The data was read from the label by a person and manually entered. (e.g.  via a keyboard).";
+            case CARD: return "The data originated from a patient's implant card and was read by an operator.";
+            case SELFREPORTED: return "The data originated from a patient source and was not directly scanned or read from a label or card.";
+            case UNKNOWN: return "The method of data capture has not been determined.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case BARCODE: return "Barcode";
+            case RFID: return "RFID";
+            case MANUAL: return "Manual";
+            case CARD: return "Card";
+            case SELFREPORTED: return "Self Reported";
+            case UNKNOWN: return "Unknown";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/udi-entry-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case BARCODE:
-      return "a barcodescanner captured the data from the device label.";
-    case RFID:
-      return "An RFID chip reader captured the data from the device label.";
-    case MANUAL:
-      return "The data was read from the label by a person and manually entered. (e.g.  via a keyboard).";
-    case CARD:
-      return "The data originated from a patient's implant card and was read by an operator.";
-    case SELFREPORTED:
-      return "The data originated from a patient source and was not directly scanned or read from a label or card.";
-    case UNKNOWN:
-      return "The method of data capture has not been determined.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case BARCODE:
-      return "Barcode";
-    case RFID:
-      return "RFID";
-    case MANUAL:
-      return "Manual";
-    case CARD:
-      return "Card";
-    case SELFREPORTED:
-      return "Self Reported";
-    case UNKNOWN:
-      return "Unknown";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

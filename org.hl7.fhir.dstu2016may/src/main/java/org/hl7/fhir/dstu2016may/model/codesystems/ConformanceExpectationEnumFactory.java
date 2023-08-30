@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ConformanceExpectationEnumFactory implements EnumFactory<ConformanceExpectation> {
@@ -46,7 +50,7 @@ public class ConformanceExpectationEnumFactory implements EnumFactory<Conformanc
       return ConformanceExpectation.MAY;
     if ("SHOULD-NOT".equals(codeString))
       return ConformanceExpectation.SHOULDNOT;
-    throw new IllegalArgumentException("Unknown ConformanceExpectation code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ConformanceExpectation code '"+codeString+"'");
   }
 
   public String toCode(ConformanceExpectation code) {
@@ -61,8 +65,8 @@ public class ConformanceExpectationEnumFactory implements EnumFactory<Conformanc
     return "?";
   }
 
-  public String toSystem(ConformanceExpectation code) {
-    return code.getSystem();
-  }
+    public String toSystem(ConformanceExpectation code) {
+      return code.getSystem();
+      }
 
 }

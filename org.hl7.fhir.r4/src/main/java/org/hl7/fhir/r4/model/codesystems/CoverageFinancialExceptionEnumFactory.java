@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class CoverageFinancialExceptionEnumFactory implements EnumFactory<CoverageFinancialException> {
@@ -42,7 +46,7 @@ public class CoverageFinancialExceptionEnumFactory implements EnumFactory<Covera
       return CoverageFinancialException.RETIRED;
     if ("foster".equals(codeString))
       return CoverageFinancialException.FOSTER;
-    throw new IllegalArgumentException("Unknown CoverageFinancialException code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown CoverageFinancialException code '"+codeString+"'");
   }
 
   public String toCode(CoverageFinancialException code) {
@@ -53,8 +57,8 @@ public class CoverageFinancialExceptionEnumFactory implements EnumFactory<Covera
     return "?";
   }
 
-  public String toSystem(CoverageFinancialException code) {
-    return code.getSystem();
-  }
+    public String toSystem(CoverageFinancialException code) {
+      return code.getSystem();
+      }
 
 }

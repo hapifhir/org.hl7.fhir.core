@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,99 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MedicationdispensePerformerFunction {
 
-  /**
-   * Recorded the details of the request
-   */
-  DATAENTERER,
-  /**
-   * Prepared the medication.
-   */
-  PACKAGER,
-  /**
-   * Performed initial quality assurance on the prepared medication
-   */
-  CHECKER,
-  /**
-   * Performed the final quality assurance on the prepared medication against the
-   * request. Typically, this is a pharmacist function.
-   */
-  FINALCHECKER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MedicationdispensePerformerFunction fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("dataenterer".equals(codeString))
-      return DATAENTERER;
-    if ("packager".equals(codeString))
-      return PACKAGER;
-    if ("checker".equals(codeString))
-      return CHECKER;
-    if ("finalchecker".equals(codeString))
-      return FINALCHECKER;
-    throw new FHIRException("Unknown MedicationdispensePerformerFunction code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case DATAENTERER:
-      return "dataenterer";
-    case PACKAGER:
-      return "packager";
-    case CHECKER:
-      return "checker";
-    case FINALCHECKER:
-      return "finalchecker";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Recorded the details of the request
+         */
+        DATAENTERER, 
+        /**
+         * Prepared the medication.
+         */
+        PACKAGER, 
+        /**
+         * Performed initial quality assurance on the prepared medication
+         */
+        CHECKER, 
+        /**
+         * Performed the final quality assurance on the prepared medication against the request. Typically, this is a pharmacist function.
+         */
+        FINALCHECKER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MedicationdispensePerformerFunction fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("dataenterer".equals(codeString))
+          return DATAENTERER;
+        if ("packager".equals(codeString))
+          return PACKAGER;
+        if ("checker".equals(codeString))
+          return CHECKER;
+        if ("finalchecker".equals(codeString))
+          return FINALCHECKER;
+        throw new FHIRException("Unknown MedicationdispensePerformerFunction code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case DATAENTERER: return "dataenterer";
+            case PACKAGER: return "packager";
+            case CHECKER: return "checker";
+            case FINALCHECKER: return "finalchecker";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/medicationdispense-performer-function";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case DATAENTERER: return "Recorded the details of the request";
+            case PACKAGER: return "Prepared the medication.";
+            case CHECKER: return "Performed initial quality assurance on the prepared medication";
+            case FINALCHECKER: return "Performed the final quality assurance on the prepared medication against the request. Typically, this is a pharmacist function.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case DATAENTERER: return "Data Enterer";
+            case PACKAGER: return "Packager";
+            case CHECKER: return "Checker";
+            case FINALCHECKER: return "Final Checker";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/medicationdispense-performer-function";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case DATAENTERER:
-      return "Recorded the details of the request";
-    case PACKAGER:
-      return "Prepared the medication.";
-    case CHECKER:
-      return "Performed initial quality assurance on the prepared medication";
-    case FINALCHECKER:
-      return "Performed the final quality assurance on the prepared medication against the request. Typically, this is a pharmacist function.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case DATAENTERER:
-      return "Data Enterer";
-    case PACKAGER:
-      return "Packager";
-    case CHECKER:
-      return "Checker";
-    case FINALCHECKER:
-      return "Final Checker";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

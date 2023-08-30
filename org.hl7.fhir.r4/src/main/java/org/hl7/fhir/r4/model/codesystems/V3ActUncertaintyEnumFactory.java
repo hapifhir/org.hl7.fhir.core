@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class V3ActUncertaintyEnumFactory implements EnumFactory<V3ActUncertainty> {
@@ -42,7 +46,7 @@ public class V3ActUncertaintyEnumFactory implements EnumFactory<V3ActUncertainty
       return V3ActUncertainty.N;
     if ("U".equals(codeString))
       return V3ActUncertainty.U;
-    throw new IllegalArgumentException("Unknown V3ActUncertainty code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3ActUncertainty code '"+codeString+"'");
   }
 
   public String toCode(V3ActUncertainty code) {
@@ -53,8 +57,8 @@ public class V3ActUncertaintyEnumFactory implements EnumFactory<V3ActUncertainty
     return "?";
   }
 
-  public String toSystem(V3ActUncertainty code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3ActUncertainty code) {
+      return code.getSystem();
+      }
 
 }

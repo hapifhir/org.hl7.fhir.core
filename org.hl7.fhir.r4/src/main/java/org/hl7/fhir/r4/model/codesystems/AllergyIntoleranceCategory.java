@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,105 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AllergyIntoleranceCategory {
 
-  /**
-   * Any substance consumed to provide nutritional support for the body.
-   */
-  FOOD,
-  /**
-   * Substances administered to achieve a physiological effect.
-   */
-  MEDICATION,
-  /**
-   * Any substances that are encountered in the environment, including any
-   * substance not already classified as food, medication, or biologic.
-   */
-  ENVIRONMENT,
-  /**
-   * A preparation that is synthesized from living organisms or their products,
-   * especially a human or animal protein, such as a hormone or antitoxin, that is
-   * used as a diagnostic, preventive, or therapeutic agent. Examples of biologic
-   * medications include: vaccines; allergenic extracts, which are used for both
-   * diagnosis and treatment (for example, allergy shots); gene therapies;
-   * cellular therapies. There are other biologic products, such as tissues, which
-   * are not typically associated with allergies.
-   */
-  BIOLOGIC,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static AllergyIntoleranceCategory fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("food".equals(codeString))
-      return FOOD;
-    if ("medication".equals(codeString))
-      return MEDICATION;
-    if ("environment".equals(codeString))
-      return ENVIRONMENT;
-    if ("biologic".equals(codeString))
-      return BIOLOGIC;
-    throw new FHIRException("Unknown AllergyIntoleranceCategory code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case FOOD:
-      return "food";
-    case MEDICATION:
-      return "medication";
-    case ENVIRONMENT:
-      return "environment";
-    case BIOLOGIC:
-      return "biologic";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Any substance consumed to provide nutritional support for the body.
+         */
+        FOOD, 
+        /**
+         * Substances administered to achieve a physiological effect.
+         */
+        MEDICATION, 
+        /**
+         * Any substances that are encountered in the environment, including any substance not already classified as food, medication, or biologic.
+         */
+        ENVIRONMENT, 
+        /**
+         * A preparation that is synthesized from living organisms or their products, especially a human or animal protein, such as a hormone or antitoxin, that is used as a diagnostic, preventive, or therapeutic agent. Examples of biologic medications include: vaccines; allergenic extracts, which are used for both diagnosis and treatment (for example, allergy shots); gene therapies; cellular therapies.  There are other biologic products, such as tissues, which are not typically associated with allergies.
+         */
+        BIOLOGIC, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static AllergyIntoleranceCategory fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("food".equals(codeString))
+          return FOOD;
+        if ("medication".equals(codeString))
+          return MEDICATION;
+        if ("environment".equals(codeString))
+          return ENVIRONMENT;
+        if ("biologic".equals(codeString))
+          return BIOLOGIC;
+        throw new FHIRException("Unknown AllergyIntoleranceCategory code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case FOOD: return "food";
+            case MEDICATION: return "medication";
+            case ENVIRONMENT: return "environment";
+            case BIOLOGIC: return "biologic";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/allergy-intolerance-category";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case FOOD: return "Any substance consumed to provide nutritional support for the body.";
+            case MEDICATION: return "Substances administered to achieve a physiological effect.";
+            case ENVIRONMENT: return "Any substances that are encountered in the environment, including any substance not already classified as food, medication, or biologic.";
+            case BIOLOGIC: return "A preparation that is synthesized from living organisms or their products, especially a human or animal protein, such as a hormone or antitoxin, that is used as a diagnostic, preventive, or therapeutic agent. Examples of biologic medications include: vaccines; allergenic extracts, which are used for both diagnosis and treatment (for example, allergy shots); gene therapies; cellular therapies.  There are other biologic products, such as tissues, which are not typically associated with allergies.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case FOOD: return "Food";
+            case MEDICATION: return "Medication";
+            case ENVIRONMENT: return "Environment";
+            case BIOLOGIC: return "Biologic";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/allergy-intolerance-category";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case FOOD:
-      return "Any substance consumed to provide nutritional support for the body.";
-    case MEDICATION:
-      return "Substances administered to achieve a physiological effect.";
-    case ENVIRONMENT:
-      return "Any substances that are encountered in the environment, including any substance not already classified as food, medication, or biologic.";
-    case BIOLOGIC:
-      return "A preparation that is synthesized from living organisms or their products, especially a human or animal protein, such as a hormone or antitoxin, that is used as a diagnostic, preventive, or therapeutic agent. Examples of biologic medications include: vaccines; allergenic extracts, which are used for both diagnosis and treatment (for example, allergy shots); gene therapies; cellular therapies.  There are other biologic products, such as tissues, which are not typically associated with allergies.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case FOOD:
-      return "Food";
-    case MEDICATION:
-      return "Medication";
-    case ENVIRONMENT:
-      return "Environment";
-    case BIOLOGIC:
-      return "Biologic";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -1,13 +1,13 @@
 package org.hl7.fhir.dstu3.test;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import org.hl7.fhir.dstu3.utils.formats.Turtle;
 import org.hl7.fhir.utilities.TextFile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 @Disabled
 public class TurtleTests {

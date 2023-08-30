@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class FmConditionsEnumFactory implements EnumFactory<FmConditions> {
@@ -40,7 +44,7 @@ public class FmConditionsEnumFactory implements EnumFactory<FmConditions> {
       return null;
     if ("123987".equals(codeString))
       return FmConditions._123987;
-    throw new IllegalArgumentException("Unknown FmConditions code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown FmConditions code '"+codeString+"'");
   }
 
   public String toCode(FmConditions code) {
@@ -49,8 +53,8 @@ public class FmConditionsEnumFactory implements EnumFactory<FmConditions> {
     return "?";
   }
 
-  public String toSystem(FmConditions code) {
-    return code.getSystem();
-  }
+    public String toSystem(FmConditions code) {
+      return code.getSystem();
+      }
 
 }

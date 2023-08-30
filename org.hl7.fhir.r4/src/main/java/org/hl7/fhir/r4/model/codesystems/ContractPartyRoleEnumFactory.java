@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ContractPartyRoleEnumFactory implements EnumFactory<ContractPartyRole> {
@@ -40,7 +44,7 @@ public class ContractPartyRoleEnumFactory implements EnumFactory<ContractPartyRo
       return null;
     if ("flunky".equals(codeString))
       return ContractPartyRole.FLUNKY;
-    throw new IllegalArgumentException("Unknown ContractPartyRole code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ContractPartyRole code '"+codeString+"'");
   }
 
   public String toCode(ContractPartyRole code) {
@@ -49,8 +53,8 @@ public class ContractPartyRoleEnumFactory implements EnumFactory<ContractPartyRo
     return "?";
   }
 
-  public String toSystem(ContractPartyRole code) {
-    return code.getSystem();
-  }
+    public String toSystem(ContractPartyRole code) {
+      return code.getSystem();
+      }
 
 }

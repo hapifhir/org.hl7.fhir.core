@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.utils;
   
  */
 
+
+
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,27 +49,27 @@ public class ProtoBufGenerator {
   private StructureDefinition definition;
   private OutputStreamWriter destination;
   private int cursor;
-  private Message message;
-
+  private Message message; 
+  
   private class Field {
-    private String name;
+    private String name;   
     private boolean required;
     private boolean repeating;
     private String type;
   }
-
+  
   private class Message {
     private String name;
     private List<Field> fields = new ArrayList<Field>();
     private List<Message> messages = new ArrayList<Message>();
-
     public Message(String name) {
       super();
       this.name = name;
     }
-
+    
+    
   }
-
+  
   public ProtoBufGenerator(IWorkerContext context) {
     super();
     this.context = context;
@@ -83,7 +85,7 @@ public class ProtoBufGenerator {
   public IWorkerContext getContext() {
     return context;
   }
-
+  
   public StructureDefinition getDefinition() {
     return definition;
   }
@@ -100,15 +102,16 @@ public class ProtoBufGenerator {
     this.destination = destination;
   }
 
+
   public void build() throws FHIRException {
     if (definition == null)
       throw new FHIRException("A definition must be provided");
     if (destination == null)
       throw new FHIRException("A destination must be provided");
-
+    
     if (definition.getDerivation() == TypeDerivationRule.CONSTRAINT)
       throw new FHIRException("derivation = constraint is not supported yet");
-
+    
     message = new Message(definition.getSnapshot().getElement().get(0).getPath());
     cursor = 1;
     while (cursor < definition.getSnapshot().getElement().size()) {
@@ -127,13 +130,13 @@ public class ProtoBufGenerator {
         else if (td.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
           fld.type = protoTypeForFhirType(ed.getTypeFirstRep().getWorkingCode());
           fld = new Field();
-          fld.name = tail(ed.getPath()) + "Extra";
+          fld.name = tail(ed.getPath())+"Extra";
           fld.repeating = (!ed.getMax().equals("1"));
           fld.type = "Primitive";
           message.fields.add(fld);
         } else
           fld.type = ed.getTypeFirstRep().getWorkingCode();
-      }
+      }   
     }
   }
 
@@ -142,12 +145,13 @@ public class ProtoBufGenerator {
       return "int23";
     else if (code.equals("boolean"))
       return "bool";
-    else
+    else 
       return "string";
   }
 
   private String tail(String path) {
-    return path.substring(path.lastIndexOf(".") + 1);
+    return path.substring(path.lastIndexOf(".")+1);
   }
-
+  
+  
 }

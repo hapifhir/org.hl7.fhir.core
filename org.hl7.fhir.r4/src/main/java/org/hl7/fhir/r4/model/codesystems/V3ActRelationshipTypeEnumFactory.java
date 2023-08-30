@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -312,7 +316,7 @@ public class V3ActRelationshipTypeEnumFactory implements EnumFactory<V3ActRelati
       return V3ActRelationshipType.RACT;
     if ("SUGG".equals(codeString))
       return V3ActRelationshipType.SUGG;
-    throw new IllegalArgumentException("Unknown V3ActRelationshipType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3ActRelationshipType code '"+codeString+"'");
   }
 
   public String toCode(V3ActRelationshipType code) {
@@ -593,8 +597,8 @@ public class V3ActRelationshipTypeEnumFactory implements EnumFactory<V3ActRelati
     return "?";
   }
 
-  public String toSystem(V3ActRelationshipType code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3ActRelationshipType code) {
+      return code.getSystem();
+      }
 
 }

@@ -29,6 +29,8 @@ package org.hl7.fhir.dstu2016may.formats;
   
  */
 
+
+
 /*
 Copyright (c) 2011+, HL7, Inc
 All rights reserved.
@@ -64,26 +66,27 @@ import org.hl7.fhir.dstu2016may.model.Coding;
 import org.hl7.fhir.dstu2016may.model.Resource;
 
 public class ResourceOrFeed {
-  private Resource resource;
-  private List<Coding> taglist;
+	private Resource resource;
+	private List<Coding> taglist;
 
-  public ResourceOrFeed() {
-  }
+	public ResourceOrFeed() {
+	}
 
-  public Resource getResource() {
-    return resource;
-  }
+	public Resource getResource() {
+		return resource;
+	}
 
-  public void setResource(Resource resource) {
-    this.resource = resource;
-  }
+	public void setResource(Resource resource) {
+		this.resource = resource;
+	}
 
-  public List<Coding> getTaglist() {
-    return taglist;
-  }
+	public List<Coding> getTaglist() {
+		return taglist;
+	}
 
-  public void setTaglist(List<Coding> taglist) {
-    this.taglist = taglist;
-  }
-
+	public void setTaglist(List<Coding> taglist) {
+		this.taglist = taglist;
+	}
+	
+	
 }

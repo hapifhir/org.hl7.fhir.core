@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -106,7 +110,7 @@ public class EventResourceTypesEnumFactory implements EnumFactory<EventResourceT
       return EventResourceTypes.SUPPLYDELIVERY;
     if ("Task".equals(codeString))
       return EventResourceTypes.TASK;
-    throw new IllegalArgumentException("Unknown EventResourceTypes code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown EventResourceTypes code '"+codeString+"'");
   }
 
   public String toCode(EventResourceTypes code) {
@@ -181,8 +185,8 @@ public class EventResourceTypesEnumFactory implements EnumFactory<EventResourceT
     return "?";
   }
 
-  public String toSystem(EventResourceTypes code) {
-    return code.getSystem();
-  }
+    public String toSystem(EventResourceTypes code) {
+      return code.getSystem();
+      }
 
 }

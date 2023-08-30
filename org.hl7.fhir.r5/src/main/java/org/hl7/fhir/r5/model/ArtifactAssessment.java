@@ -1256,10 +1256,10 @@ public class ArtifactAssessment extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("informationType")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ArtifactAssessment.content.informationType");
+          throw new FHIRException("Cannot call addChild on a primitive type ArtifactAssessment.content.informationType");
         }
         else if (name.equals("summary")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ArtifactAssessment.content.summary");
+          throw new FHIRException("Cannot call addChild on a primitive type ArtifactAssessment.content.summary");
         }
         else if (name.equals("type")) {
           this.type = new CodeableConcept();
@@ -1277,13 +1277,13 @@ public class ArtifactAssessment extends DomainResource {
           return this.author;
         }
         else if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ArtifactAssessment.content.path");
+          throw new FHIRException("Cannot call addChild on a primitive type ArtifactAssessment.content.path");
         }
         else if (name.equals("relatedArtifact")) {
           return addRelatedArtifact();
         }
         else if (name.equals("freeToShare")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ArtifactAssessment.content.freeToShare");
+          throw new FHIRException("Cannot call addChild on a primitive type ArtifactAssessment.content.freeToShare");
         }
         else if (name.equals("component")) {
           return addComponent();
@@ -2207,7 +2207,7 @@ public class ArtifactAssessment extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ArtifactAssessment.title");
+          throw new FHIRException("Cannot call addChild on a primitive type ArtifactAssessment.title");
         }
         else if (name.equals("citeAsReference")) {
           this.citeAs = new Reference();
@@ -2218,16 +2218,16 @@ public class ArtifactAssessment extends DomainResource {
           return this.citeAs;
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ArtifactAssessment.date");
+          throw new FHIRException("Cannot call addChild on a primitive type ArtifactAssessment.date");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ArtifactAssessment.copyright");
+          throw new FHIRException("Cannot call addChild on a primitive type ArtifactAssessment.copyright");
         }
         else if (name.equals("approvalDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ArtifactAssessment.approvalDate");
+          throw new FHIRException("Cannot call addChild on a primitive type ArtifactAssessment.approvalDate");
         }
         else if (name.equals("lastReviewDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ArtifactAssessment.lastReviewDate");
+          throw new FHIRException("Cannot call addChild on a primitive type ArtifactAssessment.lastReviewDate");
         }
         else if (name.equals("artifactReference")) {
           this.artifact = new Reference();
@@ -2245,10 +2245,10 @@ public class ArtifactAssessment extends DomainResource {
           return addContent();
         }
         else if (name.equals("workflowStatus")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ArtifactAssessment.workflowStatus");
+          throw new FHIRException("Cannot call addChild on a primitive type ArtifactAssessment.workflowStatus");
         }
         else if (name.equals("disposition")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ArtifactAssessment.disposition");
+          throw new FHIRException("Cannot call addChild on a primitive type ArtifactAssessment.disposition");
         }
         else
           return super.addChild(name);

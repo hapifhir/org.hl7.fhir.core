@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum LanguagePreferenceType {
 
-  /**
-   * The patient prefers to verbally communicate with the associated language.
-   */
-  VERBAL,
-  /**
-   * The patient prefers to communicate in writing with the associated language.
-   */
-  WRITTEN,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static LanguagePreferenceType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("verbal".equals(codeString))
-      return VERBAL;
-    if ("written".equals(codeString))
-      return WRITTEN;
-    throw new FHIRException("Unknown LanguagePreferenceType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case VERBAL:
-      return "verbal";
-    case WRITTEN:
-      return "written";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The patient prefers to verbally communicate with the associated language.
+         */
+        VERBAL, 
+        /**
+         * The patient prefers to communicate in writing with the associated language.
+         */
+        WRITTEN, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static LanguagePreferenceType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("verbal".equals(codeString))
+          return VERBAL;
+        if ("written".equals(codeString))
+          return WRITTEN;
+        throw new FHIRException("Unknown LanguagePreferenceType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case VERBAL: return "verbal";
+            case WRITTEN: return "written";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/language-preference-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case VERBAL: return "The patient prefers to verbally communicate with the associated language.";
+            case WRITTEN: return "The patient prefers to communicate in writing with the associated language.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case VERBAL: return "verbal";
+            case WRITTEN: return "written";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/language-preference-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case VERBAL:
-      return "The patient prefers to verbally communicate with the associated language.";
-    case WRITTEN:
-      return "The patient prefers to communicate in writing with the associated language.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case VERBAL:
-      return "verbal";
-    case WRITTEN:
-      return "written";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

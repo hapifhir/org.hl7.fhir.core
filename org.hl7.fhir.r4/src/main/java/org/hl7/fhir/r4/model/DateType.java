@@ -29,6 +29,8 @@ package org.hl7.fhir.r4.model;
   
  */
 
+
+
 import java.util.Calendar;
 
 /**
@@ -39,9 +41,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.apache.commons.lang3.Validate;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
@@ -55,140 +57,134 @@ import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 @DatatypeDef(name = "date")
 public class DateType extends BaseDateTimeType {
 
-  private static final long serialVersionUID = 3L;
+	private static final long serialVersionUID = 3L;
+	
+	/**
+	 * The default precision for this type
+	 */
+	public static final TemporalPrecisionEnum DEFAULT_PRECISION = TemporalPrecisionEnum.DAY;
 
-  /**
-   * The default precision for this type
-   */
-  public static final TemporalPrecisionEnum DEFAULT_PRECISION = TemporalPrecisionEnum.DAY;
+	/**
+	 * Constructor
+	 */
+	public DateType() {
+		super();
+	}
 
-  /**
-   * Constructor
-   */
-  public DateType() {
-    super();
-  }
+	/**
+	 * Constructor which accepts a date value and uses the {@link #DEFAULT_PRECISION} for this type
+	 */
+	public DateType(Date theDate) {
+		super(theDate, DEFAULT_PRECISION);
+	}
 
-  /**
-   * Constructor which accepts a date value and uses the
-   * {@link #DEFAULT_PRECISION} for this type
-   */
-  public DateType(Date theDate) {
-    super(theDate, DEFAULT_PRECISION);
-  }
+	/**
+	 * Constructor which accepts a date value and a precision value. Valid precisions values for this type are:
+	 * <ul>
+	 * <li>{@link ca.uhn.fhir.model.api.TemporalPrecisionEnum#YEAR}
+	 * <li>{@link ca.uhn.fhir.model.api.TemporalPrecisionEnum#MONTH}
+	 * <li>{@link ca.uhn.fhir.model.api.TemporalPrecisionEnum#DAY}
+	 * </ul>
+	 *
+	 * @throws ca.uhn.fhir.parser.DataFormatException
+	 *             If the specified precision is not allowed for this type
+	 */
+	public DateType(Date theDate, TemporalPrecisionEnum thePrecision) {
+		super(theDate, thePrecision);
+	}
 
-  /**
-   * Constructor which accepts a date value and a precision value. Valid
-   * precisions values for this type are:
-   * <ul>
-   * <li>{@link ca.uhn.fhir.model.api.TemporalPrecisionEnum#YEAR}
-   * <li>{@link ca.uhn.fhir.model.api.TemporalPrecisionEnum#MONTH}
-   * <li>{@link ca.uhn.fhir.model.api.TemporalPrecisionEnum#DAY}
-   * </ul>
-   *
-   * @throws ca.uhn.fhir.parser.DataFormatException If the specified precision is
-   *                                                not allowed for this type
-   */
-  public DateType(Date theDate, TemporalPrecisionEnum thePrecision) {
-    super(theDate, thePrecision);
-  }
+	/**
+	 * Constructor which accepts a date as a string in FHIR format
+	 *
+	 * @throws ca.uhn.fhir.parser.DataFormatException
+	 *             If the precision in the date string is not allowed for this type
+	 */
+	public DateType(String theDate) {
+		super(theDate);
+	}
 
-  /**
-   * Constructor which accepts a date as a string in FHIR format
-   *
-   * @throws ca.uhn.fhir.parser.DataFormatException If the precision in the date
-   *                                                string is not allowed for this
-   *                                                type
-   */
-  public DateType(String theDate) {
-    super(theDate);
-  }
+	/**
+	 * Constructor which accepts a date value and uses the {@link #DEFAULT_PRECISION} for this type.
+	 */
+	public DateType(Calendar theCalendar) {
+		super(theCalendar.getTime(), DEFAULT_PRECISION);
+		setTimeZone(theCalendar.getTimeZone());
+	}
 
-  /**
-   * Constructor which accepts a date value and uses the
-   * {@link #DEFAULT_PRECISION} for this type.
-   */
-  public DateType(Calendar theCalendar) {
-    super(theCalendar.getTime(), DEFAULT_PRECISION);
-    setTimeZone(theCalendar.getTimeZone());
-  }
+	/**
+	 * Constructor which accepts a date value and uses the {@link #DEFAULT_PRECISION} for this type.
+	 * <p>
+	 * <b>Use caution when using this constructor</b>: The month is 0-indexed but the day is 1-indexed 
+	 * in order to match the bahaviour of the Java {@link Calendar} type.
+	 * </p>
+	 * 
+	 * @param theYear The year, e.g. 2015
+	 * @param theMonth The month, e.g. 0 for January
+	 * @param theDay The day (1 indexed) e.g. 1 for the first day of the month
+	 */
+	public DateType(int theYear, int theMonth, int theDay) {
+		this(toCalendarZulu(theYear, theMonth, theDay));
+	}
 
-  /**
-   * Constructor which accepts a date value and uses the
-   * {@link #DEFAULT_PRECISION} for this type.
-   * <p>
-   * <b>Use caution when using this constructor</b>: The month is 0-indexed but
-   * the day is 1-indexed in order to match the bahaviour of the Java
-   * {@link Calendar} type.
-   * </p>
-   * 
-   * @param theYear  The year, e.g. 2015
-   * @param theMonth The month, e.g. 0 for January
-   * @param theDay   The day (1 indexed) e.g. 1 for the first day of the month
-   */
-  public DateType(int theYear, int theMonth, int theDay) {
-    this(toCalendarZulu(theYear, theMonth, theDay));
-  }
+	private static GregorianCalendar toCalendarZulu(int theYear, int theMonth, int theDay) {
+		Validate.isTrue(theMonth >= 0, "theMonth must be between 0 and 11");
+		Validate.isTrue(theMonth <= 11, "theMonth must be between 0 and 11");
+		Validate.isTrue(theDay >= 1, "theDay must be between 1 and 31");
+		Validate.isTrue(theDay <= 31, "theDay must be between 1 and 31");
+		
+		GregorianCalendar retVal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+		retVal.set(Calendar.YEAR, theYear);
+		retVal.set(Calendar.MONTH, theMonth);
+		retVal.set(Calendar.DATE, theDay);
+		return retVal;
+	}
 
-  private static GregorianCalendar toCalendarZulu(int theYear, int theMonth, int theDay) {
-    Validate.isTrue(theMonth >= 0, "theMonth must be between 0 and 11");
-    Validate.isTrue(theMonth <= 11, "theMonth must be between 0 and 11");
-    Validate.isTrue(theDay >= 1, "theDay must be between 1 and 31");
-    Validate.isTrue(theDay <= 31, "theDay must be between 1 and 31");
+	@Override
+	boolean isPrecisionAllowed(TemporalPrecisionEnum thePrecision) {
+		switch (thePrecision) {
+			case YEAR:
+			case MONTH:
+			case DAY:
+				return true;
+			default:
+				return false;
+		}
+	}
 
-    GregorianCalendar retVal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
-    retVal.set(Calendar.YEAR, theYear);
-    retVal.set(Calendar.MONTH, theMonth);
-    retVal.set(Calendar.DATE, theDay);
-    return retVal;
-  }
+	/**
+	 * Returns the default precision for this datatype
+	 *
+	 * @see #DEFAULT_PRECISION
+	 */
+	@Override
+	protected TemporalPrecisionEnum getDefaultPrecisionForDatatype() {
+		return DEFAULT_PRECISION;
+	}
 
-  @Override
-  boolean isPrecisionAllowed(TemporalPrecisionEnum thePrecision) {
-    switch (thePrecision) {
-    case YEAR:
-    case MONTH:
-    case DAY:
-      return true;
-    default:
-      return false;
-    }
-  }
-
-  /**
-   * Returns the default precision for this datatype
-   *
-   * @see #DEFAULT_PRECISION
-   */
-  @Override
-  protected TemporalPrecisionEnum getDefaultPrecisionForDatatype() {
-    return DEFAULT_PRECISION;
-  }
-
-  @Override
-  public DateType copy() {
-    DateType ret = new DateType(getValueAsString());
+	@Override
+	public DateType copy() {
+		DateType ret = new DateType(getValueAsString());
     copyValues(ret);
     return ret;
-  }
+	}
+	
+	public static InstantType today() {
+		return new InstantType(new Date(), TemporalPrecisionEnum.DAY, TimeZone.getDefault());
+	}
 
-  public static InstantType today() {
-    return new InstantType(new Date(), TemporalPrecisionEnum.DAY, TimeZone.getDefault());
-  }
+	/**
+	 * Creates a new instance by parsing an HL7 v3 format date time string
+	 */
+	public static DateType parseV3(String theV3String) {
+		DateType retVal = new DateType();
+		retVal.setValueAsV3String(theV3String);
+		return retVal;
+	}
 
-  /**
-   * Creates a new instance by parsing an HL7 v3 format date time string
-   */
-  public static DateType parseV3(String theV3String) {
-    DateType retVal = new DateType();
-    retVal.setValueAsV3String(theV3String);
-    return retVal;
-  }
-
-  @Override
-  public String fhirType() {
-    return "date";
-  }
+	@Override
+	public String fhirType() {
+		return "date";		
+	}
 
   @Override
   public boolean isDateTime() {

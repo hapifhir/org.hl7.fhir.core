@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class LanguagePreferenceTypeEnumFactory implements EnumFactory<LanguagePreferenceType> {
@@ -42,7 +46,7 @@ public class LanguagePreferenceTypeEnumFactory implements EnumFactory<LanguagePr
       return LanguagePreferenceType.VERBAL;
     if ("written".equals(codeString))
       return LanguagePreferenceType.WRITTEN;
-    throw new IllegalArgumentException("Unknown LanguagePreferenceType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown LanguagePreferenceType code '"+codeString+"'");
   }
 
   public String toCode(LanguagePreferenceType code) {
@@ -53,8 +57,8 @@ public class LanguagePreferenceTypeEnumFactory implements EnumFactory<LanguagePr
     return "?";
   }
 
-  public String toSystem(LanguagePreferenceType code) {
-    return code.getSystem();
-  }
+    public String toSystem(LanguagePreferenceType code) {
+      return code.getSystem();
+      }
 
 }

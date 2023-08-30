@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,89 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ListMode {
 
-  /**
-   * This list is the master list, maintained in an ongoing fashion with regular
-   * updates as the real world list it is tracking changes.
-   */
-  WORKING,
-  /**
-   * This list was prepared as a snapshot. It should not be assumed to be current.
-   */
-  SNAPSHOT,
-  /**
-   * A point-in-time list that shows what changes have been made or recommended.
-   * E.g. a discharge medication list showing what was added and removed during an
-   * encounter.
-   */
-  CHANGES,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ListMode fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("working".equals(codeString))
-      return WORKING;
-    if ("snapshot".equals(codeString))
-      return SNAPSHOT;
-    if ("changes".equals(codeString))
-      return CHANGES;
-    throw new FHIRException("Unknown ListMode code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case WORKING:
-      return "working";
-    case SNAPSHOT:
-      return "snapshot";
-    case CHANGES:
-      return "changes";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * This list is the master list, maintained in an ongoing fashion with regular updates as the real world list it is tracking changes.
+         */
+        WORKING, 
+        /**
+         * This list was prepared as a snapshot. It should not be assumed to be current.
+         */
+        SNAPSHOT, 
+        /**
+         * A point-in-time list that shows what changes have been made or recommended.  E.g. a discharge medication list showing what was added and removed during an encounter.
+         */
+        CHANGES, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ListMode fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("working".equals(codeString))
+          return WORKING;
+        if ("snapshot".equals(codeString))
+          return SNAPSHOT;
+        if ("changes".equals(codeString))
+          return CHANGES;
+        throw new FHIRException("Unknown ListMode code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case WORKING: return "working";
+            case SNAPSHOT: return "snapshot";
+            case CHANGES: return "changes";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/list-mode";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case WORKING: return "This list is the master list, maintained in an ongoing fashion with regular updates as the real world list it is tracking changes.";
+            case SNAPSHOT: return "This list was prepared as a snapshot. It should not be assumed to be current.";
+            case CHANGES: return "A point-in-time list that shows what changes have been made or recommended.  E.g. a discharge medication list showing what was added and removed during an encounter.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case WORKING: return "Working List";
+            case SNAPSHOT: return "Snapshot List";
+            case CHANGES: return "Change List";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/list-mode";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case WORKING:
-      return "This list is the master list, maintained in an ongoing fashion with regular updates as the real world list it is tracking changes.";
-    case SNAPSHOT:
-      return "This list was prepared as a snapshot. It should not be assumed to be current.";
-    case CHANGES:
-      return "A point-in-time list that shows what changes have been made or recommended.  E.g. a discharge medication list showing what was added and removed during an encounter.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case WORKING:
-      return "Working List";
-    case SNAPSHOT:
-      return "Snapshot List";
-    case CHANGES:
-      return "Change List";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,10 +34,10 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
-public class V3AmericanIndianAlaskaNativeLanguagesEnumFactory
-    implements EnumFactory<V3AmericanIndianAlaskaNativeLanguages> {
+public class V3AmericanIndianAlaskaNativeLanguagesEnumFactory implements EnumFactory<V3AmericanIndianAlaskaNativeLanguages> {
 
   public V3AmericanIndianAlaskaNativeLanguages fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
@@ -549,7 +552,7 @@ public class V3AmericanIndianAlaskaNativeLanguagesEnumFactory
       return V3AmericanIndianAlaskaNativeLanguages.XYUC;
     if ("x-ZUN".equals(codeString))
       return V3AmericanIndianAlaskaNativeLanguages.XZUN;
-    throw new IllegalArgumentException("Unknown V3AmericanIndianAlaskaNativeLanguages code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3AmericanIndianAlaskaNativeLanguages code '"+codeString+"'");
   }
 
   public String toCode(V3AmericanIndianAlaskaNativeLanguages code) {
@@ -1066,8 +1069,8 @@ public class V3AmericanIndianAlaskaNativeLanguagesEnumFactory
     return "?";
   }
 
-  public String toSystem(V3AmericanIndianAlaskaNativeLanguages code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3AmericanIndianAlaskaNativeLanguages code) {
+      return code.getSystem();
+      }
 
 }

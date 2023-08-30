@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,146 +34,113 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum DeviceStatusReason {
 
-  /**
-   * The device is off.
-   */
-  ONLINE,
-  /**
-   * The device is paused.
-   */
-  PAUSED,
-  /**
-   * The device is ready but not actively operating.
-   */
-  STANDBY,
-  /**
-   * The device is offline.
-   */
-  OFFLINE,
-  /**
-   * The device is not ready.
-   */
-  NOTREADY,
-  /**
-   * The device transducer is disconnected.
-   */
-  TRANSDUCDISCON,
-  /**
-   * The device hardware is disconnected.
-   */
-  HWDISCON,
-  /**
-   * The device is off.
-   */
-  OFF,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static DeviceStatusReason fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("online".equals(codeString))
-      return ONLINE;
-    if ("paused".equals(codeString))
-      return PAUSED;
-    if ("standby".equals(codeString))
-      return STANDBY;
-    if ("offline".equals(codeString))
-      return OFFLINE;
-    if ("not-ready".equals(codeString))
-      return NOTREADY;
-    if ("transduc-discon".equals(codeString))
-      return TRANSDUCDISCON;
-    if ("hw-discon".equals(codeString))
-      return HWDISCON;
-    if ("off".equals(codeString))
-      return OFF;
-    throw new FHIRException("Unknown DeviceStatusReason code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ONLINE:
-      return "online";
-    case PAUSED:
-      return "paused";
-    case STANDBY:
-      return "standby";
-    case OFFLINE:
-      return "offline";
-    case NOTREADY:
-      return "not-ready";
-    case TRANSDUCDISCON:
-      return "transduc-discon";
-    case HWDISCON:
-      return "hw-discon";
-    case OFF:
-      return "off";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The device is off.
+         */
+        ONLINE, 
+        /**
+         * The device is paused.
+         */
+        PAUSED, 
+        /**
+         * The device is ready but not actively operating.
+         */
+        STANDBY, 
+        /**
+         * The device is offline.
+         */
+        OFFLINE, 
+        /**
+         * The device is not ready.
+         */
+        NOTREADY, 
+        /**
+         * The device transducer is disconnected.
+         */
+        TRANSDUCDISCON, 
+        /**
+         * The device hardware is disconnected.
+         */
+        HWDISCON, 
+        /**
+         * The device is off.
+         */
+        OFF, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static DeviceStatusReason fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("online".equals(codeString))
+          return ONLINE;
+        if ("paused".equals(codeString))
+          return PAUSED;
+        if ("standby".equals(codeString))
+          return STANDBY;
+        if ("offline".equals(codeString))
+          return OFFLINE;
+        if ("not-ready".equals(codeString))
+          return NOTREADY;
+        if ("transduc-discon".equals(codeString))
+          return TRANSDUCDISCON;
+        if ("hw-discon".equals(codeString))
+          return HWDISCON;
+        if ("off".equals(codeString))
+          return OFF;
+        throw new FHIRException("Unknown DeviceStatusReason code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ONLINE: return "online";
+            case PAUSED: return "paused";
+            case STANDBY: return "standby";
+            case OFFLINE: return "offline";
+            case NOTREADY: return "not-ready";
+            case TRANSDUCDISCON: return "transduc-discon";
+            case HWDISCON: return "hw-discon";
+            case OFF: return "off";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/device-status-reason";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ONLINE: return "The device is off.";
+            case PAUSED: return "The device is paused.";
+            case STANDBY: return "The device is ready but not actively operating.";
+            case OFFLINE: return "The device is offline.";
+            case NOTREADY: return "The device is not ready.";
+            case TRANSDUCDISCON: return "The device transducer is disconnected.";
+            case HWDISCON: return "The device hardware is disconnected.";
+            case OFF: return "The device is off.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ONLINE: return "Online";
+            case PAUSED: return "Paused";
+            case STANDBY: return "Standby";
+            case OFFLINE: return "Offline";
+            case NOTREADY: return "Not Ready";
+            case TRANSDUCDISCON: return "Transducer Disconnected";
+            case HWDISCON: return "Hardware Disconnected";
+            case OFF: return "Off";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/device-status-reason";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ONLINE:
-      return "The device is off.";
-    case PAUSED:
-      return "The device is paused.";
-    case STANDBY:
-      return "The device is ready but not actively operating.";
-    case OFFLINE:
-      return "The device is offline.";
-    case NOTREADY:
-      return "The device is not ready.";
-    case TRANSDUCDISCON:
-      return "The device transducer is disconnected.";
-    case HWDISCON:
-      return "The device hardware is disconnected.";
-    case OFF:
-      return "The device is off.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ONLINE:
-      return "Online";
-    case PAUSED:
-      return "Paused";
-    case STANDBY:
-      return "Standby";
-    case OFFLINE:
-      return "Offline";
-    case NOTREADY:
-      return "Not Ready";
-    case TRANSDUCDISCON:
-      return "Transducer Disconnected";
-    case HWDISCON:
-      return "Hardware Disconnected";
-    case OFF:
-      return "Off";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

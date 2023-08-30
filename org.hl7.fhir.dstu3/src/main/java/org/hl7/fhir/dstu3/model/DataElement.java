@@ -548,16 +548,16 @@ public class DataElement extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("identity")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DataElement.identity");
+          throw new FHIRException("Cannot call addChild on a primitive type DataElement.identity");
         }
         else if (name.equals("uri")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DataElement.uri");
+          throw new FHIRException("Cannot call addChild on a primitive type DataElement.uri");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DataElement.name");
+          throw new FHIRException("Cannot call addChild on a primitive type DataElement.name");
         }
         else if (name.equals("comment")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DataElement.comment");
+          throw new FHIRException("Cannot call addChild on a primitive type DataElement.comment");
         }
         else
           return super.addChild(name);
@@ -1678,31 +1678,31 @@ public class DataElement extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DataElement.url");
+          throw new FHIRException("Cannot call addChild on a primitive type DataElement.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DataElement.version");
+          throw new FHIRException("Cannot call addChild on a primitive type DataElement.version");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DataElement.status");
+          throw new FHIRException("Cannot call addChild on a primitive type DataElement.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DataElement.experimental");
+          throw new FHIRException("Cannot call addChild on a primitive type DataElement.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DataElement.date");
+          throw new FHIRException("Cannot call addChild on a primitive type DataElement.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DataElement.publisher");
+          throw new FHIRException("Cannot call addChild on a primitive type DataElement.publisher");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DataElement.name");
+          throw new FHIRException("Cannot call addChild on a primitive type DataElement.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DataElement.title");
+          throw new FHIRException("Cannot call addChild on a primitive type DataElement.title");
         }
         else if (name.equals("contact")) {
           return addContact();
@@ -1714,10 +1714,10 @@ public class DataElement extends MetadataResource {
           return addJurisdiction();
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DataElement.copyright");
+          throw new FHIRException("Cannot call addChild on a primitive type DataElement.copyright");
         }
         else if (name.equals("stringency")) {
-          throw new FHIRException("Cannot call addChild on a singleton property DataElement.stringency");
+          throw new FHIRException("Cannot call addChild on a primitive type DataElement.stringency");
         }
         else if (name.equals("mapping")) {
           return addMapping();

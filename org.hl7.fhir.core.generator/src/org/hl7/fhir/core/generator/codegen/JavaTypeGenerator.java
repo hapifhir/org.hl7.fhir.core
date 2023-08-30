@@ -29,6 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
 import org.hl7.fhir.core.generator.engine.Definitions;
 import org.hl7.fhir.r5.model.StructureDefinition;

@@ -359,10 +359,6 @@ public class ExpressionNode {
 
   public enum CollectionStatus {
     SINGLETON, ORDERED, UNORDERED;
-
-    boolean isList() {
-      return this == ORDERED || this == UNORDERED;
-    }
   }
   
   //the expression will have one of either name or constant
@@ -423,18 +419,12 @@ public class ExpressionNode {
       } else if (constant instanceof StringType) {
         b.append("'" + Utilities.escapeJson(constant.primitiveValue()) + "'");
       } else if (constant instanceof Quantity) {
-        Quantity q = (Quantity) constant;
+		    Quantity q = (Quantity) constant;
         b.append(Utilities.escapeJson(q.getValue().toPlainString()));
-        if (q.hasUnit() || q.hasCode()) {
-          b.append(" '");
-          if (q.hasUnit()) {
-            b.append(Utilities.escapeJson(q.getUnit()));
-          } else {
-            b.append(Utilities.escapeJson(q.getCode()));
-          }
-          b.append("'");
-        }
-      } else if (constant.primitiveValue() != null) {
+        b.append(" '");
+        b.append(Utilities.escapeJson(q.getUnit()));
+        b.append("'");
+		  } else if (constant.primitiveValue() != null) {
         b.append(Utilities.escapeJson(constant.primitiveValue()));
       } else {
         b.append(Utilities.escapeJson(constant.toString()));

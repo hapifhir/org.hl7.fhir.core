@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,87 +34,68 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum HspcPatientTelecomSystem {
 
-  /**
-   * Method of communication which uses telephone lines to send and receive
-   * printed documents between facsimile devices.
-   */
-  FAX,
-  /**
-   * Electronic mail.
-   */
-  EMAIL,
-  /**
-   * Telephone.
-   */
-  PHONE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static HspcPatientTelecomSystem fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("fax".equals(codeString))
-      return FAX;
-    if ("email".equals(codeString))
-      return EMAIL;
-    if ("phone".equals(codeString))
-      return PHONE;
-    throw new FHIRException("Unknown HspcPatientTelecomSystem code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case FAX:
-      return "fax";
-    case EMAIL:
-      return "email";
-    case PHONE:
-      return "phone";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Method of communication which uses telephone lines to send and receive printed documents between facsimile devices.
+         */
+        FAX, 
+        /**
+         * Electronic mail.
+         */
+        EMAIL, 
+        /**
+         * Telephone.
+         */
+        PHONE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static HspcPatientTelecomSystem fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("fax".equals(codeString))
+          return FAX;
+        if ("email".equals(codeString))
+          return EMAIL;
+        if ("phone".equals(codeString))
+          return PHONE;
+        throw new FHIRException("Unknown HspcPatientTelecomSystem code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case FAX: return "fax";
+            case EMAIL: return "email";
+            case PHONE: return "phone";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/patient-hspc-telecomSystem";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case FAX: return "Method of communication which uses telephone lines to send and receive printed documents between facsimile devices.";
+            case EMAIL: return "Electronic mail.";
+            case PHONE: return "Telephone.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case FAX: return "fax";
+            case EMAIL: return "email";
+            case PHONE: return "phone";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/patient-hspc-telecomSystem";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case FAX:
-      return "Method of communication which uses telephone lines to send and receive printed documents between facsimile devices.";
-    case EMAIL:
-      return "Electronic mail.";
-    case PHONE:
-      return "Telephone.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case FAX:
-      return "fax";
-    case EMAIL:
-      return "email";
-    case PHONE:
-      return "phone";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

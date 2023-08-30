@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ReportActionResultCodesEnumFactory implements EnumFactory<ReportActionResultCodes> {
@@ -48,7 +52,7 @@ public class ReportActionResultCodesEnumFactory implements EnumFactory<ReportAct
       return ReportActionResultCodes.WARNING;
     if ("error".equals(codeString))
       return ReportActionResultCodes.ERROR;
-    throw new IllegalArgumentException("Unknown ReportActionResultCodes code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ReportActionResultCodes code '"+codeString+"'");
   }
 
   public String toCode(ReportActionResultCodes code) {
@@ -65,8 +69,8 @@ public class ReportActionResultCodesEnumFactory implements EnumFactory<ReportAct
     return "?";
   }
 
-  public String toSystem(ReportActionResultCodes code) {
-    return code.getSystem();
-  }
+    public String toSystem(ReportActionResultCodes code) {
+      return code.getSystem();
+      }
 
 }

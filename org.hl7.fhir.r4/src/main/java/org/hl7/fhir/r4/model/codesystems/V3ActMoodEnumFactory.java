@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -94,7 +98,7 @@ public class V3ActMoodEnumFactory implements EnumFactory<V3ActMood> {
       return V3ActMood.RSK;
     if ("OPT".equals(codeString))
       return V3ActMood.OPT;
-    throw new IllegalArgumentException("Unknown V3ActMood code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3ActMood code '"+codeString+"'");
   }
 
   public String toCode(V3ActMood code) {
@@ -157,8 +161,8 @@ public class V3ActMoodEnumFactory implements EnumFactory<V3ActMood> {
     return "?";
   }
 
-  public String toSystem(V3ActMood code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3ActMood code) {
+      return code.getSystem();
+      }
 
 }

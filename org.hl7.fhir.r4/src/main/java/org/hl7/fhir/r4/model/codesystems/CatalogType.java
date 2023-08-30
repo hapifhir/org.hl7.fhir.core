@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum CatalogType {
 
-  /**
-   * Medication Catalog.
-   */
-  MEDICATION,
-  /**
-   * Device Catalog.
-   */
-  DEVICE,
-  /**
-   * Protocol List.
-   */
-  PROTOCOL,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static CatalogType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("medication".equals(codeString))
-      return MEDICATION;
-    if ("device".equals(codeString))
-      return DEVICE;
-    if ("protocol".equals(codeString))
-      return PROTOCOL;
-    throw new FHIRException("Unknown CatalogType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case MEDICATION:
-      return "medication";
-    case DEVICE:
-      return "device";
-    case PROTOCOL:
-      return "protocol";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Medication Catalog.
+         */
+        MEDICATION, 
+        /**
+         * Device Catalog.
+         */
+        DEVICE, 
+        /**
+         * Protocol List.
+         */
+        PROTOCOL, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static CatalogType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("medication".equals(codeString))
+          return MEDICATION;
+        if ("device".equals(codeString))
+          return DEVICE;
+        if ("protocol".equals(codeString))
+          return PROTOCOL;
+        throw new FHIRException("Unknown CatalogType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case MEDICATION: return "medication";
+            case DEVICE: return "device";
+            case PROTOCOL: return "protocol";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/catalogType";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case MEDICATION: return "Medication Catalog.";
+            case DEVICE: return "Device Catalog.";
+            case PROTOCOL: return "Protocol List.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case MEDICATION: return "Medication Catalog";
+            case DEVICE: return "Device Catalog";
+            case PROTOCOL: return "Protocol List";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/catalogType";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case MEDICATION:
-      return "Medication Catalog.";
-    case DEVICE:
-      return "Device Catalog.";
-    case PROTOCOL:
-      return "Protocol List.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case MEDICATION:
-      return "Medication Catalog";
-    case DEVICE:
-      return "Device Catalog";
-    case PROTOCOL:
-      return "Protocol List";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

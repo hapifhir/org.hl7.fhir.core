@@ -415,7 +415,7 @@ public class Endpoint extends DomainResource {
           return addType();
         }
         else if (name.equals("mimeType")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Endpoint.payload.mimeType");
+          throw new FHIRException("Cannot call addChild on a primitive type Endpoint.payload.mimeType");
         }
         else
           return super.addChild(name);
@@ -1319,16 +1319,16 @@ public class Endpoint extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Endpoint.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Endpoint.status");
         }
         else if (name.equals("connectionType")) {
           return addConnectionType();
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Endpoint.name");
+          throw new FHIRException("Cannot call addChild on a primitive type Endpoint.name");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Endpoint.description");
+          throw new FHIRException("Cannot call addChild on a primitive type Endpoint.description");
         }
         else if (name.equals("environmentType")) {
           return addEnvironmentType();
@@ -1348,10 +1348,10 @@ public class Endpoint extends DomainResource {
           return addPayload();
         }
         else if (name.equals("address")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Endpoint.address");
+          throw new FHIRException("Cannot call addChild on a primitive type Endpoint.address");
         }
         else if (name.equals("header")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Endpoint.header");
+          throw new FHIRException("Cannot call addChild on a primitive type Endpoint.header");
         }
         else
           return super.addChild(name);

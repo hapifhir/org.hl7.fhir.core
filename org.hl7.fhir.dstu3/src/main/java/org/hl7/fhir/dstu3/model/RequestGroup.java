@@ -2779,16 +2779,16 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("label")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.label");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.label");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.title");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.title");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.description");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.description");
         }
         else if (name.equals("textEquivalent")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.textEquivalent");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.textEquivalent");
         }
         else if (name.equals("code")) {
           return addCode();
@@ -2830,19 +2830,19 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return this.type;
         }
         else if (name.equals("groupingBehavior")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.groupingBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.groupingBehavior");
         }
         else if (name.equals("selectionBehavior")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.selectionBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.selectionBehavior");
         }
         else if (name.equals("requiredBehavior")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.requiredBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.requiredBehavior");
         }
         else if (name.equals("precheckBehavior")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.precheckBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.precheckBehavior");
         }
         else if (name.equals("cardinalityBehavior")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.cardinalityBehavior");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.cardinalityBehavior");
         }
         else if (name.equals("resource")) {
           this.resource = new Reference();
@@ -3284,16 +3284,16 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("kind")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.kind");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.kind");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.description");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.description");
         }
         else if (name.equals("language")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.language");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.language");
         }
         else if (name.equals("expression")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.expression");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.expression");
         }
         else
           return super.addChild(name);
@@ -3616,10 +3616,10 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("actionId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.actionId");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.actionId");
         }
         else if (name.equals("relationship")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.relationship");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.relationship");
         }
         else if (name.equals("offsetDuration")) {
           this.offset = new Duration();
@@ -4790,13 +4790,13 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return this.groupIdentifier;
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.status");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.status");
         }
         else if (name.equals("intent")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.intent");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.intent");
         }
         else if (name.equals("priority")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.priority");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.priority");
         }
         else if (name.equals("subject")) {
           this.subject = new Reference();
@@ -4807,7 +4807,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
           return this.context;
         }
         else if (name.equals("authoredOn")) {
-          throw new FHIRException("Cannot call addChild on a singleton property RequestGroup.authoredOn");
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.authoredOn");
         }
         else if (name.equals("author")) {
           this.author = new Reference();

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class DefinitionTopicEnumFactory implements EnumFactory<DefinitionTopic> {
@@ -44,7 +48,7 @@ public class DefinitionTopicEnumFactory implements EnumFactory<DefinitionTopic> 
       return DefinitionTopic.EDUCATION;
     if ("assessment".equals(codeString))
       return DefinitionTopic.ASSESSMENT;
-    throw new IllegalArgumentException("Unknown DefinitionTopic code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown DefinitionTopic code '"+codeString+"'");
   }
 
   public String toCode(DefinitionTopic code) {
@@ -57,8 +61,8 @@ public class DefinitionTopicEnumFactory implements EnumFactory<DefinitionTopic> 
     return "?";
   }
 
-  public String toSystem(DefinitionTopic code) {
-    return code.getSystem();
-  }
+    public String toSystem(DefinitionTopic code) {
+      return code.getSystem();
+      }
 
 }

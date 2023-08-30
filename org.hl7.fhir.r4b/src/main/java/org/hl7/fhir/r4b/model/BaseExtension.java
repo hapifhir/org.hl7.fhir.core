@@ -29,30 +29,32 @@ package org.hl7.fhir.r4b.model;
   
  */
 
+
 import org.hl7.fhir.instance.model.api.IBaseDatatype;
 import org.hl7.fhir.instance.model.api.IBaseExtension;
 import org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 import org.hl7.fhir.instance.model.api.IPrimitiveType;
 
-public abstract class BaseExtension extends DataType
-    implements IBaseExtension<Extension, DataType>, IBaseHasExtensions {
+public abstract class BaseExtension extends DataType implements IBaseExtension<Extension, DataType>, IBaseHasExtensions {
 
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  @Override
-  public Extension setValue(IBaseDatatype theValue) {
-    setValue((DataType) theValue);
-    return (Extension) this;
-  }
 
-  public abstract Extension setValue(DataType theValue);
+	@Override
+	public Extension setValue(IBaseDatatype theValue) {
+		setValue((DataType)theValue);
+		return (Extension) this;
+	}
+	
+	public abstract Extension setValue(DataType theValue);
+	
+	
+	/**
+	 * Returns the value of this extension cast as a {@link IPrimitiveType}. This method is just a convenience method for easy chaining.
+	 */
+	public IPrimitiveType<?> getValueAsPrimitive() {
+		return (IPrimitiveType<?>)getValue();
+	}
 
-  /**
-   * Returns the value of this extension cast as a {@link IPrimitiveType}. This
-   * method is just a convenience method for easy chaining.
-   */
-  public IPrimitiveType<?> getValueAsPrimitive() {
-    return (IPrimitiveType<?>) getValue();
-  }
-
+	
 }

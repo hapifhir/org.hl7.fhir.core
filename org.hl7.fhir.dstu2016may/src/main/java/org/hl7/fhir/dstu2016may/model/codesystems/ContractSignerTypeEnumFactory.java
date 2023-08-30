@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 */
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
+
 
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
@@ -134,7 +138,7 @@ public class ContractSignerTypeEnumFactory implements EnumFactory<ContractSigner
       return ContractSignerType.VERF;
     if ("WIT".equals(codeString))
       return ContractSignerType.WIT;
-    throw new IllegalArgumentException("Unknown ContractSignerType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ContractSignerType code '"+codeString+"'");
   }
 
   public String toCode(ContractSignerType code) {
@@ -237,8 +241,8 @@ public class ContractSignerTypeEnumFactory implements EnumFactory<ContractSigner
     return "?";
   }
 
-  public String toSystem(ContractSignerType code) {
-    return code.getSystem();
-  }
+    public String toSystem(ContractSignerType code) {
+      return code.getSystem();
+      }
 
 }

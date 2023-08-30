@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ReasonMedicationNotGivenCodesEnumFactory implements EnumFactory<ReasonMedicationNotGivenCodes> {
@@ -46,7 +50,7 @@ public class ReasonMedicationNotGivenCodesEnumFactory implements EnumFactory<Rea
       return ReasonMedicationNotGivenCodes.C;
     if ("d".equals(codeString))
       return ReasonMedicationNotGivenCodes.D;
-    throw new IllegalArgumentException("Unknown ReasonMedicationNotGivenCodes code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ReasonMedicationNotGivenCodes code '"+codeString+"'");
   }
 
   public String toCode(ReasonMedicationNotGivenCodes code) {
@@ -61,8 +65,8 @@ public class ReasonMedicationNotGivenCodesEnumFactory implements EnumFactory<Rea
     return "?";
   }
 
-  public String toSystem(ReasonMedicationNotGivenCodes code) {
-    return code.getSystem();
-  }
+    public String toSystem(ReasonMedicationNotGivenCodes code) {
+      return code.getSystem();
+      }
 
 }

@@ -3,7 +3,7 @@
   "system" : "http://hl7.org/fhir/animal-species",
   "code" : "canislf",
   "display" : "Dog"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -14,11 +14,6 @@ v: {
   "display" : "Dog",
   "code" : "canislf",
   "system" : "http://hl7.org/fhir/animal-species",
-  "version" : "4.0.1",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "4.0.1"
 }
 -------------------------------------------------------------------------------------

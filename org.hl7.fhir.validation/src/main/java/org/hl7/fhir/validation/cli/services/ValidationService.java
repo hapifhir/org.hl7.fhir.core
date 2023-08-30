@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4b.model.AdministrableProductDefinition;
+import org.hl7.fhir.r5.conformance.R5ExtensionsLoader;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -46,6 +46,7 @@ import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TextFile;
@@ -60,9 +61,12 @@ import org.hl7.fhir.utilities.i18n.PoGetTextProducer;
 import org.hl7.fhir.utilities.i18n.XLIFFProducer;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.validation.Content;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.ValidationEngine.IValidationEngineLoader;
 import org.hl7.fhir.validation.ValidationRecord;
 import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
@@ -77,9 +81,10 @@ import org.hl7.fhir.validation.cli.renderers.DefaultRenderer;
 import org.hl7.fhir.validation.cli.renderers.ESLintCompactRenderer;
 import org.hl7.fhir.validation.cli.renderers.NativeRenderer;
 import org.hl7.fhir.validation.cli.renderers.ValidationOutputRenderer;
-import org.hl7.fhir.validation.cli.utils.Common;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
+
+import javax.annotation.Nonnull;
 
 public class ValidationService {
 
@@ -442,7 +447,7 @@ public class ValidationService {
   @Nonnull
   protected ValidationEngine buildValidationEngine( CliContext cliContext, String definitions, TimeTracker timeTracker) throws IOException, URISyntaxException {
     System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
-    ValidationEngine validationEngine = getValidationEngineBuilder().withTHO(false).withVersion(cliContext.getSv()).withTimeTracker(timeTracker).withUserAgent(Common.getValidatorUserAgent()).fromSource(definitions);
+    ValidationEngine validationEngine = getValidationEngineBuilder().withTHO(false).withVersion(cliContext.getSv()).withTimeTracker(timeTracker).withUserAgent("fhir/validator").fromSource(definitions);
 
     System.out.println(" - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
 
@@ -471,7 +476,6 @@ public class ValidationService {
     validationEngine.setNoUnicodeBiDiControlChars(cliContext.isNoUnicodeBiDiControlChars());
     validationEngine.setNoInvariantChecks(cliContext.isNoInvariants());
     validationEngine.setDisplayWarnings(cliContext.isDisplayWarnings());
-    validationEngine.setCheckIPSCodes(cliContext.isCheckIPSCodes());
     validationEngine.setWantInvariantInMessage(cliContext.isWantInvariantsInMessages());
     validationEngine.setSecurityChecks(cliContext.isSecurityChecks());
     validationEngine.setCrumbTrails(cliContext.isCrumbTrails());
@@ -580,7 +584,7 @@ public class ValidationService {
     for (SourceFile ref : refs) {
       System.out.println("  Extract Translations from " + ref);
       org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false, true);
-      Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
+      Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());
       LanguageProducerSession ps = po.startSession(e.fhirType()+"-"+e.getIdBase(), cliContext.getSrcLang());
       LanguageProducerLanguageSession psl = ps.forLang(cliContext.getTgtLang());
       new LanguageUtils(validator.getContext()).generateTranslations(e, psl);
@@ -615,7 +619,7 @@ public class ValidationService {
     for (SourceFile ref : refs) {
       System.out.println("  Inject Translations into " + ref);
       org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false, true);
-      Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());      
+      Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus()), cnt.getCntType());      
       t = t + new LanguageUtils(validator.getContext()).importFromTranslations(e, translations);
       Manager.compose(validator.getContext(), e, new FileOutputStream(Utilities.path(dst, new File(ref.getRef()).getName())), cnt.getCntType(),
           OutputStyle.PRETTY, null);

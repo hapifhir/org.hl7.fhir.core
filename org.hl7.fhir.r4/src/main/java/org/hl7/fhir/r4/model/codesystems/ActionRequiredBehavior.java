@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,90 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ActionRequiredBehavior {
 
-  /**
-   * An action with this behavior must be included in the actions processed by the
-   * end user; the end user SHALL NOT choose not to include this action.
-   */
-  MUST,
-  /**
-   * An action with this behavior may be included in the set of actions processed
-   * by the end user.
-   */
-  COULD,
-  /**
-   * An action with this behavior must be included in the set of actions processed
-   * by the end user, unless the end user provides documentation as to why the
-   * action was not included.
-   */
-  MUSTUNLESSDOCUMENTED,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ActionRequiredBehavior fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("must".equals(codeString))
-      return MUST;
-    if ("could".equals(codeString))
-      return COULD;
-    if ("must-unless-documented".equals(codeString))
-      return MUSTUNLESSDOCUMENTED;
-    throw new FHIRException("Unknown ActionRequiredBehavior code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case MUST:
-      return "must";
-    case COULD:
-      return "could";
-    case MUSTUNLESSDOCUMENTED:
-      return "must-unless-documented";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * An action with this behavior must be included in the actions processed by the end user; the end user SHALL NOT choose not to include this action.
+         */
+        MUST, 
+        /**
+         * An action with this behavior may be included in the set of actions processed by the end user.
+         */
+        COULD, 
+        /**
+         * An action with this behavior must be included in the set of actions processed by the end user, unless the end user provides documentation as to why the action was not included.
+         */
+        MUSTUNLESSDOCUMENTED, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ActionRequiredBehavior fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("must".equals(codeString))
+          return MUST;
+        if ("could".equals(codeString))
+          return COULD;
+        if ("must-unless-documented".equals(codeString))
+          return MUSTUNLESSDOCUMENTED;
+        throw new FHIRException("Unknown ActionRequiredBehavior code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case MUST: return "must";
+            case COULD: return "could";
+            case MUSTUNLESSDOCUMENTED: return "must-unless-documented";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/action-required-behavior";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case MUST: return "An action with this behavior must be included in the actions processed by the end user; the end user SHALL NOT choose not to include this action.";
+            case COULD: return "An action with this behavior may be included in the set of actions processed by the end user.";
+            case MUSTUNLESSDOCUMENTED: return "An action with this behavior must be included in the set of actions processed by the end user, unless the end user provides documentation as to why the action was not included.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case MUST: return "Must";
+            case COULD: return "Could";
+            case MUSTUNLESSDOCUMENTED: return "Must Unless Documented";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/action-required-behavior";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case MUST:
-      return "An action with this behavior must be included in the actions processed by the end user; the end user SHALL NOT choose not to include this action.";
-    case COULD:
-      return "An action with this behavior may be included in the set of actions processed by the end user.";
-    case MUSTUNLESSDOCUMENTED:
-      return "An action with this behavior must be included in the set of actions processed by the end user, unless the end user provides documentation as to why the action was not included.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case MUST:
-      return "Must";
-    case COULD:
-      return "Could";
-    case MUSTUNLESSDOCUMENTED:
-      return "Must Unless Documented";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

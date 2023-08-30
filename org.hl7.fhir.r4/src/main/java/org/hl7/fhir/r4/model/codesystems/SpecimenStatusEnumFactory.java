@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class SpecimenStatusEnumFactory implements EnumFactory<SpecimenStatus> {
@@ -46,7 +50,7 @@ public class SpecimenStatusEnumFactory implements EnumFactory<SpecimenStatus> {
       return SpecimenStatus.UNSATISFACTORY;
     if ("entered-in-error".equals(codeString))
       return SpecimenStatus.ENTEREDINERROR;
-    throw new IllegalArgumentException("Unknown SpecimenStatus code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown SpecimenStatus code '"+codeString+"'");
   }
 
   public String toCode(SpecimenStatus code) {
@@ -61,8 +65,8 @@ public class SpecimenStatusEnumFactory implements EnumFactory<SpecimenStatus> {
     return "?";
   }
 
-  public String toSystem(SpecimenStatus code) {
-    return code.getSystem();
-  }
+    public String toSystem(SpecimenStatus code) {
+      return code.getSystem();
+      }
 
 }

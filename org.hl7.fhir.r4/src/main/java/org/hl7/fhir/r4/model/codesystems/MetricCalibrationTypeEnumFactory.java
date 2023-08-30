@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class MetricCalibrationTypeEnumFactory implements EnumFactory<MetricCalibrationType> {
@@ -46,7 +50,7 @@ public class MetricCalibrationTypeEnumFactory implements EnumFactory<MetricCalib
       return MetricCalibrationType.GAIN;
     if ("two-point".equals(codeString))
       return MetricCalibrationType.TWOPOINT;
-    throw new IllegalArgumentException("Unknown MetricCalibrationType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown MetricCalibrationType code '"+codeString+"'");
   }
 
   public String toCode(MetricCalibrationType code) {
@@ -61,8 +65,8 @@ public class MetricCalibrationTypeEnumFactory implements EnumFactory<MetricCalib
     return "?";
   }
 
-  public String toSystem(MetricCalibrationType code) {
-    return code.getSystem();
-  }
+    public String toSystem(MetricCalibrationType code) {
+      return code.getSystem();
+      }
 
 }

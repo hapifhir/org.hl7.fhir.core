@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,124 +34,95 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum InvoicePriceComponentType {
 
-  /**
-   * the amount is the base price used for calculating the total price before
-   * applying surcharges, discount or taxes.
-   */
-  BASE,
-  /**
-   * the amount is a surcharge applied on the base price.
-   */
-  SURCHARGE,
-  /**
-   * the amount is a deduction applied on the base price.
-   */
-  DEDUCTION,
-  /**
-   * the amount is a discount applied on the base price.
-   */
-  DISCOUNT,
-  /**
-   * the amount is the tax component of the total price.
-   */
-  TAX,
-  /**
-   * the amount is of informational character, it has not been applied in the
-   * calculation of the total price.
-   */
-  INFORMATIONAL,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static InvoicePriceComponentType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("base".equals(codeString))
-      return BASE;
-    if ("surcharge".equals(codeString))
-      return SURCHARGE;
-    if ("deduction".equals(codeString))
-      return DEDUCTION;
-    if ("discount".equals(codeString))
-      return DISCOUNT;
-    if ("tax".equals(codeString))
-      return TAX;
-    if ("informational".equals(codeString))
-      return INFORMATIONAL;
-    throw new FHIRException("Unknown InvoicePriceComponentType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case BASE:
-      return "base";
-    case SURCHARGE:
-      return "surcharge";
-    case DEDUCTION:
-      return "deduction";
-    case DISCOUNT:
-      return "discount";
-    case TAX:
-      return "tax";
-    case INFORMATIONAL:
-      return "informational";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * the amount is the base price used for calculating the total price before applying surcharges, discount or taxes.
+         */
+        BASE, 
+        /**
+         * the amount is a surcharge applied on the base price.
+         */
+        SURCHARGE, 
+        /**
+         * the amount is a deduction applied on the base price.
+         */
+        DEDUCTION, 
+        /**
+         * the amount is a discount applied on the base price.
+         */
+        DISCOUNT, 
+        /**
+         * the amount is the tax component of the total price.
+         */
+        TAX, 
+        /**
+         * the amount is of informational character, it has not been applied in the calculation of the total price.
+         */
+        INFORMATIONAL, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static InvoicePriceComponentType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("base".equals(codeString))
+          return BASE;
+        if ("surcharge".equals(codeString))
+          return SURCHARGE;
+        if ("deduction".equals(codeString))
+          return DEDUCTION;
+        if ("discount".equals(codeString))
+          return DISCOUNT;
+        if ("tax".equals(codeString))
+          return TAX;
+        if ("informational".equals(codeString))
+          return INFORMATIONAL;
+        throw new FHIRException("Unknown InvoicePriceComponentType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case BASE: return "base";
+            case SURCHARGE: return "surcharge";
+            case DEDUCTION: return "deduction";
+            case DISCOUNT: return "discount";
+            case TAX: return "tax";
+            case INFORMATIONAL: return "informational";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/invoice-priceComponentType";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case BASE: return "the amount is the base price used for calculating the total price before applying surcharges, discount or taxes.";
+            case SURCHARGE: return "the amount is a surcharge applied on the base price.";
+            case DEDUCTION: return "the amount is a deduction applied on the base price.";
+            case DISCOUNT: return "the amount is a discount applied on the base price.";
+            case TAX: return "the amount is the tax component of the total price.";
+            case INFORMATIONAL: return "the amount is of informational character, it has not been applied in the calculation of the total price.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case BASE: return "base price";
+            case SURCHARGE: return "surcharge";
+            case DEDUCTION: return "deduction";
+            case DISCOUNT: return "discount";
+            case TAX: return "tax";
+            case INFORMATIONAL: return "informational";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/invoice-priceComponentType";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case BASE:
-      return "the amount is the base price used for calculating the total price before applying surcharges, discount or taxes.";
-    case SURCHARGE:
-      return "the amount is a surcharge applied on the base price.";
-    case DEDUCTION:
-      return "the amount is a deduction applied on the base price.";
-    case DISCOUNT:
-      return "the amount is a discount applied on the base price.";
-    case TAX:
-      return "the amount is the tax component of the total price.";
-    case INFORMATIONAL:
-      return "the amount is of informational character, it has not been applied in the calculation of the total price.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case BASE:
-      return "base price";
-    case SURCHARGE:
-      return "surcharge";
-    case DEDUCTION:
-      return "deduction";
-    case DISCOUNT:
-      return "discount";
-    case TAX:
-      return "tax";
-    case INFORMATIONAL:
-      return "informational";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

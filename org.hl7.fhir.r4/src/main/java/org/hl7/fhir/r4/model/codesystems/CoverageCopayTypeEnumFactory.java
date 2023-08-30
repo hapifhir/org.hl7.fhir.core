@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class CoverageCopayTypeEnumFactory implements EnumFactory<CoverageCopayType> {
@@ -58,7 +62,7 @@ public class CoverageCopayTypeEnumFactory implements EnumFactory<CoverageCopayTy
       return CoverageCopayType.DEDUCTIBLE;
     if ("maxoutofpocket".equals(codeString))
       return CoverageCopayType.MAXOUTOFPOCKET;
-    throw new IllegalArgumentException("Unknown CoverageCopayType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown CoverageCopayType code '"+codeString+"'");
   }
 
   public String toCode(CoverageCopayType code) {
@@ -85,8 +89,8 @@ public class CoverageCopayTypeEnumFactory implements EnumFactory<CoverageCopayTy
     return "?";
   }
 
-  public String toSystem(CoverageCopayType code) {
-    return code.getSystem();
-  }
+    public String toSystem(CoverageCopayType code) {
+      return code.getSystem();
+      }
 
 }

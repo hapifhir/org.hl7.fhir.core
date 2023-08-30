@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum BenefitTerm {
 
-  /**
-   * Annual, renewing on the anniversary
-   */
-  ANNUAL,
-  /**
-   * Per day
-   */
-  DAY,
-  /**
-   * For the total term, lifetime, of the policy or coverage
-   */
-  LIFETIME,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static BenefitTerm fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("annual".equals(codeString))
-      return ANNUAL;
-    if ("day".equals(codeString))
-      return DAY;
-    if ("lifetime".equals(codeString))
-      return LIFETIME;
-    throw new FHIRException("Unknown BenefitTerm code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ANNUAL:
-      return "annual";
-    case DAY:
-      return "day";
-    case LIFETIME:
-      return "lifetime";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Annual, renewing on the anniversary
+         */
+        ANNUAL, 
+        /**
+         * Per day
+         */
+        DAY, 
+        /**
+         * For the total term, lifetime, of the policy or coverage
+         */
+        LIFETIME, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static BenefitTerm fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("annual".equals(codeString))
+          return ANNUAL;
+        if ("day".equals(codeString))
+          return DAY;
+        if ("lifetime".equals(codeString))
+          return LIFETIME;
+        throw new FHIRException("Unknown BenefitTerm code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ANNUAL: return "annual";
+            case DAY: return "day";
+            case LIFETIME: return "lifetime";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/benefit-term";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ANNUAL: return "Annual, renewing on the anniversary";
+            case DAY: return "Per day";
+            case LIFETIME: return "For the total term, lifetime, of the policy or coverage";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ANNUAL: return "Annual";
+            case DAY: return "Day";
+            case LIFETIME: return "Lifetime";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/benefit-term";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ANNUAL:
-      return "Annual, renewing on the anniversary";
-    case DAY:
-      return "Per day";
-    case LIFETIME:
-      return "For the total term, lifetime, of the policy or coverage";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ANNUAL:
-      return "Annual";
-    case DAY:
-      return "Day";
-    case LIFETIME:
-      return "Lifetime";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

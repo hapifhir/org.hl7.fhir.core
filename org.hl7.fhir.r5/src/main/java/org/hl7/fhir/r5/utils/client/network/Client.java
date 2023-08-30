@@ -23,15 +23,6 @@ public class Client {
   private int retryCount;
   private long timeout = DEFAULT_TIMEOUT;
   private byte[] payload;
-  private String base;
-  
-  public String getBase() {
-    return base;
-  }
-
-  public void setBase(String base) {
-    this.base = base;
-  }
 
   public ToolingClientLogger getLogger() {
     return logger;
@@ -183,7 +174,7 @@ public class Client {
                                                              String message,
                                                              int retryCount,
                                                              long timeout) throws IOException {
-    return new FhirRequestBuilder(request, base)
+    return new FhirRequestBuilder(request)
       .withLogger(fhirLoggingInterceptor)
       .withResourceFormat(resourceFormat)
       .withRetryCount(retryCount)
@@ -199,7 +190,7 @@ public class Client {
                                                                        String message,
                                                                        int retryCount,
                                                                        long timeout) throws IOException {
-    return new FhirRequestBuilder(request, base)
+    return new FhirRequestBuilder(request)
       .withLogger(fhirLoggingInterceptor)
       .withResourceFormat(resourceFormat)
       .withRetryCount(retryCount)

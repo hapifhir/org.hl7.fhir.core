@@ -3,7 +3,7 @@
   "system" : "http://loinc.org",
   "code" : "29463-7",
   "display" : "Body Weight"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -14,18 +14,14 @@ v: {
   "display" : "Body weight",
   "code" : "29463-7",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "3141-9",
   "display" : "Body weight Measured"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -36,18 +32,14 @@ v: {
   "display" : "Body weight Measured",
   "code" : "3141-9",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "19935-6",
   "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter"
-}, "valueSet" :null, "langs":"fi", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[fi]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -55,20 +47,16 @@ v: {
   }]
 }}####
 v: {
+  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter",
   "code" : "19935-6",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "19935-6"
-}, "url": "http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns--0", "version": "0.03", "langs":"fi", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns--0", "version": "0.03", "langs":"[fi]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -76,22 +64,17 @@ v: {
   }]
 }}####
 v: {
-  "display" : "ei käännetty",
+  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter",
   "code" : "19935-6",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "19935-6",
   "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter"
-}, "url": "http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns", "version": "0.03", "langs":"fi", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns", "version": "0.03", "langs":"[fi]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -99,20 +82,16 @@ v: {
   }]
 }}####
 v: {
+  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter",
   "code" : "19935-6",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "19935-6"
-}, "valueSet" :null, "langs":"fi", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[fi]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -120,20 +99,16 @@ v: {
   }]
 }}####
 v: {
+  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter",
   "code" : "19935-6",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "28655-9"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "3.0.2", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "3.0.2", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -144,18 +119,13 @@ v: {
   "display" : "Attending Discharge summary",
   "code" : "28655-9",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "28655-9"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "3.0.2", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "3.0.2", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -166,18 +136,13 @@ v: {
   "display" : "Attending Discharge summary",
   "code" : "28655-9",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "28655-9"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -188,19 +153,14 @@ v: {
   "display" : "Attending Discharge summary",
   "code" : "28655-9",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "29299-5",
   "display" : "Reason for visit Narrative"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -211,19 +171,14 @@ v: {
   "display" : "Reason for visit Narrative",
   "code" : "29299-5",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "10183-2",
   "display" : "Hospital discharge medications Narrative"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -234,19 +189,14 @@ v: {
   "display" : "Hospital discharge medications Narrative",
   "code" : "10183-2",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "48765-2",
   "display" : "Allergies and adverse reactions Document"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -257,18 +207,13 @@ v: {
   "display" : "Allergies and adverse reactions Document",
   "code" : "48765-2",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "46241-6"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -279,18 +224,13 @@ v: {
   "display" : "Hospital admission diagnosis Narrative - Reported",
   "code" : "46241-6",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "18842-5"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "3.0.2", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes--0", "version": "3.0.2", "langs":"[en]", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -301,19 +241,14 @@ v: {
   "display" : "Discharge summary",
   "code" : "18842-5",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "18842-5",
   "display" : "Discharge Summary"
-}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "3.0.2", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/doc-typecodes", "version": "3.0.2", "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -324,18 +259,13 @@ v: {
   "display" : "Discharge summary",
   "code" : "18842-5",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "18842-5"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -346,19 +276,14 @@ v: {
   "display" : "Discharge summary",
   "code" : "18842-5",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "48765-2",
   "display" : "Allergies"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -367,20 +292,15 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Wrong Display Name 'Allergies' for http://loinc.org#48765-2 - should be one of 28 choices: 'Allergies and adverse reactions Document', 'Allergies &or adverse reactions Doc', '临床文档型' (zh-CN), '临床文档' (zh-CN), '文档' (zh-CN), '文书' (zh-CN), '医疗文书' (zh-CN), '临床医疗文书 医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 变态反应与不良反应 文档.其他' (zh-CN), '杂项类文档' (zh-CN), '其他文档 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 杂项' (zh-CN), '杂项类' (zh-CN), '杂项试验 过敏反应' (zh-CN), '过敏' (zh-CN), 'Allergie e reazioni avverse Documentazione miscellanea Miscellanea Osservazione paziente Punto nel tempo (episodio)' (it-IT), 'Документ Точка во времени' (ru-RU) or 'Момент' (ru-RU) (for the language(s) '--') (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "Wrong Display Name 'Allergies' for http://loinc.org#48765-2 - should be one of 28 choices: 'Allergies and adverse reactions Document, \"Allergies &or adverse reactions Doc\", \"临床文档型\" (zh-CN), \"临床文档\" (zh-CN), \"文档\" (zh-CN), \"文书\" (zh-CN), \"医疗文书\" (zh-CN), \"临床医疗文书 医疗服务对象\" (zh-CN), \"客户\" (zh-CN), \"病人\" (zh-CN), \"病患\" (zh-CN), \"病号\" (zh-CN), \"超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。\" (zh-CN), \"发现物\" (zh-CN), \"所见\" (zh-CN), \"结果\" (zh-CN), \"结论 变态反应与不良反应 文档.其他\" (zh-CN), \"杂项类文档\" (zh-CN), \"其他文档 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 杂项\" (zh-CN), \"杂项类\" (zh-CN), \"杂项试验 过敏反应\" (zh-CN), \"过敏\" (zh-CN), \"Allergie e reazioni avverse Documentazione miscellanea Miscellanea Osservazione paziente Punto nel tempo (episodio)\" (it-IT), \"Документ Точка во времени\" (ru-RU), \"Момент\" (ru-RU)' for the language(s) '--' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "8648-8",
   "display" : "Hospital course Narrative"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -391,19 +311,14 @@ v: {
   "display" : "Hospital course Narrative",
   "code" : "8648-8",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "78375-3",
   "display" : "Discharge diagnosis Narrative"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -414,19 +329,14 @@ v: {
   "display" : "Discharge diagnosis Narrative",
   "code" : "78375-3",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "75311-1",
   "display" : "Discharge medications Narrative"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -437,19 +347,14 @@ v: {
   "display" : "Discharge medications Narrative",
   "code" : "75311-1",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "42347-5",
   "display" : "Admission diagnosis (narrative)"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -460,19 +365,14 @@ v: {
   "display" : "Admission diagnosis (narrative)",
   "code" : "42347-5",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "42346-7",
   "display" : "Medications on admission (narrative)"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -483,19 +383,14 @@ v: {
   "display" : "Medications on admission (narrative)",
   "code" : "42346-7",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "42344-2",
   "display" : "Discharge diet (narrative)"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -506,19 +401,14 @@ v: {
   "display" : "Discharge diet (narrative)",
   "code" : "42344-2",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "10164-2",
   "display" : "History of Present illness Narrative"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -529,19 +419,14 @@ v: {
   "display" : "History of Present illness Narrative",
   "code" : "10164-2",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "18776-5",
   "display" : "Plan of care"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -550,20 +435,15 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Wrong Display Name 'Plan of care' for http://loinc.org#18776-5 - should be one of 30 choices: 'Plan of care note', 'Plan of care note', '临床文档型' (zh-CN), '临床文档' (zh-CN), '文档' (zh-CN), '文书' (zh-CN), '医疗文书' (zh-CN), '临床医疗文书 事件发生的地方' (zh-CN), '场景' (zh-CN), '环境' (zh-CN), '背景 医疗服务（照护服务、护理服务、护理、照护、医疗照护、诊疗、诊疗服务、照顾、看护）计划（方案）记录 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 文档本体' (zh-CN), '临床文档本体' (zh-CN), '文档本体' (zh-CN), '文书本体' (zh-CN), '医疗文书本体' (zh-CN), '临床医疗文书本体 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 未加明确说明的角色 笔记' (zh-CN), '按语' (zh-CN), '注释' (zh-CN), '说明' (zh-CN), '票据' (zh-CN), '单据' (zh-CN), '证明书' (zh-CN) or 'Documentazione dell'ontologia Osservazione Piano di cura Punto nel tempo (episodio) Ruolo non specificato' (it-IT) (for the language(s) '--') (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "Wrong Display Name 'Plan of care' for http://loinc.org#18776-5 - should be one of 30 choices: 'Plan of care note, \"Plan of care note\", \"临床文档型\" (zh-CN), \"临床文档\" (zh-CN), \"文档\" (zh-CN), \"文书\" (zh-CN), \"医疗文书\" (zh-CN), \"临床医疗文书 事件发生的地方\" (zh-CN), \"场景\" (zh-CN), \"环境\" (zh-CN), \"背景 医疗服务（照护服务、护理服务、护理、照护、医疗照护、诊疗、诊疗服务、照顾、看护）计划（方案）记录 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。\" (zh-CN), \"发现物\" (zh-CN), \"所见\" (zh-CN), \"结果\" (zh-CN), \"结论 文档本体\" (zh-CN), \"临床文档本体\" (zh-CN), \"文档本体\" (zh-CN), \"文书本体\" (zh-CN), \"医疗文书本体\" (zh-CN), \"临床医疗文书本体 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 未加明确说明的角色 笔记\" (zh-CN), \"按语\" (zh-CN), \"注释\" (zh-CN), \"说明\" (zh-CN), \"票据\" (zh-CN), \"单据\" (zh-CN), \"证明书\" (zh-CN), \"Documentazione dell'ontologia Osservazione Piano di cura Punto nel tempo (episodio) Ruolo non specificato\" (it-IT)' for the language(s) '--' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "47420-5",
   "display" : "Functional status assessment note"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -574,19 +454,14 @@ v: {
   "display" : "Functional status assessment note",
   "code" : "47420-5",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "47519-4",
   "display" : "History of Procedures Document"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -597,19 +472,14 @@ v: {
   "display" : "History of Procedures Document",
   "code" : "47519-4",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "10187-3",
   "display" : "Review of systems Narrative Reporte"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -618,20 +488,15 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Wrong Display Name 'Review of systems Narrative Reporte' for http://loinc.org#10187-3 - should be one of 41 choices: 'Review of systems Narrative - Reported', 'Review of systems', '医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 历史纪录与体格检查 历史纪录与体格检查.历史记录' (zh-CN), '历史纪录与体格检查.历史记录类' (zh-CN), '历史纪录与体格检查.历史记录类别' (zh-CN), '历史纪录与体格检查.病史' (zh-CN), '历史纪录与体格检查.病史类' (zh-CN), '历史纪录与体格检查.病史类别' (zh-CN), '历史纪录与体格检查.病史记录' (zh-CN), '历史纪录与体格检查.病史记录类' (zh-CN), '历史纪录与体格检查.病史记录类别' (zh-CN), '历史纪录与体格检查小节.历史记录' (zh-CN), '历史纪录与体格检查小节.历史记录类' (zh-CN), '历史纪录与体格检查小节.历史记录类别' (zh-CN), '历史纪录与体格检查小节.病史' (zh-CN), '历史纪录与体格检查小节.病史类' (zh-CN), '历史纪录与体格检查小节.病史类别 历史纪录与体格检查小节 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 叙述' (zh-CN), '叙述性文字' (zh-CN), '报告' (zh-CN), '报告型' (zh-CN), '文字叙述' (zh-CN), '文本叙述型' (zh-CN), '文本描述' (zh-CN), '文本描述型 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 病史与体格检查 系统回顾' (zh-CN), '系统审核' (zh-CN), 'Anamnesi Osservazione paziente Punto nel tempo (episodio)' (it-IT), 'Анамнестические сведения' (ru-RU), 'Сообщенная третьим лицом информация Описательный Точка во времени' (ru-RU) or 'Момент' (ru-RU) (for the language(s) '--') (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "error" : "Wrong Display Name 'Review of systems Narrative Reporte' for http://loinc.org#10187-3 - should be one of 41 choices: 'Review of systems Narrative - Reported, \"Review of systems\", \"医疗服务对象\" (zh-CN), \"客户\" (zh-CN), \"病人\" (zh-CN), \"病患\" (zh-CN), \"病号\" (zh-CN), \"超系统 - 病人 历史纪录与体格检查 历史纪录与体格检查.历史记录\" (zh-CN), \"历史纪录与体格检查.历史记录类\" (zh-CN), \"历史纪录与体格检查.历史记录类别\" (zh-CN), \"历史纪录与体格检查.病史\" (zh-CN), \"历史纪录与体格检查.病史类\" (zh-CN), \"历史纪录与体格检查.病史类别\" (zh-CN), \"历史纪录与体格检查.病史记录\" (zh-CN), \"历史纪录与体格检查.病史记录类\" (zh-CN), \"历史纪录与体格检查.病史记录类别\" (zh-CN), \"历史纪录与体格检查小节.历史记录\" (zh-CN), \"历史纪录与体格检查小节.历史记录类\" (zh-CN), \"历史纪录与体格检查小节.历史记录类别\" (zh-CN), \"历史纪录与体格检查小节.病史\" (zh-CN), \"历史纪录与体格检查小节.病史类\" (zh-CN), \"历史纪录与体格检查小节.病史类别 历史纪录与体格检查小节 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。\" (zh-CN), \"发现物\" (zh-CN), \"所见\" (zh-CN), \"结果\" (zh-CN), \"结论 叙述\" (zh-CN), \"叙述性文字\" (zh-CN), \"报告\" (zh-CN), \"报告型\" (zh-CN), \"文字叙述\" (zh-CN), \"文本叙述型\" (zh-CN), \"文本描述\" (zh-CN), \"文本描述型 时刻\" (zh-CN), \"随机\" (zh-CN), \"随意\" (zh-CN), \"瞬间 病史与体格检查 系统回顾\" (zh-CN), \"系统审核\" (zh-CN), \"Anamnesi Osservazione paziente Punto nel tempo (episodio)\" (it-IT), \"Анамнестические сведения\" (ru-RU), \"Сообщенная третьим лицом информация Описательный Точка во времени\" (ru-RU), \"Момент\" (ru-RU)' for the language(s) '--' (from Tx-Server)",
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "87504-7",
   "display" : "Administrative information"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -641,19 +506,14 @@ v: {
 v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Administrative information' for http://loinc.org#87504-7 - should be 'LCDS v4.00 - Administrative information - discharge [CMS Assessment]' (for the language(s) '--') (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "class" : "UNKNOWN"
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "2069-3",
   "display" : "Chloride [Moles/volume] in Blood"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"[en]", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -664,11 +524,6 @@ v: {
   "display" : "Chloride [Moles/volume] in Blood",
   "code" : "2069-3",
   "system" : "http://loinc.org",
-  "version" : "2.74",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
+  "version" : "2.74"
 }
 -------------------------------------------------------------------------------------

@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.openapi;
   
  */
 
+
+
 import com.google.gson.JsonObject;
 
 public class ResponseObjectWriter extends BaseWriter {
@@ -39,15 +41,16 @@ public class ResponseObjectWriter extends BaseWriter {
 
   public ResponseObjectWriter description(String value) {
     object.addProperty("description", value);
-    return this;
+    return this;            
   }
+  
 
   public HeaderWriter header(String name) {
     return new HeaderWriter(ensureMapObject("headers", name));
   }
-
+  
   public MediaTypeObjectWriter content(String type) {
     return new MediaTypeObjectWriter(ensureMapObject("content", type));
   }
-
+  
 }

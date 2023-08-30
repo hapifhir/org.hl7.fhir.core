@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum FmStatus {
 
-  /**
-   * The instance is currently in-force.
-   */
-  ACTIVE,
-  /**
-   * The instance is withdrawn, rescinded or reversed.
-   */
-  CANCELLED,
-  /**
-   * A new instance the contents of which is not complete.
-   */
-  DRAFT,
-  /**
-   * The instance was entered in error.
-   */
-  ENTEREDINERROR,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static FmStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("active".equals(codeString))
-      return ACTIVE;
-    if ("cancelled".equals(codeString))
-      return CANCELLED;
-    if ("draft".equals(codeString))
-      return DRAFT;
-    if ("entered-in-error".equals(codeString))
-      return ENTEREDINERROR;
-    throw new FHIRException("Unknown FmStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ACTIVE:
-      return "active";
-    case CANCELLED:
-      return "cancelled";
-    case DRAFT:
-      return "draft";
-    case ENTEREDINERROR:
-      return "entered-in-error";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The instance is currently in-force.
+         */
+        ACTIVE, 
+        /**
+         * The instance is withdrawn, rescinded or reversed.
+         */
+        CANCELLED, 
+        /**
+         * A new instance the contents of which is not complete.
+         */
+        DRAFT, 
+        /**
+         * The instance was entered in error.
+         */
+        ENTEREDINERROR, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static FmStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("active".equals(codeString))
+          return ACTIVE;
+        if ("cancelled".equals(codeString))
+          return CANCELLED;
+        if ("draft".equals(codeString))
+          return DRAFT;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        throw new FHIRException("Unknown FmStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ACTIVE: return "active";
+            case CANCELLED: return "cancelled";
+            case DRAFT: return "draft";
+            case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/fm-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ACTIVE: return "The instance is currently in-force.";
+            case CANCELLED: return "The instance is withdrawn, rescinded or reversed.";
+            case DRAFT: return "A new instance the contents of which is not complete.";
+            case ENTEREDINERROR: return "The instance was entered in error.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ACTIVE: return "Active";
+            case CANCELLED: return "Cancelled";
+            case DRAFT: return "Draft";
+            case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/fm-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ACTIVE:
-      return "The instance is currently in-force.";
-    case CANCELLED:
-      return "The instance is withdrawn, rescinded or reversed.";
-    case DRAFT:
-      return "A new instance the contents of which is not complete.";
-    case ENTEREDINERROR:
-      return "The instance was entered in error.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ACTIVE:
-      return "Active";
-    case CANCELLED:
-      return "Cancelled";
-    case DRAFT:
-      return "Draft";
-    case ENTEREDINERROR:
-      return "Entered in Error";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

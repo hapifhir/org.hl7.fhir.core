@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,100 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum VerificationresultCommunicationMethod {
 
-  /**
-   * The information is submitted/retrieved manually (e.g. by phone, fax,
-   * paper-based)
-   */
-  MANUAL,
-  /**
-   * The information is submitted/retrieved via a portal
-   */
-  PORTAL,
-  /**
-   * The information is retrieved (i.e. pulled) from a source (e.g. over an API)
-   */
-  PULL,
-  /**
-   * The information is sent (i.e. pushed) from a source (e.g. over an API,
-   * asynchronously, secure messaging)
-   */
-  PUSH,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static VerificationresultCommunicationMethod fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("manual".equals(codeString))
-      return MANUAL;
-    if ("portal".equals(codeString))
-      return PORTAL;
-    if ("pull".equals(codeString))
-      return PULL;
-    if ("push".equals(codeString))
-      return PUSH;
-    throw new FHIRException("Unknown VerificationresultCommunicationMethod code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case MANUAL:
-      return "manual";
-    case PORTAL:
-      return "portal";
-    case PULL:
-      return "pull";
-    case PUSH:
-      return "push";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The information is submitted/retrieved manually (e.g. by phone, fax, paper-based)
+         */
+        MANUAL, 
+        /**
+         * The information is submitted/retrieved via a portal
+         */
+        PORTAL, 
+        /**
+         * The information is retrieved (i.e. pulled) from a source (e.g. over an API)
+         */
+        PULL, 
+        /**
+         * The information is sent (i.e. pushed) from a source (e.g. over an API, asynchronously, secure messaging)
+         */
+        PUSH, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static VerificationresultCommunicationMethod fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("manual".equals(codeString))
+          return MANUAL;
+        if ("portal".equals(codeString))
+          return PORTAL;
+        if ("pull".equals(codeString))
+          return PULL;
+        if ("push".equals(codeString))
+          return PUSH;
+        throw new FHIRException("Unknown VerificationresultCommunicationMethod code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case MANUAL: return "manual";
+            case PORTAL: return "portal";
+            case PULL: return "pull";
+            case PUSH: return "push";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/verificationresult-communication-method";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case MANUAL: return "The information is submitted/retrieved manually (e.g. by phone, fax, paper-based)";
+            case PORTAL: return "The information is submitted/retrieved via a portal";
+            case PULL: return "The information is retrieved (i.e. pulled) from a source (e.g. over an API)";
+            case PUSH: return "The information is sent (i.e. pushed) from a source (e.g. over an API, asynchronously, secure messaging)";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case MANUAL: return "Manual";
+            case PORTAL: return "Portal";
+            case PULL: return "Pull";
+            case PUSH: return "Push";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/verificationresult-communication-method";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case MANUAL:
-      return "The information is submitted/retrieved manually (e.g. by phone, fax, paper-based)";
-    case PORTAL:
-      return "The information is submitted/retrieved via a portal";
-    case PULL:
-      return "The information is retrieved (i.e. pulled) from a source (e.g. over an API)";
-    case PUSH:
-      return "The information is sent (i.e. pushed) from a source (e.g. over an API, asynchronously, secure messaging)";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case MANUAL:
-      return "Manual";
-    case PORTAL:
-      return "Portal";
-    case PULL:
-      return "Pull";
-    case PUSH:
-      return "Push";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

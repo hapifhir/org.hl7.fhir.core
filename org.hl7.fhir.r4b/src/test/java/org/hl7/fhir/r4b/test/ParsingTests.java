@@ -34,16 +34,13 @@ public class ParsingTests {
   public static void setUp() {
   }
 
-  public static Stream<Arguments> data()
-      throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(
-        org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+  public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
     npm = pcm.loadPackage("hl7.fhir.r4b.examples", "4.3.0");
     List<Arguments> objects = new ArrayList<>();
     List<String> names = npm.list("package");
     for (String n : names) {
-      if (!n.contains("manifest.json") && !n.contains("xver-") && !n.contains("uml.json")
-          && !n.contains("package-min-ver.json")) {
+      if (!n.contains("manifest.json") && !n.contains("xver-") && !n.contains("uml.json")  && !n.contains("package-min-ver.json")) {
         objects.add(Arguments.of(n));
       }
     }

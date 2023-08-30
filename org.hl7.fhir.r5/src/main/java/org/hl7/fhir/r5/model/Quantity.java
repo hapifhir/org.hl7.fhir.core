@@ -517,19 +517,19 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Quantity.value");
+          throw new FHIRException("Cannot call addChild on a primitive type Quantity.value");
         }
         else if (name.equals("comparator")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Quantity.comparator");
+          throw new FHIRException("Cannot call addChild on a primitive type Quantity.comparator");
         }
         else if (name.equals("unit")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Quantity.unit");
+          throw new FHIRException("Cannot call addChild on a primitive type Quantity.unit");
         }
         else if (name.equals("system")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Quantity.system");
+          throw new FHIRException("Cannot call addChild on a primitive type Quantity.system");
         }
         else if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Quantity.code");
+          throw new FHIRException("Cannot call addChild on a primitive type Quantity.code");
         }
         else
           return super.addChild(name);

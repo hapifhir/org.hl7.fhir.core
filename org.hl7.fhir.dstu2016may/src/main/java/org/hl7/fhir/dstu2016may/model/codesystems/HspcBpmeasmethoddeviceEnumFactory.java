@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class HspcBpmeasmethoddeviceEnumFactory implements EnumFactory<HspcBpmeasmethoddevice> {
@@ -46,7 +50,7 @@ public class HspcBpmeasmethoddeviceEnumFactory implements EnumFactory<HspcBpmeas
       return HspcBpmeasmethoddevice._31163;
     if ("50577434".equals(codeString))
       return HspcBpmeasmethoddevice._50577434;
-    throw new IllegalArgumentException("Unknown HspcBpmeasmethoddevice code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown HspcBpmeasmethoddevice code '"+codeString+"'");
   }
 
   public String toCode(HspcBpmeasmethoddevice code) {
@@ -61,8 +65,8 @@ public class HspcBpmeasmethoddeviceEnumFactory implements EnumFactory<HspcBpmeas
     return "?";
   }
 
-  public String toSystem(HspcBpmeasmethoddevice code) {
-    return code.getSystem();
-  }
+    public String toSystem(HspcBpmeasmethoddevice code) {
+      return code.getSystem();
+      }
 
 }

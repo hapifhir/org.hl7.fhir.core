@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NoteType {
 
-  /**
-   * Display the note.
-   */
-  DISPLAY,
-  /**
-   * Print the note on the form.
-   */
-  PRINT,
-  /**
-   * Print the note for the operator.
-   */
-  PRINTOPER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static NoteType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("display".equals(codeString))
-      return DISPLAY;
-    if ("print".equals(codeString))
-      return PRINT;
-    if ("printoper".equals(codeString))
-      return PRINTOPER;
-    throw new FHIRException("Unknown NoteType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case DISPLAY:
-      return "display";
-    case PRINT:
-      return "print";
-    case PRINTOPER:
-      return "printoper";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Display the note.
+         */
+        DISPLAY, 
+        /**
+         * Print the note on the form.
+         */
+        PRINT, 
+        /**
+         * Print the note for the operator.
+         */
+        PRINTOPER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static NoteType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("display".equals(codeString))
+          return DISPLAY;
+        if ("print".equals(codeString))
+          return PRINT;
+        if ("printoper".equals(codeString))
+          return PRINTOPER;
+        throw new FHIRException("Unknown NoteType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case DISPLAY: return "display";
+            case PRINT: return "print";
+            case PRINTOPER: return "printoper";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/note-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case DISPLAY: return "Display the note.";
+            case PRINT: return "Print the note on the form.";
+            case PRINTOPER: return "Print the note for the operator.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case DISPLAY: return "Display";
+            case PRINT: return "Print (Form)";
+            case PRINTOPER: return "Print (Operator)";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/note-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case DISPLAY:
-      return "Display the note.";
-    case PRINT:
-      return "Print the note on the form.";
-    case PRINTOPER:
-      return "Print the note for the operator.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case DISPLAY:
-      return "Display";
-    case PRINT:
-      return "Print (Form)";
-    case PRINTOPER:
-      return "Print (Operator)";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

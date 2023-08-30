@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 */
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
+
 
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
@@ -1174,7 +1178,7 @@ public class V3TribalEntityUSEnumFactory implements EnumFactory<V3TribalEntityUS
       return V3TribalEntityUS._98;
     if ("99".equals(codeString))
       return V3TribalEntityUS._99;
-    throw new IllegalArgumentException("Unknown V3TribalEntityUS code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3TribalEntityUS code '"+codeString+"'");
   }
 
   public String toCode(V3TribalEntityUS code) {
@@ -2317,8 +2321,8 @@ public class V3TribalEntityUSEnumFactory implements EnumFactory<V3TribalEntityUS
     return "?";
   }
 
-  public String toSystem(V3TribalEntityUS code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3TribalEntityUS code) {
+      return code.getSystem();
+      }
 
 }

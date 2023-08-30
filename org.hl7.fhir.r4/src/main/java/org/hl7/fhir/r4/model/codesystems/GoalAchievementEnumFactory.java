@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class GoalAchievementEnumFactory implements EnumFactory<GoalAchievement> {
@@ -56,7 +60,7 @@ public class GoalAchievementEnumFactory implements EnumFactory<GoalAchievement> 
       return GoalAchievement.NOPROGRESS;
     if ("not-attainable".equals(codeString))
       return GoalAchievement.NOTATTAINABLE;
-    throw new IllegalArgumentException("Unknown GoalAchievement code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown GoalAchievement code '"+codeString+"'");
   }
 
   public String toCode(GoalAchievement code) {
@@ -81,8 +85,8 @@ public class GoalAchievementEnumFactory implements EnumFactory<GoalAchievement> 
     return "?";
   }
 
-  public String toSystem(GoalAchievement code) {
-    return code.getSystem();
-  }
+    public String toSystem(GoalAchievement code) {
+      return code.getSystem();
+      }
 
 }

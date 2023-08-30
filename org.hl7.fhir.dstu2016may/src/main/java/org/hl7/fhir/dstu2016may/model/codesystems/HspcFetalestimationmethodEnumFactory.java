@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class HspcFetalestimationmethodEnumFactory implements EnumFactory<HspcFetalestimationmethod> {
@@ -42,7 +46,7 @@ public class HspcFetalestimationmethodEnumFactory implements EnumFactory<HspcFet
       return HspcFetalestimationmethod._103241;
     if ("205940".equals(codeString))
       return HspcFetalestimationmethod._205940;
-    throw new IllegalArgumentException("Unknown HspcFetalestimationmethod code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown HspcFetalestimationmethod code '"+codeString+"'");
   }
 
   public String toCode(HspcFetalestimationmethod code) {
@@ -53,8 +57,8 @@ public class HspcFetalestimationmethodEnumFactory implements EnumFactory<HspcFet
     return "?";
   }
 
-  public String toSystem(HspcFetalestimationmethod code) {
-    return code.getSystem();
-  }
+    public String toSystem(HspcFetalestimationmethod code) {
+      return code.getSystem();
+      }
 
 }

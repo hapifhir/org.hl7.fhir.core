@@ -43,8 +43,7 @@ public class AdditionalBindingsRenderer {
   private RenderingContext context;
   private IMarkdownProcessor md;
 
-  public AdditionalBindingsRenderer(ProfileKnowledgeProvider pkp, String corePath, StructureDefinition profile,
-      String path, RenderingContext context, IMarkdownProcessor md) {
+  public AdditionalBindingsRenderer(ProfileKnowledgeProvider pkp, String corePath, StructureDefinition profile, String path, RenderingContext context, IMarkdownProcessor md) {
     this.pkp = pkp;
     this.corePath = corePath;
     this.profile = profile;
@@ -53,36 +52,34 @@ public class AdditionalBindingsRenderer {
     this.md = md;
   }
 
-  public void seeMaxBinding(Extension ext) {
+  public void seeMaxBinding(Extension ext) {    
     AdditionalBindingDetail abr = new AdditionalBindingDetail();
-    abr.purpose = "maximum";
-    abr.valueSet = ext.getValue().primitiveValue();
+    abr.purpose =  "maximum";
+    abr.valueSet =  ext.getValue().primitiveValue();
     abr.unchanged = ext.hasUserData(ProfileUtilities.DERIVATION_EQUALS);
-    bindings.add(abr);
+    bindings.add(abr);    
   }
 
   public void seeMinBinding(Extension ext) {
     AdditionalBindingDetail abr = new AdditionalBindingDetail();
-    abr.purpose = "minimum";
-    abr.valueSet = ext.getValue().primitiveValue();
+    abr.purpose =  "minimum";
+    abr.valueSet =  ext.getValue().primitiveValue();
     abr.unchanged = ext.hasUserData(ProfileUtilities.DERIVATION_EQUALS);
-    bindings.add(abr);
+    bindings.add(abr);    
   }
 
   public void seeAdditionalBindings(List<Extension> list) {
     for (Extension ext : list) {
       AdditionalBindingDetail abr = new AdditionalBindingDetail();
-      abr.purpose = ext.getExtensionString("purpose");
-      abr.valueSet = ext.getExtensionString("valueSet");
-      abr.doco = ext.getExtensionString("documentation");
-      abr.usage = (ext.hasExtension("usage")) && ext.getExtensionByUrl("usage").hasValueUsageContext()
-          ? ext.getExtensionByUrl("usage").getValueUsageContext()
-          : null;
+      abr.purpose =  ext.getExtensionString("purpose");
+      abr.valueSet =  ext.getExtensionString("valueSet");
+      abr.doco =  ext.getExtensionString("documentation");
+      abr.usage =  (ext.hasExtension("usage")) && ext.getExtensionByUrl("usage").hasValueUsageContext() ? ext.getExtensionByUrl("usage").getValueUsageContext() : null;
       abr.any = "any".equals(ext.getExtensionString("scope"));
       abr.unchanged = ext.hasUserData(ProfileUtilities.DERIVATION_EQUALS);
       bindings.add(abr);
     }
-  }
+  }  
 
   public String render() throws IOException {
     if (bindings.isEmpty()) {
@@ -104,9 +101,8 @@ public class AdditionalBindingsRenderer {
       render(piece.getChildren(), false);
     }
   }
-
-  private void render(List<XhtmlNode> children, boolean doDoco)
-      throws FHIRFormatError, DefinitionException, IOException {
+  
+  private void render(List<XhtmlNode> children, boolean doDoco) throws FHIRFormatError, DefinitionException, IOException {
     boolean doco = false;
     boolean usage = false;
     boolean any = false;
@@ -115,6 +111,7 @@ public class AdditionalBindingsRenderer {
       usage = usage || binding.usage != null;
       any = any || binding.any;
     }
+
 
     XhtmlNode tr = new XhtmlNode(NodeType.Element, "tr");
     children.add(tr);
@@ -130,7 +127,7 @@ public class AdditionalBindingsRenderer {
       tr.td().style("font-size: 11px").tx("Documentation");
     }
     for (AdditionalBindingDetail binding : bindings) {
-      tr = new XhtmlNode(NodeType.Element, "tr");
+      tr =  new XhtmlNode(NodeType.Element, "tr");
       if (binding.unchanged) {
         tr.style("opacity: 0.5");
       }
@@ -138,18 +135,16 @@ public class AdditionalBindingsRenderer {
       BindingResolution br = pkp == null ? makeNullBr(binding) : pkp.resolveBinding(profile, binding.valueSet, path);
 
       if (br.url != null) {
-        tr.td().style("font-size: 11px")
-            .ah(Utilities.isAbsoluteUrl(br.url) || !pkp.prependLinks() ? br.url : corePath + br.url, binding.valueSet)
-            .tx(br.display);
+        tr.td().style("font-size: 11px").ah(Utilities.isAbsoluteUrl(br.url) || !pkp.prependLinks() ? br.url : corePath+br.url, binding.valueSet).tx(br.display);
       } else {
-        tr.td().style("font-size: 11px").span(null, binding.valueSet).tx(br.display);
+        tr.td().style("font-size: 11px").span(null, binding.valueSet).tx(br.display);        
       }
       renderPurpose(tr.td().style("font-size: 11px"), binding.purpose);
       if (usage) {
         if (binding.usage != null) {
           new DataRenderer(context).render(tr.td(), binding.usage);
         } else {
-          tr.td();
+          tr.td();          
         }
       }
       if (any) {
@@ -161,7 +156,7 @@ public class AdditionalBindingsRenderer {
       }
       if (doco) {
         if (binding.doco != null) {
-          String d = md.processMarkdown("Binding.description", binding.doco);
+          String d = md.processMarkdown("Binding.description", binding.doco);          
           tr.td().style("font-size: 11px").innerHTML(d);
         } else {
           tr.td().style("font-size: 11px");
@@ -172,35 +167,31 @@ public class AdditionalBindingsRenderer {
 
   private void renderPurpose(XhtmlNode td, String purpose) {
     switch (purpose) {
-    case "maximum":
-      td.ah(corePath + "extension-elementdefinition-maxvalueset.html",
-          "A required binding, for use when the binding strength is 'extensible' or 'preferred'").tx("Max Binding");
+    case "maximum": 
+      td.ah(corePath+"extension-elementdefinition-maxvalueset.html", "A required binding, for use when the binding strength is 'extensible' or 'preferred'").tx("Max Binding");
       break;
-    case "minimum":
-      td.ah(corePath + "extension-elementdefinition-minvalueset.html",
-          "The minimum allowable value set - any conformant system SHALL support all these codes").tx("Min Binding");
+    case "minimum": 
+      td.ah(corePath+"extension-elementdefinition-minvalueset.html", "The minimum allowable value set - any conformant system SHALL support all these codes").tx("Min Binding");
       break;
-    case "conformance":
-      td.ah(corePath + "terminologies.html#strength", "Validators will check this binding (strength = required)")
-          .tx("Validation Criteria");
+    case "conformance" :
+      td.ah(corePath+"terminologies.html#strength", "Validators will check this binding (strength = required)").tx("Validation Criteria");
       break;
-    case "current":
-      td.span(null, "New records are required to use this value set, but legacy records may use other codes")
-          .tx("Required");
+    case "current" :
+      td.span(null, "New records are required to use this value set, but legacy records may use other codes").tx("Required");
       break;
-    case "recommended":
+    case "recommended" :
       td.span(null, "This is the value set that is recommended (documentation should explain why)").tx("Recommended");
       break;
-    case "ui":
+    case "ui" :
       td.span(null, "This value set is provided to user look up in a given context").tx("UI");
       break;
-    case "starter":
+    case "starter" :
       td.span(null, "This value set is a good set of codes to start with when designing your system").tx("Starter");
       break;
-    case "component":
+    case "component" :
       td.span(null, "This value set is a component of the base value set").tx("Component");
       break;
-    default:
+    default:  
       td.span(null, "Unknown code for purpose").tx(purpose);
     }
   }
@@ -211,5 +202,6 @@ public class AdditionalBindingsRenderer {
     br.display = "todo";
     return br;
   }
+
 
 }

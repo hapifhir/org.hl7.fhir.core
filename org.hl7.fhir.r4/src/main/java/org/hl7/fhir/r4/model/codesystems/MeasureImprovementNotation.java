@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,76 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum MeasureImprovementNotation {
 
-  /**
-   * Improvement is indicated as an increase in the score or measurement (e.g.
-   * Higher score indicates better quality).
-   */
-  INCREASE,
-  /**
-   * Improvement is indicated as a decrease in the score or measurement (e.g.
-   * Lower score indicates better quality).
-   */
-  DECREASE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static MeasureImprovementNotation fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("increase".equals(codeString))
-      return INCREASE;
-    if ("decrease".equals(codeString))
-      return DECREASE;
-    throw new FHIRException("Unknown MeasureImprovementNotation code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INCREASE:
-      return "increase";
-    case DECREASE:
-      return "decrease";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Improvement is indicated as an increase in the score or measurement (e.g. Higher score indicates better quality).
+         */
+        INCREASE, 
+        /**
+         * Improvement is indicated as a decrease in the score or measurement (e.g. Lower score indicates better quality).
+         */
+        DECREASE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static MeasureImprovementNotation fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("increase".equals(codeString))
+          return INCREASE;
+        if ("decrease".equals(codeString))
+          return DECREASE;
+        throw new FHIRException("Unknown MeasureImprovementNotation code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INCREASE: return "increase";
+            case DECREASE: return "decrease";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/measure-improvement-notation";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INCREASE: return "Improvement is indicated as an increase in the score or measurement (e.g. Higher score indicates better quality).";
+            case DECREASE: return "Improvement is indicated as a decrease in the score or measurement (e.g. Lower score indicates better quality).";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INCREASE: return "Increased score indicates improvement";
+            case DECREASE: return "Decreased score indicates improvement";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/measure-improvement-notation";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INCREASE:
-      return "Improvement is indicated as an increase in the score or measurement (e.g. Higher score indicates better quality).";
-    case DECREASE:
-      return "Improvement is indicated as a decrease in the score or measurement (e.g. Lower score indicates better quality).";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INCREASE:
-      return "Increased score indicates improvement";
-    case DECREASE:
-      return "Decreased score indicates improvement";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

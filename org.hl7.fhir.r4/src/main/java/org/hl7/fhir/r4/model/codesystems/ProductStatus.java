@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ProductStatus {
 
-  /**
-   * Product is currently available for use.
-   */
-  AVAILABLE,
-  /**
-   * Product is not currently available for use.
-   */
-  UNAVAILABLE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ProductStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("available".equals(codeString))
-      return AVAILABLE;
-    if ("unavailable".equals(codeString))
-      return UNAVAILABLE;
-    throw new FHIRException("Unknown ProductStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case AVAILABLE:
-      return "available";
-    case UNAVAILABLE:
-      return "unavailable";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Product is currently available for use.
+         */
+        AVAILABLE, 
+        /**
+         * Product is not currently available for use.
+         */
+        UNAVAILABLE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ProductStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("available".equals(codeString))
+          return AVAILABLE;
+        if ("unavailable".equals(codeString))
+          return UNAVAILABLE;
+        throw new FHIRException("Unknown ProductStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case AVAILABLE: return "available";
+            case UNAVAILABLE: return "unavailable";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/product-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case AVAILABLE: return "Product is currently available for use.";
+            case UNAVAILABLE: return "Product is not currently available for use.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case AVAILABLE: return "Available";
+            case UNAVAILABLE: return "Unavailable";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/product-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case AVAILABLE:
-      return "Product is currently available for use.";
-    case UNAVAILABLE:
-      return "Product is not currently available for use.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case AVAILABLE:
-      return "Available";
-    case UNAVAILABLE:
-      return "Unavailable";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

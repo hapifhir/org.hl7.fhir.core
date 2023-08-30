@@ -29,6 +29,8 @@ package org.hl7.fhir.dstu2.formats;
   
  */
 
+
+
 public enum FhirFormat {
   XML, JSON, TURTLE, TEXT, VBAR;
 

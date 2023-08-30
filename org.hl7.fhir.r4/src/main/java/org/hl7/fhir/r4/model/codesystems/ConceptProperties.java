@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,121 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConceptProperties {
 
-  /**
-   * True if the concept is not considered active - e.g. not a valid concept any
-   * more. Property type is boolean, default value is false
-   */
-  INACTIVE,
-  /**
-   * The date at which a concept was deprecated. Concepts that are deprecated but
-   * not inactive can still be used, but their use is discouraged, and they should
-   * be expected to be made inactive in a future release. Property type is
-   * dateTime
-   */
-  DEPRECATED,
-  /**
-   * The concept is not intended to be chosen by the user - only intended to be
-   * used as a selector for other concepts. Note, though, that the interpretation
-   * of this is highly contextual; all concepts are selectable in some context.
-   * Property type is boolean
-   */
-  NOTSELECTABLE,
-  /**
-   * The concept identified in this property is a parent of the concept on which
-   * it is a property. The property type will be 'code'. The meaning of 'parent'
-   * is defined by the hierarchyMeaning attribute
-   */
-  PARENT,
-  /**
-   * The concept identified in this property is a child of the concept on which it
-   * is a property. The property type will be 'code'. The meaning of 'child' is
-   * defined by the hierarchyMeaning attribute
-   */
-  CHILD,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ConceptProperties fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("inactive".equals(codeString))
-      return INACTIVE;
-    if ("deprecated".equals(codeString))
-      return DEPRECATED;
-    if ("notSelectable".equals(codeString))
-      return NOTSELECTABLE;
-    if ("parent".equals(codeString))
-      return PARENT;
-    if ("child".equals(codeString))
-      return CHILD;
-    throw new FHIRException("Unknown ConceptProperties code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INACTIVE:
-      return "inactive";
-    case DEPRECATED:
-      return "deprecated";
-    case NOTSELECTABLE:
-      return "notSelectable";
-    case PARENT:
-      return "parent";
-    case CHILD:
-      return "child";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * True if the concept is not considered active - e.g. not a valid concept any more. Property type is boolean, default value is false
+         */
+        INACTIVE, 
+        /**
+         * The date at which a concept was deprecated. Concepts that are deprecated but not inactive can still be used, but their use is discouraged, and they should be expected to be made inactive in a future release. Property type is dateTime
+         */
+        DEPRECATED, 
+        /**
+         * The concept is not intended to be chosen by the user - only intended to be used as a selector for other concepts. Note, though, that the interpretation of this is highly contextual; all concepts are selectable in some context. Property type is boolean
+         */
+        NOTSELECTABLE, 
+        /**
+         * The concept identified in this property is a parent of the concept on which it is a property. The property type will be 'code'. The meaning of 'parent' is defined by the hierarchyMeaning attribute
+         */
+        PARENT, 
+        /**
+         * The concept identified in this property is a child of the concept on which it is a property. The property type will be 'code'. The meaning of 'child' is defined by the hierarchyMeaning attribute
+         */
+        CHILD, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ConceptProperties fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("inactive".equals(codeString))
+          return INACTIVE;
+        if ("deprecated".equals(codeString))
+          return DEPRECATED;
+        if ("notSelectable".equals(codeString))
+          return NOTSELECTABLE;
+        if ("parent".equals(codeString))
+          return PARENT;
+        if ("child".equals(codeString))
+          return CHILD;
+        throw new FHIRException("Unknown ConceptProperties code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INACTIVE: return "inactive";
+            case DEPRECATED: return "deprecated";
+            case NOTSELECTABLE: return "notSelectable";
+            case PARENT: return "parent";
+            case CHILD: return "child";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/concept-properties";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INACTIVE: return "True if the concept is not considered active - e.g. not a valid concept any more. Property type is boolean, default value is false";
+            case DEPRECATED: return "The date at which a concept was deprecated. Concepts that are deprecated but not inactive can still be used, but their use is discouraged, and they should be expected to be made inactive in a future release. Property type is dateTime";
+            case NOTSELECTABLE: return "The concept is not intended to be chosen by the user - only intended to be used as a selector for other concepts. Note, though, that the interpretation of this is highly contextual; all concepts are selectable in some context. Property type is boolean";
+            case PARENT: return "The concept identified in this property is a parent of the concept on which it is a property. The property type will be 'code'. The meaning of 'parent' is defined by the hierarchyMeaning attribute";
+            case CHILD: return "The concept identified in this property is a child of the concept on which it is a property. The property type will be 'code'. The meaning of 'child' is defined by the hierarchyMeaning attribute";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INACTIVE: return "Inactive";
+            case DEPRECATED: return "Deprecated";
+            case NOTSELECTABLE: return "Not Selectable";
+            case PARENT: return "Parent";
+            case CHILD: return "Child";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/concept-properties";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INACTIVE:
-      return "True if the concept is not considered active - e.g. not a valid concept any more. Property type is boolean, default value is false";
-    case DEPRECATED:
-      return "The date at which a concept was deprecated. Concepts that are deprecated but not inactive can still be used, but their use is discouraged, and they should be expected to be made inactive in a future release. Property type is dateTime";
-    case NOTSELECTABLE:
-      return "The concept is not intended to be chosen by the user - only intended to be used as a selector for other concepts. Note, though, that the interpretation of this is highly contextual; all concepts are selectable in some context. Property type is boolean";
-    case PARENT:
-      return "The concept identified in this property is a parent of the concept on which it is a property. The property type will be 'code'. The meaning of 'parent' is defined by the hierarchyMeaning attribute";
-    case CHILD:
-      return "The concept identified in this property is a child of the concept on which it is a property. The property type will be 'code'. The meaning of 'child' is defined by the hierarchyMeaning attribute";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INACTIVE:
-      return "Inactive";
-    case DEPRECATED:
-      return "Deprecated";
-    case NOTSELECTABLE:
-      return "Not Selectable";
-    case PARENT:
-      return "Parent";
-    case CHILD:
-      return "Child";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

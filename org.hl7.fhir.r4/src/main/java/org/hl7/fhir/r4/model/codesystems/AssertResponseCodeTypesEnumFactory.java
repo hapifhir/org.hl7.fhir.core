@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -62,7 +66,7 @@ public class AssertResponseCodeTypesEnumFactory implements EnumFactory<AssertRes
       return AssertResponseCodeTypes.PRECONDITIONFAILED;
     if ("unprocessable".equals(codeString))
       return AssertResponseCodeTypes.UNPROCESSABLE;
-    throw new IllegalArgumentException("Unknown AssertResponseCodeTypes code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown AssertResponseCodeTypes code '"+codeString+"'");
   }
 
   public String toCode(AssertResponseCodeTypes code) {
@@ -93,8 +97,8 @@ public class AssertResponseCodeTypesEnumFactory implements EnumFactory<AssertRes
     return "?";
   }
 
-  public String toSystem(AssertResponseCodeTypes code) {
-    return code.getSystem();
-  }
+    public String toSystem(AssertResponseCodeTypes code) {
+      return code.getSystem();
+      }
 
 }

@@ -671,16 +671,16 @@ public class Subscription extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Subscription.type");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.type");
         }
         else if (name.equals("endpoint")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Subscription.endpoint");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.endpoint");
         }
         else if (name.equals("payload")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Subscription.payload");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.payload");
         }
         else if (name.equals("header")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Subscription.header");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.header");
         }
         else
           return super.addChild(name);
@@ -1311,22 +1311,22 @@ public class Subscription extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Subscription.status");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.status");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("end")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Subscription.end");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.end");
         }
         else if (name.equals("reason")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Subscription.reason");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.reason");
         }
         else if (name.equals("criteria")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Subscription.criteria");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.criteria");
         }
         else if (name.equals("error")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Subscription.error");
+          throw new FHIRException("Cannot call addChild on a primitive type Subscription.error");
         }
         else if (name.equals("channel")) {
           this.channel = new SubscriptionChannelComponent();

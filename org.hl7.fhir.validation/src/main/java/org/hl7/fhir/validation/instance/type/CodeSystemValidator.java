@@ -6,7 +6,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
@@ -22,8 +21,15 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class CodeSystemValidator  extends BaseValidator {
 
-  public CodeSystemValidator(BaseValidator parent) {
-    super(parent);
+  private InstanceValidator parent;
+
+  public CodeSystemValidator(IWorkerContext context, boolean debug, TimeTracker timeTracker, InstanceValidator parent, XVerExtensionManager xverManager, Coding jurisdiction) {
+    super(context, xverManager, debug);
+    source = Source.InstanceValidator;
+    this.timeTracker = timeTracker;
+    this.jurisdiction = jurisdiction;
+    this.parent = parent;
+
   }
 
   public boolean validateCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack, ValidationOptions options) {
@@ -33,9 +39,8 @@ public class CodeSystemValidator  extends BaseValidator {
     String caseSensitive = cs.getNamedChildValue("caseSensitive");
     String hierarchyMeaning = cs.getNamedChildValue("hierarchyMeaning");
     String supp = cs.getNamedChildValue("supplements");
-    int count = countConcepts(cs); 
-    
-    metaChecks(errors, cs, stack, url, content, caseSensitive, hierarchyMeaning, !Utilities.noString(supp), count, supp);
+
+    metaChecks(errors, cs, stack, url, content, caseSensitive, hierarchyMeaning, !Utilities.noString(supp));
 
     String vsu = cs.getNamedChildValue("valueSet");
     if (!Utilities.noString(vsu)) {
@@ -53,6 +58,7 @@ public class CodeSystemValidator  extends BaseValidator {
               ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !vs.getCompose().getInclude().get(0).hasValueSet()
                   && !vs.getCompose().getInclude().get(0).hasConcept() && !vs.getCompose().getInclude().get(0).hasFilter(), I18nConstants.CODESYSTEM_CS_VS_INCLUDEDETAILS, url, vsu) && ok;
               if (vs.hasExpansion()) {
+                int count = countConcepts(cs); 
                 ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs.getExpansion().getContains().size() == count, I18nConstants.CODESYSTEM_CS_VS_EXP_MISMATCH, url, vsu, count, vs.getExpansion().getContains().size()) && ok;
               }
             } else {
@@ -72,11 +78,7 @@ public class CodeSystemValidator  extends BaseValidator {
         List<Element> concepts = cs.getChildrenByName("concept");
         int ce = 0;
         for (Element concept : concepts) {
-          NodeStack nstack = stack.push(concept, ce, null, null);
-          if (ce == 0) {
-            rule(errors, "2023-08-15", IssueType.INVALID, nstack,  !"not-present".equals(content), I18nConstants.CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED);            
-          }
-          ok = validateSupplementConcept(errors, concept, nstack, supp, options) && ok;
+          ok = validateSupplementConcept(errors, concept, stack.push(concept, ce, null, null), supp, options) && ok;
           ce++;
         }    
       } else {
@@ -126,7 +128,7 @@ public class CodeSystemValidator  extends BaseValidator {
     return true;
   }
   
-  private void metaChecks(List<ValidationMessage> errors, Element cs, NodeStack stack, String url,  String content, String caseSensitive, String hierarchyMeaning, boolean isSupplement, int count, String supp) {
+  private void metaChecks(List<ValidationMessage> errors, Element cs, NodeStack stack, String url,  String content, String caseSensitive, String hierarchyMeaning, boolean isSupplement) {
     if (isSupplement) {
       if (!"supplement".equals(content)) {
         NodeStack s = stack.push(cs.getNamedChild("content"), -1, null, null);
@@ -182,42 +184,6 @@ public class CodeSystemValidator  extends BaseValidator {
           hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_NONHL7_MISSING_ELEMENT, "hierarchyMeaning");          
         } 
       }     
-    }
-
-    if (cs.hasChild("count")) {
-      int statedCount = Utilities.parseInt(cs.getNamedChildValue("count"), -1);
-      if (statedCount > -1 && content != null) { // error elsewhere
-        var nstack = stack.push(cs.getNamedChild("count"), -1, null, null);
-        switch (content) {
-        case "complete": 
-          rule(errors, "2023-08-15", IssueType.INVALID, nstack, count == statedCount, I18nConstants.CODESYSTEM_CS_COUNT_COMPLETE_WRONG, count, statedCount);
-          break;
-        case "example":
-        case "fragment":
-          warning(errors, "2023-08-15", IssueType.INVALID, nstack, count < statedCount, I18nConstants.CODESYSTEM_CS_COUNT_FRAGMENT_WRONG, count, statedCount);
-          break;
-        case "not-present":
-          if (cs.hasChildren("concept")) {
-            hint(errors, "2023-08-15", IssueType.INVALID, stack.push(cs.getNamedChild("concept"), -1, null, null), statedCount > 0, I18nConstants.CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO, statedCount);
-          }
-          break;
-        case "supplement": 
-          CodeSystem css = context.fetchCodeSystem(supp);
-          if (css != null) {
-            rule(errors, "2023-08-15", IssueType.INVALID, nstack, count == css.getCount(), I18nConstants.CODESYSTEM_CS_COUNT_SUPPLEMENT_WRONG, css.getCount(), statedCount);
-          }
-          break;
-        default: 
-          // do nothing
-        }
-      }
-    }
-
-    if ("not-present".equals(content)) {
-      List<Element> concepts = cs.getChildrenByName("concept");
-      if (concepts.size() > 0) {
-        rule(errors, "2023-08-15", IssueType.INVALID, stack.push(concepts.get(0), 0, null, null), false, I18nConstants.CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED);                    
-      }
     }
   }
 

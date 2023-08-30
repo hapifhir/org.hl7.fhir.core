@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,100 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ExDiagnosisOnAdmission {
 
-  /**
-   * Diagnosis was present at time of inpatient admission.
-   */
-  Y,
-  /**
-   * Diagnosis was not present at time of inpatient admission.
-   */
-  N,
-  /**
-   * Documentation insufficient to determine if condition was present at the time
-   * of inpatient admission.
-   */
-  U,
-  /**
-   * Clinically undetermined. Provider unable to clinically determine whether the
-   * condition was present at the time of inpatient admission.
-   */
-  W,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ExDiagnosisOnAdmission fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("y".equals(codeString))
-      return Y;
-    if ("n".equals(codeString))
-      return N;
-    if ("u".equals(codeString))
-      return U;
-    if ("w".equals(codeString))
-      return W;
-    throw new FHIRException("Unknown ExDiagnosisOnAdmission code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case Y:
-      return "y";
-    case N:
-      return "n";
-    case U:
-      return "u";
-    case W:
-      return "w";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Diagnosis was present at time of inpatient admission.
+         */
+        Y, 
+        /**
+         * Diagnosis was not present at time of inpatient admission.
+         */
+        N, 
+        /**
+         * Documentation insufficient to determine if condition was present at the time of inpatient admission.
+         */
+        U, 
+        /**
+         * Clinically undetermined. Provider unable to clinically determine whether the condition was present at the time of inpatient admission.
+         */
+        W, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ExDiagnosisOnAdmission fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("y".equals(codeString))
+          return Y;
+        if ("n".equals(codeString))
+          return N;
+        if ("u".equals(codeString))
+          return U;
+        if ("w".equals(codeString))
+          return W;
+        throw new FHIRException("Unknown ExDiagnosisOnAdmission code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case Y: return "y";
+            case N: return "n";
+            case U: return "u";
+            case W: return "w";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/ex-diagnosis-on-admission";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case Y: return "Diagnosis was present at time of inpatient admission.";
+            case N: return "Diagnosis was not present at time of inpatient admission.";
+            case U: return "Documentation insufficient to determine if condition was present at the time of inpatient admission.";
+            case W: return "Clinically undetermined. Provider unable to clinically determine whether the condition was present at the time of inpatient admission.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case Y: return "Yes";
+            case N: return "No";
+            case U: return "Unknown";
+            case W: return "Undetermined";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/ex-diagnosis-on-admission";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case Y:
-      return "Diagnosis was present at time of inpatient admission.";
-    case N:
-      return "Diagnosis was not present at time of inpatient admission.";
-    case U:
-      return "Documentation insufficient to determine if condition was present at the time of inpatient admission.";
-    case W:
-      return "Clinically undetermined. Provider unable to clinically determine whether the condition was present at the time of inpatient admission.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case Y:
-      return "Yes";
-    case N:
-      return "No";
-    case U:
-      return "Unknown";
-    case W:
-      return "Undetermined";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

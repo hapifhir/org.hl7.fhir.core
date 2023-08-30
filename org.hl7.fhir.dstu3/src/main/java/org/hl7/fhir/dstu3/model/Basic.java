@@ -430,7 +430,7 @@ public class Basic extends DomainResource {
           return this.subject;
         }
         else if (name.equals("created")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Basic.created");
+          throw new FHIRException("Cannot call addChild on a primitive type Basic.created");
         }
         else if (name.equals("author")) {
           this.author = new Reference();

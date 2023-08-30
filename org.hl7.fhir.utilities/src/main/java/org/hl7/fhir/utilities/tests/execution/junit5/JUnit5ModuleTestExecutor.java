@@ -1,7 +1,15 @@
 package org.hl7.fhir.utilities.tests.execution.junit5;
 
-import static org.junit.platform.engine.discovery.ClassNameFilter.includeClassNamePatterns;
-import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage;
+import lombok.Getter;
+import lombok.Setter;
+import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
+import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
+import org.junit.platform.engine.TestExecutionResult;
+import org.junit.platform.launcher.*;
+import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
+import org.junit.platform.launcher.core.LauncherFactory;
+import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
+import org.junit.platform.launcher.listeners.TestExecutionSummary;
 
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -9,21 +17,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
-import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
-import org.junit.platform.engine.TestExecutionResult;
-import org.junit.platform.launcher.Launcher;
-import org.junit.platform.launcher.LauncherDiscoveryRequest;
-import org.junit.platform.launcher.LauncherSession;
-import org.junit.platform.launcher.TestIdentifier;
-import org.junit.platform.launcher.TestPlan;
-import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
-import org.junit.platform.launcher.core.LauncherFactory;
-import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
-import org.junit.platform.launcher.listeners.TestExecutionSummary;
-
-import lombok.Getter;
-import lombok.Setter;
+import static org.junit.platform.engine.discovery.ClassNameFilter.includeClassNamePatterns;
+import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage;
 
 /**
  * This class allows JUnit 5 tests to be run in Java runtime.

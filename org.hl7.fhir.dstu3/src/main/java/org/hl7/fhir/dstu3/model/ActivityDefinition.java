@@ -2319,7 +2319,7 @@ The primary difference between a medication statement and a medication administr
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.type");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.type");
         }
         else if (name.equals("role")) {
           this.role = new CodeableConcept();
@@ -2697,16 +2697,16 @@ The primary difference between a medication statement and a medication administr
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.description");
         }
         else if (name.equals("path")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.path");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.path");
         }
         else if (name.equals("language")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.language");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.language");
         }
         else if (name.equals("expression")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.expression");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.expression");
         }
         else
           return super.addChild(name);
@@ -5032,46 +5032,46 @@ The primary difference between a medication statement and a medication administr
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.url");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.version");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.version");
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.name");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.title");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.title");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.status");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.experimental");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.date");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.publisher");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.publisher");
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.description");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.description");
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.purpose");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.purpose");
         }
         else if (name.equals("usage")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.usage");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.usage");
         }
         else if (name.equals("approvalDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.approvalDate");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.approvalDate");
         }
         else if (name.equals("lastReviewDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.lastReviewDate");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.lastReviewDate");
         }
         else if (name.equals("effectivePeriod")) {
           this.effectivePeriod = new Period();
@@ -5093,7 +5093,7 @@ The primary difference between a medication statement and a medication administr
           return addContact();
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.copyright");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.copyright");
         }
         else if (name.equals("relatedArtifact")) {
           return addRelatedArtifact();
@@ -5102,7 +5102,7 @@ The primary difference between a medication statement and a medication administr
           return addLibrary();
         }
         else if (name.equals("kind")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ActivityDefinition.kind");
+          throw new FHIRException("Cannot call addChild on a primitive type ActivityDefinition.kind");
         }
         else if (name.equals("code")) {
           this.code = new CodeableConcept();

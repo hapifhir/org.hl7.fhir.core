@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class SubscriberRelationshipEnumFactory implements EnumFactory<SubscriberRelationship> {
@@ -52,7 +56,7 @@ public class SubscriberRelationshipEnumFactory implements EnumFactory<Subscriber
       return SubscriberRelationship.SELF;
     if ("injured".equals(codeString))
       return SubscriberRelationship.INJURED;
-    throw new IllegalArgumentException("Unknown SubscriberRelationship code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown SubscriberRelationship code '"+codeString+"'");
   }
 
   public String toCode(SubscriberRelationship code) {
@@ -73,8 +77,8 @@ public class SubscriberRelationshipEnumFactory implements EnumFactory<Subscriber
     return "?";
   }
 
-  public String toSystem(SubscriberRelationship code) {
-    return code.getSystem();
-  }
+    public String toSystem(SubscriberRelationship code) {
+      return code.getSystem();
+      }
 
 }

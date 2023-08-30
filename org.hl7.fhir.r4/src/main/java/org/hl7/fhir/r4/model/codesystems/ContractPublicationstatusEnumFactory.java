@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -68,7 +72,7 @@ public class ContractPublicationstatusEnumFactory implements EnumFactory<Contrac
       return ContractPublicationstatus.RESOLVED;
     if ("terminated".equals(codeString))
       return ContractPublicationstatus.TERMINATED;
-    throw new IllegalArgumentException("Unknown ContractPublicationstatus code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ContractPublicationstatus code '"+codeString+"'");
   }
 
   public String toCode(ContractPublicationstatus code) {
@@ -105,8 +109,8 @@ public class ContractPublicationstatusEnumFactory implements EnumFactory<Contrac
     return "?";
   }
 
-  public String toSystem(ContractPublicationstatus code) {
-    return code.getSystem();
-  }
+    public String toSystem(ContractPublicationstatus code) {
+      return code.getSystem();
+      }
 
 }

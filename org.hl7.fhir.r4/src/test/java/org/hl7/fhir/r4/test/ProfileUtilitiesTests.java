@@ -1,11 +1,5 @@
 package org.hl7.fhir.r4.test;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
@@ -23,10 +17,16 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 @Disabled
 public class ProfileUtilitiesTests {
 
-  // /**
+  //  /**
 //   * This is simple: we just create an empty differential, generate the snapshot, and then insist it must match the base 
 //   * 
 //   * @param context2
@@ -37,15 +37,13 @@ public class ProfileUtilitiesTests {
   public void testSimple() throws FHIRException, FileNotFoundException, IOException, UcumException {
 
     StructureDefinition focus = new StructureDefinition();
-    StructureDefinition base = TestingUtilities.context()
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setBaseDefinition(base.getUrl());
     focus.setType("Patient");
     focus.setDerivation(TypeDerivationRule.CONSTRAINT);
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(),
-        "http://hl7.org/fhir/R4", "Simple Test");
+    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://hl7.org/fhir/R4", "Simple Test");
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
@@ -71,6 +69,7 @@ public class ProfileUtilitiesTests {
       System.out.println("Snap shot generation simple test passed");
   }
 
+
   //
 //  /**
 //   * This is simple: we just create an empty differential, generate the snapshot, and then insist it must match the base. for a different resource with recursion 
@@ -81,15 +80,13 @@ public class ProfileUtilitiesTests {
 //   */
   @Test
   public void testSimple2() throws EOperationOutcome, Exception {
-    StructureDefinition base = TestingUtilities.context()
-        .fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet").copy();
+    StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet").copy();
     StructureDefinition focus = base.copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setSnapshot(null);
     focus.setDifferential(null);
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(),
-        "http://hl7.org/fhir/R4", "Simple Test");
+    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://hl7.org/fhir/R4", "Simple Test");
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
@@ -789,8 +786,7 @@ public class ProfileUtilitiesTests {
 //  }
 //
 
-  private void compareXml(StructureDefinition base, StructureDefinition focus)
-      throws FileNotFoundException, IOException {
+  private void compareXml(StructureDefinition base, StructureDefinition focus) throws FileNotFoundException, IOException {
     base.setText(null);
     focus.setText(null);
     base.setDifferential(null);
@@ -809,5 +805,6 @@ public class ProfileUtilitiesTests {
     builder.directory(new CSFile(Utilities.path("[tmp]")));
     builder.start();
   }
+
 
 }

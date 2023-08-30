@@ -225,7 +225,7 @@ public class SubstanceSourceMaterial extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("fraction")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SubstanceSourceMaterial.fractionDescription.fraction");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstanceSourceMaterial.fractionDescription.fraction");
         }
         else if (name.equals("materialType")) {
           this.materialType = new CodeableConcept();
@@ -742,7 +742,7 @@ public class SubstanceSourceMaterial extends DomainResource {
           return this.intraspecificType;
         }
         else if (name.equals("intraspecificDescription")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SubstanceSourceMaterial.organism.intraspecificDescription");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstanceSourceMaterial.organism.intraspecificDescription");
         }
         else if (name.equals("author")) {
           return addAuthor();
@@ -992,7 +992,7 @@ public class SubstanceSourceMaterial extends DomainResource {
           return this.authorType;
         }
         else if (name.equals("authorDescription")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SubstanceSourceMaterial.organism.author.authorDescription");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstanceSourceMaterial.organism.author.authorDescription");
         }
         else
           return super.addChild(name);
@@ -1413,16 +1413,16 @@ public class SubstanceSourceMaterial extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("maternalOrganismId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SubstanceSourceMaterial.organism.hybrid.maternalOrganismId");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstanceSourceMaterial.organism.hybrid.maternalOrganismId");
         }
         else if (name.equals("maternalOrganismName")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SubstanceSourceMaterial.organism.hybrid.maternalOrganismName");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstanceSourceMaterial.organism.hybrid.maternalOrganismName");
         }
         else if (name.equals("paternalOrganismId")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SubstanceSourceMaterial.organism.hybrid.paternalOrganismId");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstanceSourceMaterial.organism.hybrid.paternalOrganismId");
         }
         else if (name.equals("paternalOrganismName")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SubstanceSourceMaterial.organism.hybrid.paternalOrganismName");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstanceSourceMaterial.organism.hybrid.paternalOrganismName");
         }
         else if (name.equals("hybridType")) {
           this.hybridType = new CodeableConcept();
@@ -2806,19 +2806,19 @@ public class SubstanceSourceMaterial extends DomainResource {
           return this.organismId;
         }
         else if (name.equals("organismName")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SubstanceSourceMaterial.organismName");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstanceSourceMaterial.organismName");
         }
         else if (name.equals("parentSubstanceId")) {
           return addParentSubstanceId();
         }
         else if (name.equals("parentSubstanceName")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SubstanceSourceMaterial.parentSubstanceName");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstanceSourceMaterial.parentSubstanceName");
         }
         else if (name.equals("countryOfOrigin")) {
           return addCountryOfOrigin();
         }
         else if (name.equals("geographicalLocation")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SubstanceSourceMaterial.geographicalLocation");
+          throw new FHIRException("Cannot call addChild on a primitive type SubstanceSourceMaterial.geographicalLocation");
         }
         else if (name.equals("developmentStage")) {
           this.developmentStage = new CodeableConcept();

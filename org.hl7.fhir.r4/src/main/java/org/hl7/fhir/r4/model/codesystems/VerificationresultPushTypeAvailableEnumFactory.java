@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,10 +34,10 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
-public class VerificationresultPushTypeAvailableEnumFactory
-    implements EnumFactory<VerificationresultPushTypeAvailable> {
+public class VerificationresultPushTypeAvailableEnumFactory implements EnumFactory<VerificationresultPushTypeAvailable> {
 
   public VerificationresultPushTypeAvailable fromCode(String codeString) throws IllegalArgumentException {
     if (codeString == null || "".equals(codeString))
@@ -45,7 +48,7 @@ public class VerificationresultPushTypeAvailableEnumFactory
       return VerificationresultPushTypeAvailable.ANY;
     if ("source".equals(codeString))
       return VerificationresultPushTypeAvailable.SOURCE;
-    throw new IllegalArgumentException("Unknown VerificationresultPushTypeAvailable code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown VerificationresultPushTypeAvailable code '"+codeString+"'");
   }
 
   public String toCode(VerificationresultPushTypeAvailable code) {
@@ -58,8 +61,8 @@ public class VerificationresultPushTypeAvailableEnumFactory
     return "?";
   }
 
-  public String toSystem(VerificationresultPushTypeAvailable code) {
-    return code.getSystem();
-  }
+    public String toSystem(VerificationresultPushTypeAvailable code) {
+      return code.getSystem();
+      }
 
 }

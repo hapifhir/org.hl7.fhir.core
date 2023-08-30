@@ -342,7 +342,7 @@ public class Linkage extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Linkage.type");
+          throw new FHIRException("Cannot call addChild on a primitive type Linkage.type");
         }
         else if (name.equals("resource")) {
           this.resource = new Reference();
@@ -647,7 +647,7 @@ public class Linkage extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("active")) {
-          throw new FHIRException("Cannot call addChild on a singleton property Linkage.active");
+          throw new FHIRException("Cannot call addChild on a primitive type Linkage.active");
         }
         else if (name.equals("author")) {
           this.author = new Reference();

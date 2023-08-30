@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,222 +34,167 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ClaimInformationcategory {
 
-  /**
-   * Codes conveying additional situation and condition information.
-   */
-  INFO,
-  /**
-   * Discharge status and discharge to locations.
-   */
-  DISCHARGE,
-  /**
-   * Period, start or end dates of aspects of the Condition.
-   */
-  ONSET,
-  /**
-   * Nature and date of the related event e.g. Last exam, service, X-ray etc.
-   */
-  RELATED,
-  /**
-   * Insurance policy exceptions.
-   */
-  EXCEPTION,
-  /**
-   * Materials being forwarded, e.g. Models, molds, images, documents.
-   */
-  MATERIAL,
-  /**
-   * Materials attached such as images, documents and resources.
-   */
-  ATTACHMENT,
-  /**
-   * Teeth which are missing for any reason, for example: prior extraction, never
-   * developed.
-   */
-  MISSINGTOOTH,
-  /**
-   * The type of prosthesis and date of supply if a previously supplied
-   * prosthesis.
-   */
-  PROSTHESIS,
-  /**
-   * Other information identified by the type.system.
-   */
-  OTHER,
-  /**
-   * An indication that the patient was hospitalized, the period if known
-   * otherwise a Yes/No (boolean).
-   */
-  HOSPITALIZED,
-  /**
-   * An indication that the patient was unable to work, the period if known
-   * otherwise a Yes/No (boolean).
-   */
-  EMPLOYMENTIMPACTED,
-  /**
-   * The external cause of an illness or injury.
-   */
-  EXTERNALCAUSE,
-  /**
-   * The reason for the patient visit.
-   */
-  PATIENTREASONFORVISIT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ClaimInformationcategory fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("info".equals(codeString))
-      return INFO;
-    if ("discharge".equals(codeString))
-      return DISCHARGE;
-    if ("onset".equals(codeString))
-      return ONSET;
-    if ("related".equals(codeString))
-      return RELATED;
-    if ("exception".equals(codeString))
-      return EXCEPTION;
-    if ("material".equals(codeString))
-      return MATERIAL;
-    if ("attachment".equals(codeString))
-      return ATTACHMENT;
-    if ("missingtooth".equals(codeString))
-      return MISSINGTOOTH;
-    if ("prosthesis".equals(codeString))
-      return PROSTHESIS;
-    if ("other".equals(codeString))
-      return OTHER;
-    if ("hospitalized".equals(codeString))
-      return HOSPITALIZED;
-    if ("employmentimpacted".equals(codeString))
-      return EMPLOYMENTIMPACTED;
-    if ("externalcause".equals(codeString))
-      return EXTERNALCAUSE;
-    if ("patientreasonforvisit".equals(codeString))
-      return PATIENTREASONFORVISIT;
-    throw new FHIRException("Unknown ClaimInformationcategory code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INFO:
-      return "info";
-    case DISCHARGE:
-      return "discharge";
-    case ONSET:
-      return "onset";
-    case RELATED:
-      return "related";
-    case EXCEPTION:
-      return "exception";
-    case MATERIAL:
-      return "material";
-    case ATTACHMENT:
-      return "attachment";
-    case MISSINGTOOTH:
-      return "missingtooth";
-    case PROSTHESIS:
-      return "prosthesis";
-    case OTHER:
-      return "other";
-    case HOSPITALIZED:
-      return "hospitalized";
-    case EMPLOYMENTIMPACTED:
-      return "employmentimpacted";
-    case EXTERNALCAUSE:
-      return "externalcause";
-    case PATIENTREASONFORVISIT:
-      return "patientreasonforvisit";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Codes conveying additional situation and condition information.
+         */
+        INFO, 
+        /**
+         * Discharge status and discharge to locations.
+         */
+        DISCHARGE, 
+        /**
+         * Period, start or end dates of aspects of the Condition.
+         */
+        ONSET, 
+        /**
+         * Nature and date of the related event e.g. Last exam, service, X-ray etc.
+         */
+        RELATED, 
+        /**
+         * Insurance policy exceptions.
+         */
+        EXCEPTION, 
+        /**
+         * Materials being forwarded, e.g. Models, molds, images, documents.
+         */
+        MATERIAL, 
+        /**
+         * Materials attached such as images, documents and resources.
+         */
+        ATTACHMENT, 
+        /**
+         * Teeth which are missing for any reason, for example: prior extraction, never developed.
+         */
+        MISSINGTOOTH, 
+        /**
+         * The type of prosthesis and date of supply if a previously supplied prosthesis.
+         */
+        PROSTHESIS, 
+        /**
+         * Other information identified by the type.system.
+         */
+        OTHER, 
+        /**
+         * An indication that the patient was hospitalized, the period if known otherwise a Yes/No (boolean).
+         */
+        HOSPITALIZED, 
+        /**
+         * An indication that the patient was unable to work, the period if known otherwise a Yes/No (boolean).
+         */
+        EMPLOYMENTIMPACTED, 
+        /**
+         * The external cause of an illness or injury.
+         */
+        EXTERNALCAUSE, 
+        /**
+         * The reason for the patient visit.
+         */
+        PATIENTREASONFORVISIT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ClaimInformationcategory fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("info".equals(codeString))
+          return INFO;
+        if ("discharge".equals(codeString))
+          return DISCHARGE;
+        if ("onset".equals(codeString))
+          return ONSET;
+        if ("related".equals(codeString))
+          return RELATED;
+        if ("exception".equals(codeString))
+          return EXCEPTION;
+        if ("material".equals(codeString))
+          return MATERIAL;
+        if ("attachment".equals(codeString))
+          return ATTACHMENT;
+        if ("missingtooth".equals(codeString))
+          return MISSINGTOOTH;
+        if ("prosthesis".equals(codeString))
+          return PROSTHESIS;
+        if ("other".equals(codeString))
+          return OTHER;
+        if ("hospitalized".equals(codeString))
+          return HOSPITALIZED;
+        if ("employmentimpacted".equals(codeString))
+          return EMPLOYMENTIMPACTED;
+        if ("externalcause".equals(codeString))
+          return EXTERNALCAUSE;
+        if ("patientreasonforvisit".equals(codeString))
+          return PATIENTREASONFORVISIT;
+        throw new FHIRException("Unknown ClaimInformationcategory code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INFO: return "info";
+            case DISCHARGE: return "discharge";
+            case ONSET: return "onset";
+            case RELATED: return "related";
+            case EXCEPTION: return "exception";
+            case MATERIAL: return "material";
+            case ATTACHMENT: return "attachment";
+            case MISSINGTOOTH: return "missingtooth";
+            case PROSTHESIS: return "prosthesis";
+            case OTHER: return "other";
+            case HOSPITALIZED: return "hospitalized";
+            case EMPLOYMENTIMPACTED: return "employmentimpacted";
+            case EXTERNALCAUSE: return "externalcause";
+            case PATIENTREASONFORVISIT: return "patientreasonforvisit";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/claiminformationcategory";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INFO: return "Codes conveying additional situation and condition information.";
+            case DISCHARGE: return "Discharge status and discharge to locations.";
+            case ONSET: return "Period, start or end dates of aspects of the Condition.";
+            case RELATED: return "Nature and date of the related event e.g. Last exam, service, X-ray etc.";
+            case EXCEPTION: return "Insurance policy exceptions.";
+            case MATERIAL: return "Materials being forwarded, e.g. Models, molds, images, documents.";
+            case ATTACHMENT: return "Materials attached such as images, documents and resources.";
+            case MISSINGTOOTH: return "Teeth which are missing for any reason, for example: prior extraction, never developed.";
+            case PROSTHESIS: return "The type of prosthesis and date of supply if a previously supplied prosthesis.";
+            case OTHER: return "Other information identified by the type.system.";
+            case HOSPITALIZED: return "An indication that the patient was hospitalized, the period if known otherwise a Yes/No (boolean).";
+            case EMPLOYMENTIMPACTED: return "An indication that the patient was unable to work, the period if known otherwise a Yes/No (boolean).";
+            case EXTERNALCAUSE: return "The external cause of an illness or injury.";
+            case PATIENTREASONFORVISIT: return "The reason for the patient visit.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INFO: return "Information";
+            case DISCHARGE: return "Discharge";
+            case ONSET: return "Onset";
+            case RELATED: return "Related Services";
+            case EXCEPTION: return "Exception";
+            case MATERIAL: return "Materials Forwarded";
+            case ATTACHMENT: return "Attachment";
+            case MISSINGTOOTH: return "Missing Tooth";
+            case PROSTHESIS: return "Prosthesis";
+            case OTHER: return "Other";
+            case HOSPITALIZED: return "Hospitalized";
+            case EMPLOYMENTIMPACTED: return "EmploymentImpacted";
+            case EXTERNALCAUSE: return "External Caause";
+            case PATIENTREASONFORVISIT: return "Patient Reason for Visit";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/claiminformationcategory";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INFO:
-      return "Codes conveying additional situation and condition information.";
-    case DISCHARGE:
-      return "Discharge status and discharge to locations.";
-    case ONSET:
-      return "Period, start or end dates of aspects of the Condition.";
-    case RELATED:
-      return "Nature and date of the related event e.g. Last exam, service, X-ray etc.";
-    case EXCEPTION:
-      return "Insurance policy exceptions.";
-    case MATERIAL:
-      return "Materials being forwarded, e.g. Models, molds, images, documents.";
-    case ATTACHMENT:
-      return "Materials attached such as images, documents and resources.";
-    case MISSINGTOOTH:
-      return "Teeth which are missing for any reason, for example: prior extraction, never developed.";
-    case PROSTHESIS:
-      return "The type of prosthesis and date of supply if a previously supplied prosthesis.";
-    case OTHER:
-      return "Other information identified by the type.system.";
-    case HOSPITALIZED:
-      return "An indication that the patient was hospitalized, the period if known otherwise a Yes/No (boolean).";
-    case EMPLOYMENTIMPACTED:
-      return "An indication that the patient was unable to work, the period if known otherwise a Yes/No (boolean).";
-    case EXTERNALCAUSE:
-      return "The external cause of an illness or injury.";
-    case PATIENTREASONFORVISIT:
-      return "The reason for the patient visit.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INFO:
-      return "Information";
-    case DISCHARGE:
-      return "Discharge";
-    case ONSET:
-      return "Onset";
-    case RELATED:
-      return "Related Services";
-    case EXCEPTION:
-      return "Exception";
-    case MATERIAL:
-      return "Materials Forwarded";
-    case ATTACHMENT:
-      return "Attachment";
-    case MISSINGTOOTH:
-      return "Missing Tooth";
-    case PROSTHESIS:
-      return "Prosthesis";
-    case OTHER:
-      return "Other";
-    case HOSPITALIZED:
-      return "Hospitalized";
-    case EMPLOYMENTIMPACTED:
-      return "EmploymentImpacted";
-    case EXTERNALCAUSE:
-      return "External Caause";
-    case PATIENTREASONFORVISIT:
-      return "Patient Reason for Visit";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

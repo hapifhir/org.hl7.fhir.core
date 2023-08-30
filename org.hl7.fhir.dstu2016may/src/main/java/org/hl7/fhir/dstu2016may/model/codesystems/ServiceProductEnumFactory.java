@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ServiceProductEnumFactory implements EnumFactory<ServiceProduct> {
@@ -42,7 +46,7 @@ public class ServiceProductEnumFactory implements EnumFactory<ServiceProduct> {
       return ServiceProduct.EXAM;
     if ("flushot".equals(codeString))
       return ServiceProduct.FLUSHOT;
-    throw new IllegalArgumentException("Unknown ServiceProduct code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ServiceProduct code '"+codeString+"'");
   }
 
   public String toCode(ServiceProduct code) {
@@ -53,8 +57,8 @@ public class ServiceProductEnumFactory implements EnumFactory<ServiceProduct> {
     return "?";
   }
 
-  public String toSystem(ServiceProduct code) {
-    return code.getSystem();
-  }
+    public String toSystem(ServiceProduct code) {
+      return code.getSystem();
+      }
 
 }

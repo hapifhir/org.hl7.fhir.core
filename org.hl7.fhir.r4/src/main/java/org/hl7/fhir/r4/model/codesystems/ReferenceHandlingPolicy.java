@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,116 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ReferenceHandlingPolicy {
 
-  /**
-   * The server supports and populates Literal references (i.e. using
-   * Reference.reference) where they are known (this code does not guarantee that
-   * all references are literal; see 'enforced').
-   */
-  LITERAL,
-  /**
-   * The server allows logical references (i.e. using Reference.identifier).
-   */
-  LOGICAL,
-  /**
-   * The server will attempt to resolve logical references to literal references -
-   * i.e. converting Reference.identifier to Reference.reference (if resolution
-   * fails, the server may still accept resources; see logical).
-   */
-  RESOLVES,
-  /**
-   * The server enforces that references have integrity - e.g. it ensures that
-   * references can always be resolved. This is typically the case for clinical
-   * record systems, but often not the case for middleware/proxy systems.
-   */
-  ENFORCED,
-  /**
-   * The server does not support references that point to other servers.
-   */
-  LOCAL,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ReferenceHandlingPolicy fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("literal".equals(codeString))
-      return LITERAL;
-    if ("logical".equals(codeString))
-      return LOGICAL;
-    if ("resolves".equals(codeString))
-      return RESOLVES;
-    if ("enforced".equals(codeString))
-      return ENFORCED;
-    if ("local".equals(codeString))
-      return LOCAL;
-    throw new FHIRException("Unknown ReferenceHandlingPolicy code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case LITERAL:
-      return "literal";
-    case LOGICAL:
-      return "logical";
-    case RESOLVES:
-      return "resolves";
-    case ENFORCED:
-      return "enforced";
-    case LOCAL:
-      return "local";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The server supports and populates Literal references (i.e. using Reference.reference) where they are known (this code does not guarantee that all references are literal; see 'enforced').
+         */
+        LITERAL, 
+        /**
+         * The server allows logical references (i.e. using Reference.identifier).
+         */
+        LOGICAL, 
+        /**
+         * The server will attempt to resolve logical references to literal references - i.e. converting Reference.identifier to Reference.reference (if resolution fails, the server may still accept resources; see logical).
+         */
+        RESOLVES, 
+        /**
+         * The server enforces that references have integrity - e.g. it ensures that references can always be resolved. This is typically the case for clinical record systems, but often not the case for middleware/proxy systems.
+         */
+        ENFORCED, 
+        /**
+         * The server does not support references that point to other servers.
+         */
+        LOCAL, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ReferenceHandlingPolicy fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("literal".equals(codeString))
+          return LITERAL;
+        if ("logical".equals(codeString))
+          return LOGICAL;
+        if ("resolves".equals(codeString))
+          return RESOLVES;
+        if ("enforced".equals(codeString))
+          return ENFORCED;
+        if ("local".equals(codeString))
+          return LOCAL;
+        throw new FHIRException("Unknown ReferenceHandlingPolicy code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case LITERAL: return "literal";
+            case LOGICAL: return "logical";
+            case RESOLVES: return "resolves";
+            case ENFORCED: return "enforced";
+            case LOCAL: return "local";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/reference-handling-policy";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case LITERAL: return "The server supports and populates Literal references (i.e. using Reference.reference) where they are known (this code does not guarantee that all references are literal; see 'enforced').";
+            case LOGICAL: return "The server allows logical references (i.e. using Reference.identifier).";
+            case RESOLVES: return "The server will attempt to resolve logical references to literal references - i.e. converting Reference.identifier to Reference.reference (if resolution fails, the server may still accept resources; see logical).";
+            case ENFORCED: return "The server enforces that references have integrity - e.g. it ensures that references can always be resolved. This is typically the case for clinical record systems, but often not the case for middleware/proxy systems.";
+            case LOCAL: return "The server does not support references that point to other servers.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case LITERAL: return "Literal References";
+            case LOGICAL: return "Logical References";
+            case RESOLVES: return "Resolves References";
+            case ENFORCED: return "Reference Integrity Enforced";
+            case LOCAL: return "Local References Only";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/reference-handling-policy";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case LITERAL:
-      return "The server supports and populates Literal references (i.e. using Reference.reference) where they are known (this code does not guarantee that all references are literal; see 'enforced').";
-    case LOGICAL:
-      return "The server allows logical references (i.e. using Reference.identifier).";
-    case RESOLVES:
-      return "The server will attempt to resolve logical references to literal references - i.e. converting Reference.identifier to Reference.reference (if resolution fails, the server may still accept resources; see logical).";
-    case ENFORCED:
-      return "The server enforces that references have integrity - e.g. it ensures that references can always be resolved. This is typically the case for clinical record systems, but often not the case for middleware/proxy systems.";
-    case LOCAL:
-      return "The server does not support references that point to other servers.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case LITERAL:
-      return "Literal References";
-    case LOGICAL:
-      return "Logical References";
-    case RESOLVES:
-      return "Resolves References";
-    case ENFORCED:
-      return "Reference Integrity Enforced";
-    case LOCAL:
-      return "Local References Only";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

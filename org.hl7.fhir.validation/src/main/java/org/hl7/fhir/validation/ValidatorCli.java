@@ -74,25 +74,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
-import org.hl7.fhir.validation.cli.tasks.CliTask;
-import org.hl7.fhir.validation.cli.tasks.CompareTask;
-import org.hl7.fhir.validation.cli.tasks.CompileTask;
-import org.hl7.fhir.validation.cli.tasks.ConvertTask;
-import org.hl7.fhir.validation.cli.tasks.FhirpathTask;
-import org.hl7.fhir.validation.cli.tasks.InstallTask;
-import org.hl7.fhir.validation.cli.tasks.LangTransformTask;
-import org.hl7.fhir.validation.cli.tasks.NarrativeTask;
-import org.hl7.fhir.validation.cli.tasks.ScanTask;
-import org.hl7.fhir.validation.cli.tasks.SnapshotTask;
-import org.hl7.fhir.validation.cli.tasks.SpecialTask;
-import org.hl7.fhir.validation.cli.tasks.SpreadsheetTask;
-import org.hl7.fhir.validation.cli.tasks.StandaloneTask;
-import org.hl7.fhir.validation.cli.tasks.TestsTask;
-import org.hl7.fhir.validation.cli.tasks.TransformTask;
-import org.hl7.fhir.validation.cli.tasks.TxTestsTask;
-import org.hl7.fhir.validation.cli.tasks.ValidateTask;
-import org.hl7.fhir.validation.cli.tasks.ValidationEngineTask;
-import org.hl7.fhir.validation.cli.tasks.VersionTask;
+import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.cli.utils.Display;
 import org.hl7.fhir.validation.cli.utils.Params;
 
@@ -159,6 +141,7 @@ public class ValidatorCli {
     TimeTracker tt = new TimeTracker();
     TimeTracker.Session tts = tt.start("Loading");
 
+    args = addAdditionalParamsForIpsParam(args);
     setJavaSystemProxyParamsFromParams(args);
 
     Display.displayVersion(System.out);
@@ -217,8 +200,6 @@ public class ValidatorCli {
 
   public static void main(String[] args) throws Exception {
     final ValidatorCli validatorCli = new ValidatorCli(validationService);
-
-    args = addAdditionalParamsForIpsParam(args);
     final CliContext cliContext = Params.loadCliContext(args);
     validatorCli.readParamsAndExecuteTask(cliContext, args);
   }
@@ -273,28 +254,19 @@ public class ValidatorCli {
   }
 
   private static String[] addAdditionalParamsForIpsParam(String[] args) {
+    // ips$branch --> -version 4.0 -ig hl7.fhir.uv.ips#current$connectathon-2 -profile http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips
     List<String> res = new ArrayList<>();
     for (String a : args) {
       if (a.equals("-ips")) {
         res.add("-version");
         res.add("4.0");
-        res.add("-check-ips-codes");
         res.add("-ig");
-        res.add("hl7.fhir.uv.ips#1.1.0");
-        res.add("-profile");
-        res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
-      } else if (a.equals("-ips#")) {
-        res.add("-version");
-        res.add("4.0");
-        res.add("-check-ips-codes");
-        res.add("-ig");
-        res.add("hl7.fhir.uv.ips#"+a.substring(5));
+        res.add("hl7.fhir.uv.ips#current");
         res.add("-profile");
         res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
       } else if (a.startsWith("-ips$")) {
         res.add("-version");
         res.add("4.0");
-        res.add("-check-ips-codes");
         res.add("-ig");
         res.add("hl7.fhir.uv.ips#current$"+a.substring(5));
         res.add("-profile");

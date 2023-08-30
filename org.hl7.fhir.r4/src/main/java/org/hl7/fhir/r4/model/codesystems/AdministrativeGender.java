@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AdministrativeGender {
 
-  /**
-   * Male.
-   */
-  MALE,
-  /**
-   * Female.
-   */
-  FEMALE,
-  /**
-   * Other.
-   */
-  OTHER,
-  /**
-   * Unknown.
-   */
-  UNKNOWN,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static AdministrativeGender fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("male".equals(codeString))
-      return MALE;
-    if ("female".equals(codeString))
-      return FEMALE;
-    if ("other".equals(codeString))
-      return OTHER;
-    if ("unknown".equals(codeString))
-      return UNKNOWN;
-    throw new FHIRException("Unknown AdministrativeGender code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case MALE:
-      return "male";
-    case FEMALE:
-      return "female";
-    case OTHER:
-      return "other";
-    case UNKNOWN:
-      return "unknown";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Male.
+         */
+        MALE, 
+        /**
+         * Female.
+         */
+        FEMALE, 
+        /**
+         * Other.
+         */
+        OTHER, 
+        /**
+         * Unknown.
+         */
+        UNKNOWN, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static AdministrativeGender fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("male".equals(codeString))
+          return MALE;
+        if ("female".equals(codeString))
+          return FEMALE;
+        if ("other".equals(codeString))
+          return OTHER;
+        if ("unknown".equals(codeString))
+          return UNKNOWN;
+        throw new FHIRException("Unknown AdministrativeGender code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case MALE: return "male";
+            case FEMALE: return "female";
+            case OTHER: return "other";
+            case UNKNOWN: return "unknown";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/administrative-gender";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case MALE: return "Male.";
+            case FEMALE: return "Female.";
+            case OTHER: return "Other.";
+            case UNKNOWN: return "Unknown.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case MALE: return "Male";
+            case FEMALE: return "Female";
+            case OTHER: return "Other";
+            case UNKNOWN: return "Unknown";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/administrative-gender";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case MALE:
-      return "Male.";
-    case FEMALE:
-      return "Female.";
-    case OTHER:
-      return "Other.";
-    case UNKNOWN:
-      return "Unknown.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case MALE:
-      return "Male";
-    case FEMALE:
-      return "Female";
-    case OTHER:
-      return "Other";
-    case UNKNOWN:
-      return "Unknown";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

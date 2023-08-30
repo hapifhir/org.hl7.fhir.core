@@ -4,10 +4,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -25,7 +22,6 @@ import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
-import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -96,7 +92,7 @@ public class StructureMappingTests {
   @MethodSource("data")
   public void test(String name, String source, String map, String output) throws Exception {
 
-    ByteProvider byteSource = ByteProvider.forBytes(TestingUtilities.loadTestResourceBytes("r5", "structure-mapping", source));
+    byte[] byteSource = TestingUtilities.loadTestResourceBytes("r5", "structure-mapping", source);
 
     String outputJson = TestingUtilities.loadTestResource("r5", "structure-mapping", output);
     String fileOutputRes = TestingUtilities.tempFile("structure-mapping", output) + ".out";
@@ -120,7 +116,7 @@ public class StructureMappingTests {
       fail(e.getMessage());
     }
     if (output.endsWith("json")) {
-      msg = CompareUtilities.checkJsonSrcIsSame(s.toString(), outputJson, null);
+      msg = CompareUtilities.checkJsonSrcIsSame(s.toString(), outputJson);
     } else {
       TextFile.bytesToFile(s.toByteArray(), fileOutputRes);
       TextFile.bytesToFile(outputJson.getBytes(), fileOutputResOrig);
@@ -145,7 +141,7 @@ public class StructureMappingTests {
 	try {
 	  r = new StructureMapUtilities(context).parse(map, "cda2qr");
 	  context.cacheResource(r);	      
-	  ByteProvider byteSource = ByteProvider.forBytes("{}".getBytes());
+	  byte[] byteSource = "{}".getBytes();
 	  org.hl7.fhir.r5.elementmodel.Element element = validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl());
 	  Assertions.assertNotNull(element);
 	} finally {
@@ -165,7 +161,7 @@ public class StructureMappingTests {
     StructureDefinition structureDefinition = new StructureDefinition().setUrl("testGetSourceResourceFromStructureMapDefinitionExceptionTarget");
     structureDefinition.getSnapshot().addElement().setPath("testGetSourceResourceFromStructureMapDefinitionExceptionTarget");
     context.cacheResource(structureDefinition);
-    ByteProvider byteSource = ByteProvider.forBytes("testGetSourceResourceFromStructureMapDefinitionException".getBytes());
+    byte[] byteSource = "testGetSourceResourceFromStructureMapDefinitionException".getBytes();
     DefinitionException thrown = assertThrows(
     		DefinitionException.class,
     		() -> validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl()),

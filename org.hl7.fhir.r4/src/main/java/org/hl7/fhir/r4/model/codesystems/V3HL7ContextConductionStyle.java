@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,99 +34,74 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3HL7ContextConductionStyle {
 
-  /**
-   * Definition: Context conduction is defined using the contextConductionCode and
-   * contextConductionInd attributes on ActRelationship and Participation.
-   * 
-   * 
-   * UsageNotes: This approach is deprecated as of March, 2010.
-   */
-  C,
-  /**
-   * Definition: Context conduction is not explicitly defined. The recipient of an
-   * instance must infer conduction based on the semantics of the model and what
-   * is deemed "reasonable".
-   * 
-   * 
-   * UsageNotes: Because this approach can lead to variation in instance
-   * interpretation, its use is discouraged.
-   */
-  I,
-  /**
-   * Definition: Context conduction is defined using the
-   * ActRelationship.blockedContextActRelationshipType and
-   * blockedContextParticipationType attributes and the "conductible" property on
-   * the ActRelationshipType and ParticipationType code systems.
-   */
-  V,
-  /**
-   * added to help the parsers
-   */
-  NULL;
+        /**
+         * Definition: Context conduction is defined using the contextConductionCode and contextConductionInd attributes on ActRelationship and Participation.
 
-  public static V3HL7ContextConductionStyle fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("C".equals(codeString))
-      return C;
-    if ("I".equals(codeString))
-      return I;
-    if ("V".equals(codeString))
-      return V;
-    throw new FHIRException("Unknown V3HL7ContextConductionStyle code '" + codeString + "'");
-  }
+                        
+                           UsageNotes: This approach is deprecated as of March, 2010.
+         */
+        C, 
+        /**
+         * Definition: Context conduction is not explicitly defined.  The recipient of an instance must infer conduction based on the semantics of the model and what is deemed "reasonable".
 
-  public String toCode() {
-    switch (this) {
-    case C:
-      return "C";
-    case I:
-      return "I";
-    case V:
-      return "V";
-    case NULL:
-      return null;
-    default:
-      return "?";
+                        
+                           UsageNotes: Because this approach can lead to variation in instance interpretation, its use is discouraged.
+         */
+        I, 
+        /**
+         * Definition: Context conduction is defined using the ActRelationship.blockedContextActRelationshipType and blockedContextParticipationType attributes and the "conductible" property on the ActRelationshipType and ParticipationType code systems.
+         */
+        V, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static V3HL7ContextConductionStyle fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("C".equals(codeString))
+          return C;
+        if ("I".equals(codeString))
+          return I;
+        if ("V".equals(codeString))
+          return V;
+        throw new FHIRException("Unknown V3HL7ContextConductionStyle code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case C: return "C";
+            case I: return "I";
+            case V: return "V";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/v3-HL7ContextConductionStyle";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case C: return "Definition: Context conduction is defined using the contextConductionCode and contextConductionInd attributes on ActRelationship and Participation.\r\n\n                        \n                           UsageNotes: This approach is deprecated as of March, 2010.";
+            case I: return "Definition: Context conduction is not explicitly defined.  The recipient of an instance must infer conduction based on the semantics of the model and what is deemed \"reasonable\".\r\n\n                        \n                           UsageNotes: Because this approach can lead to variation in instance interpretation, its use is discouraged.";
+            case V: return "Definition: Context conduction is defined using the ActRelationship.blockedContextActRelationshipType and blockedContextParticipationType attributes and the \"conductible\" property on the ActRelationshipType and ParticipationType code systems.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case C: return "conduction-indicator-based";
+            case I: return "inferred";
+            case V: return "vocabulary-based";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/v3-HL7ContextConductionStyle";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case C:
-      return "Definition: Context conduction is defined using the contextConductionCode and contextConductionInd attributes on ActRelationship and Participation.\r\n\n                        \n                           UsageNotes: This approach is deprecated as of March, 2010.";
-    case I:
-      return "Definition: Context conduction is not explicitly defined.  The recipient of an instance must infer conduction based on the semantics of the model and what is deemed \"reasonable\".\r\n\n                        \n                           UsageNotes: Because this approach can lead to variation in instance interpretation, its use is discouraged.";
-    case V:
-      return "Definition: Context conduction is defined using the ActRelationship.blockedContextActRelationshipType and blockedContextParticipationType attributes and the \"conductible\" property on the ActRelationshipType and ParticipationType code systems.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case C:
-      return "conduction-indicator-based";
-    case I:
-      return "inferred";
-    case V:
-      return "vocabulary-based";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

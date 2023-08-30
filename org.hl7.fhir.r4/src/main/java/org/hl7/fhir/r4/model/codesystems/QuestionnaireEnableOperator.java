@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,141 +34,104 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum QuestionnaireEnableOperator {
 
-  /**
-   * True if whether an answer exists is equal to the enableWhen answer (which
-   * must be a boolean).
-   */
-  EXISTS,
-  /**
-   * True if whether at least one answer has a value that is equal to the
-   * enableWhen answer.
-   */
-  EQUAL,
-  /**
-   * True if whether at least no answer has a value that is equal to the
-   * enableWhen answer.
-   */
-  NOT_EQUAL,
-  /**
-   * True if whether at least no answer has a value that is greater than the
-   * enableWhen answer.
-   */
-  GREATER_THAN,
-  /**
-   * True if whether at least no answer has a value that is less than the
-   * enableWhen answer.
-   */
-  LESS_THAN,
-  /**
-   * True if whether at least no answer has a value that is greater or equal to
-   * the enableWhen answer.
-   */
-  GREATER_OR_EQUAL,
-  /**
-   * True if whether at least no answer has a value that is less or equal to the
-   * enableWhen answer.
-   */
-  LESS_OR_EQUAL,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static QuestionnaireEnableOperator fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("exists".equals(codeString))
-      return EXISTS;
-    if ("=".equals(codeString))
-      return EQUAL;
-    if ("!=".equals(codeString))
-      return NOT_EQUAL;
-    if (">".equals(codeString))
-      return GREATER_THAN;
-    if ("<".equals(codeString))
-      return LESS_THAN;
-    if (">=".equals(codeString))
-      return GREATER_OR_EQUAL;
-    if ("<=".equals(codeString))
-      return LESS_OR_EQUAL;
-    throw new FHIRException("Unknown QuestionnaireEnableOperator code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case EXISTS:
-      return "exists";
-    case EQUAL:
-      return "=";
-    case NOT_EQUAL:
-      return "!=";
-    case GREATER_THAN:
-      return ">";
-    case LESS_THAN:
-      return "<";
-    case GREATER_OR_EQUAL:
-      return ">=";
-    case LESS_OR_EQUAL:
-      return "<=";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * True if whether an answer exists is equal to the enableWhen answer (which must be a boolean).
+         */
+        EXISTS, 
+        /**
+         * True if whether at least one answer has a value that is equal to the enableWhen answer.
+         */
+        EQUAL, 
+        /**
+         * True if whether at least no answer has a value that is equal to the enableWhen answer.
+         */
+        NOT_EQUAL, 
+        /**
+         * True if whether at least no answer has a value that is greater than the enableWhen answer.
+         */
+        GREATER_THAN, 
+        /**
+         * True if whether at least no answer has a value that is less than the enableWhen answer.
+         */
+        LESS_THAN, 
+        /**
+         * True if whether at least no answer has a value that is greater or equal to the enableWhen answer.
+         */
+        GREATER_OR_EQUAL, 
+        /**
+         * True if whether at least no answer has a value that is less or equal to the enableWhen answer.
+         */
+        LESS_OR_EQUAL, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static QuestionnaireEnableOperator fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("exists".equals(codeString))
+          return EXISTS;
+        if ("=".equals(codeString))
+          return EQUAL;
+        if ("!=".equals(codeString))
+          return NOT_EQUAL;
+        if (">".equals(codeString))
+          return GREATER_THAN;
+        if ("<".equals(codeString))
+          return LESS_THAN;
+        if (">=".equals(codeString))
+          return GREATER_OR_EQUAL;
+        if ("<=".equals(codeString))
+          return LESS_OR_EQUAL;
+        throw new FHIRException("Unknown QuestionnaireEnableOperator code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case EXISTS: return "exists";
+            case EQUAL: return "=";
+            case NOT_EQUAL: return "!=";
+            case GREATER_THAN: return ">";
+            case LESS_THAN: return "<";
+            case GREATER_OR_EQUAL: return ">=";
+            case LESS_OR_EQUAL: return "<=";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/questionnaire-enable-operator";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case EXISTS: return "True if whether an answer exists is equal to the enableWhen answer (which must be a boolean).";
+            case EQUAL: return "True if whether at least one answer has a value that is equal to the enableWhen answer.";
+            case NOT_EQUAL: return "True if whether at least no answer has a value that is equal to the enableWhen answer.";
+            case GREATER_THAN: return "True if whether at least no answer has a value that is greater than the enableWhen answer.";
+            case LESS_THAN: return "True if whether at least no answer has a value that is less than the enableWhen answer.";
+            case GREATER_OR_EQUAL: return "True if whether at least no answer has a value that is greater or equal to the enableWhen answer.";
+            case LESS_OR_EQUAL: return "True if whether at least no answer has a value that is less or equal to the enableWhen answer.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case EXISTS: return "Exists";
+            case EQUAL: return "Equals";
+            case NOT_EQUAL: return "Not Equals";
+            case GREATER_THAN: return "Greater Than";
+            case LESS_THAN: return "Less Than";
+            case GREATER_OR_EQUAL: return "Greater or Equals";
+            case LESS_OR_EQUAL: return "Less or Equals";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/questionnaire-enable-operator";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case EXISTS:
-      return "True if whether an answer exists is equal to the enableWhen answer (which must be a boolean).";
-    case EQUAL:
-      return "True if whether at least one answer has a value that is equal to the enableWhen answer.";
-    case NOT_EQUAL:
-      return "True if whether at least no answer has a value that is equal to the enableWhen answer.";
-    case GREATER_THAN:
-      return "True if whether at least no answer has a value that is greater than the enableWhen answer.";
-    case LESS_THAN:
-      return "True if whether at least no answer has a value that is less than the enableWhen answer.";
-    case GREATER_OR_EQUAL:
-      return "True if whether at least no answer has a value that is greater or equal to the enableWhen answer.";
-    case LESS_OR_EQUAL:
-      return "True if whether at least no answer has a value that is less or equal to the enableWhen answer.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case EXISTS:
-      return "Exists";
-    case EQUAL:
-      return "Equals";
-    case NOT_EQUAL:
-      return "Not Equals";
-    case GREATER_THAN:
-      return "Greater Than";
-    case LESS_THAN:
-      return "Less Than";
-    case GREATER_OR_EQUAL:
-      return "Greater or Equals";
-    case LESS_OR_EQUAL:
-      return "Less or Equals";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

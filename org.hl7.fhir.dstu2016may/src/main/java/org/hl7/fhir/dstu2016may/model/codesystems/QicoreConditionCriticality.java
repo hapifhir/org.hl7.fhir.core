@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,122 +34,95 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum QicoreConditionCriticality {
 
-  /**
-   * The criticality of the condition is not specified
-   */
-  UNSPECIFIED,
-  /**
-   * The condition is expected to resolve on its own
-   */
-  SELFRESOLVING,
-  /**
-   * The condition is considered to be controllable
-   */
-  CONTROLLABLE,
-  /**
-   * The condition may result in partial or full loss of function or capacity
-   */
-  FUNCTIONALLOSS,
-  /**
-   * The condition is considered to be life-threatening
-   */
-  LIFETHREATENING,
-  /**
-   * The condition requires hospitalization
-   */
-  REQUIRESHOSPITALIZATION,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static QicoreConditionCriticality fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("unspecified".equals(codeString))
-      return UNSPECIFIED;
-    if ("self-resolving".equals(codeString))
-      return SELFRESOLVING;
-    if ("controllable".equals(codeString))
-      return CONTROLLABLE;
-    if ("functional-loss".equals(codeString))
-      return FUNCTIONALLOSS;
-    if ("life-threatening".equals(codeString))
-      return LIFETHREATENING;
-    if ("requires-hospitalization".equals(codeString))
-      return REQUIRESHOSPITALIZATION;
-    throw new FHIRException("Unknown QicoreConditionCriticality code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case UNSPECIFIED:
-      return "unspecified";
-    case SELFRESOLVING:
-      return "self-resolving";
-    case CONTROLLABLE:
-      return "controllable";
-    case FUNCTIONALLOSS:
-      return "functional-loss";
-    case LIFETHREATENING:
-      return "life-threatening";
-    case REQUIRESHOSPITALIZATION:
-      return "requires-hospitalization";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The criticality of the condition is not specified
+         */
+        UNSPECIFIED, 
+        /**
+         * The condition is expected to resolve on its own
+         */
+        SELFRESOLVING, 
+        /**
+         * The condition is considered to be controllable
+         */
+        CONTROLLABLE, 
+        /**
+         * The condition may result in partial or full loss of function or capacity
+         */
+        FUNCTIONALLOSS, 
+        /**
+         * The condition is considered to be life-threatening
+         */
+        LIFETHREATENING, 
+        /**
+         * The condition requires hospitalization
+         */
+        REQUIRESHOSPITALIZATION, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static QicoreConditionCriticality fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("unspecified".equals(codeString))
+          return UNSPECIFIED;
+        if ("self-resolving".equals(codeString))
+          return SELFRESOLVING;
+        if ("controllable".equals(codeString))
+          return CONTROLLABLE;
+        if ("functional-loss".equals(codeString))
+          return FUNCTIONALLOSS;
+        if ("life-threatening".equals(codeString))
+          return LIFETHREATENING;
+        if ("requires-hospitalization".equals(codeString))
+          return REQUIRESHOSPITALIZATION;
+        throw new FHIRException("Unknown QicoreConditionCriticality code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case UNSPECIFIED: return "unspecified";
+            case SELFRESOLVING: return "self-resolving";
+            case CONTROLLABLE: return "controllable";
+            case FUNCTIONALLOSS: return "functional-loss";
+            case LIFETHREATENING: return "life-threatening";
+            case REQUIRESHOSPITALIZATION: return "requires-hospitalization";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/qicore-condition-criticality";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case UNSPECIFIED: return "The criticality of the condition is not specified";
+            case SELFRESOLVING: return "The condition is expected to resolve on its own";
+            case CONTROLLABLE: return "The condition is considered to be controllable";
+            case FUNCTIONALLOSS: return "The condition may result in partial or full loss of function or capacity";
+            case LIFETHREATENING: return "The condition is considered to be life-threatening";
+            case REQUIRESHOSPITALIZATION: return "The condition requires hospitalization";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case UNSPECIFIED: return "Not Specified";
+            case SELFRESOLVING: return "Expected to Self-Resolve";
+            case CONTROLLABLE: return "Controllable";
+            case FUNCTIONALLOSS: return "Potential loss of function or capacity";
+            case LIFETHREATENING: return "Life Threatening";
+            case REQUIRESHOSPITALIZATION: return "Requires Hospitalization";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/qicore-condition-criticality";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case UNSPECIFIED:
-      return "The criticality of the condition is not specified";
-    case SELFRESOLVING:
-      return "The condition is expected to resolve on its own";
-    case CONTROLLABLE:
-      return "The condition is considered to be controllable";
-    case FUNCTIONALLOSS:
-      return "The condition may result in partial or full loss of function or capacity";
-    case LIFETHREATENING:
-      return "The condition is considered to be life-threatening";
-    case REQUIRESHOSPITALIZATION:
-      return "The condition requires hospitalization";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case UNSPECIFIED:
-      return "Not Specified";
-    case SELFRESOLVING:
-      return "Expected to Self-Resolve";
-    case CONTROLLABLE:
-      return "Controllable";
-    case FUNCTIONALLOSS:
-      return "Potential loss of function or capacity";
-    case LIFETHREATENING:
-      return "Life Threatening";
-    case REQUIRESHOSPITALIZATION:
-      return "Requires Hospitalization";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

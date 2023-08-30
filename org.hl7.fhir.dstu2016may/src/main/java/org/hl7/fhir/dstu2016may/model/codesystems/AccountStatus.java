@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,75 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AccountStatus {
 
-  /**
-   * This account is active and may be used.
-   */
-  ACTIVE,
-  /**
-   * This account is inactive and should not be used to track financial
-   * information.
-   */
-  INACTIVE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static AccountStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("active".equals(codeString))
-      return ACTIVE;
-    if ("inactive".equals(codeString))
-      return INACTIVE;
-    throw new FHIRException("Unknown AccountStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ACTIVE:
-      return "active";
-    case INACTIVE:
-      return "inactive";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * This account is active and may be used.
+         */
+        ACTIVE, 
+        /**
+         * This account is inactive and should not be used to track financial information.
+         */
+        INACTIVE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static AccountStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("active".equals(codeString))
+          return ACTIVE;
+        if ("inactive".equals(codeString))
+          return INACTIVE;
+        throw new FHIRException("Unknown AccountStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ACTIVE: return "active";
+            case INACTIVE: return "inactive";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/account-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ACTIVE: return "This account is active and may be used.";
+            case INACTIVE: return "This account is inactive and should not be used to track financial information.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ACTIVE: return "Active";
+            case INACTIVE: return "Inactive";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/account-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ACTIVE:
-      return "This account is active and may be used.";
-    case INACTIVE:
-      return "This account is inactive and should not be used to track financial information.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ACTIVE:
-      return "Active";
-    case INACTIVE:
-      return "Inactive";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

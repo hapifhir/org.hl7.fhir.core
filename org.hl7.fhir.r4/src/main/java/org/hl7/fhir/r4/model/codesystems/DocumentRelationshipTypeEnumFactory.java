@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class DocumentRelationshipTypeEnumFactory implements EnumFactory<DocumentRelationshipType> {
@@ -46,7 +50,7 @@ public class DocumentRelationshipTypeEnumFactory implements EnumFactory<Document
       return DocumentRelationshipType.SIGNS;
     if ("appends".equals(codeString))
       return DocumentRelationshipType.APPENDS;
-    throw new IllegalArgumentException("Unknown DocumentRelationshipType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown DocumentRelationshipType code '"+codeString+"'");
   }
 
   public String toCode(DocumentRelationshipType code) {
@@ -61,8 +65,8 @@ public class DocumentRelationshipTypeEnumFactory implements EnumFactory<Document
     return "?";
   }
 
-  public String toSystem(DocumentRelationshipType code) {
-    return code.getSystem();
-  }
+    public String toSystem(DocumentRelationshipType code) {
+      return code.getSystem();
+      }
 
 }

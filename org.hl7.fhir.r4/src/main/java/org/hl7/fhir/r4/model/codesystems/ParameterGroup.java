@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,158 +34,122 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ParameterGroup {
 
-  /**
-   * Haemodynamic Parameter Group - MDC_PGRP_HEMO.
-   */
-  HAEMODYNAMIC,
-  /**
-   * ECG Parameter Group - MDC_PGRP_ECG.
-   */
-  ECG,
-  /**
-   * Respiratory Parameter Group - MDC_PGRP_RESP.
-   */
-  RESPIRATORY,
-  /**
-   * Ventilation Parameter Group - MDC_PGRP_VENT.
-   */
-  VENTILATION,
-  /**
-   * Neurological Parameter Group - MDC_PGRP_NEURO.
-   */
-  NEUROLOGICAL,
-  /**
-   * Drug Delivery Parameter Group - MDC_PGRP_DRUG.
-   */
-  DRUGDELIVERY,
-  /**
-   * Fluid Chemistry Parameter Group - MDC_PGRP_FLUID.
-   */
-  FLUIDCHEMISTRY,
-  /**
-   * Blood Chemistry Parameter Group - MDC_PGRP_BLOOD_CHEM.
-   */
-  BLOODCHEMISTRY,
-  /**
-   * Miscellaneous Parameter Group - MDC_PGRP_MISC.
-   */
-  MISCELLANEOUS,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ParameterGroup fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("haemodynamic".equals(codeString))
-      return HAEMODYNAMIC;
-    if ("ecg".equals(codeString))
-      return ECG;
-    if ("respiratory".equals(codeString))
-      return RESPIRATORY;
-    if ("ventilation".equals(codeString))
-      return VENTILATION;
-    if ("neurological".equals(codeString))
-      return NEUROLOGICAL;
-    if ("drug-delivery".equals(codeString))
-      return DRUGDELIVERY;
-    if ("fluid-chemistry".equals(codeString))
-      return FLUIDCHEMISTRY;
-    if ("blood-chemistry".equals(codeString))
-      return BLOODCHEMISTRY;
-    if ("miscellaneous".equals(codeString))
-      return MISCELLANEOUS;
-    throw new FHIRException("Unknown ParameterGroup code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case HAEMODYNAMIC:
-      return "haemodynamic";
-    case ECG:
-      return "ecg";
-    case RESPIRATORY:
-      return "respiratory";
-    case VENTILATION:
-      return "ventilation";
-    case NEUROLOGICAL:
-      return "neurological";
-    case DRUGDELIVERY:
-      return "drug-delivery";
-    case FLUIDCHEMISTRY:
-      return "fluid-chemistry";
-    case BLOODCHEMISTRY:
-      return "blood-chemistry";
-    case MISCELLANEOUS:
-      return "miscellaneous";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Haemodynamic Parameter Group - MDC_PGRP_HEMO.
+         */
+        HAEMODYNAMIC, 
+        /**
+         * ECG Parameter Group - MDC_PGRP_ECG.
+         */
+        ECG, 
+        /**
+         * Respiratory Parameter Group - MDC_PGRP_RESP.
+         */
+        RESPIRATORY, 
+        /**
+         * Ventilation Parameter Group - MDC_PGRP_VENT.
+         */
+        VENTILATION, 
+        /**
+         * Neurological Parameter Group - MDC_PGRP_NEURO.
+         */
+        NEUROLOGICAL, 
+        /**
+         * Drug Delivery Parameter Group - MDC_PGRP_DRUG.
+         */
+        DRUGDELIVERY, 
+        /**
+         * Fluid Chemistry Parameter Group - MDC_PGRP_FLUID.
+         */
+        FLUIDCHEMISTRY, 
+        /**
+         * Blood Chemistry Parameter Group - MDC_PGRP_BLOOD_CHEM.
+         */
+        BLOODCHEMISTRY, 
+        /**
+         * Miscellaneous Parameter Group - MDC_PGRP_MISC.
+         */
+        MISCELLANEOUS, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ParameterGroup fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("haemodynamic".equals(codeString))
+          return HAEMODYNAMIC;
+        if ("ecg".equals(codeString))
+          return ECG;
+        if ("respiratory".equals(codeString))
+          return RESPIRATORY;
+        if ("ventilation".equals(codeString))
+          return VENTILATION;
+        if ("neurological".equals(codeString))
+          return NEUROLOGICAL;
+        if ("drug-delivery".equals(codeString))
+          return DRUGDELIVERY;
+        if ("fluid-chemistry".equals(codeString))
+          return FLUIDCHEMISTRY;
+        if ("blood-chemistry".equals(codeString))
+          return BLOODCHEMISTRY;
+        if ("miscellaneous".equals(codeString))
+          return MISCELLANEOUS;
+        throw new FHIRException("Unknown ParameterGroup code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case HAEMODYNAMIC: return "haemodynamic";
+            case ECG: return "ecg";
+            case RESPIRATORY: return "respiratory";
+            case VENTILATION: return "ventilation";
+            case NEUROLOGICAL: return "neurological";
+            case DRUGDELIVERY: return "drug-delivery";
+            case FLUIDCHEMISTRY: return "fluid-chemistry";
+            case BLOODCHEMISTRY: return "blood-chemistry";
+            case MISCELLANEOUS: return "miscellaneous";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/parameter-group";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case HAEMODYNAMIC: return "Haemodynamic Parameter Group - MDC_PGRP_HEMO.";
+            case ECG: return "ECG Parameter Group - MDC_PGRP_ECG.";
+            case RESPIRATORY: return "Respiratory Parameter Group - MDC_PGRP_RESP.";
+            case VENTILATION: return "Ventilation Parameter Group - MDC_PGRP_VENT.";
+            case NEUROLOGICAL: return "Neurological Parameter Group - MDC_PGRP_NEURO.";
+            case DRUGDELIVERY: return "Drug Delivery Parameter Group - MDC_PGRP_DRUG.";
+            case FLUIDCHEMISTRY: return "Fluid Chemistry Parameter Group - MDC_PGRP_FLUID.";
+            case BLOODCHEMISTRY: return "Blood Chemistry Parameter Group - MDC_PGRP_BLOOD_CHEM.";
+            case MISCELLANEOUS: return "Miscellaneous Parameter Group - MDC_PGRP_MISC.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case HAEMODYNAMIC: return "Haemodynamic Parameter Group";
+            case ECG: return "ECG Parameter Group";
+            case RESPIRATORY: return "Respiratory Parameter Group";
+            case VENTILATION: return "Ventilation Parameter Group";
+            case NEUROLOGICAL: return "Neurological Parameter Group";
+            case DRUGDELIVERY: return "Drug Delivery Parameter Group";
+            case FLUIDCHEMISTRY: return "Fluid Chemistry Parameter Group";
+            case BLOODCHEMISTRY: return "Blood Chemistry Parameter Group";
+            case MISCELLANEOUS: return "Miscellaneous Parameter Group";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/parameter-group";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case HAEMODYNAMIC:
-      return "Haemodynamic Parameter Group - MDC_PGRP_HEMO.";
-    case ECG:
-      return "ECG Parameter Group - MDC_PGRP_ECG.";
-    case RESPIRATORY:
-      return "Respiratory Parameter Group - MDC_PGRP_RESP.";
-    case VENTILATION:
-      return "Ventilation Parameter Group - MDC_PGRP_VENT.";
-    case NEUROLOGICAL:
-      return "Neurological Parameter Group - MDC_PGRP_NEURO.";
-    case DRUGDELIVERY:
-      return "Drug Delivery Parameter Group - MDC_PGRP_DRUG.";
-    case FLUIDCHEMISTRY:
-      return "Fluid Chemistry Parameter Group - MDC_PGRP_FLUID.";
-    case BLOODCHEMISTRY:
-      return "Blood Chemistry Parameter Group - MDC_PGRP_BLOOD_CHEM.";
-    case MISCELLANEOUS:
-      return "Miscellaneous Parameter Group - MDC_PGRP_MISC.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case HAEMODYNAMIC:
-      return "Haemodynamic Parameter Group";
-    case ECG:
-      return "ECG Parameter Group";
-    case RESPIRATORY:
-      return "Respiratory Parameter Group";
-    case VENTILATION:
-      return "Ventilation Parameter Group";
-    case NEUROLOGICAL:
-      return "Neurological Parameter Group";
-    case DRUGDELIVERY:
-      return "Drug Delivery Parameter Group";
-    case FLUIDCHEMISTRY:
-      return "Fluid Chemistry Parameter Group";
-    case BLOODCHEMISTRY:
-      return "Blood Chemistry Parameter Group";
-    case MISCELLANEOUS:
-      return "Miscellaneous Parameter Group";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

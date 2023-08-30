@@ -43,56 +43,45 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   public QuestionnaireResponseRenderer(RenderingContext context) {
     super(context);
   }
-
+  
   public boolean render(XhtmlNode x, Resource q) throws UnsupportedEncodingException, IOException {
     return render(x, (QuestionnaireResponse) q);
   }
-
+  
   public boolean render(XhtmlNode x, QuestionnaireResponse q) throws UnsupportedEncodingException, IOException {
     switch (context.getQuestionnaireMode()) {
-    case FORM:
-      return renderForm(x, q);
-    case LINKS:
-      return renderLinks(x, q);
+    case FORM:  return renderForm(x, q);
+    case LINKS: return renderLinks(x, q);
 //    case LOGIC: return renderLogic(x, q);
 //    case DEFNS: return renderDefns(x, q);
-    case TREE:
-      return renderTree(x, q);
+    case TREE:  return renderTree(x, q);
     default:
       throw new Error("Unknown QuestionnaireResponse Renderer Mode");
     }
   }
-
+  
   public boolean render(XhtmlNode x, ResourceWrapper qr) throws UnsupportedEncodingException, IOException {
     switch (context.getQuestionnaireMode()) {
-    case FORM:
-      return renderTree(x, qr);
-    case LINKS:
-      return renderLinks(x, qr);
+    case FORM:  return renderTree(x, qr);
+    case LINKS: return renderLinks(x, qr);
 //    case LOGIC: return renderLogic(x, q);
 //    case DEFNS: return renderDefns(x, q);
-    case TREE:
-      return renderTree(x, qr);
+    case TREE:  return renderTree(x, qr);
     default:
       throw new Error("Unknown QuestionnaireResponse Renderer Mode");
     }
   }
-
+  
   public boolean renderTree(XhtmlNode x, ResourceWrapper qr) throws UnsupportedEncodingException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(),
-        true);
-    TableModel model = gen.new TableModel("qtree=" + qr.getId(), false);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
+    TableModel model = gen.new TableModel("qtree="+qr.getId(), false);    
     model.setAlternating(true);
-    model.setDocoImg(context.getSpecificationLink() + "help16.png");
-    model.setDocoRef(context.getSpecificationLink() + "formats.html#table");
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "LinkId"),
-        translate("sd.hint", "The linkId for the item"), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Text"),
-        translate("sd.hint", "Text for the item"), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Definition"),
-        translate("sd.hint", "Minimum and Maximum # of times the the itemcan appear in the instance"), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Answer"),
-        translate("sd.hint", "The type of the item"), null, 0));
+    model.setDocoImg(context.getSpecificationLink() +"help16.png");
+    model.setDocoRef(context.getSpecificationLink()+"formats.html#table");
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "LinkId"), translate("sd.hint", "The linkId for the item"), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Text"), translate("sd.hint", "Text for the item"), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Definition"), translate("sd.hint", "Minimum and Maximum # of times the the itemcan appear in the instance"), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Answer"), translate("sd.hint", "The type of the item"), null, 0));
 
     boolean hasExt = false;
     // first we add a root for the questionaire itself
@@ -107,20 +96,15 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   }
 
   public boolean renderTree(XhtmlNode x, QuestionnaireResponse q) throws UnsupportedEncodingException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(),
-        true);
-    TableModel model = gen.new TableModel("qtree=" + q.getId(), true);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
+    TableModel model = gen.new TableModel("qtree="+q.getId(), true);    
     model.setAlternating(true);
-    model.setDocoImg(context.getSpecificationLink() + "help16.png");
-    model.setDocoRef(context.getSpecificationLink() + "formats.html#table");
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "LinkId"),
-        translate("sd.hint", "The linkId for the item"), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Text"),
-        translate("sd.hint", "Text for the item"), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Definition"),
-        translate("sd.hint", "Minimum and Maximum # of times the the itemcan appear in the instance"), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Answer"),
-        translate("sd.hint", "The type of the item"), null, 0));
+    model.setDocoImg(context.getSpecificationLink() +"help16.png");
+    model.setDocoRef(context.getSpecificationLink()+"formats.html#table");
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "LinkId"), translate("sd.hint", "The linkId for the item"), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Text"), translate("sd.hint", "Text for the item"), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Definition"), translate("sd.hint", "Minimum and Maximum # of times the the itemcan appear in the instance"), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Answer"), translate("sd.hint", "The type of the item"), null, 0));
 
     boolean hasExt = false;
     // first we add a root for the questionaire itself
@@ -133,6 +117,8 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     return hasExt;
   }
 
+
+
   private Row addTreeRoot(HierarchicalTableGenerator gen, List<Row> rows, QuestionnaireResponse q) throws IOException {
     Row r = gen.new Row();
     rows.add(r);
@@ -142,7 +128,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     r.getCells().add(gen.new Cell(null, null, "", null, null));
     r.getCells().add(gen.new Cell(null, null, "QuestionnaireResponse", null, null));
     r.getCells().add(gen.new Cell(null, null, "", null, null));
-    return r;
+    return r;    
   }
 
   private Row addTreeRoot(HierarchicalTableGenerator gen, List<Row> rows, ResourceWrapper q) throws IOException {
@@ -154,11 +140,12 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     r.getCells().add(gen.new Cell(null, null, "", null, null));
     r.getCells().add(gen.new Cell(null, null, "QuestionnaireResponse", null, null));
     r.getCells().add(gen.new Cell(null, null, "", null, null));
-    return r;
+    return r;    
   }
 
-  private boolean renderTreeItem(HierarchicalTableGenerator gen, List<Row> rows, ResourceWrapper q, BaseWrapper i)
-      throws IOException {
+
+
+  private boolean renderTreeItem(HierarchicalTableGenerator gen, List<Row> rows, ResourceWrapper q, BaseWrapper i) throws IOException {
     Row r = gen.new Row();
     rows.add(r);
     boolean hasExt = false;
@@ -178,10 +165,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     }
     String linkId = i.has("linkId") ? i.get("linkId").primitiveValue() : "??";
     String text = i.has("text") ? i.get("text").primitiveValue() : "";
-    r.getCells()
-        .add(gen.new Cell(null,
-            context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget() + "#item." + linkId, linkId,
-            null, null));
+    r.getCells().add(gen.new Cell(null, context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget()+"#item."+linkId, linkId, null, null));
     r.getCells().add(gen.new Cell(null, null, text, null, null));
     r.getCells().add(gen.new Cell(null, null, null, null, null));
     if (answers.size() == 0) {
@@ -193,7 +177,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       BaseWrapper ans = answers.get(0);
       renderAnswer(gen, q, r, ans);
     } else {
-      r.getCells().add(gen.new Cell(null, null, null, null, null));
+      r.getCells().add(gen.new Cell(null, null, null, null, null));          
       for (BaseWrapper ans : answers) {
         Row ar = gen.new Row();
         ar.setIcon("icon-q-string.png", "Item");
@@ -205,11 +189,10 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       }
     }
 
-    return hasExt;
+    return hasExt;    
   }
 
-  public void renderAnswer(HierarchicalTableGenerator gen, ResourceWrapper q, Row r, BaseWrapper ans)
-      throws UnsupportedEncodingException, IOException {
+  public void renderAnswer(HierarchicalTableGenerator gen, ResourceWrapper q, Row r, BaseWrapper ans) throws UnsupportedEncodingException, IOException {
     List<BaseWrapper> items;
     Base b = ans.get("value[x]");
     if (b == null) {
@@ -230,9 +213,8 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       renderTreeItem(gen, r.getSubRows(), q, si);
     }
   }
-
-  private boolean renderTreeItem(HierarchicalTableGenerator gen, List<Row> rows, QuestionnaireResponse q,
-      QuestionnaireResponseItemComponent i) throws IOException {
+  
+  private boolean renderTreeItem(HierarchicalTableGenerator gen, List<Row> rows, QuestionnaireResponse q, QuestionnaireResponseItemComponent i) throws IOException {
     Row r = gen.new Row();
     rows.add(r);
     boolean hasExt = false;
@@ -246,30 +228,27 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     } else {
       r.setIcon("icon-q-string.png", "Item");
     }
-    r.getCells()
-        .add(gen.new Cell(null,
-            context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget() + "#item." + i.getLinkId(),
-            i.getLinkId(), null, null));
+    r.getCells().add(gen.new Cell(null, context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget()+"#item."+i.getLinkId(), i.getLinkId(), null, null));
     r.getCells().add(gen.new Cell(null, null, i.getText(), null, null));
     r.getCells().add(gen.new Cell(null, null, null, null, null));
     r.getCells().add(gen.new Cell(null, null, null, null, null));
 
-    return hasExt;
+    return hasExt;    
   }
 
   public void genDefinitionLink(HierarchicalTableGenerator gen, QuestionnaireResponseItemComponent i, Cell defn) {
-    // can we resolve the definition?
+    // can we resolve the definition? 
     String path = null;
     String d = i.getDefinition();
     if (d.contains("#")) {
-      path = d.substring(d.indexOf("#") + 1);
+      path = d.substring(d.indexOf("#")+1);
       d = d.substring(0, d.indexOf("#"));
     }
     StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d);
     if (sd != null) {
       String url = sd.getUserString("path");
       if (url != null) {
-        defn.getPieces().add(gen.new Piece(url + "#" + path, path, null));
+        defn.getPieces().add(gen.new Piece(url+"#"+path, path, null));          
       } else {
         defn.getPieces().add(gen.new Piece(null, i.getDefinition(), null));
       }
@@ -279,18 +258,18 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   }
 
   public void genDefinitionLink(XhtmlNode x, QuestionnaireResponseItemComponent i) {
-    // can we resolve the definition?
+    // can we resolve the definition? 
     String path = null;
     String d = i.getDefinition();
     if (d.contains("#")) {
-      path = d.substring(d.indexOf("#") + 1);
+      path = d.substring(d.indexOf("#")+1);
       d = d.substring(0, d.indexOf("#"));
     }
     StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d);
     if (sd != null) {
       String url = sd.getUserString("path");
       if (url != null) {
-        x.ah(url + "#" + path).tx(path);
+        x.ah(url+"#"+path).tx(path);          
       } else {
         x.tx(i.getDefinition());
       }
@@ -617,16 +596,14 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   private boolean renderLinks(XhtmlNode x, QuestionnaireResponse q) {
     x.para().tx("Try this QuestionnaireResponse out:");
     XhtmlNode ul = x.ul();
-    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src=" + Utilities.pathURL(context.getSelfLink(), "package.tgz") + "&q="
-        + q.getId() + ".json").tx("NLM Forms Library");
+    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getSelfLink(), "package.tgz")+"&q="+q.getId()+".json").tx("NLM Forms Library");
     return false;
   }
 
   private boolean renderLinks(XhtmlNode x, ResourceWrapper q) {
     x.para().tx("Try this QuestionnaireResponse out:");
     XhtmlNode ul = x.ul();
-    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src=" + Utilities.pathURL(context.getSelfLink(), "package.tgz") + "&q="
-        + q.getId() + ".json").tx("NLM Forms Library");
+    ul.li().ah("http://todo.nlm.gov/path?mode=ig&src="+Utilities.pathURL(context.getSelfLink(), "package.tgz")+"&q="+q.getId()+".json").tx("NLM Forms Library");
     return false;
   }
 
@@ -691,7 +668,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    }
 //    return false;
 //  }
-
+  
 //  private boolean renderDefinition(XhtmlNode tbl, QuestionnaireResponse q, QuestionnaireItemComponent qi, List<QuestionnaireItemComponent> parents) throws IOException {
 //    boolean ext = false;
 //    XhtmlNode td = tbl.tr().td("structure").colspan("2").span(null, null).attribute("class", "self-link-parent");
@@ -884,6 +861,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //      tr.td().tx(Boolean.toString(value));
 //    }    
 //  }
+
 
   @Override
   public String display(Resource r) throws UnsupportedEncodingException, IOException {

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class AllergyintoleranceVerificationEnumFactory implements EnumFactory<AllergyintoleranceVerification> {
@@ -46,7 +50,7 @@ public class AllergyintoleranceVerificationEnumFactory implements EnumFactory<Al
       return AllergyintoleranceVerification.REFUTED;
     if ("entered-in-error".equals(codeString))
       return AllergyintoleranceVerification.ENTEREDINERROR;
-    throw new IllegalArgumentException("Unknown AllergyintoleranceVerification code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown AllergyintoleranceVerification code '"+codeString+"'");
   }
 
   public String toCode(AllergyintoleranceVerification code) {
@@ -61,8 +65,8 @@ public class AllergyintoleranceVerificationEnumFactory implements EnumFactory<Al
     return "?";
   }
 
-  public String toSystem(AllergyintoleranceVerification code) {
-    return code.getSystem();
-  }
+    public String toSystem(AllergyintoleranceVerification code) {
+      return code.getSystem();
+      }
 
 }

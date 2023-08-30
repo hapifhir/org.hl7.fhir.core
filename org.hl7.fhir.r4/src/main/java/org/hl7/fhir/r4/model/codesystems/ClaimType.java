@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,112 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ClaimType {
 
-  /**
-   * Hospital, clinic and typically inpatient claims.
-   */
-  INSTITUTIONAL,
-  /**
-   * Dental, Denture and Hygiene claims.
-   */
-  ORAL,
-  /**
-   * Pharmacy claims for goods and services.
-   */
-  PHARMACY,
-  /**
-   * Typically, outpatient claims from Physician, Psychological, Chiropractor,
-   * Physiotherapy, Speech Pathology, rehabilitative, consulting.
-   */
-  PROFESSIONAL,
-  /**
-   * Vision claims for professional services and products such as glasses and
-   * contact lenses.
-   */
-  VISION,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ClaimType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("institutional".equals(codeString))
-      return INSTITUTIONAL;
-    if ("oral".equals(codeString))
-      return ORAL;
-    if ("pharmacy".equals(codeString))
-      return PHARMACY;
-    if ("professional".equals(codeString))
-      return PROFESSIONAL;
-    if ("vision".equals(codeString))
-      return VISION;
-    throw new FHIRException("Unknown ClaimType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INSTITUTIONAL:
-      return "institutional";
-    case ORAL:
-      return "oral";
-    case PHARMACY:
-      return "pharmacy";
-    case PROFESSIONAL:
-      return "professional";
-    case VISION:
-      return "vision";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Hospital, clinic and typically inpatient claims.
+         */
+        INSTITUTIONAL, 
+        /**
+         * Dental, Denture and Hygiene claims.
+         */
+        ORAL, 
+        /**
+         * Pharmacy claims for goods and services.
+         */
+        PHARMACY, 
+        /**
+         * Typically, outpatient claims from Physician, Psychological, Chiropractor, Physiotherapy, Speech Pathology, rehabilitative, consulting.
+         */
+        PROFESSIONAL, 
+        /**
+         * Vision claims for professional services and products such as glasses and contact lenses.
+         */
+        VISION, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ClaimType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("institutional".equals(codeString))
+          return INSTITUTIONAL;
+        if ("oral".equals(codeString))
+          return ORAL;
+        if ("pharmacy".equals(codeString))
+          return PHARMACY;
+        if ("professional".equals(codeString))
+          return PROFESSIONAL;
+        if ("vision".equals(codeString))
+          return VISION;
+        throw new FHIRException("Unknown ClaimType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INSTITUTIONAL: return "institutional";
+            case ORAL: return "oral";
+            case PHARMACY: return "pharmacy";
+            case PROFESSIONAL: return "professional";
+            case VISION: return "vision";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/claim-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INSTITUTIONAL: return "Hospital, clinic and typically inpatient claims.";
+            case ORAL: return "Dental, Denture and Hygiene claims.";
+            case PHARMACY: return "Pharmacy claims for goods and services.";
+            case PROFESSIONAL: return "Typically, outpatient claims from Physician, Psychological, Chiropractor, Physiotherapy, Speech Pathology, rehabilitative, consulting.";
+            case VISION: return "Vision claims for professional services and products such as glasses and contact lenses.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INSTITUTIONAL: return "Institutional";
+            case ORAL: return "Oral";
+            case PHARMACY: return "Pharmacy";
+            case PROFESSIONAL: return "Professional";
+            case VISION: return "Vision";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/claim-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INSTITUTIONAL:
-      return "Hospital, clinic and typically inpatient claims.";
-    case ORAL:
-      return "Dental, Denture and Hygiene claims.";
-    case PHARMACY:
-      return "Pharmacy claims for goods and services.";
-    case PROFESSIONAL:
-      return "Typically, outpatient claims from Physician, Psychological, Chiropractor, Physiotherapy, Speech Pathology, rehabilitative, consulting.";
-    case VISION:
-      return "Vision claims for professional services and products such as glasses and contact lenses.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INSTITUTIONAL:
-      return "Institutional";
-    case ORAL:
-      return "Oral";
-    case PHARMACY:
-      return "Pharmacy";
-    case PROFESSIONAL:
-      return "Professional";
-    case VISION:
-      return "Vision";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,76 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ClassificationOrContext {
 
-  /**
-   * Indicates the useContext is a classification - e.g. Administrative,
-   * financial, etc.
-   */
-  CLASSIFICATION,
-  /**
-   * Indicates the useContext is a context - a domain of use - e.g. Particular
-   * country, organization or system
-   */
-  CONTEXT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ClassificationOrContext fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("classification".equals(codeString))
-      return CLASSIFICATION;
-    if ("context".equals(codeString))
-      return CONTEXT;
-    throw new FHIRException("Unknown ClassificationOrContext code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case CLASSIFICATION:
-      return "classification";
-    case CONTEXT:
-      return "context";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Indicates the useContext is a classification - e.g. Administrative, financial, etc.
+         */
+        CLASSIFICATION, 
+        /**
+         * Indicates the useContext is a context - a domain of use - e.g. Particular country, organization or system
+         */
+        CONTEXT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ClassificationOrContext fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("classification".equals(codeString))
+          return CLASSIFICATION;
+        if ("context".equals(codeString))
+          return CONTEXT;
+        throw new FHIRException("Unknown ClassificationOrContext code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case CLASSIFICATION: return "classification";
+            case CONTEXT: return "context";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/classification-or-context";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case CLASSIFICATION: return "Indicates the useContext is a classification - e.g. Administrative, financial, etc.";
+            case CONTEXT: return "Indicates the useContext is a context - a domain of use - e.g. Particular country, organization or system";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case CLASSIFICATION: return "Classification";
+            case CONTEXT: return "Context";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/classification-or-context";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case CLASSIFICATION:
-      return "Indicates the useContext is a classification - e.g. Administrative, financial, etc.";
-    case CONTEXT:
-      return "Indicates the useContext is a context - a domain of use - e.g. Particular country, organization or system";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case CLASSIFICATION:
-      return "Classification";
-    case CONTEXT:
-      return "Context";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

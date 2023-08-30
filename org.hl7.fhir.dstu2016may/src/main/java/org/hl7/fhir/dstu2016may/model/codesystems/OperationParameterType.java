@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,62 +34,50 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Wed, Mar 23, 2016 06:13+1100 for FHIR v1.3.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum OperationParameterType {
 
-  /**
-   * Special type for any kind of resource
-   */
-  ANY,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static OperationParameterType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("Any".equals(codeString))
-      return ANY;
-    throw new FHIRException("Unknown OperationParameterType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case ANY:
-      return "Any";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Special type for any kind of resource
+         */
+        ANY, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static OperationParameterType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("Any".equals(codeString))
+          return ANY;
+        throw new FHIRException("Unknown OperationParameterType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ANY: return "Any";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/ValueSet/special-types";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ANY: return "Special type for any kind of resource";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ANY: return "Any";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/ValueSet/special-types";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case ANY:
-      return "Special type for any kind of resource";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case ANY:
-      return "Any";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

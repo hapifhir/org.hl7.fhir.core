@@ -1344,7 +1344,7 @@ public class Element extends Base {
       }
     }
 
-    throw new Error("Unrecognised property '"+name+"' on "+this.name); 
+    throw new Error("Unrecognised name "+name+" on "+this.name); 
   }
 
   @Override

@@ -28,14 +28,14 @@ public class NamingSystemRenderer extends ResourceRenderer {
   public NamingSystemRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
-
+  
   public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
     return render(x, (NamingSystem) dr);
   }
 
   public boolean render(XhtmlNode x, NamingSystem ns) throws FHIRFormatError, DefinitionException, IOException {
     x.h3().tx("Summary");
-    XhtmlNode tbl = x.table("grid");
+    XhtmlNode tbl = x.table("grid"); 
     row(tbl, "Defining URL", ns.getUrl());
     if (ns.hasVersion()) {
       row(tbl, "Version", ns.getVersion());
@@ -57,8 +57,7 @@ public class NamingSystemRenderer extends ResourceRenderer {
       renderCommitteeLink(row(tbl, "Committee"), ns);
     }
     if (CodeSystemUtilities.hasOID(ns)) {
-      row(tbl, "OID", CodeSystemUtilities.getOID(ns))
-          .tx("(" + translate("ns.summary", "for OID based terminology systems") + ")");
+      row(tbl, "OID", CodeSystemUtilities.getOID(ns)).tx("("+translate("ns.summary", "for OID based terminology systems")+")");
     }
     if (ns.hasCopyright()) {
       addMarkdown(row(tbl, "Copyright"), ns.getCopyright());
@@ -98,7 +97,7 @@ public class NamingSystemRenderer extends ResourceRenderer {
       if (hasComment) {
         tr.td().tx(id.getComment());
       }
-    }
+    }    
     return false;
   }
 
@@ -108,7 +107,6 @@ public class NamingSystemRenderer extends ResourceRenderer {
     td.tx(translate("ns.summary", name));
     return tr.td();
   }
-
   private XhtmlNode row(XhtmlNode tbl, String name, String value) {
     XhtmlNode td = row(tbl, name);
     td.tx(value);

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,102 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum DefinitionStatus {
 
-  /**
-   * The definition is in the design stage and is not yet considered to be "ready
-   * for use".
-   */
-  DRAFT,
-  /**
-   * The definition is considered ready for use.
-   */
-  ACTIVE,
-  /**
-   * The definition should no longer be used.
-   */
-  WITHDRAWN,
-  /**
-   * The authoring/source system does not know which of the status values
-   * currently applies for this resource. Note: This concept is not to be used for
-   * "other" - one of the listed statuses is presumed to apply, but the
-   * authoring/source system does not know which.
-   */
-  UNKNOWN,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static DefinitionStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("draft".equals(codeString))
-      return DRAFT;
-    if ("active".equals(codeString))
-      return ACTIVE;
-    if ("withdrawn".equals(codeString))
-      return WITHDRAWN;
-    if ("unknown".equals(codeString))
-      return UNKNOWN;
-    throw new FHIRException("Unknown DefinitionStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case DRAFT:
-      return "draft";
-    case ACTIVE:
-      return "active";
-    case WITHDRAWN:
-      return "withdrawn";
-    case UNKNOWN:
-      return "unknown";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The definition is in the design stage and is not yet considered to be "ready for use".
+         */
+        DRAFT, 
+        /**
+         * The definition is considered ready for use.
+         */
+        ACTIVE, 
+        /**
+         * The definition should no longer be used.
+         */
+        WITHDRAWN, 
+        /**
+         * The authoring/source system does not know which of the status values currently applies for this resource.  Note: This concept is not to be used for "other" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.
+         */
+        UNKNOWN, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static DefinitionStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("draft".equals(codeString))
+          return DRAFT;
+        if ("active".equals(codeString))
+          return ACTIVE;
+        if ("withdrawn".equals(codeString))
+          return WITHDRAWN;
+        if ("unknown".equals(codeString))
+          return UNKNOWN;
+        throw new FHIRException("Unknown DefinitionStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case DRAFT: return "draft";
+            case ACTIVE: return "active";
+            case WITHDRAWN: return "withdrawn";
+            case UNKNOWN: return "unknown";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/definition-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case DRAFT: return "The definition is in the design stage and is not yet considered to be \"ready for use\".";
+            case ACTIVE: return "The definition is considered ready for use.";
+            case WITHDRAWN: return "The definition should no longer be used.";
+            case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this resource.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case DRAFT: return "Draft";
+            case ACTIVE: return "Active";
+            case WITHDRAWN: return "Withdrawn";
+            case UNKNOWN: return "Unknown";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/definition-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case DRAFT:
-      return "The definition is in the design stage and is not yet considered to be \"ready for use\".";
-    case ACTIVE:
-      return "The definition is considered ready for use.";
-    case WITHDRAWN:
-      return "The definition should no longer be used.";
-    case UNKNOWN:
-      return "The authoring/source system does not know which of the status values currently applies for this resource.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case DRAFT:
-      return "Draft";
-    case ACTIVE:
-      return "Active";
-    case WITHDRAWN:
-      return "Withdrawn";
-    case UNKNOWN:
-      return "Unknown";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

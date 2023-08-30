@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class NehtaTumourStageGroupingEnumFactory implements EnumFactory<NehtaTumourStageGrouping> {
@@ -58,7 +62,7 @@ public class NehtaTumourStageGroupingEnumFactory implements EnumFactory<NehtaTum
       return NehtaTumourStageGrouping.IVA;
     if ("ivb".equals(codeString))
       return NehtaTumourStageGrouping.IVB;
-    throw new IllegalArgumentException("Unknown NehtaTumourStageGrouping code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown NehtaTumourStageGrouping code '"+codeString+"'");
   }
 
   public String toCode(NehtaTumourStageGrouping code) {
@@ -85,8 +89,8 @@ public class NehtaTumourStageGroupingEnumFactory implements EnumFactory<NehtaTum
     return "?";
   }
 
-  public String toSystem(NehtaTumourStageGrouping code) {
-    return code.getSystem();
-  }
+    public String toSystem(NehtaTumourStageGrouping code) {
+      return code.getSystem();
+      }
 
 }

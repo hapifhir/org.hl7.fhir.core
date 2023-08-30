@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class CommunicationStatusEnumFactory implements EnumFactory<CommunicationStatus> {
@@ -48,7 +52,7 @@ public class CommunicationStatusEnumFactory implements EnumFactory<Communication
       return CommunicationStatus.REJECTED;
     if ("failed".equals(codeString))
       return CommunicationStatus.FAILED;
-    throw new IllegalArgumentException("Unknown CommunicationStatus code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown CommunicationStatus code '"+codeString+"'");
   }
 
   public String toCode(CommunicationStatus code) {
@@ -65,8 +69,8 @@ public class CommunicationStatusEnumFactory implements EnumFactory<Communication
     return "?";
   }
 
-  public String toSystem(CommunicationStatus code) {
-    return code.getSystem();
-  }
+    public String toSystem(CommunicationStatus code) {
+      return code.getSystem();
+      }
 
 }

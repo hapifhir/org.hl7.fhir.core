@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class GuideParameterCodeEnumFactory implements EnumFactory<GuideParameterCode> {
@@ -58,7 +62,7 @@ public class GuideParameterCodeEnumFactory implements EnumFactory<GuideParameter
       return GuideParameterCode.GENERATETURTLE;
     if ("html-template".equals(codeString))
       return GuideParameterCode.HTMLTEMPLATE;
-    throw new IllegalArgumentException("Unknown GuideParameterCode code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown GuideParameterCode code '"+codeString+"'");
   }
 
   public String toCode(GuideParameterCode code) {
@@ -85,8 +89,8 @@ public class GuideParameterCodeEnumFactory implements EnumFactory<GuideParameter
     return "?";
   }
 
-  public String toSystem(GuideParameterCode code) {
-    return code.getSystem();
-  }
+    public String toSystem(GuideParameterCode code) {
+      return code.getSystem();
+      }
 
 }

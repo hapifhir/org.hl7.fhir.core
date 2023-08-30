@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ExProgramCode {
 
-  /**
-   * Child Asthma Program
-   */
-  AS,
-  /**
-   * Hemodialysis Program.
-   */
-  HD,
-  /**
-   * Autism Screening Program.
-   */
-  AUSCR,
-  /**
-   * No program code applies.
-   */
-  NONE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ExProgramCode fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("as".equals(codeString))
-      return AS;
-    if ("hd".equals(codeString))
-      return HD;
-    if ("auscr".equals(codeString))
-      return AUSCR;
-    if ("none".equals(codeString))
-      return NONE;
-    throw new FHIRException("Unknown ExProgramCode code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case AS:
-      return "as";
-    case HD:
-      return "hd";
-    case AUSCR:
-      return "auscr";
-    case NONE:
-      return "none";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Child Asthma Program
+         */
+        AS, 
+        /**
+         * Hemodialysis Program.
+         */
+        HD, 
+        /**
+         * Autism Screening Program.
+         */
+        AUSCR, 
+        /**
+         * No program code applies.
+         */
+        NONE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ExProgramCode fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("as".equals(codeString))
+          return AS;
+        if ("hd".equals(codeString))
+          return HD;
+        if ("auscr".equals(codeString))
+          return AUSCR;
+        if ("none".equals(codeString))
+          return NONE;
+        throw new FHIRException("Unknown ExProgramCode code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case AS: return "as";
+            case HD: return "hd";
+            case AUSCR: return "auscr";
+            case NONE: return "none";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/ex-programcode";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case AS: return "Child Asthma Program";
+            case HD: return "Hemodialysis Program.";
+            case AUSCR: return "Autism Screening Program.";
+            case NONE: return "No program code applies.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case AS: return "Child Asthma";
+            case HD: return "Hemodialysis";
+            case AUSCR: return "Autism Screening";
+            case NONE: return "None";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/ex-programcode";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case AS:
-      return "Child Asthma Program";
-    case HD:
-      return "Hemodialysis Program.";
-    case AUSCR:
-      return "Autism Screening Program.";
-    case NONE:
-      return "No program code applies.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case AS:
-      return "Child Asthma";
-    case HD:
-      return "Hemodialysis";
-    case AUSCR:
-      return "Autism Screening";
-    case NONE:
-      return "None";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

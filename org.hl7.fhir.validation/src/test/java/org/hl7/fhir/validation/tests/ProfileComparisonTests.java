@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.tests;
 
+import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.junit.jupiter.api.Test;
 
 public class ProfileComparisonTests {

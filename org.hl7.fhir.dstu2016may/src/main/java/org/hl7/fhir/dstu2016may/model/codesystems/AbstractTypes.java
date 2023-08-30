@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum AbstractTypes {
 
-  /**
-   * A place holder that means any kind of data type
-   */
-  TYPE,
-  /**
-   * A place holder that means any kind of resource
-   */
-  ANY,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static AbstractTypes fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("Type".equals(codeString))
-      return TYPE;
-    if ("Any".equals(codeString))
-      return ANY;
-    throw new FHIRException("Unknown AbstractTypes code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case TYPE:
-      return "Type";
-    case ANY:
-      return "Any";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * A place holder that means any kind of data type
+         */
+        TYPE, 
+        /**
+         * A place holder that means any kind of resource
+         */
+        ANY, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static AbstractTypes fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("Type".equals(codeString))
+          return TYPE;
+        if ("Any".equals(codeString))
+          return ANY;
+        throw new FHIRException("Unknown AbstractTypes code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case TYPE: return "Type";
+            case ANY: return "Any";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/abstract-types";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case TYPE: return "A place holder that means any kind of data type";
+            case ANY: return "A place holder that means any kind of resource";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case TYPE: return "Type";
+            case ANY: return "Any";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/abstract-types";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case TYPE:
-      return "A place holder that means any kind of data type";
-    case ANY:
-      return "A place holder that means any kind of resource";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case TYPE:
-      return "Type";
-    case ANY:
-      return "Any";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

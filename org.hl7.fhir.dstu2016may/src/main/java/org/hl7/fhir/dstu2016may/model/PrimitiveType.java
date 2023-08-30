@@ -29,6 +29,7 @@ package org.hl7.fhir.dstu2016may.model;
   
  */
 
+
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -42,8 +43,7 @@ import org.hl7.fhir.instance.model.api.IPrimitiveType;
 
 import ca.uhn.fhir.model.api.IElement;
 
-public abstract class PrimitiveType<T> extends Type
-    implements IPrimitiveType<T>, IBaseHasExtensions, IElement, Externalizable {
+public abstract class PrimitiveType<T> extends Type implements IPrimitiveType<T>, IBaseHasExtensions, IElement, Externalizable {
 
   private static final long serialVersionUID = 3L;
 
@@ -59,7 +59,8 @@ public abstract class PrimitiveType<T> extends Type
   /**
    * Subclasses must override to convert a "coerced" value into an encoded one.
    *
-   * @param theValue Will not be null
+   * @param theValue
+   *            Will not be null
    * @return May return null if the value does not correspond to anything
    */
   protected abstract String encode(T theValue);
@@ -135,10 +136,10 @@ public abstract class PrimitiveType<T> extends Type
   }
 
   /**
-   * Subclasses must override to convert an encoded representation of this
-   * datatype into a "coerced" one
+   * Subclasses must override to convert an encoded representation of this datatype into a "coerced" one
    *
-   * @param theValue Will not be null
+   * @param theValue
+   *            Will not be null
    * @return May return null if the value does not correspond to anything
    */
   protected abstract T parse(String theValue);

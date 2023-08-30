@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum OrderSetItemType {
 
-  /**
-   * The action is to create a new resource
-   */
-  CREATE,
-  /**
-   * The action is to update an existing resource
-   */
-  UPDATE,
-  /**
-   * The action is to remove an existing resource
-   */
-  REMOVE,
-  /**
-   * The action is to fire a specific event
-   */
-  FIREEVENT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static OrderSetItemType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("create".equals(codeString))
-      return CREATE;
-    if ("update".equals(codeString))
-      return UPDATE;
-    if ("remove".equals(codeString))
-      return REMOVE;
-    if ("fire-event".equals(codeString))
-      return FIREEVENT;
-    throw new FHIRException("Unknown OrderSetItemType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case CREATE:
-      return "create";
-    case UPDATE:
-      return "update";
-    case REMOVE:
-      return "remove";
-    case FIREEVENT:
-      return "fire-event";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The action is to create a new resource
+         */
+        CREATE, 
+        /**
+         * The action is to update an existing resource
+         */
+        UPDATE, 
+        /**
+         * The action is to remove an existing resource
+         */
+        REMOVE, 
+        /**
+         * The action is to fire a specific event
+         */
+        FIREEVENT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static OrderSetItemType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("create".equals(codeString))
+          return CREATE;
+        if ("update".equals(codeString))
+          return UPDATE;
+        if ("remove".equals(codeString))
+          return REMOVE;
+        if ("fire-event".equals(codeString))
+          return FIREEVENT;
+        throw new FHIRException("Unknown OrderSetItemType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case CREATE: return "create";
+            case UPDATE: return "update";
+            case REMOVE: return "remove";
+            case FIREEVENT: return "fire-event";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/order-set-item-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case CREATE: return "The action is to create a new resource";
+            case UPDATE: return "The action is to update an existing resource";
+            case REMOVE: return "The action is to remove an existing resource";
+            case FIREEVENT: return "The action is to fire a specific event";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case CREATE: return "Create";
+            case UPDATE: return "Update";
+            case REMOVE: return "Remove";
+            case FIREEVENT: return "Fire Event";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/order-set-item-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case CREATE:
-      return "The action is to create a new resource";
-    case UPDATE:
-      return "The action is to update an existing resource";
-    case REMOVE:
-      return "The action is to remove an existing resource";
-    case FIREEVENT:
-      return "The action is to fire a specific event";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case CREATE:
-      return "Create";
-    case UPDATE:
-      return "Update";
-    case REMOVE:
-      return "Remove";
-    case FIREEVENT:
-      return "Fire Event";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

@@ -1,5 +1,6 @@
 package org.hl7.fhir.r4b.model;
 
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -45,301 +46,265 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Base StructureDefinition for BackboneElement Type: Base definition for all
- * elements that are defined inside a resource - but not those in a data type.
+ * Base StructureDefinition for BackboneElement Type: Base definition for all elements that are defined inside a resource - but not those in a data type.
  */
-@DatatypeDef(name = "BackboneElement")
+@DatatypeDef(name="BackboneElement")
 public abstract class BackboneElement extends DataType implements IBaseBackboneElement {
 
-  /**
-   * May be used to represent additional information that is not part of the basic
-   * definition of the element and that modifies the understanding of the element
-   * in which it is contained and/or the understanding of the containing element's
-   * descendants. Usually modifier elements provide negation or qualification. To
-   * make the use of extensions safe and manageable, there is a strict set of
-   * governance applied to the definition and use of extensions. Though any
-   * implementer can define an extension, there is a set of requirements that
-   * SHALL be met as part of the definition of the extension. Applications
-   * processing a resource are required to check for modifier extensions.
-   * 
-   * Modifier extensions SHALL NOT change the meaning of any elements on Resource
-   * or DomainResource (including cannot change the meaning of modifierExtension
-   * itself).
-   */
-  @Child(name = "modifierExtension", type = {
-      Extension.class }, order = 0, min = 0, max = Child.MAX_UNLIMITED, modifier = true, summary = true)
-  @Description(shortDefinition = "Extensions that cannot be ignored even if unrecognized", formalDefinition = "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).")
-  protected List<Extension> modifierExtension;
+    /**
+     * May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.
 
-  private static final long serialVersionUID = -1431673179L;
+Modifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).
+     */
+    @Child(name = "modifierExtension", type = {Extension.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=true, summary=true)
+    @Description(shortDefinition="Extensions that cannot be ignored even if unrecognized", formalDefinition="May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)." )
+    protected List<Extension> modifierExtension;
+
+    private static final long serialVersionUID = -1431673179L;
 
   /**
    * Constructor
    */
-  public BackboneElement() {
-    super();
-  }
+    public BackboneElement() {
+      super();
+    }
 
-  /**
-   * @return {@link #modifierExtension} (May be used to represent additional
-   *         information that is not part of the basic definition of the element
-   *         and that modifies the understanding of the element in which it is
-   *         contained and/or the understanding of the containing element's
-   *         descendants. Usually modifier elements provide negation or
-   *         qualification. To make the use of extensions safe and manageable,
-   *         there is a strict set of governance applied to the definition and use
-   *         of extensions. Though any implementer can define an extension, there
-   *         is a set of requirements that SHALL be met as part of the definition
-   *         of the extension. Applications processing a resource are required to
-   *         check for modifier extensions.
-   * 
-   *         Modifier extensions SHALL NOT change the meaning of any elements on
-   *         Resource or DomainResource (including cannot change the meaning of
-   *         modifierExtension itself).)
-   */
-  public List<Extension> getModifierExtension() {
-    if (this.modifierExtension == null)
-      this.modifierExtension = new ArrayList<Extension>();
-    return this.modifierExtension;
-  }
+    /**
+     * @return {@link #modifierExtension} (May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.
 
-  /**
-   * @return Returns a reference to <code>this</code> for easy method chaining
-   */
-  public BackboneElement setModifierExtension(List<Extension> theModifierExtension) {
-    this.modifierExtension = theModifierExtension;
-    return this;
-  }
+Modifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).)
+     */
+    public List<Extension> getModifierExtension() { 
+      if (this.modifierExtension == null)
+        this.modifierExtension = new ArrayList<Extension>();
+      return this.modifierExtension;
+    }
 
-  public boolean hasModifierExtension() {
-    if (this.modifierExtension == null)
-      return false;
-    for (Extension item : this.modifierExtension)
-      if (!item.isEmpty())
-        return true;
-    return false;
-  }
-
-  public Extension addModifierExtension() { // 3
-    Extension t = new Extension();
-    if (this.modifierExtension == null)
-      this.modifierExtension = new ArrayList<Extension>();
-    this.modifierExtension.add(t);
-    return t;
-  }
-
-  public BackboneElement addModifierExtension(Extension t) { // 3
-    if (t == null)
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public BackboneElement setModifierExtension(List<Extension> theModifierExtension) { 
+      this.modifierExtension = theModifierExtension;
       return this;
-    if (this.modifierExtension == null)
-      this.modifierExtension = new ArrayList<Extension>();
-    this.modifierExtension.add(t);
-    return this;
-  }
-
-  /**
-   * @return The first repetition of repeating field {@link #modifierExtension},
-   *         creating it if it does not already exist {3}
-   */
-  public Extension getModifierExtensionFirstRep() {
-    if (getModifierExtension().isEmpty()) {
-      addModifierExtension();
-    }
-    return getModifierExtension().get(0);
-  }
-
-  protected void listChildren(List<Property> children) {
-    super.listChildren(children);
-    children.add(new Property("modifierExtension", "Extension",
-        "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).",
-        0, java.lang.Integer.MAX_VALUE, modifierExtension));
-  }
-
-  @Override
-  public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-    switch (_hash) {
-    case -298878168:
-      /* modifierExtension */ return new Property("modifierExtension", "Extension",
-          "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).",
-          0, java.lang.Integer.MAX_VALUE, modifierExtension);
-    default:
-      return super.getNamedProperty(_hash, _name, _checkValid);
     }
 
-  }
-
-  @Override
-  public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-    switch (hash) {
-    case -298878168:
-      /* modifierExtension */ return this.modifierExtension == null ? new Base[0]
-          : this.modifierExtension.toArray(new Base[this.modifierExtension.size()]); // Extension
-    default:
-      return super.getProperty(hash, name, checkValid);
+    public boolean hasModifierExtension() { 
+      if (this.modifierExtension == null)
+        return false;
+      for (Extension item : this.modifierExtension)
+        if (!item.isEmpty())
+          return true;
+      return false;
     }
 
-  }
-
-  @Override
-  public Base setProperty(int hash, String name, Base value) throws FHIRException {
-    switch (hash) {
-    case -298878168: // modifierExtension
-      this.getModifierExtension().add(TypeConvertor.castToExtension(value)); // Extension
-      return value;
-    default:
-      return super.setProperty(hash, name, value);
+    public Extension addModifierExtension() { //3
+      Extension t = new Extension();
+      if (this.modifierExtension == null)
+        this.modifierExtension = new ArrayList<Extension>();
+      this.modifierExtension.add(t);
+      return t;
     }
 
-  }
-
-  @Override
-  public Base setProperty(String name, Base value) throws FHIRException {
-    if (name.equals("modifierExtension")) {
-      this.getModifierExtension().add(TypeConvertor.castToExtension(value));
-    } else
-      return super.setProperty(name, value);
-    return value;
-  }
-
-  @Override
-  public Base makeProperty(int hash, String name) throws FHIRException {
-    switch (hash) {
-    case -298878168:
-      return addModifierExtension();
-    default:
-      return super.makeProperty(hash, name);
+    public BackboneElement addModifierExtension(Extension t) { //3
+      if (t == null)
+        return this;
+      if (this.modifierExtension == null)
+        this.modifierExtension = new ArrayList<Extension>();
+      this.modifierExtension.add(t);
+      return this;
     }
 
-  }
-
-  @Override
-  public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-    switch (hash) {
-    case -298878168:
-      /* modifierExtension */ return new String[] { "Extension" };
-    default:
-      return super.getTypesForProperty(hash, name);
+    /**
+     * @return The first repetition of repeating field {@link #modifierExtension}, creating it if it does not already exist {3}
+     */
+    public Extension getModifierExtensionFirstRep() { 
+      if (getModifierExtension().isEmpty()) {
+        addModifierExtension();
+      }
+      return getModifierExtension().get(0);
     }
 
-  }
+      protected void listChildren(List<Property> children) {
+        super.listChildren(children);
+        children.add(new Property("modifierExtension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).", 0, java.lang.Integer.MAX_VALUE, modifierExtension));
+      }
 
-  @Override
-  public Base addChild(String name) throws FHIRException {
-    if (name.equals("modifierExtension")) {
-      return addModifierExtension();
-    } else
-      return super.addChild(name);
-  }
+      @Override
+      public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+        switch (_hash) {
+        case -298878168: /*modifierExtension*/  return new Property("modifierExtension", "Extension", "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).", 0, java.lang.Integer.MAX_VALUE, modifierExtension);
+        default: return super.getNamedProperty(_hash, _name, _checkValid);
+        }
+
+      }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -298878168: /*modifierExtension*/ return this.modifierExtension == null ? new Base[0] : this.modifierExtension.toArray(new Base[this.modifierExtension.size()]); // Extension
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -298878168: // modifierExtension
+          this.getModifierExtension().add(TypeConvertor.castToExtension(value)); // Extension
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("modifierExtension")) {
+          this.getModifierExtension().add(TypeConvertor.castToExtension(value));
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -298878168:  return addModifierExtension(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -298878168: /*modifierExtension*/ return new String[] {"Extension"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("modifierExtension")) {
+          return addModifierExtension();
+        }
+        else
+          return super.addChild(name);
+      }
 
   public String fhirType() {
     return "BackboneElement";
 
   }
 
-  public abstract BackboneElement copy();
+      public abstract BackboneElement copy();
 
-  public void copyValues(BackboneElement dst) {
-    super.copyValues(dst);
-    if (modifierExtension != null) {
-      dst.modifierExtension = new ArrayList<Extension>();
-      for (Extension i : modifierExtension)
-        dst.modifierExtension.add(i.copy());
-    }
-    ;
-  }
+      public void copyValues(BackboneElement dst) {
+        super.copyValues(dst);
+        if (modifierExtension != null) {
+          dst.modifierExtension = new ArrayList<Extension>();
+          for (Extension i : modifierExtension)
+            dst.modifierExtension.add(i.copy());
+        };
+      }
 
-  @Override
-  public boolean equalsDeep(Base other_) {
-    if (!super.equalsDeep(other_))
-      return false;
-    if (!(other_ instanceof BackboneElement))
-      return false;
-    BackboneElement o = (BackboneElement) other_;
-    return compareDeep(modifierExtension, o.modifierExtension, true);
-  }
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof BackboneElement))
+          return false;
+        BackboneElement o = (BackboneElement) other_;
+        return compareDeep(modifierExtension, o.modifierExtension, true);
+      }
 
-  @Override
-  public boolean equalsShallow(Base other_) {
-    if (!super.equalsShallow(other_))
-      return false;
-    if (!(other_ instanceof BackboneElement))
-      return false;
-    BackboneElement o = (BackboneElement) other_;
-    return true;
-  }
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof BackboneElement))
+          return false;
+        BackboneElement o = (BackboneElement) other_;
+        return true;
+      }
 
-  public boolean isEmpty() {
-    return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(modifierExtension);
-  }
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(modifierExtension);
+      }
 
 // Manual code (from Configuration.txt):
   public void checkNoModifiers(String noun, String verb) throws FHIRException {
-    if (hasModifierExtension()) {
-      throw new FHIRException("Found unknown Modifier Exceptions on " + noun + " doing " + verb);
-    }
-
+        if (hasModifierExtension()) {
+          throw new FHIRException("Found unknown Modifier Exceptions on "+noun+" doing "+verb);
+        }
+        
   }
-
+  
   public void addModifierExtension(String url, DataType value) {
     if (isDisallowExtensions())
       throw new Error("Extensions are not allowed in this context");
     Extension ex = new Extension();
     ex.setUrl(url);
     ex.setValue(value);
-    getModifierExtension().add(ex);
+    getModifierExtension().add(ex);    
   }
 
-  @Override
-  public Extension getExtensionByUrl(String theUrl) {
-    org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
-    ArrayList<Extension> retVal = new ArrayList<Extension>();
-    Extension res = super.getExtensionByUrl(theUrl);
-    if (res != null) {
-      retVal.add(res);
-    }
-    for (Extension next : getModifierExtension()) {
-      if (theUrl.equals(next.getUrl())) {
-        retVal.add(next);
-      }
-    }
-    if (retVal.size() == 0)
-      return null;
-    else {
-      org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url " + theUrl + " must have only one match");
-      return retVal.get(0);
-    }
-  }
 
-  @Override
-  public void removeExtension(String theUrl) {
-    for (int i = getModifierExtension().size() - 1; i >= 0; i--) {
-      if (theUrl.equals(getExtension().get(i).getUrl()))
-        getExtension().remove(i);
-    }
-    super.removeExtension(theUrl);
-  }
+   @Override
+   public Extension getExtensionByUrl(String theUrl) {
+     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
+     ArrayList<Extension> retVal = new ArrayList<Extension>();
+     Extension res = super.getExtensionByUrl(theUrl);
+     if (res != null) {
+       retVal.add(res);
+     }
+     for (Extension next : getModifierExtension()) {
+       if (theUrl.equals(next.getUrl())) {
+         retVal.add(next);
+       }
+     }
+     if (retVal.size() == 0)
+       return null;
+     else {
+       org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url "+theUrl+" must have only one match");
+       return retVal.get(0);
+     }
+   }
+  
+   @Override
+   public void removeExtension(String theUrl) {
+     for (int i = getModifierExtension().size()-1; i >= 0; i--) {
+       if (theUrl.equals(getExtension().get(i).getUrl()))
+         getExtension().remove(i);
+     }
+     super.removeExtension(theUrl);
+   }
+   
 
-  /**
-   * Returns an unmodifiable list containing all extensions on this element which
-   * match the given URL.
-   * 
-   * @param theUrl The URL. Must not be blank or null.
-   * @return an unmodifiable list containing all extensions on this element which
-   *         match the given URL
-   */
-  @Override
-  public List<Extension> getExtensionsByUrl(String theUrl) {
-    org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
-    ArrayList<Extension> retVal = new ArrayList<Extension>();
-    retVal.addAll(super.getExtensionsByUrl(theUrl));
-    for (Extension next : getModifierExtension()) {
-      if (theUrl.equals(next.getUrl())) {
-        retVal.add(next);
-      }
-    }
-    return java.util.Collections.unmodifiableList(retVal);
-  }
-
+   /**
+    * Returns an unmodifiable list containing all extensions on this element which 
+    * match the given URL.
+    * 
+    * @param theUrl The URL. Must not be blank or null.
+    * @return an unmodifiable list containing all extensions on this element which 
+    * match the given URL
+    */
+   @Override
+   public List<Extension> getExtensionsByUrl(String theUrl) {
+     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
+     ArrayList<Extension> retVal = new ArrayList<Extension>();
+     retVal.addAll(super.getExtensionsByUrl(theUrl));
+     for (Extension next : getModifierExtension()) {
+       if (theUrl.equals(next.getUrl())) {
+         retVal.add(next);
+       }
+     }
+     return java.util.Collections.unmodifiableList(retVal);
+   }
+   
 // end addition
 
 }
+

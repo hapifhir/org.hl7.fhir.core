@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,62 +34,50 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ContractAssetsubtype {
 
-  /**
-   * To be completed
-   */
-  PARTICIPATION,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ContractAssetsubtype fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("participation".equals(codeString))
-      return PARTICIPATION;
-    throw new FHIRException("Unknown ContractAssetsubtype code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PARTICIPATION:
-      return "participation";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * To be completed
+         */
+        PARTICIPATION, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ContractAssetsubtype fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("participation".equals(codeString))
+          return PARTICIPATION;
+        throw new FHIRException("Unknown ContractAssetsubtype code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PARTICIPATION: return "participation";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/contract-asset-subtype";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PARTICIPATION: return "To be completed";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PARTICIPATION: return "Participation";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/contract-asset-subtype";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PARTICIPATION:
-      return "To be completed";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PARTICIPATION:
-      return "Participation";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

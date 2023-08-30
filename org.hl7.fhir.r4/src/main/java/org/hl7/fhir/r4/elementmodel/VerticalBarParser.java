@@ -29,6 +29,8 @@ package org.hl7.fhir.r4.elementmodel;
   
  */
 
+
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +47,7 @@ import org.hl7.fhir.r4.model.StructureDefinition;
 /**
  * This class provides special support for parsing v2 by the v2 logical model
  * For the logical model, see the FHIRPath spec
- * 
+ *         
  * @author Grahame Grieve
  *
  */
@@ -53,9 +55,9 @@ public class VerticalBarParser extends ParserBase {
 
   /**
    * Delimiters for a message. Note that the application rarely needs to concern
-   * itself with this information; it mainly exists for internal use. However if a
-   * message is being written to a spec that calls for non-standard delimiters,
-   * the application can set them here.
+   * itself with this information; it mainly exists for internal use. However if
+   * a message is being written to a spec that calls for non-standard delimiters,
+   * the application can set them here.  
    * 
    * @author Grahame
    *
@@ -70,22 +72,23 @@ public class VerticalBarParser extends ParserBase {
     /**
      * Hl7 defined default delimiter for a component
      */
-    public final static char DEFAULT_DELIMITER_COMPONENT = '^';
+    public final static char  DEFAULT_DELIMITER_COMPONENT = '^';
 
     /**
      * Hl7 defined default delimiter for a subcomponent
      */
-    public final static char DEFAULT_DELIMITER_SUBCOMPONENT = '&';
+    public final static char  DEFAULT_DELIMITER_SUBCOMPONENT = '&';
 
     /**
      * Hl7 defined default delimiter for a repeat
      */
-    public final static char DEFAULT_DELIMITER_REPETITION = '~';
+    public final static char  DEFAULT_DELIMITER_REPETITION = '~';
 
     /**
      * Hl7 defined default delimiter for an escape
      */
-    public final static char DEFAULT_CHARACTER_ESCAPE = '\\';
+    public final static char  DEFAULT_CHARACTER_ESCAPE = '\\';
+
 
     /**
      * defined escape character for this message
@@ -95,41 +98,42 @@ public class VerticalBarParser extends ParserBase {
     /**
      * defined repetition character for this message
      */
-    private char repetitionDelimiter;
+      private char repetitionDelimiter;
 
     /**
      * defined field character for this message
      */
-    private char fieldDelimiter;
+      private char fieldDelimiter;
 
     /**
      * defined subComponent character for this message
      */
-    private char subComponentDelimiter;
+      private char subComponentDelimiter;
 
     /**
      * defined component character for this message
      */
-    private char componentDelimiter;
+      private char componentDelimiter;
 
-    /**
-     * create
-     *
-     */
+      /**
+       * create
+       *
+       */
     public Delimiters() {
       super();
       reset();
     }
 
     public boolean matches(Delimiters other) {
-      return escapeCharacter == other.escapeCharacter && repetitionDelimiter == other.repetitionDelimiter
-          && fieldDelimiter == other.fieldDelimiter && subComponentDelimiter == other.subComponentDelimiter
-          && componentDelimiter == other.componentDelimiter;
+      return escapeCharacter == other.escapeCharacter &&
+      repetitionDelimiter == other.repetitionDelimiter &&
+      fieldDelimiter == other.fieldDelimiter &&
+      subComponentDelimiter == other.subComponentDelimiter &&
+      componentDelimiter == other.componentDelimiter;
     }
-
+    
     /**
      * get defined component character for this message
-     * 
      * @return
      */
     public char getComponentDelimiter() {
@@ -138,7 +142,6 @@ public class VerticalBarParser extends ParserBase {
 
     /**
      * set defined component character for this message
-     * 
      * @param componentDelimiter
      */
     public void setComponentDelimiter(char componentDelimiter) {
@@ -147,7 +150,6 @@ public class VerticalBarParser extends ParserBase {
 
     /**
      * get defined escape character for this message
-     * 
      * @return
      */
     public char getEscapeCharacter() {
@@ -156,7 +158,6 @@ public class VerticalBarParser extends ParserBase {
 
     /**
      * set defined escape character for this message
-     * 
      * @param escapeCharacter
      */
     public void setEscapeCharacter(char escapeCharacter) {
@@ -165,7 +166,6 @@ public class VerticalBarParser extends ParserBase {
 
     /**
      * get defined field character for this message
-     * 
      * @return
      */
     public char getFieldDelimiter() {
@@ -174,7 +174,6 @@ public class VerticalBarParser extends ParserBase {
 
     /**
      * set defined field character for this message
-     * 
      * @param fieldDelimiter
      */
     public void setFieldDelimiter(char fieldDelimiter) {
@@ -183,7 +182,6 @@ public class VerticalBarParser extends ParserBase {
 
     /**
      * get repeat field character for this message
-     * 
      * @return
      */
     public char getRepetitionDelimiter() {
@@ -192,7 +190,6 @@ public class VerticalBarParser extends ParserBase {
 
     /**
      * set repeat field character for this message
-     * 
      * @param repetitionDelimiter
      */
     public void setRepetitionDelimiter(char repetitionDelimiter) {
@@ -201,7 +198,6 @@ public class VerticalBarParser extends ParserBase {
 
     /**
      * get sub-component field character for this message
-     * 
      * @return
      */
     public char getSubComponentDelimiter() {
@@ -210,7 +206,6 @@ public class VerticalBarParser extends ParserBase {
 
     /**
      * set sub-component field character for this message
-     * 
      * @param subComponentDelimiter
      */
     public void setSubComponentDelimiter(char subComponentDelimiter) {
@@ -221,72 +216,55 @@ public class VerticalBarParser extends ParserBase {
      * reset to default HL7 values
      *
      */
-    public void reset() {
+    public void reset () {
       fieldDelimiter = DEFAULT_DELIMITER_FIELD;
       componentDelimiter = DEFAULT_DELIMITER_COMPONENT;
       subComponentDelimiter = DEFAULT_DELIMITER_SUBCOMPONENT;
       repetitionDelimiter = DEFAULT_DELIMITER_REPETITION;
       escapeCharacter = DEFAULT_CHARACTER_ESCAPE;
     }
-
+    
     /**
      * check that the delimiters are valid
      * 
      * @throws FHIRException
      */
     public void check() throws FHIRException {
-      rule(componentDelimiter != fieldDelimiter,
-          "Delimiter Error: \"" + componentDelimiter + "\" is used for both CPComponent and CPField");
-      rule(subComponentDelimiter != fieldDelimiter,
-          "Delimiter Error: \"" + subComponentDelimiter + "\" is used for both CPSubComponent and CPField");
-      rule(subComponentDelimiter != componentDelimiter,
-          "Delimiter Error: \"" + subComponentDelimiter + "\" is used for both CPSubComponent and CPComponent");
-      rule(repetitionDelimiter != fieldDelimiter,
-          "Delimiter Error: \"" + repetitionDelimiter + "\" is used for both Repetition and CPField");
-      rule(repetitionDelimiter != componentDelimiter,
-          "Delimiter Error: \"" + repetitionDelimiter + "\" is used for both Repetition and CPComponent");
-      rule(repetitionDelimiter != subComponentDelimiter,
-          "Delimiter Error: \"" + repetitionDelimiter + "\" is used for both Repetition and CPSubComponent");
-      rule(escapeCharacter != fieldDelimiter,
-          "Delimiter Error: \"" + escapeCharacter + "\" is used for both Escape and CPField");
-      rule(escapeCharacter != componentDelimiter,
-          "Delimiter Error: \"" + escapeCharacter + "\" is used for both Escape and CPComponent");
-      rule(escapeCharacter != subComponentDelimiter,
-          "Delimiter Error: \"" + escapeCharacter + "\" is used for both Escape and CPSubComponent");
-      rule(escapeCharacter != repetitionDelimiter,
-          "Delimiter Error: \"" + escapeCharacter + "\" is used for both Escape and Repetition");
+        rule(componentDelimiter != fieldDelimiter, "Delimiter Error: \""+componentDelimiter+"\" is used for both CPComponent and CPField");
+        rule(subComponentDelimiter != fieldDelimiter, "Delimiter Error: \""+subComponentDelimiter+"\" is used for both CPSubComponent and CPField");
+        rule(subComponentDelimiter != componentDelimiter, "Delimiter Error: \""+subComponentDelimiter+"\" is used for both CPSubComponent and CPComponent");
+        rule(repetitionDelimiter != fieldDelimiter, "Delimiter Error: \""+repetitionDelimiter+"\" is used for both Repetition and CPField");
+        rule(repetitionDelimiter != componentDelimiter, "Delimiter Error: \""+repetitionDelimiter+"\" is used for both Repetition and CPComponent");
+        rule(repetitionDelimiter != subComponentDelimiter, "Delimiter Error: \""+repetitionDelimiter+"\" is used for both Repetition and CPSubComponent");
+        rule(escapeCharacter != fieldDelimiter, "Delimiter Error: \""+escapeCharacter+"\" is used for both Escape and CPField");
+        rule(escapeCharacter != componentDelimiter, "Delimiter Error: \""+escapeCharacter+"\" is used for both Escape and CPComponent");
+        rule(escapeCharacter != subComponentDelimiter, "Delimiter Error: \""+escapeCharacter+"\" is used for both Escape and CPSubComponent");
+        rule(escapeCharacter != repetitionDelimiter, "Delimiter Error: \""+escapeCharacter+"\" is used for both Escape and Repetition");
     }
 
     /**
-     * check to see whether ch is a delimiter character (vertical bar parser
-     * support)
-     * 
+     * check to see whether ch is a delimiter character (vertical bar parser support)
      * @param ch
      * @return
      */
     public boolean isDelimiter(char ch) {
-      return ch == escapeCharacter || ch == repetitionDelimiter || ch == fieldDelimiter || ch == subComponentDelimiter
-          || ch == componentDelimiter;
+      return ch == escapeCharacter || ch == repetitionDelimiter || ch == fieldDelimiter || ch == subComponentDelimiter  || ch ==  componentDelimiter;
     }
 
-    /**
-     * check to see whether ch is a cell delimiter char (vertical bar parser
-     * support)
-     * 
+    /** 
+     * check to see whether ch is a cell delimiter char (vertical bar parser support)
      * @param ch
      * @return
      */
     public boolean isCellDelimiter(char ch) {
-      return ch == repetitionDelimiter || ch == fieldDelimiter || ch == subComponentDelimiter
-          || ch == componentDelimiter;
+      return ch == repetitionDelimiter || ch == fieldDelimiter || ch == subComponentDelimiter  || ch ==  componentDelimiter;
     }
 
     /**
      * get the escape for a character
-     * 
      * @param ch
      * @return
-     */
+     */ 
     public String getEscape(char ch) {
       if (ch == escapeCharacter)
         return escapeCharacter + "E" + escapeCharacter;
@@ -300,33 +278,30 @@ public class VerticalBarParser extends ParserBase {
         return escapeCharacter + "R" + escapeCharacter;
       else
         return null;
-    }
+      }
 
     /**
      * build the MSH-2 content
-     * 
      * @return
      */
     public String forMSH2() {
       return "" + componentDelimiter + repetitionDelimiter + escapeCharacter + subComponentDelimiter;
     }
 
-    /**
+    /** 
      * check to see whether ch represents a delimiter escape
-     * 
      * @param ch
      * @return
      */
     public boolean isDelimiterEscape(char ch) {
-      return ch == 'F' || ch == 'S' || ch == 'E' || ch == 'T' || ch == 'R';
+      return ch == 'F' || ch == 'S'  || ch == 'E' || ch == 'T' || ch == 'R';
     }
 
-    /**
+    /** 
      * get escape for ch in an escape
-     * 
      * @param ch
      * @return
-     * @throws DefinitionException
+     * @throws DefinitionException 
      * @throws FHIRException
      */
     public char getDelimiterEscapeChar(char ch) throws DefinitionException {
@@ -344,11 +319,12 @@ public class VerticalBarParser extends ParserBase {
         throw new DefinitionException("internal error in getDelimiterEscapeChar");
     }
   }
-
+  
   public class VerticalBarParserReader {
 
+    
     private BufferedInputStream stream;
-    private String charsetName;
+    private String charsetName; 
     private InputStreamReader reader = null;
     private boolean finished;
     private char peeked;
@@ -378,7 +354,7 @@ public class VerticalBarParser extends ParserBase {
     public void setStream(BufferedInputStream stream) {
       this.stream = stream;
     }
-
+    
     private void open() throws FHIRException {
       try {
         stream.mark(2048);
@@ -398,22 +374,22 @@ public class VerticalBarParser extends ParserBase {
         char[] temp = new char[1];
         rule(reader.read(temp, 0, 1) == 1, "unable to read 1 character from the stream");
         peeked = temp[0];
-      }
+      } 
     }
 
     public String read(int charCount) throws FHIRException {
       String value = "";
-      for (int i = 0; i < charCount; i++)
+      for (int i = 0; i < charCount; i++) 
         value = value + read();
       return value;
     }
-
-    public void skipEOL() throws FHIRException {
+    
+    public void skipEOL () throws FHIRException {
       while (!finished && (peek() == '\r' || peek() == '\n'))
         read();
     }
-
-    public char read() throws FHIRException {
+    
+    public char read () throws FHIRException {
       rule(!finished, "No more content to read");
       char value = peek();
       offset++;
@@ -426,23 +402,23 @@ public class VerticalBarParser extends ParserBase {
         next();
       } catch (Exception e) {
         throw new FHIRException(e);
-      }
+      } 
       return value;
     }
 
-    public boolean isFinished() {
-      return finished;
+    public boolean isFinished () {
+      return finished;    
     }
-
+    
     public char peek() throws FHIRException {
       rule(!finished, "Cannot peek");
-      return peeked;
+      return peeked;    
     }
 
     public void mark() {
       stream.mark(2048);
     }
-
+    
     public void reset() throws FHIRException {
       try {
         stream.reset();
@@ -472,17 +448,15 @@ public class VerticalBarParser extends ParserBase {
 
   private String charset = "ASCII";
   private Delimiters delimiters = new Delimiters();
-
+  
   @Override
   public Element parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class,
-        "http://hl7.org/fhir/v2/StructureDefinition/Message");
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/v2/StructureDefinition/Message");
     Element message = new Element("Message", new Property(context, sd.getSnapshot().getElementFirstRep(), sd));
     VerticalBarParserReader reader = new VerticalBarParserReader(new BufferedInputStream(stream), charset);
-
+    
     preDecode(reader);
-    while (!reader.isFinished()) // && (getOptions().getSegmentLimit() == 0 || getOptions().getSegmentLimit() >
-                                 // message.getSegments().size()))
+    while (!reader.isFinished()) //  && (getOptions().getSegmentLimit() == 0 || getOptions().getSegmentLimit() > message.getSegments().size()))
       readSegment(message, reader);
 
     return message;
@@ -493,14 +467,14 @@ public class VerticalBarParser extends ParserBase {
     String temp = reader.read(3);
     rule(temp.equals("MSH") || temp.equals("FHS"), "Found '" + temp + "' looking for 'MSH' or 'FHS'");
     readDelimiters(reader);
-    // readVersion(message); - probably don't need to do that?
+    // readVersion(message); - probably don't need to do that? 
     // readCharacterSet();
     reader.reset(); // ready to read message now
   }
 
   private void rule(boolean test, String msg) throws FHIRException {
     if (!test)
-      throw new FHIRException(msg);
+      throw new FHIRException(msg);    
   }
 
   private void readDelimiters(VerticalBarParserReader reader) throws FHIRException {
@@ -522,7 +496,7 @@ public class VerticalBarParser extends ParserBase {
     Element segmentCode = new Element("code", segment.getProperty().getChild("code"));
     segment.getChildren().add(segmentCode);
     segmentCode.setValue(reader.read(3));
-
+    
     int index = 0;
     while (!reader.isFinished() && !reader.IsEOL()) {
       index++;
@@ -531,12 +505,14 @@ public class VerticalBarParser extends ParserBase {
         rule(reader.read() == delimiters.getFieldDelimiter(), "Expected to find field delimiter");
     }
     if (!reader.isFinished())
-      reader.skipEOL();
+      reader.skipEOL();    
   }
 
+
+  
   private void readField(VerticalBarParserReader reader, Element segment, int index) {
     // TODO Auto-generated method stub
-
+    
   }
 
   @Override

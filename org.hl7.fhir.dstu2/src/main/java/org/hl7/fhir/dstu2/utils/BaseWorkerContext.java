@@ -29,6 +29,8 @@ package org.hl7.fhir.dstu2.utils;
   
  */
 
+
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -80,12 +82,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   protected ValueSetExpanderFactory expansionCache = new ValueSetExpansionCache(this);
   protected boolean cacheValidation; // if true, do an expansion and cache the expansion
-  private Set<String> failed = new HashSet<String>(); // value sets for which we don't try to do expansion, since the
-                                                      // first attempt to get a comprehensive expansion was not
-                                                      // successful
-  protected Map<String, Map<String, ValidationResult>> validationCache = new HashMap<String, Map<String, ValidationResult>>();
+  private Set<String> failed = new HashSet<String>(); // value sets for which we don't try to do expansion, since the first attempt to get a comprehensive expansion was not successful
+  protected Map<String, Map<String, ValidationResult>> validationCache = new HashMap<String, Map<String,ValidationResult>>();
 
-  // private ValueSetExpansionCache expansionCache; //
+  // private ValueSetExpansionCache expansionCache; //   
 
   protected FHIRToolingClient txServer;
   private Locale locale;
@@ -102,8 +102,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return true;
     else {
       Conformance conf = txServer.getConformanceStatement();
-      for (Extension ex : ToolingExtensions.getExtensions(conf,
-          "http://hl7.org/fhir/StructureDefinition/conformance-supported-system")) {
+      for (Extension ex : ToolingExtensions.getExtensions(conf, "http://hl7.org/fhir/StructureDefinition/conformance-supported-system")) {
         if (system.equals(((UriType) ex.getValue()).getValue())) {
           return true;
         }
@@ -122,7 +121,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       ValueSet result = txServer.expandValueset(vs, null, params);
       return new ValueSetExpansionOutcome(result);
     } catch (Exception e) {
-      return new ValueSetExpansionOutcome("Error expanding ValueSet \"" + vs.getUrl() + ": " + e.getMessage());
+      return new ValueSetExpansionOutcome("Error expanding ValueSet \""+vs.getUrl()+": "+e.getMessage());
     }
   }
 
@@ -191,7 +190,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private String cacheId(Coding coding) {
-    return "|" + coding.getSystem() + "|" + coding.getVersion() + "|" + coding.getCode() + "|" + coding.getDisplay();
+    return "|"+coding.getSystem()+"|"+coding.getVersion()+"|"+coding.getCode()+"|"+coding.getDisplay();
   }
 
   private String cacheId(CodeableConcept cc) {
@@ -230,25 +229,26 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private ValidationResult serverValidateCode(Parameters pin) {
-    Parameters pout = txServer.operateType(ValueSet.class, "validate-code", pin);
-    boolean ok = false;
-    String message = "No Message returned";
-    String display = null;
-    for (ParametersParameterComponent p : pout.getParameter()) {
-      if (p.getName().equals("result"))
-        ok = ((BooleanType) p.getValue()).getValue().booleanValue();
-      else if (p.getName().equals("message"))
-        message = ((StringType) p.getValue()).getValue();
-      else if (p.getName().equals("display"))
-        display = ((StringType) p.getValue()).getValue();
-    }
-    if (!ok)
-      return new ValidationResult(IssueSeverity.ERROR, message);
-    else if (display != null)
-      return new ValidationResult(new ConceptDefinitionComponent().setDisplay(display));
-    else
-      return new ValidationResult(null);
+  Parameters pout = txServer.operateType(ValueSet.class, "validate-code", pin);
+  boolean ok = false;
+  String message = "No Message returned";
+  String display = null;
+  for (ParametersParameterComponent p : pout.getParameter()) {
+    if (p.getName().equals("result"))
+      ok = ((BooleanType) p.getValue()).getValue().booleanValue();
+    else if (p.getName().equals("message"))
+      message = ((StringType) p.getValue()).getValue();
+    else if (p.getName().equals("display"))
+      display = ((StringType) p.getValue()).getValue();
   }
+  if (!ok)
+    return new ValidationResult(IssueSeverity.ERROR, message);
+  else if (display != null)
+    return new ValidationResult(new ConceptDefinitionComponent().setDisplay(display));
+  else
+    return new ValidationResult(null);
+  }
+
 
   @Override
   public ValueSetExpansionComponent expandVS(ConceptSetComponent inc) {
@@ -267,22 +267,20 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       else
         return verifyCodeExternal(null, new Coding().setSystem(system).setCode(code).setDisplay(display), true);
     } catch (Exception e) {
-      return new ValidationResult(IssueSeverity.FATAL,
-          "Error validating code \"" + code + "\" in system \"" + system + "\": " + e.getMessage());
+      return new ValidationResult(IssueSeverity.FATAL, "Error validating code \""+code+"\" in system \""+system+"\": "+e.getMessage());
     }
   }
+
 
   @Override
   public ValidationResult validateCode(Coding code, ValueSet vs) {
     try {
       if (codeSystems.containsKey(code.getSystem()) || vs.hasExpansion())
-        return verifyCodeInternal(codeSystems.get(code.getSystem()), code.getSystem(), code.getCode(),
-            code.getDisplay());
+        return verifyCodeInternal(codeSystems.get(code.getSystem()), code.getSystem(), code.getCode(), code.getDisplay());
       else
         return verifyCodeExternal(vs, code, true);
     } catch (Exception e) {
-      return new ValidationResult(IssueSeverity.FATAL,
-          "Error validating code \"" + code + "\" in system \"" + code.getSystem() + "\": " + e.getMessage());
+      return new ValidationResult(IssueSeverity.FATAL, "Error validating code \""+code+"\" in system \""+code.getSystem()+"\": "+e.getMessage());
     }
   }
 
@@ -294,10 +292,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       else
         return verifyCodeExternal(vs, code, true);
     } catch (Exception e) {
-      return new ValidationResult(IssueSeverity.FATAL,
-          "Error validating code \"" + code.toString() + "\": " + e.getMessage());
+      return new ValidationResult(IssueSeverity.FATAL, "Error validating code \""+code.toString()+"\": "+e.getMessage());
     }
   }
+
 
   @Override
   public ValidationResult validateCode(String system, String code, String display, ValueSet vs) {
@@ -309,8 +307,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       else
         return verifyCodeExternal(vs, new Coding().setSystem(system).setCode(code).setDisplay(display), true);
     } catch (Exception e) {
-      return new ValidationResult(IssueSeverity.FATAL,
-          "Error validating code \"" + code + "\" in system \"" + system + "\": " + e.getMessage());
+      return new ValidationResult(IssueSeverity.FATAL, "Error validating code \""+code+"\" in system \""+system+"\": "+e.getMessage());
     }
   }
 
@@ -321,8 +318,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       vs.getCompose().addInclude(vsi);
       return verifyCodeExternal(vs, new Coding().setSystem(system).setCode(code).setDisplay(display), true);
     } catch (Exception e) {
-      return new ValidationResult(IssueSeverity.FATAL,
-          "Error validating code \"" + code + "\" in system \"" + system + "\": " + e.getMessage());
+      return new ValidationResult(IssueSeverity.FATAL, "Error validating code \""+code+"\" in system \""+system+"\": "+e.getMessage());
     }
   }
 
@@ -335,8 +331,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
-  private ValidationResult verifyCodeInternal(ValueSet vs, CodeableConcept code)
-      throws FileNotFoundException, ETooCostly, IOException {
+  private ValidationResult verifyCodeInternal(ValueSet vs, CodeableConcept code) throws FileNotFoundException, ETooCostly, IOException {
     for (Coding c : code.getCoding()) {
       ValidationResult res = verifyCodeInternal(vs, c.getSystem(), c.getCode(), c.getDisplay());
       if (res.isOk())
@@ -348,8 +343,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return new ValidationResult(IssueSeverity.ERROR, "None of the codes are in the specified value set");
   }
 
-  private ValidationResult verifyCodeInternal(ValueSet vs, String system, String code, String display)
-      throws FileNotFoundException, ETooCostly, IOException {
+  private ValidationResult verifyCodeInternal(ValueSet vs, String system, String code, String display) throws FileNotFoundException, ETooCostly, IOException {
     if (vs.hasExpansion())
       return verifyCodeInExpansion(vs, system, code, display);
     else if (vs.hasCodeSystem() && !vs.hasCompose())
@@ -366,8 +360,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private ValidationResult verifyCodeInCodeSystem(ValueSet vs, String system, String code, String display) {
     ConceptDefinitionComponent cc = findCodeInConcept(vs.getCodeSystem().getConcept(), code);
     if (cc == null)
-      return new ValidationResult(IssueSeverity.ERROR,
-          "Unknown Code " + code + " in " + vs.getCodeSystem().getSystem());
+      return new ValidationResult(IssueSeverity.ERROR, "Unknown Code "+code+" in "+vs.getCodeSystem().getSystem());
     if (display == null)
       return new ValidationResult(cc);
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
@@ -381,22 +374,20 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (display.equalsIgnoreCase(ds.getValue()))
         return new ValidationResult(cc);
     }
-    return new ValidationResult(IssueSeverity.ERROR,
-        "Display Name for " + code + " must be one of '" + b.toString() + "'");
+    return new ValidationResult(IssueSeverity.ERROR, "Display Name for "+code+" must be one of '"+b.toString()+"'");
   }
 
-  private ValidationResult verifyCodeInExpansion(ValueSet vs, String system, String code, String display) {
+
+  private ValidationResult verifyCodeInExpansion(ValueSet vs, String system,String code, String display) {
     ValueSetExpansionContainsComponent cc = findCode(vs.getExpansion().getContains(), code);
     if (cc == null)
-      return new ValidationResult(IssueSeverity.ERROR,
-          "Unknown Code " + code + " in " + vs.getCodeSystem().getSystem());
+      return new ValidationResult(IssueSeverity.ERROR, "Unknown Code "+code+" in "+vs.getCodeSystem().getSystem());
     if (display == null)
       return new ValidationResult(new ConceptDefinitionComponent().setCode(code).setDisplay(cc.getDisplay()));
     if (cc.hasDisplay()) {
       if (display.equalsIgnoreCase(cc.getDisplay()))
         return new ValidationResult(new ConceptDefinitionComponent().setCode(code).setDisplay(cc.getDisplay()));
-      return new ValidationResult(IssueSeverity.ERROR,
-          "Display Name for " + code + " must be '" + cc.getDisplay() + "'");
+      return new ValidationResult(IssueSeverity.ERROR, "Display Name for "+code+" must be '"+cc.getDisplay()+"'");
     }
     return null;
   }
@@ -425,6 +416,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public StructureDefinition fetchTypeDefinition(String typeName) {
-    return fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + typeName);
+    return fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+typeName);
   }
 }

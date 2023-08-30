@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,90 +34,68 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ConformanceStatementKind {
 
-  /**
-   * The Conformance instance represents the present capabilities of a specific
-   * system instance. This is the kind returned by OPTIONS for a FHIR server
-   * end-point.
-   */
-  INSTANCE,
-  /**
-   * The Conformance instance represents the capabilities of a system or piece of
-   * software, independent of a particular installation.
-   */
-  CAPABILITY,
-  /**
-   * The Conformance instance represents a set of requirements for other systems
-   * to meet; e.g. as part of an implementation guide or 'request for proposal'.
-   */
-  REQUIREMENTS,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ConformanceStatementKind fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("instance".equals(codeString))
-      return INSTANCE;
-    if ("capability".equals(codeString))
-      return CAPABILITY;
-    if ("requirements".equals(codeString))
-      return REQUIREMENTS;
-    throw new FHIRException("Unknown ConformanceStatementKind code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INSTANCE:
-      return "instance";
-    case CAPABILITY:
-      return "capability";
-    case REQUIREMENTS:
-      return "requirements";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The Conformance instance represents the present capabilities of a specific system instance.  This is the kind returned by OPTIONS for a FHIR server end-point.
+         */
+        INSTANCE, 
+        /**
+         * The Conformance instance represents the capabilities of a system or piece of software, independent of a particular installation.
+         */
+        CAPABILITY, 
+        /**
+         * The Conformance instance represents a set of requirements for other systems to meet; e.g. as part of an implementation guide or 'request for proposal'.
+         */
+        REQUIREMENTS, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ConformanceStatementKind fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("instance".equals(codeString))
+          return INSTANCE;
+        if ("capability".equals(codeString))
+          return CAPABILITY;
+        if ("requirements".equals(codeString))
+          return REQUIREMENTS;
+        throw new FHIRException("Unknown ConformanceStatementKind code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INSTANCE: return "instance";
+            case CAPABILITY: return "capability";
+            case REQUIREMENTS: return "requirements";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/conformance-statement-kind";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INSTANCE: return "The Conformance instance represents the present capabilities of a specific system instance.  This is the kind returned by OPTIONS for a FHIR server end-point.";
+            case CAPABILITY: return "The Conformance instance represents the capabilities of a system or piece of software, independent of a particular installation.";
+            case REQUIREMENTS: return "The Conformance instance represents a set of requirements for other systems to meet; e.g. as part of an implementation guide or 'request for proposal'.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INSTANCE: return "Instance";
+            case CAPABILITY: return "Capability";
+            case REQUIREMENTS: return "Requirements";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/conformance-statement-kind";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INSTANCE:
-      return "The Conformance instance represents the present capabilities of a specific system instance.  This is the kind returned by OPTIONS for a FHIR server end-point.";
-    case CAPABILITY:
-      return "The Conformance instance represents the capabilities of a system or piece of software, independent of a particular installation.";
-    case REQUIREMENTS:
-      return "The Conformance instance represents a set of requirements for other systems to meet; e.g. as part of an implementation guide or 'request for proposal'.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INSTANCE:
-      return "Instance";
-    case CAPABILITY:
-      return "Capability";
-    case REQUIREMENTS:
-      return "Requirements";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

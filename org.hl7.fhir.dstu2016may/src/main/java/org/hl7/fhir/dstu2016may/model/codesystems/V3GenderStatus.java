@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum V3GenderStatus {
 
-  /**
-   * Reproductively intact
-   */
-  I,
-  /**
-   * Reproductively neutered
-   */
-  N,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static V3GenderStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("I".equals(codeString))
-      return I;
-    if ("N".equals(codeString))
-      return N;
-    throw new FHIRException("Unknown V3GenderStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case I:
-      return "I";
-    case N:
-      return "N";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Reproductively intact
+         */
+        I, 
+        /**
+         * Reproductively neutered
+         */
+        N, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static V3GenderStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("I".equals(codeString))
+          return I;
+        if ("N".equals(codeString))
+          return N;
+        throw new FHIRException("Unknown V3GenderStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case I: return "I";
+            case N: return "N";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/v3/GenderStatus";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case I: return "Reproductively intact";
+            case N: return "Reproductively neutered";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case I: return "Intact";
+            case N: return "Neutered";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/v3/GenderStatus";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case I:
-      return "Reproductively intact";
-    case N:
-      return "Reproductively neutered";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case I:
-      return "Intact";
-    case N:
-      return "Neutered";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

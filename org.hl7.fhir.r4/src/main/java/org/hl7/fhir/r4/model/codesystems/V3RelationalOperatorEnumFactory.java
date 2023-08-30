@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class V3RelationalOperatorEnumFactory implements EnumFactory<V3RelationalOperator> {
@@ -54,7 +58,7 @@ public class V3RelationalOperatorEnumFactory implements EnumFactory<V3Relational
       return V3RelationalOperator.LT;
     if ("NE".equals(codeString))
       return V3RelationalOperator.NE;
-    throw new IllegalArgumentException("Unknown V3RelationalOperator code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3RelationalOperator code '"+codeString+"'");
   }
 
   public String toCode(V3RelationalOperator code) {
@@ -77,8 +81,8 @@ public class V3RelationalOperatorEnumFactory implements EnumFactory<V3Relational
     return "?";
   }
 
-  public String toSystem(V3RelationalOperator code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3RelationalOperator code) {
+      return code.getSystem();
+      }
 
 }

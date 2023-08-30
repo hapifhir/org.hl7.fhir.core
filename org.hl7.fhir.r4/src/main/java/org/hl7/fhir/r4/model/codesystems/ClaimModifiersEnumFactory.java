@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class ClaimModifiersEnumFactory implements EnumFactory<ClaimModifiers> {
@@ -50,7 +54,7 @@ public class ClaimModifiersEnumFactory implements EnumFactory<ClaimModifiers> {
       return ClaimModifiers.ROOH;
     if ("x".equals(codeString))
       return ClaimModifiers.X;
-    throw new IllegalArgumentException("Unknown ClaimModifiers code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ClaimModifiers code '"+codeString+"'");
   }
 
   public String toCode(ClaimModifiers code) {
@@ -69,8 +73,8 @@ public class ClaimModifiersEnumFactory implements EnumFactory<ClaimModifiers> {
     return "?";
   }
 
-  public String toSystem(ClaimModifiers code) {
-    return code.getSystem();
-  }
+    public String toSystem(ClaimModifiers code) {
+      return code.getSystem();
+      }
 
 }

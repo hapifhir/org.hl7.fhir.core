@@ -29,6 +29,8 @@ package org.hl7.fhir.dstu2.utils;
   
  */
 
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +61,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
 /**
  * Decoration utilities for various resource types
- * 
  * @author Grahame
  *
  */
@@ -67,30 +68,30 @@ public class ResourceUtilities {
 
   public final static String FHIR_LANGUAGE = "urn:ietf:bcp:47";
 
-  public static boolean isAnError(OperationOutcome error) {
-    for (OperationOutcomeIssueComponent t : error.getIssue())
-      if (t.getSeverity() == IssueSeverity.ERROR)
-        return true;
-      else if (t.getSeverity() == IssueSeverity.FATAL)
-        return true;
-    return false;
-  }
-
-  public static String getErrorDescription(OperationOutcome error) {
-    if (error.hasText() && error.getText().hasDiv())
-      return new XhtmlComposer(true, false).composePlainText(error.getText().getDiv());
-
-    StringBuilder b = new StringBuilder();
-    for (OperationOutcomeIssueComponent t : error.getIssue())
-      if (t.getSeverity() == IssueSeverity.ERROR)
-        b.append("Error:" + t.getDetails() + "\r\n");
-      else if (t.getSeverity() == IssueSeverity.FATAL)
-        b.append("Fatal:" + t.getDetails() + "\r\n");
-      else if (t.getSeverity() == IssueSeverity.WARNING)
-        b.append("Warning:" + t.getDetails() + "\r\n");
-      else if (t.getSeverity() == IssueSeverity.INFORMATION)
-        b.append("Information:" + t.getDetails() + "\r\n");
-    return b.toString();
+	public static boolean isAnError(OperationOutcome error) {
+		for (OperationOutcomeIssueComponent t : error.getIssue())
+			if (t.getSeverity() == IssueSeverity.ERROR)
+				return true;
+			else if (t.getSeverity() == IssueSeverity.FATAL)
+				return true;
+		return false;
+	}
+	
+	public static String getErrorDescription(OperationOutcome error) {  
+		if (error.hasText() && error.getText().hasDiv())
+			return new XhtmlComposer(true, false).composePlainText(error.getText().getDiv());
+		
+		StringBuilder b = new StringBuilder();
+		for (OperationOutcomeIssueComponent t : error.getIssue())
+			if (t.getSeverity() == IssueSeverity.ERROR)
+				b.append("Error:" +t.getDetails()+"\r\n");
+			else if (t.getSeverity() == IssueSeverity.FATAL)
+				b.append("Fatal:" +t.getDetails()+"\r\n");
+			else if (t.getSeverity() == IssueSeverity.WARNING)
+				b.append("Warning:" +t.getDetails()+"\r\n");
+			else if (t.getSeverity() == IssueSeverity.INFORMATION)
+				b.append("Information:" +t.getDetails()+"\r\n");
+		return b.toString();
   }
 
   public static Resource getById(Bundle feed, ResourceType type, String reference) {
@@ -109,12 +110,12 @@ public class ResourceUtilities {
     return null;
   }
 
-  public static String getLink(Bundle feed, String rel) {
-    for (BundleLinkComponent link : feed.getLink()) {
-      if (link.getRelation().equals(rel))
-        return link.getUrl();
-    }
-    return null;
+	public static String getLink(Bundle feed, String rel) {
+		for (BundleLinkComponent link : feed.getLink()) {
+			if (link.getRelation().equals(rel))
+				return link.getUrl();
+		}
+	  return null;
   }
 
   public static Meta meta(Resource resource) {
@@ -123,11 +124,10 @@ public class ResourceUtilities {
     return resource.getMeta();
   }
 
-  public static String representDataElementCollection(IWorkerContext context, Bundle bundle, boolean profileLink,
-      String linkBase) {
+  public static String representDataElementCollection(IWorkerContext context, Bundle bundle, boolean profileLink, String linkBase) {
     StringBuilder b = new StringBuilder();
     DataElement common = showDECHeader(b, bundle);
-    b.append("<table class=\"grid\">\r\n");
+    b.append("<table class=\"grid\">\r\n"); 
     List<String> cols = chooseColumns(bundle, common, b, profileLink);
     for (BundleEntryComponent e : bundle.getEntry()) {
       DataElement de = (DataElement) e.getResource();
@@ -137,8 +137,8 @@ public class ResourceUtilities {
     return b.toString();
   }
 
-  private static void renderDE(DataElement de, List<String> cols, StringBuilder b, boolean profileLink,
-      String linkBase) {
+  
+  private static void renderDE(DataElement de, List<String> cols, StringBuilder b, boolean profileLink, String linkBase) {
     b.append("<tr>");
     for (String col : cols) {
       String v;
@@ -156,41 +156,28 @@ public class ResourceUtilities {
       } else if (col.equals("DataElement.binding")) {
         v = renderBinding(dee.getBinding());
       } else if (col.equals("DataElement.minValue")) {
-        v = ToolingExtensions.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/minValue")
-            ? Utilities.escapeXml(ToolingExtensions
-                .readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/minValue").asStringValue())
-            : "";
+        v = ToolingExtensions.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/minValue") ? Utilities.escapeXml(ToolingExtensions.readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/minValue").asStringValue()) : "";
       } else if (col.equals("DataElement.maxValue")) {
-        v = ToolingExtensions.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/maxValue")
-            ? Utilities.escapeXml(ToolingExtensions
-                .readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/maxValue").asStringValue())
-            : "";
+        v = ToolingExtensions.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/maxValue") ? Utilities.escapeXml(ToolingExtensions.readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/maxValue").asStringValue()) : "";
       } else if (col.equals("DataElement.maxLength")) {
-        v = ToolingExtensions.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/maxLength")
-            ? Utilities.escapeXml(ToolingExtensions
-                .readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/maxLength").asStringValue())
-            : "";
+        v = ToolingExtensions.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/maxLength") ? Utilities.escapeXml(ToolingExtensions.readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/maxLength").asStringValue()) : "";
       } else if (col.equals("DataElement.mask")) {
-        v = ToolingExtensions.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/mask")
-            ? Utilities.escapeXml(ToolingExtensions
-                .readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/mask").asStringValue())
-            : "";
-      } else
-        throw new Error("Unknown column name: " + col);
+        v = ToolingExtensions.hasExtension(de, "http://hl7.org/fhir/StructureDefinition/mask") ? Utilities.escapeXml(ToolingExtensions.readPrimitiveExtension(de, "http://hl7.org/fhir/StructureDefinition/mask").asStringValue()) : "";
+      } else 
+        throw new Error("Unknown column name: "+col);
 
-      b.append("<td>" + v + "</td>");
+      b.append("<td>"+v+"</td>");
     }
     if (profileLink) {
-      b.append("<td><a href=\"" + linkBase + "-" + de.getId()
-          + ".html\">Profile</a>, <a href=\"http://www.opencem.org/#/20140917/Intermountain/" + de.getId()
-          + "\">CEM</a>");
-      if (ToolingExtensions.hasExtension(de, ToolingExtensions.EXT_CIMI_REFERENCE))
-        b.append(", <a href=\"" + ToolingExtensions.readStringExtension(de, ToolingExtensions.EXT_CIMI_REFERENCE)
-            + "\">CIMI</a>");
+      b.append("<td><a href=\""+linkBase+"-"+de.getId()+".html\">Profile</a>, <a href=\"http://www.opencem.org/#/20140917/Intermountain/"+de.getId()+"\">CEM</a>");
+      if (ToolingExtensions.hasExtension(de, ToolingExtensions.EXT_CIMI_REFERENCE)) 
+        b.append(", <a href=\""+ToolingExtensions.readStringExtension(de, ToolingExtensions.EXT_CIMI_REFERENCE)+"\">CIMI</a>");
       b.append("</td>");
     }
     b.append("</tr>\r\n");
   }
+
+  
 
   private static String renderBinding(ElementDefinitionBindingComponent binding) {
     // TODO Auto-generated method stub
@@ -203,9 +190,8 @@ public class ResourceUtilities {
     if (units instanceof CodeableConcept)
       return renderCodeable((CodeableConcept) units);
     else
-      return "<a href=\"" + Utilities.escapeXml(((Reference) units).getReference()) + "\">"
-          + Utilities.escapeXml(((Reference) units).getReference()) + "</a>";
-
+      return "<a href=\""+Utilities.escapeXml(((Reference) units).getReference())+"\">"+Utilities.escapeXml(((Reference) units).getReference())+"</a>";
+      
   }
 
   private static String renderCodeable(CodeableConcept units) {
@@ -213,7 +199,7 @@ public class ResourceUtilities {
       return "";
     String v = renderCoding(units.getCoding());
     if (units.hasText())
-      v = v + " " + Utilities.escapeXml(units.getText());
+      v = v + " " +Utilities.escapeXml(units.getText());
     return v;
   }
 
@@ -228,8 +214,7 @@ public class ResourceUtilities {
     if (code == null || code.isEmpty())
       return "";
     else
-      return "<span title=\"" + Utilities.escapeXml(code.getSystem()) + "\">" + Utilities.escapeXml(code.getCode())
-          + "</span>";
+      return "<span title=\""+Utilities.escapeXml(code.getSystem())+"\">"+Utilities.escapeXml(code.getCode())+"</span>";
   }
 
   private static List<String> chooseColumns(Bundle bundle, DataElement common, StringBuilder b, boolean profileLink) {
@@ -347,9 +332,9 @@ public class ResourceUtilities {
         meta.getElement().get(0).getType().clear();
     }
     if (meta.hasPublisher() || meta.hasContact() || meta.hasStatus() || meta.hasDate() /* || meta.hasType() */) {
-      b.append("<table class=\"grid\">\r\n");
+      b.append("<table class=\"grid\">\r\n"); 
       if (meta.hasPublisher())
-        b.append("<tr><td>Publisher:</td><td>" + meta.getPublisher() + "</td></tr>\r\n");
+        b.append("<tr><td>Publisher:</td><td>"+meta.getPublisher()+"</td></tr>\r\n");
       if (meta.hasContact()) {
         b.append("<tr><td>Contacts:</td><td>");
         boolean firsti = true;
@@ -359,7 +344,7 @@ public class ResourceUtilities {
           else
             b.append("<br/>");
           if (c.hasName())
-            b.append(Utilities.escapeXml(c.getName()) + ": ");
+            b.append(Utilities.escapeXml(c.getName())+": ");
           boolean first = true;
           for (ContactPoint cp : c.getTelecom()) {
             if (first)
@@ -372,13 +357,13 @@ public class ResourceUtilities {
         b.append("</td></tr>\r\n");
       }
       if (meta.hasStatus())
-        b.append("<tr><td>Status:</td><td>" + meta.getStatus().toString() + "</td></tr>\r\n");
+        b.append("<tr><td>Status:</td><td>"+meta.getStatus().toString()+"</td></tr>\r\n");
       if (meta.hasDate())
-        b.append("<tr><td>Date:</td><td>" + meta.getDateElement().asStringValue() + "</td></tr>\r\n");
+        b.append("<tr><td>Date:</td><td>"+meta.getDateElement().asStringValue()+"</td></tr>\r\n");
       if (meta.getElement().get(0).hasType())
-        b.append("<tr><td>Type:</td><td>" + renderType(meta.getElement().get(0).getType()) + "</td></tr>\r\n");
-      b.append("</table>\r\n");
-    }
+        b.append("<tr><td>Type:</td><td>"+renderType(meta.getElement().get(0).getType())+"</td></tr>\r\n");
+      b.append("</table>\r\n"); 
+    }  
     return meta;
   }
 
@@ -400,11 +385,11 @@ public class ResourceUtilities {
   public static void renderContactPoint(StringBuilder b, ContactPoint cp) {
     if (cp != null && !cp.isEmpty()) {
       if (cp.getSystem() == ContactPointSystem.EMAIL)
-        b.append("<a href=\"mailto:" + cp.getValue() + "\">" + cp.getValue() + "</a>");
-      else if (cp.getSystem() == ContactPointSystem.FAX)
-        b.append("Fax: " + cp.getValue());
-      else if (cp.getSystem() == ContactPointSystem.OTHER)
-        b.append("<a href=\"" + cp.getValue() + "\">" + cp.getValue() + "</a>");
+        b.append("<a href=\"mailto:"+cp.getValue()+"\">"+cp.getValue()+"</a>");
+      else if (cp.getSystem() == ContactPointSystem.FAX) 
+        b.append("Fax: "+cp.getValue());
+      else if (cp.getSystem() == ContactPointSystem.OTHER) 
+        b.append("<a href=\""+cp.getValue()+"\">"+cp.getValue()+"</a>");
       else
         b.append(cp.getValue());
     }

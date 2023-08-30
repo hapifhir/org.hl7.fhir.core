@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,112 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum QuestionnaireUsageMode {
 
-  /**
-   * Render the item regardless of usage mode.
-   */
-  CAPTUREDISPLAY,
-  /**
-   * Render the item only when capturing data.
-   */
-  CAPTURE,
-  /**
-   * Render the item only when displaying a completed form.
-   */
-  DISPLAY,
-  /**
-   * Render the item only when displaying a completed form and the item has been
-   * answered (or has child items that have been answered).
-   */
-  DISPLAYNONEMPTY,
-  /**
-   * Render the item when capturing data or when displaying a completed form and
-   * the item has been answered (or has child items that have been answered).
-   */
-  CAPTUREDISPLAYNONEMPTY,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static QuestionnaireUsageMode fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("capture-display".equals(codeString))
-      return CAPTUREDISPLAY;
-    if ("capture".equals(codeString))
-      return CAPTURE;
-    if ("display".equals(codeString))
-      return DISPLAY;
-    if ("display-non-empty".equals(codeString))
-      return DISPLAYNONEMPTY;
-    if ("capture-display-non-empty".equals(codeString))
-      return CAPTUREDISPLAYNONEMPTY;
-    throw new FHIRException("Unknown QuestionnaireUsageMode code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case CAPTUREDISPLAY:
-      return "capture-display";
-    case CAPTURE:
-      return "capture";
-    case DISPLAY:
-      return "display";
-    case DISPLAYNONEMPTY:
-      return "display-non-empty";
-    case CAPTUREDISPLAYNONEMPTY:
-      return "capture-display-non-empty";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Render the item regardless of usage mode.
+         */
+        CAPTUREDISPLAY, 
+        /**
+         * Render the item only when capturing data.
+         */
+        CAPTURE, 
+        /**
+         * Render the item only when displaying a completed form.
+         */
+        DISPLAY, 
+        /**
+         * Render the item only when displaying a completed form and the item has been answered (or has child items that have been answered).
+         */
+        DISPLAYNONEMPTY, 
+        /**
+         * Render the item when capturing data or when displaying a completed form and the item has been answered (or has child items that have been answered).
+         */
+        CAPTUREDISPLAYNONEMPTY, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static QuestionnaireUsageMode fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("capture-display".equals(codeString))
+          return CAPTUREDISPLAY;
+        if ("capture".equals(codeString))
+          return CAPTURE;
+        if ("display".equals(codeString))
+          return DISPLAY;
+        if ("display-non-empty".equals(codeString))
+          return DISPLAYNONEMPTY;
+        if ("capture-display-non-empty".equals(codeString))
+          return CAPTUREDISPLAYNONEMPTY;
+        throw new FHIRException("Unknown QuestionnaireUsageMode code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case CAPTUREDISPLAY: return "capture-display";
+            case CAPTURE: return "capture";
+            case DISPLAY: return "display";
+            case DISPLAYNONEMPTY: return "display-non-empty";
+            case CAPTUREDISPLAYNONEMPTY: return "capture-display-non-empty";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/questionnaire-usage-mode";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case CAPTUREDISPLAY: return "Render the item regardless of usage mode.";
+            case CAPTURE: return "Render the item only when capturing data.";
+            case DISPLAY: return "Render the item only when displaying a completed form.";
+            case DISPLAYNONEMPTY: return "Render the item only when displaying a completed form and the item has been answered (or has child items that have been answered).";
+            case CAPTUREDISPLAYNONEMPTY: return "Render the item when capturing data or when displaying a completed form and the item has been answered (or has child items that have been answered).";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case CAPTUREDISPLAY: return "Capture & Display";
+            case CAPTURE: return "Capture Only";
+            case DISPLAY: return "Display Only";
+            case DISPLAYNONEMPTY: return "Display when Answered";
+            case CAPTUREDISPLAYNONEMPTY: return "Capture or, if answered, Display";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/questionnaire-usage-mode";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case CAPTUREDISPLAY:
-      return "Render the item regardless of usage mode.";
-    case CAPTURE:
-      return "Render the item only when capturing data.";
-    case DISPLAY:
-      return "Render the item only when displaying a completed form.";
-    case DISPLAYNONEMPTY:
-      return "Render the item only when displaying a completed form and the item has been answered (or has child items that have been answered).";
-    case CAPTUREDISPLAYNONEMPTY:
-      return "Render the item when capturing data or when displaying a completed form and the item has been answered (or has child items that have been answered).";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case CAPTUREDISPLAY:
-      return "Capture & Display";
-    case CAPTURE:
-      return "Capture Only";
-    case DISPLAY:
-      return "Display Only";
-    case DISPLAYNONEMPTY:
-      return "Display when Answered";
-    case CAPTUREDISPLAYNONEMPTY:
-      return "Capture or, if answered, Display";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

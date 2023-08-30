@@ -3,14 +3,10 @@ package org.hl7.fhir.validation.special;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.hl7.fhir.ParametersParameter;
-import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
@@ -20,28 +16,17 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 public class TxTesterSorters {
 
 
-
   public static void sortParameters(Parameters po) {
     Collections.sort(po.getParameter(), new TxTesterSorters.ParameterSorter());
-    for (ParametersParameterComponent p : po.getParameter()) {
-      if (p.getResource() != null && p.getResource() instanceof OperationOutcome) {
-        Collections.sort(((OperationOutcome) p.getResource()).getIssue(), new TxTesterSorters.OperationIssueSorter());
-      }
-    }
-  }
-
-
-  public static void sortOperationOutcome(OperationOutcome oo) {
-    Collections.sort(oo.getIssue(), new TxTesterSorters.OperationIssueSorter());
   }
   
+
   public static void sortValueSet(ValueSet vs) {
     Collections.sort(vs.getExtension(), new TxTesterSorters.ExtensionSorter());
     if (vs.hasExpansion()) {
       Collections.sort(vs.getExpansion().getParameter(), new TxTesterSorters.ExpParameterSorter());
       Collections.sort(vs.getExpansion().getProperty(), new TxTesterSorters.PropertyDefnSorter());
       Collections.sort(vs.getExpansion().getExtension(), new TxTesterSorters.ExtensionSorter());
-      Collections.sort(vs.getExpansion().getContains(), new TxTesterSorters.ContainsSorter());
       for (ValueSetExpansionContainsComponent cc : vs.getExpansion().getContains()) {
         sortContainsFeatures(cc);
       }
@@ -49,7 +34,6 @@ public class TxTesterSorters {
   }
 
   public static void sortContainsFeatures(ValueSetExpansionContainsComponent cc) {
-    Collections.sort(cc.getContains(), new TxTesterSorters.ContainsSorter());
     Collections.sort(cc.getExtension(), new TxTesterSorters.ExtensionSorter());
     Collections.sort(cc.getDesignation(), new TxTesterSorters.DesignationSorter());
     Collections.sort(cc.getProperty(), new TxTesterSorters.PropertyValueSorter());
@@ -58,32 +42,8 @@ public class TxTesterSorters {
     }
   }
 
-  public static class OperationIssueSorter implements Comparator<OperationOutcomeIssueComponent> {
-
-    @Override
-    public int compare(OperationOutcomeIssueComponent o1, OperationOutcomeIssueComponent o2) {
-      String s1 = o1.hasSeverity() ? o1.getSeverity().toCode() : "";
-      String s2 = o2.hasSeverity() ? o2.getSeverity().toCode() : "";
-      int ret = s1.compareTo(s2);
-      if (ret == 0) {
-        s1 = o1.hasCode() ? o1.getCode().toCode() : "";
-        s2 = o2.hasCode() ? o2.getCode().toCode() : "";
-        ret = s1.compareTo(s2);
-        if (ret == 0) {
-          s1 = o1.hasLocation() ? o1.getLocation().get(0).primitiveValue() : "";
-          s2 = o2.hasLocation() ? o2.getLocation().get(0).primitiveValue() : "";
-          ret = s1.compareTo(s2);
-          if (ret == 0) {
-            s1 = o1.getDetails().hasText() ? o1.getDetails().getText() : "";
-            s2 = o2.getDetails().hasText() ? o2.getDetails().getText() : "";
-            ret = s1.compareTo(s2);            
-          }
-        }
-      }
-      return ret;
-    }
-  }
-
+  
+  
   public static class DesignationSorter implements Comparator<ConceptReferenceDesignationComponent> {
 
     @Override
@@ -131,27 +91,13 @@ public class TxTesterSorters {
   }
   
 
-  public static class ContainsSorter implements Comparator<ValueSetExpansionContainsComponent> {
-
-    @Override
-    public int compare(ValueSetExpansionContainsComponent o1, ValueSetExpansionContainsComponent o2) {
-      return o1.getCode().compareTo(o2.getCode());
-    }
-
-  }
-
-
   public static class ExpParameterSorter implements Comparator<ValueSetExpansionParameterComponent> {
 
     @Override
     public int compare(ValueSetExpansionParameterComponent o1, ValueSetExpansionParameterComponent o2) {
       Collections.sort(o1.getExtension(), new ExtensionSorter());
       Collections.sort(o2.getExtension(), new ExtensionSorter());
-      int res = o1.getName().compareTo(o2.getName());
-      if (res == 0) {
-        res = o1.getValue().primitiveValue().compareTo(o2.getValue().primitiveValue());
-      }
-      return res;
+      return o1.getName().compareTo(o2.getName());
     }
 
   }

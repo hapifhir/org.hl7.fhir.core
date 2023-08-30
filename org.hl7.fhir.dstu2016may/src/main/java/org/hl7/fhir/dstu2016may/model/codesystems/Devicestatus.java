@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,86 +34,68 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum Devicestatus {
 
-  /**
-   * The Device is available for use.
-   */
-  AVAILABLE,
-  /**
-   * The Device is no longer available for use (e.g. lost, expired, damaged).
-   */
-  NOTAVAILABLE,
-  /**
-   * The Device was entered in error and voided.
-   */
-  ENTEREDINERROR,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static Devicestatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("available".equals(codeString))
-      return AVAILABLE;
-    if ("not-available".equals(codeString))
-      return NOTAVAILABLE;
-    if ("entered-in-error".equals(codeString))
-      return ENTEREDINERROR;
-    throw new FHIRException("Unknown Devicestatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case AVAILABLE:
-      return "available";
-    case NOTAVAILABLE:
-      return "not-available";
-    case ENTEREDINERROR:
-      return "entered-in-error";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The Device is available for use.
+         */
+        AVAILABLE, 
+        /**
+         * The Device is no longer available for use (e.g. lost, expired, damaged).
+         */
+        NOTAVAILABLE, 
+        /**
+         * The Device was entered in error and voided.
+         */
+        ENTEREDINERROR, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static Devicestatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("available".equals(codeString))
+          return AVAILABLE;
+        if ("not-available".equals(codeString))
+          return NOTAVAILABLE;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        throw new FHIRException("Unknown Devicestatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case AVAILABLE: return "available";
+            case NOTAVAILABLE: return "not-available";
+            case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/devicestatus";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case AVAILABLE: return "The Device is available for use.";
+            case NOTAVAILABLE: return "The Device is no longer available for use (e.g. lost, expired, damaged).";
+            case ENTEREDINERROR: return "The Device was entered in error and voided.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case AVAILABLE: return "Available";
+            case NOTAVAILABLE: return "Not Available";
+            case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/devicestatus";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case AVAILABLE:
-      return "The Device is available for use.";
-    case NOTAVAILABLE:
-      return "The Device is no longer available for use (e.g. lost, expired, damaged).";
-    case ENTEREDINERROR:
-      return "The Device was entered in error and voided.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case AVAILABLE:
-      return "Available";
-    case NOTAVAILABLE:
-      return "Not Available";
-    case ENTEREDINERROR:
-      return "Entered in Error";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

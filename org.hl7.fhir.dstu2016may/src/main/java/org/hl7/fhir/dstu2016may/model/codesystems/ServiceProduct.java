@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,74 +34,59 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ServiceProduct {
 
-  /**
-   * Exam
-   */
-  EXAM,
-  /**
-   * Flu shot
-   */
-  FLUSHOT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ServiceProduct fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("exam".equals(codeString))
-      return EXAM;
-    if ("flushot".equals(codeString))
-      return FLUSHOT;
-    throw new FHIRException("Unknown ServiceProduct code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case EXAM:
-      return "exam";
-    case FLUSHOT:
-      return "flushot";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Exam
+         */
+        EXAM, 
+        /**
+         * Flu shot
+         */
+        FLUSHOT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ServiceProduct fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("exam".equals(codeString))
+          return EXAM;
+        if ("flushot".equals(codeString))
+          return FLUSHOT;
+        throw new FHIRException("Unknown ServiceProduct code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case EXAM: return "exam";
+            case FLUSHOT: return "flushot";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/ex-serviceproduct";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case EXAM: return "Exam";
+            case FLUSHOT: return "Flu shot";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case EXAM: return "Exam";
+            case FLUSHOT: return "Flu shot";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/ex-serviceproduct";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case EXAM:
-      return "Exam";
-    case FLUSHOT:
-      return "Flu shot";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case EXAM:
-      return "Exam";
-    case FLUSHOT:
-      return "Flu shot";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

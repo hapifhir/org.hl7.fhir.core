@@ -9,12 +9,9 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
-import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent;
-import org.hl7.fhir.r5.model.CodeSystem.CodeSystemHierarchyMeaning;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
@@ -32,12 +29,9 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class CodeSystemRenderer extends TerminologyRenderer {
-
-  private Boolean doMarkdown = null;
 
   public CodeSystemRenderer(RenderingContext context) {
     super(context);
@@ -90,12 +84,12 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Value", getContext().getLang()));
       for (CodeSystemFilterComponent f : cs.getFilter()) {
         tr = tbl.tr();
-        renderStatus(f, tr.td()).tx(f.getCode());
-        renderStatus(f.getDescriptionElement(), tr.td()).tx(f.getDescription());
+        tr.td().tx(f.getCode());
+        tr.td().tx(f.getDescription());
         XhtmlNode td = tr.td();
         for (Enumeration<org.hl7.fhir.r5.model.Enumerations.FilterOperator> t : f.getOperator())
-          renderStatus(t, td).tx(t.asStringValue()+" ");
-        renderStatus(f.getValueElement(), tr.td()).tx(f.getValue());
+          td.tx(t.asStringValue()+" ");
+        tr.td().tx(f.getValue());
       }
     }
   }
@@ -131,13 +125,13 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         if (hasRendered) {
           tr.td().tx(ToolingExtensions.getPresentation(p, p.getCodeElement()));          
         }
-        renderStatus(p, tr.td()).tx(p.getCode());
+        tr.td().tx(p.getCode());
         if (hasURI) {
-          renderStatus(p.getUriElement(), tr.td()).tx(p.getUri());
+          tr.td().tx(p.getUri());
         }
-        renderStatus(p.getTypeElement(), tr.td()).tx(p.hasType() ? p.getType().toCode() : "");
+        tr.td().tx(p.hasType() ? p.getType().toCode() : "");
         if (hasDescription) {
-          renderStatus(p.getDescriptionElement(), tr.td()).tx(p.getDescription());
+          tr.td().tx(p.getDescription());
         }
       }
       return true;
@@ -166,9 +160,8 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         features = "features"; // ?
       }
       return context.getContext().formatMessage(I18nConstants.RND_CS_CONTENT_SUPPLEMENT, features);
-    default:
-      throw new FHIRException("Unknown CodeSystemContentMode mode");
     }
+    throw new FHIRException("Unknown CodeSystemContentMode mode");
   }
   
   private boolean generateCodeSystemContent(XhtmlNode x, CodeSystem cs, boolean hasExtensions, List<UsedConceptMap> maps, boolean props) throws FHIRFormatError, DefinitionException, IOException {
@@ -176,10 +169,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Concepts", getContext().getLang()));
     }
     XhtmlNode p = x.para();
-    renderStatus(cs.getUrlElement(), p.param("cs")).code().tx(cs.getUrl());
-    makeCasedParam(p.param("cased"), cs, cs.getCaseSensitiveElement());
-    makeHierarchyParam(p.param("h"), cs, cs.getHierarchyMeaningElement());
-
+    p.param("cs").code().tx(cs.getUrl());
     p.paramValue("code-count", CodeSystemUtilities.countCodes(cs));
     p.sentenceForParams(sentenceForContent(cs.getContent(), cs));
     if (cs.getContent() == CodeSystemContentMode.NOTPRESENT) {
@@ -244,30 +234,6 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       }
     }
     return hasExtensions;
-  }
-
-  private void makeHierarchyParam(XhtmlNode x, CodeSystem cs, Enumeration<CodeSystemHierarchyMeaning> hm) {
-    if (hm.hasValue()) {
-      String s = hm.getValue().getDisplay();
-      renderStatus(hm, x).tx(" in a "+s+" heirarchy");
-    } else if (VersionComparisonAnnotation.hasDeleted(cs, "hierarchyMeaning")) {
-      makeHierarchyParam(x, null, (Enumeration<CodeSystemHierarchyMeaning>) VersionComparisonAnnotation.getDeleted(cs, "hierarchyMeaning").get(0));
-    } else if (CodeSystemUtilities.hasHierarchy(cs)) {
-      x.tx(" in an undefined heirarchy");
-    } else {
-      x.tx("");
-    }
-  }
-
-  private void makeCasedParam(XhtmlNode x, CodeSystem cs, BooleanType caseSensitiveElement) {
-    if (caseSensitiveElement.hasValue()) {
-      String s = caseSensitiveElement.getValue() == true? "case-sensitive" : "case-insensitive";
-      renderStatus(caseSensitiveElement, x).tx(s);
-    } else if (VersionComparisonAnnotation.hasDeleted(cs, "caseSensitive")) {
-      makeCasedParam(x, null, (BooleanType) VersionComparisonAnnotation.getDeleted(cs, "caseSensitive").get(0));
-    } else {
-      x.tx("");
-    }
   }
 
   private void listConceptLanguages(CodeSystem cs, ConceptDefinitionComponent c, List<String> langs) {
@@ -400,7 +366,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       tr.setAttribute("style", "background-color: #ffeeee");
     }
     
-    XhtmlNode td = renderStatusRow(c, t, tr);
+    XhtmlNode td = tr.td();
     if (hasHierarchy) {
       td.addText(Integer.toString(level+1));
       td = tr.td();
@@ -409,9 +375,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     String link = isSupplement ? getLinkForCode(cs.getSupplements(), null, c.getCode()) : null;
     if (link != null) {
-      td.ah(link).style( "white-space:nowrap").addText(c.getCode());
+      td.ah(link).attribute("style", "white-space:nowrap").addText(c.getCode());
     } else {
-      td.style("white-space:nowrap").addText(c.getCode());
+      td.attribute("style", "white-space:nowrap").addText(c.getCode());
     }      
     XhtmlNode a;
     if (c.hasCodeElement()) {
@@ -424,13 +390,13 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     } 
     if (hasDefinitions) {
       td = tr.td();
-      if (c != null &&c.hasDefinitionElement()) {
+      if (c != null && 
+          c.hasDefinitionElement()) {
         if (getContext().getLang() == null) {
-          if (hasMarkdownInDefinitions(cs)) {
-            addMarkdown(renderStatusDiv(c.getDefinitionElement(), td), c.getDefinition());
-          } else {
-            renderStatus(c.getDefinitionElement(), td).addText(c.getDefinition());
-          }
+          if (hasMarkdownInDefinitions(cs))
+            addMarkdown(td, c.getDefinition());
+          else
+            td.addText(c.getDefinition());
         } else if (getContext().getLang().equals("*")) {
           boolean sl = false;
           for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) 
@@ -438,9 +404,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
               sl = true;
           td.addText((sl ? cs.getLanguage("en")+": " : ""));
           if (hasMarkdownInDefinitions(cs))
-            addMarkdown(renderStatusDiv(c.getDefinitionElement(), td), c.getDefinition());
+            addMarkdown(td, c.getDefinition());
           else
-            renderStatus(c.getDefinitionElement(), td).addText(c.getDefinition());
+            td.addText(c.getDefinition());
           for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
             if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "definition") && cd.hasLanguage() && !c.getDefinition().equalsIgnoreCase(cd.getValue())) {
               td.br();
@@ -448,7 +414,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
             }
           }
         } else if (getContext().getLang().equals(cs.getLanguage()) || (getContext().getLang().equals("en") && !cs.hasLanguage())) {
-          renderStatus(c.getDefinitionElement(), td).addText(c.getDefinition());
+          td.addText(c.getDefinition());
         } else {
           for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
             if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "definition") && cd.hasLanguage() && cd.getLanguage().equals(getContext().getLang())) {
@@ -581,7 +547,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       td = tr.td();
       String s = Utilities.padLeft("", '\u00A0', (level+1)*2);
       td.addText(s);
-      td.style("white-space:nowrap");
+      td.attribute("style", "white-space:nowrap");
       a = td.ah("#"+cs.getId()+"-" + Utilities.nmtokenize(cc.getCode()));
       a.addText(cc.getCode());
       if (hasDisplay) {
@@ -618,21 +584,14 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   }
 
   private boolean hasMarkdownInDefinitions(CodeSystem cs) {
-    if (doMarkdown == null) {
-      if (cs.hasExtension("http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown")) {
-        doMarkdown  = ToolingExtensions.readBoolExtension(cs, "http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown");
-      } else {
-        doMarkdown = CodeSystemUtilities.hasMarkdownInDefinitions(cs, context.getMarkdown());
-      }
-    }
-    return doMarkdown;
+    return ToolingExtensions.readBoolExtension(cs, "http://hl7.org/fhir/StructureDefinition/codesystem-use-markdown");
   }
 
 
   public void renderDisplayName(ConceptDefinitionComponent c, CodeSystem cs, XhtmlNode td) {
     if (c.hasDisplayElement()) {
       if (getContext().getLang() == null) {
-        renderStatus(c.getDisplayElement(), td).addText(c.getDisplay());
+        td.addText(c.getDisplay());
       } else if (getContext().getLang().equals("*")) {
         boolean sl = false;
         for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) 
@@ -646,7 +605,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
           }
         }
      } else if (getContext().getLang().equals(cs.getLanguage()) || (getContext().getLang().equals("en") && !cs.hasLanguage())) {
-       renderStatus(c.getDisplayElement(), td).addText(c.getDisplay());
+       td.addText(c.getDisplay());
      } else {
        for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
          if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "display") && cd.hasLanguage() && cd.getLanguage().equals(getContext().getLang())) {

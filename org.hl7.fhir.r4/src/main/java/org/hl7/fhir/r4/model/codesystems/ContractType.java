@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,110 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ContractType {
 
-  /**
-   * Privacy policy.
-   */
-  PRIVACY,
-  /**
-   * Information disclosure policy.
-   */
-  DISCLOSURE,
-  /**
-   * Health Insurance policy.
-   */
-  HEALTHINSURANCE,
-  /**
-   * Contract to supply goods or services.
-   */
-  SUPPLY,
-  /**
-   * Consent Directive.
-   */
-  CONSENT,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ContractType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("privacy".equals(codeString))
-      return PRIVACY;
-    if ("disclosure".equals(codeString))
-      return DISCLOSURE;
-    if ("healthinsurance".equals(codeString))
-      return HEALTHINSURANCE;
-    if ("supply".equals(codeString))
-      return SUPPLY;
-    if ("consent".equals(codeString))
-      return CONSENT;
-    throw new FHIRException("Unknown ContractType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case PRIVACY:
-      return "privacy";
-    case DISCLOSURE:
-      return "disclosure";
-    case HEALTHINSURANCE:
-      return "healthinsurance";
-    case SUPPLY:
-      return "supply";
-    case CONSENT:
-      return "consent";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Privacy policy.
+         */
+        PRIVACY, 
+        /**
+         * Information disclosure policy.
+         */
+        DISCLOSURE, 
+        /**
+         * Health Insurance policy.
+         */
+        HEALTHINSURANCE, 
+        /**
+         * Contract to supply goods or services.
+         */
+        SUPPLY, 
+        /**
+         * Consent Directive.
+         */
+        CONSENT, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ContractType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("privacy".equals(codeString))
+          return PRIVACY;
+        if ("disclosure".equals(codeString))
+          return DISCLOSURE;
+        if ("healthinsurance".equals(codeString))
+          return HEALTHINSURANCE;
+        if ("supply".equals(codeString))
+          return SUPPLY;
+        if ("consent".equals(codeString))
+          return CONSENT;
+        throw new FHIRException("Unknown ContractType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PRIVACY: return "privacy";
+            case DISCLOSURE: return "disclosure";
+            case HEALTHINSURANCE: return "healthinsurance";
+            case SUPPLY: return "supply";
+            case CONSENT: return "consent";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/contract-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PRIVACY: return "Privacy policy.";
+            case DISCLOSURE: return "Information disclosure policy.";
+            case HEALTHINSURANCE: return "Health Insurance policy.";
+            case SUPPLY: return "Contract to supply goods or services.";
+            case CONSENT: return "Consent Directive.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PRIVACY: return "Privacy";
+            case DISCLOSURE: return "Disclosure";
+            case HEALTHINSURANCE: return "Health Insurance";
+            case SUPPLY: return "Supply Contract";
+            case CONSENT: return "Consent";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/contract-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case PRIVACY:
-      return "Privacy policy.";
-    case DISCLOSURE:
-      return "Information disclosure policy.";
-    case HEALTHINSURANCE:
-      return "Health Insurance policy.";
-    case SUPPLY:
-      return "Contract to supply goods or services.";
-    case CONSENT:
-      return "Consent Directive.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case PRIVACY:
-      return "Privacy";
-    case DISCLOSURE:
-      return "Disclosure";
-    case HEALTHINSURANCE:
-      return "Health Insurance";
-    case SUPPLY:
-      return "Supply Contract";
-    case CONSENT:
-      return "Consent";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

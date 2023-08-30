@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,62 +34,50 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum NehtaNehtaYesNoNs {
 
-  /**
-   * Indicates whether a response was not stated.
-   */
-  NOTSTATED,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static NehtaNehtaYesNoNs fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("not-stated".equals(codeString))
-      return NOTSTATED;
-    throw new FHIRException("Unknown NehtaNehtaYesNoNs code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case NOTSTATED:
-      return "not-stated";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Indicates whether a response was not stated.
+         */
+        NOTSTATED, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static NehtaNehtaYesNoNs fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("not-stated".equals(codeString))
+          return NOTSTATED;
+        throw new FHIRException("Unknown NehtaNehtaYesNoNs code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case NOTSTATED: return "not-stated";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/nehta-yes-no-ns";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case NOTSTATED: return "Indicates whether a response was not stated.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case NOTSTATED: return "Not stated";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/nehta-yes-no-ns";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case NOTSTATED:
-      return "Indicates whether a response was not stated.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case NOTSTATED:
-      return "Not stated";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

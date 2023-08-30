@@ -366,10 +366,10 @@ public class TerminologyCapabilities extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.software.name");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.software.name");
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.software.version");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.software.version");
         }
         else
           return super.addChild(name);
@@ -619,10 +619,10 @@ public class TerminologyCapabilities extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.implementation.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.implementation.description");
         }
         else if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.implementation.url");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.implementation.url");
         }
         else
           return super.addChild(name);
@@ -1007,16 +1007,16 @@ public class TerminologyCapabilities extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("uri")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.codeSystem.uri");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.codeSystem.uri");
         }
         else if (name.equals("version")) {
           return addVersion();
         }
         else if (name.equals("content")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.codeSystem.content");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.codeSystem.content");
         }
         else if (name.equals("subsumption")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.codeSystem.subsumption");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.codeSystem.subsumption");
         }
         else
           return super.addChild(name);
@@ -1558,22 +1558,22 @@ public class TerminologyCapabilities extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.codeSystem.version.code");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.codeSystem.version.code");
         }
         else if (name.equals("isDefault")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.codeSystem.version.isDefault");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.codeSystem.version.isDefault");
         }
         else if (name.equals("compositional")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.codeSystem.version.compositional");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.codeSystem.version.compositional");
         }
         else if (name.equals("language")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.codeSystem.version.language");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.codeSystem.version.language");
         }
         else if (name.equals("filter")) {
           return addFilter();
         }
         else if (name.equals("property")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.codeSystem.version.property");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.codeSystem.version.property");
         }
         else
           return super.addChild(name);
@@ -1856,10 +1856,10 @@ public class TerminologyCapabilities extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("code")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.codeSystem.version.filter.code");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.codeSystem.version.filter.code");
         }
         else if (name.equals("op")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.codeSystem.version.filter.op");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.codeSystem.version.filter.op");
         }
         else
           return super.addChild(name);
@@ -2299,19 +2299,19 @@ public class TerminologyCapabilities extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("hierarchical")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.expansion.hierarchical");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.expansion.hierarchical");
         }
         else if (name.equals("paging")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.expansion.paging");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.expansion.paging");
         }
         else if (name.equals("incomplete")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.expansion.incomplete");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.expansion.incomplete");
         }
         else if (name.equals("parameter")) {
           return addParameter();
         }
         else if (name.equals("textFilter")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.expansion.textFilter");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.expansion.textFilter");
         }
         else
           return super.addChild(name);
@@ -2571,10 +2571,10 @@ public class TerminologyCapabilities extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.expansion.parameter.name");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.expansion.parameter.name");
         }
         else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.expansion.parameter.documentation");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.expansion.parameter.documentation");
         }
         else
           return super.addChild(name);
@@ -2758,7 +2758,7 @@ public class TerminologyCapabilities extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("translations")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.validateCode.translations");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.validateCode.translations");
         }
         else
           return super.addChild(name);
@@ -2941,7 +2941,7 @@ public class TerminologyCapabilities extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("needsMap")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.translation.needsMap");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.translation.needsMap");
         }
         else
           return super.addChild(name);
@@ -3116,7 +3116,7 @@ public class TerminologyCapabilities extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("translation")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.closure.translation");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.closure.translation");
         }
         else
           return super.addChild(name);
@@ -4886,13 +4886,13 @@ public class TerminologyCapabilities extends CanonicalResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.url");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.url");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
         else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.version");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.version");
         }
         else if (name.equals("versionAlgorithmString")) {
           this.versionAlgorithm = new StringType();
@@ -4903,28 +4903,28 @@ public class TerminologyCapabilities extends CanonicalResource {
           return this.versionAlgorithm;
         }
         else if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.name");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.name");
         }
         else if (name.equals("title")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.title");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.title");
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.status");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.status");
         }
         else if (name.equals("experimental")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.experimental");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.experimental");
         }
         else if (name.equals("date")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.date");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.date");
         }
         else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.publisher");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.publisher");
         }
         else if (name.equals("contact")) {
           return addContact();
         }
         else if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.description");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.description");
         }
         else if (name.equals("useContext")) {
           return addUseContext();
@@ -4933,16 +4933,16 @@ public class TerminologyCapabilities extends CanonicalResource {
           return addJurisdiction();
         }
         else if (name.equals("purpose")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.purpose");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.purpose");
         }
         else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.copyright");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.copyright");
         }
         else if (name.equals("copyrightLabel")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.copyrightLabel");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.copyrightLabel");
         }
         else if (name.equals("kind")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.kind");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.kind");
         }
         else if (name.equals("software")) {
           this.software = new TerminologyCapabilitiesSoftwareComponent();
@@ -4953,7 +4953,7 @@ public class TerminologyCapabilities extends CanonicalResource {
           return this.implementation;
         }
         else if (name.equals("lockedDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.lockedDate");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.lockedDate");
         }
         else if (name.equals("codeSystem")) {
           return addCodeSystem();
@@ -4963,7 +4963,7 @@ public class TerminologyCapabilities extends CanonicalResource {
           return this.expansion;
         }
         else if (name.equals("codeSearch")) {
-          throw new FHIRException("Cannot call addChild on a singleton property TerminologyCapabilities.codeSearch");
+          throw new FHIRException("Cannot call addChild on a primitive type TerminologyCapabilities.codeSearch");
         }
         else if (name.equals("validateCode")) {
           this.validateCode = new TerminologyCapabilitiesValidateCodeComponent();

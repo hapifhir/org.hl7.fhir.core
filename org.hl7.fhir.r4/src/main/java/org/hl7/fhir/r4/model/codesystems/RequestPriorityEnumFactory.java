@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class RequestPriorityEnumFactory implements EnumFactory<RequestPriority> {
@@ -46,7 +50,7 @@ public class RequestPriorityEnumFactory implements EnumFactory<RequestPriority> 
       return RequestPriority.ASAP;
     if ("stat".equals(codeString))
       return RequestPriority.STAT;
-    throw new IllegalArgumentException("Unknown RequestPriority code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown RequestPriority code '"+codeString+"'");
   }
 
   public String toCode(RequestPriority code) {
@@ -61,8 +65,8 @@ public class RequestPriorityEnumFactory implements EnumFactory<RequestPriority> 
     return "?";
   }
 
-  public String toSystem(RequestPriority code) {
-    return code.getSystem();
-  }
+    public String toSystem(RequestPriority code) {
+      return code.getSystem();
+      }
 
 }

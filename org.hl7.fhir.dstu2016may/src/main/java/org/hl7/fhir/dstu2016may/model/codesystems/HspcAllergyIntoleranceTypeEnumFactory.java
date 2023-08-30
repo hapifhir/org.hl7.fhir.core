@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class HspcAllergyIntoleranceTypeEnumFactory implements EnumFactory<HspcAllergyIntoleranceType> {
@@ -40,7 +44,7 @@ public class HspcAllergyIntoleranceTypeEnumFactory implements EnumFactory<HspcAl
       return null;
     if ("521059339".equals(codeString))
       return HspcAllergyIntoleranceType._521059339;
-    throw new IllegalArgumentException("Unknown HspcAllergyIntoleranceType code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown HspcAllergyIntoleranceType code '"+codeString+"'");
   }
 
   public String toCode(HspcAllergyIntoleranceType code) {
@@ -49,8 +53,8 @@ public class HspcAllergyIntoleranceTypeEnumFactory implements EnumFactory<HspcAl
     return "?";
   }
 
-  public String toSystem(HspcAllergyIntoleranceType code) {
-    return code.getSystem();
-  }
+    public String toSystem(HspcAllergyIntoleranceType code) {
+      return code.getSystem();
+      }
 
 }

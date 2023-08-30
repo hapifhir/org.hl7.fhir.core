@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,88 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum InsuranceplanApplicability {
 
-  /**
-   * Provider is contracted with the health insurance company to provide services
-   * to plan members for specific pre-negotiated rates
-   */
-  INNETWORK,
-  /**
-   * Provider is not contracted with the health insurance company to provide
-   * services to plan members for specific pre-negotiated rates
-   */
-  OUTOFNETWORK,
-  /**
-   * Other applicability
-   */
-  OTHER,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static InsuranceplanApplicability fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("in-network".equals(codeString))
-      return INNETWORK;
-    if ("out-of-network".equals(codeString))
-      return OUTOFNETWORK;
-    if ("other".equals(codeString))
-      return OTHER;
-    throw new FHIRException("Unknown InsuranceplanApplicability code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INNETWORK:
-      return "in-network";
-    case OUTOFNETWORK:
-      return "out-of-network";
-    case OTHER:
-      return "other";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * Provider is contracted with the health insurance company to provide services to plan members for specific pre-negotiated rates
+         */
+        INNETWORK, 
+        /**
+         * Provider is  not contracted with the health insurance company to provide services to plan members for specific pre-negotiated rates
+         */
+        OUTOFNETWORK, 
+        /**
+         * Other applicability
+         */
+        OTHER, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static InsuranceplanApplicability fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("in-network".equals(codeString))
+          return INNETWORK;
+        if ("out-of-network".equals(codeString))
+          return OUTOFNETWORK;
+        if ("other".equals(codeString))
+          return OTHER;
+        throw new FHIRException("Unknown InsuranceplanApplicability code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INNETWORK: return "in-network";
+            case OUTOFNETWORK: return "out-of-network";
+            case OTHER: return "other";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/applicability";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INNETWORK: return "Provider is contracted with the health insurance company to provide services to plan members for specific pre-negotiated rates";
+            case OUTOFNETWORK: return "Provider is  not contracted with the health insurance company to provide services to plan members for specific pre-negotiated rates";
+            case OTHER: return "Other applicability";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INNETWORK: return "In Network";
+            case OUTOFNETWORK: return "Out of Network";
+            case OTHER: return "Other";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/applicability";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INNETWORK:
-      return "Provider is contracted with the health insurance company to provide services to plan members for specific pre-negotiated rates";
-    case OUTOFNETWORK:
-      return "Provider is  not contracted with the health insurance company to provide services to plan members for specific pre-negotiated rates";
-    case OTHER:
-      return "Other applicability";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INNETWORK:
-      return "In Network";
-    case OUTOFNETWORK:
-      return "Out of Network";
-    case OTHER:
-      return "Other";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

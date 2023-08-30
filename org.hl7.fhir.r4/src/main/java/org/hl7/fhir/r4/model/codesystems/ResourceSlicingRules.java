@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,89 +34,68 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ResourceSlicingRules {
 
-  /**
-   * No additional content is allowed other than that described by the slices in
-   * this profile.
-   */
-  CLOSED,
-  /**
-   * Additional content is allowed anywhere in the list.
-   */
-  OPEN,
-  /**
-   * Additional content is allowed, but only at the end of the list. Note that
-   * using this requires that the slices be ordered, which makes it hard to share
-   * uses. This should only be done where absolutely required.
-   */
-  OPENATEND,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ResourceSlicingRules fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("closed".equals(codeString))
-      return CLOSED;
-    if ("open".equals(codeString))
-      return OPEN;
-    if ("openAtEnd".equals(codeString))
-      return OPENATEND;
-    throw new FHIRException("Unknown ResourceSlicingRules code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case CLOSED:
-      return "closed";
-    case OPEN:
-      return "open";
-    case OPENATEND:
-      return "openAtEnd";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * No additional content is allowed other than that described by the slices in this profile.
+         */
+        CLOSED, 
+        /**
+         * Additional content is allowed anywhere in the list.
+         */
+        OPEN, 
+        /**
+         * Additional content is allowed, but only at the end of the list. Note that using this requires that the slices be ordered, which makes it hard to share uses. This should only be done where absolutely required.
+         */
+        OPENATEND, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ResourceSlicingRules fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("closed".equals(codeString))
+          return CLOSED;
+        if ("open".equals(codeString))
+          return OPEN;
+        if ("openAtEnd".equals(codeString))
+          return OPENATEND;
+        throw new FHIRException("Unknown ResourceSlicingRules code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case CLOSED: return "closed";
+            case OPEN: return "open";
+            case OPENATEND: return "openAtEnd";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/resource-slicing-rules";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case CLOSED: return "No additional content is allowed other than that described by the slices in this profile.";
+            case OPEN: return "Additional content is allowed anywhere in the list.";
+            case OPENATEND: return "Additional content is allowed, but only at the end of the list. Note that using this requires that the slices be ordered, which makes it hard to share uses. This should only be done where absolutely required.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case CLOSED: return "Closed";
+            case OPEN: return "Open";
+            case OPENATEND: return "Open at End";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/resource-slicing-rules";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case CLOSED:
-      return "No additional content is allowed other than that described by the slices in this profile.";
-    case OPEN:
-      return "Additional content is allowed anywhere in the list.";
-    case OPENATEND:
-      return "Additional content is allowed, but only at the end of the list. Note that using this requires that the slices be ordered, which makes it hard to share uses. This should only be done where absolutely required.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case CLOSED:
-      return "Closed";
-    case OPEN:
-      return "Open";
-    case OPENATEND:
-      return "Open at End";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

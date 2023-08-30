@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ObservationStatusEnumFactory implements EnumFactory<ObservationStatus> {
@@ -52,7 +56,7 @@ public class ObservationStatusEnumFactory implements EnumFactory<ObservationStat
       return ObservationStatus.ENTEREDINERROR;
     if ("unknown".equals(codeString))
       return ObservationStatus.UNKNOWN;
-    throw new IllegalArgumentException("Unknown ObservationStatus code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ObservationStatus code '"+codeString+"'");
   }
 
   public String toCode(ObservationStatus code) {
@@ -73,8 +77,8 @@ public class ObservationStatusEnumFactory implements EnumFactory<ObservationStat
     return "?";
   }
 
-  public String toSystem(ObservationStatus code) {
-    return code.getSystem();
-  }
+    public String toSystem(ObservationStatus code) {
+      return code.getSystem();
+      }
 
 }

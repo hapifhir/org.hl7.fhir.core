@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,158 +34,122 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ActionRelationshipType {
 
-  /**
-   * The action must be performed before the start of the related action.
-   */
-  BEFORESTART,
-  /**
-   * The action must be performed before the related action.
-   */
-  BEFORE,
-  /**
-   * The action must be performed before the end of the related action.
-   */
-  BEFOREEND,
-  /**
-   * The action must be performed concurrent with the start of the related action.
-   */
-  CONCURRENTWITHSTART,
-  /**
-   * The action must be performed concurrent with the related action.
-   */
-  CONCURRENT,
-  /**
-   * The action must be performed concurrent with the end of the related action.
-   */
-  CONCURRENTWITHEND,
-  /**
-   * The action must be performed after the start of the related action.
-   */
-  AFTERSTART,
-  /**
-   * The action must be performed after the related action.
-   */
-  AFTER,
-  /**
-   * The action must be performed after the end of the related action.
-   */
-  AFTEREND,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ActionRelationshipType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("before-start".equals(codeString))
-      return BEFORESTART;
-    if ("before".equals(codeString))
-      return BEFORE;
-    if ("before-end".equals(codeString))
-      return BEFOREEND;
-    if ("concurrent-with-start".equals(codeString))
-      return CONCURRENTWITHSTART;
-    if ("concurrent".equals(codeString))
-      return CONCURRENT;
-    if ("concurrent-with-end".equals(codeString))
-      return CONCURRENTWITHEND;
-    if ("after-start".equals(codeString))
-      return AFTERSTART;
-    if ("after".equals(codeString))
-      return AFTER;
-    if ("after-end".equals(codeString))
-      return AFTEREND;
-    throw new FHIRException("Unknown ActionRelationshipType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case BEFORESTART:
-      return "before-start";
-    case BEFORE:
-      return "before";
-    case BEFOREEND:
-      return "before-end";
-    case CONCURRENTWITHSTART:
-      return "concurrent-with-start";
-    case CONCURRENT:
-      return "concurrent";
-    case CONCURRENTWITHEND:
-      return "concurrent-with-end";
-    case AFTERSTART:
-      return "after-start";
-    case AFTER:
-      return "after";
-    case AFTEREND:
-      return "after-end";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The action must be performed before the start of the related action.
+         */
+        BEFORESTART, 
+        /**
+         * The action must be performed before the related action.
+         */
+        BEFORE, 
+        /**
+         * The action must be performed before the end of the related action.
+         */
+        BEFOREEND, 
+        /**
+         * The action must be performed concurrent with the start of the related action.
+         */
+        CONCURRENTWITHSTART, 
+        /**
+         * The action must be performed concurrent with the related action.
+         */
+        CONCURRENT, 
+        /**
+         * The action must be performed concurrent with the end of the related action.
+         */
+        CONCURRENTWITHEND, 
+        /**
+         * The action must be performed after the start of the related action.
+         */
+        AFTERSTART, 
+        /**
+         * The action must be performed after the related action.
+         */
+        AFTER, 
+        /**
+         * The action must be performed after the end of the related action.
+         */
+        AFTEREND, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ActionRelationshipType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("before-start".equals(codeString))
+          return BEFORESTART;
+        if ("before".equals(codeString))
+          return BEFORE;
+        if ("before-end".equals(codeString))
+          return BEFOREEND;
+        if ("concurrent-with-start".equals(codeString))
+          return CONCURRENTWITHSTART;
+        if ("concurrent".equals(codeString))
+          return CONCURRENT;
+        if ("concurrent-with-end".equals(codeString))
+          return CONCURRENTWITHEND;
+        if ("after-start".equals(codeString))
+          return AFTERSTART;
+        if ("after".equals(codeString))
+          return AFTER;
+        if ("after-end".equals(codeString))
+          return AFTEREND;
+        throw new FHIRException("Unknown ActionRelationshipType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case BEFORESTART: return "before-start";
+            case BEFORE: return "before";
+            case BEFOREEND: return "before-end";
+            case CONCURRENTWITHSTART: return "concurrent-with-start";
+            case CONCURRENT: return "concurrent";
+            case CONCURRENTWITHEND: return "concurrent-with-end";
+            case AFTERSTART: return "after-start";
+            case AFTER: return "after";
+            case AFTEREND: return "after-end";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/action-relationship-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case BEFORESTART: return "The action must be performed before the start of the related action.";
+            case BEFORE: return "The action must be performed before the related action.";
+            case BEFOREEND: return "The action must be performed before the end of the related action.";
+            case CONCURRENTWITHSTART: return "The action must be performed concurrent with the start of the related action.";
+            case CONCURRENT: return "The action must be performed concurrent with the related action.";
+            case CONCURRENTWITHEND: return "The action must be performed concurrent with the end of the related action.";
+            case AFTERSTART: return "The action must be performed after the start of the related action.";
+            case AFTER: return "The action must be performed after the related action.";
+            case AFTEREND: return "The action must be performed after the end of the related action.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case BEFORESTART: return "Before Start";
+            case BEFORE: return "Before";
+            case BEFOREEND: return "Before End";
+            case CONCURRENTWITHSTART: return "Concurrent With Start";
+            case CONCURRENT: return "Concurrent";
+            case CONCURRENTWITHEND: return "Concurrent With End";
+            case AFTERSTART: return "After Start";
+            case AFTER: return "After";
+            case AFTEREND: return "After End";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/action-relationship-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case BEFORESTART:
-      return "The action must be performed before the start of the related action.";
-    case BEFORE:
-      return "The action must be performed before the related action.";
-    case BEFOREEND:
-      return "The action must be performed before the end of the related action.";
-    case CONCURRENTWITHSTART:
-      return "The action must be performed concurrent with the start of the related action.";
-    case CONCURRENT:
-      return "The action must be performed concurrent with the related action.";
-    case CONCURRENTWITHEND:
-      return "The action must be performed concurrent with the end of the related action.";
-    case AFTERSTART:
-      return "The action must be performed after the start of the related action.";
-    case AFTER:
-      return "The action must be performed after the related action.";
-    case AFTEREND:
-      return "The action must be performed after the end of the related action.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case BEFORESTART:
-      return "Before Start";
-    case BEFORE:
-      return "Before";
-    case BEFOREEND:
-      return "Before End";
-    case CONCURRENTWITHSTART:
-      return "Concurrent With Start";
-    case CONCURRENT:
-      return "Concurrent";
-    case CONCURRENTWITHEND:
-      return "Concurrent With End";
-    case AFTERSTART:
-      return "After Start";
-    case AFTER:
-      return "After";
-    case AFTEREND:
-      return "After End";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

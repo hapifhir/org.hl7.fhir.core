@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class OccurrenceCodesEnumFactory implements EnumFactory<OccurrenceCodes> {
@@ -42,7 +46,7 @@ public class OccurrenceCodesEnumFactory implements EnumFactory<OccurrenceCodes> 
       return OccurrenceCodes._1001;
     if ("1002".equals(codeString))
       return OccurrenceCodes._1002;
-    throw new IllegalArgumentException("Unknown OccurrenceCodes code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown OccurrenceCodes code '"+codeString+"'");
   }
 
   public String toCode(OccurrenceCodes code) {
@@ -53,8 +57,8 @@ public class OccurrenceCodesEnumFactory implements EnumFactory<OccurrenceCodes> 
     return "?";
   }
 
-  public String toSystem(OccurrenceCodes code) {
-    return code.getSystem();
-  }
+    public String toSystem(OccurrenceCodes code) {
+      return code.getSystem();
+      }
 
 }

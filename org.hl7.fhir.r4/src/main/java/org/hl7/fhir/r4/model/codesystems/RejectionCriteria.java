@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,110 +34,86 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum RejectionCriteria {
 
-  /**
-   * blood specimen hemolized.
-   */
-  HEMOLIZED,
-  /**
-   * insufficient quantity of specimen.
-   */
-  INSUFFICIENT,
-  /**
-   * specimen container broken.
-   */
-  BROKEN,
-  /**
-   * specimen clotted.
-   */
-  CLOTTED,
-  /**
-   * specimen temperature inappropriate.
-   */
-  WRONGTEMPERATURE,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static RejectionCriteria fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("hemolized".equals(codeString))
-      return HEMOLIZED;
-    if ("insufficient".equals(codeString))
-      return INSUFFICIENT;
-    if ("broken".equals(codeString))
-      return BROKEN;
-    if ("clotted".equals(codeString))
-      return CLOTTED;
-    if ("wrong-temperature".equals(codeString))
-      return WRONGTEMPERATURE;
-    throw new FHIRException("Unknown RejectionCriteria code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case HEMOLIZED:
-      return "hemolized";
-    case INSUFFICIENT:
-      return "insufficient";
-    case BROKEN:
-      return "broken";
-    case CLOTTED:
-      return "clotted";
-    case WRONGTEMPERATURE:
-      return "wrong-temperature";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * blood specimen hemolized.
+         */
+        HEMOLIZED, 
+        /**
+         * insufficient quantity of specimen.
+         */
+        INSUFFICIENT, 
+        /**
+         * specimen container broken.
+         */
+        BROKEN, 
+        /**
+         * specimen clotted.
+         */
+        CLOTTED, 
+        /**
+         * specimen temperature inappropriate.
+         */
+        WRONGTEMPERATURE, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static RejectionCriteria fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("hemolized".equals(codeString))
+          return HEMOLIZED;
+        if ("insufficient".equals(codeString))
+          return INSUFFICIENT;
+        if ("broken".equals(codeString))
+          return BROKEN;
+        if ("clotted".equals(codeString))
+          return CLOTTED;
+        if ("wrong-temperature".equals(codeString))
+          return WRONGTEMPERATURE;
+        throw new FHIRException("Unknown RejectionCriteria code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case HEMOLIZED: return "hemolized";
+            case INSUFFICIENT: return "insufficient";
+            case BROKEN: return "broken";
+            case CLOTTED: return "clotted";
+            case WRONGTEMPERATURE: return "wrong-temperature";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://terminology.hl7.org/CodeSystem/rejection-criteria";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case HEMOLIZED: return "blood specimen hemolized.";
+            case INSUFFICIENT: return "insufficient quantity of specimen.";
+            case BROKEN: return "specimen container broken.";
+            case CLOTTED: return "specimen clotted.";
+            case WRONGTEMPERATURE: return "specimen temperature inappropriate.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case HEMOLIZED: return "hemolized specimen";
+            case INSUFFICIENT: return "insufficient specimen volume";
+            case BROKEN: return "broken specimen container";
+            case CLOTTED: return "specimen clotted";
+            case WRONGTEMPERATURE: return "specimen temperature inappropriate";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://terminology.hl7.org/CodeSystem/rejection-criteria";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case HEMOLIZED:
-      return "blood specimen hemolized.";
-    case INSUFFICIENT:
-      return "insufficient quantity of specimen.";
-    case BROKEN:
-      return "specimen container broken.";
-    case CLOTTED:
-      return "specimen clotted.";
-    case WRONGTEMPERATURE:
-      return "specimen temperature inappropriate.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case HEMOLIZED:
-      return "hemolized specimen";
-    case INSUFFICIENT:
-      return "insufficient specimen volume";
-    case BROKEN:
-      return "broken specimen container";
-    case CLOTTED:
-      return "specimen clotted";
-    case WRONGTEMPERATURE:
-      return "specimen temperature inappropriate";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

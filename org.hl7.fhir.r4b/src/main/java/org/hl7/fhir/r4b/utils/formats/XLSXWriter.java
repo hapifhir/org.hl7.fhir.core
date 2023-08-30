@@ -29,6 +29,8 @@ package org.hl7.fhir.r4b.utils.formats;
   
  */
 
+
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -84,7 +86,7 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFilterColumn;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFilters;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.STFilterOperator;
 
-public class XLSXWriter extends TextStreamWriter {
+public class XLSXWriter  extends TextStreamWriter  {
 
   private StructureDefinition def;
   private List<StructureDefinitionMappingComponent> mapKeys = new ArrayList<StructureDefinitionMappingComponent>();
@@ -97,15 +99,14 @@ public class XLSXWriter extends TextStreamWriter {
   private boolean asXml;
   private boolean hideMustSupportFalse;
 
-  private static String[] titles = { "Path", "Slice Name", "Alias(s)", "Label", "Min", "Max", "Must Support?",
-      "Is Modifier?", "Is Summary?", "Type(s)", "Short", "Definition", "Comments", "Requirements", "Default Value",
-      "Meaning When Missing", "Fixed Value", "Pattern", "Example", "Minimum Value", "Maximum Value", "Maximum Length",
-      "Binding Strength", "Binding Description", "Binding Value Set", "Code", "Slicing Discriminator",
-      "Slicing Description", "Slicing Ordered", "Slicing Rules", "Base Path", "Base Min", "Base Max", "Condition(s)",
-      "Constraint(s)" };
+  private static String[] titles = {
+      "Path", "Slice Name", "Alias(s)", "Label", "Min", "Max", "Must Support?", "Is Modifier?", "Is Summary?", "Type(s)", "Short", 
+      "Definition", "Comments", "Requirements", "Default Value", "Meaning When Missing", "Fixed Value", "Pattern", "Example",
+      "Minimum Value", "Maximum Value", "Maximum Length", "Binding Strength", "Binding Description", "Binding Value Set", "Code",
+      "Slicing Discriminator", "Slicing Description", "Slicing Ordered", "Slicing Rules", "Base Path", "Base Min", "Base Max",
+      "Condition(s)", "Constraint(s)"};
 
-  public XLSXWriter(OutputStream out, StructureDefinition def, boolean asXml, boolean hideMustSupportFalse)
-      throws UnsupportedEncodingException {
+  public XLSXWriter(OutputStream out, StructureDefinition def, boolean asXml, boolean hideMustSupportFalse) throws UnsupportedEncodingException {
     super(out);
     outStream = out;
     this.asXml = asXml;
@@ -121,13 +122,13 @@ public class XLSXWriter extends TextStreamWriter {
     for (StructureDefinitionMappingComponent map : def.getMapping()) {
       i++;
       addCell(headerRow, i, "Mapping: " + map.getName(), styles.get("header"));
-    }
+    }    
   }
 
   private void addCell(Row row, int pos, String content) {
     addCell(row, pos, content, styles.get("body"));
   }
-
+  
   public void addCell(Row row, int pos, boolean b) {
     addCell(row, pos, b ? "Y" : "");
   }
@@ -135,17 +136,17 @@ public class XLSXWriter extends TextStreamWriter {
   public void addCell(Row row, int pos, int content) {
     addCell(row, pos, Integer.toString(content));
   }
-
+  
   private void addCell(Row row, int pos, String content, CellStyle style) {
     Cell cell = row.createCell(pos);
     cell.setCellValue(content);
     cell.setCellStyle(style);
   }
-
+  
   /**
    * create a library of cell styles
    */
-  private static Map<String, CellStyle> createStyles(Workbook wb) {
+  private static Map<String, CellStyle> createStyles(Workbook wb){
     Map<String, CellStyle> styles = new HashMap<>();
 
     CellStyle style;
@@ -161,16 +162,16 @@ public class XLSXWriter extends TextStreamWriter {
 
     style = createBorderedStyle(wb);
     style.setVerticalAlignment(VerticalAlignment.TOP);
-    style.setWrapText(true);
+    style.setWrapText(true);    
     styles.put("body", style);
 
     return styles;
   }
 
-  private static CellStyle createBorderedStyle(Workbook wb) {
+  private static CellStyle createBorderedStyle(Workbook wb){
     BorderStyle thin = BorderStyle.THIN;
     short black = IndexedColors.GREY_50_PERCENT.getIndex();
-
+    
     CellStyle style = wb.createCellStyle();
     style.setBorderRight(thin);
     style.setRightBorderColor(black);
@@ -182,16 +183,16 @@ public class XLSXWriter extends TextStreamWriter {
     style.setTopBorderColor(black);
     return style;
   }
-  /*
-   * private void findMapKeys(StructureDefinition def,
-   * List<StructureDefinitionMappingComponent> maps, IWorkerContext context) {
-   * maps.addAll(def.getMapping()); if (def.getBaseDefinition()!=null) {
-   * StructureDefinition base = context.fetchResource(StructureDefinition.class,
-   * def.getBaseDefinition()); findMapKeys(base, maps, context); } }
-   */
+  /*  private void findMapKeys(StructureDefinition def, List<StructureDefinitionMappingComponent> maps, IWorkerContext context) {
+  	maps.addAll(def.getMapping());
+  	if (def.getBaseDefinition()!=null) {
+  	  StructureDefinition base = context.fetchResource(StructureDefinition.class, def.getBaseDefinition());
+  	  findMapKeys(base, maps, context);
+  	}
+  }*/
 
   public void processElement(ElementDefinition ed) throws Exception {
-    Row row = sheet.createRow(sheet.getLastRowNum() + 1);
+    Row row = sheet.createRow(sheet.getLastRowNum()+1);
     int i = 0;
     addCell(row, i++, ed.getPath(), styles.get("body"));
     addCell(row, i++, ed.getSliceName());
@@ -207,7 +208,7 @@ public class XLSXWriter extends TextStreamWriter {
     addCell(row, i++, ed.getDefinition());
     addCell(row, i++, ed.getComment());
     addCell(row, i++, ed.getRequirements());
-    addCell(row, i++, ed.getDefaultValue() != null ? renderType(ed.getDefaultValue()) : "");
+    addCell(row, i++, ed.getDefaultValue()!=null ? renderType(ed.getDefaultValue()) : "");
     addCell(row, i++, ed.getMeaningWhenMissing());
     addCell(row, i++, ed.hasFixed() ? renderType(ed.getFixed()) : "");
     addCell(row, i++, ed.hasPattern() ? renderType(ed.getPattern()) : "");
@@ -216,9 +217,9 @@ public class XLSXWriter extends TextStreamWriter {
     addCell(row, i++, ed.hasMaxValue() ? renderType(ed.getMaxValue()) : "");
     addCell(row, i++, (ed.hasMaxLength() ? Integer.toString(ed.getMaxLength()) : ""));
     if (ed.hasBinding()) {
-      addCell(row, i++, ed.getBinding().getStrength() != null ? ed.getBinding().getStrength().toCode() : "");
+      addCell(row, i++, ed.getBinding().getStrength()!=null ? ed.getBinding().getStrength().toCode() : "");
       addCell(row, i++, ed.getBinding().getDescription());
-      if (ed.getBinding().getValueSet() == null)
+      if (ed.getBinding().getValueSet()==null)
         addCell(row, i++, "");
       else
         addCell(row, i++, ed.getBinding().getValueSet());
@@ -232,21 +233,21 @@ public class XLSXWriter extends TextStreamWriter {
       addCell(row, i++, itemList(ed.getSlicing().getDiscriminator()));
       addCell(row, i++, ed.getSlicing().getDescription());
       addCell(row, i++, ed.getSlicing().getOrdered());
-      addCell(row, i++, ed.getSlicing().getRules() != null ? ed.getSlicing().getRules().toCode() : "");
+      addCell(row, i++, ed.getSlicing().getRules()!=null ? ed.getSlicing().getRules().toCode() : "");
     } else {
       addCell(row, i++, "");
       addCell(row, i++, "");
-      addCell(row, i++, "");
-      addCell(row, i++, "");
+      addCell(row, i++, "");      
+      addCell(row, i++, "");      
     }
-    if (ed.getBase() != null) {
+    if (ed.getBase()!=null) {
       addCell(row, i++, ed.getBase().getPath());
       addCell(row, i++, ed.getBase().getMin());
       addCell(row, i++, ed.getBase().getMax());
     } else {
       addCell(row, i++, "");
       addCell(row, i++, "");
-      addCell(row, i++, "");
+      addCell(row, i++, "");      
     }
     addCell(row, i++, itemList(ed.getCondition()));
     addCell(row, i++, itemList(ed.getConstraint()));
@@ -254,52 +255,52 @@ public class XLSXWriter extends TextStreamWriter {
       String mapString = "";
       for (ElementDefinitionMappingComponent map : ed.getMapping()) {
         if (map.getIdentity().equals(mapKey.getIdentity()))
-          mapString = map.getMap();
+          mapString = map.getMap();        
       }
       addCell(row, i++, mapString);
     }
   }
 
+
   private String itemList(List l) {
     StringBuilder s = new StringBuilder();
-    for (int i = 0; i < l.size(); i++) {
+    for (int i =0; i< l.size(); i++) {
       Object o = l.get(i);
       String val = "";
       if (o instanceof StringType) {
-        val = ((StringType) o).getValue();
+        val = ((StringType)o).getValue();
       } else if (o instanceof UriType) {
-        val = ((UriType) o).getValue();
+        val = ((UriType)o).getValue();
       } else if (o instanceof IdType) {
-        val = ((IdType) o).getValue();
+        val = ((IdType)o).getValue();
       } else if (o instanceof Enumeration<?>) {
         val = o.toString();
       } else if (o instanceof TypeRefComponent) {
-        TypeRefComponent t = (TypeRefComponent) o;
-        val = t.getWorkingCode();
-        if (val == null)
-          val = "";
+        TypeRefComponent t = (TypeRefComponent)o;
+    	  val = t.getWorkingCode();
+    	  if (val == null)
+    	    val = "";
         if (val.startsWith("http://hl7.org/fhir/StructureDefinition/"))
           val = val.substring(40);
-        if (t.hasTargetProfile())
-          val = val + "(" + canonicalList(t.getTargetProfile()) + ")";
-        if (t.hasProfile())
-          val = val + " {" + canonicalList(t.getProfile()) + "}";
-        if (t.hasAggregation())
+        if (t.hasTargetProfile()) 
+          val = val+ "(" + canonicalList(t.getTargetProfile()) + ")";
+    	  if (t.hasProfile())
+    	    val = val + " {" + canonicalList(t.getProfile()) + "}";
+    	  if (t.hasAggregation()) 
           val = val + " <<" + aggList(t.getAggregation()) + ">>";
       } else if (o instanceof Coding) {
-        Coding t = (Coding) o;
-        val = (t.getSystem() == null ? "" : t.getSystem()) + (t.getCode() == null ? "" : "#" + t.getCode())
-            + (t.getDisplay() == null ? "" : " (" + t.getDisplay() + ")");
+        Coding t = (Coding)o;
+        val = (t.getSystem()==null ? "" : t.getSystem()) + (t.getCode()==null ? "" : "#" + t.getCode()) + (t.getDisplay()==null ? "" : " (" + t.getDisplay() + ")");
       } else if (o instanceof ElementDefinitionConstraintComponent) {
-        ElementDefinitionConstraintComponent c = (ElementDefinitionConstraintComponent) o;
+        ElementDefinitionConstraintComponent c = (ElementDefinitionConstraintComponent)o;
         val = c.getKey() + ":" + c.getHuman() + " {" + c.getExpression() + "}";
       } else if (o instanceof ElementDefinitionSlicingDiscriminatorComponent) {
-        ElementDefinitionSlicingDiscriminatorComponent c = (ElementDefinitionSlicingDiscriminatorComponent) o;
+        ElementDefinitionSlicingDiscriminatorComponent c = (ElementDefinitionSlicingDiscriminatorComponent)o;
         val = c.getType().toCode() + ":" + c.getPath() + "}";
-
+        
       } else {
         val = o.toString();
-        val = val.substring(val.indexOf("[") + 1);
+        val = val.substring(val.indexOf("[")+1);
         val = val.substring(0, val.indexOf("]"));
       }
       s = s.append(val);
@@ -308,7 +309,7 @@ public class XLSXWriter extends TextStreamWriter {
     }
     return s.toString();
   }
-
+  
   private String aggList(List<org.hl7.fhir.r4b.model.Enumeration<AggregationMode>> list) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (org.hl7.fhir.r4b.model.Enumeration<AggregationMode> c : list)
@@ -332,7 +333,7 @@ public class XLSXWriter extends TextStreamWriter {
       return "";
     if (value.isPrimitive())
       return value.primitiveValue();
-
+    
     String s = null;
     ByteArrayOutputStream bs = new ByteArrayOutputStream();
     if (asXml) {
@@ -340,33 +341,33 @@ public class XLSXWriter extends TextStreamWriter {
       xml.compose(bs, "", value);
       bs.close();
       s = bs.toString();
-      s = s.substring(s.indexOf("\n") + 2);
+      s = s.substring(s.indexOf("\n")+2);
     } else {
       json.setOutputStyle(OutputStyle.PRETTY);
       json.compose(bs, value, "");
       bs.close();
       s = bs.toString();
-    }
+  	}
     return s;
   }
-
+  
   private int columnPixels(double columns) {
     double WIDTH_FACTOR = 256;
     double PADDING = 180;
-    return (int) Math.floor(columns * WIDTH_FACTOR + PADDING);
+    return (int)Math.floor(columns*WIDTH_FACTOR + PADDING);
   }
 
   public void dump() throws IOException {
-    for (int i = 0; i < 34; i++) {
+    for (int i=0; i<34; i++) {
       sheet.autoSizeColumn(i);
     }
-
+      
     sheet.setColumnHidden(2, true);
     sheet.setColumnHidden(3, true);
     sheet.setColumnHidden(30, true);
     sheet.setColumnHidden(31, true);
     sheet.setColumnHidden(32, true);
-
+    
     sheet.setColumnWidth(9, columnPixels(20));
     sheet.setColumnWidth(11, columnPixels(100));
     sheet.setColumnWidth(12, columnPixels(100));
@@ -383,13 +384,15 @@ public class XLSXWriter extends TextStreamWriter {
       sheet.setColumnWidth(i, columnPixels(50));
       sheet.autoSizeColumn(i);
 //      sheet.setColumnHidden(i,  true);
-    }
-    sheet.createFreezePane(2, 1);
+    }    
+    sheet.createFreezePane(2,1);
 
     if (hideMustSupportFalse) {
       SheetConditionalFormatting sheetCF = sheet.getSheetConditionalFormatting();
       String address = "A2:AI" + Math.max(Integer.valueOf(sheet.getLastRowNum()), 2);
-      CellRangeAddress[] regions = { CellRangeAddress.valueOf(address) };
+      CellRangeAddress[] regions = {
+          CellRangeAddress.valueOf(address)
+      };
 
       ConditionalFormattingRule rule1 = sheetCF.createConditionalFormattingRule("$G2<>\"Y\"");
       PatternFormatting fill1 = rule1.createPatternFormatting();
@@ -403,10 +406,10 @@ public class XLSXWriter extends TextStreamWriter {
 
       sheetCF.addConditionalFormatting(regions, rule1, rule2);
 
-      sheet.setAutoFilter(
-          new CellRangeAddress(0, sheet.getLastRowNum(), 0, titles.length + def.getMapping().size() - 1));
+      sheet.setAutoFilter(new CellRangeAddress(0,sheet.getLastRowNum(), 0, titles.length+def.getMapping().size() - 1));
 
-      XSSFSheet xSheet = (XSSFSheet) sheet;
+
+      XSSFSheet xSheet = (XSSFSheet)sheet;
 
       CTAutoFilter sheetFilter = xSheet.getCTWorksheet().getAutoFilter();
       CTFilterColumn filterColumn1 = sheetFilter.addNewFilterColumn();
@@ -421,10 +424,9 @@ public class XLSXWriter extends TextStreamWriter {
       CTFilters filters2 = filterColumn2.addNewFilters();
       filters2.setBlank(true);
 
-      // We have to apply the filter ourselves by hiding the rows:
+      // We have to apply the filter ourselves by hiding the rows: 
       for (Row row : sheet) {
-        if (row.getRowNum() > 0
-            && (!row.getCell(6).getStringCellValue().equals("Y") || !row.getCell(26).getStringCellValue().isEmpty())) {
+        if (row.getRowNum()>0 && (!row.getCell(6).getStringCellValue().equals("Y") || !row.getCell(26).getStringCellValue().isEmpty())) {
           ((XSSFRow) row).getCTRow().setHidden(true);
         }
       }
@@ -432,7 +434,7 @@ public class XLSXWriter extends TextStreamWriter {
     sheet.setActiveCell(new CellAddress(sheet.getRow(1).getCell(0)));
 
     wb.write(outStream);
-
+    
     flush();
     close();
   }

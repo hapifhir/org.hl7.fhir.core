@@ -434,10 +434,10 @@ public class ResearchSubject extends DomainResource {
           return this.reason;
         }
         else if (name.equals("startDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchSubject.progress.startDate");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchSubject.progress.startDate");
         }
         else if (name.equals("endDate")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchSubject.progress.endDate");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchSubject.progress.endDate");
         }
         else
           return super.addChild(name);
@@ -1099,7 +1099,7 @@ public class ResearchSubject extends DomainResource {
           return addIdentifier();
         }
         else if (name.equals("status")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchSubject.status");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchSubject.status");
         }
         else if (name.equals("progress")) {
           return addProgress();
@@ -1117,10 +1117,10 @@ public class ResearchSubject extends DomainResource {
           return this.subject;
         }
         else if (name.equals("assignedComparisonGroup")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchSubject.assignedComparisonGroup");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchSubject.assignedComparisonGroup");
         }
         else if (name.equals("actualComparisonGroup")) {
-          throw new FHIRException("Cannot call addChild on a singleton property ResearchSubject.actualComparisonGroup");
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchSubject.actualComparisonGroup");
         }
         else if (name.equals("consent")) {
           return addConsent();

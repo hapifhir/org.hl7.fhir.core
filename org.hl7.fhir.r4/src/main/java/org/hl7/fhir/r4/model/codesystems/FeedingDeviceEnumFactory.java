@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -82,7 +86,7 @@ public class FeedingDeviceEnumFactory implements EnumFactory<FeedingDevice> {
       return FeedingDevice.AUTOFEEDINGDEVICE;
     if ("rocker-knife".equals(codeString))
       return FeedingDevice.ROCKERKNIFE;
-    throw new IllegalArgumentException("Unknown FeedingDevice code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown FeedingDevice code '"+codeString+"'");
   }
 
   public String toCode(FeedingDevice code) {
@@ -133,8 +137,8 @@ public class FeedingDeviceEnumFactory implements EnumFactory<FeedingDevice> {
     return "?";
   }
 
-  public String toSystem(FeedingDevice code) {
-    return code.getSystem();
-  }
+    public String toSystem(FeedingDevice code) {
+      return code.getSystem();
+      }
 
 }

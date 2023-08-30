@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,98 +34,77 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum ProcedureStatus {
 
-  /**
-   * The procedure is still occurring.
-   */
-  INPROGRESS,
-  /**
-   * The procedure was terminated without completing successfully.
-   */
-  ABORTED,
-  /**
-   * All actions involved in the procedure have taken place.
-   */
-  COMPLETED,
-  /**
-   * The statement was entered in error and Is not valid.
-   */
-  ENTEREDINERROR,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static ProcedureStatus fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("in-progress".equals(codeString))
-      return INPROGRESS;
-    if ("aborted".equals(codeString))
-      return ABORTED;
-    if ("completed".equals(codeString))
-      return COMPLETED;
-    if ("entered-in-error".equals(codeString))
-      return ENTEREDINERROR;
-    throw new FHIRException("Unknown ProcedureStatus code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case INPROGRESS:
-      return "in-progress";
-    case ABORTED:
-      return "aborted";
-    case COMPLETED:
-      return "completed";
-    case ENTEREDINERROR:
-      return "entered-in-error";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * The procedure is still occurring.
+         */
+        INPROGRESS, 
+        /**
+         * The procedure was terminated without completing successfully.
+         */
+        ABORTED, 
+        /**
+         * All actions involved in the procedure have taken place.
+         */
+        COMPLETED, 
+        /**
+         * The statement was entered in error and Is not valid.
+         */
+        ENTEREDINERROR, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static ProcedureStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("in-progress".equals(codeString))
+          return INPROGRESS;
+        if ("aborted".equals(codeString))
+          return ABORTED;
+        if ("completed".equals(codeString))
+          return COMPLETED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        throw new FHIRException("Unknown ProcedureStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INPROGRESS: return "in-progress";
+            case ABORTED: return "aborted";
+            case COMPLETED: return "completed";
+            case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/procedure-status";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INPROGRESS: return "The procedure is still occurring.";
+            case ABORTED: return "The procedure was terminated without completing successfully.";
+            case COMPLETED: return "All actions involved in the procedure have taken place.";
+            case ENTEREDINERROR: return "The statement was entered in error and Is not valid.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INPROGRESS: return "In Progress";
+            case ABORTED: return "Aboted";
+            case COMPLETED: return "Completed";
+            case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/procedure-status";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case INPROGRESS:
-      return "The procedure is still occurring.";
-    case ABORTED:
-      return "The procedure was terminated without completing successfully.";
-    case COMPLETED:
-      return "All actions involved in the procedure have taken place.";
-    case ENTEREDINERROR:
-      return "The statement was entered in error and Is not valid.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case INPROGRESS:
-      return "In Progress";
-    case ABORTED:
-      return "Aboted";
-    case COMPLETED:
-      return "Completed";
-    case ENTEREDINERROR:
-      return "Entered in Error";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }

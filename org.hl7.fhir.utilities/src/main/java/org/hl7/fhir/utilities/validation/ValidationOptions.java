@@ -1,19 +1,17 @@
 package org.hl7.fhir.utilities.validation;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 
-import com.google.gson.JsonElement;
+import java.util.HashSet;
 
 public class ValidationOptions {
   public enum ValueSetMode {
     ALL_CHECKS, CHECK_MEMERSHIP_ONLY, NO_MEMBERSHIP_CHECK
   }
-  
-  private AcceptLanguageHeader langs = null;
+
+  private Set<String> languages = new HashSet<>();
   private boolean useServer = true;
   private boolean useClient = true;
   private boolean guessSystem = false;
@@ -24,19 +22,15 @@ public class ValidationOptions {
   private boolean useValueSetDisplays;
   private boolean englishOk = true;
 
-  public ValidationOptions() {
+  public ValidationOptions(String... languages) {
     super();
-  }
-
-  public ValidationOptions(String language) {
-    super();
-    if (!Utilities.noString(language)) {
-      langs = new AcceptLanguageHeader(language, false);
+    for(String s : languages) {
+      this.languages.add(s);
     }
   }
 
   public static ValidationOptions defaults() {
-    return new ValidationOptions("en, en-US");
+    return new ValidationOptions("en", "en-US");
   }
   
   /**
@@ -46,12 +40,12 @@ public class ValidationOptions {
    * 
    * @return
    */
-  public AcceptLanguageHeader getLanguages() {
-    return langs;
+  public Set<String> getLanguages() {
+    return languages;
   }
 
   public boolean hasLanguages() {
-    return langs != null && !Utilities.noString(langs.getSource());
+    return languages.size() > 0;
   }
 
 
@@ -135,7 +129,7 @@ public class ValidationOptions {
       return this;
     }
     ValidationOptions n = this.copy();
-    n.addLanguage(language);
+    n.languages.add(language);
     return n;
   }
 
@@ -194,16 +188,7 @@ public class ValidationOptions {
   }
 
   public ValidationOptions addLanguage(String language) {
-    if (this.langs == null) {
-      langs = new AcceptLanguageHeader(language, false);
-    } else {
-      langs.add(language);
-    }
-    return this;
-  }
-
-  public ValidationOptions setLanguages(String language) {
-    langs = new AcceptLanguageHeader(language, false);
+    this.languages.add(language);
     return this;
   }
 
@@ -263,7 +248,7 @@ public class ValidationOptions {
 
   public ValidationOptions copy() {
     ValidationOptions n = new ValidationOptions();
-    n.langs = langs == null ? null : langs.copy();
+    n.languages.addAll(languages);
     n.useServer = useServer;
     n.useClient = useClient;
     n.guessSystem = guessSystem; 
@@ -277,21 +262,18 @@ public class ValidationOptions {
   
 
   public String toJson() {
-    return "\"langs\":\""+( langs == null ? "" : langs.toString())+"\", \"useServer\":\""+Boolean.toString(useServer)+"\", \"useClient\":\""+Boolean.toString(useClient)+"\", "+
+    return "\"langs\":\""+languages.toString()+"\", \"useServer\":\""+Boolean.toString(useServer)+"\", \"useClient\":\""+Boolean.toString(useClient)+"\", "+
        "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"valueSetMode\":\""+valueSetMode.toString()+"\", \"displayWarningMode\":\""+Boolean.toString(displayWarningMode)+"\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\"";
   }
 
   public String langSummary() {
-    if (langs == null) {
+    if (languages.size() == 0) {
       return "--";
     } else {
-      String s = langs.toString();
-      if (Utilities.noString(s)) {
-        s = "--";
-      }
-      return s;
+      return String.join("|", Utilities.sorted(languages));
     }
   }
+
 
 
   

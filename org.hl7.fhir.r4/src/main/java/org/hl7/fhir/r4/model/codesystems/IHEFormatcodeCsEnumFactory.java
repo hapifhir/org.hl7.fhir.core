@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,6 +33,7 @@ package org.hl7.fhir.r4.model.codesystems;
 */
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
+
 
 import org.hl7.fhir.r4.model.EnumFactory;
 
@@ -186,7 +190,7 @@ public class IHEFormatcodeCsEnumFactory implements EnumFactory<IHEFormatcodeCs> 
       return IHEFormatcodeCs.URN_HL7ORG_SDWG_CCDASTRUCTUREDBODY_2_1;
     if ("urn:hl7-org:sdwg:ccda-nonXMLBody:2.1".equals(codeString))
       return IHEFormatcodeCs.URN_HL7ORG_SDWG_CCDANONXMLBODY_2_1;
-    throw new IllegalArgumentException("Unknown IHEFormatcodeCs code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown IHEFormatcodeCs code '"+codeString+"'");
   }
 
   public String toCode(IHEFormatcodeCs code) {
@@ -341,8 +345,8 @@ public class IHEFormatcodeCsEnumFactory implements EnumFactory<IHEFormatcodeCs> 
     return "?";
   }
 
-  public String toSystem(IHEFormatcodeCs code) {
-    return code.getSystem();
-  }
+    public String toSystem(IHEFormatcodeCs code) {
+      return code.getSystem();
+      }
 
 }

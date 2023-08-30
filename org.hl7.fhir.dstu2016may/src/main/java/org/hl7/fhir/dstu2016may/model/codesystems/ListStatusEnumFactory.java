@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class ListStatusEnumFactory implements EnumFactory<ListStatus> {
@@ -44,7 +48,7 @@ public class ListStatusEnumFactory implements EnumFactory<ListStatus> {
       return ListStatus.RETIRED;
     if ("entered-in-error".equals(codeString))
       return ListStatus.ENTEREDINERROR;
-    throw new IllegalArgumentException("Unknown ListStatus code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown ListStatus code '"+codeString+"'");
   }
 
   public String toCode(ListStatus code) {
@@ -57,8 +61,8 @@ public class ListStatusEnumFactory implements EnumFactory<ListStatus> {
     return "?";
   }
 
-  public String toSystem(ListStatus code) {
-    return code.getSystem();
-  }
+    public String toSystem(ListStatus code) {
+      return code.getSystem();
+      }
 
 }

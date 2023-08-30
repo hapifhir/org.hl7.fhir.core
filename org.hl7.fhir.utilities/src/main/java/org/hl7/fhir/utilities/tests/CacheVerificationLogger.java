@@ -1,11 +1,10 @@
 package org.hl7.fhir.utilities.tests;
 
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-
+import lombok.Getter;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 
-import lombok.Getter;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public class CacheVerificationLogger implements ToolingClientLogger {
 

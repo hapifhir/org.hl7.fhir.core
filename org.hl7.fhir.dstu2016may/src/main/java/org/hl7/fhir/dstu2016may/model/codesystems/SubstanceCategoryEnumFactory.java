@@ -1,5 +1,8 @@
 package org.hl7.fhir.dstu2016may.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.dstu2016may.model.codesystems;
 
 // Generated on Sun, May 8, 2016 03:05+1000 for FHIR v1.4.0
 
+
 import org.hl7.fhir.dstu2016may.model.EnumFactory;
 
 public class SubstanceCategoryEnumFactory implements EnumFactory<SubstanceCategory> {
@@ -52,7 +56,7 @@ public class SubstanceCategoryEnumFactory implements EnumFactory<SubstanceCatego
       return SubstanceCategory.DRUG;
     if ("material".equals(codeString))
       return SubstanceCategory.MATERIAL;
-    throw new IllegalArgumentException("Unknown SubstanceCategory code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown SubstanceCategory code '"+codeString+"'");
   }
 
   public String toCode(SubstanceCategory code) {
@@ -73,8 +77,8 @@ public class SubstanceCategoryEnumFactory implements EnumFactory<SubstanceCatego
     return "?";
   }
 
-  public String toSystem(SubstanceCategory code) {
-    return code.getSystem();
-  }
+    public String toSystem(SubstanceCategory code) {
+      return code.getSystem();
+      }
 
 }

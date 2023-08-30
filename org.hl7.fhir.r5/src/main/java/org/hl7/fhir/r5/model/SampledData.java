@@ -829,31 +829,31 @@ public class SampledData extends DataType implements ICompositeType {
           return this.origin;
         }
         else if (name.equals("interval")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.interval");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.interval");
         }
         else if (name.equals("intervalUnit")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.intervalUnit");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.intervalUnit");
         }
         else if (name.equals("factor")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.factor");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.factor");
         }
         else if (name.equals("lowerLimit")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.lowerLimit");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.lowerLimit");
         }
         else if (name.equals("upperLimit")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.upperLimit");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.upperLimit");
         }
         else if (name.equals("dimensions")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.dimensions");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.dimensions");
         }
         else if (name.equals("codeMap")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.codeMap");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.codeMap");
         }
         else if (name.equals("offsets")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.offsets");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.offsets");
         }
         else if (name.equals("data")) {
-          throw new FHIRException("Cannot call addChild on a singleton property SampledData.data");
+          throw new FHIRException("Cannot call addChild on a primitive type SampledData.data");
         }
         else
           return super.addChild(name);

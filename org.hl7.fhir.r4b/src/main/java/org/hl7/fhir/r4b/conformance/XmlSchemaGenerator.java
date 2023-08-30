@@ -29,6 +29,7 @@ package org.hl7.fhir.r4b.conformance;
   
  */
 
+
 import java.io.FileOutputStream;
 /*
 Copyright (c) 2011+, HL7, Inc
@@ -79,7 +80,8 @@ import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
-public class XmlSchemaGenerator {
+
+public class XmlSchemaGenerator  {
 
   public class QName {
 
@@ -88,7 +90,7 @@ public class XmlSchemaGenerator {
 
     @Override
     public String toString() {
-      return typeNs + ":" + type;
+      return typeNs+":"+type;
     }
   }
 
@@ -104,22 +106,24 @@ public class XmlSchemaGenerator {
       this.ed = edc;
     }
 
+
   }
 
+
   private String folder;
-  private IWorkerContext context;
-  private boolean single;
-  private String version;
-  private String genDate;
-  private String license;
-  private boolean annotations;
+	private IWorkerContext context;
+	private boolean single;
+	private String version;
+	private String genDate;
+	private String license;
+	private boolean annotations;
   private ProfileUtilities profileUtilities;
 
-  public XmlSchemaGenerator(String folder, IWorkerContext context) {
+	public XmlSchemaGenerator(String folder, IWorkerContext context) {
     this.folder = folder;
     this.context = context;
     this.profileUtilities = new ProfileUtilities(context, null, null);
-  }
+	}
 
   public boolean isSingle() {
     return single;
@@ -128,6 +132,7 @@ public class XmlSchemaGenerator {
   public void setSingle(boolean single) {
     this.single = single;
   }
+  
 
   public String getVersion() {
     return version;
@@ -153,6 +158,7 @@ public class XmlSchemaGenerator {
     this.license = license;
   }
 
+
   public boolean isAnnotations() {
     return annotations;
   }
@@ -160,6 +166,7 @@ public class XmlSchemaGenerator {
   public void setAnnotations(boolean annotations) {
     this.annotations = annotations;
   }
+
 
   private Set<ElementDefinition> processed = new HashSet<ElementDefinition>();
   private Set<StructureDefinition> processedLibs = new HashSet<StructureDefinition>();
@@ -174,7 +181,7 @@ public class XmlSchemaGenerator {
   private void w(String s) throws IOException {
     writer.write(s);
   }
-
+  
   private void ln(String s) throws IOException {
     writer.write(s);
     writer.write("\r\n");
@@ -196,23 +203,23 @@ public class XmlSchemaGenerator {
 
     if (single && writer != null) {
       if (!ns.equals(getNs(sd)))
-        throw new FHIRException("namespace inconsistency: " + ns + " vs " + getNs(sd));
+        throw new FHIRException("namespace inconsistency: "+ns+" vs "+getNs(sd));
       return lang;
     }
     close();
-
-    writer = new OutputStreamWriter(new FileOutputStream(Utilities.path(folder, tail(sd.getType() + ".xsd"))), "UTF-8");
+    
+    writer = new OutputStreamWriter(new FileOutputStream(Utilities.path(folder, tail(sd.getType()+".xsd"))), "UTF-8");
     ln("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
     ln("<!-- ");
     ln(license);
     ln("");
-    ln("  Generated on " + genDate + " for FHIR v" + version + " ");
+    ln("  Generated on "+genDate+" for FHIR v"+version+" ");
     ln("");
     ln("  Note: this schema does not contain all the knowledge represented in the underlying content model");
     ln("");
     ln("-->");
-    ln("<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:fhir=\"http://hl7.org/fhir\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" "
-        + "xmlns:lm=\"" + ns + "\" targetNamespace=\"" + ns + "\" elementFormDefault=\"qualified\" version=\"1.0\">");
+    ln("<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:fhir=\"http://hl7.org/fhir\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" "+
+        "xmlns:lm=\""+ns+"\" targetNamespace=\""+ns+"\" elementFormDefault=\"qualified\" version=\"1.0\">");
     ln("  <xs:import schemaLocation=\"fhir-common.xsd\" namespace=\"http://hl7.org/fhir\"/>");
     if (useNarrative) {
       if (ns.equals("urn:hl7-org:v3"))
@@ -224,50 +231,50 @@ public class XmlSchemaGenerator {
     namespaces.put(ns, "lm");
     namespaces.put("http://hl7.org/fhir", "fhir");
     typeNames.clear();
-
+    
     return lang;
   }
+
 
   private String getNs(StructureDefinition sd) {
     String ns = "http://hl7.org/fhir";
     if (sd.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
-      ns = ToolingExtensions.readStringExtension(sd,
-          "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
+      ns = ToolingExtensions.readStringExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
     return ns;
   }
 
-  public void generate(StructureDefinition entry, Map<String, StructureDefinition> library) throws Exception {
-    processedLibs.clear();
+	public void generate(StructureDefinition entry, Map<String, StructureDefinition> library) throws Exception {
+	  processedLibs.clear();
+	  
+	  this.library = library;
+	  checkLib(entry);
+	  
+	  String ns = getNs(entry);
+	  String lang = start(entry, ns);
 
-    this.library = library;
-    checkLib(entry);
-
-    String ns = getNs(entry);
-    String lang = start(entry, ns);
-
-    w("  <xs:element name=\"" + tail(entry.getType()) + "\" type=\"lm:" + tail(entry.getType()) + "\"");
+	  w("  <xs:element name=\""+tail(entry.getType())+"\" type=\"lm:"+tail(entry.getType())+"\"");
     if (annotations) {
       ln(">");
       ln("    <xs:annotation>");
-      ln("      <xs:documentation xml:lang=\"" + lang + "\">" + Utilities.escapeXml(entry.getDescription())
-          + "</xs:documentation>");
+      ln("      <xs:documentation xml:lang=\""+lang+"\">"+Utilities.escapeXml(entry.getDescription())+"</xs:documentation>");
       ln("    </xs:annotation>");
       ln("  </xs:element>");
     } else
       ln("/>");
 
-    produceType(entry, entry.getSnapshot().getElement().get(0), tail(entry.getType()),
-        getQN(entry, entry.getBaseDefinition()), lang);
-    while (!queue.isEmpty()) {
-      ElementToGenerate q = queue.poll();
-      produceType(q.sd, q.ed, q.tname, getQN(q.sd, q.ed, "http://hl7.org/fhir/StructureDefinition/Element", false),
-          lang);
-    }
-    while (!queueLib.isEmpty()) {
-      generateInner(queueLib.poll());
-    }
-    close();
-  }
+		produceType(entry, entry.getSnapshot().getElement().get(0), tail(entry.getType()), getQN(entry, entry.getBaseDefinition()), lang);
+		while (!queue.isEmpty()) {
+		  ElementToGenerate q = queue.poll();
+		  produceType(q.sd, q.ed, q.tname, getQN(q.sd, q.ed, "http://hl7.org/fhir/StructureDefinition/Element", false), lang);
+		}
+		while (!queueLib.isEmpty()) {
+		  generateInner(queueLib.poll());
+		}
+		close();
+	}
+
+
+
 
   private void checkLib(StructureDefinition entry) {
     for (ElementDefinition ed : entry.getSnapshot().getElement()) {
@@ -288,87 +295,81 @@ public class XmlSchemaGenerator {
     if (processedLibs.contains(sd))
       return;
     processedLibs.add(sd);
-
+    
     String ns = getNs(sd);
     String lang = start(sd, ns);
 
     if (sd.getSnapshot().getElement().isEmpty())
-      throw new FHIRException("no snap shot on " + sd.getUrl());
-
+      throw new FHIRException("no snap shot on "+sd.getUrl());
+    
     produceType(sd, sd.getSnapshot().getElement().get(0), tail(sd.getType()), getQN(sd, sd.getBaseDefinition()), lang);
     while (!queue.isEmpty()) {
       ElementToGenerate q = queue.poll();
-      produceType(q.sd, q.ed, q.tname, getQN(q.sd, q.ed, "http://hl7.org/fhir/StructureDefinition/Element", false),
-          lang);
+      produceType(q.sd, q.ed, q.tname, getQN(q.sd, q.ed, "http://hl7.org/fhir/StructureDefinition/Element", false), lang);
     }
   }
 
   private String tail(String url) {
-    return url.contains("/") ? url.substring(url.lastIndexOf("/") + 1) : url;
+    return url.contains("/") ? url.substring(url.lastIndexOf("/")+1) : url;
   }
-
   private String root(String url) {
     return url.contains("/") ? url.substring(0, url.lastIndexOf("/")) : "";
   }
 
-  private String tailDot(String url) {
-    return url.contains(".") ? url.substring(url.lastIndexOf(".") + 1) : url;
-  }
 
-  private void produceType(StructureDefinition sd, ElementDefinition ed, String typeName, QName typeParent, String lang)
-      throws IOException, FHIRException {
+  private String tailDot(String url) {
+    return url.contains(".") ? url.substring(url.lastIndexOf(".")+1) : url;
+  }
+  private void produceType(StructureDefinition sd, ElementDefinition ed, String typeName, QName typeParent, String lang) throws IOException, FHIRException {
     if (processed.contains(ed))
       return;
     processed.add(ed);
-
-    // ok
-    ln("  <xs:complexType name=\"" + typeName + "\">");
+    
+    // ok 
+    ln("  <xs:complexType name=\""+typeName+"\">");
     if (annotations) {
       ln("    <xs:annotation>");
-      ln("      <xs:documentation xml:lang=\"" + lang + "\">" + Utilities.escapeXml(ed.getDefinition())
-          + "</xs:documentation>");
+      ln("      <xs:documentation xml:lang=\""+lang+"\">"+Utilities.escapeXml(ed.getDefinition())+"</xs:documentation>");
       ln("    </xs:annotation>");
     }
     ln("    <xs:complexContent>");
-    ln("      <xs:extension base=\"" + typeParent.toString() + "\">");
+    ln("      <xs:extension base=\""+typeParent.toString()+"\">");
     ln("        <xs:sequence>");
-
+    
     // hack....
-    for (ElementDefinition edc : profileUtilities.getChildList(sd, ed)) {
-      if (!(edc.hasRepresentation(PropertyRepresentation.XMLATTR)
-          || edc.hasRepresentation(PropertyRepresentation.XMLTEXT)) && !inheritedElement(edc))
+    for (ElementDefinition edc : profileUtilities.getChildList(sd,  ed)) {
+      if (!(edc.hasRepresentation(PropertyRepresentation.XMLATTR) || edc.hasRepresentation(PropertyRepresentation.XMLTEXT)) && !inheritedElement(edc))
         produceElement(sd, ed, edc, lang);
     }
     ln("        </xs:sequence>");
-    for (ElementDefinition edc : profileUtilities.getChildList(sd, ed)) {
-      if ((edc.hasRepresentation(PropertyRepresentation.XMLATTR)
-          || edc.hasRepresentation(PropertyRepresentation.XMLTEXT)) && !inheritedElement(edc))
+    for (ElementDefinition edc : profileUtilities.getChildList(sd,  ed)) {
+      if ((edc.hasRepresentation(PropertyRepresentation.XMLATTR) || edc.hasRepresentation(PropertyRepresentation.XMLTEXT)) && !inheritedElement(edc))
         produceAttribute(sd, ed, edc, lang);
     }
     ln("      </xs:extension>");
     ln("    </xs:complexContent>");
-    ln("  </xs:complexType>");
+    ln("  </xs:complexType>");    
   }
+
 
   private boolean inheritedElement(ElementDefinition edc) {
     return !edc.getPath().equals(edc.getBase().getPath());
   }
 
-  private void produceElement(StructureDefinition sd, ElementDefinition ed, ElementDefinition edc, String lang)
-      throws IOException, FHIRException {
-    if (edc.getType().size() == 0)
-      throw new Error("No type at " + edc.getPath());
-
+  private void produceElement(StructureDefinition sd, ElementDefinition ed, ElementDefinition edc, String lang) throws IOException, FHIRException {
+    if (edc.getType().size() == 0) 
+      throw new Error("No type at "+edc.getPath());
+    
     if (edc.getType().size() > 1 && edc.hasRepresentation(PropertyRepresentation.TYPEATTR)) {
       // first, find the common base type
       StructureDefinition lib = getCommonAncestor(edc.getType());
       if (lib == null)
-        throw new Error("Common ancester not found at " + edc.getPath());
+        throw new Error("Common ancester not found at "+edc.getPath());
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
       for (TypeRefComponent t : edc.getType()) {
         b.append(getQN(sd, edc, t.getWorkingCode(), true).toString());
       }
-
+      
       String name = tailDot(edc.getPath());
       String min = String.valueOf(edc.getMin());
       String max = edc.getMax();
@@ -377,44 +378,40 @@ public class XmlSchemaGenerator {
 
       QName qn = getQN(sd, edc, lib.getUrl(), true);
 
-      ln("        <xs:element name=\"" + name + "\" minOccurs=\"" + min + "\" maxOccurs=\"" + max + "\" type=\""
-          + qn.typeNs + ":" + qn.type + "\">");
+      ln("        <xs:element name=\""+name+"\" minOccurs=\""+min+"\" maxOccurs=\""+max+"\" type=\""+qn.typeNs+":"+qn.type+"\">");
       ln("          <xs:annotation>");
-      ln("          <xs:appinfo xml:lang=\"en\">Possible types: " + b.toString() + "</xs:appinfo>");
-      if (annotations && edc.hasDefinition())
-        ln("            <xs:documentation xml:lang=\"" + lang + "\">" + Utilities.escapeXml(edc.getDefinition())
-            + "</xs:documentation>");
+      ln("          <xs:appinfo xml:lang=\"en\">Possible types: "+b.toString()+"</xs:appinfo>");
+      if (annotations && edc.hasDefinition()) 
+        ln("            <xs:documentation xml:lang=\""+lang+"\">"+Utilities.escapeXml(edc.getDefinition())+"</xs:documentation>");
       ln("          </xs:annotation>");
       ln("        </xs:element>");
-    } else
-      for (TypeRefComponent t : edc.getType()) {
-        String name = tailDot(edc.getPath());
-        if (edc.getType().size() > 1)
-          name = name + Utilities.capitalize(t.getWorkingCode());
-        QName qn = getQN(sd, edc, t.getWorkingCode(), true);
-        String min = String.valueOf(edc.getMin());
-        String max = edc.getMax();
-        if ("*".equals(max))
-          max = "unbounded";
+    } else for (TypeRefComponent t : edc.getType()) {
+      String name = tailDot(edc.getPath());
+      if (edc.getType().size() > 1)
+        name = name + Utilities.capitalize(t.getWorkingCode());
+      QName qn = getQN(sd, edc, t.getWorkingCode(), true);
+      String min = String.valueOf(edc.getMin());
+      String max = edc.getMax();
+      if ("*".equals(max))
+        max = "unbounded";
 
-        w("        <xs:element name=\"" + name + "\" minOccurs=\"" + min + "\" maxOccurs=\"" + max + "\" type=\""
-            + qn.typeNs + ":" + qn.type + "\"");
-        if (annotations && edc.hasDefinition()) {
-          ln(">");
-          ln("          <xs:annotation>");
-          ln("            <xs:documentation xml:lang=\"" + lang + "\">" + Utilities.escapeXml(edc.getDefinition())
-              + "</xs:documentation>");
-          ln("          </xs:annotation>");
-          ln("        </xs:element>");
-        } else
-          ln("/>");
-      }
+
+      w("        <xs:element name=\""+name+"\" minOccurs=\""+min+"\" maxOccurs=\""+max+"\" type=\""+qn.typeNs+":"+qn.type+"\"");
+      if (annotations && edc.hasDefinition()) {
+        ln(">");
+        ln("          <xs:annotation>");
+        ln("            <xs:documentation xml:lang=\""+lang+"\">"+Utilities.escapeXml(edc.getDefinition())+"</xs:documentation>");
+        ln("          </xs:annotation>");
+        ln("        </xs:element>");
+      } else
+        ln("/>");
+    }
   }
 
   public QName getQN(StructureDefinition sd, String type) throws FHIRException {
     return getQN(sd, sd.getSnapshot().getElementFirstRep(), type, false);
   }
-
+  
   public QName getQN(StructureDefinition sd, ElementDefinition edc, String t, boolean chase) throws FHIRException {
     QName qn = new QName();
     qn.type = Utilities.isAbsoluteUrl(t) ? tail(t) : t;
@@ -425,13 +422,12 @@ public class XmlSchemaGenerator {
       if (ns.equals("http://hl7.org/fhir/StructureDefinition"))
         ns = "http://hl7.org/fhir";
       if (!namespaces.containsKey(ns))
-        throw new FHIRException("Unknown type namespace " + ns + " for " + edc.getPath());
+        throw new FHIRException("Unknown type namespace "+ns+" for "+edc.getPath());
       qn.typeNs = namespaces.get(ns);
       StructureDefinition lib = library.get(t);
-      if (lib == null && !Utilities.existsInList(t, "http://hl7.org/fhir/cda/StructureDefinition/StrucDoc.Text",
-          "http://hl7.org/fhir/StructureDefinition/Element"))
-        throw new FHIRException("Unable to resolve " + t + " for " + edc.getPath());
-      if (lib != null)
+      if (lib == null && !Utilities.existsInList(t, "http://hl7.org/fhir/cda/StructureDefinition/StrucDoc.Text", "http://hl7.org/fhir/StructureDefinition/Element"))
+        throw new FHIRException("Unable to resolve "+t+" for "+edc.getPath());
+      if (lib != null) 
         queueLib.add(lib);
     } else
       qn.typeNs = namespaces.get("http://hl7.org/fhir");
@@ -440,9 +436,9 @@ public class XmlSchemaGenerator {
       String tname = typeNameFromPath(edc);
       if (typeNames.contains(tname)) {
         int i = 1;
-        while (typeNames.contains(tname + i))
+        while (typeNames.contains(tname+i)) 
           i++;
-        tname = tname + i;
+        tname = tname+i;
       }
       queue.add(new ElementToGenerate(tname, sd, edc));
       qn.typeNs = "lm";
@@ -450,15 +446,15 @@ public class XmlSchemaGenerator {
     }
     return qn;
   }
-
+  
   private StructureDefinition getCommonAncestor(List<TypeRefComponent> type) throws FHIRException {
     StructureDefinition sd = library.get(type.get(0).getWorkingCode());
     if (sd == null)
-      throw new FHIRException("Unable to find definition for " + type.get(0).getWorkingCode());
+      throw new FHIRException("Unable to find definition for "+type.get(0).getWorkingCode()); 
     for (int i = 1; i < type.size(); i++) {
       StructureDefinition t = library.get(type.get(i).getWorkingCode());
       if (t == null)
-        throw new FHIRException("Unable to find definition for " + type.get(i).getWorkingCode());
+        throw new FHIRException("Unable to find definition for "+type.get(i).getWorkingCode()); 
       sd = getCommonAncestor(sd, t);
     }
     return sd;
@@ -475,15 +471,16 @@ public class XmlSchemaGenerator {
     boolean chain1Done = false;
     boolean chain2Done = false;
     while (common == null) {
-      chain1Done = checkChain(chain1, root, chain1Done);
-      chain2Done = checkChain(chain2, root, chain2Done);
-      if (chain1Done && chain2Done)
-        return null;
-      common = findIntersection(chain1, chain2);
+       chain1Done = checkChain(chain1, root, chain1Done);
+       chain2Done = checkChain(chain2, root, chain2Done);
+       if (chain1Done && chain2Done)
+         return null;
+       common = findIntersection(chain1, chain2);
     }
     return common;
   }
 
+  
   private StructureDefinition findIntersection(List<StructureDefinition> chain1, List<StructureDefinition> chain2) {
     for (StructureDefinition sd1 : chain1)
       for (StructureDefinition sd2 : chain2)
@@ -492,19 +489,18 @@ public class XmlSchemaGenerator {
     return null;
   }
 
-  public boolean checkChain(List<StructureDefinition> chain1, StructureDefinition root, boolean chain1Done)
-      throws FHIRException {
+  public boolean checkChain(List<StructureDefinition> chain1, StructureDefinition root, boolean chain1Done) throws FHIRException {
     if (!chain1Done) {
-      StructureDefinition sd = chain1.get(chain1.size() - 1);
+       StructureDefinition sd = chain1.get(chain1.size()-1);
       String bu = sd.getBaseDefinition();
-      if (bu == null)
-        throw new FHIRException("No base definition for " + sd.getUrl());
-      StructureDefinition t = library.get(bu);
-      if (t == null)
-        chain1Done = true;
-      else
-        chain1.add(t);
-    }
+       if (bu == null)
+         throw new FHIRException("No base definition for "+sd.getUrl());
+       StructureDefinition t = library.get(bu);
+       if (t == null)
+         chain1Done = true;
+       else
+         chain1.add(t);
+     }
     return chain1Done;
   }
 
@@ -527,8 +523,7 @@ public class XmlSchemaGenerator {
     return b.toString();
   }
 
-  private void produceAttribute(StructureDefinition sd, ElementDefinition ed, ElementDefinition edc, String lang)
-      throws IOException, FHIRException {
+  private void produceAttribute(StructureDefinition sd, ElementDefinition ed, ElementDefinition edc, String lang) throws IOException, FHIRException {
     TypeRefComponent t = edc.getTypeFirstRep();
     String name = tailDot(edc.getPath());
     String min = String.valueOf(edc.getMin());
@@ -536,29 +531,24 @@ public class XmlSchemaGenerator {
     // todo: check it's a code...
 //    if (!max.equals("1"))
 //      throw new FHIRException("Illegal cardinality \""+max+"\" for attribute "+edc.getPath());
-
+    
     String tc = t.getWorkingCode();
-    if (Utilities.isAbsoluteUrl(tc))
-      throw new FHIRException("Only FHIR primitive types are supported for attributes (" + tc + ")");
+    if (Utilities.isAbsoluteUrl(tc)) 
+      throw new FHIRException("Only FHIR primitive types are supported for attributes ("+tc+")");
     String typeNs = namespaces.get("http://hl7.org/fhir");
-    String type = tc;
-
-    w("        <xs:attribute name=\"" + name + "\" use=\""
-        + (min.equals("0") || edc.hasFixed() || edc.hasDefaultValue() ? "optional" : "required") + "\" type=\"" + typeNs
-        + ":" + type + (typeNs.equals("fhir") ? "-primitive" : "") + "\""
-        + (edc.hasFixed() ? " fixed=\"" + edc.getFixed().primitiveValue() + "\"" : "")
-        + (edc.hasDefaultValue() && !edc.hasFixed() ? " default=\"" + edc.getDefaultValue().primitiveValue() + "\""
-            : "")
-        + "");
+    String type = tc; 
+    
+    w("        <xs:attribute name=\""+name+"\" use=\""+(min.equals("0") || edc.hasFixed() || edc.hasDefaultValue() ? "optional" : "required")+"\" type=\""+typeNs+":"+type+(typeNs.equals("fhir") ? "-primitive" : "")+"\""+
+    (edc.hasFixed() ? " fixed=\""+edc.getFixed().primitiveValue()+"\"" : "")+(edc.hasDefaultValue() && !edc.hasFixed() ? " default=\""+edc.getDefaultValue().primitiveValue()+"\"" : "")+"");
     if (annotations && edc.hasDefinition()) {
       ln(">");
       ln("          <xs:annotation>");
-      ln("            <xs:documentation xml:lang=\"" + lang + "\">" + Utilities.escapeXml(edc.getDefinition())
-          + "</xs:documentation>");
+      ln("            <xs:documentation xml:lang=\""+lang+"\">"+Utilities.escapeXml(edc.getDefinition())+"</xs:documentation>");
       ln("          </xs:annotation>");
       ln("        </xs:attribute>");
     } else
       ln("/>");
   }
 
+	
 }

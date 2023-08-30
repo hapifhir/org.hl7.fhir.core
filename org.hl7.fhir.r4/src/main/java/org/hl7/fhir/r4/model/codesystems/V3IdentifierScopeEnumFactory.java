@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,6 +34,7 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.r4.model.EnumFactory;
 
 public class V3IdentifierScopeEnumFactory implements EnumFactory<V3IdentifierScope> {
@@ -46,7 +50,7 @@ public class V3IdentifierScopeEnumFactory implements EnumFactory<V3IdentifierSco
       return V3IdentifierScope.VER;
     if ("VW".equals(codeString))
       return V3IdentifierScope.VW;
-    throw new IllegalArgumentException("Unknown V3IdentifierScope code '" + codeString + "'");
+    throw new IllegalArgumentException("Unknown V3IdentifierScope code '"+codeString+"'");
   }
 
   public String toCode(V3IdentifierScope code) {
@@ -61,8 +65,8 @@ public class V3IdentifierScopeEnumFactory implements EnumFactory<V3IdentifierSco
     return "?";
   }
 
-  public String toSystem(V3IdentifierScope code) {
-    return code.getSystem();
-  }
+    public String toSystem(V3IdentifierScope code) {
+      return code.getSystem();
+      }
 
 }

@@ -1,5 +1,8 @@
 package org.hl7.fhir.r4.model.codesystems;
 
+
+
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,75 +34,59 @@ package org.hl7.fhir.r4.model.codesystems;
 
 // Generated on Wed, Jan 30, 2019 16:19-0500 for FHIR v4.0.0
 
+
 import org.hl7.fhir.exceptions.FHIRException;
 
 public enum RelationType {
 
-  /**
-   * the related entry represents an activity that may be triggered by the current
-   * item.
-   */
-  TRIGGERS,
-  /**
-   * the related entry represents an item that replaces the current retired item.
-   */
-  ISREPLACEDBY,
-  /**
-   * added to help the parsers
-   */
-  NULL;
-
-  public static RelationType fromCode(String codeString) throws FHIRException {
-    if (codeString == null || "".equals(codeString))
-      return null;
-    if ("triggers".equals(codeString))
-      return TRIGGERS;
-    if ("is-replaced-by".equals(codeString))
-      return ISREPLACEDBY;
-    throw new FHIRException("Unknown RelationType code '" + codeString + "'");
-  }
-
-  public String toCode() {
-    switch (this) {
-    case TRIGGERS:
-      return "triggers";
-    case ISREPLACEDBY:
-      return "is-replaced-by";
-    case NULL:
-      return null;
-    default:
-      return "?";
+        /**
+         * the related entry represents an activity that may be triggered by the current item.
+         */
+        TRIGGERS, 
+        /**
+         * the related entry represents an item that replaces the current retired item.
+         */
+        ISREPLACEDBY, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static RelationType fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("triggers".equals(codeString))
+          return TRIGGERS;
+        if ("is-replaced-by".equals(codeString))
+          return ISREPLACEDBY;
+        throw new FHIRException("Unknown RelationType code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case TRIGGERS: return "triggers";
+            case ISREPLACEDBY: return "is-replaced-by";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          return "http://hl7.org/fhir/relation-type";
+        }
+        public String getDefinition() {
+          switch (this) {
+            case TRIGGERS: return "the related entry represents an activity that may be triggered by the current item.";
+            case ISREPLACEDBY: return "the related entry represents an item that replaces the current retired item.";
+            case NULL: return null;
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case TRIGGERS: return "Triggers";
+            case ISREPLACEDBY: return "Replaced By";
+            case NULL: return null;
+            default: return "?";
+          }
     }
-  }
 
-  public String getSystem() {
-    return "http://hl7.org/fhir/relation-type";
-  }
-
-  public String getDefinition() {
-    switch (this) {
-    case TRIGGERS:
-      return "the related entry represents an activity that may be triggered by the current item.";
-    case ISREPLACEDBY:
-      return "the related entry represents an item that replaces the current retired item.";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
-
-  public String getDisplay() {
-    switch (this) {
-    case TRIGGERS:
-      return "Triggers";
-    case ISREPLACEDBY:
-      return "Replaced By";
-    case NULL:
-      return null;
-    default:
-      return "?";
-    }
-  }
 
 }
