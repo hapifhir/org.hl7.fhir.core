@@ -971,7 +971,7 @@ public class FHIRPathEngine {
     }
   }
 
-  private class ExecutionTypeContext {
+  private static class ExecutionTypeContext {
     private Object appInfo; 
     private String resource;
     private TypeDetails context;
