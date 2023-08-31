@@ -536,7 +536,7 @@ public class StructureDefinitionValidator extends BaseValidator {
                   types.add(elements.get(0).getNamedChildValue("path"));
                 }
                 List<String> warnings = new ArrayList<>();
-                fpe.checkOnTypes(invariant, rootPath, types, fpe.parse(exp), warnings);
+                fpe.checkOnTypes(invariant, "DomainResource", types, fpe.parse(exp), warnings);
                 for (String s : warnings) {
                   warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, false, key+": "+s);
                 }

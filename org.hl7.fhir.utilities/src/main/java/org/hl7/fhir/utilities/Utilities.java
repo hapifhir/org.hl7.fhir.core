@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -65,6 +66,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FileNotifier.FileNotifier2;
+import org.hl7.fhir.utilities.Utilities.CaseInsensitiveSorter;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class Utilities {
@@ -1306,6 +1308,21 @@ public class Utilities {
     return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
   }
 
+  public static class CaseInsensitiveSorter implements Comparator<String> {
+    @Override
+    public int compare(String o1, String o2) {
+      return o1.compareToIgnoreCase(o2);
+    }
+  }
+
+  public static List<String> sortedCaseInsensitive(Collection<String> set) {
+    List<String> list = new ArrayList<>();
+    list.addAll(set);
+    Collections.sort(list, new CaseInsensitiveSorter());
+    return list;
+  }
+
+  
   public static List<String> sorted(Collection<String> set) {
     List<String> list = new ArrayList<>();
     list.addAll(set);
