@@ -46,6 +46,7 @@ import org.hl7.fhir.r4.model.TypeDetails;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.ExpressionNodeWithOffset;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.utilities.Utilities;
 
 public class LiquidEngine implements IEvaluationContext {

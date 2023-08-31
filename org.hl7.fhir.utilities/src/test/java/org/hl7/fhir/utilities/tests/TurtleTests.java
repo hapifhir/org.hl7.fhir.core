@@ -1932,8 +1932,6 @@ public class TurtleTests {
 
   @Test
   public void test_bundle_example() throws FileNotFoundException, IOException, Exception {
-    if (!BaseTestingUtilities.silent)
-      System.out.println("bundle-example.ttl");
     new Turtle().parse(BaseTestingUtilities.loadTestResource("r5", "bundle-example.ttl"));
   }
 

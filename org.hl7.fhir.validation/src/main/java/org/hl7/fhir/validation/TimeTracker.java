@@ -6,6 +6,7 @@ public class TimeTracker {
   private long sdTime = 0;
   private long loadTime = 0;
   private long fpeTime = 0;
+  private long specTime = 0;
 
   public long getOverall() {
     return overall;
@@ -21,6 +22,10 @@ public class TimeTracker {
   }
   public long getFpeTime() {
     return fpeTime;
+  }
+
+  public long getSpecTime() {
+    return specTime;
   }
   
   public void load(long start) {
@@ -45,11 +50,16 @@ public class TimeTracker {
     fpeTime = fpeTime + (System.nanoTime() - start);
   }
   
+  public void spec(long start) {
+    specTime = specTime + (System.nanoTime() - start);
+  }
+  
   public void reset() {
     overall = 0;
     txTime = 0;
     sdTime = 0;
     loadTime = 0;
     fpeTime = 0;
+    specTime = 0;
   }
 }

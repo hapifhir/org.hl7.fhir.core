@@ -39,6 +39,7 @@ import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 import org.hl7.fhir.r4b.utils.FHIRPathEngine;
 import org.hl7.fhir.r4b.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4b.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.r4b.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;

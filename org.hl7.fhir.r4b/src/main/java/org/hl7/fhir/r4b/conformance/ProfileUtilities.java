@@ -1711,9 +1711,6 @@ public class ProfileUtilities extends TranslatingUtilities {
                     iter.remove();
                   }
                 }
-//                System.out.println("!!: Extension Error at "+cpath+": Allowed Types not sliced = "+allowedTypes+". !Extension!!");
-//                throw new Error("Extension Error at "+cpath+": Allowed Types not sliced = "+allowedTypes+". !Extension!!");
-
               } else {
                 e.getSlicing().setRules(SlicingRules.OPEN);
               }

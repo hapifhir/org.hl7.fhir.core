@@ -3516,7 +3516,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (d.getMustHaveValue()) {
       tableRow(tbl, "Primitive Value", "elementdefinition.html#primitives", strikethrough, "This primitive type must have a value (the value must be present, and cannot be replaced by an extension)");
     } else if (d.hasValueAlternatives()) {
-      tableRow(tbl, "Primitive Value", "elementdefinition.html#primitives", strikethrough, renderCanonicalList(d.getValueAlternatives()));      
+      tableRow(tbl, "Primitive Value", "elementdefinition.html#primitives", strikethrough, renderCanonicalList("This primitive type may be present, or absent if replaced by one of the following extensions: ", d.getValueAlternatives()));      
     } else if (hasPrimitiveTypes(d)) {
       tableRow(tbl, "Primitive Value", "elementdefinition.html#primitives", strikethrough, "This primitive element may be present, or absent, or replaced by an extension");            
     }
@@ -3537,11 +3537,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
     if (root && sd.hasExtension(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
       tableRow(tbl, "Impose Profile", "http://hl7.org/fhir/extensions/StructureDefinition-structuredefinition-imposeProfile.html", strikethrough, 
-          renderCanonicalListExt(sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)));
+          renderCanonicalListExt("This profile also requires that the instance also conform this additional profile: ", sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)));
     }
     if (root && sd.hasExtension(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE)) {
       tableRow(tbl, "Complies with Profile", "http://hl7.org/fhir/extensions/StructureDefinition-structuredefinition-compliesWithProfile.html", strikethrough, 
-          renderCanonicalListExt(sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE)));
+          renderCanonicalListExt("This profile compiles with the profile ", sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE)));
     }
     tableRow(tbl, "Obligations", null, strikethrough, describeObligations(d, root, sd));   
 
@@ -3810,19 +3810,19 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
 
-  private XhtmlNode renderCanonicalListExt(List<Extension> list) {
+  private XhtmlNode renderCanonicalListExt(String text, List<Extension> list) {
     List<CanonicalType> clist = new ArrayList<>();
     for (Extension ext : list) {
       if (ext.hasValueCanonicalType()) {
         clist.add(ext.getValueCanonicalType());
       }
     }
-    return renderCanonicalList(clist);
+    return renderCanonicalList(text, clist);
   }
 
-  private XhtmlNode renderCanonicalList(List<CanonicalType> list) {
+  private XhtmlNode renderCanonicalList(String text, List<CanonicalType> list) {
     XhtmlNode ret = new XhtmlNode(NodeType.Element, "div");
-    ret.tx("This primitive type may be present, or absent, or replaced by one of the following extensions: ");
+    ret.tx(text);
     var ul = ret.ul();
     for (CanonicalType ct : list) {
       CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class,  ct.getValue());

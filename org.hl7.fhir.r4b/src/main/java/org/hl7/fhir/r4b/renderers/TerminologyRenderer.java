@@ -321,8 +321,6 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
         XhtmlNode a = li.ah(value);
         a.tx("SNOMED-CT");
       } else {
-        if (value.startsWith("http://hl7.org") && !Utilities.existsInList(value, "http://hl7.org/fhir/sid/icd-10-us"))
-          System.out.println("Unable to resolve value set " + value);
         li.addText(value);
       }
     }
