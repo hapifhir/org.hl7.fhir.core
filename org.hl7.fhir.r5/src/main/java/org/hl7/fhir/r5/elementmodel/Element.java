@@ -1417,9 +1417,6 @@ public class Element extends Base {
     return webPath;
   }
   public void setWebPath(String webPath) {
-    if (webPath != null && webPath.startsWith("file:")) {
-      System.out.println("!"); // FIXME
-    }
     this.webPath = webPath;
   }
 

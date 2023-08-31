@@ -263,7 +263,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   public void see(CachedCanonicalResource<T> cr) {
     // -- 1. exit conditions -----------------------------------------------------------------------------
-    
+
     // ignore UTG NUCC erroneous code system
     if (cr.getPackageInfo() != null
       && cr.getPackageInfo().getId() != null

@@ -155,7 +155,8 @@ import org.hl7.fhir.r5.utils.BuildExtensions;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r5.utils.FHIRPathEngine.TypedElementDefinition;
+import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.FunctionDetails;
+import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.TypedElementDefinition;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
@@ -5201,44 +5202,50 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean checkSpecials(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode) {
-    if (VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(element.getType())) {
-      Base base = element.getExtensionValue(ToolingExtensions.EXT_STANDARDS_STATUS);
-      String standardsStatus = base != null && base.isPrimitive() ? base.primitiveValue() : null;
-      String status = element.getNamedChildValue("status");
-      if (!Utilities.noString(status) && !Utilities.noString(standardsStatus)) {
-        if (warning(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT, status, standardsStatus)) {
-          hint(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesDeeplyConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT_HINT, status, standardsStatus);          
+
+    long t = System.nanoTime();
+    try {
+      if (VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(element.getType())) {
+        Base base = element.getExtensionValue(ToolingExtensions.EXT_STANDARDS_STATUS);
+        String standardsStatus = base != null && base.isPrimitive() ? base.primitiveValue() : null;
+        String status = element.getNamedChildValue("status");
+        if (!Utilities.noString(status) && !Utilities.noString(standardsStatus)) {
+          if (warning(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT, status, standardsStatus)) {
+            hint(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesDeeplyConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT_HINT, status, standardsStatus);          
+          }
         }
       }
-    }
-    if (element.getType().equals(BUNDLE)) {
-      return new BundleValidator(this, serverBase).validateBundle(errors, element, stack, checkSpecials, hostContext, pct, mode);
-    } else if (element.getType().equals("Observation")) {
-      return validateObservation(errors, element, stack);
-    } else if (element.getType().equals("Questionnaire")) {
-      return new QuestionnaireValidator(this, myEnableWhenEvaluator, fpe, questionnaireMode).validateQuestionannaire(errors, element, element, stack);
-    } else if (element.getType().equals("QuestionnaireResponse")) {
-      return new QuestionnaireValidator(this, myEnableWhenEvaluator, fpe, questionnaireMode).validateQuestionannaireResponse(hostContext, errors, element, stack);
-    } else if (element.getType().equals("Measure")) {
-      return new MeasureValidator(this).validateMeasure(hostContext, errors, element, stack);      
-    } else if (element.getType().equals("MeasureReport")) {
-      return new MeasureValidator(this).validateMeasureReport(hostContext, errors, element, stack);
-    } else if (element.getType().equals("CapabilityStatement")) {
-      return validateCapabilityStatement(errors, element, stack);
-    } else if (element.getType().equals("CodeSystem")) {
-      return new CodeSystemValidator(this).validateCodeSystem(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
-    } else if (element.getType().equals("ConceptMap")) {
-      return new ConceptMapValidator(this).validateConceptMap(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
-    } else if (element.getType().equals("SearchParameter")) {
-      return new SearchParameterValidator(this, fpe).validateSearchParameter(errors, element, stack);
-    } else if (element.getType().equals("StructureDefinition")) {
-      return new StructureDefinitionValidator(this, fpe, wantCheckSnapshotUnchanged).validateStructureDefinition(errors, element, stack);
-    } else if (element.getType().equals("StructureMap")) {
-      return new StructureMapValidator(this, fpe, profileUtilities).validateStructureMap(errors, element, stack);
-    } else if (element.getType().equals("ValueSet")) {
-      return new ValueSetValidator(this).validateValueSet(errors, element, stack);
-    } else {
-      return true;
+      if (element.getType().equals(BUNDLE)) {
+        return new BundleValidator(this, serverBase).validateBundle(errors, element, stack, checkSpecials, hostContext, pct, mode);
+      } else if (element.getType().equals("Observation")) {
+        return validateObservation(errors, element, stack);
+      } else if (element.getType().equals("Questionnaire")) {
+        return new QuestionnaireValidator(this, myEnableWhenEvaluator, fpe, questionnaireMode).validateQuestionannaire(errors, element, element, stack);
+      } else if (element.getType().equals("QuestionnaireResponse")) {
+        return new QuestionnaireValidator(this, myEnableWhenEvaluator, fpe, questionnaireMode).validateQuestionannaireResponse(hostContext, errors, element, stack);
+      } else if (element.getType().equals("Measure")) {
+        return new MeasureValidator(this).validateMeasure(hostContext, errors, element, stack);      
+      } else if (element.getType().equals("MeasureReport")) {
+        return new MeasureValidator(this).validateMeasureReport(hostContext, errors, element, stack);
+      } else if (element.getType().equals("CapabilityStatement")) {
+        return validateCapabilityStatement(errors, element, stack);
+      } else if (element.getType().equals("CodeSystem")) {
+        return new CodeSystemValidator(this).validateCodeSystem(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
+      } else if (element.getType().equals("ConceptMap")) {
+        return new ConceptMapValidator(this).validateConceptMap(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
+      } else if (element.getType().equals("SearchParameter")) {
+        return new SearchParameterValidator(this, fpe).validateSearchParameter(errors, element, stack);
+      } else if (element.getType().equals("StructureDefinition")) {
+        return new StructureDefinitionValidator(this, fpe, wantCheckSnapshotUnchanged).validateStructureDefinition(errors, element, stack);
+      } else if (element.getType().equals("StructureMap")) {
+        return new StructureMapValidator(this, fpe, profileUtilities).validateStructureMap(errors, element, stack);
+      } else if (element.getType().equals("ValueSet")) {
+        return new ValueSetValidator(this).validateValueSet(errors, element, stack);
+      } else {
+        return true;
+      }
+    } finally {
+      timeTracker.spec(t);
     }
   }
 
@@ -6534,7 +6541,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
 
   public String reportTimes() {
-    String s = String.format("Times (ms): overall = %d, tx = %d, sd = %d, load = %d, fpe = %d", timeTracker.getOverall() / 1000000, timeTracker.getTxTime() / 1000000, timeTracker.getSdTime() / 1000000, timeTracker.getLoadTime() / 1000000, timeTracker.getFpeTime() / 1000000);
+    String s = String.format("Times (ms): overall = %d:4, tx = %d, sd = %d, load = %d, fpe = %d, spec = %d", timeTracker.getOverall() / 1000000, timeTracker.getTxTime() / 1000000, timeTracker.getSdTime() / 1000000, timeTracker.getLoadTime() / 1000000, timeTracker.getFpeTime() / 1000000, timeTracker.getSpecTime() / 1000000);
     timeTracker.reset();
     return s;
   }

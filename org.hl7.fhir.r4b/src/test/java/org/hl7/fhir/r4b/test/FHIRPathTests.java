@@ -18,6 +18,7 @@ import org.hl7.fhir.r4b.test.FHIRPathTests.TestResultType;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 import org.hl7.fhir.r4b.utils.FHIRPathEngine;
 import org.hl7.fhir.r4b.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4b.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
