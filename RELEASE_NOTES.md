@@ -1,7 +1,9 @@
 ## Validator Changes
 
-* no changes
+* FHIRPath fixes checking types discovered testing R6 build
 
 ## Other code changes
 
-* no changes
+* Fix rendering of impose-profile extension
+* Improvements to performance tracking code
+* get FHIRFormat from SHC code
