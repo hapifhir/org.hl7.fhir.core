@@ -15,6 +15,28 @@ v: {
   "code" : "20049000",
   "system" : "http://standardterms.edqm.eu",
   "version" : "5 March 2019",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://standardterms.edqm.eu",
+  "code" : "20053000",
+  "display" : "Oral use"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oral use",
+  "code" : "20053000",
+  "system" : "http://standardterms.edqm.eu",
+  "version" : "5 March 2019",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

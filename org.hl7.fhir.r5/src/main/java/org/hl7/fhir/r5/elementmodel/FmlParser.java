@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.elementmodel;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -44,10 +45,14 @@ public class FmlParser extends ParserBase {
   }
 
   @Override
-  public List<NamedElement> parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+  public List<NamedElement> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+    byte[] content = TextFile.streamToBytes(inStream);
+    ByteArrayInputStream stream = new ByteArrayInputStream(content);
     String text = TextFile.streamToString(stream);
     List<NamedElement> result = new ArrayList<>();
-    result.add(new NamedElement(null, parse(text)));
+    NamedElement ctxt = new NamedElement("fml", content);
+    ctxt.setElement(parse(ctxt.getErrors(), text));
+    result.add(ctxt);
     return result;
   }
 
@@ -57,7 +62,7 @@ public class FmlParser extends ParserBase {
     throw new Error("Not done yet");
   }
 
-  public Element parse(String text) throws FHIRException {
+  public Element parse(List<ValidationMessage> errors, String text) throws FHIRException {
     FHIRLexer lexer = new FHIRLexer(text, "source", true, true);
     if (lexer.done())
       throw lexer.error("Map Input cannot be empty");
@@ -112,13 +117,13 @@ public class FmlParser extends ParserBase {
       if (policy == ValidationPolicy.NONE) {
         throw e;
       } else {
-        logError("2023-02-24", e.getLocation().getLine(), e.getLocation().getColumn(), "??", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
+        logError(errors, "2023-02-24", e.getLocation().getLine(), e.getLocation().getColumn(), "??", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
       }
     } catch (Exception e) {
       if (policy == ValidationPolicy.NONE) {
         throw e;
       } else {
-        logError("2023-02-24", -1, -1, "?", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
+        logError(errors, "2023-02-24", -1, -1, "?", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
       }
     }
     result.setIgnorePropertyOrder(true);

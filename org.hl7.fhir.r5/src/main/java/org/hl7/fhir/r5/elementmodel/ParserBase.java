@@ -72,16 +72,41 @@ public abstract class ParserBase {
   public class NamedElement {
     private String name;
     private Element element;
-    public NamedElement(String name, Element element) {
+    private byte[] content;
+    private List<ValidationMessage> errors = new ArrayList<>();
+    
+    public NamedElement(String name, Element element, byte[] content) {
       super();
       this.name = name;
-      this.element = element;
+      this.element = element; 
+      this.content = content;
     }
+
+    public NamedElement(String name, byte[] content) {
+      super();
+      this.name = name;
+      this.content = content;
+    }
+    
     public String getName() {
       return name;
     }
+    
     public Element getElement() {
       return element;
+    }
+
+    public byte[] getContent() {
+      return content;
+    }
+
+    public List<ValidationMessage> getErrors() {
+      return errors;
+    }
+
+    public void setElement(Element element) {
+      this.element = element;
+      
     }
     
   }
@@ -106,7 +131,6 @@ public abstract class ParserBase {
 
 	protected IWorkerContext context;
 	protected ValidationPolicy policy;
-  protected List<ValidationMessage> errors;
   protected ILinkResolver linkResolver;
   protected boolean showDecorations;
   protected IdRenderingPolicy idPolicy = IdRenderingPolicy.All;
@@ -118,30 +142,32 @@ public abstract class ParserBase {
 		policy = ValidationPolicy.NONE;
 	}
 
-	public void setupValidation(ValidationPolicy policy, List<ValidationMessage> errors) {
+	public void setupValidation(ValidationPolicy policy) {
 	  this.policy = policy;
-	  this.errors = errors;
 	}
 
   public abstract List<NamedElement> parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException;
   
-  public Element parseSingle(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
-    if (errors == null) {
-      errors = new ArrayList<>();
-    }
+  public Element parseSingle(InputStream stream, List<ValidationMessage> errors) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+    
     List<NamedElement> res = parse(stream);
-    if (res == null) {
-      throw new FHIRException("Parsing FHIR content failed: "+errorSummary());      
-    } else if (res.size() == 0) {
-      throw new FHIRException("Parsing FHIR content returned no elements in a context where one element is required because: "+errorSummary());
-    }
+   
     if (res.size() != 1) {
       throw new FHIRException("Parsing FHIR content returned multiple elements in a context where only one element is allowed");
     }
-    return res.get(0).getElement();
+    var resE = res.get(0);
+    if (resE.getElement() == null) {
+      throw new FHIRException("Parsing FHIR content failed: "+errorSummary(resE.errors));      
+    } else if (res.size() == 0) {
+      throw new FHIRException("Parsing FHIR content returned no elements in a context where one element is required because: "+errorSummary(resE.errors));
+    }
+    if (errors != null) {
+      errors.addAll(resE.getErrors());
+    }
+    return resE.getElement();
   }
 
-	private String errorSummary() {
+	private String errorSummary(List<ValidationMessage> errors) {
 	  if (errors == null || errors.size() == 0) {
 	    return "(no error description)";
 	  } else {
@@ -152,7 +178,7 @@ public abstract class ParserBase {
   public abstract void compose(Element e, OutputStream destination, OutputStyle style, String base)  throws FHIRException, IOException;
 
 	//FIXME: i18n should be done here
-	public void logError(String ruleDate, int line, int col, String path, IssueType type, String message, IssueSeverity level) throws FHIRFormatError {
+	public void logError(List<ValidationMessage> errors, String ruleDate, int line, int col, String path, IssueType type, String message, IssueSeverity level) throws FHIRFormatError {
 	  if (errors != null) {
 	    if (policy == ValidationPolicy.EVERYTHING) {
 	      ValidationMessage msg = new ValidationMessage(Source.InstanceValidator, type, line, col, path, message, level);
@@ -164,13 +190,13 @@ public abstract class ParserBase {
 	}
 	
 	
-	protected StructureDefinition getDefinition(int line, int col, String ns, String name) throws FHIRFormatError {
+	protected StructureDefinition getDefinition(List<ValidationMessage> errors, int line, int col, String ns, String name) throws FHIRFormatError {
     if (ns == null) {
-      logError(ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS__CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAMESPACE, name), IssueSeverity.FATAL);
+      logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS__CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAMESPACE, name), IssueSeverity.FATAL);
       return null;
     }
     if (name == null) {
-      logError(ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
+      logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
       return null;
   	}
 	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
@@ -183,7 +209,7 @@ public abstract class ParserBase {
 	        return sd;
 	    }
 	  }
-	  logError(ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAMESPACENAME_, ns, name), IssueSeverity.FATAL);
+	  logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAMESPACENAME_, ns, name), IssueSeverity.FATAL);
 	  return null;
   }
 
@@ -191,9 +217,9 @@ public abstract class ParserBase {
     return type == null || !type.contains("/") ? type : type.substring(type.lastIndexOf("/")+1);
   }
 
-  protected StructureDefinition getDefinition(int line, int col, String name) throws FHIRFormatError {
+  protected StructureDefinition getDefinition(List<ValidationMessage> errors, int line, int col, String name) throws FHIRFormatError {
     if (name == null) {
-      logError(ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
+      logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
       return null;
   	}
     // first pass: only look at base definitions
@@ -209,7 +235,7 @@ public abstract class ParserBase {
         return sd;
       }
     }
-	  logError(ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, name), IssueSeverity.FATAL);
+	  logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, name), IssueSeverity.FATAL);
 	  return null;
   }
 

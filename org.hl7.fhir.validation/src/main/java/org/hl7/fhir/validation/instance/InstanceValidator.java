@@ -514,6 +514,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private Map<String, CanonicalResourceLookupResult> crLookups = new HashMap<>();
   private boolean logProgress;
   private CodingsObserver codingObserver;
+  public List<NamedElement> validatedContent;
 
   public InstanceValidator(@Nonnull IWorkerContext theContext, @Nonnull IEvaluationContext hostServices, @Nonnull XVerExtensionManager xverManager) {
     super(theContext, xverManager, false);
@@ -724,7 +725,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (parser instanceof XmlParser) {
       ((XmlParser) parser).setAllowXsiLocation(allowXsiLocation);
     }
-    parser.setupValidation(ValidationPolicy.EVERYTHING, errors);
+    parser.setupValidation(ValidationPolicy.EVERYTHING);
     if (parser instanceof XmlParser) {
       ((XmlParser) parser).setAllowXsiLocation(allowXsiLocation);
     }
@@ -732,14 +733,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ((JsonParser) parser).setAllowComments(allowComments);
     }
     long t = System.nanoTime();
-    List<NamedElement> list = null;
+    validatedContent = null;
     try {
-      list = parser.parse(stream);
+      validatedContent = parser.parse(stream);
     } catch (IOException e1) {
       throw new FHIRException(e1);
     }
     timeTracker.load(t);
-    if (list != null && !list.isEmpty()) {
+    if (validatedContent != null && !validatedContent.isEmpty()) {
       String url = parser.getImpliedProfile();
       if (url != null) {
         StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
@@ -749,11 +750,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           profiles.add(sd);
         }
       }
-      for (NamedElement ne : list) {
-        validate(appContext, errors, ne.getName(), ne.getElement(), profiles);
+      for (NamedElement ne : validatedContent) {
+        if (ne.getElement() != null) {
+          validate(appContext, ne.getErrors(), validatedContent.size() > 1 ? ne.getName() : null, ne.getElement(), profiles);
+        } 
+        errors.addAll(ne.getErrors());         
       }
     }
-    return (list == null || list.isEmpty()) ? null : list.get(0).getElement(); // todo: this is broken, but fixing it really complicates things elsewhere, so we do this for now
+    return (validatedContent == null || validatedContent.isEmpty()) ? null : validatedContent.get(0).getElement(); // todo: this is broken, but fixing it really complicates things elsewhere, so we do this for now
   }
 
   @Override
@@ -796,11 +800,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   @Override
   public org.hl7.fhir.r5.elementmodel.Element validate(Object appContext, List<ValidationMessage> errors, org.w3c.dom.Element element, List<StructureDefinition> profiles) throws FHIRException {
     XmlParser parser = new XmlParser(context);
-    parser.setupValidation(ValidationPolicy.EVERYTHING, errors);
+    parser.setupValidation(ValidationPolicy.EVERYTHING);
     long t = System.nanoTime();
     Element e;
     try {
-      e = parser.parse(element);
+      e = parser.parse(errors, element);
     } catch (IOException e1) {
       throw new FHIRException(e1);
     }
@@ -828,11 +832,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   @Override
   public org.hl7.fhir.r5.elementmodel.Element validate(Object appContext, List<ValidationMessage> errors, Document document, List<StructureDefinition> profiles) throws FHIRException {
     XmlParser parser = new XmlParser(context);
-    parser.setupValidation(ValidationPolicy.EVERYTHING, errors);
+    parser.setupValidation(ValidationPolicy.EVERYTHING);
     long t = System.nanoTime();
     Element e;
     try {
-      e = parser.parse(document);
+      e = parser.parse(errors, document);
     } catch (IOException e1) {
       throw new FHIRException(e1);
     }
@@ -859,9 +863,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   @Override
   public org.hl7.fhir.r5.elementmodel.Element validate(Object appContext, List<ValidationMessage> errors, JsonObject object, List<StructureDefinition> profiles) throws FHIRException {
     JsonParser parser = new JsonParser(context, new ProfileUtilities(context, null, null, fpe));
-    parser.setupValidation(ValidationPolicy.EVERYTHING, errors);
+    parser.setupValidation(ValidationPolicy.EVERYTHING);
     long t = System.nanoTime();
-    Element e = parser.parse(object);
+    Element e = parser.parse(errors, object);
     timeTracker.load(t);
     if (e != null)
       validate(appContext, errors, null, e, profiles);

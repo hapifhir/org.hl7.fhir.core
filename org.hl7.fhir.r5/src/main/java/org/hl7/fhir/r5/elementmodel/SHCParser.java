@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.elementmodel;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -56,20 +58,25 @@ public class SHCParser extends ParserBase {
     jsonParser = new JsonParser(context);
   }
 
-  public List<NamedElement> parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+  public List<NamedElement> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+    byte[] content = TextFile.streamToBytes(inStream);
+    ByteArrayInputStream stream = new ByteArrayInputStream(content);
     List<NamedElement> res = new ArrayList<>();
+    NamedElement shc = new NamedElement("shc", content);
+    res.add(shc);
+    
     String src = TextFile.streamToString(stream).trim();
     List<String> list = new ArrayList<>();
     String pfx = null;
     if (src.startsWith("{")) {
       JsonObject json = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(src);
-      if (checkProperty(json, "$", "verifiableCredential", true, "Array")) {
+      if (checkProperty(shc.getErrors(), json, "$", "verifiableCredential", true, "Array")) {
        pfx = "verifiableCredential";
        JsonArray arr = json.getJsonArray("verifiableCredential");
        int i = 0;
        for (JsonElement e : arr) {
          if (!(e instanceof JsonPrimitive)) {
-           logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), "$.verifiableCredential["+i+"]", IssueType.STRUCTURE, "Wrong Property verifiableCredential in JSON Payload. Expected : String but found "+e.type().toName(), IssueSeverity.ERROR);                
+           logError(shc.getErrors(), ValidationMessage.NO_RULE_DATE, line(e), col(e), "$.verifiableCredential["+i+"]", IssueType.STRUCTURE, "Wrong Property verifiableCredential in JSON Payload. Expected : String but found "+e.type().toName(), IssueSeverity.ERROR);                
          } else {
            list.add(e.asString());
          }
@@ -87,66 +94,65 @@ public class SHCParser extends ParserBase {
       c++;
       JWT jwt = null;
       try {
-        jwt = decodeJWT(ssrc);
+        jwt = decodeJWT(shc.getErrors(), ssrc);
       } catch (Exception e) {
-        logError(ValidationMessage.NO_RULE_DATE, 1, 1, prefix+"JWT", IssueType.INVALID, "Unable to decode JWT token", IssueSeverity.ERROR);
+        logError(shc.getErrors(), ValidationMessage.NO_RULE_DATE, 1, 1, prefix+"JWT", IssueType.INVALID, "Unable to decode JWT token", IssueSeverity.ERROR);
         return res;      
       }
 
-      checkNamedProperties(jwt.getPayload(), prefix+"payload", "iss", "nbf", "vc");
-      checkProperty(jwt.getPayload(), prefix+"payload", "iss", true, "String");
-      logError(ValidationMessage.NO_RULE_DATE, 1, 1, prefix+"JWT", IssueType.INFORMATIONAL, "The FHIR Validator does not check the JWT signature "+
+      checkNamedProperties(shc.getErrors(), jwt.getPayload(), prefix+"payload", "iss", "nbf", "vc");
+      checkProperty(shc.getErrors(), jwt.getPayload(), prefix+"payload", "iss", true, "String");
+      logError(shc.getErrors(), ValidationMessage.NO_RULE_DATE, 1, 1, prefix+"JWT", IssueType.INFORMATIONAL, "The FHIR Validator does not check the JWT signature "+
           "(see https://demo-portals.smarthealth.cards/VerifierPortal.html or https://github.com/smart-on-fhir/health-cards-dev-tools) (Issuer = '"+jwt.getPayload().asString("iss")+"')", IssueSeverity.INFORMATION);
-      checkProperty(jwt.getPayload(), prefix+"payload", "nbf", true, "Number");
+      checkProperty(shc.getErrors(), jwt.getPayload(), prefix+"payload", "nbf", true, "Number");
       JsonObject vc = jwt.getPayload().getJsonObject("vc");
       if (vc == null) {
-        logError(ValidationMessage.NO_RULE_DATE, 1, 1, "JWT", IssueType.STRUCTURE, "Unable to find property 'vc' in the payload", IssueSeverity.ERROR);
+        logError(shc.getErrors(), ValidationMessage.NO_RULE_DATE, 1, 1, "JWT", IssueType.STRUCTURE, "Unable to find property 'vc' in the payload", IssueSeverity.ERROR);
         return res;
       }
       String path = prefix+"payload.vc";
-      checkNamedProperties(vc, path, "type", "credentialSubject");
-      if (!checkProperty(vc, path, "type", true, "Array")) {
+      checkNamedProperties(shc.getErrors(), vc, path, "type", "credentialSubject");
+      if (!checkProperty(shc.getErrors(), vc, path, "type", true, "Array")) {
         return res;
       }
       JsonArray type = vc.getJsonArray("type");
       int i = 0;
       for (JsonElement e : type) {
         if (e.type() != JsonElementType.STRING) {
-          logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), path+".type["+i+"]", IssueType.STRUCTURE, "Wrong Property Type in JSON Payload. Expected : String but found "+e.type().toName(), IssueSeverity.ERROR);
+          logError(shc.getErrors(), ValidationMessage.NO_RULE_DATE, line(e), col(e), path+".type["+i+"]", IssueType.STRUCTURE, "Wrong Property Type in JSON Payload. Expected : String but found "+e.type().toName(), IssueSeverity.ERROR);
         } else {
           types.add(e.asString());
         }
         i++;
       }
       if (!types.contains("https://smarthealth.cards#health-card")) {
-        logError(ValidationMessage.NO_RULE_DATE, line(vc), col(vc), path, IssueType.STRUCTURE, "Card does not claim to be of type https://smarthealth.cards#health-card, cannot validate", IssueSeverity.ERROR);
+        logError(shc.getErrors(), ValidationMessage.NO_RULE_DATE, line(vc), col(vc), path, IssueType.STRUCTURE, "Card does not claim to be of type https://smarthealth.cards#health-card, cannot validate", IssueSeverity.ERROR);
         return res;
       }
-      if (!checkProperty(vc, path, "credentialSubject", true, "Object")) {
+      if (!checkProperty(shc.getErrors(), vc, path, "credentialSubject", true, "Object")) {
         return res;
       }
       JsonObject cs = vc.getJsonObject("credentialSubject");
       path = path+".credentialSubject";
-      if (!checkProperty(cs, path, "fhirVersion", true, "String")) {
+      if (!checkProperty(shc.getErrors(), cs, path, "fhirVersion", true, "String")) {
         return res;
       }
       JsonElement fv = cs.get("fhirVersion");
       if (!VersionUtilities.versionsCompatible(context.getVersion(), fv.asString())) {
-        logError(ValidationMessage.NO_RULE_DATE, line(fv), col(fv), path+".fhirVersion", IssueType.STRUCTURE, "Card claims to be of version "+fv.asString()+", cannot be validated against version "+context.getVersion(), IssueSeverity.ERROR);
+        logError(shc.getErrors(), ValidationMessage.NO_RULE_DATE, line(fv), col(fv), path+".fhirVersion", IssueType.STRUCTURE, "Card claims to be of version "+fv.asString()+", cannot be validated against version "+context.getVersion(), IssueSeverity.ERROR);
         return res;
       }
-      if (!checkProperty(cs, path, "fhirBundle", true, "Object")) {
+      if (!checkProperty(shc.getErrors(), cs, path, "fhirBundle", true, "Object")) {
         return res;
       }
       // ok. all checks passed, we can now validate the bundle
-      Element e = jsonParser.parse(cs.getJsonObject("fhirBundle"));
-      if (e != null) {
-        res.add(new NamedElement(path, e));
-      }
-    }
+      NamedElement bnd = new NamedElement(path, org.hl7.fhir.utilities.json.parser.JsonParser.composeBytes(cs.getJsonObject("fhirBundle")));
+      res.add(bnd);
+      bnd.setElement(jsonParser.parse(bnd.getErrors(), cs.getJsonObject("fhirBundle")));
+    }  
     return res;
   }
-  
+
 
   @Override
   public String getImpliedProfile() {
@@ -163,27 +169,27 @@ public class SHCParser extends ParserBase {
   }
   
 
-  private boolean checkProperty(JsonObject obj, String path, String name, boolean required, String type) {
+  private boolean checkProperty(List<ValidationMessage> errors, JsonObject obj, String path, String name, boolean required, String type) {
     JsonElement e = obj.get(name);
     if (e != null) {
       String t = e.type().toName();
       if (!type.equals(t)) {
-        logError(ValidationMessage.NO_RULE_DATE, line(e), col(e), path+"."+name, IssueType.STRUCTURE, "Wrong Property Type in JSON Payload. Expected : "+type+" but found "+t, IssueSeverity.ERROR);                
+        logError(errors, ValidationMessage.NO_RULE_DATE, line(e), col(e), path+"."+name, IssueType.STRUCTURE, "Wrong Property Type in JSON Payload. Expected : "+type+" but found "+t, IssueSeverity.ERROR);                
       } else {
         return true;
       }
     } else if (required) {
-      logError(ValidationMessage.NO_RULE_DATE, line(obj), col(obj), path, IssueType.STRUCTURE, "Missing Property in JSON Payload: "+name, IssueSeverity.ERROR);                
+      logError(errors, ValidationMessage.NO_RULE_DATE, line(obj), col(obj), path, IssueType.STRUCTURE, "Missing Property in JSON Payload: "+name, IssueSeverity.ERROR);                
     } else {
       return true;
     }
     return false;
   }
 
-  private void checkNamedProperties(JsonObject obj, String path, String... names) {
+  private void checkNamedProperties(List<ValidationMessage> errors, JsonObject obj, String path, String... names) {
     for (JsonProperty e : obj.getProperties()) {
       if (!Utilities.existsInList(e.getName(), names)) {
-        logError(ValidationMessage.NO_RULE_DATE, line(e.getValue()), col(e.getValue()), path+"."+e.getName(), IssueType.STRUCTURE, "Unknown Property in JSON Payload", IssueSeverity.WARNING);                
+        logError(errors, ValidationMessage.NO_RULE_DATE, line(e.getValue()), col(e.getValue()), path+"."+e.getName(), IssueType.STRUCTURE, "Unknown Property in JSON Payload", IssueSeverity.WARNING);                
       }
     }
   }
@@ -242,12 +248,12 @@ public class SHCParser extends ParserBase {
     return b.toString();
   }
 
-  public JWT decodeJWT(String jwt) throws IOException, DataFormatException {
+  public JWT decodeJWT(List<ValidationMessage> errors, String jwt) throws IOException, DataFormatException {
     if (jwt.startsWith("shc:/")) {
       jwt = decodeQRCode(jwt);
     }
     if (jwt.length() > MAX_ALLOWED_SHC_LENGTH) {
-      logError(ValidationMessage.NO_RULE_DATE, -1, -1, "jwt", IssueType.TOOLONG, "JWT Payload limit length is "+MAX_ALLOWED_SHC_LENGTH+" bytes for a single image - this has "+jwt.length()+" bytes", IssueSeverity.ERROR);
+      logError(errors, ValidationMessage.NO_RULE_DATE, -1, -1, "jwt", IssueType.TOOLONG, "JWT Payload limit length is "+MAX_ALLOWED_SHC_LENGTH+" bytes for a single image - this has "+jwt.length()+" bytes", IssueSeverity.ERROR);
     }
 
     String[] parts = splitToken(jwt);

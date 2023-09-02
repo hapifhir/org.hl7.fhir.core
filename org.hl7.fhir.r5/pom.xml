@@ -172,12 +172,20 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+
+    <dependency>
+      <groupId>com.nimbusds</groupId>
+      <artifactId>nimbus-jose-jwt</artifactId>
+      <version>9.30.2</version>
+    </dependency>
+
         <dependency>
             <groupId>net.sourceforge.plantuml</groupId>
             <artifactId>plantuml-mit</artifactId>
             <version>1.2023.9</version>
             <scope>compile</scope>
         </dependency>
+        
     </dependencies>
 
 	<build>
