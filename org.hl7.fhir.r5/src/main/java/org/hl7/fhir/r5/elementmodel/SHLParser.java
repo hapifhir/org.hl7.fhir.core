@@ -131,9 +131,9 @@ public class SHLParser extends ParserBase {
             }
             if (cnt != null) {
               if (cnt.getContentType() == null) {
-                logError(json.getErrors(), "202-08-31", 1, 1, "shl.json.url.fetch()", IssueType.NOTFOUND, "The server did not return a Content-Type header - should be 'application/json'", IssueSeverity.WARNING);
+                logError(json.getErrors(), "202-08-31", 1, 1, "shl.json.url.fetch()", IssueType.NOTFOUND, "The server did not return a Content-Type header - should be 'application/jose'", IssueSeverity.WARNING);
               } else if (!"application/json".equals(cnt.getContentType())) {
-                logError(json.getErrors(), "202-08-31", 1, 1, "shl.json.url.fetch()", IssueType.STRUCTURE, "The server returned the wrong Content-Type header '"+cnt.getContentType()+"' - must be 'application/json'", IssueSeverity.ERROR);
+                logError(json.getErrors(), "202-08-31", 1, 1, "shl.json.url.fetch()", IssueType.STRUCTURE, "The server returned the wrong Content-Type header '"+cnt.getContentType()+"' - must be 'application/jose'", IssueSeverity.ERROR);
               }
               processContent(res, json.getErrors(), "shl.url.fetched()", "document", cnt.getContentAsString(), ct);
             } 
@@ -232,9 +232,9 @@ public class SHLParser extends ParserBase {
         }
         if (cnt != null) {
           if (cnt.getContentType() == null) {
-            logError(errors, "202-08-31", 1, 1, "shl.json.url.fetch()", IssueType.NOTFOUND, "The server did not return a Content-Type header - should be 'application/json'", IssueSeverity.WARNING);
+            logError(errors, "202-08-31", 1, 1, "shl.json.url.fetch()", IssueType.NOTFOUND, "The server did not return a Content-Type header - should be 'application/jose'", IssueSeverity.WARNING);
           } else if (!"application/json".equals(cnt.getContentType())) {
-            logError(errors, "202-08-31", 1, 1, "shl.json.url.fetch()", IssueType.STRUCTURE, "The server returned the wrong Content-Type header '"+cnt.getContentType()+"' - must be 'application/json'", IssueSeverity.ERROR);
+            logError(errors, "202-08-31", 1, 1, "shl.json.url.fetch()", IssueType.STRUCTURE, "The server returned the wrong Content-Type header '"+cnt.getContentType()+"' - must be 'application/jose'", IssueSeverity.ERROR);
           }
           processContent(res, errors, path+".url.fetch()", name, cnt.getContentAsString(), ct);            
         } 
