@@ -20,7 +20,7 @@
     <properties>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.4.1</validator_test_case_version>
+        <validator_test_case_version>1.4.2-SNAPSHOT</validator_test_case_version>
         <jackson_version>2.15.2</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
@@ -282,6 +282,13 @@
                 <groupId>org.ogce</groupId>
                 <artifactId>xpp3</artifactId>
                 <version>1.1.6</version>
+            </dependency>
+
+
+            <dependency>
+              <groupId>com.nimbusds</groupId>
+              <artifactId>nimbus-jose-jwt</artifactId>
+              <version>9.30.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

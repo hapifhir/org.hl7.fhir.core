@@ -14,7 +14,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'O2 % BldC Oximetry' for http://loinc.org#59408-5 - should be one of 26 choices: 'Oxygen saturation in Arterial blood by Pulse oximetry', 'SaO2 % BldA PulseOx', 'O2 SaO2' (pl-PL), 'saturacja krwi tlenem' (pl-PL), 'MFr O2' (zh-CN), 'tO2' (zh-CN), '总氧' (zh-CN), '氧气 SaO2 动脉血 动脉血O2饱和度 可用数量表示的' (zh-CN), '定量性' (zh-CN), '数值型' (zh-CN), '数量型' (zh-CN), '连续数值型标尺 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 肺部测量指标与呼吸机管理 脉搏血氧测定法' (zh-CN), '脉搏血氧定量' (zh-CN), '脉搏血氧测定' (zh-CN), '脉搏血氧仪 血氧测定法 饱和 饱和状态 饱和程度' (zh-CN), 'O2-Sättigung' (de-DE), 'Frazione di massa Gestione ventilazione polmonare Punto nel tempo (episodio) Sangue arterioso' (it-IT), 'Oksijen doymuşluğu' (tr-TR), 'Количественный Кровь артериальная Массовая доля Насыщение кислородом Оксигемометрия' (ru-RU), 'Гемоксиметрия Точка во времени' (ru-RU), 'Момент' (ru-RU), 'zuurstofsaturatiemeting' (nl-NL) or 'O2 SatO2' (fr-BE) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -37,7 +36,6 @@ v: {
   "code" : "2708-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -60,7 +58,6 @@ v: {
   "code" : "3150-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -82,7 +79,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Flow Rate' for http://loinc.org#3151-8 - should be one of 37 choices: 'Inhaled oxygen flow rate', 'Inhaled O2 flow rate', 'O2' (zh-CN), 'tO2' (zh-CN), '总氧' (zh-CN), '氧气 体积速率(单位时间)' (zh-CN), '单位时间内体积的变化速率' (zh-CN), '流量 可用数量表示的' (zh-CN), '定量性' (zh-CN), '数值型' (zh-CN), '数量型' (zh-CN), '连续数值型标尺 吸入气' (zh-CN), '吸入气体' (zh-CN), '吸入的空气 所吸入的氧' (zh-CN), '已吸入的氧气 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 气 气体类 空气' (zh-CN), 'Inhaled O2' (pt-BR), 'vRate' (pt-BR), 'Volume rate' (pt-BR), 'Flow' (pt-BR), 'Point in time' (pt-BR), 'Random' (pt-BR), 'IhG' (pt-BR), 'Inhaled Gas' (pt-BR), 'Inspired' (pt-BR), 'Quantitative' (pt-BR), 'QNT' (pt-BR), 'Quant' (pt-BR), 'Quan' (pt-BR), 'Gases' (pt-BR), 'Clinico Gas inalati Punto nel tempo (episodio) Tasso di Volume' (it-IT), 'Количественный Объемная скорость Точка во времени' (ru-RU), 'Момент' (ru-RU), 'ingeademde O2' (nl-NL) or 'O2-Zufuhr' (de-AT) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -104,7 +100,6 @@ v: {
   "code" : "59408-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -125,7 +120,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#2708-6' is not in the value set 'http://hl7.org/fhir/us/core/ValueSet/us-core-vital-signs--0|4.0.0' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -147,7 +141,6 @@ v: {
   "code" : "2708-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -169,7 +162,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'O2 % BldC Oximetry' for http://loinc.org#59408-5 - should be one of 26 choices: 'Oxygen saturation in Arterial blood by Pulse oximetry', 'SaO2 % BldA PulseOx', 'O2 SaO2' (pl-PL), 'saturacja krwi tlenem' (pl-PL), 'MFr O2' (zh-CN), 'tO2' (zh-CN), '总氧' (zh-CN), '氧气 SaO2 动脉血 动脉血O2饱和度 可用数量表示的' (zh-CN), '定量性' (zh-CN), '数值型' (zh-CN), '数量型' (zh-CN), '连续数值型标尺 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 肺部测量指标与呼吸机管理 脉搏血氧测定法' (zh-CN), '脉搏血氧定量' (zh-CN), '脉搏血氧测定' (zh-CN), '脉搏血氧仪 血氧测定法 饱和 饱和状态 饱和程度' (zh-CN), 'O2-Sättigung' (de-DE), 'Frazione di massa Gestione ventilazione polmonare Punto nel tempo (episodio) Sangue arterioso' (it-IT), 'Oksijen doymuşluğu' (tr-TR), 'Количественный Кровь артериальная Массовая доля Насыщение кислородом Оксигемометрия' (ru-RU), 'Гемоксиметрия Точка во времени' (ru-RU), 'Момент' (ru-RU), 'zuurstofsaturatiemeting' (nl-NL) or 'O2 SatO2' (fr-BE) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -192,7 +184,6 @@ v: {
   "code" : "2708-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -214,7 +205,6 @@ v: {
   "code" : "59408-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -236,7 +226,6 @@ v: {
   "code" : "2708-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -258,7 +247,6 @@ v: {
   "code" : "3150-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -281,7 +269,6 @@ v: {
   "code" : "3150-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -303,7 +290,6 @@ v: {
   "code" : "3150-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -325,7 +311,6 @@ v: {
   "code" : "3151-8",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -347,7 +332,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Flow Rate' for http://loinc.org#3151-8 - should be one of 37 choices: 'Inhaled oxygen flow rate', 'Inhaled O2 flow rate', 'O2' (zh-CN), 'tO2' (zh-CN), '总氧' (zh-CN), '氧气 体积速率(单位时间)' (zh-CN), '单位时间内体积的变化速率' (zh-CN), '流量 可用数量表示的' (zh-CN), '定量性' (zh-CN), '数值型' (zh-CN), '数量型' (zh-CN), '连续数值型标尺 吸入气' (zh-CN), '吸入气体' (zh-CN), '吸入的空气 所吸入的氧' (zh-CN), '已吸入的氧气 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 气 气体类 空气' (zh-CN), 'Inhaled O2' (pt-BR), 'vRate' (pt-BR), 'Volume rate' (pt-BR), 'Flow' (pt-BR), 'Point in time' (pt-BR), 'Random' (pt-BR), 'IhG' (pt-BR), 'Inhaled Gas' (pt-BR), 'Inspired' (pt-BR), 'Quantitative' (pt-BR), 'QNT' (pt-BR), 'Quant' (pt-BR), 'Quan' (pt-BR), 'Gases' (pt-BR), 'Clinico Gas inalati Punto nel tempo (episodio) Tasso di Volume' (it-IT), 'Количественный Объемная скорость Точка во времени' (ru-RU), 'Момент' (ru-RU), 'ingeademde O2' (nl-NL) or 'O2-Zufuhr' (de-AT) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -369,7 +353,6 @@ v: {
   "code" : "3151-8",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -413,7 +396,6 @@ v: {
   "code" : "5792-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -435,7 +417,6 @@ v: {
   "code" : "11502-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -457,7 +438,6 @@ v: {
   "code" : "11502-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -479,7 +459,6 @@ v: {
   "code" : "11502-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -500,7 +479,6 @@ v: {
   "code" : "60591-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -522,7 +500,6 @@ v: {
   "code" : "60591-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -543,7 +520,6 @@ v: {
   "code" : "60591-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -565,7 +541,6 @@ v: {
   "code" : "76437-3",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -587,7 +562,6 @@ v: {
   "code" : "10160-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -609,7 +583,6 @@ v: {
   "code" : "48765-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -631,7 +604,6 @@ v: {
   "code" : "11450-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -653,7 +625,6 @@ v: {
   "code" : "47519-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -675,7 +646,6 @@ v: {
   "code" : "30954-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -697,7 +667,6 @@ v: {
   "code" : "8716-3",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -719,7 +688,6 @@ v: {
   "code" : "29762-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -741,7 +709,6 @@ v: {
   "code" : "10162-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -763,7 +730,6 @@ v: {
   "code" : "51899-3",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -786,7 +752,6 @@ v: {
   "code" : "46418-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -809,7 +774,6 @@ v: {
   "code" : "77140-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -832,7 +796,6 @@ v: {
   "code" : "4535-1",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -855,7 +818,6 @@ v: {
   "code" : "29463-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -878,7 +840,6 @@ v: {
   "code" : "8302-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -901,7 +862,6 @@ v: {
   "code" : "39156-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -924,7 +884,6 @@ v: {
   "code" : "85354-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -947,7 +906,6 @@ v: {
   "code" : "8480-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -970,7 +928,6 @@ v: {
   "code" : "8462-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -993,7 +950,6 @@ v: {
   "code" : "883-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1016,7 +972,6 @@ v: {
   "code" : "57024-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1038,7 +993,6 @@ v: {
   "code" : "59284-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1060,7 +1014,6 @@ v: {
   "code" : "59284-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1082,7 +1035,6 @@ v: {
   "code" : "46418-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1105,7 +1057,6 @@ v: {
   "code" : "46418-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1127,7 +1078,6 @@ v: {
   "code" : "46418-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1149,7 +1099,6 @@ v: {
   "code" : "77140-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1172,7 +1121,6 @@ v: {
   "code" : "77140-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1194,7 +1142,6 @@ v: {
   "code" : "77140-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1216,7 +1163,6 @@ v: {
   "code" : "4535-1",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1239,7 +1185,6 @@ v: {
   "code" : "4535-1",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1261,7 +1206,6 @@ v: {
   "code" : "4535-1",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1283,7 +1227,6 @@ v: {
   "code" : "29463-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1306,7 +1249,6 @@ v: {
   "code" : "29463-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1328,7 +1270,6 @@ v: {
   "code" : "29463-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1350,7 +1291,6 @@ v: {
   "code" : "8302-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1373,7 +1313,6 @@ v: {
   "code" : "8302-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1395,7 +1334,6 @@ v: {
   "code" : "8302-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1417,7 +1355,6 @@ v: {
   "code" : "39156-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1440,7 +1377,6 @@ v: {
   "code" : "39156-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1462,7 +1398,6 @@ v: {
   "code" : "39156-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1484,7 +1419,6 @@ v: {
   "code" : "85354-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1507,7 +1441,6 @@ v: {
   "code" : "85354-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1529,7 +1462,6 @@ v: {
   "code" : "85354-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1551,7 +1483,6 @@ v: {
   "code" : "8480-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1574,7 +1505,6 @@ v: {
   "code" : "8480-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1596,7 +1526,6 @@ v: {
   "code" : "8480-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1618,7 +1547,6 @@ v: {
   "code" : "8462-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1641,7 +1569,6 @@ v: {
   "code" : "8462-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1663,7 +1590,6 @@ v: {
   "code" : "8462-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1684,7 +1610,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#883-9' is not in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1705,7 +1630,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#46418-0' is not in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1726,7 +1650,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#77140-2' is not in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1747,7 +1670,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#4535-1' is not in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1768,7 +1690,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#29463-7' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0|0.5.0' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1789,7 +1710,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#8302-2' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0|0.5.0' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1810,7 +1730,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#39156-5' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0|0.5.0' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1831,7 +1750,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#85354-9' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0|0.5.0' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1852,7 +1770,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#883-9' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-obs-laboratory--0|0.5.0' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1874,7 +1791,6 @@ v: {
   "code" : "60591-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1897,7 +1813,6 @@ v: {
   "code" : "60591-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1919,7 +1834,6 @@ v: {
   "code" : "60591-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1942,7 +1856,6 @@ v: {
   "code" : "48765-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1965,7 +1878,6 @@ v: {
   "code" : "10160-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1988,7 +1900,6 @@ v: {
   "code" : "11450-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2010,7 +1921,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'NDC labeler code request' for http://loinc.org#51726-8 - should be one of 22 choices: 'FDA product label NDC labeler code request', 'FDA label NDC labeler code request', 'FDA 药品标签 National Drug Code' (zh-CN), 'NDC' (zh-CN), '国家药品验证号' (zh-CN), '国家药品代码' (zh-CN), '美国国家药品代码' (zh-CN), '全国药品代码' (zh-CN), 'NDC labeler code' (zh-CN), 'NDC 标识者识别代码' (zh-CN), 'NDC 厂家号' (zh-CN), 'NDC 贴签厂商代码请求' (zh-CN), 'NDC 标签号申请 叙述' (zh-CN), '叙述性文字' (zh-CN), '报告' (zh-CN), '报告型' (zh-CN), '文字叙述' (zh-CN), '文本叙述型' (zh-CN), '文本描述' (zh-CN), '文本描述型 监管类文档' (zh-CN), 'Documentazione normativa Etichetta di prodotto della Food and Drug Administ' (it-IT) or 'Описательный' (ru-RU) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2032,7 +1942,6 @@ v: {
   "severity" : "error",
   "error" : "Unknown Code 'X-34133-9' in the system 'http://loinc.org'; The provided code 'http://loinc.org#X-34133-9' is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2053,7 +1962,6 @@ v: {
   "severity" : "error",
   "error" : "Unknown Code 'X-34133-9' in the system 'http://loinc.org'; The provided code 'http://loinc.org#X-34133-9' is not in the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes--0|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2075,7 +1983,6 @@ v: {
   "severity" : "error",
   "error" : "Unknown Code 'X-34133-9' in the system 'http://loinc.org'; The provided code 'http://loinc.org#X-34133-9' is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2098,7 +2005,6 @@ v: {
   "code" : "80764-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2120,7 +2026,6 @@ v: {
   "code" : "56445-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2144,7 +2049,6 @@ v: {
   "code" : "56445-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2167,7 +2071,6 @@ v: {
   "code" : "56445-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2190,7 +2093,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Allergies and adverse reactions' for http://loinc.org#48765-2 - should be one of 28 choices: 'Allergies and adverse reactions Document', 'Allergies &or adverse reactions Doc', '临床文档型' (zh-CN), '临床文档' (zh-CN), '文档' (zh-CN), '文书' (zh-CN), '医疗文书' (zh-CN), '临床医疗文书 医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 变态反应与不良反应 文档.其他' (zh-CN), '杂项类文档' (zh-CN), '其他文档 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 杂项' (zh-CN), '杂项类' (zh-CN), '杂项试验 过敏反应' (zh-CN), '过敏' (zh-CN), 'Allergie e reazioni avverse Documentazione miscellanea Miscellanea Osservazione paziente Punto nel tempo (episodio)' (it-IT), 'Документ Точка во времени' (ru-RU) or 'Момент' (ru-RU) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2212,7 +2114,6 @@ v: {
   "code" : "34133-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2235,7 +2136,6 @@ v: {
   "code" : "34133-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2257,7 +2157,6 @@ v: {
   "code" : "34133-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2279,7 +2178,6 @@ v: {
   "code" : "34133-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2303,7 +2201,6 @@ v: {
   "code" : "57852-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2325,7 +2222,6 @@ v: {
   "code" : "18842-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2348,7 +2244,6 @@ v: {
   "code" : "18842-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2370,7 +2265,6 @@ v: {
   "code" : "18842-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2392,7 +2286,6 @@ v: {
   "code" : "29299-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2414,7 +2307,6 @@ v: {
   "severity" : "error",
   "error" : "Unknown Code '�g��' in the system 'http://loinc.org'; The provided code 'http://loinc.org#�g��' is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2437,7 +2329,6 @@ v: {
   "code" : "8867-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2460,7 +2351,6 @@ v: {
   "code" : "10331-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2482,7 +2372,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name '����' for http://loinc.org#18684-1 - should be one of 46 choices: 'First Blood pressure Set', 'ED Health Insurance Portability and Accountability Act of 1996' (zh-CN), 'HIPAA' (zh-CN), '健康保險可攜與責任法' (zh-CN), 'HIPAA法案' (zh-CN), '健康保险可移植性和问责法1996年' (zh-CN), '美国健康保险携带和责任法案' (zh-CN), '医疗保险便携性和责任法案' (zh-CN), '医疗保险便携性与责任法案' (zh-CN), '醫療保險可攜性與責任法' (zh-CN), 'HIPAA 信息附件.急诊' (zh-CN), 'HIPAA 信息附件.急诊科' (zh-CN), 'HIPAA 信息附件.急诊科就医' (zh-CN), 'HIPAA 信息附件.急诊科就诊' (zh-CN), '健康保险便携与责任法案信息附件.急诊' (zh-CN), '健康保险便携与责任法案信息附件.急诊 临床信息附件集' (zh-CN), '临床信息附件集合' (zh-CN), '集' (zh-CN), '集合 信息附件' (zh-CN), '健康保险便携与责任法案信息附件' (zh-CN), '附件 医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 压强 复合属性' (zh-CN), '复杂型属性' (zh-CN), '复杂属性 就医' (zh-CN), '就医过程 急诊科 急诊科（DEEDS）变量' (zh-CN), 'DEEDS 变量' (zh-CN), '急诊' (zh-CN), '急诊科' (zh-CN), 'Emergency Department' (zh-CN), 'ED' (zh-CN), '急诊科（急诊科系统代码之数据元素）变量' (zh-CN), '急诊科（急诊科系统代码之数据元素）指标' (zh-CN), '急诊科（美国CDC急诊科系统代码之数据元素）指标' (zh-CN), '急诊科指标 急诊科（Emergency Department，ED） 急诊部 第一个' (zh-CN), '第一次' (zh-CN), '首个' (zh-CN), '首次 血' (zh-CN), '全血' (zh-CN), 'Allegato Allegato di reparto di emergenza (pronto soccorso) Complesso Emergenza (DEEDS - Data Elements for Emergency Dep Incontro' (it-IT), 'Appuntamento paziente Stabilito' (it-IT), 'Fissato' (it-IT) or 'Встреча Комплекс' (ru-RU) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2504,7 +2393,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name '���k������' for http://loinc.org#8480-6 - should be one of 33 choices: 'Systolic blood pressure', 'BP sys', '一般血压' (zh-CN), '血压.原子型' (zh-CN), '血压指标.原子型 压力' (zh-CN), '压强 可用数量表示的' (zh-CN), '定量性' (zh-CN), '数值型' (zh-CN), '数量型' (zh-CN), '连续数值型标尺 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 血管内收缩期' (zh-CN), '血管内心缩期 血管内的' (zh-CN), 'Pressure' (pt-BR), 'Point in time' (pt-BR), 'Random' (pt-BR), 'Art sys' (pt-BR), 'Quantitative' (pt-BR), 'QNT' (pt-BR), 'Quant' (pt-BR), 'Quan' (pt-BR), 'IV' (pt-BR), 'Intravenous' (pt-BR), 'BLOOD PRESSURE MEASUREMENTS.ATOM' (pt-BR), 'BP systolic' (pt-BR), 'Blood pressure systolic' (pt-BR), 'Sys BP' (pt-BR), 'SBP' (pt-BR), 'Pressione Pressione arteriosa - atomica Punto nel tempo (episodio)' (it-IT), 'Давление Количественный Точка во времени' (ru-RU), 'Момент' (ru-RU) or 'Blutdruck systolisch' (de-AT) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2526,7 +2414,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name '�g��������' for http://loinc.org#8462-4 - should be one of 36 choices: 'Diastolic blood pressure', 'BP dias', '一般血压' (zh-CN), '血压.原子型' (zh-CN), '血压指标.原子型 压力' (zh-CN), '压强 可用数量表示的' (zh-CN), '定量性' (zh-CN), '数值型' (zh-CN), '数量型' (zh-CN), '连续数值型标尺 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 血管内心舒期' (zh-CN), '血管内舒张期 血管内的' (zh-CN), 'Dias' (pt-BR), 'Diast' (pt-BR), 'Pressure' (pt-BR), 'Point in time' (pt-BR), 'Random' (pt-BR), 'Art sys' (pt-BR), 'Quantitative' (pt-BR), 'QNT' (pt-BR), 'Quant' (pt-BR), 'Quan' (pt-BR), 'IV' (pt-BR), 'Intravenous' (pt-BR), 'Diastoli' (pt-BR), 'BLOOD PRESSURE MEASUREMENTS.ATOM' (pt-BR), 'Blood pressure diastolic' (pt-BR), 'BP diastolic' (pt-BR), 'Dias BP' (pt-BR), 'DBP' (pt-BR), 'Pressione Pressione arteriosa - atomica Punto nel tempo (episodio)' (it-IT), 'Внутрисосудистый диастолический Давление Количественный Точка во времени' (ru-RU), 'Момент' (ru-RU) or 'Blutdruck diastolisch' (de-AT) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2549,7 +2436,6 @@ v: {
   "code" : "718-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2572,7 +2458,6 @@ v: {
   "code" : "38483-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2595,7 +2480,6 @@ v: {
   "code" : "2093-3",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2618,7 +2502,6 @@ v: {
   "code" : "44261-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2642,7 +2525,6 @@ v: {
   "code" : "29463-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2664,7 +2546,6 @@ v: {
   "code" : "29463-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2686,7 +2567,6 @@ v: {
   "code" : "69548-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2708,7 +2588,6 @@ v: {
   "code" : "LA9633-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2730,7 +2609,6 @@ v: {
   "code" : "LA26398-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2752,7 +2630,6 @@ v: {
   "code" : "48018-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2774,7 +2651,6 @@ v: {
   "code" : "81252-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2796,7 +2672,6 @@ v: {
   "code" : "81290-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2818,7 +2693,6 @@ v: {
   "code" : "48002-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2840,7 +2714,6 @@ v: {
   "code" : "LA6684-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2862,7 +2735,6 @@ v: {
   "code" : "69548-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2884,7 +2756,6 @@ v: {
   "code" : "69548-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2918,7 +2789,6 @@ v: {
   "code" : "LA9633-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2952,7 +2822,6 @@ v: {
   "code" : "LA9633-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2986,7 +2855,6 @@ v: {
   "code" : "LA26398-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3020,7 +2888,6 @@ v: {
   "code" : "LA26398-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3054,7 +2921,6 @@ v: {
   "code" : "LA6684-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3088,7 +2954,6 @@ v: {
   "code" : "LA6684-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3110,7 +2975,6 @@ v: {
   "code" : "8310-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3133,7 +2997,6 @@ v: {
   "code" : "LA20271-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3156,7 +3019,6 @@ v: {
   "code" : "LA20278-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3179,7 +3041,6 @@ v: {
   "code" : "LA20275-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3202,7 +3063,6 @@ v: {
   "code" : "LA20276-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3225,7 +3085,6 @@ v: {
   "code" : "LA20296-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3248,7 +3107,6 @@ v: {
   "code" : "LA32-8",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3271,7 +3129,6 @@ v: {
   "code" : "LA33-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3421,7 +3278,6 @@ v: {
   "code" : "LA20271-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3499,7 +3355,6 @@ v: {
   "code" : "LA20278-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3557,7 +3412,6 @@ v: {
   "code" : "LA20275-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3647,7 +3501,6 @@ v: {
   "code" : "LA20276-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3717,7 +3570,6 @@ v: {
   "code" : "LA20296-2",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3755,7 +3607,6 @@ v: {
   "code" : "LA32-8",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3793,7 +3644,6 @@ v: {
   "code" : "LA33-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3815,7 +3665,6 @@ v: {
   "code" : "LA33-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3837,7 +3686,6 @@ v: {
   "code" : "LA32-8",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3872,7 +3720,6 @@ v: {
   "code" : "LA33-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3907,7 +3754,6 @@ v: {
   "code" : "LA32-8",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3930,7 +3776,6 @@ v: {
   "code" : "88123-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3953,7 +3798,6 @@ v: {
   "code" : "LA28397-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3975,7 +3819,6 @@ v: {
   "severity" : "error",
   "error" : "Unknown Code 'test' in the system 'http://loinc.org'; The provided code 'http://loinc.org|http://loinc.org#test' is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3995,6 +3838,161 @@ v: {
 v: {
   "display" : "History of allergies, reported",
   "code" : "10155-0",
+  "system" : "http://loinc.org",
+  "version" : "2.74",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "48765-2",
+  "display" : "Allergies and Adverse Reactions"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Allergies and Adverse Reactions' for http://loinc.org#48765-2 - should be one of 28 choices: 'Allergies and adverse reactions Document', 'Allergies &or adverse reactions Doc', '临床文档型' (zh-CN), '临床文档' (zh-CN), '文档' (zh-CN), '文书' (zh-CN), '医疗文书' (zh-CN), '临床医疗文书 医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 变态反应与不良反应 文档.其他' (zh-CN), '杂项类文档' (zh-CN), '其他文档 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 杂项' (zh-CN), '杂项类' (zh-CN), '杂项试验 过敏反应' (zh-CN), '过敏' (zh-CN), 'Allergie e reazioni avverse Documentazione miscellanea Miscellanea Osservazione paziente Punto nel tempo (episodio)' (it-IT), 'Документ Точка во времени' (ru-RU) or 'Момент' (ru-RU) (for the language(s) '--') (from Tx-Server)",
+  "class" : "UNKNOWN",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "10160-0",
+  "display" : "Medication List"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Medication List' for http://loinc.org#10160-0 - should be one of 48 choices: 'History of Medication use Narrative', 'Hx of Medication use', '医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 历史' (zh-CN), '史' (zh-CN), '病史 历史纪录与体格检查 历史纪录与体格检查.历史记录' (zh-CN), '历史纪录与体格检查.历史记录类' (zh-CN), '历史纪录与体格检查.历史记录类别' (zh-CN), '历史纪录与体格检查.病史' (zh-CN), '历史纪录与体格检查.病史类' (zh-CN), '历史纪录与体格检查.病史类别' (zh-CN), '历史纪录与体格检查.病史记录' (zh-CN), '历史纪录与体格检查.病史记录类' (zh-CN), '历史纪录与体格检查.病史记录类别' (zh-CN), '历史纪录与体格检查小节.历史记录' (zh-CN), '历史纪录与体格检查小节.历史记录类' (zh-CN), '历史纪录与体格检查小节.历史记录类别' (zh-CN), '历史纪录与体格检查小节.病史' (zh-CN), '历史纪录与体格检查小节.病史类' (zh-CN), '历史纪录与体格检查小节.病史类别 历史纪录与体格检查小节 叙述' (zh-CN), '叙述性文字' (zh-CN), '报告' (zh-CN), '报告型' (zh-CN), '文字叙述' (zh-CN), '文本叙述型' (zh-CN), '文本描述' (zh-CN), '文本描述型 处理用药' (zh-CN), '处理用药物' (zh-CN), '处理药物' (zh-CN), '治疗用药' (zh-CN), '治疗用药物' (zh-CN), '用药' (zh-CN), '药物处理' (zh-CN), '药物治疗' (zh-CN), '治疗药物 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 病史与体格检查 药物使用历史' (zh-CN), '药物使用史' (zh-CN), 'Anamnesi paziente Punto nel tempo (episodio) Storia' (it-IT), 'Anamnesi' (it-IT), 'История Лекарственный анамнез Описательный Точка во времени' (ru-RU), 'Момент' (ru-RU) or 'anamnese geneesmiddelen' (nl-NL) (for the language(s) '--') (from Tx-Server)",
+  "class" : "UNKNOWN",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "11450-4",
+  "display" : "Problem List"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Problem List' for http://loinc.org#11450-4 - should be one of 53 choices: 'Problem list - Reported', 'Problem list Reported', '分类型应答' (zh-CN), '分类型结果' (zh-CN), '名义性' (zh-CN), '名称型' (zh-CN), '名词型' (zh-CN), '名词性' (zh-CN), '标称性' (zh-CN), '没有自然次序的名义型或分类型应答 医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 历史纪录与体格检查 历史纪录与体格检查.历史记录' (zh-CN), '历史纪录与体格检查.历史记录类' (zh-CN), '历史纪录与体格检查.历史记录类别' (zh-CN), '历史纪录与体格检查.病史' (zh-CN), '历史纪录与体格检查.病史类' (zh-CN), '历史纪录与体格检查.病史类别' (zh-CN), '历史纪录与体格检查.病史记录' (zh-CN), '历史纪录与体格检查.病史记录类' (zh-CN), '历史纪录与体格检查.病史记录类别' (zh-CN), '历史纪录与体格检查小节.历史记录' (zh-CN), '历史纪录与体格检查小节.历史记录类' (zh-CN), '历史纪录与体格检查小节.历史记录类别' (zh-CN), '历史纪录与体格检查小节.病史' (zh-CN), '历史纪录与体格检查小节.病史类' (zh-CN), '历史纪录与体格检查小节.病史类别 历史纪录与体格检查小节 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 病史与体格检查 问题目录' (zh-CN), '问题清单 难题' (zh-CN), '困难' (zh-CN), '棘手问题' (zh-CN), '麻烦' (zh-CN), '乱子' (zh-CN), '疑难问题' (zh-CN), '疑难' (zh-CN), 'Finding' (pt-BR), 'Findings' (pt-BR), 'Point in time' (pt-BR), 'Random' (pt-BR), 'Nominal' (pt-BR), 'Anamnesi Osservazione paziente Punto nel tempo (episodio)' (it-IT), 'Анамнестические сведения' (ru-RU), 'Сообщенная третьим лицом информация Номинальный' (ru-RU), 'Именной Список проблем Точка во времени' (ru-RU) or 'Момент' (ru-RU) (for the language(s) '--') (from Tx-Server)",
+  "class" : "UNKNOWN",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "11369-6",
+  "display" : "History of Immunizations"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "Wrong Display Name 'History of Immunizations' for http://loinc.org#11369-6 - should be one of 43 choices: 'History of Immunization Narrative', 'Hx of Immunization', '免疫接种历史' (zh-CN), '免疫史' (zh-CN), '接种史' (zh-CN), '免疫接种史 医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 历史' (zh-CN), '史' (zh-CN), '病史 历史纪录与体格检查 历史纪录与体格检查.历史记录' (zh-CN), '历史纪录与体格检查.历史记录类' (zh-CN), '历史纪录与体格检查.历史记录类别' (zh-CN), '历史纪录与体格检查.病史' (zh-CN), '历史纪录与体格检查.病史类' (zh-CN), '历史纪录与体格检查.病史类别' (zh-CN), '历史纪录与体格检查.病史记录' (zh-CN), '历史纪录与体格检查.病史记录类' (zh-CN), '历史纪录与体格检查.病史记录类别' (zh-CN), '历史纪录与体格检查小节.历史记录' (zh-CN), '历史纪录与体格检查小节.历史记录类' (zh-CN), '历史纪录与体格检查小节.历史记录类别' (zh-CN), '历史纪录与体格检查小节.病史' (zh-CN), '历史纪录与体格检查小节.病史类' (zh-CN), '历史纪录与体格检查小节.病史类别 历史纪录与体格检查小节 叙述' (zh-CN), '叙述性文字' (zh-CN), '报告' (zh-CN), '报告型' (zh-CN), '文字叙述' (zh-CN), '文本叙述型' (zh-CN), '文本描述' (zh-CN), '文本描述型 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 病史与体格检查' (zh-CN), 'Anamnesi paziente Punto nel tempo (episodio) Storia' (it-IT), 'Anamnesi' (it-IT), 'История Описательный Точка во времени' (ru-RU), 'Момент' (ru-RU), 'anamnese vaccinatie' (nl-NL) or 'Immunisierungsstatus' (de-AT) (for the language(s) '--') (from Tx-Server)",
+  "class" : "UNKNOWN",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "29762-2",
+  "display" : "Social History"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "Wrong Display Name 'Social History' for http://loinc.org#29762-2 - should be one of 45 choices: 'Social history Narrative', 'Social Hx', '医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 历史纪录与体格检查 历史纪录与体格检查.历史记录' (zh-CN), '历史纪录与体格检查.历史记录类' (zh-CN), '历史纪录与体格检查.历史记录类别' (zh-CN), '历史纪录与体格检查.病史' (zh-CN), '历史纪录与体格检查.病史类' (zh-CN), '历史纪录与体格检查.病史类别' (zh-CN), '历史纪录与体格检查.病史记录' (zh-CN), '历史纪录与体格检查.病史记录类' (zh-CN), '历史纪录与体格检查.病史记录类别' (zh-CN), '历史纪录与体格检查小节.历史记录' (zh-CN), '历史纪录与体格检查小节.历史记录类' (zh-CN), '历史纪录与体格检查小节.历史记录类别' (zh-CN), '历史纪录与体格检查小节.病史' (zh-CN), '历史纪录与体格检查小节.病史类' (zh-CN), '历史纪录与体格检查小节.病史类别 历史纪录与体格检查小节 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 叙述' (zh-CN), '叙述性文字' (zh-CN), '报告' (zh-CN), '报告型' (zh-CN), '文字叙述' (zh-CN), '文本叙述型' (zh-CN), '文本描述' (zh-CN), '文本描述型 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 病史与体格检查 社会历史' (zh-CN), 'Finding' (pt-BR), 'Findings' (pt-BR), 'Point in time' (pt-BR), 'Random' (pt-BR), 'Narrative' (pt-BR), 'Report' (pt-BR), 'Anamnesi Osservazione paziente Punto nel tempo (episodio)' (it-IT), 'Описательный Социальный анамнез Точка во времени' (ru-RU) or 'Момент' (ru-RU) (for the language(s) '--') (from Tx-Server)",
+  "class" : "UNKNOWN",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "72166-2",
+  "display" : "Tobacco smoking status"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Tobacco smoking status",
+  "code" : "72166-2",
+  "system" : "http://loinc.org",
+  "version" : "2.74",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA15920-4",
+  "display" : "Former smoker"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Former smoker",
+  "code" : "LA15920-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
   "unknown-systems" : "",
