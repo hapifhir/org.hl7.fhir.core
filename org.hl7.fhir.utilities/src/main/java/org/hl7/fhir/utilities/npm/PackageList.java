@@ -67,7 +67,22 @@ public class PackageList {
       json.set("date", date);      
     }
 
-    public boolean isPartofMainSpec() {
+    public List<String> subPackages() {
+      List<String> list = new ArrayList<>();
+      if (json.has("sub-packages")) {
+        list.addAll(json.getStrings("sub-packages"));
+      }
+      return list;
+    }
+    
+    public void clearSubPackages() {
+      json.remove("sub-packages");
+    }
+    public void addSubPackage(String s) {
+      json.forceArray("sub-packages").add(s);  
+    }
+    
+    private boolean isPartofMainSpec() {
       return Utilities.startsWithInList(path(), "http://hl7.org/fhir/DSTU2", "http://hl7.org/fhir/2015Sep", "http://hl7.org/fhir/2015May");
     }
     

@@ -176,6 +176,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.SIDUtilities;
 import org.hl7.fhir.utilities.StandardsStatus;
+import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.UnicodeUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.Utilities.DecimalStatus;
@@ -269,6 +270,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private static final String HTML_FRAGMENT_REGEX = "[a-zA-Z]\\w*(((\\s+)(\\S)*)*)";
   private static final boolean STACK_TRACE = false;
   private static final boolean DEBUG_ELEMENT = false;
+  private static final boolean SAVE_INTERMEDIARIES = false; // set this to true to get the intermediary formats while we are waiting for a UI around this z(SHC/SHL)
   
   private static final HashSet<String> NO_TX_SYSTEM_EXEMPT = new HashSet<>(Arrays.asList("http://loinc.org", "http://unitsofmeasure.org", "http://hl7.org/fhir/sid/icd-9-cm", "http://snomed.info/sct", "http://www.nlm.nih.gov/research/umls/rxnorm"));
   private static final HashSet<String> NO_HTTPS_LIST = new HashSet<>(Arrays.asList("https://loinc.org", "https://unitsofmeasure.org", "https://snomed.info/sct", "https://www.nlm.nih.gov/research/umls/rxnorm"));
@@ -514,6 +516,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private Map<String, CanonicalResourceLookupResult> crLookups = new HashMap<>();
   private boolean logProgress;
   private CodingsObserver codingObserver;
+  public List<NamedElement> validatedContent;
 
   public InstanceValidator(@Nonnull IWorkerContext theContext, @Nonnull IEvaluationContext hostServices, @Nonnull XVerExtensionManager xverManager) {
     super(theContext, xverManager, false);
@@ -724,7 +727,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (parser instanceof XmlParser) {
       ((XmlParser) parser).setAllowXsiLocation(allowXsiLocation);
     }
-    parser.setupValidation(ValidationPolicy.EVERYTHING, errors);
+    parser.setupValidation(ValidationPolicy.EVERYTHING);
     if (parser instanceof XmlParser) {
       ((XmlParser) parser).setAllowXsiLocation(allowXsiLocation);
     }
@@ -732,14 +735,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ((JsonParser) parser).setAllowComments(allowComments);
     }
     long t = System.nanoTime();
-    List<NamedElement> list = null;
+    validatedContent = null;
     try {
-      list = parser.parse(stream);
+      validatedContent = parser.parse(stream);
     } catch (IOException e1) {
       throw new FHIRException(e1);
     }
     timeTracker.load(t);
-    if (list != null && !list.isEmpty()) {
+    if (validatedContent != null && !validatedContent.isEmpty()) {
+      if (SAVE_INTERMEDIARIES) {
+        int index = 0;
+        for (NamedElement ne : validatedContent) {
+          index++;
+          saveValidatedContent(ne, index);
+        }
+      }
       String url = parser.getImpliedProfile();
       if (url != null) {
         StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
@@ -749,11 +759,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           profiles.add(sd);
         }
       }
-      for (NamedElement ne : list) {
-        validate(appContext, errors, ne.getName(), ne.getElement(), profiles);
+      for (NamedElement ne : validatedContent) {
+        if (ne.getElement() != null) {
+          validate(appContext, ne.getErrors(), validatedContent.size() > 1 ? ne.getName() : null, ne.getElement(), profiles);
+        } 
+        errors.addAll(ne.getErrors());         
       }
     }
-    return (list == null || list.isEmpty()) ? null : list.get(0).getElement(); // todo: this is broken, but fixing it really complicates things elsewhere, so we do this for now
+    return (validatedContent == null || validatedContent.isEmpty()) ? null : validatedContent.get(0).getElement(); // todo: this is broken, but fixing it really complicates things elsewhere, so we do this for now
+  }
+
+  private void saveValidatedContent(NamedElement ne, int index) {
+    String tgt = null;
+    try {
+      tgt = Utilities.path("[tmp]", "validator", "content");
+      Utilities.createDirectory(tgt);
+      tgt = Utilities.path(tgt, "content-"+index+"-"+ne.getFilename());
+      TextFile.bytesToFile(ne.getContent(), tgt);
+    } catch (Exception e) {
+      System.out.println("Error saving internal content to '"+tgt+"': "+e.getLocalizedMessage());
+    }
+    
   }
 
   @Override
@@ -796,11 +822,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   @Override
   public org.hl7.fhir.r5.elementmodel.Element validate(Object appContext, List<ValidationMessage> errors, org.w3c.dom.Element element, List<StructureDefinition> profiles) throws FHIRException {
     XmlParser parser = new XmlParser(context);
-    parser.setupValidation(ValidationPolicy.EVERYTHING, errors);
+    parser.setupValidation(ValidationPolicy.EVERYTHING);
     long t = System.nanoTime();
     Element e;
     try {
-      e = parser.parse(element);
+      e = parser.parse(errors, element);
     } catch (IOException e1) {
       throw new FHIRException(e1);
     }
@@ -828,11 +854,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   @Override
   public org.hl7.fhir.r5.elementmodel.Element validate(Object appContext, List<ValidationMessage> errors, Document document, List<StructureDefinition> profiles) throws FHIRException {
     XmlParser parser = new XmlParser(context);
-    parser.setupValidation(ValidationPolicy.EVERYTHING, errors);
+    parser.setupValidation(ValidationPolicy.EVERYTHING);
     long t = System.nanoTime();
     Element e;
     try {
-      e = parser.parse(document);
+      e = parser.parse(errors, document);
     } catch (IOException e1) {
       throw new FHIRException(e1);
     }
@@ -859,9 +885,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   @Override
   public org.hl7.fhir.r5.elementmodel.Element validate(Object appContext, List<ValidationMessage> errors, JsonObject object, List<StructureDefinition> profiles) throws FHIRException {
     JsonParser parser = new JsonParser(context, new ProfileUtilities(context, null, null, fpe));
-    parser.setupValidation(ValidationPolicy.EVERYTHING, errors);
+    parser.setupValidation(ValidationPolicy.EVERYTHING);
     long t = System.nanoTime();
-    Element e = parser.parse(object);
+    Element e = parser.parse(errors, object);
     timeTracker.load(t);
     if (e != null)
       validate(appContext, errors, null, e, profiles);
@@ -4982,6 +5008,30 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       pct.done();
     }
  
+
+    if (defn.hasExtension(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
+      for (Extension ext : defn.getExtensionsByUrl(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
+        StructureDefinition sdi = context.fetchResource(StructureDefinition.class, ext.getValue().primitiveValue());
+        if (sdi == null) {
+          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), defn.getVersionedUrl());                
+        } else {
+          if (crumbTrails) {
+            element.addMessage(signpost(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_DEP, sdi.getUrl(), defn.getVersionedUrl()));
+          }
+          stack.resetIds();
+          if (pctOwned) {
+            pct = new PercentageTracker(resource.countDescendents(), resource.fhirType(), sdi.getUrl(), logProgress);
+          }
+          ok = startInner(hostContext, errors, resource, element, sdi, stack, false, pct, mode.withSource(ProfileSource.ProfileDependency)) && ok;
+          if (pctOwned) {
+            pct.done();
+          }
+          
+        }
+      }
+    }
+  
+  
     Element meta = element.getNamedChild(META);
     if (meta != null) {
       List<Element> profiles = new ArrayList<Element>();

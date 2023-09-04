@@ -21,9 +21,9 @@ public class GeneralTests {
     org.hl7.fhir.r5.elementmodel.XmlParser xp = new org.hl7.fhir.r5.elementmodel.XmlParser(TestingUtilities.getSharedWorkerContext());
     xp.setAllowXsiLocation(true);
     List<ValidationMessage> errorList = new ArrayList<>();
-    xp.setupValidation(ValidationPolicy.EVERYTHING, errorList);
+    xp.setupValidation(ValidationPolicy.EVERYTHING);
     try {
-      Object resource = xp.parse(stream);
+      xp.parseSingle(stream, errorList);
     } catch (Exception e) {
       e.printStackTrace();
     }

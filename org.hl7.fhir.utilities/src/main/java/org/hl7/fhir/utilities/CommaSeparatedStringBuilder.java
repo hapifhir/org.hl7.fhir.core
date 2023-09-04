@@ -122,6 +122,14 @@ public class CommaSeparatedStringBuilder {
     return b.toString();
   }
 
+  public static String join(String sep, String[] list) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(sep);
+    for (String s : list) {
+      b.append(s);
+    }
+    return b.toString();
+  }
+
   public static String build(List<String> list) {
     CommaSeparatedStringBuilder self = new CommaSeparatedStringBuilder();
     for (String s : list) {
