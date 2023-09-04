@@ -69,6 +69,9 @@ public class ResourceChecker {
           if (src.startsWith("shc:/")) {
             return FhirFormat.SHC;
           }
+          if (src.startsWith("shlink:/") || src.contains("#shlink:/")) {
+            return FhirFormat.SHL;
+          }
         } catch (Exception e) {
         }
         return Manager.FhirFormat.TEXT;
@@ -101,9 +104,13 @@ public class ResourceChecker {
     }
     try {
       String s = new String(cnt, StandardCharsets.UTF_8);
-      if (s.startsWith("shc:/")) 
+      if (s.startsWith("shlink:/") || s.contains("#shlink:/")) {
+        return FhirFormat.SHL;
+      }
+      if (s.startsWith("shc:/")) {
         s = SHCParser.decodeQRCode(s);
-      JWT jwt = new SHCParser(context).decodeJWT(s);
+      }
+      JWT jwt = new SHCParser(context).decodeJWT(null, s);
       return Manager.FhirFormat.SHC;
     } catch (Exception e) {
       if (debug) {

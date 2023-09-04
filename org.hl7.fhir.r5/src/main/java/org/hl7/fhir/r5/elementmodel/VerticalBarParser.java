@@ -32,6 +32,7 @@ package org.hl7.fhir.r5.elementmodel;
 
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -45,6 +46,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.utilities.TextFile;
 
 /**
  * This class provides special support for parsing v2 by the v2 logical model
@@ -452,16 +454,18 @@ public class VerticalBarParser extends ParserBase {
   private Delimiters delimiters = new Delimiters();
   
   @Override
-  public List<NamedElement> parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+  public List<NamedElement> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/v2/StructureDefinition/Message");
     Element message = new Element("Message", new Property(context, sd.getSnapshot().getElementFirstRep(), sd));
+    byte[] content = TextFile.streamToBytes(inStream);
+    ByteArrayInputStream stream = new ByteArrayInputStream(content);
     VerticalBarParserReader reader = new VerticalBarParserReader(new BufferedInputStream(stream), charset);
     
     preDecode(reader);
     while (!reader.isFinished()) //  && (getOptions().getSegmentLimit() == 0 || getOptions().getSegmentLimit() > message.getSegments().size()))
       readSegment(message, reader);
     List<NamedElement> res = new ArrayList<>();
-    res.add(new NamedElement(null, message));
+    res.add(new NamedElement("focus", "hl7", message, content));
     return res;
   }
 
