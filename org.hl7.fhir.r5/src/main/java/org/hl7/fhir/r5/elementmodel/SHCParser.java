@@ -62,7 +62,7 @@ public class SHCParser extends ParserBase {
     byte[] content = TextFile.streamToBytes(inStream);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     List<NamedElement> res = new ArrayList<>();
-    NamedElement shc = new NamedElement("shc", content);
+    NamedElement shc = new NamedElement("shc", "json", content);
     res.add(shc);
     
     String src = TextFile.streamToString(stream).trim();
@@ -146,7 +146,7 @@ public class SHCParser extends ParserBase {
         return res;
       }
       // ok. all checks passed, we can now validate the bundle
-      NamedElement bnd = new NamedElement(path, org.hl7.fhir.utilities.json.parser.JsonParser.composeBytes(cs.getJsonObject("fhirBundle")));
+      NamedElement bnd = new NamedElement(path, "json", org.hl7.fhir.utilities.json.parser.JsonParser.composeBytes(cs.getJsonObject("fhirBundle")));
       res.add(bnd);
       bnd.setElement(jsonParser.parse(bnd.getErrors(), cs.getJsonObject("fhirBundle")));
     }  

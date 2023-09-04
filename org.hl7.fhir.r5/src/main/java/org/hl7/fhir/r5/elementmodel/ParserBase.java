@@ -71,21 +71,24 @@ public abstract class ParserBase {
 
   public class NamedElement {
     private String name;
+    private String extension;
     private Element element;
     private byte[] content;
     private List<ValidationMessage> errors = new ArrayList<>();
     
-    public NamedElement(String name, Element element, byte[] content) {
+    public NamedElement(String name, String extension, Element element, byte[] content) {
       super();
       this.name = name;
       this.element = element; 
       this.content = content;
+      this.extension = extension;
     }
 
-    public NamedElement(String name, byte[] content) {
+    public NamedElement(String name, String extension, byte[] content) {
       super();
       this.name = name;
       this.content = content;
+      this.extension = extension;
     }
     
     public String getName() {
@@ -106,7 +109,10 @@ public abstract class ParserBase {
 
     public void setElement(Element element) {
       this.element = element;
-      
+    }
+
+    public String getFilename() {
+      return name+"."+extension;
     }
     
   }

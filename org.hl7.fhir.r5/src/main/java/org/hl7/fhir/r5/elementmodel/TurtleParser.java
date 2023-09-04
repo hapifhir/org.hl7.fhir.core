@@ -83,7 +83,7 @@ public class TurtleParser extends ParserBase {
   @Override
   public List<NamedElement> parse(InputStream inStream) throws IOException, FHIRException {
     byte[] content = TextFile.streamToBytes(inStream);
-    NamedElement ctxt = new NamedElement("ttl", content);
+    NamedElement ctxt = new NamedElement("focus", "ttl", content);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
 
     Turtle src = new Turtle();

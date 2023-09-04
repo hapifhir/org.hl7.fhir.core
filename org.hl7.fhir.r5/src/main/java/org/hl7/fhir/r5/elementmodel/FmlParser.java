@@ -50,7 +50,7 @@ public class FmlParser extends ParserBase {
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     String text = TextFile.streamToString(stream);
     List<NamedElement> result = new ArrayList<>();
-    NamedElement ctxt = new NamedElement("fml", content);
+    NamedElement ctxt = new NamedElement("focus", "fml", content);
     ctxt.setElement(parse(ctxt.getErrors(), text));
     result.add(ctxt);
     return result;
