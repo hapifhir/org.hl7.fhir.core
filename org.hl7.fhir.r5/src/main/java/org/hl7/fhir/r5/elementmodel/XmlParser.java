@@ -114,7 +114,7 @@ public class XmlParser extends ParserBase {
   public List<NamedElement> parse(InputStream inStream) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
     
     byte[] content = TextFile.streamToBytes(inStream);
-    NamedElement context = new NamedElement("xml", content);
+    NamedElement context = new NamedElement("focus", "xml", content);
     
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     Document doc = null;

@@ -119,7 +119,7 @@ public class JsonParser extends ParserBase {
   @Override
   public List<NamedElement> parse(InputStream inStream) throws IOException, FHIRException {
     byte[] content = TextFile.streamToBytes(inStream);
-    NamedElement ctxt = new NamedElement("json", content);
+    NamedElement ctxt = new NamedElement("focus", "json", content);
     
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     

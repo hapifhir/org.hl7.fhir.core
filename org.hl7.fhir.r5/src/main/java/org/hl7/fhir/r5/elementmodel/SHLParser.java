@@ -76,7 +76,7 @@ public class SHLParser extends ParserBase {
     byte[] content = TextFile.streamToBytes(inStream);
     
     List<NamedElement> res = new ArrayList<>();
-    NamedElement shl = addNamedElement(res, "shl", content);
+    NamedElement shl = addNamedElement(res, "shl", "txt", content);
     String src = TextFile.bytesToString(content);
     
     if (src.startsWith("shlink:/")) {
@@ -92,8 +92,8 @@ public class SHLParser extends ParserBase {
       src = null;
     }
     if (src != null) {
-      NamedElement json = addNamedElement(res, "json", TextFile.stringToBytes(src, false));
       byte[] cntin = Base64.getUrlDecoder().decode(src);
+      NamedElement json = addNamedElement(res, "json", "json", cntin);
       JsonObject j = null;
       try {
         j = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(cntin);
@@ -146,7 +146,7 @@ public class SHLParser extends ParserBase {
   
 
   private void checkManifest(List<NamedElement> res, HTTPResult cnt) throws IOException {
-    NamedElement manifest = addNamedElement(res, "manifest", cnt.getContent());
+    NamedElement manifest = addNamedElement(res, "manifest", "json", cnt.getContent());
     
     if (!cnt.getContentType().equals("application/json")) {
       logError(manifest.getErrors(), "202-08-31", 1, 1, "manifest", IssueType.STRUCTURE, "The mime type should be application/json not "+cnt.getContentType(), IssueSeverity.ERROR);
@@ -243,6 +243,7 @@ public class SHLParser extends ParserBase {
   }
 
   private void processContent(List<NamedElement> res, List<ValidationMessage> errors, String path, String name, String jose, String ct) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
+    NamedElement bin = addNamedElement(res, "encrypted", "jose", TextFile.stringToBytes(jose, false));
     byte[] cnt = null;
     JWEObject jwe;
     try {
@@ -250,10 +251,9 @@ public class SHLParser extends ParserBase {
       jwe.decrypt(new DirectDecrypter(key));
       cnt = jwe.getPayload().toBytes();
     } catch (Exception e) {
-      logError(errors, "202-08-31", 1, 1, path, IssueType.STRUCTURE, "Decruption failed: "+e.getMessage(), IssueSeverity.ERROR);    
+      logError(bin.getErrors(), "202-08-31", 1, 1, path, IssueType.STRUCTURE, "Decruption failed: "+e.getMessage(), IssueSeverity.ERROR);    
     }
     if (cnt != null) {
-      NamedElement doc = addNamedElement(res, name, cnt);
       switch (ct) {
       case "application/smart-health-card":
         //a JSON file with a .verifiableCredential array containing SMART Health Card JWS strings, as specified by https://spec.smarthealth.cards#via-file-download.
@@ -261,23 +261,26 @@ public class SHLParser extends ParserBase {
         res.addAll(shc.parse(new ByteArrayInputStream(cnt)));
         break;
       case "application/fhir+json": 
+        NamedElement doc = addNamedElement(res, name, "json", cnt);
         // a JSON file containing any FHIR resource (e.g., an individual resource or a Bundle of resources). Generally this format may not be tamper-proof.
         logError(doc.getErrors(), "202-08-31", 1, 1, name, IssueType.STRUCTURE, "Processing content of type 'application/smart-api-access' is not done yet", IssueSeverity.INFORMATION);
         break;
       case "application/smart-api-access":
+        doc = addNamedElement(res, name, "api.json", cnt);
         // a JSON file with a SMART Access Token Response (see SMART App Launch). Two additional properties are defined:
         // aud Required string indicating the FHIR Server Base URL where this token can be used (e.g., "https://server.example.org/fhir")
         // query: Optional array of strings acting as hints to the client, indicating queries it might want to make (e.g., ["Coverage?patient=123&_tag=family-insurance"])
         logError(doc.getErrors(), "202-08-31", 1, 1, name, IssueType.STRUCTURE, "Processing content of type 'application/smart-api-access' is not done yet", IssueSeverity.INFORMATION);
         break;
       default: 
+        doc = addNamedElement(res, name, "bin", cnt);
         logError(doc.getErrors(), "202-08-31", 1, 1, name, IssueType.STRUCTURE, "The Content-Type '"+ct+"' is not known", IssueSeverity.INFORMATION);
       }
     }
   }
 
-  private NamedElement addNamedElement(List<NamedElement> res, String name, byte[] content) {
-    NamedElement result = new NamedElement(name, content);
+  private NamedElement addNamedElement(List<NamedElement> res, String name, String type, byte[] content) {
+    NamedElement result = new NamedElement(name, type, content);
     res.add(result);
     return result;
   }

@@ -465,7 +465,7 @@ public class VerticalBarParser extends ParserBase {
     while (!reader.isFinished()) //  && (getOptions().getSegmentLimit() == 0 || getOptions().getSegmentLimit() > message.getSegments().size()))
       readSegment(message, reader);
     List<NamedElement> res = new ArrayList<>();
-    res.add(new NamedElement(null, message, content));
+    res.add(new NamedElement("focus", "hl7", message, content));
     return res;
   }
 
