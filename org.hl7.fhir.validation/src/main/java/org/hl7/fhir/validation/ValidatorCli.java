@@ -283,6 +283,24 @@ public class ValidatorCli {
         res.add("hl7.fhir.uv.ips#1.1.0");
         res.add("-profile");
         res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
+        res.add("-extension");
+        res.add("any");
+        res.add("-bundle");
+        res.add("Composition:0");
+        res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips");
+      } else if (a.equals("-ips:au")) {
+        res.add("-version");
+        res.add("4.0");
+        res.add("-check-ips-codes");
+        res.add("-ig");
+        res.add("hl7.fhir.au.ips#current");
+        res.add("-profile");
+        res.add("http://hl7.org.au/fhir/ips/StructureDefinition/Bundle-au-ips");
+        res.add("-extension");
+        res.add("any");
+        res.add("-bundle");
+        res.add("Composition:0");
+        res.add("http://hl7.org.au/fhir/ips/StructureDefinition/Composition-au-ips");
       } else if (a.equals("-ips#")) {
         res.add("-version");
         res.add("4.0");
@@ -291,6 +309,11 @@ public class ValidatorCli {
         res.add("hl7.fhir.uv.ips#"+a.substring(5));
         res.add("-profile");
         res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
+        res.add("-extension");
+        res.add("any");
+        res.add("-bundle");
+        res.add("Composition:0");
+        res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips");
       } else if (a.startsWith("-ips$")) {
         res.add("-version");
         res.add("4.0");
@@ -299,6 +322,11 @@ public class ValidatorCli {
         res.add("hl7.fhir.uv.ips#current$"+a.substring(5));
         res.add("-profile");
         res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");        
+        res.add("-extension");
+        res.add("any");
+        res.add("-bundle");
+        res.add("Composition:0");
+        res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips");
       } else {
         res.add(a);
       }
