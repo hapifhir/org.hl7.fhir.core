@@ -14,6 +14,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Url40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Url43_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -75,6 +76,7 @@ public class Requirements40_50 {
   public static final String COPYRIGHT_LABEL_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.copyrightLabel";
   public static final String DERIVED_FROM_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.derivedFrom";
   public static final String ACTOR_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.actor";
+  public static final String REFERENCE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.reference";
   public static final String STATEMENT_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.statement";
 
   private static final String[] IGNORED_EXTENSION_URLS = new String[]{
@@ -95,6 +97,7 @@ public class Requirements40_50 {
     COPYRIGHT_LABEL_EXTENSION_URL,
     DERIVED_FROM_EXTENSION_URL,
     ACTOR_EXTENSION_URL,
+    REFERENCE_EXTENSION_URL,
     STATEMENT_EXTENSION_URL
   };
 
@@ -162,6 +165,9 @@ public class Requirements40_50 {
     for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(ACTOR_EXTENSION_URL)) {
       tgt.getActor().add(Canonical40_50.convertCanonical((org.hl7.fhir.r4.model.CanonicalType) ext.getValue()));
     }
+    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(REFERENCE_EXTENSION_URL)) {
+      tgt.getReference().add(Url40_50.convertUrl((org.hl7.fhir.r4.model.UrlType) ext.getValue()));
+    }
     for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl(STATEMENT_EXTENSION_URL)) {
       convertRequirementsStatement(ext, tgt.addStatement());
     }
@@ -228,6 +234,9 @@ public class Requirements40_50 {
     }
     for (CanonicalType ref : src.getActor()) {
       tgt.addExtension(ACTOR_EXTENSION_URL, Canonical40_50.convertCanonical(ref));
+    }
+    for (UrlType ref : src.getReference()) {
+      tgt.addExtension(REFERENCE_EXTENSION_URL, Url40_50.convertUrl(ref));
     }
     for (RequirementsStatementComponent ref : src.getStatement()) {
       org.hl7.fhir.r4.model.Extension tgte = new org.hl7.fhir.r4.model.Extension(STATEMENT_EXTENSION_URL);

@@ -75,6 +75,7 @@ public class Requirements43_50 {
   public static final String COPYRIGHT_LABEL_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.copyrightLabel";
   public static final String DERIVED_FROM_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.derivedFrom";
   public static final String ACTOR_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.actor";
+  public static final String REFERENCE_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.reference";
   public static final String REQUIREMENTS_STATEMENT_EXTENSION_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-Requirements.statement";
 
   private static final String[] IGNORED_EXTENSION_URLS = new String[]{
@@ -96,6 +97,7 @@ public class Requirements43_50 {
     COPYRIGHT_LABEL_EXTENSION_URL,
     DERIVED_FROM_EXTENSION_URL,
     ACTOR_EXTENSION_URL,
+    REFERENCE_EXTENSION_URL,
     REQUIREMENTS_STATEMENT_EXTENSION_URL
   };
   public static org.hl7.fhir.r5.model.Requirements convertRequirements(org.hl7.fhir.r4b.model.Basic src) throws FHIRException {
@@ -160,6 +162,9 @@ public class Requirements43_50 {
     }
     for (org.hl7.fhir.r4b.model.Extension ext : src.getExtensionsByUrl(ACTOR_EXTENSION_URL)) {
       tgt.getActor().add(Canonical43_50.convertCanonical((org.hl7.fhir.r4b.model.CanonicalType) ext.getValue()));
+    }
+    for (org.hl7.fhir.r4b.model.Extension ext : src.getExtensionsByUrl(REFERENCE_EXTENSION_URL)) {
+      tgt.getReference().add(Url43_50.convertUrl((org.hl7.fhir.r4b.model.UrlType) ext.getValue()));
     }
     for (org.hl7.fhir.r4b.model.Extension ext : src.getExtensionsByUrl(REQUIREMENTS_STATEMENT_EXTENSION_URL)) {
       convertRequirementsStatement(ext, tgt.addStatement());
@@ -227,6 +232,9 @@ public class Requirements43_50 {
     }
     for (CanonicalType ref : src.getActor()) {
       tgt.addExtension(ACTOR_EXTENSION_URL, Canonical43_50.convertCanonical(ref));
+    }
+    for (UrlType ref : src.getReference()) {
+      tgt.addExtension(REFERENCE_EXTENSION_URL, Url43_50.convertUrl(ref));
     }
     for (RequirementsStatementComponent ref : src.getStatement()) {
       org.hl7.fhir.r4b.model.Extension tgte = new org.hl7.fhir.r4b.model.Extension(REQUIREMENTS_STATEMENT_EXTENSION_URL);
