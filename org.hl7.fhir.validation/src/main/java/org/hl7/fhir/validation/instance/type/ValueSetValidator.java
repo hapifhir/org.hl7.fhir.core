@@ -25,6 +25,8 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class ValueSetValidator extends BaseValidator {
 
+  private static final int TOO_MANY_CODES_TO_VALIDATE = 1000;
+  
   private CodeSystemChecker getSystemValidator(String system, List<ValidationMessage> errors) {
     if (system == null) {
       return new GeneralCodeSystemChecker(context, xverManager, debug, errors);
@@ -149,7 +151,7 @@ public class ValueSetValidator extends BaseValidator {
       List<VSCodingValidationRequest> batch = new ArrayList<>();
       boolean first = true;
       for (Element concept : concepts) {
-        // we treat the first differently because we want to know if tbe system is worth validating. if it is, then we batch the rest
+        // we treat the first differently because we want to know if the system is worth validating. if it is, then we batch the rest
         if (first) {
           systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version, slv);
           first = false;
@@ -159,29 +161,33 @@ public class ValueSetValidator extends BaseValidator {
         cc++;
       }    
       if (((InstanceValidator) parent).isValidateValueSetCodesOnTxServer() && batch.size() > 0 & !context.isNoTerminologyServer()) {
-        long t = System.currentTimeMillis();
-        if (parent.isDebug()) {
-          System.out.println("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
-        }
-        try {
-          context.validateCodeBatch(ValidationOptions.defaults(), batch, null);
+        if (batch.size() > TOO_MANY_CODES_TO_VALIDATE) {
+          ok = hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.VALUESET_INC_TOO_MANY_CODES, batch.size()) && ok;
+        } else {
+          long t = System.currentTimeMillis();
           if (parent.isDebug()) {
-            System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
+            System.out.println("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
           }
-          for (VSCodingValidationRequest cv : batch) {
-            if (version == null) {
-              ok = warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode()) && ok;
-            } else {
-              ok = warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode()) && ok;
+          try {
+            context.validateCodeBatch(ValidationOptions.defaults(), batch, null);
+            if (parent.isDebug()) {
+              System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
             }
+            for (VSCodingValidationRequest cv : batch) {
+              if (version == null) {
+                ok = warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode()) && ok;
+              } else {
+                ok = warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode()) && ok;
+              }
+            }
+          } catch (Exception e) {
+            ok = false;
+            VSCodingValidationRequest cv = batch.get(0);
+            rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, cv.getStack().getLiteralPath(), false, e.getMessage());
           }
-        } catch (Exception e) {
-          ok = false;
-          VSCodingValidationRequest cv = batch.get(0);
-          rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, cv.getStack().getLiteralPath(), false, e.getMessage());
         }
       }
-      
+
       int cf = 0;
       for (Element filter : filters) {
         if (systemOk && !validateValueSetIncludeFilter(errors, include, stack.push(filter, cf, null, null), system, version, slv)) {

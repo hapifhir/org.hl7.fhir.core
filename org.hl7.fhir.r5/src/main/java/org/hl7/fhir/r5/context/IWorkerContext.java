@@ -364,6 +364,7 @@ public interface IWorkerContext {
     private ValidationResult result;
     private CacheToken cacheToken;
     private String vs;
+    private ValueSet vsObj;
 
     public CodingValidationRequest(Coding coding) {
       super();
@@ -376,8 +377,18 @@ public interface IWorkerContext {
       this.vs = vs;
     }
 
+    public CodingValidationRequest(Coding coding, ValueSet vsObj) {
+      super();
+      this.coding = coding;
+      this.vsObj = vsObj;
+    }
+
     public String getVs() {
       return vs;
+    }
+
+    public ValueSet getVsObj() {
+      return vsObj;
     }
 
     public ValidationResult getResult() {
