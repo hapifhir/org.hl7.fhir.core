@@ -85,7 +85,20 @@ public class RequirementsRenderer extends ResourceRenderer {
         }
       }
     }
-    
+    if (req.hasReference()) {
+      XhtmlNode p = x.para();
+      p.tx("References: ");
+      int i = 0;
+      for (UrlType c : req.getReference()) {
+        i++;
+        if (i>1) p.tx(", ");
+        String url = c.getValue();
+        if (url.contains("#")) {
+          url = url.substring(0, url.indexOf("#"));
+        }
+        p.ah(c.getValue()).tx(url);
+      }
+    }
     XhtmlNode tbl = x.table("grid");
     
     for (RequirementsStatementComponent stmt : req.getStatement()) {
@@ -151,7 +164,7 @@ public class RequirementsRenderer extends ResourceRenderer {
           XhtmlNode li = ul.li();
           li.tx("References: ");
           int i = 0;
-          for (UrlType c : stmt.getSatisfiedBy()) {
+          for (UrlType c : stmt.getReference()) {
             i++;
             if (i>1) li.tx(", ");
             String url = c.getValue();
