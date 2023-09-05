@@ -1,5 +1,8 @@
 package org.hl7.fhir.convertors.analytics;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +45,8 @@ public class PackageVisitor {
   private boolean current;
   private IPackageVisitorProcessor processor;
   private FilesystemPackageCacheManager pcm;
-  private PackageClient pc;  
+  private PackageClient pc;
+  private String cache;  
   
   public List<String> getResourceTypes() {
     return resourceTypes;
@@ -75,6 +79,14 @@ public class PackageVisitor {
 
 
 
+
+  public String getCache() {
+    return cache;
+  }
+
+  public void setCache(String cache) {
+    this.cache = cache;
+  }
 
   public void setCorePackages(boolean corePackages) {
     this.corePackages = corePackages;
@@ -109,6 +121,8 @@ public class PackageVisitor {
     System.out.println("Finding packages");
     pc = new PackageClient(PackageServer.primaryServer());
     pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+  
+    Set<String> pidList = getAllPackages();
     
     Map<String, String> cpidMap = getAllCIPackages();
     Set<String> cpidSet = new HashSet<>();
@@ -118,7 +132,7 @@ public class PackageVisitor {
       processCurrentPackage(s, cpidMap.get(s), cpidSet, i, cpidMap.size()); 
       i++;
     }
-    Set<String> pidList = getAllPackages();
+    
     System.out.println("Go: "+pidList.size()+" published packages");
     i = 0;
     for (String pid : pidList) {    
@@ -161,11 +175,21 @@ public class PackageVisitor {
 
   private void processCurrentPackage(String url, String pid, Set<String> cpidSet, int i, int t) {
     try {
+      long ms1 = System.currentTimeMillis();
       String[] p = url.split("\\/");
       String repo = "https://build.fhir.org/ig/"+p[0]+"/"+p[1];
-      NpmPackage npm = NpmPackage.fromUrl(repo+"/package.tgz");
+      JsonObject manifest = JsonParser.parseObjectFromUrl(repo+"/package.manifest.json");
+      File co = new File(Utilities.path(cache, pid+"."+manifest.asString("date")+".tgz"));
+      if (!co.exists()) {
+        SimpleHTTPClient fetcher = new SimpleHTTPClient();
+        HTTPResult res = fetcher.get(repo+"/package.tgz?nocache=" + System.currentTimeMillis());
+        res.checkThrowException();
+        TextFile.bytesToFile(res.getContent(), co);
+      }
+      NpmPackage npm = NpmPackage.fromPackage(new FileInputStream(co));          
       String fv = npm.fhirVersion();
       cpidSet.add(pid);
+      long ms2 = System.currentTimeMillis();
       
       if (corePackages || !corePackage(npm)) {
         int c = 0;
@@ -182,7 +206,7 @@ public class PackageVisitor {
             }
           }
         }    
-        System.out.println("Processed: "+pid+"#current: "+c+" resources ("+i+" of "+t+")");  
+        System.out.println("Processed: "+pid+"#current: "+c+" resources ("+i+" of "+t+", "+(ms2-ms1)+"/"+(System.currentTimeMillis()-ms2)+"ms)");  
       }
     } catch (Exception e) {      
       System.out.println("Unable to process: "+pid+"#current: "+e.getMessage());      

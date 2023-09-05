@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.json.parser;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -167,6 +168,12 @@ public class JsonParser {
     compose(element, stream, false);    
   }
   
+  public static void compose(JsonElement element, File file) throws IOException {
+    FileOutputStream fo = new FileOutputStream(file);
+    compose(element, fo, false);
+    fo.close();
+  }
+  
   public static byte[] composeBytes(JsonElement element) {
     return composeBytes(element, false);    
   }
@@ -178,6 +185,12 @@ public class JsonParser {
   public static void compose(JsonElement element, OutputStream stream, boolean pretty) throws IOException {
     byte[] cnt = composeBytes(element, pretty);
     stream.write(cnt);
+  }
+  public static void compose(JsonElement element, File file, boolean pretty) throws IOException {
+    byte[] cnt = composeBytes(element, pretty);
+    FileOutputStream fo = new FileOutputStream(file);
+    fo.write(cnt);
+    fo.close();
   }
 
   public static byte[] composeBytes(JsonElement element, boolean pretty) {

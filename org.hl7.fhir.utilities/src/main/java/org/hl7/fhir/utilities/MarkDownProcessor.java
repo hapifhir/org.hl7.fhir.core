@@ -42,6 +42,7 @@ import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
+import com.github.rjeschke.txtmark.Configuration;
 import com.github.rjeschke.txtmark.Processor;
 
 public class MarkDownProcessor {
@@ -65,7 +66,8 @@ public class MarkDownProcessor {
       return "";
     }
     switch (dialect) {
-    case DARING_FIREBALL : return Processor.process(source); 
+    case DARING_FIREBALL : 
+      return Processor.process(source, Configuration.builder().enableSafeMode().enablePanicMode().build()); 
     case COMMON_MARK : return processCommonMark(preProcess(source)); 
     default: throw new Error("Unknown Markdown Dialect: "+dialect.toString()+" at "+context); 
     }
