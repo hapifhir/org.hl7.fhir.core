@@ -1,26 +1,26 @@
-package org.hl7.fhir.r5.utils.structuremap;
+package org.hl7.fhir.r4b.utils.structuremap;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.TypeDetails;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.utils.FHIRPathEngine;
-import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.FunctionDetails;
-import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r4b.elementmodel.Element;
+import org.hl7.fhir.r4b.model.Base;
+import org.hl7.fhir.r4b.model.Resource;
+import org.hl7.fhir.r4b.model.TypeDetails;
+import org.hl7.fhir.r4b.model.ValueSet;
+import org.hl7.fhir.r4b.utils.FHIRPathEngine;
+import org.hl7.fhir.r4b.utils.FHIRPathUtilityClasses.FunctionDetails;
+import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FFHIRPathHostServices implements FHIRPathEngine.IEvaluationContext {
+public class FHIRPathHostServices implements FHIRPathEngine.IEvaluationContext {
 
   private final StructureMapUtilities structureMapUtilities;
 
-  public FFHIRPathHostServices(StructureMapUtilities structureMapUtilities) {
+  public FHIRPathHostServices(StructureMapUtilities structureMapUtilities) {
     this.structureMapUtilities = structureMapUtilities;
   }
 
@@ -38,7 +38,8 @@ public class FFHIRPathHostServices implements FHIRPathEngine.IEvaluationContext 
   @Override
   public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
     if (!(appContext instanceof VariablesForProfiling))
-      throw new Error("Internal Logic Error (wrong type '" + appContext.getClass().getName() + "' in resolveConstantType)");
+      throw new Error(
+          "Internal Logic Error (wrong type '" + appContext.getClass().getName() + "' in resolveConstantType)");
     VariablesForProfiling vars = (VariablesForProfiling) appContext;
     VariableForProfiling v = vars.get(null, name);
     if (v == null)
@@ -57,12 +58,14 @@ public class FFHIRPathHostServices implements FHIRPathEngine.IEvaluationContext 
   }
 
   @Override
-  public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
+  public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters)
+      throws PathEngineException {
     throw new Error("Not Implemented Yet");
   }
 
   @Override
-  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName,
+      List<List<Base>> parameters) {
     throw new Error("Not Implemented Yet");
   }
 
@@ -92,12 +95,13 @@ public class FFHIRPathHostServices implements FHIRPathEngine.IEvaluationContext 
       val.validate(appContext, valerrors, null, (Element) item, url);
       return noErrorValidationMessages(valerrors);
     }
-    throw new NotImplementedException("Not done yet (FFHIRPathHostServices.conformsToProfile), when item is not element or not resource");
+    throw new NotImplementedException(
+        "Not done yet (FHIRPathHostServices.conformsToProfile), when item is not element or not resource");
   }
 
   @Override
   public ValueSet resolveValueSet(Object appContext, String url) {
-	return structureMapUtilities.getWorker().fetchResource(ValueSet.class, url);
+    throw new Error("Not Implemented Yet");
   }
 
 }

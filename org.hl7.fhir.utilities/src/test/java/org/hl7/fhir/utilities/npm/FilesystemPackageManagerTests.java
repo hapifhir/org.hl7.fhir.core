@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.npm;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -63,5 +64,23 @@ public class FilesystemPackageManagerTests {
         return dummyPrivateServers;
       }
     };
+  }
+
+  @Test
+  public void testUserCacheDirectory() throws IOException {
+    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager(true) {
+      protected void initCacheFolder() throws IOException {
+      }
+    };
+    assertEquals(System.getProperty("user.home") + File.separator + ".fhir/packages", filesystemPackageCacheManager.getFolder());
+  }
+
+  @Test
+  public void testSystemCacheDirectory() throws IOException {
+    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager(false) {
+      protected void initCacheFolder() throws IOException {
+      }
+    };
+    assertEquals( "/var/lib/.fhir/packages", filesystemPackageCacheManager.getFolder());
   }
 }
