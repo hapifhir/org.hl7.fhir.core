@@ -19,3 +19,5 @@
 (Apache License, Version 2.0) Byte Buddy (without dependencies) (net.bytebuddy:byte-buddy:1.12.14 - https://bytebuddy.net/byte-buddy)
 # Appears to be Apache 2.0: https://github.com/NCIP/lexevs/blob/master/lgSharedLibraries/apache/commons/jakarta-regexp-1.4.license.txt
 (Unknown license) jakarta-regexp (jakarta-regexp:jakarta-regexp:1.4 - no url defined)
+# License string includes nested brackets, causing parser breakage, but is a valid BSD license.
+(BSD 3-Clause "New" or "Revised" License (BSD-3-Clause)) abego TreeLayout Core (org.abego.treelayout:org.abego.treelayout.core:1.0.3 - http://treelayout.sourceforge.net)
