@@ -2839,10 +2839,11 @@ public class ProfileUtilities extends TranslatingUtilities {
     boolean ok = false;
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     String t = ts.getWorkingCode();
+    String tDesc = ts.toString();
     for (TypeRefComponent td : base.getType()) {;
       boolean matchType = false;
       String tt = td.getWorkingCode();
-      b.append(tt);
+      b.append(td.toString());
       if (td.hasCode() && (tt.equals(t))) {
         matchType = true;
       }
@@ -2869,20 +2870,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           // check that any derived target has a reference chain back to one of the base target profiles
           for (UriType u : ts.getTargetProfile()) {
             String url = u.getValue();
-            boolean tgtOk = !td.hasTargetProfile() || td.hasTargetProfile(url);
-            while (url != null && !tgtOk) {
-              StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
-              if (sd == null) {
-                if (messages != null) {
-                  messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, "Cannot check whether the target profile " + url + " on "+derived.getPath()+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
-                }
-                url = null;
-                tgtOk = true; // suppress error message
-              } else {
-                url = sd.getBaseDefinition();
-                tgtOk = td.hasTargetProfile(url);
-              }
-            }
+            boolean tgtOk = !td.hasTargetProfile() || sdConformsToTargets(path, derived.getPath(), url, td);            
             if (tgtOk) {
               ok = true;
             } else {
@@ -2899,10 +2887,33 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     }
     if (!ok) {
-      throw new DefinitionException(context.formatMessage(I18nConstants.STRUCTUREDEFINITION__AT__ILLEGAL_CONSTRAINED_TYPE__FROM__IN_, purl, derived.getPath(), t, b.toString(), srcSD.getUrl()));
+      throw new DefinitionException(context.formatMessage(I18nConstants.STRUCTUREDEFINITION__AT__ILLEGAL_CONSTRAINED_TYPE__FROM__IN_, purl, derived.getPath(), tDesc, b.toString(), srcSD.getUrl()));
     }
   }
 
+
+  private boolean sdConformsToTargets(String path, String dPath, String url, TypeRefComponent td) {
+    if (td.hasTargetProfile(url)) {
+      return true;
+    }
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+    if (sd == null) {
+      if (messages != null) {
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, "Cannot check whether the target profile " + url + " on "+dPath+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
+      }
+      return true;
+    } else {
+      if (sd.hasBaseDefinition() && sdConformsToTargets(path, dPath, sd.getBaseDefinition(), td)) {
+        return true;
+      }
+      for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
+        if (sdConformsToTargets(path, dPath, ext.getValueCanonicalType().asStringValue(), td)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
   private void checkTypeOk(ElementDefinition dest, String ft, StructureDefinition sd, String fieldName) {
     boolean ok = false;

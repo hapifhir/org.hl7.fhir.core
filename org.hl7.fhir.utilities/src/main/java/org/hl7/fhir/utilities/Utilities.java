@@ -647,6 +647,10 @@ public class Utilities {
     return PathBuilder.getPathBuilder().buildPath(args);
   }
 
+  public static File pathFile(String... args) throws IOException {
+    return new File(PathBuilder.getPathBuilder().buildPath(args));
+  }
+
   public static String path(File f, String... args) throws IOException {
     String[] a = new String[args.length+1];
     a[0] = f.getAbsolutePath();
