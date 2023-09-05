@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
@@ -67,6 +69,10 @@ public class PackageList {
       json.set("date", date);      
     }
 
+    public String name() {
+      return json.asString("name");
+    }
+    
     public List<String> subPackages() {
       List<String> list = new ArrayList<>();
       if (json.has("sub-packages")) {
@@ -169,6 +175,7 @@ public class PackageList {
       }
       setDate(date);
     }
+
   }
   
   private String source;
@@ -332,6 +339,16 @@ public class PackageList {
   
   public String intro() {
     return json.asString("introduction");
+  }
+
+  public List<PackageListEntry> milestones() {
+    List<PackageListEntry> list = new ArrayList<>();
+    for (PackageListEntry t : versions) {
+      if (t.name() != null) {
+        list.add(t);
+      }
+    }
+    return list;
   }
 
 
