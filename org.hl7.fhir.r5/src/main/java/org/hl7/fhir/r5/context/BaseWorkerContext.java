@@ -937,7 +937,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // 2nd pass: What can we do internally 
     // 3rd pass: hit the server
     for (CodingValidationRequest t : codes) {
-      t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs, expParameters) : null);
+      t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs == null ? t.getVsObj() : vs, expParameters) : null);
       if (t.getCoding().hasSystem()) {
         codeSystemsUsed.add(t.getCoding().getSystem());
       }
@@ -949,7 +949,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       for (CodingValidationRequest t : codes) {
         if (!t.hasResult()) {
           try {
-            ValueSetValidator vsc = constructValueSetCheckerSimple(options, vs);
+            ValueSetValidator vsc = constructValueSetCheckerSimple(options, vs == null ? t.getVsObj() : vs);
             vsc.setThrowToServer(options.isUseServer() && tcc.getClient() != null);
             ValidationResult res = vsc.validateCode("Coding", t.getCoding());
             if (txCache != null) {
@@ -983,12 +983,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Set<String> systems = new HashSet<>();
     for (CodingValidationRequest codingValidationRequest : codes) {
       if (!codingValidationRequest.hasResult()) {
-        Parameters pIn = constructParameters(options, codingValidationRequest, vs);
+        Parameters pIn = constructParameters(options, codingValidationRequest, vs == null ? codingValidationRequest.getVsObj() : vs);
         setTerminologyOptions(options, pIn);
         BundleEntryComponent be = batch.addEntry();
         be.setResource(pIn);
         be.getRequest().setMethod(HTTPVerb.POST);
-        be.getRequest().setUrl("CodeSystem/$validate-code");
+        if (vs != null || codingValidationRequest.getVsObj() != null) {
+          be.getRequest().setUrl("ValueSet/$validate-code");          
+        } else {
+          be.getRequest().setUrl("CodeSystem/$validate-code");
+        }
         be.setUserData("source", codingValidationRequest);
         systems.add(codingValidationRequest.getCoding().getSystem());
       }
@@ -1010,7 +1014,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         BundleEntryComponent r = resp.getEntry().get(i);
 
         if (r.getResource() instanceof Parameters) {
-          t.setResult(processValidationResult((Parameters) r.getResource(), vs == null ? null : vs.getUrl()));
+          t.setResult(processValidationResult((Parameters) r.getResource(), vs != null ? vs.getUrl() : t.getVsObj() != null ? t.getVsObj().getUrl() : null));
           if (txCache != null) {
             txCache.cacheValidation(t.getCacheToken(), t.getResult(), TerminologyCache.PERMANENT);
           }

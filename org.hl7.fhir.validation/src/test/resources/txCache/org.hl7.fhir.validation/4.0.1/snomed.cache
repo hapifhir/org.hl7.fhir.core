@@ -2771,7 +2771,6 @@ v: {
   "code" : "38341003",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2794,7 +2793,6 @@ v: {
   "code" : "42343007",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2817,6 +2815,69 @@ v: {
   "code" : "9014002",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/2011000195101",
+  "code" : "264358009"
+}, "url": "http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType", "version": "0.1.0", "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "code" : "264358009",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/2011000195101/version/20230607",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/2011000195101",
+  "code" : "264372000"
+}, "url": "http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType", "version": "0.1.0", "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "code" : "264372000",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/2011000195101/version/20230607",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/2011000195101",
+  "code" : "46224007"
+}, "url": "http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType", "version": "0.1.0", "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "The provided code 'http://snomed.info/sct|http://snomed.info/sct/2011000195101#46224007' is not in the value set 'http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType|0.1.0' (from Tx-Server)",
+  "class" : "UNKNOWN",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
