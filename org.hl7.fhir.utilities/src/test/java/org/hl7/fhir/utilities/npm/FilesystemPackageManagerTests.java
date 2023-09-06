@@ -74,7 +74,7 @@ public class FilesystemPackageManagerTests {
       protected void initCacheFolder() throws IOException {
       }
     };
-    assertEquals(System.getProperty("user.home") + File.separator + ".fhir/packages", filesystemPackageCacheManager.getFolder());
+    assertEquals(System.getProperty("user.home") + File.separator + ".fhir" + File.separator + "packages", filesystemPackageCacheManager.getFolder());
   }
 
   /*
