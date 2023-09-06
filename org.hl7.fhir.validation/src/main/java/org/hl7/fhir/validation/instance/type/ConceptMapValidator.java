@@ -421,7 +421,7 @@ public class ConceptMapValidator  extends BaseValidator {
 
 
   private void addToBatch(Element code, NodeStack stack, CSReference system, VSReference scope) {
-    if (scope.vs != null) {
+    if (scope != null && scope.vs != null) {
       Coding c = new Coding(system.url, code.primitiveValue(), null).setVersion(system.version);
       batch.add(new CMCodingValidationRequest(stack, c, scope.vs));
     }    
