@@ -9,6 +9,8 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 public class FilesystemPackageManagerTests {
 
@@ -75,7 +77,11 @@ public class FilesystemPackageManagerTests {
     assertEquals(System.getProperty("user.home") + File.separator + ".fhir/packages", filesystemPackageCacheManager.getFolder());
   }
 
+  /*
+    Targeted folder will only be valid on -nix style systems.
+   */
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   public void testSystemCacheDirectory() throws IOException {
     FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager(false) {
       protected void initCacheFolder() throws IOException {
