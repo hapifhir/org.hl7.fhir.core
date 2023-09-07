@@ -471,6 +471,7 @@ public class ValidationService {
     validationEngine.setNoUnicodeBiDiControlChars(cliContext.isNoUnicodeBiDiControlChars());
     validationEngine.setNoInvariantChecks(cliContext.isNoInvariants());
     validationEngine.setDisplayWarnings(cliContext.isDisplayWarnings());
+    validationEngine.setBestPracticeLevel(cliContext.getBestPracticeLevel());
     validationEngine.setCheckIPSCodes(cliContext.isCheckIPSCodes());
     validationEngine.setWantInvariantInMessage(cliContext.isWantInvariantsInMessages());
     validationEngine.setSecurityChecks(cliContext.isSecurityChecks());

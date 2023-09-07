@@ -1365,11 +1365,4 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return ok;
   }
 
-  protected boolean check(boolean ok) {
-//    if (!ok) {
-//      System.out.println("notok"); // #FIXME
-//    }
-    return ok;
-  }
-
 }

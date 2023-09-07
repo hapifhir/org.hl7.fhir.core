@@ -175,7 +175,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
       ok = false;
     }
-    return check(ok);
+    return ok;
   }
   
 
@@ -220,7 +220,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       ok = validateObligationProfileElement(errors, element, stack.push(element, cc, null, null), base) && ok;
       cc++;
     }    
-    return check(ok);
+    return ok;
   }
 
   private boolean validateObligationProfileElement(List<ValidationMessage> errors, Element element, NodeStack push, StructureDefinition base) {
@@ -269,7 +269,7 @@ public class StructureDefinitionValidator extends BaseValidator {
               I18nConstants.SD_OBGLIGATION_PROFILE_ILLEGAL, id, child.getName());
         }
       }
-      return check(ok);
+      return ok;
     } else {
       return false;
     }
@@ -319,7 +319,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             I18nConstants.SD_OBGLIGATION_PROFILE_ILLEGAL_ON_BINDING, id, child.getName());
       }
     }
-    return check(ok);
+    return ok;
   }
 
   private boolean checkExtensionContext(List<ValidationMessage> errors, Element src, NodeStack stack) {
@@ -356,7 +356,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         ok = rule(errors, "2023-04-23", IssueType.INVALID, n.getLiteralPath(), false, I18nConstants.SD_NO_CONTEXT_INV_WHEN_NOT_EXTENSION, type) && ok;
       }
     }
-    return check(ok);
+    return ok;
   }
 
   private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, String rootPath, String profileUrl, StructureDefinition base) {
@@ -368,7 +368,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       ok = validateElementDefinition(errors, elements, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical, constraint, invariantMap, rootPath, profileUrl, base) && ok;
       cc++;
     }    
-    return check(ok);
+    return ok;
   }
 
   private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, String> invariantMap, String rootPath, String profileUrl, StructureDefinition base) {
@@ -504,7 +504,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path"), rootPath, profileUrl, snapshot, base) && ok;
       cc++;
     }    
-    return check(ok);
+    return ok;
   }
   
   private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, String> invariantMap, List<Element> elements, Element element, 
@@ -565,7 +565,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
     }
-    return check(ok);
+    return ok;
   }
 
   private boolean haseHasInvariant(StructureDefinition base, String key) {
@@ -798,7 +798,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
     } 
-    return check(ok);
+    return ok;
   }
 
   private Set<String> getListofBindableTypes(Set<String> types) {
@@ -842,7 +842,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
     }
-    return check(ok);
+    return ok;
   }
 
   private boolean validateProfileTypeOrTarget(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path) {
@@ -880,7 +880,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }      
     }
-    return check(ok);
+    return ok;
   }
 
   private String getTypeCodeFromSD(StructureDefinition sd, String path) {
@@ -937,7 +937,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
     }
-    return check(ok);
+    return ok;
   }
 
   private boolean checkIsModifierExtension(StructureDefinition t) {
@@ -971,7 +971,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     } else {
       ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_NO_TARGET_PROFILE, code) && ok;
     }
-    return check(ok);
+    return ok;
   }
 
   private boolean isReferenceableTarget(StructureDefinition t) {
