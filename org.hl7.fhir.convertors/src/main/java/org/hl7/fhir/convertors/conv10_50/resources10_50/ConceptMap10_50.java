@@ -212,7 +212,7 @@ public class ConceptMap10_50 {
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NOTRELATEDTO);
         break;
       default:
-        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL);
+        tgt.setValue(null);
         break;
     }
     return tgt;

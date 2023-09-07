@@ -359,7 +359,7 @@ public class SHLParser extends ParserBase {
           long epochSecs = Long.valueOf(v);
           LocalDateTime date = LocalDateTime.ofEpochSecond(epochSecs, 0, ZoneOffset.UTC);
           LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
-          Duration duration = Duration.between(now, date);
+          Duration duration = Duration.between(date, now);
         
           if (date.isBefore(now)) {          
             logError(errors, "2023-08-31", p.getValue().getStart().getLine(), p.getValue().getStart().getCol(), "shl."+p.getName(), 

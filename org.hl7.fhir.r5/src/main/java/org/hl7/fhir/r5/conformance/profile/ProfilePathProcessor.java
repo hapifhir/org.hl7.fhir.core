@@ -32,7 +32,7 @@ import lombok.With;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProfilePathProcessor {
-
+  
   @Getter
   protected final ProfileUtilities profileUtilities;
 
@@ -95,6 +95,7 @@ public class ProfilePathProcessor {
   @Getter
   @With
   final PathSlicingParams slicing;
+
 
   private ProfilePathProcessor(
     ProfileUtilities profileUtilities
@@ -558,7 +559,9 @@ public class ProfilePathProcessor {
     ElementDefinition res;
     ElementDefinition template = null;
     if (diffMatches.get(0).hasType() && "Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode()) && !profileUtilities.isValidType(diffMatches.get(0).getType().get(0), currentBase)) {
-      throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT, getUrl(), diffMatches.get(0).getPath(), diffMatches.get(0).getType().get(0), currentBase.typeSummary()));
+      if (!ProfileUtilities.isSuppressIgnorableExceptions()) {
+        throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT, getUrl(), diffMatches.get(0).getPath(), diffMatches.get(0).getType().get(0), currentBase.typeSummary()));
+      }
     }
     String id = diffMatches.get(0).getId();
     String lid = profileUtilities.tail(id);

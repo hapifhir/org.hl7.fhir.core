@@ -276,7 +276,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
     
     // -- 2. preparation -----------------------------------------------------------------------------
-    if (cr.resource != null) {
+    if (cr.resource != null && cr.getPackageInfo() != null) {
       cr.resource.setSourcePackage(cr.getPackageInfo());
     }      
 

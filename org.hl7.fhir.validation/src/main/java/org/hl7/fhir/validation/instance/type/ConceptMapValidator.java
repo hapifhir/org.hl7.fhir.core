@@ -284,10 +284,12 @@ public class ConceptMapValidator  extends BaseValidator {
           }
           if (ctxt.hasSourceVS() && ctxt.source != null) {
             ValidationResult vr = context.validateCode(options.withCheckValueSetOnly().withNoServer(), ctxt.source.url, ctxt.source.version, c, null, ctxt.sourceScope.vs);
-            warningOrError(ctxt.source.cs.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-09-06", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS, c, ctxt.sourceScope.vs.getVersionedUrl());
+            if (!warningOrError(ctxt.source.cs.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-09-06", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS, c, ctxt.sourceScope.vs.getVersionedUrl())) {
+              ok = (ctxt.source.cs.getContent() != CodeSystemContentMode.COMPLETE) & ok;
+            }
           }
         } else {
-          ok = false;
+          ok = (ctxt.source.cs.getContent() != CodeSystemContentMode.COMPLETE) & ok;
         }
       } else {
         addToBatch(code, cstack, ctxt.source, ctxt.sourceScope);
@@ -319,10 +321,12 @@ public class ConceptMapValidator  extends BaseValidator {
           }
           if (ctxt.hasTargetVS() && ctxt.target != null) {
             ValidationResult vr = context.validateCode(options.withCheckValueSetOnly().withNoServer(), ctxt.target.url, ctxt.target.version, c, null, ctxt.targetScope.vs);
-            warningOrError(ctxt.target.cs.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-09-06", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS, c, ctxt.targetScope.vs.getVersionedUrl());
+            if (!warningOrError(ctxt.target.cs.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-09-06", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS, c, ctxt.targetScope.vs.getVersionedUrl())) {
+              ok = (ctxt.target.cs.getContent() != CodeSystemContentMode.COMPLETE) && ok;
+            }
           }
         } else {
-          ok = false;
+          ok = (ctxt.source.cs.getContent() != CodeSystemContentMode.COMPLETE) & ok;
         }
       } else {
         addToBatch(code, cstack, ctxt.target, ctxt.targetScope);

@@ -268,6 +268,9 @@ public class ConceptMap30_50 {
         case NOTRELATEDTO:
           tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.DISJOINT);
           break;
+        case RELATEDTO:
+          tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.RELATEDTO);
+          break;
         default:
           tgt.setValue(org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence.NULL);
           break;
@@ -309,6 +312,9 @@ public class ConceptMap30_50 {
         break;
       case DISJOINT:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NOTRELATEDTO);
+        break;
+      case RELATEDTO:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.RELATEDTO);
         break;
       default:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.NULL);
