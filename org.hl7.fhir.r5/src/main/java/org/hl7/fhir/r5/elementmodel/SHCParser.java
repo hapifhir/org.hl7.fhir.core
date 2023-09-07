@@ -313,7 +313,8 @@ public class SHCParser extends ParserBase {
       try {
         jwks = org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl(url);
       } catch (Exception e) {
-        logError(errors, "2023-09-08", 1, 1, name, IssueType.NOTFOUND, "Unable to verify the signature, because unable to retrieve JWKS from "+url+": "+e.getMessage(), IssueSeverity.ERROR);    
+        logError(errors, "2023-09-08", 1, 1, name, IssueType.NOTFOUND, "Unable to verify the signature, because unable to retrieve JWKS from "+url+": "+
+           e.getMessage().replace("Connection refused (Connection refused)", "Connection refused"), IssueSeverity.ERROR);    
       }
       if (jwks != null) {
         verifySignature(jwt, errors, name, iss, url, org.hl7.fhir.utilities.json.parser.JsonParser.compose(jwks));
