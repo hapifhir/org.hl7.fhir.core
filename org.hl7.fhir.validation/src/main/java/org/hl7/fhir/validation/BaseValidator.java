@@ -80,27 +80,29 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class BaseValidator implements IValidationContextResourceLoader {
 
-  public class BooleanValue {
 
-    private boolean value;
+  public class BooleanHolder {
+    private boolean value = true;
 
-    public BooleanValue(boolean value) {
+    public BooleanHolder() {
+      super();
+      this.value = true;
+    }
+    public BooleanHolder(boolean value) {
       super();
       this.value = value;
     }
-
-    public boolean isValue() {
+    public void fail() {
+      value = false;
+    }
+    public boolean ok() {
       return value;
     }
-
-    public void setValue(boolean value) {
-      this.value = value;
-    }
-
     public void see(boolean ok) {
       value = value && ok;
     }
   }
+  
 
   public class TrackedLocationRelatedMessage {
     private Object location;
@@ -642,7 +644,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected void txIssue(List<ValidationMessage> errors, String ruleDate, String txLink, int line, int col, String path, OperationOutcomeIssueComponent issue) {
+  protected ValidationMessage txIssue(List<ValidationMessage> errors, String ruleDate, String txLink, int line, int col, String path, OperationOutcomeIssueComponent issue) {
     IssueType code = IssueType.fromCode(issue.getCode().toCode());
     IssueSeverity severity = IssueSeverity.fromCode(issue.getSeverity().toCode());
     ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, code, line, col, path, issue.getDetails().getText(), severity).setTxLink(txLink);
@@ -651,6 +653,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
 //      }
 //    }
 //    return thePass;
+    return vmsg;
   }
   
   /**
@@ -1002,7 +1005,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
   }
 
 
-  protected IndexedElement getFromBundle(Element bundle, String ref, String fullUrl, List<ValidationMessage> errors, String path, String type, boolean isTransaction) {
+  protected IndexedElement getFromBundle(Element bundle, String ref, String fullUrl, List<ValidationMessage> errors, String path, String type, boolean isTransaction, BooleanHolder bh) {
     String targetUrl = null;
     String version = "";
     String resourceType = null;
@@ -1086,7 +1089,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
     }
 
     if (match != null && resourceType != null)
-      rule(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, match.getType().equals(resourceType), I18nConstants.REFERENCE_REF_RESOURCETYPE, ref, match.getType());
+      bh.see(rule(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, match.getType().equals(resourceType), I18nConstants.REFERENCE_REF_RESOURCETYPE, ref, match.getType()));
     if (match == null) {
       warning(errors, NO_RULE_DATE, IssueType.REQUIRED, -1, -1, path, !ref.startsWith("urn"), I18nConstants.BUNDLE_BUNDLE_NOT_LOCAL, ref);
       if (!Utilities.isAbsoluteUrl(ref)) {
@@ -1324,7 +1327,8 @@ public class BaseValidator implements IValidationContextResourceLoader {
   }
  
 
-  protected void checkDefinitionStatus(List<ValidationMessage> errors, Element element, String path, StructureDefinition ex, CanonicalResource source, String type) {
+  protected boolean checkDefinitionStatus(List<ValidationMessage> errors, Element element, String path, StructureDefinition ex, CanonicalResource source, String type) {
+    boolean ok = true;
     String vurl = ex.getVersionedUrl();
 
     StandardsStatus standardsStatus = ToolingExtensions.getStandardsStatus(ex);
@@ -1358,6 +1362,14 @@ public class BaseValidator implements IValidationContextResourceLoader {
         }
       }
     }
+    return ok;
+  }
+
+  protected boolean check(boolean ok) {
+//    if (!ok) {
+//      System.out.println("notok"); // #FIXME
+//    }
+    return ok;
   }
 
 }

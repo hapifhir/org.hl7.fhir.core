@@ -85,7 +85,7 @@ public class BundleValidator extends BaseValidator {
         }
       }
       if (type.equals(SEARCHSET)) {
-        checkSearchSet(errors, bundle, entries, stack);
+        ok = checkSearchSet(errors, bundle, entries, stack) && ok;
       }
       // We do not yet have rules requiring that the id and fullUrl match when dealing with messaging Bundles
       //      validateResourceIds(errors, UNKNOWN_DATE_TIME, entries, stack);
@@ -288,7 +288,9 @@ public class BundleValidator extends BaseValidator {
     return ok;
   }
 
-  private void checkSearchSet(List<ValidationMessage> errors, Element bundle, List<Element> entries, NodeStack stack) {
+  private boolean checkSearchSet(List<ValidationMessage> errors, Element bundle, List<Element> entries, NodeStack stack) {
+    boolean ok = true;
+    
     // warning: should have self link
     List<Element> links = new ArrayList<Element>();
     bundle.getNamedChildren(LINK, links);
@@ -315,13 +317,13 @@ public class BundleValidator extends BaseValidator {
         if (rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), res != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE)) {
           NodeStack rstack = estack.push(res, -1, null, null);
           String rt = res.fhirType();
-          Boolean ok = checkSearchType(types, rt);
-          if (ok == null) {
+          Boolean bok = checkSearchType(types, rt);
+          if (bok == null) {
             typeProblem = true;
             hint(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), selfLink == null, I18nConstants.BUNDLE_SEARCH_ENTRY_TYPE_NOT_SURE);                       
             String id = res.getNamedChildValue("id");
             warning(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null || "OperationOutcome".equals(rt), I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
-          } else if (ok) {
+          } else if (bok) {
             if (!"OperationOutcome".equals(rt)) {
               String id = res.getNamedChildValue("id");
               warning(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
@@ -335,8 +337,10 @@ public class BundleValidator extends BaseValidator {
             typeProblem = true;
             warning(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), false, I18nConstants.BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_NO_MODE, rt, types);            
           }
+        } else {
+          ok = false;
         }
-      }      
+      }
       if (typeProblem) {
         warning(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), !typeProblem, I18nConstants.BUNDLE_SEARCH_NO_MODE);
       } else {
@@ -360,17 +364,20 @@ public class BundleValidator extends BaseValidator {
           String id = res.getNamedChildValue("id");
           if (sm != null) {
             if ("match".equals(sm)) {
-              rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
-              rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), types.size() == 0 || checkSearchType(types, rt), I18nConstants.BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_MODE, rt, types);
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID) && ok;
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), types.size() == 0 || checkSearchType(types, rt), I18nConstants.BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_MODE, rt, types) && ok;
             } else if ("include".equals(sm)) {
-              rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID) && ok;
             } else { // outcome
-              rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), "OperationOutcome".equals(rt), I18nConstants.BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_OUTCOME, rt);
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), "OperationOutcome".equals(rt), I18nConstants.BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_OUTCOME, rt) && ok;
             }
           }
+        } else {
+          ok = false;
         }
       }
     }      
+    return ok;
   }
 
   private Boolean checkSearchType(List<String> types, String rt) {
@@ -748,27 +755,32 @@ public class BundleValidator extends BaseValidator {
     }
   }
 
-  private void followResourceLinks(Element entry, Map<String, Element> visitedResources, Map<Element, Element> candidateEntries, List<Element> candidateResources, List<ValidationMessage> errors, NodeStack stack) {
-    followResourceLinks(entry, visitedResources, candidateEntries, candidateResources, errors, stack, 0);
-  }
-
-  private void followResourceLinks(Element entry, Map<String, Element> visitedResources, Map<Element, Element> candidateEntries, List<Element> candidateResources, List<ValidationMessage> errors, NodeStack stack, int depth) {
-    Element resource = entry.getNamedChild(RESOURCE);
-    if (visitedResources.containsValue(resource))
-      return;
-
-    visitedResources.put(entry.getNamedChildValue(FULL_URL), resource);
-
-    String type = null;
-    Set<String> references = findReferences(resource);
-    for (String reference : references) {
-      // We don't want errors when just retrieving the element as they will be caught (with better path info) in subsequent processing
-      IndexedElement r = getFromBundle(stack.getElement(), reference, entry.getChildValue(FULL_URL), new ArrayList<ValidationMessage>(), stack.addToLiteralPath("entry[" + candidateResources.indexOf(resource) + "]"), type, "transaction".equals(stack.getElement().getChildValue(TYPE)));
-      if (r != null && !visitedResources.containsValue(r.getMatch())) {
-        followResourceLinks(candidateEntries.get(r.getMatch()), visitedResources, candidateEntries, candidateResources, errors, stack, depth + 1);
-      }
-    }
-  }
+  // not used?
+//  private boolean followResourceLinks(Element entry, Map<String, Element> visitedResources, Map<Element, Element> candidateEntries, List<Element> candidateResources, List<ValidationMessage> errors, NodeStack stack) {
+//    return followResourceLinks(entry, visitedResources, candidateEntries, candidateResources, errors, stack, 0);
+//  }
+//
+//  private boolean followResourceLinks(Element entry, Map<String, Element> visitedResources, Map<Element, Element> candidateEntries, List<Element> candidateResources, List<ValidationMessage> errors, NodeStack stack, int depth) {
+//    boolean ok = true;
+//    Element resource = entry.getNamedChild(RESOURCE);
+//    if (visitedResources.containsValue(resource))
+//      return ok;
+//
+//    visitedResources.put(entry.getNamedChildValue(FULL_URL), resource);
+//
+//    String type = null;
+//    Set<String> references = findReferences(resource);
+//    for (String reference : references) {
+//      // We don't want errors when just retrieving the element as they will be caught (with better path info) in subsequent processing
+//      BooleanHolder bh = new BooleanHolder();
+//      IndexedElement r = getFromBundle(stack.getElement(), reference, entry.getChildValue(FULL_URL), new ArrayList<ValidationMessage>(), stack.addToLiteralPath("entry[" + candidateResources.indexOf(resource) + "]"), type, "transaction".equals(stack.getElement().getChildValue(TYPE)), bh);
+//      ok = ok && bh.ok();
+//      if (r != null && !visitedResources.containsValue(r.getMatch())) {
+//        followResourceLinks(candidateEntries.get(r.getMatch()), visitedResources, candidateEntries, candidateResources, errors, stack, depth + 1);
+//      }
+//    }
+//    return ok;
+//  }
 
 
   private Set<String> findReferences(Element start) {
