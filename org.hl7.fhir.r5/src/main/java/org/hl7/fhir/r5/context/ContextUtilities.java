@@ -42,7 +42,6 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
 
   private IWorkerContext context;
   private boolean suppressDebugMessages;
-  private boolean ignoreProfileErrors;
   private XVerExtensionManager xverManager;
   private Map<String, String> oidCache = new HashMap<>();
   private List<StructureDefinition> allStructuresList = new ArrayList<StructureDefinition>();
@@ -61,14 +60,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   public void setSuppressDebugMessages(boolean suppressDebugMessages) {
     this.suppressDebugMessages = suppressDebugMessages;
   }
-  public boolean isIgnoreProfileErrors() {
-    return ignoreProfileErrors;
-  }
-
-  public void setIgnoreProfileErrors(boolean ignoreProfileErrors) {
-    this.ignoreProfileErrors = ignoreProfileErrors;
-  }
-
+  
   public String oid2Uri(String oid) {
     if (oid != null && oid.startsWith("urn:oid:")) {
       oid = oid.substring(8);
@@ -291,7 +283,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       }
       pu.generateSnapshot(sd, p, p.getUrl(), sd.getUserString("webroot"), p.getName());
       for (ValidationMessage msg : msgs) {
-        if ((!ignoreProfileErrors && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL) {
+        if ((!ProfileUtilities.isSuppressIgnorableExceptions() && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL) {
           if (!msg.isIgnorableError()) {
             throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE___ELEMENT__ERROR_GENERATING_SNAPSHOT_, p.getName(), p.getUrl(), msg.getLocation(), msg.getMessage()));
           } else {
