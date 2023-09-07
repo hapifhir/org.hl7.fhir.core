@@ -1,7 +1,8 @@
 ## Validator Changes
 
-* no changes
+* Fix bug preventing Best Practice invariants being reported on, and add -best-practice parameter
+* Fix issue not validating bundles when there are multiple profiles on entry.resource
 
 ## Other code changes
 
-* no changes
+* Fixes for minor bugs discovered testing the XIG
