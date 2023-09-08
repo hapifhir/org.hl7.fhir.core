@@ -2613,7 +2613,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.addStyledText(translate("sd.table", "This type must be supported"), "S", "white", "red", null, false);
             }
           }
-          if (tr.hasProfile()) {
+          if (tr.hasProfile() && choicerow.getCells().size() >= 4) {
             Cell typeCell = choicerow.getCells().get(3);
             typeCell.addPiece(gen.new Piece(null, "(", null));
             boolean first = true;
