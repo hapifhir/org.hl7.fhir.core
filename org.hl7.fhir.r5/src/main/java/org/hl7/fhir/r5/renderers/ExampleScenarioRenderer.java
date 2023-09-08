@@ -29,10 +29,13 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
   public boolean render(XhtmlNode x, Resource scen) throws IOException {
     return render(x, (ExampleScenario) scen);
   }
-  
+
   public boolean render(XhtmlNode x, ExampleScenario scen) throws FHIRException {
     try {
-      switch (context.getScenarioMode()) {
+      if (context.getScenarioMode() == null) {
+        return renderActors(x, scen);
+      } else {
+        switch (context.getScenarioMode()) {
         case ACTORS:
           return renderActors(x, scen);
         case INSTANCES:
@@ -41,6 +44,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
           return renderProcesses(x, scen);
         default:
           throw new FHIRException("Unknown ExampleScenario Renderer Mode " + context.getScenarioMode());
+        }
       }
     } catch (Exception e) {
       throw new FHIRException("Error rendering ExampleScenario " + scen.getUrl(), e);
