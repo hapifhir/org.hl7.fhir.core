@@ -2544,9 +2544,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     // create a child for each choice
     for (TypeRefComponent tr : element.getType()) {
       if (!mustSupportMode || allTypesMustSupport(element) || isMustSupport(tr)) {
+        boolean used = false;
         Row choicerow = gen.new Row();
         String t = tr.getWorkingCode();
         if (isReference(t)) {
+          used = true;
           choicerow.getCells().add(gen.new Cell(null, null, tail(element.getPath()).replace("[x]", Utilities.capitalize(t)), null, null));
           choicerow.getCells().add(gen.new Cell());
           choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
@@ -2591,6 +2593,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             System.out.println("Unable to find "+t);
             sd = context.getWorker().fetchTypeDefinition(t);
           } else if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
+            used = true;
             choicerow.getCells().add(gen.new Cell(null, null, tail(element.getPath()).replace("[x]",  Utilities.capitalize(t)), sd.getDescription(), null));
             choicerow.getCells().add(gen.new Cell());
             choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
@@ -2602,6 +2605,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.addStyledText(translate("sd.table", "This type must be supported"), "S", "white", "red", null, false);
             }
           } else {
+            used = true;
             choicerow.getCells().add(gen.new Cell(null, null, tail(element.getPath()).replace("[x]",  Utilities.capitalize(t)), sd.getDescription(), null));
             choicerow.getCells().add(gen.new Cell());
             choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
@@ -2613,7 +2617,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.addStyledText(translate("sd.table", "This type must be supported"), "S", "white", "red", null, false);
             }
           }
-          if (tr.hasProfile() && choicerow.getCells().size() >= 4) {
+          if (tr.hasProfile() && used) {
             Cell typeCell = choicerow.getCells().get(3);
             typeCell.addPiece(gen.new Piece(null, "(", null));
             boolean first = true;
@@ -2634,8 +2638,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             typeCell.addPiece(gen.new Piece(null, ")", null));
           }
         }    
-        choicerow.getCells().add(gen.new Cell());
-        subRows.add(choicerow);
+        if (used) {
+          choicerow.getCells().add(gen.new Cell());
+          subRows.add(choicerow);
+        }
       }
     }
   }
