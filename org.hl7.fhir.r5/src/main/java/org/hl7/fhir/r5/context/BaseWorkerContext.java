@@ -2463,7 +2463,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return types.iterator().next(); 
       } else { 
         types.removeIf(sd -> !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/"));
-        if (types.size() != 1) {
+        if (types.size() == 0) {
+          return null;
+        } else if (types.size() != 1) {
           throw new FHIRException("Ambiguous type "+typeName+" ("+types.toString()+") (contact Grahame Grieve for investigation)");
         } else  {
           return types.iterator().next(); 

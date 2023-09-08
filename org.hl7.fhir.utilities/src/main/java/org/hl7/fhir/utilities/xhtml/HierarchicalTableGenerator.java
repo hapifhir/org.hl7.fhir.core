@@ -83,6 +83,7 @@ import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TranslatingUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -540,6 +541,13 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     public void setOpacity(String opacity) {
       this.opacity = opacity;
     }
+    public String text() {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      for (Cell c : cells) {
+        b.append(c.text());
+      }
+      return b.toString();
+    }
     
   }
 
@@ -968,7 +976,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     for (Cell c : r.getCells()) {
       tc = tc + c.span;
     }
-    check(tc == size, "All rows must have the same number of columns as the titles  ("+Integer.toString(size)+") but row "+path+" doesn't - it has "+tc+" ("+(r.getCells().size() > 0 ? "??" : r.getCells().get(0).text())+"): "+r.getCells());
+    if (tc != size) {
+      check(tc == size, "All rows must have the same number of columns as the titles  ("+Integer.toString(size)+") but row "+path+" doesn't - it has "+tc+" ("+(r.getCells().size() > 0 ? "??" : r.text())+"): "+r.getCells());      
+    }
     int i = 0;
     for (Row c : r.getSubRows()) {
       check(c, "rows", size, path, i, r.getSubRows().size());

@@ -482,7 +482,7 @@ public class QuestionnaireValidator extends BaseValidator {
   }
 
   private boolean validateQuestionnaireResponseItem(ValidatorHostContext hostContext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
-    BooleanValue ok = new BooleanValue(true);
+    BooleanHolder ok = new BooleanHolder();
     
     String text = element.getNamedChildValue("text");
     ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), Utilities.noString(text) || text.equals(qItem.getText()), I18nConstants.QUESTIONNAIRE_QR_ITEM_TEXT, qItem.getLinkId()));
@@ -584,7 +584,7 @@ public class QuestionnaireValidator extends BaseValidator {
       }
       if (qItem.getType() != QuestionnaireItemType.GROUP) {
         // if it's a group, we already have an error before getting here, so no need to hammer away on that 
-        validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, answer, stack, inProgress, questionnaireResponseRoot, qstack);
+        ok.see(validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, answer, stack, inProgress, questionnaireResponseRoot, qstack));
       }
       i++;
     }
@@ -601,7 +601,7 @@ public class QuestionnaireValidator extends BaseValidator {
     } else {
       ok.see(validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, element, stack, inProgress, questionnaireResponseRoot, qstack));
     }
-    return ok.isValue();
+    return ok.ok();
   }
 
   private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, List<Element> answers) {
@@ -711,7 +711,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
   }
 
-  private String validateQuestionnaireResponseItemType(List<ValidationMessage> errors, Element element, NodeStack stack, BooleanValue ok, String... types) {
+  private String validateQuestionnaireResponseItemType(List<ValidationMessage> errors, Element element, NodeStack stack, BooleanHolder ok, String... types) {
     List<Element> values = new ArrayList<Element>();
     element.getNamedChildrenWithWildcard("value[x]", values);
     for (int i = 0; i < types.length; i++) {
