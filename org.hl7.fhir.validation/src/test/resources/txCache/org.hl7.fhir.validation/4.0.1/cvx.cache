@@ -119,7 +119,6 @@ v: {
   "code" : "115",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -141,7 +140,6 @@ v: {
   "code" : "10",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -163,7 +161,6 @@ v: {
   "code" : "85",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -185,7 +182,6 @@ v: {
   "code" : "25",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -207,7 +203,6 @@ v: {
   "code" : "37",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -229,7 +224,6 @@ v: {
   "code" : "185",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -251,7 +245,6 @@ v: {
   "code" : "150",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -273,7 +266,6 @@ v: {
   "code" : "207",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -295,7 +287,6 @@ v: {
   "code" : "171",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -315,6 +306,70 @@ v: {
 v: {
   "display" : "influenza virus vaccine, unspecified formulation",
   "code" : "88",
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "version" : "20210406",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "code" : "210"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "SARS-COV-2 (COVID-19) vaccine, vector non-replicating, recombinant spike protein-ChAdOx1, preservative free, 0.5 mL",
+  "code" : "210",
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "version" : "20210406",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "code" : "210"
+}, "url": "http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx", "version": "0.6.2", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "SARS-COV-2 (COVID-19) vaccine, vector non-replicating, recombinant spike protein-ChAdOx1, preservative free, 0.5 mL",
+  "code" : "210",
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "version" : "20210406",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://hl7.org/fhir/sid/cvx",
+  "code" : "207"
+}, "url": "http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx", "version": "0.6.2", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose",
+  "code" : "207",
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
   "unknown-systems" : "",

@@ -136,6 +136,9 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  */
 public class ProfileUtilities extends TranslatingUtilities {
 
+  private static boolean suppressIgnorableExceptions;
+
+  
   public class ElementDefinitionCounter {
     int countMin = 0;
     int countMax = 0;
@@ -2886,7 +2889,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
     }
-    if (!ok) {
+    if (!ok && !isSuppressIgnorableExceptions()) {
       throw new DefinitionException(context.formatMessage(I18nConstants.STRUCTUREDEFINITION__AT__ILLEGAL_CONSTRAINED_TYPE__FROM__IN_, purl, derived.getPath(), tDesc, b.toString(), srcSD.getUrl()));
     }
   }
@@ -4465,6 +4468,14 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   public static boolean isResourceBoundary(ElementDefinition ed) {
     return ed.getType().size() == 1 && "Resource".equals(ed.getTypeFirstRep().getCode());
+  }
+
+  public static boolean isSuppressIgnorableExceptions() {
+    return suppressIgnorableExceptions;
+  }
+
+  public static void setSuppressIgnorableExceptions(boolean suppressIgnorableExceptions) {
+    ProfileUtilities.suppressIgnorableExceptions = suppressIgnorableExceptions;
   }
 
 }

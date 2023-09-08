@@ -74,7 +74,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       String url = src.getNamedChildValue("url");
       
       sd = loadAsSD(src);
-      checkExtensionContext(errors, src, stack);
+      ok = checkExtensionContext(errors, src, stack) && ok;
       
       List<ElementDefinition> snapshot = sd.getSnapshot().getElement();
       sd.setSnapshot(null);
@@ -83,9 +83,9 @@ public class StructureDefinitionValidator extends BaseValidator {
       if (warning(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), base != null, I18nConstants.UNABLE_TO_FIND_BASE__FOR_, sd.getBaseDefinition(), "StructureDefinition, so can't check the differential")) {
         if (rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasDerivation(), I18nConstants.SD_MUST_HAVE_DERIVATION, sd.getUrl())) {
           boolean bok = base.getAbstract() || sd.hasKind() && sd.getKind() == base.getKind();
-          rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), bok, I18nConstants.SD_CONSTRAINED_KIND_NO_MATCH, sd.getKind().toCode(), base.getKind().toCode(), base.getType(), base.getUrl());
+          ok = rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), bok, I18nConstants.SD_CONSTRAINED_KIND_NO_MATCH, sd.getKind().toCode(), base.getKind().toCode(), base.getType(), base.getUrl()) && ok;
           if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
-            rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasType() && sd.getType().equals(base.getType()), I18nConstants.SD_CONSTRAINED_TYPE_NO_MATCH, sd.getType(), base.getType());
+            ok = rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasType() && sd.getType().equals(base.getType()), I18nConstants.SD_CONSTRAINED_TYPE_NO_MATCH, sd.getType(), base.getType()) && ok;
             List<ValidationMessage> msgs = new ArrayList<>();
             ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
             pu.setForPublication(forPublication);
@@ -102,7 +102,7 @@ public class StructureDefinitionValidator extends BaseValidator {
                   msg.setLocation(stack.getLiteralPath());
                 }
                 errors.add(msg);
-                ok = false;
+                ok = (!msg.isError()) && ok;
               }
             }
             if (!snapshot.isEmpty() && wantCheckSnapshotUnchanged) {
@@ -111,7 +111,7 @@ public class StructureDefinitionValidator extends BaseValidator {
               ok = rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), was == is, I18nConstants.SNAPSHOT_EXISTING_PROBLEM, was, is) && ok;
             }
           } else {
-            rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasType() && !sd.getType().equals(base.getType()), I18nConstants.SD_SPECIALIZED_TYPE_MATCHES, sd.getType(), base.getType());
+            ok = rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasType() && !sd.getType().equals(base.getType()), I18nConstants.SD_SPECIALIZED_TYPE_MATCHES, sd.getType(), base.getType()) && ok;
           }
         } else {
           ok = false;
@@ -144,6 +144,8 @@ public class StructureDefinitionValidator extends BaseValidator {
                 ok = validateObligationProfile(errors, differential, stack.push(differential, -1, null, null), base) && ok;
               }
             }
+          } else {
+            ok = false;
           }
         }
       }
@@ -320,7 +322,8 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
 
-  private void checkExtensionContext(List<ValidationMessage> errors, Element src, NodeStack stack) {
+  private boolean checkExtensionContext(List<ValidationMessage> errors, Element src, NodeStack stack) {
+    boolean ok = true;
     String type = src.getNamedChildValue("type");
     List<Element> eclist = src.getChildren("context");
     List<Element> cilist = src.getChildren("contextInvariant");
@@ -341,7 +344,7 @@ public class StructureDefinitionValidator extends BaseValidator {
           warning(errors, "2023-04-23", IssueType.BUSINESSRULE, n.getLiteralPath(), false, I18nConstants.SD_CONTEXT_SHOULD_NOT_BE_ELEMENT, cv);
         }          
       } else {
-        rule(errors, "2023-04-23", IssueType.INVALID, n.getLiteralPath(), false, I18nConstants.SD_NO_CONTEXT_WHEN_NOT_EXTENSION, type);
+        ok = rule(errors, "2023-04-23", IssueType.INVALID, n.getLiteralPath(), false, I18nConstants.SD_NO_CONTEXT_WHEN_NOT_EXTENSION, type) && ok;
       }
     }
     i = 0;
@@ -350,9 +353,10 @@ public class StructureDefinitionValidator extends BaseValidator {
       if ("Extension".equals(type)) {
           
       } else {
-        rule(errors, "2023-04-23", IssueType.INVALID, n.getLiteralPath(), false, I18nConstants.SD_NO_CONTEXT_INV_WHEN_NOT_EXTENSION, type);
+        ok = rule(errors, "2023-04-23", IssueType.INVALID, n.getLiteralPath(), false, I18nConstants.SD_NO_CONTEXT_INV_WHEN_NOT_EXTENSION, type) && ok;
       }
     }
+    return ok;
   }
 
   private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, String rootPath, String profileUrl, StructureDefinition base) {
@@ -371,11 +375,11 @@ public class StructureDefinitionValidator extends BaseValidator {
     boolean ok = true;
     boolean typeMustSupport = false;
     String path = element.getNamedChildValue("path");
-    rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), typeName == null || path == null || path.equals(typeName) || path.startsWith(typeName+"."), I18nConstants.SD_PATH_TYPE_MISMATCH, typeName, path);
+    ok = rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), typeName == null || path == null || path.equals(typeName) || path.startsWith(typeName+"."), I18nConstants.SD_PATH_TYPE_MISMATCH, typeName, path) && ok;
     if (!snapshot) {
-      rule(errors, "2023-01-17", IssueType.INVALID, stack.getLiteralPath(), path.contains(".") || !element.hasChild("slicing"), I18nConstants.SD_NO_SLICING_ON_ROOT, path);
+      ok = rule(errors, "2023-01-17", IssueType.INVALID, stack.getLiteralPath(), path.contains(".") || !element.hasChild("slicing"), I18nConstants.SD_NO_SLICING_ON_ROOT, path) && ok;
     }
-    rule(errors, "2023-05-22", IssueType.NOTFOUND, stack.getLiteralPath(), snapshot || !constraint || !element.hasChild("meaningWhenMissing") || meaningWhenMissingAllowed(element), I18nConstants.SD_ELEMENT_NOT_IN_CONSTRAINT, "meaningWhenMissing", path);
+    ok = rule(errors, "2023-05-22", IssueType.NOTFOUND, stack.getLiteralPath(), snapshot || !constraint || !element.hasChild("meaningWhenMissing") || meaningWhenMissingAllowed(element), I18nConstants.SD_ELEMENT_NOT_IN_CONSTRAINT, "meaningWhenMissing", path) && ok;
     
     List<Element> types = element.getChildrenByName("type");
     Set<String> typeCodes = new HashSet<>();
@@ -398,7 +402,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       if (Utilities.noString(tc) && type.hasChild("code")) {
         if (VersionUtilities.isR4Plus(context.getVersion())) {
-          rule(errors, "2023-03-16", IssueType.INVALID, stack.getLiteralPath(), false, I18nConstants.SD_NO_TYPE_CODE_ON_CODE, path, sd.getId());
+          ok = rule(errors, "2023-03-16", IssueType.INVALID, stack.getLiteralPath(), false, I18nConstants.SD_NO_TYPE_CODE_ON_CODE, path, sd.getId()) && ok;
         }
       }
       if (!Utilities.noString(tc)) {
@@ -489,6 +493,8 @@ public class StructureDefinitionValidator extends BaseValidator {
             warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_WARNING_DOTNET, element.getIdBase(), "pattern");
           }
         }
+      } else {
+        ok = false;
       }
       // if we see fixed[x] or pattern[x] applied to a repeating element, we'll give the user a hint
     }

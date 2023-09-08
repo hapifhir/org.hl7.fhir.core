@@ -295,7 +295,7 @@ public class ActivityDefinition40_50 {
         tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.SUPPLYREQUEST);
         break;
       case TASK:
-        tgt.setValue(org.hl7.fhir.r5.model.ActivityDefinition.RequestResourceTypes.NULL);
+        tgt.setValue(null);
         tgt.addExtension(VersionConvertorConstants.EXT_ACTUAL_RESOURCE_NAME, new CodeType("Task"));
         break;
       case VISIONPRESCRIPTION:

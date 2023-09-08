@@ -213,6 +213,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     InstanceValidator val = vCurr.getValidator(fmt);
     val.setWantCheckSnapshotUnchanged(true);
     val.getContext().setClientRetryCount(4);
+    val.setBestPracticeWarningLevel(BestPracticeWarningLevel.Ignore);
     val.setDebug(false);
     if (!VersionUtilities.isR5Plus(val.getContext().getVersion())) {
       val.getBaseOptions().setUseValueSetDisplays(true);

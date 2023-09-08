@@ -36,6 +36,20 @@ public class JsonObject extends JsonElement {
     return this;
   }
 
+  public JsonObject addIfNotNull(String name, JsonElement value) throws JsonException {
+    if (value != null) {
+      check(name != null, "Name is null");
+      if (get(name) != null) {
+        check(false, "Name '"+name+"' already exists (value = "+get(name).toString()+")");
+      }
+      JsonProperty p = new JsonProperty(name, value);
+      properties.add(p);
+      propMap.put(name, p);
+    }
+    return this;
+  }
+
+  
   // this is used by the parser which can allow duplicates = true (for the validator). You should not otherwise use it
   public JsonObject addForParser(String name, JsonElement value, boolean noComma, boolean nameUnquoted, boolean valueUnquoted) throws JsonException {
     check(name != null, "Name is null");
@@ -52,6 +66,15 @@ public class JsonObject extends JsonElement {
   public JsonObject add(String name, String value) throws JsonException {
     check(name != null, "Name is null");
     return add(name, value == null ? new JsonNull() : new JsonString(value));
+  }
+
+  public JsonObject addIfNotNull(String name, String value) throws JsonException {
+    check(name != null, "Name is null");
+    if (value == null) { 
+      return this;
+    } else {
+      return add(name, value == null ? new JsonNull() : new JsonString(value));
+    }
   }
 
   public JsonObject add(String name, boolean value) throws JsonException {

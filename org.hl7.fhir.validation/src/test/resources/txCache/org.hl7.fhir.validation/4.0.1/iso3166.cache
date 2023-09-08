@@ -141,6 +141,28 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Alderney' for urn:iso:std:iso:3166#NO - should be 'Norway' (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:iso:std:iso:3166",
+  "code" : "US",
+  "display" : "United States of America"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "United States of America",
+  "code" : "US",
+  "system" : "urn:iso:std:iso:3166",
+  "version" : "2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
