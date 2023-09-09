@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
 public class FilesystemPackageManagerTests {
@@ -88,5 +89,15 @@ public class FilesystemPackageManagerTests {
       }
     };
     assertEquals( "/var/lib/.fhir/packages", filesystemPackageCacheManager.getFolder());
+  }
+
+  @Test
+  @EnabledOnOs(OS.WINDOWS)
+  public void testSystemCacheDirectoryWin() throws IOException {
+    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager(false) {
+      protected void initCacheFolder() throws IOException {
+      }
+    };
+    assertEquals( "C:\\ProgramData\\.fhir\\packages", filesystemPackageCacheManager.getFolder());
   }
 }

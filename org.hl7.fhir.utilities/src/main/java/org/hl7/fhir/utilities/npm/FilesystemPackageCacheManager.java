@@ -146,7 +146,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     switch (mode) {
     case SYSTEM:
-      cacheFolder = new File(Utilities.path("/var", "lib", ".fhir", "packages"));
+      if (Utilities.isWindows()) {
+        cacheFolder = new File(Utilities.path("C:","ProgramData", ".fhir", "packages"));
+      } else {
+        cacheFolder = new File(Utilities.path("/var", "lib", ".fhir", "packages"));
+      }
       break;
     case USER:
       cacheFolder = new File(Utilities.path(System.getProperty("user.home"), ".fhir", "packages"));
