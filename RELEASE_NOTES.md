@@ -2,6 +2,7 @@
 
 * Fix bug preventing Best Practice invariants being reported on, and add -best-practice parameter
 * Fix issue not validating bundles when there are multiple profiles on entry.resource
+* Add Japanese translations
 
 ## Other code changes
 
