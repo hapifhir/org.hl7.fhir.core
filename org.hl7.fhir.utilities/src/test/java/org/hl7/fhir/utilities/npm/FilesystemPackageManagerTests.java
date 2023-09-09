@@ -98,6 +98,6 @@ public class FilesystemPackageManagerTests {
       protected void initCacheFolder() throws IOException {
       }
     };
-    assertEquals( "C:\\ProgramData\\.fhir\\packages", filesystemPackageCacheManager.getFolder());
+    assertEquals( System.getenv("ProgramData") + "\\.fhir\\packages", filesystemPackageCacheManager.getFolder());
   }
 }
