@@ -35,6 +35,19 @@ class I18nBaseTest {
     Object[] testArgs = {ARG_1};
     assertEquals(form.format(testArgs), result);
   }
+  
+  @Test
+  @DisplayName("Test argument substitution with initializing Locale(Japanese).")
+  void testFormatMessageWithInitLocaleJA() {
+    I18nTestClass testClass = new I18nTestClass();
+    ResourceBundle loadedBundle = ResourceBundle.getBundle("Messages", Locale.JAPANESE);
+    testClass.setLocale(Locale.JAPANESE);
+    String result = testClass.formatMessage(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ARG_1);
+    MessageFormat form = new MessageFormat(loadedBundle.getString(I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES));
+    Object[] testArgs = {ARG_1};
+    System.out.println(result);
+    assertEquals(form.format(testArgs), result);
+  }
 
   @Test
   @DisplayName("Test argument substitution without initializing Locale.")
