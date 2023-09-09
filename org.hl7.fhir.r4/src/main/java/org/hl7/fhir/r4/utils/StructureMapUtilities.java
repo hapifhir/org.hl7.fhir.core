@@ -175,7 +175,7 @@ public class StructureMapUtilities {
     public List<Base> performSearch(Object appContext, String url) throws FHIRException;
   }
 
-  private class FFHIRPathHostServices implements IEvaluationContext {
+  private class FHIRPathHostServices implements IEvaluationContext {
 
     public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext)
         throws PathEngineException {
@@ -241,7 +241,7 @@ public class StructureMapUtilities {
           ok = ok && v.getLevel().isError();
         return ok;
       }
-      throw new NotImplementedException("Not done yet (FFHIRPathHostServices.conformsToProfile), when item is element");
+      throw new NotImplementedException("Not done yet (FHIRPathHostServices.conformsToProfile), when item is element");
     }
 
     @Override
@@ -264,7 +264,7 @@ public class StructureMapUtilities {
     this.services = services;
     this.pkp = pkp;
     fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FFHIRPathHostServices());
+    fpe.setHostServices(new FHIRPathHostServices());
   }
 
   public StructureMapUtilities(IWorkerContext worker, ITransformerServices services) {
@@ -272,7 +272,7 @@ public class StructureMapUtilities {
     this.worker = worker;
     this.services = services;
     fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FFHIRPathHostServices());
+    fpe.setHostServices(new FHIRPathHostServices());
   }
 
   public StructureMapUtilities(IWorkerContext worker) {
@@ -280,7 +280,7 @@ public class StructureMapUtilities {
     this.worker = worker;
     if (worker != null) {
       fpe = new FHIRPathEngine(worker);
-      fpe.setHostServices(new FFHIRPathHostServices());
+      fpe.setHostServices(new FHIRPathHostServices());
     }
   }
 

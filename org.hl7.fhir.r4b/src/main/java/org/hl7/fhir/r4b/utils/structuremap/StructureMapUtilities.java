@@ -109,7 +109,7 @@ public class StructureMapUtilities {
   private static final boolean RENDER_MULTIPLE_TARGETS_ONELINE = true;
   private static final String AUTO_VAR_NAME = "vvv";
 
-  private class FFHIRPathHostServices implements IEvaluationContext {
+  private class FHIRPathHostServices implements IEvaluationContext {
 
     public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext)
         throws PathEngineException {
@@ -177,7 +177,7 @@ public class StructureMapUtilities {
           ok = ok && v.getLevel().isError();
         return ok;
       }
-      throw new NotImplementedException("Not done yet (FFHIRPathHostServices.conformsToProfile), when item is element");
+      throw new NotImplementedException("Not done yet (FHIRPathHostServices.conformsToProfile), when item is element");
     }
 
     @Override
@@ -201,7 +201,7 @@ public class StructureMapUtilities {
     this.services = services;
     this.pkp = pkp;
     fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FFHIRPathHostServices());
+    fpe.setHostServices(new FHIRPathHostServices());
     profileUtilities = new ProfileUtilities(worker, null, null);
   }
 
@@ -210,7 +210,7 @@ public class StructureMapUtilities {
     this.worker = worker;
     this.services = services;
     fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FFHIRPathHostServices());
+    fpe.setHostServices(new FHIRPathHostServices());
     profileUtilities = new ProfileUtilities(worker, null, null);
   }
 
@@ -218,7 +218,7 @@ public class StructureMapUtilities {
     super();
     this.worker = worker;
     fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FFHIRPathHostServices());
+    fpe.setHostServices(new FHIRPathHostServices());
     profileUtilities = new ProfileUtilities(worker, null, null);
 
   }

@@ -146,7 +146,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     switch (mode) {
     case SYSTEM:
-      cacheFolder = new File(Utilities.path("var", "lib", ".fhir", "packages"));
+      if (Utilities.isWindows()) {
+        cacheFolder = new File(Utilities.path(System.getenv("ProgramData"), ".fhir", "packages"));
+      } else {
+        cacheFolder = new File(Utilities.path("/var", "lib", ".fhir", "packages"));
+      }
       break;
     case USER:
       cacheFolder = new File(Utilities.path(System.getProperty("user.home"), ".fhir", "packages"));
@@ -162,10 +166,17 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       break;    
     }
 
+    initCacheFolder();
+  }
+
+  protected void initCacheFolder() throws IOException {
     if (!(cacheFolder.exists()))
       Utilities.createDirectory(cacheFolder.getAbsolutePath());
-    if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
-      TextFile.stringToFile("[cache]\r\nversion=" + CACHE_VERSION + "\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", Utilities.path(cacheFolder, "packages.ini"), false);
+    String packagesIniPath = Utilities.path(cacheFolder, "packages.ini");
+    File packagesIniFile = new File(packagesIniPath);
+    if (!(packagesIniFile.exists()))
+      packagesIniFile.createNewFile();
+    TextFile.stringToFile("[cache]\r\nversion=" + CACHE_VERSION + "\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", packagesIniPath, false);
     createIniFile();
     for (File f : cacheFolder.listFiles()) {
       if (f.isDirectory() && Utilities.isValidUUID(f.getName())) {
