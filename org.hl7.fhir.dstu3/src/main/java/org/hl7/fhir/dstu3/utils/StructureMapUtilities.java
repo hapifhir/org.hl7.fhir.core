@@ -160,7 +160,7 @@ public class StructureMapUtilities {
     public List<Base> performSearch(Object appContext, String url);
 	}
 
-	private class FFHIRPathHostServices implements IEvaluationContext{
+	private class FHIRPathHostServices implements IEvaluationContext{
 
     public Base resolveConstant(Object appContext, String name) throws PathEngineException {
       Variables vars = (Variables) appContext;
@@ -223,7 +223,7 @@ public class StructureMapUtilities {
 		this.services = services;
 		this.pkp = pkp;
 		fpe = new FHIRPathEngine(worker);
-		fpe.setHostServices(new FFHIRPathHostServices());
+		fpe.setHostServices(new FHIRPathHostServices());
 	}
 
 	public StructureMapUtilities(IWorkerContext worker, Map<String, StructureMap> library, ITransformerServices services) {
@@ -232,7 +232,7 @@ public class StructureMapUtilities {
 		this.library = library;
 		this.services = services;
 		fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FFHIRPathHostServices());
+    fpe.setHostServices(new FHIRPathHostServices());
 	}
 
   public StructureMapUtilities(IWorkerContext worker, Map<String, StructureMap> library) {
@@ -240,14 +240,14 @@ public class StructureMapUtilities {
     this.worker = worker;
     this.library = library;
     fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FFHIRPathHostServices());
+    fpe.setHostServices(new FHIRPathHostServices());
   }
 
   public StructureMapUtilities(IWorkerContext worker) {
     super();
     this.worker = worker;
     fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FFHIRPathHostServices());
+    fpe.setHostServices(new FHIRPathHostServices());
   }
 
   public StructureMapUtilities(IWorkerContext worker, ITransformerServices services) {
@@ -260,7 +260,7 @@ public class StructureMapUtilities {
     }
     this.services = services;
     fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FFHIRPathHostServices());
+    fpe.setHostServices(new FHIRPathHostServices());
   }
 
 	public static String render(StructureMap map) {

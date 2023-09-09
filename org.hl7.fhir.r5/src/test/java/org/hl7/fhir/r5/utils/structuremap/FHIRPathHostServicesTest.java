@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-class FFHIRPathHostServicesTest {
+class FHIRPathHostServicesTest {
   static private SimpleWorkerContext context;
 
   @BeforeAll
   static public void setUp() throws Exception {
-    FilesystemPackageCacheManager pcm = new org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager(false);
+    FilesystemPackageCacheManager pcm = new org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager(true);
     context = TestingUtilities.getWorkerContext(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
   }
 
   @Test
   public void testrResolveValueSet() throws IOException, FHIRException {
     StructureMapUtilities scu = new StructureMapUtilities(context);
-    FFHIRPathHostServices fphs = new FFHIRPathHostServices(scu);
+    FHIRPathHostServices fphs = new FHIRPathHostServices(scu);
     ValueSet v = fphs.resolveValueSet(null, "http://hl7.org/fhir/ValueSet/FHIR-version");
     Assertions.assertNotNull(v);
     Assertions.assertEquals("http://hl7.org/fhir/ValueSet/FHIR-version", v.getUrl());
