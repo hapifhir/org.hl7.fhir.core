@@ -6,3 +6,4 @@
 ## Other code changes
 
 * Fixes for minor bugs discovered testing the XIG
+* fix package program data path
