@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Add baseUrl and version methods to r5 CanonicalType
