@@ -77,6 +77,16 @@ public class CanonicalType extends UriType {
 	public String fhirType() {
 		return "canonical";		
 	}
+
+  public String baseUrl() {
+    var s = primitiveValue();
+    return s == null || !s.contains("|") ? s : s.substring(0, s.indexOf("|"));
+  }
+
+  public String version() {
+    var s = primitiveValue();
+    return s == null || !s.contains("|") ? null : s.substring(s.indexOf("|")+1);
+  }
 	
 
 }
