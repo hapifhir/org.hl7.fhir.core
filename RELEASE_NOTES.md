@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Library changes for IG-publisher
