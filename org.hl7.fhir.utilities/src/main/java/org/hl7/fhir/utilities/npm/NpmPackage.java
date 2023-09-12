@@ -1187,14 +1187,18 @@ public class NpmPackage {
   }
 
   public void unPack(String dir) throws IOException {
-    unPack (dir, false);
+    unPack (dir, false, new ArrayList<>());
   }
 
-  public void unPackWithAppend(String dir) throws IOException {
-    unPack (dir, true);
+  public void unPackWithAppend(String dir, List<String> files) throws IOException {
+    unPack (dir, true, files);
   }
 
   public void unPack(String dir, boolean withAppend) throws IOException {
+    unPack (dir, withAppend, new ArrayList<>());
+  }
+  
+  public void unPack(String dir, boolean withAppend, List<String> files) throws IOException {
     assert !minimalMemory;
     
     for (NpmPackageFolder folder : folders.values()) {
@@ -1213,15 +1217,16 @@ public class NpmPackage {
         File f = new File(fn);
         if (withAppend && f.getName().startsWith("_append.")) {
           String appendFn = Utilities.path(dn, s.substring(8));
-          if (new File(appendFn).exists())
+          f = new File(appendFn);
+          files.add(f.getAbsolutePath());
+          if (f.exists())
             TextFile.appendBytesToFile(folder.fetchFile(s), appendFn);        
           else
             TextFile.bytesToFile(folder.fetchFile(s), appendFn);        
         } else
+          files.add(f.getAbsolutePath());
           TextFile.bytesToFile(folder.fetchFile(s), fn);
-      }
-//      if (path != null)
-//        FileUtils.copyDirectory(new File(path), new File(dir));      
+      }      
     }
   }
 
