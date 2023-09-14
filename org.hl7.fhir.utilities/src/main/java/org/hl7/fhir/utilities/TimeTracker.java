@@ -88,9 +88,15 @@ public class TimeTracker {
   }
 
   public String milestone() {
-    long start = milestone == 0 ? globalStart : milestone ;
+    long start = milestone == 0 ? globalStart : milestone;
     milestone = System.nanoTime();
     return DurationUtil.presentDuration(milestone - start);
+  }
+
+  public boolean longerThan(int i) {
+    long start = milestone == 0 ? globalStart : milestone;
+    long diff = (System.nanoTime() - start)/ 1000000;
+    return diff > i * 1000;
   }
 
 }
