@@ -6541,6 +6541,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean checkInvariant(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, StructureDefinition profile, Element resource, Element element, ElementDefinitionConstraintComponent inv) throws FHIRException {
+    if (IsExemptInvariant(path, element, inv)) {
+      return true;
+    }
     boolean ok = true;
     if (debug) {
       System.out.println("inv "+inv.getKey()+" on "+path+" in "+resource.fhirType()+" {{ "+inv.getExpression()+" }}"+time());
@@ -6578,26 +6581,39 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (!Utilities.noString(msg)) {
         msg = msg + " (log: " + msg + ")";
       }
-      msg = context.formatMessage(I18nConstants.INV_FAILED, inv.getKey() + ": '" + inv.getHuman()+"'")+msg;        
-  
+      if (inv.hasSource()) {
+        msg = context.formatMessage(I18nConstants.INV_FAILED_SOURCE, inv.getKey() + ": '" + inv.getHuman()+"'", inv.getSource())+msg;        
+      } else {
+        msg = context.formatMessage(I18nConstants.INV_FAILED, inv.getKey() + ": '" + inv.getHuman()+"'")+msg;
+      }
+      String invId = (inv.hasSource() ? inv.getSource() : profile.getUrl()) + "#"+inv.getKey();
+      
       if (inv.hasExtension(ToolingExtensions.EXT_BEST_PRACTICE) &&
         ToolingExtensions.readBooleanExtension(inv, ToolingExtensions.EXT_BEST_PRACTICE)) {
         msg = msg +" (Best Practice Recommendation)";
         if (bpWarnings == BestPracticeWarningLevel.Hint)
-          hint(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg);
+          hintInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId);
         else if (/*bpWarnings == null || */ bpWarnings == BestPracticeWarningLevel.Warning)
-          warning(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg);
+          warningInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId);
         else if (bpWarnings == BestPracticeWarningLevel.Error)
-          ok = rule(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg) && ok;
+          ok = ruleInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId) && ok;
       } else if (inv.getSeverity() == ConstraintSeverity.ERROR) {
-        ok = rule(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg) && ok;
+        ok = ruleInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId) && ok;
       } else if (inv.getSeverity() == ConstraintSeverity.WARNING) {
-        warning(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg);
+        warningInv(errors, NO_RULE_DATE, IssueType.INVARIANT, element.line(), element.col(), path, invOK, msg, invId);
       }
     }
     return ok;
   }
   
+  private boolean IsExemptInvariant(String path, Element element, ElementDefinitionConstraintComponent inv) {
+    if ("eld-24".equals(inv.getKey())) {
+      String p = element.getNamedChildValue("path");
+      return (p != null) && ((p.endsWith("xtension.url") || p.endsWith(".id")));
+    }
+    return false;
+  }
+
   private boolean validateObservation(List<ValidationMessage> errors, Element element, NodeStack stack) {
     boolean ok = true;
     // all observations should have a subject, a performer, and a time

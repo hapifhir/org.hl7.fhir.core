@@ -8,6 +8,8 @@ public class JsonProperty {
   boolean unquotedName;
   boolean unquotedValue;
   
+  private int tag;
+  
   public JsonProperty(String name, JsonElement value) {
     super();
     this.name = name;
@@ -53,6 +55,14 @@ public class JsonProperty {
   @Override
   public String toString() {
     return "\""+name+"\" : "+value.toString();
+  }
+
+  public int getTag() {
+    return tag;
+  }
+
+  public void setTag(int tag) {
+    this.tag = tag;
   }
   
 }

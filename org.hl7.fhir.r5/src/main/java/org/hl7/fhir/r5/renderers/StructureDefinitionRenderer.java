@@ -1505,12 +1505,21 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE), "This profile also complies with the profile", true);
 
           if (profile.getKind() == StructureDefinitionKind.LOGICAL) {
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
-            if (ToolingExtensions.readBoolExtension(profile, ToolingExtensions.EXT_LOGICAL_TARGET)) {
-              c.addPiece(gen.new Piece(null, "This logical model can be the target of a reference", null).addStyle("font-weight:bold"));  
+            Extension lt = ToolingExtensions.getExtension(profile, ToolingExtensions.EXT_LOGICAL_TARGET);
+            if (lt == null || !lt.hasValueBooleanType()) {
+              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+              c.addPiece(gen.new Piece(null, "Instances of this logical model are not marked to be the target of a Reference", null).addStyle("font-weight:bold"));  ;        
+            } else if (lt.getValue().hasExtension(ToolingExtensions.DAR)) {                 
+            } else if (!lt.getValueBooleanType().hasValue()) {
+                if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+                c.addPiece(gen.new Piece(null, "Instances of this logical model are not marked to be the target of a Reference", null).addStyle("font-weight:bold"));  ;        
+            } else if (lt.getValueBooleanType().booleanValue()) {
+              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+              c.addPiece(gen.new Piece(null, "Instances of this logical model can be the target of a Reference", null).addStyle("font-weight:bold"));        
             } else {
-              c.addPiece(gen.new Piece(null, "This logical model cannot be the target of a reference", null).addStyle("font-weight:bold"));                
-            }
+              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+              c.addPiece(gen.new Piece(null, "Instances of this logical model cannot be the target of a Reference", null).addStyle("font-weight:bold"));  
+            }            
           }
         }
         if (definition != null) {
@@ -3538,7 +3547,17 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
     }
     if (root && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-      tableRow(tbl, "Logical Model", null, strikethrough, ToolingExtensions.readBoolExtension(sd, ToolingExtensions.EXT_LOGICAL_TARGET) ? "This logical model can be the target of a reference" : "This logical model cannot be the target of a reference");
+      Extension lt = ToolingExtensions.getExtension(sd, ToolingExtensions.EXT_LOGICAL_TARGET);
+      if (lt == null || !lt.hasValue()) {
+        tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model are not marked to be the target of a Reference");        
+      } else if (lt.getValue().hasExtension(ToolingExtensions.DAR)) {        
+      } else if (lt.getValueBooleanType().hasValue()) {
+        tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model are not marked to be the target of a Reference");        
+      } else if (lt.getValueBooleanType().booleanValue()) {
+        tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model can be the target of a Reference");        
+      } else {
+        tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model cannot be the target of a Reference");
+      }
     }
 
     if (root && sd.hasExtension(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
