@@ -6541,6 +6541,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean checkInvariant(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, StructureDefinition profile, Element resource, Element element, ElementDefinitionConstraintComponent inv) throws FHIRException {
+    if (IsExemptInvariant(path, element, inv)) {
+      return true;
+    }
     boolean ok = true;
     if (debug) {
       System.out.println("inv "+inv.getKey()+" on "+path+" in "+resource.fhirType()+" {{ "+inv.getExpression()+" }}"+time());
@@ -6603,6 +6606,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
   
+  private boolean IsExemptInvariant(String path, Element element, ElementDefinitionConstraintComponent inv) {
+    if ("eld-24".equals(inv.getKey())) {
+      String p = element.getNamedChildValue("path");
+      return (p != null) && ((p.endsWith("xtension.url") || p.endsWith(".id")));
+    }
+    return false;
+  }
+
   private boolean validateObservation(List<ValidationMessage> errors, Element element, NodeStack stack) {
     boolean ok = true;
     // all observations should have a subject, a performer, and a time
