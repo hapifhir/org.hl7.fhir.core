@@ -1249,7 +1249,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (!res.isOk() && localError != null) {
       res.setDiagnostics("Local Error: "+localError.trim()+". Server Error: "+res.getMessage());
-    } else if (!res.isOk() && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
+    } else if (!res.isOk() && res.getUnknownSystems() != null && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
       // we had some problem evaluating locally, but the server doesn't know the code system, so we'll just go with the local error
       res.setMessage(localWarning);
       res.setDiagnostics("Local Error: "+localWarning.trim()+". Server Error: "+res.getMessage());
@@ -1527,11 +1527,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (tcc.usingCache()) {
       if (!tcc.alreadyCached(cr)) {
         tcc.addToCache(cr);
-        System.out.println("add to cache: "+cr.getVUrl());
+        if (logger.isDebugLogging()) {
+          logger.logMessage("add to cache: "+cr.getVUrl());
+        }
         addToParams = true;
         cache = true;
       } else {
-        System.out.println("already cached: "+cr.getVUrl());
+        if (logger.isDebugLogging()) {
+          logger.logMessage("already cached: "+cr.getVUrl());
+        }
       }
     } else {
       addToParams = true;
