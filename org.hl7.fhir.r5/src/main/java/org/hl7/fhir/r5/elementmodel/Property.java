@@ -341,6 +341,11 @@ public class Property {
 
 
   public List<Property> getChildProperties(String elementName, String statedType) throws FHIRException {
+    String cacheKey = structure.getVUrl()+"#"+definition.getPath()+":"+elementName+"/"+statedType;
+    List<Property> cached = profileUtilities.getCachedPropertyList().get(cacheKey);
+    if (cached != null) {
+      return cached;
+    }
     ElementDefinition ed = definition;
     StructureDefinition sd = structure;
     SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed);
@@ -415,6 +420,7 @@ public class Property {
     for (ElementDefinition child : children.getList()) {
       properties.add(new Property(context, child, sd, this.profileUtilities));
     }
+    profileUtilities.getCachedPropertyList().put(cacheKey, properties);
     return properties;
   }
 
