@@ -207,6 +207,7 @@ public class I18nConstants {
   public static final String INTERNAL_INT_BAD_TYPE = "Internal_INT_Bad_Type";
 //  public static final String INTERNAL_RECURSION_DETECTION_FIND_LOOP_PATH_RECURSION____CHECK_PATHS_ARE_VALID_FOR_PATH_ = "Internal_recursion_detection_find_loop_path_recursion____check_paths_are_valid_for_path_";
   public static final String INV_FAILED = "INV_FAILED";
+  public static final String INV_FAILED_SOURCE = "INV_FAILED_SOURCE";
   public static final String INVALID_SLICING__THERE_IS_MORE_THAN_ONE_TYPE_SLICE_AT__BUT_ONE_OF_THEM__HAS_MIN__1_SO_THE_OTHER_SLICES_CANNOT_EXIST = "Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist";
   public static final String LANGUAGE_XHTML_LANG_DIFFERENT1 = "Language_XHTML_Lang_Different1";
   public static final String LANGUAGE_XHTML_LANG_DIFFERENT2 = "Language_XHTML_Lang_Different2";
