@@ -20,5 +20,3 @@
 * Performance improvements for IG Publisher
 * Start working on cross-version extensions
 * Improve rendering of message about logical target
-* Fix error in Comparisons
-* fix NPE checking codes
