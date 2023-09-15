@@ -911,7 +911,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       derived.clearUserData("profileutils.snapshot.generating");
       snapshotStack.remove(derived.getUrl());
     }
+    derived.setUserData("profileutils.snapshot.generated", true); // used by the publisher
   }
+
 
   private XVerExtensionManager makeXVer() {
     if (xver == null) {
@@ -4476,6 +4478,16 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   public static void setSuppressIgnorableExceptions(boolean suppressIgnorableExceptions) {
     ProfileUtilities.suppressIgnorableExceptions = suppressIgnorableExceptions;
+  }
+
+  public void setMessages(List<ValidationMessage> messages) {
+    this.messages = messages; 
+  }
+
+  private Map<String, List<Property>> propertyCache = new HashMap<>();
+  
+  public Map<String, List<Property>> getCachedPropertyList() {
+    return propertyCache;
   }
 
 }

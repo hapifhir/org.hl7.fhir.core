@@ -327,6 +327,16 @@ public class ValidatorCli {
         res.add("-bundle");
         res.add("Composition:0");
         res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips");
+      } else if (a.equals("-cda")) {
+        res.add("-version");
+        res.add("5.0");
+        res.add("-ig");
+        res.add("hl7.cda.uv.core#2.1.0-draft1");
+      } else if (a.equals("-ccda")) {
+        res.add("-version");
+        res.add("5.0");
+        res.add("-ig");
+        res.add("hl7.cda.uv.core#2.1.0-draft1");
       } else {
         res.add(a);
       }

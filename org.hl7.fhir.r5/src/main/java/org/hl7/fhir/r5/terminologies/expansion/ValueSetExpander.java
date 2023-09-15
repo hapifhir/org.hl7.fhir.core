@@ -194,10 +194,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     ValueSetExpansionContainsComponent n = new ValueSet.ValueSetExpansionContainsComponent();
     n.setSystem(system);
     n.setCode(code);
-    if (isAbstract)
+    if (isAbstract) {
       n.setAbstract(true);
-    if (inactive)
+    }
+    if (inactive) {
       n.setInactive(true);
+    }
     if (deprecated) {
       ValueSetUtilities.setDeprecated(vsProp, n);
     }
