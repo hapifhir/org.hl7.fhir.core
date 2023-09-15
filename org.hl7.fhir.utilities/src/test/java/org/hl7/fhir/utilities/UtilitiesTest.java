@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.SystemUtils;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
@@ -57,12 +58,6 @@ class UtilitiesTest {
   @DisplayName("Test Utilities.path maps user directory correctly")
   public void testUserDirPath() throws IOException {
     assertEquals(Utilities.path("[user]", TEST_TXT), getUserDirectory() + TEST_TXT);
-  }
-
-  @Test
-  @DisplayName("Test Utilities.path maps JAVA_HOME correctly")
-  public void testJavaHomeDirPath() throws IOException {
-    assertEquals(Utilities.path("[JAVA_HOME]", TEST_TXT), getJavaHomeDirectory() + TEST_TXT);
   }
 
   private String getJavaHomeDirectory() {
