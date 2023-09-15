@@ -906,10 +906,15 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
             } else if (derivesFrom(sdnw, sdex, ctxt)) {
               tfound = true;
             } else if (sdnw.getSnapshot().getElement().get(0).getPath().equals(sdex.getSnapshot().getElement().get(0).getPath())) {
-              ProfileComparison compP = (ProfileComparison) session.compare(sdex, sdnw);
-              if (compP.getUnion() != null) {
-                tfound = true;
-                ex.addTargetProfile("#"+compP.getId());
+              ResourceComparison cmp = session.compare(sdex, sdnw);
+              if (cmp instanceof ProfileComparison) {
+                ProfileComparison compP = (ProfileComparison) cmp;
+                if (compP.getUnion() != null) {
+                  tfound = true;
+                  ex.addTargetProfile("#"+compP.getId());
+                }
+              } else {
+                // ?
               }
             }
           }
@@ -973,10 +978,15 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
               c.setProfile(r.getProfile());
               pfound = true;
             } else if (sdl.getType().equals(sdr.getType())) {
-              ProfileComparison compP = (ProfileComparison) session.compare(sdl, sdr);
-              if (compP != null && compP.getIntersection() != null) {
-                pfound = true;
-                c.addProfile("#"+compP.getId());
+              ResourceComparison cmp = session.compare(sdl, sdr);
+              if (cmp instanceof ProfileComparison) {
+                ProfileComparison compP = (ProfileComparison) cmp;
+                if (compP != null && compP.getIntersection() != null) {
+                  pfound = true;
+                  c.addProfile("#"+compP.getId());
+                }
+              } else {
+                // not sure how to handle this error?
               }
             }
           }
