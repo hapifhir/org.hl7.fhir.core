@@ -1137,13 +1137,16 @@ public class NpmPackage {
       tar.putArchiveEntry(entry);
       tar.write(cnt);
       tar.closeArchiveEntry();
-      cnt = TextFile.fileToBytes(filename);
-      new File(filename).delete();
-      entry = new TarArchiveEntry(n+"/.index.db");
-      entry.setSize(cnt.length);
-      tar.putArchiveEntry(entry);
-      tar.write(cnt);
-      tar.closeArchiveEntry();
+      var file = new File(filename);
+      if (file.exists()) {
+        cnt = TextFile.fileToBytes(file);
+        file.delete();
+        entry = new TarArchiveEntry(n+"/.index.db");
+        entry.setSize(cnt.length);
+        tar.putArchiveEntry(entry);
+        tar.write(cnt);
+        tar.closeArchiveEntry();
+      }
     }
     byte[] cnt = TextFile.stringToBytes(JsonParser.compose(npm, true), false);
     TarArchiveEntry entry = new TarArchiveEntry("package/package.json");
