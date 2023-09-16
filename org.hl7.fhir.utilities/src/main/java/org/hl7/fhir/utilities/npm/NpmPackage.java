@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -598,7 +599,7 @@ public class NpmPackage {
   public void indexFolder(String desc, NpmPackageFolder folder) throws FileNotFoundException, IOException {
     List<String> remove = new ArrayList<>();
     NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
-    indexer.start();
+    indexer.start(folder.folder != null ? Utilities.path(folder.folder.getAbsolutePath(), ".index.db") : null);
     for (String n : folder.listFiles()) {
       if (!indexer.seeFile(n, folder.fetchFile(n))) {
         remove.add(n);
@@ -1076,7 +1077,7 @@ public class NpmPackage {
         Utilities.createDirectory(pd.getAbsolutePath());
       }
       NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
-      indexer.start();
+      indexer.start(Utilities.path(dir.getAbsolutePath(), n, ".index.db"));
       for (String s : folder.content.keySet()) {
         byte[] b = folder.content.get(s);
         indexer.seeFile(s, b);
@@ -1112,7 +1113,8 @@ public class NpmPackage {
         n = "package/"+n;
       }
       NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
-      indexer.start();
+      String filename = Utilities.path("[tmp]", "tmp-"+UUID.randomUUID().toString()+".db");
+      indexer.start(filename);
       for (String s : folder.content.keySet()) {
         byte[] b = folder.content.get(s);
         String name = n+"/"+s;
@@ -1131,6 +1133,13 @@ public class NpmPackage {
       }
       byte[] cnt = indexer.build().getBytes(StandardCharsets.UTF_8);
       TarArchiveEntry entry = new TarArchiveEntry(n+"/.index.json");
+      entry.setSize(cnt.length);
+      tar.putArchiveEntry(entry);
+      tar.write(cnt);
+      tar.closeArchiveEntry();
+      cnt = TextFile.fileToBytes(filename);
+      new File(filename).delete();
+      entry = new TarArchiveEntry(n+"/.index.db");
       entry.setSize(cnt.length);
       tar.putArchiveEntry(entry);
       tar.write(cnt);
