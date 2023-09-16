@@ -5338,7 +5338,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean checkSpecials(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials, PercentageTracker pct, ValidationMode mode) {
-
+    boolean ok = true;
+    
     long t = System.nanoTime();
     try {
       if (VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(element.getType())) {
@@ -5350,39 +5351,135 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             hint(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesDeeplyConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT_HINT, status, standardsStatus);          
           }
         }
+        
+        if (isHL7Core(element)) {
+          ok = checkPublisherConsistency(errors, element, stack) && ok;  
+        }
       }
       if (element.getType().equals(BUNDLE)) {
-        return new BundleValidator(this, serverBase).validateBundle(errors, element, stack, checkSpecials, hostContext, pct, mode);
+        return new BundleValidator(this, serverBase).validateBundle(errors, element, stack, checkSpecials, hostContext, pct, mode) && ok;
       } else if (element.getType().equals("Observation")) {
-        return validateObservation(errors, element, stack);
+        return validateObservation(errors, element, stack) && ok;
       } else if (element.getType().equals("Questionnaire")) {
-        return new QuestionnaireValidator(this, myEnableWhenEvaluator, fpe, questionnaireMode).validateQuestionannaire(errors, element, element, stack);
+        return new QuestionnaireValidator(this, myEnableWhenEvaluator, fpe, questionnaireMode).validateQuestionannaire(errors, element, element, stack) && ok;
       } else if (element.getType().equals("QuestionnaireResponse")) {
-        return new QuestionnaireValidator(this, myEnableWhenEvaluator, fpe, questionnaireMode).validateQuestionannaireResponse(hostContext, errors, element, stack);
+        return new QuestionnaireValidator(this, myEnableWhenEvaluator, fpe, questionnaireMode).validateQuestionannaireResponse(hostContext, errors, element, stack) && ok;
       } else if (element.getType().equals("Measure")) {
-        return new MeasureValidator(this).validateMeasure(hostContext, errors, element, stack);      
+        return new MeasureValidator(this).validateMeasure(hostContext, errors, element, stack) && ok;      
       } else if (element.getType().equals("MeasureReport")) {
-        return new MeasureValidator(this).validateMeasureReport(hostContext, errors, element, stack);
+        return new MeasureValidator(this).validateMeasureReport(hostContext, errors, element, stack) && ok;
       } else if (element.getType().equals("CapabilityStatement")) {
-        return validateCapabilityStatement(errors, element, stack);
+        return validateCapabilityStatement(errors, element, stack) && ok;
       } else if (element.getType().equals("CodeSystem")) {
-        return new CodeSystemValidator(this).validateCodeSystem(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
+        return new CodeSystemValidator(this).validateCodeSystem(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang())) && ok;
       } else if (element.getType().equals("ConceptMap")) {
-        return new ConceptMapValidator(this).validateConceptMap(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang()));
+        return new ConceptMapValidator(this).validateConceptMap(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang())) && ok;
       } else if (element.getType().equals("SearchParameter")) {
-        return new SearchParameterValidator(this, fpe).validateSearchParameter(errors, element, stack);
+        return new SearchParameterValidator(this, fpe).validateSearchParameter(errors, element, stack) && ok;
       } else if (element.getType().equals("StructureDefinition")) {
-        return new StructureDefinitionValidator(this, fpe, wantCheckSnapshotUnchanged).validateStructureDefinition(errors, element, stack);
+        return new StructureDefinitionValidator(this, fpe, wantCheckSnapshotUnchanged).validateStructureDefinition(errors, element, stack) && ok;
       } else if (element.getType().equals("StructureMap")) {
-        return new StructureMapValidator(this, fpe, profileUtilities).validateStructureMap(errors, element, stack);
+        return new StructureMapValidator(this, fpe, profileUtilities).validateStructureMap(errors, element, stack) && ok;
       } else if (element.getType().equals("ValueSet")) {
-        return new ValueSetValidator(this).validateValueSet(errors, element, stack);
+        return new ValueSetValidator(this).validateValueSet(errors, element, stack) && ok;
       } else {
-        return true;
+        return ok;
       }
     } finally {
       timeTracker.spec(t);
     }
+  }
+
+  private boolean checkPublisherConsistency(List<ValidationMessage> errors, Element element, NodeStack stack) {
+
+    String pub = element.getNamedChildValue("publisher");
+    Base wgT = element.getExtensionValue(ToolingExtensions.EXT_WORKGROUP);
+    String wg = wgT == null ? null : wgT.primitiveValue();
+    List<String> urls = new ArrayList<>();
+    for (Element c : element.getChildren("contact")) {      
+      for (Element t : c.getChildren("telecom")) {
+        if ("url".equals(t.getNamedChildValue("system")) && t.getNamedChildValue("value") != null) {
+          urls.add(t.getNamedChildValue("value"));
+        }
+      }
+    }
+    if (rule(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), wg != null, I18nConstants.VALIDATION_HL7_WG_NEEDED, ToolingExtensions.EXT_WORKGROUP)) {
+      String name = nameForWG(wg);
+      String url = urlForWG(wg);
+      if (rule(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), name != null, I18nConstants.VALIDATION_HL7_WG_UNKNOWN, wg)) {
+        String rpub = "HL7 International / "+name;
+        if (warning(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), pub != null, I18nConstants.VALIDATION_HL7_PUBLISHER_MISSING, wg, rpub)) {
+          warningOrError(pub.contains("/"), errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), rpub.equals(pub), I18nConstants.VALIDATION_HL7_PUBLISHER_MISMATCH, wg, rpub, pub);
+        }
+        warning(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), 
+            Utilities.startsWithInList(url, urls), I18nConstants.VALIDATION_HL7_WG_URL, wg, url);
+        return true;
+      }        
+    }      
+    return false;
+  }
+
+  private String urlForWG(String wg) {
+    switch (wg) {
+    case "cbcc": return "http://www.hl7.org/Special/committees/homehealth";
+    case "cds": return "http://www.hl7.org/Special/committees/dss";
+    case "cqi": return "http://www.hl7.org/Special/committees/cqi";
+    case "cg": return "http://www.hl7.org/Special/committees/clingenomics";
+    case "dev": return "http://www.hl7.org/Special/committees/healthcaredevices";
+    case "ehr": return "http://www.hl7.org/special/committees/ehr";
+    case "fhir": return "http://www.hl7.org/Special/committees/fiwg";
+    case "fm": return "http://www.hl7.org/Special/committees/fm";
+    case "hsi": return "http://www.hl7.org/Special/committees/hsi";
+    case "ii": return "http://www.hl7.org/Special/committees/imagemgt";
+    case "inm": return "http://www.hl7.org/special/committees/inm";
+    case "mnm": return "http://www.hl7.org/special/committees/mnm";
+    case "its": return "http://www.hl7.org/special/committees/xml";
+    case "oo": return "http://www.hl7.org/Special/committees/orders";
+    case "pa": return "http://www.hl7.org/Special/committees/pafm";
+    case "pc": return "http://www.hl7.org/Special/committees/patientcare";
+    case "pe": return "http://www.hl7.org/Special/committees/patientempowerment";
+    case "pher": return "http://www.hl7.org/Special/committees/pher";
+    case "phx": return "http://www.hl7.org/Special/committees/medication";
+    case "brr": return "http://www.hl7.org/Special/committees/rcrim";
+    case "sd": return "http://www.hl7.org/Special/committees/structure";
+    case "sec": return "http://www.hl7.org/Special/committees/secure";
+    case "us": return "http://www.hl7.org/Special/Committees/usrealm";
+    case "vocab": return "http://www.hl7.org/Special/committees/Vocab";
+    case "aid": return "http://www.hl7.org/Special/committees/java";
+    }
+    return null;
+  }
+
+  private String nameForWG(String wg) {
+    switch (wg) {
+
+    case "cbcc": return "Community Based Collaborative Care";
+    case "cds": return "Clinical Decision Support";
+    case "cqi": return "Clinical Quality Information";
+    case "cg": return "Clinical Genomics";
+    case "dev": return "Health Care Devices";
+    case "ehr": return "Electronic Health Records";
+    case "fhir": return "FHIR Infrastructure";
+    case "fm": return "Financial Management";
+    case "hsi": return "Health Standards Integration";
+    case "ii": return "Imaging Integration";
+    case "inm": return "Infrastructure And Messaging";
+    case "mnm": return "Modeling and Methodology";
+    case "its": return "Implementable Technology Specifications";
+    case "oo": return "Orders and Observations";
+    case "pa": return "Patient Administration";
+    case "pc": return "Patient Care";
+    case "pe": return "Patient Empowerment";
+    case "pher": return "Public Health and Emergency Response";
+    case "phx": return "Pharmacy";
+    case "brr": return "Biomedical Research and Regulation";
+    case "sd": return "Structured Documents";
+    case "sec": return "Security";
+    case "us": return "US Realm Taskforce";
+    case "vocab": return "Terminology Infrastructure";
+    case "aid": return "Application Implementation and Design";
+    }
+    return null;
   }
 
   private boolean statusCodesConsistent(String status, String standardsStatus) {
