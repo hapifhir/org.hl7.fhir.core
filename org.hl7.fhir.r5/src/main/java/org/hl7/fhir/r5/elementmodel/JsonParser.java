@@ -121,7 +121,7 @@ public class JsonParser extends ParserBase {
 
   @Override
   public List<NamedElement> parse(InputStream inStream) throws IOException, FHIRException {
-//    long start = System.currentTimeMillis();
+    long start = System.currentTimeMillis();
     byte[] content = TextFile.streamToBytes(inStream);
     NamedElement ctxt = new NamedElement("focus", "json", content);
     
@@ -145,8 +145,8 @@ public class JsonParser extends ParserBase {
     List<NamedElement> res = new ArrayList<>();
     res.add(ctxt);
 
-//    long t=System.currentTimeMillis()-start;
-//    System.out.println("json parser: "+(t)+": "+content.length+(t == 0 ? "" : " @ "+(content.length / t)));
+    long t=System.currentTimeMillis()-start;
+    System.out.println("json parser: "+(t)+"ms, "+(content.length/1024)+"kb "+(t == 0 ? "" : " @ "+(content.length / t)+"kb/s"));
     return res;
   }
 
@@ -222,6 +222,8 @@ public class JsonParser extends ParserBase {
 
     // second pass: check for things not processed (including duplicates)
     checkNotProcessed(errors, path, element, hasResourceType, object.getProperties());
+    
+    
     if (object.isExtraComma()) {
       logError(errors, "2022-11-26", object.getEnd().getLine(), object.getEnd().getCol(), path, IssueType.INVALID, context.formatMessage(I18nConstants.JSON_COMMA_EXTRA, "Object"), IssueSeverity.ERROR);
     }
@@ -282,7 +284,16 @@ public class JsonParser extends ParserBase {
     }
     return null;
   }
-
+  
+  private JsonProperty getJsonPropertyByBaseName(String name, List<JsonProperty> children) {
+    for (JsonProperty p : children) {
+      if (p.getTag() == 0 && p.getName().startsWith(name)) {
+        return p;
+      }
+    }
+    return null;
+  }
+  
   private void processChildren(List<ValidationMessage> errors, String path, JsonObject object) {
     for (JsonProperty p : object.getProperties()) {
       if (p.isUnquotedName()) {
@@ -311,17 +322,22 @@ public class JsonParser extends ParserBase {
             logError(errors, ValidationMessage.NO_RULE_DATE, line(je), col(je), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(je), property.getName(), type, property.typeSummary()), IssueSeverity.ERROR);
           }
         }
-      } else {
-        for (TypeRefComponent type : property.getDefinition().getType()) {
-          String eName = property.getJsonName().substring(0, property.getName().length()-3) + Utilities.capitalize(type.getWorkingCode());
-          jp = getJsonPropertyByName(eName, children);
-          JsonProperty jp1 = getJsonPropertyByName("_"+eName, children);
-          if (!isPrimitive(type.getWorkingCode()) && jp != null) {
-            parseChildComplex(errors, path, jp, context, property, eName, false);
-            break;
-          } else if (isPrimitive(type.getWorkingCode()) && (jp != null || jp1 != null)) {
-            parseChildPrimitive(errors, jp, jp1, context, property, path, eName, false);
-            break;
+      } else { 
+        String baseName = property.getJsonName().substring(0, property.getName().length()-3);
+        jp = getJsonPropertyByBaseName(baseName, children);
+        if (jp != null) {
+          for (TypeRefComponent type : property.getDefinition().getType()) {
+            String eName = baseName + Utilities.capitalize(type.getWorkingCode());
+            if (jp.getName().equals(eName)) {
+              JsonProperty jp1 = getJsonPropertyByName("_"+eName, children);
+              if (!isPrimitive(type.getWorkingCode()) && jp != null) {
+                parseChildComplex(errors, path, jp, context, property, eName, false);
+                break;
+              } else if (isPrimitive(type.getWorkingCode()) && (jp != null || jp1 != null)) {
+                parseChildPrimitive(errors, jp, jp1, context, property, path, eName, false);
+                break;
+              }
+            }
           }
         }
       }
@@ -331,6 +347,7 @@ public class JsonParser extends ParserBase {
       parseChildComplex(errors, path, jp, context, property, property.getJsonName(), property.hasJsonName());
     }
   }
+
 
   private String getTypeFromJsonType(JsonElement je) {
     if (je.isJsonPrimitive()) {
