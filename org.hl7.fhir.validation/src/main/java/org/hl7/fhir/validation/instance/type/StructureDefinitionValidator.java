@@ -481,7 +481,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (v != null) {
           ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "fixed", v.fhirType(), typeCodes) && ok;
           hint(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_HINT, element.getIdBase(), "fixed");
-          if (isPrimitiveType(v.fhirType())) {
+          if (context.isPrimitiveType(v.fhirType())) {
             warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_WARNING_DOTNET, element.getIdBase(), "fixed");
           } else {
             warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), false, I18nConstants.SD_VALUE_COMPLEX_FIXED, v.fhirType());            
@@ -491,7 +491,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (v != null) {
           ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "pattern", v.fhirType(), typeCodes) && ok;
           hint(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_HINT, element.getIdBase(), "pattern");
-          if (isPrimitiveType(v.fhirType())) {
+          if (context.isPrimitiveType(v.fhirType())) {
             warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_WARNING_DOTNET, element.getIdBase(), "pattern");
           }
         }
@@ -737,10 +737,6 @@ public class StructureDefinitionValidator extends BaseValidator {
     return true;
   }
 
-  private boolean isPrimitiveType(String fhirType) {
-    StructureDefinition sd = context.fetchTypeDefinition(fhirType);
-    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
-  }
 
   private String boundType(Set<String> typeCodes) {
     for (String tc : typeCodes) {

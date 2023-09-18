@@ -31,10 +31,11 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     private String url;
     private String version;
     private String supplements;
+    private String derivation;
     private CanonicalResource resource;
     private boolean hacked;
     
-    public CanonicalResourceProxy(String type, String id, String url, String version, String supplements) {
+    public CanonicalResourceProxy(String type, String id, String url, String version, String supplements, String derivation) {
       super();
       this.type = type;
       this.id = id;
@@ -73,6 +74,14 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     
     public String getSupplements() {
       return supplements;
+    }
+
+    public String getDerivation() {
+      return derivation;
+    }
+
+    public void setDerivation(String derivation) {
+      this.derivation = derivation;
     }
 
     public CanonicalResource getResource() throws FHIRException {

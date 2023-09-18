@@ -141,7 +141,7 @@ import com.google.gson.JsonObject;
 
 import javax.annotation.Nonnull;
 
-public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext{
+public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   private static final boolean QA_CHECK_REFERENCE_SOURCE = false; // see comments below
 
@@ -223,6 +223,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private CanonicalResourceManager<ConceptMap> maps = new CanonicalResourceManager<ConceptMap>(false, minimalMemory);
   protected CanonicalResourceManager<StructureMap> transforms = new CanonicalResourceManager<StructureMap>(false, minimalMemory);
   private CanonicalResourceManager<StructureDefinition> structures = new CanonicalResourceManager<StructureDefinition>(false, minimalMemory);
+  private TypeManager typeManager = new TypeManager(structures);
   private final CanonicalResourceManager<Measure> measures = new CanonicalResourceManager<Measure>(false, minimalMemory);
   private final CanonicalResourceManager<Library> libraries = new CanonicalResourceManager<Library>(false, minimalMemory);
   private CanonicalResourceManager<ImplementationGuide> guides = new CanonicalResourceManager<ImplementationGuide>(false, minimalMemory);
@@ -279,6 +280,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.valueSets = valueSets;
     this.maps = maps;
     this.structures = profiles;
+    this.typeManager = new TypeManager(structures);
     this.guides = guides;
     clock = new TimeTracker();
   }
@@ -292,6 +294,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       maps.copy(other.maps);
       transforms.copy(other.transforms);
       structures.copy(other.structures);
+      typeManager = new TypeManager(structures);
       searchParameters.copy(other.searchParameters);
       plans.copy(other.plans);
       questionnaires.copy(other.questionnaires);
@@ -370,6 +373,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           fixOldSD(sd);
         }
         structures.register(r, packageInfo);
+        typeManager.see(r);
         break;
       case "ValueSet":
         valueSets.register(r, packageInfo);
@@ -462,6 +466,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             fixOldSD(sd);
           }
           structures.see(sd, packageInfo);
+          typeManager.see(sd);
         } else if (r instanceof ValueSet) {
           valueSets.see((ValueSet) m, packageInfo);
         } else if (r instanceof CodeSystem) {
@@ -2337,6 +2342,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
       if (fhirType.equals("StructureDefinition")) {
         structures.drop(id);
+        typeManager.reload();
       } else if (fhirType.equals("ImplementationGuide")) {
         guides.drop(id);
       } else if (fhirType.equals("CapabilityStatement")) {
@@ -2463,34 +2469,23 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (Utilities.isAbsoluteUrl(typeName)) {
       return fetchResource(StructureDefinition.class, typeName);
     } else {
-      Set<StructureDefinition> types = new HashSet<>();
-      types.addAll(fetchTypeDefinitions(typeName));
-      types.removeIf(sd -> sd.getDerivation() == TypeDerivationRule.CONSTRAINT);
-       if (types.size() == 0) {
-        return null; // throw new FHIRException("Unresolved type "+typeName+" (0)");
-      } else if (types.size() == 1) {
-        return types.iterator().next(); 
-      } else { 
-        types.removeIf(sd -> !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/"));
-        if (types.size() == 0) {
-          return null;
-        } else if (types.size() != 1) {
-          throw new FHIRException("Ambiguous type "+typeName+" ("+types.toString()+") (contact Grahame Grieve for investigation)");
-        } else  {
-          return types.iterator().next(); 
-        } 
-      }
+      return typeManager.fetchTypeDefinition(typeName);
     }
   }
   
   @Override
   public List<StructureDefinition> fetchTypeDefinitions(String typeName) {
-    List<StructureDefinition> res = new ArrayList<>();
-    structures.listAll(res);
-    res.removeIf(sd -> !sd.hasType() || !(sd.getType().equals(typeName) || sd.getTypeTail().equals(typeName)));
-    return res;
+    return typeManager.getDefinitions(typeName);
   }
 
+  public boolean isPrimitiveType(String type) {
+    return typeManager.isPrimitive(type);
+  }
+
+  public boolean isDataType(String type) {
+    return typeManager.isDataType(type);
+  }
+  
   public boolean isTlogging() {
     return tlogging;
   }
@@ -2627,6 +2622,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     maps.setVersion(version);
     transforms.setVersion(version);
     structures.setVersion(version);
+    typeManager.reload();
     measures.setVersion(version);
     libraries.setVersion(version);
     guides.setVersion(version);

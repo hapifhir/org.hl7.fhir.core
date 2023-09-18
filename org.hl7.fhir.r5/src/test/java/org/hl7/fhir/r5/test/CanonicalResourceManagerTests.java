@@ -19,7 +19,7 @@ public class CanonicalResourceManagerTests {
     private CanonicalResource resource;
 
     public DeferredLoadTestResource(CanonicalResource resource) {
-      super(resource.fhirType(), resource.getId(), resource.getUrl(), resource.getVersion(), resource instanceof CodeSystem ? ((CodeSystem) resource).getSupplements() : null);
+      super(resource.fhirType(), resource.getId(), resource.getUrl(), resource.getVersion(), resource instanceof CodeSystem ? ((CodeSystem) resource).getSupplements() : null, null);
       this.resource = resource;
     }
 

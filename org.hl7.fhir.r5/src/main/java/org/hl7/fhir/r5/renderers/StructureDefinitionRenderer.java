@@ -801,7 +801,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
       } else if (hasDef && element.getType().get(0).getWorkingCode() != null && element.getType().get(0).getWorkingCode().startsWith("@")) {
         row.setIcon("icon_reuse.png", HierarchicalTableGenerator.TEXT_ICON_REUSE);
-      } else if (hasDef && isPrimitive(element.getType().get(0).getWorkingCode())) {
+      } else if (hasDef && context.getContext().isPrimitiveType(element.getType().get(0).getWorkingCode())) {
         if (keyRows.contains(element.getId())) {
           row.setIcon("icon-key.png", HierarchicalTableGenerator.TEXT_ICON_KEY);
         } else {
@@ -809,7 +809,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
       } else if (hasDef && element.getType().get(0).hasTarget()) {
         row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
-      } else if (hasDef && isDataType(element.getType().get(0).getWorkingCode())) {
+      } else if (hasDef && context.getContext().isDataType(element.getType().get(0).getWorkingCode())) {
         row.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
       } else if (hasDef && element.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) {
         row.setIcon("icon-object-box.png", HierarchicalTableGenerator.TEXT_ICON_OBJECT_BOX);
@@ -2122,7 +2122,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (!pattern) {
               c.addPiece(gen.new Piece(null, "0..0", null));
               row.setIcon("icon_fixed.gif", "Fixed Value" /*HierarchicalTableGenerator.TEXT_ICON_FIXED*/);
-            } else if (isPrimitive(t.getTypeCode())) {
+            } else if (context.getContext().isPrimitiveType(t.getTypeCode())) {
               row.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
               c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null));
             } else if (isReference(t.getTypeCode())) { 
@@ -2448,28 +2448,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return path.substring(path.lastIndexOf('.')+1);
     else
       return path;
-  }
-
-
-
-
-
-  protected boolean isPrimitive(String value) {
-    StructureDefinition sd = context.getWorker().fetchTypeDefinition(value);
-    if (sd == null) // might be running before all SDs are available
-      return Utilities.existsInList(value, "base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid");
-    else 
-      return sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
-  }
-
-
-  private boolean isDataType(String value) {
-    StructureDefinition sd = context.getWorker().fetchTypeDefinition(value);
-    if (sd == null) // might be running before all SDs are available
-      return Utilities.existsInList(value, "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", 
-          "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext");
-    else 
-      return sd.getKind() == StructureDefinitionKind.COMPLEXTYPE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION;
   }
 
   private boolean slicesExist(List<ElementDefinition> elements, ElementDefinition element) {
@@ -3827,7 +3805,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
   private boolean hasPrimitiveTypes(ElementDefinition d) {
     for (TypeRefComponent tr : d.getType()) {
-      if (isPrimitive(tr.getCode())) {
+      if (context.getContext().isPrimitiveType(tr.getCode())) {
         return true;
       }
     }

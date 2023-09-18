@@ -249,12 +249,7 @@ public class Property {
 	 * @param E.g. "integer"
 	 */
 	public boolean isPrimitive(String code) {
-	  if (Utilities.isAbsoluteUrl(code)) {
-	    StructureDefinition sd = context.fetchTypeDefinition(code);
-	    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
-	  } else {
-	    return TypesUtilities.isPrimitive(code);
-	  }
+	  return context.isPrimitiveType(code);
 	}
 
 	public boolean isPrimitive() {

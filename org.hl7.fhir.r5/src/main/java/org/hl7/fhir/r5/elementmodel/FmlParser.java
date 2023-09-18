@@ -45,12 +45,12 @@ public class FmlParser extends ParserBase {
   }
 
   @Override
-  public List<NamedElement> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+  public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
     byte[] content = TextFile.streamToBytes(inStream);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     String text = TextFile.streamToString(stream);
-    List<NamedElement> result = new ArrayList<>();
-    NamedElement ctxt = new NamedElement("focus", "fml", content);
+    List<ValidatedFragment> result = new ArrayList<>();
+    ValidatedFragment ctxt = new ValidatedFragment("focus", "fml", content);
     ctxt.setElement(parse(ctxt.getErrors(), text));
     result.add(ctxt);
     return result;

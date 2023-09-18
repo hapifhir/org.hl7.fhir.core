@@ -41,7 +41,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
@@ -106,7 +105,7 @@ public class Manager {
     }
   }
   
-  public static List<NamedElement> parse(IWorkerContext context, InputStream source, FhirFormat inputFormat) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
+  public static List<ValidatedFragment> parse(IWorkerContext context, InputStream source, FhirFormat inputFormat) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
     return makeParser(context, inputFormat).parse(source);
   }
 

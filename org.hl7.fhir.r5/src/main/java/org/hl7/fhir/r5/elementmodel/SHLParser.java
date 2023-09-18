@@ -72,11 +72,11 @@ public class SHLParser extends ParserBase {
     super(context);
   }
 
-  public List<NamedElement> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+  public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
     byte[] content = TextFile.streamToBytes(inStream);
     
-    List<NamedElement> res = new ArrayList<>();
-    NamedElement shl = addNamedElement(res, "shl", "txt", content);
+    List<ValidatedFragment> res = new ArrayList<>();
+    ValidatedFragment shl = addNamedElement(res, "shl", "txt", content);
     String src = TextFile.bytesToString(content);
     
     if (src.startsWith("shlink:/")) {
@@ -93,7 +93,7 @@ public class SHLParser extends ParserBase {
     }
     if (src != null) {
       byte[] cntin = Base64.getUrlDecoder().decode(src);
-      NamedElement json = addNamedElement(res, "json", "json", cntin);
+      ValidatedFragment json = addNamedElement(res, "json", "json", cntin);
       JsonObject j = null;
       try {
         j = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(cntin);
@@ -145,8 +145,8 @@ public class SHLParser extends ParserBase {
   }
   
 
-  private void checkManifest(List<NamedElement> res, HTTPResult cnt) throws IOException {
-    NamedElement manifest = addNamedElement(res, "manifest", "json", cnt.getContent());
+  private void checkManifest(List<ValidatedFragment> res, HTTPResult cnt) throws IOException {
+    ValidatedFragment manifest = addNamedElement(res, "manifest", "json", cnt.getContent());
     
     if (!cnt.getContentType().equals("application/json")) {
       logError(manifest.getErrors(), "202-08-31", 1, 1, "manifest", IssueType.STRUCTURE, "The mime type should be application/json not "+cnt.getContentType(), IssueSeverity.ERROR);
@@ -188,7 +188,7 @@ public class SHLParser extends ParserBase {
     }
   }
 
-  private void processManifestEntry(List<NamedElement> res, List<ValidationMessage> errors, JsonObject j, String path, String name) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
+  private void processManifestEntry(List<ValidatedFragment> res, List<ValidationMessage> errors, JsonObject j, String path, String name) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
     for (JsonProperty p : j.getProperties()) {
       if (!Utilities.existsInList(p.getName(), "contentType", "location", "embedded")) {
         logError(errors, "202-08-31", p.getValue().getStart().getLine(), p.getValue().getStart().getCol(), "manifest."+p.getName(), 
@@ -242,8 +242,8 @@ public class SHLParser extends ParserBase {
     }
   }
 
-  private void processContent(List<NamedElement> res, List<ValidationMessage> errors, String path, String name, String jose, String ct) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
-    NamedElement bin = addNamedElement(res, "encrypted", "jose", TextFile.stringToBytes(jose, false));
+  private void processContent(List<ValidatedFragment> res, List<ValidationMessage> errors, String path, String name, String jose, String ct) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
+    ValidatedFragment bin = addNamedElement(res, "encrypted", "jose", TextFile.stringToBytes(jose, false));
     byte[] cnt = null;
     JWEObject jwe;
     try {
@@ -261,7 +261,7 @@ public class SHLParser extends ParserBase {
         res.addAll(shc.parse(new ByteArrayInputStream(cnt)));
         break;
       case "application/fhir+json": 
-        NamedElement doc = addNamedElement(res, name, "json", cnt);
+        ValidatedFragment doc = addNamedElement(res, name, "json", cnt);
         // a JSON file containing any FHIR resource (e.g., an individual resource or a Bundle of resources). Generally this format may not be tamper-proof.
         logError(doc.getErrors(), "202-08-31", 1, 1, name, IssueType.STRUCTURE, "Processing content of type 'application/smart-api-access' is not done yet", IssueSeverity.INFORMATION);
         break;
@@ -279,8 +279,8 @@ public class SHLParser extends ParserBase {
     }
   }
 
-  private NamedElement addNamedElement(List<NamedElement> res, String name, String type, byte[] content) {
-    NamedElement result = new NamedElement(name, type, content);
+  private ValidatedFragment addNamedElement(List<ValidatedFragment> res, String name, String type, byte[] content) {
+    ValidatedFragment result = new ValidatedFragment(name, type, content);
     res.add(result);
     return result;
   }
