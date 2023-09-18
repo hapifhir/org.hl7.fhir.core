@@ -45,7 +45,7 @@ public class NpmPackageIndexBuilder {
         new File(filename).delete();
         conn = DriverManager.getConnection("jdbc:sqlite:"+filename); 
         Statement stmt = conn.createStatement();
-        stmt.execute("CREATE TABLE index (\r\n"+
+        stmt.execute("CREATE TABLE ResourceList (\r\n"+
             "FileName       nvarchar NOT NULL,\r\n"+
             "ResourceType   nvarchar NOT NULL,\r\n"+
             "Id             nvarchar NULL,\r\n"+
@@ -57,7 +57,7 @@ public class NpmPackageIndexBuilder {
             "Content        nvarchar NULL,\r\n"+
             "PRIMARY KEY (FileName))\r\n");
 
-        psql = conn.prepareStatement("Insert into index (FileName, ResourceType, Id, Url, Version, Kind, Type, Supplements, Content) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        psql = conn.prepareStatement("Insert into ResourceList (FileName, ResourceType, Id, Url, Version, Kind, Type, Supplements, Content) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
       } catch (Exception e) {
         conn = null;
       }

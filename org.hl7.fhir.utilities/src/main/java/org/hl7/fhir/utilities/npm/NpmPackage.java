@@ -223,13 +223,13 @@ public class NpmPackage {
       List<String> res = new ArrayList<>();
       if (folder != null) {
         for (File f : folder.listFiles()) {
-          if (!f.isDirectory() && !Utilities.existsInList(f.getName(), "package.json", ".index.json")) {
+          if (!f.isDirectory() && !Utilities.existsInList(f.getName(), "package.json", ".index.json", ".index.db")) {
             res.add(f.getName());
           }
         }
       } else {
         for (String s : content.keySet()) {
-          if (!Utilities.existsInList(s, "package.json", ".index.json")) {
+          if (!Utilities.existsInList(s, "package.json", ".index.json", ".index.db")) {
             res.add(s);
           }
         }
@@ -1095,12 +1095,12 @@ public class NpmPackage {
   public void save(OutputStream stream) throws IOException {
     assert !minimalMemory;
     TarArchiveOutputStream tar;
-    ByteArrayOutputStream OutputStream;
-    BufferedOutputStream bufferedOutputStream;
+//    ByteArrayOutputStream OutputStream;
+//    BufferedOutputStream bufferedOutputStream;
     GzipCompressorOutputStream gzipOutputStream;
 
-    OutputStream = new ByteArrayOutputStream();
-    bufferedOutputStream = new BufferedOutputStream(OutputStream);
+//    OutputStream = new ByteArrayOutputStream();
+//    bufferedOutputStream = new BufferedOutputStream(OutputStream);
     GzipParameters gp = new GzipParameters();
     gp.setCompressionLevel(Deflater.BEST_COMPRESSION);
     gzipOutputStream = new GzipCompressorOutputStream(stream, gp);
@@ -1122,7 +1122,7 @@ public class NpmPackage {
           System.out.println(name+" is null");
         } else {
           indexer.seeFile(s, b);
-          if (!s.equals(".index.json") && !s.equals("package.json")) {
+          if (!s.equals(".index.json") && !s.equals(".index.db") && !s.equals("package.json")) {
             TarArchiveEntry entry = new TarArchiveEntry(name);
             entry.setSize(b.length);
             tar.putArchiveEntry(entry);
@@ -1158,10 +1158,10 @@ public class NpmPackage {
     tar.finish();
     tar.close();
     gzipOutputStream.close();
-    bufferedOutputStream.close();
-    OutputStream.close();
-    byte[] b = OutputStream.toByteArray();
-    stream.write(b);
+//    bufferedOutputStream.close();
+//    OutputStream.close();
+//    byte[] b = OutputStream.toByteArray();
+//    stream.write(b);
   }
 
   /**
