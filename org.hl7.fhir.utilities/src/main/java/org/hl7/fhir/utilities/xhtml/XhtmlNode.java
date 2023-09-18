@@ -336,15 +336,32 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
   public String allText() {
     if (!hasChildren()) {
-      return getContent();
+      if (getContent() == null) {
+        return "";
+      } else {
+        return getContent();
+      }
     }
     
     StringBuilder b = new StringBuilder();
-    for (XhtmlNode n : childNodes)
-      if (n.getNodeType() == NodeType.Text)
-        b.append(n.getContent());
-      else if (n.getNodeType() == NodeType.Element)
+    for (XhtmlNode n : childNodes) {
+      if (n.getNodeType() == NodeType.Element && Utilities.existsInList(n.getName(), "li")) {
+        b.append("* ");
+      }
+      if (n.getNodeType() == NodeType.Text) {
+        if (n.getContent() != null) {
+          b.append(n.getContent());
+        }
+      } 
+      if (n.getNodeType() == NodeType.Element) {
         b.append(n.allText());
+        if (Utilities.existsInList(n.getName(), "p", "div", "tr", "th", "ul", "ol", "li", "h1", "h2", "h3", "h4", "h5", "h6")) {
+          b.append("\r\n");
+        } else if (Utilities.existsInList(n.getName(), "th", "td", "span")) {
+          b.append(" ");
+        }
+      }
+    }
     return b.toString();
   }
 
