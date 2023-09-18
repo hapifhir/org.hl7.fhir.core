@@ -180,6 +180,9 @@ public class ComparisonSession {
   }
 
   private VersionComparisonAnnotation getAnnotation(Base b) {
+    if (b == null) {
+      return null;
+    }
     if (b.hasUserData(VersionComparisonAnnotation.USER_DATA_NAME)) {
       return (VersionComparisonAnnotation) b.getUserData(VersionComparisonAnnotation.USER_DATA_NAME);
     } else {
