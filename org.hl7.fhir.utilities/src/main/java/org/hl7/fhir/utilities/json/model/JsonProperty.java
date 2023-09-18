@@ -8,8 +8,8 @@ public class JsonProperty {
   boolean noComma; // parse in Json5 mode, but records this so the validator can complain
   boolean unquotedName;
   boolean unquotedValue;
-  
-  private int tag; // used for status in validator - faster parsing
+   
+  private int tag;
   
   public JsonProperty(String name, JsonElement value) {
     super();
