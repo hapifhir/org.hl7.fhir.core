@@ -55,9 +55,11 @@ public class NpmPackageIndexBuilder {
             "Type           nvarchar NULL,\r\n"+
             "Supplements    nvarchar NULL,\r\n"+
             "Content        nvarchar NULL,\r\n"+
+            "ValueSet       nvarchar NULL,\r\n"+
+            "Derivation     nvarchar NULL,\r\n"+
             "PRIMARY KEY (FileName))\r\n");
 
-        psql = conn.prepareStatement("Insert into ResourceList (FileName, ResourceType, Id, Url, Version, Kind, Type, Supplements, Content) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        psql = conn.prepareStatement("Insert into ResourceList (FileName, ResourceType, Id, Url, Version, Kind, Type, Supplements, Content, ValueSet) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       } catch (Exception e) {
         conn = null;
       }
@@ -95,6 +97,12 @@ public class NpmPackageIndexBuilder {
           if (json.hasPrimitive("content")) {
             fi.add("content", json.asString("content"));
           }
+          if (json.hasPrimitive("valueSet")) {
+            fi.add("valueSet", json.asString("valueSet"));
+          }
+          if (json.hasPrimitive("derivation")) {
+            fi.add("valueSet", json.asString("derivation"));
+          }
           if (psql != null) {
             psql.setString(1, name); // FileName); 
             psql.setString(2, json.asString("resourceType")); // ResourceType"); 
@@ -105,6 +113,8 @@ public class NpmPackageIndexBuilder {
             psql.setString(7, json.asString("type")); // Type"); 
             psql.setString(8, json.asString("supplements")); // Supplements"); 
             psql.setString(9, json.asString("content")); // Content");
+            psql.setString(10, json.asString("valueSet")); // ValueSet");
+            psql.setString(10, json.asString("derivation")); // ValueSet");
             psql.execute();
           }
         }

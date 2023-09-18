@@ -77,9 +77,9 @@ import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.elementmodel.ParserBase;
-import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
 import org.hl7.fhir.r5.elementmodel.ResourceParser;
+import org.hl7.fhir.r5.elementmodel.ValidatedFragment;
 import org.hl7.fhir.r5.elementmodel.XmlParser;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.model.Address;
@@ -517,7 +517,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private Map<String, CanonicalResourceLookupResult> crLookups = new HashMap<>();
   private boolean logProgress;
   private CodingsObserver codingObserver;
-  public List<NamedElement> validatedContent;
+  public List<ValidatedFragment> validatedContent;
   public boolean testMode;
 
   public InstanceValidator(@Nonnull IWorkerContext theContext, @Nonnull IEvaluationContext hostServices, @Nonnull XVerExtensionManager xverManager) {
@@ -747,7 +747,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (validatedContent != null && !validatedContent.isEmpty()) {
       if (SAVE_INTERMEDIARIES) {
         int index = 0;
-        for (NamedElement ne : validatedContent) {
+        for (ValidatedFragment ne : validatedContent) {
           index++;
           saveValidatedContent(ne, index);
         }
@@ -761,7 +761,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           profiles.add(sd);
         }
       }
-      for (NamedElement ne : validatedContent) {
+      for (ValidatedFragment ne : validatedContent) {
         if (ne.getElement() != null) {
           validate(appContext, ne.getErrors(), validatedContent.size() > 1 ? ne.getName() : null, ne.getElement(), profiles);
         } 
@@ -771,7 +771,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return (validatedContent == null || validatedContent.isEmpty()) ? null : validatedContent.get(0).getElement(); // todo: this is broken, but fixing it really complicates things elsewhere, so we do this for now
   }
 
-  private void saveValidatedContent(NamedElement ne, int index) {
+  private void saveValidatedContent(ValidatedFragment ne, int index) {
     String tgt = null;
     try {
       tgt = Utilities.path("[tmp]", "validator", "content");
@@ -4309,8 +4309,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean isPrimitiveType(String code) {
-    StructureDefinition sd = context.fetchTypeDefinition(code);
-    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
+    return context.isPrimitiveType(code);
   }
 
   private String getErrorMessage(String message) {

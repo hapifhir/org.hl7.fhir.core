@@ -111,10 +111,10 @@ public class XmlParser extends ParserBase {
     this.allowXsiLocation = allowXsiLocation;
   }
 
-  public List<NamedElement> parse(InputStream inStream) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
+  public List<ValidatedFragment> parse(InputStream inStream) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
     
     byte[] content = TextFile.streamToBytes(inStream);
-    NamedElement context = new NamedElement("focus", "xml", content);
+    ValidatedFragment context = new ValidatedFragment("focus", "xml", content);
     
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     Document doc = null;
@@ -177,7 +177,7 @@ public class XmlParser extends ParserBase {
     if (doc != null) {
       context.setElement(parse(context.getErrors(), doc));
     }
-    List<NamedElement> res = new ArrayList<>();
+    List<ValidatedFragment> res = new ArrayList<>();
     res.add(context);
     return res;
   }

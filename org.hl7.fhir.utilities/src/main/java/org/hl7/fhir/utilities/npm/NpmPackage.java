@@ -113,6 +113,7 @@ public class NpmPackage {
     private String filename;
     private String supplements;
     private String stype;
+    private String derivation;
     
     public PackageResourceInformation(String root, JsonObject fi) throws IOException {
       super();
@@ -123,6 +124,7 @@ public class NpmPackage {
       filename = Utilities.path(root, fi.asString("filename"));
       supplements = fi.asString("supplements");
       stype = fi.asString("type");
+      derivation = fi.asString("derivation");
     }
     public String getId() {
       return id;
@@ -147,6 +149,9 @@ public class NpmPackage {
     }
     public boolean hasId() {
       return !Utilities.noString(id);
+    }
+    public String getDerivation() {
+      return derivation;
     }
     
   }
