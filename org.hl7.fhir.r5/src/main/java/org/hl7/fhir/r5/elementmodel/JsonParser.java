@@ -121,7 +121,7 @@ public class JsonParser extends ParserBase {
 
   @Override
   public List<NamedElement> parse(InputStream inStream) throws IOException, FHIRException {
-    long start = System.currentTimeMillis();
+//    long start = System.currentTimeMillis();
     byte[] content = TextFile.streamToBytes(inStream);
     NamedElement ctxt = new NamedElement("focus", "json", content);
     
@@ -145,8 +145,8 @@ public class JsonParser extends ParserBase {
     List<NamedElement> res = new ArrayList<>();
     res.add(ctxt);
 
-    long t=System.currentTimeMillis()-start;
-    System.out.println("json parser: "+(t)+"ms, "+(content.length/1024)+"kb "+(t == 0 ? "" : " @ "+(content.length / t)+"kb/s"));
+//    long t=System.currentTimeMillis()-start;
+//    System.out.println("json parser: "+(t)+"ms, "+(content.length/1024)+"kb "+(t == 0 ? "" : " @ "+(content.length / t)+"kb/s"));
     return res;
   }
 
