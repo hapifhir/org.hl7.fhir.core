@@ -1330,6 +1330,11 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return url != null && url.contains("hl7");
   }
 
+  protected boolean isHL7Core(Element cr) {
+    String url = cr.getChildValue("url");
+    return url != null && url.startsWith("http://hl7.org/fhir/") && !url.startsWith("http://hl7.org/fhir/test");
+  }
+
   public boolean isAllowExamples() {
     return this.allowExamples;
   }
