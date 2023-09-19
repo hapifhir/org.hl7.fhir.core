@@ -45,7 +45,7 @@ public class TypeManager {
   }
 
   public void see(StructureDefinition sd) {
-    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+    if (sd.getDerivation() != TypeDerivationRule.CONSTRAINT) {
       String type = sd.getType();
       List<StructureDefinition> types = typeDefinitions.get(type);
       if (types == null) {
