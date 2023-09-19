@@ -206,8 +206,14 @@ public class ComparisonSession {
 
   public void markDeleted(Base parent, String name, Base other) {
     if (isAnnotate() && other != null) {
-      getAnnotation(parent).deleted(name, other);
-      getAnnotation(other).deleted();
+      VersionComparisonAnnotation annotation = getAnnotation(parent);
+      if (annotation != null) {
+        annotation.deleted(name, other);
+      }
+      annotation = getAnnotation(other);
+      if (annotation != null) {
+        annotation.deleted(name, other);
+      }
     }
   }
 
