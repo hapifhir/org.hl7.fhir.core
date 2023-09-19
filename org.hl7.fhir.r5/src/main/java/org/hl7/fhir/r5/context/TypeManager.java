@@ -18,8 +18,8 @@ public class TypeManager {
 
   
   private CanonicalResourceManager<StructureDefinition> structures;
-  private Map<String, List<StructureDefinition>> typeDefinitions = new HashMap<>();
-  private Map<String, List<StructureDefinition>> fhirTypeDefinitions = new HashMap<>();
+  private Map<String, Set<StructureDefinition>> typeDefinitions = new HashMap<>();
+  private Map<String, Set<StructureDefinition>> fhirTypeDefinitions = new HashMap<>();
   private Set<String> primitiveNames = new HashSet<>();
   private Set<String> dataTypeNames = new HashSet<>();
   
@@ -47,16 +47,16 @@ public class TypeManager {
   public void see(StructureDefinition sd) {
     if (sd.getDerivation() != TypeDerivationRule.CONSTRAINT) {
       String type = sd.getType();
-      List<StructureDefinition> types = typeDefinitions.get(type);
+      Set<StructureDefinition> types = typeDefinitions.get(type);
       if (types == null) {
-        types = new ArrayList<>();
+        types = new HashSet<>();
         typeDefinitions.put(type, types);
       }
       types.add(sd);
       if (sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/")) {
         types = fhirTypeDefinitions.get(type);
         if (types == null) {
-          types = new ArrayList<>();
+          types = new HashSet<>();
           fhirTypeDefinitions.put(type, types);
         }
         types.add(sd);
@@ -72,7 +72,7 @@ public class TypeManager {
 
   public List<StructureDefinition> getDefinitions(String typeName) {
     List<StructureDefinition> list = new ArrayList<>();
-    List<StructureDefinition> defined = typeDefinitions.get(typeName);
+    Set<StructureDefinition> defined = typeDefinitions.get(typeName);
     if (defined != null) {
       list.addAll(defined);
     }
@@ -80,11 +80,11 @@ public class TypeManager {
   }
 
   public StructureDefinition fetchTypeDefinition(String typeName) {
-    List<StructureDefinition> types = typeDefinitions.get(typeName);
+    Set<StructureDefinition> types = typeDefinitions.get(typeName);
     if (types == null) {
       return null; // throw new FHIRException("Unresolved type "+typeName+" (0)");
     } else if (types.size() == 1) {
-      return types.get(0); 
+      return types.iterator().next(); 
     } else { 
       types = fhirTypeDefinitions.get(typeName);
       if (types == null) {
@@ -92,7 +92,7 @@ public class TypeManager {
       } else if (types.size() != 1) {
         throw new FHIRException("Ambiguous type "+typeName+" ("+types.toString()+") (contact Grahame Grieve for investigation)");
       } else  {
-        return types.get(0); 
+        return types.iterator().next(); 
       }
     }
   }
