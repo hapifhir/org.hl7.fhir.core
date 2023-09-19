@@ -101,7 +101,7 @@ public class NpmPackageIndexBuilder {
             fi.add("valueSet", json.asString("valueSet"));
           }
           if (json.hasPrimitive("derivation")) {
-            fi.add("valueSet", json.asString("derivation"));
+            fi.add("derivation", json.asString("derivation"));
           }
           if (psql != null) {
             psql.setString(1, name); // FileName); 
