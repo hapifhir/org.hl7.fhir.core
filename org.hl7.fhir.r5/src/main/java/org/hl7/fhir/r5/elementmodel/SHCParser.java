@@ -24,7 +24,6 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.elementmodel.SHCParser.SHCSignedJWT;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.TextFile;
@@ -80,11 +79,11 @@ public class SHCParser extends ParserBase {
     jsonParser = new JsonParser(context);
   }
 
-  public List<NamedElement> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+  public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
     byte[] content = TextFile.streamToBytes(inStream);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
-    List<NamedElement> res = new ArrayList<>();
-    NamedElement shc = new NamedElement("shc", "json", content);
+    List<ValidatedFragment> res = new ArrayList<>();
+    ValidatedFragment shc = new ValidatedFragment("shc", "json", content);
     res.add(shc);
 
     String src = TextFile.streamToString(stream).trim();
@@ -166,7 +165,7 @@ public class SHCParser extends ParserBase {
         return res;
       }
       // ok. all checks passed, we can now validate the bundle
-      NamedElement bnd = new NamedElement(path, "json", org.hl7.fhir.utilities.json.parser.JsonParser.composeBytes(cs.getJsonObject("fhirBundle")));
+      ValidatedFragment bnd = new ValidatedFragment(path, "json", org.hl7.fhir.utilities.json.parser.JsonParser.composeBytes(cs.getJsonObject("fhirBundle")));
       res.add(bnd);
       bnd.setElement(jsonParser.parse(bnd.getErrors(), cs.getJsonObject("fhirBundle")));
     }  

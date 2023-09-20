@@ -52,7 +52,6 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
-import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonCreator;
 import org.hl7.fhir.r5.formats.JsonCreatorCanonical;
@@ -120,10 +119,10 @@ public class JsonParser extends ParserBase {
 
 
   @Override
-  public List<NamedElement> parse(InputStream inStream) throws IOException, FHIRException {
-    long start = System.currentTimeMillis();
+  public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
+//    long start = System.currentTimeMillis();
     byte[] content = TextFile.streamToBytes(inStream);
-    NamedElement ctxt = new NamedElement("focus", "json", content);
+    ValidatedFragment ctxt = new ValidatedFragment("focus", "json", content);
     
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     
@@ -141,16 +140,21 @@ public class JsonParser extends ParserBase {
       obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true); 
     }
     
-    ctxt.setElement(parse(ctxt.getErrors(), obj));
-    List<NamedElement> res = new ArrayList<>();
+    if (obj != null) {
+      ctxt.setElement(parse(ctxt.getErrors(), obj));
+    }
+    List<ValidatedFragment> res = new ArrayList<>();
     res.add(ctxt);
 
-    long t=System.currentTimeMillis()-start;
-    System.out.println("json parser: "+(t)+"ms, "+(content.length/1024)+"kb "+(t == 0 ? "" : " @ "+(content.length / t)+"kb/s"));
+//    long  t =System.currentTimeMillis()-start;
+//    System.out.println("json parser: "+(t)+"ms, "+(content.length/1024)+"kb "+(t == 0 ? "" : " @ "+(content.length / t)+"kb/s"));
     return res;
   }
 
   public Element parse(List<ValidationMessage> errors, JsonObject object) throws FHIRException {
+    if (object == null) {
+      System.out.println("What?");
+    }
     StructureDefinition sd = getLogical();
     String name;
     String path;      

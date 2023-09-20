@@ -45,12 +45,12 @@ public class FmlParser extends ParserBase {
   }
 
   @Override
-  public List<NamedElement> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+  public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
     byte[] content = TextFile.streamToBytes(inStream);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     String text = TextFile.streamToString(stream);
-    List<NamedElement> result = new ArrayList<>();
-    NamedElement ctxt = new NamedElement("focus", "fml", content);
+    List<ValidatedFragment> result = new ArrayList<>();
+    ValidatedFragment ctxt = new ValidatedFragment("focus", "fml", content);
     ctxt.setElement(parse(ctxt.getErrors(), text));
     result.add(ctxt);
     return result;
@@ -571,7 +571,9 @@ public class FmlParser extends ParserBase {
   private void parseParameter(Element ref, FHIRLexer lexer) throws FHIRLexerException, FHIRFormatError {
     boolean r5 = VersionUtilities.isR5Plus(context.getVersion());
     String name = r5 ? "parameter" : "variable";
-    if (!lexer.isConstant()) {
+    if (ref.hasChildren(name) && !ref.getChildByName(name).isList()) {
+      throw lexer.error("variable on target is not a list, so can't add an element");
+    } else if (!lexer.isConstant()) {
       ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueId" : "value").setValue(lexer.take());
     } else if (lexer.isStringConstant())
       ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueString" : "value").setValue(lexer.readConstant("??"));
