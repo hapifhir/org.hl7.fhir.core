@@ -124,6 +124,7 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.utils.PackageHackerR5;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -141,7 +142,7 @@ import com.google.gson.JsonObject;
 
 import javax.annotation.Nonnull;
 
-public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext{
+public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext {
 
   private static final boolean QA_CHECK_REFERENCE_SOURCE = false; // see comments below
 
@@ -223,6 +224,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private CanonicalResourceManager<ConceptMap> maps = new CanonicalResourceManager<ConceptMap>(false, minimalMemory);
   protected CanonicalResourceManager<StructureMap> transforms = new CanonicalResourceManager<StructureMap>(false, minimalMemory);
   private CanonicalResourceManager<StructureDefinition> structures = new CanonicalResourceManager<StructureDefinition>(false, minimalMemory);
+  private TypeManager typeManager = new TypeManager(structures);
   private final CanonicalResourceManager<Measure> measures = new CanonicalResourceManager<Measure>(false, minimalMemory);
   private final CanonicalResourceManager<Library> libraries = new CanonicalResourceManager<Library>(false, minimalMemory);
   private CanonicalResourceManager<ImplementationGuide> guides = new CanonicalResourceManager<ImplementationGuide>(false, minimalMemory);
@@ -279,6 +281,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.valueSets = valueSets;
     this.maps = maps;
     this.structures = profiles;
+    this.typeManager = new TypeManager(structures);
     this.guides = guides;
     clock = new TimeTracker();
   }
@@ -292,6 +295,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       maps.copy(other.maps);
       transforms.copy(other.transforms);
       structures.copy(other.structures);
+      typeManager = new TypeManager(structures);
       searchParameters.copy(other.searchParameters);
       plans.copy(other.plans);
       questionnaires.copy(other.questionnaires);
@@ -370,6 +374,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           fixOldSD(sd);
         }
         structures.register(r, packageInfo);
+        typeManager.see(r);
         break;
       case "ValueSet":
         valueSets.register(r, packageInfo);
@@ -462,6 +467,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             fixOldSD(sd);
           }
           structures.see(sd, packageInfo);
+          typeManager.see(sd);
         } else if (r instanceof ValueSet) {
           valueSets.see((ValueSet) m, packageInfo);
         } else if (r instanceof CodeSystem) {
@@ -775,17 +781,21 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     
     if (noTerminologyServer) {
-      return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE);
+      return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, false);
     }
     Map<String, String> params = new HashMap<String, String>();
     params.put("_limit", Integer.toString(expandCodesLimit ));
     params.put("_incomplete", "true");
     txLog("$expand on "+txCache.summary(vs));
+    if (addDependentResources(p, vs)) {
+      p.addParameter().setName("cache-id").setValue(new IdType(tcc.getCacheId()));              
+    }
+    
     try {
       ValueSet result = tcc.getClient().expandValueset(vs, p, params);
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
     } catch (Exception e) {
-      res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN);
+      res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, true);
       if (txLog != null) {
         res.setTxLink(txLog.getLastId());
       }
@@ -815,7 +825,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       throw new Error(formatMessage(I18nConstants.NO_PARAMETERS_PROVIDED_TO_EXPANDVS));
     }
     if (vs.getUrl().equals("http://hl7.org/fhir/ValueSet/all-time-units") || vs.getUrl().equals("http://hl7.org/fhir/ValueSet/all-distance-units")) {
-      return new ValueSetExpansionOutcome("This value set is not expanded correctly at this time (will be fixed in a future version)", TerminologyServiceErrorClass.VALUESET_UNSUPPORTED);
+      return new ValueSetExpansionOutcome("This value set is not expanded correctly at this time (will be fixed in a future version)", TerminologyServiceErrorClass.VALUESET_UNSUPPORTED, false);
     }
     
     Parameters p = pIn.copy();
@@ -857,7 +867,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } catch (Exception e) {
       allErrors.addAll(vse.getAllErrors());
       e.printStackTrace();
-      res = new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN);
+      res = new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, e instanceof EFhirClientException);
     }
     allErrors.addAll(vse.getAllErrors());
     if (res.getValueset() != null) {
@@ -868,17 +878,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return res;
     }
     if (res.getErrorClass() == TerminologyServiceErrorClass.INTERNAL_ERROR || isNoTerminologyServer()) { // this class is created specifically to say: don't consult the server
-      return new ValueSetExpansionOutcome(res.getError(), res.getErrorClass());
+      return new ValueSetExpansionOutcome(res.getError(), res.getErrorClass(), false);
     }
 
     // if that failed, we try to expand on the server
-    if (addDependentResources(p, vs)) {
-      p.addParameter().setName("cache-id").setValue(new IdType(tcc.getCacheId()));              
-    }
-    
     if (noTerminologyServer) {
-      return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, allErrors);
+      return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, allErrors, false);
     }
+
+    p.addParameter().setName("cache-id").setValue(new IdType(tcc.getCacheId()));              
+    addDependentResources(p, vs);
+    
     Map<String, String> params = new HashMap<String, String>();
     params.put("_limit", Integer.toString(expandCodesLimit ));
     params.put("_incomplete", "true");
@@ -893,7 +903,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
     } catch (Exception e) {
-      res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), TerminologyServiceErrorClass.UNKNOWN, allErrors).setTxLink(txLog == null ? null : txLog.getLastId());
+      if (res != null && !res.isFromServer()) {
+        res = new ValueSetExpansionOutcome(res.getError()+" (and "+e.getMessage()+")", res.getErrorClass(), false);
+      } else {
+        res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), TerminologyServiceErrorClass.UNKNOWN, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
+      }
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
@@ -1278,10 +1292,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     p.setParameter("includeDefinition", false);
     p.setParameter("excludeNested", !hierarchical);
 
-    boolean cached = addDependentResources(p, vs);
-    if (cached) {
-      p.addParameter().setName("cache-id").setValue(new IdType(tcc.getCacheId()));
-    }
+    addDependentResources(p, vs);
+    p.addParameter().setName("cache-id").setValue(new IdType(tcc.getCacheId()));
     return p;
   }
 
@@ -1475,9 +1487,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       cache = true;
       addDependentResources(pin, vs);
     }
-    if (cache) {
-      pin.addParameter().setName("cache-id").setValue(new IdType(tcc.getCacheId()));
-    }
+    pin.addParameter().setName("cache-id").setValue(new IdType(tcc.getCacheId()));
     for (ParametersParameterComponent pp : pin.getParameter()) {
       if (pp.getName().equals("profile")) {
         throw new Error(formatMessage(I18nConstants.CAN_ONLY_SPECIFY_PROFILE_IN_THE_CONTEXT));
@@ -2337,6 +2347,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
       if (fhirType.equals("StructureDefinition")) {
         structures.drop(id);
+        typeManager.reload();
       } else if (fhirType.equals("ImplementationGuide")) {
         guides.drop(id);
       } else if (fhirType.equals("CapabilityStatement")) {
@@ -2463,34 +2474,23 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (Utilities.isAbsoluteUrl(typeName)) {
       return fetchResource(StructureDefinition.class, typeName);
     } else {
-      Set<StructureDefinition> types = new HashSet<>();
-      types.addAll(fetchTypeDefinitions(typeName));
-      types.removeIf(sd -> sd.getDerivation() == TypeDerivationRule.CONSTRAINT);
-       if (types.size() == 0) {
-        return null; // throw new FHIRException("Unresolved type "+typeName+" (0)");
-      } else if (types.size() == 1) {
-        return types.iterator().next(); 
-      } else { 
-        types.removeIf(sd -> !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/"));
-        if (types.size() == 0) {
-          return null;
-        } else if (types.size() != 1) {
-          throw new FHIRException("Ambiguous type "+typeName+" ("+types.toString()+") (contact Grahame Grieve for investigation)");
-        } else  {
-          return types.iterator().next(); 
-        } 
-      }
+      return typeManager.fetchTypeDefinition(typeName);
     }
   }
   
   @Override
   public List<StructureDefinition> fetchTypeDefinitions(String typeName) {
-    List<StructureDefinition> res = new ArrayList<>();
-    structures.listAll(res);
-    res.removeIf(sd -> !sd.hasType() || !(sd.getType().equals(typeName) || sd.getTypeTail().equals(typeName)));
-    return res;
+    return typeManager.getDefinitions(typeName);
   }
 
+  public boolean isPrimitiveType(String type) {
+    return typeManager.isPrimitive(type);
+  }
+
+  public boolean isDataType(String type) {
+    return typeManager.isDataType(type);
+  }
+  
   public boolean isTlogging() {
     return tlogging;
   }
@@ -2627,6 +2627,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     maps.setVersion(version);
     transforms.setVersion(version);
     structures.setVersion(version);
+    typeManager.reload();
     measures.setVersion(version);
     libraries.setVersion(version);
     guides.setVersion(version);

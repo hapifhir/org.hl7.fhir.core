@@ -556,7 +556,7 @@ public class Element extends Base {
         return ne;
       } else if (p.getDefinition().isChoice() && name.startsWith(p.getName().replace("[x]", ""))) {
         String type = name.substring(p.getName().length()-3);
-        if (new ContextUtilities(property.getContext()).isPrimitiveDatatype(Utilities.uncapitalize(type))) {
+        if (property.getContext().isPrimitiveType(Utilities.uncapitalize(type))) {
           type = Utilities.uncapitalize(type);
         }
         Element ne = new Element(name, p);
@@ -1335,7 +1335,7 @@ public class Element extends Base {
 
     for (Property p : property.getChildProperties(this.name, type)) {
       if (p.getName().equals(name)) {
-        if (!p.isList()) {
+        if (!p.isList() && hasChild(name)) {
           throw new Error(name+" on "+this.name+" is not a list, so can't add an element"); 
         }
         Element ne = new Element(name, p);

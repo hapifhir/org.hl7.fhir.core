@@ -454,7 +454,7 @@ public class VerticalBarParser extends ParserBase {
   private Delimiters delimiters = new Delimiters();
   
   @Override
-  public List<NamedElement> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+  public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/v2/StructureDefinition/Message");
     Element message = new Element("Message", new Property(context, sd.getSnapshot().getElementFirstRep(), sd));
     byte[] content = TextFile.streamToBytes(inStream);
@@ -464,8 +464,8 @@ public class VerticalBarParser extends ParserBase {
     preDecode(reader);
     while (!reader.isFinished()) //  && (getOptions().getSegmentLimit() == 0 || getOptions().getSegmentLimit() > message.getSegments().size()))
       readSegment(message, reader);
-    List<NamedElement> res = new ArrayList<>();
-    res.add(new NamedElement("focus", "hl7", message, content));
+    List<ValidatedFragment> res = new ArrayList<>();
+    res.add(new ValidatedFragment("focus", "hl7", message, content));
     return res;
   }
 

@@ -530,6 +530,8 @@ public class TerminologyCache {
         sw.write(BREAK+"\r\n");
         if (ce.e != null) {
           sw.write("e: {\r\n");
+          if (ce.e.isFromServer())
+            sw.write("  \"from-server\" : true,\r\n");
           if (ce.e.getValueset() != null)
             sw.write("  \"valueSet\" : "+json.composeString(ce.e.getValueset()).trim()+",\r\n");
           sw.write("  \"error\" : \""+Utilities.escapeJson(ce.e.getError()).trim()+"\"\r\n}\r\n");
@@ -623,9 +625,9 @@ public class TerminologyCache {
     String error = loadJS(o.get("error"));
     if (e) {
       if (o.has("valueSet"))
-        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN);
+        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN, o.has("from-server"));
       else
-        ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN);
+        ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN, o.has("from-server"));
     } else {
       String t = loadJS(o.get("severity"));
       IssueSeverity severity = t == null ? null :  IssueSeverity.fromCode(t);

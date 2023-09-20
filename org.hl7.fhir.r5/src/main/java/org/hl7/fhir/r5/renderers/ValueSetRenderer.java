@@ -15,8 +15,10 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
+import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
+import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
@@ -26,8 +28,10 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ExtensionHelper;
+import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
@@ -38,6 +42,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
@@ -48,9 +53,11 @@ import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
@@ -1142,7 +1149,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
   }
 
-  private boolean genInclude(XhtmlNode ul, ConceptSetComponent inc, String type, List<String> langs, boolean doDesignations, List<UsedConceptMap> maps, Map<String, String> designations, int index, Resource vsRes) throws FHIRException, IOException {
+  private boolean genInclude(XhtmlNode ul, ConceptSetComponent inc, String type, List<String> langs, boolean doDesignations, List<UsedConceptMap> maps, Map<String, String> designations, int index, ValueSet vsRes) throws FHIRException, IOException {
     boolean hasExtensions = false;
     XhtmlNode li;
     li = ul.li();
@@ -1165,7 +1172,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           }
 
           // for performance reasons, we do all the fetching in one batch
-          definitions = getConceptsForCodes(e, inc);
+          definitions = getConceptsForCodes(e, inc, vsRes, index);
 
           
           XhtmlNode t = li.table("none");
@@ -1361,7 +1368,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
 
-  private Map<String, ConceptDefinitionComponent> getConceptsForCodes(CodeSystem e, ConceptSetComponent inc) {
+  private Map<String, ConceptDefinitionComponent> getConceptsForCodes(CodeSystem e, ConceptSetComponent inc, ValueSet source, int index) {
     if (e == null) {
       e = getContext().getWorker().fetchCodeSystem(inc.getSystem());
     }
@@ -1369,13 +1376,21 @@ public class ValueSetRenderer extends TerminologyRenderer {
     ValueSetExpansionComponent vse = null;
     if (!context.isNoSlowLookup()) { // && !getContext().getWorker().hasCache()) { removed GG 20220107 like what is this trying to do?
       try {
-        ValueSetExpansionOutcome vso = getContext().getWorker().expandVS(inc, false, false);   
+        
+        ValueSet vs = new ValueSet();
+        vs.setUrl(source.getUrl()+"-inc-"+index);
+        vs.setStatus(PublicationStatus.ACTIVE);
+        vs.setCompose(new ValueSetComposeComponent());
+        vs.getCompose().setInactive(false);
+        vs.getCompose().getInclude().add(inc);
+        
+        ValueSetExpansionOutcome vso = getContext().getWorker().expandVS(vs, true, false);
         ValueSet valueset = vso.getValueset();
         if (valueset == null)
           throw new TerminologyServiceException("Error Expanding ValueSet: "+vso.getError());
         vse = valueset.getExpansion();        
 
-      } catch (TerminologyServiceException e1) {
+      } catch (Exception e1) {
         return null;
       }
     }

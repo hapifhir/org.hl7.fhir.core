@@ -273,7 +273,12 @@ public class FhirRequestBuilder {
     }
 
     if (error != null) {
-      throw new EFhirClientException("Error from server: " + ResourceUtilities.getErrorDescription(error), error);
+      String s = ResourceUtilities.getErrorDescription(error);
+      System.out.println(s);
+      if (s.startsWith("Unable to find value set")) {
+        System.out.println("!");
+      }
+      throw new EFhirClientException("Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
     }
 
     return resource;

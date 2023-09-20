@@ -19,30 +19,34 @@ public class ValueSetExpansionOutcome {
   private TerminologyServiceErrorClass errorClass;
   private String txLink;
   private List<String> allErrors = new ArrayList<>();
+  private boolean fromServer;
   
   public ValueSetExpansionOutcome(ValueSet valueset) {
     super();
     this.valueset = valueset;
     this.error = null;
   }
-  public ValueSetExpansionOutcome(ValueSet valueset, String error, TerminologyServiceErrorClass errorClass) {
+  public ValueSetExpansionOutcome(ValueSet valueset, String error, TerminologyServiceErrorClass errorClass, boolean fromServer) {
     super();
     this.valueset = valueset;
     this.error = error;
     this.errorClass = errorClass;
+    this.fromServer = fromServer;
     allErrors.add(error);
   }
 
-  public ValueSetExpansionOutcome(String error, TerminologyServiceErrorClass errorClass) {
+  public ValueSetExpansionOutcome(String error, TerminologyServiceErrorClass errorClass, boolean fromServer) {
     this.valueset = null;
     this.error = error;
     this.errorClass = errorClass;
+    this.fromServer = fromServer;
     allErrors.add(error);
   }
-  public ValueSetExpansionOutcome(String error, TerminologyServiceErrorClass errorClass, List<String> errList) {
+  public ValueSetExpansionOutcome(String error, TerminologyServiceErrorClass errorClass, List<String> errList, boolean fromServer) {
     this.valueset = null;
     this.error = error;
     this.errorClass = errorClass;
+    this.fromServer = fromServer;
     this.allErrors.addAll(errList);
     if (!allErrors.contains(error)) {
       allErrors.add(error);
@@ -72,6 +76,9 @@ public class ValueSetExpansionOutcome {
     return allErrors;
   }
   
+  public boolean isFromServer() {
+    return fromServer;
+  }
   public boolean isOk() {
     return (allErrors.isEmpty() || (allErrors.size() == 1 && allErrors.get(0) == null)) && error == null;
   }
