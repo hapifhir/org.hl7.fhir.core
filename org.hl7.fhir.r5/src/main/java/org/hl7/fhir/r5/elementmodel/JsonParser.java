@@ -140,7 +140,9 @@ public class JsonParser extends ParserBase {
       obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true); 
     }
     
-    ctxt.setElement(parse(ctxt.getErrors(), obj));
+    if (obj != null) {
+      ctxt.setElement(parse(ctxt.getErrors(), obj));
+    }
     List<ValidatedFragment> res = new ArrayList<>();
     res.add(ctxt);
 
@@ -150,6 +152,9 @@ public class JsonParser extends ParserBase {
   }
 
   public Element parse(List<ValidationMessage> errors, JsonObject object) throws FHIRException {
+    if (object == null) {
+      System.out.println("What?");
+    }
     StructureDefinition sd = getLogical();
     String name;
     String path;      
