@@ -61,6 +61,12 @@ public class NpmPackageIndexBuilder {
 
         psql = conn.prepareStatement("Insert into ResourceList (FileName, ResourceType, Id, Url, Version, Kind, Type, Supplements, Content, ValueSet) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       } catch (Exception e) {
+        if (conn != null) { 
+          try {
+            conn.close();
+          } catch (SQLException e1) {
+          }
+        }
         conn = null;
       }
     }
