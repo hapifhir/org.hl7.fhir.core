@@ -521,6 +521,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private CodingsObserver codingObserver;
   public List<ValidatedFragment> validatedContent;
   public boolean testMode;
+  private boolean example ;
 
   public InstanceValidator(@Nonnull IWorkerContext theContext, @Nonnull IEvaluationContext hostServices, @Nonnull XVerExtensionManager xverManager) {
     super(theContext, xverManager, false);
@@ -5353,7 +5354,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
         }
         
-        if (isHL7Core(element)) {
+        if (isHL7Core(element) && !isExample()) {
           ok = checkPublisherConsistency(errors, element, stack) && ok;  
         }
       }
@@ -7104,5 +7105,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.testMode = testMode;
   }
   
+
+  public boolean isExample() {
+    return example;
+  }
   
+  public IResourceValidator setExample(boolean example) {
+    this.example = example;
+    return this;
+  }
 }
