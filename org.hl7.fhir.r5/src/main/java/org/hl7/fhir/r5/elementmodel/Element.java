@@ -1335,7 +1335,7 @@ public class Element extends Base {
 
     for (Property p : property.getChildProperties(this.name, type)) {
       if (p.getName().equals(name)) {
-        if (!p.isList()) {
+        if (!p.isList() && hasChild(name)) {
           throw new Error(name+" on "+this.name+" is not a list, so can't add an element"); 
         }
         Element ne = new Element(name, p);
