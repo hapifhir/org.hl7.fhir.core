@@ -1309,7 +1309,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             boolean first = true;
             for (StructureDefinition sd : children) {
               if (first) first = false; else c.addPiece(gen.new Piece(null, ", ", null));
-              c.addPiece(gen.new Piece(sd.getWebPath(), sd.getTypeName(), null));
+              c.addPiece(gen.new Piece(sd.getWebPath(), sd.getName(), null));
             }
           }
         }
