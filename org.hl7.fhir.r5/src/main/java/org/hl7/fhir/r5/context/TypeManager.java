@@ -33,8 +33,10 @@ public class TypeManager {
     typeDefinitions.clear();
     primitiveNames.clear();
     dataTypeNames.clear();
-    for (StructureDefinition sd : structures.getList()) {
-      see(sd);
+    for (CanonicalResourceManager<StructureDefinition>.CachedCanonicalResource<StructureDefinition> cr : structures.getCachedList()) {
+      if (!"constraint".equals(cr.getDerivation())) {
+        see(cr.getResource());
+      }
     }    
   }
 
@@ -45,7 +47,7 @@ public class TypeManager {
   }
 
   public void see(StructureDefinition sd) {
-    if (sd.getDerivation() != TypeDerivationRule.CONSTRAINT) {
+    if (sd.getDerivation() != TypeDerivationRule.CONSTRAINT && (sd.getSourcePackage() == null || !sd.getSourcePackage().isExamplesPackage())) {
       String type = sd.getType();
       Set<StructureDefinition> types = typeDefinitions.get(type);
       if (types == null) {

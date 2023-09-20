@@ -827,7 +827,7 @@ public class Element extends Base {
   public boolean equalsDeep(Base other) {
     if (!super.equalsDeep(other))
       return false;
-    if (isPrimitive() && other.isPrimitive())
+    if (isPrimitive() && primitiveValue() != null && other.isPrimitive())
       return primitiveValue().equals(other.primitiveValue());
     if (isPrimitive() || other.isPrimitive())
       return false;
