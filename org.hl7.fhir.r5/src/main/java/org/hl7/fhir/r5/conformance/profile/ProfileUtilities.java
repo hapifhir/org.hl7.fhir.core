@@ -3431,7 +3431,8 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private void compareDiffs(List<ElementDefinition> diffList, List<ElementDefinition> newDiff, List<String> errors) {
     if (diffList.size() != newDiff.size()) {
-      errors.add("The diff list size changed when sorting - was "+diffList.size()+" is now "+newDiff.size());
+      errors.add("The diff list size changed when sorting - was "+diffList.size()+" is now "+newDiff.size()+
+          " ["+CommaSeparatedStringBuilder.buildObjects(diffList)+"]/["+CommaSeparatedStringBuilder.buildObjects(newDiff)+"]");
     } else {
       for (int i = 0; i < Integer.min(diffList.size(), newDiff.size()); i++) {
         ElementDefinition e = diffList.get(i);

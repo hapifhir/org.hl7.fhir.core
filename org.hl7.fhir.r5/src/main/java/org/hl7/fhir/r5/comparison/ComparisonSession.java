@@ -212,7 +212,7 @@ public class ComparisonSession {
       }
       annotation = getAnnotation(other);
       if (annotation != null) {
-        annotation.deleted(name, other);
+        annotation.deleted();
       }
     }
   }
