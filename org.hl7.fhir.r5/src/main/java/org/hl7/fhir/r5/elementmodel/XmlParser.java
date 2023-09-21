@@ -114,7 +114,7 @@ public class XmlParser extends ParserBase {
   public List<ValidatedFragment> parse(InputStream inStream) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
     
     byte[] content = TextFile.streamToBytes(inStream);
-    ValidatedFragment context = new ValidatedFragment("focus", "xml", content);
+    ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "xml", content);
     
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     Document doc = null;
@@ -134,7 +134,7 @@ public class XmlParser extends ParserBase {
         // if we can, we'll inspect the header/encoding ourselves 
 
         stream.mark(1024);
-        version = checkHeader(context.getErrors(), stream);
+        version = checkHeader(focusFragment.getErrors(), stream);
         stream.reset();
 
         // use a slower parser that keeps location data
@@ -168,17 +168,17 @@ public class XmlParser extends ParserBase {
       if (e.getMessage().contains("lineNumber:") && e.getMessage().contains("columnNumber:")) {
         int line = Utilities.parseInt(extractVal(e.getMessage(), "lineNumber"), 0); 
         int col = Utilities.parseInt(extractVal(e.getMessage(), "columnNumber"), 0); 
-        logError(context.getErrors(), ValidationMessage.NO_RULE_DATE, line, col, "(xml)", IssueType.INVALID, e.getMessage().substring(e.getMessage().lastIndexOf(";")+1).trim(), IssueSeverity.FATAL);
+        logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, line, col, "(xml)", IssueType.INVALID, e.getMessage().substring(e.getMessage().lastIndexOf(";")+1).trim(), IssueSeverity.FATAL);
       } else {
-        logError(context.getErrors(), ValidationMessage.NO_RULE_DATE, 0, 0, "(xml)", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
+        logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, 0, 0, "(xml)", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
       }
       doc = null;
     }
     if (doc != null) {
-      context.setElement(parse(context.getErrors(), doc));
+      focusFragment.setElement(parse(focusFragment.getErrors(), doc));
     }
     List<ValidatedFragment> res = new ArrayList<>();
-    res.add(context);
+    res.add(focusFragment);
     return res;
   }
 

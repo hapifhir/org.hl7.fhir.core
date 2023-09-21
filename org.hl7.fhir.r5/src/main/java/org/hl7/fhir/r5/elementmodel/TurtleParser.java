@@ -82,7 +82,7 @@ public class TurtleParser extends ParserBase {
   @Override
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
     byte[] content = TextFile.streamToBytes(inStream);
-    ValidatedFragment ctxt = new ValidatedFragment("focus", "ttl", content);
+    ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "ttl", content);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
 
     Turtle src = new Turtle();
@@ -90,16 +90,16 @@ public class TurtleParser extends ParserBase {
       try {
         src.parse(TextFile.streamToString(stream));
       } catch (Exception e) {  
-        logError(ctxt.getErrors(), ValidationMessage.NO_RULE_DATE, -1, -1, "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_TURTLE_, e.getMessage()), IssueSeverity.FATAL);
+        logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, -1, -1, "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_TURTLE_, e.getMessage()), IssueSeverity.FATAL);
         return null;
       }
-      ctxt.setElement(parse(ctxt.getErrors(), src));
+      focusFragment.setElement(parse(focusFragment.getErrors(), src));
     } else {
       src.parse(TextFile.streamToString(stream));
-      ctxt.setElement(parse(ctxt.getErrors(), src));
+      focusFragment.setElement(parse(focusFragment.getErrors(), src));
     }
     List<ValidatedFragment> res = new ArrayList<>();
-    res.add(ctxt);
+    res.add(focusFragment);
     return res;
   }
   

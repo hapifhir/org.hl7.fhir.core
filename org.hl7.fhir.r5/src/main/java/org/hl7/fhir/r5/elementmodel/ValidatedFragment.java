@@ -10,6 +10,8 @@ public class ValidatedFragment {
   private String extension;
   private Element element;
   private byte[] content;
+
+  public final static String FOCUS_NAME = "focus";
   private List<ValidationMessage> errors = new ArrayList<>();
   
   public ValidatedFragment(String name, String extension, Element element, byte[] content) {
