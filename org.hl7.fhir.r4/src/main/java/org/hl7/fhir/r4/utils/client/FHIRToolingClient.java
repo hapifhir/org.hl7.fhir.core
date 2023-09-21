@@ -71,7 +71,7 @@ public class FHIRToolingClient {
   private static final int TIMEOUT_OPERATION = 30000;
   private static final int TIMEOUT_ENTRY = 500;
   private static final int TIMEOUT_OPERATION_LONG = 60000;
-  private static final int TIMEOUT_OPERATION_EXPAND = 120000;
+  private static final int TIMEOUT_OPERATION_EXPAND = 480000;
 
   private String base;
   private ResourceAddress resourceAddress;
@@ -412,6 +412,23 @@ public class FHIRToolingClient {
       }
     } catch (IOException e) {
       throw new FHIRException(e);
+    }
+    return result == null ? null : (ValueSet) result.getPayload();
+  }
+
+  public ValueSet expandValueSetWithId(String vsId, Parameters expParams) {
+    Map<String, String> parameters = new HashMap<>();
+
+    org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
+    try {
+      result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand", parameters),
+        getPreferredResourceFormat(), generateHeaders(), "ValueSet/" + vsId + "/$expand", TIMEOUT_OPERATION_EXPAND);
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
+        (OperationOutcome) result.getPayload());
     }
     return result == null ? null : (ValueSet) result.getPayload();
   }
