@@ -1013,17 +1013,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     if (batch.getEntry().size() > 0) {
-      txLog("$batch validate for "+batch.getEntry().size()+" codes on systems "+systems.toString());
-      if (tcc.getClient() == null) {
-        throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
-      }
-      if (txLog != null) {
-        txLog.clearLastId();
-      }
-      Bundle resp = tcc.getClient().validateBatch(batch);
-      if (resp == null) {
-        throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_NO_BATCH_RESPONSE));          
-      }      
+      Bundle resp = processBatch(batch, systems);      
       for (int i = 0; i < batch.getEntry().size(); i++) {
         CodingValidationRequest t = (CodingValidationRequest) batch.getEntry().get(i).getUserData("source");
         BundleEntryComponent r = resp.getEntry().get(i);
@@ -1038,6 +1028,21 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
       }
     }    
+  }
+
+  private Bundle processBatch(Bundle batch, Set<String> systems) {
+    txLog("$batch validate for "+batch.getEntry().size()+" codes on systems "+systems.toString());
+    if (tcc.getClient() == null) {
+      throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
+    }
+    if (txLog != null) {
+      txLog.clearLastId();
+    }
+    Bundle resp = tcc.getClient().validateBatch(batch);
+    if (resp == null) {
+      throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_NO_BATCH_RESPONSE));          
+    }
+    return resp;
   }
   
   @Override
@@ -1113,17 +1118,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     if (batch.getEntry().size() > 0) {
-      txLog("$batch validate for "+batch.getEntry().size()+" codes on systems "+systems.toString());
-      if (tcc.getClient() == null) {
-        throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
-      }
-      if (txLog != null) {
-        txLog.clearLastId();
-      }
-      Bundle resp = tcc.getClient().validateBatch(batch);
-      if (resp == null) {
-        throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_NO_BATCH_RESPONSE));          
-      }      
+      Bundle resp = processBatch(batch, systems);      
       for (int i = 0; i < batch.getEntry().size(); i++) {
         CodingValidationRequest t = (CodingValidationRequest) batch.getEntry().get(i).getUserData("source");
         BundleEntryComponent r = resp.getEntry().get(i);

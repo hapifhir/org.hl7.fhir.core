@@ -18,6 +18,7 @@ import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.utils.ResourceUtilities;
 import org.hl7.fhir.r4.utils.client.EFhirClientException;
 import org.hl7.fhir.r4.utils.client.ResourceFormat;
+import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import okhttp3.Authenticator;
@@ -247,7 +248,7 @@ public class FhirRequestBuilder {
   public Bundle executeAsBatch() throws IOException {
     formatHeaders(httpRequest, resourceFormat, null);
     Response response = getHttpClient().newCall(httpRequest.build()).execute();
-    return unmarshalFeed(response, resourceFormat);
+     return unmarshalFeed(response, resourceFormat);
   }
 
   /**
@@ -307,6 +308,12 @@ public class FhirRequestBuilder {
           }
         }
       }
+      if (!response.isSuccessful() && feed == null && error == null) {
+        String text = TextFile.bytesToString(body);
+        throw new EFhirClientException("Error from "+source+": " + text);
+      }
+    } catch (EFhirClientException e) {
+      throw e;
     } catch (IOException ioe) {
       throw new EFhirClientException("Error reading Http Response from "+source+":"+ioe.getMessage(), ioe);
     } catch (Exception e) {
