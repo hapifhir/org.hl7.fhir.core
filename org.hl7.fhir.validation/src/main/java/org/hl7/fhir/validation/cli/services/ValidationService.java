@@ -62,10 +62,7 @@ import org.hl7.fhir.utilities.i18n.XLIFFProducer;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.validation.IgLoader;
-import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.ValidationRecord;
-import org.hl7.fhir.validation.ValidatorUtils;
+import org.hl7.fhir.validation.*;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
@@ -115,10 +112,19 @@ public class ValidationService {
 
     ValidationResponse response = new ValidationResponse().setSessionId(sessionId);
 
-    for (FileInfo fp : request.getFilesToValidate()) {
+    for (FileInfo fileToValidate : request.getFilesToValidate()) {
+      if (fileToValidate.getFileType() == null) {
+        Manager.FhirFormat format = ResourceChecker.checkIsResource(validator.getContext(),
+          false,
+          fileToValidate.getFileContent().getBytes(),
+          fileToValidate.getFileName(),
+          false);
+        fileToValidate.setFileType(format.getExtension());
+      }
+
       List<ValidationMessage> messages = new ArrayList<>();
 
-      List<ValidatedFragment> validatedFragments = validator.validateAsFragments(fp.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fp.getFileType()),
+      List<ValidatedFragment> validatedFragments = validator.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
         request.getCliContext().getProfiles(), messages);
 
       // TODO this chunk does not work for multi-file validation, as the fileName is overwritten
