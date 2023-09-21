@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Fix typo in CodeSystem renderer fixed string
