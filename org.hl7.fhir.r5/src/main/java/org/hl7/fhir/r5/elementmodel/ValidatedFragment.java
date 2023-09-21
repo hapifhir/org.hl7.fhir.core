@@ -50,5 +50,8 @@ public class ValidatedFragment {
   public String getFilename() {
     return name+"."+extension;
   }
-  
+
+  public String getExtension() {
+    return extension;
+  }
 }

@@ -29,6 +29,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.elementmodel.ValidatedFragment;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Bundle;
@@ -116,11 +117,31 @@ public class ValidationService {
 
     for (FileInfo fp : request.getFilesToValidate()) {
       List<ValidationMessage> messages = new ArrayList<>();
+
+      List<ValidatedFragment> validatedFragments = validator.validateAsFragments(fp.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fp.getFileType()),
+        request.getCliContext().getProfiles(), messages);
+
+      // TODO this chunk does not work for multi-file validation, as the fileName is overwritten
+      for (ValidatedFragment validatedFragment : validatedFragments) {
+        ValidationOutcome outcome = new ValidationOutcome();
+        FileInfo fileInfo = new FileInfo(
+          validatedFragment.getFilename(),
+          new String(validatedFragment.getContent()),
+          validatedFragment.getExtension());
+        outcome.setMessages(validatedFragment.getErrors());
+        outcome.setFileInfo(fileInfo);
+        response.addOutcome(outcome);
+      }
+
+      //TODO the code below works correctly for multi-file validation.
+      /*
       validator.validate(fp.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fp.getFileType()),
         request.getCliContext().getProfiles(), messages);
+
       ValidationOutcome outcome = new ValidationOutcome().setFileInfo(fp);
       messages.forEach(outcome::addMessage);
       response.addOutcome(outcome);
+      */
     }
     System.out.println("  Max Memory: "+Runtime.getRuntime().maxMemory());
     return response;
