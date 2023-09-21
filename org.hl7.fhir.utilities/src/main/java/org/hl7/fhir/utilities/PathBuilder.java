@@ -175,13 +175,6 @@ public class PathBuilder {
       }
     } else if ("[user]".equals(a)) {
       return System.getProperty("user.home");
-    } else if (a.startsWith("[") && a.endsWith("]")) {
-      String ev = System.getenv(a.replace("[", "").replace("]", ""));
-      if (ev != null) {
-        return ev;
-      } else {
-        return "null";
-      }
     }
     return a;
   }

@@ -6,6 +6,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.PackageInformation;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -31,10 +32,11 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     private String url;
     private String version;
     private String supplements;
+    private String derivation;
     private CanonicalResource resource;
     private boolean hacked;
     
-    public CanonicalResourceProxy(String type, String id, String url, String version, String supplements) {
+    public CanonicalResourceProxy(String type, String id, String url, String version, String supplements, String derivation) {
       super();
       this.type = type;
       this.id = id;
@@ -73,6 +75,14 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     
     public String getSupplements() {
       return supplements;
+    }
+
+    public String getDerivation() {
+      return derivation;
+    }
+
+    public void setDerivation(String derivation) {
+      this.derivation = derivation;
     }
 
     public CanonicalResource getResource() throws FHIRException {
@@ -117,7 +127,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
   }
 
-  private class CachedCanonicalResource<T1 extends CanonicalResource> {
+  public class CachedCanonicalResource<T1 extends CanonicalResource> {
     private T1 resource;
     private CanonicalResourceProxy proxy;
     private PackageInformation packageInfo;
@@ -176,6 +186,14 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         return proxy.getSupplements(); 
       } else {
         return resource instanceof CodeSystem ? ((CodeSystem) resource).getSupplements() : null;
+      }
+    }
+
+    public Object getDerivation() {
+      if (resource == null) {
+        return proxy.getDerivation(); 
+      } else {
+        return resource instanceof StructureDefinition ? ((StructureDefinition) resource).getDerivationElement().primitiveValue() : null;
       }
     }  
 
@@ -610,6 +628,10 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     list.clear();
     map.clear();
     
+  }
+
+  public List<CachedCanonicalResource<T>> getCachedList() {
+    return list;
   }
 
   public List<T> getList() {

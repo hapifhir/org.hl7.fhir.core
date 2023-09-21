@@ -57,6 +57,7 @@ import org.hl7.fhir.r4b.model.Enumeration;
 import org.hl7.fhir.r4b.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r4b.model.ImplementationGuide;
 import org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideDependsOnComponent;
+import org.hl7.fhir.r4b.utils.NPMPackageGenerator.Category;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -110,6 +111,7 @@ public class NPMPackageGenerator {
   private JsonObject packageManifest;
   private NpmPackageIndexBuilder indexer;
   private String igVersion;
+  private String indexdb;
 
   public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig,
       Date date, boolean notForPublication) throws FHIRException, IOException {
@@ -324,8 +326,9 @@ public class NPMPackageGenerator {
     bufferedOutputStream = new BufferedOutputStream(OutputStream);
     gzipOutputStream = new GzipCompressorOutputStream(bufferedOutputStream);
     tar = new TarArchiveOutputStream(gzipOutputStream);
+    indexdb = Utilities.path("[tmp]", "tmp-"+UUID.randomUUID().toString()+".db");
     indexer = new NpmPackageIndexBuilder();
-    indexer.start();
+    indexer.start(indexdb);
   }
 
   public void addFile(Category cat, String name, byte[] content) throws IOException {
@@ -367,6 +370,9 @@ public class NPMPackageGenerator {
   private void buildIndexJson() throws IOException {
     byte[] content = TextFile.stringToBytes(indexer.build(), false);
     addFile(Category.RESOURCE, ".index.json", content);
+    content = TextFile.fileToBytes(indexdb);
+    new File(indexdb).delete();
+    addFile(Category.RESOURCE, ".index.db", content);
   }
 
   public String filename() {

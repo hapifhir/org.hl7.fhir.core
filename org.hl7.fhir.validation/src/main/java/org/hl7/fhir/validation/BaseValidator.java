@@ -325,6 +325,21 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return thePass;
   }
 
+  /**
+   * Test a rule and add a {@link IssueSeverity#INFORMATION} validation message if the validation fails
+   * 
+   * @param thePass
+   *          Set this parameter to <code>false</code> if the validation does not pass
+   * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
+   */
+  protected boolean hintInv(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg, String invId) {
+    if (!thePass && doingHints()) {
+      String message = context.formatMessage(msg);
+      addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.INFORMATION, msg).setInvId(invId);
+    }
+    return thePass;
+  }
+
   protected boolean hint(List<ValidationMessage> errors, String ruleDate, IssueType type, NodeStack stack, boolean thePass, String msg, Object... theMessageArguments) {
     return hint(errors, ruleDate, type, stack.line(), stack.col(), stack.getLiteralPath(),  thePass, msg, theMessageArguments);
   }
@@ -422,6 +437,14 @@ public class BaseValidator implements IValidationContextResourceLoader {
     if (!thePass && doingErrors()) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.ERROR, theMessage);
+    }
+    return thePass;
+  }
+
+  protected boolean ruleInv(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String theMessage, String invId, Object... theMessageArguments) {
+    if (!thePass && doingErrors()) {
+      String message = context.formatMessage(theMessage, theMessageArguments);
+      addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.ERROR, theMessage).setInvId(invId);
     }
     return thePass;
   }
@@ -573,6 +596,16 @@ public class BaseValidator implements IValidationContextResourceLoader {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       IssueSeverity severity = IssueSeverity.WARNING;
       addValidationMessage(errors, ruleDate, type, line, col, path, nmsg, severity, msg);
+    }
+    return thePass;
+
+  }
+  
+  protected boolean warningInv(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg, String invId, Object... theMessageArguments) {
+    if (!thePass && doingWarnings()) {
+      String nmsg = context.formatMessage(msg, theMessageArguments);
+      IssueSeverity severity = IssueSeverity.WARNING;
+      addValidationMessage(errors, ruleDate, type, line, col, path, nmsg, severity, msg).setInvId(invId);
     }
     return thePass;
 
@@ -1295,6 +1328,11 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected boolean isHL7(Element cr) {
     String url = cr.getChildValue("url");
     return url != null && url.contains("hl7");
+  }
+
+  protected boolean isHL7Core(Element cr) {
+    String url = cr.getChildValue("url");
+    return url != null && url.startsWith("http://hl7.org/fhir/") && !url.startsWith("http://hl7.org/fhir/test");
   }
 
   public boolean isAllowExamples() {

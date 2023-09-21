@@ -911,7 +911,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       derived.clearUserData("profileutils.snapshot.generating");
       snapshotStack.remove(derived.getUrl());
     }
+    derived.setUserData("profileutils.snapshot.generated", true); // used by the publisher
   }
+
 
   private XVerExtensionManager makeXVer() {
     if (xver == null) {
@@ -3429,7 +3431,8 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private void compareDiffs(List<ElementDefinition> diffList, List<ElementDefinition> newDiff, List<String> errors) {
     if (diffList.size() != newDiff.size()) {
-      errors.add("The diff list size changed when sorting - was "+diffList.size()+" is now "+newDiff.size());
+      errors.add("The diff list size changed when sorting - was "+diffList.size()+" is now "+newDiff.size()+
+          " ["+CommaSeparatedStringBuilder.buildObjects(diffList)+"]/["+CommaSeparatedStringBuilder.buildObjects(newDiff)+"]");
     } else {
       for (int i = 0; i < Integer.min(diffList.size(), newDiff.size()); i++) {
         ElementDefinition e = diffList.get(i);
@@ -4476,6 +4479,16 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   public static void setSuppressIgnorableExceptions(boolean suppressIgnorableExceptions) {
     ProfileUtilities.suppressIgnorableExceptions = suppressIgnorableExceptions;
+  }
+
+  public void setMessages(List<ValidationMessage> messages) {
+    this.messages = messages; 
+  }
+
+  private Map<String, List<Property>> propertyCache = new HashMap<>();
+  
+  public Map<String, List<Property>> getCachedPropertyList() {
+    return propertyCache;
   }
 
 }

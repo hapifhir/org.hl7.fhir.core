@@ -14,13 +14,13 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.1.5-SNAPSHOT</version>
+    <version>6.1.9-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.4.3</validator_test_case_version>
+        <validator_test_case_version>1.4.5</validator_test_case_version>
         <jackson_version>2.15.2</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
@@ -296,6 +296,13 @@
               <groupId>com.nimbusds</groupId>
               <artifactId>nimbus-jose-jwt</artifactId>
               <version>9.30.2</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
+            <dependency>
+                <groupId>org.xerial</groupId>
+                <artifactId>sqlite-jdbc</artifactId>
+                <version>3.43.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

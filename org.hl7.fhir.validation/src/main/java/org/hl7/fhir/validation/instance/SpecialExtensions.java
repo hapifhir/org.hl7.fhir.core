@@ -24,6 +24,7 @@ public class SpecialExtensions {
       "http://hl7.org/fhir/StructureDefinition/instance-name",
       "http://hl7.org/fhir/StructureDefinition/instance-description",
       "http://hl7.org/fhir/build/StructureDefinition/definition", // wrongly defined in used in early R4B/R5 builds - changed to http://hl7.org/build/fhir/StructureDefinition/binding-definition
+      "http://hl7.org/fhir/build/StructureDefinition/binding-definition", // wrongly defined in used in early R4B/R5 builds - changed to http://hl7.org/build/fhir/StructureDefinition/binding-definition
       "http://hl7.org/fhir/StructureDefinition/codesystem-properties-mode",
       "http://hl7.org/fhir/StructureDefinition/structuredefinition-rdf-type",
       "http://hl7.org/fhir/StructureDefinition/structuredefinition-conformance-derivedFrom", // this is defined in R5, but needed earlier

@@ -502,7 +502,13 @@ public class FHIRPathEngine {
         }
         types.addType(sd.getUrl());
       } else {
-        String ctxt = t.substring(0, t.indexOf('.'));
+        String ctxt = null;
+        if (t.contains("#")) {
+          ctxt = t.substring(0, t.indexOf('#'));
+          t = t.substring(t.indexOf('#')+1);
+        } else {
+          ctxt = t.substring(0, t.indexOf('.'));
+        }
         StructureDefinition sd = cu.findType(ctxt);
         if (sd == null) {
           throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT, t);
@@ -1624,7 +1630,6 @@ public class FHIRPathEngine {
         temp = TemporalPrecisionEnum.SECOND;
       }
     }
-
 
     if (date == null) {
       if (tz != null) {

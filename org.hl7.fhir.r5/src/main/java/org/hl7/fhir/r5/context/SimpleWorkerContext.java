@@ -97,11 +97,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
     private final String filename;
     private final IContextResourceLoader loader;
+    private PackageInformation pi;
 
-    public PackageResourceLoader(PackageResourceInformation pri, IContextResourceLoader loader) {
-      super(pri.getResourceType(), pri.getId(), loader == null ? pri.getUrl() :loader.patchUrl(pri.getUrl(), pri.getResourceType()), pri.getVersion(), pri.getSupplements());
+    public PackageResourceLoader(PackageResourceInformation pri, IContextResourceLoader loader, PackageInformation pi) {
+      super(pri.getResourceType(), pri.getId(), loader == null ? pri.getUrl() :loader.patchUrl(pri.getUrl(), pri.getResourceType()), pri.getVersion(), pri.getSupplements(), pri.getDerivation());
       this.filename = pri.getFilename();
       this.loader = loader;
+      this.pi = pi;
     }
 
     @Override
@@ -110,9 +112,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         FileInputStream f = new FileInputStream(filename);
         try  {
           if (loader != null) {
-            return R5Hacker.fixR5BrokenResource((CanonicalResource) loader.loadResource(f, true));
+            return setPi(R5Hacker.fixR5BrokenResource((CanonicalResource) loader.loadResource(f, true)));
           } else {
-            return R5Hacker.fixR5BrokenResource((CanonicalResource) new JsonParser().parse(f));
+            return setPi(R5Hacker.fixR5BrokenResource((CanonicalResource) new JsonParser().parse(f)));
           }
         } finally {
           f.close();
@@ -120,6 +122,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       } catch (Exception e) {
         throw new FHIRException("Error loading "+filename+": "+e.getMessage(), e);
       }
+    }
+
+    private CanonicalResource setPi(CanonicalResource cr) {
+      cr.setSourcePackage(pi);
+      return cr;
     }
   }
 
@@ -478,6 +485,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if ((types == null || types.size() == 0) &&  loader != null) {
       types = loader.getTypes();
     }
+    PackageInformation pii = new PackageInformation(pi);
     if (VersionUtilities.isR2Ver(pi.fhirVersion()) || !pi.canLazyLoad() || !allowLazyLoading) {
       // can't lazy load R2 because of valueset/codesystem implementation
       if (types == null || types.size() == 0) {
@@ -485,7 +493,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       }
       for (String s : pi.listResources(types)) {
         try {
-          loadDefinitionItem(s, pi.load("package", s), loader, null, new PackageInformation(pi));
+          loadDefinitionItem(s, pi.load("package", s), loader, null, pii);
           t++;
         } catch (Exception e) {
           throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, s, pi.name(), pi.version(), e.getMessage()), e);
@@ -499,9 +507,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         if (!pri.getFilename().contains("ig-r4") && (loader == null || loader.wantLoad(pi, pri))) {
           try {
             if (!pri.hasId()) {
-              loadDefinitionItem(pri.getFilename(), new FileInputStream(pri.getFilename()), loader, null, new PackageInformation(pi));
+              loadDefinitionItem(pri.getFilename(), new FileInputStream(pri.getFilename()), loader, null, pii);
             } else {
-              registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageInformation(pi));
+              registerResourceFromPackage(new PackageResourceLoader(pri, loader, pii), pii);
             }
             t++;
           } catch (FHIRException e) {

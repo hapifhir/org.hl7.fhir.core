@@ -323,7 +323,7 @@ public class PEBuilder {
             if (passElementPropsCheck(defn) && !Utilities.existsInList(defn.getName(), omitList)) {
               PEDefinitionElement pe = new PEDefinitionElement(this, profile, defn, parent.path());
               pe.setRecursing(definition == defn || (profile.getDerivation() == TypeDerivationRule.SPECIALIZATION && profile.getType().equals("Extension")));
-              if (cu.isPrimitiveDatatype(definition.getTypeFirstRep().getWorkingCode()) && "value".equals(pe.name())) {
+              if (context.isPrimitiveType(definition.getTypeFirstRep().getWorkingCode()) && "value".equals(pe.name())) {
                 pe.setMustHaveValue(definition.getMustHaveValue());
               }
               pe.setInFixedValue(definition.hasFixed() || definition.hasPattern() || parent.isInFixedValue());

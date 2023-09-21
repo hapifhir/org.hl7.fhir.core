@@ -334,7 +334,8 @@ public class VersionUtilities {
       if (pc!=null) {
         if (pt.contains("-") && !pc.contains("-")) {
           pt = pt.substring(0, pt.indexOf("-"));
-          return pt.compareTo(pc) >= 0;
+          int res = pc.compareTo(pt);
+          return res >= 0;
         } else {
           return compareVersionPart(pt, pc);          
         }

@@ -111,6 +111,7 @@ public class LiquidRenderer extends ResourceRenderer implements ILiquidRendering
     LiquidEngine engine = new LiquidEngine(context.getWorker(), context.getServices());
     XhtmlNode xn;
     try {
+      engine.setIncludeResolver(new LiquidRendererIncludeResolver(context));
       LiquidDocument doc = engine.parse(liquidTemplate, "template");
       engine.setRenderingSupport(this);
       String html = engine.evaluate(doc, r.getBase(), new LiquidRendererContxt(rcontext, r));

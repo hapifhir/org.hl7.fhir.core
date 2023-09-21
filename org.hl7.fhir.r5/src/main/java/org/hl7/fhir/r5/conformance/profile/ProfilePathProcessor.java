@@ -1160,7 +1160,7 @@ public class ProfilePathProcessor {
                     throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, diffMatches.get(0).getPath(), getDifferential().getElement().get(cursors.diffCursor).getPath(), profileUtilities.typeCode(outcome.getType()), getProfileName()));
                 }
               ElementDefinition.TypeRefComponent t = outcome.getType().get(0);
-              if (t.getCode().equals("BackboneElement")) {
+              if (Utilities.existsInList(t.getCode(), "Base", "Element", "BackboneElement")) {
                 int baseStart = cursors.base.getElement().indexOf(currentBase) + 1;
                 int baseMax = baseStart + 1;
                 while (baseMax < cursors.base.getElement().size() && cursors.base.getElement().get(baseMax).getPath().startsWith(currentBase.getPath() + "."))

@@ -39,7 +39,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CodeableConcept;
@@ -72,7 +71,7 @@ public class ObjectConverter  {
     org.hl7.fhir.r5.formats.JsonParser jp = new org.hl7.fhir.r5.formats.JsonParser();
     jp.compose(bs, ig);
     ByteArrayInputStream bi = new ByteArrayInputStream(bs.toByteArray());
-    List<NamedElement> list = new JsonParser(context).parse(bi);
+    List<ValidatedFragment> list = new JsonParser(context).parse(bi);
     if (list.size() != 1) {
       throw new FHIRException("Unable to convert because the source contains multieple resources");
     }

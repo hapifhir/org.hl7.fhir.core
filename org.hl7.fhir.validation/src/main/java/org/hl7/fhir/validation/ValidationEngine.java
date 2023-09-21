@@ -457,7 +457,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       if (userAgent != null) {
         contextBuilder.withUserAgent(userAgent);
       }
-      context = contextBuilder.fromDefinitions(source, ValidatorUtils.loaderForVersion(version), new PackageInformation(src, new Date()));
+      context = contextBuilder.fromDefinitions(source, ValidatorUtils.loaderForVersion(version), new PackageInformation(src, version, new Date()));
       ValidatorUtils.grabNatives(getBinaries(), source, "http://hl7.org/fhir");
     }
     // ucum-essence.xml should be in the class path. if it's not, ask about how to sort this out 

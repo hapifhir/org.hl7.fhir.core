@@ -267,7 +267,9 @@ public class TerminologyCache {
 
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
         ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())
-        +"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n";      
+        +"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n";
+      } else if (options.getVsAsUrl()) {
+        ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+extracted(json, vs)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
       } else {
         ValueSet vsc = getVSEssense(vs);
         ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
@@ -530,6 +532,8 @@ public class TerminologyCache {
         sw.write(BREAK+"\r\n");
         if (ce.e != null) {
           sw.write("e: {\r\n");
+          if (ce.e.isFromServer())
+            sw.write("  \"from-server\" : true,\r\n");
           if (ce.e.getValueset() != null)
             sw.write("  \"valueSet\" : "+json.composeString(ce.e.getValueset()).trim()+",\r\n");
           sw.write("  \"error\" : \""+Utilities.escapeJson(ce.e.getError()).trim()+"\"\r\n}\r\n");
@@ -623,9 +627,9 @@ public class TerminologyCache {
     String error = loadJS(o.get("error"));
     if (e) {
       if (o.has("valueSet"))
-        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN);
+        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN, o.has("from-server"));
       else
-        ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN);
+        ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN, o.has("from-server"));
     } else {
       String t = loadJS(o.get("severity"));
       IssueSeverity severity = t == null ? null :  IssueSeverity.fromCode(t);

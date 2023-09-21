@@ -109,9 +109,9 @@ public class ComparisonSession {
           throw new FHIRException("Unable to compare resources of type "+left.fhirType()+" and "+right.fhirType());
         }
       } catch (Throwable e) {
-//        if (debug) {
+        if (debug) {
           e.printStackTrace();
-//        }
+        }
         ResourceComparer.PlaceHolderComparison csc = new ResourceComparer.PlaceHolderComparison(left, right, e);
         compares.put(key, csc);
         return csc;      
@@ -180,6 +180,9 @@ public class ComparisonSession {
   }
 
   private VersionComparisonAnnotation getAnnotation(Base b) {
+    if (b == null) {
+      return null;
+    }
     if (b.hasUserData(VersionComparisonAnnotation.USER_DATA_NAME)) {
       return (VersionComparisonAnnotation) b.getUserData(VersionComparisonAnnotation.USER_DATA_NAME);
     } else {
@@ -203,8 +206,14 @@ public class ComparisonSession {
 
   public void markDeleted(Base parent, String name, Base other) {
     if (isAnnotate() && other != null) {
-      getAnnotation(parent).deleted(name, other);
-      getAnnotation(other).deleted();
+      VersionComparisonAnnotation annotation = getAnnotation(parent);
+      if (annotation != null) {
+        annotation.deleted(name, other);
+      }
+      annotation = getAnnotation(other);
+      if (annotation != null) {
+        annotation.deleted();
+      }
     }
   }
 

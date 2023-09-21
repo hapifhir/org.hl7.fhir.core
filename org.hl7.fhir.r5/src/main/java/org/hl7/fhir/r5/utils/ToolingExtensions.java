@@ -143,6 +143,10 @@ public class ToolingExtensions {
   public static final String EXT_PROFILE_MAPPING = "http://hl7.org/fhir/tools/StructureDefinition/profile-mapping";
   public static final String EXT_CS_ALTERNATE_USE = "http://hl7.org/fhir/StructureDefinition/alternate-code-use";
   public static final String EXT_CS_ALTERNATE_STATUS = "http://hl7.org/fhir/StructureDefinition/alternate-code-status";
+  public static final String EXT_OBLIGATION_PROFILE_FLAG = "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile";
+  public static final String EXT_OBLIGATION_INHERITS = "http://hl7.org/fhir/tools/StructureDefinition/inherit-obligations";
+  public static final String DAR = "http://hl7.org/fhir/StructureDefinition/data-absent-reason";
+
 
   // validated
   //  private static final String EXT_OID = "http://hl7.org/fhir/StructureDefinition/valueset-oid";
@@ -1080,8 +1084,5 @@ public class ToolingExtensions {
     }
     return res;
   }
-
-  public static final String EXT_OBLIGATION_PROFILE_FLAG = "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile";
-  public static final String EXT_OBLIGATION_INHERITS = "http://hl7.org/fhir/tools/StructureDefinition/inherit-obligations";
 
 }

@@ -466,8 +466,14 @@ public class FHIRToolingClient {
         throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
             (OperationOutcome) result.getPayload());
       }
-    } catch (IOException e) {
-      throw new FHIRException(e);
+    } catch (EFhirClientException e) {
+      if (e.getServerErrors().size() > 0) {
+        throw new EFhirClientException(e.getMessage(), e.getServerErrors().get(0));
+      } else {
+        throw new EFhirClientException(e.getMessage(), e);
+      }
+    } catch (Exception e) {
+      throw new EFhirClientException(e.getMessage(), e);
     }
     return result == null ? null : (ValueSet) result.getPayload();
   }

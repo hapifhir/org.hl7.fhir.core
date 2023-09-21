@@ -102,6 +102,9 @@ public interface IResourceValidator {
   boolean isForPublication();
   IResourceValidator setForPublication(boolean forPublication);
   
+  boolean isExample();
+  IResourceValidator setExample(boolean example);
+  
   public boolean isWarnOnDraftOrExperimental();
 
   public IResourceValidator setWarnOnDraftOrExperimental(boolean warnOnDraftOrExperimental);

@@ -938,7 +938,20 @@ public interface IWorkerContext {
    */
   public List<StructureDefinition> fetchTypeDefinitions(String n);
 
+  /**
+   * return whether type is primitive type. This is called a lot, and needs a high performance implementation 
+   * @param type
+   * @return
+   */
+  public boolean isPrimitiveType(String type);
 
+  /**
+   * return whether type is data type. This is called a lot, and needs a high performance implementation 
+   * @param type
+   * @return
+   */
+  public boolean isDataType(String type);
+  
   /**
    * Returns a set of keys that can be used to get binaries from this context.
    * The binaries come from the loaded packages (mostly the pubpack)
@@ -1020,4 +1033,6 @@ public interface IWorkerContext {
   
   public boolean isForPublication();
   public void setForPublication(boolean value);
+
+
 }

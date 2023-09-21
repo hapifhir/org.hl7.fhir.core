@@ -451,7 +451,13 @@ public class LiquidEngine implements IEvaluationContext {
 
     @Override
     public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
+      if (includeResolver == null) {
+        throw new FHIRException("Includes are not supported in this context");
+      }
       String src = includeResolver.fetchInclude(LiquidEngine.this, page);
+      if (src == null) {
+        throw new FHIRException("The include '"+page+"' could not be resolved");
+      }
       LiquidParser parser = new LiquidParser(src);
       LiquidDocument doc = parser.parse(page);
       LiquidEngineContext nctxt = new LiquidEngineContext(ctxt.externalContext, ctxt);
@@ -617,8 +623,8 @@ public class LiquidEngine implements IEvaluationContext {
       int i = 1;
       while (i < cnt.length() && !Character.isWhitespace(cnt.charAt(i)))
         i++;
-      if (i == cnt.length() || i == 0)
-        throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_SYNTAX_INCLUDE, name + ": Error reading include: " + cnt));
+      if (i == 0)
+        throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_SYNTAX_INCLUDE, name, cnt));
       LiquidInclude res = new LiquidInclude();
       res.page = cnt.substring(0, i);
       while (i < cnt.length() && Character.isWhitespace(cnt.charAt(i)))

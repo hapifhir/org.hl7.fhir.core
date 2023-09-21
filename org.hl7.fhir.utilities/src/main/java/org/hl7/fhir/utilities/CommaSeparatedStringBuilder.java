@@ -138,6 +138,15 @@ public class CommaSeparatedStringBuilder {
     return self.toString();
   }
 
+
+  public static String buildObjects(List<? extends Object> list) {
+    CommaSeparatedStringBuilder self = new CommaSeparatedStringBuilder();
+    for (Object s : list) {
+      self.append(s.toString());
+    }
+    return self.toString();
+  }
+  
   public static Set<String> toSet(String source) {
     if (source == null) {
       return null;

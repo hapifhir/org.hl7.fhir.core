@@ -35,6 +35,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
@@ -86,29 +87,31 @@ public class StructureDefinitionValidator extends BaseValidator {
           ok = rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), bok, I18nConstants.SD_CONSTRAINED_KIND_NO_MATCH, sd.getKind().toCode(), base.getKind().toCode(), base.getType(), base.getUrl()) && ok;
           if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
             ok = rule(errors, "2022-11-02", IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasType() && sd.getType().equals(base.getType()), I18nConstants.SD_CONSTRAINED_TYPE_NO_MATCH, sd.getType(), base.getType()) && ok;
-            List<ValidationMessage> msgs = new ArrayList<>();
-            ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
-            pu.setForPublication(forPublication);
-            pu.setXver(xverManager);
-            pu.setNewSlicingProcessing(!sd.hasFhirVersion() || VersionUtilities.isR4Plus(sd.getFhirVersion().toCode()));
-            pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/R4/", sd.getName());
-            if (msgs.size() > 0) {
-              for (ValidationMessage msg : msgs) {
-                // we need to set the location for the context 
-                String loc = msg.getLocation();
-                if (loc.startsWith("StructureDefinition.")) {
-                  msg.setLocation(stack.getLiteralPath()+loc.substring(loc.indexOf(".")));
-                } else {
-                  msg.setLocation(stack.getLiteralPath());
+            if (!src.hasUserData("profileutils.snapshot.errors")) { // if it does, we've already logged these errors elsewhere
+              List<ValidationMessage> msgs = new ArrayList<>();
+              ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
+              pu.setForPublication(forPublication);
+              pu.setXver(xverManager);
+              pu.setNewSlicingProcessing(!sd.hasFhirVersion() || VersionUtilities.isR4Plus(sd.getFhirVersion().toCode()));
+              pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir/R4/", sd.getName());
+              if (msgs.size() > 0) {
+                for (ValidationMessage msg : msgs) {
+                  // we need to set the location for the context 
+                  String loc = msg.getLocation();
+                  if (loc.startsWith("StructureDefinition.")) {
+                    msg.setLocation(stack.getLiteralPath()+loc.substring(loc.indexOf(".")));
+                  } else {
+                    msg.setLocation(stack.getLiteralPath());
+                  }
+                  errors.add(msg);
+                  ok = (!msg.isError()) && ok;
                 }
-                errors.add(msg);
-                ok = (!msg.isError()) && ok;
               }
-            }
-            if (!snapshot.isEmpty() && wantCheckSnapshotUnchanged) {
-              int was = snapshot.size();
-              int is = sd.getSnapshot().getElement().size();
-              ok = rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), was == is, I18nConstants.SNAPSHOT_EXISTING_PROBLEM, was, is) && ok;
+              if (!snapshot.isEmpty() && wantCheckSnapshotUnchanged) {
+                int was = snapshot.size();
+                int is = sd.getSnapshot().getElement().size();
+                ok = rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), was == is, I18nConstants.SNAPSHOT_EXISTING_PROBLEM, was, is) && ok;
+              }
             }
           } else {
             ok = rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasType() && !sd.getType().equals(base.getType()), I18nConstants.SD_SPECIALIZED_TYPE_MATCHES, sd.getType(), base.getType()) && ok;
@@ -127,10 +130,10 @@ public class StructureDefinitionValidator extends BaseValidator {
       boolean logical = "logical".equals(src.getNamedChildValue("kind"));
       boolean constraint = "constraint".equals(src.getNamedChildValue("derivation"));
       for (Element differential : differentials) {
-        ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint, src.getNamedChildValue("type"), src.getNamedChildValue("url"), base) && ok;
+        ok = validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd, typeName, logical, constraint, src.getNamedChildValue("type"), src.getNamedChildValue("url"), src.getNamedChildValue("type"), base) && ok;
       }
       for (Element snapshotE : snapshots) {
-        ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type"), src.getNamedChildValue("url"), base) && ok;
+        ok = validateElementList(errors, snapshotE, stack.push(snapshotE, -1, null, null), true, true, sd, typeName, logical, constraint, src.getNamedChildValue("type"), src.getNamedChildValue("url"), src.getNamedChildValue("type"), base) && ok;
       }
       
       // obligation profile support
@@ -359,19 +362,19 @@ public class StructureDefinitionValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, String rootPath, String profileUrl, StructureDefinition base) {
+  private boolean validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, String rootPath, String profileUrl, String profileType, StructureDefinition base) {
     Map<String, String> invariantMap = new HashMap<>();
     boolean ok = true;
     List<Element> elements = elementList.getChildrenByName("element");
     int cc = 0;
     for (Element element : elements) {
-      ok = validateElementDefinition(errors, elements, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical, constraint, invariantMap, rootPath, profileUrl, base) && ok;
+      ok = validateElementDefinition(errors, elements, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd, typeName, logical, constraint, invariantMap, rootPath, profileUrl, profileType, base) && ok;
       cc++;
     }    
     return ok;
   }
 
-  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, String> invariantMap, String rootPath, String profileUrl, StructureDefinition base) {
+  private boolean validateElementDefinition(List<ValidationMessage> errors, List<Element> elements, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd, String typeName, boolean logical, boolean constraint, Map<String, String> invariantMap, String rootPath, String profileUrl, String profileType, StructureDefinition base) {
     boolean ok = true;
     boolean typeMustSupport = false;
     String path = element.getNamedChildValue("path");
@@ -479,7 +482,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (v != null) {
           ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "fixed", v.fhirType(), typeCodes) && ok;
           hint(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_HINT, element.getIdBase(), "fixed");
-          if (isPrimitiveType(v.fhirType())) {
+          if (context.isPrimitiveType(v.fhirType())) {
             warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_WARNING_DOTNET, element.getIdBase(), "fixed");
           } else {
             warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), false, I18nConstants.SD_VALUE_COMPLEX_FIXED, v.fhirType());            
@@ -489,7 +492,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (v != null) {
           ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "pattern", v.fhirType(), typeCodes) && ok;
           hint(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_HINT, element.getIdBase(), "pattern");
-          if (isPrimitiveType(v.fhirType())) {
+          if (context.isPrimitiveType(v.fhirType())) {
             warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), !repeating, I18nConstants.SD_VALUE_TYPE_REPEAT_WARNING_DOTNET, element.getIdBase(), "pattern");
           }
         }
@@ -501,14 +504,14 @@ public class StructureDefinitionValidator extends BaseValidator {
     List<Element> constraints = element.getChildrenByName("constraint");
     int cc = 0;
     for (Element invariant : constraints) {
-      ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path"), rootPath, profileUrl, snapshot, base) && ok;
+      ok = validateElementDefinitionInvariant(errors, invariant, stack.push(invariant, cc, null, null), invariantMap, elements, element, element.getNamedChildValue("path"), rootPath, profileUrl, profileType, snapshot, base) && ok;
       cc++;
     }    
     return ok;
   }
   
   private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, String> invariantMap, List<Element> elements, Element element, 
-      String path, String rootPath, String profileUrl, boolean snapshot, StructureDefinition base) {
+      String path, String rootPath, String profileUrl, String profileType, boolean snapshot, StructureDefinition base) {
     boolean ok = true;
     String key = invariant.getNamedChildValue("key"); 
     String expression = invariant.getNamedChildValue("expression");
@@ -528,13 +531,13 @@ public class StructureDefinitionValidator extends BaseValidator {
                 // we have to figure out the context, and we might be in type slicing. 
                 String exp = expression;
                 Element te = element;
-                List<String> types = getTypesForElement(elements, te);
+                List<String> types = getTypesForElement(elements, te, profileType);
                 while (types.size() == 0 && te != null) {
                   Element oldte = te;
                   te = getParent(elements, te);
                   if (te != null) {
                     exp = tail(oldte, te)+".all("+exp+")";
-                    types = getTypesForElement(elements, te);
+                    types = getTypesForElement(elements, te, profileType);
                   }
                 }
                 if (types.size() == 0) {
@@ -598,7 +601,7 @@ public class StructureDefinitionValidator extends BaseValidator {
    return null;
   }
 
-  private List<String> getTypesForElement(List<Element> elements, Element element) {
+  private List<String> getTypesForElement(List<Element> elements, Element element, String profileType) {
     List<String> types = new ArrayList<>();
     if (element.hasChild("path") && !element.getNamedChildValue("path").contains(".")) {
       types.add(element.getNamedChildValue("path"));
@@ -610,7 +613,11 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
         if (t != null) {
           if (isAbstractType(t) && hasChildren(element, elements) ) {
-            types.add(element.getNamedChildValue("path"));
+            if (!Utilities.isAbsoluteUrl(profileType)) {
+              types.add(element.getNamedChildValue("path"));
+            } else {
+              types.add(profileType+"#"+element.getNamedChildValue("path"));              
+            }
           } else {
             types.add(t);
           }
@@ -731,10 +738,6 @@ public class StructureDefinitionValidator extends BaseValidator {
     return true;
   }
 
-  private boolean isPrimitiveType(String fhirType) {
-    StructureDefinition sd = context.fetchTypeDefinition(fhirType);
-    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
-  }
 
   private String boundType(Set<String> typeCodes) {
     for (String tc : typeCodes) {
@@ -813,7 +816,7 @@ public class StructureDefinitionValidator extends BaseValidator {
 
   private boolean serverSupportsValueSet(String ref) {
     ValidationResult vr = context.validateCode(new ValidationOptions().withCheckValueSetOnly().withVsAsUrl().withNoClient(), new Coding("http://loinc.org", "5792-7", null), new ValueSet().setUrl(ref));
-    return vr.getErrorClass() == null;
+    return vr.getErrorClass() == null || vr.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN;
   }
 
   private boolean validateElementType(List<ValidationMessage> errors, Element type, NodeStack stack, StructureDefinition sd, String path, boolean logical) {

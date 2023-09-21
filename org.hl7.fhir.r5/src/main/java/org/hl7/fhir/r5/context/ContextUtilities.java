@@ -223,7 +223,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
           } catch (Exception e) {
             if (!isSuppressDebugMessages()) {
               System.out.println("Unable to generate snapshot @2 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
-              if (context.getLogger().isDebugLogging()) {
+              if (context.getLogger() != null && context.getLogger().isDebugLogging()) {
                 e.printStackTrace();
               }
             }
@@ -310,8 +310,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
 
   @Override
   public boolean isPrimitiveType(String type) {
-    StructureDefinition sd = context.fetchTypeDefinition(type);
-    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
+    return context.isPrimitiveType(type);
   }
 
   @Override
@@ -362,11 +361,6 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   @Override
   public boolean prependLinks() {
     return false;
-  }
-
-  public boolean isPrimitiveDatatype(String type) {
-    StructureDefinition sd = context.fetchTypeDefinition(type);
-    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
   }
 
   public StructureDefinition fetchByJsonName(String key) {

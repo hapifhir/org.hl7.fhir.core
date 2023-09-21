@@ -523,7 +523,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   public static final String NO_RULE_DATE = null;
   private boolean matched; // internal use counting matching filters
   private boolean ignorableError;
-
+  private String invId;
 
   /**
    * Constructor
@@ -901,6 +901,14 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       return loc.substring(loc.indexOf(": ")+2);
     }
     return loc;
+  }
+
+  public String getInvId() {
+    return invId;
+  }
+
+  public void setInvId(String invId) {
+    this.invId = invId;
   }
   
   

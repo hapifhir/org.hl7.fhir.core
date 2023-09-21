@@ -31,7 +31,7 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class ConceptMapValidator  extends BaseValidator {
 
-  private static final int TOO_MANY_CODES_TO_VALIDATE = 1000;
+  private static final int TOO_MANY_CODES_TO_VALIDATE = 500;
   
   public static class PropertyDefinition {
     private String type;
@@ -425,7 +425,7 @@ public class ConceptMapValidator  extends BaseValidator {
 
 
   private void addToBatch(Element code, NodeStack stack, CSReference system, VSReference scope) {
-    if (scope != null && scope.vs != null) {
+    if (scope != null && scope.vs != null && system != null) {
       Coding c = new Coding(system.url, code.primitiveValue(), null).setVersion(system.version);
       batch.add(new CMCodingValidationRequest(stack, c, scope.vs));
     }    

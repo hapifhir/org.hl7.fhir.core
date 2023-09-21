@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.ArrayList;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -69,54 +68,6 @@ public abstract class ParserBase {
     }
   }
 
-  public class NamedElement {
-    private String name;
-    private String extension;
-    private Element element;
-    private byte[] content;
-    private List<ValidationMessage> errors = new ArrayList<>();
-    
-    public NamedElement(String name, String extension, Element element, byte[] content) {
-      super();
-      this.name = name;
-      this.element = element; 
-      this.content = content;
-      this.extension = extension;
-    }
-
-    public NamedElement(String name, String extension, byte[] content) {
-      super();
-      this.name = name;
-      this.content = content;
-      this.extension = extension;
-    }
-    
-    public String getName() {
-      return name;
-    }
-    
-    public Element getElement() {
-      return element;
-    }
-
-    public byte[] getContent() {
-      return content;
-    }
-
-    public List<ValidationMessage> getErrors() {
-      return errors;
-    }
-
-    public void setElement(Element element) {
-      this.element = element;
-    }
-
-    public String getFilename() {
-      return name+"."+extension;
-    }
-    
-  }
-
   public interface ILinkResolver {
     String resolveType(String type);
     String resolveProperty(Property property);
@@ -126,13 +77,7 @@ public abstract class ParserBase {
   public enum ValidationPolicy { NONE, QUICK, EVERYTHING }
 
   public boolean isPrimitive(String code) {
-    StructureDefinition sd = context.fetchTypeDefinition(code);
-    if (sd != null) {
-      return sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
-    }
-
-    return Utilities.existsInList(code, "boolean", "integer", "integer64", "string", "decimal", "uri", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "markdown", "unsignedInt", "positiveInt", "uuid", "xhtml", "url", "canonical");
-    
+    return context.isPrimitiveType(code);    
 	}
 
 	protected IWorkerContext context;
@@ -152,20 +97,20 @@ public abstract class ParserBase {
 	  this.policy = policy;
 	}
 
-  public abstract List<NamedElement> parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException;
+  public abstract List<ValidatedFragment> parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException;
   
   public Element parseSingle(InputStream stream, List<ValidationMessage> errors) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
     
-    List<NamedElement> res = parse(stream);
+    List<ValidatedFragment> res = parse(stream);
    
     if (res.size() != 1) {
       throw new FHIRException("Parsing FHIR content returned multiple elements in a context where only one element is allowed");
     }
     var resE = res.get(0);
     if (resE.getElement() == null) {
-      throw new FHIRException("Parsing FHIR content failed: "+errorSummary(resE.errors));      
+      throw new FHIRException("Parsing FHIR content failed: "+errorSummary(resE.getErrors()));      
     } else if (res.size() == 0) {
-      throw new FHIRException("Parsing FHIR content returned no elements in a context where one element is required because: "+errorSummary(resE.errors));
+      throw new FHIRException("Parsing FHIR content returned no elements in a context where one element is required because: "+errorSummary(resE.getErrors()));
     }
     if (errors != null) {
       errors.addAll(resE.getErrors());

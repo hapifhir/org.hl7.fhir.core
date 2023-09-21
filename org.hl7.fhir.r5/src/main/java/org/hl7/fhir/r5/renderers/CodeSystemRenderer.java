@@ -541,6 +541,8 @@ public class CodeSystemRenderer extends TerminologyRenderer {
               td.addText(pcv.getValueCoding().getCode());
             } else if (pcv.hasValueStringType() && Utilities.isAbsoluteUrlLinkable(pcv.getValue().primitiveValue())) {
               td.ah(pcv.getValue().primitiveValue()).tx(pcv.getValue().primitiveValue());
+            } else if ("parent".equals(pcv.getCode())) {              
+              td.ah("#"+cs.getId()+"-"+pcv.getValue().primitiveValue()).addText(pcv.getValue().primitiveValue());
             } else {
               td.addText(pcv.getValue().primitiveValue());
             }

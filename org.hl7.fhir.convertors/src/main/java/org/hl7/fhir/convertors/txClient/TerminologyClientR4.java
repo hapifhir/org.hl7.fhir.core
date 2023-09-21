@@ -88,9 +88,11 @@ public class TerminologyClientR4 implements ITerminologyClient {
       vs2 = client.expandValueset(vs2, p2, params); // todo: second parameter
       return (ValueSet) VersionConvertorFactory_40_50.convertResource(vs2);
     } catch (org.hl7.fhir.r4.utils.client.EFhirClientException e) {
-      throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), 
-          (org.hl7.fhir.r5.model.OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0)));
-
+      if (e.getServerErrors().size() > 0) {
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), (org.hl7.fhir.r5.model.OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0)));
+      } else {
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage());        
+      }
     }
   }
 
@@ -165,7 +167,8 @@ public class TerminologyClientR4 implements ITerminologyClient {
 
   @Override
   public Bundle validateBatch(Bundle batch) {
-    return (Bundle) VersionConvertorFactory_40_50.convertResource(client.transaction((org.hl7.fhir.r4.model.Bundle) VersionConvertorFactory_40_50.convertResource(batch)));
+    org.hl7.fhir.r4.model.Bundle result = client.transaction((org.hl7.fhir.r4.model.Bundle) VersionConvertorFactory_40_50.convertResource(batch));
+    return result == null ? null : (Bundle) VersionConvertorFactory_40_50.convertResource(result);
   }
 
   @Override

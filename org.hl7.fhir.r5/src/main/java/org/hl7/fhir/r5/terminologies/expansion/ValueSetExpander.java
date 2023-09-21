@@ -123,6 +123,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.Termi
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
@@ -194,10 +195,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     ValueSetExpansionContainsComponent n = new ValueSet.ValueSetExpansionContainsComponent();
     n.setSystem(system);
     n.setCode(code);
-    if (isAbstract)
+    if (isAbstract) {
       n.setAbstract(true);
-    if (inactive)
+    }
+    if (inactive) {
       n.setInactive(true);
+    }
     if (deprecated) {
       ValueSetUtilities.setDeprecated(vsProp, n);
     }
@@ -580,23 +583,23 @@ public class ValueSetExpander extends ValueSetProcessBase {
     } catch (NoTerminologyServiceException e) {
       // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
       // that might fail too, but it might not, later.
-      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.NOSERVICE, allErrors);
+      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.NOSERVICE, allErrors, false);
     } catch (CodeSystemProviderExtension e) {
       // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
       // that might fail too, but it might not, later.
-      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.INTERNAL_ERROR, allErrors);
+      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.INTERNAL_ERROR, allErrors, false);
     } catch (TerminologyServiceProtectionException e) {
       if (opContext.isOriginal()) {
-        return new ValueSetExpansionOutcome(e.getMessage(), e.getError(), allErrors);
+        return new ValueSetExpansionOutcome(e.getMessage(), e.getError(), allErrors, false);
       } else {
         throw e;
       }
     } catch (ETooCostly e) {
-      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors);
+      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false);
     } catch (Exception e) {
       // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
       // that might fail too, but it might not, later.
-      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors);
+      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e instanceof EFhirClientException || e instanceof TerminologyServiceException);
     }
   }
   
@@ -703,7 +706,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       focus.getExpansion().setTotal(dwc.getTotal());
     }
     if (!requiredSupplements.isEmpty()) {      
-      return new ValueSetExpansionOutcome(context.formatMessagePlural(requiredSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(requiredSupplements)), TerminologyServiceErrorClass.BUSINESS_RULE, allErrors);
+      return new ValueSetExpansionOutcome(context.formatMessagePlural(requiredSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(requiredSupplements)), TerminologyServiceErrorClass.BUSINESS_RULE, allErrors, false);
     }
     if (!expParams.hasParameter("includeDefinition") || !expParams.getParameterBool("includeDefinition")) {
       focus.setCompose(null);

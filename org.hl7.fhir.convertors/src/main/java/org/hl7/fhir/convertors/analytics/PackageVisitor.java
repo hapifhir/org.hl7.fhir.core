@@ -135,22 +135,24 @@ public class PackageVisitor {
     
     System.out.println("Go: "+pidList.size()+" published packages");
     i = 0;
-    for (String pid : pidList) {    
-      if (!cpidSet.contains(pid)) {
-        cpidSet.add(pid);
-        List<String> vList = listVersions(pid);
-        if (oldVersions) {
-          for (String v : vList) {
-            processPackage(pid, v, i, pidList.size());          
+    for (String pid : pidList) {  
+      if (pid != null) {
+        if (!cpidSet.contains(pid)) {
+          cpidSet.add(pid);
+          List<String> vList = listVersions(pid);
+          if (oldVersions) {
+            for (String v : vList) {
+              processPackage(pid, v, i, pidList.size());          
+            }
+          } else if (vList.isEmpty()) {
+            System.out.println("No Packages for "+pid);
+          } else {
+            processPackage(pid, vList.get(vList.size() - 1), i, pidList.size());
           }
-        } else if (vList.isEmpty()) {
-          System.out.println("No Packages for "+pid);
-        } else {
-          processPackage(pid, vList.get(vList.size() - 1), i, pidList.size());
         }
-      }
-      i++;
-    }    
+        i++;
+      }    
+    }
     JsonObject json = JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json");
     i = 0;
     List<JsonObject> objects = json.getJsonObjects("guides");
@@ -192,8 +194,8 @@ public class PackageVisitor {
       long ms2 = System.currentTimeMillis();
       
       if (corePackages || !corePackage(npm)) {
-        int c = 0;
         if (fv != null && (versions.isEmpty() || versions.contains(fv))) {
+          int c = 0;
           for (String type : resourceTypes) {
             for (String s : npm.listResources(type)) {
               c++;
@@ -205,8 +207,10 @@ public class PackageVisitor {
               }
             }
           }
-        }    
-        System.out.println("Processed: "+pid+"#current: "+c+" resources ("+i+" of "+t+", "+(ms2-ms1)+"/"+(System.currentTimeMillis()-ms2)+"ms)");  
+          System.out.println("Processed: "+pid+"#current: "+c+" resources ("+i+" of "+t+", "+(ms2-ms1)+"/"+(System.currentTimeMillis()-ms2)+"ms)");  
+        } else {
+          System.out.println("Ignored: "+pid+"#current: no version");            
+        }
       }
     } catch (Exception e) {      
       System.out.println("Unable to process: "+pid+"#current: "+e.getMessage());      
@@ -262,7 +266,7 @@ public class PackageVisitor {
       for (Element channel : XMLUtil.getNamedChildren(xml.getDocumentElement(), "channel")) {
         for (Element item : XMLUtil.getNamedChildren(channel, "item")) {
           String pid = XMLUtil.getNamedChildText(item, "title");
-          if (pid.contains("#")) {
+          if (pid != null && pid.contains("#")) {
             list.add(pid.substring(0, pid.indexOf("#")));
           }
         }

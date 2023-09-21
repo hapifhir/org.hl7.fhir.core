@@ -53,4 +53,8 @@ public class VersionUtilitiesTest {
     assertFalse(VersionUtilities.isThisOrLater("0.9.x", "0.8.1"));
   }
 
+  @Test 
+  public void bugFixTests() {
+    assertTrue(VersionUtilities.isThisOrLater("1.0.0-ballot", "1.0.1"));
+  }
 }

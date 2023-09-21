@@ -27,7 +27,7 @@ public class ResourceParser extends ParserBase {
   }
 
   @Override
-  public List<NamedElement> parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+  public List<ValidatedFragment> parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
     throw new NotImplementedException("parse(InputStream stream)"); // doesns't make sense
   }
 

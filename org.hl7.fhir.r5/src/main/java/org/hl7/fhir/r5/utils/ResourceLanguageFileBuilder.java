@@ -92,7 +92,7 @@ public class ResourceLanguageFileBuilder {
 
 
   private boolean isTranslatable(Property p, Base b, String id) {
-    if (new ContextUtilities(context).isPrimitiveDatatype(b.fhirType())) { // never any translations for non-primitives
+    if (context.isPrimitiveType(b.fhirType())) { // never any translations for non-primitives
       ElementDefinition ed = null;
       for (ElementDefinition t : profile.getSnapshot().getElement()) {
         if (t.getId().equals(id)) {

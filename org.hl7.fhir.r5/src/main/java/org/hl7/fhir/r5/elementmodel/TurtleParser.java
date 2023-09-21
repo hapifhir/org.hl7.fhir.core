@@ -45,7 +45,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
-import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -81,9 +80,9 @@ public class TurtleParser extends ParserBase {
     super(context);
   }
   @Override
-  public List<NamedElement> parse(InputStream inStream) throws IOException, FHIRException {
+  public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
     byte[] content = TextFile.streamToBytes(inStream);
-    NamedElement ctxt = new NamedElement("focus", "ttl", content);
+    ValidatedFragment ctxt = new ValidatedFragment("focus", "ttl", content);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
 
     Turtle src = new Turtle();
@@ -99,7 +98,7 @@ public class TurtleParser extends ParserBase {
       src.parse(TextFile.streamToString(stream));
       ctxt.setElement(parse(ctxt.getErrors(), src));
     }
-    List<NamedElement> res = new ArrayList<>();
+    List<ValidatedFragment> res = new ArrayList<>();
     res.add(ctxt);
     return res;
   }

@@ -19,7 +19,7 @@ public class CanonicalResourceManagerTests {
     private CanonicalResource resource;
 
     public DeferredLoadTestResource(CanonicalResource resource) {
-      super(resource.fhirType(), resource.getId(), resource.getUrl(), resource.getVersion(), resource instanceof CodeSystem ? ((CodeSystem) resource).getSupplements() : null);
+      super(resource.fhirType(), resource.getId(), resource.getUrl(), resource.getVersion(), resource instanceof CodeSystem ? ((CodeSystem) resource).getSupplements() : null, null);
       this.resource = resource;
     }
 
@@ -431,12 +431,12 @@ public class CanonicalResourceManagerTests {
     vs2.setVersion("2000.0.0");
     vs2.setName("2");
 
-    mrm.see(vs1, new PackageInformation("hl7.fhir.r4.core", "4.0.1", new Date()));
+    mrm.see(vs1, new PackageInformation("hl7.fhir.r4.core", "4.0.1", "4.0.1", new Date()));
     Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
     Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0"));
     Assertions.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("1"));
 
-    mrm.see(vs2, new PackageInformation("hl7.terminology.r4", "4.0.1", new Date()));   
+    mrm.see(vs2, new PackageInformation("hl7.terminology.r4", "4.0.1", "4.0.1", new Date()));   
     Assertions.assertNotNull(mrm.get("http://terminology.hl7.org/ValueSet/234"));
     Assertions.assertTrue(mrm.get("http://terminology.hl7.org/ValueSet/234").getName().equals("2"));
     Assertions.assertNull(mrm.get("http://terminology.hl7.org/ValueSet/234", "2.0.0")); // this will get dropped completely because of UTG rules
@@ -822,14 +822,14 @@ public class CanonicalResourceManagerTests {
     vs1.setVersion("4.0.1");
     vs1.setName("1");
     DeferredLoadTestResource vs1d = new DeferredLoadTestResource(vs1);
-    mrm.see(vs1, new PackageInformation("pid.one", "1.0.0", new Date()));
+    mrm.see(vs1, new PackageInformation("pid.one", "1.0.0", "4.0.1", new Date()));
 
     ValueSet vs2 = new ValueSet();
     vs2.setId("2346");
     vs2.setUrl("http://url/ValueSet/234");
     vs2.setVersion("4.0.1");
     vs2.setName("2");
-    mrm.see(vs2, new PackageInformation("pid.two", "1.0.0", new Date()));
+    mrm.see(vs2, new PackageInformation("pid.two", "1.0.0", "4.0.1", new Date()));
 
     List<String> pvl1 = new ArrayList<>();
     pvl1.add("pid.one#1.0.0");
@@ -862,14 +862,14 @@ public class CanonicalResourceManagerTests {
     csb1.setUrl("http://url/CodeSystem/234");
     csb1.setVersion("4.0.1");
     csb1.setName("1");
-    mrm.see(csb1, new PackageInformation("pid.one", "1.0.0", new Date()));
+    mrm.see(csb1, new PackageInformation("pid.one", "1.0.0", "4.0.1", new Date()));
 
     CodeSystem csb2 = new CodeSystem();
     csb2.setId("2346");
     csb2.setUrl("http://url/CodeSystem/234");
     csb2.setVersion("4.0.1");
     csb2.setName("2");
-    mrm.see(csb2, new PackageInformation("pid.two", "1.0.0", new Date()));
+    mrm.see(csb2, new PackageInformation("pid.two", "1.0.0", "4.0.1", new Date()));
 
     CodeSystem css1 = new CodeSystem();
     css1.setId("s2345");
@@ -877,7 +877,7 @@ public class CanonicalResourceManagerTests {
     css1.setVersion("4.0.1");
     css1.setName("s1");
     css1.setSupplements("http://url/CodeSystem/234");
-    mrm.see(css1, new PackageInformation("pid.one", "1.0.0", new Date()));
+    mrm.see(css1, new PackageInformation("pid.one", "1.0.0", "4.0.1", new Date()));
 
     CodeSystem css2 = new CodeSystem();
     css2.setId("s2346");
@@ -885,7 +885,7 @@ public class CanonicalResourceManagerTests {
     css2.setVersion("4.0.1");
     css2.setName("s2");
     css2.setSupplements("http://url/CodeSystem/234");
-    mrm.see(css2, new PackageInformation("pid.two", "1.0.0", new Date()));
+    mrm.see(css2, new PackageInformation("pid.two", "1.0.0", "4.0.1", new Date()));
 
     List<CodeSystem> sl = mrm.getSupplements("http://url/CodeSystem/234");
     Assertions.assertEquals(2, sl.size());
