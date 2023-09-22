@@ -12,7 +12,7 @@ public class VSACImporterCLI {
           mixinStandardHelpOptions = true,
           version = "VSACCLI 1.0",
           subcommands = { GetValueSetList.class,
-                          GetVsacCodeSystems.class,
+                          GetCodeSystems.class,
                           CommandLine.HelpCommand.class },
            description = "Interact with the VSAC FHIR Terminology Service.")
   static class ParentCommand implements Runnable {
@@ -48,17 +48,18 @@ public class VSACImporterCLI {
     }
   }
 
-  @Command(name = "getVsacCodeSystems", mixinStandardHelpOptions = true, description = "Download all VSAC code systems as FHIR CodeSystem resources.")
-  static class GetVsacCodeSystems implements Runnable {
+  @Command(name = "getCodeSystems", mixinStandardHelpOptions = true, description = "Download VSAC code systems as FHIR CodeSystem resources.")
+  static class GetCodeSystems implements Runnable {
+    enum FhirFormat { xml, json }
 
-    @Option(names = { "-i", "--inputFile" }, required = true, paramLabel = "FILE", arity = "1..1", description = "The full path to a CSV file containing rows for each VSAC code system with the code system's FHIR Logical ID (id) in the first column, and its Version ID (vid) in the second column.")
+    @Option(names = { "-i", "--inputFile" }, required = true, paramLabel = "FILE", arity = "1..1", description = "The full path to a CSV file containing rows for each VSAC code system with the code system's FHIR Logical ID (id) in the first column, its Version ID (vid) in the second column, and the output filename to write the code system to.")
     private File inputFile;
 
     @Option(names = { "-a", "--apiKey" }, required = true, arity = "1..1", description = "The VSAC API key to use.")
     private String apiKey;
 
-    @Option(names = { "-f", "--fhirFormat" }, required = false, defaultValue = "json", arity = "0..1", description = "The FHIR format for the output code systems.")
-    private String fhirFormat;
+    @Option(names = { "-f", "--fhirFormat" }, required = false, defaultValue = "json", arity = "0..1", description = "The FHIR format for the output code systems. Valid values: ${COMPLETION-CANDIDATES}" )
+    private FhirFormat fhirFormat;
 
     @Option(names = { "-d", "--destinationFolder" }, required = true, arity = "1..1", paramLabel = "FOLDER", description = "The full path to the folder where the FHIR resource files will be written to.")
     private File destinationFolder;
@@ -67,7 +68,7 @@ public class VSACImporterCLI {
     public void run() {
       try {
         VSACImporter vsacImporter = new VSACImporter();
-        // TODO
+        vsacImporter.getCodeSystems(inputFile, apiKey, fhirFormat.toString(), destinationFolder);
       }
       catch (Exception e) {
         e.printStackTrace();

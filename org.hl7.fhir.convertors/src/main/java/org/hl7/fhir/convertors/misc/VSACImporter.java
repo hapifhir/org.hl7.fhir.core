@@ -13,6 +13,7 @@ import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.elementmodel.Manager;
 import org.hl7.fhir.r4.formats.FormatUtilities;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueType;
@@ -121,7 +122,6 @@ public class VSACImporter extends OIDBasedValueSetImporter {
 
   /**
    * Generates expansions of a provided list of VSAC value sets and writes details of the value set expansions (including the code systems used) to an output file.
-   *
    */
   public void getValueSetList(File inputFile, String apiKey, String separator, File outputFile) throws FHIRException, IOException, URISyntaxException {
     CSVReader csv = new CSVReader(new FileInputStream(inputFile));
@@ -134,7 +134,6 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     fhirToolingClient.setTimeout(360000);
 
     int i = 0;
-    int j = 0;
     BufferedWriter bwr = new BufferedWriter(new FileWriter(outputFile));
 
     String csvOutputHeader = ("NUM" + separator + "OID" + separator + "Name" + separator + "Title" + separator + "URL" + separator + "Version" + separator + "Status" + separator + "Code systems in expansion" + separator + "Code systems in expansion");
@@ -215,5 +214,56 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     }
     long timeTakenMs = System.currentTimeMillis() - startTime;
     System.out.println("Done. " + i + " ValueSets in " + timeTakenMs + " milliseconds.");
+  }
+
+  /**
+   * Download VSAC code systems as FHIR CodeSystem resources.
+   */
+  public void getCodeSystems(File inputFile, String apiKey, String fhirFormat, File destinationFolder) throws FHIRException, IOException, URISyntaxException {
+    CSVReader csv = new CSVReader(new FileInputStream(inputFile));
+    csv.readHeaders();
+    Map<String, String> errs = new HashMap<>();
+
+    FHIRToolingClient fhirToolingClient = new FHIRToolingClient("https://cts.nlm.nih.gov/fhir", "fhir/vsac");
+    fhirToolingClient.setUsername("apikey");
+    fhirToolingClient.setPassword(apiKey);
+    fhirToolingClient.setTimeout(360000);
+
+    int i = 0;
+    long startTime = System.currentTimeMillis();
+    while (csv.line()) {
+      String id = csv.cell("id");
+      String vid = csv.cell("vid");
+      String filenamePrefix = csv.cell("filenamePrefix");
+      try {
+          CodeSystem cs = fhirToolingClient.vread(CodeSystem.class, id, vid);
+          Manager.FhirFormat format = null;
+          switch (fhirFormat) {
+            case "json" : {
+              format = Manager.FhirFormat.JSON;
+              break;
+            }
+            case "xml" : {
+              format = Manager.FhirFormat.XML;
+              break;
+            }
+            default: {
+              format = Manager.FhirFormat.JSON;
+            }
+          }
+          FormatUtilities.makeParser(format).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(destinationFolder, filenamePrefix + "-" + id + "-" + vid + "." + fhirFormat)), cs);
+        i++;
+      } catch (Exception e) {
+        System.out.println("Unable to fetch code systems with id " + id + " and vid " + vid + ": " + e.getMessage());
+        errs.put(id + ":" + vid, e.getMessage());
+      }
+    }
+    OperationOutcome oo = new OperationOutcome();
+    for (String oid : errs.keySet()) {
+      oo.addIssue().setSeverity(IssueSeverity.ERROR).setCode(IssueType.EXCEPTION).setDiagnostics(errs.get(oid)).addLocation(oid);
+    }
+    FormatUtilities.makeParser(Manager.FhirFormat.JSON).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(destinationFolder, "OperationOutcome-vsac-errors.json")), oo);
+    long timeTakenMs = System.currentTimeMillis() - startTime;
+    System.out.println("Downloaded " + i + " VSAC code systems in " + timeTakenMs + " milliseconds.");
   }
 }
