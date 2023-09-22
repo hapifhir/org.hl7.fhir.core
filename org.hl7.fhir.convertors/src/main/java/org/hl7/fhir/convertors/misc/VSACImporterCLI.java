@@ -64,11 +64,14 @@ public class VSACImporterCLI {
     @Option(names = { "-d", "--destinationFolder" }, required = true, arity = "1..1", paramLabel = "FOLDER", description = "The full path to the folder where the FHIR resource files will be written to.")
     private File destinationFolder;
 
+    @Option(names = { "-o", "--onlyNew" }, required = false, defaultValue = "true", arity = "0..1", description = "Whether only new code systems should be downloaded." )
+    private boolean onlyNew;
+
     @Override
     public void run() {
       try {
         VSACImporter vsacImporter = new VSACImporter();
-        vsacImporter.getCodeSystems(inputFile, apiKey, fhirFormat.toString(), destinationFolder);
+        vsacImporter.getCodeSystems(inputFile, apiKey, fhirFormat.toString(), destinationFolder, onlyNew);
       }
       catch (Exception e) {
         e.printStackTrace();

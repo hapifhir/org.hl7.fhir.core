@@ -219,7 +219,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
   /**
    * Download VSAC code systems as FHIR CodeSystem resources.
    */
-  public void getCodeSystems(File inputFile, String apiKey, String fhirFormat, File destinationFolder) throws FHIRException, IOException, URISyntaxException {
+  public void getCodeSystems(File inputFile, String apiKey, String fhirFormat, File destinationFolder, boolean onlyNew) throws FHIRException, IOException, URISyntaxException {
     CSVReader csv = new CSVReader(new FileInputStream(inputFile));
     csv.readHeaders();
     Map<String, String> errs = new HashMap<>();
@@ -235,32 +235,43 @@ public class VSACImporter extends OIDBasedValueSetImporter {
       String id = csv.cell("id");
       String vid = csv.cell("vid");
       String filenamePrefix = csv.cell("filenamePrefix");
-      try {
-          CodeSystem cs = fhirToolingClient.vread(CodeSystem.class, id, vid);
-          Manager.FhirFormat format = null;
-          switch (fhirFormat) {
-            case "json" : {
-              format = Manager.FhirFormat.JSON;
-              break;
+      StringBuilder filename = new StringBuilder();
+      if (filenamePrefix != null) filename.append(filenamePrefix);
+      filename.append("CodeSystem-").append(id).append(".").append(fhirFormat);
+
+        try {
+          if (!onlyNew || !(new File(Utilities.path(destinationFolder, filename.toString())).exists())) {
+            CodeSystem cs = null;
+            if (vid != null) {
+              cs = fhirToolingClient.vread(CodeSystem.class, id, vid);
+            } else {
+              cs = fhirToolingClient.read(CodeSystem.class, id);
             }
-            case "xml" : {
-              format = Manager.FhirFormat.XML;
-              break;
+            Manager.FhirFormat format = null;
+            switch (fhirFormat) {
+              case "json": {
+                format = Manager.FhirFormat.JSON;
+                break;
+              }
+              case "xml": {
+                format = Manager.FhirFormat.XML;
+                break;
+              }
+              default: {
+                format = Manager.FhirFormat.JSON;
+              }
             }
-            default: {
-              format = Manager.FhirFormat.JSON;
-            }
+            FormatUtilities.makeParser(format).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(destinationFolder, filename.toString())), cs);
+            i++;
           }
-          FormatUtilities.makeParser(format).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(destinationFolder, filenamePrefix + "-" + id + "-" + vid + "-" + cs.getVersion() + "." + fhirFormat)), cs);
-        i++;
       } catch (Exception e) {
-        System.out.println("Unable to fetch code systems with id " + id + " and vid " + vid + ": " + e.getMessage());
+        System.out.println("Unable to fetch code systems with id " + id + ": " + e.getMessage());
         errs.put(id + ":" + vid, e.getMessage());
       }
     }
     OperationOutcome oo = new OperationOutcome();
-    for (String oid : errs.keySet()) {
-      oo.addIssue().setSeverity(IssueSeverity.ERROR).setCode(IssueType.EXCEPTION).setDiagnostics(errs.get(oid)).addLocation(oid);
+    for (String id : errs.keySet()) {
+      oo.addIssue().setSeverity(IssueSeverity.ERROR).setCode(IssueType.EXCEPTION).setDiagnostics(errs.get(id)).addLocation(id);
     }
     FormatUtilities.makeParser(Manager.FhirFormat.JSON).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(destinationFolder, "OperationOutcome-vsac-errors.json")), oo);
     long timeTakenMs = System.currentTimeMillis() - startTime;
