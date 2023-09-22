@@ -251,7 +251,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
               format = Manager.FhirFormat.JSON;
             }
           }
-          FormatUtilities.makeParser(format).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(destinationFolder, filenamePrefix + "-" + id + "-" + vid + "." + fhirFormat)), cs);
+          FormatUtilities.makeParser(format).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(destinationFolder, filenamePrefix + "-" + id + "-" + vid + "-" + cs.getVersion() + "." + fhirFormat)), cs);
         i++;
       } catch (Exception e) {
         System.out.println("Unable to fetch code systems with id " + id + " and vid " + vid + ": " + e.getMessage());
