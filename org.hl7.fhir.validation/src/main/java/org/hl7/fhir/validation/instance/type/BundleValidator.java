@@ -115,14 +115,14 @@ public class BundleValidator extends BaseValidator {
         String rtype = entry.getNamedChild(RESOURCE).fhirType();
         int rcount = counter.containsKey(rtype) ? counter.get(rtype)+1 : 0;
         counter.put(rtype, rcount);
+        Element res = entry.getNamedChild(RESOURCE);
+        NodeStack rstack = estack.push(res, -1, null, null);
         for (BundleValidationRule bvr : validator().getBundleValidationRules()) {
           if (meetsRule(bvr, rtype, rcount, count)) {
             StructureDefinition defn = context.fetchResource(StructureDefinition.class, bvr.getProfile());
             if (defn == null) {
               throw new Error(context.formatMessage(I18nConstants.BUNDLE_RULE_PROFILE_UNKNOWN, bvr.getRule(), bvr.getProfile()));
             } else {
-              Element res = entry.getNamedChild(RESOURCE);
-              NodeStack rstack = estack.push(res, -1, null, null);
               if (validator().isCrumbTrails()) {
                 res.addMessage(signpost(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, res.line(), res.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM, defn.getUrl()));
               }
@@ -130,7 +130,9 @@ public class BundleValidator extends BaseValidator {
               ok = validator().startInner(hostContext, errors, res, res, defn, rstack, false, pct, mode) && ok;
             }
           }
-        }      
+        }
+        // also, while we're here, check the specials, since this doesn't happen anywhere else 
+        ((InstanceValidator) parent).checkSpecials(hostContext, errors, res, rstack, true, pct, mode);
       }
       
       // todo: check specials
