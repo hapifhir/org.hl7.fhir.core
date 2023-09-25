@@ -583,7 +583,7 @@ public class I18nConstants {
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES = "Unable_to_resolve_system__value_set_has_multiple_matches";
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_NO_SYSTEM = "Unable_to_resolve_system__value_set_has_include_with_no_system";
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_UNKNOWN_SYSTEM = "Unable_to_resolve_system__value_set_has_include_with_unknown_system";
-//  public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_FILTER = "Unable_to_resolve_system__value_set_has_include_with_filter";
+  public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_FILTER = "Unable_to_resolve_system__value_set_has_include_with_filter";
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_INCLUDES_OR_EXPANSION = "Unable_to_resolve_system__value_set_has_no_includes_or_expansion";
   public static final String UNABLE_TO_RESOLVE_VALUE_SET_ = "Unable_to_resolve_value_Set_";
   public static final String UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER = "Unable_to_validate_code_without_using_server";
@@ -1000,6 +1000,9 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS = "TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS_NO_UNIT = "TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS_NO_UNIT";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS_NOT_IN_UNIT = "TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS_NOT_IN_UNIT";
+  public static final String CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM = "CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM";
+  public static final String LOGICAL_MODEL_NAME_MISMATCH = "LOGICAL_MODEL_NAME_MISMATCH";
+  public static final String LOGICAL_MODEL_QNAME_MISMATCH = "LOGICAL_MODEL_QNAME_MISMATCH";
 }
 
 
