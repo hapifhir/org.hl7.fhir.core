@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -48,6 +49,7 @@ public class GeneratedPEModelTest {
 
   @Test
   public void testPEGenLoad() throws Exception {
+    TimeZone.setDefault(TimeZone.getTimeZone("UTC+1100"));
     load();
     Observation obs = (Observation) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "profiles", "pe-instance.xml"));
     TestProfile tp = TestProfile.fromSource(ctxt, obs);

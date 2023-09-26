@@ -7,6 +7,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 public class ValidatedFragment {
   private String name;
+  private String elementPath;
   private String extension;
   private Element element;
   private byte[] content;
@@ -50,5 +51,16 @@ public class ValidatedFragment {
   public String getFilename() {
     return name+"."+extension;
   }
+
+  public String getElementPath() {
+    return elementPath;
+  }
+
+  public void setElementPath(String elementPath) {
+    this.elementPath = elementPath;
+  }
   
+  public String path() {
+    return elementPath == null ? name : elementPath;
+  }
 }
