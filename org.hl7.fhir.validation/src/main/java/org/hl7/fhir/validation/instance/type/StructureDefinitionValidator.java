@@ -604,7 +604,14 @@ public class StructureDefinitionValidator extends BaseValidator {
   private List<String> getTypesForElement(List<Element> elements, Element element, String profileType) {
     List<String> types = new ArrayList<>();
     if (element.hasChild("path") && !element.getNamedChildValue("path").contains(".")) {
-      types.add(element.getNamedChildValue("path"));
+      String t = element.getNamedChildValue("path");
+      if (profileType.equals(t)) {
+        types.add(profileType);
+      } else if (profileType.endsWith("/"+t)) {
+        types.add(profileType);
+      } else {
+        throw new Error("Error: this should not happen: '"+t+"' vs '"+profileType+"'?");
+      }      
     } else {
       for (Element tr : element.getChildrenByName("type")) {
         String t = tr.getNamedChildValue("code");
