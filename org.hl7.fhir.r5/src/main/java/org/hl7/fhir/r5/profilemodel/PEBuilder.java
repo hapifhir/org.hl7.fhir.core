@@ -1,5 +1,33 @@
 package org.hl7.fhir.r5.profilemodel;
 
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, \
+  are permitted provided that the following conditions are met:
+  
+   * Redistributions of source code must retain the above copyright notice, this \
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
+  POSSIBILITY OF SUCH DAMAGE.
+  */
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -340,7 +368,11 @@ public class PEBuilder {
                   } else if (isTypeSlicing(defn)) {
                     res.add(new PEDefinitionTypeSlice(this, list.get(i).getSliceName(), profile, list.get(i), defn, parent.path()));
                   } else {
-                    res.add(new PEDefinitionSlice(this, list.get(i).getSliceName(), profile, list.get(i), defn, parent.path()));
+                    if (ProfileUtilities.isComplexExtension(profile) && defn.getPath().endsWith(".extension")) {
+                      res.add(new PEDefinitionSubExtension(this, profile, list.get(i), parent.path()));
+                    } else {
+                      res.add(new PEDefinitionSlice(this, list.get(i).getSliceName(), profile, list.get(i), defn, parent.path()));
+                    }
                   }
                   i++;
                 }
@@ -362,6 +394,15 @@ public class PEBuilder {
     } else {
       throw new DefinitionException("not done yet");
     }
+  }
+
+  protected PEDefinition makeChild(PEDefinition parent, StructureDefinition profileStructure, ElementDefinition definition) {
+    PEDefinitionElement pe = new PEDefinitionElement(this, profileStructure, definition, parent.path());
+    if (context.isPrimitiveType(definition.getTypeFirstRep().getWorkingCode()) && "value".equals(pe.name())) {
+      pe.setMustHaveValue(definition.getMustHaveValue());
+    }
+    pe.setInFixedValue(definition.hasFixed() || definition.hasPattern() || parent.isInFixedValue());
+    return pe;
   }
 
   private boolean passElementPropsCheck(ElementDefinition bdefn) {
@@ -417,7 +458,7 @@ public class PEBuilder {
         }
       }
     }
-    return false;
+    return !defn.getPath().contains(".");
   }
 
 
@@ -463,6 +504,10 @@ public class PEBuilder {
   }
 
 
+  protected PEType makeType(String tn, String url) {
+    return new PEType(tn, tn, url);
+  }
+  
   protected PEType makeType(String tn) {
     return new PEType(tn, tn, "http://hl7.org/fhir/StructureDefinition/"+ tn);
   }
@@ -484,15 +529,15 @@ public class PEBuilder {
   }
 
   protected void populateByProfile(Base base, PEDefinition definition) {
-    for (PEDefinition pe : definition.children(true)) {
-      System.out.println("PopulateByProfile for "+pe.path);
-      if (pe.fixedValue()) {
-        if (pe.definition().hasPattern()) {
-          base.setProperty(pe.schemaName(), pe.definition().getPattern());
-        } else { 
-          base.setProperty(pe.schemaName(), pe.definition().getFixed());
-        }
-      } else if (!pe.isSlicer()) {
+    if (definition.types().size() == 1) {
+      for (PEDefinition pe : definition.directChildren(true)) {
+        if (pe.fixedValue()) {
+          if (pe.definition().hasPattern()) {
+            base.setProperty(pe.schemaName(), pe.definition().getPattern());
+          } else { 
+            base.setProperty(pe.schemaName(), pe.definition().getFixed());
+          }
+        } else if (!pe.isSlicer() && pe.max() == 1) {
           for (int i = 0; i < pe.min(); i++) {
             Base b = null;
             if (pe.schemaName().endsWith("[x]")) {
@@ -507,6 +552,7 @@ public class PEBuilder {
             if (b != null) {
               populateByProfile(b, pe);
             }
+          }
         }
       }
     }
