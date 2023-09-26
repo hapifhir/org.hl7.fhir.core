@@ -83,7 +83,7 @@ public class SHCParser extends ParserBase {
     byte[] content = TextFile.streamToBytes(inStream);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     List<ValidatedFragment> res = new ArrayList<>();
-    ValidatedFragment shc = new ValidatedFragment("shc", "json", content);
+    ValidatedFragment shc = new ValidatedFragment("shc", "txt", content);
     res.add(shc);
 
     String src = TextFile.streamToString(stream).trim();
@@ -121,6 +121,8 @@ public class SHCParser extends ParserBase {
         return res;      
       }
 
+      ValidatedFragment bnd = new ValidatedFragment("payload", "json", jwt.payloadSrc);
+      res.add(bnd);
       checkNamedProperties(shc.getErrors(), jwt.getPayload(), prefix+"payload", "iss", "nbf", "vc");
       checkProperty(shc.getErrors(), jwt.getPayload(), prefix+"payload", "iss", true, "String");
       checkProperty(shc.getErrors(), jwt.getPayload(), prefix+"payload", "nbf", true, "Number");
@@ -165,8 +167,6 @@ public class SHCParser extends ParserBase {
         return res;
       }
       // ok. all checks passed, we can now validate the bundle
-      ValidatedFragment bnd = new ValidatedFragment(path, "json", org.hl7.fhir.utilities.json.parser.JsonParser.composeBytes(cs.getJsonObject("fhirBundle")));
-      res.add(bnd);
       bnd.setElement(jsonParser.parse(bnd.getErrors(), cs.getJsonObject("fhirBundle")));
     }  
     return res;
@@ -234,6 +234,9 @@ public class SHCParser extends ParserBase {
     private JsonObject header;
     private JsonObject payload;
 
+    private byte[] headerSrc;
+    private byte[] payloadSrc;
+
     public JsonObject getHeader() {
       return header;
     }
@@ -246,6 +249,19 @@ public class SHCParser extends ParserBase {
     public void setPayload(JsonObject payload) {
       this.payload = payload;
     }
+    public byte[] getHeaderSrc() {
+      return headerSrc;
+    }
+    public void setHeaderSrc(byte[] headerSrc) {
+      this.headerSrc = headerSrc;
+    }
+    public byte[] getPayloadSrc() {
+      return payloadSrc;
+    }
+    public void setPayloadSrc(byte[] payloadSrc) {
+      this.payloadSrc = payloadSrc;
+    }
+    
   }
 
   private static final int BUFFER_SIZE = 1024;
@@ -287,10 +303,12 @@ public class SHCParser extends ParserBase {
       throw new FHIRException("The input is not a valid base 64 encoded string.", e);
     }
     JWT res = new JWT();
+    res.setHeaderSrc(headerJson);
     res.header = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(headerJson);
     if ("DEF".equals(res.header.asString("zip"))) {
       payloadJson = inflate(payloadJson);
     }
+    res.setPayloadSrc(payloadJson);
     res.payload = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(TextFile.bytesToString(payloadJson), true);
 
     checkSignature(jwt, res, errors, "jwt", org.hl7.fhir.utilities.json.parser.JsonParser.compose(res.payload));
