@@ -122,7 +122,7 @@ public class JsonParser extends ParserBase {
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
 //    long start = System.currentTimeMillis();
     byte[] content = TextFile.streamToBytes(inStream);
-    ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "json", content);
+    ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "json", content, false);
     
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     

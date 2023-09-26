@@ -114,7 +114,7 @@ public class XmlParser extends ParserBase {
   public List<ValidatedFragment> parse(InputStream inStream) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
     
     byte[] content = TextFile.streamToBytes(inStream);
-    ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "xml", content);
+    ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "xml", content, false);
     
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     Document doc = null;
