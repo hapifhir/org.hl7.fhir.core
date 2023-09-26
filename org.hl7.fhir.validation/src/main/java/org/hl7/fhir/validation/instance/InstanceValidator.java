@@ -766,7 +766,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       for (ValidatedFragment ne : validatedContent) {
         if (ne.getElement() != null) {
-          validate(appContext, ne.getErrors(), validatedContent.size() > 1 ? ne.getName() : null, ne.getElement(), profiles);
+          validate(appContext, ne.getErrors(), validatedContent.size() > 1 ? ne.path() : null, ne.getElement(), profiles);
         } 
         errors.addAll(ne.getErrors());         
       }
