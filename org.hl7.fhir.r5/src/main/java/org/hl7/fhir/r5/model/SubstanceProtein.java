@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -528,6 +528,29 @@ public class SubstanceProtein extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("subunit")) {
+          this.subunit = null;
+        } else if (name.equals("sequence")) {
+          this.sequence = null;
+        } else if (name.equals("length")) {
+          this.length = null;
+        } else if (name.equals("sequenceAttachment")) {
+          this.sequenceAttachment = null;
+        } else if (name.equals("nTerminalModificationId")) {
+          this.nTerminalModificationId = null;
+        } else if (name.equals("nTerminalModification")) {
+          this.nTerminalModification = null;
+        } else if (name.equals("cTerminalModificationId")) {
+          this.cTerminalModificationId = null;
+        } else if (name.equals("cTerminalModification")) {
+          this.cTerminalModification = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -934,6 +957,21 @@ public class SubstanceProtein extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("sequenceType")) {
+          this.sequenceType = null;
+        } else if (name.equals("numberOfSubunits")) {
+          this.numberOfSubunits = null;
+        } else if (name.equals("disulfideLinkage")) {
+          this.getDisulfideLinkage().remove(value);
+        } else if (name.equals("subunit")) {
+          this.getSubunit().add((SubstanceProteinSubunitComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

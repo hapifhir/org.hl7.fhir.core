@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -320,6 +320,23 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("country")) {
+          this.country = null;
+        } else if (name.equals("jurisdiction")) {
+          this.jurisdiction = null;
+        } else if (name.equals("status")) {
+          this.status = null;
+        } else if (name.equals("dateRange")) {
+          this.dateRange = null;
+        } else if (name.equals("restoreDate")) {
+          this.restoreDate = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

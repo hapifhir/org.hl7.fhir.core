@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -387,6 +387,17 @@ public class Endpoint extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.getType().remove(value);
+        } else if (name.equals("mimeType")) {
+          this.getMimeType().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1271,6 +1282,38 @@ public class Endpoint extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new EndpointStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<EndpointStatus>
+        } else if (name.equals("connectionType")) {
+          this.getConnectionType().remove(value);
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("environmentType")) {
+          this.getEnvironmentType().remove(value);
+        } else if (name.equals("managingOrganization")) {
+          this.managingOrganization = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else if (name.equals("payload")) {
+          this.getPayload().add((EndpointPayloadComponent) value);
+        } else if (name.equals("address")) {
+          this.address = null;
+        } else if (name.equals("header")) {
+          this.getHeader().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

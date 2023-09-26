@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -486,6 +486,24 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("value")) {
+          this.value = null;
+        } else if (name.equals("comparator")) {
+          value = new QuantityComparatorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.comparator = (Enumeration) value; // Enumeration<QuantityComparator>
+        } else if (name.equals("unit")) {
+          this.unit = null;
+        } else if (name.equals("system")) {
+          this.system = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

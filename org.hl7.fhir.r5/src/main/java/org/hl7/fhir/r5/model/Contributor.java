@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -421,6 +421,20 @@ public class Contributor extends DataType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new ContributorTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ContributorType>
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

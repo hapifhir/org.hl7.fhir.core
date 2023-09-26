@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -741,6 +741,21 @@ public class DeviceDefinition extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("deviceIdentifier")) {
+          this.deviceIdentifier = null;
+        } else if (name.equals("issuer")) {
+          this.issuer = null;
+        } else if (name.equals("jurisdiction")) {
+          this.jurisdiction = null;
+        } else if (name.equals("marketDistribution")) {
+          this.getMarketDistribution().add((UdiDeviceIdentifierMarketDistributionComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -988,6 +1003,17 @@ public class DeviceDefinition extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("marketPeriod")) {
+          this.marketPeriod = null;
+        } else if (name.equals("subJurisdiction")) {
+          this.subJurisdiction = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1368,6 +1394,22 @@ public class DeviceDefinition extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new DeviceDefinitionRegulatoryIdentifierTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<DeviceDefinitionRegulatoryIdentifierType>
+        } else if (name.equals("deviceIdentifier")) {
+          this.deviceIdentifier = null;
+        } else if (name.equals("issuer")) {
+          this.issuer = null;
+        } else if (name.equals("jurisdiction")) {
+          this.jurisdiction = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1641,6 +1683,18 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("type")) {
+          value = new DeviceNameTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<DeviceNameType>
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1876,6 +1930,17 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("justification")) {
+          this.getJustification().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2236,6 +2301,21 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("category")) {
+          this.category = null;
+        } else if (name.equals("specification")) {
+          this.specification = null;
+        } else if (name.equals("version")) {
+          this.getVersion().remove(value);
+        } else if (name.equals("source")) {
+          this.getSource().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2486,6 +2566,17 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("reference")) {
+          this.reference = null;
+        } else if (name.equals("count")) {
+          this.count = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2952,6 +3043,25 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.identifier = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("count")) {
+          this.count = null;
+        } else if (name.equals("distributor")) {
+          this.getDistributor().add((PackagingDistributorComponent) value);
+        } else if (name.equals("udiDeviceIdentifier")) {
+          this.getUdiDeviceIdentifier().add((DeviceDefinitionUdiDeviceIdentifierComponent) value);
+        } else if (name.equals("packaging")) {
+          this.getPackaging().add((DeviceDefinitionPackagingComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -3246,6 +3356,17 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("organizationReference")) {
+          this.getOrganizationReference().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -3517,6 +3638,19 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("component")) {
+          this.component = null;
+        } else if (name.equals("value")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3847,6 +3981,17 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -4081,6 +4226,17 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("relation")) {
+          this.relation = null;
+        } else if (name.equals("relatedDevice")) {
+          this.relatedDevice = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -4372,6 +4528,19 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("substance")) {
+          this.substance = null;
+        } else if (name.equals("alternate")) {
+          this.alternate = null;
+        } else if (name.equals("allergenicIndicator")) {
+          this.allergenicIndicator = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -4973,6 +5142,27 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("usageInstruction")) {
+          this.usageInstruction = null;
+        } else if (name.equals("relatedArtifact")) {
+          this.getRelatedArtifact().remove(value);
+        } else if (name.equals("indication")) {
+          this.getIndication().remove(value);
+        } else if (name.equals("contraindication")) {
+          this.getContraindication().remove(value);
+        } else if (name.equals("warning")) {
+          this.getWarning().remove(value);
+        } else if (name.equals("intendedUse")) {
+          this.intendedUse = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -5324,6 +5514,20 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("recall")) {
+          this.recall = null;
+        } else if (name.equals("scope")) {
+          value = new DeviceCorrectiveActionScopeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.scope = (Enumeration) value; // Enumeration<DeviceCorrectiveActionScope>
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -5645,6 +5849,21 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("chargeItemCode")) {
+          this.chargeItemCode = null;
+        } else if (name.equals("count")) {
+          this.count = null;
+        } else if (name.equals("effectivePeriod")) {
+          this.effectivePeriod = null;
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -7438,6 +7657,66 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("udiDeviceIdentifier")) {
+          this.getUdiDeviceIdentifier().add((DeviceDefinitionUdiDeviceIdentifierComponent) value);
+        } else if (name.equals("regulatoryIdentifier")) {
+          this.getRegulatoryIdentifier().add((DeviceDefinitionRegulatoryIdentifierComponent) value);
+        } else if (name.equals("partNumber")) {
+          this.partNumber = null;
+        } else if (name.equals("manufacturer")) {
+          this.manufacturer = null;
+        } else if (name.equals("deviceName")) {
+          this.getDeviceName().add((DeviceDefinitionDeviceNameComponent) value);
+        } else if (name.equals("modelNumber")) {
+          this.modelNumber = null;
+        } else if (name.equals("classification")) {
+          this.getClassification().add((DeviceDefinitionClassificationComponent) value);
+        } else if (name.equals("conformsTo")) {
+          this.getConformsTo().add((DeviceDefinitionConformsToComponent) value);
+        } else if (name.equals("hasPart")) {
+          this.getHasPart().add((DeviceDefinitionHasPartComponent) value);
+        } else if (name.equals("packaging")) {
+          this.getPackaging().add((DeviceDefinitionPackagingComponent) value);
+        } else if (name.equals("version")) {
+          this.getVersion().add((DeviceDefinitionVersionComponent) value);
+        } else if (name.equals("safety")) {
+          this.getSafety().remove(value);
+        } else if (name.equals("shelfLifeStorage")) {
+          this.getShelfLifeStorage().remove(value);
+        } else if (name.equals("languageCode")) {
+          this.getLanguageCode().remove(value);
+        } else if (name.equals("property")) {
+          this.getProperty().add((DeviceDefinitionPropertyComponent) value);
+        } else if (name.equals("owner")) {
+          this.owner = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("link")) {
+          this.getLink().add((DeviceDefinitionLinkComponent) value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("material")) {
+          this.getMaterial().add((DeviceDefinitionMaterialComponent) value);
+        } else if (name.equals("productionIdentifierInUDI")) {
+          value = new DeviceProductionIdentifierInUDIEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getProductionIdentifierInUDI().add((Enumeration) value);
+        } else if (name.equals("guideline")) {
+          this.guideline = (DeviceDefinitionGuidelineComponent) value; // DeviceDefinitionGuidelineComponent
+        } else if (name.equals("correctiveAction")) {
+          this.correctiveAction = (DeviceDefinitionCorrectiveActionComponent) value; // DeviceDefinitionCorrectiveActionComponent
+        } else if (name.equals("chargeItem")) {
+          this.getChargeItem().add((DeviceDefinitionChargeItemComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

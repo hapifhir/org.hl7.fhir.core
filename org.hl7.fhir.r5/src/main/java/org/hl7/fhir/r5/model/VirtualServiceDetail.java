@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -434,6 +434,23 @@ public class VirtualServiceDetail extends DataType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("channelType")) {
+          this.channelType = null;
+        } else if (name.equals("address[x]")) {
+          this.address = null;
+        } else if (name.equals("additionalInfo")) {
+          this.getAdditionalInfo().remove(value);
+        } else if (name.equals("maxParticipants")) {
+          this.maxParticipants = null;
+        } else if (name.equals("sessionKey")) {
+          this.sessionKey = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

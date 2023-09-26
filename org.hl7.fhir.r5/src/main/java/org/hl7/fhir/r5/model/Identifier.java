@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -550,6 +550,26 @@ public class Identifier extends DataType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("use")) {
+          value = new IdentifierUseEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.use = (Enumeration) value; // Enumeration<IdentifierUse>
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("system")) {
+          this.system = null;
+        } else if (name.equals("value")) {
+          this.value = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else if (name.equals("assigner")) {
+          this.assigner = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

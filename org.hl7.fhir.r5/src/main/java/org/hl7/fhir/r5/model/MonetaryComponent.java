@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -485,6 +485,22 @@ public class MonetaryComponent extends DataType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new PriceComponentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<PriceComponentType>
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("factor")) {
+          this.factor = null;
+        } else if (name.equals("amount")) {
+          this.amount = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

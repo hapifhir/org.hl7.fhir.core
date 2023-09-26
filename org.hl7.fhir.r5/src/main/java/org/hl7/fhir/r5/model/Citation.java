@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -879,6 +879,17 @@ public class Citation extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("style")) {
+          this.style = null;
+        } else if (name.equals("text")) {
+          this.text = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1108,6 +1119,17 @@ public class Citation extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("classifier")) {
+          this.getClassifier().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1382,6 +1404,19 @@ public class Citation extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("activity")) {
+          this.activity = null;
+        } else if (name.equals("actual")) {
+          this.actual = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2445,6 +2480,43 @@ public class Citation extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("relatedIdentifier")) {
+          this.getRelatedIdentifier().remove(value);
+        } else if (name.equals("dateAccessed")) {
+          this.dateAccessed = null;
+        } else if (name.equals("version")) {
+          this.version = (CitationCitedArtifactVersionComponent) value; // CitationCitedArtifactVersionComponent
+        } else if (name.equals("currentState")) {
+          this.getCurrentState().remove(value);
+        } else if (name.equals("statusDate")) {
+          this.getStatusDate().add((CitationCitedArtifactStatusDateComponent) value);
+        } else if (name.equals("title")) {
+          this.getTitle().add((CitationCitedArtifactTitleComponent) value);
+        } else if (name.equals("abstract")) {
+          this.getAbstract().add((CitationCitedArtifactAbstractComponent) value);
+        } else if (name.equals("part")) {
+          this.part = (CitationCitedArtifactPartComponent) value; // CitationCitedArtifactPartComponent
+        } else if (name.equals("relatesTo")) {
+          this.getRelatesTo().add((CitationCitedArtifactRelatesToComponent) value);
+        } else if (name.equals("publicationForm")) {
+          this.getPublicationForm().add((CitationCitedArtifactPublicationFormComponent) value);
+        } else if (name.equals("webLocation")) {
+          this.getWebLocation().add((CitationCitedArtifactWebLocationComponent) value);
+        } else if (name.equals("classification")) {
+          this.getClassification().add((CitationCitedArtifactClassificationComponent) value);
+        } else if (name.equals("contributorship")) {
+          this.contributorship = (CitationCitedArtifactContributorshipComponent) value; // CitationCitedArtifactContributorshipComponent
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2805,6 +2877,17 @@ public class Citation extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("value")) {
+          this.value = null;
+        } else if (name.equals("baseCitation")) {
+          this.baseCitation = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -3073,6 +3156,19 @@ public class Citation extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("activity")) {
+          this.activity = null;
+        } else if (name.equals("actual")) {
+          this.actual = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3381,6 +3477,19 @@ public class Citation extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.getType().remove(value);
+        } else if (name.equals("language")) {
+          this.language = null;
+        } else if (name.equals("text")) {
+          this.text = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3728,6 +3837,21 @@ public class Citation extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("language")) {
+          this.language = null;
+        } else if (name.equals("text")) {
+          this.text = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -4006,6 +4130,19 @@ public class Citation extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("value")) {
+          this.value = null;
+        } else if (name.equals("baseCitation")) {
+          this.baseCitation = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -4611,6 +4748,30 @@ public class Citation extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new RelatedArtifactTypeExpandedEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<RelatedArtifactTypeExpanded>
+        } else if (name.equals("classifier")) {
+          this.getClassifier().remove(value);
+        } else if (name.equals("label")) {
+          this.label = null;
+        } else if (name.equals("display")) {
+          this.display = null;
+        } else if (name.equals("citation")) {
+          this.citation = null;
+        } else if (name.equals("document")) {
+          this.document = null;
+        } else if (name.equals("resource")) {
+          this.resource = null;
+        } else if (name.equals("resourceReference")) {
+          this.resourceReference = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -5697,6 +5858,43 @@ public class Citation extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("publishedIn")) {
+          this.publishedIn = (CitationCitedArtifactPublicationFormPublishedInComponent) value; // CitationCitedArtifactPublicationFormPublishedInComponent
+        } else if (name.equals("citedMedium")) {
+          this.citedMedium = null;
+        } else if (name.equals("volume")) {
+          this.volume = null;
+        } else if (name.equals("issue")) {
+          this.issue = null;
+        } else if (name.equals("articleDate")) {
+          this.articleDate = null;
+        } else if (name.equals("publicationDateText")) {
+          this.publicationDateText = null;
+        } else if (name.equals("publicationDateSeason")) {
+          this.publicationDateSeason = null;
+        } else if (name.equals("lastRevisionDate")) {
+          this.lastRevisionDate = null;
+        } else if (name.equals("language")) {
+          this.getLanguage().remove(value);
+        } else if (name.equals("accessionNumber")) {
+          this.accessionNumber = null;
+        } else if (name.equals("pageString")) {
+          this.pageString = null;
+        } else if (name.equals("firstPage")) {
+          this.firstPage = null;
+        } else if (name.equals("lastPage")) {
+          this.lastPage = null;
+        } else if (name.equals("pageCount")) {
+          this.pageCount = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -6190,6 +6388,23 @@ public class Citation extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("publisherLocation")) {
+          this.publisherLocation = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -6470,6 +6685,17 @@ public class Citation extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("classifier")) {
+          this.getClassifier().remove(value);
+        } else if (name.equals("url")) {
+          this.url = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -6772,6 +6998,19 @@ public class Citation extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("classifier")) {
+          this.getClassifier().remove(value);
+        } else if (name.equals("artifactAssessment")) {
+          this.getArtifactAssessment().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -7106,6 +7345,19 @@ public class Citation extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("complete")) {
+          this.complete = null;
+        } else if (name.equals("entry")) {
+          this.getEntry().add((CitationCitedArtifactContributorshipEntryComponent) value);
+        } else if (name.equals("summary")) {
+          this.getSummary().add((ContributorshipSummaryComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -7721,6 +7973,29 @@ public class Citation extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("contributor")) {
+          this.contributor = null;
+        } else if (name.equals("forenameInitials")) {
+          this.forenameInitials = null;
+        } else if (name.equals("affiliation")) {
+          this.getAffiliation().remove(value);
+        } else if (name.equals("contributionType")) {
+          this.getContributionType().remove(value);
+        } else if (name.equals("role")) {
+          this.role = null;
+        } else if (name.equals("contributionInstance")) {
+          this.getContributionInstance().add((CitationCitedArtifactContributorshipEntryContributionInstanceComponent) value);
+        } else if (name.equals("correspondingContact")) {
+          this.correspondingContact = null;
+        } else if (name.equals("rankingOrder")) {
+          this.rankingOrder = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -8009,6 +8284,17 @@ public class Citation extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("time")) {
+          this.time = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -8319,6 +8605,21 @@ public class Citation extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("style")) {
+          this.style = null;
+        } else if (name.equals("source")) {
+          this.source = null;
+        } else if (name.equals("value")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -10491,6 +10792,76 @@ public class Citation extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("jurisdiction")) {
+          this.getJurisdiction().remove(value);
+        } else if (name.equals("purpose")) {
+          this.purpose = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = null;
+        } else if (name.equals("approvalDate")) {
+          this.approvalDate = null;
+        } else if (name.equals("lastReviewDate")) {
+          this.lastReviewDate = null;
+        } else if (name.equals("effectivePeriod")) {
+          this.effectivePeriod = null;
+        } else if (name.equals("author")) {
+          this.getAuthor().remove(value);
+        } else if (name.equals("editor")) {
+          this.getEditor().remove(value);
+        } else if (name.equals("reviewer")) {
+          this.getReviewer().remove(value);
+        } else if (name.equals("endorser")) {
+          this.getEndorser().remove(value);
+        } else if (name.equals("summary")) {
+          this.getSummary().add((CitationSummaryComponent) value);
+        } else if (name.equals("classification")) {
+          this.getClassification().add((CitationClassificationComponent) value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("currentState")) {
+          this.getCurrentState().remove(value);
+        } else if (name.equals("statusDate")) {
+          this.getStatusDate().add((CitationStatusDateComponent) value);
+        } else if (name.equals("relatedArtifact")) {
+          this.getRelatedArtifact().remove(value);
+        } else if (name.equals("citedArtifact")) {
+          this.citedArtifact = (CitationCitedArtifactComponent) value; // CitationCitedArtifactComponent
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

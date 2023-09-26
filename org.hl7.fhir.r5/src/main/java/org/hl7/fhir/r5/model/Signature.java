@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -498,6 +498,27 @@ public class Signature extends DataType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.getType().remove(value);
+        } else if (name.equals("when")) {
+          this.when = null;
+        } else if (name.equals("who")) {
+          this.who = null;
+        } else if (name.equals("onBehalfOf")) {
+          this.onBehalfOf = null;
+        } else if (name.equals("targetFormat")) {
+          this.targetFormat = null;
+        } else if (name.equals("sigFormat")) {
+          this.sigFormat = null;
+        } else if (name.equals("data")) {
+          this.data = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

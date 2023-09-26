@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -268,6 +268,19 @@ public class Binary extends BaseBinary implements IBaseBinary {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("contentType")) {
+          this.contentType = null;
+        } else if (name.equals("securityContext")) {
+          this.securityContext = null;
+        } else if (name.equals("data")) {
+          this.data = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

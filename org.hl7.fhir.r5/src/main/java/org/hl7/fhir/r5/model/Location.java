@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -553,6 +553,19 @@ public class Location extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("longitude")) {
+          this.longitude = null;
+        } else if (name.equals("latitude")) {
+          this.latitude = null;
+        } else if (name.equals("altitude")) {
+          this.altitude = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1733,6 +1746,51 @@ public class Location extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new LocationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<LocationStatus>
+        } else if (name.equals("operationalStatus")) {
+          this.operationalStatus = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("alias")) {
+          this.getAlias().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("mode")) {
+          value = new LocationModeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.mode = (Enumeration) value; // Enumeration<LocationMode>
+        } else if (name.equals("type")) {
+          this.getType().remove(value);
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("address")) {
+          this.address = null;
+        } else if (name.equals("form")) {
+          this.form = null;
+        } else if (name.equals("position")) {
+          this.position = (LocationPositionComponent) value; // LocationPositionComponent
+        } else if (name.equals("managingOrganization")) {
+          this.managingOrganization = null;
+        } else if (name.equals("partOf")) {
+          this.partOf = null;
+        } else if (name.equals("characteristic")) {
+          this.getCharacteristic().remove(value);
+        } else if (name.equals("hoursOfOperation")) {
+          this.getHoursOfOperation().remove(value);
+        } else if (name.equals("virtualService")) {
+          this.getVirtualService().remove(value);
+        } else if (name.equals("endpoint")) {
+          this.getEndpoint().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

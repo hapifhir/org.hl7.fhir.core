@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -657,6 +657,23 @@ public class MolecularSequence extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("coordinateSystem")) {
+          this.coordinateSystem = null;
+        } else if (name.equals("ordinalPosition")) {
+          this.ordinalPosition = null;
+        } else if (name.equals("sequenceRange")) {
+          this.sequenceRange = null;
+        } else if (name.equals("startingSequence")) {
+          this.startingSequence = (MolecularSequenceRelativeStartingSequenceComponent) value; // MolecularSequenceRelativeStartingSequenceComponent
+        } else if (name.equals("edit")) {
+          this.getEdit().add((MolecularSequenceRelativeEditComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1225,6 +1242,29 @@ public class MolecularSequence extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("genomeAssembly")) {
+          this.genomeAssembly = null;
+        } else if (name.equals("chromosome")) {
+          this.chromosome = null;
+        } else if (name.equals("sequence[x]")) {
+          this.sequence = null;
+        } else if (name.equals("windowStart")) {
+          this.windowStart = null;
+        } else if (name.equals("windowEnd")) {
+          this.windowEnd = null;
+        } else if (name.equals("orientation")) {
+          value = new OrientationTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.orientation = (Enumeration) value; // Enumeration<OrientationType>
+        } else if (name.equals("strand")) {
+          value = new StrandTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.strand = (Enumeration) value; // Enumeration<StrandType>
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1638,6 +1678,21 @@ public class MolecularSequence extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("start")) {
+          this.start = null;
+        } else if (name.equals("end")) {
+          this.end = null;
+        } else if (name.equals("replacementSequence")) {
+          this.replacementSequence = null;
+        } else if (name.equals("replacedSequence")) {
+          this.replacedSequence = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2331,6 +2386,34 @@ public class MolecularSequence extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("type")) {
+          value = new SequenceTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<SequenceType>
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("focus")) {
+          this.getFocus().remove(value);
+        } else if (name.equals("specimen")) {
+          this.specimen = null;
+        } else if (name.equals("device")) {
+          this.device = null;
+        } else if (name.equals("performer")) {
+          this.performer = null;
+        } else if (name.equals("literal")) {
+          this.literal = null;
+        } else if (name.equals("formatted")) {
+          this.getFormatted().remove(value);
+        } else if (name.equals("relative")) {
+          this.getRelative().add((MolecularSequenceRelativeComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -229,6 +229,17 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+      @Override
+      public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("id")) {
+          this.id = null;
+        } else if (name.equals("extension")) {
+          this.getExtension().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -170,6 +170,17 @@ public class CodeableReference extends DataType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("concept")) {
+          this.concept = null;
+        } else if (name.equals("reference")) {
+          this.reference = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

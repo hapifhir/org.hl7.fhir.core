@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -684,6 +684,21 @@ public class Group extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else if (name.equals("exclude")) {
+          this.exclude = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -983,6 +998,19 @@ public class Group extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("entity")) {
+          this.entity = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else if (name.equals("inactive")) {
+          this.inactive = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1792,6 +1820,37 @@ public class Group extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("active")) {
+          this.active = null;
+        } else if (name.equals("type")) {
+          value = new GroupTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<GroupType>
+        } else if (name.equals("membership")) {
+          value = new GroupMembershipBasisEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.membership = (Enumeration) value; // Enumeration<GroupMembershipBasis>
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("managingEntity")) {
+          this.managingEntity = null;
+        } else if (name.equals("characteristic")) {
+          this.getCharacteristic().add((GroupCharacteristicComponent) value);
+        } else if (name.equals("member")) {
+          this.getMember().add((GroupMemberComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

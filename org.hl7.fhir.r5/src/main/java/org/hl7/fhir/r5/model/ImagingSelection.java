@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -595,6 +595,17 @@ public class ImagingSelection extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("function")) {
+          this.function = null;
+        } else if (name.equals("actor")) {
+          this.actor = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1125,6 +1136,25 @@ public class ImagingSelection extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("uid")) {
+          this.uid = null;
+        } else if (name.equals("number")) {
+          this.number = null;
+        } else if (name.equals("sopClass")) {
+          this.sopClass = null;
+        } else if (name.equals("subset")) {
+          this.getSubset().remove(value);
+        } else if (name.equals("imageRegion2D")) {
+          this.getImageRegion2D().add((ImageRegion2DComponent) value);
+        } else if (name.equals("imageRegion3D")) {
+          this.getImageRegion3D().add((ImageRegion3DComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1440,6 +1470,18 @@ public class ImagingSelection extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("regionType")) {
+          value = new ImagingSelection2DGraphicTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.regionType = (Enumeration) value; // Enumeration<ImagingSelection2DGraphicType>
+        } else if (name.equals("coordinate")) {
+          this.getCoordinate().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1713,6 +1755,18 @@ public class ImagingSelection extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("regionType")) {
+          value = new ImagingSelection3DGraphicTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.regionType = (Enumeration) value; // Enumeration<ImagingSelection3DGraphicType>
+        } else if (name.equals("coordinate")) {
+          this.getCoordinate().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2890,6 +2944,48 @@ public class ImagingSelection extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new ImagingSelectionStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<ImagingSelectionStatus>
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("issued")) {
+          this.issued = null;
+        } else if (name.equals("performer")) {
+          this.getPerformer().add((ImagingSelectionPerformerComponent) value);
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("studyUid")) {
+          this.studyUid = null;
+        } else if (name.equals("derivedFrom")) {
+          this.getDerivedFrom().remove(value);
+        } else if (name.equals("endpoint")) {
+          this.getEndpoint().remove(value);
+        } else if (name.equals("seriesUid")) {
+          this.seriesUid = null;
+        } else if (name.equals("seriesNumber")) {
+          this.seriesNumber = null;
+        } else if (name.equals("frameOfReferenceUid")) {
+          this.frameOfReferenceUid = null;
+        } else if (name.equals("bodySite")) {
+          this.bodySite = null;
+        } else if (name.equals("focus")) {
+          this.getFocus().remove(value);
+        } else if (name.equals("instance")) {
+          this.getInstance().add((ImagingSelectionInstanceComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

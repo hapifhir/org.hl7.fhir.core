@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -244,6 +244,19 @@ public class BiologicallyDerivedProduct extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("collector")) {
+          this.collector = null;
+        } else if (name.equals("source")) {
+          this.source = null;
+        } else if (name.equals("collected[x]")) {
+          this.collected = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -611,6 +624,17 @@ public class BiologicallyDerivedProduct extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1470,6 +1494,39 @@ public class BiologicallyDerivedProduct extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("productCategory")) {
+          this.productCategory = null;
+        } else if (name.equals("productCode")) {
+          this.productCode = null;
+        } else if (name.equals("parent")) {
+          this.getParent().remove(value);
+        } else if (name.equals("request")) {
+          this.getRequest().remove(value);
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("biologicalSourceEvent")) {
+          this.biologicalSourceEvent = null;
+        } else if (name.equals("processingFacility")) {
+          this.getProcessingFacility().remove(value);
+        } else if (name.equals("division")) {
+          this.division = null;
+        } else if (name.equals("productStatus")) {
+          this.productStatus = null;
+        } else if (name.equals("expirationDate")) {
+          this.expirationDate = null;
+        } else if (name.equals("collection")) {
+          this.collection = (BiologicallyDerivedProductCollectionComponent) value; // BiologicallyDerivedProductCollectionComponent
+        } else if (name.equals("storageTempRequirements")) {
+          this.storageTempRequirements = null;
+        } else if (name.equals("property")) {
+          this.getProperty().add((BiologicallyDerivedProductPropertyComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

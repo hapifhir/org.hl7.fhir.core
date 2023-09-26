@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -665,6 +665,27 @@ public class VerificationResult extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("who")) {
+          this.who = null;
+        } else if (name.equals("type")) {
+          this.getType().remove(value);
+        } else if (name.equals("communicationMethod")) {
+          this.getCommunicationMethod().remove(value);
+        } else if (name.equals("validationStatus")) {
+          this.validationStatus = null;
+        } else if (name.equals("validationDate")) {
+          this.validationDate = null;
+        } else if (name.equals("canPushUpdates")) {
+          this.canPushUpdates = null;
+        } else if (name.equals("pushTypeAvailable")) {
+          this.getPushTypeAvailable().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1223,6 +1244,29 @@ public class VerificationResult extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("who")) {
+          this.who = null;
+        } else if (name.equals("onBehalfOf")) {
+          this.onBehalfOf = null;
+        } else if (name.equals("communicationMethod")) {
+          this.communicationMethod = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("sourceIdentityCertificate")) {
+          this.sourceIdentityCertificate = null;
+        } else if (name.equals("proxyIdentityCertificate")) {
+          this.proxyIdentityCertificate = null;
+        } else if (name.equals("proxySignature")) {
+          this.proxySignature = null;
+        } else if (name.equals("sourceSignature")) {
+          this.sourceSignature = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1539,6 +1583,19 @@ public class VerificationResult extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("organization")) {
+          this.organization = null;
+        } else if (name.equals("identityCertificate")) {
+          this.identityCertificate = null;
+        } else if (name.equals("attestationSignature")) {
+          this.attestationSignature = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2478,6 +2535,42 @@ public class VerificationResult extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("target")) {
+          this.getTarget().remove(value);
+        } else if (name.equals("targetLocation")) {
+          this.getTargetLocation().remove(value);
+        } else if (name.equals("need")) {
+          this.need = null;
+        } else if (name.equals("status")) {
+          value = new VerificationResultStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<VerificationResultStatus>
+        } else if (name.equals("statusDate")) {
+          this.statusDate = null;
+        } else if (name.equals("validationType")) {
+          this.validationType = null;
+        } else if (name.equals("validationProcess")) {
+          this.getValidationProcess().remove(value);
+        } else if (name.equals("frequency")) {
+          this.frequency = null;
+        } else if (name.equals("lastPerformed")) {
+          this.lastPerformed = null;
+        } else if (name.equals("nextScheduled")) {
+          this.nextScheduled = null;
+        } else if (name.equals("failureAction")) {
+          this.failureAction = null;
+        } else if (name.equals("primarySource")) {
+          this.getPrimarySource().add((VerificationResultPrimarySourceComponent) value);
+        } else if (name.equals("attestation")) {
+          this.attestation = (VerificationResultAttestationComponent) value; // VerificationResultAttestationComponent
+        } else if (name.equals("validator")) {
+          this.getValidator().add((VerificationResultValidatorComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -216,6 +216,17 @@ public class ClaimResponse extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("when[x]")) {
+          this.when = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -733,6 +744,25 @@ public class ClaimResponse extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("itemSequence")) {
+          this.itemSequence = null;
+        } else if (name.equals("traceNumber")) {
+          this.getTraceNumber().remove(value);
+        } else if (name.equals("noteNumber")) {
+          this.getNoteNumber().remove(value);
+        } else if (name.equals("reviewOutcome")) {
+          this.reviewOutcome = (ReviewOutcomeComponent) value; // ReviewOutcomeComponent
+        } else if (name.equals("adjudication")) {
+          this.getAdjudication().add((AdjudicationComponent) value);
+        } else if (name.equals("detail")) {
+          this.getDetail().add((ItemDetailComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1111,6 +1141,21 @@ public class ClaimResponse extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("decision")) {
+          this.decision = null;
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("preAuthRef")) {
+          this.preAuthRef = null;
+        } else if (name.equals("preAuthPeriod")) {
+          this.preAuthPeriod = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1416,6 +1461,21 @@ public class ClaimResponse extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("category")) {
+          this.category = null;
+        } else if (name.equals("reason")) {
+          this.reason = null;
+        } else if (name.equals("amount")) {
+          this.amount = null;
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1944,6 +2004,25 @@ public class ClaimResponse extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("detailSequence")) {
+          this.detailSequence = null;
+        } else if (name.equals("traceNumber")) {
+          this.getTraceNumber().remove(value);
+        } else if (name.equals("noteNumber")) {
+          this.getNoteNumber().remove(value);
+        } else if (name.equals("reviewOutcome")) {
+          this.reviewOutcome = (ReviewOutcomeComponent) value; // ReviewOutcomeComponent
+        } else if (name.equals("adjudication")) {
+          this.getAdjudication().add((AdjudicationComponent) value);
+        } else if (name.equals("subDetail")) {
+          this.getSubDetail().add((SubDetailComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2428,6 +2507,23 @@ public class ClaimResponse extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("subDetailSequence")) {
+          this.subDetailSequence = null;
+        } else if (name.equals("traceNumber")) {
+          this.getTraceNumber().remove(value);
+        } else if (name.equals("noteNumber")) {
+          this.getNoteNumber().remove(value);
+        } else if (name.equals("reviewOutcome")) {
+          this.reviewOutcome = (ReviewOutcomeComponent) value; // ReviewOutcomeComponent
+        } else if (name.equals("adjudication")) {
+          this.getAdjudication().add((AdjudicationComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3988,6 +4084,59 @@ public class ClaimResponse extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("itemSequence")) {
+          this.getItemSequence().remove(value);
+        } else if (name.equals("detailSequence")) {
+          this.getDetailSequence().remove(value);
+        } else if (name.equals("subdetailSequence")) {
+          this.getSubdetailSequence().remove(value);
+        } else if (name.equals("traceNumber")) {
+          this.getTraceNumber().remove(value);
+        } else if (name.equals("provider")) {
+          this.getProvider().remove(value);
+        } else if (name.equals("revenue")) {
+          this.revenue = null;
+        } else if (name.equals("productOrService")) {
+          this.productOrService = null;
+        } else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = null;
+        } else if (name.equals("request")) {
+          this.getRequest().remove(value);
+        } else if (name.equals("modifier")) {
+          this.getModifier().remove(value);
+        } else if (name.equals("programCode")) {
+          this.getProgramCode().remove(value);
+        } else if (name.equals("serviced[x]")) {
+          this.serviced = null;
+        } else if (name.equals("location[x]")) {
+          this.location = null;
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("unitPrice")) {
+          this.unitPrice = null;
+        } else if (name.equals("factor")) {
+          this.factor = null;
+        } else if (name.equals("tax")) {
+          this.tax = null;
+        } else if (name.equals("net")) {
+          this.net = null;
+        } else if (name.equals("bodySite")) {
+          this.getBodySite().add((BodySiteComponent) value);
+        } else if (name.equals("noteNumber")) {
+          this.getNoteNumber().remove(value);
+        } else if (name.equals("reviewOutcome")) {
+          this.reviewOutcome = (ReviewOutcomeComponent) value; // ReviewOutcomeComponent
+        } else if (name.equals("adjudication")) {
+          this.getAdjudication().add((AdjudicationComponent) value);
+        } else if (name.equals("detail")) {
+          this.getDetail().add((AddedItemDetailComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -4464,6 +4613,17 @@ public class ClaimResponse extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("site")) {
+          this.getSite().remove(value);
+        } else if (name.equals("subSite")) {
+          this.getSubSite().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -5339,6 +5499,41 @@ public class ClaimResponse extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("traceNumber")) {
+          this.getTraceNumber().remove(value);
+        } else if (name.equals("revenue")) {
+          this.revenue = null;
+        } else if (name.equals("productOrService")) {
+          this.productOrService = null;
+        } else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = null;
+        } else if (name.equals("modifier")) {
+          this.getModifier().remove(value);
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("unitPrice")) {
+          this.unitPrice = null;
+        } else if (name.equals("factor")) {
+          this.factor = null;
+        } else if (name.equals("tax")) {
+          this.tax = null;
+        } else if (name.equals("net")) {
+          this.net = null;
+        } else if (name.equals("noteNumber")) {
+          this.getNoteNumber().remove(value);
+        } else if (name.equals("reviewOutcome")) {
+          this.reviewOutcome = (ReviewOutcomeComponent) value; // ReviewOutcomeComponent
+        } else if (name.equals("adjudication")) {
+          this.getAdjudication().add((AdjudicationComponent) value);
+        } else if (name.equals("subDetail")) {
+          this.getSubDetail().add((AddedItemSubDetailComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -6247,6 +6442,39 @@ public class ClaimResponse extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("traceNumber")) {
+          this.getTraceNumber().remove(value);
+        } else if (name.equals("revenue")) {
+          this.revenue = null;
+        } else if (name.equals("productOrService")) {
+          this.productOrService = null;
+        } else if (name.equals("productOrServiceEnd")) {
+          this.productOrServiceEnd = null;
+        } else if (name.equals("modifier")) {
+          this.getModifier().remove(value);
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("unitPrice")) {
+          this.unitPrice = null;
+        } else if (name.equals("factor")) {
+          this.factor = null;
+        } else if (name.equals("tax")) {
+          this.tax = null;
+        } else if (name.equals("net")) {
+          this.net = null;
+        } else if (name.equals("noteNumber")) {
+          this.getNoteNumber().remove(value);
+        } else if (name.equals("reviewOutcome")) {
+          this.reviewOutcome = (ReviewOutcomeComponent) value; // ReviewOutcomeComponent
+        } else if (name.equals("adjudication")) {
+          this.getAdjudication().add((AdjudicationComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -6551,6 +6779,17 @@ public class ClaimResponse extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("category")) {
+          this.category = null;
+        } else if (name.equals("amount")) {
+          this.amount = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -6946,6 +7185,25 @@ public class ClaimResponse extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("adjustment")) {
+          this.adjustment = null;
+        } else if (name.equals("adjustmentReason")) {
+          this.adjustmentReason = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("amount")) {
+          this.amount = null;
+        } else if (name.equals("identifier")) {
+          this.identifier = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -7305,6 +7563,21 @@ public class ClaimResponse extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("number")) {
+          this.number = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("text")) {
+          this.text = null;
+        } else if (name.equals("language")) {
+          this.language = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -7714,6 +7987,23 @@ public class ClaimResponse extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("sequence")) {
+          this.sequence = null;
+        } else if (name.equals("focal")) {
+          this.focal = null;
+        } else if (name.equals("coverage")) {
+          this.coverage = null;
+        } else if (name.equals("businessArrangement")) {
+          this.businessArrangement = null;
+        } else if (name.equals("claimResponse")) {
+          this.claimResponse = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -8163,6 +8453,23 @@ public class ClaimResponse extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("itemSequence")) {
+          this.itemSequence = null;
+        } else if (name.equals("detailSequence")) {
+          this.detailSequence = null;
+        } else if (name.equals("subDetailSequence")) {
+          this.subDetailSequence = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("expression")) {
+          this.getExpression().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -10069,6 +10376,80 @@ public class ClaimResponse extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("traceNumber")) {
+          this.getTraceNumber().remove(value);
+        } else if (name.equals("status")) {
+          value = new FinancialResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FinancialResourceStatusCodes>
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("subType")) {
+          this.subType = null;
+        } else if (name.equals("use")) {
+          value = new UseEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.use = (Enumeration) value; // Enumeration<Use>
+        } else if (name.equals("patient")) {
+          this.patient = null;
+        } else if (name.equals("created")) {
+          this.created = null;
+        } else if (name.equals("insurer")) {
+          this.insurer = null;
+        } else if (name.equals("requestor")) {
+          this.requestor = null;
+        } else if (name.equals("request")) {
+          this.request = null;
+        } else if (name.equals("outcome")) {
+          value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
+        } else if (name.equals("decision")) {
+          this.decision = null;
+        } else if (name.equals("disposition")) {
+          this.disposition = null;
+        } else if (name.equals("preAuthRef")) {
+          this.preAuthRef = null;
+        } else if (name.equals("preAuthPeriod")) {
+          this.preAuthPeriod = null;
+        } else if (name.equals("event")) {
+          this.getEvent().add((ClaimResponseEventComponent) value);
+        } else if (name.equals("payeeType")) {
+          this.payeeType = null;
+        } else if (name.equals("encounter")) {
+          this.getEncounter().remove(value);
+        } else if (name.equals("diagnosisRelatedGroup")) {
+          this.diagnosisRelatedGroup = null;
+        } else if (name.equals("item")) {
+          this.getItem().add((ItemComponent) value);
+        } else if (name.equals("addItem")) {
+          this.getAddItem().add((AddedItemComponent) value);
+        } else if (name.equals("adjudication")) {
+          this.getAdjudication().add((AdjudicationComponent) value);
+        } else if (name.equals("total")) {
+          this.getTotal().add((TotalComponent) value);
+        } else if (name.equals("payment")) {
+          this.payment = (PaymentComponent) value; // PaymentComponent
+        } else if (name.equals("fundsReserve")) {
+          this.fundsReserve = null;
+        } else if (name.equals("formCode")) {
+          this.formCode = null;
+        } else if (name.equals("form")) {
+          this.form = null;
+        } else if (name.equals("processNote")) {
+          this.getProcessNote().add((NoteComponent) value);
+        } else if (name.equals("communicationRequest")) {
+          this.getCommunicationRequest().remove(value);
+        } else if (name.equals("insurance")) {
+          this.getInsurance().add((InsuranceComponent) value);
+        } else if (name.equals("error")) {
+          this.getError().add((ErrorComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -391,6 +391,17 @@ public class DeviceUsage extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1488,6 +1499,48 @@ public class DeviceUsage extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("status")) {
+          value = new DeviceUsageStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<DeviceUsageStatus>
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("patient")) {
+          this.patient = null;
+        } else if (name.equals("derivedFrom")) {
+          this.getDerivedFrom().remove(value);
+        } else if (name.equals("context")) {
+          this.context = null;
+        } else if (name.equals("timing[x]")) {
+          this.timing = null;
+        } else if (name.equals("dateAsserted")) {
+          this.dateAsserted = null;
+        } else if (name.equals("usageStatus")) {
+          this.usageStatus = null;
+        } else if (name.equals("usageReason")) {
+          this.getUsageReason().remove(value);
+        } else if (name.equals("adherence")) {
+          this.adherence = (DeviceUsageAdherenceComponent) value; // DeviceUsageAdherenceComponent
+        } else if (name.equals("informationSource")) {
+          this.informationSource = null;
+        } else if (name.equals("device")) {
+          this.device = null;
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("bodySite")) {
+          this.bodySite = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

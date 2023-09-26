@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -396,6 +396,25 @@ public class Evidence extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("variableRole")) {
+          this.variableRole = null;
+        } else if (name.equals("observed")) {
+          this.observed = null;
+        } else if (name.equals("intended")) {
+          this.intended = null;
+        } else if (name.equals("directnessMatch")) {
+          this.directnessMatch = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1099,6 +1118,33 @@ public class Evidence extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("statisticType")) {
+          this.statisticType = null;
+        } else if (name.equals("category")) {
+          this.category = null;
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("numberOfEvents")) {
+          this.numberOfEvents = null;
+        } else if (name.equals("numberAffected")) {
+          this.numberAffected = null;
+        } else if (name.equals("sampleSize")) {
+          this.sampleSize = (EvidenceStatisticSampleSizeComponent) value; // EvidenceStatisticSampleSizeComponent
+        } else if (name.equals("attributeEstimate")) {
+          this.getAttributeEstimate().add((EvidenceStatisticAttributeEstimateComponent) value);
+        } else if (name.equals("modelCharacteristic")) {
+          this.getModelCharacteristic().add((EvidenceStatisticModelCharacteristicComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1601,6 +1647,23 @@ public class Evidence extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("numberOfStudies")) {
+          this.numberOfStudies = null;
+        } else if (name.equals("numberOfParticipants")) {
+          this.numberOfParticipants = null;
+        } else if (name.equals("knownDataCount")) {
+          this.knownDataCount = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2151,6 +2214,27 @@ public class Evidence extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("level")) {
+          this.level = null;
+        } else if (name.equals("range")) {
+          this.range = null;
+        } else if (name.equals("attributeEstimate")) {
+          this.getAttributeEstimate().add((EvidenceStatisticAttributeEstimateComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2537,6 +2621,21 @@ public class Evidence extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("value")) {
+          this.value = null;
+        } else if (name.equals("variable")) {
+          this.getVariable().add((EvidenceStatisticModelCharacteristicVariableComponent) value);
+        } else if (name.equals("attributeEstimate")) {
+          this.getAttributeEstimate().add((EvidenceStatisticAttributeEstimateComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3000,6 +3099,24 @@ public class Evidence extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("variableDefinition")) {
+          this.variableDefinition = null;
+        } else if (name.equals("handling")) {
+          value = new EvidenceVariableHandlingEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.handling = (Enumeration) value; // Enumeration<EvidenceVariableHandling>
+        } else if (name.equals("valueCategory")) {
+          this.getValueCategory().remove(value);
+        } else if (name.equals("valueQuantity")) {
+          this.getValueQuantity().remove(value);
+        } else if (name.equals("valueRange")) {
+          this.getValueRange().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3499,6 +3616,25 @@ public class Evidence extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("rating")) {
+          this.rating = null;
+        } else if (name.equals("rater")) {
+          this.rater = null;
+        } else if (name.equals("subcomponent")) {
+          this.getSubcomponent().add((EvidenceCertaintyComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -5776,6 +5912,76 @@ public class Evidence extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("citeAs[x]")) {
+          this.citeAs = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("approvalDate")) {
+          this.approvalDate = null;
+        } else if (name.equals("lastReviewDate")) {
+          this.lastReviewDate = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("author")) {
+          this.getAuthor().remove(value);
+        } else if (name.equals("editor")) {
+          this.getEditor().remove(value);
+        } else if (name.equals("reviewer")) {
+          this.getReviewer().remove(value);
+        } else if (name.equals("endorser")) {
+          this.getEndorser().remove(value);
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("purpose")) {
+          this.purpose = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = null;
+        } else if (name.equals("relatedArtifact")) {
+          this.getRelatedArtifact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("assertion")) {
+          this.assertion = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("variableDefinition")) {
+          this.getVariableDefinition().add((EvidenceVariableDefinitionComponent) value);
+        } else if (name.equals("synthesisType")) {
+          this.synthesisType = null;
+        } else if (name.equals("studyDesign")) {
+          this.getStudyDesign().remove(value);
+        } else if (name.equals("statistic")) {
+          this.getStatistic().add((EvidenceStatisticComponent) value);
+        } else if (name.equals("certainty")) {
+          this.getCertainty().add((EvidenceCertaintyComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

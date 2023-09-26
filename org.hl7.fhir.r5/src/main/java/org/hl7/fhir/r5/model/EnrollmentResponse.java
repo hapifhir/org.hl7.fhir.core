@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -670,6 +670,31 @@ public class EnrollmentResponse extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new FinancialResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FinancialResourceStatusCodes>
+        } else if (name.equals("request")) {
+          this.request = null;
+        } else if (name.equals("outcome")) {
+          value = new EnrollmentOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.outcome = (Enumeration) value; // Enumeration<EnrollmentOutcome>
+        } else if (name.equals("disposition")) {
+          this.disposition = null;
+        } else if (name.equals("created")) {
+          this.created = null;
+        } else if (name.equals("organization")) {
+          this.organization = null;
+        } else if (name.equals("requestProvider")) {
+          this.requestProvider = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -190,6 +190,15 @@ public class Communication extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("content[x]")) {
+          this.content = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1679,6 +1688,59 @@ public class Communication extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("instantiatesCanonical")) {
+          this.getInstantiatesCanonical().remove(value);
+        } else if (name.equals("instantiatesUri")) {
+          this.getInstantiatesUri().remove(value);
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("partOf")) {
+          this.getPartOf().remove(value);
+        } else if (name.equals("inResponseTo")) {
+          this.getInResponseTo().remove(value);
+        } else if (name.equals("status")) {
+          value = new EventStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<EventStatus>
+        } else if (name.equals("statusReason")) {
+          this.statusReason = null;
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("priority")) {
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+        } else if (name.equals("medium")) {
+          this.getMedium().remove(value);
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("topic")) {
+          this.topic = null;
+        } else if (name.equals("about")) {
+          this.getAbout().remove(value);
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("sent")) {
+          this.sent = null;
+        } else if (name.equals("received")) {
+          this.received = null;
+        } else if (name.equals("recipient")) {
+          this.getRecipient().remove(value);
+        } else if (name.equals("sender")) {
+          this.sender = null;
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("payload")) {
+          this.getPayload().add((CommunicationPayloadComponent) value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

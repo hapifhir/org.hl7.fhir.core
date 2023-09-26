@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -364,6 +364,22 @@ public class Availability extends DataType implements ICompositeType {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("daysOfWeek")) {
+          value = new DaysOfWeekEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getDaysOfWeek().add((Enumeration) value);
+        } else if (name.equals("allDay")) {
+          this.allDay = null;
+        } else if (name.equals("availableStartTime")) {
+          this.availableStartTime = null;
+        } else if (name.equals("availableEndTime")) {
+          this.availableEndTime = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -605,6 +621,17 @@ public class Availability extends DataType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("during")) {
+          this.during = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -861,6 +888,17 @@ public class Availability extends DataType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("availableTime")) {
+          this.getAvailableTime().add((AvailabilityAvailableTimeComponent) value);
+        } else if (name.equals("notAvailableTime")) {
+          this.getNotAvailableTime().add((AvailabilityNotAvailableTimeComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -883,6 +883,37 @@ public class ImmunizationRecommendation extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("vaccineCode")) {
+          this.getVaccineCode().remove(value);
+        } else if (name.equals("targetDisease")) {
+          this.getTargetDisease().remove(value);
+        } else if (name.equals("contraindicatedVaccineCode")) {
+          this.getContraindicatedVaccineCode().remove(value);
+        } else if (name.equals("forecastStatus")) {
+          this.forecastStatus = null;
+        } else if (name.equals("forecastReason")) {
+          this.getForecastReason().remove(value);
+        } else if (name.equals("dateCriterion")) {
+          this.getDateCriterion().add((ImmunizationRecommendationRecommendationDateCriterionComponent) value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("series")) {
+          this.series = null;
+        } else if (name.equals("doseNumber")) {
+          this.doseNumber = null;
+        } else if (name.equals("seriesDoses")) {
+          this.seriesDoses = null;
+        } else if (name.equals("supportingImmunization")) {
+          this.getSupportingImmunization().remove(value);
+        } else if (name.equals("supportingPatientInformation")) {
+          this.getSupportingPatientInformation().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1209,6 +1240,17 @@ public class ImmunizationRecommendation extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("value")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1613,6 +1655,23 @@ public class ImmunizationRecommendation extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("patient")) {
+          this.patient = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("authority")) {
+          this.authority = null;
+        } else if (name.equals("recommendation")) {
+          this.getRecommendation().add((ImmunizationRecommendationRecommendationComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

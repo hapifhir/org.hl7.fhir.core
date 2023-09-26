@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -382,6 +382,20 @@ public class FormularyItem extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("status")) {
+          value = new FormularyItemStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FormularyItemStatusCodes>
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

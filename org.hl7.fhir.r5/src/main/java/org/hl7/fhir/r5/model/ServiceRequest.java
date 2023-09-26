@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -212,6 +212,17 @@ public class ServiceRequest extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("parameterFocus")) {
+          this.parameterFocus = null;
+        } else if (name.equals("parameter")) {
+          this.getParameter().add((ServiceRequestOrderDetailParameterComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -540,6 +551,17 @@ public class ServiceRequest extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -755,6 +777,15 @@ public class ServiceRequest extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("instruction[x]")) {
+          this.instruction = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2960,6 +2991,82 @@ public class ServiceRequest extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("instantiatesCanonical")) {
+          this.getInstantiatesCanonical().remove(value);
+        } else if (name.equals("instantiatesUri")) {
+          this.getInstantiatesUri().remove(value);
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("replaces")) {
+          this.getReplaces().remove(value);
+        } else if (name.equals("requisition")) {
+          this.requisition = null;
+        } else if (name.equals("status")) {
+          value = new RequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<RequestStatus>
+        } else if (name.equals("intent")) {
+          value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.intent = (Enumeration) value; // Enumeration<RequestIntent>
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("priority")) {
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+        } else if (name.equals("doNotPerform")) {
+          this.doNotPerform = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("orderDetail")) {
+          this.getOrderDetail().add((ServiceRequestOrderDetailComponent) value);
+        } else if (name.equals("quantity[x]")) {
+          this.quantity = null;
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("focus")) {
+          this.getFocus().remove(value);
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("occurrence[x]")) {
+          this.occurrence = null;
+        } else if (name.equals("asNeeded[x]")) {
+          this.asNeeded = null;
+        } else if (name.equals("authoredOn")) {
+          this.authoredOn = null;
+        } else if (name.equals("requester")) {
+          this.requester = null;
+        } else if (name.equals("performerType")) {
+          this.performerType = null;
+        } else if (name.equals("performer")) {
+          this.getPerformer().remove(value);
+        } else if (name.equals("location")) {
+          this.getLocation().remove(value);
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("insurance")) {
+          this.getInsurance().remove(value);
+        } else if (name.equals("supportingInfo")) {
+          this.getSupportingInfo().remove(value);
+        } else if (name.equals("specimen")) {
+          this.getSpecimen().remove(value);
+        } else if (name.equals("bodySite")) {
+          this.getBodySite().remove(value);
+        } else if (name.equals("bodyStructure")) {
+          this.bodyStructure = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("patientInstruction")) {
+          this.getPatientInstruction().add((ServiceRequestPatientInstructionComponent) value);
+        } else if (name.equals("relevantHistory")) {
+          this.getRelevantHistory().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

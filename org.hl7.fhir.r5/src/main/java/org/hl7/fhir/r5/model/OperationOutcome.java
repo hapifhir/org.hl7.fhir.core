@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -1237,6 +1237,27 @@ For resource issues, this will be a simple XPath limited to element names, repet
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("severity")) {
+          value = new IssueSeverityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.severity = (Enumeration) value; // Enumeration<IssueSeverity>
+        } else if (name.equals("code")) {
+          value = new IssueTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.code = (Enumeration) value; // Enumeration<IssueType>
+        } else if (name.equals("details")) {
+          this.details = null;
+        } else if (name.equals("diagnostics")) {
+          this.diagnostics = null;
+        } else if (name.equals("location")) {
+          this.getLocation().remove(value);
+        } else if (name.equals("expression")) {
+          this.getExpression().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1501,6 +1522,15 @@ public  boolean isInformationorLess() {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("issue")) {
+          this.getIssue().add((OperationOutcomeIssueComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

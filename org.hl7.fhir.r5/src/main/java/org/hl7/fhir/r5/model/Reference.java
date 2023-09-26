@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -366,6 +366,21 @@ The type is the Canonical URL of Resource Definition that is the type this refer
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("reference")) {
+          this.reference = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("identifier")) {
+          this.identifier = null;
+        } else if (name.equals("display")) {
+          this.display = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -650,6 +650,35 @@ public class ProdCharacteristic extends BackboneType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("height")) {
+          this.height = null;
+        } else if (name.equals("width")) {
+          this.width = null;
+        } else if (name.equals("depth")) {
+          this.depth = null;
+        } else if (name.equals("weight")) {
+          this.weight = null;
+        } else if (name.equals("nominalVolume")) {
+          this.nominalVolume = null;
+        } else if (name.equals("externalDiameter")) {
+          this.externalDiameter = null;
+        } else if (name.equals("shape")) {
+          this.shape = null;
+        } else if (name.equals("color")) {
+          this.getColor().remove(value);
+        } else if (name.equals("imprint")) {
+          this.getImprint().remove(value);
+        } else if (name.equals("image")) {
+          this.getImage().remove(value);
+        } else if (name.equals("scoring")) {
+          this.scoring = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

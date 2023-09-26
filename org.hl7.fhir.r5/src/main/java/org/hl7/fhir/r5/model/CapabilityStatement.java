@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -1416,6 +1416,19 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("releaseDate")) {
+          this.releaseDate = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1715,6 +1728,19 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("custodian")) {
+          this.custodian = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2369,6 +2395,30 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("mode")) {
+          value = new RestfulCapabilityModeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.mode = (Enumeration) value; // Enumeration<RestfulCapabilityMode>
+        } else if (name.equals("documentation")) {
+          this.documentation = null;
+        } else if (name.equals("security")) {
+          this.security = (CapabilityStatementRestSecurityComponent) value; // CapabilityStatementRestSecurityComponent
+        } else if (name.equals("resource")) {
+          this.getResource().add((CapabilityStatementRestResourceComponent) value);
+        } else if (name.equals("interaction")) {
+          this.getInteraction().add((SystemInteractionComponent) value);
+        } else if (name.equals("searchParam")) {
+          this.getSearchParam().add((CapabilityStatementRestResourceSearchParamComponent) value);
+        } else if (name.equals("operation")) {
+          this.getOperation().add((CapabilityStatementRestResourceOperationComponent) value);
+        } else if (name.equals("compartment")) {
+          this.getCompartment().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2742,6 +2792,19 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("cors")) {
+          this.cors = null;
+        } else if (name.equals("service")) {
+          this.getService().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -4086,6 +4149,53 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("profile")) {
+          this.profile = null;
+        } else if (name.equals("supportedProfile")) {
+          this.getSupportedProfile().remove(value);
+        } else if (name.equals("documentation")) {
+          this.documentation = null;
+        } else if (name.equals("interaction")) {
+          this.getInteraction().add((ResourceInteractionComponent) value);
+        } else if (name.equals("versioning")) {
+          value = new ResourceVersionPolicyEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.versioning = (Enumeration) value; // Enumeration<ResourceVersionPolicy>
+        } else if (name.equals("readHistory")) {
+          this.readHistory = null;
+        } else if (name.equals("updateCreate")) {
+          this.updateCreate = null;
+        } else if (name.equals("conditionalCreate")) {
+          this.conditionalCreate = null;
+        } else if (name.equals("conditionalRead")) {
+          value = new ConditionalReadStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.conditionalRead = (Enumeration) value; // Enumeration<ConditionalReadStatus>
+        } else if (name.equals("conditionalUpdate")) {
+          this.conditionalUpdate = null;
+        } else if (name.equals("conditionalPatch")) {
+          this.conditionalPatch = null;
+        } else if (name.equals("conditionalDelete")) {
+          value = new ConditionalDeleteStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.conditionalDelete = (Enumeration) value; // Enumeration<ConditionalDeleteStatus>
+        } else if (name.equals("referencePolicy")) {
+          value = new ReferenceHandlingPolicyEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getReferencePolicy().add((Enumeration) value);
+        } else if (name.equals("searchInclude")) {
+          this.getSearchInclude().remove(value);
+        } else if (name.equals("searchRevInclude")) {
+          this.getSearchRevInclude().remove(value);
+        } else if (name.equals("searchParam")) {
+          this.getSearchParam().add((CapabilityStatementRestResourceSearchParamComponent) value);
+        } else if (name.equals("operation")) {
+          this.getOperation().add((CapabilityStatementRestResourceOperationComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -4484,6 +4594,18 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          value = new TypeRestfulInteractionEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.code = (Enumeration) value; // Enumeration<TypeRestfulInteraction>
+        } else if (name.equals("documentation")) {
+          this.documentation = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -4865,6 +4987,22 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("definition")) {
+          this.definition = null;
+        } else if (name.equals("type")) {
+          value = new SearchParamTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<SearchParamType>
+        } else if (name.equals("documentation")) {
+          this.documentation = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -5194,6 +5332,19 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("definition")) {
+          this.definition = null;
+        } else if (name.equals("documentation")) {
+          this.documentation = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -5457,6 +5608,18 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          value = new SystemRestfulInteractionEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.code = (Enumeration) value; // Enumeration<SystemRestfulInteraction>
+        } else if (name.equals("documentation")) {
+          this.documentation = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -5840,6 +6003,21 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("endpoint")) {
+          this.getEndpoint().add((CapabilityStatementMessagingEndpointComponent) value);
+        } else if (name.equals("reliableCache")) {
+          this.reliableCache = null;
+        } else if (name.equals("documentation")) {
+          this.documentation = null;
+        } else if (name.equals("supportedMessage")) {
+          this.getSupportedMessage().add((CapabilityStatementMessagingSupportedMessageComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -6094,6 +6272,17 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("protocol")) {
+          this.protocol = null;
+        } else if (name.equals("address")) {
+          this.address = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -6346,6 +6535,18 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("mode")) {
+          value = new EventCapabilityModeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.mode = (Enumeration) value; // Enumeration<EventCapabilityMode>
+        } else if (name.equals("definition")) {
+          this.definition = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -6663,6 +6864,20 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("mode")) {
+          value = new DocumentModeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.mode = (Enumeration) value; // Enumeration<DocumentMode>
+        } else if (name.equals("documentation")) {
+          this.documentation = null;
+        } else if (name.equals("profile")) {
+          this.profile = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -8772,6 +8987,76 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("jurisdiction")) {
+          this.getJurisdiction().remove(value);
+        } else if (name.equals("purpose")) {
+          this.purpose = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = null;
+        } else if (name.equals("kind")) {
+          value = new CapabilityStatementKindEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.kind = (Enumeration) value; // Enumeration<CapabilityStatementKind>
+        } else if (name.equals("instantiates")) {
+          this.getInstantiates().remove(value);
+        } else if (name.equals("imports")) {
+          this.getImports().remove(value);
+        } else if (name.equals("software")) {
+          this.software = (CapabilityStatementSoftwareComponent) value; // CapabilityStatementSoftwareComponent
+        } else if (name.equals("implementation")) {
+          this.implementation = (CapabilityStatementImplementationComponent) value; // CapabilityStatementImplementationComponent
+        } else if (name.equals("fhirVersion")) {
+          value = new FHIRVersionEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.fhirVersion = (Enumeration) value; // Enumeration<FHIRVersion>
+        } else if (name.equals("format")) {
+          this.getFormat().remove(value);
+        } else if (name.equals("patchFormat")) {
+          this.getPatchFormat().remove(value);
+        } else if (name.equals("acceptLanguage")) {
+          this.getAcceptLanguage().remove(value);
+        } else if (name.equals("implementationGuide")) {
+          this.getImplementationGuide().remove(value);
+        } else if (name.equals("rest")) {
+          this.getRest().add((CapabilityStatementRestComponent) value);
+        } else if (name.equals("messaging")) {
+          this.getMessaging().add((CapabilityStatementMessagingComponent) value);
+        } else if (name.equals("document")) {
+          this.getDocument().add((CapabilityStatementDocumentComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

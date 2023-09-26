@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -413,6 +413,17 @@ public class SupplyRequest extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1455,6 +1466,47 @@ public class SupplyRequest extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new SupplyRequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<SupplyRequestStatus>
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("category")) {
+          this.category = null;
+        } else if (name.equals("priority")) {
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+        } else if (name.equals("deliverFor")) {
+          this.deliverFor = null;
+        } else if (name.equals("item")) {
+          this.item = null;
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("parameter")) {
+          this.getParameter().add((SupplyRequestParameterComponent) value);
+        } else if (name.equals("occurrence[x]")) {
+          this.occurrence = null;
+        } else if (name.equals("authoredOn")) {
+          this.authoredOn = null;
+        } else if (name.equals("requester")) {
+          this.requester = null;
+        } else if (name.equals("supplier")) {
+          this.getSupplier().remove(value);
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("deliverFrom")) {
+          this.deliverFrom = null;
+        } else if (name.equals("deliverTo")) {
+          this.deliverTo = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

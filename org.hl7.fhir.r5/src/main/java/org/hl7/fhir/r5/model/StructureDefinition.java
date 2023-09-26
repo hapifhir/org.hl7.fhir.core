@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -695,6 +695,21 @@ public class StructureDefinition extends CanonicalResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identity")) {
+          this.identity = null;
+        } else if (name.equals("uri")) {
+          this.uri = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("comment")) {
+          this.comment = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -963,6 +978,18 @@ public class StructureDefinition extends CanonicalResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new ExtensionContextTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ExtensionContextType>
+        } else if (name.equals("expression")) {
+          this.expression = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1158,6 +1185,15 @@ public class StructureDefinition extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("element")) {
+          this.getElement().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1381,6 +1417,15 @@ public class StructureDefinition extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("element")) {
+          this.getElement().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3350,6 +3395,75 @@ public class StructureDefinition extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("jurisdiction")) {
+          this.getJurisdiction().remove(value);
+        } else if (name.equals("purpose")) {
+          this.purpose = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = null;
+        } else if (name.equals("keyword")) {
+          this.getKeyword().remove(value);
+        } else if (name.equals("fhirVersion")) {
+          value = new FHIRVersionEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.fhirVersion = (Enumeration) value; // Enumeration<FHIRVersion>
+        } else if (name.equals("mapping")) {
+          this.getMapping().add((StructureDefinitionMappingComponent) value);
+        } else if (name.equals("kind")) {
+          value = new StructureDefinitionKindEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.kind = (Enumeration) value; // Enumeration<StructureDefinitionKind>
+        } else if (name.equals("abstract")) {
+          this.abstract_ = null;
+        } else if (name.equals("context")) {
+          this.getContext().add((StructureDefinitionContextComponent) value);
+        } else if (name.equals("contextInvariant")) {
+          this.getContextInvariant().remove(value);
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("baseDefinition")) {
+          this.baseDefinition = null;
+        } else if (name.equals("derivation")) {
+          value = new TypeDerivationRuleEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.derivation = (Enumeration) value; // Enumeration<TypeDerivationRule>
+        } else if (name.equals("snapshot")) {
+          this.snapshot = (StructureDefinitionSnapshotComponent) value; // StructureDefinitionSnapshotComponent
+        } else if (name.equals("differential")) {
+          this.differential = (StructureDefinitionDifferentialComponent) value; // StructureDefinitionDifferentialComponent
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -581,6 +581,22 @@ public class GraphDefinition extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("nodeId")) {
+          this.nodeId = null;
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("type")) {
+          value = new VersionIndependentResourceTypesAllEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<VersionIndependentResourceTypesAll>
+        } else if (name.equals("profile")) {
+          this.profile = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1296,6 +1312,31 @@ public class GraphDefinition extends CanonicalResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("min")) {
+          this.min = null;
+        } else if (name.equals("max")) {
+          this.max = null;
+        } else if (name.equals("sourceId")) {
+          this.sourceId = null;
+        } else if (name.equals("path")) {
+          this.path = null;
+        } else if (name.equals("sliceName")) {
+          this.sliceName = null;
+        } else if (name.equals("targetId")) {
+          this.targetId = null;
+        } else if (name.equals("params")) {
+          this.params = null;
+        } else if (name.equals("compartment")) {
+          this.getCompartment().add((GraphDefinitionLinkCompartmentComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1794,6 +1835,26 @@ public class GraphDefinition extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("use")) {
+          value = new GraphCompartmentUseEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.use = (Enumeration) value; // Enumeration<GraphCompartmentUse>
+        } else if (name.equals("rule")) {
+          value = new GraphCompartmentRuleEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.rule = (Enumeration) value; // Enumeration<GraphCompartmentRule>
+        } else if (name.equals("code")) {
+          value = new CompartmentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.code = (Enumeration) value; // Enumeration<CompartmentType>
+        } else if (name.equals("expression")) {
+          this.expression = null;
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3247,6 +3308,54 @@ public class GraphDefinition extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("jurisdiction")) {
+          this.getJurisdiction().remove(value);
+        } else if (name.equals("purpose")) {
+          this.purpose = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = null;
+        } else if (name.equals("start")) {
+          this.start = null;
+        } else if (name.equals("node")) {
+          this.getNode().add((GraphDefinitionNodeComponent) value);
+        } else if (name.equals("link")) {
+          this.getLink().add((GraphDefinitionLinkComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
