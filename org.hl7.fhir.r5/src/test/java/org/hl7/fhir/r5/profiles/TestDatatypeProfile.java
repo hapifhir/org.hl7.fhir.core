@@ -36,9 +36,9 @@ public class TestDatatypeProfile extends PEGeneratedBase {
 
   private static final String CANONICAL_URL = "http://hl7.org/fhir/test/StructureDefinition/pe-profile2|0.1";
 
-  private List<Coding> codings;// @NotNull  // Code defined by a terminology system
-  private List<Coding> snomedcts;// @NotNull  // Code defined by a terminology system
-  private List<Coding> loincs;  // Code defined by a terminology system
+  private Coding coding;// @NotNull  // Code defined by a terminology system
+  private Coding snomedct;// @NotNull  // Code defined by a terminology system
+  private Coding loinc;  // Code defined by a terminology system
   private String text;// @NotNull  // Plain text representation of the concept
 
   /**
@@ -64,14 +64,14 @@ public class TestDatatypeProfile extends PEGeneratedBase {
 
   public void load(PEInstance src) {
     clear();
-    for (PEInstance item : src.children("codings")) {
-      codings.add((Coding) item.asDataType());
+    if (src.hasChild("coding")) {
+      coding = (Coding) src.child("coding").asDataType();
     }
-    for (PEInstance item : src.children("snomedcts")) {
-      snomedcts.add((Coding) item.asDataType());
+    if (src.hasChild("snomedct")) {
+      snomedct = (Coding) src.child("snomedct").asDataType();
     }
-    for (PEInstance item : src.children("loincs")) {
-      loincs.add((Coding) item.asDataType());
+    if (src.hasChild("loinc")) {
+      loinc = (Coding) src.child("loinc").asDataType();
     }
     if (src.hasChild("text")) {
       text = ((StringType) src.child("text").asDataType()).getValue();
@@ -80,6 +80,22 @@ public class TestDatatypeProfile extends PEGeneratedBase {
   }
 
   public void save(PEInstance tgt, boolean nulls) {
+    tgt.clear("coding");
+    if (coding != null) {
+      tgt.addChild("coding", coding);
+    }
+    tgt.clear("snomedct");
+    if (snomedct != null) {
+      tgt.addChild("snomedct", snomedct);
+    }
+    tgt.clear("loinc");
+    if (loinc != null) {
+      tgt.addChild("loinc", loinc);
+    }
+    tgt.clear("text");
+    if (text != null) {
+      tgt.makeChild("text").data().setProperty("value", new StringType(text));
+    }
 
   }
 
@@ -87,91 +103,52 @@ public class TestDatatypeProfile extends PEGeneratedBase {
    * Test CodeableConcept Profile.
    *
    */
-  public List<Coding> getCodings() {
-    if (codings == null) { codings = new ArrayList<>(); }
-    return codings;
+  public Coding getCoding() {
+    if (coding == null) { coding = new Coding(); }
+    return coding;
   }
 
-  public boolean hasCodings() {
-    return codings != null && !codings.isEmpty();
+  public TestDatatypeProfile setCoding(Coding value) {
+    this.coding = value;
+    return this;
   }
-
-  public Coding addCoding() {
-    Coding theThing = new Coding();
-    getCodings().add(theThing);
-    return theThing;
+  public boolean hasCoding() {
+    return coding != null;
   }
-
-  public boolean hasCoding(Coding item) {
-    return hasCodings() && codings.contains(item);
-  }
-
-  public void removeCoding(Coding item) {
-    if (hasCoding(item)) {
-      codings.remove(item);
-    }
-  }
-
 
   /**
    * Test CodeableConcept Profile.
    *
    */
-  public List<Coding> getSnomedcts() {
-    if (snomedcts == null) { snomedcts = new ArrayList<>(); }
-    return snomedcts;
+  public Coding getSnomedct() {
+    if (snomedct == null) { snomedct = new Coding(); }
+    return snomedct;
   }
 
-  public boolean hasSnomedcts() {
-    return snomedcts != null && !snomedcts.isEmpty();
+  public TestDatatypeProfile setSnomedct(Coding value) {
+    this.snomedct = value;
+    return this;
   }
-
-  public Coding addSnomedct() {
-    Coding theThing = new Coding();
-    getSnomedcts().add(theThing);
-    return theThing;
+  public boolean hasSnomedct() {
+    return snomedct != null;
   }
-
-  public boolean hasSnomedct(Coding item) {
-    return hasSnomedcts() && snomedcts.contains(item);
-  }
-
-  public void removeSnomedct(Coding item) {
-    if (hasSnomedct(item)) {
-      snomedcts.remove(item);
-    }
-  }
-
 
   /**
    * Test CodeableConcept Profile.
    *
    */
-  public List<Coding> getLoincs() {
-    if (loincs == null) { loincs = new ArrayList<>(); }
-    return loincs;
+  public Coding getLoinc() {
+    if (loinc == null) { loinc = new Coding(); }
+    return loinc;
   }
 
-  public boolean hasLoincs() {
-    return loincs != null && !loincs.isEmpty();
+  public TestDatatypeProfile setLoinc(Coding value) {
+    this.loinc = value;
+    return this;
   }
-
-  public Coding addLoinc() {
-    Coding theThing = new Coding();
-    getLoincs().add(theThing);
-    return theThing;
+  public boolean hasLoinc() {
+    return loinc != null;
   }
-
-  public boolean hasLoinc(Coding item) {
-    return hasLoincs() && loincs.contains(item);
-  }
-
-  public void removeLoinc(Coding item) {
-    if (hasLoinc(item)) {
-      loincs.remove(item);
-    }
-  }
-
 
   /**
    * Test CodeableConcept Profile.
@@ -193,9 +170,9 @@ public class TestDatatypeProfile extends PEGeneratedBase {
 
 
   public void clear() {
-    codings = null;
-    snomedcts = null;
-    loincs = null;
+    coding = null;
+    snomedct = null;
+    loinc = null;
     text = null;
 
   }
