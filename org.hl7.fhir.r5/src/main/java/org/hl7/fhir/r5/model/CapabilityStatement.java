@@ -2405,13 +2405,13 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         } else if (name.equals("security")) {
           this.security = (CapabilityStatementRestSecurityComponent) value; // CapabilityStatementRestSecurityComponent
         } else if (name.equals("resource")) {
-          this.getResource().add((CapabilityStatementRestResourceComponent) value);
+          this.getResource().remove((CapabilityStatementRestResourceComponent) value);
         } else if (name.equals("interaction")) {
-          this.getInteraction().add((SystemInteractionComponent) value);
+          this.getInteraction().remove((SystemInteractionComponent) value);
         } else if (name.equals("searchParam")) {
-          this.getSearchParam().add((CapabilityStatementRestResourceSearchParamComponent) value);
+          this.getSearchParam().remove((CapabilityStatementRestResourceSearchParamComponent) value);
         } else if (name.equals("operation")) {
-          this.getOperation().add((CapabilityStatementRestResourceOperationComponent) value);
+          this.getOperation().remove((CapabilityStatementRestResourceOperationComponent) value);
         } else if (name.equals("compartment")) {
           this.getCompartment().remove(value);
         } else
@@ -4160,7 +4160,7 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         } else if (name.equals("documentation")) {
           this.documentation = null;
         } else if (name.equals("interaction")) {
-          this.getInteraction().add((ResourceInteractionComponent) value);
+          this.getInteraction().remove((ResourceInteractionComponent) value);
         } else if (name.equals("versioning")) {
           value = new ResourceVersionPolicyEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.versioning = (Enumeration) value; // Enumeration<ResourceVersionPolicy>
@@ -4182,15 +4182,15 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
           this.conditionalDelete = (Enumeration) value; // Enumeration<ConditionalDeleteStatus>
         } else if (name.equals("referencePolicy")) {
           value = new ReferenceHandlingPolicyEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getReferencePolicy().add((Enumeration) value);
+          this.getReferencePolicy().remove((Enumeration) value);
         } else if (name.equals("searchInclude")) {
           this.getSearchInclude().remove(value);
         } else if (name.equals("searchRevInclude")) {
           this.getSearchRevInclude().remove(value);
         } else if (name.equals("searchParam")) {
-          this.getSearchParam().add((CapabilityStatementRestResourceSearchParamComponent) value);
+          this.getSearchParam().remove((CapabilityStatementRestResourceSearchParamComponent) value);
         } else if (name.equals("operation")) {
-          this.getOperation().add((CapabilityStatementRestResourceOperationComponent) value);
+          this.getOperation().remove((CapabilityStatementRestResourceOperationComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -6006,13 +6006,13 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("endpoint")) {
-          this.getEndpoint().add((CapabilityStatementMessagingEndpointComponent) value);
+          this.getEndpoint().remove((CapabilityStatementMessagingEndpointComponent) value);
         } else if (name.equals("reliableCache")) {
           this.reliableCache = null;
         } else if (name.equals("documentation")) {
           this.documentation = null;
         } else if (name.equals("supportedMessage")) {
-          this.getSupportedMessage().add((CapabilityStatementMessagingSupportedMessageComponent) value);
+          this.getSupportedMessage().remove((CapabilityStatementMessagingSupportedMessageComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -9049,11 +9049,11 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
         } else if (name.equals("implementationGuide")) {
           this.getImplementationGuide().remove(value);
         } else if (name.equals("rest")) {
-          this.getRest().add((CapabilityStatementRestComponent) value);
+          this.getRest().remove((CapabilityStatementRestComponent) value);
         } else if (name.equals("messaging")) {
-          this.getMessaging().add((CapabilityStatementMessagingComponent) value);
+          this.getMessaging().remove((CapabilityStatementMessagingComponent) value);
         } else if (name.equals("document")) {
-          this.getDocument().add((CapabilityStatementDocumentComponent) value);
+          this.getDocument().remove((CapabilityStatementDocumentComponent) value);
         } else
           super.removeChild(name, value);
         

@@ -3464,23 +3464,23 @@ A coverage may only be responsible for specific types of charges, and the sequen
         } else if (name.equals("servicePeriod")) {
           this.servicePeriod = null;
         } else if (name.equals("coverage")) {
-          this.getCoverage().add((CoverageComponent) value);
+          this.getCoverage().remove((CoverageComponent) value);
         } else if (name.equals("owner")) {
           this.owner = null;
         } else if (name.equals("description")) {
           this.description = null;
         } else if (name.equals("guarantor")) {
-          this.getGuarantor().add((GuarantorComponent) value);
+          this.getGuarantor().remove((GuarantorComponent) value);
         } else if (name.equals("diagnosis")) {
-          this.getDiagnosis().add((AccountDiagnosisComponent) value);
+          this.getDiagnosis().remove((AccountDiagnosisComponent) value);
         } else if (name.equals("procedure")) {
-          this.getProcedure().add((AccountProcedureComponent) value);
+          this.getProcedure().remove((AccountProcedureComponent) value);
         } else if (name.equals("relatedAccount")) {
-          this.getRelatedAccount().add((AccountRelatedAccountComponent) value);
+          this.getRelatedAccount().remove((AccountRelatedAccountComponent) value);
         } else if (name.equals("currency")) {
           this.currency = null;
         } else if (name.equals("balance")) {
-          this.getBalance().add((AccountBalanceComponent) value);
+          this.getBalance().remove((AccountBalanceComponent) value);
         } else if (name.equals("calculatedAt")) {
           this.calculatedAt = null;
         } else

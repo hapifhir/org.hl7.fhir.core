@@ -1329,7 +1329,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("discriminator")) {
-          this.getDiscriminator().add((ElementDefinitionSlicingDiscriminatorComponent) value);
+          this.getDiscriminator().remove((ElementDefinitionSlicingDiscriminatorComponent) value);
         } else if (name.equals("description")) {
           this.description = null;
         } else if (name.equals("ordered")) {
@@ -2466,7 +2466,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           this.getTargetProfile().remove(value);
         } else if (name.equals("aggregation")) {
           value = new AggregationModeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getAggregation().add((Enumeration) value);
+          this.getAggregation().remove((Enumeration) value);
         } else if (name.equals("versioning")) {
           value = new ReferenceVersionRulesEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.versioning = (Enumeration) value; // Enumeration<ReferenceVersionRules>
@@ -4930,7 +4930,7 @@ public boolean hasTarget() {
         } else if (name.equals("valueSet")) {
           this.valueSet = null;
         } else if (name.equals("additional")) {
-          this.getAdditional().add((ElementDefinitionBindingAdditionalComponent) value);
+          this.getAdditional().remove((ElementDefinitionBindingAdditionalComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -11799,7 +11799,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
           this.path = null;
         } else if (name.equals("representation")) {
           value = new PropertyRepresentationEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getRepresentation().add((Enumeration) value);
+          this.getRepresentation().remove((Enumeration) value);
         } else if (name.equals("sliceName")) {
           this.sliceName = null;
         } else if (name.equals("sliceIsConstraining")) {
@@ -11829,7 +11829,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         } else if (name.equals("contentReference")) {
           this.contentReference = null;
         } else if (name.equals("type")) {
-          this.getType().add((TypeRefComponent) value);
+          this.getType().remove((TypeRefComponent) value);
         } else if (name.equals("defaultValue[x]")) {
           this.defaultValue = null;
         } else if (name.equals("meaningWhenMissing")) {
@@ -11841,7 +11841,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         } else if (name.equals("pattern[x]")) {
           this.pattern = null;
         } else if (name.equals("example")) {
-          this.getExample().add((ElementDefinitionExampleComponent) value);
+          this.getExample().remove((ElementDefinitionExampleComponent) value);
         } else if (name.equals("minValue[x]")) {
           this.minValue = null;
         } else if (name.equals("maxValue[x]")) {
@@ -11851,7 +11851,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         } else if (name.equals("condition")) {
           this.getCondition().remove(value);
         } else if (name.equals("constraint")) {
-          this.getConstraint().add((ElementDefinitionConstraintComponent) value);
+          this.getConstraint().remove((ElementDefinitionConstraintComponent) value);
         } else if (name.equals("mustHaveValue")) {
           this.mustHaveValue = null;
         } else if (name.equals("valueAlternatives")) {
@@ -11867,7 +11867,7 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         } else if (name.equals("binding")) {
           this.binding = (ElementDefinitionBindingComponent) value; // ElementDefinitionBindingComponent
         } else if (name.equals("mapping")) {
-          this.getMapping().add((ElementDefinitionMappingComponent) value);
+          this.getMapping().remove((ElementDefinitionMappingComponent) value);
         } else
           super.removeChild(name, value);
         

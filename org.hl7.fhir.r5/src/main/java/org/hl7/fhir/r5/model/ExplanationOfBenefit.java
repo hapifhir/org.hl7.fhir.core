@@ -5273,7 +5273,7 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("udi")) {
           this.getUdi().remove(value);
         } else if (name.equals("bodySite")) {
-          this.getBodySite().add((ItemBodySiteComponent) value);
+          this.getBodySite().remove((ItemBodySiteComponent) value);
         } else if (name.equals("encounter")) {
           this.getEncounter().remove(value);
         } else if (name.equals("noteNumber")) {
@@ -5281,9 +5281,9 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("reviewOutcome")) {
           this.reviewOutcome = (ItemReviewOutcomeComponent) value; // ItemReviewOutcomeComponent
         } else if (name.equals("adjudication")) {
-          this.getAdjudication().add((AdjudicationComponent) value);
+          this.getAdjudication().remove((AdjudicationComponent) value);
         } else if (name.equals("detail")) {
-          this.getDetail().add((DetailComponent) value);
+          this.getDetail().remove((DetailComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -7706,9 +7706,9 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("reviewOutcome")) {
           this.reviewOutcome = (ItemReviewOutcomeComponent) value; // ItemReviewOutcomeComponent
         } else if (name.equals("adjudication")) {
-          this.getAdjudication().add((AdjudicationComponent) value);
+          this.getAdjudication().remove((AdjudicationComponent) value);
         } else if (name.equals("subDetail")) {
-          this.getSubDetail().add((SubDetailComponent) value);
+          this.getSubDetail().remove((SubDetailComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -8986,7 +8986,7 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("reviewOutcome")) {
           this.reviewOutcome = (ItemReviewOutcomeComponent) value; // ItemReviewOutcomeComponent
         } else if (name.equals("adjudication")) {
-          this.getAdjudication().add((AdjudicationComponent) value);
+          this.getAdjudication().remove((AdjudicationComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -10736,15 +10736,15 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("net")) {
           this.net = null;
         } else if (name.equals("bodySite")) {
-          this.getBodySite().add((AddedItemBodySiteComponent) value);
+          this.getBodySite().remove((AddedItemBodySiteComponent) value);
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().remove(value);
         } else if (name.equals("reviewOutcome")) {
           this.reviewOutcome = (ItemReviewOutcomeComponent) value; // ItemReviewOutcomeComponent
         } else if (name.equals("adjudication")) {
-          this.getAdjudication().add((AdjudicationComponent) value);
+          this.getAdjudication().remove((AdjudicationComponent) value);
         } else if (name.equals("detail")) {
-          this.getDetail().add((AddedItemDetailComponent) value);
+          this.getDetail().remove((AddedItemDetailComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -12191,9 +12191,9 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("reviewOutcome")) {
           this.reviewOutcome = (ItemReviewOutcomeComponent) value; // ItemReviewOutcomeComponent
         } else if (name.equals("adjudication")) {
-          this.getAdjudication().add((AdjudicationComponent) value);
+          this.getAdjudication().remove((AdjudicationComponent) value);
         } else if (name.equals("subDetail")) {
-          this.getSubDetail().add((AddedItemDetailSubDetailComponent) value);
+          this.getSubDetail().remove((AddedItemDetailSubDetailComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -13181,7 +13181,7 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("reviewOutcome")) {
           this.reviewOutcome = (ItemReviewOutcomeComponent) value; // ItemReviewOutcomeComponent
         } else if (name.equals("adjudication")) {
-          this.getAdjudication().add((AdjudicationComponent) value);
+          this.getAdjudication().remove((AdjudicationComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -14864,7 +14864,7 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("term")) {
           this.term = null;
         } else if (name.equals("financial")) {
-          this.getFinancial().add((BenefitComponent) value);
+          this.getFinancial().remove((BenefitComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -18033,13 +18033,13 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("fundsReserve")) {
           this.fundsReserve = null;
         } else if (name.equals("related")) {
-          this.getRelated().add((RelatedClaimComponent) value);
+          this.getRelated().remove((RelatedClaimComponent) value);
         } else if (name.equals("prescription")) {
           this.prescription = null;
         } else if (name.equals("originalPrescription")) {
           this.originalPrescription = null;
         } else if (name.equals("event")) {
-          this.getEvent().add((ExplanationOfBenefitEventComponent) value);
+          this.getEvent().remove((ExplanationOfBenefitEventComponent) value);
         } else if (name.equals("payee")) {
           this.payee = (PayeeComponent) value; // PayeeComponent
         } else if (name.equals("referral")) {
@@ -18066,29 +18066,29 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("diagnosisRelatedGroup")) {
           this.diagnosisRelatedGroup = null;
         } else if (name.equals("careTeam")) {
-          this.getCareTeam().add((CareTeamComponent) value);
+          this.getCareTeam().remove((CareTeamComponent) value);
         } else if (name.equals("supportingInfo")) {
-          this.getSupportingInfo().add((SupportingInformationComponent) value);
+          this.getSupportingInfo().remove((SupportingInformationComponent) value);
         } else if (name.equals("diagnosis")) {
-          this.getDiagnosis().add((DiagnosisComponent) value);
+          this.getDiagnosis().remove((DiagnosisComponent) value);
         } else if (name.equals("procedure")) {
-          this.getProcedure().add((ProcedureComponent) value);
+          this.getProcedure().remove((ProcedureComponent) value);
         } else if (name.equals("precedence")) {
           this.precedence = null;
         } else if (name.equals("insurance")) {
-          this.getInsurance().add((InsuranceComponent) value);
+          this.getInsurance().remove((InsuranceComponent) value);
         } else if (name.equals("accident")) {
           this.accident = (AccidentComponent) value; // AccidentComponent
         } else if (name.equals("patientPaid")) {
           this.patientPaid = null;
         } else if (name.equals("item")) {
-          this.getItem().add((ItemComponent) value);
+          this.getItem().remove((ItemComponent) value);
         } else if (name.equals("addItem")) {
-          this.getAddItem().add((AddedItemComponent) value);
+          this.getAddItem().remove((AddedItemComponent) value);
         } else if (name.equals("adjudication")) {
-          this.getAdjudication().add((AdjudicationComponent) value);
+          this.getAdjudication().remove((AdjudicationComponent) value);
         } else if (name.equals("total")) {
-          this.getTotal().add((TotalComponent) value);
+          this.getTotal().remove((TotalComponent) value);
         } else if (name.equals("payment")) {
           this.payment = (PaymentComponent) value; // PaymentComponent
         } else if (name.equals("formCode")) {
@@ -18096,11 +18096,11 @@ public class ExplanationOfBenefit extends DomainResource {
         } else if (name.equals("form")) {
           this.form = null;
         } else if (name.equals("processNote")) {
-          this.getProcessNote().add((NoteComponent) value);
+          this.getProcessNote().remove((NoteComponent) value);
         } else if (name.equals("benefitPeriod")) {
           this.benefitPeriod = null;
         } else if (name.equals("benefitBalance")) {
-          this.getBenefitBalance().add((BenefitBalanceComponent) value);
+          this.getBenefitBalance().remove((BenefitBalanceComponent) value);
         } else
           super.removeChild(name, value);
         

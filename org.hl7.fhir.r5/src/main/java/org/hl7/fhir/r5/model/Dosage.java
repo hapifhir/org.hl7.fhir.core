@@ -1229,7 +1229,7 @@ public class Dosage extends BackboneType implements ICompositeType {
         } else if (name.equals("method")) {
           this.method = null;
         } else if (name.equals("doseAndRate")) {
-          this.getDoseAndRate().add((DosageDoseAndRateComponent) value);
+          this.getDoseAndRate().remove((DosageDoseAndRateComponent) value);
         } else if (name.equals("maxDosePerPeriod")) {
           this.getMaxDosePerPeriod().remove(value);
         } else if (name.equals("maxDosePerAdministration")) {

@@ -312,6 +312,21 @@ public class Organization extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("purpose")) {
+        this.purpose = null;
+      } else if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("telecom")) {
+        this.getTelecom().remove(value);
+      } else if (name.equals("address")) {
+        this.address = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1185,6 +1200,33 @@ public class Organization extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("active")) {
+      this.active = null;
+    } else if (name.equals("type")) {
+      this.getType().remove(value);
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("alias")) {
+      this.getAlias().remove(value);
+    } else if (name.equals("telecom")) {
+      this.getTelecom().remove(value);
+    } else if (name.equals("address")) {
+      this.getAddress().remove(value);
+    } else if (name.equals("partOf")) {
+      this.partOf = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove((OrganizationContactComponent) value);
+    } else if (name.equals("endpoint")) {
+      this.getEndpoint().remove(value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

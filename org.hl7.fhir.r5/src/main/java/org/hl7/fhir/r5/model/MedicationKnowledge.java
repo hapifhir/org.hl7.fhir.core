@@ -1464,7 +1464,7 @@ public class MedicationKnowledge extends DomainResource {
         if (name.equals("indication")) {
           this.getIndication().remove(value);
         } else if (name.equals("dosingGuideline")) {
-          this.getDosingGuideline().add((MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent) value);
+          this.getDosingGuideline().remove((MedicationKnowledgeIndicationGuidelineDosingGuidelineComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1820,11 +1820,11 @@ public class MedicationKnowledge extends DomainResource {
         if (name.equals("treatmentIntent")) {
           this.treatmentIntent = null;
         } else if (name.equals("dosage")) {
-          this.getDosage().add((MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent) value);
+          this.getDosage().remove((MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageComponent) value);
         } else if (name.equals("administrationTreatment")) {
           this.administrationTreatment = null;
         } else if (name.equals("patientCharacteristic")) {
-          this.getPatientCharacteristic().add((MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent) value);
+          this.getPatientCharacteristic().remove((MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2951,7 +2951,7 @@ public class MedicationKnowledge extends DomainResource {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("cost")) {
-          this.getCost().add((MedicationKnowledgeCostComponent) value);
+          this.getCost().remove((MedicationKnowledgeCostComponent) value);
         } else if (name.equals("packagedProduct")) {
           this.packagedProduct = null;
         } else
@@ -3334,7 +3334,7 @@ public class MedicationKnowledge extends DomainResource {
         } else if (name.equals("stabilityDuration")) {
           this.stabilityDuration = null;
         } else if (name.equals("environmentalSetting")) {
-          this.getEnvironmentalSetting().add((MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent) value);
+          this.getEnvironmentalSetting().remove((MedicationKnowledgeStorageGuidelineEnvironmentalSettingComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3987,7 +3987,7 @@ public class MedicationKnowledge extends DomainResource {
         if (name.equals("regulatoryAuthority")) {
           this.regulatoryAuthority = null;
         } else if (name.equals("substitution")) {
-          this.getSubstitution().add((MedicationKnowledgeRegulatorySubstitutionComponent) value);
+          this.getSubstitution().remove((MedicationKnowledgeRegulatorySubstitutionComponent) value);
         } else if (name.equals("schedule")) {
           this.getSchedule().remove(value);
         } else if (name.equals("maxDispense")) {
@@ -4925,9 +4925,9 @@ public class MedicationKnowledge extends DomainResource {
         } else if (name.equals("intendedRoute")) {
           this.getIntendedRoute().remove(value);
         } else if (name.equals("ingredient")) {
-          this.getIngredient().add((MedicationKnowledgeDefinitionalIngredientComponent) value);
+          this.getIngredient().remove((MedicationKnowledgeDefinitionalIngredientComponent) value);
         } else if (name.equals("drugCharacteristic")) {
-          this.getDrugCharacteristic().add((MedicationKnowledgeDefinitionalDrugCharacteristicComponent) value);
+          this.getDrugCharacteristic().remove((MedicationKnowledgeDefinitionalDrugCharacteristicComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -7017,31 +7017,31 @@ public class MedicationKnowledge extends DomainResource {
         } else if (name.equals("name")) {
           this.getName().remove(value);
         } else if (name.equals("relatedMedicationKnowledge")) {
-          this.getRelatedMedicationKnowledge().add((MedicationKnowledgeRelatedMedicationKnowledgeComponent) value);
+          this.getRelatedMedicationKnowledge().remove((MedicationKnowledgeRelatedMedicationKnowledgeComponent) value);
         } else if (name.equals("associatedMedication")) {
           this.getAssociatedMedication().remove(value);
         } else if (name.equals("productType")) {
           this.getProductType().remove(value);
         } else if (name.equals("monograph")) {
-          this.getMonograph().add((MedicationKnowledgeMonographComponent) value);
+          this.getMonograph().remove((MedicationKnowledgeMonographComponent) value);
         } else if (name.equals("preparationInstruction")) {
           this.preparationInstruction = null;
         } else if (name.equals("cost")) {
-          this.getCost().add((MedicationKnowledgeCostComponent) value);
+          this.getCost().remove((MedicationKnowledgeCostComponent) value);
         } else if (name.equals("monitoringProgram")) {
-          this.getMonitoringProgram().add((MedicationKnowledgeMonitoringProgramComponent) value);
+          this.getMonitoringProgram().remove((MedicationKnowledgeMonitoringProgramComponent) value);
         } else if (name.equals("indicationGuideline")) {
-          this.getIndicationGuideline().add((MedicationKnowledgeIndicationGuidelineComponent) value);
+          this.getIndicationGuideline().remove((MedicationKnowledgeIndicationGuidelineComponent) value);
         } else if (name.equals("medicineClassification")) {
-          this.getMedicineClassification().add((MedicationKnowledgeMedicineClassificationComponent) value);
+          this.getMedicineClassification().remove((MedicationKnowledgeMedicineClassificationComponent) value);
         } else if (name.equals("packaging")) {
-          this.getPackaging().add((MedicationKnowledgePackagingComponent) value);
+          this.getPackaging().remove((MedicationKnowledgePackagingComponent) value);
         } else if (name.equals("clinicalUseIssue")) {
           this.getClinicalUseIssue().remove(value);
         } else if (name.equals("storageGuideline")) {
-          this.getStorageGuideline().add((MedicationKnowledgeStorageGuidelineComponent) value);
+          this.getStorageGuideline().remove((MedicationKnowledgeStorageGuidelineComponent) value);
         } else if (name.equals("regulatory")) {
-          this.getRegulatory().add((MedicationKnowledgeRegulatoryComponent) value);
+          this.getRegulatory().remove((MedicationKnowledgeRegulatoryComponent) value);
         } else if (name.equals("definitional")) {
           this.definitional = (MedicationKnowledgeDefinitionalComponent) value; // MedicationKnowledgeDefinitionalComponent
         } else

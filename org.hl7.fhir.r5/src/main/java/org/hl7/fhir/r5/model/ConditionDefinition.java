@@ -3802,17 +3802,17 @@ public class ConditionDefinition extends MetadataResource {
         } else if (name.equals("definition")) {
           this.getDefinition().remove(value);
         } else if (name.equals("observation")) {
-          this.getObservation().add((ConditionDefinitionObservationComponent) value);
+          this.getObservation().remove((ConditionDefinitionObservationComponent) value);
         } else if (name.equals("medication")) {
-          this.getMedication().add((ConditionDefinitionMedicationComponent) value);
+          this.getMedication().remove((ConditionDefinitionMedicationComponent) value);
         } else if (name.equals("precondition")) {
-          this.getPrecondition().add((ConditionDefinitionPreconditionComponent) value);
+          this.getPrecondition().remove((ConditionDefinitionPreconditionComponent) value);
         } else if (name.equals("team")) {
           this.getTeam().remove(value);
         } else if (name.equals("questionnaire")) {
-          this.getQuestionnaire().add((ConditionDefinitionQuestionnaireComponent) value);
+          this.getQuestionnaire().remove((ConditionDefinitionQuestionnaireComponent) value);
         } else if (name.equals("plan")) {
-          this.getPlan().add((ConditionDefinitionPlanComponent) value);
+          this.getPlan().remove((ConditionDefinitionPlanComponent) value);
         } else
           super.removeChild(name, value);
         

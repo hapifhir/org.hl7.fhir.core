@@ -396,6 +396,23 @@ public class MedicinalProductUndesirableEffect extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("subject")) {
+      this.getSubject().remove(castToReference(value));
+    } else if (name.equals("symptomConditionEffect")) {
+      this.symptomConditionEffect = null;
+    } else if (name.equals("classification")) {
+      this.classification = null;
+    } else if (name.equals("frequencyOfOccurrence")) {
+      this.frequencyOfOccurrence = null;
+    } else if (name.equals("population")) {
+      this.getPopulation().remove(castToPopulation(value));
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1867885268:

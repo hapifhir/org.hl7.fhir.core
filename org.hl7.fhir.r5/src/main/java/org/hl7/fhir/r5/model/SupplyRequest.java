@@ -1489,7 +1489,7 @@ public class SupplyRequest extends DomainResource {
         } else if (name.equals("quantity")) {
           this.quantity = null;
         } else if (name.equals("parameter")) {
-          this.getParameter().add((SupplyRequestParameterComponent) value);
+          this.getParameter().remove((SupplyRequestParameterComponent) value);
         } else if (name.equals("occurrence[x]")) {
           this.occurrence = null;
         } else if (name.equals("authoredOn")) {

@@ -636,7 +636,7 @@ public class Linkage extends DomainResource {
         } else if (name.equals("author")) {
           this.author = null;
         } else if (name.equals("item")) {
-          this.getItem().add((LinkageItemComponent) value);
+          this.getItem().remove((LinkageItemComponent) value);
         } else
           super.removeChild(name, value);
         

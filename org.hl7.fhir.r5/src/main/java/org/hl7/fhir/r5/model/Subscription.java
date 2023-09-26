@@ -2053,13 +2053,13 @@ public class Subscription extends DomainResource {
         } else if (name.equals("reason")) {
           this.reason = null;
         } else if (name.equals("filterBy")) {
-          this.getFilterBy().add((SubscriptionFilterByComponent) value);
+          this.getFilterBy().remove((SubscriptionFilterByComponent) value);
         } else if (name.equals("channelType")) {
           this.channelType = null;
         } else if (name.equals("endpoint")) {
           this.endpoint = null;
         } else if (name.equals("parameter")) {
-          this.getParameter().add((SubscriptionParameterComponent) value);
+          this.getParameter().remove((SubscriptionParameterComponent) value);
         } else if (name.equals("heartbeatPeriod")) {
           this.heartbeatPeriod = null;
         } else if (name.equals("timeout")) {

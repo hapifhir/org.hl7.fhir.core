@@ -782,7 +782,7 @@ public class Provenance extends DomainResource {
         } else if (name.equals("what")) {
           this.what = null;
         } else if (name.equals("agent")) {
-          this.getAgent().add((ProvenanceAgentComponent) value);
+          this.getAgent().remove((ProvenanceAgentComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1726,9 +1726,9 @@ public class Provenance extends DomainResource {
         } else if (name.equals("encounter")) {
           this.encounter = null;
         } else if (name.equals("agent")) {
-          this.getAgent().add((ProvenanceAgentComponent) value);
+          this.getAgent().remove((ProvenanceAgentComponent) value);
         } else if (name.equals("entity")) {
-          this.getEntity().add((ProvenanceEntityComponent) value);
+          this.getEntity().remove((ProvenanceEntityComponent) value);
         } else if (name.equals("signature")) {
           this.getSignature().remove(value);
         } else

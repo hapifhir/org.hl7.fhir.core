@@ -2149,9 +2149,9 @@ public class DiagnosticReport extends DomainResource {
         } else if (name.equals("study")) {
           this.getStudy().remove(value);
         } else if (name.equals("supportingInfo")) {
-          this.getSupportingInfo().add((DiagnosticReportSupportingInfoComponent) value);
+          this.getSupportingInfo().remove((DiagnosticReportSupportingInfoComponent) value);
         } else if (name.equals("media")) {
-          this.getMedia().add((DiagnosticReportMediaComponent) value);
+          this.getMedia().remove((DiagnosticReportMediaComponent) value);
         } else if (name.equals("composition")) {
           this.composition = null;
         } else if (name.equals("conclusion")) {

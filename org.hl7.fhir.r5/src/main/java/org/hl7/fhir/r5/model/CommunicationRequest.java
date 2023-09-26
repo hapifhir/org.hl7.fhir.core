@@ -1700,7 +1700,7 @@ public class CommunicationRequest extends DomainResource {
         } else if (name.equals("encounter")) {
           this.encounter = null;
         } else if (name.equals("payload")) {
-          this.getPayload().add((CommunicationRequestPayloadComponent) value);
+          this.getPayload().remove((CommunicationRequestPayloadComponent) value);
         } else if (name.equals("occurrence[x]")) {
           this.occurrence = null;
         } else if (name.equals("authoredOn")) {

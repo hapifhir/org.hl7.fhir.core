@@ -761,6 +761,23 @@ public class TriggerDefinition extends Type implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("timing[x]")) {
+      this.timing = null;
+    } else if (name.equals("data")) {
+      this.getData().remove(castToDataRequirement(value));
+    } else if (name.equals("condition")) {
+      this.condition = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 3575610:

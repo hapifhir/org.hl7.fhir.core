@@ -1226,6 +1226,39 @@ public class DeviceUseStatement extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("basedOn")) {
+      this.getBasedOn().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("derivedFrom")) {
+      this.getDerivedFrom().remove(value);
+    } else if (name.equals("timing[x]")) {
+      this.timing = null;
+    } else if (name.equals("recordedOn")) {
+      this.recordedOn = null;
+    } else if (name.equals("source")) {
+      this.source = null;
+    } else if (name.equals("device")) {
+      this.device = null;
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(value);
+    } else if (name.equals("reasonReference")) {
+      this.getReasonReference().remove(value);
+    } else if (name.equals("bodySite")) {
+      this.bodySite = null;
+    } else if (name.equals("note")) {
+      this.getNote().remove(value);
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1618432855:

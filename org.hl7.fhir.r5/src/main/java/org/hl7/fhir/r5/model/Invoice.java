@@ -1932,13 +1932,13 @@ public class Invoice extends DomainResource {
         } else if (name.equals("period[x]")) {
           this.period = null;
         } else if (name.equals("participant")) {
-          this.getParticipant().add((InvoiceParticipantComponent) value);
+          this.getParticipant().remove((InvoiceParticipantComponent) value);
         } else if (name.equals("issuer")) {
           this.issuer = null;
         } else if (name.equals("account")) {
           this.account = null;
         } else if (name.equals("lineItem")) {
-          this.getLineItem().add((InvoiceLineItemComponent) value);
+          this.getLineItem().remove((InvoiceLineItemComponent) value);
         } else if (name.equals("totalPriceComponent")) {
           this.getTotalPriceComponent().remove(value);
         } else if (name.equals("totalNet")) {

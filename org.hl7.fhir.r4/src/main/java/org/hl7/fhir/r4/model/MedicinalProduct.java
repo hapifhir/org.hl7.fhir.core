@@ -323,6 +323,19 @@ public class MedicinalProduct extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("productName")) {
+        this.productName = null;
+      } else if (name.equals("namePart")) {
+        this.getNamePart().remove((MedicinalProductNameNamePartComponent) value);
+      } else if (name.equals("countryLanguage")) {
+        this.getCountryLanguage().remove((MedicinalProductNameCountryLanguageComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -587,6 +600,17 @@ public class MedicinalProduct extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("part")) {
+        this.part = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -859,6 +883,19 @@ public class MedicinalProduct extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("country")) {
+        this.country = null;
+      } else if (name.equals("jurisdiction")) {
+        this.jurisdiction = null;
+      } else if (name.equals("language")) {
+        this.language = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1394,6 +1431,25 @@ public class MedicinalProduct extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("operationType")) {
+        this.operationType = null;
+      } else if (name.equals("authorisationReferenceNumber")) {
+        this.authorisationReferenceNumber = null;
+      } else if (name.equals("effectiveDate")) {
+        this.effectiveDate = null;
+      } else if (name.equals("confidentialityIndicator")) {
+        this.confidentialityIndicator = null;
+      } else if (name.equals("manufacturer")) {
+        this.getManufacturer().remove(castToReference(value));
+      } else if (name.equals("regulator")) {
+        this.regulator = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1979,6 +2035,27 @@ public class MedicinalProduct extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identifier")) {
+        this.getIdentifier().remove(castToIdentifier(value));
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("intendedUse")) {
+        this.intendedUse = null;
+      } else if (name.equals("indication[x]")) {
+        this.indication = null;
+      } else if (name.equals("status")) {
+        this.status = null;
+      } else if (name.equals("date")) {
+        this.date = null;
+      } else if (name.equals("species")) {
+        this.species = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3697,6 +3774,53 @@ public class MedicinalProduct extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("domain")) {
+      this.domain = null;
+    } else if (name.equals("combinedPharmaceuticalDoseForm")) {
+      this.combinedPharmaceuticalDoseForm = null;
+    } else if (name.equals("legalStatusOfSupply")) {
+      this.legalStatusOfSupply = null;
+    } else if (name.equals("additionalMonitoringIndicator")) {
+      this.additionalMonitoringIndicator = null;
+    } else if (name.equals("specialMeasures")) {
+      this.getSpecialMeasures().remove(castToString(value));
+    } else if (name.equals("paediatricUseIndicator")) {
+      this.paediatricUseIndicator = null;
+    } else if (name.equals("productClassification")) {
+      this.getProductClassification().remove(castToCodeableConcept(value));
+    } else if (name.equals("marketingStatus")) {
+      this.getMarketingStatus().remove(castToMarketingStatus(value));
+    } else if (name.equals("pharmaceuticalProduct")) {
+      this.getPharmaceuticalProduct().remove(castToReference(value));
+    } else if (name.equals("packagedMedicinalProduct")) {
+      this.getPackagedMedicinalProduct().remove(castToReference(value));
+    } else if (name.equals("attachedDocument")) {
+      this.getAttachedDocument().remove(castToReference(value));
+    } else if (name.equals("masterFile")) {
+      this.getMasterFile().remove(castToReference(value));
+    } else if (name.equals("contact")) {
+      this.getContact().remove(castToReference(value));
+    } else if (name.equals("clinicalTrial")) {
+      this.getClinicalTrial().remove(castToReference(value));
+    } else if (name.equals("name")) {
+      this.getName().remove((MedicinalProductNameComponent) value);
+    } else if (name.equals("crossReference")) {
+      this.getCrossReference().remove(castToIdentifier(value));
+    } else if (name.equals("manufacturingBusinessOperation")) {
+      this.getManufacturingBusinessOperation().remove((MedicinalProductManufacturingBusinessOperationComponent) value);
+    } else if (name.equals("specialDesignation")) {
+      this.getSpecialDesignation().remove((MedicinalProductSpecialDesignationComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

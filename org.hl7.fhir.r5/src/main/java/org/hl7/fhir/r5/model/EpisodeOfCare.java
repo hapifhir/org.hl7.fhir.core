@@ -1791,13 +1791,13 @@ public class EpisodeOfCare extends DomainResource {
           value = new EpisodeOfCareStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<EpisodeOfCareStatus>
         } else if (name.equals("statusHistory")) {
-          this.getStatusHistory().add((EpisodeOfCareStatusHistoryComponent) value);
+          this.getStatusHistory().remove((EpisodeOfCareStatusHistoryComponent) value);
         } else if (name.equals("type")) {
           this.getType().remove(value);
         } else if (name.equals("reason")) {
-          this.getReason().add((ReasonComponent) value);
+          this.getReason().remove((ReasonComponent) value);
         } else if (name.equals("diagnosis")) {
-          this.getDiagnosis().add((DiagnosisComponent) value);
+          this.getDiagnosis().remove((DiagnosisComponent) value);
         } else if (name.equals("patient")) {
           this.patient = null;
         } else if (name.equals("managingOrganization")) {

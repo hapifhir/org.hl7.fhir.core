@@ -715,7 +715,7 @@ public class SubstanceSourceMaterial extends DomainResource {
         } else if (name.equals("intraspecificDescription")) {
           this.intraspecificDescription = null;
         } else if (name.equals("author")) {
-          this.getAuthor().add((SubstanceSourceMaterialOrganismAuthorComponent) value);
+          this.getAuthor().remove((SubstanceSourceMaterialOrganismAuthorComponent) value);
         } else if (name.equals("hybrid")) {
           this.hybrid = (SubstanceSourceMaterialOrganismHybridComponent) value; // SubstanceSourceMaterialOrganismHybridComponent
         } else if (name.equals("organismGeneral")) {
@@ -2856,11 +2856,11 @@ public class SubstanceSourceMaterial extends DomainResource {
         } else if (name.equals("developmentStage")) {
           this.developmentStage = null;
         } else if (name.equals("fractionDescription")) {
-          this.getFractionDescription().add((SubstanceSourceMaterialFractionDescriptionComponent) value);
+          this.getFractionDescription().remove((SubstanceSourceMaterialFractionDescriptionComponent) value);
         } else if (name.equals("organism")) {
           this.organism = (SubstanceSourceMaterialOrganismComponent) value; // SubstanceSourceMaterialOrganismComponent
         } else if (name.equals("partDescription")) {
-          this.getPartDescription().add((SubstanceSourceMaterialPartDescriptionComponent) value);
+          this.getPartDescription().remove((SubstanceSourceMaterialPartDescriptionComponent) value);
         } else
           super.removeChild(name, value);
         

@@ -1118,7 +1118,7 @@ public class RelatedPerson extends DomainResource {
         } else if (name.equals("period")) {
           this.period = null;
         } else if (name.equals("communication")) {
-          this.getCommunication().add((RelatedPersonCommunicationComponent) value);
+          this.getCommunication().remove((RelatedPersonCommunicationComponent) value);
         } else
           super.removeChild(name, value);
         

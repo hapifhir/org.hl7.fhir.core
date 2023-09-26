@@ -2330,15 +2330,15 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
         } else if (name.equals("photo")) {
           this.getPhoto().remove(value);
         } else if (name.equals("contact")) {
-          this.getContact().add((ContactComponent) value);
+          this.getContact().remove((ContactComponent) value);
         } else if (name.equals("communication")) {
-          this.getCommunication().add((PatientCommunicationComponent) value);
+          this.getCommunication().remove((PatientCommunicationComponent) value);
         } else if (name.equals("generalPractitioner")) {
           this.getGeneralPractitioner().remove(value);
         } else if (name.equals("managingOrganization")) {
           this.managingOrganization = null;
         } else if (name.equals("link")) {
-          this.getLink().add((PatientLinkComponent) value);
+          this.getLink().remove((PatientLinkComponent) value);
         } else
           super.removeChild(name, value);
         

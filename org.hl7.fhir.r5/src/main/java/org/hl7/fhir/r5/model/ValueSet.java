@@ -450,9 +450,9 @@ public class ValueSet extends MetadataResource {
         } else if (name.equals("inactive")) {
           this.inactive = null;
         } else if (name.equals("include")) {
-          this.getInclude().add((ConceptSetComponent) value);
+          this.getInclude().remove((ConceptSetComponent) value);
         } else if (name.equals("exclude")) {
-          this.getExclude().add((ConceptSetComponent) value);
+          this.getExclude().remove((ConceptSetComponent) value);
         } else if (name.equals("property")) {
           this.getProperty().remove(value);
         } else
@@ -1025,9 +1025,9 @@ public class ValueSet extends MetadataResource {
         } else if (name.equals("version")) {
           this.version = null;
         } else if (name.equals("concept")) {
-          this.getConcept().add((ConceptReferenceComponent) value);
+          this.getConcept().remove((ConceptReferenceComponent) value);
         } else if (name.equals("filter")) {
-          this.getFilter().add((ConceptSetFilterComponent) value);
+          this.getFilter().remove((ConceptSetFilterComponent) value);
         } else if (name.equals("valueSet")) {
           this.getValueSet().remove(value);
         } else if (name.equals("copyright")) {
@@ -1405,7 +1405,7 @@ public class ValueSet extends MetadataResource {
         } else if (name.equals("display")) {
           this.display = null;
         } else if (name.equals("designation")) {
-          this.getDesignation().add((ConceptReferenceDesignationComponent) value);
+          this.getDesignation().remove((ConceptReferenceDesignationComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2810,11 +2810,11 @@ public class ValueSet extends MetadataResource {
         } else if (name.equals("offset")) {
           this.offset = null;
         } else if (name.equals("parameter")) {
-          this.getParameter().add((ValueSetExpansionParameterComponent) value);
+          this.getParameter().remove((ValueSetExpansionParameterComponent) value);
         } else if (name.equals("property")) {
-          this.getProperty().add((ValueSetExpansionPropertyComponent) value);
+          this.getProperty().remove((ValueSetExpansionPropertyComponent) value);
         } else if (name.equals("contains")) {
-          this.getContains().add((ValueSetExpansionContainsComponent) value);
+          this.getContains().remove((ValueSetExpansionContainsComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -4245,11 +4245,11 @@ public class ValueSet extends MetadataResource {
         } else if (name.equals("display")) {
           this.display = null;
         } else if (name.equals("designation")) {
-          this.getDesignation().add((ConceptReferenceDesignationComponent) value);
+          this.getDesignation().remove((ConceptReferenceDesignationComponent) value);
         } else if (name.equals("property")) {
-          this.getProperty().add((ConceptPropertyComponent) value);
+          this.getProperty().remove((ConceptPropertyComponent) value);
         } else if (name.equals("contains")) {
-          this.getContains().add((ValueSetExpansionContainsComponent) value);
+          this.getContains().remove((ValueSetExpansionContainsComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -4729,7 +4729,7 @@ public class ValueSet extends MetadataResource {
         } else if (name.equals("value[x]")) {
           this.value = null;
         } else if (name.equals("subProperty")) {
-          this.getSubProperty().add((ConceptSubPropertyComponent) value);
+          this.getSubProperty().remove((ConceptSubPropertyComponent) value);
         } else
           super.removeChild(name, value);
         

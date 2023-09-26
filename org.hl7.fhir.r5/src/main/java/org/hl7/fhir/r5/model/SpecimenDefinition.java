@@ -794,7 +794,7 @@ public class SpecimenDefinition extends DomainResource {
         } else if (name.equals("rejectionCriterion")) {
           this.getRejectionCriterion().remove(value);
         } else if (name.equals("handling")) {
-          this.getHandling().add((SpecimenDefinitionTypeTestedHandlingComponent) value);
+          this.getHandling().remove((SpecimenDefinitionTypeTestedHandlingComponent) value);
         } else if (name.equals("testingDestination")) {
           this.getTestingDestination().remove(value);
         } else
@@ -1432,7 +1432,7 @@ public class SpecimenDefinition extends DomainResource {
         } else if (name.equals("minimumVolume[x]")) {
           this.minimumVolume = null;
         } else if (name.equals("additive")) {
-          this.getAdditive().add((SpecimenDefinitionTypeTestedContainerAdditiveComponent) value);
+          this.getAdditive().remove((SpecimenDefinitionTypeTestedContainerAdditiveComponent) value);
         } else if (name.equals("preparation")) {
           this.preparation = null;
         } else
@@ -3998,7 +3998,7 @@ public class SpecimenDefinition extends DomainResource {
         } else if (name.equals("collection")) {
           this.getCollection().remove(value);
         } else if (name.equals("typeTested")) {
-          this.getTypeTested().add((SpecimenDefinitionTypeTestedComponent) value);
+          this.getTypeTested().remove((SpecimenDefinitionTypeTestedComponent) value);
         } else
           super.removeChild(name, value);
         

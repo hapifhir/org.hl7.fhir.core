@@ -483,9 +483,9 @@ public class NutritionOrder extends DomainResource {
         } else if (name.equals("schedule")) {
           this.schedule = (OralDietScheduleComponent) value; // OralDietScheduleComponent
         } else if (name.equals("nutrient")) {
-          this.getNutrient().add((NutritionOrderOralDietNutrientComponent) value);
+          this.getNutrient().remove((NutritionOrderOralDietNutrientComponent) value);
         } else if (name.equals("texture")) {
-          this.getTexture().add((NutritionOrderOralDietTextureComponent) value);
+          this.getTexture().remove((NutritionOrderOralDietTextureComponent) value);
         } else if (name.equals("fluidConsistencyType")) {
           this.getFluidConsistencyType().remove(value);
         } else if (name.equals("instruction")) {
@@ -2624,13 +2624,13 @@ public class NutritionOrder extends DomainResource {
         } else if (name.equals("deliveryDevice")) {
           this.getDeliveryDevice().remove(value);
         } else if (name.equals("additive")) {
-          this.getAdditive().add((NutritionOrderEnteralFormulaAdditiveComponent) value);
+          this.getAdditive().remove((NutritionOrderEnteralFormulaAdditiveComponent) value);
         } else if (name.equals("caloricDensity")) {
           this.caloricDensity = null;
         } else if (name.equals("routeOfAdministration")) {
           this.routeOfAdministration = null;
         } else if (name.equals("administration")) {
-          this.getAdministration().add((NutritionOrderEnteralFormulaAdministrationComponent) value);
+          this.getAdministration().remove((NutritionOrderEnteralFormulaAdministrationComponent) value);
         } else if (name.equals("maxVolumeToDeliver")) {
           this.maxVolumeToDeliver = null;
         } else if (name.equals("administrationInstruction")) {
@@ -5169,7 +5169,7 @@ public class NutritionOrder extends DomainResource {
         } else if (name.equals("oralDiet")) {
           this.oralDiet = (NutritionOrderOralDietComponent) value; // NutritionOrderOralDietComponent
         } else if (name.equals("supplement")) {
-          this.getSupplement().add((NutritionOrderSupplementComponent) value);
+          this.getSupplement().remove((NutritionOrderSupplementComponent) value);
         } else if (name.equals("enteralFormula")) {
           this.enteralFormula = (NutritionOrderEnteralFormulaComponent) value; // NutritionOrderEnteralFormulaComponent
         } else if (name.equals("note")) {

@@ -511,6 +511,17 @@ public class MedicationDispense extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("function")) {
+        this.function = null;
+      } else if (name.equals("actor")) {
+        this.actor = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -944,6 +955,21 @@ public class MedicationDispense extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("wasSubstituted")) {
+        this.wasSubstituted = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("reason")) {
+        this.getReason().remove(castToCodeableConcept(value));
+      } else if (name.equals("responsibleParty")) {
+        this.getResponsibleParty().remove(castToReference(value));
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3019,6 +3045,61 @@ public class MedicationDispense extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("partOf")) {
+      this.getPartOf().remove(castToReference(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("statusReason[x]")) {
+      this.statusReason = null;
+    } else if (name.equals("category")) {
+      this.category = null;
+    } else if (name.equals("medication[x]")) {
+      this.medication = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("context")) {
+      this.context = null;
+    } else if (name.equals("supportingInformation")) {
+      this.getSupportingInformation().remove(castToReference(value));
+    } else if (name.equals("performer")) {
+      this.getPerformer().remove((MedicationDispensePerformerComponent) value);
+    } else if (name.equals("location")) {
+      this.location = null;
+    } else if (name.equals("authorizingPrescription")) {
+      this.getAuthorizingPrescription().remove(castToReference(value));
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("quantity")) {
+      this.quantity = null;
+    } else if (name.equals("daysSupply")) {
+      this.daysSupply = null;
+    } else if (name.equals("whenPrepared")) {
+      this.whenPrepared = null;
+    } else if (name.equals("whenHandedOver")) {
+      this.whenHandedOver = null;
+    } else if (name.equals("destination")) {
+      this.destination = null;
+    } else if (name.equals("receiver")) {
+      this.getReceiver().remove(castToReference(value));
+    } else if (name.equals("note")) {
+      this.getNote().remove(castToAnnotation(value));
+    } else if (name.equals("dosageInstruction")) {
+      this.getDosageInstruction().remove(castToDosage(value));
+    } else if (name.equals("substitution")) {
+      this.substitution = (MedicationDispenseSubstitutionComponent) value; // MedicationDispenseSubstitutionComponent
+    } else if (name.equals("detectedIssue")) {
+      this.getDetectedIssue().remove(castToReference(value));
+    } else if (name.equals("eventHistory")) {
+      this.getEventHistory().remove(castToReference(value));
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

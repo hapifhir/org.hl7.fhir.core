@@ -1290,7 +1290,7 @@ public class CareTeam extends DomainResource {
         } else if (name.equals("period")) {
           this.period = null;
         } else if (name.equals("participant")) {
-          this.getParticipant().add((CareTeamParticipantComponent) value);
+          this.getParticipant().remove((CareTeamParticipantComponent) value);
         } else if (name.equals("reason")) {
           this.getReason().remove(value);
         } else if (name.equals("managingOrganization")) {

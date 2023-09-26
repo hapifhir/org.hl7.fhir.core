@@ -1033,7 +1033,7 @@ public class Substance extends DomainResource {
         } else if (name.equals("quantity")) {
           this.quantity = null;
         } else if (name.equals("ingredient")) {
-          this.getIngredient().add((SubstanceIngredientComponent) value);
+          this.getIngredient().remove((SubstanceIngredientComponent) value);
         } else
           super.removeChild(name, value);
         

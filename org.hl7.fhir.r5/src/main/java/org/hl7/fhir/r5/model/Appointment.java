@@ -4924,13 +4924,13 @@ The duration (usually in minutes) could also be provided to indicate the length 
         } else if (name.equals("subject")) {
           this.subject = null;
         } else if (name.equals("participant")) {
-          this.getParticipant().add((AppointmentParticipantComponent) value);
+          this.getParticipant().remove((AppointmentParticipantComponent) value);
         } else if (name.equals("recurrenceId")) {
           this.recurrenceId = null;
         } else if (name.equals("occurrenceChanged")) {
           this.occurrenceChanged = null;
         } else if (name.equals("recurrenceTemplate")) {
-          this.getRecurrenceTemplate().add((AppointmentRecurrenceTemplateComponent) value);
+          this.getRecurrenceTemplate().remove((AppointmentRecurrenceTemplateComponent) value);
         } else
           super.removeChild(name, value);
         

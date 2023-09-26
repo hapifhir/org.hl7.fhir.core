@@ -1191,6 +1191,23 @@ public class SubscriptionTopic extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("resource")) {
+        this.resource = null;
+      } else if (name.equals("supportedInteraction")) {
+        this.getSupportedInteraction().remove((Enumeration) value);
+      } else if (name.equals("queryCriteria")) {
+        this.queryCriteria = null;
+      } else if (name.equals("fhirPathCriteria")) {
+        this.fhirPathCriteria = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1772,6 +1789,23 @@ public class SubscriptionTopic extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("previous")) {
+        this.previous = null;
+      } else if (name.equals("resultForCreate")) {
+        this.resultForCreate = null;
+      } else if (name.equals("current")) {
+        this.current = null;
+      } else if (name.equals("resultForDelete")) {
+        this.resultForDelete = null;
+      } else if (name.equals("requireBoth")) {
+        this.requireBoth = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2179,6 +2213,19 @@ public class SubscriptionTopic extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("event")) {
+        this.event = null;
+      } else if (name.equals("resource")) {
+        this.resource = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2674,6 +2721,21 @@ public class SubscriptionTopic extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("resource")) {
+        this.resource = null;
+      } else if (name.equals("filterParameter")) {
+        this.filterParameter = null;
+      } else if (name.equals("modifier")) {
+        this.getModifier().remove((Enumeration) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -3131,6 +3193,19 @@ public class SubscriptionTopic extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("resource")) {
+        this.resource = null;
+      } else if (name.equals("include")) {
+        this.getInclude().remove(value);
+      } else if (name.equals("revInclude")) {
+        this.getRevInclude().remove(value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -5076,6 +5151,57 @@ public class SubscriptionTopic extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("derivedFrom")) {
+      this.getDerivedFrom().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(value);
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(value);
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("approvalDate")) {
+      this.approvalDate = null;
+    } else if (name.equals("lastReviewDate")) {
+      this.lastReviewDate = null;
+    } else if (name.equals("effectivePeriod")) {
+      this.effectivePeriod = null;
+    } else if (name.equals("resourceTrigger")) {
+      this.getResourceTrigger().remove((SubscriptionTopicResourceTriggerComponent) value);
+    } else if (name.equals("eventTrigger")) {
+      this.getEventTrigger().remove((SubscriptionTopicEventTriggerComponent) value);
+    } else if (name.equals("canFilterBy")) {
+      this.getCanFilterBy().remove((SubscriptionTopicCanFilterByComponent) value);
+    } else if (name.equals("notificationShape")) {
+      this.getNotificationShape().remove((SubscriptionTopicNotificationShapeComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

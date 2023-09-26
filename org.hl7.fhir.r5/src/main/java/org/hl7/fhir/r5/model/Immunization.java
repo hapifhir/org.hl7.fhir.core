@@ -3018,7 +3018,7 @@ public class Immunization extends DomainResource {
         } else if (name.equals("doseQuantity")) {
           this.doseQuantity = null;
         } else if (name.equals("performer")) {
-          this.getPerformer().add((ImmunizationPerformerComponent) value);
+          this.getPerformer().remove((ImmunizationPerformerComponent) value);
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else if (name.equals("reason")) {
@@ -3028,13 +3028,13 @@ public class Immunization extends DomainResource {
         } else if (name.equals("subpotentReason")) {
           this.getSubpotentReason().remove(value);
         } else if (name.equals("programEligibility")) {
-          this.getProgramEligibility().add((ImmunizationProgramEligibilityComponent) value);
+          this.getProgramEligibility().remove((ImmunizationProgramEligibilityComponent) value);
         } else if (name.equals("fundingSource")) {
           this.fundingSource = null;
         } else if (name.equals("reaction")) {
-          this.getReaction().add((ImmunizationReactionComponent) value);
+          this.getReaction().remove((ImmunizationReactionComponent) value);
         } else if (name.equals("protocolApplied")) {
-          this.getProtocolApplied().add((ImmunizationProtocolAppliedComponent) value);
+          this.getProtocolApplied().remove((ImmunizationProtocolAppliedComponent) value);
         } else
           super.removeChild(name, value);
         

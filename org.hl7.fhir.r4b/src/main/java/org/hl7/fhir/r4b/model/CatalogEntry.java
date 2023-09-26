@@ -354,6 +354,17 @@ public class CatalogEntry extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("relationtype")) {
+        this.relationtype = null;
+      } else if (name.equals("item")) {
+        this.item = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1406,6 +1417,39 @@ public class CatalogEntry extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("orderable")) {
+      this.orderable = null;
+    } else if (name.equals("referencedItem")) {
+      this.referencedItem = null;
+    } else if (name.equals("additionalIdentifier")) {
+      this.getAdditionalIdentifier().remove(value);
+    } else if (name.equals("classification")) {
+      this.getClassification().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("validityPeriod")) {
+      this.validityPeriod = null;
+    } else if (name.equals("validTo")) {
+      this.validTo = null;
+    } else if (name.equals("lastUpdated")) {
+      this.lastUpdated = null;
+    } else if (name.equals("additionalCharacteristic")) {
+      this.getAdditionalCharacteristic().remove(value);
+    } else if (name.equals("additionalClassification")) {
+      this.getAdditionalClassification().remove(value);
+    } else if (name.equals("relatedEntry")) {
+      this.getRelatedEntry().remove((CatalogEntryRelatedEntryComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

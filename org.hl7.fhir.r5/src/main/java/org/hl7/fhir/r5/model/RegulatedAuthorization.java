@@ -366,7 +366,7 @@ public class RegulatedAuthorization extends DomainResource {
         } else if (name.equals("date[x]")) {
           this.date = null;
         } else if (name.equals("application")) {
-          this.getApplication().add((RegulatedAuthorizationCaseComponent) value);
+          this.getApplication().remove((RegulatedAuthorizationCaseComponent) value);
         } else
           super.removeChild(name, value);
         

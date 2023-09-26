@@ -1050,6 +1050,17 @@ public class SearchParameter extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("definition")) {
+        this.definition = null;
+      } else if (name.equals("expression")) {
+        this.expression = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -3263,6 +3274,66 @@ public class SearchParameter extends MetadataResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("derivedFrom")) {
+      this.derivedFrom = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(castToContactDetail(value));
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(castToUsageContext(value));
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(castToCodeableConcept(value));
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("base")) {
+      this.getBase().remove(castToCode(value));
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("expression")) {
+      this.expression = null;
+    } else if (name.equals("xpath")) {
+      this.xpath = null;
+    } else if (name.equals("xpathUsage")) {
+      this.xpathUsage = null;
+    } else if (name.equals("target")) {
+      this.getTarget().remove(castToCode(value));
+    } else if (name.equals("multipleOr")) {
+      this.multipleOr = null;
+    } else if (name.equals("multipleAnd")) {
+      this.multipleAnd = null;
+    } else if (name.equals("comparator")) {
+      this.getComparator().remove((Enumeration) value);
+    } else if (name.equals("modifier")) {
+      value = null;
+      this.getModifier().remove((Enumeration) value);
+    } else if (name.equals("chain")) {
+      this.getChain().remove(castToString(value));
+    } else if (name.equals("component")) {
+      this.getComponent().remove((SearchParameterComponentComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

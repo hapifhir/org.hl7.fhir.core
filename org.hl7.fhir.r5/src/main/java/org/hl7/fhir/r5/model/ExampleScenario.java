@@ -1067,9 +1067,9 @@ public class ExampleScenario extends CanonicalResource {
         } else if (name.equals("content")) {
           this.content = null;
         } else if (name.equals("version")) {
-          this.getVersion().add((ExampleScenarioInstanceVersionComponent) value);
+          this.getVersion().remove((ExampleScenarioInstanceVersionComponent) value);
         } else if (name.equals("containedInstance")) {
-          this.getContainedInstance().add((ExampleScenarioInstanceContainedInstanceComponent) value);
+          this.getContainedInstance().remove((ExampleScenarioInstanceContainedInstanceComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2249,7 +2249,7 @@ public class ExampleScenario extends CanonicalResource {
         } else if (name.equals("postConditions")) {
           this.postConditions = null;
         } else if (name.equals("step")) {
-          this.getStep().add((ExampleScenarioProcessStepComponent) value);
+          this.getStep().remove((ExampleScenarioProcessStepComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2746,7 +2746,7 @@ public class ExampleScenario extends CanonicalResource {
         } else if (name.equals("operation")) {
           this.operation = (ExampleScenarioProcessStepOperationComponent) value; // ExampleScenarioProcessStepOperationComponent
         } else if (name.equals("alternative")) {
-          this.getAlternative().add((ExampleScenarioProcessStepAlternativeComponent) value);
+          this.getAlternative().remove((ExampleScenarioProcessStepAlternativeComponent) value);
         } else if (name.equals("pause")) {
           this.pause = null;
         } else
@@ -3811,7 +3811,7 @@ public class ExampleScenario extends CanonicalResource {
         } else if (name.equals("description")) {
           this.description = null;
         } else if (name.equals("step")) {
-          this.getStep().add((ExampleScenarioProcessStepComponent) value);
+          this.getStep().remove((ExampleScenarioProcessStepComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -5304,11 +5304,11 @@ public class ExampleScenario extends CanonicalResource {
         } else if (name.equals("copyrightLabel")) {
           this.copyrightLabel = null;
         } else if (name.equals("actor")) {
-          this.getActor().add((ExampleScenarioActorComponent) value);
+          this.getActor().remove((ExampleScenarioActorComponent) value);
         } else if (name.equals("instance")) {
-          this.getInstance().add((ExampleScenarioInstanceComponent) value);
+          this.getInstance().remove((ExampleScenarioInstanceComponent) value);
         } else if (name.equals("process")) {
-          this.getProcess().add((ExampleScenarioProcessComponent) value);
+          this.getProcess().remove((ExampleScenarioProcessComponent) value);
         } else
           super.removeChild(name, value);
         

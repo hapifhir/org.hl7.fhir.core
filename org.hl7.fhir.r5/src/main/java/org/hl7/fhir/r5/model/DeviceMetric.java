@@ -1471,7 +1471,7 @@ public class DeviceMetric extends DomainResource {
         } else if (name.equals("measurementFrequency")) {
           this.measurementFrequency = null;
         } else if (name.equals("calibration")) {
-          this.getCalibration().add((DeviceMetricCalibrationComponent) value);
+          this.getCalibration().remove((DeviceMetricCalibrationComponent) value);
         } else
           super.removeChild(name, value);
         

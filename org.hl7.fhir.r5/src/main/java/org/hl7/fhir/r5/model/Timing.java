@@ -1889,12 +1889,12 @@ Normal practice is to use the 'mo' code as a calendar month when calculating the
           this.periodUnit = (Enumeration) value; // Enumeration<UnitsOfTime>
         } else if (name.equals("dayOfWeek")) {
           value = new DaysOfWeekEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getDayOfWeek().add((Enumeration) value);
+          this.getDayOfWeek().remove((Enumeration) value);
         } else if (name.equals("timeOfDay")) {
           this.getTimeOfDay().remove(value);
         } else if (name.equals("when")) {
           value = new EventTimingEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getWhen().add((Enumeration) value);
+          this.getWhen().remove((Enumeration) value);
         } else if (name.equals("offset")) {
           this.offset = null;
         } else

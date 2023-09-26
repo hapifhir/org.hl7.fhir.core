@@ -847,7 +847,7 @@ public class DocumentReference extends DomainResource {
         if (name.equals("attachment")) {
           this.attachment = null;
         } else if (name.equals("profile")) {
-          this.getProfile().add((DocumentReferenceContentProfileComponent) value);
+          this.getProfile().remove((DocumentReferenceContentProfileComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2633,17 +2633,17 @@ public class DocumentReference extends DomainResource {
         } else if (name.equals("author")) {
           this.getAuthor().remove(value);
         } else if (name.equals("attester")) {
-          this.getAttester().add((DocumentReferenceAttesterComponent) value);
+          this.getAttester().remove((DocumentReferenceAttesterComponent) value);
         } else if (name.equals("custodian")) {
           this.custodian = null;
         } else if (name.equals("relatesTo")) {
-          this.getRelatesTo().add((DocumentReferenceRelatesToComponent) value);
+          this.getRelatesTo().remove((DocumentReferenceRelatesToComponent) value);
         } else if (name.equals("description")) {
           this.description = null;
         } else if (name.equals("securityLabel")) {
           this.getSecurityLabel().remove(value);
         } else if (name.equals("content")) {
-          this.getContent().add((DocumentReferenceContentComponent) value);
+          this.getContent().remove((DocumentReferenceContentComponent) value);
         } else
           super.removeChild(name, value);
         

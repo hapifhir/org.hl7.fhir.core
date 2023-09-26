@@ -1085,7 +1085,7 @@ public class SubscriptionStatus extends DomainResource {
         } else if (name.equals("eventsSinceSubscriptionStart")) {
           this.eventsSinceSubscriptionStart = null;
         } else if (name.equals("notificationEvent")) {
-          this.getNotificationEvent().add((SubscriptionStatusNotificationEventComponent) value);
+          this.getNotificationEvent().remove((SubscriptionStatusNotificationEventComponent) value);
         } else if (name.equals("subscription")) {
           this.subscription = null;
         } else if (name.equals("topic")) {

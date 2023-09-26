@@ -1857,7 +1857,7 @@ public class MessageHeader extends DomainResource {
         if (name.equals("event[x]")) {
           this.event = null;
         } else if (name.equals("destination")) {
-          this.getDestination().add((MessageDestinationComponent) value);
+          this.getDestination().remove((MessageDestinationComponent) value);
         } else if (name.equals("sender")) {
           this.sender = null;
         } else if (name.equals("author")) {

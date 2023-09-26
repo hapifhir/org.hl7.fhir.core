@@ -2296,15 +2296,15 @@ public class NutritionProduct extends DomainResource {
         } else if (name.equals("manufacturer")) {
           this.getManufacturer().remove(value);
         } else if (name.equals("nutrient")) {
-          this.getNutrient().add((NutritionProductNutrientComponent) value);
+          this.getNutrient().remove((NutritionProductNutrientComponent) value);
         } else if (name.equals("ingredient")) {
-          this.getIngredient().add((NutritionProductIngredientComponent) value);
+          this.getIngredient().remove((NutritionProductIngredientComponent) value);
         } else if (name.equals("knownAllergen")) {
           this.getKnownAllergen().remove(value);
         } else if (name.equals("characteristic")) {
-          this.getCharacteristic().add((NutritionProductCharacteristicComponent) value);
+          this.getCharacteristic().remove((NutritionProductCharacteristicComponent) value);
         } else if (name.equals("instance")) {
-          this.getInstance().add((NutritionProductInstanceComponent) value);
+          this.getInstance().remove((NutritionProductInstanceComponent) value);
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else

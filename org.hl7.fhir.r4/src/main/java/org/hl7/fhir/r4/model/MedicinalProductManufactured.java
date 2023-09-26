@@ -577,6 +577,27 @@ public class MedicinalProductManufactured extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("manufacturedDoseForm")) {
+      this.manufacturedDoseForm = null;
+    } else if (name.equals("unitOfPresentation")) {
+      this.unitOfPresentation = null;
+    } else if (name.equals("quantity")) {
+      this.quantity = null;
+    } else if (name.equals("manufacturer")) {
+      this.getManufacturer().remove(castToReference(value));
+    } else if (name.equals("ingredient")) {
+      this.getIngredient().remove(castToReference(value));
+    } else if (name.equals("physicalCharacteristics")) {
+      this.physicalCharacteristics = null;
+    } else if (name.equals("otherCharacteristics")) {
+      this.getOtherCharacteristics().remove(castToCodeableConcept(value));
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1451400348:

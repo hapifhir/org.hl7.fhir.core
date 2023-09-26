@@ -1069,6 +1069,35 @@ public class Slot extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("serviceCategory")) {
+      this.getServiceCategory().remove(value);
+    } else if (name.equals("serviceType")) {
+      this.getServiceType().remove(value);
+    } else if (name.equals("specialty")) {
+      this.getSpecialty().remove(value);
+    } else if (name.equals("appointmentType")) {
+      this.appointmentType = null;
+    } else if (name.equals("schedule")) {
+      this.schedule = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("start")) {
+      this.start = null;
+    } else if (name.equals("end")) {
+      this.end = null;
+    } else if (name.equals("overbooked")) {
+      this.overbooked = null;
+    } else if (name.equals("comment")) {
+      this.comment = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1618432855:

@@ -1038,11 +1038,11 @@ public class PackagedProductDefinition extends DomainResource {
         } else if (name.equals("manufacturer")) {
           this.getManufacturer().remove(value);
         } else if (name.equals("property")) {
-          this.getProperty().add((PackagedProductDefinitionPackagingPropertyComponent) value);
+          this.getProperty().remove((PackagedProductDefinitionPackagingPropertyComponent) value);
         } else if (name.equals("containedItem")) {
-          this.getContainedItem().add((PackagedProductDefinitionPackagingContainedItemComponent) value);
+          this.getContainedItem().remove((PackagedProductDefinitionPackagingContainedItemComponent) value);
         } else if (name.equals("packaging")) {
-          this.getPackaging().add((PackagedProductDefinitionPackagingComponent) value);
+          this.getPackaging().remove((PackagedProductDefinitionPackagingComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2731,7 +2731,7 @@ public class PackagedProductDefinition extends DomainResource {
         } else if (name.equals("description")) {
           this.description = null;
         } else if (name.equals("legalStatusOfSupply")) {
-          this.getLegalStatusOfSupply().add((PackagedProductDefinitionLegalStatusOfSupplyComponent) value);
+          this.getLegalStatusOfSupply().remove((PackagedProductDefinitionLegalStatusOfSupplyComponent) value);
         } else if (name.equals("marketingStatus")) {
           this.getMarketingStatus().remove(value);
         } else if (name.equals("copackagedIndicator")) {
@@ -2743,7 +2743,7 @@ public class PackagedProductDefinition extends DomainResource {
         } else if (name.equals("packaging")) {
           this.packaging = (PackagedProductDefinitionPackagingComponent) value; // PackagedProductDefinitionPackagingComponent
         } else if (name.equals("characteristic")) {
-          this.getCharacteristic().add((PackagedProductDefinitionPackagingPropertyComponent) value);
+          this.getCharacteristic().remove((PackagedProductDefinitionPackagingPropertyComponent) value);
         } else
           super.removeChild(name, value);
         

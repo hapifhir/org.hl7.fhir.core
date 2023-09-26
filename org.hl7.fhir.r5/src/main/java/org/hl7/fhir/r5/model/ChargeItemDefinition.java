@@ -500,7 +500,7 @@ public class ChargeItemDefinition extends MetadataResource {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("applicability")) {
-          this.getApplicability().add((ChargeItemDefinitionApplicabilityComponent) value);
+          this.getApplicability().remove((ChargeItemDefinitionApplicabilityComponent) value);
         } else if (name.equals("priceComponent")) {
           this.getPriceComponent().remove(value);
         } else
@@ -2636,9 +2636,9 @@ public class ChargeItemDefinition extends MetadataResource {
         } else if (name.equals("instance")) {
           this.getInstance().remove(value);
         } else if (name.equals("applicability")) {
-          this.getApplicability().add((ChargeItemDefinitionApplicabilityComponent) value);
+          this.getApplicability().remove((ChargeItemDefinitionApplicabilityComponent) value);
         } else if (name.equals("propertyGroup")) {
-          this.getPropertyGroup().add((ChargeItemDefinitionPropertyGroupComponent) value);
+          this.getPropertyGroup().remove((ChargeItemDefinitionPropertyGroupComponent) value);
         } else
           super.removeChild(name, value);
         

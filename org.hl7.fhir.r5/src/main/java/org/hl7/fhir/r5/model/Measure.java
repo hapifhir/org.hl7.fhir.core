@@ -1132,9 +1132,9 @@ public class Measure extends MetadataResource {
         } else if (name.equals("library")) {
           this.getLibrary().remove(value);
         } else if (name.equals("population")) {
-          this.getPopulation().add((MeasureGroupPopulationComponent) value);
+          this.getPopulation().remove((MeasureGroupPopulationComponent) value);
         } else if (name.equals("stratifier")) {
-          this.getStratifier().add((MeasureGroupStratifierComponent) value);
+          this.getStratifier().remove((MeasureGroupStratifierComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2219,7 +2219,7 @@ public class Measure extends MetadataResource {
         } else if (name.equals("groupDefinition")) {
           this.groupDefinition = null;
         } else if (name.equals("component")) {
-          this.getComponent().add((MeasureGroupStratifierComponentComponent) value);
+          this.getComponent().remove((MeasureGroupStratifierComponentComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -6169,13 +6169,13 @@ public class Measure extends MetadataResource {
         } else if (name.equals("improvementNotation")) {
           this.improvementNotation = null;
         } else if (name.equals("term")) {
-          this.getTerm().add((MeasureTermComponent) value);
+          this.getTerm().remove((MeasureTermComponent) value);
         } else if (name.equals("guidance")) {
           this.guidance = null;
         } else if (name.equals("group")) {
-          this.getGroup().add((MeasureGroupComponent) value);
+          this.getGroup().remove((MeasureGroupComponent) value);
         } else if (name.equals("supplementalData")) {
-          this.getSupplementalData().add((MeasureSupplementalDataComponent) value);
+          this.getSupplementalData().remove((MeasureSupplementalDataComponent) value);
         } else
           super.removeChild(name, value);
         

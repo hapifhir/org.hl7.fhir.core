@@ -675,6 +675,23 @@ public class QuestionnaireResponse extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("linkId")) {
+        this.linkId = null;
+      } else if (name.equals("definition")) {
+        this.definition = null;
+      } else if (name.equals("text")) {
+        this.text = null;
+      } else if (name.equals("answer")) {
+        this.getAnswer().remove((QuestionnaireResponseItemAnswerComponent) value);
+      } else if (name.equals("item")) {
+        this.getItem().remove((QuestionnaireResponseItemComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1218,6 +1235,17 @@ public class QuestionnaireResponse extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("value[x]")) {
+        this.value = null;
+      } else if (name.equals("item")) {
+        this.getItem().remove((QuestionnaireResponseItemComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2272,6 +2300,35 @@ public class QuestionnaireResponse extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.identifier = null;
+    } else if (name.equals("basedOn")) {
+      this.getBasedOn().remove(castToReference(value));
+    } else if (name.equals("partOf")) {
+      this.getPartOf().remove(castToReference(value));
+    } else if (name.equals("questionnaire")) {
+      this.questionnaire = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("authored")) {
+      this.authored = null;
+    } else if (name.equals("author")) {
+      this.author = null;
+    } else if (name.equals("source")) {
+      this.source = null;
+    } else if (name.equals("item")) {
+      this.getItem().remove((QuestionnaireResponseItemComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

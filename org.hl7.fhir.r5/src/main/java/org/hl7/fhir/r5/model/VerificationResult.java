@@ -2563,11 +2563,11 @@ public class VerificationResult extends DomainResource {
         } else if (name.equals("failureAction")) {
           this.failureAction = null;
         } else if (name.equals("primarySource")) {
-          this.getPrimarySource().add((VerificationResultPrimarySourceComponent) value);
+          this.getPrimarySource().remove((VerificationResultPrimarySourceComponent) value);
         } else if (name.equals("attestation")) {
           this.attestation = (VerificationResultAttestationComponent) value; // VerificationResultAttestationComponent
         } else if (name.equals("validator")) {
-          this.getValidator().add((VerificationResultValidatorComponent) value);
+          this.getValidator().remove((VerificationResultValidatorComponent) value);
         } else
           super.removeChild(name, value);
         

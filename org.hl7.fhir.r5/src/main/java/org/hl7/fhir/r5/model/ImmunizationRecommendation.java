@@ -896,7 +896,7 @@ public class ImmunizationRecommendation extends DomainResource {
         } else if (name.equals("forecastReason")) {
           this.getForecastReason().remove(value);
         } else if (name.equals("dateCriterion")) {
-          this.getDateCriterion().add((ImmunizationRecommendationRecommendationDateCriterionComponent) value);
+          this.getDateCriterion().remove((ImmunizationRecommendationRecommendationDateCriterionComponent) value);
         } else if (name.equals("description")) {
           this.description = null;
         } else if (name.equals("series")) {
@@ -1668,7 +1668,7 @@ public class ImmunizationRecommendation extends DomainResource {
         } else if (name.equals("authority")) {
           this.authority = null;
         } else if (name.equals("recommendation")) {
-          this.getRecommendation().add((ImmunizationRecommendationRecommendationComponent) value);
+          this.getRecommendation().remove((ImmunizationRecommendationRecommendationComponent) value);
         } else
           super.removeChild(name, value);
         

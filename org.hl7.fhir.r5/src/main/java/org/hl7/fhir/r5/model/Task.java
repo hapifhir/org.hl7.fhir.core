@@ -5581,7 +5581,7 @@ public class Task extends DomainResource {
         } else if (name.equals("owner")) {
           this.owner = null;
         } else if (name.equals("performer")) {
-          this.getPerformer().add((TaskPerformerComponent) value);
+          this.getPerformer().remove((TaskPerformerComponent) value);
         } else if (name.equals("location")) {
           this.location = null;
         } else if (name.equals("reason")) {
@@ -5595,9 +5595,9 @@ public class Task extends DomainResource {
         } else if (name.equals("restriction")) {
           this.restriction = (TaskRestrictionComponent) value; // TaskRestrictionComponent
         } else if (name.equals("input")) {
-          this.getInput().add((TaskInputComponent) value);
+          this.getInput().remove((TaskInputComponent) value);
         } else if (name.equals("output")) {
-          this.getOutput().add((TaskOutputComponent) value);
+          this.getOutput().remove((TaskOutputComponent) value);
         } else
           super.removeChild(name, value);
         

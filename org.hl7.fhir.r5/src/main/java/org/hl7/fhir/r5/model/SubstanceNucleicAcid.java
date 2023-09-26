@@ -551,9 +551,9 @@ public class SubstanceNucleicAcid extends DomainResource {
         } else if (name.equals("threePrime")) {
           this.threePrime = null;
         } else if (name.equals("linkage")) {
-          this.getLinkage().add((SubstanceNucleicAcidSubunitLinkageComponent) value);
+          this.getLinkage().remove((SubstanceNucleicAcidSubunitLinkageComponent) value);
         } else if (name.equals("sugar")) {
-          this.getSugar().add((SubstanceNucleicAcidSubunitSugarComponent) value);
+          this.getSugar().remove((SubstanceNucleicAcidSubunitSugarComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1704,7 +1704,7 @@ public class SubstanceNucleicAcid extends DomainResource {
         } else if (name.equals("oligoNucleotideType")) {
           this.oligoNucleotideType = null;
         } else if (name.equals("subunit")) {
-          this.getSubunit().add((SubstanceNucleicAcidSubunitComponent) value);
+          this.getSubunit().remove((SubstanceNucleicAcidSubunitComponent) value);
         } else
           super.removeChild(name, value);
         

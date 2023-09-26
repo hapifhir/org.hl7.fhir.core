@@ -4678,7 +4678,7 @@ public class ResearchStudy extends DomainResource {
         } else if (name.equals("title")) {
           this.title = null;
         } else if (name.equals("label")) {
-          this.getLabel().add((ResearchStudyLabelComponent) value);
+          this.getLabel().remove((ResearchStudyLabelComponent) value);
         } else if (name.equals("protocol")) {
           this.getProtocol().remove(value);
         } else if (name.equals("partOf")) {
@@ -4717,19 +4717,19 @@ public class ResearchStudy extends DomainResource {
         } else if (name.equals("classifier")) {
           this.getClassifier().remove(value);
         } else if (name.equals("associatedParty")) {
-          this.getAssociatedParty().add((ResearchStudyAssociatedPartyComponent) value);
+          this.getAssociatedParty().remove((ResearchStudyAssociatedPartyComponent) value);
         } else if (name.equals("progressStatus")) {
-          this.getProgressStatus().add((ResearchStudyProgressStatusComponent) value);
+          this.getProgressStatus().remove((ResearchStudyProgressStatusComponent) value);
         } else if (name.equals("whyStopped")) {
           this.whyStopped = null;
         } else if (name.equals("recruitment")) {
           this.recruitment = (ResearchStudyRecruitmentComponent) value; // ResearchStudyRecruitmentComponent
         } else if (name.equals("comparisonGroup")) {
-          this.getComparisonGroup().add((ResearchStudyComparisonGroupComponent) value);
+          this.getComparisonGroup().remove((ResearchStudyComparisonGroupComponent) value);
         } else if (name.equals("objective")) {
-          this.getObjective().add((ResearchStudyObjectiveComponent) value);
+          this.getObjective().remove((ResearchStudyObjectiveComponent) value);
         } else if (name.equals("outcomeMeasure")) {
-          this.getOutcomeMeasure().add((ResearchStudyOutcomeMeasureComponent) value);
+          this.getOutcomeMeasure().remove((ResearchStudyOutcomeMeasureComponent) value);
         } else if (name.equals("result")) {
           this.getResult().remove(value);
         } else

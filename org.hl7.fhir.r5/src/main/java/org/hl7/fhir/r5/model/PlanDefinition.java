@@ -487,7 +487,7 @@ public class PlanDefinition extends MetadataResource {
         } else if (name.equals("documentation")) {
           this.getDocumentation().remove(value);
         } else if (name.equals("target")) {
-          this.getTarget().add((PlanDefinitionGoalTargetComponent) value);
+          this.getTarget().remove((PlanDefinitionGoalTargetComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1271,7 +1271,7 @@ public class PlanDefinition extends MetadataResource {
         } else if (name.equals("description")) {
           this.description = null;
         } else if (name.equals("option")) {
-          this.getOption().add((PlanDefinitionActorOptionComponent) value);
+          this.getOption().remove((PlanDefinitionActorOptionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3719,19 +3719,19 @@ public class PlanDefinition extends MetadataResource {
         } else if (name.equals("trigger")) {
           this.getTrigger().remove(value);
         } else if (name.equals("condition")) {
-          this.getCondition().add((PlanDefinitionActionConditionComponent) value);
+          this.getCondition().remove((PlanDefinitionActionConditionComponent) value);
         } else if (name.equals("input")) {
-          this.getInput().add((PlanDefinitionActionInputComponent) value);
+          this.getInput().remove((PlanDefinitionActionInputComponent) value);
         } else if (name.equals("output")) {
-          this.getOutput().add((PlanDefinitionActionOutputComponent) value);
+          this.getOutput().remove((PlanDefinitionActionOutputComponent) value);
         } else if (name.equals("relatedAction")) {
-          this.getRelatedAction().add((PlanDefinitionActionRelatedActionComponent) value);
+          this.getRelatedAction().remove((PlanDefinitionActionRelatedActionComponent) value);
         } else if (name.equals("timing[x]")) {
           this.timing = null;
         } else if (name.equals("location")) {
           this.location = null;
         } else if (name.equals("participant")) {
-          this.getParticipant().add((PlanDefinitionActionParticipantComponent) value);
+          this.getParticipant().remove((PlanDefinitionActionParticipantComponent) value);
         } else if (name.equals("type")) {
           this.type = null;
         } else if (name.equals("groupingBehavior")) {
@@ -3754,9 +3754,9 @@ public class PlanDefinition extends MetadataResource {
         } else if (name.equals("transform")) {
           this.transform = null;
         } else if (name.equals("dynamicValue")) {
-          this.getDynamicValue().add((PlanDefinitionActionDynamicValueComponent) value);
+          this.getDynamicValue().remove((PlanDefinitionActionDynamicValueComponent) value);
         } else if (name.equals("action")) {
-          this.getAction().add((PlanDefinitionActionComponent) value);
+          this.getAction().remove((PlanDefinitionActionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -8514,11 +8514,11 @@ public class PlanDefinition extends MetadataResource {
         } else if (name.equals("library")) {
           this.getLibrary().remove(value);
         } else if (name.equals("goal")) {
-          this.getGoal().add((PlanDefinitionGoalComponent) value);
+          this.getGoal().remove((PlanDefinitionGoalComponent) value);
         } else if (name.equals("actor")) {
-          this.getActor().add((PlanDefinitionActorComponent) value);
+          this.getActor().remove((PlanDefinitionActorComponent) value);
         } else if (name.equals("action")) {
-          this.getAction().add((PlanDefinitionActionComponent) value);
+          this.getAction().remove((PlanDefinitionActionComponent) value);
         } else if (name.equals("asNeeded[x]")) {
           this.asNeeded = null;
         } else

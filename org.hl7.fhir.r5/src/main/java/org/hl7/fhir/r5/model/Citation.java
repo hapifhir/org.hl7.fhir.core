@@ -2493,21 +2493,21 @@ public class Citation extends MetadataResource {
         } else if (name.equals("currentState")) {
           this.getCurrentState().remove(value);
         } else if (name.equals("statusDate")) {
-          this.getStatusDate().add((CitationCitedArtifactStatusDateComponent) value);
+          this.getStatusDate().remove((CitationCitedArtifactStatusDateComponent) value);
         } else if (name.equals("title")) {
-          this.getTitle().add((CitationCitedArtifactTitleComponent) value);
+          this.getTitle().remove((CitationCitedArtifactTitleComponent) value);
         } else if (name.equals("abstract")) {
-          this.getAbstract().add((CitationCitedArtifactAbstractComponent) value);
+          this.getAbstract().remove((CitationCitedArtifactAbstractComponent) value);
         } else if (name.equals("part")) {
           this.part = (CitationCitedArtifactPartComponent) value; // CitationCitedArtifactPartComponent
         } else if (name.equals("relatesTo")) {
-          this.getRelatesTo().add((CitationCitedArtifactRelatesToComponent) value);
+          this.getRelatesTo().remove((CitationCitedArtifactRelatesToComponent) value);
         } else if (name.equals("publicationForm")) {
-          this.getPublicationForm().add((CitationCitedArtifactPublicationFormComponent) value);
+          this.getPublicationForm().remove((CitationCitedArtifactPublicationFormComponent) value);
         } else if (name.equals("webLocation")) {
-          this.getWebLocation().add((CitationCitedArtifactWebLocationComponent) value);
+          this.getWebLocation().remove((CitationCitedArtifactWebLocationComponent) value);
         } else if (name.equals("classification")) {
-          this.getClassification().add((CitationCitedArtifactClassificationComponent) value);
+          this.getClassification().remove((CitationCitedArtifactClassificationComponent) value);
         } else if (name.equals("contributorship")) {
           this.contributorship = (CitationCitedArtifactContributorshipComponent) value; // CitationCitedArtifactContributorshipComponent
         } else if (name.equals("note")) {
@@ -7352,9 +7352,9 @@ public class Citation extends MetadataResource {
         if (name.equals("complete")) {
           this.complete = null;
         } else if (name.equals("entry")) {
-          this.getEntry().add((CitationCitedArtifactContributorshipEntryComponent) value);
+          this.getEntry().remove((CitationCitedArtifactContributorshipEntryComponent) value);
         } else if (name.equals("summary")) {
-          this.getSummary().add((ContributorshipSummaryComponent) value);
+          this.getSummary().remove((ContributorshipSummaryComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -7986,7 +7986,7 @@ public class Citation extends MetadataResource {
         } else if (name.equals("role")) {
           this.role = null;
         } else if (name.equals("contributionInstance")) {
-          this.getContributionInstance().add((CitationCitedArtifactContributorshipEntryContributionInstanceComponent) value);
+          this.getContributionInstance().remove((CitationCitedArtifactContributorshipEntryContributionInstanceComponent) value);
         } else if (name.equals("correspondingContact")) {
           this.correspondingContact = null;
         } else if (name.equals("rankingOrder")) {
@@ -10846,15 +10846,15 @@ public class Citation extends MetadataResource {
         } else if (name.equals("endorser")) {
           this.getEndorser().remove(value);
         } else if (name.equals("summary")) {
-          this.getSummary().add((CitationSummaryComponent) value);
+          this.getSummary().remove((CitationSummaryComponent) value);
         } else if (name.equals("classification")) {
-          this.getClassification().add((CitationClassificationComponent) value);
+          this.getClassification().remove((CitationClassificationComponent) value);
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else if (name.equals("currentState")) {
           this.getCurrentState().remove(value);
         } else if (name.equals("statusDate")) {
-          this.getStatusDate().add((CitationStatusDateComponent) value);
+          this.getStatusDate().remove((CitationStatusDateComponent) value);
         } else if (name.equals("relatedArtifact")) {
           this.getRelatedArtifact().remove(value);
         } else if (name.equals("citedArtifact")) {

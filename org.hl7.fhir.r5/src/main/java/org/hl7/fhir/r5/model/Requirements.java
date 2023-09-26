@@ -915,7 +915,7 @@ public class Requirements extends CanonicalResource {
           this.label = null;
         } else if (name.equals("conformance")) {
           value = new ConformanceExpectationEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getConformance().add((Enumeration) value);
+          this.getConformance().remove((Enumeration) value);
         } else if (name.equals("conditionality")) {
           this.conditionality = null;
         } else if (name.equals("requirement")) {
@@ -2580,7 +2580,7 @@ public class Requirements extends CanonicalResource {
         } else if (name.equals("actor")) {
           this.getActor().remove(value);
         } else if (name.equals("statement")) {
-          this.getStatement().add((RequirementsStatementComponent) value);
+          this.getStatement().remove((RequirementsStatementComponent) value);
         } else
           super.removeChild(name, value);
         

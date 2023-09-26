@@ -2944,7 +2944,7 @@ public class NamingSystem extends MetadataResource {
         } else if (name.equals("usage")) {
           this.usage = null;
         } else if (name.equals("uniqueId")) {
-          this.getUniqueId().add((NamingSystemUniqueIdComponent) value);
+          this.getUniqueId().remove((NamingSystemUniqueIdComponent) value);
         } else
           super.removeChild(name, value);
         

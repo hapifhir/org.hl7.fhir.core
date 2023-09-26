@@ -1735,7 +1735,7 @@ public class Communication extends DomainResource {
         } else if (name.equals("reason")) {
           this.getReason().remove(value);
         } else if (name.equals("payload")) {
-          this.getPayload().add((CommunicationPayloadComponent) value);
+          this.getPayload().remove((CommunicationPayloadComponent) value);
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else

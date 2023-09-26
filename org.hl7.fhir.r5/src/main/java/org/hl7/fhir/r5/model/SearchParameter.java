@@ -2585,7 +2585,7 @@ public class SearchParameter extends CanonicalResource {
           this.code = null;
         } else if (name.equals("base")) {
           value = new VersionIndependentResourceTypesAllEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getBase().add((Enumeration) value);
+          this.getBase().remove((Enumeration) value);
         } else if (name.equals("type")) {
           value = new SearchParamTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<SearchParamType>
@@ -2598,21 +2598,21 @@ public class SearchParameter extends CanonicalResource {
           this.constraint = null;
         } else if (name.equals("target")) {
           value = new VersionIndependentResourceTypesAllEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getTarget().add((Enumeration) value);
+          this.getTarget().remove((Enumeration) value);
         } else if (name.equals("multipleOr")) {
           this.multipleOr = null;
         } else if (name.equals("multipleAnd")) {
           this.multipleAnd = null;
         } else if (name.equals("comparator")) {
           value = new SearchComparatorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getComparator().add((Enumeration) value);
+          this.getComparator().remove((Enumeration) value);
         } else if (name.equals("modifier")) {
           value = new SearchModifierCodeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getModifier().add((Enumeration) value);
+          this.getModifier().remove((Enumeration) value);
         } else if (name.equals("chain")) {
           this.getChain().remove(value);
         } else if (name.equals("component")) {
-          this.getComponent().add((SearchParameterComponentComponent) value);
+          this.getComponent().remove((SearchParameterComponentComponent) value);
         } else
           super.removeChild(name, value);
         

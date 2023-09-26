@@ -1908,19 +1908,19 @@ public class RequestOrchestration extends DomainResource {
         } else if (name.equals("goal")) {
           this.getGoal().remove(value);
         } else if (name.equals("condition")) {
-          this.getCondition().add((RequestOrchestrationActionConditionComponent) value);
+          this.getCondition().remove((RequestOrchestrationActionConditionComponent) value);
         } else if (name.equals("input")) {
-          this.getInput().add((RequestOrchestrationActionInputComponent) value);
+          this.getInput().remove((RequestOrchestrationActionInputComponent) value);
         } else if (name.equals("output")) {
-          this.getOutput().add((RequestOrchestrationActionOutputComponent) value);
+          this.getOutput().remove((RequestOrchestrationActionOutputComponent) value);
         } else if (name.equals("relatedAction")) {
-          this.getRelatedAction().add((RequestOrchestrationActionRelatedActionComponent) value);
+          this.getRelatedAction().remove((RequestOrchestrationActionRelatedActionComponent) value);
         } else if (name.equals("timing[x]")) {
           this.timing = null;
         } else if (name.equals("location")) {
           this.location = null;
         } else if (name.equals("participant")) {
-          this.getParticipant().add((RequestOrchestrationActionParticipantComponent) value);
+          this.getParticipant().remove((RequestOrchestrationActionParticipantComponent) value);
         } else if (name.equals("type")) {
           this.type = null;
         } else if (name.equals("groupingBehavior")) {
@@ -1945,9 +1945,9 @@ public class RequestOrchestration extends DomainResource {
         } else if (name.equals("transform")) {
           this.transform = null;
         } else if (name.equals("dynamicValue")) {
-          this.getDynamicValue().add((RequestOrchestrationActionDynamicValueComponent) value);
+          this.getDynamicValue().remove((RequestOrchestrationActionDynamicValueComponent) value);
         } else if (name.equals("action")) {
-          this.getAction().add((RequestOrchestrationActionComponent) value);
+          this.getAction().remove((RequestOrchestrationActionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -5467,7 +5467,7 @@ public class RequestOrchestration extends DomainResource {
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else if (name.equals("action")) {
-          this.getAction().add((RequestOrchestrationActionComponent) value);
+          this.getAction().remove((RequestOrchestrationActionComponent) value);
         } else
           super.removeChild(name, value);
         

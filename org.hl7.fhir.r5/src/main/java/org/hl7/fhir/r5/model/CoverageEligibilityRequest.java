@@ -1647,7 +1647,7 @@ public class CoverageEligibilityRequest extends DomainResource {
         } else if (name.equals("facility")) {
           this.facility = null;
         } else if (name.equals("diagnosis")) {
-          this.getDiagnosis().add((DiagnosisComponent) value);
+          this.getDiagnosis().remove((DiagnosisComponent) value);
         } else if (name.equals("detail")) {
           this.getDetail().remove(value);
         } else
@@ -2919,11 +2919,11 @@ public class CoverageEligibilityRequest extends DomainResource {
           this.priority = null;
         } else if (name.equals("purpose")) {
           value = new EligibilityRequestPurposeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getPurpose().add((Enumeration) value);
+          this.getPurpose().remove((Enumeration) value);
         } else if (name.equals("patient")) {
           this.patient = null;
         } else if (name.equals("event")) {
-          this.getEvent().add((CoverageEligibilityRequestEventComponent) value);
+          this.getEvent().remove((CoverageEligibilityRequestEventComponent) value);
         } else if (name.equals("serviced[x]")) {
           this.serviced = null;
         } else if (name.equals("created")) {
@@ -2937,11 +2937,11 @@ public class CoverageEligibilityRequest extends DomainResource {
         } else if (name.equals("facility")) {
           this.facility = null;
         } else if (name.equals("supportingInfo")) {
-          this.getSupportingInfo().add((SupportingInformationComponent) value);
+          this.getSupportingInfo().remove((SupportingInformationComponent) value);
         } else if (name.equals("insurance")) {
-          this.getInsurance().add((InsuranceComponent) value);
+          this.getInsurance().remove((InsuranceComponent) value);
         } else if (name.equals("item")) {
-          this.getItem().add((DetailsComponent) value);
+          this.getItem().remove((DetailsComponent) value);
         } else
           super.removeChild(name, value);
         

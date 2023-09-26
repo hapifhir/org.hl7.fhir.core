@@ -755,9 +755,9 @@ public class ClaimResponse extends DomainResource {
         } else if (name.equals("reviewOutcome")) {
           this.reviewOutcome = (ReviewOutcomeComponent) value; // ReviewOutcomeComponent
         } else if (name.equals("adjudication")) {
-          this.getAdjudication().add((AdjudicationComponent) value);
+          this.getAdjudication().remove((AdjudicationComponent) value);
         } else if (name.equals("detail")) {
-          this.getDetail().add((ItemDetailComponent) value);
+          this.getDetail().remove((ItemDetailComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2015,9 +2015,9 @@ public class ClaimResponse extends DomainResource {
         } else if (name.equals("reviewOutcome")) {
           this.reviewOutcome = (ReviewOutcomeComponent) value; // ReviewOutcomeComponent
         } else if (name.equals("adjudication")) {
-          this.getAdjudication().add((AdjudicationComponent) value);
+          this.getAdjudication().remove((AdjudicationComponent) value);
         } else if (name.equals("subDetail")) {
-          this.getSubDetail().add((SubDetailComponent) value);
+          this.getSubDetail().remove((SubDetailComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2520,7 +2520,7 @@ public class ClaimResponse extends DomainResource {
         } else if (name.equals("reviewOutcome")) {
           this.reviewOutcome = (ReviewOutcomeComponent) value; // ReviewOutcomeComponent
         } else if (name.equals("adjudication")) {
-          this.getAdjudication().add((AdjudicationComponent) value);
+          this.getAdjudication().remove((AdjudicationComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -4123,15 +4123,15 @@ public class ClaimResponse extends DomainResource {
         } else if (name.equals("net")) {
           this.net = null;
         } else if (name.equals("bodySite")) {
-          this.getBodySite().add((BodySiteComponent) value);
+          this.getBodySite().remove((BodySiteComponent) value);
         } else if (name.equals("noteNumber")) {
           this.getNoteNumber().remove(value);
         } else if (name.equals("reviewOutcome")) {
           this.reviewOutcome = (ReviewOutcomeComponent) value; // ReviewOutcomeComponent
         } else if (name.equals("adjudication")) {
-          this.getAdjudication().add((AdjudicationComponent) value);
+          this.getAdjudication().remove((AdjudicationComponent) value);
         } else if (name.equals("detail")) {
-          this.getDetail().add((AddedItemDetailComponent) value);
+          this.getDetail().remove((AddedItemDetailComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -5528,9 +5528,9 @@ public class ClaimResponse extends DomainResource {
         } else if (name.equals("reviewOutcome")) {
           this.reviewOutcome = (ReviewOutcomeComponent) value; // ReviewOutcomeComponent
         } else if (name.equals("adjudication")) {
-          this.getAdjudication().add((AdjudicationComponent) value);
+          this.getAdjudication().remove((AdjudicationComponent) value);
         } else if (name.equals("subDetail")) {
-          this.getSubDetail().add((AddedItemSubDetailComponent) value);
+          this.getSubDetail().remove((AddedItemSubDetailComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -6469,7 +6469,7 @@ public class ClaimResponse extends DomainResource {
         } else if (name.equals("reviewOutcome")) {
           this.reviewOutcome = (ReviewOutcomeComponent) value; // ReviewOutcomeComponent
         } else if (name.equals("adjudication")) {
-          this.getAdjudication().add((AdjudicationComponent) value);
+          this.getAdjudication().remove((AdjudicationComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -10416,7 +10416,7 @@ public class ClaimResponse extends DomainResource {
         } else if (name.equals("preAuthPeriod")) {
           this.preAuthPeriod = null;
         } else if (name.equals("event")) {
-          this.getEvent().add((ClaimResponseEventComponent) value);
+          this.getEvent().remove((ClaimResponseEventComponent) value);
         } else if (name.equals("payeeType")) {
           this.payeeType = null;
         } else if (name.equals("encounter")) {
@@ -10424,13 +10424,13 @@ public class ClaimResponse extends DomainResource {
         } else if (name.equals("diagnosisRelatedGroup")) {
           this.diagnosisRelatedGroup = null;
         } else if (name.equals("item")) {
-          this.getItem().add((ItemComponent) value);
+          this.getItem().remove((ItemComponent) value);
         } else if (name.equals("addItem")) {
-          this.getAddItem().add((AddedItemComponent) value);
+          this.getAddItem().remove((AddedItemComponent) value);
         } else if (name.equals("adjudication")) {
-          this.getAdjudication().add((AdjudicationComponent) value);
+          this.getAdjudication().remove((AdjudicationComponent) value);
         } else if (name.equals("total")) {
-          this.getTotal().add((TotalComponent) value);
+          this.getTotal().remove((TotalComponent) value);
         } else if (name.equals("payment")) {
           this.payment = (PaymentComponent) value; // PaymentComponent
         } else if (name.equals("fundsReserve")) {
@@ -10440,13 +10440,13 @@ public class ClaimResponse extends DomainResource {
         } else if (name.equals("form")) {
           this.form = null;
         } else if (name.equals("processNote")) {
-          this.getProcessNote().add((NoteComponent) value);
+          this.getProcessNote().remove((NoteComponent) value);
         } else if (name.equals("communicationRequest")) {
           this.getCommunicationRequest().remove(value);
         } else if (name.equals("insurance")) {
-          this.getInsurance().add((InsuranceComponent) value);
+          this.getInsurance().remove((InsuranceComponent) value);
         } else if (name.equals("error")) {
-          this.getError().add((ErrorComponent) value);
+          this.getError().remove((ErrorComponent) value);
         } else
           super.removeChild(name, value);
         

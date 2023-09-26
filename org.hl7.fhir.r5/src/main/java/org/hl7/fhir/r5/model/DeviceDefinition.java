@@ -750,7 +750,7 @@ public class DeviceDefinition extends DomainResource {
         } else if (name.equals("jurisdiction")) {
           this.jurisdiction = null;
         } else if (name.equals("marketDistribution")) {
-          this.getMarketDistribution().add((UdiDeviceIdentifierMarketDistributionComponent) value);
+          this.getMarketDistribution().remove((UdiDeviceIdentifierMarketDistributionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3052,11 +3052,11 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         } else if (name.equals("count")) {
           this.count = null;
         } else if (name.equals("distributor")) {
-          this.getDistributor().add((PackagingDistributorComponent) value);
+          this.getDistributor().remove((PackagingDistributorComponent) value);
         } else if (name.equals("udiDeviceIdentifier")) {
-          this.getUdiDeviceIdentifier().add((DeviceDefinitionUdiDeviceIdentifierComponent) value);
+          this.getUdiDeviceIdentifier().remove((DeviceDefinitionUdiDeviceIdentifierComponent) value);
         } else if (name.equals("packaging")) {
-          this.getPackaging().add((DeviceDefinitionPackagingComponent) value);
+          this.getPackaging().remove((DeviceDefinitionPackagingComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -7666,27 +7666,27 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         } else if (name.equals("identifier")) {
           this.getIdentifier().remove(value);
         } else if (name.equals("udiDeviceIdentifier")) {
-          this.getUdiDeviceIdentifier().add((DeviceDefinitionUdiDeviceIdentifierComponent) value);
+          this.getUdiDeviceIdentifier().remove((DeviceDefinitionUdiDeviceIdentifierComponent) value);
         } else if (name.equals("regulatoryIdentifier")) {
-          this.getRegulatoryIdentifier().add((DeviceDefinitionRegulatoryIdentifierComponent) value);
+          this.getRegulatoryIdentifier().remove((DeviceDefinitionRegulatoryIdentifierComponent) value);
         } else if (name.equals("partNumber")) {
           this.partNumber = null;
         } else if (name.equals("manufacturer")) {
           this.manufacturer = null;
         } else if (name.equals("deviceName")) {
-          this.getDeviceName().add((DeviceDefinitionDeviceNameComponent) value);
+          this.getDeviceName().remove((DeviceDefinitionDeviceNameComponent) value);
         } else if (name.equals("modelNumber")) {
           this.modelNumber = null;
         } else if (name.equals("classification")) {
-          this.getClassification().add((DeviceDefinitionClassificationComponent) value);
+          this.getClassification().remove((DeviceDefinitionClassificationComponent) value);
         } else if (name.equals("conformsTo")) {
-          this.getConformsTo().add((DeviceDefinitionConformsToComponent) value);
+          this.getConformsTo().remove((DeviceDefinitionConformsToComponent) value);
         } else if (name.equals("hasPart")) {
-          this.getHasPart().add((DeviceDefinitionHasPartComponent) value);
+          this.getHasPart().remove((DeviceDefinitionHasPartComponent) value);
         } else if (name.equals("packaging")) {
-          this.getPackaging().add((DeviceDefinitionPackagingComponent) value);
+          this.getPackaging().remove((DeviceDefinitionPackagingComponent) value);
         } else if (name.equals("version")) {
-          this.getVersion().add((DeviceDefinitionVersionComponent) value);
+          this.getVersion().remove((DeviceDefinitionVersionComponent) value);
         } else if (name.equals("safety")) {
           this.getSafety().remove(value);
         } else if (name.equals("shelfLifeStorage")) {
@@ -7694,26 +7694,26 @@ RegisteredName | UserFriendlyName | PatientReportedName.
         } else if (name.equals("languageCode")) {
           this.getLanguageCode().remove(value);
         } else if (name.equals("property")) {
-          this.getProperty().add((DeviceDefinitionPropertyComponent) value);
+          this.getProperty().remove((DeviceDefinitionPropertyComponent) value);
         } else if (name.equals("owner")) {
           this.owner = null;
         } else if (name.equals("contact")) {
           this.getContact().remove(value);
         } else if (name.equals("link")) {
-          this.getLink().add((DeviceDefinitionLinkComponent) value);
+          this.getLink().remove((DeviceDefinitionLinkComponent) value);
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else if (name.equals("material")) {
-          this.getMaterial().add((DeviceDefinitionMaterialComponent) value);
+          this.getMaterial().remove((DeviceDefinitionMaterialComponent) value);
         } else if (name.equals("productionIdentifierInUDI")) {
           value = new DeviceProductionIdentifierInUDIEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getProductionIdentifierInUDI().add((Enumeration) value);
+          this.getProductionIdentifierInUDI().remove((Enumeration) value);
         } else if (name.equals("guideline")) {
           this.guideline = (DeviceDefinitionGuidelineComponent) value; // DeviceDefinitionGuidelineComponent
         } else if (name.equals("correctiveAction")) {
           this.correctiveAction = (DeviceDefinitionCorrectiveActionComponent) value; // DeviceDefinitionCorrectiveActionComponent
         } else if (name.equals("chargeItem")) {
-          this.getChargeItem().add((DeviceDefinitionChargeItemComponent) value);
+          this.getChargeItem().remove((DeviceDefinitionChargeItemComponent) value);
         } else
           super.removeChild(name, value);
         

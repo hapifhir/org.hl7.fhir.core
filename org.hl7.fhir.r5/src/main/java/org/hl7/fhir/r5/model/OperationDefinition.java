@@ -1177,7 +1177,7 @@ public class OperationDefinition extends CanonicalResource {
           this.use = (Enumeration) value; // Enumeration<OperationParameterUse>
         } else if (name.equals("scope")) {
           value = new OperationParameterScopeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getScope().add((Enumeration) value);
+          this.getScope().remove((Enumeration) value);
         } else if (name.equals("min")) {
           this.min = null;
         } else if (name.equals("max")) {
@@ -1189,7 +1189,7 @@ public class OperationDefinition extends CanonicalResource {
           this.type = (Enumeration) value; // Enumeration<FHIRTypes>
         } else if (name.equals("allowedType")) {
           value = new FHIRTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getAllowedType().add((Enumeration) value);
+          this.getAllowedType().remove((Enumeration) value);
         } else if (name.equals("targetProfile")) {
           this.getTargetProfile().remove(value);
         } else if (name.equals("searchType")) {
@@ -1198,9 +1198,9 @@ public class OperationDefinition extends CanonicalResource {
         } else if (name.equals("binding")) {
           this.binding = (OperationDefinitionParameterBindingComponent) value; // OperationDefinitionParameterBindingComponent
         } else if (name.equals("referencedFrom")) {
-          this.getReferencedFrom().add((OperationDefinitionParameterReferencedFromComponent) value);
+          this.getReferencedFrom().remove((OperationDefinitionParameterReferencedFromComponent) value);
         } else if (name.equals("part")) {
-          this.getPart().add((OperationDefinitionParameterComponent) value);
+          this.getPart().remove((OperationDefinitionParameterComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -4228,7 +4228,7 @@ public class OperationDefinition extends CanonicalResource {
           this.base = null;
         } else if (name.equals("resource")) {
           value = new VersionIndependentResourceTypesAllEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getResource().add((Enumeration) value);
+          this.getResource().remove((Enumeration) value);
         } else if (name.equals("system")) {
           this.system = null;
         } else if (name.equals("type")) {
@@ -4240,9 +4240,9 @@ public class OperationDefinition extends CanonicalResource {
         } else if (name.equals("outputProfile")) {
           this.outputProfile = null;
         } else if (name.equals("parameter")) {
-          this.getParameter().add((OperationDefinitionParameterComponent) value);
+          this.getParameter().remove((OperationDefinitionParameterComponent) value);
         } else if (name.equals("overload")) {
-          this.getOverload().add((OperationDefinitionOverloadComponent) value);
+          this.getOverload().remove((OperationDefinitionOverloadComponent) value);
         } else
           super.removeChild(name, value);
         

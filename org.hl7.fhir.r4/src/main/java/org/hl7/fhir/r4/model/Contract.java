@@ -1419,6 +1419,25 @@ public class Contract extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("subType")) {
+        this.subType = null;
+      } else if (name.equals("publisher")) {
+        this.publisher = null;
+      } else if (name.equals("publicationDate")) {
+        this.publicationDate = null;
+      } else if (name.equals("publicationStatus")) {
+        this.publicationStatus = null;
+      } else if (name.equals("copyright")) {
+        this.copyright = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2359,6 +2378,37 @@ public class Contract extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identifier")) {
+        this.identifier = null;
+      } else if (name.equals("issued")) {
+        this.issued = null;
+      } else if (name.equals("applies")) {
+        this.applies = null;
+      } else if (name.equals("topic[x]")) {
+        this.topic = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("subType")) {
+        this.subType = null;
+      } else if (name.equals("text")) {
+        this.text = null;
+      } else if (name.equals("securityLabel")) {
+        this.getSecurityLabel().remove((SecurityLabelComponent) value);
+      } else if (name.equals("offer")) {
+        this.offer = (ContractOfferComponent) value; // ContractOfferComponent
+      } else if (name.equals("asset")) {
+        this.getAsset().remove((ContractAssetComponent) value);
+      } else if (name.equals("action")) {
+        this.getAction().remove((ActionComponent) value);
+      } else if (name.equals("group")) {
+        this.getGroup().remove((TermComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2900,6 +2950,21 @@ public class Contract extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("number")) {
+        this.getNumber().remove(castToUnsignedInt(value));
+      } else if (name.equals("classification")) {
+        this.classification = null;
+      } else if (name.equals("category")) {
+        this.getCategory().remove(castToCoding(value));
+      } else if (name.equals("control")) {
+        this.getControl().remove(castToCoding(value));
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3789,6 +3854,33 @@ public class Contract extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identifier")) {
+        this.getIdentifier().remove(castToIdentifier(value));
+      } else if (name.equals("party")) {
+        this.getParty().remove((ContractPartyComponent) value);
+      } else if (name.equals("topic")) {
+        this.topic = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("decision")) {
+        this.decision = null;
+      } else if (name.equals("decisionMode")) {
+        this.getDecisionMode().remove(castToCodeableConcept(value));
+      } else if (name.equals("answer")) {
+        this.getAnswer().remove((AnswerComponent) value);
+      } else if (name.equals("text")) {
+        this.text = null;
+      } else if (name.equals("linkId")) {
+        this.getLinkId().remove(castToString(value));
+      } else if (name.equals("securityLabelNumber")) {
+        this.getSecurityLabelNumber().remove(castToUnsignedInt(value));
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -4155,6 +4247,17 @@ public class Contract extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("reference")) {
+        this.getReference().remove(castToReference(value));
+      } else if (name.equals("role")) {
+        this.role = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -4650,6 +4753,15 @@ public class Contract extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("value[x]")) {
+        this.value = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -5933,6 +6045,43 @@ public class Contract extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("scope")) {
+        this.scope = null;
+      } else if (name.equals("type")) {
+        this.getType().remove(castToCodeableConcept(value));
+      } else if (name.equals("typeReference")) {
+        this.getTypeReference().remove(castToReference(value));
+      } else if (name.equals("subtype")) {
+        this.getSubtype().remove(castToCodeableConcept(value));
+      } else if (name.equals("relationship")) {
+        this.relationship = null;
+      } else if (name.equals("context")) {
+        this.getContext().remove((AssetContextComponent) value);
+      } else if (name.equals("condition")) {
+        this.condition = null;
+      } else if (name.equals("periodType")) {
+        this.getPeriodType().remove(castToCodeableConcept(value));
+      } else if (name.equals("period")) {
+        this.getPeriod().remove(castToPeriod(value));
+      } else if (name.equals("usePeriod")) {
+        this.getUsePeriod().remove(castToPeriod(value));
+      } else if (name.equals("text")) {
+        this.text = null;
+      } else if (name.equals("linkId")) {
+        this.getLinkId().remove(castToString(value));
+      } else if (name.equals("answer")) {
+        this.getAnswer().remove((AnswerComponent) value);
+      } else if (name.equals("securityLabelNumber")) {
+        this.getSecurityLabelNumber().remove(castToUnsignedInt(value));
+      } else if (name.equals("valuedItem")) {
+        this.getValuedItem().remove((ValuedItemComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -6450,6 +6599,19 @@ public class Contract extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("reference")) {
+        this.reference = null;
+      } else if (name.equals("code")) {
+        this.getCode().remove(castToCodeableConcept(value));
+      } else if (name.equals("text")) {
+        this.text = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -7654,6 +7816,41 @@ public class Contract extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("entity[x]")) {
+        this.entity = null;
+      } else if (name.equals("identifier")) {
+        this.identifier = null;
+      } else if (name.equals("effectiveTime")) {
+        this.effectiveTime = null;
+      } else if (name.equals("quantity")) {
+        this.quantity = null;
+      } else if (name.equals("unitPrice")) {
+        this.unitPrice = null;
+      } else if (name.equals("factor")) {
+        this.factor = null;
+      } else if (name.equals("points")) {
+        this.points = null;
+      } else if (name.equals("net")) {
+        this.net = null;
+      } else if (name.equals("payment")) {
+        this.payment = null;
+      } else if (name.equals("paymentDate")) {
+        this.paymentDate = null;
+      } else if (name.equals("responsible")) {
+        this.responsible = null;
+      } else if (name.equals("recipient")) {
+        this.recipient = null;
+      } else if (name.equals("linkId")) {
+        this.getLinkId().remove(castToString(value));
+      } else if (name.equals("securityLabelNumber")) {
+        this.getSecurityLabelNumber().remove(castToUnsignedInt(value));
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -9562,6 +9759,55 @@ public class Contract extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("doNotPerform")) {
+        this.doNotPerform = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("subject")) {
+        this.getSubject().remove((ActionSubjectComponent) value);
+      } else if (name.equals("intent")) {
+        this.intent = null;
+      } else if (name.equals("linkId")) {
+        this.getLinkId().remove(castToString(value));
+      } else if (name.equals("status")) {
+        this.status = null;
+      } else if (name.equals("context")) {
+        this.context = null;
+      } else if (name.equals("contextLinkId")) {
+        this.getContextLinkId().remove(castToString(value));
+      } else if (name.equals("occurrence[x]")) {
+        this.occurrence = null;
+      } else if (name.equals("requester")) {
+        this.getRequester().remove(castToReference(value));
+      } else if (name.equals("requesterLinkId")) {
+        this.getRequesterLinkId().remove(castToString(value));
+      } else if (name.equals("performerType")) {
+        this.getPerformerType().remove(castToCodeableConcept(value));
+      } else if (name.equals("performerRole")) {
+        this.performerRole = null;
+      } else if (name.equals("performer")) {
+        this.performer = null;
+      } else if (name.equals("performerLinkId")) {
+        this.getPerformerLinkId().remove(castToString(value));
+      } else if (name.equals("reasonCode")) {
+        this.getReasonCode().remove(castToCodeableConcept(value));
+      } else if (name.equals("reasonReference")) {
+        this.getReasonReference().remove(castToReference(value));
+      } else if (name.equals("reason")) {
+        this.getReason().remove(castToString(value));
+      } else if (name.equals("reasonLinkId")) {
+        this.getReasonLinkId().remove(castToString(value));
+      } else if (name.equals("note")) {
+        this.getNote().remove(castToAnnotation(value));
+      } else if (name.equals("securityLabelNumber")) {
+        this.getSecurityLabelNumber().remove(castToUnsignedInt(value));
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -10061,6 +10307,17 @@ public class Contract extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("reference")) {
+        this.getReference().remove(castToReference(value));
+      } else if (name.equals("role")) {
+        this.role = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -10396,6 +10653,19 @@ public class Contract extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("party")) {
+        this.party = null;
+      } else if (name.equals("signature")) {
+        this.getSignature().remove(castToSignature(value));
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -10648,6 +10918,15 @@ public class Contract extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("content[x]")) {
+        this.content = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -10870,6 +11149,15 @@ public class Contract extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("content[x]")) {
+        this.content = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -11090,6 +11378,15 @@ public class Contract extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("content[x]")) {
+        this.content = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -13880,6 +14177,79 @@ public class Contract extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("legalState")) {
+      this.legalState = null;
+    } else if (name.equals("instantiatesCanonical")) {
+      this.instantiatesCanonical = null;
+    } else if (name.equals("instantiatesUri")) {
+      this.instantiatesUri = null;
+    } else if (name.equals("contentDerivative")) {
+      this.contentDerivative = null;
+    } else if (name.equals("issued")) {
+      this.issued = null;
+    } else if (name.equals("applies")) {
+      this.applies = null;
+    } else if (name.equals("expirationType")) {
+      this.expirationType = null;
+    } else if (name.equals("subject")) {
+      this.getSubject().remove(castToReference(value));
+    } else if (name.equals("authority")) {
+      this.getAuthority().remove(castToReference(value));
+    } else if (name.equals("domain")) {
+      this.getDomain().remove(castToReference(value));
+    } else if (name.equals("site")) {
+      this.getSite().remove(castToReference(value));
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("subtitle")) {
+      this.subtitle = null;
+    } else if (name.equals("alias")) {
+      this.getAlias().remove(castToString(value));
+    } else if (name.equals("author")) {
+      this.author = null;
+    } else if (name.equals("scope")) {
+      this.scope = null;
+    } else if (name.equals("topic[x]")) {
+      this.topic = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("subType")) {
+      this.getSubType().remove(castToCodeableConcept(value));
+    } else if (name.equals("contentDefinition")) {
+      this.contentDefinition = (ContentDefinitionComponent) value; // ContentDefinitionComponent
+    } else if (name.equals("term")) {
+      this.getTerm().remove((TermComponent) value);
+    } else if (name.equals("supportingInfo")) {
+      this.getSupportingInfo().remove(castToReference(value));
+    } else if (name.equals("relevantHistory")) {
+      this.getRelevantHistory().remove(castToReference(value));
+    } else if (name.equals("signer")) {
+      this.getSigner().remove((SignatoryComponent) value);
+    } else if (name.equals("friendly")) {
+      this.getFriendly().remove((FriendlyLanguageComponent) value);
+    } else if (name.equals("legal")) {
+      this.getLegal().remove((LegalLanguageComponent) value);
+    } else if (name.equals("rule")) {
+      this.getRule().remove((ComputableLanguageComponent) value);
+    } else if (name.equals("legallyBinding[x]")) {
+      this.legallyBinding = null;
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

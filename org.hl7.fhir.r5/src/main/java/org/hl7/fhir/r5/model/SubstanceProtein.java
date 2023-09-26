@@ -968,7 +968,7 @@ public class SubstanceProtein extends DomainResource {
         } else if (name.equals("disulfideLinkage")) {
           this.getDisulfideLinkage().remove(value);
         } else if (name.equals("subunit")) {
-          this.getSubunit().add((SubstanceProteinSubunitComponent) value);
+          this.getSubunit().remove((SubstanceProteinSubunitComponent) value);
         } else
           super.removeChild(name, value);
         

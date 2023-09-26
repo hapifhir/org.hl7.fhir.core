@@ -615,6 +615,25 @@ public class Meta extends DataType implements IBaseMetaType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("versionId")) {
+      this.versionId = null;
+    } else if (name.equals("lastUpdated")) {
+      this.lastUpdated = null;
+    } else if (name.equals("source")) {
+      this.source = null;
+    } else if (name.equals("profile")) {
+      this.getProfile().remove(value);
+    } else if (name.equals("security")) {
+      this.getSecurity().remove(value);
+    } else if (name.equals("tag")) {
+      this.getTag().remove(value);
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1407102957:

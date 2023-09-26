@@ -368,7 +368,7 @@ public class Availability extends DataType implements ICompositeType {
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("daysOfWeek")) {
           value = new DaysOfWeekEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getDaysOfWeek().add((Enumeration) value);
+          this.getDaysOfWeek().remove((Enumeration) value);
         } else if (name.equals("allDay")) {
           this.allDay = null;
         } else if (name.equals("availableStartTime")) {
@@ -893,9 +893,9 @@ public class Availability extends DataType implements ICompositeType {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("availableTime")) {
-          this.getAvailableTime().add((AvailabilityAvailableTimeComponent) value);
+          this.getAvailableTime().remove((AvailabilityAvailableTimeComponent) value);
         } else if (name.equals("notAvailableTime")) {
-          this.getNotAvailableTime().add((AvailabilityNotAvailableTimeComponent) value);
+          this.getNotAvailableTime().remove((AvailabilityNotAvailableTimeComponent) value);
         } else
           super.removeChild(name, value);
         

@@ -1030,7 +1030,7 @@ public class TestReport extends DomainResource {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("action")) {
-          this.getAction().add((SetupActionComponent) value);
+          this.getAction().remove((SetupActionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1987,7 +1987,7 @@ public class TestReport extends DomainResource {
         } else if (name.equals("detail")) {
           this.detail = null;
         } else if (name.equals("requirement")) {
-          this.getRequirement().add((SetupActionAssertRequirementComponent) value);
+          this.getRequirement().remove((SetupActionAssertRequirementComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2543,7 +2543,7 @@ public class TestReport extends DomainResource {
         } else if (name.equals("description")) {
           this.description = null;
         } else if (name.equals("action")) {
-          this.getAction().add((TestActionComponent) value);
+          this.getAction().remove((TestActionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2973,7 +2973,7 @@ public class TestReport extends DomainResource {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("action")) {
-          this.getAction().add((TeardownActionComponent) value);
+          this.getAction().remove((TeardownActionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -4012,11 +4012,11 @@ public class TestReport extends DomainResource {
         } else if (name.equals("issued")) {
           this.issued = null;
         } else if (name.equals("participant")) {
-          this.getParticipant().add((TestReportParticipantComponent) value);
+          this.getParticipant().remove((TestReportParticipantComponent) value);
         } else if (name.equals("setup")) {
           this.setup = (TestReportSetupComponent) value; // TestReportSetupComponent
         } else if (name.equals("test")) {
-          this.getTest().add((TestReportTestComponent) value);
+          this.getTest().remove((TestReportTestComponent) value);
         } else if (name.equals("teardown")) {
           this.teardown = (TestReportTeardownComponent) value; // TestReportTeardownComponent
         } else

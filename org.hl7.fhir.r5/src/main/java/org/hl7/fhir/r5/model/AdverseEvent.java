@@ -3391,21 +3391,21 @@ public class AdverseEvent extends DomainResource {
         } else if (name.equals("recorder")) {
           this.recorder = null;
         } else if (name.equals("participant")) {
-          this.getParticipant().add((AdverseEventParticipantComponent) value);
+          this.getParticipant().remove((AdverseEventParticipantComponent) value);
         } else if (name.equals("study")) {
           this.getStudy().remove(value);
         } else if (name.equals("expectedInResearchStudy")) {
           this.expectedInResearchStudy = null;
         } else if (name.equals("suspectEntity")) {
-          this.getSuspectEntity().add((AdverseEventSuspectEntityComponent) value);
+          this.getSuspectEntity().remove((AdverseEventSuspectEntityComponent) value);
         } else if (name.equals("contributingFactor")) {
-          this.getContributingFactor().add((AdverseEventContributingFactorComponent) value);
+          this.getContributingFactor().remove((AdverseEventContributingFactorComponent) value);
         } else if (name.equals("preventiveAction")) {
-          this.getPreventiveAction().add((AdverseEventPreventiveActionComponent) value);
+          this.getPreventiveAction().remove((AdverseEventPreventiveActionComponent) value);
         } else if (name.equals("mitigatingAction")) {
-          this.getMitigatingAction().add((AdverseEventMitigatingActionComponent) value);
+          this.getMitigatingAction().remove((AdverseEventMitigatingActionComponent) value);
         } else if (name.equals("supportingInfo")) {
-          this.getSupportingInfo().add((AdverseEventSupportingInfoComponent) value);
+          this.getSupportingInfo().remove((AdverseEventSupportingInfoComponent) value);
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else

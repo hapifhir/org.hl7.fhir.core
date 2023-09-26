@@ -1305,7 +1305,7 @@ public class VisionPrescription extends DomainResource {
         } else if (name.equals("axis")) {
           this.axis = null;
         } else if (name.equals("prism")) {
-          this.getPrism().add((PrismComponent) value);
+          this.getPrism().remove((PrismComponent) value);
         } else if (name.equals("add")) {
           this.add = null;
         } else if (name.equals("power")) {
@@ -2287,7 +2287,7 @@ public class VisionPrescription extends DomainResource {
         } else if (name.equals("prescriber")) {
           this.prescriber = null;
         } else if (name.equals("lensSpecification")) {
-          this.getLensSpecification().add((VisionPrescriptionLensSpecificationComponent) value);
+          this.getLensSpecification().remove((VisionPrescriptionLensSpecificationComponent) value);
         } else
           super.removeChild(name, value);
         

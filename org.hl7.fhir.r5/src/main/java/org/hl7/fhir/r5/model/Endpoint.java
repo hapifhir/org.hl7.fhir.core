@@ -1306,7 +1306,7 @@ public class Endpoint extends DomainResource {
         } else if (name.equals("period")) {
           this.period = null;
         } else if (name.equals("payload")) {
-          this.getPayload().add((EndpointPayloadComponent) value);
+          this.getPayload().remove((EndpointPayloadComponent) value);
         } else if (name.equals("address")) {
           this.address = null;
         } else if (name.equals("header")) {

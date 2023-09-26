@@ -3147,7 +3147,7 @@ public class Bundle extends Resource implements IBaseBundle {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("link")) {
-          this.getLink().add((BundleLinkComponent) value);
+          this.getLink().remove((BundleLinkComponent) value);
         } else if (name.equals("fullUrl")) {
           this.fullUrl = null;
         } else if (name.equals("resource")) {
@@ -5113,9 +5113,9 @@ public class Bundle extends Resource implements IBaseBundle {
         } else if (name.equals("total")) {
           this.total = null;
         } else if (name.equals("link")) {
-          this.getLink().add((BundleLinkComponent) value);
+          this.getLink().remove((BundleLinkComponent) value);
         } else if (name.equals("entry")) {
-          this.getEntry().add((BundleEntryComponent) value);
+          this.getEntry().remove((BundleEntryComponent) value);
         } else if (name.equals("signature")) {
           this.signature = null;
         } else if (name.equals("issues")) {

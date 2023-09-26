@@ -1527,7 +1527,7 @@ public  boolean isInformationorLess() {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("issue")) {
-          this.getIssue().add((OperationOutcomeIssueComponent) value);
+          this.getIssue().remove((OperationOutcomeIssueComponent) value);
         } else
           super.removeChild(name, value);
         

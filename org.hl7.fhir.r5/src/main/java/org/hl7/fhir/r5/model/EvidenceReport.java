@@ -430,7 +430,7 @@ public class EvidenceReport extends MetadataResource {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("characteristic")) {
-          this.getCharacteristic().add((EvidenceReportSubjectCharacteristicComponent) value);
+          this.getCharacteristic().remove((EvidenceReportSubjectCharacteristicComponent) value);
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else
@@ -2301,7 +2301,7 @@ public class EvidenceReport extends MetadataResource {
         } else if (name.equals("emptyReason")) {
           this.emptyReason = null;
         } else if (name.equals("section")) {
-          this.getSection().add((SectionComponent) value);
+          this.getSection().remove((SectionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -4247,9 +4247,9 @@ public class EvidenceReport extends MetadataResource {
         } else if (name.equals("endorser")) {
           this.getEndorser().remove(value);
         } else if (name.equals("relatesTo")) {
-          this.getRelatesTo().add((EvidenceReportRelatesToComponent) value);
+          this.getRelatesTo().remove((EvidenceReportRelatesToComponent) value);
         } else if (name.equals("section")) {
-          this.getSection().add((SectionComponent) value);
+          this.getSection().remove((SectionComponent) value);
         } else
           super.removeChild(name, value);
         

@@ -1036,6 +1036,29 @@ public class ResearchSubject extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("period")) {
+      this.period = null;
+    } else if (name.equals("study")) {
+      this.study = null;
+    } else if (name.equals("individual")) {
+      this.individual = null;
+    } else if (name.equals("assignedArm")) {
+      this.assignedArm = null;
+    } else if (name.equals("actualArm")) {
+      this.actualArm = null;
+    } else if (name.equals("consent")) {
+      this.consent = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1618432855:

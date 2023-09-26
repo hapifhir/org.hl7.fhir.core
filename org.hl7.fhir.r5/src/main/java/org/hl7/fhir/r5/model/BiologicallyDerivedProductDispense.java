@@ -1410,7 +1410,7 @@ public class BiologicallyDerivedProductDispense extends DomainResource {
         } else if (name.equals("matchStatus")) {
           this.matchStatus = null;
         } else if (name.equals("performer")) {
-          this.getPerformer().add((BiologicallyDerivedProductDispensePerformerComponent) value);
+          this.getPerformer().remove((BiologicallyDerivedProductDispensePerformerComponent) value);
         } else if (name.equals("location")) {
           this.location = null;
         } else if (name.equals("quantity")) {

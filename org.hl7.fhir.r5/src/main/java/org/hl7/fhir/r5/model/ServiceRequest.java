@@ -219,7 +219,7 @@ public class ServiceRequest extends DomainResource {
         if (name.equals("parameterFocus")) {
           this.parameterFocus = null;
         } else if (name.equals("parameter")) {
-          this.getParameter().add((ServiceRequestOrderDetailParameterComponent) value);
+          this.getParameter().remove((ServiceRequestOrderDetailParameterComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3023,7 +3023,7 @@ public class ServiceRequest extends DomainResource {
         } else if (name.equals("code")) {
           this.code = null;
         } else if (name.equals("orderDetail")) {
-          this.getOrderDetail().add((ServiceRequestOrderDetailComponent) value);
+          this.getOrderDetail().remove((ServiceRequestOrderDetailComponent) value);
         } else if (name.equals("quantity[x]")) {
           this.quantity = null;
         } else if (name.equals("subject")) {
@@ -3061,7 +3061,7 @@ public class ServiceRequest extends DomainResource {
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else if (name.equals("patientInstruction")) {
-          this.getPatientInstruction().add((ServiceRequestPatientInstructionComponent) value);
+          this.getPatientInstruction().remove((ServiceRequestPatientInstructionComponent) value);
         } else if (name.equals("relevantHistory")) {
           this.getRelevantHistory().remove(value);
         } else

@@ -323,6 +323,19 @@ public class Dosage extends BackboneType implements ICompositeType {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("dose[x]")) {
+        this.dose = null;
+      } else if (name.equals("rate[x]")) {
+        this.rate = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1262,6 +1275,39 @@ public class Dosage extends BackboneType implements ICompositeType {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("sequence")) {
+      this.sequence = null;
+    } else if (name.equals("text")) {
+      this.text = null;
+    } else if (name.equals("additionalInstruction")) {
+      this.getAdditionalInstruction().remove(value);
+    } else if (name.equals("patientInstruction")) {
+      this.patientInstruction = null;
+    } else if (name.equals("timing")) {
+      this.timing = null;
+    } else if (name.equals("asNeeded[x]")) {
+      this.asNeeded = null;
+    } else if (name.equals("site")) {
+      this.site = null;
+    } else if (name.equals("route")) {
+      this.route = null;
+    } else if (name.equals("method")) {
+      this.method = null;
+    } else if (name.equals("doseAndRate")) {
+      this.getDoseAndRate().remove((DosageDoseAndRateComponent) value);
+    } else if (name.equals("maxDosePerPeriod")) {
+      this.maxDosePerPeriod = null;
+    } else if (name.equals("maxDosePerAdministration")) {
+      this.maxDosePerAdministration = null;
+    } else if (name.equals("maxDosePerLifetime")) {
+      this.maxDosePerLifetime = null;
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

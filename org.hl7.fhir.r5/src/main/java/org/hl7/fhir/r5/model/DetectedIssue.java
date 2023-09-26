@@ -1847,13 +1847,13 @@ public class DetectedIssue extends DomainResource {
         } else if (name.equals("implicated")) {
           this.getImplicated().remove(value);
         } else if (name.equals("evidence")) {
-          this.getEvidence().add((DetectedIssueEvidenceComponent) value);
+          this.getEvidence().remove((DetectedIssueEvidenceComponent) value);
         } else if (name.equals("detail")) {
           this.detail = null;
         } else if (name.equals("reference")) {
           this.reference = null;
         } else if (name.equals("mitigation")) {
-          this.getMitigation().add((DetectedIssueMitigationComponent) value);
+          this.getMitigation().remove((DetectedIssueMitigationComponent) value);
         } else
           super.removeChild(name, value);
         

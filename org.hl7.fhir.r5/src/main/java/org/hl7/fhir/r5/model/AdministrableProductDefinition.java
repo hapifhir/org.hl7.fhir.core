@@ -831,7 +831,7 @@ public class AdministrableProductDefinition extends DomainResource {
         } else if (name.equals("maxTreatmentPeriod")) {
           this.maxTreatmentPeriod = null;
         } else if (name.equals("targetSpecies")) {
-          this.getTargetSpecies().add((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent) value);
+          this.getTargetSpecies().remove((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1123,7 +1123,7 @@ public class AdministrableProductDefinition extends DomainResource {
         if (name.equals("code")) {
           this.code = null;
         } else if (name.equals("withdrawalPeriod")) {
-          this.getWithdrawalPeriod().add((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent) value);
+          this.getWithdrawalPeriod().remove((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2236,9 +2236,9 @@ public class AdministrableProductDefinition extends DomainResource {
         } else if (name.equals("description")) {
           this.description = null;
         } else if (name.equals("property")) {
-          this.getProperty().add((AdministrableProductDefinitionPropertyComponent) value);
+          this.getProperty().remove((AdministrableProductDefinitionPropertyComponent) value);
         } else if (name.equals("routeOfAdministration")) {
-          this.getRouteOfAdministration().add((AdministrableProductDefinitionRouteOfAdministrationComponent) value);
+          this.getRouteOfAdministration().remove((AdministrableProductDefinitionRouteOfAdministrationComponent) value);
         } else
           super.removeChild(name, value);
         

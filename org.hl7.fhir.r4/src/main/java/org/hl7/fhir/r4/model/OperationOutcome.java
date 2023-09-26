@@ -1501,6 +1501,25 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("severity")) {
+        this.severity = null;
+      } else if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("details")) {
+        this.details = null;
+      } else if (name.equals("diagnostics")) {
+        this.diagnostics = null;
+      } else if (name.equals("location")) {
+        this.getLocation().remove(castToString(value));
+      } else if (name.equals("expression")) {
+        this.getExpression().remove(castToString(value));
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1745,6 +1764,15 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("issue")) {
+      this.getIssue().remove((OperationOutcomeIssueComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

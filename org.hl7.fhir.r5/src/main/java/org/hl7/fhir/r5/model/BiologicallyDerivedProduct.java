@@ -1523,7 +1523,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
         } else if (name.equals("storageTempRequirements")) {
           this.storageTempRequirements = null;
         } else if (name.equals("property")) {
-          this.getProperty().add((BiologicallyDerivedProductPropertyComponent) value);
+          this.getProperty().remove((BiologicallyDerivedProductPropertyComponent) value);
         } else
           super.removeChild(name, value);
         

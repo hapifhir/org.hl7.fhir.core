@@ -2988,11 +2988,11 @@ public class PaymentReconciliation extends DomainResource {
         } else if (name.equals("paymentIdentifier")) {
           this.paymentIdentifier = null;
         } else if (name.equals("allocation")) {
-          this.getAllocation().add((PaymentReconciliationAllocationComponent) value);
+          this.getAllocation().remove((PaymentReconciliationAllocationComponent) value);
         } else if (name.equals("formCode")) {
           this.formCode = null;
         } else if (name.equals("processNote")) {
-          this.getProcessNote().add((NotesComponent) value);
+          this.getProcessNote().remove((NotesComponent) value);
         } else
           super.removeChild(name, value);
         

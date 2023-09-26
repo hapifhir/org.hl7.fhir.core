@@ -1530,7 +1530,7 @@ public class RiskAssessment extends DomainResource {
         } else if (name.equals("basis")) {
           this.getBasis().remove(value);
         } else if (name.equals("prediction")) {
-          this.getPrediction().add((RiskAssessmentPredictionComponent) value);
+          this.getPrediction().remove((RiskAssessmentPredictionComponent) value);
         } else if (name.equals("mitigation")) {
           this.mitigation = null;
         } else if (name.equals("note")) {

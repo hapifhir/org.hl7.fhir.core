@@ -835,7 +835,7 @@ public class CoverageEligibilityResponse extends DomainResource {
         } else if (name.equals("benefitPeriod")) {
           this.benefitPeriod = null;
         } else if (name.equals("item")) {
-          this.getItem().add((ItemsComponent) value);
+          this.getItem().remove((ItemsComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1762,7 +1762,7 @@ public class CoverageEligibilityResponse extends DomainResource {
         } else if (name.equals("term")) {
           this.term = null;
         } else if (name.equals("benefit")) {
-          this.getBenefit().add((BenefitComponent) value);
+          this.getBenefit().remove((BenefitComponent) value);
         } else if (name.equals("authorizationRequired")) {
           this.authorizationRequired = null;
         } else if (name.equals("authorizationSupporting")) {
@@ -3586,11 +3586,11 @@ public class CoverageEligibilityResponse extends DomainResource {
           this.status = (Enumeration) value; // Enumeration<FinancialResourceStatusCodes>
         } else if (name.equals("purpose")) {
           value = new EligibilityResponsePurposeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getPurpose().add((Enumeration) value);
+          this.getPurpose().remove((Enumeration) value);
         } else if (name.equals("patient")) {
           this.patient = null;
         } else if (name.equals("event")) {
-          this.getEvent().add((CoverageEligibilityResponseEventComponent) value);
+          this.getEvent().remove((CoverageEligibilityResponseEventComponent) value);
         } else if (name.equals("serviced[x]")) {
           this.serviced = null;
         } else if (name.equals("created")) {
@@ -3607,13 +3607,13 @@ public class CoverageEligibilityResponse extends DomainResource {
         } else if (name.equals("insurer")) {
           this.insurer = null;
         } else if (name.equals("insurance")) {
-          this.getInsurance().add((InsuranceComponent) value);
+          this.getInsurance().remove((InsuranceComponent) value);
         } else if (name.equals("preAuthRef")) {
           this.preAuthRef = null;
         } else if (name.equals("form")) {
           this.form = null;
         } else if (name.equals("error")) {
-          this.getError().add((ErrorsComponent) value);
+          this.getError().remove((ErrorsComponent) value);
         } else
           super.removeChild(name, value);
         

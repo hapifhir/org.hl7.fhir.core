@@ -1183,6 +1183,33 @@ public class Address extends DataType implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("use")) {
+      this.use = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("text")) {
+      this.text = null;
+    } else if (name.equals("line")) {
+      this.getLine().remove(value);
+    } else if (name.equals("city")) {
+      this.city = null;
+    } else if (name.equals("district")) {
+      this.district = null;
+    } else if (name.equals("state")) {
+      this.state = null;
+    } else if (name.equals("postalCode")) {
+      this.postalCode = null;
+    } else if (name.equals("country")) {
+      this.country = null;
+    } else if (name.equals("period")) {
+      this.period = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 116103:

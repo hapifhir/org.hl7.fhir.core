@@ -1810,7 +1810,7 @@ public class CompartmentDefinition extends CanonicalResource {
         } else if (name.equals("search")) {
           this.search = null;
         } else if (name.equals("resource")) {
-          this.getResource().add((CompartmentDefinitionResourceComponent) value);
+          this.getResource().remove((CompartmentDefinitionResourceComponent) value);
         } else
           super.removeChild(name, value);
         
