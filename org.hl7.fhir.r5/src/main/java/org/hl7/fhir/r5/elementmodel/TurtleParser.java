@@ -82,7 +82,7 @@ public class TurtleParser extends ParserBase {
   @Override
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
     byte[] content = TextFile.streamToBytes(inStream);
-    ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "ttl", content);
+    ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "ttl", content, false);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
 
     Turtle src = new Turtle();

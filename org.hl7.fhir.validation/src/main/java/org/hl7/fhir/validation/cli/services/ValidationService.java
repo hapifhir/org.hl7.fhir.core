@@ -127,27 +127,28 @@ public class ValidationService {
       List<ValidatedFragment> validatedFragments = validator.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
         request.getCliContext().getProfiles(), messages);
 
-      // TODO this chunk does not work for multi-file validation, as the fileName is overwritten
-      for (ValidatedFragment validatedFragment : validatedFragments) {
+      if (validatedFragments.size() == 1 && !validatedFragments.get(0).isDerivedContent()) {
+        ValidatedFragment validatedFragment = validatedFragments.get(0);
         ValidationOutcome outcome = new ValidationOutcome();
-        FileInfo fileInfo = new FileInfo(
-          validatedFragment.getFilename(),
+          FileInfo fileInfo = new FileInfo(
+          fileToValidate.getFileName(),
           new String(validatedFragment.getContent()),
           validatedFragment.getExtension());
         outcome.setMessages(validatedFragment.getErrors());
         outcome.setFileInfo(fileInfo);
         response.addOutcome(outcome);
+      } else {
+        for (ValidatedFragment validatedFragment : validatedFragments) {
+          ValidationOutcome outcome = new ValidationOutcome();
+          FileInfo fileInfo = new FileInfo(
+            validatedFragment.getFilename(),
+            new String(validatedFragment.getContent()),
+            validatedFragment.getExtension());
+          outcome.setMessages(validatedFragment.getErrors());
+          outcome.setFileInfo(fileInfo);
+          response.addOutcome(outcome);
+        }
       }
-
-      //TODO the code below works correctly for multi-file validation.
-      /*
-      validator.validate(fp.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fp.getFileType()),
-        request.getCliContext().getProfiles(), messages);
-
-      ValidationOutcome outcome = new ValidationOutcome().setFileInfo(fp);
-      messages.forEach(outcome::addMessage);
-      response.addOutcome(outcome);
-      */
     }
     System.out.println("  Max Memory: "+Runtime.getRuntime().maxMemory());
     return response;
