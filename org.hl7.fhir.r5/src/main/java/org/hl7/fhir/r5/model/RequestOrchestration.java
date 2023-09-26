@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -1886,6 +1886,73 @@ public class RequestOrchestration extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("linkId")) {
+          this.linkId = null;
+        } else if (name.equals("prefix")) {
+          this.prefix = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("textEquivalent")) {
+          this.textEquivalent = null;
+        } else if (name.equals("priority")) {
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+        } else if (name.equals("code")) {
+          this.getCode().remove(value);
+        } else if (name.equals("documentation")) {
+          this.getDocumentation().remove(value);
+        } else if (name.equals("goal")) {
+          this.getGoal().remove(value);
+        } else if (name.equals("condition")) {
+          this.getCondition().add((RequestOrchestrationActionConditionComponent) value);
+        } else if (name.equals("input")) {
+          this.getInput().add((RequestOrchestrationActionInputComponent) value);
+        } else if (name.equals("output")) {
+          this.getOutput().add((RequestOrchestrationActionOutputComponent) value);
+        } else if (name.equals("relatedAction")) {
+          this.getRelatedAction().add((RequestOrchestrationActionRelatedActionComponent) value);
+        } else if (name.equals("timing[x]")) {
+          this.timing = null;
+        } else if (name.equals("location")) {
+          this.location = null;
+        } else if (name.equals("participant")) {
+          this.getParticipant().add((RequestOrchestrationActionParticipantComponent) value);
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("groupingBehavior")) {
+          value = new ActionGroupingBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.groupingBehavior = (Enumeration) value; // Enumeration<ActionGroupingBehavior>
+        } else if (name.equals("selectionBehavior")) {
+          value = new ActionSelectionBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.selectionBehavior = (Enumeration) value; // Enumeration<ActionSelectionBehavior>
+        } else if (name.equals("requiredBehavior")) {
+          value = new ActionRequiredBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.requiredBehavior = (Enumeration) value; // Enumeration<ActionRequiredBehavior>
+        } else if (name.equals("precheckBehavior")) {
+          value = new ActionPrecheckBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.precheckBehavior = (Enumeration) value; // Enumeration<ActionPrecheckBehavior>
+        } else if (name.equals("cardinalityBehavior")) {
+          value = new ActionCardinalityBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.cardinalityBehavior = (Enumeration) value; // Enumeration<ActionCardinalityBehavior>
+        } else if (name.equals("resource")) {
+          this.resource = null;
+        } else if (name.equals("definition[x]")) {
+          this.definition = null;
+        } else if (name.equals("transform")) {
+          this.transform = null;
+        } else if (name.equals("dynamicValue")) {
+          this.getDynamicValue().add((RequestOrchestrationActionDynamicValueComponent) value);
+        } else if (name.equals("action")) {
+          this.getAction().add((RequestOrchestrationActionComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2357,6 +2424,18 @@ public class RequestOrchestration extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("kind")) {
+          value = new ActionConditionKindEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.kind = (Enumeration) value; // Enumeration<ActionConditionKind>
+        } else if (name.equals("expression")) {
+          this.expression = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2644,6 +2723,19 @@ public class RequestOrchestration extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("requirement")) {
+          this.requirement = null;
+        } else if (name.equals("relatedData")) {
+          this.relatedData = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2941,6 +3033,19 @@ public class RequestOrchestration extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("requirement")) {
+          this.requirement = null;
+        } else if (name.equals("relatedData")) {
+          this.relatedData = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3339,6 +3444,23 @@ public class RequestOrchestration extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("targetId")) {
+          this.targetId = null;
+        } else if (name.equals("relationship")) {
+          value = new ActionRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.relationship = (Enumeration) value; // Enumeration<ActionRelationshipType>
+        } else if (name.equals("endRelationship")) {
+          value = new ActionRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.endRelationship = (Enumeration) value; // Enumeration<ActionRelationshipType>
+        } else if (name.equals("offset[x]")) {
+          this.offset = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3803,6 +3925,26 @@ public class RequestOrchestration extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
+        } else if (name.equals("typeCanonical")) {
+          this.typeCanonical = null;
+        } else if (name.equals("typeReference")) {
+          this.typeReference = null;
+        } else if (name.equals("role")) {
+          this.role = null;
+        } else if (name.equals("function")) {
+          this.function = null;
+        } else if (name.equals("actor[x]")) {
+          this.actor = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -4061,6 +4203,17 @@ public class RequestOrchestration extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("path")) {
+          this.path = null;
+        } else if (name.equals("expression")) {
+          this.expression = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -5272,6 +5425,52 @@ public class RequestOrchestration extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("instantiatesCanonical")) {
+          this.getInstantiatesCanonical().remove(value);
+        } else if (name.equals("instantiatesUri")) {
+          this.getInstantiatesUri().remove(value);
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("replaces")) {
+          this.getReplaces().remove(value);
+        } else if (name.equals("groupIdentifier")) {
+          this.groupIdentifier = null;
+        } else if (name.equals("status")) {
+          value = new RequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<RequestStatus>
+        } else if (name.equals("intent")) {
+          value = new RequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.intent = (Enumeration) value; // Enumeration<RequestIntent>
+        } else if (name.equals("priority")) {
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("authoredOn")) {
+          this.authoredOn = null;
+        } else if (name.equals("author")) {
+          this.author = null;
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("goal")) {
+          this.getGoal().remove(value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("action")) {
+          this.getAction().add((RequestOrchestrationActionComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

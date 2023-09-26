@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -251,6 +251,19 @@ public class DeviceAssociation extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("status")) {
+          this.status = null;
+        } else if (name.equals("operator")) {
+          this.getOperator().remove(value);
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -862,6 +875,31 @@ public class DeviceAssociation extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("device")) {
+          this.device = null;
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("status")) {
+          this.status = null;
+        } else if (name.equals("statusReason")) {
+          this.getStatusReason().remove(value);
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("bodyStructure")) {
+          this.bodyStructure = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else if (name.equals("operation")) {
+          this.getOperation().add((DeviceAssociationOperationComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

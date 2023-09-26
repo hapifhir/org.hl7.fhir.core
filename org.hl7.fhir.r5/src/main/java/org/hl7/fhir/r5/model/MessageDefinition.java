@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -597,6 +597,21 @@ public class MessageDefinition extends CanonicalResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("profile")) {
+          this.profile = null;
+        } else if (name.equals("min")) {
+          this.min = null;
+        } else if (name.equals("max")) {
+          this.max = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -863,6 +878,17 @@ public class MessageDefinition extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("message")) {
+          this.message = null;
+        } else if (name.equals("situation")) {
+          this.situation = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2714,6 +2740,68 @@ public class MessageDefinition extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("replaces")) {
+          this.getReplaces().remove(value);
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("jurisdiction")) {
+          this.getJurisdiction().remove(value);
+        } else if (name.equals("purpose")) {
+          this.purpose = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = null;
+        } else if (name.equals("base")) {
+          this.base = null;
+        } else if (name.equals("parent")) {
+          this.getParent().remove(value);
+        } else if (name.equals("event[x]")) {
+          this.event = null;
+        } else if (name.equals("category")) {
+          value = new MessageSignificanceCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.category = (Enumeration) value; // Enumeration<MessageSignificanceCategory>
+        } else if (name.equals("focus")) {
+          this.getFocus().add((MessageDefinitionFocusComponent) value);
+        } else if (name.equals("responseRequired")) {
+          value = new MessageheaderResponseRequestEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.responseRequired = (Enumeration) value; // Enumeration<MessageheaderResponseRequest>
+        } else if (name.equals("allowedResponse")) {
+          this.getAllowedResponse().add((MessageDefinitionAllowedResponseComponent) value);
+        } else if (name.equals("graph")) {
+          this.graph = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

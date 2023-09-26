@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -165,6 +165,15 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("modifierExtension")) {
+          this.getModifierExtension().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

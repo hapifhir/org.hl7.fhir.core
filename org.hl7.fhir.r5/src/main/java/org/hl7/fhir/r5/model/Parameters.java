@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -1172,6 +1172,21 @@ public class Parameters extends Resource implements IBaseParameters {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else if (name.equals("resource")) {
+          this.resource = null;
+        } else if (name.equals("part")) {
+          this.getPart().add((ParametersParameterComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1610,6 +1625,15 @@ public String toString() {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("parameter")) {
+          this.getParameter().add((ParametersParameterComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

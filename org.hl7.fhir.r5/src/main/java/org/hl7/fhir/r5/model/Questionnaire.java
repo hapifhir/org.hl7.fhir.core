@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -2069,6 +2069,53 @@ public class Questionnaire extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("linkId")) {
+          this.linkId = null;
+        } else if (name.equals("definition")) {
+          this.definition = null;
+        } else if (name.equals("code")) {
+          this.getCode().remove(value);
+        } else if (name.equals("prefix")) {
+          this.prefix = null;
+        } else if (name.equals("text")) {
+          this.text = null;
+        } else if (name.equals("type")) {
+          value = new QuestionnaireItemTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<QuestionnaireItemType>
+        } else if (name.equals("enableWhen")) {
+          this.getEnableWhen().add((QuestionnaireItemEnableWhenComponent) value);
+        } else if (name.equals("enableBehavior")) {
+          value = new EnableWhenBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.enableBehavior = (Enumeration) value; // Enumeration<EnableWhenBehavior>
+        } else if (name.equals("disabledDisplay")) {
+          value = new QuestionnaireItemDisabledDisplayEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.disabledDisplay = (Enumeration) value; // Enumeration<QuestionnaireItemDisabledDisplay>
+        } else if (name.equals("required")) {
+          this.required = null;
+        } else if (name.equals("repeats")) {
+          this.repeats = null;
+        } else if (name.equals("readOnly")) {
+          this.readOnly = null;
+        } else if (name.equals("maxLength")) {
+          this.maxLength = null;
+        } else if (name.equals("answerConstraint")) {
+          value = new QuestionnaireAnswerConstraintEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.answerConstraint = (Enumeration) value; // Enumeration<QuestionnaireAnswerConstraint>
+        } else if (name.equals("answerValueSet")) {
+          this.answerValueSet = null;
+        } else if (name.equals("answerOption")) {
+          this.getAnswerOption().add((QuestionnaireItemAnswerOptionComponent) value);
+        } else if (name.equals("initial")) {
+          this.getInitial().add((QuestionnaireItemInitialComponent) value);
+        } else if (name.equals("item")) {
+          this.getItem().add((QuestionnaireItemComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2689,6 +2736,20 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("question")) {
+          this.question = null;
+        } else if (name.equals("operator")) {
+          value = new QuestionnaireItemOperatorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.operator = (Enumeration) value; // Enumeration<QuestionnaireItemOperator>
+        } else if (name.equals("answer[x]")) {
+          this.answer = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -3056,6 +3117,17 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("value[x]")) {
+          this.value = null;
+        } else if (name.equals("initialSelected")) {
+          this.initialSelected = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3438,6 +3510,15 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -5378,6 +5459,62 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("derivedFrom")) {
+          this.getDerivedFrom().remove(value);
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("subjectType")) {
+          this.getSubjectType().remove(value);
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("jurisdiction")) {
+          this.getJurisdiction().remove(value);
+        } else if (name.equals("purpose")) {
+          this.purpose = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = null;
+        } else if (name.equals("approvalDate")) {
+          this.approvalDate = null;
+        } else if (name.equals("lastReviewDate")) {
+          this.lastReviewDate = null;
+        } else if (name.equals("effectivePeriod")) {
+          this.effectivePeriod = null;
+        } else if (name.equals("code")) {
+          this.getCode().remove(value);
+        } else if (name.equals("item")) {
+          this.getItem().add((QuestionnaireItemComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

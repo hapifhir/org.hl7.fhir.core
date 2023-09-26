@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -673,6 +673,31 @@ public class Schedule extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("active")) {
+          this.active = null;
+        } else if (name.equals("serviceCategory")) {
+          this.getServiceCategory().remove(value);
+        } else if (name.equals("serviceType")) {
+          this.getServiceType().remove(value);
+        } else if (name.equals("specialty")) {
+          this.getSpecialty().remove(value);
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("actor")) {
+          this.getActor().remove(value);
+        } else if (name.equals("planningHorizon")) {
+          this.planningHorizon = null;
+        } else if (name.equals("comment")) {
+          this.comment = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

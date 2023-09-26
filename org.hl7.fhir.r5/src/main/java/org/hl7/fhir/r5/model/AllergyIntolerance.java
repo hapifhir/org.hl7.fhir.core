@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -536,6 +536,17 @@ public class AllergyIntolerance extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("function")) {
+          this.function = null;
+        } else if (name.equals("actor")) {
+          this.actor = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1079,6 +1090,28 @@ public class AllergyIntolerance extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("substance")) {
+          this.substance = null;
+        } else if (name.equals("manifestation")) {
+          this.getManifestation().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("onset")) {
+          this.onset = null;
+        } else if (name.equals("severity")) {
+          value = new AllergyIntoleranceSeverityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.severity = (Enumeration) value; // Enumeration<AllergyIntoleranceSeverity>
+        } else if (name.equals("exposureRoute")) {
+          this.exposureRoute = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2151,6 +2184,45 @@ public class AllergyIntolerance extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("clinicalStatus")) {
+          this.clinicalStatus = null;
+        } else if (name.equals("verificationStatus")) {
+          this.verificationStatus = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("category")) {
+          value = new AllergyIntoleranceCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getCategory().add((Enumeration) value);
+        } else if (name.equals("criticality")) {
+          value = new AllergyIntoleranceCriticalityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.criticality = (Enumeration) value; // Enumeration<AllergyIntoleranceCriticality>
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("patient")) {
+          this.patient = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("onset[x]")) {
+          this.onset = null;
+        } else if (name.equals("recordedDate")) {
+          this.recordedDate = null;
+        } else if (name.equals("participant")) {
+          this.getParticipant().add((AllergyIntoleranceParticipantComponent) value);
+        } else if (name.equals("lastOccurrence")) {
+          this.lastOccurrence = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("reaction")) {
+          this.getReaction().add((AllergyIntoleranceReactionComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

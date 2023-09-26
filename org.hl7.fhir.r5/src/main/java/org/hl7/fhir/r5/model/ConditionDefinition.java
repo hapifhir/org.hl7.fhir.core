@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -387,6 +387,17 @@ public class ConditionDefinition extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("category")) {
+          this.category = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -588,6 +599,17 @@ public class ConditionDefinition extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("category")) {
+          this.category = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -894,6 +916,20 @@ public class ConditionDefinition extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new ConditionPreconditionTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ConditionPreconditionType>
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1140,6 +1176,18 @@ public class ConditionDefinition extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("purpose")) {
+          value = new ConditionQuestionnairePurposeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.purpose = (Enumeration) value; // Enumeration<ConditionQuestionnairePurpose>
+        } else if (name.equals("reference")) {
+          this.reference = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1346,6 +1394,17 @@ public class ConditionDefinition extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("role")) {
+          this.role = null;
+        } else if (name.equals("reference")) {
+          this.reference = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3691,6 +3750,72 @@ public class ConditionDefinition extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("subtitle")) {
+          this.subtitle = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("jurisdiction")) {
+          this.getJurisdiction().remove(value);
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("severity")) {
+          this.severity = null;
+        } else if (name.equals("bodySite")) {
+          this.bodySite = null;
+        } else if (name.equals("stage")) {
+          this.stage = null;
+        } else if (name.equals("hasSeverity")) {
+          this.hasSeverity = null;
+        } else if (name.equals("hasBodySite")) {
+          this.hasBodySite = null;
+        } else if (name.equals("hasStage")) {
+          this.hasStage = null;
+        } else if (name.equals("definition")) {
+          this.getDefinition().remove(value);
+        } else if (name.equals("observation")) {
+          this.getObservation().add((ConditionDefinitionObservationComponent) value);
+        } else if (name.equals("medication")) {
+          this.getMedication().add((ConditionDefinitionMedicationComponent) value);
+        } else if (name.equals("precondition")) {
+          this.getPrecondition().add((ConditionDefinitionPreconditionComponent) value);
+        } else if (name.equals("team")) {
+          this.getTeam().remove(value);
+        } else if (name.equals("questionnaire")) {
+          this.getQuestionnaire().add((ConditionDefinitionQuestionnaireComponent) value);
+        } else if (name.equals("plan")) {
+          this.getPlan().add((ConditionDefinitionPlanComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

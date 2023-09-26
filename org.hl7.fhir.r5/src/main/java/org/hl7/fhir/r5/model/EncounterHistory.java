@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -184,6 +184,17 @@ public class EncounterHistory extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("location")) {
+          this.location = null;
+        } else if (name.equals("form")) {
+          this.form = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1015,6 +1026,40 @@ public class EncounterHistory extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new EncounterStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<EncounterStatus>
+        } else if (name.equals("class")) {
+          this.class_ = null;
+        } else if (name.equals("type")) {
+          this.getType().remove(value);
+        } else if (name.equals("serviceType")) {
+          this.getServiceType().remove(value);
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("subjectStatus")) {
+          this.subjectStatus = null;
+        } else if (name.equals("actualPeriod")) {
+          this.actualPeriod = null;
+        } else if (name.equals("plannedStartDate")) {
+          this.plannedStartDate = null;
+        } else if (name.equals("plannedEndDate")) {
+          this.plannedEndDate = null;
+        } else if (name.equals("length")) {
+          this.length = null;
+        } else if (name.equals("location")) {
+          this.getLocation().add((EncounterHistoryLocationComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

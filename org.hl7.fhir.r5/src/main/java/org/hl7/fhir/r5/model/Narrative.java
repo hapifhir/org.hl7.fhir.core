@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -335,6 +335,18 @@ public class Narrative extends BaseNarrative implements INarrative {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("status")) {
+          value = new NarrativeStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<NarrativeStatus>
+        } else if (name.equals("div")) {
+          this.div = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

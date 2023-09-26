@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -587,6 +587,28 @@ public class Patient extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("relationship")) {
+          this.getRelationship().remove(value);
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("telecom")) {
+          this.getTelecom().remove(value);
+        } else if (name.equals("address")) {
+          this.address = null;
+        } else if (name.equals("gender")) {
+          value = new AdministrativeGenderEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.gender = (Enumeration) value; // Enumeration<AdministrativeGender>
+        } else if (name.equals("organization")) {
+          this.organization = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -861,6 +883,17 @@ public class Patient extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("language")) {
+          this.language = null;
+        } else if (name.equals("preferred")) {
+          this.preferred = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1092,6 +1125,18 @@ public class Patient extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("other")) {
+          this.other = null;
+        } else if (name.equals("type")) {
+          value = new LinkTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<LinkType>
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2257,6 +2302,46 @@ Deceased patients may also be marked as inactive for the same reasons, but may b
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("active")) {
+          this.active = null;
+        } else if (name.equals("name")) {
+          this.getName().remove(value);
+        } else if (name.equals("telecom")) {
+          this.getTelecom().remove(value);
+        } else if (name.equals("gender")) {
+          value = new AdministrativeGenderEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.gender = (Enumeration) value; // Enumeration<AdministrativeGender>
+        } else if (name.equals("birthDate")) {
+          this.birthDate = null;
+        } else if (name.equals("deceased[x]")) {
+          this.deceased = null;
+        } else if (name.equals("address")) {
+          this.getAddress().remove(value);
+        } else if (name.equals("maritalStatus")) {
+          this.maritalStatus = null;
+        } else if (name.equals("multipleBirth[x]")) {
+          this.multipleBirth = null;
+        } else if (name.equals("photo")) {
+          this.getPhoto().remove(value);
+        } else if (name.equals("contact")) {
+          this.getContact().add((ContactComponent) value);
+        } else if (name.equals("communication")) {
+          this.getCommunication().add((PatientCommunicationComponent) value);
+        } else if (name.equals("generalPractitioner")) {
+          this.getGeneralPractitioner().remove(value);
+        } else if (name.equals("managingOrganization")) {
+          this.managingOrganization = null;
+        } else if (name.equals("link")) {
+          this.getLink().add((PatientLinkComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

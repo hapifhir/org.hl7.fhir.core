@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -327,6 +327,17 @@ public class Invoice extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("role")) {
+          this.role = null;
+        } else if (name.equals("actor")) {
+          this.actor = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -724,6 +735,21 @@ public class Invoice extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("sequence")) {
+          this.sequence = null;
+        } else if (name.equals("serviced[x]")) {
+          this.serviced = null;
+        } else if (name.equals("chargeItem[x]")) {
+          this.chargeItem = null;
+        } else if (name.equals("priceComponent")) {
+          this.getPriceComponent().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1882,6 +1908,50 @@ public class Invoice extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new InvoiceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<InvoiceStatus>
+        } else if (name.equals("cancelledReason")) {
+          this.cancelledReason = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("recipient")) {
+          this.recipient = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("creation")) {
+          this.creation = null;
+        } else if (name.equals("period[x]")) {
+          this.period = null;
+        } else if (name.equals("participant")) {
+          this.getParticipant().add((InvoiceParticipantComponent) value);
+        } else if (name.equals("issuer")) {
+          this.issuer = null;
+        } else if (name.equals("account")) {
+          this.account = null;
+        } else if (name.equals("lineItem")) {
+          this.getLineItem().add((InvoiceLineItemComponent) value);
+        } else if (name.equals("totalPriceComponent")) {
+          this.getTotalPriceComponent().remove(value);
+        } else if (name.equals("totalNet")) {
+          this.totalNet = null;
+        } else if (name.equals("totalGross")) {
+          this.totalGross = null;
+        } else if (name.equals("paymentTerms")) {
+          this.paymentTerms = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -434,6 +434,23 @@ public class CompartmentDefinition extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("param")) {
+          this.getParam().remove(value);
+        } else if (name.equals("documentation")) {
+          this.documentation = null;
+        } else if (name.equals("startParam")) {
+          this.startParam = null;
+        } else if (name.equals("endParam")) {
+          this.endParam = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1756,6 +1773,47 @@ public class CompartmentDefinition extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("purpose")) {
+          this.purpose = null;
+        } else if (name.equals("code")) {
+          value = new CompartmentTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.code = (Enumeration) value; // Enumeration<CompartmentType>
+        } else if (name.equals("search")) {
+          this.search = null;
+        } else if (name.equals("resource")) {
+          this.getResource().add((CompartmentDefinitionResourceComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

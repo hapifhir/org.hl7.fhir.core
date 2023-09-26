@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -710,6 +710,25 @@ public class ContactPoint extends DataType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("system")) {
+          value = new ContactPointSystemEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.system = (Enumeration) value; // Enumeration<ContactPointSystem>
+        } else if (name.equals("value")) {
+          this.value = null;
+        } else if (name.equals("use")) {
+          value = new ContactPointUseEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.use = (Enumeration) value; // Enumeration<ContactPointUse>
+        } else if (name.equals("rank")) {
+          this.rank = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

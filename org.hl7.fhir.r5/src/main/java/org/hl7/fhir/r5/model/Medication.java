@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -405,6 +405,19 @@ public class Medication extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("item")) {
+          this.item = null;
+        } else if (name.equals("isActive")) {
+          this.isActive = null;
+        } else if (name.equals("strength[x]")) {
+          this.strength = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -671,6 +684,17 @@ public class Medication extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("lotNumber")) {
+          this.lotNumber = null;
+        } else if (name.equals("expirationDate")) {
+          this.expirationDate = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1232,6 +1256,32 @@ public class Medication extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("status")) {
+          value = new MedicationStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<MedicationStatusCodes>
+        } else if (name.equals("marketingAuthorizationHolder")) {
+          this.marketingAuthorizationHolder = null;
+        } else if (name.equals("doseForm")) {
+          this.doseForm = null;
+        } else if (name.equals("totalVolume")) {
+          this.totalVolume = null;
+        } else if (name.equals("ingredient")) {
+          this.getIngredient().add((MedicationIngredientComponent) value);
+        } else if (name.equals("batch")) {
+          this.batch = (MedicationBatchComponent) value; // MedicationBatchComponent
+        } else if (name.equals("definition")) {
+          this.definition = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -461,6 +461,25 @@ public class RiskAssessment extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("outcome")) {
+          this.outcome = null;
+        } else if (name.equals("probability[x]")) {
+          this.probability = null;
+        } else if (name.equals("qualitativeRisk")) {
+          this.qualitativeRisk = null;
+        } else if (name.equals("relativeRisk")) {
+          this.relativeRisk = null;
+        } else if (name.equals("when[x]")) {
+          this.when = null;
+        } else if (name.equals("rationale")) {
+          this.rationale = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1479,6 +1498,46 @@ public class RiskAssessment extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("basedOn")) {
+          this.basedOn = null;
+        } else if (name.equals("parent")) {
+          this.parent = null;
+        } else if (name.equals("status")) {
+          value = new ObservationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<ObservationStatus>
+        } else if (name.equals("method")) {
+          this.method = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("occurrence[x]")) {
+          this.occurrence = null;
+        } else if (name.equals("condition")) {
+          this.condition = null;
+        } else if (name.equals("performer")) {
+          this.performer = null;
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("basis")) {
+          this.getBasis().remove(value);
+        } else if (name.equals("prediction")) {
+          this.getPrediction().add((RiskAssessmentPredictionComponent) value);
+        } else if (name.equals("mitigation")) {
+          this.mitigation = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

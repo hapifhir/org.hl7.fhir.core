@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -526,6 +526,11 @@ public abstract class CanonicalResource extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
           return super.setProperty(name, value);
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+          super.removeChild(name, value);
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -200,6 +200,17 @@ public class TestPlan extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("predecessor")) {
+          this.predecessor = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -725,6 +736,25 @@ public class TestPlan extends CanonicalResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("sequence")) {
+          this.sequence = null;
+        } else if (name.equals("scope")) {
+          this.getScope().remove(value);
+        } else if (name.equals("dependency")) {
+          this.getDependency().add((TestCaseDependencyComponent) value);
+        } else if (name.equals("testRun")) {
+          this.getTestRun().add((TestPlanTestCaseTestRunComponent) value);
+        } else if (name.equals("testData")) {
+          this.getTestData().add((TestPlanTestCaseTestDataComponent) value);
+        } else if (name.equals("assertion")) {
+          this.getAssertion().add((TestPlanTestCaseAssertionComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -996,6 +1026,17 @@ public class TestPlan extends CanonicalResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("predecessor")) {
+          this.predecessor = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1220,6 +1261,17 @@ public class TestPlan extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("narrative")) {
+          this.narrative = null;
+        } else if (name.equals("script")) {
+          this.script = (TestPlanTestCaseTestRunScriptComponent) value; // TestPlanTestCaseTestRunScriptComponent
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1450,6 +1502,17 @@ public class TestPlan extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("language")) {
+          this.language = null;
+        } else if (name.equals("source[x]")) {
+          this.source = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1733,6 +1796,19 @@ public class TestPlan extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("content")) {
+          this.content = null;
+        } else if (name.equals("source[x]")) {
+          this.source = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2073,6 +2149,19 @@ public class TestPlan extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.getType().remove(value);
+        } else if (name.equals("object")) {
+          this.getObject().remove(value);
+        } else if (name.equals("result")) {
+          this.getResult().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3726,6 +3815,60 @@ public class TestPlan extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("jurisdiction")) {
+          this.getJurisdiction().remove(value);
+        } else if (name.equals("purpose")) {
+          this.purpose = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = null;
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("scope")) {
+          this.getScope().remove(value);
+        } else if (name.equals("testTools")) {
+          this.testTools = null;
+        } else if (name.equals("dependency")) {
+          this.getDependency().add((TestPlanDependencyComponent) value);
+        } else if (name.equals("exitCriteria")) {
+          this.exitCriteria = null;
+        } else if (name.equals("testCase")) {
+          this.getTestCase().add((TestPlanTestCaseComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

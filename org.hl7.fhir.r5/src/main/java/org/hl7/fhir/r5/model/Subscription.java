@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -539,6 +539,25 @@ public class Subscription extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("resourceType")) {
+          this.resourceType = null;
+        } else if (name.equals("filterParameter")) {
+          this.filterParameter = null;
+        } else if (name.equals("comparator")) {
+          value = new SearchComparatorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.comparator = (Enumeration) value; // Enumeration<SearchComparator>
+        } else if (name.equals("modifier")) {
+          value = new SearchModifierCodeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.modifier = (Enumeration) value; // Enumeration<SearchModifierCode>
+        } else if (name.equals("value")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -810,6 +829,17 @@ public class Subscription extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("value")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2001,6 +2031,49 @@ public class Subscription extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("status")) {
+          value = new SubscriptionStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<SubscriptionStatusCodes>
+        } else if (name.equals("topic")) {
+          this.topic = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("end")) {
+          this.end = null;
+        } else if (name.equals("managingEntity")) {
+          this.managingEntity = null;
+        } else if (name.equals("reason")) {
+          this.reason = null;
+        } else if (name.equals("filterBy")) {
+          this.getFilterBy().add((SubscriptionFilterByComponent) value);
+        } else if (name.equals("channelType")) {
+          this.channelType = null;
+        } else if (name.equals("endpoint")) {
+          this.endpoint = null;
+        } else if (name.equals("parameter")) {
+          this.getParameter().add((SubscriptionParameterComponent) value);
+        } else if (name.equals("heartbeatPeriod")) {
+          this.heartbeatPeriod = null;
+        } else if (name.equals("timeout")) {
+          this.timeout = null;
+        } else if (name.equals("contentType")) {
+          this.contentType = null;
+        } else if (name.equals("content")) {
+          value = new SubscriptionPayloadContentEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.content = (Enumeration) value; // Enumeration<SubscriptionPayloadContent>
+        } else if (name.equals("maxCount")) {
+          this.maxCount = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

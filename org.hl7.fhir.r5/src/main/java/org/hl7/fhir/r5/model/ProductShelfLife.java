@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -268,6 +268,19 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("period[x]")) {
+          this.period = null;
+        } else if (name.equals("specialPrecautionsForStorage")) {
+          this.getSpecialPrecautionsForStorage().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

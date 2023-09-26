@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -417,6 +417,19 @@ public class CarePlan extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("performedActivity")) {
+          this.getPerformedActivity().remove(value);
+        } else if (name.equals("progress")) {
+          this.getProgress().remove(value);
+        } else if (name.equals("plannedActivityReference")) {
+          this.plannedActivityReference = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2007,6 +2020,61 @@ public class CarePlan extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("instantiatesCanonical")) {
+          this.getInstantiatesCanonical().remove(value);
+        } else if (name.equals("instantiatesUri")) {
+          this.getInstantiatesUri().remove(value);
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("replaces")) {
+          this.getReplaces().remove(value);
+        } else if (name.equals("partOf")) {
+          this.getPartOf().remove(value);
+        } else if (name.equals("status")) {
+          value = new RequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<RequestStatus>
+        } else if (name.equals("intent")) {
+          value = new CarePlanIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.intent = (Enumeration) value; // Enumeration<CarePlanIntent>
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else if (name.equals("created")) {
+          this.created = null;
+        } else if (name.equals("custodian")) {
+          this.custodian = null;
+        } else if (name.equals("contributor")) {
+          this.getContributor().remove(value);
+        } else if (name.equals("careTeam")) {
+          this.getCareTeam().remove(value);
+        } else if (name.equals("addresses")) {
+          this.getAddresses().remove(value);
+        } else if (name.equals("supportingInfo")) {
+          this.getSupportingInfo().remove(value);
+        } else if (name.equals("goal")) {
+          this.getGoal().remove(value);
+        } else if (name.equals("activity")) {
+          this.getActivity().add((CarePlanActivityComponent) value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -334,6 +334,17 @@ public class SupplyDelivery extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("item[x]")) {
+          this.item = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1109,6 +1120,36 @@ public class SupplyDelivery extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("partOf")) {
+          this.getPartOf().remove(value);
+        } else if (name.equals("status")) {
+          value = new SupplyDeliveryStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<SupplyDeliveryStatus>
+        } else if (name.equals("patient")) {
+          this.patient = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("suppliedItem")) {
+          this.getSuppliedItem().add((SupplyDeliverySuppliedItemComponent) value);
+        } else if (name.equals("occurrence[x]")) {
+          this.occurrence = null;
+        } else if (name.equals("supplier")) {
+          this.supplier = null;
+        } else if (name.equals("destination")) {
+          this.destination = null;
+        } else if (name.equals("receiver")) {
+          this.getReceiver().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

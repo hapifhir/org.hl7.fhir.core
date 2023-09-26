@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -338,6 +338,17 @@ public class SearchParameter extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("definition")) {
+          this.definition = null;
+        } else if (name.equals("expression")) {
+          this.expression = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2529,6 +2540,82 @@ public class SearchParameter extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("derivedFrom")) {
+          this.derivedFrom = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("jurisdiction")) {
+          this.getJurisdiction().remove(value);
+        } else if (name.equals("purpose")) {
+          this.purpose = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("base")) {
+          value = new VersionIndependentResourceTypesAllEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getBase().add((Enumeration) value);
+        } else if (name.equals("type")) {
+          value = new SearchParamTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<SearchParamType>
+        } else if (name.equals("expression")) {
+          this.expression = null;
+        } else if (name.equals("processingMode")) {
+          value = new SearchProcessingModeTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.processingMode = (Enumeration) value; // Enumeration<SearchProcessingModeType>
+        } else if (name.equals("constraint")) {
+          this.constraint = null;
+        } else if (name.equals("target")) {
+          value = new VersionIndependentResourceTypesAllEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getTarget().add((Enumeration) value);
+        } else if (name.equals("multipleOr")) {
+          this.multipleOr = null;
+        } else if (name.equals("multipleAnd")) {
+          this.multipleAnd = null;
+        } else if (name.equals("comparator")) {
+          value = new SearchComparatorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getComparator().add((Enumeration) value);
+        } else if (name.equals("modifier")) {
+          value = new SearchModifierCodeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getModifier().add((Enumeration) value);
+        } else if (name.equals("chain")) {
+          this.getChain().remove(value);
+        } else if (name.equals("component")) {
+          this.getComponent().add((SearchParameterComponentComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

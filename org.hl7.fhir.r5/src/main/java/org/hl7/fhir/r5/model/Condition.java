@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -183,6 +183,17 @@ public class Condition extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("function")) {
+          this.function = null;
+        } else if (name.equals("actor")) {
+          this.actor = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -454,6 +465,19 @@ public class Condition extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("summary")) {
+          this.summary = null;
+        } else if (name.equals("assessment")) {
+          this.getAssessment().remove(value);
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1611,6 +1635,45 @@ public class Condition extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("clinicalStatus")) {
+          this.clinicalStatus = null;
+        } else if (name.equals("verificationStatus")) {
+          this.verificationStatus = null;
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("severity")) {
+          this.severity = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("bodySite")) {
+          this.getBodySite().remove(value);
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("onset[x]")) {
+          this.onset = null;
+        } else if (name.equals("abatement[x]")) {
+          this.abatement = null;
+        } else if (name.equals("recordedDate")) {
+          this.recordedDate = null;
+        } else if (name.equals("participant")) {
+          this.getParticipant().add((ConditionParticipantComponent) value);
+        } else if (name.equals("stage")) {
+          this.getStage().add((ConditionStageComponent) value);
+        } else if (name.equals("evidence")) {
+          this.getEvidence().remove(value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

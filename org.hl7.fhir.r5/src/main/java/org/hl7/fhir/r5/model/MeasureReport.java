@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -847,6 +847,25 @@ public class MeasureReport extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("linkId")) {
+          this.linkId = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("population")) {
+          this.getPopulation().add((MeasureReportGroupPopulationComponent) value);
+        } else if (name.equals("measureScore[x]")) {
+          this.measureScore = null;
+        } else if (name.equals("stratifier")) {
+          this.getStratifier().add((MeasureReportGroupStratifierComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1337,6 +1356,25 @@ public class MeasureReport extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("linkId")) {
+          this.linkId = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("count")) {
+          this.count = null;
+        } else if (name.equals("subjectResults")) {
+          this.subjectResults = null;
+        } else if (name.equals("subjectReport")) {
+          this.getSubjectReport().remove(value);
+        } else if (name.equals("subjects")) {
+          this.subjects = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1662,6 +1700,19 @@ public class MeasureReport extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("linkId")) {
+          this.linkId = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("stratum")) {
+          this.getStratum().add((StratifierGroupComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2184,6 +2235,21 @@ public class MeasureReport extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("value[x]")) {
+          this.value = null;
+        } else if (name.equals("component")) {
+          this.getComponent().add((StratifierGroupComponentComponent) value);
+        } else if (name.equals("population")) {
+          this.getPopulation().add((StratifierGroupPopulationComponent) value);
+        } else if (name.equals("measureScore[x]")) {
+          this.measureScore = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2596,6 +2662,19 @@ public class MeasureReport extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("linkId")) {
+          this.linkId = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3053,6 +3132,25 @@ public class MeasureReport extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("linkId")) {
+          this.linkId = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("count")) {
+          this.count = null;
+        } else if (name.equals("subjectResults")) {
+          this.subjectResults = null;
+        } else if (name.equals("subjectReport")) {
+          this.getSubjectReport().remove(value);
+        } else if (name.equals("subjects")) {
+          this.subjects = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -4123,6 +4221,50 @@ public class MeasureReport extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new MeasureReportStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<MeasureReportStatus>
+        } else if (name.equals("type")) {
+          value = new MeasureReportTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<MeasureReportType>
+        } else if (name.equals("dataUpdateType")) {
+          value = new SubmitDataUpdateTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.dataUpdateType = (Enumeration) value; // Enumeration<SubmitDataUpdateType>
+        } else if (name.equals("measure")) {
+          this.measure = null;
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("reporter")) {
+          this.reporter = null;
+        } else if (name.equals("reportingVendor")) {
+          this.reportingVendor = null;
+        } else if (name.equals("location")) {
+          this.location = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else if (name.equals("inputParameters")) {
+          this.inputParameters = null;
+        } else if (name.equals("scoring")) {
+          this.scoring = null;
+        } else if (name.equals("improvementNotation")) {
+          this.improvementNotation = null;
+        } else if (name.equals("group")) {
+          this.getGroup().add((MeasureReportGroupComponent) value);
+        } else if (name.equals("supplementalData")) {
+          this.getSupplementalData().remove(value);
+        } else if (name.equals("evaluatedResource")) {
+          this.getEvaluatedResource().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

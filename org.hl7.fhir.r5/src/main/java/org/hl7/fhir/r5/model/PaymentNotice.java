@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -674,6 +674,38 @@ public class PaymentNotice extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new FinancialResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FinancialResourceStatusCodes>
+        } else if (name.equals("request")) {
+          this.request = null;
+        } else if (name.equals("response")) {
+          this.response = null;
+        } else if (name.equals("created")) {
+          this.created = null;
+        } else if (name.equals("reporter")) {
+          this.reporter = null;
+        } else if (name.equals("payment")) {
+          this.payment = null;
+        } else if (name.equals("paymentDate")) {
+          this.paymentDate = null;
+        } else if (name.equals("payee")) {
+          this.payee = null;
+        } else if (name.equals("recipient")) {
+          this.recipient = null;
+        } else if (name.equals("amount")) {
+          this.amount = null;
+        } else if (name.equals("paymentStatus")) {
+          this.paymentStatus = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -206,6 +206,15 @@ public abstract class PrimitiveType<T> extends DataType implements IPrimitiveTyp
     else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("value"))
+      setValueAsString(value.toString()); 
+    else
+      super.removeChild(name, value);
+    
   }
 
   @Override

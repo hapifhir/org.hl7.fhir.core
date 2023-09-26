@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -1338,6 +1338,35 @@ public class RelatedArtifact extends DataType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new RelatedArtifactTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<RelatedArtifactType>
+        } else if (name.equals("classifier")) {
+          this.getClassifier().remove(value);
+        } else if (name.equals("label")) {
+          this.label = null;
+        } else if (name.equals("display")) {
+          this.display = null;
+        } else if (name.equals("citation")) {
+          this.citation = null;
+        } else if (name.equals("document")) {
+          this.document = null;
+        } else if (name.equals("resource")) {
+          this.resource = null;
+        } else if (name.equals("resourceReference")) {
+          this.resourceReference = null;
+        } else if (name.equals("publicationStatus")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.publicationStatus = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("publicationDate")) {
+          this.publicationDate = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

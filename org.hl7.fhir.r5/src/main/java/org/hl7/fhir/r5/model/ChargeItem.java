@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -360,6 +360,17 @@ public class ChargeItem extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("function")) {
+          this.function = null;
+        } else if (name.equals("actor")) {
+          this.actor = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1968,6 +1979,66 @@ public class ChargeItem extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("definitionUri")) {
+          this.getDefinitionUri().remove(value);
+        } else if (name.equals("definitionCanonical")) {
+          this.getDefinitionCanonical().remove(value);
+        } else if (name.equals("status")) {
+          value = new ChargeItemStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<ChargeItemStatus>
+        } else if (name.equals("partOf")) {
+          this.getPartOf().remove(value);
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("occurrence[x]")) {
+          this.occurrence = null;
+        } else if (name.equals("performer")) {
+          this.getPerformer().add((ChargeItemPerformerComponent) value);
+        } else if (name.equals("performingOrganization")) {
+          this.performingOrganization = null;
+        } else if (name.equals("requestingOrganization")) {
+          this.requestingOrganization = null;
+        } else if (name.equals("costCenter")) {
+          this.costCenter = null;
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("bodysite")) {
+          this.getBodysite().remove(value);
+        } else if (name.equals("unitPriceComponent")) {
+          this.unitPriceComponent = null;
+        } else if (name.equals("totalPriceComponent")) {
+          this.totalPriceComponent = null;
+        } else if (name.equals("overrideReason")) {
+          this.overrideReason = null;
+        } else if (name.equals("enterer")) {
+          this.enterer = null;
+        } else if (name.equals("enteredDate")) {
+          this.enteredDate = null;
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("service")) {
+          this.getService().remove(value);
+        } else if (name.equals("product")) {
+          this.getProduct().remove(value);
+        } else if (name.equals("account")) {
+          this.getAccount().remove(value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("supportingInformation")) {
+          this.getSupportingInformation().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

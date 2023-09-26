@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -1396,6 +1396,49 @@ public class GenomicStudy extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("methodType")) {
+          this.getMethodType().remove(value);
+        } else if (name.equals("changeType")) {
+          this.getChangeType().remove(value);
+        } else if (name.equals("genomeBuild")) {
+          this.genomeBuild = null;
+        } else if (name.equals("instantiatesCanonical")) {
+          this.instantiatesCanonical = null;
+        } else if (name.equals("instantiatesUri")) {
+          this.instantiatesUri = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("focus")) {
+          this.getFocus().remove(value);
+        } else if (name.equals("specimen")) {
+          this.getSpecimen().remove(value);
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("protocolPerformed")) {
+          this.protocolPerformed = null;
+        } else if (name.equals("regionsStudied")) {
+          this.getRegionsStudied().remove(value);
+        } else if (name.equals("regionsCalled")) {
+          this.getRegionsCalled().remove(value);
+        } else if (name.equals("input")) {
+          this.getInput().add((GenomicStudyAnalysisInputComponent) value);
+        } else if (name.equals("output")) {
+          this.getOutput().add((GenomicStudyAnalysisOutputComponent) value);
+        } else if (name.equals("performer")) {
+          this.getPerformer().add((GenomicStudyAnalysisPerformerComponent) value);
+        } else if (name.equals("device")) {
+          this.getDevice().add((GenomicStudyAnalysisDeviceComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1822,6 +1865,19 @@ public class GenomicStudy extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("file")) {
+          this.file = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("generatedBy[x]")) {
+          this.generatedBy = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2038,6 +2094,17 @@ public class GenomicStudy extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("file")) {
+          this.file = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2239,6 +2306,17 @@ public class GenomicStudy extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("actor")) {
+          this.actor = null;
+        } else if (name.equals("role")) {
+          this.role = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2438,6 +2516,17 @@ public class GenomicStudy extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("device")) {
+          this.device = null;
+        } else if (name.equals("function")) {
+          this.function = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3481,6 +3570,44 @@ public class GenomicStudy extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new GenomicStudyStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<GenomicStudyStatus>
+        } else if (name.equals("type")) {
+          this.getType().remove(value);
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("startDate")) {
+          this.startDate = null;
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("referrer")) {
+          this.referrer = null;
+        } else if (name.equals("interpreter")) {
+          this.getInterpreter().remove(value);
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("instantiatesCanonical")) {
+          this.instantiatesCanonical = null;
+        } else if (name.equals("instantiatesUri")) {
+          this.instantiatesUri = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("analysis")) {
+          this.getAnalysis().add((GenomicStudyAnalysisComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -281,6 +281,19 @@ public class InsurancePlan extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("network")) {
+          this.getNetwork().remove(value);
+        } else if (name.equals("benefit")) {
+          this.getBenefit().add((CoverageBenefitComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -599,6 +612,19 @@ public class InsurancePlan extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("requirement")) {
+          this.requirement = null;
+        } else if (name.equals("limit")) {
+          this.getLimit().add((CoverageBenefitLimitComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -809,6 +835,17 @@ public class InsurancePlan extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("value")) {
+          this.value = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1313,6 +1350,25 @@ public class InsurancePlan extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("coverageArea")) {
+          this.getCoverageArea().remove(value);
+        } else if (name.equals("network")) {
+          this.getNetwork().remove(value);
+        } else if (name.equals("generalCost")) {
+          this.getGeneralCost().add((InsurancePlanPlanGeneralCostComponent) value);
+        } else if (name.equals("specificCost")) {
+          this.getSpecificCost().add((InsurancePlanPlanSpecificCostComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1684,6 +1740,21 @@ public class InsurancePlan extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("groupSize")) {
+          this.groupSize = null;
+        } else if (name.equals("cost")) {
+          this.cost = null;
+        } else if (name.equals("comment")) {
+          this.comment = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1936,6 +2007,17 @@ public class InsurancePlan extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("category")) {
+          this.category = null;
+        } else if (name.equals("benefit")) {
+          this.getBenefit().add((PlanBenefitComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2175,6 +2257,17 @@ public class InsurancePlan extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("cost")) {
+          this.getCost().add((PlanBenefitCostComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2495,6 +2588,21 @@ public class InsurancePlan extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("applicability")) {
+          this.applicability = null;
+        } else if (name.equals("qualifiers")) {
+          this.getQualifiers().remove(value);
+        } else if (name.equals("value")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3504,6 +3612,42 @@ public class InsurancePlan extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("type")) {
+          this.getType().remove(value);
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("alias")) {
+          this.getAlias().remove(value);
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else if (name.equals("ownedBy")) {
+          this.ownedBy = null;
+        } else if (name.equals("administeredBy")) {
+          this.administeredBy = null;
+        } else if (name.equals("coverageArea")) {
+          this.getCoverageArea().remove(value);
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("endpoint")) {
+          this.getEndpoint().remove(value);
+        } else if (name.equals("network")) {
+          this.getNetwork().remove(value);
+        } else if (name.equals("coverage")) {
+          this.getCoverage().add((InsurancePlanCoverageComponent) value);
+        } else if (name.equals("plan")) {
+          this.getPlan().add((InsurancePlanPlanComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

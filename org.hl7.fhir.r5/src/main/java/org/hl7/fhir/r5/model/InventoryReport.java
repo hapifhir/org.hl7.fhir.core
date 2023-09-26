@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+﻿package org.hl7.fhir.r5.model;
 
 
 /*
@@ -533,6 +533,21 @@ public class InventoryReport extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("location")) {
+          this.location = null;
+        } else if (name.equals("itemStatus")) {
+          this.itemStatus = null;
+        } else if (name.equals("countingDateTime")) {
+          this.countingDateTime = null;
+        } else if (name.equals("item")) {
+          this.getItem().add((InventoryReportInventoryListingItemComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -798,6 +813,19 @@ public class InventoryReport extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("category")) {
+          this.category = null;
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("item")) {
+          this.item = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1484,6 +1512,35 @@ public class InventoryReport extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new InventoryReportStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<InventoryReportStatus>
+        } else if (name.equals("countType")) {
+          value = new InventoryCountTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.countType = (Enumeration) value; // Enumeration<InventoryCountType>
+        } else if (name.equals("operationType")) {
+          this.operationType = null;
+        } else if (name.equals("operationTypeReason")) {
+          this.operationTypeReason = null;
+        } else if (name.equals("reportedDateTime")) {
+          this.reportedDateTime = null;
+        } else if (name.equals("reporter")) {
+          this.reporter = null;
+        } else if (name.equals("reportingPeriod")) {
+          this.reportingPeriod = null;
+        } else if (name.equals("inventoryListing")) {
+          this.getInventoryListing().add((InventoryReportInventoryListingComponent) value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
