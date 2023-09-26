@@ -249,6 +249,17 @@ public class ContactDetail extends DataType implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("telecom")) {
+      this.getTelecom().remove(value);
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 3373707:

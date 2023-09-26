@@ -1331,7 +1331,7 @@ public class GraphDefinition extends CanonicalResource {
         } else if (name.equals("params")) {
           this.params = null;
         } else if (name.equals("compartment")) {
-          this.getCompartment().add((GraphDefinitionLinkCompartmentComponent) value);
+          this.getCompartment().remove((GraphDefinitionLinkCompartmentComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3350,9 +3350,9 @@ public class GraphDefinition extends CanonicalResource {
         } else if (name.equals("start")) {
           this.start = null;
         } else if (name.equals("node")) {
-          this.getNode().add((GraphDefinitionNodeComponent) value);
+          this.getNode().remove((GraphDefinitionNodeComponent) value);
         } else if (name.equals("link")) {
-          this.getLink().add((GraphDefinitionLinkComponent) value);
+          this.getLink().remove((GraphDefinitionLinkComponent) value);
         } else
           super.removeChild(name, value);
         

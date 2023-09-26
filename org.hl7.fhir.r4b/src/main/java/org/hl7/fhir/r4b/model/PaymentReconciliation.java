@@ -596,6 +596,33 @@ public class PaymentReconciliation extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identifier")) {
+        this.identifier = null;
+      } else if (name.equals("predecessor")) {
+        this.predecessor = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("request")) {
+        this.request = null;
+      } else if (name.equals("submitter")) {
+        this.submitter = null;
+      } else if (name.equals("response")) {
+        this.response = null;
+      } else if (name.equals("date")) {
+        this.date = null;
+      } else if (name.equals("responsible")) {
+        this.responsible = null;
+      } else if (name.equals("payee")) {
+        this.payee = null;
+      } else if (name.equals("amount")) {
+        this.amount = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -938,6 +965,17 @@ public class PaymentReconciliation extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("text")) {
+        this.text = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1982,6 +2020,43 @@ public class PaymentReconciliation extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("period")) {
+      this.period = null;
+    } else if (name.equals("created")) {
+      this.created = null;
+    } else if (name.equals("paymentIssuer")) {
+      this.paymentIssuer = null;
+    } else if (name.equals("request")) {
+      this.request = null;
+    } else if (name.equals("requestor")) {
+      this.requestor = null;
+    } else if (name.equals("outcome")) {
+      this.outcome = null;
+    } else if (name.equals("disposition")) {
+      this.disposition = null;
+    } else if (name.equals("paymentDate")) {
+      this.paymentDate = null;
+    } else if (name.equals("paymentAmount")) {
+      this.paymentAmount = null;
+    } else if (name.equals("paymentIdentifier")) {
+      this.paymentIdentifier = null;
+    } else if (name.equals("detail")) {
+      this.getDetail().remove((DetailsComponent) value);
+    } else if (name.equals("formCode")) {
+      this.formCode = null;
+    } else if (name.equals("processNote")) {
+      this.getProcessNote().remove((NotesComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

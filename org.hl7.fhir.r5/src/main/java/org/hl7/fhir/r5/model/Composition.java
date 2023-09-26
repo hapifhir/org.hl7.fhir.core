@@ -1123,7 +1123,7 @@ public class Composition extends DomainResource {
         } else if (name.equals("emptyReason")) {
           this.emptyReason = null;
         } else if (name.equals("section")) {
-          this.getSection().add((SectionComponent) value);
+          this.getSection().remove((SectionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2529,15 +2529,15 @@ public class Composition extends DomainResource {
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else if (name.equals("attester")) {
-          this.getAttester().add((CompositionAttesterComponent) value);
+          this.getAttester().remove((CompositionAttesterComponent) value);
         } else if (name.equals("custodian")) {
           this.custodian = null;
         } else if (name.equals("relatesTo")) {
           this.getRelatesTo().remove(value);
         } else if (name.equals("event")) {
-          this.getEvent().add((CompositionEventComponent) value);
+          this.getEvent().remove((CompositionEventComponent) value);
         } else if (name.equals("section")) {
-          this.getSection().add((SectionComponent) value);
+          this.getSection().remove((SectionComponent) value);
         } else
           super.removeChild(name, value);
         

@@ -1274,7 +1274,7 @@ public class Medication extends DomainResource {
         } else if (name.equals("totalVolume")) {
           this.totalVolume = null;
         } else if (name.equals("ingredient")) {
-          this.getIngredient().add((MedicationIngredientComponent) value);
+          this.getIngredient().remove((MedicationIngredientComponent) value);
         } else if (name.equals("batch")) {
           this.batch = (MedicationBatchComponent) value; // MedicationBatchComponent
         } else if (name.equals("definition")) {

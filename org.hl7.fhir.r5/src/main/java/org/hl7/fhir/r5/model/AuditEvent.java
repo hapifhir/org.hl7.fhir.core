@@ -2043,9 +2043,9 @@ public class AuditEvent extends DomainResource {
         } else if (name.equals("query")) {
           this.query = null;
         } else if (name.equals("detail")) {
-          this.getDetail().add((AuditEventEntityDetailComponent) value);
+          this.getDetail().remove((AuditEventEntityDetailComponent) value);
         } else if (name.equals("agent")) {
-          this.getAgent().add((AuditEventAgentComponent) value);
+          this.getAgent().remove((AuditEventAgentComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3487,11 +3487,11 @@ public class AuditEvent extends DomainResource {
         } else if (name.equals("encounter")) {
           this.encounter = null;
         } else if (name.equals("agent")) {
-          this.getAgent().add((AuditEventAgentComponent) value);
+          this.getAgent().remove((AuditEventAgentComponent) value);
         } else if (name.equals("source")) {
           this.source = (AuditEventSourceComponent) value; // AuditEventSourceComponent
         } else if (name.equals("entity")) {
-          this.getEntity().add((AuditEventEntityComponent) value);
+          this.getEntity().remove((AuditEventEntityComponent) value);
         } else
           super.removeChild(name, value);
         

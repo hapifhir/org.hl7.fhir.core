@@ -290,7 +290,7 @@ public class InsurancePlan extends DomainResource {
         } else if (name.equals("network")) {
           this.getNetwork().remove(value);
         } else if (name.equals("benefit")) {
-          this.getBenefit().add((CoverageBenefitComponent) value);
+          this.getBenefit().remove((CoverageBenefitComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -619,7 +619,7 @@ public class InsurancePlan extends DomainResource {
         } else if (name.equals("requirement")) {
           this.requirement = null;
         } else if (name.equals("limit")) {
-          this.getLimit().add((CoverageBenefitLimitComponent) value);
+          this.getLimit().remove((CoverageBenefitLimitComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1361,9 +1361,9 @@ public class InsurancePlan extends DomainResource {
         } else if (name.equals("network")) {
           this.getNetwork().remove(value);
         } else if (name.equals("generalCost")) {
-          this.getGeneralCost().add((InsurancePlanPlanGeneralCostComponent) value);
+          this.getGeneralCost().remove((InsurancePlanPlanGeneralCostComponent) value);
         } else if (name.equals("specificCost")) {
-          this.getSpecificCost().add((InsurancePlanPlanSpecificCostComponent) value);
+          this.getSpecificCost().remove((InsurancePlanPlanSpecificCostComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2012,7 +2012,7 @@ public class InsurancePlan extends DomainResource {
         if (name.equals("category")) {
           this.category = null;
         } else if (name.equals("benefit")) {
-          this.getBenefit().add((PlanBenefitComponent) value);
+          this.getBenefit().remove((PlanBenefitComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2264,7 +2264,7 @@ public class InsurancePlan extends DomainResource {
         if (name.equals("type")) {
           this.type = null;
         } else if (name.equals("cost")) {
-          this.getCost().add((PlanBenefitCostComponent) value);
+          this.getCost().remove((PlanBenefitCostComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3642,9 +3642,9 @@ public class InsurancePlan extends DomainResource {
         } else if (name.equals("network")) {
           this.getNetwork().remove(value);
         } else if (name.equals("coverage")) {
-          this.getCoverage().add((InsurancePlanCoverageComponent) value);
+          this.getCoverage().remove((InsurancePlanCoverageComponent) value);
         } else if (name.equals("plan")) {
-          this.getPlan().add((InsurancePlanPlanComponent) value);
+          this.getPlan().remove((InsurancePlanPlanComponent) value);
         } else
           super.removeChild(name, value);
         

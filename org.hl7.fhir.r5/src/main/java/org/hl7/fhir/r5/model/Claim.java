@@ -5214,11 +5214,11 @@ public class Claim extends DomainResource {
         } else if (name.equals("udi")) {
           this.getUdi().remove(value);
         } else if (name.equals("bodySite")) {
-          this.getBodySite().add((BodySiteComponent) value);
+          this.getBodySite().remove((BodySiteComponent) value);
         } else if (name.equals("encounter")) {
           this.getEncounter().remove(value);
         } else if (name.equals("detail")) {
-          this.getDetail().add((DetailComponent) value);
+          this.getDetail().remove((DetailComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -6738,7 +6738,7 @@ public class Claim extends DomainResource {
         } else if (name.equals("udi")) {
           this.getUdi().remove(value);
         } else if (name.equals("subDetail")) {
-          this.getSubDetail().add((SubDetailComponent) value);
+          this.getSubDetail().remove((SubDetailComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -9718,7 +9718,7 @@ public class Claim extends DomainResource {
         } else if (name.equals("fundsReserve")) {
           this.fundsReserve = null;
         } else if (name.equals("related")) {
-          this.getRelated().add((RelatedClaimComponent) value);
+          this.getRelated().remove((RelatedClaimComponent) value);
         } else if (name.equals("prescription")) {
           this.prescription = null;
         } else if (name.equals("originalPrescription")) {
@@ -9734,23 +9734,23 @@ public class Claim extends DomainResource {
         } else if (name.equals("diagnosisRelatedGroup")) {
           this.diagnosisRelatedGroup = null;
         } else if (name.equals("event")) {
-          this.getEvent().add((ClaimEventComponent) value);
+          this.getEvent().remove((ClaimEventComponent) value);
         } else if (name.equals("careTeam")) {
-          this.getCareTeam().add((CareTeamComponent) value);
+          this.getCareTeam().remove((CareTeamComponent) value);
         } else if (name.equals("supportingInfo")) {
-          this.getSupportingInfo().add((SupportingInformationComponent) value);
+          this.getSupportingInfo().remove((SupportingInformationComponent) value);
         } else if (name.equals("diagnosis")) {
-          this.getDiagnosis().add((DiagnosisComponent) value);
+          this.getDiagnosis().remove((DiagnosisComponent) value);
         } else if (name.equals("procedure")) {
-          this.getProcedure().add((ProcedureComponent) value);
+          this.getProcedure().remove((ProcedureComponent) value);
         } else if (name.equals("insurance")) {
-          this.getInsurance().add((InsuranceComponent) value);
+          this.getInsurance().remove((InsuranceComponent) value);
         } else if (name.equals("accident")) {
           this.accident = (AccidentComponent) value; // AccidentComponent
         } else if (name.equals("patientPaid")) {
           this.patientPaid = null;
         } else if (name.equals("item")) {
-          this.getItem().add((ItemComponent) value);
+          this.getItem().remove((ItemComponent) value);
         } else if (name.equals("total")) {
           this.total = null;
         } else

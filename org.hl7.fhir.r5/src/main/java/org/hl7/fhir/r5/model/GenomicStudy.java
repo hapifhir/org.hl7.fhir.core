@@ -1427,13 +1427,13 @@ public class GenomicStudy extends DomainResource {
         } else if (name.equals("regionsCalled")) {
           this.getRegionsCalled().remove(value);
         } else if (name.equals("input")) {
-          this.getInput().add((GenomicStudyAnalysisInputComponent) value);
+          this.getInput().remove((GenomicStudyAnalysisInputComponent) value);
         } else if (name.equals("output")) {
-          this.getOutput().add((GenomicStudyAnalysisOutputComponent) value);
+          this.getOutput().remove((GenomicStudyAnalysisOutputComponent) value);
         } else if (name.equals("performer")) {
-          this.getPerformer().add((GenomicStudyAnalysisPerformerComponent) value);
+          this.getPerformer().remove((GenomicStudyAnalysisPerformerComponent) value);
         } else if (name.equals("device")) {
-          this.getDevice().add((GenomicStudyAnalysisDeviceComponent) value);
+          this.getDevice().remove((GenomicStudyAnalysisDeviceComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3604,7 +3604,7 @@ public class GenomicStudy extends DomainResource {
         } else if (name.equals("description")) {
           this.description = null;
         } else if (name.equals("analysis")) {
-          this.getAnalysis().add((GenomicStudyAnalysisComponent) value);
+          this.getAnalysis().remove((GenomicStudyAnalysisComponent) value);
         } else
           super.removeChild(name, value);
         

@@ -2854,13 +2854,13 @@ public class Specimen extends DomainResource {
         } else if (name.equals("role")) {
           this.getRole().remove(value);
         } else if (name.equals("feature")) {
-          this.getFeature().add((SpecimenFeatureComponent) value);
+          this.getFeature().remove((SpecimenFeatureComponent) value);
         } else if (name.equals("collection")) {
           this.collection = (SpecimenCollectionComponent) value; // SpecimenCollectionComponent
         } else if (name.equals("processing")) {
-          this.getProcessing().add((SpecimenProcessingComponent) value);
+          this.getProcessing().remove((SpecimenProcessingComponent) value);
         } else if (name.equals("container")) {
-          this.getContainer().add((SpecimenContainerComponent) value);
+          this.getContainer().remove((SpecimenContainerComponent) value);
         } else if (name.equals("condition")) {
           this.getCondition().remove(value);
         } else if (name.equals("note")) {

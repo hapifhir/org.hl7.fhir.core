@@ -1089,7 +1089,7 @@ public class EvidenceVariable extends MetadataResource {
         } else if (name.equals("duration[x]")) {
           this.duration = null;
         } else if (name.equals("timeFromEvent")) {
-          this.getTimeFromEvent().add((EvidenceVariableCharacteristicTimeFromEventComponent) value);
+          this.getTimeFromEvent().remove((EvidenceVariableCharacteristicTimeFromEventComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2049,7 +2049,7 @@ public class EvidenceVariable extends MetadataResource {
         } else if (name.equals("threshold")) {
           this.threshold = null;
         } else if (name.equals("characteristic")) {
-          this.getCharacteristic().add((EvidenceVariableCharacteristicComponent) value);
+          this.getCharacteristic().remove((EvidenceVariableCharacteristicComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -5052,12 +5052,12 @@ See guidance around (not) making local changes to elements [here](canonicalresou
         } else if (name.equals("actual")) {
           this.actual = null;
         } else if (name.equals("characteristic")) {
-          this.getCharacteristic().add((EvidenceVariableCharacteristicComponent) value);
+          this.getCharacteristic().remove((EvidenceVariableCharacteristicComponent) value);
         } else if (name.equals("handling")) {
           value = new EvidenceVariableHandlingEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.handling = (Enumeration) value; // Enumeration<EvidenceVariableHandling>
         } else if (name.equals("category")) {
-          this.getCategory().add((EvidenceVariableCategoryComponent) value);
+          this.getCategory().remove((EvidenceVariableCategoryComponent) value);
         } else
           super.removeChild(name, value);
         

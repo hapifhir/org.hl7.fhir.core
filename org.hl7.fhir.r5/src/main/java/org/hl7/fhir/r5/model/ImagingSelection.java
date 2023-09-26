@@ -1147,9 +1147,9 @@ public class ImagingSelection extends DomainResource {
         } else if (name.equals("subset")) {
           this.getSubset().remove(value);
         } else if (name.equals("imageRegion2D")) {
-          this.getImageRegion2D().add((ImageRegion2DComponent) value);
+          this.getImageRegion2D().remove((ImageRegion2DComponent) value);
         } else if (name.equals("imageRegion3D")) {
-          this.getImageRegion3D().add((ImageRegion3DComponent) value);
+          this.getImageRegion3D().remove((ImageRegion3DComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2958,7 +2958,7 @@ public class ImagingSelection extends DomainResource {
         } else if (name.equals("issued")) {
           this.issued = null;
         } else if (name.equals("performer")) {
-          this.getPerformer().add((ImagingSelectionPerformerComponent) value);
+          this.getPerformer().remove((ImagingSelectionPerformerComponent) value);
         } else if (name.equals("basedOn")) {
           this.getBasedOn().remove(value);
         } else if (name.equals("category")) {
@@ -2982,7 +2982,7 @@ public class ImagingSelection extends DomainResource {
         } else if (name.equals("focus")) {
           this.getFocus().remove(value);
         } else if (name.equals("instance")) {
-          this.getInstance().add((ImagingSelectionInstanceComponent) value);
+          this.getInstance().remove((ImagingSelectionInstanceComponent) value);
         } else
           super.removeChild(name, value);
         

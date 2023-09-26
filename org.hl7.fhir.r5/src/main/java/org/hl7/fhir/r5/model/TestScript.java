@@ -2300,9 +2300,9 @@ public class TestScript extends CanonicalResource {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("link")) {
-          this.getLink().add((TestScriptMetadataLinkComponent) value);
+          this.getLink().remove((TestScriptMetadataLinkComponent) value);
         } else if (name.equals("capability")) {
-          this.getCapability().add((TestScriptMetadataCapabilityComponent) value);
+          this.getCapability().remove((TestScriptMetadataCapabilityComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -4738,7 +4738,7 @@ public class TestScript extends CanonicalResource {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("action")) {
-          this.getAction().add((SetupActionComponent) value);
+          this.getAction().remove((SetupActionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -6171,7 +6171,7 @@ public class TestScript extends CanonicalResource {
         } else if (name.equals("params")) {
           this.params = null;
         } else if (name.equals("requestHeader")) {
-          this.getRequestHeader().add((SetupActionOperationRequestHeaderComponent) value);
+          this.getRequestHeader().remove((SetupActionOperationRequestHeaderComponent) value);
         } else if (name.equals("requestId")) {
           this.requestId = null;
         } else if (name.equals("responseId")) {
@@ -8351,7 +8351,7 @@ public class TestScript extends CanonicalResource {
         } else if (name.equals("warningOnly")) {
           this.warningOnly = null;
         } else if (name.equals("requirement")) {
-          this.getRequirement().add((SetupActionAssertRequirementComponent) value);
+          this.getRequirement().remove((SetupActionAssertRequirementComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -9053,7 +9053,7 @@ public class TestScript extends CanonicalResource {
         } else if (name.equals("description")) {
           this.description = null;
         } else if (name.equals("action")) {
-          this.getAction().add((TestActionComponent) value);
+          this.getAction().remove((TestActionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -9483,7 +9483,7 @@ public class TestScript extends CanonicalResource {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("action")) {
-          this.getAction().add((TeardownActionComponent) value);
+          this.getAction().remove((TeardownActionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -11528,23 +11528,23 @@ public class TestScript extends CanonicalResource {
         } else if (name.equals("copyrightLabel")) {
           this.copyrightLabel = null;
         } else if (name.equals("origin")) {
-          this.getOrigin().add((TestScriptOriginComponent) value);
+          this.getOrigin().remove((TestScriptOriginComponent) value);
         } else if (name.equals("destination")) {
-          this.getDestination().add((TestScriptDestinationComponent) value);
+          this.getDestination().remove((TestScriptDestinationComponent) value);
         } else if (name.equals("metadata")) {
           this.metadata = (TestScriptMetadataComponent) value; // TestScriptMetadataComponent
         } else if (name.equals("scope")) {
-          this.getScope().add((TestScriptScopeComponent) value);
+          this.getScope().remove((TestScriptScopeComponent) value);
         } else if (name.equals("fixture")) {
-          this.getFixture().add((TestScriptFixtureComponent) value);
+          this.getFixture().remove((TestScriptFixtureComponent) value);
         } else if (name.equals("profile")) {
           this.getProfile().remove(value);
         } else if (name.equals("variable")) {
-          this.getVariable().add((TestScriptVariableComponent) value);
+          this.getVariable().remove((TestScriptVariableComponent) value);
         } else if (name.equals("setup")) {
           this.setup = (TestScriptSetupComponent) value; // TestScriptSetupComponent
         } else if (name.equals("test")) {
-          this.getTest().add((TestScriptTestComponent) value);
+          this.getTest().remove((TestScriptTestComponent) value);
         } else if (name.equals("teardown")) {
           this.teardown = (TestScriptTeardownComponent) value; // TestScriptTeardownComponent
         } else

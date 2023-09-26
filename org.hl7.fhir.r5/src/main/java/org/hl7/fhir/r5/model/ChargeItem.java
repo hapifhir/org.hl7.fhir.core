@@ -2003,7 +2003,7 @@ public class ChargeItem extends DomainResource {
         } else if (name.equals("occurrence[x]")) {
           this.occurrence = null;
         } else if (name.equals("performer")) {
-          this.getPerformer().add((ChargeItemPerformerComponent) value);
+          this.getPerformer().remove((ChargeItemPerformerComponent) value);
         } else if (name.equals("performingOrganization")) {
           this.performingOrganization = null;
         } else if (name.equals("requestingOrganization")) {

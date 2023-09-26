@@ -1086,7 +1086,7 @@ public class ResearchSubject extends DomainResource {
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("progress")) {
-          this.getProgress().add((ResearchSubjectProgressComponent) value);
+          this.getProgress().remove((ResearchSubjectProgressComponent) value);
         } else if (name.equals("period")) {
           this.period = null;
         } else if (name.equals("study")) {

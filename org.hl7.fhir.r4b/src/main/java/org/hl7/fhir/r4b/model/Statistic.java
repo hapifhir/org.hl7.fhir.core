@@ -468,6 +468,23 @@ public class Statistic extends BackboneType implements ICompositeType {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("note")) {
+        this.getNote().remove(value);
+      } else if (name.equals("numberOfStudies")) {
+        this.numberOfStudies = null;
+      } else if (name.equals("numberOfParticipants")) {
+        this.numberOfParticipants = null;
+      } else if (name.equals("knownDataCount")) {
+        this.knownDataCount = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1080,6 +1097,27 @@ public class Statistic extends BackboneType implements ICompositeType {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("note")) {
+        this.getNote().remove(value);
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("quantity")) {
+        this.quantity = null;
+      } else if (name.equals("level")) {
+        this.level = null;
+      } else if (name.equals("range")) {
+        this.range = null;
+      } else if (name.equals("attributeEstimate")) {
+        this.getAttributeEstimate().remove((StatisticAttributeEstimateAttributeEstimateComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1633,6 +1671,25 @@ public class Statistic extends BackboneType implements ICompositeType {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("note")) {
+        this.getNote().remove(value);
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("quantity")) {
+        this.quantity = null;
+      } else if (name.equals("level")) {
+        this.level = null;
+      } else if (name.equals("range")) {
+        this.range = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1977,6 +2034,19 @@ public class Statistic extends BackboneType implements ICompositeType {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("value")) {
+        this.value = null;
+      } else if (name.equals("variable")) {
+        this.getVariable().remove((StatisticModelCharacteristicVariableComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2485,6 +2555,23 @@ public class Statistic extends BackboneType implements ICompositeType {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("variableDefinition")) {
+        this.variableDefinition = null;
+      } else if (name.equals("handling")) {
+        this.handling = null;
+      } else if (name.equals("valueCategory")) {
+        this.getValueCategory().remove(value);
+      } else if (name.equals("valueQuantity")) {
+        this.getValueQuantity().remove(value);
+      } else if (name.equals("valueRange")) {
+        this.getValueRange().remove(value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3294,6 +3381,33 @@ public class Statistic extends BackboneType implements ICompositeType {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("note")) {
+      this.getNote().remove(value);
+    } else if (name.equals("statisticType")) {
+      this.statisticType = null;
+    } else if (name.equals("category")) {
+      this.category = null;
+    } else if (name.equals("quantity")) {
+      this.quantity = null;
+    } else if (name.equals("numberOfEvents")) {
+      this.numberOfEvents = null;
+    } else if (name.equals("numberAffected")) {
+      this.numberAffected = null;
+    } else if (name.equals("sampleSize")) {
+      this.sampleSize = (StatisticSampleSizeComponent) value; // StatisticSampleSizeComponent
+    } else if (name.equals("attributeEstimate")) {
+      this.getAttributeEstimate().remove((StatisticAttributeEstimateComponent) value);
+    } else if (name.equals("modelCharacteristic")) {
+      this.getModelCharacteristic().remove((StatisticModelCharacteristicComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

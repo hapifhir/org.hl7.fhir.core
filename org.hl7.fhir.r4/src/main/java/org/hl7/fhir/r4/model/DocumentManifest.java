@@ -231,6 +231,17 @@ public class DocumentManifest extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identifier")) {
+        this.identifier = null;
+      } else if (name.equals("ref")) {
+        this.ref = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1322,6 +1333,37 @@ public class DocumentManifest extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("masterIdentifier")) {
+      this.masterIdentifier = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("created")) {
+      this.created = null;
+    } else if (name.equals("author")) {
+      this.getAuthor().remove(castToReference(value));
+    } else if (name.equals("recipient")) {
+      this.getRecipient().remove(castToReference(value));
+    } else if (name.equals("source")) {
+      this.source = null;
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("content")) {
+      this.getContent().remove(castToReference(value));
+    } else if (name.equals("related")) {
+      this.getRelated().remove((DocumentManifestRelatedComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

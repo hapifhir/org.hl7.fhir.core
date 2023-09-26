@@ -542,7 +542,7 @@ public class InventoryReport extends DomainResource {
         } else if (name.equals("countingDateTime")) {
           this.countingDateTime = null;
         } else if (name.equals("item")) {
-          this.getItem().add((InventoryReportInventoryListingItemComponent) value);
+          this.getItem().remove((InventoryReportInventoryListingItemComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1535,7 +1535,7 @@ public class InventoryReport extends DomainResource {
         } else if (name.equals("reportingPeriod")) {
           this.reportingPeriod = null;
         } else if (name.equals("inventoryListing")) {
-          this.getInventoryListing().add((InventoryReportInventoryListingComponent) value);
+          this.getInventoryListing().remove((InventoryReportInventoryListingComponent) value);
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else

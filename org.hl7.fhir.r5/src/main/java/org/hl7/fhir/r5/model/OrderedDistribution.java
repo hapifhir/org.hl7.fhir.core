@@ -727,7 +727,7 @@ public class OrderedDistribution extends BackboneType implements ICompositeType 
         } else if (name.equals("bottomOfFirstInterval")) {
           this.bottomOfFirstInterval = null;
         } else if (name.equals("interval")) {
-          this.getInterval().add((OrderedDistributionIntervalComponent) value);
+          this.getInterval().remove((OrderedDistributionIntervalComponent) value);
         } else if (name.equals("topOfInterval")) {
           this.topOfInterval = null;
         } else

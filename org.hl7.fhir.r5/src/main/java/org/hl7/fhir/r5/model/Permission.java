@@ -942,9 +942,9 @@ public class Permission extends DomainResource {
           value = new ConsentProvisionTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<ConsentProvisionType>
         } else if (name.equals("data")) {
-          this.getData().add((RuleDataComponent) value);
+          this.getData().remove((RuleDataComponent) value);
         } else if (name.equals("activity")) {
-          this.getActivity().add((RuleActivityComponent) value);
+          this.getActivity().remove((RuleActivityComponent) value);
         } else if (name.equals("limit")) {
           this.getLimit().remove(value);
         } else
@@ -1345,7 +1345,7 @@ public class Permission extends DomainResource {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("resource")) {
-          this.getResource().add((RuleDataResourceComponent) value);
+          this.getResource().remove((RuleDataResourceComponent) value);
         } else if (name.equals("security")) {
           this.getSecurity().remove(value);
         } else if (name.equals("period")) {
@@ -2520,7 +2520,7 @@ public class Permission extends DomainResource {
           value = new PermissionRuleCombiningEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.combining = (Enumeration) value; // Enumeration<PermissionRuleCombining>
         } else if (name.equals("rule")) {
-          this.getRule().add((RuleComponent) value);
+          this.getRule().remove((RuleComponent) value);
         } else
           super.removeChild(name, value);
         

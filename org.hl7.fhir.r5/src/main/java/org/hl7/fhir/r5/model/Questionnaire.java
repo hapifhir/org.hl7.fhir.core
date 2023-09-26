@@ -2085,7 +2085,7 @@ public class Questionnaire extends MetadataResource {
           value = new QuestionnaireItemTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.type = (Enumeration) value; // Enumeration<QuestionnaireItemType>
         } else if (name.equals("enableWhen")) {
-          this.getEnableWhen().add((QuestionnaireItemEnableWhenComponent) value);
+          this.getEnableWhen().remove((QuestionnaireItemEnableWhenComponent) value);
         } else if (name.equals("enableBehavior")) {
           value = new EnableWhenBehaviorEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.enableBehavior = (Enumeration) value; // Enumeration<EnableWhenBehavior>
@@ -2106,11 +2106,11 @@ public class Questionnaire extends MetadataResource {
         } else if (name.equals("answerValueSet")) {
           this.answerValueSet = null;
         } else if (name.equals("answerOption")) {
-          this.getAnswerOption().add((QuestionnaireItemAnswerOptionComponent) value);
+          this.getAnswerOption().remove((QuestionnaireItemAnswerOptionComponent) value);
         } else if (name.equals("initial")) {
-          this.getInitial().add((QuestionnaireItemInitialComponent) value);
+          this.getInitial().remove((QuestionnaireItemInitialComponent) value);
         } else if (name.equals("item")) {
-          this.getItem().add((QuestionnaireItemComponent) value);
+          this.getItem().remove((QuestionnaireItemComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -5511,7 +5511,7 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
         } else if (name.equals("code")) {
           this.getCode().remove(value);
         } else if (name.equals("item")) {
-          this.getItem().add((QuestionnaireItemComponent) value);
+          this.getItem().remove((QuestionnaireItemComponent) value);
         } else
           super.removeChild(name, value);
         

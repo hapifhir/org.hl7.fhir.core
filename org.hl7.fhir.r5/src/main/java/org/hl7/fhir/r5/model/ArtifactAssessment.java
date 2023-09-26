@@ -1239,7 +1239,7 @@ public class ArtifactAssessment extends DomainResource {
         } else if (name.equals("freeToShare")) {
           this.freeToShare = null;
         } else if (name.equals("component")) {
-          this.getComponent().add((ArtifactAssessmentContentComponent) value);
+          this.getComponent().remove((ArtifactAssessmentContentComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2208,7 +2208,7 @@ public class ArtifactAssessment extends DomainResource {
         } else if (name.equals("artifact[x]")) {
           this.artifact = null;
         } else if (name.equals("content")) {
-          this.getContent().add((ArtifactAssessmentContentComponent) value);
+          this.getContent().remove((ArtifactAssessmentContentComponent) value);
         } else if (name.equals("workflowStatus")) {
           value = new ArtifactAssessmentWorkflowStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.workflowStatus = (Enumeration) value; // Enumeration<ArtifactAssessmentWorkflowStatus>

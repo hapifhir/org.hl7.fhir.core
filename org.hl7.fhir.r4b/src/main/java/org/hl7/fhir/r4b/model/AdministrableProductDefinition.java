@@ -339,6 +339,19 @@ public class AdministrableProductDefinition extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("value[x]")) {
+        this.value = null;
+      } else if (name.equals("status")) {
+        this.status = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -873,6 +886,27 @@ public class AdministrableProductDefinition extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("firstDose")) {
+        this.firstDose = null;
+      } else if (name.equals("maxSingleDose")) {
+        this.maxSingleDose = null;
+      } else if (name.equals("maxDosePerDay")) {
+        this.maxDosePerDay = null;
+      } else if (name.equals("maxDosePerTreatmentPeriod")) {
+        this.maxDosePerTreatmentPeriod = null;
+      } else if (name.equals("maxTreatmentPeriod")) {
+        this.maxTreatmentPeriod = null;
+      } else if (name.equals("targetSpecies")) {
+        this.getTargetSpecies().remove((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1184,6 +1218,18 @@ public class AdministrableProductDefinition extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("withdrawalPeriod")) {
+        this.getWithdrawalPeriod()
+            .remove((AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1502,6 +1548,19 @@ public class AdministrableProductDefinition extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("tissue")) {
+        this.tissue = null;
+      } else if (name.equals("value")) {
+        this.value = null;
+      } else if (name.equals("supportingInformation")) {
+        this.supportingInformation = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2402,6 +2461,33 @@ public class AdministrableProductDefinition extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("formOf")) {
+      this.getFormOf().remove(value);
+    } else if (name.equals("administrableDoseForm")) {
+      this.administrableDoseForm = null;
+    } else if (name.equals("unitOfPresentation")) {
+      this.unitOfPresentation = null;
+    } else if (name.equals("producedFrom")) {
+      this.getProducedFrom().remove(value);
+    } else if (name.equals("ingredient")) {
+      this.getIngredient().remove(value);
+    } else if (name.equals("device")) {
+      this.device = null;
+    } else if (name.equals("property")) {
+      this.getProperty().remove((AdministrableProductDefinitionPropertyComponent) value);
+    } else if (name.equals("routeOfAdministration")) {
+      this.getRouteOfAdministration().remove((AdministrableProductDefinitionRouteOfAdministrationComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

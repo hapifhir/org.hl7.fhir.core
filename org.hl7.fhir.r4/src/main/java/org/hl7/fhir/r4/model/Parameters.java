@@ -399,6 +399,21 @@ public class Parameters extends Resource implements IBaseParameters {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("value[x]")) {
+        this.value = null;
+      } else if (name.equals("resource")) {
+        this.resource = null;
+      } else if (name.equals("part")) {
+        this.getPart().remove((ParametersParameterComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -768,6 +783,15 @@ public class Parameters extends Resource implements IBaseParameters {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("parameter")) {
+      this.getParameter().remove((ParametersParameterComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

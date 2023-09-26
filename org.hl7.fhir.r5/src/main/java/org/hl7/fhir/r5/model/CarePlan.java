@@ -2069,7 +2069,7 @@ public class CarePlan extends DomainResource {
         } else if (name.equals("goal")) {
           this.getGoal().remove(value);
         } else if (name.equals("activity")) {
-          this.getActivity().add((CarePlanActivityComponent) value);
+          this.getActivity().remove((CarePlanActivityComponent) value);
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else

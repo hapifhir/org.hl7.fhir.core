@@ -870,6 +870,27 @@ public class RelatedArtifact extends Type implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("label")) {
+      this.label = null;
+    } else if (name.equals("display")) {
+      this.display = null;
+    } else if (name.equals("citation")) {
+      this.citation = null;
+    } else if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("document")) {
+      this.document = null;
+    } else if (name.equals("resource")) {
+      this.resource = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 3575610:

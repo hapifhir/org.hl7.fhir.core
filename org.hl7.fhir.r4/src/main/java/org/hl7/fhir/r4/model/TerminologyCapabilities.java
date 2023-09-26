@@ -524,6 +524,17 @@ public class TerminologyCapabilities extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("version")) {
+        this.version = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -806,6 +817,17 @@ public class TerminologyCapabilities extends MetadataResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("url")) {
+        this.url = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1154,6 +1176,19 @@ public class TerminologyCapabilities extends MetadataResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("uri")) {
+        this.uri = null;
+      } else if (name.equals("version")) {
+        this.getVersion().remove((TerminologyCapabilitiesCodeSystemVersionComponent) value);
+      } else if (name.equals("subsumption")) {
+        this.subsumption = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1756,6 +1791,25 @@ public class TerminologyCapabilities extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("isDefault")) {
+        this.isDefault = null;
+      } else if (name.equals("compositional")) {
+        this.compositional = null;
+      } else if (name.equals("language")) {
+        this.getLanguage().remove(castToCode(value));
+      } else if (name.equals("filter")) {
+        this.getFilter().remove((TerminologyCapabilitiesCodeSystemVersionFilterComponent) value);
+      } else if (name.equals("property")) {
+        this.getProperty().remove(castToCode(value));
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2086,6 +2140,17 @@ public class TerminologyCapabilities extends MetadataResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("op")) {
+        this.getOp().remove(castToCode(value));
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2578,6 +2643,23 @@ public class TerminologyCapabilities extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("hierarchical")) {
+        this.hierarchical = null;
+      } else if (name.equals("paging")) {
+        this.paging = null;
+      } else if (name.equals("incomplete")) {
+        this.incomplete = null;
+      } else if (name.equals("parameter")) {
+        this.getParameter().remove((TerminologyCapabilitiesExpansionParameterComponent) value);
+      } else if (name.equals("textFilter")) {
+        this.textFilter = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2884,6 +2966,17 @@ public class TerminologyCapabilities extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("documentation")) {
+        this.documentation = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -3089,6 +3182,15 @@ public class TerminologyCapabilities extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("translations")) {
+        this.translations = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -3287,6 +3389,15 @@ public class TerminologyCapabilities extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("needsMap")) {
+        this.needsMap = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -3474,6 +3585,15 @@ public class TerminologyCapabilities extends MetadataResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("translation")) {
+        this.translation = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -5303,6 +5423,61 @@ public class TerminologyCapabilities extends MetadataResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(castToContactDetail(value));
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(castToUsageContext(value));
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(castToCodeableConcept(value));
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("kind")) {
+      this.kind = null;
+    } else if (name.equals("software")) {
+      this.software = (TerminologyCapabilitiesSoftwareComponent) value; // TerminologyCapabilitiesSoftwareComponent
+    } else if (name.equals("implementation")) {
+      this.implementation = (TerminologyCapabilitiesImplementationComponent) value; // TerminologyCapabilitiesImplementationComponent
+    } else if (name.equals("lockedDate")) {
+      this.lockedDate = null;
+    } else if (name.equals("codeSystem")) {
+      this.getCodeSystem().remove((TerminologyCapabilitiesCodeSystemComponent) value);
+    } else if (name.equals("expansion")) {
+      this.expansion = (TerminologyCapabilitiesExpansionComponent) value; // TerminologyCapabilitiesExpansionComponent
+    } else if (name.equals("codeSearch")) {
+      this.codeSearch = null;
+    } else if (name.equals("validateCode")) {
+      this.validateCode = (TerminologyCapabilitiesValidateCodeComponent) value; // TerminologyCapabilitiesValidateCodeComponent
+    } else if (name.equals("translation")) {
+      this.translation = (TerminologyCapabilitiesTranslationComponent) value; // TerminologyCapabilitiesTranslationComponent
+    } else if (name.equals("closure")) {
+      this.closure = (TerminologyCapabilitiesClosureComponent) value; // TerminologyCapabilitiesClosureComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

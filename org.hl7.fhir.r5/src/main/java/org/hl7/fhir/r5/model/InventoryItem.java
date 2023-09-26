@@ -3040,9 +3040,9 @@ public class InventoryItem extends DomainResource {
         } else if (name.equals("code")) {
           this.getCode().remove(value);
         } else if (name.equals("name")) {
-          this.getName().add((InventoryItemNameComponent) value);
+          this.getName().remove((InventoryItemNameComponent) value);
         } else if (name.equals("responsibleOrganization")) {
-          this.getResponsibleOrganization().add((InventoryItemResponsibleOrganizationComponent) value);
+          this.getResponsibleOrganization().remove((InventoryItemResponsibleOrganizationComponent) value);
         } else if (name.equals("description")) {
           this.description = (InventoryItemDescriptionComponent) value; // InventoryItemDescriptionComponent
         } else if (name.equals("inventoryStatus")) {
@@ -3052,9 +3052,9 @@ public class InventoryItem extends DomainResource {
         } else if (name.equals("netContent")) {
           this.netContent = null;
         } else if (name.equals("association")) {
-          this.getAssociation().add((InventoryItemAssociationComponent) value);
+          this.getAssociation().remove((InventoryItemAssociationComponent) value);
         } else if (name.equals("characteristic")) {
-          this.getCharacteristic().add((InventoryItemCharacteristicComponent) value);
+          this.getCharacteristic().remove((InventoryItemCharacteristicComponent) value);
         } else if (name.equals("instance")) {
           this.instance = (InventoryItemInstanceComponent) value; // InventoryItemInstanceComponent
         } else if (name.equals("productReference")) {

@@ -1698,7 +1698,7 @@ public class Goal extends DomainResource {
         } else if (name.equals("start[x]")) {
           this.start = null;
         } else if (name.equals("target")) {
-          this.getTarget().add((GoalTargetComponent) value);
+          this.getTarget().remove((GoalTargetComponent) value);
         } else if (name.equals("statusDate")) {
           this.statusDate = null;
         } else if (name.equals("statusReason")) {

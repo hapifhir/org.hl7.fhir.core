@@ -4400,7 +4400,7 @@ public class ActivityDefinition extends MetadataResource {
         } else if (name.equals("location")) {
           this.location = null;
         } else if (name.equals("participant")) {
-          this.getParticipant().add((ActivityDefinitionParticipantComponent) value);
+          this.getParticipant().remove((ActivityDefinitionParticipantComponent) value);
         } else if (name.equals("product[x]")) {
           this.product = null;
         } else if (name.equals("quantity")) {
@@ -4418,7 +4418,7 @@ public class ActivityDefinition extends MetadataResource {
         } else if (name.equals("transform")) {
           this.transform = null;
         } else if (name.equals("dynamicValue")) {
-          this.getDynamicValue().add((ActivityDefinitionDynamicValueComponent) value);
+          this.getDynamicValue().remove((ActivityDefinitionDynamicValueComponent) value);
         } else
           super.removeChild(name, value);
         

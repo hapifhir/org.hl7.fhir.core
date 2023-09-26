@@ -584,9 +584,9 @@ public class QuestionnaireResponse extends DomainResource {
         } else if (name.equals("text")) {
           this.text = null;
         } else if (name.equals("answer")) {
-          this.getAnswer().add((QuestionnaireResponseItemAnswerComponent) value);
+          this.getAnswer().remove((QuestionnaireResponseItemAnswerComponent) value);
         } else if (name.equals("item")) {
-          this.getItem().add((QuestionnaireResponseItemComponent) value);
+          this.getItem().remove((QuestionnaireResponseItemComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1053,7 +1053,7 @@ public class QuestionnaireResponse extends DomainResource {
         if (name.equals("value[x]")) {
           this.value = null;
         } else if (name.equals("item")) {
-          this.getItem().add((QuestionnaireResponseItemComponent) value);
+          this.getItem().remove((QuestionnaireResponseItemComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1876,7 +1876,7 @@ public class QuestionnaireResponse extends DomainResource {
         } else if (name.equals("source")) {
           this.source = null;
         } else if (name.equals("item")) {
-          this.getItem().add((QuestionnaireResponseItemComponent) value);
+          this.getItem().remove((QuestionnaireResponseItemComponent) value);
         } else
           super.removeChild(name, value);
         

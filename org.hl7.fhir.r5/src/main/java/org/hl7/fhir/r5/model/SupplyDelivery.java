@@ -1138,7 +1138,7 @@ public class SupplyDelivery extends DomainResource {
         } else if (name.equals("type")) {
           this.type = null;
         } else if (name.equals("suppliedItem")) {
-          this.getSuppliedItem().add((SupplyDeliverySuppliedItemComponent) value);
+          this.getSuppliedItem().remove((SupplyDeliverySuppliedItemComponent) value);
         } else if (name.equals("occurrence[x]")) {
           this.occurrence = null;
         } else if (name.equals("supplier")) {

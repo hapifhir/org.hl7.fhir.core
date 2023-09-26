@@ -782,6 +782,21 @@ public class Subscription extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("endpoint")) {
+        this.endpoint = null;
+      } else if (name.equals("payload")) {
+        this.payload = null;
+      } else if (name.equals("header")) {
+        this.getHeader().remove(castToString(value));
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1433,6 +1448,27 @@ public class Subscription extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(castToContactPoint(value));
+    } else if (name.equals("end")) {
+      this.end = null;
+    } else if (name.equals("reason")) {
+      this.reason = null;
+    } else if (name.equals("criteria")) {
+      this.criteria = null;
+    } else if (name.equals("error")) {
+      this.error = null;
+    } else if (name.equals("channel")) {
+      this.channel = (SubscriptionChannelComponent) value; // SubscriptionChannelComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

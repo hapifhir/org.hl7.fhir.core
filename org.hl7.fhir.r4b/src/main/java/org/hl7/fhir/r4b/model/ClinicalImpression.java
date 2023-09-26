@@ -393,6 +393,17 @@ public class ClinicalImpression extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("item")) {
+        this.getItem().remove(value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -698,6 +709,19 @@ public class ClinicalImpression extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("itemCodeableConcept")) {
+        this.itemCodeableConcept = null;
+      } else if (name.equals("itemReference")) {
+        this.itemReference = null;
+      } else if (name.equals("basis")) {
+        this.basis = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2237,6 +2261,53 @@ public class ClinicalImpression extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("statusReason")) {
+      this.statusReason = null;
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("effective[x]")) {
+      this.effective = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("assessor")) {
+      this.assessor = null;
+    } else if (name.equals("previous")) {
+      this.previous = null;
+    } else if (name.equals("problem")) {
+      this.getProblem().remove(value);
+    } else if (name.equals("investigation")) {
+      this.getInvestigation().remove((ClinicalImpressionInvestigationComponent) value);
+    } else if (name.equals("protocol")) {
+      this.getProtocol().remove(value);
+    } else if (name.equals("summary")) {
+      this.summary = null;
+    } else if (name.equals("finding")) {
+      this.getFinding().remove((ClinicalImpressionFindingComponent) value);
+    } else if (name.equals("prognosisCodeableConcept")) {
+      this.getPrognosisCodeableConcept().remove(value);
+    } else if (name.equals("prognosisReference")) {
+      this.getPrognosisReference().remove(value);
+    } else if (name.equals("supportingInfo")) {
+      this.getSupportingInfo().remove(value);
+    } else if (name.equals("note")) {
+      this.getNote().remove(value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

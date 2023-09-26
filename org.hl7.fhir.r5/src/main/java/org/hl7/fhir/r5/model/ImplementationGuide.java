@@ -10211,15 +10211,15 @@ public class ImplementationGuide extends CanonicalResource {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
       if (name.equals("grouping")) {
-        this.getGrouping().add((ImplementationGuideDefinitionGroupingComponent) value);
+        this.getGrouping().remove((ImplementationGuideDefinitionGroupingComponent) value);
       } else if (name.equals("resource")) {
-        this.getResource().add((ImplementationGuideDefinitionResourceComponent) value);
+        this.getResource().remove((ImplementationGuideDefinitionResourceComponent) value);
       } else if (name.equals("page")) {
         this.page = (ImplementationGuideDefinitionPageComponent) value; // ImplementationGuideDefinitionPageComponent
       } else if (name.equals("parameter")) {
-        this.getParameter().add((ImplementationGuideDefinitionParameterComponent) value);
+        this.getParameter().remove((ImplementationGuideDefinitionParameterComponent) value);
       } else if (name.equals("template")) {
-        this.getTemplate().add((ImplementationGuideDefinitionTemplateComponent) value);
+        this.getTemplate().remove((ImplementationGuideDefinitionTemplateComponent) value);
       } else
         super.removeChild(name, value);
       
@@ -11113,7 +11113,7 @@ public class ImplementationGuide extends CanonicalResource {
         this.reference = null;
       } else if (name.equals("fhirVersion")) {
         value = new FHIRVersionEnumFactory().fromType(TypeConvertor.castToCode(value));
-        this.getFhirVersion().add((Enumeration) value);
+        this.getFhirVersion().remove((Enumeration) value);
       } else if (name.equals("name")) {
         this.name = null;
       } else if (name.equals("description")) {
@@ -11655,7 +11655,7 @@ public class ImplementationGuide extends CanonicalResource {
         value = new GuidePageGenerationEnumFactory().fromType(TypeConvertor.castToCode(value));
         this.generation = (Enumeration) value; // Enumeration<GuidePageGeneration>
       } else if (name.equals("page")) {
-        this.getPage().add((ImplementationGuideDefinitionPageComponent) value);
+        this.getPage().remove((ImplementationGuideDefinitionPageComponent) value);
       } else
         super.removeChild(name, value);
       
@@ -12759,9 +12759,9 @@ public class ImplementationGuide extends CanonicalResource {
       if (name.equals("rendering")) {
         this.rendering = null;
       } else if (name.equals("resource")) {
-        this.getResource().add((ManifestResourceComponent) value);
+        this.getResource().remove((ManifestResourceComponent) value);
       } else if (name.equals("page")) {
-        this.getPage().add((ManifestPageComponent) value);
+        this.getPage().remove((ManifestPageComponent) value);
       } else if (name.equals("image")) {
         this.getImage().remove(value);
       } else if (name.equals("other")) {
@@ -15261,11 +15261,11 @@ public class ImplementationGuide extends CanonicalResource {
       this.license = (Enumeration) value; // Enumeration<SPDXLicense>
     } else if (name.equals("fhirVersion")) {
       value = new FHIRVersionEnumFactory().fromType(TypeConvertor.castToCode(value));
-      this.getFhirVersion().add((Enumeration) value);
+      this.getFhirVersion().remove((Enumeration) value);
     } else if (name.equals("dependsOn")) {
-      this.getDependsOn().add((ImplementationGuideDependsOnComponent) value);
+      this.getDependsOn().remove((ImplementationGuideDependsOnComponent) value);
     } else if (name.equals("global")) {
-      this.getGlobal().add((ImplementationGuideGlobalComponent) value);
+      this.getGlobal().remove((ImplementationGuideGlobalComponent) value);
     } else if (name.equals("definition")) {
       this.definition = (ImplementationGuideDefinitionComponent) value; // ImplementationGuideDefinitionComponent
     } else if (name.equals("manifest")) {

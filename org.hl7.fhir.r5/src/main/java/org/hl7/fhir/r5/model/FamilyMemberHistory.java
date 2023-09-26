@@ -2742,7 +2742,7 @@ public class FamilyMemberHistory extends DomainResource {
         } else if (name.equals("date")) {
           this.date = null;
         } else if (name.equals("participant")) {
-          this.getParticipant().add((FamilyMemberHistoryParticipantComponent) value);
+          this.getParticipant().remove((FamilyMemberHistoryParticipantComponent) value);
         } else if (name.equals("name")) {
           this.name = null;
         } else if (name.equals("relationship")) {
@@ -2762,9 +2762,9 @@ public class FamilyMemberHistory extends DomainResource {
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else if (name.equals("condition")) {
-          this.getCondition().add((FamilyMemberHistoryConditionComponent) value);
+          this.getCondition().remove((FamilyMemberHistoryConditionComponent) value);
         } else if (name.equals("procedure")) {
-          this.getProcedure().add((FamilyMemberHistoryProcedureComponent) value);
+          this.getProcedure().remove((FamilyMemberHistoryProcedureComponent) value);
         } else
           super.removeChild(name, value);
         

@@ -211,7 +211,7 @@ public class SubstancePolymer extends DomainResource {
         if (name.equals("ratioType")) {
           this.ratioType = null;
         } else if (name.equals("startingMaterial")) {
-          this.getStartingMaterial().add((SubstancePolymerMonomerSetStartingMaterialComponent) value);
+          this.getStartingMaterial().remove((SubstancePolymerMonomerSetStartingMaterialComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -853,7 +853,7 @@ public class SubstancePolymer extends DomainResource {
         } else if (name.equals("repeatUnitAmountType")) {
           this.repeatUnitAmountType = null;
         } else if (name.equals("repeatUnit")) {
-          this.getRepeatUnit().add((SubstancePolymerRepeatRepeatUnitComponent) value);
+          this.getRepeatUnit().remove((SubstancePolymerRepeatRepeatUnitComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1301,9 +1301,9 @@ public class SubstancePolymer extends DomainResource {
         } else if (name.equals("amount")) {
           this.amount = null;
         } else if (name.equals("degreeOfPolymerisation")) {
-          this.getDegreeOfPolymerisation().add((SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) value);
+          this.getDegreeOfPolymerisation().remove((SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) value);
         } else if (name.equals("structuralRepresentation")) {
-          this.getStructuralRepresentation().add((SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent) value);
+          this.getStructuralRepresentation().remove((SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2561,9 +2561,9 @@ public class SubstancePolymer extends DomainResource {
         } else if (name.equals("modification")) {
           this.modification = null;
         } else if (name.equals("monomerSet")) {
-          this.getMonomerSet().add((SubstancePolymerMonomerSetComponent) value);
+          this.getMonomerSet().remove((SubstancePolymerMonomerSetComponent) value);
         } else if (name.equals("repeat")) {
-          this.getRepeat().add((SubstancePolymerRepeatComponent) value);
+          this.getRepeat().remove((SubstancePolymerRepeatComponent) value);
         } else
           super.removeChild(name, value);
         

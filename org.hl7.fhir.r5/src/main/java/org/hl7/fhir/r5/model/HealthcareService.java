@@ -1852,7 +1852,7 @@ public class HealthcareService extends DomainResource {
         } else if (name.equals("serviceProvisionCode")) {
           this.getServiceProvisionCode().remove(value);
         } else if (name.equals("eligibility")) {
-          this.getEligibility().add((HealthcareServiceEligibilityComponent) value);
+          this.getEligibility().remove((HealthcareServiceEligibilityComponent) value);
         } else if (name.equals("program")) {
           this.getProgram().remove(value);
         } else if (name.equals("characteristic")) {

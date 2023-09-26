@@ -1103,7 +1103,7 @@ public class Coverage extends DomainResource {
         } else if (name.equals("value[x]")) {
           this.value = null;
         } else if (name.equals("exception")) {
-          this.getException().add((ExemptionComponent) value);
+          this.getException().remove((ExemptionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2614,7 +2614,7 @@ public class Coverage extends DomainResource {
           value = new KindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<Kind>
         } else if (name.equals("paymentBy")) {
-          this.getPaymentBy().add((CoveragePaymentByComponent) value);
+          this.getPaymentBy().remove((CoveragePaymentByComponent) value);
         } else if (name.equals("type")) {
           this.type = null;
         } else if (name.equals("policyHolder")) {
@@ -2634,13 +2634,13 @@ public class Coverage extends DomainResource {
         } else if (name.equals("insurer")) {
           this.insurer = null;
         } else if (name.equals("class")) {
-          this.getClass_().add((ClassComponent) value);
+          this.getClass_().remove((ClassComponent) value);
         } else if (name.equals("order")) {
           this.order = null;
         } else if (name.equals("network")) {
           this.network = null;
         } else if (name.equals("costToBeneficiary")) {
-          this.getCostToBeneficiary().add((CostToBeneficiaryComponent) value);
+          this.getCostToBeneficiary().remove((CostToBeneficiaryComponent) value);
         } else if (name.equals("subrogation")) {
           this.subrogation = null;
         } else if (name.equals("contract")) {

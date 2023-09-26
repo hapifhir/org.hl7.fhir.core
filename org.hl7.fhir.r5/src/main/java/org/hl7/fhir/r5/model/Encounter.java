@@ -3538,7 +3538,7 @@ public class Encounter extends DomainResource {
         } else if (name.equals("serviceProvider")) {
           this.serviceProvider = null;
         } else if (name.equals("participant")) {
-          this.getParticipant().add((EncounterParticipantComponent) value);
+          this.getParticipant().remove((EncounterParticipantComponent) value);
         } else if (name.equals("appointment")) {
           this.getAppointment().remove(value);
         } else if (name.equals("virtualService")) {
@@ -3552,9 +3552,9 @@ public class Encounter extends DomainResource {
         } else if (name.equals("length")) {
           this.length = null;
         } else if (name.equals("reason")) {
-          this.getReason().add((ReasonComponent) value);
+          this.getReason().remove((ReasonComponent) value);
         } else if (name.equals("diagnosis")) {
-          this.getDiagnosis().add((DiagnosisComponent) value);
+          this.getDiagnosis().remove((DiagnosisComponent) value);
         } else if (name.equals("account")) {
           this.getAccount().remove(value);
         } else if (name.equals("dietPreference")) {
@@ -3566,7 +3566,7 @@ public class Encounter extends DomainResource {
         } else if (name.equals("admission")) {
           this.admission = (EncounterAdmissionComponent) value; // EncounterAdmissionComponent
         } else if (name.equals("location")) {
-          this.getLocation().add((EncounterLocationComponent) value);
+          this.getLocation().remove((EncounterLocationComponent) value);
         } else
           super.removeChild(name, value);
         

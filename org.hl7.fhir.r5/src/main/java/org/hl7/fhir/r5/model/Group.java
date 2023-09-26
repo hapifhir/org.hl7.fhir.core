@@ -1845,9 +1845,9 @@ public class Group extends DomainResource {
         } else if (name.equals("managingEntity")) {
           this.managingEntity = null;
         } else if (name.equals("characteristic")) {
-          this.getCharacteristic().add((GroupCharacteristicComponent) value);
+          this.getCharacteristic().remove((GroupCharacteristicComponent) value);
         } else if (name.equals("member")) {
-          this.getMember().add((GroupMemberComponent) value);
+          this.getMember().remove((GroupMemberComponent) value);
         } else
           super.removeChild(name, value);
         

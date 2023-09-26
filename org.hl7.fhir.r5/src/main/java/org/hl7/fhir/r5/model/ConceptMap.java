@@ -1677,7 +1677,7 @@ public class ConceptMap extends MetadataResource {
         } else if (name.equals("target")) {
           this.target = null;
         } else if (name.equals("element")) {
-          this.getElement().add((SourceElementComponent) value);
+          this.getElement().remove((SourceElementComponent) value);
         } else if (name.equals("unmapped")) {
           this.unmapped = (ConceptMapGroupUnmappedComponent) value; // ConceptMapGroupUnmappedComponent
         } else
@@ -2156,7 +2156,7 @@ public class ConceptMap extends MetadataResource {
         } else if (name.equals("noMap")) {
           this.noMap = null;
         } else if (name.equals("target")) {
-          this.getTarget().add((TargetElementComponent) value);
+          this.getTarget().remove((TargetElementComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2853,11 +2853,11 @@ public class ConceptMap extends MetadataResource {
         } else if (name.equals("comment")) {
           this.comment = null;
         } else if (name.equals("property")) {
-          this.getProperty().add((MappingPropertyComponent) value);
+          this.getProperty().remove((MappingPropertyComponent) value);
         } else if (name.equals("dependsOn")) {
-          this.getDependsOn().add((OtherElementComponent) value);
+          this.getDependsOn().remove((OtherElementComponent) value);
         } else if (name.equals("product")) {
-          this.getProduct().add((OtherElementComponent) value);
+          this.getProduct().remove((OtherElementComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -6472,15 +6472,15 @@ public class ConceptMap extends MetadataResource {
         } else if (name.equals("relatedArtifact")) {
           this.getRelatedArtifact().remove(value);
         } else if (name.equals("property")) {
-          this.getProperty().add((PropertyComponent) value);
+          this.getProperty().remove((PropertyComponent) value);
         } else if (name.equals("additionalAttribute")) {
-          this.getAdditionalAttribute().add((AdditionalAttributeComponent) value);
+          this.getAdditionalAttribute().remove((AdditionalAttributeComponent) value);
         } else if (name.equals("sourceScope[x]")) {
           this.sourceScope = null;
         } else if (name.equals("targetScope[x]")) {
           this.targetScope = null;
         } else if (name.equals("group")) {
-          this.getGroup().add((ConceptMapGroupComponent) value);
+          this.getGroup().remove((ConceptMapGroupComponent) value);
         } else
           super.removeChild(name, value);
         

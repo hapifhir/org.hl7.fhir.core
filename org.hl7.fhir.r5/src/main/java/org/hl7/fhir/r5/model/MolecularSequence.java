@@ -668,7 +668,7 @@ public class MolecularSequence extends DomainResource {
         } else if (name.equals("startingSequence")) {
           this.startingSequence = (MolecularSequenceRelativeStartingSequenceComponent) value; // MolecularSequenceRelativeStartingSequenceComponent
         } else if (name.equals("edit")) {
-          this.getEdit().add((MolecularSequenceRelativeEditComponent) value);
+          this.getEdit().remove((MolecularSequenceRelativeEditComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2410,7 +2410,7 @@ public class MolecularSequence extends DomainResource {
         } else if (name.equals("formatted")) {
           this.getFormatted().remove(value);
         } else if (name.equals("relative")) {
-          this.getRelative().add((MolecularSequenceRelativeComponent) value);
+          this.getRelative().remove((MolecularSequenceRelativeComponent) value);
         } else
           super.removeChild(name, value);
         

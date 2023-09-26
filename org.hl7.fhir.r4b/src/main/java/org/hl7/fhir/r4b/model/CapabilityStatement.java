@@ -1740,6 +1740,19 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("version")) {
+        this.version = null;
+      } else if (name.equals("releaseDate")) {
+        this.releaseDate = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2091,6 +2104,19 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("url")) {
+        this.url = null;
+      } else if (name.equals("custodian")) {
+        this.custodian = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2861,6 +2887,29 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("mode")) {
+        this.mode = null;
+      } else if (name.equals("documentation")) {
+        this.documentation = null;
+      } else if (name.equals("security")) {
+        this.security = (CapabilityStatementRestSecurityComponent) value; // CapabilityStatementRestSecurityComponent
+      } else if (name.equals("resource")) {
+        this.getResource().remove((CapabilityStatementRestResourceComponent) value);
+      } else if (name.equals("interaction")) {
+        this.getInteraction().remove((SystemInteractionComponent) value);
+      } else if (name.equals("searchParam")) {
+        this.getSearchParam().remove((CapabilityStatementRestResourceSearchParamComponent) value);
+      } else if (name.equals("operation")) {
+        this.getOperation().remove((CapabilityStatementRestResourceOperationComponent) value);
+      } else if (name.equals("compartment")) {
+        this.getCompartment().remove(value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -3288,6 +3337,19 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("cors")) {
+        this.cors = null;
+      } else if (name.equals("service")) {
+        this.getService().remove(value);
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -4889,6 +4951,47 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("profile")) {
+        this.profile = null;
+      } else if (name.equals("supportedProfile")) {
+        this.getSupportedProfile().remove(value);
+      } else if (name.equals("documentation")) {
+        this.documentation = null;
+      } else if (name.equals("interaction")) {
+        this.getInteraction().remove((ResourceInteractionComponent) value);
+      } else if (name.equals("versioning")) {
+        this.versioning = null;
+      } else if (name.equals("readHistory")) {
+        this.readHistory = null;
+      } else if (name.equals("updateCreate")) {
+        this.updateCreate = null;
+      } else if (name.equals("conditionalCreate")) {
+        this.conditionalCreate = null;
+      } else if (name.equals("conditionalRead")) {
+        this.conditionalRead = null;
+      } else if (name.equals("conditionalUpdate")) {
+        this.conditionalUpdate = null;
+      } else if (name.equals("conditionalDelete")) {
+        this.conditionalDelete = null;
+      } else if (name.equals("referencePolicy")) {
+        this.getReferencePolicy().remove((Enumeration) value);
+      } else if (name.equals("searchInclude")) {
+        this.getSearchInclude().remove(value);
+      } else if (name.equals("searchRevInclude")) {
+        this.getSearchRevInclude().remove(value);
+      } else if (name.equals("searchParam")) {
+        this.getSearchParam().remove((CapabilityStatementRestResourceSearchParamComponent) value);
+      } else if (name.equals("operation")) {
+        this.getOperation().remove((CapabilityStatementRestResourceOperationComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -5360,6 +5463,17 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("documentation")) {
+        this.documentation = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -5836,6 +5950,21 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("definition")) {
+        this.definition = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("documentation")) {
+        this.documentation = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -6274,6 +6403,19 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("definition")) {
+        this.definition = null;
+      } else if (name.equals("documentation")) {
+        this.documentation = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -6578,6 +6720,17 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("documentation")) {
+        this.documentation = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -7037,6 +7190,21 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("endpoint")) {
+        this.getEndpoint().remove((CapabilityStatementMessagingEndpointComponent) value);
+      } else if (name.equals("reliableCache")) {
+        this.reliableCache = null;
+      } else if (name.equals("documentation")) {
+        this.documentation = null;
+      } else if (name.equals("supportedMessage")) {
+        this.getSupportedMessage().remove((CapabilityStatementMessagingSupportedMessageComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -7324,6 +7492,17 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("protocol")) {
+        this.protocol = null;
+      } else if (name.equals("address")) {
+        this.address = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -7618,6 +7797,17 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("mode")) {
+        this.mode = null;
+      } else if (name.equals("definition")) {
+        this.definition = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -7995,6 +8185,19 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("mode")) {
+        this.mode = null;
+      } else if (name.equals("documentation")) {
+        this.documentation = null;
+      } else if (name.equals("profile")) {
+        this.profile = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -10335,6 +10538,65 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(value);
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(value);
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("kind")) {
+      this.kind = null;
+    } else if (name.equals("instantiates")) {
+      this.getInstantiates().remove(value);
+    } else if (name.equals("imports")) {
+      this.getImports().remove(value);
+    } else if (name.equals("software")) {
+      this.software = (CapabilityStatementSoftwareComponent) value; // CapabilityStatementSoftwareComponent
+    } else if (name.equals("implementation")) {
+      this.implementation = (CapabilityStatementImplementationComponent) value; // CapabilityStatementImplementationComponent
+    } else if (name.equals("fhirVersion")) {
+      this.fhirVersion = null;
+    } else if (name.equals("format")) {
+      this.getFormat().remove(value);
+    } else if (name.equals("patchFormat")) {
+      this.getPatchFormat().remove(value);
+    } else if (name.equals("implementationGuide")) {
+      this.getImplementationGuide().remove(value);
+    } else if (name.equals("rest")) {
+      this.getRest().remove((CapabilityStatementRestComponent) value);
+    } else if (name.equals("messaging")) {
+      this.getMessaging().remove((CapabilityStatementMessagingComponent) value);
+    } else if (name.equals("document")) {
+      this.getDocument().remove((CapabilityStatementDocumentComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

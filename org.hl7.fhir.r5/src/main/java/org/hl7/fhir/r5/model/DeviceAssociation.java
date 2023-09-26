@@ -896,7 +896,7 @@ public class DeviceAssociation extends DomainResource {
         } else if (name.equals("period")) {
           this.period = null;
         } else if (name.equals("operation")) {
-          this.getOperation().add((DeviceAssociationOperationComponent) value);
+          this.getOperation().remove((DeviceAssociationOperationComponent) value);
         } else
           super.removeChild(name, value);
         

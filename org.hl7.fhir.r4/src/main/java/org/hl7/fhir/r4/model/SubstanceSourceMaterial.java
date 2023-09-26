@@ -245,6 +245,17 @@ public class SubstanceSourceMaterial extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("fraction")) {
+        this.fraction = null;
+      } else if (name.equals("materialType")) {
+        this.materialType = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -824,6 +835,29 @@ public class SubstanceSourceMaterial extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("family")) {
+        this.family = null;
+      } else if (name.equals("genus")) {
+        this.genus = null;
+      } else if (name.equals("species")) {
+        this.species = null;
+      } else if (name.equals("intraspecificType")) {
+        this.intraspecificType = null;
+      } else if (name.equals("intraspecificDescription")) {
+        this.intraspecificDescription = null;
+      } else if (name.equals("author")) {
+        this.getAuthor().remove((SubstanceSourceMaterialOrganismAuthorComponent) value);
+      } else if (name.equals("hybrid")) {
+        this.hybrid = (SubstanceSourceMaterialOrganismHybridComponent) value; // SubstanceSourceMaterialOrganismHybridComponent
+      } else if (name.equals("organismGeneral")) {
+        this.organismGeneral = (SubstanceSourceMaterialOrganismOrganismGeneralComponent) value; // SubstanceSourceMaterialOrganismOrganismGeneralComponent
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1161,6 +1195,17 @@ public class SubstanceSourceMaterial extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("authorType")) {
+        this.authorType = null;
+      } else if (name.equals("authorDescription")) {
+        this.authorDescription = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1687,6 +1732,23 @@ public class SubstanceSourceMaterial extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("maternalOrganismId")) {
+        this.maternalOrganismId = null;
+      } else if (name.equals("maternalOrganismName")) {
+        this.maternalOrganismName = null;
+      } else if (name.equals("paternalOrganismId")) {
+        this.paternalOrganismId = null;
+      } else if (name.equals("paternalOrganismName")) {
+        this.paternalOrganismName = null;
+      } else if (name.equals("hybridType")) {
+        this.hybridType = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2025,6 +2087,21 @@ public class SubstanceSourceMaterial extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("kingdom")) {
+        this.kingdom = null;
+      } else if (name.equals("phylum")) {
+        this.phylum = null;
+      } else if (name.equals("class")) {
+        this.class_ = null;
+      } else if (name.equals("order")) {
+        this.order = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2269,6 +2346,17 @@ public class SubstanceSourceMaterial extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("part")) {
+        this.part = null;
+      } else if (name.equals("partLocation")) {
+        this.partLocation = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3299,6 +3387,39 @@ public class SubstanceSourceMaterial extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("sourceMaterialClass")) {
+      this.sourceMaterialClass = null;
+    } else if (name.equals("sourceMaterialType")) {
+      this.sourceMaterialType = null;
+    } else if (name.equals("sourceMaterialState")) {
+      this.sourceMaterialState = null;
+    } else if (name.equals("organismId")) {
+      this.organismId = null;
+    } else if (name.equals("organismName")) {
+      this.organismName = null;
+    } else if (name.equals("parentSubstanceId")) {
+      this.getParentSubstanceId().remove(castToIdentifier(value));
+    } else if (name.equals("parentSubstanceName")) {
+      this.getParentSubstanceName().remove(castToString(value));
+    } else if (name.equals("countryOfOrigin")) {
+      this.getCountryOfOrigin().remove(castToCodeableConcept(value));
+    } else if (name.equals("geographicalLocation")) {
+      this.getGeographicalLocation().remove(castToString(value));
+    } else if (name.equals("developmentStage")) {
+      this.developmentStage = null;
+    } else if (name.equals("fractionDescription")) {
+      this.getFractionDescription().remove((SubstanceSourceMaterialFractionDescriptionComponent) value);
+    } else if (name.equals("organism")) {
+      this.organism = (SubstanceSourceMaterialOrganismComponent) value; // SubstanceSourceMaterialOrganismComponent
+    } else if (name.equals("partDescription")) {
+      this.getPartDescription().remove((SubstanceSourceMaterialPartDescriptionComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

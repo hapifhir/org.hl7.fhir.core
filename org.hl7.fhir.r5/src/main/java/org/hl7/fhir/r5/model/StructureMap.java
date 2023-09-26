@@ -2112,9 +2112,9 @@ public class StructureMap extends CanonicalResource {
         } else if (name.equals("documentation")) {
           this.documentation = null;
         } else if (name.equals("input")) {
-          this.getInput().add((StructureMapGroupInputComponent) value);
+          this.getInput().remove((StructureMapGroupInputComponent) value);
         } else if (name.equals("rule")) {
-          this.getRule().add((StructureMapGroupRuleComponent) value);
+          this.getRule().remove((StructureMapGroupRuleComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3107,13 +3107,13 @@ public String toString() {
         if (name.equals("name")) {
           this.name = null;
         } else if (name.equals("source")) {
-          this.getSource().add((StructureMapGroupRuleSourceComponent) value);
+          this.getSource().remove((StructureMapGroupRuleSourceComponent) value);
         } else if (name.equals("target")) {
-          this.getTarget().add((StructureMapGroupRuleTargetComponent) value);
+          this.getTarget().remove((StructureMapGroupRuleTargetComponent) value);
         } else if (name.equals("rule")) {
-          this.getRule().add((StructureMapGroupRuleComponent) value);
+          this.getRule().remove((StructureMapGroupRuleComponent) value);
         } else if (name.equals("dependent")) {
-          this.getDependent().add((StructureMapGroupRuleDependentComponent) value);
+          this.getDependent().remove((StructureMapGroupRuleDependentComponent) value);
         } else if (name.equals("documentation")) {
           this.documentation = null;
         } else
@@ -4694,14 +4694,14 @@ public String toString() {
           this.variable = null;
         } else if (name.equals("listMode")) {
           value = new StructureMapTargetListModeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getListMode().add((Enumeration) value);
+          this.getListMode().remove((Enumeration) value);
         } else if (name.equals("listRuleId")) {
           this.listRuleId = null;
         } else if (name.equals("transform")) {
           value = new StructureMapTransformEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.transform = (Enumeration) value; // Enumeration<StructureMapTransform>
         } else if (name.equals("parameter")) {
-          this.getParameter().add((StructureMapGroupRuleTargetParameterComponent) value);
+          this.getParameter().remove((StructureMapGroupRuleTargetParameterComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -5350,7 +5350,7 @@ public String toString() {
         if (name.equals("name")) {
           this.name = null;
         } else if (name.equals("parameter")) {
-          this.getParameter().add((StructureMapGroupRuleTargetParameterComponent) value);
+          this.getParameter().remove((StructureMapGroupRuleTargetParameterComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -6906,13 +6906,13 @@ public String toString() {
         } else if (name.equals("copyrightLabel")) {
           this.copyrightLabel = null;
         } else if (name.equals("structure")) {
-          this.getStructure().add((StructureMapStructureComponent) value);
+          this.getStructure().remove((StructureMapStructureComponent) value);
         } else if (name.equals("import")) {
           this.getImport().remove(value);
         } else if (name.equals("const")) {
-          this.getConst().add((StructureMapConstComponent) value);
+          this.getConst().remove((StructureMapConstComponent) value);
         } else if (name.equals("group")) {
-          this.getGroup().add((StructureMapGroupComponent) value);
+          this.getGroup().remove((StructureMapGroupComponent) value);
         } else
           super.removeChild(name, value);
         

@@ -1056,6 +1056,37 @@ public class ImmunizationRecommendation extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("vaccineCode")) {
+        this.getVaccineCode().remove(castToCodeableConcept(value));
+      } else if (name.equals("targetDisease")) {
+        this.targetDisease = null;
+      } else if (name.equals("contraindicatedVaccineCode")) {
+        this.getContraindicatedVaccineCode().remove(castToCodeableConcept(value));
+      } else if (name.equals("forecastStatus")) {
+        this.forecastStatus = null;
+      } else if (name.equals("forecastReason")) {
+        this.getForecastReason().remove(castToCodeableConcept(value));
+      } else if (name.equals("dateCriterion")) {
+        this.getDateCriterion().remove((ImmunizationRecommendationRecommendationDateCriterionComponent) value);
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("series")) {
+        this.series = null;
+      } else if (name.equals("doseNumber[x]")) {
+        this.doseNumber = null;
+      } else if (name.equals("seriesDoses[x]")) {
+        this.seriesDoses = null;
+      } else if (name.equals("supportingImmunization")) {
+        this.getSupportingImmunization().remove(castToReference(value));
+      } else if (name.equals("supportingPatientInformation")) {
+        this.getSupportingPatientInformation().remove(castToReference(value));
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1437,6 +1468,17 @@ public class ImmunizationRecommendation extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("value")) {
+        this.value = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1948,6 +1990,23 @@ public class ImmunizationRecommendation extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("patient")) {
+      this.patient = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("authority")) {
+      this.authority = null;
+    } else if (name.equals("recommendation")) {
+      this.getRecommendation().remove((ImmunizationRecommendationRecommendationComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

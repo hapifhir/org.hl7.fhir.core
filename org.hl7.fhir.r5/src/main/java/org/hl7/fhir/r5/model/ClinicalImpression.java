@@ -1488,7 +1488,7 @@ public class ClinicalImpression extends DomainResource {
         } else if (name.equals("summary")) {
           this.summary = null;
         } else if (name.equals("finding")) {
-          this.getFinding().add((ClinicalImpressionFindingComponent) value);
+          this.getFinding().remove((ClinicalImpressionFindingComponent) value);
         } else if (name.equals("prognosisCodeableConcept")) {
           this.getPrognosisCodeableConcept().remove(value);
         } else if (name.equals("prognosisReference")) {

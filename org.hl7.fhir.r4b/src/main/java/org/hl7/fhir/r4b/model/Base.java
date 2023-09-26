@@ -147,6 +147,10 @@ public abstract class Base implements Serializable, IBase, IElement {
     throw new FHIRException("Attempt to set unknown property " + name);
   }
 
+  public void removeChild(String name, Base value) throws FHIRException {
+    throw new FHIRException("Attempt to remove unknown child " + name);
+  }
+
   public Base addChild(String name) throws FHIRException {
     throw new FHIRException("Attempt to add child with unknown name " + name);
   }

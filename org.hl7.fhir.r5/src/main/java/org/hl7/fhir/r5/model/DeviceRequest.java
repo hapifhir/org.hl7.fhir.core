@@ -1989,7 +1989,7 @@ public class DeviceRequest extends DomainResource {
         } else if (name.equals("quantity")) {
           this.quantity = null;
         } else if (name.equals("parameter")) {
-          this.getParameter().add((DeviceRequestParameterComponent) value);
+          this.getParameter().remove((DeviceRequestParameterComponent) value);
         } else if (name.equals("subject")) {
           this.subject = null;
         } else if (name.equals("encounter")) {

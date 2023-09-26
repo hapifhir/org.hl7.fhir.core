@@ -571,9 +571,9 @@ public class MedicinalProductDefinition extends DomainResource {
         } else if (name.equals("type")) {
           this.type = null;
         } else if (name.equals("part")) {
-          this.getPart().add((MedicinalProductDefinitionNamePartComponent) value);
+          this.getPart().remove((MedicinalProductDefinitionNamePartComponent) value);
         } else if (name.equals("usage")) {
-          this.getUsage().add((MedicinalProductDefinitionNameUsageComponent) value);
+          this.getUsage().remove((MedicinalProductDefinitionNameUsageComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3979,19 +3979,19 @@ public class MedicinalProductDefinition extends DomainResource {
         } else if (name.equals("masterFile")) {
           this.getMasterFile().remove(value);
         } else if (name.equals("contact")) {
-          this.getContact().add((MedicinalProductDefinitionContactComponent) value);
+          this.getContact().remove((MedicinalProductDefinitionContactComponent) value);
         } else if (name.equals("clinicalTrial")) {
           this.getClinicalTrial().remove(value);
         } else if (name.equals("code")) {
           this.getCode().remove(value);
         } else if (name.equals("name")) {
-          this.getName().add((MedicinalProductDefinitionNameComponent) value);
+          this.getName().remove((MedicinalProductDefinitionNameComponent) value);
         } else if (name.equals("crossReference")) {
-          this.getCrossReference().add((MedicinalProductDefinitionCrossReferenceComponent) value);
+          this.getCrossReference().remove((MedicinalProductDefinitionCrossReferenceComponent) value);
         } else if (name.equals("operation")) {
-          this.getOperation().add((MedicinalProductDefinitionOperationComponent) value);
+          this.getOperation().remove((MedicinalProductDefinitionOperationComponent) value);
         } else if (name.equals("characteristic")) {
-          this.getCharacteristic().add((MedicinalProductDefinitionCharacteristicComponent) value);
+          this.getCharacteristic().remove((MedicinalProductDefinitionCharacteristicComponent) value);
         } else
           super.removeChild(name, value);
         

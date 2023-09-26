@@ -975,9 +975,9 @@ public class ImagingStudy extends DomainResource {
         } else if (name.equals("started")) {
           this.started = null;
         } else if (name.equals("performer")) {
-          this.getPerformer().add((ImagingStudySeriesPerformerComponent) value);
+          this.getPerformer().remove((ImagingStudySeriesPerformerComponent) value);
         } else if (name.equals("instance")) {
-          this.getInstance().add((ImagingStudySeriesInstanceComponent) value);
+          this.getInstance().remove((ImagingStudySeriesInstanceComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2924,7 +2924,7 @@ public class ImagingStudy extends DomainResource {
         } else if (name.equals("description")) {
           this.description = null;
         } else if (name.equals("series")) {
-          this.getSeries().add((ImagingStudySeriesComponent) value);
+          this.getSeries().remove((ImagingStudySeriesComponent) value);
         } else
           super.removeChild(name, value);
         

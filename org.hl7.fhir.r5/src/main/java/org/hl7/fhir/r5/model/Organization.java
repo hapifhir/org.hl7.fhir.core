@@ -1112,7 +1112,7 @@ public class Organization extends DomainResource {
         } else if (name.equals("endpoint")) {
           this.getEndpoint().remove(value);
         } else if (name.equals("qualification")) {
-          this.getQualification().add((OrganizationQualificationComponent) value);
+          this.getQualification().remove((OrganizationQualificationComponent) value);
         } else
           super.removeChild(name, value);
         

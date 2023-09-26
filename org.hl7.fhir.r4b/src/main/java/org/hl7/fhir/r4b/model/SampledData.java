@@ -733,6 +733,27 @@ public class SampledData extends DataType implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("origin")) {
+      this.origin = null;
+    } else if (name.equals("period")) {
+      this.period = null;
+    } else if (name.equals("factor")) {
+      this.factor = null;
+    } else if (name.equals("lowerLimit")) {
+      this.lowerLimit = null;
+    } else if (name.equals("upperLimit")) {
+      this.upperLimit = null;
+    } else if (name.equals("dimensions")) {
+      this.dimensions = null;
+    } else if (name.equals("data")) {
+      this.data = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1008619738:

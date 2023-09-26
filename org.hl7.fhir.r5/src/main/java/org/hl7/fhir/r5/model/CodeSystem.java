@@ -684,7 +684,7 @@ public class CodeSystem extends MetadataResource {
           this.description = null;
         } else if (name.equals("operator")) {
           value = new FilterOperatorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getOperator().add((Enumeration) value);
+          this.getOperator().remove((Enumeration) value);
         } else if (name.equals("value")) {
           this.value = null;
         } else
@@ -1653,11 +1653,11 @@ public class CodeSystem extends MetadataResource {
         } else if (name.equals("definition")) {
           this.definition = null;
         } else if (name.equals("designation")) {
-          this.getDesignation().add((ConceptDefinitionDesignationComponent) value);
+          this.getDesignation().remove((ConceptDefinitionDesignationComponent) value);
         } else if (name.equals("property")) {
-          this.getProperty().add((ConceptPropertyComponent) value);
+          this.getProperty().remove((ConceptPropertyComponent) value);
         } else if (name.equals("concept")) {
-          this.getConcept().add((ConceptDefinitionComponent) value);
+          this.getConcept().remove((ConceptDefinitionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -5068,11 +5068,11 @@ public class CodeSystem extends MetadataResource {
         } else if (name.equals("count")) {
           this.count = null;
         } else if (name.equals("filter")) {
-          this.getFilter().add((CodeSystemFilterComponent) value);
+          this.getFilter().remove((CodeSystemFilterComponent) value);
         } else if (name.equals("property")) {
-          this.getProperty().add((PropertyComponent) value);
+          this.getProperty().remove((PropertyComponent) value);
         } else if (name.equals("concept")) {
-          this.getConcept().add((ConceptDefinitionComponent) value);
+          this.getConcept().remove((ConceptDefinitionComponent) value);
         } else
           super.removeChild(name, value);
         

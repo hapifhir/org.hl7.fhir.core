@@ -2459,7 +2459,7 @@ public class MedicationDispense extends DomainResource {
         } else if (name.equals("supportingInformation")) {
           this.getSupportingInformation().remove(value);
         } else if (name.equals("performer")) {
-          this.getPerformer().add((MedicationDispensePerformerComponent) value);
+          this.getPerformer().remove((MedicationDispensePerformerComponent) value);
         } else if (name.equals("location")) {
           this.location = null;
         } else if (name.equals("authorizingPrescription")) {

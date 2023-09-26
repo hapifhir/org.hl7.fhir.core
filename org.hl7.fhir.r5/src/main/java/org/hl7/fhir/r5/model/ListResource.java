@@ -1332,7 +1332,7 @@ public class ListResource extends DomainResource {
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else if (name.equals("entry")) {
-          this.getEntry().add((ListResourceEntryComponent) value);
+          this.getEntry().remove((ListResourceEntryComponent) value);
         } else if (name.equals("emptyReason")) {
           this.emptyReason = null;
         } else

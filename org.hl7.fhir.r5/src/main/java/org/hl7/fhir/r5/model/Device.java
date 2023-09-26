@@ -4206,7 +4206,7 @@ public class Device extends DomainResource {
         } else if (name.equals("definition")) {
           this.definition = null;
         } else if (name.equals("udiCarrier")) {
-          this.getUdiCarrier().add((DeviceUdiCarrierComponent) value);
+          this.getUdiCarrier().remove((DeviceUdiCarrierComponent) value);
         } else if (name.equals("status")) {
           value = new FHIRDeviceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<FHIRDeviceStatus>
@@ -4225,7 +4225,7 @@ public class Device extends DomainResource {
         } else if (name.equals("serialNumber")) {
           this.serialNumber = null;
         } else if (name.equals("name")) {
-          this.getName().add((DeviceNameComponent) value);
+          this.getName().remove((DeviceNameComponent) value);
         } else if (name.equals("modelNumber")) {
           this.modelNumber = null;
         } else if (name.equals("partNumber")) {
@@ -4235,11 +4235,11 @@ public class Device extends DomainResource {
         } else if (name.equals("type")) {
           this.getType().remove(value);
         } else if (name.equals("version")) {
-          this.getVersion().add((DeviceVersionComponent) value);
+          this.getVersion().remove((DeviceVersionComponent) value);
         } else if (name.equals("conformsTo")) {
-          this.getConformsTo().add((DeviceConformsToComponent) value);
+          this.getConformsTo().remove((DeviceConformsToComponent) value);
         } else if (name.equals("property")) {
-          this.getProperty().add((DevicePropertyComponent) value);
+          this.getProperty().remove((DevicePropertyComponent) value);
         } else if (name.equals("mode")) {
           this.mode = null;
         } else if (name.equals("cycle")) {

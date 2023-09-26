@@ -3440,14 +3440,14 @@ public class StructureDefinition extends CanonicalResource {
           value = new FHIRVersionEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.fhirVersion = (Enumeration) value; // Enumeration<FHIRVersion>
         } else if (name.equals("mapping")) {
-          this.getMapping().add((StructureDefinitionMappingComponent) value);
+          this.getMapping().remove((StructureDefinitionMappingComponent) value);
         } else if (name.equals("kind")) {
           value = new StructureDefinitionKindEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.kind = (Enumeration) value; // Enumeration<StructureDefinitionKind>
         } else if (name.equals("abstract")) {
           this.abstract_ = null;
         } else if (name.equals("context")) {
-          this.getContext().add((StructureDefinitionContextComponent) value);
+          this.getContext().remove((StructureDefinitionContextComponent) value);
         } else if (name.equals("contextInvariant")) {
           this.getContextInvariant().remove(value);
         } else if (name.equals("type")) {

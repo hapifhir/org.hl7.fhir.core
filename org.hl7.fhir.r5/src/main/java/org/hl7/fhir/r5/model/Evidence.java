@@ -1137,9 +1137,9 @@ public class Evidence extends MetadataResource {
         } else if (name.equals("sampleSize")) {
           this.sampleSize = (EvidenceStatisticSampleSizeComponent) value; // EvidenceStatisticSampleSizeComponent
         } else if (name.equals("attributeEstimate")) {
-          this.getAttributeEstimate().add((EvidenceStatisticAttributeEstimateComponent) value);
+          this.getAttributeEstimate().remove((EvidenceStatisticAttributeEstimateComponent) value);
         } else if (name.equals("modelCharacteristic")) {
-          this.getModelCharacteristic().add((EvidenceStatisticModelCharacteristicComponent) value);
+          this.getModelCharacteristic().remove((EvidenceStatisticModelCharacteristicComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2229,7 +2229,7 @@ public class Evidence extends MetadataResource {
         } else if (name.equals("range")) {
           this.range = null;
         } else if (name.equals("attributeEstimate")) {
-          this.getAttributeEstimate().add((EvidenceStatisticAttributeEstimateComponent) value);
+          this.getAttributeEstimate().remove((EvidenceStatisticAttributeEstimateComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2630,9 +2630,9 @@ public class Evidence extends MetadataResource {
         } else if (name.equals("value")) {
           this.value = null;
         } else if (name.equals("variable")) {
-          this.getVariable().add((EvidenceStatisticModelCharacteristicVariableComponent) value);
+          this.getVariable().remove((EvidenceStatisticModelCharacteristicVariableComponent) value);
         } else if (name.equals("attributeEstimate")) {
-          this.getAttributeEstimate().add((EvidenceStatisticAttributeEstimateComponent) value);
+          this.getAttributeEstimate().remove((EvidenceStatisticAttributeEstimateComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3631,7 +3631,7 @@ public class Evidence extends MetadataResource {
         } else if (name.equals("rater")) {
           this.rater = null;
         } else if (name.equals("subcomponent")) {
-          this.getSubcomponent().add((EvidenceCertaintyComponent) value);
+          this.getSubcomponent().remove((EvidenceCertaintyComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -5970,15 +5970,15 @@ public class Evidence extends MetadataResource {
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else if (name.equals("variableDefinition")) {
-          this.getVariableDefinition().add((EvidenceVariableDefinitionComponent) value);
+          this.getVariableDefinition().remove((EvidenceVariableDefinitionComponent) value);
         } else if (name.equals("synthesisType")) {
           this.synthesisType = null;
         } else if (name.equals("studyDesign")) {
           this.getStudyDesign().remove(value);
         } else if (name.equals("statistic")) {
-          this.getStatistic().add((EvidenceStatisticComponent) value);
+          this.getStatistic().remove((EvidenceStatisticComponent) value);
         } else if (name.equals("certainty")) {
-          this.getCertainty().add((EvidenceCertaintyComponent) value);
+          this.getCertainty().remove((EvidenceCertaintyComponent) value);
         } else
           super.removeChild(name, value);
         

@@ -1007,7 +1007,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         if (name.equals("uri")) {
           this.uri = null;
         } else if (name.equals("version")) {
-          this.getVersion().add((TerminologyCapabilitiesCodeSystemVersionComponent) value);
+          this.getVersion().remove((TerminologyCapabilitiesCodeSystemVersionComponent) value);
         } else if (name.equals("content")) {
           value = new CodeSystemContentModeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.content = (Enumeration) value; // Enumeration<CodeSystemContentMode>
@@ -1575,9 +1575,9 @@ public class TerminologyCapabilities extends CanonicalResource {
           this.compositional = null;
         } else if (name.equals("language")) {
           value = new CommonLanguagesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getLanguage().add((Enumeration) value);
+          this.getLanguage().remove((Enumeration) value);
         } else if (name.equals("filter")) {
-          this.getFilter().add((TerminologyCapabilitiesCodeSystemVersionFilterComponent) value);
+          this.getFilter().remove((TerminologyCapabilitiesCodeSystemVersionFilterComponent) value);
         } else if (name.equals("property")) {
           this.getProperty().remove(value);
         } else
@@ -2348,7 +2348,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         } else if (name.equals("incomplete")) {
           this.incomplete = null;
         } else if (name.equals("parameter")) {
-          this.getParameter().add((TerminologyCapabilitiesExpansionParameterComponent) value);
+          this.getParameter().remove((TerminologyCapabilitiesExpansionParameterComponent) value);
         } else if (name.equals("textFilter")) {
           this.textFilter = null;
         } else
@@ -4983,7 +4983,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         } else if (name.equals("lockedDate")) {
           this.lockedDate = null;
         } else if (name.equals("codeSystem")) {
-          this.getCodeSystem().add((TerminologyCapabilitiesCodeSystemComponent) value);
+          this.getCodeSystem().remove((TerminologyCapabilitiesCodeSystemComponent) value);
         } else if (name.equals("expansion")) {
           this.expansion = (TerminologyCapabilitiesExpansionComponent) value; // TerminologyCapabilitiesExpansionComponent
         } else if (name.equals("codeSearch")) {

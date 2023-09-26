@@ -1056,7 +1056,7 @@ public class EncounterHistory extends DomainResource {
         } else if (name.equals("length")) {
           this.length = null;
         } else if (name.equals("location")) {
-          this.getLocation().add((EncounterHistoryLocationComponent) value);
+          this.getLocation().remove((EncounterHistoryLocationComponent) value);
         } else
           super.removeChild(name, value);
         

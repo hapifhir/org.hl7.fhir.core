@@ -244,6 +244,17 @@ public class RelatedPerson extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("language")) {
+        this.language = null;
+      } else if (name.equals("preferred")) {
+        this.preferred = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1257,6 +1268,37 @@ public class RelatedPerson extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("active")) {
+      this.active = null;
+    } else if (name.equals("patient")) {
+      this.patient = null;
+    } else if (name.equals("relationship")) {
+      this.getRelationship().remove(castToCodeableConcept(value));
+    } else if (name.equals("name")) {
+      this.getName().remove(castToHumanName(value));
+    } else if (name.equals("telecom")) {
+      this.getTelecom().remove(castToContactPoint(value));
+    } else if (name.equals("gender")) {
+      this.gender = null;
+    } else if (name.equals("birthDate")) {
+      this.birthDate = null;
+    } else if (name.equals("address")) {
+      this.getAddress().remove(castToAddress(value));
+    } else if (name.equals("photo")) {
+      this.getPhoto().remove(castToAttachment(value));
+    } else if (name.equals("period")) {
+      this.period = null;
+    } else if (name.equals("communication")) {
+      this.getCommunication().remove((RelatedPersonCommunicationComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

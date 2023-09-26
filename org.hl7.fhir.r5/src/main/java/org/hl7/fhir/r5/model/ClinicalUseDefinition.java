@@ -580,7 +580,7 @@ public class ClinicalUseDefinition extends DomainResource {
         } else if (name.equals("applicability")) {
           this.applicability = null;
         } else if (name.equals("otherTherapy")) {
-          this.getOtherTherapy().add((ClinicalUseDefinitionContraindicationOtherTherapyComponent) value);
+          this.getOtherTherapy().remove((ClinicalUseDefinitionContraindicationOtherTherapyComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1425,7 +1425,7 @@ public class ClinicalUseDefinition extends DomainResource {
         } else if (name.equals("applicability")) {
           this.applicability = null;
         } else if (name.equals("otherTherapy")) {
-          this.getOtherTherapy().add((ClinicalUseDefinitionContraindicationOtherTherapyComponent) value);
+          this.getOtherTherapy().remove((ClinicalUseDefinitionContraindicationOtherTherapyComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1876,7 +1876,7 @@ public class ClinicalUseDefinition extends DomainResource {
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
         if (name.equals("interactant")) {
-          this.getInteractant().add((ClinicalUseDefinitionInteractionInteractantComponent) value);
+          this.getInteractant().remove((ClinicalUseDefinitionInteractionInteractantComponent) value);
         } else if (name.equals("type")) {
           this.type = null;
         } else if (name.equals("effect")) {

@@ -1664,9 +1664,9 @@ public class Condition extends DomainResource {
         } else if (name.equals("recordedDate")) {
           this.recordedDate = null;
         } else if (name.equals("participant")) {
-          this.getParticipant().add((ConditionParticipantComponent) value);
+          this.getParticipant().remove((ConditionParticipantComponent) value);
         } else if (name.equals("stage")) {
-          this.getStage().add((ConditionStageComponent) value);
+          this.getStage().remove((ConditionStageComponent) value);
         } else if (name.equals("evidence")) {
           this.getEvidence().remove(value);
         } else if (name.equals("note")) {

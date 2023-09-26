@@ -743,13 +743,13 @@ public class TestPlan extends CanonicalResource {
         } else if (name.equals("scope")) {
           this.getScope().remove(value);
         } else if (name.equals("dependency")) {
-          this.getDependency().add((TestCaseDependencyComponent) value);
+          this.getDependency().remove((TestCaseDependencyComponent) value);
         } else if (name.equals("testRun")) {
-          this.getTestRun().add((TestPlanTestCaseTestRunComponent) value);
+          this.getTestRun().remove((TestPlanTestCaseTestRunComponent) value);
         } else if (name.equals("testData")) {
-          this.getTestData().add((TestPlanTestCaseTestDataComponent) value);
+          this.getTestData().remove((TestPlanTestCaseTestDataComponent) value);
         } else if (name.equals("assertion")) {
-          this.getAssertion().add((TestPlanTestCaseAssertionComponent) value);
+          this.getAssertion().remove((TestPlanTestCaseAssertionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3861,11 +3861,11 @@ public class TestPlan extends CanonicalResource {
         } else if (name.equals("testTools")) {
           this.testTools = null;
         } else if (name.equals("dependency")) {
-          this.getDependency().add((TestPlanDependencyComponent) value);
+          this.getDependency().remove((TestPlanDependencyComponent) value);
         } else if (name.equals("exitCriteria")) {
           this.exitCriteria = null;
         } else if (name.equals("testCase")) {
-          this.getTestCase().add((TestPlanTestCaseComponent) value);
+          this.getTestCase().remove((TestPlanTestCaseComponent) value);
         } else
           super.removeChild(name, value);
         

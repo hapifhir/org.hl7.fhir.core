@@ -856,11 +856,11 @@ public class MeasureReport extends DomainResource {
         } else if (name.equals("subject")) {
           this.subject = null;
         } else if (name.equals("population")) {
-          this.getPopulation().add((MeasureReportGroupPopulationComponent) value);
+          this.getPopulation().remove((MeasureReportGroupPopulationComponent) value);
         } else if (name.equals("measureScore[x]")) {
           this.measureScore = null;
         } else if (name.equals("stratifier")) {
-          this.getStratifier().add((MeasureReportGroupStratifierComponent) value);
+          this.getStratifier().remove((MeasureReportGroupStratifierComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1709,7 +1709,7 @@ public class MeasureReport extends DomainResource {
         } else if (name.equals("code")) {
           this.code = null;
         } else if (name.equals("stratum")) {
-          this.getStratum().add((StratifierGroupComponent) value);
+          this.getStratum().remove((StratifierGroupComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2240,9 +2240,9 @@ public class MeasureReport extends DomainResource {
         if (name.equals("value[x]")) {
           this.value = null;
         } else if (name.equals("component")) {
-          this.getComponent().add((StratifierGroupComponentComponent) value);
+          this.getComponent().remove((StratifierGroupComponentComponent) value);
         } else if (name.equals("population")) {
-          this.getPopulation().add((StratifierGroupPopulationComponent) value);
+          this.getPopulation().remove((StratifierGroupPopulationComponent) value);
         } else if (name.equals("measureScore[x]")) {
           this.measureScore = null;
         } else
@@ -4257,7 +4257,7 @@ public class MeasureReport extends DomainResource {
         } else if (name.equals("improvementNotation")) {
           this.improvementNotation = null;
         } else if (name.equals("group")) {
-          this.getGroup().add((MeasureReportGroupComponent) value);
+          this.getGroup().remove((MeasureReportGroupComponent) value);
         } else if (name.equals("supplementalData")) {
           this.getSupplementalData().remove(value);
         } else if (name.equals("evaluatedResource")) {

@@ -580,7 +580,7 @@ public class Ingredient extends DomainResource {
         if (name.equals("code")) {
           this.code = null;
         } else if (name.equals("strength")) {
-          this.getStrength().add((IngredientSubstanceStrengthComponent) value);
+          this.getStrength().remove((IngredientSubstanceStrengthComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1299,7 +1299,7 @@ public class Ingredient extends DomainResource {
         } else if (name.equals("country")) {
           this.getCountry().remove(value);
         } else if (name.equals("referenceStrength")) {
-          this.getReferenceStrength().add((IngredientSubstanceStrengthReferenceStrengthComponent) value);
+          this.getReferenceStrength().remove((IngredientSubstanceStrengthReferenceStrengthComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2515,7 +2515,7 @@ public class Ingredient extends DomainResource {
         } else if (name.equals("comment")) {
           this.comment = null;
         } else if (name.equals("manufacturer")) {
-          this.getManufacturer().add((IngredientManufacturerComponent) value);
+          this.getManufacturer().remove((IngredientManufacturerComponent) value);
         } else if (name.equals("substance")) {
           this.substance = (IngredientSubstanceComponent) value; // IngredientSubstanceComponent
         } else

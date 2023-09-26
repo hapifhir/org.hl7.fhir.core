@@ -710,6 +710,29 @@ public class Attachment extends DataType implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("contentType")) {
+      this.contentType = null;
+    } else if (name.equals("language")) {
+      this.language = null;
+    } else if (name.equals("data")) {
+      this.data = null;
+    } else if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("size")) {
+      this.size = null;
+    } else if (name.equals("hash")) {
+      this.hash = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("creation")) {
+      this.creation = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -389131437:

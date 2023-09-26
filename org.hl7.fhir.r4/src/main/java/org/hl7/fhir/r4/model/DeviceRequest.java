@@ -931,6 +931,17 @@ public class DeviceRequest extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("value[x]")) {
+        this.value = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -3058,6 +3069,61 @@ public class DeviceRequest extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("instantiatesCanonical")) {
+      this.getInstantiatesCanonical().remove(castToCanonical(value));
+    } else if (name.equals("instantiatesUri")) {
+      this.getInstantiatesUri().remove(castToUri(value));
+    } else if (name.equals("basedOn")) {
+      this.getBasedOn().remove(castToReference(value));
+    } else if (name.equals("priorRequest")) {
+      this.getPriorRequest().remove(castToReference(value));
+    } else if (name.equals("groupIdentifier")) {
+      this.groupIdentifier = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("intent")) {
+      this.intent = null;
+    } else if (name.equals("priority")) {
+      this.priority = null;
+    } else if (name.equals("code[x]")) {
+      this.code = null;
+    } else if (name.equals("parameter")) {
+      this.getParameter().remove((DeviceRequestParameterComponent) value);
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("occurrence[x]")) {
+      this.occurrence = null;
+    } else if (name.equals("authoredOn")) {
+      this.authoredOn = null;
+    } else if (name.equals("requester")) {
+      this.requester = null;
+    } else if (name.equals("performerType")) {
+      this.performerType = null;
+    } else if (name.equals("performer")) {
+      this.performer = null;
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(castToCodeableConcept(value));
+    } else if (name.equals("reasonReference")) {
+      this.getReasonReference().remove(castToReference(value));
+    } else if (name.equals("insurance")) {
+      this.getInsurance().remove(castToReference(value));
+    } else if (name.equals("supportingInfo")) {
+      this.getSupportingInfo().remove(castToReference(value));
+    } else if (name.equals("note")) {
+      this.getNote().remove(castToAnnotation(value));
+    } else if (name.equals("relevantHistory")) {
+      this.getRelevantHistory().remove(castToReference(value));
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

@@ -1553,11 +1553,11 @@ public class Person extends DomainResource {
         } else if (name.equals("photo")) {
           this.getPhoto().remove(value);
         } else if (name.equals("communication")) {
-          this.getCommunication().add((PersonCommunicationComponent) value);
+          this.getCommunication().remove((PersonCommunicationComponent) value);
         } else if (name.equals("managingOrganization")) {
           this.managingOrganization = null;
         } else if (name.equals("link")) {
-          this.getLink().add((PersonLinkComponent) value);
+          this.getLink().remove((PersonLinkComponent) value);
         } else
           super.removeChild(name, value);
         

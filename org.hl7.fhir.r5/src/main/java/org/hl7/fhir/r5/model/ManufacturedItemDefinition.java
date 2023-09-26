@@ -851,11 +851,11 @@ public class ManufacturedItemDefinition extends DomainResource {
         } else if (name.equals("amount")) {
           this.getAmount().remove(value);
         } else if (name.equals("constituent")) {
-          this.getConstituent().add((ManufacturedItemDefinitionComponentConstituentComponent) value);
+          this.getConstituent().remove((ManufacturedItemDefinitionComponentConstituentComponent) value);
         } else if (name.equals("property")) {
-          this.getProperty().add((ManufacturedItemDefinitionPropertyComponent) value);
+          this.getProperty().remove((ManufacturedItemDefinitionPropertyComponent) value);
         } else if (name.equals("component")) {
-          this.getComponent().add((ManufacturedItemDefinitionComponentComponent) value);
+          this.getComponent().remove((ManufacturedItemDefinitionComponentComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -2111,9 +2111,9 @@ public class ManufacturedItemDefinition extends DomainResource {
         } else if (name.equals("ingredient")) {
           this.getIngredient().remove(value);
         } else if (name.equals("property")) {
-          this.getProperty().add((ManufacturedItemDefinitionPropertyComponent) value);
+          this.getProperty().remove((ManufacturedItemDefinitionPropertyComponent) value);
         } else if (name.equals("component")) {
-          this.getComponent().add((ManufacturedItemDefinitionComponentComponent) value);
+          this.getComponent().remove((ManufacturedItemDefinitionComponentComponent) value);
         } else
           super.removeChild(name, value);
         

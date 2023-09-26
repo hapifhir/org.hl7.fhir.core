@@ -573,6 +573,23 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("value")) {
+      this.value = null;
+    } else if (name.equals("comparator")) {
+      this.comparator = null;
+    } else if (name.equals("unit")) {
+      this.unit = null;
+    } else if (name.equals("system")) {
+      this.system = null;
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 111972721:

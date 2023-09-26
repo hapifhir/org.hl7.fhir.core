@@ -1457,9 +1457,9 @@ The `PractitionerRole.communication` property should be used for publishing the 
         } else if (name.equals("photo")) {
           this.getPhoto().remove(value);
         } else if (name.equals("qualification")) {
-          this.getQualification().add((PractitionerQualificationComponent) value);
+          this.getQualification().remove((PractitionerQualificationComponent) value);
         } else if (name.equals("communication")) {
-          this.getCommunication().add((PractitionerCommunicationComponent) value);
+          this.getCommunication().remove((PractitionerCommunicationComponent) value);
         } else
           super.removeChild(name, value);
         

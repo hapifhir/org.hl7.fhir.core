@@ -2324,11 +2324,11 @@ public class NutritionIntake extends DomainResource {
         } else if (name.equals("reported[x]")) {
           this.reported = null;
         } else if (name.equals("consumedItem")) {
-          this.getConsumedItem().add((NutritionIntakeConsumedItemComponent) value);
+          this.getConsumedItem().remove((NutritionIntakeConsumedItemComponent) value);
         } else if (name.equals("ingredientLabel")) {
-          this.getIngredientLabel().add((NutritionIntakeIngredientLabelComponent) value);
+          this.getIngredientLabel().remove((NutritionIntakeIngredientLabelComponent) value);
         } else if (name.equals("performer")) {
-          this.getPerformer().add((NutritionIntakePerformerComponent) value);
+          this.getPerformer().remove((NutritionIntakePerformerComponent) value);
         } else if (name.equals("location")) {
           this.location = null;
         } else if (name.equals("derivedFrom")) {

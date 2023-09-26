@@ -630,7 +630,7 @@ public class SubscriptionTopic extends CanonicalResource {
           this.resource = null;
         } else if (name.equals("supportedInteraction")) {
           value = new InteractionTriggerEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getSupportedInteraction().add((Enumeration) value);
+          this.getSupportedInteraction().remove((Enumeration) value);
         } else if (name.equals("queryCriteria")) {
           this.queryCriteria = (SubscriptionTopicResourceTriggerQueryCriteriaComponent) value; // SubscriptionTopicResourceTriggerQueryCriteriaComponent
         } else if (name.equals("fhirPathCriteria")) {
@@ -2023,10 +2023,10 @@ public class SubscriptionTopic extends CanonicalResource {
           this.filterDefinition = null;
         } else if (name.equals("comparator")) {
           value = new SearchComparatorEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getComparator().add((Enumeration) value);
+          this.getComparator().remove((Enumeration) value);
         } else if (name.equals("modifier")) {
           value = new SearchModifierCodeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getModifier().add((Enumeration) value);
+          this.getModifier().remove((Enumeration) value);
         } else
           super.removeChild(name, value);
         
@@ -4232,13 +4232,13 @@ public class SubscriptionTopic extends CanonicalResource {
         } else if (name.equals("effectivePeriod")) {
           this.effectivePeriod = null;
         } else if (name.equals("resourceTrigger")) {
-          this.getResourceTrigger().add((SubscriptionTopicResourceTriggerComponent) value);
+          this.getResourceTrigger().remove((SubscriptionTopicResourceTriggerComponent) value);
         } else if (name.equals("eventTrigger")) {
-          this.getEventTrigger().add((SubscriptionTopicEventTriggerComponent) value);
+          this.getEventTrigger().remove((SubscriptionTopicEventTriggerComponent) value);
         } else if (name.equals("canFilterBy")) {
-          this.getCanFilterBy().add((SubscriptionTopicCanFilterByComponent) value);
+          this.getCanFilterBy().remove((SubscriptionTopicCanFilterByComponent) value);
         } else if (name.equals("notificationShape")) {
-          this.getNotificationShape().add((SubscriptionTopicNotificationShapeComponent) value);
+          this.getNotificationShape().remove((SubscriptionTopicNotificationShapeComponent) value);
         } else
           super.removeChild(name, value);
         

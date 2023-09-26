@@ -2198,7 +2198,7 @@ public class AllergyIntolerance extends DomainResource {
           this.type = null;
         } else if (name.equals("category")) {
           value = new AllergyIntoleranceCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getCategory().add((Enumeration) value);
+          this.getCategory().remove((Enumeration) value);
         } else if (name.equals("criticality")) {
           value = new AllergyIntoleranceCriticalityEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.criticality = (Enumeration) value; // Enumeration<AllergyIntoleranceCriticality>
@@ -2213,13 +2213,13 @@ public class AllergyIntolerance extends DomainResource {
         } else if (name.equals("recordedDate")) {
           this.recordedDate = null;
         } else if (name.equals("participant")) {
-          this.getParticipant().add((AllergyIntoleranceParticipantComponent) value);
+          this.getParticipant().remove((AllergyIntoleranceParticipantComponent) value);
         } else if (name.equals("lastOccurrence")) {
           this.lastOccurrence = null;
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else if (name.equals("reaction")) {
-          this.getReaction().add((AllergyIntoleranceReactionComponent) value);
+          this.getReaction().remove((AllergyIntoleranceReactionComponent) value);
         } else
           super.removeChild(name, value);
         

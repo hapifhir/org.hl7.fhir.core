@@ -5181,9 +5181,9 @@ public class Transport extends DomainResource {
         } else if (name.equals("restriction")) {
           this.restriction = (TransportRestrictionComponent) value; // TransportRestrictionComponent
         } else if (name.equals("input")) {
-          this.getInput().add((ParameterComponent) value);
+          this.getInput().remove((ParameterComponent) value);
         } else if (name.equals("output")) {
-          this.getOutput().add((TransportOutputComponent) value);
+          this.getOutput().remove((TransportOutputComponent) value);
         } else if (name.equals("requestedLocation")) {
           this.requestedLocation = null;
         } else if (name.equals("currentLocation")) {

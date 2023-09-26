@@ -385,6 +385,11 @@ public abstract class MetadataResource extends CanonicalResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    super.removeChild(name, value);
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     default:

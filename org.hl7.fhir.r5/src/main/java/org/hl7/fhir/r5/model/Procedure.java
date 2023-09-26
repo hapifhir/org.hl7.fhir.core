@@ -2436,7 +2436,7 @@ public class Procedure extends DomainResource {
         } else if (name.equals("reported[x]")) {
           this.reported = null;
         } else if (name.equals("performer")) {
-          this.getPerformer().add((ProcedurePerformerComponent) value);
+          this.getPerformer().remove((ProcedurePerformerComponent) value);
         } else if (name.equals("location")) {
           this.location = null;
         } else if (name.equals("reason")) {
@@ -2454,7 +2454,7 @@ public class Procedure extends DomainResource {
         } else if (name.equals("note")) {
           this.getNote().remove(value);
         } else if (name.equals("focalDevice")) {
-          this.getFocalDevice().add((ProcedureFocalDeviceComponent) value);
+          this.getFocalDevice().remove((ProcedureFocalDeviceComponent) value);
         } else if (name.equals("used")) {
           this.getUsed().remove(value);
         } else if (name.equals("supportingInfo")) {

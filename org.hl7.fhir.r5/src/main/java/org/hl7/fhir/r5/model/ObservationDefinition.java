@@ -1632,11 +1632,11 @@ public class ObservationDefinition extends DomainResource {
           this.code = null;
         } else if (name.equals("permittedDataType")) {
           value = new ObservationDataTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getPermittedDataType().add((Enumeration) value);
+          this.getPermittedDataType().remove((Enumeration) value);
         } else if (name.equals("permittedUnit")) {
           this.getPermittedUnit().remove(value);
         } else if (name.equals("qualifiedValue")) {
-          this.getQualifiedValue().add((ObservationDefinitionQualifiedValueComponent) value);
+          this.getQualifiedValue().remove((ObservationDefinitionQualifiedValueComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -4159,7 +4159,7 @@ public class ObservationDefinition extends DomainResource {
           this.code = null;
         } else if (name.equals("permittedDataType")) {
           value = new ObservationDataTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.getPermittedDataType().add((Enumeration) value);
+          this.getPermittedDataType().remove((Enumeration) value);
         } else if (name.equals("multipleResultsAllowed")) {
           this.multipleResultsAllowed = null;
         } else if (name.equals("bodySite")) {
@@ -4175,11 +4175,11 @@ public class ObservationDefinition extends DomainResource {
         } else if (name.equals("permittedUnit")) {
           this.getPermittedUnit().remove(value);
         } else if (name.equals("qualifiedValue")) {
-          this.getQualifiedValue().add((ObservationDefinitionQualifiedValueComponent) value);
+          this.getQualifiedValue().remove((ObservationDefinitionQualifiedValueComponent) value);
         } else if (name.equals("hasMember")) {
           this.getHasMember().remove(value);
         } else if (name.equals("component")) {
-          this.getComponent().add((ObservationDefinitionComponentComponent) value);
+          this.getComponent().remove((ObservationDefinitionComponentComponent) value);
         } else
           super.removeChild(name, value);
         

@@ -2344,6 +2344,69 @@ public class Evidence extends MetadataResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("shortTitle")) {
+      this.shortTitle = null;
+    } else if (name.equals("subtitle")) {
+      this.subtitle = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(castToContactDetail(value));
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("note")) {
+      this.getNote().remove(castToAnnotation(value));
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(castToUsageContext(value));
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(castToCodeableConcept(value));
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("approvalDate")) {
+      this.approvalDate = null;
+    } else if (name.equals("lastReviewDate")) {
+      this.lastReviewDate = null;
+    } else if (name.equals("effectivePeriod")) {
+      this.effectivePeriod = null;
+    } else if (name.equals("topic")) {
+      this.getTopic().remove(castToCodeableConcept(value));
+    } else if (name.equals("author")) {
+      this.getAuthor().remove(castToContactDetail(value));
+    } else if (name.equals("editor")) {
+      this.getEditor().remove(castToContactDetail(value));
+    } else if (name.equals("reviewer")) {
+      this.getReviewer().remove(castToContactDetail(value));
+    } else if (name.equals("endorser")) {
+      this.getEndorser().remove(castToContactDetail(value));
+    } else if (name.equals("relatedArtifact")) {
+      this.getRelatedArtifact().remove(castToRelatedArtifact(value));
+    } else if (name.equals("exposureBackground")) {
+      this.exposureBackground = null;
+    } else if (name.equals("exposureVariant")) {
+      this.getExposureVariant().remove(castToReference(value));
+    } else if (name.equals("outcome")) {
+      this.getOutcome().remove(castToReference(value));
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 116079:

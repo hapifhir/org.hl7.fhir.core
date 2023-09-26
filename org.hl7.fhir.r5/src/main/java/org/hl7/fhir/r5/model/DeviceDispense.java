@@ -1712,7 +1712,7 @@ public class DeviceDispense extends DomainResource {
         } else if (name.equals("supportingInformation")) {
           this.getSupportingInformation().remove(value);
         } else if (name.equals("performer")) {
-          this.getPerformer().add((DeviceDispensePerformerComponent) value);
+          this.getPerformer().remove((DeviceDispensePerformerComponent) value);
         } else if (name.equals("location")) {
           this.location = null;
         } else if (name.equals("type")) {

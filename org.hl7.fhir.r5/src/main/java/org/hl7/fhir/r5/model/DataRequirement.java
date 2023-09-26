@@ -2501,15 +2501,15 @@ The value of mustSupport SHALL be a FHIRPath resolvable on the type of the DataR
         } else if (name.equals("mustSupport")) {
           this.getMustSupport().remove(value);
         } else if (name.equals("codeFilter")) {
-          this.getCodeFilter().add((DataRequirementCodeFilterComponent) value);
+          this.getCodeFilter().remove((DataRequirementCodeFilterComponent) value);
         } else if (name.equals("dateFilter")) {
-          this.getDateFilter().add((DataRequirementDateFilterComponent) value);
+          this.getDateFilter().remove((DataRequirementDateFilterComponent) value);
         } else if (name.equals("valueFilter")) {
-          this.getValueFilter().add((DataRequirementValueFilterComponent) value);
+          this.getValueFilter().remove((DataRequirementValueFilterComponent) value);
         } else if (name.equals("limit")) {
           this.limit = null;
         } else if (name.equals("sort")) {
-          this.getSort().add((DataRequirementSortComponent) value);
+          this.getSort().remove((DataRequirementSortComponent) value);
         } else
           super.removeChild(name, value);
         

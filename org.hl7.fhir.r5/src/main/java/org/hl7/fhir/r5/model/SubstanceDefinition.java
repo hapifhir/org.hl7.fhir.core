@@ -2114,7 +2114,7 @@ public class SubstanceDefinition extends DomainResource {
         } else if (name.equals("sourceDocument")) {
           this.getSourceDocument().remove(value);
         } else if (name.equals("representation")) {
-          this.getRepresentation().add((SubstanceDefinitionStructureRepresentationComponent) value);
+          this.getRepresentation().remove((SubstanceDefinitionStructureRepresentationComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3786,11 +3786,11 @@ public class SubstanceDefinition extends DomainResource {
         } else if (name.equals("jurisdiction")) {
           this.getJurisdiction().remove(value);
         } else if (name.equals("synonym")) {
-          this.getSynonym().add((SubstanceDefinitionNameComponent) value);
+          this.getSynonym().remove((SubstanceDefinitionNameComponent) value);
         } else if (name.equals("translation")) {
-          this.getTranslation().add((SubstanceDefinitionNameComponent) value);
+          this.getTranslation().remove((SubstanceDefinitionNameComponent) value);
         } else if (name.equals("official")) {
-          this.getOfficial().add((SubstanceDefinitionNameOfficialComponent) value);
+          this.getOfficial().remove((SubstanceDefinitionNameOfficialComponent) value);
         } else if (name.equals("source")) {
           this.getSource().remove(value);
         } else
@@ -6715,23 +6715,23 @@ public class SubstanceDefinition extends DomainResource {
         } else if (name.equals("supplier")) {
           this.getSupplier().remove(value);
         } else if (name.equals("moiety")) {
-          this.getMoiety().add((SubstanceDefinitionMoietyComponent) value);
+          this.getMoiety().remove((SubstanceDefinitionMoietyComponent) value);
         } else if (name.equals("characterization")) {
-          this.getCharacterization().add((SubstanceDefinitionCharacterizationComponent) value);
+          this.getCharacterization().remove((SubstanceDefinitionCharacterizationComponent) value);
         } else if (name.equals("property")) {
-          this.getProperty().add((SubstanceDefinitionPropertyComponent) value);
+          this.getProperty().remove((SubstanceDefinitionPropertyComponent) value);
         } else if (name.equals("referenceInformation")) {
           this.referenceInformation = null;
         } else if (name.equals("molecularWeight")) {
-          this.getMolecularWeight().add((SubstanceDefinitionMolecularWeightComponent) value);
+          this.getMolecularWeight().remove((SubstanceDefinitionMolecularWeightComponent) value);
         } else if (name.equals("structure")) {
           this.structure = (SubstanceDefinitionStructureComponent) value; // SubstanceDefinitionStructureComponent
         } else if (name.equals("code")) {
-          this.getCode().add((SubstanceDefinitionCodeComponent) value);
+          this.getCode().remove((SubstanceDefinitionCodeComponent) value);
         } else if (name.equals("name")) {
-          this.getName().add((SubstanceDefinitionNameComponent) value);
+          this.getName().remove((SubstanceDefinitionNameComponent) value);
         } else if (name.equals("relationship")) {
-          this.getRelationship().add((SubstanceDefinitionRelationshipComponent) value);
+          this.getRelationship().remove((SubstanceDefinitionRelationshipComponent) value);
         } else if (name.equals("nucleicAcid")) {
           this.nucleicAcid = null;
         } else if (name.equals("polymer")) {

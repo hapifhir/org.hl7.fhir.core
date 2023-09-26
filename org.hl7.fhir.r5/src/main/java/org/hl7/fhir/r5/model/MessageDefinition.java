@@ -2791,12 +2791,12 @@ public class MessageDefinition extends CanonicalResource {
           value = new MessageSignificanceCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.category = (Enumeration) value; // Enumeration<MessageSignificanceCategory>
         } else if (name.equals("focus")) {
-          this.getFocus().add((MessageDefinitionFocusComponent) value);
+          this.getFocus().remove((MessageDefinitionFocusComponent) value);
         } else if (name.equals("responseRequired")) {
           value = new MessageheaderResponseRequestEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.responseRequired = (Enumeration) value; // Enumeration<MessageheaderResponseRequest>
         } else if (name.equals("allowedResponse")) {
-          this.getAllowedResponse().add((MessageDefinitionAllowedResponseComponent) value);
+          this.getAllowedResponse().remove((MessageDefinitionAllowedResponseComponent) value);
         } else if (name.equals("graph")) {
           this.graph = null;
         } else

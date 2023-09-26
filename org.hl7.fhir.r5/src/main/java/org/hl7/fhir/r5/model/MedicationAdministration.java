@@ -2294,7 +2294,7 @@ public class MedicationAdministration extends DomainResource {
         } else if (name.equals("subPotentReason")) {
           this.getSubPotentReason().remove(value);
         } else if (name.equals("performer")) {
-          this.getPerformer().add((MedicationAdministrationPerformerComponent) value);
+          this.getPerformer().remove((MedicationAdministrationPerformerComponent) value);
         } else if (name.equals("reason")) {
           this.getReason().remove(value);
         } else if (name.equals("request")) {

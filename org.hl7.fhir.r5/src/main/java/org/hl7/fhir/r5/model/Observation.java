@@ -1530,7 +1530,7 @@ Reflex | Repeat | Re-run.
         } else if (name.equals("interpretation")) {
           this.getInterpretation().remove(value);
         } else if (name.equals("referenceRange")) {
-          this.getReferenceRange().add((ObservationReferenceRangeComponent) value);
+          this.getReferenceRange().remove((ObservationReferenceRangeComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3537,7 +3537,7 @@ Reflex | Repeat | Re-run.
         } else if (name.equals("basedOn")) {
           this.getBasedOn().remove(value);
         } else if (name.equals("triggeredBy")) {
-          this.getTriggeredBy().add((ObservationTriggeredByComponent) value);
+          this.getTriggeredBy().remove((ObservationTriggeredByComponent) value);
         } else if (name.equals("partOf")) {
           this.getPartOf().remove(value);
         } else if (name.equals("status")) {
@@ -3578,13 +3578,13 @@ Reflex | Repeat | Re-run.
         } else if (name.equals("device")) {
           this.device = null;
         } else if (name.equals("referenceRange")) {
-          this.getReferenceRange().add((ObservationReferenceRangeComponent) value);
+          this.getReferenceRange().remove((ObservationReferenceRangeComponent) value);
         } else if (name.equals("hasMember")) {
           this.getHasMember().remove(value);
         } else if (name.equals("derivedFrom")) {
           this.getDerivedFrom().remove(value);
         } else if (name.equals("component")) {
-          this.getComponent().add((ObservationComponentComponent) value);
+          this.getComponent().remove((ObservationComponentComponent) value);
         } else
           super.removeChild(name, value);
         

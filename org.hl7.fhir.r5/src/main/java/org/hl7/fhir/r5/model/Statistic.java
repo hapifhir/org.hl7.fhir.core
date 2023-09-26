@@ -990,7 +990,7 @@ public class Statistic extends BackboneType implements ICompositeType {
         } else if (name.equals("range")) {
           this.range = null;
         } else if (name.equals("attributeEstimate")) {
-          this.getAttributeEstimate().add((StatisticAttributeEstimateAttributeEstimateComponent) value);
+          this.getAttributeEstimate().remove((StatisticAttributeEstimateAttributeEstimateComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -1829,7 +1829,7 @@ public class Statistic extends BackboneType implements ICompositeType {
         } else if (name.equals("value")) {
           this.value = null;
         } else if (name.equals("variable")) {
-          this.getVariable().add((StatisticModelCharacteristicVariableComponent) value);
+          this.getVariable().remove((StatisticModelCharacteristicVariableComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3022,9 +3022,9 @@ public class Statistic extends BackboneType implements ICompositeType {
         } else if (name.equals("sampleSize")) {
           this.sampleSize = (StatisticSampleSizeComponent) value; // StatisticSampleSizeComponent
         } else if (name.equals("attributeEstimate")) {
-          this.getAttributeEstimate().add((StatisticAttributeEstimateComponent) value);
+          this.getAttributeEstimate().remove((StatisticAttributeEstimateComponent) value);
         } else if (name.equals("modelCharacteristic")) {
-          this.getModelCharacteristic().add((StatisticModelCharacteristicComponent) value);
+          this.getModelCharacteristic().remove((StatisticModelCharacteristicComponent) value);
         } else
           super.removeChild(name, value);
         

@@ -1890,15 +1890,15 @@ public class Contract extends DomainResource {
         } else if (name.equals("text")) {
           this.text = null;
         } else if (name.equals("securityLabel")) {
-          this.getSecurityLabel().add((SecurityLabelComponent) value);
+          this.getSecurityLabel().remove((SecurityLabelComponent) value);
         } else if (name.equals("offer")) {
           this.offer = (ContractOfferComponent) value; // ContractOfferComponent
         } else if (name.equals("asset")) {
-          this.getAsset().add((ContractAssetComponent) value);
+          this.getAsset().remove((ContractAssetComponent) value);
         } else if (name.equals("action")) {
-          this.getAction().add((ActionComponent) value);
+          this.getAction().remove((ActionComponent) value);
         } else if (name.equals("group")) {
-          this.getGroup().add((TermComponent) value);
+          this.getGroup().remove((TermComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3155,7 +3155,7 @@ public class Contract extends DomainResource {
         if (name.equals("identifier")) {
           this.getIdentifier().remove(value);
         } else if (name.equals("party")) {
-          this.getParty().add((ContractPartyComponent) value);
+          this.getParty().remove((ContractPartyComponent) value);
         } else if (name.equals("topic")) {
           this.topic = null;
         } else if (name.equals("type")) {
@@ -3165,7 +3165,7 @@ public class Contract extends DomainResource {
         } else if (name.equals("decisionMode")) {
           this.getDecisionMode().remove(value);
         } else if (name.equals("answer")) {
-          this.getAnswer().add((AnswerComponent) value);
+          this.getAnswer().remove((AnswerComponent) value);
         } else if (name.equals("text")) {
           this.text = null;
         } else if (name.equals("linkId")) {
@@ -5027,7 +5027,7 @@ public class Contract extends DomainResource {
         } else if (name.equals("relationship")) {
           this.relationship = null;
         } else if (name.equals("context")) {
-          this.getContext().add((AssetContextComponent) value);
+          this.getContext().remove((AssetContextComponent) value);
         } else if (name.equals("condition")) {
           this.condition = null;
         } else if (name.equals("periodType")) {
@@ -5041,11 +5041,11 @@ public class Contract extends DomainResource {
         } else if (name.equals("linkId")) {
           this.getLinkId().remove(value);
         } else if (name.equals("answer")) {
-          this.getAnswer().add((AnswerComponent) value);
+          this.getAnswer().remove((AnswerComponent) value);
         } else if (name.equals("securityLabelNumber")) {
           this.getSecurityLabelNumber().remove(value);
         } else if (name.equals("valuedItem")) {
-          this.getValuedItem().add((ValuedItemComponent) value);
+          this.getValuedItem().remove((ValuedItemComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -7889,7 +7889,7 @@ public class Contract extends DomainResource {
         } else if (name.equals("type")) {
           this.type = null;
         } else if (name.equals("subject")) {
-          this.getSubject().add((ActionSubjectComponent) value);
+          this.getSubject().remove((ActionSubjectComponent) value);
         } else if (name.equals("intent")) {
           this.intent = null;
         } else if (name.equals("linkId")) {
@@ -11423,19 +11423,19 @@ public class Contract extends DomainResource {
         } else if (name.equals("contentDefinition")) {
           this.contentDefinition = (ContentDefinitionComponent) value; // ContentDefinitionComponent
         } else if (name.equals("term")) {
-          this.getTerm().add((TermComponent) value);
+          this.getTerm().remove((TermComponent) value);
         } else if (name.equals("supportingInfo")) {
           this.getSupportingInfo().remove(value);
         } else if (name.equals("relevantHistory")) {
           this.getRelevantHistory().remove(value);
         } else if (name.equals("signer")) {
-          this.getSigner().add((SignatoryComponent) value);
+          this.getSigner().remove((SignatoryComponent) value);
         } else if (name.equals("friendly")) {
-          this.getFriendly().add((FriendlyLanguageComponent) value);
+          this.getFriendly().remove((FriendlyLanguageComponent) value);
         } else if (name.equals("legal")) {
-          this.getLegal().add((LegalLanguageComponent) value);
+          this.getLegal().remove((LegalLanguageComponent) value);
         } else if (name.equals("rule")) {
-          this.getRule().add((ComputableLanguageComponent) value);
+          this.getRule().remove((ComputableLanguageComponent) value);
         } else if (name.equals("legallyBinding[x]")) {
           this.legallyBinding = null;
         } else

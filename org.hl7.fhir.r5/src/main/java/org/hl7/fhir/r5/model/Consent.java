@@ -1664,7 +1664,7 @@ public class Consent extends DomainResource {
         if (name.equals("period")) {
           this.period = null;
         } else if (name.equals("actor")) {
-          this.getActor().add((ProvisionActorComponent) value);
+          this.getActor().remove((ProvisionActorComponent) value);
         } else if (name.equals("action")) {
           this.getAction().remove(value);
         } else if (name.equals("securityLabel")) {
@@ -1680,11 +1680,11 @@ public class Consent extends DomainResource {
         } else if (name.equals("dataPeriod")) {
           this.dataPeriod = null;
         } else if (name.equals("data")) {
-          this.getData().add((ProvisionDataComponent) value);
+          this.getData().remove((ProvisionDataComponent) value);
         } else if (name.equals("expression")) {
           this.expression = null;
         } else if (name.equals("provision")) {
-          this.getProvision().add((ProvisionComponent) value);
+          this.getProvision().remove((ProvisionComponent) value);
         } else
           super.removeChild(name, value);
         
@@ -3543,12 +3543,12 @@ public class Consent extends DomainResource {
         } else if (name.equals("policyText")) {
           this.getPolicyText().remove(value);
         } else if (name.equals("verification")) {
-          this.getVerification().add((ConsentVerificationComponent) value);
+          this.getVerification().remove((ConsentVerificationComponent) value);
         } else if (name.equals("decision")) {
           value = new ConsentProvisionTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.decision = (Enumeration) value; // Enumeration<ConsentProvisionType>
         } else if (name.equals("provision")) {
-          this.getProvision().add((ProvisionComponent) value);
+          this.getProvision().remove((ProvisionComponent) value);
         } else
           super.removeChild(name, value);
         

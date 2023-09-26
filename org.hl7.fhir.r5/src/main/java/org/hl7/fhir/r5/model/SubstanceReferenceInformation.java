@@ -1547,11 +1547,11 @@ public class SubstanceReferenceInformation extends DomainResource {
         if (name.equals("comment")) {
           this.comment = null;
         } else if (name.equals("gene")) {
-          this.getGene().add((SubstanceReferenceInformationGeneComponent) value);
+          this.getGene().remove((SubstanceReferenceInformationGeneComponent) value);
         } else if (name.equals("geneElement")) {
-          this.getGeneElement().add((SubstanceReferenceInformationGeneElementComponent) value);
+          this.getGeneElement().remove((SubstanceReferenceInformationGeneElementComponent) value);
         } else if (name.equals("target")) {
-          this.getTarget().add((SubstanceReferenceInformationTargetComponent) value);
+          this.getTarget().remove((SubstanceReferenceInformationTargetComponent) value);
         } else
           super.removeChild(name, value);
         
