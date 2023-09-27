@@ -1475,6 +1475,31 @@ public class StructureDefinition extends MetadataResource {
 
     }
 
+    public ElementDefinition getElementByPath(String path) {
+      if (path == null) {
+        return null;
+      }
+      for (ElementDefinition ed : getElement()) {
+        if (path.equals(ed.getPath()) || (path+"[x]").equals(ed.getPath())) {
+          return ed;
+        }
+      }
+      return null;
+    }
+
+
+    public ElementDefinition getElementById(String id) {
+      if (id == null) {
+        return null;
+      }
+      for (ElementDefinition ed : getElement()) {
+        if (id.equals(ed.getId())) {
+          return ed;
+        }
+      }
+      return null;
+    }
+
   }
 
   @Block()
@@ -4803,5 +4828,9 @@ public class StructureDefinition extends MetadataResource {
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_BASE = new ca.uhn.fhir.model.api.Include(
       "StructureDefinition:base").toLocked();
+
+  public String getVersionedUrl() {
+    return hasVersion() ? getUrl()+"|"+getVersion() : getUrl();
+  }
 
 }
