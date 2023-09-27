@@ -1960,6 +1960,57 @@ public class Media extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("basedOn")) {
+      this.getBasedOn().remove(castToReference(value));
+    } else if (name.equals("partOf")) {
+      this.getPartOf().remove(castToReference(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("modality")) {
+      this.modality = null;
+    } else if (name.equals("view")) {
+      this.view = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("created[x]")) {
+      this.created = null;
+    } else if (name.equals("issued")) {
+      this.issued = null;
+    } else if (name.equals("operator")) {
+      this.operator = null;
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(castToCodeableConcept(value));
+    } else if (name.equals("bodySite")) {
+      this.bodySite = null;
+    } else if (name.equals("deviceName")) {
+      this.deviceName = null;
+    } else if (name.equals("device")) {
+      this.device = null;
+    } else if (name.equals("height")) {
+      this.height = null;
+    } else if (name.equals("width")) {
+      this.width = null;
+    } else if (name.equals("frames")) {
+      this.frames = null;
+    } else if (name.equals("duration")) {
+      this.duration = null;
+    } else if (name.equals("content")) {
+      this.content = null;
+    } else if (name.equals("note")) {
+      this.getNote().remove(castToAnnotation(value));
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1618432855:

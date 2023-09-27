@@ -795,6 +795,26 @@ public class Device extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("deviceIdentifier")) {
+          this.deviceIdentifier = null;
+        } else if (name.equals("issuer")) {
+          this.issuer = null;
+        } else if (name.equals("jurisdiction")) {
+          this.jurisdiction = null;
+        } else if (name.equals("carrierAIDC")) {
+          this.carrierAIDC = null;
+        } else if (name.equals("carrierHRF")) {
+          this.carrierHRF = null;
+        } else if (name.equals("entryType")) {
+          value = new UDIEntryTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.entryType = (Enumeration) value; // Enumeration<UDIEntryType>
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1137,6 +1157,20 @@ public class Device extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("value")) {
+          this.value = null;
+        } else if (name.equals("type")) {
+          value = new DeviceNameTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<DeviceNameType>
+        } else if (name.equals("display")) {
+          this.display = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1477,6 +1511,21 @@ public class Device extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("component")) {
+          this.component = null;
+        } else if (name.equals("installDate")) {
+          this.installDate = null;
+        } else if (name.equals("value")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1764,6 +1813,19 @@ public class Device extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("category")) {
+          this.category = null;
+        } else if (name.equals("specification")) {
+          this.specification = null;
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2093,6 +2155,17 @@ public class Device extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -4122,6 +4195,78 @@ public class Device extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("displayName")) {
+          this.displayName = null;
+        } else if (name.equals("definition")) {
+          this.definition = null;
+        } else if (name.equals("udiCarrier")) {
+          this.getUdiCarrier().remove((DeviceUdiCarrierComponent) value);
+        } else if (name.equals("status")) {
+          value = new FHIRDeviceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FHIRDeviceStatus>
+        } else if (name.equals("availabilityStatus")) {
+          this.availabilityStatus = null;
+        } else if (name.equals("biologicalSourceEvent")) {
+          this.biologicalSourceEvent = null;
+        } else if (name.equals("manufacturer")) {
+          this.manufacturer = null;
+        } else if (name.equals("manufactureDate")) {
+          this.manufactureDate = null;
+        } else if (name.equals("expirationDate")) {
+          this.expirationDate = null;
+        } else if (name.equals("lotNumber")) {
+          this.lotNumber = null;
+        } else if (name.equals("serialNumber")) {
+          this.serialNumber = null;
+        } else if (name.equals("name")) {
+          this.getName().remove((DeviceNameComponent) value);
+        } else if (name.equals("modelNumber")) {
+          this.modelNumber = null;
+        } else if (name.equals("partNumber")) {
+          this.partNumber = null;
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("type")) {
+          this.getType().remove(value);
+        } else if (name.equals("version")) {
+          this.getVersion().remove((DeviceVersionComponent) value);
+        } else if (name.equals("conformsTo")) {
+          this.getConformsTo().remove((DeviceConformsToComponent) value);
+        } else if (name.equals("property")) {
+          this.getProperty().remove((DevicePropertyComponent) value);
+        } else if (name.equals("mode")) {
+          this.mode = null;
+        } else if (name.equals("cycle")) {
+          this.cycle = null;
+        } else if (name.equals("duration")) {
+          this.duration = null;
+        } else if (name.equals("owner")) {
+          this.owner = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("location")) {
+          this.location = null;
+        } else if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("endpoint")) {
+          this.getEndpoint().remove(value);
+        } else if (name.equals("gateway")) {
+          this.getGateway().remove(value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("safety")) {
+          this.getSafety().remove(value);
+        } else if (name.equals("parent")) {
+          this.parent = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -228,6 +228,17 @@ public class Citation extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("classifier")) {
+        this.getClassifier().remove(value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -521,6 +532,19 @@ public class Citation extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("activity")) {
+        this.activity = null;
+      } else if (name.equals("actual")) {
+        this.actual = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -920,6 +944,19 @@ public class Citation extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("relationshipType")) {
+        this.relationshipType = null;
+      } else if (name.equals("targetClassifier")) {
+        this.getTargetClassifier().remove(value);
+      } else if (name.equals("target[x]")) {
+        this.target = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2119,6 +2156,43 @@ public class Citation extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identifier")) {
+        this.getIdentifier().remove(value);
+      } else if (name.equals("relatedIdentifier")) {
+        this.getRelatedIdentifier().remove(value);
+      } else if (name.equals("dateAccessed")) {
+        this.dateAccessed = null;
+      } else if (name.equals("version")) {
+        this.version = (CitationCitedArtifactVersionComponent) value; // CitationCitedArtifactVersionComponent
+      } else if (name.equals("currentState")) {
+        this.getCurrentState().remove(value);
+      } else if (name.equals("statusDate")) {
+        this.getStatusDate().remove((CitationCitedArtifactStatusDateComponent) value);
+      } else if (name.equals("title")) {
+        this.getTitle().remove((CitationCitedArtifactTitleComponent) value);
+      } else if (name.equals("abstract")) {
+        this.getAbstract().remove((CitationCitedArtifactAbstractComponent) value);
+      } else if (name.equals("part")) {
+        this.part = (CitationCitedArtifactPartComponent) value; // CitationCitedArtifactPartComponent
+      } else if (name.equals("relatesTo")) {
+        this.getRelatesTo().remove((CitationCitedArtifactRelatesToComponent) value);
+      } else if (name.equals("publicationForm")) {
+        this.getPublicationForm().remove((CitationCitedArtifactPublicationFormComponent) value);
+      } else if (name.equals("webLocation")) {
+        this.getWebLocation().remove((CitationCitedArtifactWebLocationComponent) value);
+      } else if (name.equals("classification")) {
+        this.getClassification().remove((CitationCitedArtifactClassificationComponent) value);
+      } else if (name.equals("contributorship")) {
+        this.contributorship = (CitationCitedArtifactContributorshipComponent) value; // CitationCitedArtifactContributorshipComponent
+      } else if (name.equals("note")) {
+        this.getNote().remove(value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2527,6 +2601,17 @@ public class Citation extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("value")) {
+        this.value = null;
+      } else if (name.equals("baseCitation")) {
+        this.baseCitation = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2815,6 +2900,19 @@ public class Citation extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("activity")) {
+        this.activity = null;
+      } else if (name.equals("actual")) {
+        this.actual = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3148,6 +3246,19 @@ public class Citation extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.getType().remove(value);
+      } else if (name.equals("language")) {
+        this.language = null;
+      } else if (name.equals("text")) {
+        this.text = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3530,6 +3641,21 @@ public class Citation extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("language")) {
+        this.language = null;
+      } else if (name.equals("text")) {
+        this.text = null;
+      } else if (name.equals("copyright")) {
+        this.copyright = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -3832,6 +3958,19 @@ public class Citation extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("value")) {
+        this.value = null;
+      } else if (name.equals("baseCitation")) {
+        this.baseCitation = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -4231,6 +4370,19 @@ public class Citation extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("relationshipType")) {
+        this.relationshipType = null;
+      } else if (name.equals("targetClassifier")) {
+        this.getTargetClassifier().remove(value);
+      } else if (name.equals("target[x]")) {
+        this.target = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -5163,6 +5315,35 @@ public class Citation extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("publishedIn")) {
+        this.publishedIn = (CitationCitedArtifactPublicationFormPublishedInComponent) value; // CitationCitedArtifactPublicationFormPublishedInComponent
+      } else if (name.equals("periodicRelease")) {
+        this.periodicRelease = (CitationCitedArtifactPublicationFormPeriodicReleaseComponent) value; // CitationCitedArtifactPublicationFormPeriodicReleaseComponent
+      } else if (name.equals("articleDate")) {
+        this.articleDate = null;
+      } else if (name.equals("lastRevisionDate")) {
+        this.lastRevisionDate = null;
+      } else if (name.equals("language")) {
+        this.getLanguage().remove(value);
+      } else if (name.equals("accessionNumber")) {
+        this.accessionNumber = null;
+      } else if (name.equals("pageString")) {
+        this.pageString = null;
+      } else if (name.equals("firstPage")) {
+        this.firstPage = null;
+      } else if (name.equals("lastPage")) {
+        this.lastPage = null;
+      } else if (name.equals("pageCount")) {
+        this.pageCount = null;
+      } else if (name.equals("copyright")) {
+        this.copyright = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -5698,6 +5879,23 @@ public class Citation extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("identifier")) {
+        this.getIdentifier().remove(value);
+      } else if (name.equals("title")) {
+        this.title = null;
+      } else if (name.equals("publisher")) {
+        this.publisher = null;
+      } else if (name.equals("publisherLocation")) {
+        this.publisherLocation = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -6104,6 +6302,21 @@ public class Citation extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("citedMedium")) {
+        this.citedMedium = null;
+      } else if (name.equals("volume")) {
+        this.volume = null;
+      } else if (name.equals("issue")) {
+        this.issue = null;
+      } else if (name.equals("dateOfPublication")) {
+        this.dateOfPublication = (CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent) value; // CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationComponent
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -6702,6 +6915,25 @@ public class Citation extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("date")) {
+        this.date = null;
+      } else if (name.equals("year")) {
+        this.year = null;
+      } else if (name.equals("month")) {
+        this.month = null;
+      } else if (name.equals("day")) {
+        this.day = null;
+      } else if (name.equals("season")) {
+        this.season = null;
+      } else if (name.equals("text")) {
+        this.text = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -6983,6 +7215,17 @@ public class Citation extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("url")) {
+        this.url = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -7281,6 +7524,19 @@ public class Citation extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("classifier")) {
+        this.getClassifier().remove(value);
+      } else if (name.equals("whoClassified")) {
+        this.whoClassified = (CitationCitedArtifactClassificationWhoClassifiedComponent) value; // CitationCitedArtifactClassificationWhoClassifiedComponent
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -7713,6 +7969,23 @@ public class Citation extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("person")) {
+        this.person = null;
+      } else if (name.equals("organization")) {
+        this.organization = null;
+      } else if (name.equals("publisher")) {
+        this.publisher = null;
+      } else if (name.equals("classifierCopyright")) {
+        this.classifierCopyright = null;
+      } else if (name.equals("freeToShare")) {
+        this.freeToShare = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -8097,6 +8370,19 @@ public class Citation extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("complete")) {
+        this.complete = null;
+      } else if (name.equals("entry")) {
+        this.getEntry().remove((CitationCitedArtifactContributorshipEntryComponent) value);
+      } else if (name.equals("summary")) {
+        this.getSummary().remove((CitationCitedArtifactContributorshipSummaryComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -9093,6 +9379,38 @@ public class Citation extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("initials")) {
+        this.initials = null;
+      } else if (name.equals("collectiveName")) {
+        this.collectiveName = null;
+      } else if (name.equals("identifier")) {
+        this.getIdentifier().remove(value);
+      } else if (name.equals("affiliationInfo")) {
+        this.getAffiliationInfo().remove((CitationCitedArtifactContributorshipEntryAffiliationInfoComponent) value);
+      } else if (name.equals("address")) {
+        this.getAddress().remove(value);
+      } else if (name.equals("telecom")) {
+        this.getTelecom().remove(value);
+      } else if (name.equals("contributionType")) {
+        this.getContributionType().remove(value);
+      } else if (name.equals("role")) {
+        this.role = null;
+      } else if (name.equals("contributionInstance")) {
+        this.getContributionInstance()
+            .remove((CitationCitedArtifactContributorshipEntryContributionInstanceComponent) value);
+      } else if (name.equals("correspondingContact")) {
+        this.correspondingContact = null;
+      } else if (name.equals("listOrder")) {
+        this.listOrder = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -9561,6 +9879,19 @@ public class Citation extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("affiliation")) {
+        this.affiliation = null;
+      } else if (name.equals("role")) {
+        this.role = null;
+      } else if (name.equals("identifier")) {
+        this.getIdentifier().remove(value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -9826,6 +10157,17 @@ public class Citation extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("time")) {
+        this.time = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -10176,6 +10518,21 @@ public class Citation extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("style")) {
+        this.style = null;
+      } else if (name.equals("source")) {
+        this.source = null;
+      } else if (name.equals("value")) {
+        this.value = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -12578,6 +12935,71 @@ public class Citation extends CanonicalResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(value);
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(value);
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("approvalDate")) {
+      this.approvalDate = null;
+    } else if (name.equals("lastReviewDate")) {
+      this.lastReviewDate = null;
+    } else if (name.equals("effectivePeriod")) {
+      this.effectivePeriod = null;
+    } else if (name.equals("author")) {
+      this.getAuthor().remove(value);
+    } else if (name.equals("editor")) {
+      this.getEditor().remove(value);
+    } else if (name.equals("reviewer")) {
+      this.getReviewer().remove(value);
+    } else if (name.equals("endorser")) {
+      this.getEndorser().remove(value);
+    } else if (name.equals("summary")) {
+      this.getSummary().remove(value);
+    } else if (name.equals("classification")) {
+      this.getClassification().remove((CitationClassificationComponent) value);
+    } else if (name.equals("note")) {
+      this.getNote().remove(value);
+    } else if (name.equals("currentState")) {
+      this.getCurrentState().remove(value);
+    } else if (name.equals("statusDate")) {
+      this.getStatusDate().remove((CitationStatusDateComponent) value);
+    } else if (name.equals("relatesTo")) {
+      this.getRelatesTo().remove((CitationRelatesToComponent) value);
+    } else if (name.equals("citedArtifact")) {
+      this.citedArtifact = (CitationCitedArtifactComponent) value; // CitationCitedArtifactComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

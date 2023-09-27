@@ -510,6 +510,21 @@ public class CareTeam extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("role")) {
+        this.getRole().remove(value);
+      } else if (name.equals("member")) {
+        this.member = null;
+      } else if (name.equals("onBehalfOf")) {
+        this.onBehalfOf = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1570,6 +1585,39 @@ public class CareTeam extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove(value);
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("period")) {
+      this.period = null;
+    } else if (name.equals("participant")) {
+      this.getParticipant().remove((CareTeamParticipantComponent) value);
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(value);
+    } else if (name.equals("reasonReference")) {
+      this.getReasonReference().remove(value);
+    } else if (name.equals("managingOrganization")) {
+      this.getManagingOrganization().remove(value);
+    } else if (name.equals("telecom")) {
+      this.getTelecom().remove(value);
+    } else if (name.equals("note")) {
+      this.getNote().remove(value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

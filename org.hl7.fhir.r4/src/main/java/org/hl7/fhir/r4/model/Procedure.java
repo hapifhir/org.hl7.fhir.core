@@ -563,6 +563,19 @@ public class Procedure extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("function")) {
+        this.function = null;
+      } else if (name.equals("actor")) {
+        this.actor = null;
+      } else if (name.equals("onBehalfOf")) {
+        this.onBehalfOf = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -833,6 +846,17 @@ public class Procedure extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("action")) {
+        this.action = null;
+      } else if (name.equals("manipulated")) {
+        this.manipulated = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3277,6 +3301,69 @@ public class Procedure extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("instantiatesCanonical")) {
+      this.getInstantiatesCanonical().remove(castToCanonical(value));
+    } else if (name.equals("instantiatesUri")) {
+      this.getInstantiatesUri().remove(castToUri(value));
+    } else if (name.equals("basedOn")) {
+      this.getBasedOn().remove(castToReference(value));
+    } else if (name.equals("partOf")) {
+      this.getPartOf().remove(castToReference(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("statusReason")) {
+      this.statusReason = null;
+    } else if (name.equals("category")) {
+      this.category = null;
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("performed[x]")) {
+      this.performed = null;
+    } else if (name.equals("recorder")) {
+      this.recorder = null;
+    } else if (name.equals("asserter")) {
+      this.asserter = null;
+    } else if (name.equals("performer")) {
+      this.getPerformer().remove((ProcedurePerformerComponent) value);
+    } else if (name.equals("location")) {
+      this.location = null;
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(castToCodeableConcept(value));
+    } else if (name.equals("reasonReference")) {
+      this.getReasonReference().remove(castToReference(value));
+    } else if (name.equals("bodySite")) {
+      this.getBodySite().remove(castToCodeableConcept(value));
+    } else if (name.equals("outcome")) {
+      this.outcome = null;
+    } else if (name.equals("report")) {
+      this.getReport().remove(castToReference(value));
+    } else if (name.equals("complication")) {
+      this.getComplication().remove(castToCodeableConcept(value));
+    } else if (name.equals("complicationDetail")) {
+      this.getComplicationDetail().remove(castToReference(value));
+    } else if (name.equals("followUp")) {
+      this.getFollowUp().remove(castToCodeableConcept(value));
+    } else if (name.equals("note")) {
+      this.getNote().remove(castToAnnotation(value));
+    } else if (name.equals("focalDevice")) {
+      this.getFocalDevice().remove((ProcedureFocalDeviceComponent) value);
+    } else if (name.equals("usedReference")) {
+      this.getUsedReference().remove(castToReference(value));
+    } else if (name.equals("usedCode")) {
+      this.getUsedCode().remove(castToCodeableConcept(value));
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

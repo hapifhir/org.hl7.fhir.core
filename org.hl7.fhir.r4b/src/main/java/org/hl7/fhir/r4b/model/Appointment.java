@@ -870,6 +870,23 @@ public class Appointment extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.getType().remove(value);
+      } else if (name.equals("actor")) {
+        this.actor = null;
+      } else if (name.equals("required")) {
+        this.required = null;
+      } else if (name.equals("status")) {
+        this.status = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2787,6 +2804,57 @@ public class Appointment extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("cancelationReason")) {
+      this.cancelationReason = null;
+    } else if (name.equals("serviceCategory")) {
+      this.getServiceCategory().remove(value);
+    } else if (name.equals("serviceType")) {
+      this.getServiceType().remove(value);
+    } else if (name.equals("specialty")) {
+      this.getSpecialty().remove(value);
+    } else if (name.equals("appointmentType")) {
+      this.appointmentType = null;
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(value);
+    } else if (name.equals("reasonReference")) {
+      this.getReasonReference().remove(value);
+    } else if (name.equals("priority")) {
+      this.priority = null;
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("supportingInformation")) {
+      this.getSupportingInformation().remove(value);
+    } else if (name.equals("start")) {
+      this.start = null;
+    } else if (name.equals("end")) {
+      this.end = null;
+    } else if (name.equals("minutesDuration")) {
+      this.minutesDuration = null;
+    } else if (name.equals("slot")) {
+      this.getSlot().remove(value);
+    } else if (name.equals("created")) {
+      this.created = null;
+    } else if (name.equals("comment")) {
+      this.comment = null;
+    } else if (name.equals("patientInstruction")) {
+      this.patientInstruction = null;
+    } else if (name.equals("basedOn")) {
+      this.getBasedOn().remove(value);
+    } else if (name.equals("participant")) {
+      this.getParticipant().remove((AppointmentParticipantComponent) value);
+    } else if (name.equals("requestedPeriod")) {
+      this.getRequestedPeriod().remove(value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

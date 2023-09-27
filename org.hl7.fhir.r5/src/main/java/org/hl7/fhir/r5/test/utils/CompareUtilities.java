@@ -501,11 +501,26 @@ private boolean isOptional(JsonElement e) {
  private String compareText(String expectedString, String actualString) {
     for (int i = 0; i < Integer.min(expectedString.length(), actualString.length()); i++) {
       if (expectedString.charAt(i) != actualString.charAt(i))
-        return createNotEqualMessage("Strings differ at character " + Integer.toString(i), String.valueOf(expectedString.charAt(i)), String.valueOf(actualString.charAt(i)));
+        return createNotEqualMessage("Strings differ at character " + Integer.toString(i), charWithContext(expectedString, i), charWithContext(actualString, i));
     }
     if (expectedString.length() != actualString.length())
       return createNotEqualMessage("Strings differ in length but match to the end of the shortest.", Integer.toString(expectedString.length()), Integer.toString(actualString.length()));
     return null;
   }
+
+private String charWithContext(String s, int i) {
+  String result = s.substring(i, i+1);
+  if (i > 7) {
+    i = i - 7;
+  }
+  int e = i + 20;
+  if (e > s.length()) {
+    e = s.length();
+  }
+  if (e > i+1) {
+    result = result + " with context '"+s.substring(i, e)+"'";
+  }
+  return result;
+}
 
 }

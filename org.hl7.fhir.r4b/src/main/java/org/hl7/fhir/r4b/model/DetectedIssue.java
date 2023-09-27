@@ -401,6 +401,17 @@ public class DetectedIssue extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.getCode().remove(value);
+      } else if (name.equals("detail")) {
+        this.getDetail().remove(value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -721,6 +732,19 @@ public class DetectedIssue extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("action")) {
+        this.action = null;
+      } else if (name.equals("date")) {
+        this.date = null;
+      } else if (name.equals("author")) {
+        this.author = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1711,6 +1735,37 @@ public class DetectedIssue extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("severity")) {
+      this.severity = null;
+    } else if (name.equals("patient")) {
+      this.patient = null;
+    } else if (name.equals("identified[x]")) {
+      this.identified = null;
+    } else if (name.equals("author")) {
+      this.author = null;
+    } else if (name.equals("implicated")) {
+      this.getImplicated().remove(value);
+    } else if (name.equals("evidence")) {
+      this.getEvidence().remove((DetectedIssueEvidenceComponent) value);
+    } else if (name.equals("detail")) {
+      this.detail = null;
+    } else if (name.equals("reference")) {
+      this.reference = null;
+    } else if (name.equals("mitigation")) {
+      this.getMitigation().remove((DetectedIssueMitigationComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

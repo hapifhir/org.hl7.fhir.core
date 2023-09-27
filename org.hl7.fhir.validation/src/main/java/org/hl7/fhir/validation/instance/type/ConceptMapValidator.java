@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -164,8 +165,10 @@ public class ConceptMapValidator  extends BaseValidator {
             System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
           }
           for (CMCodingValidationRequest cv : batch) {
-            if (cv.getCoding().getVersion() == null) {
-              ok = rule(errors, "2023-09-06", IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.CONCEPTMAP_VS_INVALID_CONCEPT_CODE, cv.getCoding().getSystem(), cv.getCoding().getCode(), cv.getVsObj().getUrl()) && ok;
+            if (cv.getResult().getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+              warning(errors, "2023-09-06", IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM, cv.getCoding().getSystem(), cv.getCoding().getCode(), cv.getVsObj().getUrl());                
+            } else if (cv.getCoding().getVersion() == null) {
+              ok = rule(errors, "2023-09-06", IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.CONCEPTMAP_VS_INVALID_CONCEPT_CODE, cv.getCoding().getSystem(), cv.getCoding().getCode(), cv.getVsObj().getUrl()) && ok;                
             } else {
               ok = rule(errors, "2023-09-06", IssueType.BUSINESSRULE, cv.getStack(), cv.getResult().isOk(), I18nConstants.CONCEPTMAP_VS_INVALID_CONCEPT_CODE_VER, cv.getCoding().getSystem(), cv.getCoding().getVersion(), cv.getCoding().getCode(), cv.getVsObj().getUrl()) && ok;
             }

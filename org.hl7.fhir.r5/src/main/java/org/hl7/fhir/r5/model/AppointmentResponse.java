@@ -964,6 +964,38 @@ public class AppointmentResponse extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("appointment")) {
+          this.appointment = null;
+        } else if (name.equals("proposedNewTime")) {
+          this.proposedNewTime = null;
+        } else if (name.equals("start")) {
+          this.start = null;
+        } else if (name.equals("end")) {
+          this.end = null;
+        } else if (name.equals("participantType")) {
+          this.getParticipantType().remove(value);
+        } else if (name.equals("actor")) {
+          this.actor = null;
+        } else if (name.equals("participantStatus")) {
+          value = new AppointmentResponseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.participantStatus = (Enumeration) value; // Enumeration<AppointmentResponseStatus>
+        } else if (name.equals("comment")) {
+          this.comment = null;
+        } else if (name.equals("recurring")) {
+          this.recurring = null;
+        } else if (name.equals("occurrenceDate")) {
+          this.occurrenceDate = null;
+        } else if (name.equals("recurrenceId")) {
+          this.recurrenceId = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {

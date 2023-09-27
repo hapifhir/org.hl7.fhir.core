@@ -438,6 +438,21 @@ public class Provenance extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("role")) {
+          this.getRole().remove(value);
+        } else if (name.equals("who")) {
+          this.who = null;
+        } else if (name.equals("onBehalfOf")) {
+          this.onBehalfOf = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -757,6 +772,20 @@ public class Provenance extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("role")) {
+          value = new ProvenanceEntityRoleEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.role = (Enumeration) value; // Enumeration<ProvenanceEntityRole>
+        } else if (name.equals("what")) {
+          this.what = null;
+        } else if (name.equals("agent")) {
+          this.getAgent().remove((ProvenanceAgentComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1672,6 +1701,39 @@ public class Provenance extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("target")) {
+          this.getTarget().remove(value);
+        } else if (name.equals("occurred[x]")) {
+          this.occurred = null;
+        } else if (name.equals("recorded")) {
+          this.recorded = null;
+        } else if (name.equals("policy")) {
+          this.getPolicy().remove(value);
+        } else if (name.equals("location")) {
+          this.location = null;
+        } else if (name.equals("authorization")) {
+          this.getAuthorization().remove(value);
+        } else if (name.equals("activity")) {
+          this.activity = null;
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("patient")) {
+          this.patient = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("agent")) {
+          this.getAgent().remove((ProvenanceAgentComponent) value);
+        } else if (name.equals("entity")) {
+          this.getEntity().remove((ProvenanceEntityComponent) value);
+        } else if (name.equals("signature")) {
+          this.getSignature().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

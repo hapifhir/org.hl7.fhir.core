@@ -209,6 +209,15 @@ public abstract class PrimitiveType<T> extends DataType implements IPrimitiveTyp
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("value"))
+      setValueAsString(value.toString()); 
+    else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     if (hash == 111972721) {
       return this; 

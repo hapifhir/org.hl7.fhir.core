@@ -756,6 +756,19 @@ public class Goal extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("measure")) {
+        this.measure = null;
+      } else if (name.equals("detail[x]")) {
+        this.detail = null;
+      } else if (name.equals("due[x]")) {
+        this.due = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2128,6 +2141,45 @@ public class Goal extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("lifecycleStatus")) {
+      this.lifecycleStatus = null;
+    } else if (name.equals("achievementStatus")) {
+      this.achievementStatus = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove(castToCodeableConcept(value));
+    } else if (name.equals("priority")) {
+      this.priority = null;
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("start[x]")) {
+      this.start = null;
+    } else if (name.equals("target")) {
+      this.getTarget().remove((GoalTargetComponent) value);
+    } else if (name.equals("statusDate")) {
+      this.statusDate = null;
+    } else if (name.equals("statusReason")) {
+      this.statusReason = null;
+    } else if (name.equals("expressedBy")) {
+      this.expressedBy = null;
+    } else if (name.equals("addresses")) {
+      this.getAddresses().remove(castToReference(value));
+    } else if (name.equals("note")) {
+      this.getNote().remove(castToAnnotation(value));
+    } else if (name.equals("outcomeCode")) {
+      this.getOutcomeCode().remove(castToCodeableConcept(value));
+    } else if (name.equals("outcomeReference")) {
+      this.getOutcomeReference().remove(castToReference(value));
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

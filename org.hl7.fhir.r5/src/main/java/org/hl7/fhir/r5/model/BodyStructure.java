@@ -392,6 +392,23 @@ public class BodyStructure extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("structure")) {
+          this.structure = null;
+        } else if (name.equals("laterality")) {
+          this.laterality = null;
+        } else if (name.equals("bodyLandmarkOrientation")) {
+          this.getBodyLandmarkOrientation().remove((BodyStructureIncludedStructureBodyLandmarkOrientationComponent) value);
+        } else if (name.equals("spatialReference")) {
+          this.getSpatialReference().remove(value);
+        } else if (name.equals("qualifier")) {
+          this.getQualifier().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -823,6 +840,21 @@ public class BodyStructure extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("landmarkDescription")) {
+          this.getLandmarkDescription().remove(value);
+        } else if (name.equals("clockFacePosition")) {
+          this.getClockFacePosition().remove(value);
+        } else if (name.equals("distanceFromLandmark")) {
+          this.getDistanceFromLandmark().remove((BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent) value);
+        } else if (name.equals("surfaceOrientation")) {
+          this.getSurfaceOrientation().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1110,6 +1142,17 @@ public class BodyStructure extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("device")) {
+          this.getDevice().remove(value);
+        } else if (name.equals("value")) {
+          this.getValue().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1721,6 +1764,29 @@ public class BodyStructure extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("active")) {
+          this.active = null;
+        } else if (name.equals("morphology")) {
+          this.morphology = null;
+        } else if (name.equals("includedStructure")) {
+          this.getIncludedStructure().remove((BodyStructureIncludedStructureComponent) value);
+        } else if (name.equals("excludedStructure")) {
+          this.getExcludedStructure().remove((BodyStructureIncludedStructureComponent) value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("image")) {
+          this.getImage().remove(value);
+        } else if (name.equals("patient")) {
+          this.patient = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

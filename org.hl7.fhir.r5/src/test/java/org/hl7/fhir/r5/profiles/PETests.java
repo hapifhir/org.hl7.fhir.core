@@ -1,13 +1,46 @@
 package org.hl7.fhir.r5.profiles;
 
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, \
+  are permitted provided that the following conditions are met:
+  
+   * Redistributions of source code must retain the above copyright notice, this \
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
+  POSSIBILITY OF SUCH DAMAGE.
+  */
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.Comparison;
 import org.hl7.fhir.r5.model.Enumerations.ObservationStatus;
 import org.hl7.fhir.r5.model.Observation;
 import org.hl7.fhir.r5.model.Resource;
@@ -16,15 +49,13 @@ import org.hl7.fhir.r5.profilemodel.PEInstance;
 import org.hl7.fhir.r5.profilemodel.PEType;
 import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator;
 import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
-import org.hl7.fhir.r5.profilemodel.gen.ProfileExample;
-import org.hl7.fhir.r5.profilemodel.gen.ProfileExample.LOINCCodesForCholesterolInSerumPlasma;
-import org.hl7.fhir.r5.profilemodel.gen.ProfileExample.ProfileExampleComplex;
-import org.hl7.fhir.r5.profilemodel.gen.ProfileExample.ProfileExampleComplexSlice3;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.profilemodel.PEInstance.PEInstanceDataKind;
+import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -78,7 +109,7 @@ public class PETests {
     checkElement(children.get(4), "contained", "contained", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Resource", 4, "contained");
     checkElement(children.get(5), "extension", "extension", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Extension", 3, "extension.where(((url = 'http://hl7.org/fhir/test/StructureDefinition/pe-extension-simple') or (url = 'http://hl7.org/fhir/test/StructureDefinition/pe-extension-complex')).not())");
     checkElement(children.get(6), "extension", "simple", 0, 1, false, "http://hl7.org/fhir/StructureDefinition/code", 2, "extension('http://hl7.org/fhir/test/StructureDefinition/pe-extension-simple').value");
-    checkElement(children.get(7), "extension", "complex", 0, 1, false, "http://hl7.org/fhir/StructureDefinition/Extension", 4, "extension('http://hl7.org/fhir/test/StructureDefinition/pe-extension-complex')");
+    checkElement(children.get(7), "extension", "complex", 0, 1, false, "http://hl7.org/fhir/test/StructureDefinition/pe-extension-complex", 4, "extension('http://hl7.org/fhir/test/StructureDefinition/pe-extension-complex')");
     checkElement(children.get(8), "identifier", "identifier", 0, 1, false, "http://hl7.org/fhir/StructureDefinition/Identifier", 7, "identifier");
     checkElement(children.get(9), "status", "status", 1, 1, true, "http://hl7.org/fhir/StructureDefinition/code", 2, "status");
     checkElement(children.get(10), "category", "category", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/CodeableConcept", 3, "category");
@@ -107,7 +138,7 @@ public class PETests {
     checkElement(ggchildren.get(1), "value", "value", 1, 1, false, null, 3, "value");
     
     gchildren = children.get(7).children("http://hl7.org/fhir/StructureDefinition/Extension");
-    checkElement(gchildren.get(0), "extension", "extension", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Extension", 3, "extension");
+    checkElement(gchildren.get(0), "extension", "extension", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/Extension", 3, "extension.where(((url = 'slice1') or (url = 'slice2') or (url = 'slice3')).not())");
     checkElement(gchildren.get(1), "extension", "slice1", 0, 2, false, "http://hl7.org/fhir/StructureDefinition/Coding", 6, "extension('slice1').value");
     checkElement(gchildren.get(2), "extension", "slice2", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/string", 2, "extension('slice2').value");
     checkElement(gchildren.get(3), "extension", "slice3", 1, 1, false, "http://hl7.org/fhir/StructureDefinition/Extension", 3, "extension('slice3')");
@@ -171,7 +202,7 @@ public class PETests {
     Assertions.assertEquals("extension", pe.schemaName());
     Assertions.assertEquals(0, pe.min());
     Assertions.assertEquals(1, pe.max());
-    Assertions.assertEquals("Extension", pe.types().get(0).getName());
+    Assertions.assertEquals("USCoreEthnicityExtension", pe.types().get(0).getName());
     Assertions.assertNotNull(pe.definition());
     Assertions.assertNotNull(pe.baseDefinition());
     Assertions.assertEquals("US Core ethnicity Extension", pe.shortDocumentation());
@@ -359,36 +390,43 @@ public class PETests {
     PEInstance slice3 = complex.child("slice3");
     Assertions.assertNotNull(slice3);
     Assertions.assertEquals("TestProfile.complex.slice3", slice3.getPath());
-    
-    ProfileExample ex = new ProfileExample(obs);
-    Assertions.assertEquals(ObservationStatus.FINAL, ex.getStatus());
-    Assertions.assertEquals("76690-7", ex.getCode().getCodingFirstRep().getCode());
-    Assertions.assertEquals(LOINCCodesForCholesterolInSerumPlasma.L14647_2, ex.getSimple());
-    ProfileExampleComplex cplx = ex.getComplex();
-    Assertions.assertNotNull(cplx);
-    Assertions.assertEquals("18767-4", cplx.getSlice1().get(0).getCode());
-    Assertions.assertEquals("A string value", cplx.getSlice2().get(0).primitiveValue());
-    ProfileExampleComplexSlice3 sl3 = cplx.getSlice3();
-    Assertions.assertEquals("56874-1", sl3.getSlice3a().get(0).getCode());
-    Assertions.assertEquals("Another string value", sl3.getSlice3b().get(0).primitiveValue());
   }
-
 
   @Test
   public void testGenerate() throws IOException {
     load();
     PECodeGenerator gen = new PECodeGenerator(ctxt);
+    
     gen.setFolder(Utilities.path("[tmp]"));
-    gen.setCanonical("http://hl7.org/fhir/test/StructureDefinition/pe-profile1");
-    gen.setPkgName("org.hl7.fhir.r5.profiles");
-    gen.setExtensionPolicy(ExtensionPolicy.None);
+    gen.setExtensionPolicy(ExtensionPolicy.Complexes);
     gen.setNarrative(false);
     gen.setMeta(false);
     gen.setLanguage("en-AU");
     gen.setContained(false);
-    gen.setKeyELementsOnly(true);
+    gen.setKeyElementsOnly(true);
+    gen.setGenDate("{date}");
+    
+    gen.setCanonical("http://hl7.org/fhir/test/StructureDefinition/pe-profile1");
+    gen.setPkgName("org.hl7.fhir.r5.profiles");
     gen.execute();    
     gen.setCanonical("http://hl7.org/fhir/test/StructureDefinition/pe-profile2");
     gen.execute();    
+    gen.setCanonical("http://hl7.org/fhir/test/StructureDefinition/pe-extension-complex");
+    gen.execute();    
+    
+    checkGeneratedJava("TestComplexExtension");
+    checkGeneratedJava("TestDatatypeProfile");
+    checkGeneratedJava("TestProfile");
   }
+
+
+  private void checkGeneratedJava(String name) throws FileNotFoundException, IOException {
+    String actual = Utilities.normalize(TextFile.fileToString(Utilities.path("[tmp]", name+".java")));
+    String expected = Utilities.normalize(TestingUtilities.loadTestResource("r5", "profiles", name+".java"));
+    String msg = CompareUtilities.checkTextIsSame(expected, actual);
+    if (msg != null) {      
+      Assertions.fail("Generated code for "+name+" is different: "+msg);
+    }
+  }
+
 }

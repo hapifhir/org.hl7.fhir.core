@@ -422,6 +422,21 @@ public class MessageHeader extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("endpoint[x]")) {
+          this.endpoint = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("target")) {
+          this.target = null;
+        } else if (name.equals("receiver")) {
+          this.receiver = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -865,6 +880,23 @@ public class MessageHeader extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("endpoint[x]")) {
+          this.endpoint = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("software")) {
+          this.software = null;
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("contact")) {
+          this.contact = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1162,6 +1194,20 @@ public class MessageHeader extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.identifier = null;
+        } else if (name.equals("code")) {
+          value = new ResponseTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.code = (Enumeration) value; // Enumeration<ResponseType>
+        } else if (name.equals("details")) {
+          this.details = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1804,6 +1850,33 @@ public class MessageHeader extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("event[x]")) {
+          this.event = null;
+        } else if (name.equals("destination")) {
+          this.getDestination().remove((MessageDestinationComponent) value);
+        } else if (name.equals("sender")) {
+          this.sender = null;
+        } else if (name.equals("author")) {
+          this.author = null;
+        } else if (name.equals("source")) {
+          this.source = (MessageSourceComponent) value; // MessageSourceComponent
+        } else if (name.equals("responsible")) {
+          this.responsible = null;
+        } else if (name.equals("reason")) {
+          this.reason = null;
+        } else if (name.equals("response")) {
+          this.response = (MessageHeaderResponseComponent) value; // MessageHeaderResponseComponent
+        } else if (name.equals("focus")) {
+          this.getFocus().remove(value);
+        } else if (name.equals("definition")) {
+          this.definition = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

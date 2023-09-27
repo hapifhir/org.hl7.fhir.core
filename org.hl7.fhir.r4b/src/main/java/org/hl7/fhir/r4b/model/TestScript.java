@@ -5751,6 +5751,17 @@ public class TestScript extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("index")) {
+        this.index = null;
+      } else if (name.equals("profile")) {
+        this.profile = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -6009,6 +6020,17 @@ public class TestScript extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("index")) {
+        this.index = null;
+      } else if (name.equals("profile")) {
+        this.profile = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -6300,6 +6322,17 @@ public class TestScript extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("link")) {
+        this.getLink().remove((TestScriptMetadataLinkComponent) value);
+      } else if (name.equals("capability")) {
+        this.getCapability().remove((TestScriptMetadataCapabilityComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -6588,6 +6621,17 @@ public class TestScript extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("url")) {
+        this.url = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -7291,6 +7335,27 @@ public class TestScript extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("required")) {
+        this.required = null;
+      } else if (name.equals("validated")) {
+        this.validated = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("origin")) {
+        this.getOrigin().remove(value);
+      } else if (name.equals("destination")) {
+        this.destination = null;
+      } else if (name.equals("link")) {
+        this.getLink().remove(value);
+      } else if (name.equals("capabilities")) {
+        this.capabilities = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -7702,6 +7767,19 @@ public class TestScript extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("autocreate")) {
+        this.autocreate = null;
+      } else if (name.equals("autodelete")) {
+        this.autodelete = null;
+      } else if (name.equals("resource")) {
+        this.resource = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -8473,6 +8551,29 @@ public class TestScript extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("defaultValue")) {
+        this.defaultValue = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("expression")) {
+        this.expression = null;
+      } else if (name.equals("headerField")) {
+        this.headerField = null;
+      } else if (name.equals("hint")) {
+        this.hint = null;
+      } else if (name.equals("path")) {
+        this.path = null;
+      } else if (name.equals("sourceId")) {
+        this.sourceId = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -8732,6 +8833,15 @@ public class TestScript extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("action")) {
+        this.getAction().remove((SetupActionComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -8945,6 +9055,17 @@ public class TestScript extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("operation")) {
+        this.operation = (SetupActionOperationComponent) value; // SetupActionOperationComponent
+      } else if (name.equals("assert")) {
+        this.assert_ = (SetupActionAssertComponent) value; // SetupActionAssertComponent
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -10362,6 +10483,47 @@ public class TestScript extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("resource")) {
+        this.resource = null;
+      } else if (name.equals("label")) {
+        this.label = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("accept")) {
+        this.accept = null;
+      } else if (name.equals("contentType")) {
+        this.contentType = null;
+      } else if (name.equals("destination")) {
+        this.destination = null;
+      } else if (name.equals("encodeRequestUrl")) {
+        this.encodeRequestUrl = null;
+      } else if (name.equals("method")) {
+        this.method = null;
+      } else if (name.equals("origin")) {
+        this.origin = null;
+      } else if (name.equals("params")) {
+        this.params = null;
+      } else if (name.equals("requestHeader")) {
+        this.getRequestHeader().remove((SetupActionOperationRequestHeaderComponent) value);
+      } else if (name.equals("requestId")) {
+        this.requestId = null;
+      } else if (name.equals("responseId")) {
+        this.responseId = null;
+      } else if (name.equals("sourceId")) {
+        this.sourceId = null;
+      } else if (name.equals("targetId")) {
+        this.targetId = null;
+      } else if (name.equals("url")) {
+        this.url = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -10767,6 +10929,17 @@ public class TestScript extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("field")) {
+        this.field = null;
+      } else if (name.equals("value")) {
+        this.value = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -12655,6 +12828,57 @@ public class TestScript extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("label")) {
+        this.label = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("direction")) {
+        this.direction = null;
+      } else if (name.equals("compareToSourceId")) {
+        this.compareToSourceId = null;
+      } else if (name.equals("compareToSourceExpression")) {
+        this.compareToSourceExpression = null;
+      } else if (name.equals("compareToSourcePath")) {
+        this.compareToSourcePath = null;
+      } else if (name.equals("contentType")) {
+        this.contentType = null;
+      } else if (name.equals("expression")) {
+        this.expression = null;
+      } else if (name.equals("headerField")) {
+        this.headerField = null;
+      } else if (name.equals("minimumId")) {
+        this.minimumId = null;
+      } else if (name.equals("navigationLinks")) {
+        this.navigationLinks = null;
+      } else if (name.equals("operator")) {
+        this.operator = null;
+      } else if (name.equals("path")) {
+        this.path = null;
+      } else if (name.equals("requestMethod")) {
+        this.requestMethod = null;
+      } else if (name.equals("requestURL")) {
+        this.requestURL = null;
+      } else if (name.equals("resource")) {
+        this.resource = null;
+      } else if (name.equals("response")) {
+        this.response = null;
+      } else if (name.equals("responseCode")) {
+        this.responseCode = null;
+      } else if (name.equals("sourceId")) {
+        this.sourceId = null;
+      } else if (name.equals("validateProfileId")) {
+        this.validateProfileId = null;
+      } else if (name.equals("value")) {
+        this.value = null;
+      } else if (name.equals("warningOnly")) {
+        this.warningOnly = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -13192,6 +13416,19 @@ public class TestScript extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("action")) {
+        this.getAction().remove((TestActionComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -13428,6 +13665,17 @@ public class TestScript extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("operation")) {
+        this.operation = (SetupActionOperationComponent) value; // SetupActionOperationComponent
+      } else if (name.equals("assert")) {
+        this.assert_ = (SetupActionAssertComponent) value; // SetupActionAssertComponent
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -13639,6 +13887,15 @@ public class TestScript extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("action")) {
+        this.getAction().remove((TeardownActionComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -13817,6 +14074,15 @@ public class TestScript extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("operation")) {
+        this.operation = (SetupActionOperationComponent) value; // SetupActionOperationComponent
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -15807,6 +16073,61 @@ public class TestScript extends CanonicalResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.identifier = null;
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(value);
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(value);
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("origin")) {
+      this.getOrigin().remove((TestScriptOriginComponent) value);
+    } else if (name.equals("destination")) {
+      this.getDestination().remove((TestScriptDestinationComponent) value);
+    } else if (name.equals("metadata")) {
+      this.metadata = (TestScriptMetadataComponent) value; // TestScriptMetadataComponent
+    } else if (name.equals("fixture")) {
+      this.getFixture().remove((TestScriptFixtureComponent) value);
+    } else if (name.equals("profile")) {
+      this.getProfile().remove(value);
+    } else if (name.equals("variable")) {
+      this.getVariable().remove((TestScriptVariableComponent) value);
+    } else if (name.equals("setup")) {
+      this.setup = (TestScriptSetupComponent) value; // TestScriptSetupComponent
+    } else if (name.equals("test")) {
+      this.getTest().remove((TestScriptTestComponent) value);
+    } else if (name.equals("teardown")) {
+      this.teardown = (TestScriptTeardownComponent) value; // TestScriptTeardownComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

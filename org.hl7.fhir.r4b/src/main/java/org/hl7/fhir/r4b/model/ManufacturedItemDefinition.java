@@ -292,6 +292,17 @@ public class ManufacturedItemDefinition extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("value[x]")) {
+        this.value = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -925,6 +936,27 @@ public class ManufacturedItemDefinition extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("manufacturedDoseForm")) {
+      this.manufacturedDoseForm = null;
+    } else if (name.equals("unitOfPresentation")) {
+      this.unitOfPresentation = null;
+    } else if (name.equals("manufacturer")) {
+      this.getManufacturer().remove(value);
+    } else if (name.equals("ingredient")) {
+      this.getIngredient().remove(value);
+    } else if (name.equals("property")) {
+      this.getProperty().remove((ManufacturedItemDefinitionPropertyComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

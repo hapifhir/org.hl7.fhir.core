@@ -524,6 +524,23 @@ public class Coding extends Type implements IBaseCoding, ICompositeType, ICoding
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("system")) {
+      this.system = null;
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("display")) {
+      this.display = null;
+    } else if (name.equals("userSelected")) {
+      this.userSelected = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -887328209:

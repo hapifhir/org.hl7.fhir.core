@@ -387,6 +387,25 @@ public class ResearchSubject extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("subjectState")) {
+          this.subjectState = null;
+        } else if (name.equals("milestone")) {
+          this.milestone = null;
+        } else if (name.equals("reason")) {
+          this.reason = null;
+        } else if (name.equals("startDate")) {
+          this.startDate = null;
+        } else if (name.equals("endDate")) {
+          this.endDate = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1057,6 +1076,32 @@ public class ResearchSubject extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("progress")) {
+          this.getProgress().remove((ResearchSubjectProgressComponent) value);
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else if (name.equals("study")) {
+          this.study = null;
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("assignedComparisonGroup")) {
+          this.assignedComparisonGroup = null;
+        } else if (name.equals("actualComparisonGroup")) {
+          this.actualComparisonGroup = null;
+        } else if (name.equals("consent")) {
+          this.getConsent().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -735,6 +735,28 @@ public class HumanName extends DataType implements ICompositeType {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("use")) {
+          value = new NameUseEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.use = (Enumeration) value; // Enumeration<NameUse>
+        } else if (name.equals("text")) {
+          this.text = null;
+        } else if (name.equals("family")) {
+          this.family = null;
+        } else if (name.equals("given")) {
+          this.getGiven().remove(value);
+        } else if (name.equals("prefix")) {
+          this.getPrefix().remove(value);
+        } else if (name.equals("suffix")) {
+          this.getSuffix().remove(value);
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {

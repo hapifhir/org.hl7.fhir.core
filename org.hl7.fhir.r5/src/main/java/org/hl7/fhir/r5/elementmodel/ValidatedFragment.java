@@ -12,6 +12,9 @@ public class ValidatedFragment {
   @Getter
   private String name;
 
+  @Getter @Setter
+  private String elementPath;
+
   @Getter
   private String extension;
 
@@ -49,4 +52,7 @@ public class ValidatedFragment {
     return name+"."+extension;
   }
 
+  public String path() {
+    return elementPath == null ? name : elementPath;
+  }
 }

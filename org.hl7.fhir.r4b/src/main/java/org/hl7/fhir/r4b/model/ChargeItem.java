@@ -442,6 +442,17 @@ public class ChargeItem extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("function")) {
+        this.function = null;
+      } else if (name.equals("actor")) {
+        this.actor = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2392,6 +2403,65 @@ public class ChargeItem extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("definitionUri")) {
+      this.getDefinitionUri().remove(value);
+    } else if (name.equals("definitionCanonical")) {
+      this.getDefinitionCanonical().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("partOf")) {
+      this.getPartOf().remove(value);
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("context")) {
+      this.context = null;
+    } else if (name.equals("occurrence[x]")) {
+      this.occurrence = null;
+    } else if (name.equals("performer")) {
+      this.getPerformer().remove((ChargeItemPerformerComponent) value);
+    } else if (name.equals("performingOrganization")) {
+      this.performingOrganization = null;
+    } else if (name.equals("requestingOrganization")) {
+      this.requestingOrganization = null;
+    } else if (name.equals("costCenter")) {
+      this.costCenter = null;
+    } else if (name.equals("quantity")) {
+      this.quantity = null;
+    } else if (name.equals("bodysite")) {
+      this.getBodysite().remove(value);
+    } else if (name.equals("factorOverride")) {
+      this.factorOverride = null;
+    } else if (name.equals("priceOverride")) {
+      this.priceOverride = null;
+    } else if (name.equals("overrideReason")) {
+      this.overrideReason = null;
+    } else if (name.equals("enterer")) {
+      this.enterer = null;
+    } else if (name.equals("enteredDate")) {
+      this.enteredDate = null;
+    } else if (name.equals("reason")) {
+      this.getReason().remove(value);
+    } else if (name.equals("service")) {
+      this.getService().remove(value);
+    } else if (name.equals("product[x]")) {
+      this.product = null;
+    } else if (name.equals("account")) {
+      this.getAccount().remove(value);
+    } else if (name.equals("note")) {
+      this.getNote().remove(value);
+    } else if (name.equals("supportingInformation")) {
+      this.getSupportingInformation().remove(value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

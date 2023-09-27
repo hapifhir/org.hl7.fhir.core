@@ -638,6 +638,27 @@ public class ParameterDefinition extends DataType implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("use")) {
+      this.use = null;
+    } else if (name.equals("min")) {
+      this.min = null;
+    } else if (name.equals("max")) {
+      this.max = null;
+    } else if (name.equals("documentation")) {
+      this.documentation = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("profile")) {
+      this.profile = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 3373707:

@@ -1053,6 +1053,42 @@ public class GuidanceResponse extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("requestIdentifier")) {
+          this.requestIdentifier = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("module[x]")) {
+          this.module = null;
+        } else if (name.equals("status")) {
+          value = new GuidanceResponseStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<GuidanceResponseStatus>
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("occurrenceDateTime")) {
+          this.occurrenceDateTime = null;
+        } else if (name.equals("performer")) {
+          this.performer = null;
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("evaluationMessage")) {
+          this.evaluationMessage = null;
+        } else if (name.equals("outputParameters")) {
+          this.outputParameters = null;
+        } else if (name.equals("result")) {
+          this.getResult().remove(value);
+        } else if (name.equals("dataRequirement")) {
+          this.getDataRequirement().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {

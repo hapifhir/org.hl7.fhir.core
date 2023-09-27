@@ -400,6 +400,20 @@ public class InventoryItem extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("nameType")) {
+          this.nameType = null;
+        } else if (name.equals("language")) {
+          value = new CommonLanguagesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.language = (Enumeration) value; // Enumeration<CommonLanguages>
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -615,6 +629,17 @@ public class InventoryItem extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("role")) {
+          this.role = null;
+        } else if (name.equals("organization")) {
+          this.organization = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -871,6 +896,18 @@ public class InventoryItem extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("language")) {
+          value = new CommonLanguagesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.language = (Enumeration) value; // Enumeration<CommonLanguages>
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1119,6 +1156,19 @@ public class InventoryItem extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("associationType")) {
+          this.associationType = null;
+        } else if (name.equals("relatedItem")) {
+          this.relatedItem = null;
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1544,6 +1594,17 @@ public class InventoryItem extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("characteristicType")) {
+          this.characteristicType = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1992,6 +2053,23 @@ public class InventoryItem extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("lotNumber")) {
+          this.lotNumber = null;
+        } else if (name.equals("expiry")) {
+          this.expiry = null;
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("location")) {
+          this.location = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2948,6 +3026,42 @@ public class InventoryItem extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new InventoryItemStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<InventoryItemStatusCodes>
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("code")) {
+          this.getCode().remove(value);
+        } else if (name.equals("name")) {
+          this.getName().remove((InventoryItemNameComponent) value);
+        } else if (name.equals("responsibleOrganization")) {
+          this.getResponsibleOrganization().remove((InventoryItemResponsibleOrganizationComponent) value);
+        } else if (name.equals("description")) {
+          this.description = (InventoryItemDescriptionComponent) value; // InventoryItemDescriptionComponent
+        } else if (name.equals("inventoryStatus")) {
+          this.getInventoryStatus().remove(value);
+        } else if (name.equals("baseUnit")) {
+          this.baseUnit = null;
+        } else if (name.equals("netContent")) {
+          this.netContent = null;
+        } else if (name.equals("association")) {
+          this.getAssociation().remove((InventoryItemAssociationComponent) value);
+        } else if (name.equals("characteristic")) {
+          this.getCharacteristic().remove((InventoryItemCharacteristicComponent) value);
+        } else if (name.equals("instance")) {
+          this.instance = (InventoryItemInstanceComponent) value; // InventoryItemInstanceComponent
+        } else if (name.equals("productReference")) {
+          this.productReference = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

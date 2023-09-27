@@ -296,6 +296,17 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("id")) {
+      this.id = null;
+    } else if (name.equals("extension")) {
+      this.getExtension().remove(castToExtension(value));
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 3355:

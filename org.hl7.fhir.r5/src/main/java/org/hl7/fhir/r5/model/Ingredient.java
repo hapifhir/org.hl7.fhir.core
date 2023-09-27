@@ -325,6 +325,18 @@ public class Ingredient extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("role")) {
+          value = new IngredientManufacturerRoleEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.role = (Enumeration) value; // Enumeration<IngredientManufacturerRole>
+        } else if (name.equals("manufacturer")) {
+          this.manufacturer = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -561,6 +573,17 @@ public class Ingredient extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("strength")) {
+          this.getStrength().remove((IngredientSubstanceStrengthComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1259,6 +1282,29 @@ public class Ingredient extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("presentation[x]")) {
+          this.presentation = null;
+        } else if (name.equals("textPresentation")) {
+          this.textPresentation = null;
+        } else if (name.equals("concentration[x]")) {
+          this.concentration = null;
+        } else if (name.equals("textConcentration")) {
+          this.textConcentration = null;
+        } else if (name.equals("basis")) {
+          this.basis = null;
+        } else if (name.equals("measurementPoint")) {
+          this.measurementPoint = null;
+        } else if (name.equals("country")) {
+          this.getCountry().remove(value);
+        } else if (name.equals("referenceStrength")) {
+          this.getReferenceStrength().remove((IngredientSubstanceStrengthReferenceStrengthComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1725,6 +1771,21 @@ public class Ingredient extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("substance")) {
+          this.substance = null;
+        } else if (name.equals("strength[x]")) {
+          this.strength = null;
+        } else if (name.equals("measurementPoint")) {
+          this.measurementPoint = null;
+        } else if (name.equals("country")) {
+          this.getCountry().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2432,6 +2493,34 @@ public class Ingredient extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.identifier = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("for")) {
+          this.getFor().remove(value);
+        } else if (name.equals("role")) {
+          this.role = null;
+        } else if (name.equals("function")) {
+          this.getFunction().remove(value);
+        } else if (name.equals("group")) {
+          this.group = null;
+        } else if (name.equals("allergenicIndicator")) {
+          this.allergenicIndicator = null;
+        } else if (name.equals("comment")) {
+          this.comment = null;
+        } else if (name.equals("manufacturer")) {
+          this.getManufacturer().remove((IngredientManufacturerComponent) value);
+        } else if (name.equals("substance")) {
+          this.substance = (IngredientSubstanceComponent) value; // IngredientSubstanceComponent
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

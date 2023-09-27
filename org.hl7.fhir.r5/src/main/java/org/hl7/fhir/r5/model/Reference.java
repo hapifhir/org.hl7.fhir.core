@@ -368,6 +368,21 @@ The type is the Canonical URL of Resource Definition that is the type this refer
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("reference")) {
+          this.reference = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("identifier")) {
+          this.identifier = null;
+        } else if (name.equals("display")) {
+          this.display = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {

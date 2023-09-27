@@ -200,6 +200,17 @@ public class MedicinalProductPackaged extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("outerPackaging")) {
+        this.outerPackaging = null;
+      } else if (name.equals("immediatePackaging")) {
+        this.immediatePackaging = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1246,6 +1257,37 @@ public class MedicinalProductPackaged extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identifier")) {
+        this.getIdentifier().remove(castToIdentifier(value));
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("quantity")) {
+        this.quantity = null;
+      } else if (name.equals("material")) {
+        this.getMaterial().remove(castToCodeableConcept(value));
+      } else if (name.equals("alternateMaterial")) {
+        this.getAlternateMaterial().remove(castToCodeableConcept(value));
+      } else if (name.equals("device")) {
+        this.getDevice().remove(castToReference(value));
+      } else if (name.equals("manufacturedItem")) {
+        this.getManufacturedItem().remove(castToReference(value));
+      } else if (name.equals("packageItem")) {
+        this.getPackageItem().remove((MedicinalProductPackagedPackageItemComponent) value);
+      } else if (name.equals("physicalCharacteristics")) {
+        this.physicalCharacteristics = null;
+      } else if (name.equals("otherCharacteristics")) {
+        this.getOtherCharacteristics().remove(castToCodeableConcept(value));
+      } else if (name.equals("shelfLifeStorage")) {
+        this.getShelfLifeStorage().remove(castToProductShelfLife(value));
+      } else if (name.equals("manufacturer")) {
+        this.getManufacturer().remove(castToReference(value));
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2202,6 +2244,31 @@ public class MedicinalProductPackaged extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("subject")) {
+      this.getSubject().remove(castToReference(value));
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("legalStatusOfSupply")) {
+      this.legalStatusOfSupply = null;
+    } else if (name.equals("marketingStatus")) {
+      this.getMarketingStatus().remove(castToMarketingStatus(value));
+    } else if (name.equals("marketingAuthorization")) {
+      this.marketingAuthorization = null;
+    } else if (name.equals("manufacturer")) {
+      this.getManufacturer().remove(castToReference(value));
+    } else if (name.equals("batchIdentifier")) {
+      this.getBatchIdentifier().remove((MedicinalProductPackagedBatchIdentifierComponent) value);
+    } else if (name.equals("packageItem")) {
+      this.getPackageItem().remove((MedicinalProductPackagedPackageItemComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

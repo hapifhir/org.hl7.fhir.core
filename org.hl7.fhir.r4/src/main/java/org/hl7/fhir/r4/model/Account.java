@@ -467,6 +467,17 @@ public class Account extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("coverage")) {
+        this.coverage = null;
+      } else if (name.equals("priority")) {
+        this.priority = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -794,6 +805,19 @@ public class Account extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("party")) {
+        this.party = null;
+      } else if (name.equals("onHold")) {
+        this.onHold = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1748,6 +1772,35 @@ public class Account extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("subject")) {
+      this.getSubject().remove(castToReference(value));
+    } else if (name.equals("servicePeriod")) {
+      this.servicePeriod = null;
+    } else if (name.equals("coverage")) {
+      this.getCoverage().remove((CoverageComponent) value);
+    } else if (name.equals("owner")) {
+      this.owner = null;
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("guarantor")) {
+      this.getGuarantor().remove((GuarantorComponent) value);
+    } else if (name.equals("partOf")) {
+      this.partOf = null;
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

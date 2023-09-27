@@ -488,7 +488,7 @@ public class FHIRLexer {
           i = i + 4;
           break;
         default:
-          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i), currentLocation);
+          throw new FHIRLexerException("Unknown FHIRPath character escape \\"+s.charAt(i), currentLocation);
         }
       } else {
         b.append(ch);
@@ -537,7 +537,7 @@ public class FHIRLexer {
           i = i + 4;
           break;
         default:
-          throw new FHIRLexerException("Unknown character escape \\"+s.charAt(i), currentLocation);
+          throw new FHIRLexerException("Unknown FHIRPath character escape \\"+s.charAt(i), currentLocation);
         }
       } else {
         b.append(ch);

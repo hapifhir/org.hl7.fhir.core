@@ -1091,6 +1091,37 @@ public class PaymentNotice extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("request")) {
+      this.request = null;
+    } else if (name.equals("response")) {
+      this.response = null;
+    } else if (name.equals("created")) {
+      this.created = null;
+    } else if (name.equals("provider")) {
+      this.provider = null;
+    } else if (name.equals("payment")) {
+      this.payment = null;
+    } else if (name.equals("paymentDate")) {
+      this.paymentDate = null;
+    } else if (name.equals("payee")) {
+      this.payee = null;
+    } else if (name.equals("recipient")) {
+      this.recipient = null;
+    } else if (name.equals("amount")) {
+      this.amount = null;
+    } else if (name.equals("paymentStatus")) {
+      this.paymentStatus = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1618432855:

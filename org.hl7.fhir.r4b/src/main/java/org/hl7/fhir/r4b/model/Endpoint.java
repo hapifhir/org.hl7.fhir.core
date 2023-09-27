@@ -1104,6 +1104,35 @@ public class Endpoint extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("connectionType")) {
+      this.connectionType = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("managingOrganization")) {
+      this.managingOrganization = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("period")) {
+      this.period = null;
+    } else if (name.equals("payloadType")) {
+      this.getPayloadType().remove(value);
+    } else if (name.equals("payloadMimeType")) {
+      this.getPayloadMimeType().remove(value);
+    } else if (name.equals("address")) {
+      this.address = null;
+    } else if (name.equals("header")) {
+      this.getHeader().remove(value);
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1618432855:

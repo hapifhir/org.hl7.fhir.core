@@ -860,6 +860,21 @@ public class StructureDefinition extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identity")) {
+        this.identity = null;
+      } else if (name.equals("uri")) {
+        this.uri = null;
+      } else if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("comment")) {
+        this.comment = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1162,6 +1177,17 @@ public class StructureDefinition extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("expression")) {
+        this.expression = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1365,6 +1391,15 @@ public class StructureDefinition extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("element")) {
+        this.getElement().remove(castToElementDefinition(value));
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1438,6 +1473,31 @@ public class StructureDefinition extends MetadataResource {
     public String fhirType() {
       return "StructureDefinition.snapshot";
 
+    }
+
+    public ElementDefinition getElementByPath(String path) {
+      if (path == null) {
+        return null;
+      }
+      for (ElementDefinition ed : getElement()) {
+        if (path.equals(ed.getPath()) || (path+"[x]").equals(ed.getPath())) {
+          return ed;
+        }
+      }
+      return null;
+    }
+
+
+    public ElementDefinition getElementById(String id) {
+      if (id == null) {
+        return null;
+      }
+      for (ElementDefinition ed : getElement()) {
+        if (id.equals(ed.getId())) {
+          return ed;
+        }
+      }
+      return null;
     }
 
   }
@@ -1564,6 +1624,15 @@ public class StructureDefinition extends MetadataResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("element")) {
+        this.getElement().remove(castToElementDefinition(value));
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3800,6 +3869,67 @@ public class StructureDefinition extends MetadataResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(castToContactDetail(value));
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(castToUsageContext(value));
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(castToCodeableConcept(value));
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("keyword")) {
+      this.getKeyword().remove(castToCoding(value));
+    } else if (name.equals("fhirVersion")) {
+      this.fhirVersion = null;
+    } else if (name.equals("mapping")) {
+      this.getMapping().remove((StructureDefinitionMappingComponent) value);
+    } else if (name.equals("kind")) {
+      this.kind = null;
+    } else if (name.equals("abstract")) {
+      this.abstract_ = null;
+    } else if (name.equals("context")) {
+      this.getContext().remove((StructureDefinitionContextComponent) value);
+    } else if (name.equals("contextInvariant")) {
+      this.getContextInvariant().remove(castToString(value));
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("baseDefinition")) {
+      this.baseDefinition = null;
+    } else if (name.equals("derivation")) {
+      this.derivation = null;
+    } else if (name.equals("snapshot")) {
+      this.snapshot = (StructureDefinitionSnapshotComponent) value; // StructureDefinitionSnapshotComponent
+    } else if (name.equals("differential")) {
+      this.differential = (StructureDefinitionDifferentialComponent) value; // StructureDefinitionDifferentialComponent
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 116079:
@@ -4698,5 +4828,9 @@ public class StructureDefinition extends MetadataResource {
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_BASE = new ca.uhn.fhir.model.api.Include(
       "StructureDefinition:base").toLocked();
+
+  public String getVersionedUrl() {
+    return hasVersion() ? getUrl()+"|"+getVersion() : getUrl();
+  }
 
 }

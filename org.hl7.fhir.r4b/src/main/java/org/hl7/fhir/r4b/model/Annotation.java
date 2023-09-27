@@ -332,6 +332,19 @@ public class Annotation extends DataType implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("author[x]")) {
+      this.author = null;
+    } else if (name.equals("time")) {
+      this.time = null;
+    } else if (name.equals("text")) {
+      this.text = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 1475597077:

@@ -264,6 +264,17 @@ public class MedicinalProductContraindication extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("therapyRelationshipType")) {
+        this.therapyRelationshipType = null;
+      } else if (name.equals("medication[x]")) {
+        this.medication = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -917,6 +928,27 @@ public class MedicinalProductContraindication extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("subject")) {
+      this.getSubject().remove(castToReference(value));
+    } else if (name.equals("disease")) {
+      this.disease = null;
+    } else if (name.equals("diseaseStatus")) {
+      this.diseaseStatus = null;
+    } else if (name.equals("comorbidity")) {
+      this.getComorbidity().remove(castToCodeableConcept(value));
+    } else if (name.equals("therapeuticIndication")) {
+      this.getTherapeuticIndication().remove(castToReference(value));
+    } else if (name.equals("otherTherapy")) {
+      this.getOtherTherapy().remove((MedicinalProductContraindicationOtherTherapyComponent) value);
+    } else if (name.equals("population")) {
+      this.getPopulation().remove(castToPopulation(value));
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

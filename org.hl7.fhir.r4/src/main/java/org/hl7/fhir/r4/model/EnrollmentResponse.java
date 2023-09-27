@@ -861,6 +861,29 @@ public class EnrollmentResponse extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("request")) {
+      this.request = null;
+    } else if (name.equals("outcome")) {
+      this.outcome = null;
+    } else if (name.equals("disposition")) {
+      this.disposition = null;
+    } else if (name.equals("created")) {
+      this.created = null;
+    } else if (name.equals("organization")) {
+      this.organization = null;
+    } else if (name.equals("requestProvider")) {
+      this.requestProvider = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1618432855:

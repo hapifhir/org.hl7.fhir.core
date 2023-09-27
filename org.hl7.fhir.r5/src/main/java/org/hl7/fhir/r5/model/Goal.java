@@ -565,6 +565,19 @@ public class Goal extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("measure")) {
+          this.measure = null;
+        } else if (name.equals("detail[x]")) {
+          this.detail = null;
+        } else if (name.equals("due[x]")) {
+          this.due = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1661,6 +1674,46 @@ public class Goal extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("lifecycleStatus")) {
+          value = new GoalLifecycleStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.lifecycleStatus = (Enumeration) value; // Enumeration<GoalLifecycleStatus>
+        } else if (name.equals("achievementStatus")) {
+          this.achievementStatus = null;
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("continuous")) {
+          this.continuous = null;
+        } else if (name.equals("priority")) {
+          this.priority = null;
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("start[x]")) {
+          this.start = null;
+        } else if (name.equals("target")) {
+          this.getTarget().remove((GoalTargetComponent) value);
+        } else if (name.equals("statusDate")) {
+          this.statusDate = null;
+        } else if (name.equals("statusReason")) {
+          this.statusReason = null;
+        } else if (name.equals("source")) {
+          this.source = null;
+        } else if (name.equals("addresses")) {
+          this.getAddresses().remove(value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("outcome")) {
+          this.getOutcome().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
