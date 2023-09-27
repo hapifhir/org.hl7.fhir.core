@@ -356,6 +356,17 @@ A coverage may only be responsible for specific types of charges, and the sequen
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("coverage")) {
+          this.coverage = null;
+        } else if (name.equals("priority")) {
+          this.priority = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -622,6 +633,19 @@ A coverage may only be responsible for specific types of charges, and the sequen
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("party")) {
+          this.party = null;
+        } else if (name.equals("onHold")) {
+          this.onHold = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1121,6 +1145,25 @@ A coverage may only be responsible for specific types of charges, and the sequen
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("sequence")) {
+          this.sequence = null;
+        } else if (name.equals("condition")) {
+          this.condition = null;
+        } else if (name.equals("dateOfDiagnosis")) {
+          this.dateOfDiagnosis = null;
+        } else if (name.equals("type")) {
+          this.getType().remove(value);
+        } else if (name.equals("onAdmission")) {
+          this.onAdmission = null;
+        } else if (name.equals("packageCode")) {
+          this.getPackageCode().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1657,6 +1700,25 @@ A coverage may only be responsible for specific types of charges, and the sequen
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("sequence")) {
+          this.sequence = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("dateOfService")) {
+          this.dateOfService = null;
+        } else if (name.equals("type")) {
+          this.getType().remove(value);
+        } else if (name.equals("packageCode")) {
+          this.getPackageCode().remove(value);
+        } else if (name.equals("device")) {
+          this.getDevice().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1904,6 +1966,17 @@ A coverage may only be responsible for specific types of charges, and the sequen
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("relationship")) {
+          this.relationship = null;
+        } else if (name.equals("account")) {
+          this.account = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2215,6 +2288,21 @@ A coverage may only be responsible for specific types of charges, and the sequen
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("aggregate")) {
+          this.aggregate = null;
+        } else if (name.equals("term")) {
+          this.term = null;
+        } else if (name.equals("estimate")) {
+          this.estimate = null;
+        } else if (name.equals("amount")) {
+          this.amount = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3356,6 +3444,48 @@ A coverage may only be responsible for specific types of charges, and the sequen
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new AccountStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<AccountStatus>
+        } else if (name.equals("billingStatus")) {
+          this.billingStatus = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("subject")) {
+          this.getSubject().remove(value);
+        } else if (name.equals("servicePeriod")) {
+          this.servicePeriod = null;
+        } else if (name.equals("coverage")) {
+          this.getCoverage().remove((CoverageComponent) value);
+        } else if (name.equals("owner")) {
+          this.owner = null;
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("guarantor")) {
+          this.getGuarantor().remove((GuarantorComponent) value);
+        } else if (name.equals("diagnosis")) {
+          this.getDiagnosis().remove((AccountDiagnosisComponent) value);
+        } else if (name.equals("procedure")) {
+          this.getProcedure().remove((AccountProcedureComponent) value);
+        } else if (name.equals("relatedAccount")) {
+          this.getRelatedAccount().remove((AccountRelatedAccountComponent) value);
+        } else if (name.equals("currency")) {
+          this.currency = null;
+        } else if (name.equals("balance")) {
+          this.getBalance().remove((AccountBalanceComponent) value);
+        } else if (name.equals("calculatedAt")) {
+          this.calculatedAt = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

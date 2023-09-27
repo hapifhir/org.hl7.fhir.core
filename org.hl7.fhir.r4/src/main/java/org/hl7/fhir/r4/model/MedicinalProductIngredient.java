@@ -321,6 +321,21 @@ public class MedicinalProductIngredient extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("group")) {
+        this.group = null;
+      } else if (name.equals("confidentiality")) {
+        this.confidentiality = null;
+      } else if (name.equals("strength")) {
+        this.getStrength().remove((MedicinalProductIngredientSpecifiedSubstanceStrengthComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -918,6 +933,28 @@ public class MedicinalProductIngredient extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("presentation")) {
+        this.presentation = null;
+      } else if (name.equals("presentationLowLimit")) {
+        this.presentationLowLimit = null;
+      } else if (name.equals("concentration")) {
+        this.concentration = null;
+      } else if (name.equals("concentrationLowLimit")) {
+        this.concentrationLowLimit = null;
+      } else if (name.equals("measurementPoint")) {
+        this.measurementPoint = null;
+      } else if (name.equals("country")) {
+        this.getCountry().remove(castToCodeableConcept(value));
+      } else if (name.equals("referenceStrength")) {
+        this.getReferenceStrength()
+            .remove((MedicinalProductIngredientSpecifiedSubstanceStrengthReferenceStrengthComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1406,6 +1443,23 @@ public class MedicinalProductIngredient extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("substance")) {
+        this.substance = null;
+      } else if (name.equals("strength")) {
+        this.strength = null;
+      } else if (name.equals("strengthLowLimit")) {
+        this.strengthLowLimit = null;
+      } else if (name.equals("measurementPoint")) {
+        this.measurementPoint = null;
+      } else if (name.equals("country")) {
+        this.getCountry().remove(castToCodeableConcept(value));
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1696,6 +1750,17 @@ public class MedicinalProductIngredient extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("strength")) {
+        this.getStrength().remove((MedicinalProductIngredientSpecifiedSubstanceStrengthComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2225,6 +2290,25 @@ public class MedicinalProductIngredient extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.identifier = null;
+    } else if (name.equals("role")) {
+      this.role = null;
+    } else if (name.equals("allergenicIndicator")) {
+      this.allergenicIndicator = null;
+    } else if (name.equals("manufacturer")) {
+      this.getManufacturer().remove(castToReference(value));
+    } else if (name.equals("specifiedSubstance")) {
+      this.getSpecifiedSubstance().remove((MedicinalProductIngredientSpecifiedSubstanceComponent) value);
+    } else if (name.equals("substance")) {
+      this.substance = (MedicinalProductIngredientSubstanceComponent) value; // MedicinalProductIngredientSubstanceComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

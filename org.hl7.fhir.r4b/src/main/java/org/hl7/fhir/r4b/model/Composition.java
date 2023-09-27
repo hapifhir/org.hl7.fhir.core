@@ -466,6 +466,19 @@ public class Composition extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("mode")) {
+        this.mode = null;
+      } else if (name.equals("time")) {
+        this.time = null;
+      } else if (name.equals("party")) {
+        this.party = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -771,6 +784,17 @@ public class Composition extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("target[x]")) {
+        this.target = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1122,6 +1146,19 @@ public class Composition extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.getCode().remove(value);
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else if (name.equals("detail")) {
+        this.getDetail().remove(value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1957,6 +1994,33 @@ public class Composition extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("title")) {
+        this.title = null;
+      } else if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("author")) {
+        this.getAuthor().remove(value);
+      } else if (name.equals("focus")) {
+        this.focus = null;
+      } else if (name.equals("text")) {
+        this.text = null;
+      } else if (name.equals("mode")) {
+        this.mode = null;
+      } else if (name.equals("orderedBy")) {
+        this.orderedBy = null;
+      } else if (name.equals("entry")) {
+        this.getEntry().remove(value);
+      } else if (name.equals("emptyReason")) {
+        this.emptyReason = null;
+      } else if (name.equals("section")) {
+        this.getSection().remove((SectionComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3195,6 +3259,43 @@ public class Composition extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.identifier = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove(value);
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("author")) {
+      this.getAuthor().remove(value);
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("confidentiality")) {
+      this.confidentiality = null;
+    } else if (name.equals("attester")) {
+      this.getAttester().remove((CompositionAttesterComponent) value);
+    } else if (name.equals("custodian")) {
+      this.custodian = null;
+    } else if (name.equals("relatesTo")) {
+      this.getRelatesTo().remove((CompositionRelatesToComponent) value);
+    } else if (name.equals("event")) {
+      this.getEvent().remove((CompositionEventComponent) value);
+    } else if (name.equals("section")) {
+      this.getSection().remove((SectionComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

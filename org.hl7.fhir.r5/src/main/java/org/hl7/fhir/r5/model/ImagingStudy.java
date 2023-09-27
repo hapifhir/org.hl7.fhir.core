@@ -952,6 +952,37 @@ public class ImagingStudy extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("uid")) {
+          this.uid = null;
+        } else if (name.equals("number")) {
+          this.number = null;
+        } else if (name.equals("modality")) {
+          this.modality = null;
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("numberOfInstances")) {
+          this.numberOfInstances = null;
+        } else if (name.equals("endpoint")) {
+          this.getEndpoint().remove(value);
+        } else if (name.equals("bodySite")) {
+          this.bodySite = null;
+        } else if (name.equals("laterality")) {
+          this.laterality = null;
+        } else if (name.equals("specimen")) {
+          this.getSpecimen().remove(value);
+        } else if (name.equals("started")) {
+          this.started = null;
+        } else if (name.equals("performer")) {
+          this.getPerformer().remove((ImagingStudySeriesPerformerComponent) value);
+        } else if (name.equals("instance")) {
+          this.getInstance().remove((ImagingStudySeriesInstanceComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1245,6 +1276,17 @@ public class ImagingStudy extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("function")) {
+          this.function = null;
+        } else if (name.equals("actor")) {
+          this.actor = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1601,6 +1643,21 @@ public class ImagingStudy extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("uid")) {
+          this.uid = null;
+        } else if (name.equals("sopClass")) {
+          this.sopClass = null;
+        } else if (name.equals("number")) {
+          this.number = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2827,6 +2884,50 @@ public class ImagingStudy extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new ImagingStudyStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<ImagingStudyStatus>
+        } else if (name.equals("modality")) {
+          this.getModality().remove(value);
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("started")) {
+          this.started = null;
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("partOf")) {
+          this.getPartOf().remove(value);
+        } else if (name.equals("referrer")) {
+          this.referrer = null;
+        } else if (name.equals("endpoint")) {
+          this.getEndpoint().remove(value);
+        } else if (name.equals("numberOfSeries")) {
+          this.numberOfSeries = null;
+        } else if (name.equals("numberOfInstances")) {
+          this.numberOfInstances = null;
+        } else if (name.equals("procedure")) {
+          this.getProcedure().remove(value);
+        } else if (name.equals("location")) {
+          this.location = null;
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("series")) {
+          this.getSeries().remove((ImagingStudySeriesComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

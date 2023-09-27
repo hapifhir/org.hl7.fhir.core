@@ -35388,7 +35388,7 @@ public class JsonParser extends JsonParserBase {
       return parseVisionPrescription(json);
 
     } else {
-      throw new FHIRFormatError("Unknown.Unrecognised resource type '"+t+"' (in property 'resourceType')");
+      throw new FHIRFormatError("Unknown/Unrecognised resource type '"+t+"' (in property 'resourceType')");
     }
   }
 

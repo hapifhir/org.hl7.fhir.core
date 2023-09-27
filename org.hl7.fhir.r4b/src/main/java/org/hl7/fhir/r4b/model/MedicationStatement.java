@@ -1651,6 +1651,47 @@ public class MedicationStatement extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("basedOn")) {
+      this.getBasedOn().remove(value);
+    } else if (name.equals("partOf")) {
+      this.getPartOf().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("statusReason")) {
+      this.getStatusReason().remove(value);
+    } else if (name.equals("category")) {
+      this.category = null;
+    } else if (name.equals("medication[x]")) {
+      this.medication = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("context")) {
+      this.context = null;
+    } else if (name.equals("effective[x]")) {
+      this.effective = null;
+    } else if (name.equals("dateAsserted")) {
+      this.dateAsserted = null;
+    } else if (name.equals("informationSource")) {
+      this.informationSource = null;
+    } else if (name.equals("derivedFrom")) {
+      this.getDerivedFrom().remove(value);
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(value);
+    } else if (name.equals("reasonReference")) {
+      this.getReasonReference().remove(value);
+    } else if (name.equals("note")) {
+      this.getNote().remove(value);
+    } else if (name.equals("dosage")) {
+      this.getDosage().remove(value);
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1618432855:

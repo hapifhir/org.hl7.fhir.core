@@ -660,6 +660,17 @@ public class Encounter extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("status")) {
+        this.status = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -885,6 +896,17 @@ public class Encounter extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("class")) {
+        this.class_ = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1214,6 +1236,19 @@ public class Encounter extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.getType().remove(castToCodeableConcept(value));
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else if (name.equals("individual")) {
+        this.individual = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1575,6 +1610,19 @@ public class Encounter extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("condition")) {
+        this.condition = null;
+      } else if (name.equals("use")) {
+        this.use = null;
+      } else if (name.equals("rank")) {
+        this.rank = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2282,6 +2330,31 @@ public class Encounter extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("preAdmissionIdentifier")) {
+        this.preAdmissionIdentifier = null;
+      } else if (name.equals("origin")) {
+        this.origin = null;
+      } else if (name.equals("admitSource")) {
+        this.admitSource = null;
+      } else if (name.equals("reAdmission")) {
+        this.reAdmission = null;
+      } else if (name.equals("dietPreference")) {
+        this.getDietPreference().remove(castToCodeableConcept(value));
+      } else if (name.equals("specialCourtesy")) {
+        this.getSpecialCourtesy().remove(castToCodeableConcept(value));
+      } else if (name.equals("specialArrangement")) {
+        this.getSpecialArrangement().remove(castToCodeableConcept(value));
+      } else if (name.equals("destination")) {
+        this.destination = null;
+      } else if (name.equals("dischargeDisposition")) {
+        this.dischargeDisposition = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2755,6 +2828,21 @@ public class Encounter extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("location")) {
+        this.location = null;
+      } else if (name.equals("status")) {
+        this.status = null;
+      } else if (name.equals("physicalType")) {
+        this.physicalType = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -4685,6 +4773,59 @@ public class Encounter extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("statusHistory")) {
+      this.getStatusHistory().remove((StatusHistoryComponent) value);
+    } else if (name.equals("class")) {
+      this.class_ = null;
+    } else if (name.equals("classHistory")) {
+      this.getClassHistory().remove((ClassHistoryComponent) value);
+    } else if (name.equals("type")) {
+      this.getType().remove(castToCodeableConcept(value));
+    } else if (name.equals("serviceType")) {
+      this.serviceType = null;
+    } else if (name.equals("priority")) {
+      this.priority = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("episodeOfCare")) {
+      this.getEpisodeOfCare().remove(castToReference(value));
+    } else if (name.equals("basedOn")) {
+      this.getBasedOn().remove(castToReference(value));
+    } else if (name.equals("participant")) {
+      this.getParticipant().remove((EncounterParticipantComponent) value);
+    } else if (name.equals("appointment")) {
+      this.getAppointment().remove(castToReference(value));
+    } else if (name.equals("period")) {
+      this.period = null;
+    } else if (name.equals("length")) {
+      this.length = null;
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(castToCodeableConcept(value));
+    } else if (name.equals("reasonReference")) {
+      this.getReasonReference().remove(castToReference(value));
+    } else if (name.equals("diagnosis")) {
+      this.getDiagnosis().remove((DiagnosisComponent) value);
+    } else if (name.equals("account")) {
+      this.getAccount().remove(castToReference(value));
+    } else if (name.equals("hospitalization")) {
+      this.hospitalization = (EncounterHospitalizationComponent) value; // EncounterHospitalizationComponent
+    } else if (name.equals("location")) {
+      this.getLocation().remove((EncounterLocationComponent) value);
+    } else if (name.equals("serviceProvider")) {
+      this.serviceProvider = null;
+    } else if (name.equals("partOf")) {
+      this.partOf = null;
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

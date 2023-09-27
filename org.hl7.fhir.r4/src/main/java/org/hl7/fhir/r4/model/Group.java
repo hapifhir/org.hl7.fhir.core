@@ -637,6 +637,21 @@ public class Group extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("value[x]")) {
+        this.value = null;
+      } else if (name.equals("exclude")) {
+        this.exclude = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1011,6 +1026,19 @@ public class Group extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("entity")) {
+        this.entity = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else if (name.equals("inactive")) {
+        this.inactive = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1886,6 +1914,33 @@ public class Group extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("active")) {
+      this.active = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("actual")) {
+      this.actual = null;
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("quantity")) {
+      this.quantity = null;
+    } else if (name.equals("managingEntity")) {
+      this.managingEntity = null;
+    } else if (name.equals("characteristic")) {
+      this.getCharacteristic().remove((GroupCharacteristicComponent) value);
+    } else if (name.equals("member")) {
+      this.getMember().remove((GroupMemberComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

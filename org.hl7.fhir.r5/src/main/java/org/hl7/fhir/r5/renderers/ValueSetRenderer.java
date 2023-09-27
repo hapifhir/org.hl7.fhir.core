@@ -65,7 +65,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.ibm.icu.impl.locale.StringTokenIterator;
 
 public class ValueSetRenderer extends TerminologyRenderer {
 

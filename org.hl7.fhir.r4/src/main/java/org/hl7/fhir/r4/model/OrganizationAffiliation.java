@@ -1111,6 +1111,37 @@ public class OrganizationAffiliation extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("active")) {
+      this.active = null;
+    } else if (name.equals("period")) {
+      this.period = null;
+    } else if (name.equals("organization")) {
+      this.organization = null;
+    } else if (name.equals("participatingOrganization")) {
+      this.participatingOrganization = null;
+    } else if (name.equals("network")) {
+      this.getNetwork().remove(castToReference(value));
+    } else if (name.equals("code")) {
+      this.getCode().remove(castToCodeableConcept(value));
+    } else if (name.equals("specialty")) {
+      this.getSpecialty().remove(castToCodeableConcept(value));
+    } else if (name.equals("location")) {
+      this.getLocation().remove(castToReference(value));
+    } else if (name.equals("healthcareService")) {
+      this.getHealthcareService().remove(castToReference(value));
+    } else if (name.equals("telecom")) {
+      this.getTelecom().remove(castToContactPoint(value));
+    } else if (name.equals("endpoint")) {
+      this.getEndpoint().remove(castToReference(value));
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1618432855:

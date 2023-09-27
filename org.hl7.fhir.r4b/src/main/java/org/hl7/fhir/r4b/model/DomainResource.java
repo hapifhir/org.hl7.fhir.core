@@ -400,6 +400,21 @@ public abstract class DomainResource extends Resource
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("text")) {
+      this.text = null;
+    } else if (name.equals("contained")) {
+      this.getContained().remove(value);
+    } else if (name.equals("extension")) {
+      this.getExtension().remove(value);
+    } else if (name.equals("modifierExtension")) {
+      this.getModifierExtension().remove(value);
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 3556653:

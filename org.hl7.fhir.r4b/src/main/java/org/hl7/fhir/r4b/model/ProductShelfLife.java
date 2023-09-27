@@ -350,6 +350,19 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("period[x]")) {
+      this.period = null;
+    } else if (name.equals("specialPrecautionsForStorage")) {
+      this.getSpecialPrecautionsForStorage().remove(value);
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 3575610:

@@ -176,6 +176,17 @@ public class Range extends Type implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("low")) {
+      this.low = null;
+    } else if (name.equals("high")) {
+      this.high = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 107348:

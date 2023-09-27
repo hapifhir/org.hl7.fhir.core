@@ -545,6 +545,27 @@ public class PlanDefinition extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("category")) {
+        this.category = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("priority")) {
+        this.priority = null;
+      } else if (name.equals("start")) {
+        this.start = null;
+      } else if (name.equals("addresses")) {
+        this.getAddresses().remove(value);
+      } else if (name.equals("documentation")) {
+        this.getDocumentation().remove(value);
+      } else if (name.equals("target")) {
+        this.getTarget().remove((PlanDefinitionGoalTargetComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -974,6 +995,19 @@ public class PlanDefinition extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("measure")) {
+        this.measure = null;
+      } else if (name.equals("detail[x]")) {
+        this.detail = null;
+      } else if (name.equals("due")) {
+        this.due = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3440,6 +3474,67 @@ public class PlanDefinition extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("prefix")) {
+        this.prefix = null;
+      } else if (name.equals("title")) {
+        this.title = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("textEquivalent")) {
+        this.textEquivalent = null;
+      } else if (name.equals("priority")) {
+        this.priority = null;
+      } else if (name.equals("code")) {
+        this.getCode().remove(value);
+      } else if (name.equals("reason")) {
+        this.getReason().remove(value);
+      } else if (name.equals("documentation")) {
+        this.getDocumentation().remove(value);
+      } else if (name.equals("goalId")) {
+        this.getGoalId().remove(value);
+      } else if (name.equals("subject[x]")) {
+        this.subject = null;
+      } else if (name.equals("trigger")) {
+        this.getTrigger().remove(value);
+      } else if (name.equals("condition")) {
+        this.getCondition().remove((PlanDefinitionActionConditionComponent) value);
+      } else if (name.equals("input")) {
+        this.getInput().remove(value);
+      } else if (name.equals("output")) {
+        this.getOutput().remove(value);
+      } else if (name.equals("relatedAction")) {
+        this.getRelatedAction().remove((PlanDefinitionActionRelatedActionComponent) value);
+      } else if (name.equals("timing[x]")) {
+        this.timing = null;
+      } else if (name.equals("participant")) {
+        this.getParticipant().remove((PlanDefinitionActionParticipantComponent) value);
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("groupingBehavior")) {
+        this.groupingBehavior = null;
+      } else if (name.equals("selectionBehavior")) {
+        this.selectionBehavior = null;
+      } else if (name.equals("requiredBehavior")) {
+        this.requiredBehavior = null;
+      } else if (name.equals("precheckBehavior")) {
+        this.precheckBehavior = null;
+      } else if (name.equals("cardinalityBehavior")) {
+        this.cardinalityBehavior = null;
+      } else if (name.equals("definition[x]")) {
+        this.definition = null;
+      } else if (name.equals("transform")) {
+        this.transform = null;
+      } else if (name.equals("dynamicValue")) {
+        this.getDynamicValue().remove((PlanDefinitionActionDynamicValueComponent) value);
+      } else if (name.equals("action")) {
+        this.getAction().remove((PlanDefinitionActionComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -3989,6 +4084,17 @@ public class PlanDefinition extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("kind")) {
+        this.kind = null;
+      } else if (name.equals("expression")) {
+        this.expression = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -4361,6 +4467,19 @@ public class PlanDefinition extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("actionId")) {
+        this.actionId = null;
+      } else if (name.equals("relationship")) {
+        this.relationship = null;
+      } else if (name.equals("offset[x]")) {
+        this.offset = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -4627,6 +4746,17 @@ public class PlanDefinition extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("role")) {
+        this.role = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -4918,6 +5048,17 @@ public class PlanDefinition extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("path")) {
+        this.path = null;
+      } else if (name.equals("expression")) {
+        this.expression = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -7652,6 +7793,75 @@ public class PlanDefinition extends CanonicalResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("subtitle")) {
+      this.subtitle = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("subject[x]")) {
+      this.subject = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(value);
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(value);
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("usage")) {
+      this.usage = null;
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("approvalDate")) {
+      this.approvalDate = null;
+    } else if (name.equals("lastReviewDate")) {
+      this.lastReviewDate = null;
+    } else if (name.equals("effectivePeriod")) {
+      this.effectivePeriod = null;
+    } else if (name.equals("topic")) {
+      this.getTopic().remove(value);
+    } else if (name.equals("author")) {
+      this.getAuthor().remove(value);
+    } else if (name.equals("editor")) {
+      this.getEditor().remove(value);
+    } else if (name.equals("reviewer")) {
+      this.getReviewer().remove(value);
+    } else if (name.equals("endorser")) {
+      this.getEndorser().remove(value);
+    } else if (name.equals("relatedArtifact")) {
+      this.getRelatedArtifact().remove(value);
+    } else if (name.equals("library")) {
+      this.getLibrary().remove(value);
+    } else if (name.equals("goal")) {
+      this.getGoal().remove((PlanDefinitionGoalComponent) value);
+    } else if (name.equals("action")) {
+      this.getAction().remove((PlanDefinitionActionComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

@@ -646,6 +646,29 @@ public class SubstanceNucleicAcid extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("subunit")) {
+        this.subunit = null;
+      } else if (name.equals("sequence")) {
+        this.sequence = null;
+      } else if (name.equals("length")) {
+        this.length = null;
+      } else if (name.equals("sequenceAttachment")) {
+        this.sequenceAttachment = null;
+      } else if (name.equals("fivePrime")) {
+        this.fivePrime = null;
+      } else if (name.equals("threePrime")) {
+        this.threePrime = null;
+      } else if (name.equals("linkage")) {
+        this.getLinkage().remove((SubstanceNucleicAcidSubunitLinkageComponent) value);
+      } else if (name.equals("sugar")) {
+        this.getSugar().remove((SubstanceNucleicAcidSubunitSugarComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1135,6 +1158,21 @@ public class SubstanceNucleicAcid extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("connectivity")) {
+        this.connectivity = null;
+      } else if (name.equals("identifier")) {
+        this.identifier = null;
+      } else if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("residueSite")) {
+        this.residueSite = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1488,6 +1526,19 @@ public class SubstanceNucleicAcid extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identifier")) {
+        this.identifier = null;
+      } else if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("residueSite")) {
+        this.residueSite = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1981,6 +2032,23 @@ public class SubstanceNucleicAcid extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("sequenceType")) {
+      this.sequenceType = null;
+    } else if (name.equals("numberOfSubunits")) {
+      this.numberOfSubunits = null;
+    } else if (name.equals("areaOfHybridisation")) {
+      this.areaOfHybridisation = null;
+    } else if (name.equals("oligoNucleotideType")) {
+      this.oligoNucleotideType = null;
+    } else if (name.equals("subunit")) {
+      this.getSubunit().remove((SubstanceNucleicAcidSubunitComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

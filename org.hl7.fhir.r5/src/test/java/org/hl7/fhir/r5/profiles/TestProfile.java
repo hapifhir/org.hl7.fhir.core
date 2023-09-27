@@ -37,13 +37,16 @@ public class TestProfile extends PEGeneratedBase {
   private static final String CANONICAL_URL = "http://hl7.org/fhir/test/StructureDefinition/pe-profile1|0.1";
 
   private String id;  // 
-  private List<Identifier> identifiers;  // Business Identifier for observation
+  private List<Extension> extensions = new ArrayList<>();  // Extension
+  private String simple;  // A simple extension
+  private TestComplexExtension complex;  // A complex extension
+  private Identifier identifier;  // Business Identifier for observation
   private String status;// @NotNull  // registered | preliminary | final | amended +
   private CodeableConcept code;// @NotNull  // Sexual Orientation
   private Reference subject;// @NotNull  // Who and/or what the observation is about
   private Reference encounter;  // Healthcare event during which this observation is made
   private Date effective;// @NotNull  // Clinically relevant time/time-period for observation
-  private List<Reference> performers;  // Who is responsible for the observation
+  private List<Reference> performers = new ArrayList<>();  // Who is responsible for the observation
   private TestDatatypeProfile valueCodeableConcept;  // Sexual Orientation
 
   /**
@@ -86,11 +89,20 @@ public class TestProfile extends PEGeneratedBase {
     if (src.hasChild("id")) {
       id = ((IdType) src.child("id").asDataType()).getValue();
     }
-    for (PEInstance item : src.children("identifiers")) {
-      identifiers.add((Identifier) item.asDataType());
+    for (PEInstance item : src.children("extension")) {
+      extensions.add((Extension) item.asDataType());
+    }
+    if (src.hasChild("simple")) {
+      simple = src.child("simple").asDataType().primitiveValue();
+    }
+    if (src.hasChild("complex")) {
+      complex = TestComplexExtension.fromSource(src.child("complex"));
+    }
+    if (src.hasChild("identifier")) {
+      identifier = (Identifier) src.child("identifier").asDataType();
     }
     if (src.hasChild("status")) {
-      status = ((CodeType) src.child("status").asDataType()).getValue();
+      status = src.child("status").asDataType().primitiveValue();
     }
     if (src.hasChild("code")) {
       code = (CodeableConcept) src.child("code").asDataType();
@@ -104,7 +116,7 @@ public class TestProfile extends PEGeneratedBase {
     if (src.hasChild("effective")) {
       effective = ((DateTimeType) src.child("effective").asDataType()).getValue();
     }
-    for (PEInstance item : src.children("performers")) {
+    for (PEInstance item : src.children("performer")) {
       performers.add((Reference) item.asDataType());
     }
     if (src.hasChild("valueCodeableConcept")) {
@@ -139,6 +151,54 @@ public class TestProfile extends PEGeneratedBase {
   }
 
   public void save(PEInstance tgt, boolean nulls) {
+    tgt.clear("id");
+    if (id != null) {
+      tgt.makeChild("id").data().setProperty("value", new IdType(id));
+    }
+    tgt.clear("extension");
+    for (Extension item : extensions) {
+      tgt.addChild("extension", item);
+    }
+    tgt.clear("simple");
+    if (simple != null) {
+      tgt.makeChild("simple").data().setProperty("value[x]", new CodeType(simple));
+    }
+    tgt.clear("complex");
+    if (complex != null) {
+      complex.save(tgt.makeChild("complex"), nulls);
+    }
+    tgt.clear("identifier");
+    if (identifier != null) {
+      tgt.addChild("identifier", identifier);
+    }
+    tgt.clear("status");
+    if (status != null) {
+      tgt.makeChild("status").data().setProperty("value", new StringType(status));
+    }
+    tgt.clear("code");
+    if (code != null) {
+      tgt.addChild("code", code);
+    }
+    tgt.clear("subject");
+    if (subject != null) {
+      tgt.addChild("subject", subject);
+    }
+    tgt.clear("encounter");
+    if (encounter != null) {
+      tgt.addChild("encounter", encounter);
+    }
+    tgt.clear("effective");
+    if (effective != null) {
+      tgt.addChild("effective", new DateTimeType(effective));
+    }
+    tgt.clear("performer");
+    for (Reference item : performers) {
+      tgt.addChild("performer", item);
+    }
+    tgt.clear("valueCodeableConcept");
+    if (valueCodeableConcept != null) {
+      valueCodeableConcept.save(tgt.makeChild("valueCodeableConcept"), nulls);
+    }
 
   }
 
@@ -163,31 +223,82 @@ public class TestProfile extends PEGeneratedBase {
    * Test Observation Profile.
    *
    */
-  public List<Identifier> getIdentifiers() {
-    if (identifiers == null) { identifiers = new ArrayList<>(); }
-    return identifiers;
+  public List<Extension> getExtensions() {
+    if (extensions == null) { extensions = new ArrayList<>(); }
+    return extensions;
   }
 
-  public boolean hasIdentifiers() {
-    return identifiers != null && !identifiers.isEmpty();
+  public boolean hasExtensions() {
+    return extensions != null && !extensions.isEmpty();
   }
 
-  public Identifier addIdentifier() {
-    Identifier theThing = new Identifier();
-    getIdentifiers().add(theThing);
+  public Extension addExtension() {
+    Extension theThing = new Extension();
+    getExtensions().add(theThing);
     return theThing;
   }
 
-  public boolean hasIdentifier(Identifier item) {
-    return hasIdentifiers() && identifiers.contains(item);
+  public boolean hasExtension(Extension item) {
+    return hasExtensions() && extensions.contains(item);
   }
 
-  public void removeIdentifier(Identifier item) {
-    if (hasIdentifier(item)) {
-      identifiers.remove(item);
+  public void removeExtension(Extension item) {
+    if (hasExtension(item)) {
+      extensions.remove(item);
     }
   }
 
+
+  /**
+   * Test Observation Profile.
+   *
+   */
+  public String getSimple() {
+    return simple;
+  }
+
+  public TestProfile setSimple(String value) {
+    this.simple = value;
+    return this;
+  }
+
+  public boolean hasSimple() {
+    return simple != null;
+  }
+
+  /**
+   * Test Observation Profile.
+   *
+   */
+  public TestComplexExtension getComplex() {
+    if (complex == null) { complex = new TestComplexExtension(); }
+    return complex;
+  }
+
+  public TestProfile setComplex(TestComplexExtension value) {
+    this.complex = value;
+    return this;
+  }
+  public boolean hasComplex() {
+    return complex != null;
+  }
+
+  /**
+   * Test Observation Profile.
+   *
+   */
+  public Identifier getIdentifier() {
+    if (identifier == null) { identifier = new Identifier(); }
+    return identifier;
+  }
+
+  public TestProfile setIdentifier(Identifier value) {
+    this.identifier = value;
+    return this;
+  }
+  public boolean hasIdentifier() {
+    return identifier != null;
+  }
 
   /**
    * Test Observation Profile.
@@ -321,13 +432,16 @@ public class TestProfile extends PEGeneratedBase {
 
   public void clear() {
     id = null;
-    identifiers = null;
+    extensions.clear();
+    simple = null;
+    complex = null;
+    identifier = null;
     status = null;
     code = null;
     subject = null;
     encounter = null;
     effective = null;
-    performers = null;
+    performers.clear();
     valueCodeableConcept = null;
 
   }

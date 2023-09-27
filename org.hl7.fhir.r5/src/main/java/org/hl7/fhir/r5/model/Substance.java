@@ -328,6 +328,17 @@ public class Substance extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("substance[x]")) {
+          this.substance = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1000,6 +1011,32 @@ public class Substance extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("instance")) {
+          this.instance = null;
+        } else if (name.equals("status")) {
+          value = new FHIRSubstanceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FHIRSubstanceStatus>
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("expiry")) {
+          this.expiry = null;
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("ingredient")) {
+          this.getIngredient().remove((SubstanceIngredientComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -729,6 +729,24 @@ public class Appointment extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.getType().remove(value);
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else if (name.equals("actor")) {
+          this.actor = null;
+        } else if (name.equals("required")) {
+          this.required = null;
+        } else if (name.equals("status")) {
+          value = new ParticipationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<ParticipationStatus>
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1433,6 +1451,33 @@ public class Appointment extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("timezone")) {
+          this.timezone = null;
+        } else if (name.equals("recurrenceType")) {
+          this.recurrenceType = null;
+        } else if (name.equals("lastOccurrenceDate")) {
+          this.lastOccurrenceDate = null;
+        } else if (name.equals("occurrenceCount")) {
+          this.occurrenceCount = null;
+        } else if (name.equals("occurrenceDate")) {
+          this.getOccurrenceDate().remove(value);
+        } else if (name.equals("weeklyTemplate")) {
+          this.weeklyTemplate = (AppointmentRecurrenceTemplateWeeklyTemplateComponent) value; // AppointmentRecurrenceTemplateWeeklyTemplateComponent
+        } else if (name.equals("monthlyTemplate")) {
+          this.monthlyTemplate = (AppointmentRecurrenceTemplateMonthlyTemplateComponent) value; // AppointmentRecurrenceTemplateMonthlyTemplateComponent
+        } else if (name.equals("yearlyTemplate")) {
+          this.yearlyTemplate = (AppointmentRecurrenceTemplateYearlyTemplateComponent) value; // AppointmentRecurrenceTemplateYearlyTemplateComponent
+        } else if (name.equals("excludingDate")) {
+          this.getExcludingDate().remove(value);
+        } else if (name.equals("excludingRecurrenceId")) {
+          this.getExcludingRecurrenceId().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2108,6 +2153,29 @@ public class Appointment extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("monday")) {
+          this.monday = null;
+        } else if (name.equals("tuesday")) {
+          this.tuesday = null;
+        } else if (name.equals("wednesday")) {
+          this.wednesday = null;
+        } else if (name.equals("thursday")) {
+          this.thursday = null;
+        } else if (name.equals("friday")) {
+          this.friday = null;
+        } else if (name.equals("saturday")) {
+          this.saturday = null;
+        } else if (name.equals("sunday")) {
+          this.sunday = null;
+        } else if (name.equals("weekInterval")) {
+          this.weekInterval = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2478,6 +2546,21 @@ public class Appointment extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("dayOfMonth")) {
+          this.dayOfMonth = null;
+        } else if (name.equals("nthWeekOfMonth")) {
+          this.nthWeekOfMonth = null;
+        } else if (name.equals("dayOfWeek")) {
+          this.dayOfWeek = null;
+        } else if (name.equals("monthInterval")) {
+          this.monthInterval = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2683,6 +2766,15 @@ public class Appointment extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("yearInterval")) {
+          this.yearInterval = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -4770,6 +4862,78 @@ The duration (usually in minutes) could also be provided to indicate the length 
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new AppointmentStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<AppointmentStatus>
+        } else if (name.equals("cancellationReason")) {
+          this.cancellationReason = null;
+        } else if (name.equals("class")) {
+          this.getClass_().remove(value);
+        } else if (name.equals("serviceCategory")) {
+          this.getServiceCategory().remove(value);
+        } else if (name.equals("serviceType")) {
+          this.getServiceType().remove(value);
+        } else if (name.equals("specialty")) {
+          this.getSpecialty().remove(value);
+        } else if (name.equals("appointmentType")) {
+          this.appointmentType = null;
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("priority")) {
+          this.priority = null;
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("replaces")) {
+          this.getReplaces().remove(value);
+        } else if (name.equals("virtualService")) {
+          this.getVirtualService().remove(value);
+        } else if (name.equals("supportingInformation")) {
+          this.getSupportingInformation().remove(value);
+        } else if (name.equals("previousAppointment")) {
+          this.previousAppointment = null;
+        } else if (name.equals("originatingAppointment")) {
+          this.originatingAppointment = null;
+        } else if (name.equals("start")) {
+          this.start = null;
+        } else if (name.equals("end")) {
+          this.end = null;
+        } else if (name.equals("minutesDuration")) {
+          this.minutesDuration = null;
+        } else if (name.equals("requestedPeriod")) {
+          this.getRequestedPeriod().remove(value);
+        } else if (name.equals("slot")) {
+          this.getSlot().remove(value);
+        } else if (name.equals("account")) {
+          this.getAccount().remove(value);
+        } else if (name.equals("created")) {
+          this.created = null;
+        } else if (name.equals("cancellationDate")) {
+          this.cancellationDate = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("patientInstruction")) {
+          this.getPatientInstruction().remove(value);
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("participant")) {
+          this.getParticipant().remove((AppointmentParticipantComponent) value);
+        } else if (name.equals("recurrenceId")) {
+          this.recurrenceId = null;
+        } else if (name.equals("occurrenceChanged")) {
+          this.occurrenceChanged = null;
+        } else if (name.equals("recurrenceTemplate")) {
+          this.getRecurrenceTemplate().remove((AppointmentRecurrenceTemplateComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

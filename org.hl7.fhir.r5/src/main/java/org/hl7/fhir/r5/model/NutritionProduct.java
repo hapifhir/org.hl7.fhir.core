@@ -319,6 +319,17 @@ public class NutritionProduct extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("item")) {
+          this.item = null;
+        } else if (name.equals("amount")) {
+          this.getAmount().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -558,6 +569,17 @@ public class NutritionProduct extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("item")) {
+          this.item = null;
+        } else if (name.equals("amount")) {
+          this.getAmount().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -866,6 +888,17 @@ public class NutritionProduct extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1412,6 +1445,27 @@ public class NutritionProduct extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("lotNumber")) {
+          this.lotNumber = null;
+        } else if (name.equals("expiry")) {
+          this.expiry = null;
+        } else if (name.equals("useBy")) {
+          this.useBy = null;
+        } else if (name.equals("biologicalSourceEvent")) {
+          this.biologicalSourceEvent = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2228,6 +2282,34 @@ public class NutritionProduct extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("status")) {
+          value = new NutritionProductStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<NutritionProductStatus>
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("manufacturer")) {
+          this.getManufacturer().remove(value);
+        } else if (name.equals("nutrient")) {
+          this.getNutrient().remove((NutritionProductNutrientComponent) value);
+        } else if (name.equals("ingredient")) {
+          this.getIngredient().remove((NutritionProductIngredientComponent) value);
+        } else if (name.equals("knownAllergen")) {
+          this.getKnownAllergen().remove(value);
+        } else if (name.equals("characteristic")) {
+          this.getCharacteristic().remove((NutritionProductCharacteristicComponent) value);
+        } else if (name.equals("instance")) {
+          this.getInstance().remove((NutritionProductInstanceComponent) value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -314,6 +314,17 @@ public class FamilyMemberHistory extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("function")) {
+          this.function = null;
+        } else if (name.equals("actor")) {
+          this.actor = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -752,6 +763,23 @@ public class FamilyMemberHistory extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("outcome")) {
+          this.outcome = null;
+        } else if (name.equals("contributedToDeath")) {
+          this.contributedToDeath = null;
+        } else if (name.equals("onset[x]")) {
+          this.onset = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1246,6 +1274,23 @@ public class FamilyMemberHistory extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("outcome")) {
+          this.outcome = null;
+        } else if (name.equals("contributedToDeath")) {
+          this.contributedToDeath = null;
+        } else if (name.equals("performed[x]")) {
+          this.performed = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2677,6 +2722,52 @@ public class FamilyMemberHistory extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("instantiatesCanonical")) {
+          this.getInstantiatesCanonical().remove(value);
+        } else if (name.equals("instantiatesUri")) {
+          this.getInstantiatesUri().remove(value);
+        } else if (name.equals("status")) {
+          value = new FamilyHistoryStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FamilyHistoryStatus>
+        } else if (name.equals("dataAbsentReason")) {
+          this.dataAbsentReason = null;
+        } else if (name.equals("patient")) {
+          this.patient = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("participant")) {
+          this.getParticipant().remove((FamilyMemberHistoryParticipantComponent) value);
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("relationship")) {
+          this.relationship = null;
+        } else if (name.equals("sex")) {
+          this.sex = null;
+        } else if (name.equals("born[x]")) {
+          this.born = null;
+        } else if (name.equals("age[x]")) {
+          this.age = null;
+        } else if (name.equals("estimatedAge")) {
+          this.estimatedAge = null;
+        } else if (name.equals("deceased[x]")) {
+          this.deceased = null;
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("condition")) {
+          this.getCondition().remove((FamilyMemberHistoryConditionComponent) value);
+        } else if (name.equals("procedure")) {
+          this.getProcedure().remove((FamilyMemberHistoryProcedureComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

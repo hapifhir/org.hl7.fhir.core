@@ -831,7 +831,11 @@ public class Utilities {
         b.append(Character.toLowerCase(c));
         isWhitespace = false;
       } else if (!isWhitespace) {
-        b.append(' ');
+        if (c == '\r' || c == '\n') {
+          b.append('\n');
+        } else {
+          b.append(' ');
+        }
         isWhitespace = true;
       }
     }

@@ -443,6 +443,23 @@ public class ValueSet extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("lockedDate")) {
+          this.lockedDate = null;
+        } else if (name.equals("inactive")) {
+          this.inactive = null;
+        } else if (name.equals("include")) {
+          this.getInclude().remove((ConceptSetComponent) value);
+        } else if (name.equals("exclude")) {
+          this.getExclude().remove((ConceptSetComponent) value);
+        } else if (name.equals("property")) {
+          this.getProperty().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1001,6 +1018,25 @@ public class ValueSet extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("system")) {
+          this.system = null;
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("concept")) {
+          this.getConcept().remove((ConceptReferenceComponent) value);
+        } else if (name.equals("filter")) {
+          this.getFilter().remove((ConceptSetFilterComponent) value);
+        } else if (name.equals("valueSet")) {
+          this.getValueSet().remove(value);
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1360,6 +1396,19 @@ public class ValueSet extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("display")) {
+          this.display = null;
+        } else if (name.equals("designation")) {
+          this.getDesignation().remove((ConceptReferenceDesignationComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1737,6 +1786,21 @@ public class ValueSet extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("language")) {
+          this.language = null;
+        } else if (name.equals("use")) {
+          this.use = null;
+        } else if (name.equals("additionalUse")) {
+          this.getAdditionalUse().remove(value);
+        } else if (name.equals("value")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2068,6 +2132,20 @@ public class ValueSet extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("property")) {
+          this.property = null;
+        } else if (name.equals("op")) {
+          value = new FilterOperatorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.op = (Enumeration) value; // Enumeration<FilterOperator>
+        } else if (name.equals("value")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2719,6 +2797,29 @@ public class ValueSet extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.identifier = null;
+        } else if (name.equals("next")) {
+          this.next = null;
+        } else if (name.equals("timestamp")) {
+          this.timestamp = null;
+        } else if (name.equals("total")) {
+          this.total = null;
+        } else if (name.equals("offset")) {
+          this.offset = null;
+        } else if (name.equals("parameter")) {
+          this.getParameter().remove((ValueSetExpansionParameterComponent) value);
+        } else if (name.equals("property")) {
+          this.getProperty().remove((ValueSetExpansionPropertyComponent) value);
+        } else if (name.equals("contains")) {
+          this.getContains().remove((ValueSetExpansionContainsComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -3121,6 +3222,17 @@ public class ValueSet extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -3404,6 +3516,17 @@ public class ValueSet extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("uri")) {
+          this.uri = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -4107,6 +4230,31 @@ public class ValueSet extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("system")) {
+          this.system = null;
+        } else if (name.equals("abstract")) {
+          this.abstract_ = null;
+        } else if (name.equals("inactive")) {
+          this.inactive = null;
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("display")) {
+          this.display = null;
+        } else if (name.equals("designation")) {
+          this.getDesignation().remove((ConceptReferenceDesignationComponent) value);
+        } else if (name.equals("property")) {
+          this.getProperty().remove((ConceptPropertyComponent) value);
+        } else if (name.equals("contains")) {
+          this.getContains().remove((ValueSetExpansionContainsComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -4574,6 +4722,19 @@ public class ValueSet extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else if (name.equals("subProperty")) {
+          this.getSubProperty().remove((ConceptSubPropertyComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -4951,6 +5112,17 @@ public class ValueSet extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -5224,6 +5396,17 @@ public class ValueSet extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("inclusionCriteria")) {
+          this.inclusionCriteria = null;
+        } else if (name.equals("exclusionCriteria")) {
+          this.exclusionCriteria = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -7213,6 +7396,74 @@ public class ValueSet extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("jurisdiction")) {
+          this.getJurisdiction().remove(value);
+        } else if (name.equals("immutable")) {
+          this.immutable = null;
+        } else if (name.equals("purpose")) {
+          this.purpose = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = null;
+        } else if (name.equals("approvalDate")) {
+          this.approvalDate = null;
+        } else if (name.equals("lastReviewDate")) {
+          this.lastReviewDate = null;
+        } else if (name.equals("effectivePeriod")) {
+          this.effectivePeriod = null;
+        } else if (name.equals("topic")) {
+          this.getTopic().remove(value);
+        } else if (name.equals("author")) {
+          this.getAuthor().remove(value);
+        } else if (name.equals("editor")) {
+          this.getEditor().remove(value);
+        } else if (name.equals("reviewer")) {
+          this.getReviewer().remove(value);
+        } else if (name.equals("endorser")) {
+          this.getEndorser().remove(value);
+        } else if (name.equals("relatedArtifact")) {
+          this.getRelatedArtifact().remove(value);
+        } else if (name.equals("compose")) {
+          this.compose = (ValueSetComposeComponent) value; // ValueSetComposeComponent
+        } else if (name.equals("expansion")) {
+          this.expansion = (ValueSetExpansionComponent) value; // ValueSetExpansionComponent
+        } else if (name.equals("scope")) {
+          this.scope = (ValueSetScopeComponent) value; // ValueSetScopeComponent
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

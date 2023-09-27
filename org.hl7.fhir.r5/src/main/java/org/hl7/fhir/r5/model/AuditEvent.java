@@ -552,6 +552,17 @@ public class AuditEvent extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("detail")) {
+          this.getDetail().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1163,6 +1174,29 @@ public class AuditEvent extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("role")) {
+          this.getRole().remove(value);
+        } else if (name.equals("who")) {
+          this.who = null;
+        } else if (name.equals("requestor")) {
+          this.requestor = null;
+        } else if (name.equals("location")) {
+          this.location = null;
+        } else if (name.equals("policy")) {
+          this.getPolicy().remove(value);
+        } else if (name.equals("network[x]")) {
+          this.network = null;
+        } else if (name.equals("authorization")) {
+          this.getAuthorization().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1501,6 +1535,19 @@ public class AuditEvent extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("site")) {
+          this.site = null;
+        } else if (name.equals("observer")) {
+          this.observer = null;
+        } else if (name.equals("type")) {
+          this.getType().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1985,6 +2032,25 @@ public class AuditEvent extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("what")) {
+          this.what = null;
+        } else if (name.equals("role")) {
+          this.role = null;
+        } else if (name.equals("securityLabel")) {
+          this.getSecurityLabel().remove(value);
+        } else if (name.equals("query")) {
+          this.query = null;
+        } else if (name.equals("detail")) {
+          this.getDetail().remove((AuditEventEntityDetailComponent) value);
+        } else if (name.equals("agent")) {
+          this.getAgent().remove((AuditEventAgentComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2407,6 +2473,17 @@ public class AuditEvent extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3381,6 +3458,43 @@ public class AuditEvent extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("action")) {
+          value = new AuditEventActionEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.action = (Enumeration) value; // Enumeration<AuditEventAction>
+        } else if (name.equals("severity")) {
+          value = new AuditEventSeverityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.severity = (Enumeration) value; // Enumeration<AuditEventSeverity>
+        } else if (name.equals("occurred[x]")) {
+          this.occurred = null;
+        } else if (name.equals("recorded")) {
+          this.recorded = null;
+        } else if (name.equals("outcome")) {
+          this.outcome = (AuditEventOutcomeComponent) value; // AuditEventOutcomeComponent
+        } else if (name.equals("authorization")) {
+          this.getAuthorization().remove(value);
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("patient")) {
+          this.patient = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("agent")) {
+          this.getAgent().remove((AuditEventAgentComponent) value);
+        } else if (name.equals("source")) {
+          this.source = (AuditEventSourceComponent) value; // AuditEventSourceComponent
+        } else if (name.equals("entity")) {
+          this.getEntity().remove((AuditEventEntityComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

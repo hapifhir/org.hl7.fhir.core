@@ -321,6 +321,21 @@ public class Practitioner extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identifier")) {
+        this.getIdentifier().remove(value);
+      } else if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else if (name.equals("issuer")) {
+        this.issuer = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1234,6 +1249,33 @@ public class Practitioner extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("active")) {
+      this.active = null;
+    } else if (name.equals("name")) {
+      this.getName().remove(value);
+    } else if (name.equals("telecom")) {
+      this.getTelecom().remove(value);
+    } else if (name.equals("address")) {
+      this.getAddress().remove(value);
+    } else if (name.equals("gender")) {
+      this.gender = null;
+    } else if (name.equals("birthDate")) {
+      this.birthDate = null;
+    } else if (name.equals("photo")) {
+      this.getPhoto().remove(value);
+    } else if (name.equals("qualification")) {
+      this.getQualification().remove((PractitionerQualificationComponent) value);
+    } else if (name.equals("communication")) {
+      this.getCommunication().remove(value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

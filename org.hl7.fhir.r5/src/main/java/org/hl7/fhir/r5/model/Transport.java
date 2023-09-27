@@ -634,6 +634,19 @@ public class Transport extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("repetitions")) {
+          this.repetitions = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else if (name.equals("recipient")) {
+          this.getRecipient().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1715,6 +1728,17 @@ public class Transport extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3000,6 +3024,17 @@ public class Transport extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -5086,6 +5121,80 @@ public class Transport extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("instantiatesCanonical")) {
+          this.instantiatesCanonical = null;
+        } else if (name.equals("instantiatesUri")) {
+          this.instantiatesUri = null;
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("groupIdentifier")) {
+          this.groupIdentifier = null;
+        } else if (name.equals("partOf")) {
+          this.getPartOf().remove(value);
+        } else if (name.equals("status")) {
+          value = new TransportStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<TransportStatus>
+        } else if (name.equals("statusReason")) {
+          this.statusReason = null;
+        } else if (name.equals("intent")) {
+          value = new TransportIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.intent = (Enumeration) value; // Enumeration<TransportIntent>
+        } else if (name.equals("priority")) {
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("focus")) {
+          this.focus = null;
+        } else if (name.equals("for")) {
+          this.for_ = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("completionTime")) {
+          this.completionTime = null;
+        } else if (name.equals("authoredOn")) {
+          this.authoredOn = null;
+        } else if (name.equals("lastModified")) {
+          this.lastModified = null;
+        } else if (name.equals("requester")) {
+          this.requester = null;
+        } else if (name.equals("performerType")) {
+          this.getPerformerType().remove(value);
+        } else if (name.equals("owner")) {
+          this.owner = null;
+        } else if (name.equals("location")) {
+          this.location = null;
+        } else if (name.equals("insurance")) {
+          this.getInsurance().remove(value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("relevantHistory")) {
+          this.getRelevantHistory().remove(value);
+        } else if (name.equals("restriction")) {
+          this.restriction = (TransportRestrictionComponent) value; // TransportRestrictionComponent
+        } else if (name.equals("input")) {
+          this.getInput().remove((ParameterComponent) value);
+        } else if (name.equals("output")) {
+          this.getOutput().remove((TransportOutputComponent) value);
+        } else if (name.equals("requestedLocation")) {
+          this.requestedLocation = null;
+        } else if (name.equals("currentLocation")) {
+          this.currentLocation = null;
+        } else if (name.equals("reason")) {
+          this.reason = null;
+        } else if (name.equals("history")) {
+          this.history = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

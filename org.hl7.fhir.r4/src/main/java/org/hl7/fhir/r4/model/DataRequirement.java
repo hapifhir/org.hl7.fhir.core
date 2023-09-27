@@ -599,6 +599,21 @@ public class DataRequirement extends Type implements ICompositeType {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("path")) {
+        this.path = null;
+      } else if (name.equals("searchParam")) {
+        this.searchParam = null;
+      } else if (name.equals("valueSet")) {
+        this.valueSet = null;
+      } else if (name.equals("code")) {
+        this.getCode().remove(castToCoding(value));
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1091,6 +1106,19 @@ public class DataRequirement extends Type implements ICompositeType {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("path")) {
+        this.path = null;
+      } else if (name.equals("searchParam")) {
+        this.searchParam = null;
+      } else if (name.equals("value[x]")) {
+        this.value = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1406,6 +1434,17 @@ public class DataRequirement extends Type implements ICompositeType {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("path")) {
+        this.path = null;
+      } else if (name.equals("direction")) {
+        this.direction = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2246,6 +2285,29 @@ public class DataRequirement extends Type implements ICompositeType {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("profile")) {
+      this.getProfile().remove(castToCanonical(value));
+    } else if (name.equals("subject[x]")) {
+      this.subject = null;
+    } else if (name.equals("mustSupport")) {
+      this.getMustSupport().remove(castToString(value));
+    } else if (name.equals("codeFilter")) {
+      this.getCodeFilter().remove((DataRequirementCodeFilterComponent) value);
+    } else if (name.equals("dateFilter")) {
+      this.getDateFilter().remove((DataRequirementDateFilterComponent) value);
+    } else if (name.equals("limit")) {
+      this.limit = null;
+    } else if (name.equals("sort")) {
+      this.getSort().remove((DataRequirementSortComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

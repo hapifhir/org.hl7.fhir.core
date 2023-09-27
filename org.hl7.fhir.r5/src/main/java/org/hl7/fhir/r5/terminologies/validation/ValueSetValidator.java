@@ -947,7 +947,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
         if (vsi.hasSystem()) {
           if (vsi.hasFilter()) {
-            problems.add(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_NO_SYSTEM, valueset.getVersionedUrl(), i, vsi.getSystem()));
+            problems.add(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_FILTER, valueset.getVersionedUrl(), i, vsi.getSystem()));
             return false;
           }
           CodeSystemProvider csp = CodeSystemProvider.factory(vsi.getSystem());

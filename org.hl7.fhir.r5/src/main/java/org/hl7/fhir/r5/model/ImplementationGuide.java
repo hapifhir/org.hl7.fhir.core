@@ -9484,6 +9484,21 @@ public class ImplementationGuide extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("uri")) {
+        this.uri = null;
+      } else if (name.equals("packageId")) {
+        this.packageId = null;
+      } else if (name.equals("version")) {
+        this.version = null;
+      } else if (name.equals("reason")) {
+        this.reason = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -9748,6 +9763,17 @@ public class ImplementationGuide extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("profile")) {
+        this.profile = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -10182,6 +10208,23 @@ public class ImplementationGuide extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("grouping")) {
+        this.getGrouping().remove((ImplementationGuideDefinitionGroupingComponent) value);
+      } else if (name.equals("resource")) {
+        this.getResource().remove((ImplementationGuideDefinitionResourceComponent) value);
+      } else if (name.equals("page")) {
+        this.page = (ImplementationGuideDefinitionPageComponent) value; // ImplementationGuideDefinitionPageComponent
+      } else if (name.equals("parameter")) {
+        this.getParameter().remove((ImplementationGuideDefinitionParameterComponent) value);
+      } else if (name.equals("template")) {
+        this.getTemplate().remove((ImplementationGuideDefinitionTemplateComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -10470,6 +10513,17 @@ public class ImplementationGuide extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -11053,6 +11107,28 @@ public class ImplementationGuide extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("reference")) {
+        this.reference = null;
+      } else if (name.equals("fhirVersion")) {
+        value = new FHIRVersionEnumFactory().fromType(TypeConvertor.castToCode(value));
+        this.getFhirVersion().remove((Enumeration) value);
+      } else if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("isExample")) {
+        this.isExample = null;
+      } else if (name.equals("profile")) {
+        this.getProfile().remove(value);
+      } else if (name.equals("groupingId")) {
+        this.groupingId = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -11567,6 +11643,24 @@ public class ImplementationGuide extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("source[x]")) {
+        this.source = null;
+      } else if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("title")) {
+        this.title = null;
+      } else if (name.equals("generation")) {
+        value = new GuidePageGenerationEnumFactory().fromType(TypeConvertor.castToCode(value));
+        this.generation = (Enumeration) value; // Enumeration<GuidePageGeneration>
+      } else if (name.equals("page")) {
+        this.getPage().remove((ImplementationGuideDefinitionPageComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -11830,6 +11924,17 @@ public class ImplementationGuide extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("value")) {
+        this.value = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -12145,6 +12250,19 @@ public class ImplementationGuide extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("source")) {
+        this.source = null;
+      } else if (name.equals("scope")) {
+        this.scope = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -12636,6 +12754,23 @@ public class ImplementationGuide extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("rendering")) {
+        this.rendering = null;
+      } else if (name.equals("resource")) {
+        this.getResource().remove((ManifestResourceComponent) value);
+      } else if (name.equals("page")) {
+        this.getPage().remove((ManifestPageComponent) value);
+      } else if (name.equals("image")) {
+        this.getImage().remove(value);
+      } else if (name.equals("other")) {
+        this.getOther().remove(value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -13041,6 +13176,21 @@ public class ImplementationGuide extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("reference")) {
+        this.reference = null;
+      } else if (name.equals("isExample")) {
+        this.isExample = null;
+      } else if (name.equals("profile")) {
+        this.getProfile().remove(value);
+      } else if (name.equals("relativePath")) {
+        this.relativePath = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -13391,6 +13541,19 @@ public class ImplementationGuide extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("title")) {
+        this.title = null;
+      } else if (name.equals("anchor")) {
+        this.getAnchor().remove(value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -15052,6 +15215,64 @@ public class ImplementationGuide extends CanonicalResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("versionAlgorithm[x]")) {
+      this.versionAlgorithm = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("status")) {
+      value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+      this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(value);
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(value);
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("copyrightLabel")) {
+      this.copyrightLabel = null;
+    } else if (name.equals("packageId")) {
+      this.packageId = null;
+    } else if (name.equals("license")) {
+      value = new SPDXLicenseEnumFactory().fromType(TypeConvertor.castToCode(value));
+      this.license = (Enumeration) value; // Enumeration<SPDXLicense>
+    } else if (name.equals("fhirVersion")) {
+      value = new FHIRVersionEnumFactory().fromType(TypeConvertor.castToCode(value));
+      this.getFhirVersion().remove((Enumeration) value);
+    } else if (name.equals("dependsOn")) {
+      this.getDependsOn().remove((ImplementationGuideDependsOnComponent) value);
+    } else if (name.equals("global")) {
+      this.getGlobal().remove((ImplementationGuideGlobalComponent) value);
+    } else if (name.equals("definition")) {
+      this.definition = (ImplementationGuideDefinitionComponent) value; // ImplementationGuideDefinitionComponent
+    } else if (name.equals("manifest")) {
+      this.manifest = (ImplementationGuideManifestComponent) value; // ImplementationGuideManifestComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

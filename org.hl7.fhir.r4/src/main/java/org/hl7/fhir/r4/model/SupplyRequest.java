@@ -656,6 +656,17 @@ public class SupplyRequest extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("value[x]")) {
+        this.value = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1959,6 +1970,43 @@ public class SupplyRequest extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("category")) {
+      this.category = null;
+    } else if (name.equals("priority")) {
+      this.priority = null;
+    } else if (name.equals("item[x]")) {
+      this.item = null;
+    } else if (name.equals("quantity")) {
+      this.quantity = null;
+    } else if (name.equals("parameter")) {
+      this.getParameter().remove((SupplyRequestParameterComponent) value);
+    } else if (name.equals("occurrence[x]")) {
+      this.occurrence = null;
+    } else if (name.equals("authoredOn")) {
+      this.authoredOn = null;
+    } else if (name.equals("requester")) {
+      this.requester = null;
+    } else if (name.equals("supplier")) {
+      this.getSupplier().remove(castToReference(value));
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(castToCodeableConcept(value));
+    } else if (name.equals("reasonReference")) {
+      this.getReasonReference().remove(castToReference(value));
+    } else if (name.equals("deliverFrom")) {
+      this.deliverFrom = null;
+    } else if (name.equals("deliverTo")) {
+      this.deliverTo = null;
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

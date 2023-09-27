@@ -768,6 +768,23 @@ public class NamingSystem extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("value")) {
+        this.value = null;
+      } else if (name.equals("preferred")) {
+        this.preferred = null;
+      } else if (name.equals("comment")) {
+        this.comment = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1946,6 +1963,39 @@ public class NamingSystem extends CanonicalResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("kind")) {
+      this.kind = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("responsible")) {
+      this.responsible = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(value);
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(value);
+    } else if (name.equals("usage")) {
+      this.usage = null;
+    } else if (name.equals("uniqueId")) {
+      this.getUniqueId().remove((NamingSystemUniqueIdComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

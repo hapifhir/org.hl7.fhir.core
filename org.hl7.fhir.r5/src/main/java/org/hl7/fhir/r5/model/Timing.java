@@ -1861,6 +1861,47 @@ Normal practice is to use the 'mo' code as a calendar month when calculating the
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("bounds[x]")) {
+          this.bounds = null;
+        } else if (name.equals("count")) {
+          this.count = null;
+        } else if (name.equals("countMax")) {
+          this.countMax = null;
+        } else if (name.equals("duration")) {
+          this.duration = null;
+        } else if (name.equals("durationMax")) {
+          this.durationMax = null;
+        } else if (name.equals("durationUnit")) {
+          value = new UnitsOfTimeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.durationUnit = (Enumeration) value; // Enumeration<UnitsOfTime>
+        } else if (name.equals("frequency")) {
+          this.frequency = null;
+        } else if (name.equals("frequencyMax")) {
+          this.frequencyMax = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else if (name.equals("periodMax")) {
+          this.periodMax = null;
+        } else if (name.equals("periodUnit")) {
+          value = new UnitsOfTimeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.periodUnit = (Enumeration) value; // Enumeration<UnitsOfTime>
+        } else if (name.equals("dayOfWeek")) {
+          value = new DaysOfWeekEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getDayOfWeek().remove((Enumeration) value);
+        } else if (name.equals("timeOfDay")) {
+          this.getTimeOfDay().remove(value);
+        } else if (name.equals("when")) {
+          value = new EventTimingEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getWhen().remove((Enumeration) value);
+        } else if (name.equals("offset")) {
+          this.offset = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2245,6 +2286,19 @@ Normal practice is to use the 'mo' code as a calendar month when calculating the
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("event")) {
+          this.getEvent().remove(value);
+        } else if (name.equals("repeat")) {
+          this.repeat = (TimingRepeatComponent) value; // TimingRepeatComponent
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

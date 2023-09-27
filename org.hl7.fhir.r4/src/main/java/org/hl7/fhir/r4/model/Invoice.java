@@ -622,6 +622,17 @@ public class Invoice extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("role")) {
+        this.role = null;
+      } else if (name.equals("actor")) {
+        this.actor = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1018,6 +1029,19 @@ public class Invoice extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("sequence")) {
+        this.sequence = null;
+      } else if (name.equals("chargeItem[x]")) {
+        this.chargeItem = null;
+      } else if (name.equals("priceComponent")) {
+        this.getPriceComponent().remove((InvoiceLineItemPriceComponentComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1432,6 +1456,21 @@ public class Invoice extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("factor")) {
+        this.factor = null;
+      } else if (name.equals("amount")) {
+        this.amount = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2714,6 +2753,45 @@ public class Invoice extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("cancelledReason")) {
+      this.cancelledReason = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("recipient")) {
+      this.recipient = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("participant")) {
+      this.getParticipant().remove((InvoiceParticipantComponent) value);
+    } else if (name.equals("issuer")) {
+      this.issuer = null;
+    } else if (name.equals("account")) {
+      this.account = null;
+    } else if (name.equals("lineItem")) {
+      this.getLineItem().remove((InvoiceLineItemComponent) value);
+    } else if (name.equals("totalPriceComponent")) {
+      this.getTotalPriceComponent().remove((InvoiceLineItemPriceComponentComponent) value);
+    } else if (name.equals("totalNet")) {
+      this.totalNet = null;
+    } else if (name.equals("totalGross")) {
+      this.totalGross = null;
+    } else if (name.equals("paymentTerms")) {
+      this.paymentTerms = null;
+    } else if (name.equals("note")) {
+      this.getNote().remove(castToAnnotation(value));
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override
