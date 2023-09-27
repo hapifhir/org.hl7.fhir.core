@@ -290,6 +290,19 @@ public class Condition extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("summary")) {
+        this.summary = null;
+      } else if (name.equals("assessment")) {
+        this.getAssessment().remove(castToReference(value));
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -600,6 +613,17 @@ public class Condition extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.getCode().remove(castToCodeableConcept(value));
+      } else if (name.equals("detail")) {
+        this.getDetail().remove(castToReference(value));
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2111,6 +2135,47 @@ public class Condition extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("clinicalStatus")) {
+      this.clinicalStatus = null;
+    } else if (name.equals("verificationStatus")) {
+      this.verificationStatus = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove(castToCodeableConcept(value));
+    } else if (name.equals("severity")) {
+      this.severity = null;
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("bodySite")) {
+      this.getBodySite().remove(castToCodeableConcept(value));
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("onset[x]")) {
+      this.onset = null;
+    } else if (name.equals("abatement[x]")) {
+      this.abatement = null;
+    } else if (name.equals("recordedDate")) {
+      this.recordedDate = null;
+    } else if (name.equals("recorder")) {
+      this.recorder = null;
+    } else if (name.equals("asserter")) {
+      this.asserter = null;
+    } else if (name.equals("stage")) {
+      this.getStage().remove((ConditionStageComponent) value);
+    } else if (name.equals("evidence")) {
+      this.getEvidence().remove((ConditionEvidenceComponent) value);
+    } else if (name.equals("note")) {
+      this.getNote().remove(castToAnnotation(value));
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

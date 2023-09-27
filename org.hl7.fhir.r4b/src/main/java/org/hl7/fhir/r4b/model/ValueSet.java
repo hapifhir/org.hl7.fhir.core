@@ -454,6 +454,21 @@ public class ValueSet extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("lockedDate")) {
+        this.lockedDate = null;
+      } else if (name.equals("inactive")) {
+        this.inactive = null;
+      } else if (name.equals("include")) {
+        this.getInclude().remove((ConceptSetComponent) value);
+      } else if (name.equals("exclude")) {
+        this.getExclude().remove((ConceptSetComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1020,6 +1035,23 @@ public class ValueSet extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("system")) {
+        this.system = null;
+      } else if (name.equals("version")) {
+        this.version = null;
+      } else if (name.equals("concept")) {
+        this.getConcept().remove((ConceptReferenceComponent) value);
+      } else if (name.equals("filter")) {
+        this.getFilter().remove((ConceptSetFilterComponent) value);
+      } else if (name.equals("valueSet")) {
+        this.getValueSet().remove(value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1432,6 +1464,19 @@ public class ValueSet extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("display")) {
+        this.display = null;
+      } else if (name.equals("designation")) {
+        this.getDesignation().remove((ConceptReferenceDesignationComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1762,6 +1807,19 @@ public class ValueSet extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("language")) {
+        this.language = null;
+      } else if (name.equals("use")) {
+        this.use = null;
+      } else if (name.equals("value")) {
+        this.value = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2153,6 +2211,19 @@ public class ValueSet extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("property")) {
+        this.property = null;
+      } else if (name.equals("op")) {
+        this.op = null;
+      } else if (name.equals("value")) {
+        this.value = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2794,6 +2865,25 @@ public class ValueSet extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identifier")) {
+        this.identifier = null;
+      } else if (name.equals("timestamp")) {
+        this.timestamp = null;
+      } else if (name.equals("total")) {
+        this.total = null;
+      } else if (name.equals("offset")) {
+        this.offset = null;
+      } else if (name.equals("parameter")) {
+        this.getParameter().remove((ValueSetExpansionParameterComponent) value);
+      } else if (name.equals("contains")) {
+        this.getContains().remove((ValueSetExpansionContainsComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -3225,6 +3315,17 @@ public class ValueSet extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("value[x]")) {
+        this.value = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -4043,6 +4144,29 @@ public class ValueSet extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("system")) {
+        this.system = null;
+      } else if (name.equals("abstract")) {
+        this.abstract_ = null;
+      } else if (name.equals("inactive")) {
+        this.inactive = null;
+      } else if (name.equals("version")) {
+        this.version = null;
+      } else if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("display")) {
+        this.display = null;
+      } else if (name.equals("designation")) {
+        this.getDesignation().remove((ConceptReferenceDesignationComponent) value);
+      } else if (name.equals("contains")) {
+        this.getContains().remove((ValueSetExpansionContainsComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -5693,6 +5817,49 @@ public class ValueSet extends CanonicalResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(value);
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(value);
+    } else if (name.equals("immutable")) {
+      this.immutable = null;
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("compose")) {
+      this.compose = (ValueSetComposeComponent) value; // ValueSetComposeComponent
+    } else if (name.equals("expansion")) {
+      this.expansion = (ValueSetExpansionComponent) value; // ValueSetExpansionComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

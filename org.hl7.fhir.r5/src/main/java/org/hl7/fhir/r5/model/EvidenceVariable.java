@@ -1060,6 +1060,41 @@ public class EvidenceVariable extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("linkId")) {
+          this.linkId = null;
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("exclude")) {
+          this.exclude = null;
+        } else if (name.equals("definitionReference")) {
+          this.definitionReference = null;
+        } else if (name.equals("definitionCanonical")) {
+          this.definitionCanonical = null;
+        } else if (name.equals("definitionCodeableConcept")) {
+          this.definitionCodeableConcept = null;
+        } else if (name.equals("definitionExpression")) {
+          this.definitionExpression = null;
+        } else if (name.equals("definitionId")) {
+          this.definitionId = null;
+        } else if (name.equals("definitionByTypeAndValue")) {
+          this.definitionByTypeAndValue = (EvidenceVariableCharacteristicDefinitionByTypeAndValueComponent) value; // EvidenceVariableCharacteristicDefinitionByTypeAndValueComponent
+        } else if (name.equals("definitionByCombination")) {
+          this.definitionByCombination = (EvidenceVariableCharacteristicDefinitionByCombinationComponent) value; // EvidenceVariableCharacteristicDefinitionByCombinationComponent
+        } else if (name.equals("instances[x]")) {
+          this.instances = null;
+        } else if (name.equals("duration[x]")) {
+          this.duration = null;
+        } else if (name.equals("timeFromEvent")) {
+          this.getTimeFromEvent().remove((EvidenceVariableCharacteristicTimeFromEventComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1619,6 +1654,23 @@ public class EvidenceVariable extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("method")) {
+          this.getMethod().remove(value);
+        } else if (name.equals("device")) {
+          this.device = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else if (name.equals("offset")) {
+          this.offset = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1987,6 +2039,20 @@ public class EvidenceVariable extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          value = new CharacteristicCombinationEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.code = (Enumeration) value; // Enumeration<CharacteristicCombination>
+        } else if (name.equals("threshold")) {
+          this.threshold = null;
+        } else if (name.equals("characteristic")) {
+          this.getCharacteristic().remove((EvidenceVariableCharacteristicComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2434,6 +2500,23 @@ public class EvidenceVariable extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("event[x]")) {
+          this.event = null;
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("range")) {
+          this.range = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2742,6 +2825,17 @@ public class EvidenceVariable extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -4898,6 +4992,75 @@ See guidance around (not) making local changes to elements [here](canonicalresou
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("shortTitle")) {
+          this.shortTitle = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("purpose")) {
+          this.purpose = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = null;
+        } else if (name.equals("approvalDate")) {
+          this.approvalDate = null;
+        } else if (name.equals("lastReviewDate")) {
+          this.lastReviewDate = null;
+        } else if (name.equals("effectivePeriod")) {
+          this.effectivePeriod = null;
+        } else if (name.equals("author")) {
+          this.getAuthor().remove(value);
+        } else if (name.equals("editor")) {
+          this.getEditor().remove(value);
+        } else if (name.equals("reviewer")) {
+          this.getReviewer().remove(value);
+        } else if (name.equals("endorser")) {
+          this.getEndorser().remove(value);
+        } else if (name.equals("relatedArtifact")) {
+          this.getRelatedArtifact().remove(value);
+        } else if (name.equals("actual")) {
+          this.actual = null;
+        } else if (name.equals("characteristic")) {
+          this.getCharacteristic().remove((EvidenceVariableCharacteristicComponent) value);
+        } else if (name.equals("handling")) {
+          value = new EvidenceVariableHandlingEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.handling = (Enumeration) value; // Enumeration<EvidenceVariableHandling>
+        } else if (name.equals("category")) {
+          this.getCategory().remove((EvidenceVariableCategoryComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

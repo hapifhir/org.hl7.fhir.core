@@ -332,6 +332,19 @@ public class Binary extends BaseBinary implements IBaseBinary {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("contentType")) {
+      this.contentType = null;
+    } else if (name.equals("securityContext")) {
+      this.securityContext = null;
+    } else if (name.equals("data")) {
+      this.data = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -389131437:

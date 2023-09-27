@@ -349,6 +349,17 @@ public class Immunization extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("function")) {
+        this.function = null;
+      } else if (name.equals("actor")) {
+        this.actor = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -784,6 +795,21 @@ public class Immunization extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("documentType")) {
+        this.documentType = null;
+      } else if (name.equals("reference")) {
+        this.reference = null;
+      } else if (name.equals("publicationDate")) {
+        this.publicationDate = null;
+      } else if (name.equals("presentationDate")) {
+        this.presentationDate = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1108,6 +1134,19 @@ public class Immunization extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("date")) {
+        this.date = null;
+      } else if (name.equals("detail")) {
+        this.detail = null;
+      } else if (name.equals("reported")) {
+        this.reported = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1626,6 +1665,23 @@ public class Immunization extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("series")) {
+        this.series = null;
+      } else if (name.equals("authority")) {
+        this.authority = null;
+      } else if (name.equals("targetDisease")) {
+        this.getTargetDisease().remove(value);
+      } else if (name.equals("doseNumber[x]")) {
+        this.doseNumber = null;
+      } else if (name.equals("seriesDoses[x]")) {
+        this.seriesDoses = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3649,6 +3705,69 @@ public class Immunization extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("statusReason")) {
+      this.statusReason = null;
+    } else if (name.equals("vaccineCode")) {
+      this.vaccineCode = null;
+    } else if (name.equals("patient")) {
+      this.patient = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("occurrence[x]")) {
+      this.occurrence = null;
+    } else if (name.equals("recorded")) {
+      this.recorded = null;
+    } else if (name.equals("primarySource")) {
+      this.primarySource = null;
+    } else if (name.equals("reportOrigin")) {
+      this.reportOrigin = null;
+    } else if (name.equals("location")) {
+      this.location = null;
+    } else if (name.equals("manufacturer")) {
+      this.manufacturer = null;
+    } else if (name.equals("lotNumber")) {
+      this.lotNumber = null;
+    } else if (name.equals("expirationDate")) {
+      this.expirationDate = null;
+    } else if (name.equals("site")) {
+      this.site = null;
+    } else if (name.equals("route")) {
+      this.route = null;
+    } else if (name.equals("doseQuantity")) {
+      this.doseQuantity = null;
+    } else if (name.equals("performer")) {
+      this.getPerformer().remove((ImmunizationPerformerComponent) value);
+    } else if (name.equals("note")) {
+      this.getNote().remove(value);
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(value);
+    } else if (name.equals("reasonReference")) {
+      this.getReasonReference().remove(value);
+    } else if (name.equals("isSubpotent")) {
+      this.isSubpotent = null;
+    } else if (name.equals("subpotentReason")) {
+      this.getSubpotentReason().remove(value);
+    } else if (name.equals("education")) {
+      this.getEducation().remove((ImmunizationEducationComponent) value);
+    } else if (name.equals("programEligibility")) {
+      this.getProgramEligibility().remove(value);
+    } else if (name.equals("fundingSource")) {
+      this.fundingSource = null;
+    } else if (name.equals("reaction")) {
+      this.getReaction().remove((ImmunizationReactionComponent) value);
+    } else if (name.equals("protocolApplied")) {
+      this.getProtocolApplied().remove((ImmunizationProtocolAppliedComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

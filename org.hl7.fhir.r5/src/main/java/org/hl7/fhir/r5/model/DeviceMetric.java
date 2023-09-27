@@ -809,6 +809,21 @@ public class DeviceMetric extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new DeviceMetricCalibrationTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<DeviceMetricCalibrationType>
+        } else if (name.equals("state")) {
+          value = new DeviceMetricCalibrationStateEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.state = (Enumeration) value; // Enumeration<DeviceMetricCalibrationState>
+        } else if (name.equals("time")) {
+          this.time = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1433,6 +1448,33 @@ public class DeviceMetric extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("unit")) {
+          this.unit = null;
+        } else if (name.equals("device")) {
+          this.device = null;
+        } else if (name.equals("operationalStatus")) {
+          value = new DeviceMetricOperationalStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.operationalStatus = (Enumeration) value; // Enumeration<DeviceMetricOperationalStatus>
+        } else if (name.equals("color")) {
+          this.color = null;
+        } else if (name.equals("category")) {
+          value = new DeviceMetricCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.category = (Enumeration) value; // Enumeration<DeviceMetricCategory>
+        } else if (name.equals("measurementFrequency")) {
+          this.measurementFrequency = null;
+        } else if (name.equals("calibration")) {
+          this.getCalibration().remove((DeviceMetricCalibrationComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

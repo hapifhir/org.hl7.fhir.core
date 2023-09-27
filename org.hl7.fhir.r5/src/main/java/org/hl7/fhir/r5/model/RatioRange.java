@@ -211,6 +211,19 @@ public class RatioRange extends DataType implements ICompositeType {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("lowNumerator")) {
+          this.lowNumerator = null;
+        } else if (name.equals("highNumerator")) {
+          this.highNumerator = null;
+        } else if (name.equals("denominator")) {
+          this.denominator = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {

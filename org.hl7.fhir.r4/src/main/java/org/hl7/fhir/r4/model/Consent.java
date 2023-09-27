@@ -752,6 +752,17 @@ public class Consent extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("authority")) {
+        this.authority = null;
+      } else if (name.equals("uri")) {
+        this.uri = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1100,6 +1111,19 @@ public class Consent extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("verified")) {
+        this.verified = null;
+      } else if (name.equals("verifiedWith")) {
+        this.verifiedWith = null;
+      } else if (name.equals("verificationDate")) {
+        this.verificationDate = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2035,6 +2059,35 @@ public class Consent extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else if (name.equals("actor")) {
+        this.getActor().remove((provisionActorComponent) value);
+      } else if (name.equals("action")) {
+        this.getAction().remove(castToCodeableConcept(value));
+      } else if (name.equals("securityLabel")) {
+        this.getSecurityLabel().remove(castToCoding(value));
+      } else if (name.equals("purpose")) {
+        this.getPurpose().remove(castToCoding(value));
+      } else if (name.equals("class")) {
+        this.getClass_().remove(castToCoding(value));
+      } else if (name.equals("code")) {
+        this.getCode().remove(castToCodeableConcept(value));
+      } else if (name.equals("dataPeriod")) {
+        this.dataPeriod = null;
+      } else if (name.equals("data")) {
+        this.getData().remove((provisionDataComponent) value);
+      } else if (name.equals("provision")) {
+        this.getProvision().remove((provisionComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2417,6 +2470,17 @@ public class Consent extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("role")) {
+        this.role = null;
+      } else if (name.equals("reference")) {
+        this.reference = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2707,6 +2771,17 @@ public class Consent extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("meaning")) {
+        this.meaning = null;
+      } else if (name.equals("reference")) {
+        this.reference = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3842,6 +3917,39 @@ public class Consent extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("scope")) {
+      this.scope = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove(castToCodeableConcept(value));
+    } else if (name.equals("patient")) {
+      this.patient = null;
+    } else if (name.equals("dateTime")) {
+      this.dateTime = null;
+    } else if (name.equals("performer")) {
+      this.getPerformer().remove(castToReference(value));
+    } else if (name.equals("organization")) {
+      this.getOrganization().remove(castToReference(value));
+    } else if (name.equals("source[x]")) {
+      this.source = null;
+    } else if (name.equals("policy")) {
+      this.getPolicy().remove((ConsentPolicyComponent) value);
+    } else if (name.equals("policyRule")) {
+      this.policyRule = null;
+    } else if (name.equals("verification")) {
+      this.getVerification().remove((ConsentVerificationComponent) value);
+    } else if (name.equals("provision")) {
+      this.provision = (provisionComponent) value; // provisionComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

@@ -2542,6 +2542,44 @@ public class Timing extends BackboneType implements ICompositeType {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("bounds[x]")) {
+        this.bounds = null;
+      } else if (name.equals("count")) {
+        this.count = null;
+      } else if (name.equals("countMax")) {
+        this.countMax = null;
+      } else if (name.equals("duration")) {
+        this.duration = null;
+      } else if (name.equals("durationMax")) {
+        this.durationMax = null;
+      } else if (name.equals("durationUnit")) {
+        this.durationUnit = null;
+      } else if (name.equals("frequency")) {
+        this.frequency = null;
+      } else if (name.equals("frequencyMax")) {
+        this.frequencyMax = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else if (name.equals("periodMax")) {
+        this.periodMax = null;
+      } else if (name.equals("periodUnit")) {
+        this.periodUnit = null;
+      } else if (name.equals("dayOfWeek")) {
+        this.getDayOfWeek().remove((Enumeration) value);
+      } else if (name.equals("timeOfDay")) {
+        this.getTimeOfDay().remove(castToTime(value));
+      } else if (name.equals("when")) {
+        value = null;
+        this.getWhen().remove((Enumeration) value);
+      } else if (name.equals("offset")) {
+        this.offset = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2988,6 +3026,19 @@ public class Timing extends BackboneType implements ICompositeType {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("event")) {
+      this.getEvent().remove(castToDateTime(value));
+    } else if (name.equals("repeat")) {
+      this.repeat = (TimingRepeatComponent) value; // TimingRepeatComponent
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

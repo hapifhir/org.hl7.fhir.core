@@ -3466,6 +3466,51 @@ public class RequestGroup extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("prefix")) {
+        this.prefix = null;
+      } else if (name.equals("title")) {
+        this.title = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("textEquivalent")) {
+        this.textEquivalent = null;
+      } else if (name.equals("priority")) {
+        this.priority = null;
+      } else if (name.equals("code")) {
+        this.getCode().remove(castToCodeableConcept(value));
+      } else if (name.equals("documentation")) {
+        this.getDocumentation().remove(castToRelatedArtifact(value));
+      } else if (name.equals("condition")) {
+        this.getCondition().remove((RequestGroupActionConditionComponent) value);
+      } else if (name.equals("relatedAction")) {
+        this.getRelatedAction().remove((RequestGroupActionRelatedActionComponent) value);
+      } else if (name.equals("timing[x]")) {
+        this.timing = null;
+      } else if (name.equals("participant")) {
+        this.getParticipant().remove(castToReference(value));
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("groupingBehavior")) {
+        this.groupingBehavior = null;
+      } else if (name.equals("selectionBehavior")) {
+        this.selectionBehavior = null;
+      } else if (name.equals("requiredBehavior")) {
+        this.requiredBehavior = null;
+      } else if (name.equals("precheckBehavior")) {
+        this.precheckBehavior = null;
+      } else if (name.equals("cardinalityBehavior")) {
+        this.cardinalityBehavior = null;
+      } else if (name.equals("resource")) {
+        this.resource = null;
+      } else if (name.equals("action")) {
+        this.getAction().remove((RequestGroupActionComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -3908,6 +3953,17 @@ public class RequestGroup extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("kind")) {
+        this.kind = null;
+      } else if (name.equals("expression")) {
+        this.expression = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -4278,6 +4334,19 @@ public class RequestGroup extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("actionId")) {
+        this.actionId = null;
+      } else if (name.equals("relationship")) {
+        this.relationship = null;
+      } else if (name.equals("offset[x]")) {
+        this.offset = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -5836,6 +5905,49 @@ public class RequestGroup extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("instantiatesCanonical")) {
+      this.getInstantiatesCanonical().remove(castToCanonical(value));
+    } else if (name.equals("instantiatesUri")) {
+      this.getInstantiatesUri().remove(castToUri(value));
+    } else if (name.equals("basedOn")) {
+      this.getBasedOn().remove(castToReference(value));
+    } else if (name.equals("replaces")) {
+      this.getReplaces().remove(castToReference(value));
+    } else if (name.equals("groupIdentifier")) {
+      this.groupIdentifier = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("intent")) {
+      this.intent = null;
+    } else if (name.equals("priority")) {
+      this.priority = null;
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("authoredOn")) {
+      this.authoredOn = null;
+    } else if (name.equals("author")) {
+      this.author = null;
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(castToCodeableConcept(value));
+    } else if (name.equals("reasonReference")) {
+      this.getReasonReference().remove(castToReference(value));
+    } else if (name.equals("note")) {
+      this.getNote().remove(castToAnnotation(value));
+    } else if (name.equals("action")) {
+      this.getAction().remove((RequestGroupActionComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

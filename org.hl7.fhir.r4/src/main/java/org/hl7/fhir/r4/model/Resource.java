@@ -404,6 +404,21 @@ public abstract class Resource extends BaseResource implements IAnyResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("id")) {
+      this.id = null;
+    } else if (name.equals("meta")) {
+      this.meta = null;
+    } else if (name.equals("implicitRules")) {
+      this.implicitRules = null;
+    } else if (name.equals("language")) {
+      this.language = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 3355:

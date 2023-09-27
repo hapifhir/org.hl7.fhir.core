@@ -530,6 +530,21 @@ public class CoverageEligibilityResponse extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("coverage")) {
+        this.coverage = null;
+      } else if (name.equals("inforce")) {
+        this.inforce = null;
+      } else if (name.equals("benefitPeriod")) {
+        this.benefitPeriod = null;
+      } else if (name.equals("item")) {
+        this.getItem().remove((ItemsComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1591,6 +1606,41 @@ public class CoverageEligibilityResponse extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("category")) {
+        this.category = null;
+      } else if (name.equals("productOrService")) {
+        this.productOrService = null;
+      } else if (name.equals("modifier")) {
+        this.getModifier().remove(value);
+      } else if (name.equals("provider")) {
+        this.provider = null;
+      } else if (name.equals("excluded")) {
+        this.excluded = null;
+      } else if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("network")) {
+        this.network = null;
+      } else if (name.equals("unit")) {
+        this.unit = null;
+      } else if (name.equals("term")) {
+        this.term = null;
+      } else if (name.equals("benefit")) {
+        this.getBenefit().remove((BenefitComponent) value);
+      } else if (name.equals("authorizationRequired")) {
+        this.authorizationRequired = null;
+      } else if (name.equals("authorizationSupporting")) {
+        this.getAuthorizationSupporting().remove(value);
+      } else if (name.equals("authorizationUrl")) {
+        this.authorizationUrl = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2107,6 +2157,19 @@ public class CoverageEligibilityResponse extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("allowed[x]")) {
+        this.allowed = null;
+      } else if (name.equals("used[x]")) {
+        this.used = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2318,6 +2381,15 @@ public class CoverageEligibilityResponse extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3476,6 +3548,43 @@ public class CoverageEligibilityResponse extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("purpose")) {
+      this.getPurpose().remove((Enumeration) value);
+    } else if (name.equals("patient")) {
+      this.patient = null;
+    } else if (name.equals("serviced[x]")) {
+      this.serviced = null;
+    } else if (name.equals("created")) {
+      this.created = null;
+    } else if (name.equals("requestor")) {
+      this.requestor = null;
+    } else if (name.equals("request")) {
+      this.request = null;
+    } else if (name.equals("outcome")) {
+      this.outcome = null;
+    } else if (name.equals("disposition")) {
+      this.disposition = null;
+    } else if (name.equals("insurer")) {
+      this.insurer = null;
+    } else if (name.equals("insurance")) {
+      this.getInsurance().remove((InsuranceComponent) value);
+    } else if (name.equals("preAuthRef")) {
+      this.preAuthRef = null;
+    } else if (name.equals("form")) {
+      this.form = null;
+    } else if (name.equals("error")) {
+      this.getError().remove((ErrorsComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

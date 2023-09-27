@@ -1191,6 +1191,27 @@ public class MedicationRequest extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("initialFill")) {
+        this.initialFill = (MedicationRequestDispenseRequestInitialFillComponent) value; // MedicationRequestDispenseRequestInitialFillComponent
+      } else if (name.equals("dispenseInterval")) {
+        this.dispenseInterval = null;
+      } else if (name.equals("validityPeriod")) {
+        this.validityPeriod = null;
+      } else if (name.equals("numberOfRepeatsAllowed")) {
+        this.numberOfRepeatsAllowed = null;
+      } else if (name.equals("quantity")) {
+        this.quantity = null;
+      } else if (name.equals("expectedSupplyDuration")) {
+        this.expectedSupplyDuration = null;
+      } else if (name.equals("performer")) {
+        this.performer = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1455,6 +1476,17 @@ public class MedicationRequest extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("quantity")) {
+        this.quantity = null;
+      } else if (name.equals("duration")) {
+        this.duration = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1731,6 +1763,17 @@ public class MedicationRequest extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("allowed[x]")) {
+        this.allowed = null;
+      } else if (name.equals("reason")) {
+        this.reason = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -4471,6 +4514,77 @@ public class MedicationRequest extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("statusReason")) {
+      this.statusReason = null;
+    } else if (name.equals("intent")) {
+      this.intent = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove(castToCodeableConcept(value));
+    } else if (name.equals("priority")) {
+      this.priority = null;
+    } else if (name.equals("doNotPerform")) {
+      this.doNotPerform = null;
+    } else if (name.equals("reported[x]")) {
+      this.reported = null;
+    } else if (name.equals("medication[x]")) {
+      this.medication = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("supportingInformation")) {
+      this.getSupportingInformation().remove(castToReference(value));
+    } else if (name.equals("authoredOn")) {
+      this.authoredOn = null;
+    } else if (name.equals("requester")) {
+      this.requester = null;
+    } else if (name.equals("performer")) {
+      this.performer = null;
+    } else if (name.equals("performerType")) {
+      this.performerType = null;
+    } else if (name.equals("recorder")) {
+      this.recorder = null;
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(castToCodeableConcept(value));
+    } else if (name.equals("reasonReference")) {
+      this.getReasonReference().remove(castToReference(value));
+    } else if (name.equals("instantiatesCanonical")) {
+      this.getInstantiatesCanonical().remove(castToCanonical(value));
+    } else if (name.equals("instantiatesUri")) {
+      this.getInstantiatesUri().remove(castToUri(value));
+    } else if (name.equals("basedOn")) {
+      this.getBasedOn().remove(castToReference(value));
+    } else if (name.equals("groupIdentifier")) {
+      this.groupIdentifier = null;
+    } else if (name.equals("courseOfTherapyType")) {
+      this.courseOfTherapyType = null;
+    } else if (name.equals("insurance")) {
+      this.getInsurance().remove(castToReference(value));
+    } else if (name.equals("note")) {
+      this.getNote().remove(castToAnnotation(value));
+    } else if (name.equals("dosageInstruction")) {
+      this.getDosageInstruction().remove(castToDosage(value));
+    } else if (name.equals("dispenseRequest")) {
+      this.dispenseRequest = (MedicationRequestDispenseRequestComponent) value; // MedicationRequestDispenseRequestComponent
+    } else if (name.equals("substitution")) {
+      this.substitution = (MedicationRequestSubstitutionComponent) value; // MedicationRequestSubstitutionComponent
+    } else if (name.equals("priorPrescription")) {
+      this.priorPrescription = null;
+    } else if (name.equals("detectedIssue")) {
+      this.getDetectedIssue().remove(castToReference(value));
+    } else if (name.equals("eventHistory")) {
+      this.getEventHistory().remove(castToReference(value));
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

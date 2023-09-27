@@ -404,6 +404,17 @@ public class Narrative extends BaseNarrative implements INarrative {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("div")) {
+      this.div = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -892481550:

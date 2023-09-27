@@ -795,6 +795,19 @@ public class BiologicallyDerivedProduct extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("collector")) {
+        this.collector = null;
+      } else if (name.equals("source")) {
+        this.source = null;
+      } else if (name.equals("collected[x]")) {
+        this.collected = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1208,6 +1221,21 @@ public class BiologicallyDerivedProduct extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("procedure")) {
+        this.procedure = null;
+      } else if (name.equals("additive")) {
+        this.additive = null;
+      } else if (name.equals("time[x]")) {
+        this.time = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1507,6 +1535,17 @@ public class BiologicallyDerivedProduct extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("time[x]")) {
+        this.time = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1919,6 +1958,21 @@ public class BiologicallyDerivedProduct extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("temperature")) {
+        this.temperature = null;
+      } else if (name.equals("scale")) {
+        this.scale = null;
+      } else if (name.equals("duration")) {
+        this.duration = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2863,6 +2917,35 @@ public class BiologicallyDerivedProduct extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("productCategory")) {
+      this.productCategory = null;
+    } else if (name.equals("productCode")) {
+      this.productCode = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("request")) {
+      this.getRequest().remove(castToReference(value));
+    } else if (name.equals("quantity")) {
+      this.quantity = null;
+    } else if (name.equals("parent")) {
+      this.getParent().remove(castToReference(value));
+    } else if (name.equals("collection")) {
+      this.collection = (BiologicallyDerivedProductCollectionComponent) value; // BiologicallyDerivedProductCollectionComponent
+    } else if (name.equals("processing")) {
+      this.getProcessing().remove((BiologicallyDerivedProductProcessingComponent) value);
+    } else if (name.equals("manipulation")) {
+      this.manipulation = (BiologicallyDerivedProductManipulationComponent) value; // BiologicallyDerivedProductManipulationComponent
+    } else if (name.equals("storage")) {
+      this.getStorage().remove((BiologicallyDerivedProductStorageComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

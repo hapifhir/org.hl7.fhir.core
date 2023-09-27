@@ -410,6 +410,17 @@ public class AdverseEvent extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("function")) {
+          this.function = null;
+        } else if (name.equals("actor")) {
+          this.actor = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -647,6 +658,17 @@ public class AdverseEvent extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("instance[x]")) {
+          this.instance = null;
+        } else if (name.equals("causality")) {
+          this.causality = (AdverseEventSuspectEntityCausalityComponent) value; // AdverseEventSuspectEntityCausalityComponent
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -896,6 +918,19 @@ public class AdverseEvent extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("assessmentMethod")) {
+          this.assessmentMethod = null;
+        } else if (name.equals("entityRelatedness")) {
+          this.entityRelatedness = null;
+        } else if (name.equals("author")) {
+          this.author = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1106,6 +1141,15 @@ public class AdverseEvent extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("item[x]")) {
+          this.item = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1303,6 +1347,15 @@ public class AdverseEvent extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("item[x]")) {
+          this.item = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1504,6 +1557,15 @@ public class AdverseEvent extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("item[x]")) {
+          this.item = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1701,6 +1763,15 @@ public class AdverseEvent extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("item[x]")) {
+          this.item = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3283,6 +3354,63 @@ public class AdverseEvent extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new AdverseEventStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<AdverseEventStatus>
+        } else if (name.equals("actuality")) {
+          value = new AdverseEventActualityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.actuality = (Enumeration) value; // Enumeration<AdverseEventActuality>
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("occurrence[x]")) {
+          this.occurrence = null;
+        } else if (name.equals("detected")) {
+          this.detected = null;
+        } else if (name.equals("recordedDate")) {
+          this.recordedDate = null;
+        } else if (name.equals("resultingEffect")) {
+          this.getResultingEffect().remove(value);
+        } else if (name.equals("location")) {
+          this.location = null;
+        } else if (name.equals("seriousness")) {
+          this.seriousness = null;
+        } else if (name.equals("outcome")) {
+          this.getOutcome().remove(value);
+        } else if (name.equals("recorder")) {
+          this.recorder = null;
+        } else if (name.equals("participant")) {
+          this.getParticipant().remove((AdverseEventParticipantComponent) value);
+        } else if (name.equals("study")) {
+          this.getStudy().remove(value);
+        } else if (name.equals("expectedInResearchStudy")) {
+          this.expectedInResearchStudy = null;
+        } else if (name.equals("suspectEntity")) {
+          this.getSuspectEntity().remove((AdverseEventSuspectEntityComponent) value);
+        } else if (name.equals("contributingFactor")) {
+          this.getContributingFactor().remove((AdverseEventContributingFactorComponent) value);
+        } else if (name.equals("preventiveAction")) {
+          this.getPreventiveAction().remove((AdverseEventPreventiveActionComponent) value);
+        } else if (name.equals("mitigatingAction")) {
+          this.getMitigatingAction().remove((AdverseEventMitigatingActionComponent) value);
+        } else if (name.equals("supportingInfo")) {
+          this.getSupportingInfo().remove((AdverseEventSupportingInfoComponent) value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

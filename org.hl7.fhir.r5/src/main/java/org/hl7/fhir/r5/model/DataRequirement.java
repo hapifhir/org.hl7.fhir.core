@@ -629,6 +629,21 @@ public class DataRequirement extends DataType implements ICompositeType {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("path")) {
+          this.path = null;
+        } else if (name.equals("searchParam")) {
+          this.searchParam = null;
+        } else if (name.equals("valueSet")) {
+          this.valueSet = null;
+        } else if (name.equals("code")) {
+          this.getCode().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -980,6 +995,19 @@ public class DataRequirement extends DataType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("path")) {
+          this.path = null;
+        } else if (name.equals("searchParam")) {
+          this.searchParam = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1401,6 +1429,22 @@ public class DataRequirement extends DataType implements ICompositeType {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("path")) {
+          this.path = null;
+        } else if (name.equals("searchParam")) {
+          this.searchParam = null;
+        } else if (name.equals("comparator")) {
+          value = new ValueFilterComparatorEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.comparator = (Enumeration) value; // Enumeration<ValueFilterComparator>
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1677,6 +1721,18 @@ public class DataRequirement extends DataType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("path")) {
+          this.path = null;
+        } else if (name.equals("direction")) {
+          value = new SortDirectionEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.direction = (Enumeration) value; // Enumeration<SortDirection>
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2431,6 +2487,32 @@ The value of mustSupport SHALL be a FHIRPath resolvable on the type of the DataR
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new FHIRTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<FHIRTypes>
+        } else if (name.equals("profile")) {
+          this.getProfile().remove(value);
+        } else if (name.equals("subject[x]")) {
+          this.subject = null;
+        } else if (name.equals("mustSupport")) {
+          this.getMustSupport().remove(value);
+        } else if (name.equals("codeFilter")) {
+          this.getCodeFilter().remove((DataRequirementCodeFilterComponent) value);
+        } else if (name.equals("dateFilter")) {
+          this.getDateFilter().remove((DataRequirementDateFilterComponent) value);
+        } else if (name.equals("valueFilter")) {
+          this.getValueFilter().remove((DataRequirementValueFilterComponent) value);
+        } else if (name.equals("limit")) {
+          this.limit = null;
+        } else if (name.equals("sort")) {
+          this.getSort().remove((DataRequirementSortComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

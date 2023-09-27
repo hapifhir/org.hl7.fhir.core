@@ -1,5 +1,33 @@
 package org.hl7.fhir.r5.profilemodel;
 
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, \
+  are permitted provided that the following conditions are met:
+  
+   * Redistributions of source code must retain the above copyright notice, this \
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
+  POSSIBILITY OF SUCH DAMAGE.
+  */
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,10 +36,13 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.DateType;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Address;
@@ -19,6 +50,7 @@ import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StringType;
 
 /**
  * This class provides a profile centric view of a resource, as driven by a profile
@@ -109,6 +141,9 @@ public class PEInstance {
       if (defn.name().equals(name)) {
         return defn;
       }
+      if (defn.name().equals(name+"[x]")) {
+        return defn;
+      }
     }
     throw new FHIRException("No children with the name '"+name+"'");
   }
@@ -118,7 +153,7 @@ public class PEInstance {
    */
   public PEInstance makeChild(String name) {
     PEDefinition child = byName(definition.children(), name);
-    Base b = data.addChild(child.schemaName());
+    Base b = child.isBaseList() || !child.isBasePrimitive() ? data.addChild(child.schemaNameWithType()) : data.makeProperty(child.schemaNameWithType().hashCode(), child.schemaNameWithType());
     builder.populateByProfile(b, child);
     return new PEInstance(builder, child, resource, b, path+"."+child.name());
   }
@@ -141,10 +176,16 @@ public class PEInstance {
   /**
    * remove the nominated child from the resource
    */
-  public boolean removeChild(PEInstance child) {
-    return data.removeChild(child.definition().schemaName(), child.data);
+  public void removeChild(PEInstance child) {
+    data.removeChild(child.definition().schemaName(), child.data);
   }
 
+  public void clear(String name) {
+    List<PEInstance> children = children(name);
+    for (PEInstance child : children) {
+      removeChild(child);
+    }
+  }
 
   public enum PEInstanceDataKind {
     Resource, Complex, DataType, Primitive
@@ -250,5 +291,20 @@ public class PEInstance {
   
   public IWorkerContext getContext() {
     return builder.getContext();
+  }
+
+  public void addChild(String name, DataType value) {
+      PEDefinition child = byName(definition.children(), name);
+      Base b = data.setProperty(child.schemaName(), value);
+  }
+  
+  public void addChild(String name, String value) {
+    PEDefinition child = byName(definition.children(), name);
+    Base b = data.setProperty(child.schemaName(), new StringType(value));
+  }
+
+  public void addChild(String name, Date value) {
+    PEDefinition child = byName(definition.children(), name);
+    Base b = data.setProperty(child.schemaName(), new DateType(value));
   }
 }

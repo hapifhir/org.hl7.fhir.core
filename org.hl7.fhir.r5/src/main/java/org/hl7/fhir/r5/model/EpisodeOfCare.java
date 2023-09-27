@@ -386,6 +386,18 @@ public class EpisodeOfCare extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("status")) {
+          value = new EpisodeOfCareStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<EpisodeOfCareStatus>
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -615,6 +627,17 @@ public class EpisodeOfCare extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("use")) {
+          this.use = null;
+        } else if (name.equals("value")) {
+          this.getValue().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -850,6 +873,17 @@ public class EpisodeOfCare extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("condition")) {
+          this.getCondition().remove(value);
+        } else if (name.equals("use")) {
+          this.use = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1747,6 +1781,40 @@ public class EpisodeOfCare extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new EpisodeOfCareStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<EpisodeOfCareStatus>
+        } else if (name.equals("statusHistory")) {
+          this.getStatusHistory().remove((EpisodeOfCareStatusHistoryComponent) value);
+        } else if (name.equals("type")) {
+          this.getType().remove(value);
+        } else if (name.equals("reason")) {
+          this.getReason().remove((ReasonComponent) value);
+        } else if (name.equals("diagnosis")) {
+          this.getDiagnosis().remove((DiagnosisComponent) value);
+        } else if (name.equals("patient")) {
+          this.patient = null;
+        } else if (name.equals("managingOrganization")) {
+          this.managingOrganization = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else if (name.equals("referralRequest")) {
+          this.getReferralRequest().remove(value);
+        } else if (name.equals("careManager")) {
+          this.careManager = null;
+        } else if (name.equals("careTeam")) {
+          this.getCareTeam().remove(value);
+        } else if (name.equals("account")) {
+          this.getAccount().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

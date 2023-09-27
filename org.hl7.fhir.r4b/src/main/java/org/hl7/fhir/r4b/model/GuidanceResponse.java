@@ -1401,6 +1401,43 @@ public class GuidanceResponse extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("requestIdentifier")) {
+      this.requestIdentifier = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("module[x]")) {
+      this.module = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("occurrenceDateTime")) {
+      this.occurrenceDateTime = null;
+    } else if (name.equals("performer")) {
+      this.performer = null;
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(value);
+    } else if (name.equals("reasonReference")) {
+      this.getReasonReference().remove(value);
+    } else if (name.equals("note")) {
+      this.getNote().remove(value);
+    } else if (name.equals("evaluationMessage")) {
+      this.getEvaluationMessage().remove(value);
+    } else if (name.equals("outputParameters")) {
+      this.outputParameters = null;
+    } else if (name.equals("result")) {
+      this.result = null;
+    } else if (name.equals("dataRequirement")) {
+      this.getDataRequirement().remove(value);
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -354233192:

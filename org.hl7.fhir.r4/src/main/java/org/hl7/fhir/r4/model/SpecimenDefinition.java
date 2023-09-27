@@ -744,6 +744,29 @@ public class SpecimenDefinition extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("isDerived")) {
+        this.isDerived = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("preference")) {
+        this.preference = null;
+      } else if (name.equals("container")) {
+        this.container = (SpecimenDefinitionTypeTestedContainerComponent) value; // SpecimenDefinitionTypeTestedContainerComponent
+      } else if (name.equals("requirement")) {
+        this.requirement = null;
+      } else if (name.equals("retentionTime")) {
+        this.retentionTime = null;
+      } else if (name.equals("rejectionCriterion")) {
+        this.getRejectionCriterion().remove(castToCodeableConcept(value));
+      } else if (name.equals("handling")) {
+        this.getHandling().remove((SpecimenDefinitionTypeTestedHandlingComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1434,6 +1457,29 @@ public class SpecimenDefinition extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("material")) {
+        this.material = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("cap")) {
+        this.cap = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("capacity")) {
+        this.capacity = null;
+      } else if (name.equals("minimumVolume[x]")) {
+        this.minimumVolume = null;
+      } else if (name.equals("additive")) {
+        this.getAdditive().remove((SpecimenDefinitionTypeTestedContainerAdditiveComponent) value);
+      } else if (name.equals("preparation")) {
+        this.preparation = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1728,6 +1774,15 @@ public class SpecimenDefinition extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("additive[x]")) {
+        this.additive = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2089,6 +2144,21 @@ public class SpecimenDefinition extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("temperatureQualifier")) {
+        this.temperatureQualifier = null;
+      } else if (name.equals("temperatureRange")) {
+        this.temperatureRange = null;
+      } else if (name.equals("maxDuration")) {
+        this.maxDuration = null;
+      } else if (name.equals("instruction")) {
+        this.instruction = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2632,6 +2702,25 @@ public class SpecimenDefinition extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.identifier = null;
+    } else if (name.equals("typeCollected")) {
+      this.typeCollected = null;
+    } else if (name.equals("patientPreparation")) {
+      this.getPatientPreparation().remove(castToCodeableConcept(value));
+    } else if (name.equals("timeAspect")) {
+      this.timeAspect = null;
+    } else if (name.equals("collection")) {
+      this.getCollection().remove(castToCodeableConcept(value));
+    } else if (name.equals("typeTested")) {
+      this.getTypeTested().remove((SpecimenDefinitionTypeTestedComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

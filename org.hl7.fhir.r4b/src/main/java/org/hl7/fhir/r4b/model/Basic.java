@@ -402,6 +402,23 @@ public class Basic extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("created")) {
+      this.created = null;
+    } else if (name.equals("author")) {
+      this.author = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1618432855:

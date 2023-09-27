@@ -678,6 +678,23 @@ public class FamilyMemberHistory extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("outcome")) {
+        this.outcome = null;
+      } else if (name.equals("contributedToDeath")) {
+        this.contributedToDeath = null;
+      } else if (name.equals("onset[x]")) {
+        this.onset = null;
+      } else if (name.equals("note")) {
+        this.getNote().remove(castToAnnotation(value));
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2363,6 +2380,49 @@ public class FamilyMemberHistory extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("instantiatesCanonical")) {
+      this.getInstantiatesCanonical().remove(castToCanonical(value));
+    } else if (name.equals("instantiatesUri")) {
+      this.getInstantiatesUri().remove(castToUri(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("dataAbsentReason")) {
+      this.dataAbsentReason = null;
+    } else if (name.equals("patient")) {
+      this.patient = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("relationship")) {
+      this.relationship = null;
+    } else if (name.equals("sex")) {
+      this.sex = null;
+    } else if (name.equals("born[x]")) {
+      this.born = null;
+    } else if (name.equals("age[x]")) {
+      this.age = null;
+    } else if (name.equals("estimatedAge")) {
+      this.estimatedAge = null;
+    } else if (name.equals("deceased[x]")) {
+      this.deceased = null;
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(castToCodeableConcept(value));
+    } else if (name.equals("reasonReference")) {
+      this.getReasonReference().remove(castToReference(value));
+    } else if (name.equals("note")) {
+      this.getNote().remove(castToAnnotation(value));
+    } else if (name.equals("condition")) {
+      this.getCondition().remove((FamilyMemberHistoryConditionComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

@@ -761,6 +761,27 @@ public class EvidenceVariable extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("definition[x]")) {
+        this.definition = null;
+      } else if (name.equals("method")) {
+        this.method = null;
+      } else if (name.equals("device")) {
+        this.device = null;
+      } else if (name.equals("exclude")) {
+        this.exclude = null;
+      } else if (name.equals("timeFromStart")) {
+        this.timeFromStart = (EvidenceVariableCharacteristicTimeFromStartComponent) value; // EvidenceVariableCharacteristicTimeFromStartComponent
+      } else if (name.equals("groupMeasure")) {
+        this.groupMeasure = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1186,6 +1207,21 @@ public class EvidenceVariable extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("quantity")) {
+        this.quantity = null;
+      } else if (name.equals("range")) {
+        this.range = null;
+      } else if (name.equals("note")) {
+        this.getNote().remove(value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1510,6 +1546,17 @@ public class EvidenceVariable extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("value[x]")) {
+        this.value = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3638,6 +3685,61 @@ public class EvidenceVariable extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("shortTitle")) {
+      this.shortTitle = null;
+    } else if (name.equals("subtitle")) {
+      this.subtitle = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("note")) {
+      this.getNote().remove(value);
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(value);
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("author")) {
+      this.getAuthor().remove(value);
+    } else if (name.equals("editor")) {
+      this.getEditor().remove(value);
+    } else if (name.equals("reviewer")) {
+      this.getReviewer().remove(value);
+    } else if (name.equals("endorser")) {
+      this.getEndorser().remove(value);
+    } else if (name.equals("relatedArtifact")) {
+      this.getRelatedArtifact().remove(value);
+    } else if (name.equals("actual")) {
+      this.actual = null;
+    } else if (name.equals("characteristicCombination")) {
+      this.characteristicCombination = null;
+    } else if (name.equals("characteristic")) {
+      this.getCharacteristic().remove((EvidenceVariableCharacteristicComponent) value);
+    } else if (name.equals("handling")) {
+      this.handling = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove((EvidenceVariableCategoryComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

@@ -188,6 +188,15 @@ public abstract class BackboneType extends Type implements IBaseBackboneElement 
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("modifierExtension")) {
+      this.getModifierExtension().remove(castToExtension(value));
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -298878168:

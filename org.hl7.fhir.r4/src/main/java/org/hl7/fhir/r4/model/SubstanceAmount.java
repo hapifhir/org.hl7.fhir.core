@@ -186,6 +186,17 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("lowLimit")) {
+        this.lowLimit = null;
+      } else if (name.equals("highLimit")) {
+        this.highLimit = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -621,6 +632,21 @@ public class SubstanceAmount extends BackboneType implements ICompositeType {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("amount[x]")) {
+      this.amount = null;
+    } else if (name.equals("amountType")) {
+      this.amountType = null;
+    } else if (name.equals("amountText")) {
+      this.amountText = null;
+    } else if (name.equals("referenceRange")) {
+      this.referenceRange = (SubstanceAmountReferenceRangeComponent) value; // SubstanceAmountReferenceRangeComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

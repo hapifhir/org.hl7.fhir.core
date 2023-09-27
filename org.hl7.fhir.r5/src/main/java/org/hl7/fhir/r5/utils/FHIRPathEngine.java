@@ -506,6 +506,9 @@ public class FHIRPathEngine {
         if (t.contains("#")) {
           ctxt = t.substring(0, t.indexOf('#'));
           t = t.substring(t.indexOf('#')+1);
+        } else if (Utilities.isAbsoluteUrl(t)) {
+          ctxt = t;
+          t = ctxt.substring(ctxt.lastIndexOf("/")+1);
         } else {
           ctxt = t.substring(0, t.indexOf('.'));
         }
@@ -1726,7 +1729,7 @@ public class FHIRPathEngine {
           i = i + 3;
           break;
         default:
-          throw lexer.error("Unknown character escape \\"+s.charAt(i));
+          throw lexer.error("Unknown FHIRPath character escape \\"+s.charAt(i));
         }
         i++;
       } else {
@@ -5823,7 +5826,11 @@ public class FHIRPathEngine {
         addTypeAndDescendents(sdl, sd, cu.allStructures());
         if (type.contains("#")) {
           tail = type.substring(type.indexOf("#")+1);
-          tail = tail.substring(tail.indexOf("."));
+          if (tail.contains(".")) {
+            tail = tail.substring(tail.indexOf("."));
+          } else {
+            tail = "";
+          }
         }
       }
 

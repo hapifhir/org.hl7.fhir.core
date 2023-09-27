@@ -561,6 +561,17 @@ public class DiagnosticReport extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("comment")) {
+        this.comment = null;
+      } else if (name.equals("link")) {
+        this.link = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2253,6 +2264,49 @@ public class DiagnosticReport extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("basedOn")) {
+      this.getBasedOn().remove(castToReference(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove(castToCodeableConcept(value));
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("effective[x]")) {
+      this.effective = null;
+    } else if (name.equals("issued")) {
+      this.issued = null;
+    } else if (name.equals("performer")) {
+      this.getPerformer().remove(castToReference(value));
+    } else if (name.equals("resultsInterpreter")) {
+      this.getResultsInterpreter().remove(castToReference(value));
+    } else if (name.equals("specimen")) {
+      this.getSpecimen().remove(castToReference(value));
+    } else if (name.equals("result")) {
+      this.getResult().remove(castToReference(value));
+    } else if (name.equals("imagingStudy")) {
+      this.getImagingStudy().remove(castToReference(value));
+    } else if (name.equals("media")) {
+      this.getMedia().remove((DiagnosticReportMediaComponent) value);
+    } else if (name.equals("conclusion")) {
+      this.conclusion = null;
+    } else if (name.equals("conclusionCode")) {
+      this.getConclusionCode().remove(castToCodeableConcept(value));
+    } else if (name.equals("presentedForm")) {
+      this.getPresentedForm().remove(castToAttachment(value));
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override
