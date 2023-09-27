@@ -40,6 +40,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.Comparison;
 import org.hl7.fhir.r5.model.Enumerations.ObservationStatus;
 import org.hl7.fhir.r5.model.Observation;
 import org.hl7.fhir.r5.model.Resource;
@@ -51,6 +52,7 @@ import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.profilemodel.PEInstance.PEInstanceDataKind;
+import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
@@ -419,10 +421,12 @@ public class PETests {
 
 
   private void checkGeneratedJava(String name) throws FileNotFoundException, IOException {
-    String actual = TextFile.fileToString(Utilities.path("[tmp]", name+".java"));
-    String expected = TestingUtilities.loadTestResource("r5", "profiles", name+".java");
-    if (!actual.equals(expected)) {
-      Assertions.fail("Generated code for "+name+" is different");
+    String actual = Utilities.normalize(TextFile.fileToString(Utilities.path("[tmp]", name+".java")));
+    String expected = Utilities.normalize(TestingUtilities.loadTestResource("r5", "profiles", name+".java"));
+    String msg = CompareUtilities.checkTextIsSame(expected, actual);
+    if (msg != null) {      
+      Assertions.fail("Generated code for "+name+" is different: "+msg);
     }
   }
+
 }
