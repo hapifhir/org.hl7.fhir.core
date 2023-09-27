@@ -889,6 +889,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version) {
+    try {
+      return fetchResourceWithException(class_, uri+"|"+version);
+    } catch (FHIRException e) {
+      throw new Error(e);
+    }
+  }
+
   @Override
   public <T extends Resource> boolean hasResource(Class<T> class_, String uri) {
     try {
@@ -1148,6 +1156,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + typeName);
   }
 
+
+  public boolean isPrimitiveType(String type) {
+    return Utilities.existsInList(type, "boolean", "integer", "integer64", "string", "decimal", "uri", "base64Binary", "instant", "date", "dateTime", "time", "code", "oid", "id", "markdown", "unsignedInt", "positiveInt", "uuid", "xhtml", "url", "canonical");
+  }
+
+  public boolean isDataType(String type) {
+    return Utilities.existsInList(type, "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", 
+        "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext");
+  }
+  
+  
   public boolean isTlogging() {
     return tlogging;
   }
