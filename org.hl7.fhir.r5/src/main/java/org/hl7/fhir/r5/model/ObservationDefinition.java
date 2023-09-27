@@ -1131,6 +1131,39 @@ public class ObservationDefinition extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("context")) {
+          this.context = null;
+        } else if (name.equals("appliesTo")) {
+          this.getAppliesTo().remove(value);
+        } else if (name.equals("gender")) {
+          value = new AdministrativeGenderEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.gender = (Enumeration) value; // Enumeration<AdministrativeGender>
+        } else if (name.equals("age")) {
+          this.age = null;
+        } else if (name.equals("gestationalAge")) {
+          this.gestationalAge = null;
+        } else if (name.equals("condition")) {
+          this.condition = null;
+        } else if (name.equals("rangeCategory")) {
+          value = new ObservationRangeCategoryEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.rangeCategory = (Enumeration) value; // Enumeration<ObservationRangeCategory>
+        } else if (name.equals("range")) {
+          this.range = null;
+        } else if (name.equals("validCodedValueSet")) {
+          this.validCodedValueSet = null;
+        } else if (name.equals("normalCodedValueSet")) {
+          this.normalCodedValueSet = null;
+        } else if (name.equals("abnormalCodedValueSet")) {
+          this.abnormalCodedValueSet = null;
+        } else if (name.equals("criticalCodedValueSet")) {
+          this.criticalCodedValueSet = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1591,6 +1624,22 @@ public class ObservationDefinition extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("permittedDataType")) {
+          value = new ObservationDataTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getPermittedDataType().remove((Enumeration) value);
+        } else if (name.equals("permittedUnit")) {
+          this.getPermittedUnit().remove(value);
+        } else if (name.equals("qualifiedValue")) {
+          this.getQualifiedValue().remove((ObservationDefinitionQualifiedValueComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -4051,6 +4100,89 @@ public class ObservationDefinition extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.identifier = null;
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("jurisdiction")) {
+          this.getJurisdiction().remove(value);
+        } else if (name.equals("purpose")) {
+          this.purpose = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = null;
+        } else if (name.equals("approvalDate")) {
+          this.approvalDate = null;
+        } else if (name.equals("lastReviewDate")) {
+          this.lastReviewDate = null;
+        } else if (name.equals("effectivePeriod")) {
+          this.effectivePeriod = null;
+        } else if (name.equals("derivedFromCanonical")) {
+          this.getDerivedFromCanonical().remove(value);
+        } else if (name.equals("derivedFromUri")) {
+          this.getDerivedFromUri().remove(value);
+        } else if (name.equals("subject")) {
+          this.getSubject().remove(value);
+        } else if (name.equals("performerType")) {
+          this.performerType = null;
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("permittedDataType")) {
+          value = new ObservationDataTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getPermittedDataType().remove((Enumeration) value);
+        } else if (name.equals("multipleResultsAllowed")) {
+          this.multipleResultsAllowed = null;
+        } else if (name.equals("bodySite")) {
+          this.bodySite = null;
+        } else if (name.equals("method")) {
+          this.method = null;
+        } else if (name.equals("specimen")) {
+          this.getSpecimen().remove(value);
+        } else if (name.equals("device")) {
+          this.getDevice().remove(value);
+        } else if (name.equals("preferredReportName")) {
+          this.preferredReportName = null;
+        } else if (name.equals("permittedUnit")) {
+          this.getPermittedUnit().remove(value);
+        } else if (name.equals("qualifiedValue")) {
+          this.getQualifiedValue().remove((ObservationDefinitionQualifiedValueComponent) value);
+        } else if (name.equals("hasMember")) {
+          this.getHasMember().remove(value);
+        } else if (name.equals("component")) {
+          this.getComponent().remove((ObservationDefinitionComponentComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

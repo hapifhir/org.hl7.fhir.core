@@ -200,6 +200,15 @@ public class MedicinalProductInteraction extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("item[x]")) {
+        this.item = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -748,6 +757,27 @@ public class MedicinalProductInteraction extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("subject")) {
+      this.getSubject().remove(castToReference(value));
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("interactant")) {
+      this.getInteractant().remove((MedicinalProductInteractionInteractantComponent) value);
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("effect")) {
+      this.effect = null;
+    } else if (name.equals("incidence")) {
+      this.incidence = null;
+    } else if (name.equals("management")) {
+      this.management = null;
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

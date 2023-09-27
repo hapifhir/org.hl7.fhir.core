@@ -508,6 +508,21 @@ public class ExampleScenario extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("actorId")) {
+        this.actorId = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1094,6 +1109,25 @@ public class ExampleScenario extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("resourceId")) {
+        this.resourceId = null;
+      } else if (name.equals("resourceType")) {
+        this.resourceType = null;
+      } else if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("version")) {
+        this.getVersion().remove((ExampleScenarioInstanceVersionComponent) value);
+      } else if (name.equals("containedInstance")) {
+        this.getContainedInstance().remove((ExampleScenarioInstanceContainedInstanceComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1413,6 +1447,17 @@ public class ExampleScenario extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("versionId")) {
+        this.versionId = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1692,6 +1737,17 @@ public class ExampleScenario extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("resourceId")) {
+        this.resourceId = null;
+      } else if (name.equals("versionId")) {
+        this.versionId = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2195,6 +2251,23 @@ public class ExampleScenario extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("title")) {
+        this.title = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("preConditions")) {
+        this.preConditions = null;
+      } else if (name.equals("postConditions")) {
+        this.postConditions = null;
+      } else if (name.equals("step")) {
+        this.getStep().remove((ExampleScenarioProcessStepComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2613,6 +2686,21 @@ public class ExampleScenario extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("process")) {
+        this.getProcess().remove((ExampleScenarioProcessComponent) value);
+      } else if (name.equals("pause")) {
+        this.pause = null;
+      } else if (name.equals("operation")) {
+        this.operation = (ExampleScenarioProcessStepOperationComponent) value; // ExampleScenarioProcessStepOperationComponent
+      } else if (name.equals("alternative")) {
+        this.getAlternative().remove((ExampleScenarioProcessStepAlternativeComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3436,6 +3524,33 @@ public class ExampleScenario extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("number")) {
+        this.number = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("initiator")) {
+        this.initiator = null;
+      } else if (name.equals("receiver")) {
+        this.receiver = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("initiatorActive")) {
+        this.initiatorActive = null;
+      } else if (name.equals("receiverActive")) {
+        this.receiverActive = null;
+      } else if (name.equals("request")) {
+        this.request = (ExampleScenarioInstanceContainedInstanceComponent) value; // ExampleScenarioInstanceContainedInstanceComponent
+      } else if (name.equals("response")) {
+        this.response = (ExampleScenarioInstanceContainedInstanceComponent) value; // ExampleScenarioInstanceContainedInstanceComponent
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -3875,6 +3990,19 @@ public class ExampleScenario extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("title")) {
+        this.title = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("step")) {
+        this.getStep().remove((ExampleScenarioProcessStepComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -5450,6 +5578,47 @@ public class ExampleScenario extends CanonicalResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(value);
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(value);
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("actor")) {
+      this.getActor().remove((ExampleScenarioActorComponent) value);
+    } else if (name.equals("instance")) {
+      this.getInstance().remove((ExampleScenarioInstanceComponent) value);
+    } else if (name.equals("process")) {
+      this.getProcess().remove((ExampleScenarioProcessComponent) value);
+    } else if (name.equals("workflow")) {
+      this.getWorkflow().remove(value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

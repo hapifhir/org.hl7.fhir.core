@@ -245,6 +245,19 @@ public class SubstanceReferenceInformation extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("geneSequenceOrigin")) {
+          this.geneSequenceOrigin = null;
+        } else if (name.equals("gene")) {
+          this.gene = null;
+        } else if (name.equals("source")) {
+          this.getSource().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -524,6 +537,19 @@ public class SubstanceReferenceInformation extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("element")) {
+          this.element = null;
+        } else if (name.equals("source")) {
+          this.getSource().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1047,6 +1073,29 @@ public class SubstanceReferenceInformation extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("target")) {
+          this.target = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("interaction")) {
+          this.interaction = null;
+        } else if (name.equals("organism")) {
+          this.organism = null;
+        } else if (name.equals("organismType")) {
+          this.organismType = null;
+        } else if (name.equals("amount[x]")) {
+          this.amount = null;
+        } else if (name.equals("amountType")) {
+          this.amountType = null;
+        } else if (name.equals("source")) {
+          this.getSource().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1491,6 +1540,21 @@ public class SubstanceReferenceInformation extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("comment")) {
+          this.comment = null;
+        } else if (name.equals("gene")) {
+          this.getGene().remove((SubstanceReferenceInformationGeneComponent) value);
+        } else if (name.equals("geneElement")) {
+          this.getGeneElement().remove((SubstanceReferenceInformationGeneElementComponent) value);
+        } else if (name.equals("target")) {
+          this.getTarget().remove((SubstanceReferenceInformationTargetComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

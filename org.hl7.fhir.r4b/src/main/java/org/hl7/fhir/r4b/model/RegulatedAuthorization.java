@@ -391,6 +391,23 @@ public class RegulatedAuthorization extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identifier")) {
+        this.identifier = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("status")) {
+        this.status = null;
+      } else if (name.equals("date[x]")) {
+        this.date = null;
+      } else if (name.equals("application")) {
+        this.getApplication().remove((RegulatedAuthorizationCaseComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1410,6 +1427,41 @@ public class RegulatedAuthorization extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("subject")) {
+      this.getSubject().remove(value);
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("region")) {
+      this.getRegion().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("statusDate")) {
+      this.statusDate = null;
+    } else if (name.equals("validityPeriod")) {
+      this.validityPeriod = null;
+    } else if (name.equals("indication")) {
+      this.indication = null;
+    } else if (name.equals("intendedUse")) {
+      this.intendedUse = null;
+    } else if (name.equals("basis")) {
+      this.getBasis().remove(value);
+    } else if (name.equals("holder")) {
+      this.holder = null;
+    } else if (name.equals("regulator")) {
+      this.regulator = null;
+    } else if (name.equals("case")) {
+      this.case_ = (RegulatedAuthorizationCaseComponent) value; // RegulatedAuthorizationCaseComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

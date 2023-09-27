@@ -427,6 +427,17 @@ public class EvidenceReport extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("characteristic")) {
+          this.getCharacteristic().remove((EvidenceReportSubjectCharacteristicComponent) value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -821,6 +832,21 @@ public class EvidenceReport extends MetadataResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else if (name.equals("exclude")) {
+          this.exclude = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1085,6 +1111,18 @@ public class EvidenceReport extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          value = new ReportRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.code = (Enumeration) value; // Enumeration<ReportRelationshipType>
+        } else if (name.equals("target")) {
+          this.target = (EvidenceReportRelatesToTargetComponent) value; // EvidenceReportRelatesToTargetComponent
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1413,6 +1451,21 @@ public class EvidenceReport extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.identifier = null;
+        } else if (name.equals("display")) {
+          this.display = null;
+        } else if (name.equals("resource")) {
+          this.resource = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2220,6 +2273,38 @@ public class EvidenceReport extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("focus")) {
+          this.focus = null;
+        } else if (name.equals("focusReference")) {
+          this.focusReference = null;
+        } else if (name.equals("author")) {
+          this.getAuthor().remove(value);
+        } else if (name.equals("text")) {
+          this.text = null;
+        } else if (name.equals("mode")) {
+          value = new ListModeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.mode = (Enumeration) value; // Enumeration<ListMode>
+        } else if (name.equals("orderedBy")) {
+          this.orderedBy = null;
+        } else if (name.equals("entryClassifier")) {
+          this.getEntryClassifier().remove(value);
+        } else if (name.equals("entryReference")) {
+          this.getEntryReference().remove(value);
+        } else if (name.equals("entryQuantity")) {
+          this.getEntryQuantity().remove(value);
+        } else if (name.equals("emptyReason")) {
+          this.emptyReason = null;
+        } else if (name.equals("section")) {
+          this.getSection().remove((SectionComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -4124,6 +4209,50 @@ public class EvidenceReport extends MetadataResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("relatedIdentifier")) {
+          this.getRelatedIdentifier().remove(value);
+        } else if (name.equals("citeAs[x]")) {
+          this.citeAs = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("relatedArtifact")) {
+          this.getRelatedArtifact().remove(value);
+        } else if (name.equals("subject")) {
+          this.subject = (EvidenceReportSubjectComponent) value; // EvidenceReportSubjectComponent
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("author")) {
+          this.getAuthor().remove(value);
+        } else if (name.equals("editor")) {
+          this.getEditor().remove(value);
+        } else if (name.equals("reviewer")) {
+          this.getReviewer().remove(value);
+        } else if (name.equals("endorser")) {
+          this.getEndorser().remove(value);
+        } else if (name.equals("relatesTo")) {
+          this.getRelatesTo().remove((EvidenceReportRelatesToComponent) value);
+        } else if (name.equals("section")) {
+          this.getSection().remove((SectionComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

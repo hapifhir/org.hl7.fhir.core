@@ -991,6 +991,25 @@ public class ConceptMap extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("source")) {
+        this.source = null;
+      } else if (name.equals("sourceVersion")) {
+        this.sourceVersion = null;
+      } else if (name.equals("target")) {
+        this.target = null;
+      } else if (name.equals("targetVersion")) {
+        this.targetVersion = null;
+      } else if (name.equals("element")) {
+        this.getElement().remove((SourceElementComponent) value);
+      } else if (name.equals("unmapped")) {
+        this.unmapped = (ConceptMapGroupUnmappedComponent) value; // ConceptMapGroupUnmappedComponent
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1382,6 +1401,19 @@ public class ConceptMap extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("display")) {
+        this.display = null;
+      } else if (name.equals("target")) {
+        this.getTarget().remove((TargetElementComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2018,6 +2050,25 @@ public class ConceptMap extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("display")) {
+        this.display = null;
+      } else if (name.equals("equivalence")) {
+        this.equivalence = null;
+      } else if (name.equals("comment")) {
+        this.comment = null;
+      } else if (name.equals("dependsOn")) {
+        this.getDependsOn().remove((OtherElementComponent) value);
+      } else if (name.equals("product")) {
+        this.getProduct().remove((OtherElementComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2521,6 +2572,21 @@ public class ConceptMap extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("property")) {
+        this.property = null;
+      } else if (name.equals("system")) {
+        this.system = null;
+      } else if (name.equals("value")) {
+        this.value = null;
+      } else if (name.equals("display")) {
+        this.display = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -3019,6 +3085,21 @@ public class ConceptMap extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("mode")) {
+        this.mode = null;
+      } else if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("display")) {
+        this.display = null;
+      } else if (name.equals("url")) {
+        this.url = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -4712,6 +4793,49 @@ public class ConceptMap extends CanonicalResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.identifier = null;
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(value);
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(value);
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("source[x]")) {
+      this.source = null;
+    } else if (name.equals("target[x]")) {
+      this.target = null;
+    } else if (name.equals("group")) {
+      this.getGroup().remove((ConceptMapGroupComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

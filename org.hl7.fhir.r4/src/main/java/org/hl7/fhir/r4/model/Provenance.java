@@ -579,6 +579,21 @@ public class Provenance extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("role")) {
+        this.getRole().remove(castToCodeableConcept(value));
+      } else if (name.equals("who")) {
+        this.who = null;
+      } else if (name.equals("onBehalfOf")) {
+        this.onBehalfOf = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -965,6 +980,19 @@ public class Provenance extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("role")) {
+        this.role = null;
+      } else if (name.equals("what")) {
+        this.what = null;
+      } else if (name.equals("agent")) {
+        this.getAgent().remove((ProvenanceAgentComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1892,6 +1920,33 @@ public class Provenance extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("target")) {
+      this.getTarget().remove(castToReference(value));
+    } else if (name.equals("occurred[x]")) {
+      this.occurred = null;
+    } else if (name.equals("recorded")) {
+      this.recorded = null;
+    } else if (name.equals("policy")) {
+      this.getPolicy().remove(castToUri(value));
+    } else if (name.equals("location")) {
+      this.location = null;
+    } else if (name.equals("reason")) {
+      this.getReason().remove(castToCodeableConcept(value));
+    } else if (name.equals("activity")) {
+      this.activity = null;
+    } else if (name.equals("agent")) {
+      this.getAgent().remove((ProvenanceAgentComponent) value);
+    } else if (name.equals("entity")) {
+      this.getEntity().remove((ProvenanceEntityComponent) value);
+    } else if (name.equals("signature")) {
+      this.getSignature().remove(castToSignature(value));
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

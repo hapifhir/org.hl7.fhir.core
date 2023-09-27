@@ -806,6 +806,29 @@ public class Flag extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove(castToCodeableConcept(value));
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("period")) {
+      this.period = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("author")) {
+      this.author = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1618432855:

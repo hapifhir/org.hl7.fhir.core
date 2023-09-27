@@ -450,6 +450,19 @@ public class EffectEvidenceSynthesis extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("numberOfStudies")) {
+        this.numberOfStudies = null;
+      } else if (name.equals("numberOfParticipants")) {
+        this.numberOfParticipants = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -880,6 +893,21 @@ public class EffectEvidenceSynthesis extends MetadataResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("exposureState")) {
+        this.exposureState = null;
+      } else if (name.equals("variantState")) {
+        this.variantState = null;
+      } else if (name.equals("riskEvidenceSynthesis")) {
+        this.riskEvidenceSynthesis = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1410,6 +1438,25 @@ public class EffectEvidenceSynthesis extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("variantState")) {
+        this.variantState = null;
+      } else if (name.equals("value")) {
+        this.value = null;
+      } else if (name.equals("unitOfMeasure")) {
+        this.unitOfMeasure = null;
+      } else if (name.equals("precisionEstimate")) {
+        this.getPrecisionEstimate().remove((EffectEvidenceSynthesisEffectEstimatePrecisionEstimateComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1893,6 +1940,21 @@ public class EffectEvidenceSynthesis extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("level")) {
+        this.level = null;
+      } else if (name.equals("from")) {
+        this.from = null;
+      } else if (name.equals("to")) {
+        this.to = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2269,6 +2331,19 @@ public class EffectEvidenceSynthesis extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("rating")) {
+        this.getRating().remove(castToCodeableConcept(value));
+      } else if (name.equals("note")) {
+        this.getNote().remove(castToAnnotation(value));
+      } else if (name.equals("certaintySubcomponent")) {
+        this.getCertaintySubcomponent().remove((EffectEvidenceSynthesisCertaintyCertaintySubcomponentComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2615,6 +2690,19 @@ public class EffectEvidenceSynthesis extends MetadataResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("rating")) {
+        this.getRating().remove(castToCodeableConcept(value));
+      } else if (name.equals("note")) {
+        this.getNote().remove(castToAnnotation(value));
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -5244,6 +5332,79 @@ public class EffectEvidenceSynthesis extends MetadataResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(castToContactDetail(value));
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("note")) {
+      this.getNote().remove(castToAnnotation(value));
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(castToUsageContext(value));
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(castToCodeableConcept(value));
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("approvalDate")) {
+      this.approvalDate = null;
+    } else if (name.equals("lastReviewDate")) {
+      this.lastReviewDate = null;
+    } else if (name.equals("effectivePeriod")) {
+      this.effectivePeriod = null;
+    } else if (name.equals("topic")) {
+      this.getTopic().remove(castToCodeableConcept(value));
+    } else if (name.equals("author")) {
+      this.getAuthor().remove(castToContactDetail(value));
+    } else if (name.equals("editor")) {
+      this.getEditor().remove(castToContactDetail(value));
+    } else if (name.equals("reviewer")) {
+      this.getReviewer().remove(castToContactDetail(value));
+    } else if (name.equals("endorser")) {
+      this.getEndorser().remove(castToContactDetail(value));
+    } else if (name.equals("relatedArtifact")) {
+      this.getRelatedArtifact().remove(castToRelatedArtifact(value));
+    } else if (name.equals("synthesisType")) {
+      this.synthesisType = null;
+    } else if (name.equals("studyType")) {
+      this.studyType = null;
+    } else if (name.equals("population")) {
+      this.population = null;
+    } else if (name.equals("exposure")) {
+      this.exposure = null;
+    } else if (name.equals("exposureAlternative")) {
+      this.exposureAlternative = null;
+    } else if (name.equals("outcome")) {
+      this.outcome = null;
+    } else if (name.equals("sampleSize")) {
+      this.sampleSize = (EffectEvidenceSynthesisSampleSizeComponent) value; // EffectEvidenceSynthesisSampleSizeComponent
+    } else if (name.equals("resultsByExposure")) {
+      this.getResultsByExposure().remove((EffectEvidenceSynthesisResultsByExposureComponent) value);
+    } else if (name.equals("effectEstimate")) {
+      this.getEffectEstimate().remove((EffectEvidenceSynthesisEffectEstimateComponent) value);
+    } else if (name.equals("certainty")) {
+      this.getCertainty().remove((EffectEvidenceSynthesisCertaintyComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

@@ -142,26 +142,60 @@ public abstract class ParserBase {
 	
 	
 	protected StructureDefinition getDefinition(List<ValidationMessage> errors, int line, int col, String ns, String name) throws FHIRFormatError {
-    if (ns == null) {
-      logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS__CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAMESPACE, name), IssueSeverity.FATAL);
-      return null;
-    }
-    if (name == null) {
-      logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
-      return null;
-  	}
-	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
-	    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
-	      String type = urlTail(sd.getType());
-        if(name.equals(type) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
-	        return sd;
-	      String sns = ToolingExtensions.readStringExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
-	      if ((name.equals(type) || name.equals(sd.getName())) && ns != null && ns.equals(sns))
-	        return sd;
+	  if (logical != null) {
+	    String expectedName = ToolingExtensions.readStringExtension(logical, "http://hl7.org/fhir/StructureDefinition/elementdefinition-name");
+	    if (expectedName == null) {
+	      expectedName = logical.getType();
 	    }
+	    String expectedNamespace = ToolingExtensions.readStringExtension(logical, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
+	    if (matchesNamespace(expectedNamespace, ns) && matchesName(expectedName, name)) {
+	      return logical;
+	    } else {
+	      if (expectedNamespace == null && ns == null) {
+          logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.LOGICAL_MODEL_NAME_MISMATCH, name, expectedName), IssueSeverity.FATAL);
+	      } else {
+	        logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.LOGICAL_MODEL_QNAME_MISMATCH, qn(ns, name), qn(expectedNamespace, expectedName)), IssueSeverity.FATAL);	        
+	      }
+        return null;	      
+	    }
+	  } else {
+      if (ns == null) {
+        logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS__CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAMESPACE, name), IssueSeverity.FATAL);
+        return null;
+      }
+      if (name == null) {
+        logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME), IssueSeverity.FATAL);
+        return null;
+    	}
+  	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
+  	    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
+  	      String type = urlTail(sd.getType());
+          if(name.equals(type) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
+  	        return sd;
+  	      String sns = ToolingExtensions.readStringExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
+  	      if ((name.equals(type) || name.equals(sd.getName())) && ns != null && ns.equals(sns))
+  	        return sd;
+  	    }
+  	  }
+  	  logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAMESPACENAME_, (ns == null ? "(none)" : ns), name), IssueSeverity.FATAL);
+  	  return null;
 	  }
-	  logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAMESPACENAME_, ns, name), IssueSeverity.FATAL);
-	  return null;
+  }
+
+  private Object qn(String ns, String name) {
+    return ns == null ? name : ns+"::"+name;
+  }
+
+  private boolean matchesNamespace(String expectedNamespace, String ns) {
+    if (expectedNamespace == null) {
+      return ns == null || "noNamespace".equals(ns);
+    } else {
+      return expectedNamespace.equals(ns);
+    }
+  }
+
+  private boolean matchesName(String expectedName, String name) {
+    return expectedName != null && expectedName.equals(name);
   }
 
   private String urlTail(String type) {

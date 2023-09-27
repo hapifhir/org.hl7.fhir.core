@@ -528,6 +528,11 @@ public abstract class CanonicalResource extends DomainResource {
           return super.setProperty(name, value);
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+          super.removeChild(name, value);
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {

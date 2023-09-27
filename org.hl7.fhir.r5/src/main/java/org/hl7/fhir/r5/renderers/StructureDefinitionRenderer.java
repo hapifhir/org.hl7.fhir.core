@@ -770,7 +770,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         row.setLineColor(0);
       boolean hasDef = element != null;
       boolean ext = false;
-      if (tail(element.getPath()).equals("extension")) {
+      if (tail(element.getPath()).equals("extension") && isExtension(element)) {
         if (element.hasType() && element.getType().get(0).hasProfile() && extensionIsComplex(element.getType().get(0).getProfile().get(0).getValue()))
           row.setIcon("icon_extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
         else
@@ -841,7 +841,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       case SUMMARY:
         genElementCells(gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName, nc, mustSupport, true, rc);
         break;
-
       }
       if (element.hasSlicing()) {
         if (standardExtensionSlicing(element)) {
@@ -942,6 +941,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
     }
     return slicingRow;
+  }
+
+  private boolean isExtension(ElementDefinition element) {
+    if (element.getType().isEmpty()) {
+      return true;
+    }
+    String type = element.getTypeFirstRep().getWorkingCode();
+    return "Extension".equals(type);
   }
 
   private void genElementObligations(HierarchicalTableGenerator gen, ElementDefinition element, List<Column> columns, Row row, String corePath, StructureDefinition profile) throws IOException {
@@ -1763,7 +1770,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
         tl = t;
         if (t.hasTarget()) {
-          c.getPieces().add(gen.new Piece(corePath+"references.html", t.getWorkingCode(), null));
+          if (t.hasProfile()) {
+            StructureDefinition tsd = context.getContext().fetchResource(StructureDefinition.class, t.getProfile().get(0).asStringValue());
+            if (tsd != null) {
+              c.getPieces().add(gen.new Piece(tsd.getWebPath(), tsd.getName(), tsd.present()));
+            } else {
+              c.getPieces().add(gen.new Piece(corePath+"references.html", t.getWorkingCode(), null));
+            }
+          } else {
+            c.getPieces().add(gen.new Piece(corePath+"references.html", t.getWorkingCode(), null));
+          }
           if (!mustSupportMode && isMustSupportDirect(t) && e.getMustSupport()) {
             c.addPiece(gen.new Piece(null, " ", null));
             c.addStyledText(translate("sd.table", "This type must be supported"), "S", "white", "red", null, false);

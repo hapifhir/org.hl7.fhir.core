@@ -766,7 +766,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       for (ValidatedFragment ne : validatedContent) {
         if (ne.getElement() != null) {
-          validate(appContext, ne.getErrors(), validatedContent.size() > 1 ? ne.getName() : null, ne.getElement(), profiles);
+          validate(appContext, ne.getErrors(), validatedContent.size() > 1 ? ne.path() : null, ne.getElement(), profiles);
         } 
         errors.addAll(ne.getErrors());         
       }
@@ -5608,6 +5608,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               break;
             }
           }
+          
+          checkSpecials(hostContext, errors, element, stack, ok, pct, mode);
 
           if (typeForResource.getProfile().size() == 1) {
             long t = System.nanoTime();
@@ -6665,8 +6667,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     List<Element> performers = new ArrayList<>();
     element.getNamedChildren("performer", performers);
     ok = bpCheck(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), performers.size() > 0, I18nConstants.ALL_OBSERVATIONS_SHOULD_HAVE_A_PERFORMER) && ok;
-    ok = bpCheck(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), element.getNamedChild("effectiveDateTime") != null || element.getNamedChild("effectivePeriod") != null, I18nConstants.ALL_OBSERVATIONS_SHOULD_HAVE_AN_EFFECTIVEDATETIME_OR_AN_EFFECTIVEPERIOD) && ok;
-    
+    ok = bpCheck(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), 
+          element.getNamedChild("effectiveDateTime") != null || element.getNamedChild("effectivePeriod") != null || 
+          element.getNamedChild("effectiveTiming") != null || element.getNamedChild("effectiveInstant") != null, 
+          I18nConstants.ALL_OBSERVATIONS_SHOULD_HAVE_AN_EFFECTIVEDATETIME_OR_AN_EFFECTIVEPERIOD, element.getProperty().typeSummary()) && ok;    
     return ok;
   }
 

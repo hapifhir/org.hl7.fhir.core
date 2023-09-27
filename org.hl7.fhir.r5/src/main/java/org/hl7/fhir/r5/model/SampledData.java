@@ -786,6 +786,33 @@ public class SampledData extends DataType implements ICompositeType {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("origin")) {
+          this.origin = null;
+        } else if (name.equals("interval")) {
+          this.interval = null;
+        } else if (name.equals("intervalUnit")) {
+          this.intervalUnit = null;
+        } else if (name.equals("factor")) {
+          this.factor = null;
+        } else if (name.equals("lowerLimit")) {
+          this.lowerLimit = null;
+        } else if (name.equals("upperLimit")) {
+          this.upperLimit = null;
+        } else if (name.equals("dimensions")) {
+          this.dimensions = null;
+        } else if (name.equals("codeMap")) {
+          this.codeMap = null;
+        } else if (name.equals("offsets")) {
+          this.offsets = null;
+        } else if (name.equals("data")) {
+          this.data = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {

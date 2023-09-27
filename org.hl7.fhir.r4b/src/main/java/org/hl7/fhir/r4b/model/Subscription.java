@@ -623,6 +623,21 @@ public class Subscription extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("endpoint")) {
+        this.endpoint = null;
+      } else if (name.equals("payload")) {
+        this.payload = null;
+      } else if (name.equals("header")) {
+        this.getHeader().remove(value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1278,6 +1293,29 @@ public class Subscription extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("status")) {
+      value = new org.hl7.fhir.r4b.model.Enumerations.SubscriptionStatusEnumFactory()
+          .fromType(TypeConvertor.castToCode(value));
+      this.status = (Enumeration) value; // Enumeration<org.hl7.fhir.r4b.model.Enumerations.SubscriptionStatus>
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("end")) {
+      this.end = null;
+    } else if (name.equals("reason")) {
+      this.reason = null;
+    } else if (name.equals("criteria")) {
+      this.criteria = null;
+    } else if (name.equals("error")) {
+      this.error = null;
+    } else if (name.equals("channel")) {
+      this.channel = (SubscriptionChannelComponent) value; // SubscriptionChannelComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

@@ -1001,6 +1001,25 @@ public class GraphDefinition extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("path")) {
+        this.path = null;
+      } else if (name.equals("sliceName")) {
+        this.sliceName = null;
+      } else if (name.equals("min")) {
+        this.min = null;
+      } else if (name.equals("max")) {
+        this.max = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("target")) {
+        this.getTarget().remove((GraphDefinitionLinkTargetComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1531,6 +1550,23 @@ public class GraphDefinition extends MetadataResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("params")) {
+        this.params = null;
+      } else if (name.equals("profile")) {
+        this.profile = null;
+      } else if (name.equals("compartment")) {
+        this.getCompartment().remove((GraphDefinitionLinkTargetCompartmentComponent) value);
+      } else if (name.equals("link")) {
+        this.getLink().remove((GraphDefinitionLinkComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2071,6 +2107,23 @@ public class GraphDefinition extends MetadataResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("use")) {
+        this.use = null;
+      } else if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("rule")) {
+        this.rule = null;
+      } else if (name.equals("expression")) {
+        this.expression = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3359,6 +3412,43 @@ public class GraphDefinition extends MetadataResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(castToContactDetail(value));
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(castToUsageContext(value));
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(castToCodeableConcept(value));
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("start")) {
+      this.start = null;
+    } else if (name.equals("profile")) {
+      this.profile = null;
+    } else if (name.equals("link")) {
+      this.getLink().remove((GraphDefinitionLinkComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

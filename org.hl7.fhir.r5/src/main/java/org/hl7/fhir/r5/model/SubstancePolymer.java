@@ -206,6 +206,17 @@ public class SubstancePolymer extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("ratioType")) {
+          this.ratioType = null;
+        } else if (name.equals("startingMaterial")) {
+          this.getStartingMaterial().remove((SubstancePolymerMonomerSetStartingMaterialComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -509,6 +520,21 @@ public class SubstancePolymer extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("category")) {
+          this.category = null;
+        } else if (name.equals("isDefining")) {
+          this.isDefining = null;
+        } else if (name.equals("amount")) {
+          this.amount = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -818,6 +844,19 @@ public class SubstancePolymer extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("averageMolecularFormula")) {
+          this.averageMolecularFormula = null;
+        } else if (name.equals("repeatUnitAmountType")) {
+          this.repeatUnitAmountType = null;
+        } else if (name.equals("repeatUnit")) {
+          this.getRepeatUnit().remove((SubstancePolymerRepeatRepeatUnitComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1253,6 +1292,23 @@ public class SubstancePolymer extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("unit")) {
+          this.unit = null;
+        } else if (name.equals("orientation")) {
+          this.orientation = null;
+        } else if (name.equals("amount")) {
+          this.amount = null;
+        } else if (name.equals("degreeOfPolymerisation")) {
+          this.getDegreeOfPolymerisation().remove((SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) value);
+        } else if (name.equals("structuralRepresentation")) {
+          this.getStructuralRepresentation().remove((SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1623,6 +1679,21 @@ public class SubstancePolymer extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("average")) {
+          this.average = null;
+        } else if (name.equals("low")) {
+          this.low = null;
+        } else if (name.equals("high")) {
+          this.high = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1939,6 +2010,21 @@ public class SubstancePolymer extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("representation")) {
+          this.representation = null;
+        } else if (name.equals("format")) {
+          this.format = null;
+        } else if (name.equals("attachment")) {
+          this.attachment = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2460,6 +2546,27 @@ public class SubstancePolymer extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.identifier = null;
+        } else if (name.equals("class")) {
+          this.class_ = null;
+        } else if (name.equals("geometry")) {
+          this.geometry = null;
+        } else if (name.equals("copolymerConnectivity")) {
+          this.getCopolymerConnectivity().remove(value);
+        } else if (name.equals("modification")) {
+          this.modification = null;
+        } else if (name.equals("monomerSet")) {
+          this.getMonomerSet().remove((SubstancePolymerMonomerSetComponent) value);
+        } else if (name.equals("repeat")) {
+          this.getRepeat().remove((SubstancePolymerRepeatComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

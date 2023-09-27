@@ -329,11 +329,11 @@ public class JsonParser extends ParserBase {
       } else { 
         String baseName = property.getJsonName().substring(0, property.getName().length()-3);
         jp = getJsonPropertyByBaseName(baseName, children);
-        if (jp != null) {
+        JsonProperty jp1 = getJsonPropertyByBaseName("_"+baseName, children);
+        if (jp != null || jp1 != null) {
           for (TypeRefComponent type : property.getDefinition().getType()) {
             String eName = baseName + Utilities.capitalize(type.getWorkingCode());
-            if (jp.getName().equals(eName)) {
-              JsonProperty jp1 = getJsonPropertyByName("_"+eName, children);
+            if ((jp != null && jp.getName().equals(eName) || (jp1 != null && jp1.getName().equals("_"+eName)))) {
               if (!isPrimitive(type.getWorkingCode()) && jp != null) {
                 parseChildComplex(errors, path, jp, context, property, eName, false);
                 break;

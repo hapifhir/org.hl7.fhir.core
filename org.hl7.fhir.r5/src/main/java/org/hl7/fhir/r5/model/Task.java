@@ -649,6 +649,17 @@ public class Task extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("function")) {
+          this.function = null;
+        } else if (name.equals("actor")) {
+          this.actor = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -937,6 +948,19 @@ public class Task extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("repetitions")) {
+          this.repetitions = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else if (name.equals("recipient")) {
+          this.getRecipient().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2020,6 +2044,17 @@ public class Task extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3305,6 +3340,17 @@ public class Task extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -5479,6 +5525,82 @@ public class Task extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("instantiatesCanonical")) {
+          this.instantiatesCanonical = null;
+        } else if (name.equals("instantiatesUri")) {
+          this.instantiatesUri = null;
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("groupIdentifier")) {
+          this.groupIdentifier = null;
+        } else if (name.equals("partOf")) {
+          this.getPartOf().remove(value);
+        } else if (name.equals("status")) {
+          value = new TaskStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<TaskStatus>
+        } else if (name.equals("statusReason")) {
+          this.statusReason = null;
+        } else if (name.equals("businessStatus")) {
+          this.businessStatus = null;
+        } else if (name.equals("intent")) {
+          value = new TaskIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.intent = (Enumeration) value; // Enumeration<TaskIntent>
+        } else if (name.equals("priority")) {
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+        } else if (name.equals("doNotPerform")) {
+          this.doNotPerform = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("focus")) {
+          this.focus = null;
+        } else if (name.equals("for")) {
+          this.for_ = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("requestedPeriod")) {
+          this.requestedPeriod = null;
+        } else if (name.equals("executionPeriod")) {
+          this.executionPeriod = null;
+        } else if (name.equals("authoredOn")) {
+          this.authoredOn = null;
+        } else if (name.equals("lastModified")) {
+          this.lastModified = null;
+        } else if (name.equals("requester")) {
+          this.requester = null;
+        } else if (name.equals("requestedPerformer")) {
+          this.getRequestedPerformer().remove(value);
+        } else if (name.equals("owner")) {
+          this.owner = null;
+        } else if (name.equals("performer")) {
+          this.getPerformer().remove((TaskPerformerComponent) value);
+        } else if (name.equals("location")) {
+          this.location = null;
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("insurance")) {
+          this.getInsurance().remove(value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("relevantHistory")) {
+          this.getRelevantHistory().remove(value);
+        } else if (name.equals("restriction")) {
+          this.restriction = (TaskRestrictionComponent) value; // TaskRestrictionComponent
+        } else if (name.equals("input")) {
+          this.getInput().remove((TaskInputComponent) value);
+        } else if (name.equals("output")) {
+          this.getOutput().remove((TaskOutputComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

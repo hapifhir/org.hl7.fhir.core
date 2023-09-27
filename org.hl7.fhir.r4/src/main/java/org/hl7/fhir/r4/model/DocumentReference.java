@@ -591,6 +591,17 @@ public class DocumentReference extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("target")) {
+        this.target = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -826,6 +837,17 @@ public class DocumentReference extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("attachment")) {
+        this.attachment = null;
+      } else if (name.equals("format")) {
+        this.format = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1459,6 +1481,27 @@ public class DocumentReference extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("encounter")) {
+        this.getEncounter().remove(castToReference(value));
+      } else if (name.equals("event")) {
+        this.getEvent().remove(castToCodeableConcept(value));
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else if (name.equals("facilityType")) {
+        this.facilityType = null;
+      } else if (name.equals("practiceSetting")) {
+        this.practiceSetting = null;
+      } else if (name.equals("sourcePatientInfo")) {
+        this.sourcePatientInfo = null;
+      } else if (name.equals("related")) {
+        this.getRelated().remove(castToReference(value));
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2839,6 +2882,45 @@ public class DocumentReference extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("masterIdentifier")) {
+      this.masterIdentifier = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("docStatus")) {
+      this.docStatus = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove(castToCodeableConcept(value));
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("author")) {
+      this.getAuthor().remove(castToReference(value));
+    } else if (name.equals("authenticator")) {
+      this.authenticator = null;
+    } else if (name.equals("custodian")) {
+      this.custodian = null;
+    } else if (name.equals("relatesTo")) {
+      this.getRelatesTo().remove((DocumentReferenceRelatesToComponent) value);
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("securityLabel")) {
+      this.getSecurityLabel().remove(castToCodeableConcept(value));
+    } else if (name.equals("content")) {
+      this.getContent().remove((DocumentReferenceContentComponent) value);
+    } else if (name.equals("context")) {
+      this.context = (DocumentReferenceContextComponent) value; // DocumentReferenceContextComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

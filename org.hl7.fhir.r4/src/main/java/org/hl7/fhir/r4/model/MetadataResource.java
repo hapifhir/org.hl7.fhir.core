@@ -1039,6 +1039,37 @@ public abstract class MetadataResource extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(castToContactDetail(value));
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(castToUsageContext(value));
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(castToCodeableConcept(value));
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 116079:

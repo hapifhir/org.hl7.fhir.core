@@ -296,6 +296,17 @@ public class ManufacturedItemDefinition extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -831,6 +842,25 @@ public class ManufacturedItemDefinition extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("function")) {
+          this.getFunction().remove(value);
+        } else if (name.equals("amount")) {
+          this.getAmount().remove(value);
+        } else if (name.equals("constituent")) {
+          this.getConstituent().remove((ManufacturedItemDefinitionComponentConstituentComponent) value);
+        } else if (name.equals("property")) {
+          this.getProperty().remove((ManufacturedItemDefinitionPropertyComponent) value);
+        } else if (name.equals("component")) {
+          this.getComponent().remove((ManufacturedItemDefinitionComponentComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1270,6 +1300,21 @@ public class ManufacturedItemDefinition extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("amount")) {
+          this.getAmount().remove(value);
+        } else if (name.equals("location")) {
+          this.getLocation().remove(value);
+        } else if (name.equals("function")) {
+          this.getFunction().remove(value);
+        } else if (name.equals("hasIngredient")) {
+          this.getHasIngredient().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2044,6 +2089,34 @@ public class ManufacturedItemDefinition extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("manufacturedDoseForm")) {
+          this.manufacturedDoseForm = null;
+        } else if (name.equals("unitOfPresentation")) {
+          this.unitOfPresentation = null;
+        } else if (name.equals("manufacturer")) {
+          this.getManufacturer().remove(value);
+        } else if (name.equals("marketingStatus")) {
+          this.getMarketingStatus().remove(value);
+        } else if (name.equals("ingredient")) {
+          this.getIngredient().remove(value);
+        } else if (name.equals("property")) {
+          this.getProperty().remove((ManufacturedItemDefinitionPropertyComponent) value);
+        } else if (name.equals("component")) {
+          this.getComponent().remove((ManufacturedItemDefinitionComponentComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

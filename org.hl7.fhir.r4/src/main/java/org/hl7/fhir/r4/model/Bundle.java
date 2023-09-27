@@ -864,6 +864,17 @@ public class Bundle extends Resource implements IBaseBundle {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("relation")) {
+        this.relation = null;
+      } else if (name.equals("url")) {
+        this.url = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1425,6 +1436,25 @@ public class Bundle extends Resource implements IBaseBundle {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("link")) {
+        this.getLink().remove((BundleLinkComponent) value);
+      } else if (name.equals("fullUrl")) {
+        this.fullUrl = null;
+      } else if (name.equals("resource")) {
+        this.resource = null;
+      } else if (name.equals("search")) {
+        this.search = (BundleEntrySearchComponent) value; // BundleEntrySearchComponent
+      } else if (name.equals("request")) {
+        this.request = (BundleEntryRequestComponent) value; // BundleEntryRequestComponent
+      } else if (name.equals("response")) {
+        this.response = (BundleEntryResponseComponent) value; // BundleEntryResponseComponent
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1769,6 +1799,17 @@ public class Bundle extends Resource implements IBaseBundle {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("mode")) {
+        this.mode = null;
+      } else if (name.equals("score")) {
+        this.score = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2403,6 +2444,25 @@ public class Bundle extends Resource implements IBaseBundle {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("method")) {
+        this.method = null;
+      } else if (name.equals("url")) {
+        this.url = null;
+      } else if (name.equals("ifNoneMatch")) {
+        this.ifNoneMatch = null;
+      } else if (name.equals("ifModifiedSince")) {
+        this.ifModifiedSince = null;
+      } else if (name.equals("ifMatch")) {
+        this.ifMatch = null;
+      } else if (name.equals("ifNoneExist")) {
+        this.ifNoneExist = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2938,6 +2998,23 @@ public class Bundle extends Resource implements IBaseBundle {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("status")) {
+        this.status = null;
+      } else if (name.equals("location")) {
+        this.location = null;
+      } else if (name.equals("etag")) {
+        this.etag = null;
+      } else if (name.equals("lastModified")) {
+        this.lastModified = null;
+      } else if (name.equals("outcome")) {
+        this.outcome = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3636,6 +3713,27 @@ public class Bundle extends Resource implements IBaseBundle {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.identifier = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("timestamp")) {
+      this.timestamp = null;
+    } else if (name.equals("total")) {
+      this.total = null;
+    } else if (name.equals("link")) {
+      this.getLink().remove((BundleLinkComponent) value);
+    } else if (name.equals("entry")) {
+      this.getEntry().remove((BundleEntryComponent) value);
+    } else if (name.equals("signature")) {
+      this.signature = null;
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

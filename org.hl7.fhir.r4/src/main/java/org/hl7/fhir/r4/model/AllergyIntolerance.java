@@ -1200,6 +1200,27 @@ public class AllergyIntolerance extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("substance")) {
+        this.substance = null;
+      } else if (name.equals("manifestation")) {
+        this.getManifestation().remove(castToCodeableConcept(value));
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("onset")) {
+        this.onset = null;
+      } else if (name.equals("severity")) {
+        this.severity = null;
+      } else if (name.equals("exposureRoute")) {
+        this.exposureRoute = null;
+      } else if (name.equals("note")) {
+        this.getNote().remove(castToAnnotation(value));
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2675,6 +2696,46 @@ public class AllergyIntolerance extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("clinicalStatus")) {
+      this.clinicalStatus = null;
+    } else if (name.equals("verificationStatus")) {
+      this.verificationStatus = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove((Enumeration) value);
+    } else if (name.equals("criticality")) {
+      value = null;
+      this.criticality = (Enumeration) value; // Enumeration<AllergyIntoleranceCriticality>
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("patient")) {
+      this.patient = null;
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("onset[x]")) {
+      this.onset = null;
+    } else if (name.equals("recordedDate")) {
+      this.recordedDate = null;
+    } else if (name.equals("recorder")) {
+      this.recorder = null;
+    } else if (name.equals("asserter")) {
+      this.asserter = null;
+    } else if (name.equals("lastOccurrence")) {
+      this.lastOccurrence = null;
+    } else if (name.equals("note")) {
+      this.getNote().remove(castToAnnotation(value));
+    } else if (name.equals("reaction")) {
+      this.getReaction().remove((AllergyIntoleranceReactionComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

@@ -167,6 +167,15 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("modifierExtension")) {
+          this.getModifierExtension().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {

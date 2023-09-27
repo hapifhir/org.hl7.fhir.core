@@ -1430,6 +1430,37 @@ public class ResearchElementDefinition extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("definition[x]")) {
+        this.definition = null;
+      } else if (name.equals("usageContext")) {
+        this.getUsageContext().remove(value);
+      } else if (name.equals("exclude")) {
+        this.exclude = null;
+      } else if (name.equals("unitOfMeasure")) {
+        this.unitOfMeasure = null;
+      } else if (name.equals("studyEffectiveDescription")) {
+        this.studyEffectiveDescription = null;
+      } else if (name.equals("studyEffective[x]")) {
+        this.studyEffective = null;
+      } else if (name.equals("studyEffectiveTimeFromStart")) {
+        this.studyEffectiveTimeFromStart = null;
+      } else if (name.equals("studyEffectiveGroupMeasure")) {
+        this.studyEffectiveGroupMeasure = null;
+      } else if (name.equals("participantEffectiveDescription")) {
+        this.participantEffectiveDescription = null;
+      } else if (name.equals("participantEffective[x]")) {
+        this.participantEffective = null;
+      } else if (name.equals("participantEffectiveTimeFromStart")) {
+        this.participantEffectiveTimeFromStart = null;
+      } else if (name.equals("participantEffectiveGroupMeasure")) {
+        this.participantEffectiveGroupMeasure = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -4463,6 +4494,79 @@ public class ResearchElementDefinition extends CanonicalResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("shortTitle")) {
+      this.shortTitle = null;
+    } else if (name.equals("subtitle")) {
+      this.subtitle = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("subject[x]")) {
+      this.subject = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("comment")) {
+      this.getComment().remove(value);
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(value);
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(value);
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("usage")) {
+      this.usage = null;
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("approvalDate")) {
+      this.approvalDate = null;
+    } else if (name.equals("lastReviewDate")) {
+      this.lastReviewDate = null;
+    } else if (name.equals("effectivePeriod")) {
+      this.effectivePeriod = null;
+    } else if (name.equals("topic")) {
+      this.getTopic().remove(value);
+    } else if (name.equals("author")) {
+      this.getAuthor().remove(value);
+    } else if (name.equals("editor")) {
+      this.getEditor().remove(value);
+    } else if (name.equals("reviewer")) {
+      this.getReviewer().remove(value);
+    } else if (name.equals("endorser")) {
+      this.getEndorser().remove(value);
+    } else if (name.equals("relatedArtifact")) {
+      this.getRelatedArtifact().remove(value);
+    } else if (name.equals("library")) {
+      this.getLibrary().remove(value);
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("variableType")) {
+      this.variableType = null;
+    } else if (name.equals("characteristic")) {
+      this.getCharacteristic().remove((ResearchElementDefinitionCharacteristicComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

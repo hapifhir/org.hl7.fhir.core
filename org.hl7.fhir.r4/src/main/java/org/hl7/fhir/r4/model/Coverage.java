@@ -465,6 +465,19 @@ public class Coverage extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("value")) {
+        this.value = null;
+      } else if (name.equals("name")) {
+        this.name = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -820,6 +833,19 @@ public class Coverage extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("value[x]")) {
+        this.value = null;
+      } else if (name.equals("exception")) {
+        this.getException().remove((ExemptionComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1062,6 +1088,17 @@ public class Coverage extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("period")) {
+        this.period = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2490,6 +2527,47 @@ public class Coverage extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("policyHolder")) {
+      this.policyHolder = null;
+    } else if (name.equals("subscriber")) {
+      this.subscriber = null;
+    } else if (name.equals("subscriberId")) {
+      this.subscriberId = null;
+    } else if (name.equals("beneficiary")) {
+      this.beneficiary = null;
+    } else if (name.equals("dependent")) {
+      this.dependent = null;
+    } else if (name.equals("relationship")) {
+      this.relationship = null;
+    } else if (name.equals("period")) {
+      this.period = null;
+    } else if (name.equals("payor")) {
+      this.getPayor().remove(castToReference(value));
+    } else if (name.equals("class")) {
+      this.getClass_().remove((ClassComponent) value);
+    } else if (name.equals("order")) {
+      this.order = null;
+    } else if (name.equals("network")) {
+      this.network = null;
+    } else if (name.equals("costToBeneficiary")) {
+      this.getCostToBeneficiary().remove((CostToBeneficiaryComponent) value);
+    } else if (name.equals("subrogation")) {
+      this.subrogation = null;
+    } else if (name.equals("contract")) {
+      this.getContract().remove(castToReference(value));
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

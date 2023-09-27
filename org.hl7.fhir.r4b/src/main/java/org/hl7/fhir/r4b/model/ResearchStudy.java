@@ -619,6 +619,19 @@ public class ResearchStudy extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -870,6 +883,17 @@ public class ResearchStudy extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2703,6 +2727,61 @@ public class ResearchStudy extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("protocol")) {
+      this.getProtocol().remove(value);
+    } else if (name.equals("partOf")) {
+      this.getPartOf().remove(value);
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("primaryPurposeType")) {
+      this.primaryPurposeType = null;
+    } else if (name.equals("phase")) {
+      this.phase = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove(value);
+    } else if (name.equals("focus")) {
+      this.getFocus().remove(value);
+    } else if (name.equals("condition")) {
+      this.getCondition().remove(value);
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("relatedArtifact")) {
+      this.getRelatedArtifact().remove(value);
+    } else if (name.equals("keyword")) {
+      this.getKeyword().remove(value);
+    } else if (name.equals("location")) {
+      this.getLocation().remove(value);
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("enrollment")) {
+      this.getEnrollment().remove(value);
+    } else if (name.equals("period")) {
+      this.period = null;
+    } else if (name.equals("sponsor")) {
+      this.sponsor = null;
+    } else if (name.equals("principalInvestigator")) {
+      this.principalInvestigator = null;
+    } else if (name.equals("site")) {
+      this.getSite().remove(value);
+    } else if (name.equals("reasonStopped")) {
+      this.reasonStopped = null;
+    } else if (name.equals("note")) {
+      this.getNote().remove(value);
+    } else if (name.equals("arm")) {
+      this.getArm().remove((ResearchStudyArmComponent) value);
+    } else if (name.equals("objective")) {
+      this.getObjective().remove((ResearchStudyObjectiveComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

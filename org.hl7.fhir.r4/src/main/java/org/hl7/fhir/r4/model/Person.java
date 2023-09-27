@@ -422,6 +422,17 @@ public class Person extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("target")) {
+        this.target = null;
+      } else if (name.equals("assurance")) {
+        this.assurance = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1261,6 +1272,33 @@ public class Person extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("name")) {
+      this.getName().remove(castToHumanName(value));
+    } else if (name.equals("telecom")) {
+      this.getTelecom().remove(castToContactPoint(value));
+    } else if (name.equals("gender")) {
+      this.gender = null;
+    } else if (name.equals("birthDate")) {
+      this.birthDate = null;
+    } else if (name.equals("address")) {
+      this.getAddress().remove(castToAddress(value));
+    } else if (name.equals("photo")) {
+      this.photo = null;
+    } else if (name.equals("managingOrganization")) {
+      this.managingOrganization = null;
+    } else if (name.equals("active")) {
+      this.active = null;
+    } else if (name.equals("link")) {
+      this.getLink().remove((PersonLinkComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

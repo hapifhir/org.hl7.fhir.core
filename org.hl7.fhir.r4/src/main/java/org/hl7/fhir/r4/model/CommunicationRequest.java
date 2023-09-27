@@ -613,6 +613,15 @@ public class CommunicationRequest extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("content[x]")) {
+        this.content = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2519,6 +2528,57 @@ public class CommunicationRequest extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("basedOn")) {
+      this.getBasedOn().remove(castToReference(value));
+    } else if (name.equals("replaces")) {
+      this.getReplaces().remove(castToReference(value));
+    } else if (name.equals("groupIdentifier")) {
+      this.groupIdentifier = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("statusReason")) {
+      this.statusReason = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove(castToCodeableConcept(value));
+    } else if (name.equals("priority")) {
+      this.priority = null;
+    } else if (name.equals("doNotPerform")) {
+      this.doNotPerform = null;
+    } else if (name.equals("medium")) {
+      this.getMedium().remove(castToCodeableConcept(value));
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("about")) {
+      this.getAbout().remove(castToReference(value));
+    } else if (name.equals("encounter")) {
+      this.encounter = null;
+    } else if (name.equals("payload")) {
+      this.getPayload().remove((CommunicationRequestPayloadComponent) value);
+    } else if (name.equals("occurrence[x]")) {
+      this.occurrence = null;
+    } else if (name.equals("authoredOn")) {
+      this.authoredOn = null;
+    } else if (name.equals("requester")) {
+      this.requester = null;
+    } else if (name.equals("recipient")) {
+      this.getRecipient().remove(castToReference(value));
+    } else if (name.equals("sender")) {
+      this.sender = null;
+    } else if (name.equals("reasonCode")) {
+      this.getReasonCode().remove(castToCodeableConcept(value));
+    } else if (name.equals("reasonReference")) {
+      this.getReasonReference().remove(castToReference(value));
+    } else if (name.equals("note")) {
+      this.getNote().remove(castToAnnotation(value));
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override
