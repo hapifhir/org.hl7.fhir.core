@@ -120,7 +120,7 @@ public class HL7WorkGroups {
     case "pa": return "Patient Administration";
     case "pe": return "Patient Empowerment";
     case "pc": return "Patient Care";
-    case "pher": return "Public Health and Emergency Response";
+    case "pher": return "Public Health";
     case "phx": return "Pharmacy";
     case "sd": return "Structured Documents";
     case "sec": return "Security";
