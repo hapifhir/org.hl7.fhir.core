@@ -9692,6 +9692,42 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
     return hasFixed() ? getFixed() : getPattern();
   }
 
+  public String getName() {
+    return hasPath() ? getPath().contains(".") ? getPath().substring(getPath().lastIndexOf(".")+1) : getPath() : null;
+  }
+
+  public boolean getMustHaveValue() {
+   return false;
+  }
+  public boolean isChoice() {
+    return getPath().endsWith("[x]");
+  }  
+  
+
+  public String getNameBase() {
+    return getName().replace("[x]", "");
+  }
+
+  public boolean unbounded() {
+    return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
+  }
+
+  public boolean isMandatory() {
+    return getMin() > 0;
+  }
+
+
+  public boolean prohibited() { 
+    return "0".equals(getMax()); 
+  } 
+
+  public boolean isProhibited() { 
+    return "0".equals(getMax()); 
+  }   
+
+  public boolean isRequired() { 
+    return getMin() == 1; 
+  }
 // end addition
 
 }
