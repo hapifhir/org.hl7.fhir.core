@@ -1169,7 +1169,7 @@ public class StructureMapValidator extends BaseValidator {
             Element g = (Element) grp.getTargetGroup().getUserData("element.source");
             if (g.hasUserData("structuremap.parameters")) {
               VariableSet pvars = (VariableSet) g.getUserData("structuremap.parameters");
-              rule(errors, "2023-03-01", IssueType.INVALID, dependent.line(), dependent.col(), stack.getLiteralPath(), pvars.matches(lvars), I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE, grp.getTargetGroup().getName(), pvars.summary(), lvars.summary());
+              warning(errors, "2023-03-01", IssueType.INVALID, dependent.line(), dependent.col(), stack.getLiteralPath(), pvars.matches(lvars), I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE, grp.getTargetGroup().getName(), pvars.summary(), lvars.summary());
             } else {
               g.setUserData("structuremap.parameters", lvars);
             }

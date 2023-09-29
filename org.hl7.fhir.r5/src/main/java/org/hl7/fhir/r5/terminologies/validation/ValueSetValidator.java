@@ -687,6 +687,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private ValidationResult validateCode(String path, Coding code, CodeSystem cs, CodeableConcept vcc, ValidationProcessInfo info) {
     ConceptDefinitionComponent cc = cs.hasUserData("tx.cs.special") ? ((SpecialCodeSystem) cs.getUserData("tx.cs.special")).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode(), allAltCodes);
     if (cc == null) {
+      cc = findSpecialConcept(code, cs);
+    }
+    if (cc == null) {
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
         String msg = context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_FRAGMENT, code.getCode(), cs.getVersionedUrl());
         return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path+".code", msg));        
@@ -759,6 +762,28 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
   }
 
+  private ConceptDefinitionComponent findSpecialConcept(Coding c, CodeSystem cs) {
+    // handling weird special cases in v2 code systems 
+    if ("http://terminology.hl7.org/CodeSystem/v2-0203".equals(cs.getUrl())) {
+      String code = c.getCode();
+      if (code != null && code.startsWith("NN") && code.length() > 3) {
+        ConceptDefinitionComponent cd = findCountryCode(code.substring(2));
+        if (cd != null) {
+          return new ConceptDefinitionComponent(code).setDisplay("National Identifier for "+cd.getDisplay());
+        }
+      }      
+    }
+//    0396: HL7nnnn, IBTnnnn, ISOnnnn, X12Dennnn, 99zzz
+//    0335: PRNxxx
+    return null;
+  }
+
+  
+  private ConceptDefinitionComponent findCountryCode(String code) {
+    ValidationResult vr = context.validateCode(new ValidationOptions(), "urn:iso:std:iso:3166", null, code, null);
+    return vr == null || !vr.isOk() ? null : new ConceptDefinitionComponent(code).setDisplay(vr.getDisplay()).setDefinition(vr.getDefinition());
+  }
+
   private IssueSeverity dispWarning() {
     return options.isDisplayWarningMode() ? IssueSeverity.WARNING : IssueSeverity.ERROR; 
   }
@@ -810,15 +835,6 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     return null;
   }
-
-  private String gen(Coding code) {
-    if (code.hasSystem()) {
-      return code.getSystem()+"#"+code.getCode();
-    } else {
-      return null;
-    }
-  }
-
 
   private String getValueSetSystemOrNull() throws FHIRException {
     if (valueset == null) {

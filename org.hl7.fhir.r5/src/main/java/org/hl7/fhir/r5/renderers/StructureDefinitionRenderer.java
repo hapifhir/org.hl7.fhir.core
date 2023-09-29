@@ -68,6 +68,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.InternalMarkdownProcessor;
+import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.SourcedElementDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
@@ -156,6 +157,25 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   //    }
   //
   //  }
+
+  public class SourcedElementDefinition {
+    private StructureDefinition profile;
+    private ElementDefinition definition;
+    
+    
+    protected SourcedElementDefinition(StructureDefinition profile, ElementDefinition definition) {
+      super();
+      this.profile = profile;
+      this.definition = definition;
+    }
+    public StructureDefinition getProfile() {
+      return profile;
+    }
+    public ElementDefinition getDefinition() {
+      return definition;
+    }
+    
+  }
 
   public class InternalMarkdownProcessor implements IMarkdownProcessor {
 
@@ -1320,6 +1340,22 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
           }
         }
+        if (logicalModel) {
+          List<SourcedElementDefinition> ancestors = new ArrayList<>();
+          getAncestorElements(profile, ancestors);
+          if (ancestors.size() > 0) {
+            c.addPiece(gen.new Piece("br"));
+            c.addPiece(gen.new Piece(null, "Elements defined in Ancestors: ", null));
+            boolean first = true;
+            for (SourcedElementDefinition ed : ancestors) {
+              if (first)
+                first = false;
+              else
+                c.addPiece(gen.new Piece(null, ", ", null));
+              c.addPiece(gen.new Piece(ed.getProfile().getWebPath(), (isAttr(ed) ? "@" : "")+ed.getDefinition().getName(), ed.getDefinition().getDefinition()));
+            }     
+          }
+        }
       }
       if (definition.getPath().endsWith("url") && definition.hasFixed()) {
         c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\""+buildJson(definition.getFixed())+"\"", null).addStyle("color: darkgreen")));
@@ -1552,6 +1588,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             } 
 
             AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, profile, definition.getPath(), rc, null, this);
+            abr.seeAdditionalBindings(definition, null, false);
             if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET)) {
               abr.seeMaxBinding(ToolingExtensions.getExtension(binding, ToolingExtensions.EXT_MAX_VALUESET));
             }
@@ -1651,6 +1688,26 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return c;
   }
 
+  private boolean isAttr(SourcedElementDefinition ed) {
+    for (Enumeration<PropertyRepresentation> t : ed.getDefinition().getRepresentation()) {
+      if (t.getValue() == PropertyRepresentation.XMLATTR) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private void getAncestorElements(StructureDefinition profile, List<SourcedElementDefinition> ancestors) {
+    StructureDefinition base = context.getContext().fetchResource(StructureDefinition.class, profile.getBaseDefinition());
+    if (base != null) {
+      getAncestorElements(base, ancestors);
+      for (ElementDefinition ed : base.getDifferential().getElement()) {
+        if (Utilities.charCount(ed.getPath(), '.') == 1) {
+          ancestors.add(new SourcedElementDefinition(base, ed));
+        }
+      }
+    }
+  }
 
   private void addCanonicalListExt(HierarchicalTableGenerator gen, Cell c, List<Extension> list, String start, boolean bold) {
     List<CanonicalType> clist = new ArrayList<>();

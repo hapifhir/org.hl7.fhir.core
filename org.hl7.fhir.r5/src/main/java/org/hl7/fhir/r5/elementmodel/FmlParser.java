@@ -422,7 +422,7 @@ public class FmlParser extends ParserBase {
     lexer.token("(");
     boolean done = false;
     while (!done) {
-      parseParameter(ref, lexer);
+      parseParameter(ref, lexer, false);
       done = !lexer.hasToken(",");
       if (!done)
         lexer.next();
@@ -527,7 +527,7 @@ public class FmlParser extends ParserBase {
       target.makeElement("transform").markLocation(loc).setValue(name);
       lexer.token("(");
       if (target.getChildValue("transform").equals(StructureMapTransform.EVALUATE.toCode())) {
-        parseParameter(target, lexer);
+        parseParameter(target, lexer, true);
         lexer.token(",");
         loc = lexer.getCurrentLocation();
         ExpressionNode node = fpe.parse(lexer);
@@ -535,7 +535,7 @@ public class FmlParser extends ParserBase {
         target.addElement("parameter").markLocation(loc).makeElement("valueString").setValue(node.toString());
       } else {
         while (!lexer.hasToken(")")) {
-          parseParameter(target, lexer);
+          parseParameter(target, lexer, true);
           if (!lexer.hasToken(")"))
             lexer.token(",");
         }
@@ -568,9 +568,9 @@ public class FmlParser extends ParserBase {
     }
   }
 
-  private void parseParameter(Element ref, FHIRLexer lexer) throws FHIRLexerException, FHIRFormatError {
+  private void parseParameter(Element ref, FHIRLexer lexer, boolean isTarget) throws FHIRLexerException, FHIRFormatError {
     boolean r5 = VersionUtilities.isR5Plus(context.getVersion());
-    String name = r5 ? "parameter" : "variable";
+    String name = r5 || isTarget ? "parameter" : "variable";
     if (ref.hasChildren(name) && !ref.getChildByName(name).isList()) {
       throw lexer.error("variable on target is not a list, so can't add an element");
     } else if (!lexer.isConstant()) {

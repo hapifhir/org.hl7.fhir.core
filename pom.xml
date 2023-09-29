@@ -14,13 +14,13 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.1.10-SNAPSHOT</version>
+    <version>6.1.11-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.4.6</validator_test_case_version>
+        <validator_test_case_version>1.4.7</validator_test_case_version>
         <jackson_version>2.15.2</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
