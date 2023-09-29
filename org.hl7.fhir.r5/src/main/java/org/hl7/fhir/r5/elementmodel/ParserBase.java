@@ -143,9 +143,12 @@ public abstract class ParserBase {
 	
 	protected StructureDefinition getDefinition(List<ValidationMessage> errors, int line, int col, String ns, String name) throws FHIRFormatError {
 	  if (logical != null) {
-	    String expectedName = ToolingExtensions.readStringExtension(logical, "http://hl7.org/fhir/StructureDefinition/elementdefinition-name");
+	    String expectedName = ToolingExtensions.readStringExtension(logical, "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name");
 	    if (expectedName == null) {
 	      expectedName = logical.getType();
+	      if (Utilities.isAbsoluteUrl(expectedName)) {
+	        expectedName = expectedName.substring(expectedName.lastIndexOf("/")+1);
+	      }
 	    }
 	    String expectedNamespace = ToolingExtensions.readStringExtension(logical, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
 	    if (matchesNamespace(expectedNamespace, ns) && matchesName(expectedName, name)) {

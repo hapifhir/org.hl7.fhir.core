@@ -92,6 +92,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingCompo
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
@@ -2691,6 +2692,14 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (d.hasValueSet()) {
             nb.setValueSet(d.getValueSet());
           }
+          for (ElementDefinitionBindingAdditionalComponent ab : d.getAdditional()) {
+            ElementDefinitionBindingAdditionalComponent eab = getMatchingAdditionalBinding(nb, ab);
+            if (eab != null) {
+              mergeAdditionalBinding(eab, ab);
+            } else {
+              nb.getAdditional().add(ab);
+            }
+          }
           base.setBinding(nb); 
         } else if (trimDifferential)
           derived.setBinding(null);
@@ -2788,6 +2797,42 @@ public class ProfileUtilities extends TranslatingUtilities {
       checkTypeOk(dest, dest.getPattern().fhirType(), srcSD, "pattern");
     }
     //updateURLs(url, webUrl, dest);
+  }
+
+  private void mergeAdditionalBinding(ElementDefinitionBindingAdditionalComponent dest, ElementDefinitionBindingAdditionalComponent source) {
+    for (UsageContext t : source.getUsage()) {
+      if (!hasUsage(dest, t)) {
+        dest.addUsage(t);
+      }
+    }
+    if (source.getAny()) {
+      source.setAny(true);
+    }
+    if (source.hasShortDoco()) {
+      dest.setShortDoco(source.getShortDoco());
+    }
+    if (source.hasDocumentation()) {
+      dest.setDocumentation(source.getDocumentation());
+    }
+    
+  }
+
+  private boolean hasUsage(ElementDefinitionBindingAdditionalComponent dest, UsageContext tgt) {
+    for (UsageContext t : dest.getUsage()) {
+      if (t.getCode() != null && t.getCode().matches(tgt.getCode()) && t.getValue() != null && t.getValue().equals(tgt.getValue())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private ElementDefinitionBindingAdditionalComponent getMatchingAdditionalBinding(ElementDefinitionBindingComponent nb,ElementDefinitionBindingAdditionalComponent ab) {
+    for (ElementDefinitionBindingAdditionalComponent t : nb.getAdditional()) {
+      if (t.getValueSet() != null && t.getValueSet().equals(ab.getValueSet()) && t.getPurpose() == ab.getPurpose()) {
+        return t;
+      }
+    }
+    return null;
   }
 
   private void mergeExtensions(Element tgt, Element src) {
