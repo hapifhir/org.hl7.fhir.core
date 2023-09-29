@@ -83,7 +83,7 @@ public class SHCParser extends ParserBase {
     byte[] content = TextFile.streamToBytes(inStream);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     List<ValidatedFragment> res = new ArrayList<>();
-    ValidatedFragment shc = new ValidatedFragment("shc", "json", content, false);
+    ValidatedFragment shc = new ValidatedFragment("shc", "txt", content, false);
     res.add(shc);
 
     String src = TextFile.streamToString(stream).trim();
