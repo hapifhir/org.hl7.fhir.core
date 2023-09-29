@@ -38,7 +38,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -357,13 +359,19 @@ public class XmlParser extends ParserBase {
         if (property != null) {
           String av = attr.getNodeValue();
           if (ToolingExtensions.hasExtension(property.getDefinition(), ToolingExtensions.EXT_DATE_FORMAT))
-            av = convertForDateFormatFromExternal(ToolingExtensions.readStringExtension(property.getDefinition(), ToolingExtensions.EXT_DATE_FORMAT), av);
+            av = convertForDateFormatFromExternal(ToolingExtensions.readStringExtension(property.getDefinition(), ToolingExtensions.EXT_DATE_FORMAT), av);          
           if (property.getName().equals("value") && element.isPrimitive())
             element.setValue(av);
           else {
-            Element n = new Element(property.getName(), property, property.getType(), av).markLocation(line, col);
-            n.setPath(element.getPath()+"."+property.getName());
-            element.getChildren().add(n);
+            String[] vl = {av};
+            if (property.isList() && av.contains(" ")) {
+              vl = av.split(" ");
+            }
+            for (String v : vl) {
+              Element n = new Element(property.getName(), property, property.getType(), v).markLocation(line, col);
+              n.setPath(element.getPath()+"."+property.getName());
+              element.getChildren().add(n);
+            }
           }
         } else {
           boolean ok = false;
@@ -739,11 +747,20 @@ public class XmlParser extends ParserBase {
       }
     } else {
       setXsiTypeIfIsTypeAttr(xml, element);
+      Set<String> handled = new HashSet<>();
       for (Element child : element.getChildren()) {
-        if (isAttr(child.getProperty()) && wantCompose(element.getPath(), child)) {
+        if (!handled.contains(child.getName()) && isAttr(child.getProperty()) && wantCompose(element.getPath(), child)) {
+          handled.add(child.getName());
+          String av = child.getValue();
+          if (child.getProperty().isList()) {
+            for (Element c2 : element.getChildren()) {
+              if (c2 != child && c2.getName().equals(child.getName())) {
+                av = av + " "+c2.getValue();
+              }
+            }            
+          }
           if (linkResolver != null)
             xml.link(linkResolver.resolveType(child.getType()));
-          String av = child.getValue();
           if (ToolingExtensions.hasExtension(child.getProperty().getDefinition(), ToolingExtensions.EXT_DATE_FORMAT))
             av = convertForDateFormatToExternal(ToolingExtensions.readStringExtension(child.getProperty().getDefinition(), ToolingExtensions.EXT_DATE_FORMAT), av);
           xml.attribute(child.getProperty().getXmlNamespace(),child.getProperty().getXmlName(), av);
