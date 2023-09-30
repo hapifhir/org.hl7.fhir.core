@@ -2467,10 +2467,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public StructureDefinition fetchTypeDefinition(String typeName) {
     if (Utilities.isAbsoluteUrl(typeName)) {
-      return fetchResource(StructureDefinition.class, typeName);
-    } else {
-      return typeManager.fetchTypeDefinition(typeName);
-    }
+      StructureDefinition res = fetchResource(StructureDefinition.class, typeName);
+      if (res != null) {
+        return res;
+      }
+    } 
+    return typeManager.fetchTypeDefinition(typeName);
   }
   
   @Override
