@@ -52,6 +52,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonCreator;
 import org.hl7.fhir.r5.formats.JsonCreatorCanonical;
@@ -108,7 +109,7 @@ public class JsonParser extends ParserBase {
 //    if (sd == null)
 //      return null;
 //
-//    Element result = new Element(type, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities));
+//    Element result = new Element(type, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities)).setFormat(FhirFormat.JSON);
 //    result.setPath(type);
 //    checkObject(obj, result, path);
 //    result.setType(type);
@@ -179,7 +180,7 @@ public class JsonParser extends ParserBase {
       name = sd.getType();
       path = sd.getTypeTail();
     }
-    baseElement = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities));
+    baseElement = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities)).setFormat(FhirFormat.JSON);
     checkObject(errors, object, baseElement, path);
     baseElement.markLocation(line(object), col(object));
     baseElement.setType(name);
@@ -433,12 +434,12 @@ public class JsonParser extends ParserBase {
             String npathArr = path+"."+property.getName()+"["+i+"]";
             String fpathArr = element.getPath()+"."+property.getName()+"["+i+"]";
             
-            Element n = new Element(name, property).markLocation(line(pv.getValue()), col(pv.getValue()));
+            Element n = new Element(name, property).markLocation(line(pv.getValue()), col(pv.getValue())).setFormat(FhirFormat.JSON);
             n.setPath(fpath);
             element.getChildren().add(n);
             // handle the key
             String fpathKey = fpathArr+"."+propK.getName();
-            Element nKey = new Element(code, propK).markLocation(line(pv.getValue()), col(pv.getValue()));
+            Element nKey = new Element(code, propK).markLocation(line(pv.getValue()), col(pv.getValue())).setFormat(FhirFormat.JSON);
             checkComments(errors, pv.getValue(), n, fpathArr);
             nKey.setPath(fpathKey);
             n.getChildren().add(nKey);
@@ -524,7 +525,7 @@ public class JsonParser extends ParserBase {
     }
     if (e instanceof JsonObject) {
       JsonObject child = (JsonObject) e;
-      Element n = new Element(name, property).markLocation(line(child), col(child));
+      Element n = new Element(name, property).markLocation(line(child), col(child)).setFormat(FhirFormat.JSON);
       n.setPath(fpath);
       checkComments(errors, commentContext, n, commentPath);        
       checkObject(errors, child, n, npath);
@@ -537,7 +538,7 @@ public class JsonParser extends ParserBase {
     } else if (property.isNullable() && e instanceof JsonNull) {
       // we create an element marked as a null element so we know something was present
       JsonNull child = (JsonNull) e;
-      Element n = new Element(name, property).markLocation(line(child), col(child));
+      Element n = new Element(name, property).markLocation(line(child), col(child)).setFormat(FhirFormat.JSON);
       checkComments(errors, commentContext, n, commentPath);        
       checkComments(errors, child, n, fpath);
       n.setPath(fpath);
@@ -632,7 +633,7 @@ public class JsonParser extends ParserBase {
     } else if (fork != null && !(fork instanceof JsonObject)) {
       logError(errors, ValidationMessage.NO_RULE_DATE, line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(fork), name, npath), IssueSeverity.ERROR);
     } else {
-      Element n = new Element(isJsonName ? property.getName() : name, property).markLocation(line(main != null ? main : fork), col(main != null ? main : fork));
+      Element n = new Element(isJsonName ? property.getName() : name, property).markLocation(line(main != null ? main : fork), col(main != null ? main : fork)).setFormat(FhirFormat.JSON);
       if (main != null) {
         checkComments(errors, main, n, npath);
       }

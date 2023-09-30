@@ -33,9 +33,34 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class PackageVisitor {
+
+  public static class PackageContext {
+    private String pid;
+    private NpmPackage npm;
+    private String version;
+    protected PackageContext(String pid, NpmPackage npm, String version) {
+      super();
+      this.pid = pid;
+      this.npm = npm;
+      this.version = version;
+    }
+    public String getPid() {
+      return pid;
+    }
+    public NpmPackage getNpm() {
+      return npm;
+    }
+    public String getVersion() {
+      return version;
+    }
+  }
   
   public interface IPackageVisitorProcessor {
-     public void processResource(String pid, NpmPackage npm, String version, String type, String id, byte[] content) throws FHIRException, IOException, EOperationOutcome;
+    public Object startPackage(PackageContext context) throws FHIRException, IOException, EOperationOutcome;
+    public void processResource(PackageContext context, Object clientContext, String type, String id, byte[] content) throws FHIRException, IOException, EOperationOutcome;
+    public void finishPackage(PackageContext context) throws FHIRException, IOException, EOperationOutcome;
+
+    public void alreadyVisited(String pid) throws FHIRException, IOException, EOperationOutcome;
   }
 
   private List<String> resourceTypes = new ArrayList<>();
@@ -47,7 +72,7 @@ public class PackageVisitor {
   private FilesystemPackageCacheManager pcm;
   private PackageClient pc;
   private String cache;  
-  
+
   public List<String> getResourceTypes() {
     return resourceTypes;
   }
@@ -117,13 +142,13 @@ public class PackageVisitor {
     this.processor = processor;
   }
 
-  public void visitPackages() throws IOException, ParserConfigurationException, SAXException {
+  public void visitPackages() throws IOException, ParserConfigurationException, SAXException, FHIRException, EOperationOutcome {
     System.out.println("Finding packages");
     pc = new PackageClient(PackageServer.primaryServer());
     pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
-  
+
     Set<String> pidList = getAllPackages();
-    
+
     Map<String, String> cpidMap = getAllCIPackages();
     Set<String> cpidSet = new HashSet<>();
     System.out.println("Go: "+cpidMap.size()+" current packages");
@@ -132,7 +157,7 @@ public class PackageVisitor {
       processCurrentPackage(s, cpidMap.get(s), cpidSet, i, cpidMap.size()); 
       i++;
     }
-    
+
     System.out.println("Go: "+pidList.size()+" published packages");
     i = 0;
     for (String pid : pidList) {  
@@ -149,6 +174,8 @@ public class PackageVisitor {
           } else {
             processPackage(pid, vList.get(vList.size() - 1), i, pidList.size());
           }
+        } else {
+          processor.alreadyVisited(pid);
         }
         i++;
       }    
@@ -192,22 +219,35 @@ public class PackageVisitor {
       String fv = npm.fhirVersion();
       cpidSet.add(pid);
       long ms2 = System.currentTimeMillis();
-      
+
       if (corePackages || !corePackage(npm)) {
         if (fv != null && (versions.isEmpty() || versions.contains(fv))) {
-          int c = 0;
-          for (String type : resourceTypes) {
-            for (String s : npm.listResources(type)) {
-              c++;
-              try {
-                processor.processResource(pid+"#current", npm, fv, type, s, TextFile.streamToBytes(npm.load("package", s)));
-              } catch (Exception e) {
-                System.out.println("####### Error loading "+pid+"#current["+fv+"]/"+type+" ####### "+e.getMessage());
-//                e.printStackTrace();
+          PackageContext ctxt = new PackageContext(pid+"#current", npm, fv);
+          boolean ok = false;
+          Object context = null;
+          try {
+            context = processor.startPackage(ctxt);
+            ok = true;
+          } catch (Exception e) {
+            System.out.println("####### Error loading "+pid+"#current["+fv+"]: ####### "+e.getMessage());
+            //                e.printStackTrace();
+          }
+          if (ok) {
+            int c = 0;
+            for (String type : resourceTypes) {
+              for (String s : npm.listResources(type)) {
+                c++;
+                try {
+                  processor.processResource(ctxt, context, type, s, TextFile.streamToBytes(npm.load("package", s)));
+                } catch (Exception e) {
+                  System.out.println("####### Error loading "+pid+"#current["+fv+"]/"+type+" ####### "+e.getMessage());
+                  //                e.printStackTrace();
+                }
               }
             }
+            processor.finishPackage(ctxt);
+            System.out.println("Processed: "+pid+"#current: "+c+" resources ("+i+" of "+t+", "+(ms2-ms1)+"/"+(System.currentTimeMillis()-ms2)+"ms)");
           }
-          System.out.println("Processed: "+pid+"#current: "+c+" resources ("+i+" of "+t+", "+(ms2-ms1)+"/"+(System.currentTimeMillis()-ms2)+"ms)");  
         } else {
           System.out.println("Ignored: "+pid+"#current: no version");            
         }
@@ -252,7 +292,7 @@ public class PackageVisitor {
     for (JsonObject feed : json.getJsonObjects("feeds")) {
       processFeed(list, feed.asString("url"));
     }
-    
+
     return list;
   }
 
@@ -277,7 +317,7 @@ public class PackageVisitor {
   }
 
 
-  private void processPackage(String pid, String v, int i, int t) throws IOException {
+  private void processPackage(String pid, String v, int i, int t) throws IOException, FHIRException, EOperationOutcome {
     NpmPackage npm = null;
     String fv = null;
     try {
@@ -287,21 +327,34 @@ public class PackageVisitor {
       System.out.println("Unable to process: "+pid+"#"+v+": "+e.getMessage());      
     }
     if (corePackages || !corePackage(npm)) {
-      int c = 0;
-      if (fv != null && (versions.isEmpty() || versions.contains(fv))) {
-        for (String type : resourceTypes) {
-          for (String s : npm.listResources(type)) {
-            c++;
-            try {
-              processor.processResource(pid+"#"+v, npm, fv, type, s, TextFile.streamToBytes(npm.load("package", s)));
-            } catch (Exception e) {
-              System.out.println("####### Error loading "+pid+"#"+v +"["+fv+"]/"+type+" ####### "+e.getMessage());
-              e.printStackTrace();
+      PackageContext ctxt = new PackageContext(pid+"#"+v, npm, fv);
+      boolean ok = false;
+      Object context = null;
+      try {
+        context = processor.startPackage(ctxt);
+        ok = true;
+      } catch (Exception e) {
+        System.out.println("####### Error loading package  "+pid+"#"+v +"["+fv+"]: "+e.getMessage());
+        e.printStackTrace();
+      }
+      if (ok) {
+        int c = 0;
+        if (fv != null && (versions.isEmpty() || versions.contains(fv))) {
+          for (String type : resourceTypes) {
+            for (String s : npm.listResources(type)) {
+              c++;
+              try {
+                processor.processResource(ctxt, context, type, s, TextFile.streamToBytes(npm.load("package", s)));
+              } catch (Exception e) {
+                System.out.println("####### Error loading "+pid+"#"+v +"["+fv+"]/"+type+" ####### "+e.getMessage());
+                e.printStackTrace();
+              }
             }
           }
-        }
-      }    
-      System.out.println("Processed: "+pid+"#"+v+": "+c+" resources ("+i+" of "+t+")");  
+        }    
+        processor.finishPackage(ctxt);
+        System.out.println("Processed: "+pid+"#"+v+": "+c+" resources ("+i+" of "+t+")");  
+      }
     }
   }
 

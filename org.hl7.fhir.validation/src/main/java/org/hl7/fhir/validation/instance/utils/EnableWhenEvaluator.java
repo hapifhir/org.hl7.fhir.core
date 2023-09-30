@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.instance;
+package org.hl7.fhir.validation.instance.utils;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -48,7 +48,6 @@ import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemEnableWhenComponent;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemOperator;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.validation.instance.type.QuestionnaireValidator.QuestionnaireWithContext;
-import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 
 import ca.uhn.fhir.rest.server.exceptions.UnprocessableEntityException;
 
@@ -144,7 +143,7 @@ public class EnableWhenEvaluator {
    * <p>
    * The context Questionnaire and QuestionnaireResponse are always available
    */
-  public boolean isQuestionEnabled(ValidatorHostContext hostContext, QuestionnaireItemComponent qitem, QStack qstack, FHIRPathEngine engine) {
+  public boolean isQuestionEnabled(ValidationContext hostContext, QuestionnaireItemComponent qitem, QStack qstack, FHIRPathEngine engine) {
     if (hasExpressionExtension(qitem)) {
       String expr = getExpression(qitem);
       ExpressionNode node = engine.parse(expr);

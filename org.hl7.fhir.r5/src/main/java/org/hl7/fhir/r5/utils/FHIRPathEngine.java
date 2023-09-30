@@ -5794,7 +5794,10 @@ public class FHIRPathEngine {
         url = type;
       }
       String tail = "";
-      StructureDefinition sd = worker.fetchResource(StructureDefinition.class, url);
+      StructureDefinition sd = worker.fetchTypeDefinition(url);
+      if (sd == null) {
+        sd = worker.fetchResource(StructureDefinition.class, url);
+      }
       if (sd == null) {
         if (url.startsWith(TypeDetails.FP_NS)) {
           return;
