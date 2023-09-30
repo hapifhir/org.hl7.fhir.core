@@ -1,7 +1,9 @@
 ## Validator Changes
 
-* no changes
+* Fix FHIRPath type resolution for logical models
+* Update parsers to record the element format for logical model validation
+* fix profile matching for CDA logical models
 
 ## Other code changes
 
-* no changes
+* Upgrade PackageVisitor for XIG
