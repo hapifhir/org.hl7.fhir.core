@@ -38,6 +38,7 @@ import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.extensions.ExtensionsUtils;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DataType;
@@ -130,6 +131,7 @@ public class Element extends Base implements NamedItem {
   private boolean isNull;
   private Base source;
   private boolean ignorePropertyOrder;
+  private FhirFormat format;
 
 	public Element(String name) {
 		super();
@@ -421,7 +423,7 @@ public class Element extends Base implements NamedItem {
           childForValue = child;
           break;
         } else {
-          Element ne = new Element(child);
+          Element ne = new Element(child).setFormat(format);
           children.add(ne);
           numberChildren();
           childForValue = ne;
@@ -442,7 +444,7 @@ public class Element extends Base implements NamedItem {
         if (t >= i)
           i = t+1;
         if (p.getName().equals(name) || p.getName().equals(name+"[x]")) {
-          Element ne = new Element(name, p);
+          Element ne = new Element(name, p).setFormat(format);
           children.add(i, ne);
           childForValue = ne;
           break;
@@ -504,7 +506,7 @@ public class Element extends Base implements NamedItem {
         if (!child.isList()) {
           return child;
         } else {
-          Element ne = new Element(child);
+          Element ne = new Element(child).setFormat(format);
           children.add(ne);
           numberChildren();
           return ne;
@@ -514,7 +516,7 @@ public class Element extends Base implements NamedItem {
 
     for (Property p : property.getChildProperties(this.name, type)) {
       if (p.getName().equals(name)) {
-        Element ne = new Element(name, p);
+        Element ne = new Element(name, p).setFormat(format);
         children.add(ne);
         return ne;
       } else if (p.getDefinition().isChoice() && name.startsWith(p.getName().replace("[x]", ""))) {
@@ -522,7 +524,7 @@ public class Element extends Base implements NamedItem {
         if (property.getContext().isPrimitiveType(Utilities.uncapitalize(type))) {
           type = Utilities.uncapitalize(type);
         }
-        Element ne = new Element(name, p);
+        Element ne = new Element(name, p).setFormat(format);
         ne.setType(type);
         children.add(ne);
         return ne;
@@ -546,7 +548,7 @@ public class Element extends Base implements NamedItem {
 
     for (Property p : property.getChildProperties(this.name, type)) {
       if (p.getName().equals(name)) {
-        Element ne = new Element(name, p);
+        Element ne = new Element(name, p).setFormat(format);
         children.add(ne);
         return ne;
       }
@@ -1295,7 +1297,7 @@ public class Element extends Base implements NamedItem {
         if (!p.isList() && hasChild(name)) {
           throw new Error(name+" on "+this.name+" is not a list, so can't add an element"); 
         }
-        Element ne = new Element(name, p);
+        Element ne = new Element(name, p).setFormat(format);
         children.add(ne);
         return ne;
       }
@@ -1344,6 +1346,7 @@ public class Element extends Base implements NamedItem {
     dest.instanceId = instanceId;
     dest.isNull = isNull;
     dest.source = source;
+    dest.format = format;
   }
   
   public Base setProperty(String name, Base value) throws FHIRException {
@@ -1464,6 +1467,15 @@ public class Element extends Base implements NamedItem {
     } else {
       return getName();
     }
+  }
+
+  public FhirFormat getFormat() {
+    return format;
+  }
+
+  public Element setFormat(FhirFormat format) {
+    this.format = format;
+    return this;
   }
 
 }

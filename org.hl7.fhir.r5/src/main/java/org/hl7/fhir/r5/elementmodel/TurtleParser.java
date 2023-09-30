@@ -45,6 +45,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -150,7 +151,7 @@ public class TurtleParser extends ParserBase {
     if (sd == null)
       return null;
 
-    Element result = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd));
+    Element result = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd)).setFormat(FhirFormat.TURTLE);
     result.markLocation(cmp.getLine(), cmp.getCol());
     result.setType(name);
     parseChildren(errors, src, path, cmp, result, false);
@@ -210,7 +211,7 @@ public class TurtleParser extends ParserBase {
       parseResource(errors, src, npath, object, element, property, name, e);
     else  if (e instanceof TTLComplex) {
       TTLComplex child = (TTLComplex) e;
-      Element n = new Element(tail(name), property).markLocation(e.getLine(), e.getCol());
+      Element n = new Element(tail(name), property).markLocation(e.getLine(), e.getCol()).setFormat(FhirFormat.TURTLE);
       element.getChildren().add(n);
       if (property.isPrimitive(property.getType(tail(name)))) {
         parseChildren(errors, src, npath, child, n, true);
@@ -276,7 +277,7 @@ public class TurtleParser extends ParserBase {
     if (sd == null)
       return;
     
-    Element n = new Element(tail(name), property).markLocation(object.getLine(), object.getCol());
+    Element n = new Element(tail(name), property).markLocation(object.getLine(), object.getCol()).setFormat(FhirFormat.TURTLE);
     element.getChildren().add(n);
     n.updateProperty(new Property(this.context, sd.getSnapshot().getElement().get(0), sd), SpecialElement.fromProperty(n.getProperty()), property);
     n.setType(rt);
