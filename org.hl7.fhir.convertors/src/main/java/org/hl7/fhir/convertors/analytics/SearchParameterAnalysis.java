@@ -12,8 +12,10 @@ import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.convertors.analytics.PackageVisitor.IPackageVisitorProcessor;
+import org.hl7.fhir.convertors.analytics.PackageVisitor.PackageContext;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -89,17 +91,29 @@ public class SearchParameterAnalysis implements IPackageVisitorProcessor {
           }
         }
         System.out.println();
-      }
-      
+      }      
     }
     
   }
   
   private Map<String, SearchParameterVersionAnalysis> versions = new HashMap<String, SearchParameterAnalysis.SearchParameterVersionAnalysis>();
   
+
   @Override
-  public void processResource(String pid, NpmPackage npm, String version, String type, String id, byte[] content) throws FHIRException {
-//    System.out.println("v"+version+" "+type+" from "+pid);    
+  public void alreadyVisited(String pid) {
+    
+  }
+
+  @Override
+  public Object startPackage(PackageContext ctxt) {
+    return null;
+  }
+
+  @Override
+  public void processResource(PackageContext ctxt, Object context, String type, String id, byte[] content) throws FHIRException, IOException, EOperationOutcome {
+//    System.out.println("v"+version+" "+type+" from "+pid);  
+    String pid = ctxt.getPid();
+    String version = ctxt.getVersion();
     boolean core = pid.startsWith("hl7.fhir.r") && (pid.contains(".core") || pid.contains(".examples"));
     version = VersionUtilities.getMajMin(version);
     if (!versions.containsKey(version)) {
@@ -123,6 +137,11 @@ public class SearchParameterAnalysis implements IPackageVisitorProcessor {
     }
   }
 
+  @Override
+  public void finishPackage(PackageContext ctxt) {    
+    
+  }
+  
   private void processR5SP(boolean core, SearchParameterVersionAnalysis analysis, byte[] content) throws FHIRFormatError, IOException {
     org.hl7.fhir.r5.model.Resource res = new org.hl7.fhir.r5.formats.JsonParser().parse(content);
     if (res instanceof org.hl7.fhir.r5.model.Bundle) {
@@ -187,7 +206,7 @@ public class SearchParameterAnalysis implements IPackageVisitorProcessor {
     new SearchParameterAnalysis().execute();
   }
 
-  private void execute() throws IOException, ParserConfigurationException, SAXException {
+  private void execute() throws IOException, ParserConfigurationException, SAXException, FHIRException, EOperationOutcome {
     PackageVisitor pv = new PackageVisitor();
     pv.getResourceTypes().add("SearchParameter");
     pv.getResourceTypes().add("Bundle");
@@ -207,4 +226,5 @@ public class SearchParameterAnalysis implements IPackageVisitorProcessor {
       }
       
   }
+
 }

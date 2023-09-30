@@ -57,6 +57,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.DateTimeType;
@@ -228,7 +229,7 @@ public class XmlParser extends ParserBase {
     if (sd == null)
       return null;
 
-    Element result = new Element(element.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd));
+    Element result = new Element(element.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd)).setFormat(FhirFormat.XML);
     result.setPath(element.getLocalName());
     checkElement(errors, element, path, result.getProperty());
     result.markLocation(line(element, false), col(element, false));
@@ -288,7 +289,7 @@ public class XmlParser extends ParserBase {
 
   public Element parse(List<ValidationMessage> errors, org.w3c.dom.Element base, String type) throws Exception {
     StructureDefinition sd = getDefinition(errors, 0, 0, FormatUtilities.FHIR_NS, type);
-    Element result = new Element(base.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd));
+    Element result = new Element(base.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd)).setFormat(FhirFormat.XML);
     result.setPath(base.getLocalName());
     String path = "/"+pathPrefix(base.getNamespaceURI())+base.getLocalName();
     checkElement(errors, base, path, result.getProperty());
@@ -311,16 +312,16 @@ public class XmlParser extends ParserBase {
       if (property != null) {
         if ("ED.data[x]".equals(property.getDefinition().getId()) || (property.getDefinition()!=null && property.getDefinition().getBase()!=null && "ED.data[x]".equals(property.getDefinition().getBase().getPath()))) {
           if ("B64".equals(node.getAttribute("representation"))) {
-            Element n = new Element("dataBase64Binary", property, "base64Binary", text).markLocation(line, col);
+            Element n = new Element("dataBase64Binary", property, "base64Binary", text).markLocation(line, col).setFormat(FhirFormat.XML);
             n.setPath(element.getPath()+"."+property.getName());
             element.getChildren().add(n);
           } else {
-            Element n = new Element("dataString", property, "string", text).markLocation(line, col);
+            Element n = new Element("dataString", property, "string", text).markLocation(line, col).setFormat(FhirFormat.XML);
             n.setPath(element.getPath()+"."+property.getName());
             element.getChildren().add(n);
           }
         } else {
-          Element n = new Element(property.getName(), property, property.getType(), text).markLocation(line, col);
+          Element n = new Element(property.getName(), property, property.getType(), text).markLocation(line, col).setFormat(FhirFormat.XML);
           n.setPath(element.getPath()+"."+property.getName());
           element.getChildren().add(n);
         }
@@ -368,7 +369,7 @@ public class XmlParser extends ParserBase {
               vl = av.split(" ");
             }
             for (String v : vl) {
-              Element n = new Element(property.getName(), property, property.getType(), v).markLocation(line, col);
+              Element n = new Element(property.getName(), property, property.getType(), v).markLocation(line, col).setFormat(FhirFormat.XML);
               n.setPath(element.getPath()+"."+property.getName());
               element.getChildren().add(n);
             }
@@ -415,12 +416,12 @@ public class XmlParser extends ParserBase {
                 }
               }
             }
-            Element n = new Element(property.getName(), property, "xhtml", new XhtmlComposer(XhtmlComposer.XML, false).compose(xhtml)).setXhtml(xhtml).markLocation(line(child, false), col(child, false));
+            Element n = new Element(property.getName(), property, "xhtml", new XhtmlComposer(XhtmlComposer.XML, false).compose(xhtml)).setXhtml(xhtml).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML);
             n.setPath(element.getPath()+"."+property.getName());
             element.getChildren().add(n);
           } else {
             String npath = path+"/"+pathPrefix(child.getNamespaceURI())+child.getLocalName();
-            Element n = new Element(child.getLocalName(), property).markLocation(line(child, false), col(child, false));
+            Element n = new Element(child.getLocalName(), property).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML);
             if (property.isList()) {
               n.setPath(element.getPath()+"."+property.getName()+"["+repeatCount+"]");    				  
             } else {

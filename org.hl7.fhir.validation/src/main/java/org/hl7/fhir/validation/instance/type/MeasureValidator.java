@@ -33,7 +33,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
-import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
+import org.hl7.fhir.validation.instance.utils.ValidationContext;
 import org.w3c.dom.Document;
 
 public class MeasureValidator extends BaseValidator {
@@ -43,7 +43,7 @@ public class MeasureValidator extends BaseValidator {
     super(parent);
   }
 
-  public boolean validateMeasure(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack) throws FHIRException {
+  public boolean validateMeasure(ValidationContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack) throws FHIRException {
     boolean ok = true;
     MeasureContext mctxt = new MeasureContext();
     List<Element> libs = element.getChildrenByName("library");
@@ -131,7 +131,7 @@ public class MeasureValidator extends BaseValidator {
     return ok;
   }
   
-  private boolean validateMeasureCriteria(ValidatorHostContext hostContext, List<ValidationMessage> errors, MeasureContext mctxt, Element crit, NodeStack nsc) {
+  private boolean validateMeasureCriteria(ValidationContext hostContext, List<ValidationMessage> errors, MeasureContext mctxt, Element crit, NodeStack nsc) {
     boolean ok = true;
     String mimeType = crit.getChildValue("language");
     if (!Utilities.noString(mimeType)) { // that would be an error elsewhere 
@@ -206,7 +206,7 @@ public class MeasureValidator extends BaseValidator {
 
   // ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  public boolean validateMeasureReport(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack) throws FHIRException {
+  public boolean validateMeasureReport(ValidationContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack) throws FHIRException {
     boolean ok = true;
     Element m = element.getNamedChild("measure");
     String measure = null;
@@ -282,7 +282,7 @@ public class MeasureValidator extends BaseValidator {
     }
   }
 
-  private boolean validateMeasureReportGroups(ValidatorHostContext hostContext, MeasureContext m, List<ValidationMessage> errors, Element mr, NodeStack stack, boolean inProgress) {
+  private boolean validateMeasureReportGroups(ValidationContext hostContext, MeasureContext m, List<ValidationMessage> errors, Element mr, NodeStack stack, boolean inProgress) {
     boolean ok = true;
     
     if (m.groups().size() == 0) {
@@ -344,7 +344,7 @@ public class MeasureValidator extends BaseValidator {
     return "data-collection".equals(mr.getChildValue("type"));
   }
 
-  private boolean validateMeasureReportGroup(ValidatorHostContext hostContext, MeasureContext m, MeasureGroupComponent mg, List<ValidationMessage> errors, Element mrg, NodeStack ns, boolean inProgress) {
+  private boolean validateMeasureReportGroup(ValidationContext hostContext, MeasureContext m, MeasureGroupComponent mg, List<ValidationMessage> errors, Element mrg, NodeStack ns, boolean inProgress) {
     boolean ok = true;
     ok = validateMeasureReportGroupPopulations(hostContext, m, mg, errors, mrg, ns, inProgress) && ok;
     ok = validateScore(hostContext, m, errors, mrg, ns, inProgress) && ok;
@@ -352,7 +352,7 @@ public class MeasureValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean validateScore(ValidatorHostContext hostContext, MeasureContext m, List<ValidationMessage> errors, Element mrg, NodeStack stack, boolean inProgress) {
+  private boolean validateScore(ValidationContext hostContext, MeasureContext m, List<ValidationMessage> errors, Element mrg, NodeStack stack, boolean inProgress) {
     boolean ok = true;
     
     Element ms = mrg.getNamedChild("measureScore");
@@ -456,7 +456,7 @@ public class MeasureValidator extends BaseValidator {
       return true;
     }
   }
-  private boolean validateMeasureReportGroupPopulations(ValidatorHostContext hostContext, MeasureContext m, MeasureGroupComponent mg, List<ValidationMessage> errors, Element mrg, NodeStack stack, boolean inProgress) {
+  private boolean validateMeasureReportGroupPopulations(ValidationContext hostContext, MeasureContext m, MeasureGroupComponent mg, List<ValidationMessage> errors, Element mrg, NodeStack stack, boolean inProgress) {
     boolean ok = true;
     // there must be a population for each population defined in the measure, and no 4others. 
     List<MeasureGroupPopulationComponent> pops = new ArrayList<MeasureGroupPopulationComponent>();
@@ -491,7 +491,7 @@ public class MeasureValidator extends BaseValidator {
     return ok;
   }
   
-  private boolean validateMeasureReportGroupPopulation(ValidatorHostContext hostContext, MeasureContext m, MeasureGroupPopulationComponent mgp, List<ValidationMessage> errors, Element mrgp, NodeStack ns, boolean inProgress) {
+  private boolean validateMeasureReportGroupPopulation(ValidationContext hostContext, MeasureContext m, MeasureGroupPopulationComponent mgp, List<ValidationMessage> errors, Element mrgp, NodeStack ns, boolean inProgress) {
     boolean ok = true;
     List<Element> sr = mrgp.getChildrenByName("subjectResults");
     if ("subject-list".equals(m.reportType())) {
@@ -508,7 +508,7 @@ public class MeasureValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean validateMeasureReportGroupStratifiers(ValidatorHostContext hostContext, MeasureContext m, MeasureGroupComponent mg, List<ValidationMessage> errors, Element mrg, NodeStack stack, boolean inProgress) {
+  private boolean validateMeasureReportGroupStratifiers(ValidationContext hostContext, MeasureContext m, MeasureGroupComponent mg, List<ValidationMessage> errors, Element mrg, NodeStack stack, boolean inProgress) {
     boolean ok = true;
     
     // there must be a population for each population defined in the measure, and no 4others. 
@@ -544,7 +544,7 @@ public class MeasureValidator extends BaseValidator {
     return true;
   }
   
-  private boolean validateMeasureReportGroupStratifier(ValidatorHostContext hostContext, MeasureContext m, MeasureGroupStratifierComponent mgs, List<ValidationMessage> errors, Element mrgs, NodeStack ns, boolean inProgress) {
+  private boolean validateMeasureReportGroupStratifier(ValidationContext hostContext, MeasureContext m, MeasureGroupStratifierComponent mgs, List<ValidationMessage> errors, Element mrgs, NodeStack ns, boolean inProgress) {
     // still to be done
     return true;
   }

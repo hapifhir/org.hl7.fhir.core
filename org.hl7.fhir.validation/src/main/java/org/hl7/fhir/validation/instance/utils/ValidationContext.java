@@ -5,13 +5,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
-public class ValidatorHostContext {
+public class ValidationContext {
 
     private Object appContext;
 
+    // the version we are currently validating for right now
+    // not implemented yet - this is the forerunner of a major upgrade to the validator
+    private String version;
+    
     // the resource we are actually validating right now
     private Element resource; 
     // the resource that is the scope of id resolution - either the same as resource, or the resource the contains that resource. This can only be one level deep.
@@ -19,14 +24,15 @@ public class ValidatorHostContext {
     private Element groupingResource; // either a bundle or a parameters that holds the rootResource (for reference resolution)
     
     private StructureDefinition profile; // the profile that contains the content being validated
+    
     private boolean checkSpecials = true;
     private Map<String, List<ValidationMessage>> sliceRecords;
-
-    public ValidatorHostContext(Object appContext) {
+    
+    public ValidationContext(Object appContext) {
         this.appContext = appContext;
     }
 
-    public ValidatorHostContext(Object appContext, Element element) {
+    public ValidationContext(Object appContext, Element element) {
       this.appContext = appContext;
       this.resource = element;
       this.rootResource = element;
@@ -42,7 +48,7 @@ public class ValidatorHostContext {
       }
     }
 
-    public ValidatorHostContext(Object appContext, Element element, Element root) {
+    public ValidationContext(Object appContext, Element element, Element root) {
       this.appContext = appContext;
       this.resource = element;
       this.rootResource = root;
@@ -51,7 +57,7 @@ public class ValidatorHostContext {
       dump("creating");
   }
 
-    public ValidatorHostContext(Object appContext, Element element, Element root, Element groupingResource) {
+    public ValidationContext(Object appContext, Element element, Element root, Element groupingResource) {
       this.appContext = appContext;
       this.resource = element;
       this.rootResource = root;
@@ -64,12 +70,12 @@ public class ValidatorHostContext {
         return appContext;
     }
 
-    public ValidatorHostContext setAppContext(Object appContext) {
+    public ValidationContext setAppContext(Object appContext) {
         this.appContext = appContext;
         return this;
     }
 
-    public ValidatorHostContext setResource(Element resource) {
+    public ValidationContext setResource(Element resource) {
         this.resource = resource;
         return this;
     }
@@ -78,7 +84,7 @@ public class ValidatorHostContext {
         return rootResource;
     }
 
-    public ValidatorHostContext setRootResource(Element rootResource) {
+    public ValidationContext setRootResource(Element rootResource) {
         this.rootResource = rootResource;
         dump("setting root resource");
         return this;
@@ -92,7 +98,7 @@ public class ValidatorHostContext {
         return profile;
     }
 
-    public ValidatorHostContext setProfile(StructureDefinition profile) {
+    public ValidationContext setProfile(StructureDefinition profile) {
         this.profile = profile;
         return this;
     }
@@ -101,7 +107,7 @@ public class ValidatorHostContext {
         return sliceRecords;
     }
 
-    public ValidatorHostContext setSliceRecords(Map<String, List<ValidationMessage>> sliceRecords) {
+    public ValidationContext setSliceRecords(Map<String, List<ValidationMessage>> sliceRecords) {
         this.sliceRecords = sliceRecords;
         return this;
     }
@@ -124,45 +130,49 @@ public class ValidatorHostContext {
       }
     }
 
-    public ValidatorHostContext forContained(Element element) {
-        ValidatorHostContext res = new ValidatorHostContext(appContext);
+    public ValidationContext forContained(Element element) {
+        ValidationContext res = new ValidationContext(appContext);
         res.rootResource = resource;
         res.resource = element;
         res.profile = profile;
         res.groupingResource = groupingResource;
+        res.version = version;
         res.dump("forContained");
         return res;
     }
 
-    public ValidatorHostContext forEntry(Element element, Element groupingResource) {
-        ValidatorHostContext res = new ValidatorHostContext(appContext);
+    public ValidationContext forEntry(Element element, Element groupingResource) {
+        ValidationContext res = new ValidationContext(appContext);
         res.rootResource = element;
         res.resource = element;
         res.profile = profile;
         res.groupingResource = groupingResource;
+        res.version = version;
         res.dump("forEntry");
         return res;
     }
 
-    public ValidatorHostContext forProfile(StructureDefinition profile) {
-        ValidatorHostContext res = new ValidatorHostContext(appContext);
+    public ValidationContext forProfile(StructureDefinition profile) {
+        ValidationContext res = new ValidationContext(appContext);
         res.resource = resource;
         res.rootResource = rootResource;
         res.profile = profile;
+        res.version = version;
         res.groupingResource = groupingResource;
         res.sliceRecords = sliceRecords != null ? sliceRecords : new HashMap<String, List<ValidationMessage>>();
         res.dump("forProfile "+profile.getUrl());
         return res;
     }
 
-    public ValidatorHostContext forLocalReference(StructureDefinition profile, Element resource) {
-        ValidatorHostContext res = new ValidatorHostContext(appContext);
+    public ValidationContext forLocalReference(StructureDefinition profile, Element resource) {
+        ValidationContext res = new ValidationContext(appContext);
         res.resource = resource;
         res.rootResource = resource;
         res.profile = profile;
         res.groupingResource = groupingResource;
         res.checkSpecials = false;
         res.dump("forLocalReference "+profile.getUrl());
+        res.version = version;
         return res;
     }
 
@@ -173,27 +183,38 @@ public class ValidatorHostContext {
 //      }
     }
 
-    public ValidatorHostContext forRemoteReference(StructureDefinition profile, Element resource) {
-        ValidatorHostContext res = new ValidatorHostContext(appContext);
+    public ValidationContext forRemoteReference(StructureDefinition profile, Element resource) {
+        ValidationContext res = new ValidationContext(appContext);
         res.resource = resource;
         res.rootResource = resource;
         res.profile = profile;
         res.groupingResource = null;
         res.checkSpecials = false;
+        res.version = version;
         res.dump("forRemoteReference "+profile.getUrl());
         return res;
     }
 
-    public ValidatorHostContext forSlicing() {
-        ValidatorHostContext res = new ValidatorHostContext(appContext);
+    public ValidationContext forSlicing() {
+        ValidationContext res = new ValidationContext(appContext);
         res.resource = resource;
         res.rootResource = resource;
         res.groupingResource = groupingResource;
         res.profile = profile;
         res.checkSpecials = false;
+        res.version = version;
         res.sliceRecords = new HashMap<String, List<ValidationMessage>>();
         res.dump("forSlicing");
         return res;
+    }
+
+    public String getVersion() {
+      return version;
+    }
+
+    public ValidationContext setVersion(String version) {
+      this.version = version;
+      return this;
     }
 
 
