@@ -1,7 +1,9 @@
 package org.hl7.fhir.utilities.json.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hl7.fhir.utilities.json.JsonException;
 
@@ -10,6 +12,7 @@ public abstract class JsonElement {
   private List<JsonComment> comments;
   private JsonLocationData start;
   private JsonLocationData end;
+  private Map<String, Object> userData;
   
   public abstract JsonElementType type();
 
@@ -112,4 +115,66 @@ public abstract class JsonElement {
   public String asString() {
     return isJsonPrimitive() ? ((JsonPrimitive) this).getValue() : null;
   }
+
+
+  public Object getUserData(String name) {
+    if (userData == null)
+      return null;
+    return userData.get(name);
+  }
+  
+  public void setUserData(String name, Object value) {
+    if (userData == null)
+      userData = new HashMap<String, Object>();
+    userData.put(name, value);
+  }
+
+  public void clearUserData(String name) {
+    if (userData != null)
+      userData.remove(name);
+  }
+ 
+  
+  public void setUserDataINN(String name, Object value) {
+    if (value == null)
+      return;
+    
+    if (userData == null)
+      userData = new HashMap<String, Object>();
+    userData.put(name, value);
+  }
+
+  public boolean hasUserData(String name) {
+    if (userData == null)
+      return false;
+    else
+      return userData.containsKey(name) && (userData.get(name) != null);
+  }
+
+  public String getUserString(String name) {
+    Object ud = getUserData(name);
+    if (ud == null)
+      return null;
+    if (ud instanceof String)
+      return (String) ud;
+    return ud.toString();
+  }
+
+  public int getUserInt(String name) {
+    if (!hasUserData(name))
+      return 0;
+    return (Integer) getUserData(name);
+  }
+
+  public void copyUserData(JsonElement other) {
+    if (other.userData != null) {
+      if (userData == null) {
+        userData = new HashMap<>();
+      }
+      userData.putAll(other.userData);
+    }
+  }      
+
+
+  
 }
