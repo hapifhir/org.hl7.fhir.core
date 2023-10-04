@@ -6215,12 +6215,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (ed.getRepresentation().isEmpty()) { // ignore xml attributes
         int count = 0;
         List<ElementDefinition> slices = null;
-        if (ed.hasSlicing())
+        if (ed.hasSlicing()) {
           slices = profileUtilities.getSliceList(profile, ed);
-        for (ElementInfo ei : children)
-          if (ei.definition == ed)
+        }
+        for (ElementInfo ei : children) {
+          if (ei.definition == ed) {
             count++;
-          else if (slices != null) {
+          } else if (slices != null) {
             for (ElementDefinition sed : slices) {
               if (ei.definition == sed) {
                 count++;
@@ -6228,6 +6229,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
             }
           }
+        }
         if (ed.getMin() > 0) {
           if (problematicPaths.contains(ed.getPath()))
             hintPlural(errors, NO_RULE_DATE, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count >= ed.getMin(), count, I18nConstants.VALIDATION_VAL_PROFILE_NOCHECKMIN, profile.getVersionedUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), Integer.toString(ed.getMin()));
@@ -6238,9 +6240,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
         }
         if (ed.hasMax() && !ed.getMax().equals("*")) {
-          if (problematicPaths.contains(ed.getPath()))
+          if (problematicPaths.contains(ed.getPath())) {
             hintPlural(errors, NO_RULE_DATE, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count <= Integer.parseInt(ed.getMax()), count, I18nConstants.VALIDATION_VAL_PROFILE_NOCHECKMAX, profile.getVersionedUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), ed.getMax());
-          else if (count > Integer.parseInt(ed.getMax())) {
+          } else if (count > Integer.parseInt(ed.getMax())) {
             ok = rulePlural(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, count, I18nConstants.VALIDATION_VAL_PROFILE_MAXIMUM, profile.getVersionedUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), ed.getMax(), Integer.toString(count)) && ok;
           }
         }

@@ -422,7 +422,11 @@ public class XmlParser extends ParserBase {
             element.getChildren().add(n);
           } else {
             String npath = path+"/"+pathPrefix(child.getNamespaceURI())+child.getLocalName();
-            Element n = new Element(child.getLocalName(), property).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML);
+            String name = child.getLocalName();
+            if (!property.isChoice() && !name.equals(property.getName())) {
+              name = property.getName();
+            }
+            Element n = new Element(name, property).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML);
             if (property.isList()) {
               n.setPath(element.getPath()+"."+property.getName()+"["+repeatCount+"]");    				  
             } else {
