@@ -536,6 +536,13 @@ public class FHIRPathEngine {
     return res;
   }
   
+  public TypeDetails checkOnTypes(Object appContext, String resourceType, TypeDetails types, ExpressionNode expr, List<String> warnings) throws FHIRLexerException, PathEngineException, DefinitionException {
+    typeWarnings.clear();
+    TypeDetails res = executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, false);
+    warnings.addAll(typeWarnings);
+    return res;
+  }
+  
   /**
    * check that paths referred to in the ExpressionNode are valid
    * 
@@ -1361,7 +1368,7 @@ public class FHIRPathEngine {
     case Unescape: return checkParamCount(lexer, location, exp, 1);
     case Trim: return checkParamCount(lexer, location, exp, 0);
     case Split: return checkParamCount(lexer, location, exp, 1);
-    case Join: return checkParamCount(lexer, location, exp, 1);    
+    case Join: return checkParamCount(lexer, location, exp, 0, 1);    
     case HtmlChecks1: return checkParamCount(lexer, location, exp, 0);
     case HtmlChecks2: return checkParamCount(lexer, location, exp, 0);
     case Comparable: return checkParamCount(lexer, location, exp, 1);
@@ -4209,12 +4216,16 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcJoin(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
-    String param = nl.get(0).primitiveValue();
-    String param2 = param;
-    if (exp.getParameters().size() == 2) {
-      nl = execute(context, focus, exp.getParameters().get(1), true);
-      param2 = nl.get(0).primitiveValue();
+    List<Base> nl = exp.getParameters().size() > 0 ? execute(context, focus, exp.getParameters().get(0), true) : new ArrayList<Base>();
+    String param = "";
+    String param2 = "";
+    if (exp.getParameters().size() > 0) {
+      param = nl.get(0).primitiveValue();
+      param2 = param;
+      if (exp.getParameters().size() == 2) {
+        nl = execute(context, focus, exp.getParameters().get(1), true);
+        param2 = nl.get(0).primitiveValue();
+      }
     }
     
     List<Base> result = new ArrayList<Base>();
