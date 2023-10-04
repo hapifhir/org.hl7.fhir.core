@@ -1,6 +1,7 @@
 ## Validator Changes
 
-* no changes
+* Allow programmatic access to validated fragments. 
+* Identify derived validated fragments.
 
 ## Other code changes
 
