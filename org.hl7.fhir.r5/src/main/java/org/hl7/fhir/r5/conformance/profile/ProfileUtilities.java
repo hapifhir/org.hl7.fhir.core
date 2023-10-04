@@ -4507,7 +4507,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   public static boolean isModifierExtension(StructureDefinition sd) {
     ElementDefinition defn = sd.getSnapshot().getElementByPath("Extension");
-    return defn.getIsModifier();
+    return defn != null && defn.getIsModifier();
   }
 
   public boolean isForPublication() {

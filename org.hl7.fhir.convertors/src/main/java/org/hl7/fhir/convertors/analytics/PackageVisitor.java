@@ -72,6 +72,7 @@ public class PackageVisitor {
   private FilesystemPackageCacheManager pcm;
   private PackageClient pc;
   private String cache;  
+  private int step;
 
   public List<String> getResourceTypes() {
     return resourceTypes;
@@ -164,15 +165,17 @@ public class PackageVisitor {
       if (pid != null) {
         if (!cpidSet.contains(pid)) {
           cpidSet.add(pid);
-          List<String> vList = listVersions(pid);
-          if (oldVersions) {
-            for (String v : vList) {
-              processPackage(pid, v, i, pidList.size());          
+          if (step == 0 || step == 3) {
+            List<String> vList = listVersions(pid);
+            if (oldVersions) {
+              for (String v : vList) {
+                processPackage(pid, v, i, pidList.size());          
+              }
+            } else if (vList.isEmpty()) {
+              System.out.println("No Packages for "+pid);
+            } else {
+              processPackage(pid, vList.get(vList.size() - 1), i, pidList.size());
             }
-          } else if (vList.isEmpty()) {
-            System.out.println("No Packages for "+pid);
-          } else {
-            processPackage(pid, vList.get(vList.size() - 1), i, pidList.size());
           }
         } else {
           processor.alreadyVisited(pid);
@@ -180,76 +183,81 @@ public class PackageVisitor {
         i++;
       }    
     }
-    JsonObject json = JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json");
-    i = 0;
-    List<JsonObject> objects = json.getJsonObjects("guides");
-    for (JsonObject o : objects) {
-      String pid = o.asString("npm-name");
-      if (pid != null && !cpidSet.contains(pid)) {
-        cpidSet.add(pid);
-        List<String> vList = listVersions(pid);
-        if (oldVersions) {
-          for (String v : vList) {
-            processPackage(pid, v, i, objects.size());          
+
+    if (step == 0 || step == 3) {
+      JsonObject json = JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json");
+      i = 0;
+      List<JsonObject> objects = json.getJsonObjects("guides");
+      for (JsonObject o : objects) {
+        String pid = o.asString("npm-name");
+        if (pid != null && !cpidSet.contains(pid)) {
+          cpidSet.add(pid);
+          List<String> vList = listVersions(pid);
+          if (oldVersions) {
+            for (String v : vList) {
+              processPackage(pid, v, i, objects.size());          
+            }
+          } else if (vList.isEmpty()) {
+            System.out.println("No Packages for "+pid);
+          } else {
+            processPackage(pid, vList.get(vList.size() - 1), i, objects.size());
           }
-        } else if (vList.isEmpty()) {
-          System.out.println("No Packages for "+pid);
-        } else {
-          processPackage(pid, vList.get(vList.size() - 1), i, objects.size());
         }
+        i++;
       }
-      i++;
     }
   }
 
   private void processCurrentPackage(String url, String pid, Set<String> cpidSet, int i, int t) {
     try {
-      long ms1 = System.currentTimeMillis();
-      String[] p = url.split("\\/");
-      String repo = "https://build.fhir.org/ig/"+p[0]+"/"+p[1];
-      JsonObject manifest = JsonParser.parseObjectFromUrl(repo+"/package.manifest.json");
-      File co = new File(Utilities.path(cache, pid+"."+manifest.asString("date")+".tgz"));
-      if (!co.exists()) {
-        SimpleHTTPClient fetcher = new SimpleHTTPClient();
-        HTTPResult res = fetcher.get(repo+"/package.tgz?nocache=" + System.currentTimeMillis());
-        res.checkThrowException();
-        TextFile.bytesToFile(res.getContent(), co);
-      }
-      NpmPackage npm = NpmPackage.fromPackage(new FileInputStream(co));          
-      String fv = npm.fhirVersion();
       cpidSet.add(pid);
-      long ms2 = System.currentTimeMillis();
+      if (step == 0 || (step == 1 && i < t/2) || (step == 2 && i >= t/2)) {
+        long ms1 = System.currentTimeMillis();
+        String[] p = url.split("\\/");
+        String repo = "https://build.fhir.org/ig/"+p[0]+"/"+p[1];
+        JsonObject manifest = JsonParser.parseObjectFromUrl(repo+"/package.manifest.json");
+        File co = new File(Utilities.path(cache, pid+"."+manifest.asString("date")+".tgz"));
+        if (!co.exists()) {
+          SimpleHTTPClient fetcher = new SimpleHTTPClient();
+          HTTPResult res = fetcher.get(repo+"/package.tgz?nocache=" + System.currentTimeMillis());
+          res.checkThrowException();
+          TextFile.bytesToFile(res.getContent(), co);
+        }
+        NpmPackage npm = NpmPackage.fromPackage(new FileInputStream(co));          
+        String fv = npm.fhirVersion();
+        long ms2 = System.currentTimeMillis();
 
-      if (corePackages || !corePackage(npm)) {
-        if (fv != null && (versions.isEmpty() || versions.contains(fv))) {
-          PackageContext ctxt = new PackageContext(pid+"#current", npm, fv);
-          boolean ok = false;
-          Object context = null;
-          try {
-            context = processor.startPackage(ctxt);
-            ok = true;
-          } catch (Exception e) {
-            System.out.println("####### Error loading "+pid+"#current["+fv+"]: ####### "+e.getMessage());
-            //                e.printStackTrace();
-          }
-          if (ok) {
-            int c = 0;
-            for (String type : resourceTypes) {
-              for (String s : npm.listResources(type)) {
-                c++;
-                try {
-                  processor.processResource(ctxt, context, type, s, TextFile.streamToBytes(npm.load("package", s)));
-                } catch (Exception e) {
-                  System.out.println("####### Error loading "+pid+"#current["+fv+"]/"+type+" ####### "+e.getMessage());
-                  //                e.printStackTrace();
+        if (corePackages || !corePackage(npm)) {
+          if (fv != null && (versions.isEmpty() || versions.contains(fv))) {
+            PackageContext ctxt = new PackageContext(pid+"#current", npm, fv);
+            boolean ok = false;
+            Object context = null;
+            try {
+              context = processor.startPackage(ctxt);
+              ok = true;
+            } catch (Exception e) {
+              System.out.println("####### Error loading "+pid+"#current["+fv+"]: ####### "+e.getMessage());
+              //                e.printStackTrace();
+            }
+            if (ok) {
+              int c = 0;
+              for (String type : resourceTypes) {
+                for (String s : npm.listResources(type)) {
+                  c++;
+                  try {
+                    processor.processResource(ctxt, context, type, s, TextFile.streamToBytes(npm.load("package", s)));
+                  } catch (Exception e) {
+                    System.out.println("####### Error loading "+pid+"#current["+fv+"]/"+type+" ####### "+e.getMessage());
+                    //                e.printStackTrace();
+                  }
                 }
               }
+              processor.finishPackage(ctxt);
+              System.out.println("Processed: "+pid+"#current: "+c+" resources ("+i+" of "+t+", "+(ms2-ms1)+"/"+(System.currentTimeMillis()-ms2)+"ms)");
             }
-            processor.finishPackage(ctxt);
-            System.out.println("Processed: "+pid+"#current: "+c+" resources ("+i+" of "+t+", "+(ms2-ms1)+"/"+(System.currentTimeMillis()-ms2)+"ms)");
+          } else {
+            System.out.println("Ignored: "+pid+"#current: no version");            
           }
-        } else {
-          System.out.println("Ignored: "+pid+"#current: no version");            
         }
       }
     } catch (Exception e) {      
@@ -368,6 +376,14 @@ public class PackageVisitor {
         npm.name().startsWith("hl7.fhir.r4.") || 
         npm.name().startsWith("hl7.fhir.r4b.") || 
         npm.name().startsWith("hl7.fhir.r5."));
+  }
+
+  public int getStep() {
+    return step;
+  }
+
+  public void setStep(int step) {
+    this.step = step;
   }
 
 }
