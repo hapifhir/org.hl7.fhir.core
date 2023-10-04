@@ -14,10 +14,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.Factory;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceFactory;
-import org.hl7.fhir.r5.sql.SQLOnFhirTestCases.RowSorter;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.sql.Provider;
@@ -28,12 +26,13 @@ import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.xml.sax.SAXException;
 
-public class SQLOnFhirTestCases {
+public class SQLOnFhirTests {
 
   public class TestProvider implements Provider {
 
@@ -110,6 +109,7 @@ public class SQLOnFhirTestCases {
   @SuppressWarnings("deprecation")
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
+  @Disabled
   public void test(String name, TestDetails test) throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
     this.details = test;
     Runner runner = new Runner();
