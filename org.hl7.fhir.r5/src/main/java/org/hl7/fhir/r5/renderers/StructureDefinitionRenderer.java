@@ -1482,6 +1482,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML Namespace")+": ", null).addStyle("font-weight:bold"));
           c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAMESPACE), null));          
         }
+        if (root && ToolingExtensions.readBoolExtension(profile, ToolingExtensions.EXT_XML_NO_ORDER)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML Order")+": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, "The properties of this type can appear in any order in the XML", null));   
+        }
         if (definition.hasExtension(ToolingExtensions.EXT_JSON_EMPTY)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           String code = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_EMPTY);
@@ -3755,7 +3760,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     boolean no = root && ToolingExtensions.readBoolExtension(profile, ToolingExtensions.EXT_XML_NO_ORDER);
     if (no) {
-      ret.tx("The children of this property can appear in any order in the XML.");
+      ret.tx("The children of this type can appear in any order in the XML.");
     }
     return ret;
   }
