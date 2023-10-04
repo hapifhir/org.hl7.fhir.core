@@ -123,7 +123,7 @@ public class JsonParser extends ParserBase {
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
 //    long start = System.currentTimeMillis();
     byte[] content = TextFile.streamToBytes(inStream);
-    ValidatedFragment ctxt = new ValidatedFragment("focus", "json", content);
+    ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "json", content, false);
     
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     
@@ -135,17 +135,17 @@ public class JsonParser extends ParserBase {
       try {
         obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true); 
       } catch (Exception e) {
-        logError(ctxt.getErrors(), ValidationMessage.NO_RULE_DATE, -1, -1,context.formatMessage(I18nConstants.DOCUMENT), IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_, e.getMessage()), IssueSeverity.FATAL);
+        logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, -1, -1,context.formatMessage(I18nConstants.DOCUMENT), IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_JSON_, e.getMessage()), IssueSeverity.FATAL);
       }
     } else {
       obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true); 
     }
     
     if (obj != null) {
-      ctxt.setElement(parse(ctxt.getErrors(), obj));
+      focusFragment.setElement(parse(focusFragment.getErrors(), obj));
     }
     List<ValidatedFragment> res = new ArrayList<>();
-    res.add(ctxt);
+    res.add(focusFragment);
 
 //    long  t =System.currentTimeMillis()-start;
 //    System.out.println("json parser: "+(t)+"ms, "+(content.length/1024)+"kb "+(t == 0 ? "" : " @ "+(content.length / t)+"kb/s"));
