@@ -61,6 +61,7 @@ import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -769,7 +770,11 @@ public class XmlParser extends ParserBase {
       }
       if (linkResolver != null)
         xml.link(linkResolver.resolveProperty(element.getProperty()));
-      xml.enter(element.getProperty().getXmlNamespace(),elementName);
+      if (!xml.namespaceDefined(element.getProperty().getXmlNamespace())) {
+        String abbrev = makeNamespaceAbbrev(element.getProperty(), xml);
+        xml.namespace(element.getProperty().getXmlNamespace(), abbrev);
+      }
+      xml.enter(element.getProperty().getXmlNamespace(), elementName);
       if (!root && element.getSpecial() != null) {
         if (linkResolver != null)
           xml.link(linkResolver.resolveProperty(element.getProperty()));
@@ -791,6 +796,37 @@ public class XmlParser extends ParserBase {
     }
   }
 
+  private String makeNamespaceAbbrev(Property property, IXMLWriter xml) {
+    // it's a cosmetic thing, but we're going to try to come up with a nice namespace
+
+    ElementDefinition ed = property.getDefinition();
+    String ns = property.getXmlNamespace();
+    String n = property.getXmlName();
+    
+    String diff = property.getName().toLowerCase().replace(n.toLowerCase(), "");
+    if (!Utilities.noString(diff) && diff.length() <= 5 && Utilities.isToken(diff) && !xml.abbreviationDefined(diff)) {
+      return diff;
+    }
+    
+    int i = ns.length()-1;
+    while (i > 0) {
+      if (Character.isAlphabetic(ns.charAt(i)) || Character.isDigit(ns.charAt(i))) {
+        i--;
+      } else {
+        break;
+      }
+    }
+    String tail = ns.substring(i+1);
+    if (!Utilities.noString(tail) && tail.length() <= 5 && Utilities.isToken(tail) && !xml.abbreviationDefined(tail)) {
+      return tail;
+    }
+    
+    i = 0;
+    while (xml.abbreviationDefined("ns"+i)) {
+      i++;
+    }
+    return "ns"+i;
+  }
   private String checkHeader(List<ValidationMessage> errors, InputStream stream) throws IOException {
     try {
       // the stream will either start with the UTF-8 BOF or with <xml
