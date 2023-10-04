@@ -117,7 +117,9 @@ public class CommaSeparatedStringBuilder {
   public static String join(String sep, Collection<String> list) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(sep);
     for (String s : list) {
-      b.append(s);
+      if (s != null) {
+        b.append(s);
+      }
     }
     return b.toString();
   }
