@@ -83,7 +83,7 @@ public class SHCParser extends ParserBase {
     byte[] content = TextFile.streamToBytes(inStream);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     List<ValidatedFragment> res = new ArrayList<>();
-    ValidatedFragment shc = new ValidatedFragment("shc", "txt", content);
+    ValidatedFragment shc = new ValidatedFragment("shc", "txt", content, false);
     res.add(shc);
 
     String src = TextFile.streamToString(stream).trim();
@@ -121,7 +121,7 @@ public class SHCParser extends ParserBase {
         return res;      
       }
 
-      ValidatedFragment bnd = new ValidatedFragment("payload", "json", jwt.payloadSrc);
+      ValidatedFragment bnd = new ValidatedFragment("payload", "json", jwt.payloadSrc, true);
       res.add(bnd);
       checkNamedProperties(shc.getErrors(), jwt.getPayload(), prefix+"payload", "iss", "nbf", "vc");
       checkProperty(shc.getErrors(), jwt.getPayload(), prefix+"payload", "iss", true, "String");

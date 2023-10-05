@@ -50,9 +50,9 @@ public class FmlParser extends ParserBase {
     ByteArrayInputStream stream = new ByteArrayInputStream(content);
     String text = TextFile.streamToString(stream);
     List<ValidatedFragment> result = new ArrayList<>();
-    ValidatedFragment ctxt = new ValidatedFragment("focus", "fml", content);
-    ctxt.setElement(parse(ctxt.getErrors(), text));
-    result.add(ctxt);
+    ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "fml", content, false);
+    focusFragment.setElement(parse(focusFragment.getErrors(), text));
+    result.add(focusFragment);
     return result;
   }
 
