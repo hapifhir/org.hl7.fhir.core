@@ -280,7 +280,7 @@ public class SHLParser extends ParserBase {
   }
 
   private ValidatedFragment addNamedElement(List<ValidatedFragment> res, String name, String type, byte[] content) {
-    ValidatedFragment result = new ValidatedFragment(name, type, content);
+    ValidatedFragment result = new ValidatedFragment(name, type, content, true);
     res.add(result);
     return result;
   }
