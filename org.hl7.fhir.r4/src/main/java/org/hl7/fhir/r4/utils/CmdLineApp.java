@@ -10,17 +10,22 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.SimpleWorkerContext;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
+import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4.model.CapabilityStatement;
+import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Condition;
+import org.hl7.fhir.r4.model.DateType;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Immunization;
+import org.hl7.fhir.r4.model.Parameters;
+import org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Procedure;
@@ -63,6 +68,8 @@ public class CmdLineApp {
           finished = true;
         } else if (p.length == 1 && p[0].equals("?")) {
           genMenu();
+        } else if (p.length == 1 && p[0].equals("?tx")) {
+          genMenuTx();
         } else if (p.length >= 1 && p[0].equals("c")) {
           if (p.length == 1) {
             connectToServer("http://hapi.fhir.org/baseR4");
@@ -108,8 +115,10 @@ public class CmdLineApp {
           select("Patient", p[1]);
         } else if (p.length == 3 && p[0].equals("e")) {
           edit(p[1], p[2]);
+        } else if (p.length > 3 && p[0].equals("tx")) {
+          tx(p);
         } else {
-          System.out.println("Command unknown or not understood: "+cmd);
+          tx(p);
         }
       } catch (Exception e) {
         System.out.println("Error executing command "+p[0]+": "+e.getMessage());
@@ -119,7 +128,48 @@ public class CmdLineApp {
     System.out.println("Finished!"); 
   }
 
-  private void getImmunizations() {
+  private boolean tx(String[] p) throws IOException {
+    if (p[1].equals("l")) {
+      if (p.length == 4) {
+        return lookup(p[2], p[3]);
+      }
+    } else if (p[1].equals("v")) {
+      if (p.length == 4) {
+        return validate(p[2], p[3], null);
+      } else if (p.length == 5) {
+        return validate(p[2], p[3], p[4]);
+      }
+    }
+    throw new FHIRException("Not understood");
+  }
+
+  private boolean validate(String system, String code, String url) throws IOException {
+    Parameters pin = new Parameters();
+    if (url != null) {
+      pin.addParameter("url", url);
+    }
+    pin.addParameter("system", system);
+    pin.addParameter("code", code);
+    Parameters pout = client.operateType(CodeSystem.class, "validate-code", pin);
+    showParameters("  ", pout.getParameter());
+    return true;
+  }
+
+  private void showParameters(String prefix, List<ParametersParameterComponent> list) {
+    for (ParametersParameterComponent pp : list) {
+      if (pp.hasValue()) {        
+        System.out.println("  "+pp.getName()+": "+pp.getValue().toString());
+      } else if (pp.hasPart()) {
+        showParameters("   ", pp.getPart());
+      }
+    }
+  }
+
+  private boolean lookup(String string, String string2) {
+    throw new FHIRException("Not implemented");
+  }
+
+  private void getImmunizations() throws IOException {
 
     Bundle bnd = client.search("Immunization", "?patient="+currentId);
     System.out.println(""+bnd.getTotal()+" Immunizations found. Printing "+bnd.getEntry().size());
@@ -130,7 +180,7 @@ public class CmdLineApp {
     } 
   }
 
-  private void getProcedures() {
+  private void getProcedures() throws IOException {
 
     Bundle bnd = client.search("Procedure", "?patient="+currentId);
     System.out.println(""+bnd.getTotal()+" Procedures found. Printing "+bnd.getEntry().size());
@@ -141,7 +191,7 @@ public class CmdLineApp {
     } 
   }
   
-  private void getConditions() {
+  private void getConditions() throws IOException {
 
     Bundle bnd = client.search("Condition", "?patient="+currentId);
     System.out.println(""+bnd.getTotal()+" Conditions found. Printing "+bnd.getEntry().size());
@@ -176,6 +226,7 @@ public class CmdLineApp {
     case "boolean" : return new BooleanType(value);
     case "code" :  return new CodeType(value);
     case "string" : return new StringType(value);
+    case "date" : return new DateType(value);
     }
     throw new FHIRException("Unhandled type "+p.getTypeCode());
   }
@@ -193,7 +244,7 @@ public class CmdLineApp {
     System.out.println(new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(currentResource));
   }
 
-  private void select(String type, String id) {
+  private void select(String type, String id) throws IOException {
     if (type.equals("Patient")) {
       currentResource = client.fetchResource(Patient.class, id);
     } else if (type.equals("Immunization")) {
@@ -209,7 +260,8 @@ public class CmdLineApp {
     System.out.println("Resource = "+currentId+" "+summary(currentResource));
   }
 
-  private String summary(Resource r) {
+  private String summary(Resource r) throws IOException {
+//    return new XmlParser().composeString(r);
     if (r instanceof Patient) {
       Patient pat = (Patient) r;
       return pat.getIdBase()+" "+pat.getGender()+" "+pat.getBirthDateElement().asStringValue()+" "+name(pat);
@@ -272,7 +324,7 @@ public class CmdLineApp {
     return "";
   }
 
-  private void search(String[] p) {
+  private void search(String[] p) throws IOException {
     if (client == null) {
       throw new FHIRException("Not connected to to a server");
     }
@@ -280,7 +332,7 @@ public class CmdLineApp {
     if (p.length > 2) {
       search = search +"&gender="+p[2];
       if (p.length > 3) {
-        search = search +"&dob="+p[3];
+        search = search +"&birthdate="+p[3];
       }
     }
     Bundle bnd = client.search("Patient", search);
@@ -316,9 +368,18 @@ public class CmdLineApp {
   private void connectToServer(String url) throws URISyntaxException {
     client = new FHIRToolingClient(url, "FHIR-Command-Line-App");
     CapabilityStatement cs = client.getCapabilitiesStatementQuick();
-    System.out.println("Connected to "+url+": "+cs.getSoftware().getName()+".");
+    System.out.println("Connected to "+url+": "+cs.getSoftware().getName()+", version "+cs.getFhirVersion().toCode());
   }
 
+  private void genMenuTx() {
+
+    System.out.println("Simple Client. Commands you can run:");
+    System.out.println(" tx l {system} {code}");
+    System.out.println(" tx v {system} {code} {vs-url}");
+    System.out.println(" ?tx - print this again");    
+    System.out.println(" x - exit");    
+  }
+  
   private void genMenu() {
     System.out.println("Simple Client. Commands you can run:");
     System.out.println(" c {url} - connect to a server");
