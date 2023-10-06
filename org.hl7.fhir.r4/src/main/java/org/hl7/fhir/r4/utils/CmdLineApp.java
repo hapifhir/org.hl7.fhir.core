@@ -10,33 +10,24 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.SimpleWorkerContext;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
-<<<<<<< HEAD
 import org.hl7.fhir.r4.formats.XmlParser;
-=======
->>>>>>> master
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4.model.CapabilityStatement;
-<<<<<<< HEAD
 import org.hl7.fhir.r4.model.CodeSystem;
-=======
->>>>>>> master
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Condition;
-<<<<<<< HEAD
 import org.hl7.fhir.r4.model.DateType;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent;
-=======
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Immunization;
->>>>>>> master
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Procedure;
@@ -79,11 +70,8 @@ public class CmdLineApp {
           finished = true;
         } else if (p.length == 1 && p[0].equals("?")) {
           genMenu();
-<<<<<<< HEAD
         } else if (p.length == 1 && p[0].equals("?tx")) {
           genMenuTx();
-=======
->>>>>>> master
         } else if (p.length >= 1 && p[0].equals("c")) {
           if (p.length == 1) {
             connectToServer("http://hapi.fhir.org/baseR4");
@@ -129,15 +117,10 @@ public class CmdLineApp {
           select("Patient", p[1]);
         } else if (p.length == 3 && p[0].equals("e")) {
           edit(p[1], p[2]);
-<<<<<<< HEAD
         } else if (p.length > 3 && p[0].equals("tx")) {
           tx(p);
         } else {
-          tx(p);
-=======
-        } else {
           System.out.println("Command unknown or not understood: "+cmd);
->>>>>>> master
         }
       } catch (Exception e) {
         System.out.println("Error executing command "+p[0]+": "+e.getMessage());
@@ -147,7 +130,6 @@ public class CmdLineApp {
     System.out.println("Finished!"); 
   }
 
-<<<<<<< HEAD
   private boolean tx(String[] p) throws IOException {
     if (p[1].equals("l")) {
       if (p.length == 4) {
@@ -190,10 +172,6 @@ public class CmdLineApp {
   }
 
   private void getImmunizations() throws IOException {
-=======
-  private void getImmunizations() {
->>>>>>> master
-
     Bundle bnd = client.search("Immunization", "?patient="+currentId);
     System.out.println(""+bnd.getTotal()+" Immunizations found. Printing "+bnd.getEntry().size());
     
@@ -203,11 +181,8 @@ public class CmdLineApp {
     } 
   }
 
-<<<<<<< HEAD
+
   private void getProcedures() throws IOException {
-=======
-  private void getProcedures() {
->>>>>>> master
 
     Bundle bnd = client.search("Procedure", "?patient="+currentId);
     System.out.println(""+bnd.getTotal()+" Procedures found. Printing "+bnd.getEntry().size());
@@ -218,11 +193,8 @@ public class CmdLineApp {
     } 
   }
   
-<<<<<<< HEAD
+
   private void getConditions() throws IOException {
-=======
-  private void getConditions() {
->>>>>>> master
 
     Bundle bnd = client.search("Condition", "?patient="+currentId);
     System.out.println(""+bnd.getTotal()+" Conditions found. Printing "+bnd.getEntry().size());
@@ -257,10 +229,7 @@ public class CmdLineApp {
     case "boolean" : return new BooleanType(value);
     case "code" :  return new CodeType(value);
     case "string" : return new StringType(value);
-<<<<<<< HEAD
     case "date" : return new DateType(value);
-=======
->>>>>>> master
     }
     throw new FHIRException("Unhandled type "+p.getTypeCode());
   }
@@ -278,11 +247,7 @@ public class CmdLineApp {
     System.out.println(new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(currentResource));
   }
 
-<<<<<<< HEAD
   private void select(String type, String id) throws IOException {
-=======
-  private void select(String type, String id) {
->>>>>>> master
     if (type.equals("Patient")) {
       currentResource = client.fetchResource(Patient.class, id);
     } else if (type.equals("Immunization")) {
@@ -298,12 +263,8 @@ public class CmdLineApp {
     System.out.println("Resource = "+currentId+" "+summary(currentResource));
   }
 
-<<<<<<< HEAD
   private String summary(Resource r) throws IOException {
 //    return new XmlParser().composeString(r);
-=======
-  private String summary(Resource r) {
->>>>>>> master
     if (r instanceof Patient) {
       Patient pat = (Patient) r;
       return pat.getIdBase()+" "+pat.getGender()+" "+pat.getBirthDateElement().asStringValue()+" "+name(pat);
@@ -366,11 +327,7 @@ public class CmdLineApp {
     return "";
   }
 
-<<<<<<< HEAD
   private void search(String[] p) throws IOException {
-=======
-  private void search(String[] p) {
->>>>>>> master
     if (client == null) {
       throw new FHIRException("Not connected to to a server");
     }
@@ -378,11 +335,7 @@ public class CmdLineApp {
     if (p.length > 2) {
       search = search +"&gender="+p[2];
       if (p.length > 3) {
-<<<<<<< HEAD
         search = search +"&birthdate="+p[3];
-=======
-        search = search +"&dob="+p[3];
->>>>>>> master
       }
     }
     Bundle bnd = client.search("Patient", search);
@@ -418,7 +371,6 @@ public class CmdLineApp {
   private void connectToServer(String url) throws URISyntaxException {
     client = new FHIRToolingClient(url, "FHIR-Command-Line-App");
     CapabilityStatement cs = client.getCapabilitiesStatementQuick();
-<<<<<<< HEAD
     System.out.println("Connected to "+url+": "+cs.getSoftware().getName()+", version "+cs.getFhirVersion().toCode());
   }
 
@@ -431,11 +383,6 @@ public class CmdLineApp {
     System.out.println(" x - exit");    
   }
   
-=======
-    System.out.println("Connected to "+url+": "+cs.getSoftware().getName()+".");
-  }
-
->>>>>>> master
   private void genMenu() {
     System.out.println("Simple Client. Commands you can run:");
     System.out.println(" c {url} - connect to a server");
