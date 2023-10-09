@@ -185,6 +185,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -493,6 +494,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public List<ValidatedFragment> validatedContent;
   public boolean testMode;
   private boolean example ;
+  private IDigitalSignatureServices signatureServices;
 
   public InstanceValidator(@Nonnull IWorkerContext theContext, @Nonnull IEvaluationContext hostServices, @Nonnull XVerExtensionManager xverManager) {
     super(theContext, xverManager, false);
@@ -710,6 +712,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (parser instanceof JsonParser) {
       ((JsonParser) parser).setAllowComments(allowComments);
     }
+    parser.setSignatureServices(signatureServices);
+    
     long t = System.nanoTime();
     validatedContent = null;
     try {
@@ -5586,9 +5590,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             long t = System.nanoTime();
             StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, typeForResource.getProfile().get(0).asStringValue(), parentProfile);
             timeTracker.sd(t);
-            trackUsage(profile, valContext, element);
             if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
-                profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE_EXPL, special.toHuman(), resourceName, typeForResource.getProfile().get(0).asStringValue())) {
+                profile != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOPROFILE_EXPL, special == null ? "??" : special.toHuman(), resourceName, typeForResource.getProfile().get(0).asStringValue())) {
+              trackUsage(profile, valContext, element);
               ok = validateResource(hc, errors, resource, element, profile, idstatus, stack, pct, mode) && ok;
             } else {
               ok = false;
@@ -5841,6 +5845,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = true;
     List<String> profiles = new ArrayList<String>();
     String type = null;
+    String typeName = null;
     ElementDefinition typeDefn = null;
     checkMustSupport(profile, ei);
     long s = System.currentTimeMillis();
@@ -5848,21 +5853,29 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (checkDefn.getType().size() == 1 && !"*".equals(checkDefn.getType().get(0).getWorkingCode()) && !"Element".equals(checkDefn.getType().get(0).getWorkingCode())
       && !"BackboneElement".equals(checkDefn.getType().get(0).getWorkingCode())) {
       type = checkDefn.getType().get(0).getWorkingCode();
+      typeName = type;
+      if (Utilities.isAbsoluteUrl(type)) {
+        StructureDefinition sdt = context.fetchTypeDefinition(type);
+        if (sdt != null) {
+          typeName = sdt.getTypeName();
+        }
+      }
       String stype = ei.getElement().fhirType();
       if (!stype.equals(type)) {
         if (checkDefn.isChoice()) {
           if (extensionUrl != null && !isAbsolute(extensionUrl)) {
             ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), false, I18nConstants.EXTENSION_PROF_TYPE, profile.getVersionedUrl(), type, stype) && ok;
           } else if (!isAbstractType(type) && !"Extension".equals(profile.getType())) {
-            ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), stype.equals(type), I18nConstants.EXTENSION_PROF_TYPE, profile.getVersionedUrl(), type, stype) && ok;                  
+            ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), stype.equals(typeName), I18nConstants.EXTENSION_PROF_TYPE, profile.getVersionedUrl(), type, stype) && ok;                  
          }
         } else if (!isAbstractType(type)) {
-          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), stype.equals(type) || 
+          ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), ei.getPath(), stype.equals(typeName) || 
             (Utilities.existsInList(type, "string", "id") && Utilities.existsInList(stype, "string", "id")), // work around a r4 problem with id/string
             I18nConstants.EXTENSION_PROF_TYPE, profile.getVersionedUrl(), type, stype) && ok;
         } else if (!isResource(type)) {
 //          System.out.println("update type "+type+" to "+stype+"?");
           type = stype;
+          typeName = type;
         } else {
           // this will be sorted out in contains ... System.out.println("update type "+type+" to "+stype+"?");
         }
@@ -5878,8 +5891,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       String prefix = tail(checkDefn.getPath());
       assert prefix.endsWith("[x]");
       type = ei.getName().substring(prefix.length() - 3);
-      if (isPrimitiveType(type))
+      typeName = type;
+      if (isPrimitiveType(type)) {
         type = Utilities.uncapitalize(type);
+        typeName = type;
+      }
       if (checkDefn.getType().get(0).hasProfile()) {
         for (CanonicalType p : checkDefn.getType().get(0).getProfile()) {
           profiles.add(p.getValue());
@@ -5892,13 +5908,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
       if (checkDefn.hasRepresentation(PropertyRepresentation.TYPEATTR)) {
         type = ei.getElement().getType();
+        typeName = type;
       } else if (ei.getElement().isResource()) {
-        type = ei.getElement().fhirType();            
+        type = ei.getElement().fhirType();
+        typeName = type;            
       } else {
         prefix = prefix.substring(0, prefix.length() - 3);
         for (TypeRefComponent t : checkDefn.getType())
           if ((prefix + Utilities.capitalize(t.getWorkingCode())).equals(ei.getName())) {
             type = t.getWorkingCode();
+            typeName = type;
             // Excluding reference is a kludge to get around versioning issues
             if (t.hasProfile() && !type.equals("Reference"))
               profiles.add(t.getProfile().get(0).getValue());
@@ -5906,9 +5925,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       if (type == null) {
         TypeRefComponent trc = checkDefn.getType().get(0);
-        if (trc.getWorkingCode().equals("Reference"))
+        if (trc.getWorkingCode().equals("Reference")) {
           type = "Reference";
-        else
+          typeName = type;
+        } else
           ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTYPE, ei.getName(), describeTypes(checkDefn.getType())) && ok;
       }
     } else if (checkDefn.getContentReference() != null) {
@@ -5933,6 +5953,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ei.definition = ei.definition;            
         }
         type = null;
+        typeName = type;
       }
     }
     NodeStack localStack = stack.push(ei.getElement(), "*".equals(ei.getDefinition().getBase().getMax()) && ei.count == -1 ? 0 : ei.count, checkDefn, type == null ? typeDefn : resolveType(type, checkDefn.getType()));
@@ -7115,4 +7136,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.example = example;
     return this;
   }
+
+  public IDigitalSignatureServices getSignatureServices() {
+    return signatureServices;
+  }
+
+  public void setSignatureServices(IDigitalSignatureServices signatureServices) {
+    this.signatureServices = signatureServices;
+  }
+  
 }
