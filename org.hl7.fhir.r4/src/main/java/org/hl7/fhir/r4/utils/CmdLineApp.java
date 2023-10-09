@@ -181,7 +181,6 @@ public class CmdLineApp {
     } 
   }
 
-
   private void getProcedures() throws IOException {
 
     Bundle bnd = client.search("Procedure", "?patient="+currentId);
@@ -193,7 +192,6 @@ public class CmdLineApp {
     } 
   }
   
-
   private void getConditions() throws IOException {
 
     Bundle bnd = client.search("Condition", "?patient="+currentId);
