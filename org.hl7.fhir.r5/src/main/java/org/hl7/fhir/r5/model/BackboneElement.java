@@ -331,9 +331,8 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
          retVal.add(next);
        }
      }
-     List<Extension> sv = super.getExtensionsByUrl(theUrls);
-     sv.addAll(retVal);
-     return sv;
+     retVal.addAll(super.getExtensionsByUrl(theUrls));
+     return java.util.Collections.unmodifiableList(retVal);
    }
    
 
