@@ -70,11 +70,13 @@ import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
+import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
@@ -98,7 +100,7 @@ import com.google.gson.JsonObject;
 
 
 @RunWith(Parameterized.class)
-public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher, IValidationPolicyAdvisor {
+public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher, IValidationPolicyAdvisor, IDigitalSignatureServices {
 
   public class TestSorter implements Comparator<Object> {
 
@@ -319,6 +321,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("noHtmlInMarkdown")) {
       val.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.ERROR);
     }
+    val.setSignatureServices(this);
     if (content.has("logical")==false) {
       val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
       logOutput(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
@@ -790,6 +793,15 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   @Override
   public boolean fetchesCanonicalResource(IResourceValidator validator, String url) {
     return false;
+  }
+
+  @Override
+  public org.hl7.fhir.utilities.json.model.JsonObject fetchJWKS(String address) throws JsonException, IOException {
+    if ("https://test.fhir.org/icao/.well-known/jwks.json".equals(address)) {
+      return org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(TestingUtilities.loadTestResourceBytes("validator", "test.fhir.org-jwks.json"));
+    } else {
+      return org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl(address);
+    }
   }
 
 }

@@ -326,8 +326,7 @@ public class XmlParser extends ParserBase {
           n.setPath(element.getPath()+"."+property.getName());
           element.getChildren().add(n);
         }
-      } 
-      else {
+      } else {
         Node n = node.getFirstChild();
         while (n != null) {
           if (n.getNodeType() == Node.TEXT_NODE && !Utilities.noString(n.getTextContent().trim())) {
