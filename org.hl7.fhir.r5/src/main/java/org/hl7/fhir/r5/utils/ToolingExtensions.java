@@ -74,6 +74,7 @@ import java.util.HashSet;
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.Utilities;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.BackboneElement;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -205,7 +206,7 @@ public class ToolingExtensions {
   public static final String EXT_VS_KEYWORD = "http://hl7.org/fhir/StructureDefinition/valueset-keyWord";  
   public static final String EXT_WORKGROUP = "http://hl7.org/fhir/StructureDefinition/structuredefinition-wg";
   public static final String EXT_XML_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
-  public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
+  public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.group.element.target.equivalence";
   public static final String EXT_Q_IS_SUBJ = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-isSubject"; 
   public static final String EXT_Q_HIDDEN = "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden";
   public static final String EXT_Q_OTP_DISP = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-optionalDisplay"; 
@@ -672,6 +673,28 @@ public class ToolingExtensions {
       ext.setValue(new CodeType(value));
     else
       resource.getExtension().add(new Extension(uri).setValue(new CodeType(value)));
+  }
+
+  public static void setCodeExtensionMod(DomainResource resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new CodeType(value));
+    else
+      resource.getModifierExtension().add(new Extension(uri).setValue(new CodeType(value)));
+  }
+
+  public static void setCodeExtensionMod(BackboneElement resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new CodeType(value));
+    else
+      resource.getModifierExtension().add(new Extension(uri).setValue(new CodeType(value)));
   }
 
   public static void setCodeExtension(Element element, String uri, String value) {
