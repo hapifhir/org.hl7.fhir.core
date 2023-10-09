@@ -848,8 +848,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (element.hasSliceName())
         sName = sName +":"+element.getSliceName();
       used.used = true;
-      if (logicalModel && element.hasRepresentation(PropertyRepresentation.XMLATTR))
-        sName = "@"+sName;
+      if (logicalModel) {
+        if (element.hasRepresentation(PropertyRepresentation.XMLATTR)) {
+          sName = "@"+sName;
+        } else if (element.hasUserData("derived.pointer")) {
+          ElementDefinition drv = (ElementDefinition) element.getUserData("derived.pointer");
+          if (drv.hasRepresentation(PropertyRepresentation.XMLATTR)) {
+            sName = "@"+sName;
+          }
+        }
+      }
       Cell nc = genElementNameCell(gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName, all);
       switch (context.getStructureMode()) {
       case BINDINGS:
