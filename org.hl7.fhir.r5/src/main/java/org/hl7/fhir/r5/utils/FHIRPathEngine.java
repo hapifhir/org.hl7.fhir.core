@@ -135,6 +135,7 @@ public class FHIRPathEngine {
   private boolean doNotEnforceAsCaseSensitive;
   private boolean allowDoubleQuotes;
   private List<String> typeWarnings = new ArrayList<>();
+  private boolean emitSQLonFHIRWarning;
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -474,7 +475,7 @@ public class FHIRPathEngine {
       }
     }
 
-    return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, elementDependencies, true, false);
+    return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, elementDependencies, true, false, expr);
   }
   
   /**
@@ -531,14 +532,14 @@ public class FHIRPathEngine {
         }
       }
     }
-    TypeDetails res = executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, false);
+    TypeDetails res = executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, false, expr);
     warnings.addAll(typeWarnings);
     return res;
   }
   
   public TypeDetails checkOnTypes(Object appContext, String resourceType, TypeDetails types, ExpressionNode expr, List<String> warnings) throws FHIRLexerException, PathEngineException, DefinitionException {
     typeWarnings.clear();
-    TypeDetails res = executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, false);
+    TypeDetails res = executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, false, expr);
     warnings.addAll(typeWarnings);
     return res;
   }
@@ -566,7 +567,7 @@ public class FHIRPathEngine {
       }
     }
 
-    return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, elementDependencies, true, false);
+    return executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, elementDependencies, true, false, expr);
   }
 
   private FHIRException makeExceptionPlural(Integer num, ExpressionNode holder, String constName, Object... args) {
@@ -615,13 +616,13 @@ public class FHIRPathEngine {
       }
     }
 
-    return executeType(new ExecutionTypeContext(appContext, sd.getUrl(), types, types), types, expr, null, true, false);
+    return executeType(new ExecutionTypeContext(appContext, sd.getUrl(), types, types), types, expr, null, true, false, expr);
   }
 
   public TypeDetails check(Object appContext, StructureDefinition sd, ExpressionNode expr) throws FHIRLexerException, PathEngineException, DefinitionException {
     // if context is a path that refers to a type, do that conversion now 
     TypeDetails types = null; // this is a special case; the first path reference will have to resolve to something in the context
-    return executeType(new ExecutionTypeContext(appContext, sd == null ? null : sd.getUrl(), null, types), types, expr, null, true, false);
+    return executeType(new ExecutionTypeContext(appContext, sd == null ? null : sd.getUrl(), null, types), types, expr, null, true, false, expr);
   }
 
   public TypeDetails check(Object appContext, String resourceType, String context, String expr) throws FHIRLexerException, PathEngineException, DefinitionException {
@@ -1515,7 +1516,8 @@ public class FHIRPathEngine {
     return new TypeDetails(CollectionStatus.SINGLETON, exp.getName());
   }
 
-  private TypeDetails executeType(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, Set<ElementDefinition> elementDependencies, boolean atEntry, boolean canBeNone) throws PathEngineException, DefinitionException {
+  private TypeDetails executeType(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, Set<ElementDefinition> elementDependencies, boolean atEntry, boolean canBeNone, ExpressionNode container) throws PathEngineException, DefinitionException {
+    
     TypeDetails result = new TypeDetails(null);
     switch (exp.getKind()) {
     case Name:
@@ -1539,9 +1541,10 @@ public class FHIRPathEngine {
           }
         }
       }
+      doSQLOnFHIRCheck(result, exp);
       break;
     case Function:
-      result.update(evaluateFunctionType(context, focus, exp, elementDependencies));
+      result.update(evaluateFunctionType(context, focus, exp, elementDependencies, container));
       break;
     case Unary:
       result.addType(TypeDetails.FP_Integer);
@@ -1552,12 +1555,12 @@ public class FHIRPathEngine {
       result.update(resolveConstantType(context, exp.getConstant(), exp));
       break;
     case Group:
-      result.update(executeType(context, focus, exp.getGroup(), elementDependencies, atEntry, canBeNone));
+      result.update(executeType(context, focus, exp.getGroup(), elementDependencies, atEntry, canBeNone, exp));
     }
     exp.setTypes(result);
 
     if (exp.getInner() != null) {
-      result = executeType(context, result, exp.getInner(), elementDependencies, false, false);
+      result = executeType(context, result, exp.getInner(), elementDependencies, false, false, exp);
     }
 
     if (exp.isProximal() && exp.getOperation() != null) {
@@ -1568,7 +1571,7 @@ public class FHIRPathEngine {
         if (last.getOperation() == Operation.Is || last.getOperation() == Operation.As) {
           work = executeTypeName(context, focus, next, atEntry);
         } else {
-          work = executeType(context, focus, next, elementDependencies, atEntry, canBeNone);
+          work = executeType(context, focus, next, elementDependencies, atEntry, canBeNone, exp);
         }
         result = operateTypes(result, last.getOperation(), work, last);
         last = next;
@@ -1577,6 +1580,19 @@ public class FHIRPathEngine {
       exp.setOpTypes(result);
     }
     return result;
+  }
+
+  private void doSQLOnFHIRCheck(TypeDetails focus, ExpressionNode expr) {
+    if (emitSQLonFHIRWarning) {
+      // special Logic for SQL-on-FHIR:
+      if (focus.isChoice()) {
+        if (expr.getInner() == null || expr.getInner().getFunction() != Function.OfType) {
+          typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_CHOICE_NO_TYPE_SPECIFIER, expr.toString()));
+        }
+      } else if (expr.getInner() != null && expr.getInner().getFunction() == Function.OfType) {
+        typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_CHOICE_SPURIOUS_TYPE_SPECIFIER, expr.toString()));
+      }
+    }
   }
 
   private List<Base> resolveConstant(ExecutionContext context, Base constant, boolean beforeContext, ExpressionNode expr) throws PathEngineException {
@@ -3129,16 +3145,16 @@ public class FHIRPathEngine {
     int i = 0;
     for (ExpressionNode expr : exp.getParameters()) {
       if (isExpressionParameter(exp, i)) {
-        paramTypes.add(executeType(changeThis(context, focus), focus, expr, elementDependencies, true, canBeNone));
+        paramTypes.add(executeType(changeThis(context, focus), focus, expr, elementDependencies, true, canBeNone, expr));
       } else {
-        paramTypes.add(executeType(context, context.thisItem, expr, elementDependencies, true, canBeNone));
+        paramTypes.add(executeType(context, context.thisItem, expr, elementDependencies, true, canBeNone, expr));
       }
       i++;
     }
   }
 
   @SuppressWarnings("unchecked")
-  private TypeDetails evaluateFunctionType(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, Set<ElementDefinition> elementDependencies) throws PathEngineException, DefinitionException {
+  private TypeDetails evaluateFunctionType(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, Set<ElementDefinition> elementDependencies,  ExpressionNode container) throws PathEngineException, DefinitionException {
     List<TypeDetails> paramTypes = new ArrayList<TypeDetails>();
     if (exp.getFunction() == Function.Is || exp.getFunction() == Function.As || exp.getFunction() == Function.OfType) {
       paramTypes.add(new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
@@ -3163,6 +3179,12 @@ public class FHIRPathEngine {
       evaluateParameters(context, focus.toSingleton(), exp, elementDependencies, paramTypes, false);
     } else {
       evaluateParameters(context, focus, exp, elementDependencies, paramTypes, false);
+    }
+    if (exp.getFunction() == Function.First || exp.getFunction() == Function.Last || exp.getFunction() == Function.Tail || exp.getFunction() == Function.Skip || exp.getFunction() == Function.Take) {
+      if (focus.getCollectionStatus() == CollectionStatus.SINGLETON) {
+        typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_NOT_A_COLLECTION, container.toString()));
+
+      }
     }
     switch (exp.getFunction()) {
     case Empty : 
@@ -5926,6 +5948,9 @@ public class FHIRPathEngine {
 
           ElementDefinitionMatch ed = getElementDefinition(sdi, path, isAllowPolymorphicNames(), expr);
           if (ed != null) {
+            if (ed.getDefinition().isChoice()) {
+              result.setChoice(true);
+            }
             if (!Utilities.noString(ed.getFixedType())) {
               if (elementDependencies != null) {
                 elementDependencies.add(ed.definition);
@@ -6024,7 +6049,11 @@ public class FHIRPathEngine {
       if (ed.getPath().equals(path)) {
         if (ed.hasContentReference()) {
           ElementDefinitionMatch res = getElementDefinitionById(sd, ed.getContentReference());
-          res.sourceDefinition = ed;
+          if (res == null) {
+            throw new Error("Unable to find "+ed.getContentReference());
+          } else {
+            res.sourceDefinition = ed;
+          }
           return res;
         } else {
           return new ElementDefinitionMatch(ed, null);
@@ -6055,7 +6084,11 @@ public class FHIRPathEngine {
       if (ed.hasContentReference() && path.startsWith(ed.getPath()+".")) {
         ElementDefinitionMatch m = getElementDefinitionById(sd, ed.getContentReference());
         ElementDefinitionMatch res = getElementDefinition(sd, m.definition.getPath()+path.substring(ed.getPath().length()), allowTypedName, expr);
-        res.sourceDefinition = ed;
+        if (res == null) {
+          throw new Error("Unable to find "+ed.getContentReference());
+        } else {
+          res.sourceDefinition = ed;
+        }
         return res;
       }
     }
@@ -6090,6 +6123,9 @@ public class FHIRPathEngine {
   }
 
   private ElementDefinitionMatch getElementDefinitionById(StructureDefinition sd, String ref) {
+    if (ref.startsWith(sd.getUrl()+"#")) {
+      ref = ref.replace(sd.getUrl()+"#", "#"); 
+    }
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ref.equals("#"+ed.getId())) {
         return new ElementDefinitionMatch(ed, null);
@@ -6411,4 +6447,13 @@ public class FHIRPathEngine {
   public void setAllowDoubleQuotes(boolean allowDoubleQuotes) {
     this.allowDoubleQuotes = allowDoubleQuotes;    
   }
+
+  public boolean isEmitSQLonFHIRWarning() {
+    return emitSQLonFHIRWarning;
+  }
+
+  public void setEmitSQLonFHIRWarning(boolean emitSQLonFHIRWarning) {
+    this.emitSQLonFHIRWarning = emitSQLonFHIRWarning;
+  }
+  
 }
