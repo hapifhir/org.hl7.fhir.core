@@ -10,7 +10,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.SimpleWorkerContext;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
-
+import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.Bundle;
@@ -26,6 +26,8 @@ import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.r4.model.HumanName;
+import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Procedure;
@@ -118,7 +120,7 @@ public class CmdLineApp {
         } else if (p.length > 3 && p[0].equals("tx")) {
           tx(p);
         } else {
-          tx(p);
+          System.out.println("Command unknown or not understood: "+cmd);
         }
       } catch (Exception e) {
         System.out.println("Error executing command "+p[0]+": "+e.getMessage());
@@ -170,7 +172,6 @@ public class CmdLineApp {
   }
 
   private void getImmunizations() throws IOException {
-
     Bundle bnd = client.search("Immunization", "?patient="+currentId);
     System.out.println(""+bnd.getTotal()+" Immunizations found. Printing "+bnd.getEntry().size());
     

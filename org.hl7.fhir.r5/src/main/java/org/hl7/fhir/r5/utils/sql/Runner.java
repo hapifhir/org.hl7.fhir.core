@@ -74,6 +74,7 @@ public class Runner implements IEvaluationContext {
     }
     fpe = new FHIRPathEngine(context);
     fpe.setHostServices(this);
+    fpe.setEmitSQLonFHIRWarning(true);
     if (viewDefinition == null) {
       throw new FHIRException("No viewDefinition provided");
     }

@@ -3,19 +3,19 @@ package org.hl7.fhir.r4.model;
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
+
   Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
-  
-   * Redistributions of source code must retain the above copyright notice, this 
+
+ * Redistributions of source code must retain the above copyright notice, this 
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
+ * Redistributions in binary form must reproduce the above copyright notice, 
      this list of conditions and the following disclaimer in the documentation 
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
+ * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
-  
+
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
@@ -26,8 +26,8 @@ package org.hl7.fhir.r4.model;
   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
   POSSIBILITY OF SUCH DAMAGE.
-  
-*/
+
+ */
 
 // Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
 import java.util.ArrayList;
@@ -35,6 +35,7 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.utilities.Utilities;
 
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
@@ -203,7 +204,7 @@ public abstract class BackboneElement extends Element implements IBaseBackboneEl
       this.getModifierExtension().remove(castToExtension(value));
     } else
       super.removeChild(name, value);
-    
+
   }
 
   @Override
@@ -277,7 +278,7 @@ public abstract class BackboneElement extends Element implements IBaseBackboneEl
     return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(modifierExtension);
   }
 
-// added from java-adornments.txt:
+  // added from java-adornments.txt:
 
   public void checkNoModifiers(String noun, String verb) throws FHIRException {
     if (hasModifierExtension()) {
@@ -286,6 +287,119 @@ public abstract class BackboneElement extends Element implements IBaseBackboneEl
 
   }
 
-// end addition
+  public void addModifierExtension(String url, Type value) {
+    if (isDisallowExtensions())
+      throw new Error("Extensions are not allowed in this context");
+    Extension ex = new Extension();
+    ex.setUrl(url);
+    ex.setValue(value);
+    getModifierExtension().add(ex);    
+  }
+
+
+  @Override
+  public Extension getExtensionByUrl(String theUrl) {
+    org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
+    ArrayList<Extension> retVal = new ArrayList<Extension>();
+    Extension res = super.getExtensionByUrl(theUrl);
+    if (res != null) {
+      retVal.add(res);
+    }
+    for (Extension next : getModifierExtension()) {
+      if (theUrl.equals(next.getUrl())) {
+        retVal.add(next);
+      }
+    }
+    if (retVal.size() == 0)
+      return null;
+    else {
+      org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url "+theUrl+" must have only one match");
+      return retVal.get(0);
+    }
+  }
+
+  @Override
+  public void removeExtension(String theUrl) {
+    for (int i = getModifierExtension().size()-1; i >= 0; i--) {
+      if (theUrl.equals(getExtension().get(i).getUrl()))
+        getExtension().remove(i);
+    }
+    super.removeExtension(theUrl);
+  }
+
+
+  /**
+   * Returns an unmodifiable list containing all extensions on this element which 
+   * match the given URL.
+   * 
+   * @param theUrl The URL. Must not be blank or null.
+   * @return an unmodifiable list containing all extensions on this element which 
+   * match the given URL
+   */
+  @Override
+  public List<Extension> getExtensionsByUrl(String theUrl) {
+    org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
+    ArrayList<Extension> retVal = new ArrayList<Extension>();
+    retVal.addAll(super.getExtensionsByUrl(theUrl));
+    for (Extension next : getModifierExtension()) {
+      if (theUrl.equals(next.getUrl())) {
+        retVal.add(next);
+      }
+    }
+    return java.util.Collections.unmodifiableList(retVal);
+  }
+
+  public void copyExtensions(org.hl7.fhir.r4.model.BackboneElement src, String... urls) {
+    super.copyExtensions(src,urls);
+    for (Extension e : src.getModifierExtension()) {
+      if (Utilities.existsInList(e.getUrl(), urls)) {
+        addModifierExtension(e.copy());
+      }
+    }    
+  }
+
+  public List<Extension> getExtensionsByUrl(String... theUrls) {
+
+    ArrayList<Extension> retVal = new ArrayList<>();
+    for (Extension next : getModifierExtension()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        retVal.add(next);
+      }
+    }
+    retVal.addAll(super.getExtensionsByUrl(theUrls));
+    return java.util.Collections.unmodifiableList(retVal);
+  }
+
+
+  public boolean hasExtension(String... theUrls) {
+    for (Extension next : getModifierExtension()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        return true;
+      }
+    }
+    return super.hasExtension(theUrls);
+  }
+
+
+  public boolean hasExtension(String theUrl) {
+    for (Extension ext : getModifierExtension()) {
+      if (theUrl.equals(ext.getUrl())) {
+        return true;
+      }
+    }
+
+    return super.hasExtension(theUrl);
+  }
+
+
+  public void copyNewExtensions(org.hl7.fhir.r4.model.BackboneElement src, String... urls) {
+    for (Extension e : src.getModifierExtension()) {
+      if (Utilities.existsInList(e.getUrl(), urls) && !!hasExtension(e.getUrl())) {
+        addExtension(e.copy());
+      }
+    }    
+    super.copyNewExtensions(src, urls);
+  }
+  // end addition
 
 }

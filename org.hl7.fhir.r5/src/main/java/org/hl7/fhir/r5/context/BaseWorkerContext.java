@@ -2472,7 +2472,30 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return res;
       }
     } 
-    return typeManager.fetchTypeDefinition(typeName);
+    StructureDefinition p = typeManager.fetchTypeDefinition(typeName);
+    if (p != null && !p.isGeneratedSnapshot()) {
+      if (p.isGeneratingSnapshot()) {
+        throw new FHIRException("Attempt to fetch the profile "+p.getVersionedUrl()+" while generating the snapshot for it");
+      }
+      try {
+        if (logger.isDebugLogging()) {
+          System.out.println("Generating snapshot for "+p.getVersionedUrl());
+        }
+        p.setGeneratingSnapshot(true);
+        try {
+          new ContextUtilities(this).generateSnapshot(p);
+        } finally {
+          p.setGeneratingSnapshot(false);      
+        }
+      } catch (Exception e) {
+        // not sure what to do in this case?
+        System.out.println("Unable to generate snapshot @4 for "+p.getVersionedUrl()+": "+e.getMessage());
+        if (logger.isDebugLogging()) {
+          e.printStackTrace();
+        }
+      }
+    }
+    return p;
   }
   
   @Override
