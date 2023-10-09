@@ -8,7 +8,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 /**
- * This doesn't do anythign at this time
+ * This works around known issues in struture definitions
  * 
  * @author graha
  *
@@ -48,7 +48,7 @@ public class StructureDefinitionHacker {
           ed.setComment("e.g. The patient is a pregnant, has congestive heart failure, has an Adenocarcinoma, and is allergic to penicillin.");
         }
       }
-    }
+    }    
     return sd;
   }
 

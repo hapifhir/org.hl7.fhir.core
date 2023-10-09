@@ -49,6 +49,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -86,6 +87,7 @@ public abstract class ParserBase {
   protected boolean showDecorations;
   protected IdRenderingPolicy idPolicy = IdRenderingPolicy.All;
   protected StructureDefinition logical;
+  protected IDigitalSignatureServices signatureServices;
   
 	public ParserBase(IWorkerContext context) {
 		super();
@@ -279,6 +281,14 @@ public abstract class ParserBase {
   public ParserBase setLogical(StructureDefinition logical) {
     this.logical = logical;
     return this;
+  }
+
+  public IDigitalSignatureServices getSignatureServices() {
+    return signatureServices;
+  }
+
+  public void setSignatureServices(IDigitalSignatureServices signatureServices) {
+    this.signatureServices = signatureServices;
   }
 
 }
