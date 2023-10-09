@@ -132,6 +132,7 @@ public class TypeDetails {
   private List<ProfiledType> types = new ArrayList<ProfiledType>();
   private CollectionStatus collectionStatus;
   private Set<String> targets; // or, not and, canonical urls
+  private boolean choice;
 
   public TypeDetails(CollectionStatus collectionStatus, String... names) {
     super();
@@ -307,6 +308,9 @@ public class TypeDetails {
         targets = new HashSet<>();
       }
       targets.addAll(source.targets);
+    }
+    if (source.isChoice()) {
+      choice = true;
     }
   }
   
@@ -535,6 +539,14 @@ public class TypeDetails {
   }
   public boolean isList() {
     return collectionStatus != null && collectionStatus.isList();
+  }
+  
+  // for SQL-on-FHIR: warnings when .ofType() is not paired with a choice element
+  public void setChoice(boolean b) {
+    choice = true;
+  }
+  public boolean isChoice() {
+    return choice;
   }
   
 }
