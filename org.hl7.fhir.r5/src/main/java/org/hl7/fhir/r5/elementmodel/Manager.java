@@ -95,6 +95,9 @@ public class Manager {
       return null;
     }
     public static FhirFormat readFromMimeType(String mt) {
+      if (mt == null) {
+        return null;
+      }
       if (mt.contains("/xml") || mt.contains("+xml")) {
         return FhirFormat.XML;
       }

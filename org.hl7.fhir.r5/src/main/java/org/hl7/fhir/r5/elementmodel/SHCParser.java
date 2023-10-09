@@ -329,7 +329,7 @@ public class SHCParser extends ParserBase {
       String url = Utilities.pathURL(iss, "/.well-known/jwks.json");
       JsonObject jwks = null;
       try {
-        jwks = org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl(url);
+        jwks = signatureServices != null ? signatureServices.fetchJWKS(url) : org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl(url);
       } catch (Exception e) {
         logError(errors, "2023-09-08", 1, 1, name, IssueType.NOTFOUND, "Unable to verify the signature, because unable to retrieve JWKS from "+url+": "+
            e.getMessage().replace("Connection refused (Connection refused)", "Connection refused"), IssueSeverity.ERROR);    
