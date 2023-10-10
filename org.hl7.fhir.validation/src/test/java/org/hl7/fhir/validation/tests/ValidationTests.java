@@ -384,7 +384,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           String contents = TestingUtilities.loadTestResource("validator", filename);
           CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
           if (mr instanceof StructureDefinition) {
-            new ContextUtilities(val.getContext()).generateSnapshot((StructureDefinition) mr, true);
+            new ContextUtilities(val.getContext()).generateSnapshot((StructureDefinition) mr);
           }
           logOutput("load resource "+mr.getUrl());
           val.getContext().cacheResource(mr);
