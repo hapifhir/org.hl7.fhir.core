@@ -1,7 +1,7 @@
 ## Validator Changes
 
-* no changes
+* Make sure logical models get a snapshot generated
 
 ## Other code changes
 
-* no changes
+* Fix URL of concept map extension in version conversion
