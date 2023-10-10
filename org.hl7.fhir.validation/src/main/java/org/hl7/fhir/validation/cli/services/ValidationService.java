@@ -366,11 +366,7 @@ public class ValidationService {
       List<StructureDefinition> structures =  cu.allStructures();
       for (StructureDefinition sd : structures) {
         if (!sd.hasSnapshot()) {
-          if (sd.getKind() != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-            cu.generateSnapshot(sd, true);
-          } else {
-            cu.generateSnapshot(sd, false);
-          }
+          cu.generateSnapshot(sd);
         }
       }
       validator.setMapLog(cliContext.getMapLog());
@@ -402,11 +398,7 @@ public class ValidationService {
       List<StructureDefinition> structures = cu.allStructures();
       for (StructureDefinition sd : structures) {
         if (!sd.hasSnapshot()) {
-          if (sd.getKind() != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-            cu.generateSnapshot(sd, true);
-          } else {
-            cu.generateSnapshot(sd, false);
-          }
+          cu.generateSnapshot(sd);
         }
       }
       validator.setMapLog(cliContext.getMapLog());

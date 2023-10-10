@@ -250,11 +250,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
    * @throws FHIRException
    */
   public void generateSnapshot(StructureDefinition p) throws DefinitionException, FHIRException {
-    generateSnapshot(p, false);
-  }
-  
-  public void generateSnapshot(StructureDefinition p, boolean ifLogical) {
-    if ((!p.hasSnapshot() || isProfileNeedsRegenerate(p) ) && (ifLogical || p.getKind() != StructureDefinitionKind.LOGICAL)) {
+    if ((!p.hasSnapshot() || isProfileNeedsRegenerate(p))) {
       if (!p.hasBaseDefinition())
         throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE___HAS_NO_BASE_AND_NO_SNAPSHOT, p.getName(), p.getUrl()));
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getBaseDefinition(), p);
