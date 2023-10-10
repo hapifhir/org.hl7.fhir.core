@@ -43,7 +43,7 @@ public class CDARoundTripTests {
 	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
 	    if (!sd.hasSnapshot()) {
 	      //				System.out.println("generate snapshot for " + sd.getUrl());
-	      new ContextUtilities(context).generateSnapshot(sd, true);
+	      new ContextUtilities(context).generateSnapshot(sd);
 	    }
 	  }
 	}
