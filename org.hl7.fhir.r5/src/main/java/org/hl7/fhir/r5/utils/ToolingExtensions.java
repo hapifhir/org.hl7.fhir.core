@@ -206,7 +206,7 @@ public class ToolingExtensions {
   public static final String EXT_VS_KEYWORD = "http://hl7.org/fhir/StructureDefinition/valueset-keyWord";  
   public static final String EXT_WORKGROUP = "http://hl7.org/fhir/StructureDefinition/structuredefinition-wg";
   public static final String EXT_XML_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
-  public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.group.element.target.equivalence";
+  public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
   public static final String EXT_Q_IS_SUBJ = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-isSubject"; 
   public static final String EXT_Q_HIDDEN = "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden";
   public static final String EXT_Q_OTP_DISP = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-optionalDisplay"; 
