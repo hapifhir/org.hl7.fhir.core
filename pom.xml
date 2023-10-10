@@ -29,7 +29,7 @@
         <okhttp.version>4.11.0</okhttp.version>
         <jacoco_version>0.8.9</jacoco_version>
         <lombok_version>1.18.30</lombok_version>
-        <byte_buddy_version>1.12.14</byte_buddy_version>
+        <byte_buddy_version>1.14.8</byte_buddy_version>
         <apache_poi_version>5.2.1</apache_poi_version>
         <saxon_he_version>9.8.0-15</saxon_he_version>
         <maven.compiler.release>11</maven.compiler.release>
