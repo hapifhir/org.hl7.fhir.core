@@ -38,6 +38,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -101,22 +102,23 @@ public class JsonParser extends ParserBase {
     this.profileUtilities = new ProfileUtilities(this.context, null, null, new FHIRPathEngine(context));
     contextUtilities = new ContextUtilities(context);
   }
-//
-//  public Element parse(String source, String type) throws Exception {
-//    JsonObject obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true); 
-//    String path = "/"+type;
-//    StructureDefinition sd = getDefinition(-1, -1, type);
-//    if (sd == null)
-//      return null;
-//
-//    Element result = new Element(type, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities)).setFormat(FhirFormat.JSON);
-//    result.setPath(type);
-//    checkObject(obj, result, path);
-//    result.setType(type);
-//    parseChildren(path, obj, result, true);
-//    result.numberChildren();
-//    return result;
-//  }
+
+  public Element parse(String source, String type) throws Exception {
+    ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "json", source.getBytes(StandardCharsets.UTF_8), false);
+    JsonObject obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true); 
+    String path = "/"+type;
+    StructureDefinition sd = getDefinition(focusFragment.getErrors(), -1, -1, type);
+    if (sd == null)
+      return null;
+
+    Element result = new Element(type, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities)).setFormat(FhirFormat.JSON);
+    result.setPath(type);
+    checkObject(focusFragment.getErrors(), obj, result, path);
+    result.setType(type);
+    parseChildren(focusFragment.getErrors(), path, obj, result, true, new ArrayList<>());
+    result.numberChildren();
+    return result;
+  }
 
 
   @Override
