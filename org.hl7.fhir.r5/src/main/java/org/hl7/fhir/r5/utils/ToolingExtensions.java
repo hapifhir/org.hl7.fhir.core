@@ -255,7 +255,7 @@ public class ToolingExtensions {
   public static final String EXT_OBLIGATION_TOOLS = "http://hl7.org/fhir/tools/StructureDefinition/obligation";
   public static final String EXT_OBLIGATION_CORE = "http://hl7.org/fhir/StructureDefinition/obligation";
   public static final String EXT_NO_BINDING = "http://hl7.org/fhir/tools/StructureDefinition/no-binding";
-  ;
+  public static final String EXT_ID_CHOICE_GROUP = "http://hl7.org/fhir/tools/StructureDefinition/xml-choice-group";
   
   // specific extension helpers
 

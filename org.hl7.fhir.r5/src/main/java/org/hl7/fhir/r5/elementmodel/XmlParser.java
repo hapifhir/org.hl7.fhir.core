@@ -304,8 +304,10 @@ public class XmlParser extends ParserBase {
     // this parsing routine retains the original order in a the XML file, to support validation
     reapComments(node, element);
     List<Property> properties = element.getProperty().getChildProperties(element.getName(), XMLUtil.getXsiType(node));
+    Property cgProp = getChoiceGroupProp(properties);
+    Property mtProp = cgProp == null ? null : getTextProp(cgProp.getChildProperties(null, null));
 
-    String text = XMLUtil.getDirectText(node).trim();
+    String text = mtProp == null ? XMLUtil.getDirectText(node).trim() : null;
     int line = line(node, false);
     int col = col(node, false);
     if (!Utilities.noString(text)) {
@@ -396,6 +398,7 @@ public class XmlParser extends ParserBase {
     while (child != null) {
       if (child.getNodeType() == Node.ELEMENT_NODE) {
         Property property = getElementProp(properties, child.getLocalName(), child.getNamespaceURI());
+        
         if (property != null) {
           if (property.getName().equals(lastName)) {
             repeatCount++;
@@ -462,9 +465,57 @@ public class XmlParser extends ParserBase {
             }
           }
         } else {
-          logError(errors, ValidationMessage.NO_RULE_DATE, line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNDEFINED_ELEMENT_, child.getLocalName(), path), IssueSeverity.ERROR);
+          if (cgProp != null) {
+            property = getElementProp(cgProp.getChildProperties(null, null), child.getLocalName(), child.getNamespaceURI());
+            if (property != null) {
+              if (cgProp.getName().equals(lastName)) {
+                repeatCount++;
+              } else {
+                lastName = cgProp.getName();
+                repeatCount = 0;
+              }
+              
+              String npath = path+"/"+pathPrefix(cgProp.getXmlNamespace())+cgProp.getName();
+              String name = cgProp.getName();
+              Element cgn = new Element(cgProp.getName(), cgProp).setFormat(FhirFormat.XML);
+              cgn.setPath(element.getPath()+"."+cgProp.getName()+"["+repeatCount+"]"); 
+              element.getChildren().add(cgn);
+              
+              npath = npath+"/"+pathPrefix(child.getNamespaceURI())+child.getLocalName();
+              name = child.getLocalName();
+              Element n = new Element(name, property).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML);
+              cgn.getChildren().add(n);
+              n.setPath(element.getPath()+"."+property.getName());
+              checkElement(errors, (org.w3c.dom.Element) child, npath, n.getProperty());
+              parseChildren(errors, npath, (org.w3c.dom.Element) child, n);
+            }
+          }
+          if (property == null) {
+            logError(errors, ValidationMessage.NO_RULE_DATE, line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNDEFINED_ELEMENT_, child.getLocalName(), path), IssueSeverity.ERROR);
+          }
         }
-      } else if (child.getNodeType() == Node.CDATA_SECTION_NODE){
+      } else if (child.getNodeType() == Node.TEXT_NODE && !Utilities.noString(child.getTextContent().trim()) && mtProp != null) {
+        if (cgProp.getName().equals(lastName)) {
+          repeatCount++;
+        } else {
+          lastName = cgProp.getName();
+          repeatCount = 0;
+        }
+        
+        String npath = path+"/"+pathPrefix(cgProp.getXmlNamespace())+cgProp.getName();
+        String name = cgProp.getName();
+        Element cgn = new Element(cgProp.getName(), cgProp).setFormat(FhirFormat.XML);
+        cgn.setPath(element.getPath()+"."+cgProp.getName()+"["+repeatCount+"]"); 
+        element.getChildren().add(cgn);
+        
+        npath = npath+"/text()";
+        name = mtProp.getName();
+        Element n = new Element(name, mtProp, mtProp.getType(), child.getTextContent().trim()).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML);
+        cgn.getChildren().add(n);
+        n.setPath(element.getPath()+"."+mtProp.getName());
+
+        
+      } else if (child.getNodeType() == Node.CDATA_SECTION_NODE) {
         logError(errors, ValidationMessage.NO_RULE_DATE, line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.CDATA_IS_NOT_ALLOWED), IssueSeverity.ERROR);
       } else if (!Utilities.existsInList(child.getNodeType(), 3, 8)) {
         logError(errors, ValidationMessage.NO_RULE_DATE, line(child, false), col(child, false), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.NODE_TYPE__IS_NOT_ALLOWED, Integer.toString(child.getNodeType())), IssueSeverity.ERROR);
@@ -473,6 +524,15 @@ public class XmlParser extends ParserBase {
     }
   }
 
+  private Property getChoiceGroupProp(List<Property> properties) {
+    for (Property p : properties) {
+      if (p.getDefinition().hasExtension(ToolingExtensions.EXT_ID_CHOICE_GROUP)) {
+        return p;
+      }
+    }
+    return null;
+  }
+  
   private boolean validAttrValue(String value) {
     if (version == null) {
       return true;
@@ -515,6 +575,8 @@ public class XmlParser extends ParserBase {
           return p;
       }
     }
+    
+
     return null;
   }
 

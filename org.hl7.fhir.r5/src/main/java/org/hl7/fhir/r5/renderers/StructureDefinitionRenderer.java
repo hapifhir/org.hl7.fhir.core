@@ -95,69 +95,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 public class StructureDefinitionRenderer extends ResourceRenderer {
 
-  //  public class ObligationWrapper {
-  //
-  //    private Extension ext;
-  //
-  //    public ObligationWrapper(Extension ext) {
-  //      this.ext = ext;
-  //    }
-  //
-  //    public boolean hasActor() {
-  //      return ext.hasExtension("actor");
-  //    }
-  //
-  //    public boolean hasActor(String id) {
-  //      return ext.hasExtension("actor") && id.equals(ext.getExtensionByUrl("actor").getValue().primitiveValue());
-  //    }
-  //
-  //    public Coding getCode() {
-  //      Extension code = ext.getExtensionByUrl("obligation");
-  //      if (code != null && code.hasValueCoding()) {
-  //        return code.getValueCoding();
-  //      }
-  //      if (code != null && code.hasValueCodeType()) {
-  //        return new Coding().setSystem("http://hl7.org/fhir/tools/CodeSystem/obligation").setCode(code.getValueCodeType().primitiveValue());
-  //      }
-  //      return null;
-  //    }
-  //
-  //    public boolean hasFilter() {
-  //      return ext.hasExtension("filter");
-  //    }
-  //
-  //    public String getFilter() {
-  //      Extension code = ext.getExtensionByUrl("filter");
-  //      if (code != null && code.getValue() != null) {
-  //        return code.getValue().primitiveValue();
-  //      }
-  //      return null;
-  //    }
-  //
-  //    public boolean hasUsage() {
-  //      return ext.hasExtension("usage");
-  //    }
-  //
-  //    public String getFilterDocumentation() {
-  //      Extension code = ext.getExtensionByUrl("filter-desc");
-  //      if (code != null && code.getValue() != null) {
-  //        return code.getValue().primitiveValue();
-  //      }
-  //      return null;
-  //    }
-  //
-  //    public List<UsageContext> getUsage() {
-  //      List<UsageContext> usage = new ArrayList<>();
-  //      for (Extension u : ext.getExtensionsByUrl("usage" )) {
-  //        if (u.hasValueUsageContext()) {
-  //          usage.add(u.getValueUsageContext());
-  //        }
-  //      }
-  //      return usage;
-  //    }
-  //
-  //  }
-
   public class SourcedElementDefinition {
     private StructureDefinition profile;
     private ElementDefinition definition;
@@ -1472,6 +1409,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
             c.getPieces().add(gen.new Piece(null, "An ID is not allowed in this context", null));     
           }
+        }
+        if (definition.hasExtension(ToolingExtensions.EXT_ID_CHOICE_GROUP)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          c.getPieces().add(gen.new Piece(null, translate("sd.table", "Choice Group")+": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, "This is a repeating choice group that does not appear directly in the instance", null));
         }
         if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
@@ -3663,6 +3605,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         tableRow(tbl, "ID Expectation", null, strikethrough, "An ID is not allowed in this context");
       }
     }
+
+    if (d.hasExtension(ToolingExtensions.EXT_ID_CHOICE_GROUP)) {
+      tableRow(tbl, "Choice Group", null, strikethrough, "This is a repeating choice group that does not appear directly in the instance");          
+    }
+    
     // tooling extensions for formats
     if (ToolingExtensions.hasExtensions(d, ToolingExtensions.EXT_JSON_EMPTY, ToolingExtensions.EXT_JSON_PROP_KEY, ToolingExtensions.EXT_JSON_NULLABLE, 
         ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) {
