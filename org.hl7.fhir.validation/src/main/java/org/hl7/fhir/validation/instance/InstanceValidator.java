@@ -1660,7 +1660,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           c.setSystem(url);
         }
       } else {
-        warning(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NO_SYSTEM);        
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE); 
       }
       
       c.setCode(element.getNamedChildValue("code"));
@@ -1837,7 +1837,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String code = element.getNamedChildValue("code");
     String system = element.getNamedChildValue("system");
     if (code != null && system == null) {
-      warning(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NO_SYSTEM);        
+      warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE); 
     }
     String version = element.getNamedChildValue("version");
     String display = element.getNamedChildValue("display");
@@ -1849,7 +1849,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = true;
     
     ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, theSystem == null || isCodeSystemReferenceValid(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE) && ok;
-    warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, Utilities.noString(theCode) || !Utilities.noString(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE);
 
     if (theSystem != null && theCode != null && !noTerminologyChecks) {
       ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, theSystem) && ok;
@@ -2625,12 +2624,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       boolean dok = ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
           e.primitiveValue()
           .matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, "'"+e.primitiveValue()+"' doesn't meet format requirements for dateTime") && ok;
-      dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !hasTime(e.primitiveValue()) || hasTimeZone(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_TZ) && dok;
+      if (isCoreDefinition(profile) || (context.hasExtension(ToolingExtensions.EXT_DATE_RULES) && ToolingExtensions.readStringExtension(context, ToolingExtensions.EXT_DATE_RULES).contains("tz-for-time"))) {
+        dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !hasTime(e.primitiveValue()) || hasTimeZone(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_TZ) && dok;
+      }
       dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && dok;
       if (dok) {
         try {
           DateTimeType dt = new DateTimeType(e.primitiveValue());
-          warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
+          if (isCoreDefinition(profile) || (context.hasExtension(ToolingExtensions.EXT_DATE_RULES) && ToolingExtensions.readStringExtension(context, ToolingExtensions.EXT_DATE_RULES).contains("year-valid"))) {
+            warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
+          }
         } catch (Exception ex) {
           rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_VALID, ex.getMessage());
           dok = false;
@@ -2655,7 +2658,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (dok) {
         try {
           DateType dt = new DateType(e.primitiveValue());
-          warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
+          if (isCoreDefinition(profile) || (context.hasExtension(ToolingExtensions.EXT_DATE_RULES) && ToolingExtensions.readStringExtension(context, ToolingExtensions.EXT_DATE_RULES).contains("year-valid"))) {
+            warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
+          }
         } catch (Exception ex) {
           rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, ex.getMessage());
           dok = false;
@@ -2750,7 +2755,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (dok) {
         try {
           InstantType dt = new InstantType(e.primitiveValue());
-          warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
+          if (isCoreDefinition(profile) || (context.hasExtension(ToolingExtensions.EXT_DATE_RULES) && ToolingExtensions.readStringExtension(context, ToolingExtensions.EXT_DATE_RULES).contains("year-valid"))) {
+            warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
+          }
         } catch (Exception ex) {
           rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INSTANT_VALID, ex.getMessage());
           dok = false;
@@ -2832,6 +2839,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   
     // for nothing to check
     return ok;
+  }
+
+  private boolean isCoreDefinition(StructureDefinition profile) {
+    return profile.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/") && profile.getKind() != StructureDefinitionKind.LOGICAL;
   }
 
   private String getRegexFromType(String fhirType) {
@@ -6149,6 +6160,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkCDACoding(List<ValidationMessage> errors, String path, boolean isPQ, Element element, StructureDefinition profile, ElementDefinition checkDefn, NodeStack stack, StructureDefinition defn, boolean inCodeableConcept, boolean checkDisplay) {
     boolean ok = true;
     String system = null;
+    String code = element.getNamedChildValue(isPQ ? "unit" : "code");
     String oid = element.getNamedChildValue("codeSystem");
     if (oid != null) {
       String url = context.urlForOid(true, oid);
@@ -6159,9 +6171,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else {
         system = url;
       }
-    } 
+    } else {
+      warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, code == null, I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE);      
+    }
     
-    String code = element.getNamedChildValue(isPQ ? "unit" : "code");
     String version = element.getNamedChildValue("codeSystemVersion");
     String display = element.getNamedChildValue("displayName");
     return checkCodedElement(errors, path, element, profile, checkDefn, inCodeableConcept, checkDisplay, stack, code, system, version, display) && ok;

@@ -1007,7 +1007,8 @@ public class I18nConstants {
   public static final String FHIRPATH_CHOICE_SPURIOUS_TYPE_SPECIFIER = "FHIRPATH_CHOICE_SPURIOUS_TYPE_SPECIFIER";
   public static final String FHIRPATH_NOT_A_COLLECTION = "FHIRPATH_NOT_A_COLLECTION";
   public static final String TERMINOLOGY_TX_UNKNOWN_OID = "TERMINOLOGY_TX_UNKNOWN_OID";
-  public static final String TERMINOLOGY_TX_NO_SYSTEM = "TERMINOLOGY_TX_NO_SYSTEM";
+  public static final String XSI_TYPE_WRONG = "XSI_TYPE_WRONG";
+  public static final String XSI_TYPE_UNNECESSARY = "XSI_TYPE_UNNECESSARY";
 }
 
 
