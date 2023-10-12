@@ -7,8 +7,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -31,12 +34,21 @@ public class NpmPackageIndexBuilder {
   private Connection conn;
   private PreparedStatement psql;
   private String dbFilename;
+  private JsonObject oidIndex;
+  private JsonObject oidIndexCS;
+  private JsonObject oidIndexOther;
   
   public void start(String filename) {
     index = new JsonObject();
     index.add("index-version", CURRENT_INDEX_VERSION);
     files = new JsonArray();
     index.add("files", files);
+    
+    oidIndex = new JsonObject();
+    oidIndexCS = new JsonObject();
+    oidIndex.add("cs", oidIndexCS);
+    oidIndexOther = new JsonObject();
+    oidIndex.add("other", oidIndexOther);
 
 
     dbFilename = filename;
@@ -59,7 +71,7 @@ public class NpmPackageIndexBuilder {
             "Derivation     nvarchar NULL,\r\n"+
             "PRIMARY KEY (FileName))\r\n");
 
-        psql = conn.prepareStatement("Insert into ResourceList (FileName, ResourceType, Id, Url, Version, Kind, Type, Supplements, Content, ValueSet) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        psql = conn.prepareStatement("Insert into ResourceList (FileName, ResourceType, Id, Url, Version, Kind, Type, Supplements, Content, ValueSet, OIDs) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       } catch (Exception e) {
         if (conn != null) { 
           try {
@@ -109,6 +121,7 @@ public class NpmPackageIndexBuilder {
           if (json.hasPrimitive("derivation")) {
             fi.add("derivation", json.asString("derivation"));
           }
+          
           if (psql != null) {
             psql.setString(1, name); // FileName); 
             psql.setString(2, json.asString("resourceType")); // ResourceType"); 
@@ -133,7 +146,70 @@ public class NpmPackageIndexBuilder {
     }
     return true;
   }
+
+  public boolean seeOidsInFile(String name, byte[] content) {
+    if (name.endsWith(".json")) {
+      try {
+        JsonObject json = JsonParser.parseObject(content);
+        String rt = json.asString("resourceType");
+        if (rt != null) {
+          Set<String> oids = new HashSet<String>();
+          String url = null;
+          if ("NamingSystem".equals(rt)) {
+            
+            for (JsonObject id : json.getJsonObjects("uniqueId")) {
+              String t = id.asString("type");
+              String v = id.asString("value");
+              if ("url".equals(t) && v != null) {
+                url = v;
+              } else if ("oid".equals(t) && v != null) {
+                oids.add(v);
+              }
+            }
+            JsonArray a = new JsonArray();
+            ("codesystem".equals(json.asString("kind")) ? oidIndexCS : oidIndexOther).add(url, a);            
+            for (String s : oids) {
+              a.add(s);
+            }
+          } else {            
+            if (json.hasPrimitive("url")) { 
+              if (json.has("oid")) {
+                oids.add(json.asString("oid"));
+              }
+              if (json.has("url")) {
+                String v = json.asString("url");
+                if (v != null && v.startsWith("urn:oid:")) {
+                  oids.add(v.substring(8));
+                }
+              }
+
+              for (JsonObject id : json.getJsonObjects("identifier")) {
+                String v = id.asString("value");
+                if (v != null && v.startsWith("urn:oid:")) {
+                  oids.add(v.substring(8));
+                }
+              }
+              if (!oids.isEmpty()) {
+                JsonArray a = new JsonArray();
+                ("CodeSystem".equals(rt) ? oidIndexCS : oidIndexOther).add(json.asString("url"), a);
+                for (String s : oids) {
+                  a.add(s);
+                }
+              }
+            }
+          }
+        }
+      } catch (Exception e) {
+        System.out.println("Error parsing "+name+": "+e.getMessage());
+        if (name.contains("openapi")) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
   
+
   public String build() {
     try {
       if (conn != null) {
@@ -213,6 +289,10 @@ public class NpmPackageIndexBuilder {
 
   public String getDbFilename() {
     return dbFilename;
+  }
+
+  public JsonObject getOidIndex() {
+    return oidIndex;
   }
 
 }
