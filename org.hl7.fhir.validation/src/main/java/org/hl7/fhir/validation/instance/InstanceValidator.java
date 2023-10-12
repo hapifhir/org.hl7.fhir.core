@@ -1651,13 +1651,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       
       String oid = element.getNamedChildValue("codeSystem");
       if (oid != null) {
-        String url = context.urlForOid(true, oid);
-        if (url == null) {
+        Set<String> urls = context.urlsForOid(true, oid);
+        if (urls.size() != 1) {
           c.setSystem("urn:oid:"+oid);
           ok = false;
-          rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_UNKNOWN_OID, oid);
+          if (urls.size() == 0) {
+            rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_UNKNOWN_OID, oid);
+          } else {
+            rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_OID_MULTIPLE_MATCHES, oid, CommaSeparatedStringBuilder.join(",", urls));
+          }
         } else {
-          c.setSystem(url);
+          c.setSystem(urls.iterator().next());
         }
       } else {
         warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE); 
@@ -6163,13 +6167,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String code = element.getNamedChildValue(isPQ ? "unit" : "code");
     String oid = element.getNamedChildValue("codeSystem");
     if (oid != null) {
-      String url = context.urlForOid(true, oid);
-      if (url == null) {
+      Set<String> urls = context.urlsForOid(true, oid);
+      if (urls.size() != 1) {
         system = "urn:oid:"+oid;
         ok = false;
-        rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_UNKNOWN_OID, oid);
+
+        if (urls.size() == 0) {
+          rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_UNKNOWN_OID, oid);
+        } else {
+          rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_OID_MULTIPLE_MATCHES, oid, CommaSeparatedStringBuilder.join(",", urls));
+        }
       } else {
-        system = url;
+        system = urls.iterator().next();
       }
     } else {
       warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, code == null, I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE);      

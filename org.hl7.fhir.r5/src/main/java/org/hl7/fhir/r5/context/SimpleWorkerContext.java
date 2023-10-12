@@ -482,9 +482,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       packageTracker.packageLoaded(pi.id(), pi.version());
     }
     
-    String oi = pi.getFolders().get("package").oidIndexFile();
-    if (oi != null) {
-      oidFiles.add(oi);
+    String of = pi.getFolders().get("package").getFolderPath();
+    if (of != null) {
+      oidSources.add(new OIDSource(of));
     }
     
     if ((types == null || types.size() == 0) &&  loader != null) {
