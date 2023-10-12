@@ -43,6 +43,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import lombok.Getter;
@@ -74,11 +75,13 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.IdType;
+import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.Measure;
 import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
+import org.hl7.fhir.r5.model.NamingSystem.NamingSystemType;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
 import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.OperationOutcome;
@@ -133,11 +136,16 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.json.JsonException;
+import org.hl7.fhir.utilities.json.model.JsonArray;
+import org.hl7.fhir.utilities.json.model.JsonProperty;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import javax.annotation.Nonnull;
@@ -241,7 +249,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   
   private UcumService ucumService;
   protected Map<String, byte[]> binaries = new HashMap<String, byte[]>();
-  protected Map<String, String> oidCache = new HashMap<>();
+  protected Map<String, String> oidCacheCS = new HashMap<>();
+  protected Map<String, String> oidCacheOth = new HashMap<>();
+  protected Map<String, String> oidCacheManual = new HashMap<>();
+  protected List<String> oidFiles = new ArrayList<>();
 
   protected Map<String, Map<String, ValidationResult>> validationCache = new HashMap<String, Map<String,ValidationResult>>();
   protected String name;
@@ -323,7 +334,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       codeSystemsUsed.addAll(other.codeSystemsUsed);
       ucumService = other.ucumService;
       binaries.putAll(other.binaries);
-      oidCache.putAll(other.oidCache);
+      oidCacheCS.putAll(other.oidCacheCS);
+      oidCacheOth.putAll(other.oidCacheOth);
       validationCache.putAll(other.validationCache);
       tlogging = other.tlogging;
       locator = other.locator;
@@ -446,7 +458,36 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
 
       if (r instanceof CodeSystem || r instanceof NamingSystem) {
-        oidCache.clear();
+        oidCacheCS.clear();
+        String url = null;
+        Set<String> oids = new HashSet<String>();
+        if (r instanceof CodeSystem) {
+          CodeSystem cs = (CodeSystem) r;
+          url = cs.getUrl();
+          for (Identifier id : cs.getIdentifier()) {
+            if (id.hasValue() && id.getValue().startsWith("urn:oid:")) {
+              oids.add(id.getValue().substring(8));           
+            }
+          }
+        }
+        if (r instanceof NamingSystem) {
+          NamingSystem ns = ((NamingSystem) r);
+          if (ns.getKind() == NamingSystemType.CODESYSTEM) {
+            for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
+              if (id.getType() == NamingSystemIdentifierType.URI) {
+                url = id.getValue();
+              }
+              if (id.getType() == NamingSystemIdentifierType.OID) {
+                oids.add(id.getValue());
+              }
+            }
+          }
+        }
+        if (url != null) {
+          for (String s : oids) {
+            oidCacheManual.put(s, url);
+          }
+        }
       }
 
       if (r instanceof CanonicalResource) {
@@ -2778,4 +2819,53 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.cachingAllowed = cachingAllowed;
   }
 
+  @Override
+  public String urlForOid(boolean codeSystem, String oid) {
+    if (oid == null) {
+      return null;
+    }
+    Map<String, String> cache = codeSystem ?oidCacheCS : oidCacheOth;
+    
+    if (cache.isEmpty()) {
+      loadOidCache();
+    }
+    if (cache.containsKey(oid)) {
+      return cache.get(oid);
+    }
+    switch (oid) {
+    case "2.16.840.1.113883.6.1" : return "http://loinc.org";
+    case "2.16.840.1.113883.6.96" : return "http://snomed.info/sct";
+    default:return null;
+    }
+  }
+
+  private void loadOidCache() {
+    oidCacheCS.putAll(oidCacheManual);
+    for (String ff : oidFiles) {
+      File f = new File(ff);
+      if (f.exists()) {
+        org.hl7.fhir.utilities.json.model.JsonObject oids = null;
+        try {
+          oids = JsonParser.parseObject(f);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+        if (oids != null && oids.has("cs")) {
+          loadOids(oidCacheCS, oids.getJsonObject("cs"));
+        }
+        if (oids != null && oids.has("other")) {
+          loadOids(oidCacheOth, oids.getJsonObject("other"));
+        }
+      }
+    }
+  }
+
+  private void loadOids(Map<String, String> cache, org.hl7.fhir.utilities.json.model.JsonObject oids) {
+    for (JsonProperty p : oids.getProperties()) {
+      JsonArray a = (JsonArray) p.getValue();
+      for (String s : a.asStrings()) {
+        cache.put(s, p.getName());
+      }
+    }
+  }
 }

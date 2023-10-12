@@ -311,6 +311,22 @@ public class NpmPackage {
         }
       }
     }
+    public JsonObject oidIndex() throws IOException {
+      if (folder == null) {
+        return null;
+      } else {
+        File ij = new File(fn(".oids.json"));
+        if (ij.exists()) {
+          return JsonParser.parseObject(ij);
+        } else {
+          return null;
+        }
+      }
+    }
+
+    public String oidIndexFile() throws IOException {
+      return fn(".oids.json");
+    }
   }
 
   private String path;
@@ -597,7 +613,34 @@ public class NpmPackage {
       JsonObject index = folder.index();
       if (index == null || index.forceArray("files").size() == 0) {
         indexFolder(desc, folder);
+      }  
+      index = folder.oidIndex();
+      if (index == null || index.forceArray("oids").size() == 0) {
+        indexOidsInFolder(desc, folder);
       } 
+    }
+  }
+
+  public void indexOidsInFolder(String desc, NpmPackageFolder folder) throws FileNotFoundException, IOException {
+    List<String> remove = new ArrayList<>();
+    NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
+    indexer.start(folder.folder != null ? Utilities.path(folder.folder.getAbsolutePath(), ".index.db") : null);
+    for (String n : folder.listFiles()) {
+      if (!indexer.seeOidsInFile(n, folder.fetchFile(n))) {
+        remove.add(n);
+      }
+    } 
+    for (String n : remove) {
+      folder.removeFile(n);
+    }
+    String json = JsonParser.compose(indexer.getOidIndex(), true);
+    try {
+      if (folder.folder != null) {
+        TextFile.stringToFile(json, Utilities.path(folder.folder.getAbsolutePath(), ".oids.json"));
+      }
+    } catch (Exception e) {
+      TextFile.stringToFile(json, Utilities.path("[tmp]", ".oids.json"));
+      throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/"+folder.folderName+"/.oids.json: "+e.getMessage(), e);
     }
   }
 
