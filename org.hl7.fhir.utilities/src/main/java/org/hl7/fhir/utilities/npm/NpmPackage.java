@@ -722,9 +722,17 @@ public class NpmPackage {
   public List<String> list(String folder) throws IOException {
     List<String> res = new ArrayList<String>();
     if (folders.containsKey(folder)) {
-      res.addAll(folders.get(folder).listFiles());
+      for (String s : folders.get(folder).listFiles()) {
+        if (!s.startsWith(".")) {
+          res.add(s);
+        }
+      }
     } else if (folders.containsKey(Utilities.path("package", folder))) {
-      res.addAll(folders.get(Utilities.path("package", folder)).listFiles());
+      for (String s : folders.get(Utilities.path("package", folder)).listFiles()) {
+        if (!s.startsWith(".")) {
+          res.add(s);
+        }
+      }
     }
     return res;
   }
@@ -1174,6 +1182,7 @@ public class NpmPackage {
           System.out.println(name+" is null");
         } else {
           indexer.seeFile(s, b);
+          indexer.seeOidsInFile(s, b);
           if (!s.equals(".index.json") && !s.equals(".index.db") && !s.equals("package.json")) {
             TarArchiveEntry entry = new TarArchiveEntry(name);
             entry.setSize(b.length);
@@ -1185,6 +1194,12 @@ public class NpmPackage {
       }
       byte[] cnt = indexer.build().getBytes(StandardCharsets.UTF_8);
       TarArchiveEntry entry = new TarArchiveEntry(n+"/.index.json");
+      entry.setSize(cnt.length);
+      tar.putArchiveEntry(entry);
+      tar.write(cnt);
+      tar.closeArchiveEntry();
+      cnt = JsonParser.composeBytes(indexer.getOidIndex(), true);
+      entry = new TarArchiveEntry(n+"/.oids.json");
       entry.setSize(cnt.length);
       tar.putArchiveEntry(entry);
       tar.write(cnt);
