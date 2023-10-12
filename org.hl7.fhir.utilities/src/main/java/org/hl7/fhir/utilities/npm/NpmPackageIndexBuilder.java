@@ -166,10 +166,15 @@ public class NpmPackageIndexBuilder {
                 oids.add(v);
               }
             }
-            JsonArray a = new JsonArray();
-            ("codesystem".equals(json.asString("kind")) ? oidIndexCS : oidIndexOther).add(url, a);            
-            for (String s : oids) {
-              a.add(s);
+            if (url != null) {
+              JsonArray a = new JsonArray();
+              JsonObject cache = ("codesystem".equals(json.asString("kind")) ? oidIndexCS : oidIndexOther);
+              if (!cache.has(url)) {
+                json.add(url, a);            
+                for (String s : oids) {
+                  a.add(s);
+                }
+              }
             }
           } else {            
             if (json.hasPrimitive("url")) { 
@@ -191,9 +196,12 @@ public class NpmPackageIndexBuilder {
               }
               if (!oids.isEmpty()) {
                 JsonArray a = new JsonArray();
-                ("CodeSystem".equals(rt) ? oidIndexCS : oidIndexOther).add(json.asString("url"), a);
-                for (String s : oids) {
-                  a.add(s);
+                JsonObject cache = ("CodeSystem".equals(rt) ? oidIndexCS : oidIndexOther);
+                if (!cache.has(json.asString("url"))) {
+                  cache.add(json.asString("url"), a);
+                  for (String s : oids) {
+                    a.add(s);
+                  }
                 }
               }
             }
@@ -201,6 +209,7 @@ public class NpmPackageIndexBuilder {
         }
       } catch (Exception e) {
         System.out.println("Error parsing "+name+": "+e.getMessage());
+        e.printStackTrace();
         if (name.contains("openapi")) {
           return false;
         }
