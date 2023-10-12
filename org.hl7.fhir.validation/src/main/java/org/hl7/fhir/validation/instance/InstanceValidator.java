@@ -93,6 +93,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ContactPoint;
@@ -1403,7 +1404,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
 
-  private boolean checkTerminologyCodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, NodeStack stack, StructureDefinition logical) {
+  private boolean checkCDACodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, NodeStack stack, StructureDefinition logical) {
     boolean ok = true;
     if (!noTerminologyChecks && theElementCntext != null && theElementCntext.hasBinding()) {
       ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
@@ -1419,7 +1420,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           } else {
             try {
-              CodeableConcept cc = convertToCodeableConcept(element, logical);
+              CodeableConcept cc = new CodeableConcept();
+              ok = convertCDACodeToCodeableConcept(errors, path, element, logical, cc) && ok;
               if (!cc.hasCoding()) {
                 if (binding.getStrength() == BindingStrength.REQUIRED)
                   ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, "No code provided, and a code is required from the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getVersionedUrl()) && ok;
@@ -1638,43 +1640,35 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
-  private CodeableConcept convertToCodeableConcept(Element element, StructureDefinition logical) {
-    CodeableConcept res = new CodeableConcept();
-    for (ElementDefinition ed : logical.getSnapshot().getElement()) {
-      if (Utilities.charCount(ed.getPath(), '.') == 1) {
-        List<String> maps = getMapping("http://hl7.org/fhir/terminology-pattern", logical, ed);
-        for (String m : maps) {
-          String name = tail(ed.getPath());
-          List<Element> list = new ArrayList<>();
-          element.getNamedChildren(name, list);
-          if (!list.isEmpty()) {
-            if ("Coding.code".equals(m)) {
-              res.getCodingFirstRep().setCode(list.get(0).primitiveValue());
-            } else if ("Coding.system[fmt:OID]".equals(m)) {
-              String oid = list.get(0).primitiveValue();
-              String url = new ContextUtilities(context).oid2Uri(oid);
-              if (url != null) {
-                res.getCodingFirstRep().setSystem(url);
-              } else {
-                res.getCodingFirstRep().setSystem("urn:oid:" + oid);
-              }
-            } else if ("Coding.version".equals(m)) {
-              res.getCodingFirstRep().setVersion(list.get(0).primitiveValue());
-            } else if ("Coding.display".equals(m)) {
-              res.getCodingFirstRep().setDisplay(list.get(0).primitiveValue());
-            } else if ("CodeableConcept.text".equals(m)) {
-              res.setText(list.get(0).primitiveValue());
-            } else if ("CodeableConcept.coding".equals(m)) {
-              StructureDefinition c = context.fetchTypeDefinition(ed.getTypeFirstRep().getCode());
-              for (Element e : list) {
-                res.addCoding(convertToCoding(e, c));
-              }
-            }
-          }
-        }
-      }
+  private boolean convertCDACodeToCodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition logical, CodeableConcept cc) {
+    boolean ok = true;
+    cc.setText(element.getNamedChildValue("originalText"));
+    if (element.hasChild("nullFlavor")) {
+      cc.addExtension("http://hl7.org/fhir/StructureDefinition/iso21090-nullFlavor", new CodeType(element.getNamedChildValue("nullFlavor")));
     }
-    return res;
+    if (element.hasChild("code") || element.hasChild("codeSystem")) {
+      Coding c = cc.addCoding();
+      
+      String oid = element.getNamedChildValue("codeSystem");
+      if (oid != null) {
+        String url = context.urlForOid(true, oid);
+        if (url == null) {
+          c.setSystem("urn:oid:"+oid);
+          ok = false;
+          rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_UNKNOWN_OID, oid);
+        } else {
+          c.setSystem(url);
+        }
+      } else {
+        warning(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NO_SYSTEM);        
+      }
+      
+      c.setCode(element.getNamedChildValue("code"));
+      c.setVersion(element.getNamedChildValue("codeSystemVersion"));
+      c.setDisplay(element.getNamedChildValue("displayName"));
+    }
+    // todo: translations
+    return ok;
   }
 
   private Coding convertToCoding(Element element, StructureDefinition logical) {
@@ -1842,6 +1836,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkCoding(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay, NodeStack stack) {
     String code = element.getNamedChildValue("code");
     String system = element.getNamedChildValue("system");
+    if (code != null && system == null) {
+      warning(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NO_SYSTEM);        
+    }
     String version = element.getNamedChildValue("version");
     String display = element.getNamedChildValue("display");
     return checkCodedElement(errors, path, element, profile, theElementCntext, inCodeableConcept, checkDisplay, stack, code, system, version, display);
@@ -5969,7 +5966,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String thisExtension = null;
     boolean checkDisplay = true;
 
-    SpecialElement special = ei.getElement().getSpecial();
+    // SpecialElement special = ei.getElement().getSpecial();
     // this used to say
     //   if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.BUNDLE_ISSUES || special == SpecialElement.PARAMETER) {
     //      ok = checkInvariants(valContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, ei.getElement(), ei.getElement(), localStack, false) && ok;
@@ -6030,13 +6027,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         // (str.matches(".*([.,/])work\\1$"))
       } else if (Utilities.isAbsoluteUrl(type)) {
         StructureDefinition defn = context.fetchTypeDefinition(type);
-        if (defn != null && hasMapping("http://hl7.org/fhir/terminology-pattern", defn, defn.getSnapshot().getElementFirstRep())) {
-          List<String> txtype = getMapping("http://hl7.org/fhir/terminology-pattern", defn, defn.getSnapshot().getElementFirstRep());
-          if (txtype.contains("CodeableConcept")) {
-            ok = checkTerminologyCodeableConcept(errors, ei.getPath(), ei.getElement(), profile, checkDefn, stack, defn) && ok;
-            thisIsCodeableConcept = true;
-          } else if (txtype.contains("Coding")) {
-            ok = checkTerminologyCoding(errors, ei.getPath(), ei.getElement(), profile, checkDefn, inCodeableConcept, checkDisplayInContext, stack, defn) && ok;
+        if (defn != null && defn.hasExtension(ToolingExtensions.EXT_BINDING_STYLE)) {
+          String style = ToolingExtensions.readStringExtension(defn, ToolingExtensions.EXT_BINDING_STYLE);
+          if ("CDA".equals(style)) {
+            if (cdaTypeIs(defn, "CS")) {
+              ok = checkCDACodeSimple(valContext, errors, ei.getPath(), ei.getElement(), profile, checkDefn, stack, defn) && ok;              
+            } else if (cdaTypeIs(defn, "CV") || cdaTypeIs(defn, "PQ")) {
+              ok = checkCDACoding(errors, ei.getPath(), cdaTypeIs(defn, "PQ"), ei.getElement(), profile, checkDefn, stack, defn, inCodeableConcept, checkDisplayInContext) && ok;
+            } else if (cdaTypeIs(defn, "CD") || cdaTypeIs(defn, "CE")) {
+              ok = checkCDACodeableConcept(errors, ei.getPath(), ei.getElement(), profile, checkDefn, stack, defn) && ok;
+              thisIsCodeableConcept = true;
+            }
           }
         }
       }
@@ -6139,6 +6140,39 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return ok;
+  }
+
+  private boolean cdaTypeIs(StructureDefinition defn, String type) {
+    return ("http://hl7.org/cda/stds/core/StructureDefinition/"+type).equals(defn.getUrl());
+  }
+
+  private boolean checkCDACoding(List<ValidationMessage> errors, String path, boolean isPQ, Element element, StructureDefinition profile, ElementDefinition checkDefn, NodeStack stack, StructureDefinition defn, boolean inCodeableConcept, boolean checkDisplay) {
+    boolean ok = true;
+    String system = null;
+    String oid = element.getNamedChildValue("codeSystem");
+    if (oid != null) {
+      String url = context.urlForOid(true, oid);
+      if (url == null) {
+        system = "urn:oid:"+oid;
+        ok = false;
+        rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_UNKNOWN_OID, oid);
+      } else {
+        system = url;
+      }
+    } 
+    
+    String code = element.getNamedChildValue(isPQ ? "unit" : "code");
+    String version = element.getNamedChildValue("codeSystemVersion");
+    String display = element.getNamedChildValue("displayName");
+    return checkCodedElement(errors, path, element, profile, checkDefn, inCodeableConcept, checkDisplay, stack, code, system, version, display) && ok;
+  }
+
+  private boolean checkCDACodeSimple(ValidationContext valContext, List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition checkDefn, NodeStack stack, StructureDefinition defn) {
+    if (element.hasChild("code")) {
+      return checkPrimitiveBinding(valContext, errors, path, "code", checkDefn, element.getNamedChild("code"), profile, stack);
+    } else {
+      return false;
+    }
   }
 
   private boolean isAbstractType(String type) {
