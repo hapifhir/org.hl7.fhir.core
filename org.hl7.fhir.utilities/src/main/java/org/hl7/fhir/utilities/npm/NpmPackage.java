@@ -207,6 +207,10 @@ public class NpmPackage {
       return folderName;
     }
 
+    public String getFolderPath() {
+      return folder == null ? null : folder.getAbsolutePath();
+    }
+    
     public boolean readIndex(JsonObject index, Map<String, List<String>> typeMap) {
       if (!index.has("index-version") || (index.asInteger("index-version") != NpmPackageIndexBuilder.CURRENT_INDEX_VERSION)) {
         return false;
@@ -228,13 +232,13 @@ public class NpmPackage {
       List<String> res = new ArrayList<>();
       if (folder != null) {
         for (File f : folder.listFiles()) {
-          if (!f.isDirectory() && !Utilities.existsInList(f.getName(), "package.json", ".index.json", ".index.db")) {
+          if (!f.isDirectory() && !Utilities.existsInList(f.getName(), "package.json", ".index.json", ".index.db", ".oids.json", ".oids.db")) {
             res.add(f.getName());
           }
         }
       } else {
         for (String s : content.keySet()) {
-          if (!Utilities.existsInList(s, "package.json", ".index.json", ".index.db")) {
+          if (!Utilities.existsInList(s, "package.json", ".index.json", ".index.db", ".oids.json", ".oids.db")) {
             res.add(s);
           }
         }
@@ -324,13 +328,7 @@ public class NpmPackage {
       }
     }
 
-    public String oidIndexFile() throws IOException {
-      if (folder == null) {
-        return null;
-      } else {
-        return fn(".oids.json");
-      }
-    }
+
   }
 
   private String path;
@@ -618,35 +616,9 @@ public class NpmPackage {
       if (index == null || index.forceArray("files").size() == 0) {
         indexFolder(desc, folder);
       }  
-      index = folder.oidIndex();
-      if (index == null || index.forceArray("oids").size() == 0) {
-        indexOidsInFolder(desc, folder);
-      } 
     }
   }
 
-  public void indexOidsInFolder(String desc, NpmPackageFolder folder) throws FileNotFoundException, IOException {
-    List<String> remove = new ArrayList<>();
-    NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
-    indexer.start(folder.folder != null ? Utilities.path(folder.folder.getAbsolutePath(), ".index.db") : null);
-    for (String n : folder.listFiles()) {
-      if (!indexer.seeOidsInFile(n, folder.fetchFile(n))) {
-        remove.add(n);
-      }
-    } 
-    for (String n : remove) {
-      folder.removeFile(n);
-    }
-    String json = JsonParser.compose(indexer.getOidIndex(), true);
-    try {
-      if (folder.folder != null) {
-        TextFile.stringToFile(json, Utilities.path(folder.folder.getAbsolutePath(), ".oids.json"));
-      }
-    } catch (Exception e) {
-      TextFile.stringToFile(json, Utilities.path("[tmp]", ".oids.json"));
-      throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/"+folder.folderName+"/.oids.json: "+e.getMessage(), e);
-    }
-  }
 
   public void indexFolder(String desc, NpmPackageFolder folder) throws FileNotFoundException, IOException {
     List<String> remove = new ArrayList<>();
@@ -1182,7 +1154,6 @@ public class NpmPackage {
           System.out.println(name+" is null");
         } else {
           indexer.seeFile(s, b);
-          indexer.seeOidsInFile(s, b);
           if (!s.equals(".index.json") && !s.equals(".index.db") && !s.equals("package.json")) {
             TarArchiveEntry entry = new TarArchiveEntry(name);
             entry.setSize(b.length);
@@ -1194,12 +1165,6 @@ public class NpmPackage {
       }
       byte[] cnt = indexer.build().getBytes(StandardCharsets.UTF_8);
       TarArchiveEntry entry = new TarArchiveEntry(n+"/.index.json");
-      entry.setSize(cnt.length);
-      tar.putArchiveEntry(entry);
-      tar.write(cnt);
-      tar.closeArchiveEntry();
-      cnt = JsonParser.composeBytes(indexer.getOidIndex(), true);
-      entry = new TarArchiveEntry(n+"/.oids.json");
       entry.setSize(cnt.length);
       tar.putArchiveEntry(entry);
       tar.write(cnt);

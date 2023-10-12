@@ -1009,6 +1009,7 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_UNKNOWN_OID = "TERMINOLOGY_TX_UNKNOWN_OID";
   public static final String XSI_TYPE_WRONG = "XSI_TYPE_WRONG";
   public static final String XSI_TYPE_UNNECESSARY = "XSI_TYPE_UNNECESSARY";
+  public static final String TERMINOLOGY_TX_OID_MULTIPLE_MATCHES = "TERMINOLOGY_TX_OID_MULTIPLE_MATCHES";
 }
 
 

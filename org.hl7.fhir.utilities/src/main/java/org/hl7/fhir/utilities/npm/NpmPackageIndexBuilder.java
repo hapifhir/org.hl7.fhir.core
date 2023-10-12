@@ -34,22 +34,12 @@ public class NpmPackageIndexBuilder {
   private Connection conn;
   private PreparedStatement psql;
   private String dbFilename;
-  private JsonObject oidIndex;
-  private JsonObject oidIndexCS;
-  private JsonObject oidIndexOther;
   
   public void start(String filename) {
     index = new JsonObject();
     index.add("index-version", CURRENT_INDEX_VERSION);
     files = new JsonArray();
     index.add("files", files);
-    
-    oidIndex = new JsonObject();
-    oidIndexCS = new JsonObject();
-    oidIndex.add("cs", oidIndexCS);
-    oidIndexOther = new JsonObject();
-    oidIndex.add("other", oidIndexOther);
-
 
     dbFilename = filename;
     if (filename != null) {
@@ -71,7 +61,7 @@ public class NpmPackageIndexBuilder {
             "Derivation     nvarchar NULL,\r\n"+
             "PRIMARY KEY (FileName))\r\n");
 
-        psql = conn.prepareStatement("Insert into ResourceList (FileName, ResourceType, Id, Url, Version, Kind, Type, Supplements, Content, ValueSet, OIDs) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        psql = conn.prepareStatement("Insert into ResourceList (FileName, ResourceType, Id, Url, Version, Kind, Type, Supplements, Content, ValueSet) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       } catch (Exception e) {
         if (conn != null) { 
           try {
@@ -146,78 +136,6 @@ public class NpmPackageIndexBuilder {
     }
     return true;
   }
-
-  public boolean seeOidsInFile(String name, byte[] content) {
-    if (name.endsWith(".json")) {
-      try {
-        JsonObject json = JsonParser.parseObject(content);
-        String rt = json.asString("resourceType");
-        if (rt != null) {
-          Set<String> oids = new HashSet<String>();
-          String url = null;
-          if ("NamingSystem".equals(rt)) {
-            
-            for (JsonObject id : json.getJsonObjects("uniqueId")) {
-              String t = id.asString("type");
-              String v = id.asString("value");
-              if ("url".equals(t) && v != null) {
-                url = v;
-              } else if ("oid".equals(t) && v != null) {
-                oids.add(v);
-              }
-            }
-            if (url != null) {
-              JsonArray a = new JsonArray();
-              JsonObject cache = ("codesystem".equals(json.asString("kind")) ? oidIndexCS : oidIndexOther);
-              if (!cache.has(url)) {
-                json.add(url, a);            
-                for (String s : oids) {
-                  a.add(s);
-                }
-              }
-            }
-          } else {            
-            if (json.hasPrimitive("url")) { 
-              if (json.has("oid")) {
-                oids.add(json.asString("oid"));
-              }
-              if (json.has("url")) {
-                String v = json.asString("url");
-                if (v != null && v.startsWith("urn:oid:")) {
-                  oids.add(v.substring(8));
-                }
-              }
-
-              for (JsonObject id : json.getJsonObjects("identifier")) {
-                String v = id.asString("value");
-                if (v != null && v.startsWith("urn:oid:")) {
-                  oids.add(v.substring(8));
-                }
-              }
-              if (!oids.isEmpty()) {
-                JsonArray a = new JsonArray();
-                JsonObject cache = ("CodeSystem".equals(rt) ? oidIndexCS : oidIndexOther);
-                if (!cache.has(json.asString("url"))) {
-                  cache.add(json.asString("url"), a);
-                  for (String s : oids) {
-                    a.add(s);
-                  }
-                }
-              }
-            }
-          }
-        }
-      } catch (Exception e) {
-        System.out.println("Error parsing "+name+": "+e.getMessage());
-        e.printStackTrace();
-        if (name.contains("openapi")) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-  
 
   public String build() {
     try {
@@ -300,8 +218,5 @@ public class NpmPackageIndexBuilder {
     return dbFilename;
   }
 
-  public JsonObject getOidIndex() {
-    return oidIndex;
-  }
 
 }
