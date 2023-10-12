@@ -325,7 +325,11 @@ public class NpmPackage {
     }
 
     public String oidIndexFile() throws IOException {
-      return fn(".oids.json");
+      if (folder == null) {
+        return null;
+      } else {
+        return fn(".oids.json");
+      }
     }
   }
 
