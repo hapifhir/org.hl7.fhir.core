@@ -62,7 +62,7 @@ public class NpmPackageTests {
 
 
   private void checkNpm(NpmPackage npm) throws IOException {
-    Assertions.assertEquals(1, npm.list("other").size());
+    Assertions.assertEquals(2, npm.list("other").size());
     Assertions.assertEquals("help.png", npm.list("other").get(0));
     Assertions.assertEquals(1, npm.list("package").size());
     Assertions.assertEquals("StructureDefinition-Definition.json", npm.list("package").get(0));

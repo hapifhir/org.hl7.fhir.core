@@ -609,5 +609,15 @@ public class Property {
     return ok;
   }
 
+
+  public String getXmlTypeName() {
+    TypeRefComponent tr = type;
+    if (tr == null) {
+      tr = definition.getTypeFirstRep();
+    }
+    StructureDefinition sd = context.fetchTypeDefinition(tr.getWorkingCode());
+    return sd.getSnapshot().getElementFirstRep().getPath();
+  }
+
   
 }
