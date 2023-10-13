@@ -207,6 +207,10 @@ public class NpmPackage {
       return folderName;
     }
 
+    public String getFolderPath() {
+      return folder == null ? null : folder.getAbsolutePath();
+    }
+    
     public boolean readIndex(JsonObject index, Map<String, List<String>> typeMap) {
       if (!index.has("index-version") || (index.asInteger("index-version") != NpmPackageIndexBuilder.CURRENT_INDEX_VERSION)) {
         return false;
@@ -228,13 +232,13 @@ public class NpmPackage {
       List<String> res = new ArrayList<>();
       if (folder != null) {
         for (File f : folder.listFiles()) {
-          if (!f.isDirectory() && !Utilities.existsInList(f.getName(), "package.json", ".index.json", ".index.db")) {
+          if (!f.isDirectory() && !Utilities.existsInList(f.getName(), "package.json", ".index.json", ".index.db", ".oids.json", ".oids.db")) {
             res.add(f.getName());
           }
         }
       } else {
         for (String s : content.keySet()) {
-          if (!Utilities.existsInList(s, "package.json", ".index.json", ".index.db")) {
+          if (!Utilities.existsInList(s, "package.json", ".index.json", ".index.db", ".oids.json", ".oids.db")) {
             res.add(s);
           }
         }
@@ -311,6 +315,20 @@ public class NpmPackage {
         }
       }
     }
+    public JsonObject oidIndex() throws IOException {
+      if (folder == null) {
+        return null;
+      } else {
+        File ij = new File(fn(".oids.json"));
+        if (ij.exists()) {
+          return JsonParser.parseObject(ij);
+        } else {
+          return null;
+        }
+      }
+    }
+
+
   }
 
   private String path;
@@ -597,9 +615,10 @@ public class NpmPackage {
       JsonObject index = folder.index();
       if (index == null || index.forceArray("files").size() == 0) {
         indexFolder(desc, folder);
-      } 
+      }  
     }
   }
+
 
   public void indexFolder(String desc, NpmPackageFolder folder) throws FileNotFoundException, IOException {
     List<String> remove = new ArrayList<>();
@@ -675,9 +694,17 @@ public class NpmPackage {
   public List<String> list(String folder) throws IOException {
     List<String> res = new ArrayList<String>();
     if (folders.containsKey(folder)) {
-      res.addAll(folders.get(folder).listFiles());
+      for (String s : folders.get(folder).listFiles()) {
+        if (!s.startsWith(".")) {
+          res.add(s);
+        }
+      }
     } else if (folders.containsKey(Utilities.path("package", folder))) {
-      res.addAll(folders.get(Utilities.path("package", folder)).listFiles());
+      for (String s : folders.get(Utilities.path("package", folder)).listFiles()) {
+        if (!s.startsWith(".")) {
+          res.add(s);
+        }
+      }
     }
     return res;
   }

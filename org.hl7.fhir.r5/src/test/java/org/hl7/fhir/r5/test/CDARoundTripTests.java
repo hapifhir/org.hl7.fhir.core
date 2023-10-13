@@ -17,6 +17,7 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,19 +34,8 @@ public class CDARoundTripTests {
 	  context = TestingUtilities.getWorkerContext(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
 	  fp = new FHIRPathEngine(context);
 
-	  context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "any.xml"), "any.xml", null);
-	  context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ii.xml"), "ii.xml", null);
-	  context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cd.xml"), "cd.xml", null);
-	  context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ce.xml"), "ce.xml", null);
-	  context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "ed.xml"), "ed.xml", null);
-	  context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "st.xml"), "st.xml", null);
-	  context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cda.xml"), "cda.xml", null);
-	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
-	    if (!sd.hasSnapshot()) {
-	      //				System.out.println("generate snapshot for " + sd.getUrl());
-	      new ContextUtilities(context).generateSnapshot(sd);
-	    }
-	  }
+	  NpmPackage npm = new FilesystemPackageCacheManager(true).loadPackage("hl7.cda.uv.core");
+	  context.loadFromPackage(npm, null);
 	}
 
 // old-test    
@@ -191,16 +181,16 @@ public class CDARoundTripTests {
 //  }
 
 	public void assertsExample(Element cdaExample) {
-	    Assertions.assertEquals("2.16.840.1.113883.3.27.1776", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.templateId.root")));
-        Assertions.assertEquals("SoEN", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.displayName")));
-        Assertions.assertEquals("SoEN2", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.sdtcDisplayName")));
-        Assertions.assertEquals("c266", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.id.extension")));
-	    Assertions.assertEquals("2.16.840.1.113883.19.4", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.id.root")));
-	    Assertions.assertEquals("X-34133-9", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.code")));
-	    Assertions.assertEquals("2.16.840.1.113883.6.1", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.codeSystem")));
-	    Assertions.assertEquals("LOINC", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.codeSystemName")));
-	    Assertions.assertEquals("Episode Note", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.title.dataString")));	  
-  }
+	  Assertions.assertEquals("2.16.840.1.113883.3.27.1776", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.templateId.root")));
+	  Assertions.assertEquals("SoEN", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.displayName")));
+	  Assertions.assertEquals("2.16.840.1.113883.1.2.3.4.5.6", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.sdtcValueSet")));
+	  Assertions.assertEquals("c266", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.id.extension")));
+	  Assertions.assertEquals("2.16.840.1.113883.19.4", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.id.root")));
+	  Assertions.assertEquals("X-34133-9", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.code")));
+	  Assertions.assertEquals("2.16.840.1.113883.6.1", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.codeSystem")));
+	  Assertions.assertEquals("LOINC", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.codeSystemName")));
+	  Assertions.assertEquals("Episode Note", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.title.dataString")));	  
+	}
 
 	@Test
 	/**

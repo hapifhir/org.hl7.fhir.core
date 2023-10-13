@@ -1407,6 +1407,45 @@ v: {
   "code" : "CHE",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en-US"
+}, "url": "http://terminology.hl7.org/ValueSet/v3-HumanLanguage", "version": "2.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "The CodeSystem http://terminology.hl7.org/CodeSystem/ietf3066 is unknown; Unable to check whether the code is in the value set http://terminology.hl7.org/ValueSet/v3-HumanLanguage|2.0.0 (from Tx-Server)",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "unknown-systems" : "http://terminology.hl7.org/CodeSystem/ietf3066",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "PRN"
+}, "valueSet" :null, "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "The CodeSystem  is unknown (from Tx-Server)",
+  "class" : "UNKNOWN",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

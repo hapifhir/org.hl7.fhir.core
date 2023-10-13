@@ -39,6 +39,7 @@ public class TestProfile extends PEGeneratedBase {
   private String id;  // 
   private List<Extension> extensions = new ArrayList<>();  // Extension
   private String simple;  // A simple extension
+//  @ProfileAnnotation(max = 1, min=1, path="Observation.extension('url')", doco = "blah", type="")
   private TestComplexExtension complex;  // A complex extension
   private Identifier identifier;  // Business Identifier for observation
   private String status;// @NotNull  // registered | preliminary | final | amended +
@@ -139,7 +140,7 @@ public class TestProfile extends PEGeneratedBase {
   }
 
   /**
-   * Save this profile class into an existing resource (overwriting enything that 
+   * Save this profile class into an existing resource (overwriting anything that 
    * exists in the profile) 
    *
    */

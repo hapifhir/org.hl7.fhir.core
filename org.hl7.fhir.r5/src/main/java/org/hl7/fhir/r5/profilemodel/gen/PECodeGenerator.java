@@ -158,7 +158,7 @@ public class PECodeGenerator {
         w(b, "    return theThing;");
         w(b, "  }");
         w(b);
-        jdoc(b, "Save this profile class into an existing resource (overwriting enything that exists in the profile) ", 2, true);
+        jdoc(b, "Save this profile class into an existing resource (overwriting anything that exists in the profile) ", 2, true);
         w(b, "  public void save(IWorkerContext context, "+base+" dest, boolean nulls) {");
         w(b, "    workerContext = context;");
         w(b, "    PEBuilder builder = new PEBuilder(context, PEElementPropertiesPolicy.EXTENSION, true);");
