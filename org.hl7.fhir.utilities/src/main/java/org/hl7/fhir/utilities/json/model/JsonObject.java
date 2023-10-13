@@ -25,8 +25,8 @@ public class JsonObject extends JsonElement {
   }
 
   public JsonObject add(String name, JsonElement value) throws JsonException {
-    check(name != null, "Name is null");
-    check(value != null, "Value is null");
+    check(name != null, "Json Property Name is null");
+    check(value != null, "Json Property Value is null");
     if (get(name) != null) {
       check(false, "Name '"+name+"' already exists (value = "+get(name).toString()+")");
     }

@@ -482,6 +482,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       packageTracker.packageLoaded(pi.id(), pi.version());
     }
     
+    String of = pi.getFolders().get("package").getFolderPath();
+    if (of != null) {
+      oidSources.add(new OIDSource(of));
+    }
+    
     if ((types == null || types.size() == 0) &&  loader != null) {
       types = loader.getTypes();
     }
@@ -802,6 +807,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   public String getSpecUrl() {
     return VersionUtilities.getSpecUrl(getVersion())+"/";
   }
+
 
 }
 

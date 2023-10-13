@@ -1034,5 +1034,6 @@ public interface IWorkerContext {
   public boolean isForPublication();
   public void setForPublication(boolean value);
 
+  public Set<String> urlsForOid(boolean codeSystem, String oid);
 
 }
