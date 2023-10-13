@@ -220,7 +220,7 @@ public abstract class ParserBase {
 	    }
 	  }
     for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
-      if (name.equals(sd.getType()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+      if (name.equals(sd.getTypeName()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         new ContextUtilities(context).generateSnapshot(sd); 
         return sd;
       }
