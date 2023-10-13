@@ -1848,6 +1848,12 @@ public class FHIRPathEngine {
       } catch (Exception e) {
         return false;
       }
+    } else if ("CDA".equals(t[0])) {      
+      try {
+        return worker.fetchTypeDefinition(Utilities.pathURL(Constants.NS_CDA_ROOT, "StructureDefinition", t[1])) != null;
+      } catch (Exception e) {
+        return false;
+      }
     } else {
       return false;
     }
@@ -4864,6 +4870,20 @@ public class FHIRPathEngine {
 
       } else if (tn.startsWith("FHIR.")) {
         String tnp = tn.substring(5);
+        if (b.fhirType().equals(tnp)) {
+          result.add(b);          
+        } else {
+          StructureDefinition sd = worker.fetchTypeDefinition(b.fhirType());
+          while (sd != null) {
+            if (tnp.equals(sd.getType())) {
+              result.add(b);
+              break;
+            }
+            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), sd);
+          }
+        }
+      } else if (tn.startsWith("CDA.")) {
+        String tnp = Utilities.pathURL(Constants.NS_CDA_ROOT, "StructureDefinition", tn.substring(4));
         if (b.fhirType().equals(tnp)) {
           result.add(b);          
         } else {
