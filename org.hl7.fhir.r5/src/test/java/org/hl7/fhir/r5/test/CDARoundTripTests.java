@@ -34,7 +34,7 @@ public class CDARoundTripTests {
 	  context = TestingUtilities.getWorkerContext(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
 	  fp = new FHIRPathEngine(context);
 
-	  NpmPackage npm = new FilesystemPackageCacheManager(true).loadPackage("hl7.cda.uv.core");
+	  NpmPackage npm = new FilesystemPackageCacheManager(true).loadPackage("hl7.cda.uv.core", "current");
 	  context.loadFromPackage(npm, null);
 	}
 
@@ -189,7 +189,8 @@ public class CDARoundTripTests {
 	  Assertions.assertEquals("X-34133-9", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.code")));
 	  Assertions.assertEquals("2.16.840.1.113883.6.1", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.codeSystem")));
 	  Assertions.assertEquals("LOINC", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.code.codeSystemName")));
-	  Assertions.assertEquals("Episode Note", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.title.dataString")));	  
+    Assertions.assertEquals("Episode Note", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.title.xmlText")));   
+    Assertions.assertEquals("Episode Note", fp.evaluateToString(null, cdaExample, cdaExample, cdaExample, fp.parse("ClinicalDocument.title.ofType(CDA.ST).xmlText")));   
 	}
 
 	@Test
