@@ -9,7 +9,7 @@ public class URICodeSystem extends SpecialCodeSystem {
   @Override
   public ConceptDefinitionComponent findConcept(Coding code) {
     if (Utilities.isAbsoluteUrl(code.getCode())) {
-      return new ConceptDefinitionComponent(code.getCode());
+      return new ConceptDefinitionComponent(code.getCode()).setDisplay(code.hasDisplay() ? code.getDisplay() : code.getCode());
     } else {
       return null;
     }
