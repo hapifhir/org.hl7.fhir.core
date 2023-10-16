@@ -397,6 +397,10 @@ public class SnapShotGenerationXTests {
       throw new Error("Not implemented yet");
     }
 
+    @Override
+    public boolean paramIsType(String name, int index) {
+      return false;
+    }
   }
 
   private static FHIRPathEngine fp;
@@ -577,4 +581,6 @@ public class SnapShotGenerationXTests {
     }
     return sd;
   }
+  
+
 }

@@ -100,4 +100,8 @@ public class FHIRPathHostServices implements FHIRPathEngine.IEvaluationContext {
 	return structureMapUtilities.getWorker().fetchResource(ValueSet.class, url);
   }
 
+  @Override
+  public boolean paramIsType(String name, int index) {
+    return false;
+  }
 }

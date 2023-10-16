@@ -804,4 +804,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
   }
 
+
+  @Override
+  public boolean paramIsType(String name, int index) {
+    return false;
+  }
 }

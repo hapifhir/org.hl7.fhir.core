@@ -225,6 +225,12 @@ public abstract class ParserBase {
         return sd;
       }
     }
+    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
+      if (name.equals(sd.getUrl()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+        new ContextUtilities(context).generateSnapshot(sd); 
+        return sd;
+      }
+    }
 	  logError(errors, ValidationMessage.NO_RULE_DATE, line, col, name, IssueType.STRUCTURE, context.formatMessage(I18nConstants.THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, name), IssueSeverity.FATAL);
 	  return null;
   }

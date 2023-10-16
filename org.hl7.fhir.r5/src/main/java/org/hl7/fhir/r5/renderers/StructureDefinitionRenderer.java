@@ -1518,6 +1518,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
               c.addPiece(gen.new Piece(null, "Instances of this logical model cannot be the target of a Reference", null).addStyle("font-weight:bold"));  
             }            
+            String ps = ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_PROFILE_STYLE);
+            if (ps != null) {
+              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+              if ("cda".equals(ps)) {
+                c.addPiece(gen.new Piece(null, "Instances of this type are validated by templateId", null).addStyle("font-weight:bold"));
+              } else {
+                c.addPiece(gen.new Piece(null, "Instances of this type are validated using an unknown approach: "+ps, null).addStyle("font-weight:bold"));
+              }              
+            }
           }
         }
         if (definition != null) {
@@ -3563,6 +3572,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model can be the target of a Reference");        
       } else {
         tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model cannot be the target of a Reference");
+      }
+      String ps = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_PROFILE_STYLE);
+      if (ps != null) {
+        if ("cda".equals(ps)) {
+          tableRow(tbl, "Validation", null, strikethrough, "Instances of this type are validated by templateId");
+        } else {
+          tableRow(tbl, "Validation", null, strikethrough, "Instances of this type are validated using an unknown approach: "+ps);
+        }              
       }
     }
 
