@@ -193,6 +193,7 @@ public class JsonParser extends ParserBase {
   }
 
   private void checkObject(List<ValidationMessage> errors, JsonObject object, Element b, String path) {
+    b.setNativeObject(object);
     checkComments(errors, object, b, path);
     if (policy == ValidationPolicy.EVERYTHING) {
       if (object.getProperties().size() == 0) {

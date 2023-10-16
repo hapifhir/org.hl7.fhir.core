@@ -302,7 +302,7 @@ public class XmlParser extends ParserBase {
 
   public Element parse(List<ValidationMessage> errors, org.w3c.dom.Element base, String type) throws Exception {
     StructureDefinition sd = getDefinition(errors, 0, 0, FormatUtilities.FHIR_NS, type);
-    Element result = new Element(base.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd)).setFormat(FhirFormat.XML);
+    Element result = new Element(base.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd)).setFormat(FhirFormat.XML).setNativeObject(base);
     result.setPath(base.getLocalName());
     String path = "/"+pathPrefix(base.getNamespaceURI())+base.getLocalName();
     checkElement(errors, base, path, result.getProperty(), false);
@@ -431,7 +431,7 @@ public class XmlParser extends ParserBase {
                 }
               }
             }
-            Element n = new Element(property.getName(), property, "xhtml", new XhtmlComposer(XhtmlComposer.XML, false).compose(xhtml)).setXhtml(xhtml).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML);
+            Element n = new Element(property.getName(), property, "xhtml", new XhtmlComposer(XhtmlComposer.XML, false).compose(xhtml)).setXhtml(xhtml).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML).setNativeObject(child);
             n.setPath(element.getPath()+"."+property.getName());
             element.getChildren().add(n);
           } else {
@@ -440,7 +440,7 @@ public class XmlParser extends ParserBase {
             if (!property.isChoice() && !name.equals(property.getName())) {
               name = property.getName();
             }
-            Element n = new Element(name, property).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML);
+            Element n = new Element(name, property).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML).setNativeObject(child);
             if (property.isList()) {
               n.setPath(element.getPath()+"."+property.getName()+"["+repeatCount+"]");    				  
             } else {
@@ -497,7 +497,7 @@ public class XmlParser extends ParserBase {
               
               npath = npath+"/"+pathPrefix(child.getNamespaceURI())+child.getLocalName();
               name = child.getLocalName();
-              Element n = new Element(name, property).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML);
+              Element n = new Element(name, property).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML).setNativeObject(child);
               cgn.getChildren().add(n);
               n.setPath(element.getPath()+"."+property.getName());
               checkElement(errors, (org.w3c.dom.Element) child, npath, n.getProperty(), false);
@@ -524,7 +524,7 @@ public class XmlParser extends ParserBase {
         
         npath = npath+"/text()";
         name = mtProp.getName();
-        Element n = new Element(name, mtProp, mtProp.getType(), child.getTextContent().trim()).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML);
+        Element n = new Element(name, mtProp, mtProp.getType(), child.getTextContent().trim()).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML).setNativeObject(child);
         cgn.getChildren().add(n);
         n.setPath(element.getPath()+"."+mtProp.getName());
 
