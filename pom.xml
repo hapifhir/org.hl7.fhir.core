@@ -343,6 +343,7 @@
                             <java.locale.providers>COMPAT</java.locale.providers>
                         </systemPropertyVariables>
                         <redirectTestOutputToFile>false</redirectTestOutputToFile>
+                        <excludedGroups>excludedInSurefire</excludedGroups>
                     </configuration>
                 </plugin>
 
