@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.utils.sql;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,20 +25,20 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 public class Validator {
-  
+
   private IWorkerContext context;
   private FHIRPathEngine fpe;
   private List<String> prohibitedNames = new ArrayList<String>();
   private List<ValidationMessage> issues = new ArrayList<ValidationMessage>();
-  private boolean arrays;
-  private boolean complexTypes;
-  private boolean needsName;
+  private Boolean arrays;
+  private Boolean complexTypes;
+  private Boolean needsName;
 
   private String resourceName;
   private List<Column> columns = new ArrayList<Column>();
   private String name;
 
-  protected Validator(IWorkerContext context, FHIRPathEngine fpe, List<String> prohibitedNames, boolean arrays, boolean complexTypes, boolean needsName) {
+  public Validator(IWorkerContext context, FHIRPathEngine fpe, List<String> prohibitedNames, Boolean arrays, Boolean complexTypes, Boolean needsName) {
     super();
     this.context = context;
     this.fpe = fpe;
@@ -58,7 +59,9 @@ public class Validator {
   public void checkViewDefinition(String path, JsonObject viewDefinition) {
     JsonElement nameJ = viewDefinition.get("name");
     if (nameJ == null) {
-      if (needsName) {
+      if (needsName == null) {
+        hint(path, viewDefinition, "No name provided. A name is required in many contexts where a ViewDefinition is used");        
+      } else if (needsName) {
         error(path, viewDefinition, "No name provided", IssueType.REQUIRED);
       }
     } else if (!(nameJ instanceof JsonString)) {
@@ -122,119 +125,201 @@ public class Validator {
   }
 
   private void checkSelect(String path, JsonObject select, TypeDetails t) {
-    if (select.has("path")) {
-      checkSelectPath(path, select, select.get("path"), t);
-    } else if (select.has("forEach")) {
-      checkForEach(path, select, select.get("forEach"), t);
+
+    if (select.has("forEach")) {
+      t = checkForEach(path, select, select.get("forEach"), t);
     } else if (select.has("forEachOrNull")) {
-      checkForEachOrNull(path, select, select.get("forEachOrNull"), t);
-    } else if (select.has("union")) {
-      checkUnion(path, select, select.get("union"), t);
-    } else {
-      error(path, select, "The select has neither a path, forEach, forEachOrNull, or union statement", IssueType.REQUIRED);
+      t = checkForEachOrNull(path, select, select.get("forEachOrNull"), t);
+    } 
+
+    if (t != null) {
+      boolean content = false;
+
+      if (select.has("union")) {
+        content = checkUnion(path, select, select.get("union"), t);
+      } 
+      
+      if (select.has("column")) {
+        JsonElement a = select.get("column");
+        if (!(a instanceof JsonArray)) {
+          error(path+".column", a, "column is not an array", IssueType.INVALID);
+        } else {
+          content = true;
+          int i = 0;
+          for (JsonElement e : ((JsonArray) a)) {
+            if (!(e instanceof JsonObject)) {
+              error(path+".column["+i+"]", a, "column["+i+"] is a "+e.type().toName()+" not an object", IssueType.INVALID);
+            } else { 
+              checkColumn(path+".column["+i+"]", (JsonObject) e, t);
+            }
+          }      
+        }     
+      }
+
+      if (select.has("select")) {
+        JsonElement a = select.get("select");
+        if (!(a instanceof JsonArray)) {
+          error(path+".select", a, "select is not an array", IssueType.INVALID);
+        } else {
+          content = true;
+          int i = 0;
+          for (JsonElement e : ((JsonArray) a)) {
+            if (!(e instanceof JsonObject)) {
+              error(path+".select["+i+"]", e, "select["+i+"] is not an object", IssueType.INVALID);
+            } else { 
+              checkSelect(path+".select["+i+"]", (JsonObject) e, t);
+            }
+          }      
+        }     
+      }
+
+      if (!content) {
+        error(path, select, "The select has no columns or selects", IssueType.REQUIRED);
+      }
     }
   }
 
-  private void checkSelectPath(String path, JsonObject select, JsonElement expression, TypeDetails t) {
-    if (!(expression instanceof JsonString)) {
-      error(path+".forEach", expression, "forEach is not a string", IssueType.INVALID);
-    } else {
-      String expr = expression.asString();
 
-      List<String> warnings = new ArrayList<>();
-      TypeDetails td = null;
-      ExpressionNode node = null;
-      try {
-        node = fpe.parse(expr);
-        select.setUserData("path", node);
-        td = fpe.checkOnTypes(null, resourceName, t, node, warnings);
-      } catch (Exception e) {
-        error(path, expression, e.getMessage(), IssueType.INVALID);
+  private boolean checkUnion(String path, JsonObject focus, JsonElement expression,  TypeDetails t) {
+    JsonElement a = focus.get("union");
+    if (!(a instanceof JsonArray)) {
+      error(path+".union", a, "union is not an array", IssueType.INVALID);
+      return false;
+    } else {      
+      int i = 0;
+      for (JsonElement e : ((JsonArray) a)) {
+        if (!(e instanceof JsonObject)) {
+          error(path+".union["+i+"]", e, "union["+i+"] is not an object", IssueType.INVALID);
+        } else { 
+          checkSelect(path+".union["+i+"]", (JsonObject) e, t);
+        }
+      }  
+      if (i < 2) {
+        warning(path+".union", a, "union should have more than one item");        
       }
-      if (td != null && node != null) {
-        for (String s : warnings) {
-          warning(path+".path", expression, s);
-        }
-        String columnName = null;
-        JsonElement aliasJ = select.get("alias");
-        if (aliasJ != null) {
-          if (aliasJ instanceof JsonString) {
-            columnName = aliasJ.asString();
-            if (!isValidName(columnName)) {      
-              error(path+".name", aliasJ, "The name '"+columnName+"' is not valid", IssueType.VALUE);
-            }
-          } else {
-            error(path+".alias", aliasJ, "alias must be a string", IssueType.INVALID);
-          }
-        }
-        if (columnName == null) {
-          List<String> names = node.getDistalNames();
-          if (names.size() == 1 && names.get(0) != null) {
-            columnName = names.get(0);
-            if (!isValidName(columnName)) {      
-              error(path+".path", expression, "The name '"+columnName+"' found in the path expression is not a valid column name, so an alias is required", IssueType.INVARIANT);
-            }
-          } else {
-            error(path, select, "The path does not resolve to a name, so an alias is required", IssueType.REQUIRED);
-          }
-        }
-        // ok, name is sorted!
-        if (columnName != null) {
-          select.setUserData("name", columnName);
-          boolean isColl = (td.getCollectionStatus() != CollectionStatus.SINGLETON) || column(columnName) != null;
-          if (select.has("collection")) {
-            JsonElement collectionJ = select.get("collection");
-            if (!(collectionJ instanceof JsonBoolean)) {
-              error(path+".collection", collectionJ, "collection is not a boolean", IssueType.INVALID);
-            } else {
-              boolean collection = collectionJ.asJsonBoolean().asBoolean();
-              if (!collection && isColl) {
-                isColl = false;
-                warning(path, select, "collection is false, but the path statement(s) might return multiple values for the column '"+columnName+"' some inputs");
-              }
-            }
-          }
-          if (isColl && !arrays) {
-            warning(path, expression, "column appears to be a collection, but this is not allowed in this context");
-          }
-          // ok collection is sorted
-          Set<String> types = new HashSet<>();
-          for (String type : td.getTypes()) {
-            types.add(simpleType(type));
-          }
+      return true;
+    }     
+  }
+  
+  private void checkColumn(String path, JsonObject column, TypeDetails t) {
+    if (!column.has("path")) {
+      error(path, column, "no path found", IssueType.INVALID);      
+    } else {
+      JsonElement expression = column.get("path"); 
+      if (!(expression instanceof JsonString)) {
+        error(path+".forEach", expression, "forEach is not a string", IssueType.INVALID);
+      } else {
+        String expr = expression.asString();
 
-          JsonElement typeJ = select.get("type");
-          if (typeJ != null) {
-            if (typeJ instanceof JsonString) {
-              String type = typeJ.asString();
-              if (!td.hasType(type)) {
-                error(path+".type", typeJ, "The path expression does not return a value of the type '"+type, IssueType.VALUE);
-              } else {
-                types.clear();
-                types.add(simpleType(type));
+        List<String> warnings = new ArrayList<>();
+        TypeDetails td = null;
+        ExpressionNode node = null;
+        try {
+          node = fpe.parse(expr);
+          column.setUserData("path", node);
+          td = fpe.checkOnTypes(null, resourceName, t, node, warnings);
+        } catch (Exception e) {
+          error(path, expression, e.getMessage(), IssueType.INVALID);
+        }
+        if (td != null && node != null) {
+          for (String s : warnings) {
+            warning(path+".path", expression, s);
+          }
+          String columnName = null;
+          JsonElement aliasJ = column.get("alias");
+          if (aliasJ != null) {
+            if (aliasJ instanceof JsonString) {
+              columnName = aliasJ.asString();
+              if (!isValidName(columnName)) {      
+                error(path+".name", aliasJ, "The name '"+columnName+"' is not valid", IssueType.VALUE);
               }
             } else {
-              error(path+".type", typeJ, "type must be a string", IssueType.INVALID);
+              error(path+".alias", aliasJ, "alias must be a string", IssueType.INVALID);
             }
           }
-          if (types.size() != 1) {
-            error(path, select, "Unable to determine a type (found "+td.describe()+")", IssueType.BUSINESSRULE);
-          } else {
-            String type = types.iterator().next();
-            if (!isSimpleType(type) && !complexTypes) {
-              error(path, expression, "column is a complex type but this is not allowed in this context", IssueType.BUSINESSRULE);
+          if (columnName == null) {
+            List<String> names = node.getDistalNames();
+            if (names.size() == 1 && names.get(0) != null) {
+              columnName = names.get(0);
+              if (!isValidName(columnName)) {      
+                error(path+".path", expression, "The name '"+columnName+"' found in the path expression is not a valid column name, so an alias is required", IssueType.INVARIANT);
+              }
             } else {
-              Column col = column(columnName);
-              if (col != null) {
-                if (!col.getType().equals(type)) {
-                  error(path, expression, "Duplicate definition for "+columnName+" has different types ("+col.getType()+" vs "+type+")", IssueType.BUSINESSRULE);
+              error(path, column, "The path does not resolve to a name, so an alias is required", IssueType.REQUIRED);
+            }
+          }
+          // ok, name is sorted!
+          if (columnName != null) {
+            column.setUserData("name", columnName);
+            boolean isColl = (td.getCollectionStatus() != CollectionStatus.SINGLETON) || column(columnName) != null;
+            if (column.has("collection")) {
+              JsonElement collectionJ = column.get("collection");
+              if (!(collectionJ instanceof JsonBoolean)) {
+                error(path+".collection", collectionJ, "collection is not a boolean", IssueType.INVALID);
+              } else {
+                boolean collection = collectionJ.asJsonBoolean().asBoolean();
+                if (!collection && isColl) {
+                  isColl = false;
+                  warning(path, column, "collection is false, but the path statement(s) might return multiple values for the column '"+columnName+"' some inputs");
                 }
-                if (col.isColl() != isColl) {
-                  error(path, expression, "Duplicate definition for "+columnName+" has different status for collection ("+col.isColl()+" vs "+isColl+")", IssueType.BUSINESSRULE);
+              }
+            }
+            if (isColl) {
+              if (arrays == null) {
+                warning(path, expression, "column appears to be a collection. Collections are not supported in all Runners");
+              } else if (!arrays) {
+                warning(path, expression, "column appears to be a collection, but this is not allowed in this context");
+              }
+            }
+            // ok collection is sorted
+            Set<String> types = new HashSet<>();
+            for (String type : td.getTypes()) {
+              types.add(simpleType(type));
+            }
+
+            JsonElement typeJ = column.get("type");
+            if (typeJ != null) {
+              if (typeJ instanceof JsonString) {
+                String type = typeJ.asString();
+                if (!td.hasType(type)) {
+                  error(path+".type", typeJ, "The path expression does not return a value of the type '"+type, IssueType.VALUE);
+                } else {
+                  types.clear();
+                  types.add(simpleType(type));
                 }
               } else {
-                columns.add(new Column(columnName, isColl, type, kindForType(type)));
+                error(path+".type", typeJ, "type must be a string", IssueType.INVALID);
+              }
+            }
+            if (types.size() != 1) {
+              error(path, column, "Unable to determine a type (found "+td.describe()+")", IssueType.BUSINESSRULE);
+            } else {
+              String type = types.iterator().next();
+              boolean ok = false;
+              if (!isSimpleType(type)) {
+                if (complexTypes) {
+                  warning(path, expression, "Column is a complex type. This is not supported in some Runners");
+                } else if (!complexTypes) {            
+                  error(path, expression, "Column is a complex type but this is not allowed in this context", IssueType.BUSINESSRULE);
+                } else {
+                  ok = true;
+                }
+              } else {
+                ok = true;
+              }
+              if (ok) {
+                Column col = column(columnName);
+                if (col != null) {
+                  if (!col.getType().equals(type)) {
+                    error(path, expression, "Duplicate definition for "+columnName+" has different types ("+col.getType()+" vs "+type+")", IssueType.BUSINESSRULE);
+                  }
+                  if (col.isColl() != isColl) {
+                    error(path, expression, "Duplicate definition for "+columnName+" has different status for collection ("+col.isColl()+" vs "+isColl+")", IssueType.BUSINESSRULE);
+                  }
+                } else {
+                  columns.add(new Column(columnName, isColl, type, kindForType(type)));
 
+                }
               }
             }
           }
@@ -295,9 +380,10 @@ public class Validator {
     return type;
   }
 
-  private void checkForEach(String path, JsonObject focus, JsonElement expression, TypeDetails t) {
+  private TypeDetails checkForEach(String path, JsonObject focus, JsonElement expression, TypeDetails t) {
     if (!(expression instanceof JsonString)) {
       error(path+".forEach", expression, "forEach is not a string", IssueType.INVALID);
+      return null;
     } else {
       String expr = expression.asString();
 
@@ -312,28 +398,36 @@ public class Validator {
       }
       if (td != null) {
         for (String s : warnings) {
-          warning(path+".path", expression, s);
-        }
-        int i = 0;
-        if (checkAllObjects(path, focus, "select")) {
-          for (JsonObject select : focus.getJsonObjects("select")) {
-            checkSelect(path+".select["+i+"]", select, td);
-            i++;
-          }
-          if (i == 0) {
-            error(path, focus, "No select statements found", IssueType.REQUIRED);
-          }
+          warning(path+".forEach", expression, s);
         }
       }
+      return td;
     }
   }
 
-  private void checkForEachOrNull(String path, JsonObject focus, JsonElement expression, TypeDetails t) {
-    error(path+".forEachOrNull", expression, "forEachOrNull is not supported", IssueType.BUSINESSRULE);    
-  }
+  private TypeDetails checkForEachOrNull(String path, JsonObject focus, JsonElement expression, TypeDetails t) {
+    if (!(expression instanceof JsonString)) {
+      error(path+".forEachOrNull", expression, "forEachOrNull is not a string", IssueType.INVALID);
+      return null;
+    } else {
+      String expr = expression.asString();
 
-  private void checkUnion(String path, JsonObject focus, JsonElement expression,  TypeDetails t) {
-    error(path+".union", focus.get("union"), "union is not supported", IssueType.BUSINESSRULE);        
+      List<String> warnings = new ArrayList<>();
+      TypeDetails td = null;
+      try {
+        ExpressionNode n = fpe.parse(expr);
+        focus.setUserData("forEachOrNull", n);
+        td = fpe.checkOnTypes(null, resourceName, t, n, warnings);
+      } catch (Exception e) {
+        error(path, expression, e.getMessage(), IssueType.INVALID);
+      }
+      if (td != null) {
+        for (String s : warnings) {
+          warning(path+".forEachOrNull", expression, s);
+        }
+      }
+      return td;
+    }
   }
 
   private void checkConstant(String path, JsonObject constant) {
@@ -481,27 +575,40 @@ public class Validator {
     issues.add(vm);
   }
 
-  public void dump() {
-   for (ValidationMessage vm : issues) {
-     System.out.println(vm.summary());
-   }
-    
+  private void hint(String path, JsonElement e, String issue) {
+    ValidationMessage vm = new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, e.getStart().getLine(), e.getStart().getCol(), path, issue, IssueSeverity.INFORMATION);
+    issues.add(vm);
   }
 
-  public void check() {
+  public void dump() {
+    for (ValidationMessage vm : issues) {
+      System.out.println(vm.summary());
+    }
+
+  }
+
+  public void check() {    
+    if (!isOk()) {
+      throw new FHIRException("View Definition is not valid");
+    }
+
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public List<ValidationMessage> getIssues() {
+    return issues;
+  }
+
+  public boolean isOk() {
     boolean ok = true;
     for (ValidationMessage vm : issues) {
       if (vm.isError()) {
         ok = false;
       }
     }
-    if (!ok) {
-      throw new FHIRException("View Definition is not valid");
-    }
-     
-  }
-
-  public String getName() {
-    return name;
+    return ok;
   }
 }

@@ -337,6 +337,11 @@ public class ValidatorCli {
         res.add("5.0");
         res.add("-ig");
         res.add("hl7.cda.uv.core#2.1.0-draft1");
+      } else if (a.equals("-view-definition")) {
+        res.add("-version");
+        res.add("5.0");
+        res.add("-ig");
+        res.add("hl7.fhir.uv.sql-on-fhir#current");
       } else {
         res.add(a);
       }

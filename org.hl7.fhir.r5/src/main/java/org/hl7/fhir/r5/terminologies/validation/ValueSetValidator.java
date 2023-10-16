@@ -1265,7 +1265,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   public boolean validateCodeInConceptList(String code, CodeSystem def, List<ConceptDefinitionComponent> list, AlternateCodesProcessingRules altCodeRules) {
     opContext.deadCheck();
-    if (def.getCaseSensitive()) {
+    if (def.hasUserData("tx.cs.special")) {
+      return ((SpecialCodeSystem) def.getUserData("tx.cs.special")).findConcept(new Coding().setCode(code)) != null; 
+    } else if (def.getCaseSensitive()) {
       for (ConceptDefinitionComponent cc : list) {
         if (cc.getCode().equals(code)) { 
           return true;

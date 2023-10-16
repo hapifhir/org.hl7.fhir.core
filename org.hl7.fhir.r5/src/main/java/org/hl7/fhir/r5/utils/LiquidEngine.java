@@ -853,4 +853,8 @@ public class LiquidEngine implements IEvaluationContext {
     return replaced;
   }
 
+  @Override
+  public boolean paramIsType(String name, int index) {
+    return false;
+  }
 }

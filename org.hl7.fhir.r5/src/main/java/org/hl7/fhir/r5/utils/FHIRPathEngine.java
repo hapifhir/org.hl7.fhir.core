@@ -33,6 +33,7 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DateTimeType;
@@ -203,6 +204,13 @@ public class FHIRPathEngine {
      * return the value set referenced by the url, which has been used in memberOf()
      */
     public ValueSet resolveValueSet(Object appContext, String url);
+    
+    /**
+     * For the moment, there can only be one parameter if it's a type parameter 
+     * @param name
+     * @return true if it's a type parameter 
+     */
+    public boolean paramIsType(String name, int index);
   }
 
   /**
@@ -3162,7 +3170,7 @@ public class FHIRPathEngine {
   @SuppressWarnings("unchecked")
   private TypeDetails evaluateFunctionType(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, Set<ElementDefinition> elementDependencies,  ExpressionNode container) throws PathEngineException, DefinitionException {
     List<TypeDetails> paramTypes = new ArrayList<TypeDetails>();
-    if (exp.getFunction() == Function.Is || exp.getFunction() == Function.As || exp.getFunction() == Function.OfType) {
+    if (exp.getFunction() == Function.Is || exp.getFunction() == Function.As || exp.getFunction() == Function.OfType || (exp.getFunction() == Function.Custom && hostServices.paramIsType(exp.getName(), 0))) {
       paramTypes.add(new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
     } else if (exp.getFunction() == Function.Repeat && exp.getParameters().size() == 1) {
       TypeDetails base = TypeDetails.empty();
@@ -3793,8 +3801,22 @@ public class FHIRPathEngine {
 
     case Custom: { 
       List<List<Base>> params = new ArrayList<List<Base>>();
-      for (ExpressionNode p : exp.getParameters()) {
-        params.add(execute(context, focus, p, true));
+      if (hostServices.paramIsType( exp.getName(), 0)) {
+        if (exp.getParameters().size() > 0) {
+          String tn;
+          if (exp.getParameters().get(0).getInner() != null) {
+            tn = exp.getParameters().get(0).getName()+"."+exp.getParameters().get(0).getInner().getName();
+          } else {
+            tn = "FHIR."+exp.getParameters().get(0).getName();
+          }
+          List<Base> p = new ArrayList<>();
+          p.add(new CodeType(tn));
+          params.add(p);
+        }
+      } else {
+        for (ExpressionNode p : exp.getParameters()) {
+          params.add(execute(context, focus, p, true));
+        }
       }
       return hostServices.executeFunction(context.appInfo, focus, exp.getName(), params);
     }

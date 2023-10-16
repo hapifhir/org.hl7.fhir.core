@@ -160,6 +160,7 @@ import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.TypedElementDefinition;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.sql.Validator;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
@@ -427,6 +428,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return null;
       }
       return context.fetchResource(ValueSet.class, url);
+    }
+
+    @Override
+    public boolean paramIsType(String name, int index) {
+      return false;
     }
 
   }
@@ -5379,6 +5385,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return new StructureMapValidator(this, fpe, profileUtilities).validateStructureMap(errors, element, stack) && ok;
       } else if (element.getType().equals("ValueSet")) {
         return new ValueSetValidator(this).validateValueSet(errors, element, stack) && ok;
+      } else if ("http://hl7.org/fhir/uv/sql-on-fhir/StructureDefinition/ViewDefinition".equals(element.getProperty().getStructure().getUrl())) {
+        if (element.getNativeObject() != null && element.getNativeObject() instanceof JsonObject) {
+          JsonObject json = (JsonObject) element.getNativeObject();
+          Validator sqlv = new Validator(context, fpe, new ArrayList<>(), null, null, null);
+          sqlv.checkViewDefinition(stack.getLiteralPath(), json);
+          errors.addAll(sqlv.getIssues());
+          ok = sqlv.isOk() && ok;
+        } 
+        return ok;        
       } else {
         return ok;
       }

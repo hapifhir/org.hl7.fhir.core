@@ -155,7 +155,7 @@ public class PackageVisitor {
     System.out.println("Go: "+cpidMap.size()+" current packages");
     int i = 0;
     for (String s : cpidMap.keySet()) {
-      processCurrentPackage(s, cpidMap.get(s), cpidSet, i, cpidMap.size()); 
+      processCurrentPackage(cpidMap.get(s), s, cpidSet, i, cpidMap.size()); 
       i++;
     }
 
@@ -266,12 +266,20 @@ public class PackageVisitor {
   }
 
   private Map<String, String> getAllCIPackages() throws IOException {
+    System.out.println("Fetch https://build.fhir.org/ig/qas.json");
     Map<String, String> res = new HashMap<>();
     if (current) {
       JsonArray json = (JsonArray) JsonParser.parseFromUrl("https://build.fhir.org/ig/qas.json");
       for (JsonObject o  : json.asJsonObjects()) {
         String url = o.asString("repo");
-        res.put(url, o.asString("package-id"));
+        String pid = o.asString("package-id");
+        if (url.contains("/branches/master") || url.contains("/branches/main") ) {
+          if (!res.containsKey(pid)) {
+            res.put(pid, url);
+          } else if (!url.equals(res.get(pid))) {
+            System.out.println("Ignore "+url+" already encountered "+pid +" @ "+res.get(pid));
+          }
+        }
       }
     }
     return res;

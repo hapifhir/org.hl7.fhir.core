@@ -111,7 +111,11 @@ public class Runner implements IEvaluationContext {
       }
       if (ok) {
         List<List<Cell>> rows = new ArrayList<>();
-        generateCells(b, vd, rows);
+        rows.add(new ArrayList<Cell>());
+
+        for (JsonObject select : vd.getJsonObjects("select")) {
+          executeSelect(select, b, rows);
+        }
         for (List<Cell> row : rows) {
           storage.addRow(store, row);
         }
@@ -119,46 +123,45 @@ public class Runner implements IEvaluationContext {
     }
     storage.finish(store);
   }
-
-  private void generateCells(Base bl, JsonObject vd, List<List<Cell>> rows) {
-    if (vd.has("forEach")) {
-      executeForEach(vd, bl, rows);
-    } else if (vd.has("forEachOrNull")) {
-      executeForEachOrNull(vd, bl, rows);
-    } else if (vd.has("union")) {
-      executeUnion(vd, bl, rows);
-    } else {
-      for (JsonObject select : vd.getJsonObjects("select")) {
-        executeSelect(select, bl, rows);
-      }
-    }
-  }
   
-  private void executeSelect(JsonObject select, Base bl, List<List<Cell>> rows) {
-    if (select.has("path")) {
-      executeSelectPath(select, bl, rows);
-    } else if (select.has("forEach")) {
-      executeForEach(select, bl, rows);
+  private void executeSelect(JsonObject select, Base b, List<List<Cell>> rows) {
+    List<Base> focus = new ArrayList<>();
+    
+    if (select.has("forEach")) {
+      focus.addAll(executeForEach(select, b));
     } else if (select.has("forEachOrNull")) {
-      executeForEachOrNull(select, bl, rows);
-    } else if (select.has("union")) {
-      executeUnion(select, bl, rows);
+      focus.addAll(executeForEachOrNull(select, b));  
+    } else {
+      focus.add(b);
     }
-  }
 
-  private void executeForEach(JsonObject focus, Base b, List<List<Cell>> rows) {
-    ExpressionNode n = (ExpressionNode) focus.getUserData("forEach");
-    List<Base> bl2 = fpe.evaluate(b, n);
+//  } else if (select.has("union")) {
+//    focus.addAll(executeUnion(select, b));
+
     List<List<Cell>> tempRows = new ArrayList<>();
     tempRows.addAll(rows);
     rows.clear();
-    for (Base b2 : bl2) {
-      List<List<Cell>> rowsToAdd = cloneRows(tempRows);    
-      for (JsonObject select : focus.getJsonObjects("select")) {
-        executeSelect(select, b2, rowsToAdd);
+
+    for (Base f : focus) {
+      List<List<Cell>> rowsToAdd = cloneRows(tempRows);  
+
+      for (JsonObject column : select.getJsonObjects("column")) {
+        executeColumn(column, f, rowsToAdd);
+      }
+
+      for (JsonObject sub : select.getJsonObjects("union")) {
+        executeSelect(sub, f, rowsToAdd);
+      }
+      
+      for (JsonObject sub : select.getJsonObjects("select")) {
+        executeSelect(sub, f, rowsToAdd);
       }
       rows.addAll(rowsToAdd);
     }
+  }
+
+  private List<Base> executeUnion(JsonObject focus,  Base b, List<List<Cell>> rows) {
+    throw new FHIRException("union is not supported");   
   }
 
   private List<List<Cell>> cloneRows(List<List<Cell>> rows) {
@@ -176,30 +179,38 @@ public class Runner implements IEvaluationContext {
     }
     return list;
   }
-  
-  private void executeForEachOrNull(JsonObject focus, Base b, List<List<Cell>> rows) {
-    throw new FHIRException("forEachOrNull is not supported");   
+
+  private List<Base> executeForEach(JsonObject focus, Base b) {
+    ExpressionNode n = (ExpressionNode) focus.getUserData("forEach");
+    List<Base> result = new ArrayList<>();
+    result.addAll(fpe.evaluate(b, n));
+    return result;  
   }
 
-  private void executeUnion(JsonObject focus,  Base b, List<List<Cell>> rows) {
-    throw new FHIRException("union is not supported");   
+  private List<Base> executeForEachOrNull(JsonObject focus, Base b) {
+    ExpressionNode n = (ExpressionNode) focus.getUserData("forEachOrNull");
+    List<Base> result = new ArrayList<>();
+    result.addAll(fpe.evaluate(b, n));
+    if (result.size() == 0) {
+      result.add(null);
+    }
+    return result;  
   }
 
-
-  private void executeSelectPath(JsonObject select, Base b, List<List<Cell>> rows) {
-    ExpressionNode n = (ExpressionNode) select.getUserData("path");
-    List<Base> bl2 = fpe.evaluate(b, n);
-    String name = select.getUserString("name");
-    if (!bl2.isEmpty()) {
-      if (rows.isEmpty()) {
-        rows.add(new ArrayList<Cell>());
-      }
-      for (List<Cell> row : rows) {
-        Cell c = cell(row, name);
-        if (c == null) {
-          c = new Cell(column(name));
-          row.add(c);
-        }
+  private void executeColumn(JsonObject column, Base b, List<List<Cell>> rows) {
+    ExpressionNode n = (ExpressionNode) column.getUserData("path");
+    List<Base> bl2 = new ArrayList<>();
+    if (b != null) {
+      bl2.addAll(fpe.evaluate(b, n));
+    }
+    String name = column.getUserString("name");
+    for (List<Cell> row : rows) {
+      Cell c = cell(row, name);
+      if (c == null) {
+        c = new Cell(column(name));
+        row.add(c);
+      }      
+      if (!bl2.isEmpty()) {
         if (bl2.size() + c.getValues().size() > 1) {
           // this is a problem if collection != true or if the storage can't deal with it 
           // though this should've been picked up before now - but there are circumstances where it wouldn't be
@@ -209,14 +220,6 @@ public class Runner implements IEvaluationContext {
         }
         for (Base b2 : bl2) {
           c.getValues().add(genValue(c.getColumn(), b2));
-        }
-      }
-    } else {
-      for (List<Cell> row : rows) {
-        Cell c = cell(row, name);
-        if (c == null) {
-          c = new Cell(column(name));
-          row.add(c);
         }
       }
     }
@@ -376,6 +379,9 @@ public class Runner implements IEvaluationContext {
     String rt = null;
     if (parameters.size() > 0) {
       rt = parameters.get(0).get(0).primitiveValue();
+      if (rt.startsWith("FHIR.")) {
+        rt = rt.substring(5);
+      }
     }
     List<Base> base = new ArrayList<Base>();
     if (focus.size() == 1) {
@@ -426,6 +432,10 @@ public class Runner implements IEvaluationContext {
   @Override
   public ValueSet resolveValueSet(Object appContext, String url) {
     throw new Error("Not implemented yet: resolveValueSet");
+  }
+  @Override
+  public boolean paramIsType(String name, int index) {
+    return "getReferenceKey".equals(name);
   }
 
 

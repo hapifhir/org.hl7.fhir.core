@@ -308,4 +308,9 @@ public class ComparisonRenderer implements IEvaluationContext {
     return null;
   }
 
+  @Override
+  public boolean paramIsType(String name, int index) {
+    return false;
+  }
+
 }
