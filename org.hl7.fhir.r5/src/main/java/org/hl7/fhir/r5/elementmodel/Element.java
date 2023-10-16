@@ -132,6 +132,7 @@ public class Element extends Base implements NamedItem {
   private Base source;
   private boolean ignorePropertyOrder;
   private FhirFormat format;
+  private Object nativeObject;
 
 	public Element(String name) {
 		super();
@@ -1475,6 +1476,15 @@ public class Element extends Base implements NamedItem {
 
   public Element setFormat(FhirFormat format) {
     this.format = format;
+    return this;
+  }
+
+  public Object getNativeObject() {
+    return nativeObject;
+  }
+
+  public Element setNativeObject(Object nativeObject) {
+    this.nativeObject = nativeObject;
     return this;
   }
 
