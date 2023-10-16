@@ -6,7 +6,7 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 public class MyIgnorableTest {
 
   @Test
-
+  @Tag("excludedInSurefire")
   public void testMe() {
     System.out.println("You have tested me.");
   }
