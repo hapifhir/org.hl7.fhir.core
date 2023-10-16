@@ -145,6 +145,17 @@ public class JsonObject extends JsonElement {
     }
   }
 
+  public JsonObject set(String name, long value) throws JsonException {
+    check(name != null, "Name is null");
+    JsonProperty p = propMap.get(name);
+    if (p != null) {
+      p.setValue(new JsonNumber(value));
+      return this;
+    } else {
+      return add(name, new JsonNumber(value));
+    }
+  }
+
   public JsonElement get(String name) {
     if (propMap.containsKey(name)) {
       return propMap.get(name).getValue();
