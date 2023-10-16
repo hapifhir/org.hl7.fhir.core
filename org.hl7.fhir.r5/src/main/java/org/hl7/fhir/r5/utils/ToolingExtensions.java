@@ -257,6 +257,7 @@ public class ToolingExtensions {
   public static final String EXT_NO_BINDING = "http://hl7.org/fhir/tools/StructureDefinition/no-binding";
   public static final String EXT_ID_CHOICE_GROUP = "http://hl7.org/fhir/tools/StructureDefinition/xml-choice-group";
   public static final String EXT_DATE_RULES = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-rules";
+  public static final String EXT_PROFILE_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/type-profile-style";
   
   // specific extension helpers
 
