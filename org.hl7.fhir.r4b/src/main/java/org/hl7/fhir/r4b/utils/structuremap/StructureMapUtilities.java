@@ -1314,16 +1314,73 @@ public class StructureMapUtilities {
     }
   }
 
+  public static <T> List<List<T>> CartesianProduct(List<List<T>> input)
+  {
+    if (input.isEmpty())
+      return input;
+
+    var result = new ArrayList<List<T>>();
+    if (input.size() == 1){
+      // return a new list for each element
+      for (T item : input.get(0)){
+        List<T> newList = new ArrayList<T>();
+        newList.add(item);
+        result.add(newList);
+      }
+      return result;
+    }
+
+    List<T> left = input.get(0);
+    List<List<T>> right = CartesianProduct(input.subList(1, input.size()));
+
+    if (left.isEmpty()){
+      // Just return the right side
+      for (List<T> r : right){
+        List<T> newList = new ArrayList<T>();
+        newList.addAll(r);
+        result.add(newList);
+      }
+    }
+    for (T l : left){
+      if (right.isEmpty()){
+        // no more in the next collection, so just add this one
+        List<T> newList = new ArrayList<T>();
+        newList.add(l);
+        result.add(newList);
+      }
+
+      for (List<T> r : right){
+        List<T> newList = new ArrayList<T>();
+        newList.add(l);
+        newList.addAll(r);
+        result.add(newList);
+      }
+    }
+    return result;
+  }
+
   private void executeRule(String indent, TransformContext context, StructureMap map, Variables vars,
       StructureMapGroupComponent group, StructureMapGroupRuleComponent rule, boolean atRoot) throws FHIRException {
     log(indent + "rule : " + rule.getName() + "; vars = " + vars.summary());
-    Variables srcVars = vars.copy();
+    if (rule.getSource().size() == 0)
+      throw new FHIRException("Rule \"" + rule.getName() + "\": has no sources");
     if (rule.getSource().size() != 1)
-      throw new FHIRException("Rule \"" + rule.getName() + "\": not handled yet");
-    List<Variables> source = processSource(rule.getName(), context, srcVars, rule.getSource().get(0), map.getUrl(),
-        indent);
-    if (source != null) {
-      for (Variables v : source) {
+      log(indent + "rule : " + rule.getName() + " has " + Integer.toString(rule.getSource().size()) + " sources - generating cartesian product");
+
+    List<List<Variable>> sourceVariables = new ArrayList<List<Variable>>();
+    for (StructureMapGroupRuleSourceComponent ruleSource : rule.getSource()){
+      List<Variable> source2 = processSource(rule.getName(), context, vars, ruleSource, map.getUrl(), indent);
+      sourceVariables.add(source2);
+    }
+    // https://www.hl7.org/fhir/mapping-language.html#7.8.0.8.1
+    var cartesianProduct = CartesianProduct(sourceVariables);
+
+    for (var sourceVars : cartesianProduct){
+      Variables v = new Variables(vars);
+      for (var sv : sourceVars){
+        v.add(sv.getMode(), sv.getName(), sv.getObject());
+      }
+      {
         for (StructureMapGroupRuleTargetComponent t : rule.getTarget()) {
           processTarget(rule.getName(), context, v, map, group, t,
               rule.getSource().size() == 1 ? rule.getSourceFirstRep().getVariable() : null, atRoot, vars);
@@ -1621,7 +1678,7 @@ public class StructureMapUtilities {
     return res;
   }
 
-  private List<Variables> processSource(String ruleId, TransformContext context, Variables vars,
+  private List<Variable> processSource(String ruleId, TransformContext context, Variables vars,
       StructureMapGroupRuleSourceComponent src, String pathForErrors, String indent) throws FHIRException {
     List<Base> items;
     if (src.getContext().equals("@search")) {
@@ -1703,7 +1760,7 @@ public class StructureMapUtilities {
       for (Base item : items)
         b.appendIfNotNull(fpe.evaluateToString(vars, null, null, item, expr));
       if (b.length() > 0)
-        services.log(b.toString());
+        log(b.toString());
     }
 
     if (src.hasListMode() && !items.isEmpty()) {
@@ -1734,12 +1791,12 @@ public class StructureMapUtilities {
       case NULL:
       }
     }
-    List<Variables> result = new ArrayList<Variables>();
+    List<Variable> result = new ArrayList<Variable>();
     for (Base r : items) {
-      Variables v = vars.copy();
       if (src.hasVariable())
-        v.add(VariableMode.INPUT, src.getVariable(), r);
-      result.add(v);
+        result.add(new Variable(VariableMode.INPUT, src.getVariable(), r));
+      else
+        result.add(new Variable(VariableMode.INPUT, AUTO_VAR_NAME, r));
     }
     return result;
   }

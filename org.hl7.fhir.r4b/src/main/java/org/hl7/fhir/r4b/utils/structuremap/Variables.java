@@ -7,6 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Variables {
+  public Variables() {
+  }
+  public Variables(Variables parent) {
+    _parent = parent;
+  }
+
+  private Variables _parent;
+
   private List<Variable> list = new ArrayList<Variable>();
 
   public void add(VariableMode mode, String name, Base object) {
@@ -29,6 +37,8 @@ public class Variables {
     for (Variable v : list)
       if ((v.getMode() == mode) && v.getName().equals(name))
         return v.getObject();
+    if (_parent != null)
+      return _parent.get(mode, name);
     return null;
   }
 
