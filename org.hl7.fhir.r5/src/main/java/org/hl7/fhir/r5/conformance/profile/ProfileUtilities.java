@@ -2356,6 +2356,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     }
     if (profile != null) {
+      if (profile.getSnapshot().getElement().isEmpty()) {
+        throw new DefinitionException(context.formatMessage(I18nConstants.SNAPSHOT_IS_EMPTY, profile.getVersionedUrl()));
+      }
       ElementDefinition e = profile.getSnapshot().getElement().get(0);
       String webroot = profile.getUserString("webroot");
 
