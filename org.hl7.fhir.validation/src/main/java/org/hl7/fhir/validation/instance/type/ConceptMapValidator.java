@@ -329,7 +329,7 @@ public class ConceptMapValidator  extends BaseValidator {
             }
           }
         } else {
-          ok = (ctxt.source.cs.getContent() != CodeSystemContentMode.COMPLETE) & ok;
+          ok = (ctxt.target.cs.getContent() != CodeSystemContentMode.COMPLETE) & ok;
         }
       } else {
         addToBatch(code, cstack, ctxt.target, ctxt.targetScope);
