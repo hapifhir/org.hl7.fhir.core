@@ -721,9 +721,9 @@ public class ExpressionNode {
     } else if (group != null) {
       names.addAll(group.getDistalNames());
     } else if (function != null) {
-      names.addAll(null);
+      names.add(null);
     } else if (constant != null) {
-      names.addAll(null);
+      names.add(null);
     } else {
       names.add(name);
     }    
