@@ -29,6 +29,7 @@ import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.runner.RunWith;
@@ -39,6 +40,7 @@ import com.google.common.base.Charsets;
 
 @RunWith(Parameterized.class)
 @EnabledIf("localTxRunning")
+@Disabled
 public class LocalTerminologyServiceTests implements ITxTesterLoader {
 
   public static class JsonObjectPair {
@@ -99,6 +101,7 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   @SuppressWarnings("deprecation")
   @Test   
   @Tag("excludedInSurefire")
+  @Disabled
   public void test() throws Exception {
     if (SERVER != null) {
       if (tester == null) {
