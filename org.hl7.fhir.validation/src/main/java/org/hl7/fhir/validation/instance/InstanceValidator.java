@@ -502,12 +502,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public boolean testMode;
   private boolean example ;
   private IDigitalSignatureServices signatureServices;
+  private ContextUtilities cu;
 
   public InstanceValidator(@Nonnull IWorkerContext theContext, @Nonnull IEvaluationContext hostServices, @Nonnull XVerExtensionManager xverManager) {
     super(theContext, xverManager, false);
     start = System.currentTimeMillis();
     this.externalHostServices = hostServices;
     this.profileUtilities = new ProfileUtilities(theContext, null, null);
+    cu = new ContextUtilities(theContext);
     fpe = new FHIRPathEngine(context);
     validatorServices = new ValidatorHostServices();
     fpe.setHostServices(validatorServices);
@@ -1662,7 +1664,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           c.setSystem("urn:oid:"+oid);
           ok = false;
           if (urls.size() == 0) {
-            rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_UNKNOWN_OID, oid);
+            warning(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_UNKNOWN_OID, oid);
           } else {
             rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_OID_MULTIPLE_MATCHES, oid, CommaSeparatedStringBuilder.join(",", urls));
           }
@@ -5799,6 +5801,25 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ok = checkChild(valContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei, extensionUrl, pct, mode) && ok;
     }
     vi.setValid(ok);
+    
+
+    if (!definition.getPath().contains(".") && profile.hasExtension(ToolingExtensions.EXT_PROFILE_STYLE) && "cda".equals(ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_PROFILE_STYLE))) {
+      List<Element> templates = element.getChildren("templateId");
+      for (Element t : templates) {
+        String tid = "urn:hl7ii:"+t.getChildValue("root")+(t.hasChild("extension") ? ":"+t.getChildValue("extension") : "");
+        StructureDefinition sd = cu.fetchProfileByIdentifier(tid);
+        if (sd == null) {
+          ok = rule(errors, "2023-10-20", IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, t.hasChild("extension") ? I18nConstants.CDA_UNKNOWN_TEMPLATE_EXT : I18nConstants.CDA_UNKNOWN_TEMPLATE, t.getChildValue("root"), t.getChildValue("extension")) && ok;
+        } else {
+          ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
+          if (!element.hasValidated(sd, ed)) {
+            element.addMessage(signpost(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST, sd.getVersionedUrl()));
+            ok = validateElement(valContext, errors, sd, ed, null, null, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, extensionUrl, pct, mode) && ok;
+          }
+        }
+      }
+    }      
+    
     return ok;
   }
 
@@ -6060,13 +6081,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (defn != null && defn.hasExtension(ToolingExtensions.EXT_BINDING_STYLE)) {
           String style = ToolingExtensions.readStringExtension(defn, ToolingExtensions.EXT_BINDING_STYLE);
           if ("CDA".equals(style)) {
-            if (cdaTypeIs(defn, "CS")) {
-              ok = checkCDACodeSimple(valContext, errors, ei.getPath(), ei.getElement(), profile, checkDefn, stack, defn) && ok;              
-            } else if (cdaTypeIs(defn, "CV") || cdaTypeIs(defn, "PQ")) {
-              ok = checkCDACoding(errors, ei.getPath(), cdaTypeIs(defn, "PQ"), ei.getElement(), profile, checkDefn, stack, defn, inCodeableConcept, checkDisplayInContext) && ok;
-            } else if (cdaTypeIs(defn, "CD") || cdaTypeIs(defn, "CE")) {
-              ok = checkCDACodeableConcept(errors, ei.getPath(), ei.getElement(), profile, checkDefn, stack, defn) && ok;
-              thisIsCodeableConcept = true;
+            if (!ei.getElement().hasChild("nullFlavor")) {
+              if (cdaTypeIs(defn, "CS")) {
+                ok = checkCDACodeSimple(valContext, errors, ei.getPath(), ei.getElement(), profile, checkDefn, stack, defn) && ok;              
+              } else if (cdaTypeIs(defn, "CV") || cdaTypeIs(defn, "PQ")) {
+                ok = checkCDACoding(errors, ei.getPath(), cdaTypeIs(defn, "PQ"), ei.getElement(), profile, checkDefn, stack, defn, inCodeableConcept, checkDisplayInContext) && ok;
+              } else if (cdaTypeIs(defn, "CD") || cdaTypeIs(defn, "CE")) {
+                ok = checkCDACodeableConcept(errors, ei.getPath(), ei.getElement(), profile, checkDefn, stack, defn) && ok;
+                thisIsCodeableConcept = true;
+              }
             }
           }
         }
@@ -6180,7 +6203,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = true;
     String system = null;
     String code = element.getNamedChildValue(isPQ ? "unit" : "code");
-    String oid = element.getNamedChildValue("codeSystem");
+    String oid = isPQ ? "2.16.840.1.113883.6.8" : element.getNamedChildValue("codeSystem");
     if (oid != null) {
       Set<String> urls = context.urlsForOid(true, oid);
       if (urls.size() != 1) {
@@ -6188,7 +6211,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = false;
 
         if (urls.size() == 0) {
-          rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_UNKNOWN_OID, oid);
+          warning(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_UNKNOWN_OID, oid);
         } else {
           rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_OID_MULTIPLE_MATCHES, oid, CommaSeparatedStringBuilder.join(",", urls));
         }

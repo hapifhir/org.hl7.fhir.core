@@ -424,5 +424,16 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return null;
   }
 
+  public StructureDefinition fetchProfileByIdentifier(String tid) {
+    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
+      for (Identifier ii : sd.getIdentifier()) {
+        if (tid.equals(ii.getValue())) {
+          return sd;
+        }
+      }
+    }
+    return null;
+  }
+
 }
 

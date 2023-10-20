@@ -541,7 +541,17 @@ public abstract class Base implements Serializable, IBase, IElement {
     return vi;
   }
   
-  
+
+  public boolean hasValidated(StructureDefinition sd, ElementDefinition ed) {
+    if (validationInfo != null) {
+      for (ValidationInfo vi : validationInfo) {
+        if (vi.definition == ed && vi.structure == sd) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
   
   // validation messages: the validator does not populate these (yet)
   public Base addValidationMessage(ValidationMessage msg) {

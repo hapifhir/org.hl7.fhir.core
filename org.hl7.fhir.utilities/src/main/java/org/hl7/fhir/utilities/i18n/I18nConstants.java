@@ -1010,6 +1010,8 @@ public class I18nConstants {
   public static final String XSI_TYPE_WRONG = "XSI_TYPE_WRONG";
   public static final String XSI_TYPE_UNNECESSARY = "XSI_TYPE_UNNECESSARY";
   public static final String TERMINOLOGY_TX_OID_MULTIPLE_MATCHES = "TERMINOLOGY_TX_OID_MULTIPLE_MATCHES";
+  public static final String CDA_UNKNOWN_TEMPLATE = "CDA_UNKNOWN_TEMPLATE";
+  public static final String CDA_UNKNOWN_TEMPLATE_EXT = "CDA_UNKNOWN_TEMPLATE_EXT";
 }
 
 
