@@ -242,6 +242,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private NpmPackage loadPackageInfo(String path) throws IOException {
+    File f = new File(Utilities.path(path, "usage.ini"));
+    JsonObject j = f.exists() ? JsonParser.parseObject(f) : new JsonObject();
+    j.set("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+    JsonParser.compose(j, f, true);
+
     NpmPackage pi = minimalMemory ?  NpmPackage.fromFolderMinimal(path) : NpmPackage.fromFolder(path);
     return pi;
   }
