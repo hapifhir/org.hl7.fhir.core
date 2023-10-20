@@ -1,5 +1,6 @@
 package org.hl7.fhir.terminology.tests;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +29,8 @@ import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -35,7 +38,8 @@ import org.junit.runners.Parameterized.Parameters;
 import com.google.common.base.Charsets;
 
 @RunWith(Parameterized.class)
-public class ExternalTerminologyServiceTests implements ITxTesterLoader {
+@EnabledIf("localTxRunning")
+public class LocalTerminologyServiceTests implements ITxTesterLoader {
 
   public static class JsonObjectPair {
     public JsonObjectPair(JsonObject suite, JsonObject test) {
@@ -46,9 +50,14 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     private JsonObject test;
   }
 
-  private static final String SERVER = FhirSettings.getTxFhirDevelopment();  
+  private static final String SERVER = FhirSettings.getTxFhirLocal();  
+  // private static final String SERVER = "https://r4.ontoserver.csiro.au/fhir";
 
-  
+
+  private static boolean localTxRunning() {
+    return new File("/Users/grahamegrieve/work/server/serverx").exists();
+  }
+
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
 
@@ -71,7 +80,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
 
     List<Object[]> objects = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
-        objects.add(new Object[]{id, examples.get(id)});
+      objects.add(new Object[]{id, examples.get(id)});
     }
     return objects;
   }
@@ -83,12 +92,13 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   private static TxTester tester;
   private List<String> modes = new ArrayList<>();
 
-  public ExternalTerminologyServiceTests(String name, JsonObjectPair setup) {
+  public LocalTerminologyServiceTests(String name, JsonObjectPair setup) {
     this.setup = setup;
   }
-  
+
   @SuppressWarnings("deprecation")
-  @Test
+  @Test   
+  @Tag("excludedInSurefire")
   public void test() throws Exception {
     if (SERVER != null) {
       if (tester == null) {
@@ -100,7 +110,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
       Assertions.assertTrue(true);
     }
   }
-  
+
   public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
     String contents = TestingUtilities.loadTestResource("tx", filename);
     try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
