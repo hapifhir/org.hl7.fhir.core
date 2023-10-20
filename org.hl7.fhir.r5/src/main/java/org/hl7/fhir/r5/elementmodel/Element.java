@@ -1488,4 +1488,15 @@ public class Element extends Base implements NamedItem {
     return this;
   }
 
+  public void removeExtension(String url) {
+    List<Element> rem = new ArrayList<>();
+    for (Element e : children) {
+      if ("extension".equals(e.getName()) && url.equals(e.getChildValue("url"))) {
+        rem.add(e);
+      }
+    }
+    children.removeAll(rem);
+  }
+
+
 }
