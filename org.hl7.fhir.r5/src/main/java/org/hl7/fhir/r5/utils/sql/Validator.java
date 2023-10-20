@@ -226,15 +226,15 @@ public class Validator {
             warning(path+".path", expression, s);
           }
           String columnName = null;
-          JsonElement aliasJ = column.get("alias");
-          if (aliasJ != null) {
-            if (aliasJ instanceof JsonString) {
-              columnName = aliasJ.asString();
+          JsonElement nameJ = column.get("name");
+          if (nameJ != null) {
+            if (nameJ instanceof JsonString) {
+              columnName = nameJ.asString();
               if (!isValidName(columnName)) {      
-                error(path+".name", aliasJ, "The name '"+columnName+"' is not valid", IssueType.VALUE);
+                error(path+".name", nameJ, "The name '"+columnName+"' is not valid", IssueType.VALUE);
               }
             } else {
-              error(path+".alias", aliasJ, "alias must be a string", IssueType.INVALID);
+              error(path+".name", nameJ, "name must be a string", IssueType.INVALID);
             }
           }
           if (columnName == null) {
@@ -242,10 +242,12 @@ public class Validator {
             if (names.size() == 1 && names.get(0) != null) {
               columnName = names.get(0);
               if (!isValidName(columnName)) {      
-                error(path+".path", expression, "The name '"+columnName+"' found in the path expression is not a valid column name, so an alias is required", IssueType.INVARIANT);
+                error(path+".path", expression, "A column name is required. The natural name to chose is '"+columnName+"' (from the path)", IssueType.INVARIANT);
+              } else {
+                error(path, column, "A column name is required", IssueType.REQUIRED);
               }
             } else {
-              error(path, column, "The path does not resolve to a name, so an alias is required", IssueType.REQUIRED);
+              error(path, column, "A column name is required", IssueType.REQUIRED);
             }
           }
           // ok, name is sorted!
