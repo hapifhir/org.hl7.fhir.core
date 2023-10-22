@@ -24,7 +24,7 @@ public class FHIRPathHostServices implements FHIRPathEngine.IEvaluationContext {
     this.structureMapUtilities = structureMapUtilities;
   }
 
-  public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
     Variables vars = (Variables) appContext;
     Base res = vars.get(VariableMode.INPUT, name);
     if (res == null)
@@ -36,7 +36,7 @@ public class FHIRPathHostServices implements FHIRPathEngine.IEvaluationContext {
   }
 
   @Override
-  public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
     if (!(appContext instanceof VariablesForProfiling))
       throw new Error("Internal Logic Error (wrong type '" + appContext.getClass().getName() + "' in resolveConstantType)");
     VariablesForProfiling vars = (VariablesForProfiling) appContext;
@@ -52,22 +52,22 @@ public class FHIRPathHostServices implements FHIRPathEngine.IEvaluationContext {
   }
 
   @Override
-  public FunctionDetails resolveFunction(String functionName) {
+  public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
     return null; // throw new Error("Not Implemented Yet");
   }
 
   @Override
-  public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
+  public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
     throw new Error("Not Implemented Yet");
   }
 
   @Override
-  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+  public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
     throw new Error("Not Implemented Yet");
   }
 
   @Override
-  public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
     if (structureMapUtilities.getServices() == null)
       return null;
     return structureMapUtilities.getServices().resolveReference(appContext, url);
@@ -81,7 +81,7 @@ public class FHIRPathHostServices implements FHIRPathEngine.IEvaluationContext {
   }
 
   @Override
-  public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
+  public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
     IResourceValidator val = structureMapUtilities.getWorker().newValidator();
     List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
     if (item instanceof Resource) {
@@ -96,7 +96,7 @@ public class FHIRPathHostServices implements FHIRPathEngine.IEvaluationContext {
   }
 
   @Override
-  public ValueSet resolveValueSet(Object appContext, String url) {
+  public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
 	return structureMapUtilities.getWorker().fetchResource(ValueSet.class, url);
   }
 
