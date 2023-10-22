@@ -275,16 +275,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private class ValidatorHostServices implements IEvaluationContext {
 
     @Override
-    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
       ValidationContext c = (ValidationContext) appContext;
+      if ("profile".equals(name) && explicitConstant) {
+        List<Base> b = new ArrayList<>();
+        if (c.getProfile() != null) {
+          b.add(c.getProfile());
+        }
+        return b;
+      }
       if (externalHostServices != null)
-        return externalHostServices.resolveConstant(c.getAppContext(), name, beforeContext);
+        return externalHostServices.resolveConstant(engine, c.getAppContext(), name, beforeContext, explicitConstant);
       else
         return new ArrayList<Base>();
     }
 
     @Override
-    public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
       if (appContext instanceof VariableSet) {
         VariableSet vars = (VariableSet) appContext;
         VariableDefn v = vars.getVariable(name.substring(1));
@@ -296,7 +303,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       ValidationContext c = (ValidationContext) appContext;
       if (externalHostServices != null)
-        return externalHostServices.resolveConstantType(c.getAppContext(), name);
+        return externalHostServices.resolveConstantType(engine, c.getAppContext(), name, explicitConstant);
       else
         return null;
     }
@@ -310,22 +317,76 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     @Override
-    public FunctionDetails resolveFunction(String functionName) {
-      throw new FHIRException(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESRESOLVEFUNCTION_, functionName));
+    public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
+      switch (functionName) {
+      case "slice": return new FunctionDetails("Returns the given slice as defined in the given structure definition. If in an invariant, First parameter can be %profile - current profile", 2, 2);
+      default: throw new FHIRException(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESRESOLVEFUNCTION_, functionName));
+      }      
     }
 
     @Override
-    public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
-      throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESCHECKFUNCTION));
+    public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
+
+      switch (functionName) {
+      case "slice":
+        // todo: check parameters 
+        return focus;
+      
+      default: throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESCHECKFUNCTION));
+      }
     }
 
     @Override
-    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
-      throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESEXECUTEFUNCTION));
+    public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+      switch (functionName) {
+      case "slice": return executeSlice(engine, appContext, focus, parameters);
+      default: throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESEXECUTEFUNCTION));
+      }
+    }
+
+    private List<Base> executeSlice(FHIRPathEngine engine, Object appContext, List<Base> focus, List<List<Base>> parameters) {
+      ValidationContext c = (ValidationContext) appContext;
+      
+      List<Base> res = new ArrayList<>();
+      if (parameters.size() != 2 && !(appContext instanceof ValidationContext)) {
+        return res;
+      }
+      
+      StructureDefinition sd = null;
+      // if present, first parameter must be a singleton that points to the current profile
+      if (parameters.get(0).size() > 1) {
+        return res;
+      } else if (parameters.get(0).size() == 1) { // if it's there, we have to check it 
+        Base b = parameters.get(0).get(0);
+        if (b.isPrimitive()) {
+          sd = context.fetchResource(StructureDefinition.class, b.primitiveValue());
+        } else if (b instanceof StructureDefinition) {
+          sd = (StructureDefinition) b;
+        }
+      } else {
+        sd = c.getProfile();
+      }
+
+      // second parameter must be present 
+      if (parameters.get(1).size() != 1) {
+        return res;
+      }  
+      String name = parameters.get(1).get(0).primitiveValue();
+      if (!Utilities.noString(name)) {
+        for (Base b : focus) {
+          if (b instanceof Element) {
+            Element e = (Element) b;
+            if (e.hasSlice(sd, name)) {
+              res.add(e);
+            }
+          }
+        }
+      }
+      return res;
     }
 
     @Override
-    public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
       ValidationContext c = (ValidationContext) appContext;
 
       if (refContext != null && refContext.hasUserData("validator.bundle.resolution")) {
@@ -356,7 +417,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       if (externalHostServices != null) {
-        return setParentsBase(externalHostServices.resolveReference(c.getAppContext(), url, refContext));
+        return setParentsBase(externalHostServices.resolveReference(engine, c.getAppContext(), url, refContext));
       } else if (fetcher != null) {
         try {
           return setParents(fetcher.fetch(InstanceValidator.this, c.getAppContext(), url));
@@ -370,7 +431,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
    
     @Override
-    public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
+    public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
       ValidationContext ctxt = (ValidationContext) appContext;
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
       if (sd == null) {
@@ -414,7 +475,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     @Override
-    public ValueSet resolveValueSet(Object appContext, String url) {
+    public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
       ValidationContext c = (ValidationContext) appContext;
       if (c.getProfile() != null && url.startsWith("#")) {
         for (Resource r : c.getProfile().getContained()) {
@@ -5760,8 +5821,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     ValidationInfo vi = element.addDefinition(profile, definition, mode);
     
-    // check type invariants
-    ok = checkInvariants(valContext, errors, profile, definition, resource, element, stack, false) & ok;
     if (definition.getFixed() != null) {
       ok = checkFixedValue(errors, stack.getLiteralPath(), element, definition.getFixed(), profile.getVersionedUrl(), definition.getSliceName(), null, false) && ok;
     } 
@@ -5792,6 +5851,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     BooleanHolder bh = new BooleanHolder();
     List<String> problematicPaths = assignChildren(valContext, errors, profile, resource, stack, childDefinitions, children, bh);
     ok = bh.ok() && ok;
+    for (ElementInfo ei : children) {
+      ei.getElement().addSliceDefinition(profile, ei.getDefinition(), ei.getSlice());
+    }
 
     ok = checkCardinalities(errors, profile, element, stack, childDefinitions, children, problematicPaths) && ok;
     // 4. check order if any slices are ordered. (todo)
@@ -5800,8 +5862,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (ElementInfo ei : children) {
       ok = checkChild(valContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei, extensionUrl, pct, mode) && ok;
     }
-    vi.setValid(ok);
+
+    // check type invariants (after we've sliced the children)
+    ok = checkInvariants(valContext, errors, profile, definition, resource, element, stack, false) & ok;
     
+    vi.setValid(ok);    
 
     if (!definition.getPath().contains(".") && profile.hasExtension(ToolingExtensions.EXT_PROFILE_STYLE) && "cda".equals(ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_PROFILE_STYLE))) {
       List<Element> templates = element.getChildren("templateId");
@@ -6694,7 +6759,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       timeTracker.fpe(t);
       inv.setUserData("validator.expression.cache", n);
     }
-
+    
+    valContext.setProfile(profile);
+    
     boolean invOK;
     String msg;
     try {
