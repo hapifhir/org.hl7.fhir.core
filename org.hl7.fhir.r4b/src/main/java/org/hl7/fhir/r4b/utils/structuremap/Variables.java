@@ -30,6 +30,7 @@ public class Variables {
   public Variables copy() {
     Variables result = new Variables();
     result.list.addAll(list);
+    result._parent = _parent;
     return result;
   }
 
@@ -46,7 +47,7 @@ public class Variables {
     CommaSeparatedStringBuilder s = new CommaSeparatedStringBuilder();
     CommaSeparatedStringBuilder t = new CommaSeparatedStringBuilder();
     CommaSeparatedStringBuilder sh = new CommaSeparatedStringBuilder();
-    for (Variable v : list)
+    for (Variable v : list) {
       switch (v.getMode()) {
       case INPUT:
         s.append(v.summary());
@@ -58,8 +59,11 @@ public class Variables {
         sh.append(v.summary());
         break;
       }
-    return "source variables [" + s.toString() + "], target variables [" + t.toString() + "], shared variables ["
+    }
+    var localVarSummary = "source variables [" + s.toString() + "], target variables [" + t.toString() + "], shared variables ["
         + sh.toString() + "]";
+    if (_parent != null)
+      return localVarSummary + "\n" + _parent.summary();
+    return localVarSummary;
   }
-
 }

@@ -1320,6 +1320,13 @@ public class StructureMapUtilities {
   }
 
   public class Variables {
+    public Variables() {
+    }
+    public Variables(Variables parent) {
+      _parent = parent;
+    }
+  
+    private Variables _parent;
     private List<Variable> list = new ArrayList<Variable>();
 
     public void add(VariableMode mode, String name, Base object) {
@@ -1335,6 +1342,7 @@ public class StructureMapUtilities {
     public Variables copy() {
       Variables result = new Variables();
       result.list.addAll(list);
+      result._parent = _parent;
       return result;
     }
 
@@ -1342,6 +1350,8 @@ public class StructureMapUtilities {
       for (Variable v : list)
         if ((v.mode == mode) && v.getName().equals(name))
           return v.getObject();
+      if (_parent != null)
+        return _parent.get(mode, name);
       return null;
     }
 
@@ -1349,7 +1359,7 @@ public class StructureMapUtilities {
       CommaSeparatedStringBuilder s = new CommaSeparatedStringBuilder();
       CommaSeparatedStringBuilder t = new CommaSeparatedStringBuilder();
       CommaSeparatedStringBuilder sh = new CommaSeparatedStringBuilder();
-      for (Variable v : list)
+      for (Variable v : list) {
         switch (v.mode) {
         case INPUT:
           s.append(v.summary());
@@ -1361,8 +1371,12 @@ public class StructureMapUtilities {
           sh.append(v.summary());
           break;
         }
-      return "source variables [" + s.toString() + "], target variables [" + t.toString() + "], shared variables ["
+      }
+      var localVarSummary = "source variables [" + s.toString() + "], target variables [" + t.toString() + "], shared variables ["
           + sh.toString() + "]";
+      if (_parent != null)
+        return localVarSummary + "\n" + _parent.summary();
+      return localVarSummary;
     }
 
   }
