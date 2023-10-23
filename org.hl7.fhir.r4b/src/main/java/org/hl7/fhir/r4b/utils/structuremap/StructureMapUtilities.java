@@ -2243,7 +2243,9 @@ public class StructureMapUtilities {
     XhtmlNode xt = tr.addTag("td");
 
     VariablesForProfiling srcVars = vars.copy();
-    if (rule.getSource().size() != 1)
+    if (rule.getSource().size() != 0)
+      throw new FHIRException("Rule \"" + rule.getName() + "\": has no sources");
+    if (rule.getSource().size() > 1)
       throw new FHIRException("Rule \"" + rule.getName() + "\": not handled yet");
     VariablesForProfiling source = analyseSource(rule.getName(), context, srcVars, rule.getSourceFirstRep(), xs);
 

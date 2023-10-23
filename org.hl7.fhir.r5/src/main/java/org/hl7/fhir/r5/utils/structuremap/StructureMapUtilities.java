@@ -1304,7 +1304,9 @@ public class StructureMapUtilities {
   private void executeRule(String indent, TransformContext context, StructureMap map, Variables vars, StructureMapGroupComponent group, StructureMapGroupRuleComponent rule, boolean atRoot) throws FHIRException {
     log(indent + "rule : " + rule.getName() + "; vars = " + vars.summary());
     Variables srcVars = vars.copy();
-    if (rule.getSource().size() != 1)
+    if (rule.getSource().size() != 0)
+      throw new FHIRException("Rule \"" + rule.getName() + "\": has no sources");
+    if (rule.getSource().size() > 1)
       throw new FHIRException("Rule \"" + rule.getName() + "\": not handled yet");
     List<Variables> source = processSource(rule.getName(), context, srcVars, rule.getSource().get(0), map.getUrl(), indent);
     if (source != null) {
@@ -2171,7 +2173,9 @@ public class StructureMapUtilities {
     XhtmlNode xt = tr.addTag("td");
 
     VariablesForProfiling srcVars = vars.copy();
-    if (rule.getSource().size() != 1)
+    if (rule.getSource().size() != 0)
+      throw new FHIRException("Rule \"" + rule.getName() + "\": has no sources");
+    if (rule.getSource().size() > 1)
       throw new FHIRException("Rule \"" + rule.getName() + "\": not handled yet");
     VariablesForProfiling source = analyseSource(rule.getName(), context, srcVars, rule.getSourceFirstRep(), xs);
 
