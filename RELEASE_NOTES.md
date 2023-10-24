@@ -7,6 +7,7 @@
 * Fix for index out of bounds error when extension uses itself
 * Fix issue where .resolve() in FHIRPath didn't work with URL values (and fix typo in i18n system)
 * Implement FHIRPath slice() function in validator
+* Fix bug where Snapshot generation can run off the end of the differential 
 
 ## Other code changes
 
