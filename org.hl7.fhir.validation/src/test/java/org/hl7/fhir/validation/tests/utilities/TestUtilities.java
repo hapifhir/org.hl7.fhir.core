@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.tests.utilities;
 
 import java.nio.file.Paths;
+import java.util.Locale;
 
 import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
@@ -64,5 +65,9 @@ public class TestUtilities {
     }
 
     return validationEngine;
+  }
+
+  public static boolean runningAsSurefire() {
+    return "true".equals(System.getProperty("runningAsSurefire") != null ? System.getProperty("runningAsSurefire").toLowerCase(Locale.ENGLISH) : "");
   }
 }
