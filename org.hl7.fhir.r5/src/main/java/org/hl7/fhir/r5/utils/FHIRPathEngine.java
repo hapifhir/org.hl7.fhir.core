@@ -3632,7 +3632,7 @@ public class FHIRPathEngine {
   }
 
   private void checkContextReference(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
-    if (!focus.hasType(worker, "string") && !focus.hasType(worker, "uri") && !focus.hasType(worker, "Reference") && !focus.hasType(worker, "canonical")) {
+    if (!focus.hasType(worker, "string") && !focus.hasType(worker, "uri") && !focus.hasType(worker, "url") && !focus.hasType(worker, "Reference") && !focus.hasType(worker, "canonical")) {
       throw makeException(expr, I18nConstants.FHIRPATH_REFERENCE_ONLY, name, focus.describe());
     }
   }
