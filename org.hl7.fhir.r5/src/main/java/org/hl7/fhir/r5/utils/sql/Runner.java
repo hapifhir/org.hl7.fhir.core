@@ -318,12 +318,12 @@ public class Runner implements IEvaluationContext {
   }
   
   @Override
-  public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
     throw new Error("Not implemented yet: resolveConstant");
   }
 
   @Override
-  public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
     throw new Error("Not implemented yet: resolveConstantType");
   }
 
@@ -333,7 +333,7 @@ public class Runner implements IEvaluationContext {
   }
 
   @Override
-  public FunctionDetails resolveFunction(String functionName) {
+  public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
     switch (functionName) {
     case "getResourceKey" : return new FunctionDetails("Unique Key for resource", 0, 0);
     case "getReferenceKey" : return new FunctionDetails("Unique Key for resource that is the target of the reference", 0, 1);
@@ -341,7 +341,7 @@ public class Runner implements IEvaluationContext {
     }
   }
   @Override
-  public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
+  public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
     switch (functionName) {
     case "getResourceKey" : return new TypeDetails(CollectionStatus.SINGLETON, "string");
     case "getReferenceKey" : return new TypeDetails(CollectionStatus.SINGLETON, "string");
@@ -350,7 +350,7 @@ public class Runner implements IEvaluationContext {
   }
 
   @Override
-  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+  public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
     switch (functionName) {
     case "getResourceKey" : return executeResourceKey(focus);
     case "getReferenceKey" : return executeReferenceKey(focus, parameters);
@@ -420,17 +420,17 @@ public class Runner implements IEvaluationContext {
     return null;
   }
   @Override
-  public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
     throw new Error("Not implemented yet: resolveReference");
   }
 
   @Override
-  public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
+  public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
     throw new Error("Not implemented yet: conformsToProfile");
   }
 
   @Override
-  public ValueSet resolveValueSet(Object appContext, String url) {
+  public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
     throw new Error("Not implemented yet: resolveValueSet");
   }
   @Override

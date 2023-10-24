@@ -38,6 +38,7 @@ import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.elementmodel.Element.SliceDefinition;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.extensions.ExtensionsUtils;
 import org.hl7.fhir.r5.model.Base;
@@ -73,6 +74,32 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  *
  */
 public class Element extends Base implements NamedItem {
+  public class SliceDefinition {
+
+    private StructureDefinition profile;
+    private ElementDefinition definition;
+    private ElementDefinition slice;
+
+    public SliceDefinition(StructureDefinition profile, ElementDefinition definition, ElementDefinition slice) {
+      this.profile = profile;
+      this.definition = definition;
+      this.slice = slice;
+    }
+
+    public StructureDefinition getProfile() {
+      return profile;
+    }
+
+    public ElementDefinition getDefinition() {
+      return definition;
+    }
+
+    public ElementDefinition getSlice() {
+      return slice;
+    }
+
+  }
+
   private static final HashSet<String> extensionList = new HashSet<>(Arrays.asList("extension", "modifierExtension"));
 
   public enum SpecialElement {
@@ -133,6 +160,7 @@ public class Element extends Base implements NamedItem {
   private boolean ignorePropertyOrder;
   private FhirFormat format;
   private Object nativeObject;
+  private List<SliceDefinition> sliceDefinitions;
 
 	public Element(String name) {
 		super();
@@ -1496,6 +1524,24 @@ public class Element extends Base implements NamedItem {
       }
     }
     children.removeAll(rem);
+  }
+
+  public void addSliceDefinition(StructureDefinition profile, ElementDefinition definition, ElementDefinition slice) {
+    if (sliceDefinitions == null) {
+      sliceDefinitions = new ArrayList<>();
+    }
+    sliceDefinitions.add(new SliceDefinition(profile, definition, slice));
+  }
+
+  public boolean hasSlice(StructureDefinition sd, String sliceName) {
+    if (sliceDefinitions != null) {
+      for (SliceDefinition def : sliceDefinitions) {
+        if (def.profile == sd && sliceName.equals(def.definition.getSliceName())) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 
