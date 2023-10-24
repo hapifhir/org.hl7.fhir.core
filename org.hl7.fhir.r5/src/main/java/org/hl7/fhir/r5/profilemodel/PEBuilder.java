@@ -531,7 +531,7 @@ public class PEBuilder {
   protected void populateByProfile(Base base, PEDefinition definition) {
     if (definition.types().size() == 1) {
       for (PEDefinition pe : definition.directChildren(true)) {
-        if (pe.fixedValue()) {
+        if (pe.hasFixedValue()) {
           if (pe.definition().hasPattern()) {
             base.setProperty(pe.schemaName(), pe.definition().getPattern());
           } else { 

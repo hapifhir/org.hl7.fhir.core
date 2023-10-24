@@ -46,12 +46,12 @@ public class FHIRPathTests {
   public class FHIRPathTestEvaluationServices implements IEvaluationContext {
 
     @Override
-    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
       throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.resolveConstant), when item is element");
     }
 
     @Override
-    public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
       throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.resolveConstantType), when item is element");
     }
 
@@ -61,27 +61,27 @@ public class FHIRPathTests {
     }
 
     @Override
-    public FunctionDetails resolveFunction(String functionName) {
+    public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
       throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.resolveFunction), when item is element (for " + functionName + ")");
     }
 
     @Override
-    public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
+    public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
       throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.checkFunction), when item is element");
     }
 
     @Override
-    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+    public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
       throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.executeFunction), when item is element");
     }
 
     @Override
-    public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
       throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.resolveReference), when item is element");
     }
 
     @Override
-    public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
+    public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
       if (url.equals("http://hl7.org/fhir/StructureDefinition/Patient"))
         return true;
       if (url.equals("http://hl7.org/fhir/StructureDefinition/Person"))
@@ -91,7 +91,7 @@ public class FHIRPathTests {
     }
 
     @Override
-    public ValueSet resolveValueSet(Object appContext, String url) {
+    public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
       return TestingUtilities.getSharedWorkerContext().fetchResource(ValueSet.class, url);
     }
 
@@ -291,7 +291,7 @@ public class FHIRPathTests {
     final String DUMMY_CONSTANT_2 = "dummyConstant2";
     fp.setHostServices(new FHIRPathTestEvaluationServices() {
       @Override
-      public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+      public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
 
         return Arrays.asList(
           new StringType(DUMMY_CONSTANT_1).noExtensions(),

@@ -112,7 +112,7 @@ public class PETests {
     checkElement(children.get(7), "extension", "complex", 0, 1, false, "http://hl7.org/fhir/test/StructureDefinition/pe-extension-complex", 4, "extension('http://hl7.org/fhir/test/StructureDefinition/pe-extension-complex')");
     checkElement(children.get(8), "identifier", "identifier", 0, 1, false, "http://hl7.org/fhir/StructureDefinition/Identifier", 7, "identifier");
     checkElement(children.get(9), "status", "status", 1, 1, true, "http://hl7.org/fhir/StructureDefinition/code", 2, "status");
-    checkElement(children.get(10), "category", "category", 0, Integer.MAX_VALUE, false, "http://hl7.org/fhir/StructureDefinition/CodeableConcept", 3, "category");
+    checkElement(children.get(10), "category", "category", 1, 1, false, "http://hl7.org/fhir/StructureDefinition/CodeableConcept", 3, "category");
     checkElement(children.get(11), "code", "code", 1, 1, true, "http://hl7.org/fhir/StructureDefinition/CodeableConcept", 3, "code");
     checkElement(children.get(12), "subject", "subject", 1, 1, false, "http://hl7.org/fhir/StructureDefinition/Reference", 5, "subject");
     checkElement(children.get(13), "encounter", "encounter", 0, 1, false, "http://hl7.org/fhir/StructureDefinition/Reference", 5, "encounter");
@@ -154,7 +154,7 @@ public class PETests {
     Assertions.assertEquals(schemaName, pe.schemaName());
     Assertions.assertEquals(min, pe.min());
     Assertions.assertEquals(max, pe.max());
-    Assertions.assertEquals(fixed, pe.fixedValue() || pe.isInFixedValue());
+    Assertions.assertEquals(fixed, pe.hasFixedValue() || pe.isInFixedValue());
     if (type != null) {
       Assertions.assertEquals(1, pe.types().size());
       Assertions.assertEquals(type, pe.types().get(0).getUrl());

@@ -109,6 +109,12 @@ public class Utilities {
     return inf.pluralize(word);
   }
 
+  public static String singularise(String word) {
+    Inflector inf = new Inflector();
+    return inf.singularize(word);
+  }
+
+  
   public static boolean isInteger(String string) {
     if (isBlank(string)) {
       return false;
@@ -556,6 +562,8 @@ public class Utilities {
     return b.toString();
   }
 
+
+    
   public static String unescapeJson(String json) throws FHIRException {
     if (json == null)
       return null;
@@ -988,6 +996,23 @@ public class Utilities {
   public static boolean isURL(String s) {
     boolean ok = s.matches("^http(s{0,1})://[a-zA-Z0-9_/\\-\\.]+\\.([A-Za-z/]{2,5})[a-zA-Z0-9_/\\&\\?\\=\\-\\.\\~\\%]*");
     return ok;
+  }
+
+
+  public static String escapeCSV(String value) {
+    if (value == null)
+      return "";
+
+    StringBuilder b = new StringBuilder();
+    for (char c : value.toCharArray()) {
+      if (c == '"')
+        b.append("\"\"");
+      else if (isWhitespace(c)) 
+        b.append(" ");
+      else
+        b.append(c);
+    }
+    return b.toString();
   }
 
 
