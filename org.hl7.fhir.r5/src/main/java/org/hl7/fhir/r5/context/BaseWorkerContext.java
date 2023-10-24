@@ -881,7 +881,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (pIn == null) {
       throw new Error(formatMessage(I18nConstants.NO_PARAMETERS_PROVIDED_TO_EXPANDVS));
     }
-    if (vs.getUrl().equals("http://hl7.org/fhir/ValueSet/all-time-units") || vs.getUrl().equals("http://hl7.org/fhir/ValueSet/all-distance-units")) {
+    if (vs.hasUrl() && (vs.getUrl().equals("http://hl7.org/fhir/ValueSet/all-time-units") || vs.getUrl().equals("http://hl7.org/fhir/ValueSet/all-distance-units"))) {
       return new ValueSetExpansionOutcome("This value set is not expanded correctly at this time (will be fixed in a future version)", TerminologyServiceErrorClass.VALUESET_UNSUPPORTED, false);
     }
     
@@ -1790,6 +1790,22 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @SuppressWarnings("unchecked")
   public <T extends Resource> T fetchResourceWithExceptionByVersion(Class<T> class_, String uri, String version, Resource sourceForReference) throws FHIRException {
     if (uri == null) {
+      return null;
+    }
+    if (uri.startsWith("#")) {
+      if (sourceForReference != null && sourceForReference instanceof DomainResource) {
+        for (Resource r : ((DomainResource) sourceForReference).getContained()) {
+          if (r.getClass() == class_ &&( "#"+r.getIdBase()).equals(uri)) {
+            if (r instanceof CanonicalResource) {
+              CanonicalResource cr = (CanonicalResource) r;
+              if (!cr.hasUrl()) {
+                cr.setUrl(Utilities.makeUuidUrn());
+              }              
+            }
+            return (T) r;
+          }
+        }
+      }
       return null;
     }
     

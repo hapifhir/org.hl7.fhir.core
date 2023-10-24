@@ -70,7 +70,7 @@ import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
-public class CodeSystemUtilities {
+public class CodeSystemUtilities extends TerminologyUtilities {
 
   public static class SystemReference {
     private String link;
