@@ -4,11 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
@@ -27,11 +23,9 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
+import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -39,8 +33,7 @@ import org.junit.runners.Parameterized.Parameters;
 import com.google.common.base.Charsets;
 
 @RunWith(Parameterized.class)
-@EnabledIf("localTxRunning")
-@Disabled
+
 public class LocalTerminologyServiceTests implements ITxTesterLoader {
 
   public static class JsonObjectPair {
@@ -59,6 +52,8 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   private static boolean localTxRunning() {
     return new File("/Users/grahamegrieve/work/server/serverx").exists();
   }
+
+
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
@@ -99,10 +94,16 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   }
 
   @SuppressWarnings("deprecation")
-  @Test   
-  @Tag("excludedInSurefire")
-  @Disabled
+  @Test
   public void test() throws Exception {
+    if (TestUtilities.runningAsSurefire()) {
+      logTestSkip("Running in surefire.");
+      return;
+    }
+    if (!localTxRunning()) {
+      logTestSkip("No local terminology server available.");
+      return;
+    }
     if (SERVER != null) {
       if (tester == null) {
         tester = new TxTester(this, SERVER, true, externals);
@@ -112,6 +113,10 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
     } else {
       Assertions.assertTrue(true);
     }
+  }
+
+  private void logTestSkip(String reason) {
+    System.out.println("Skipping test: " + setup.suite.asString("name") + " " + setup.test.asString("name") + " reason: " + reason);
   }
 
   public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.fhir.ucum.UcumEssenceService;
@@ -175,5 +176,7 @@ public class TestingUtilities extends BaseTestingUtilities {
     FilesystemPackageCacheManager.setPackageProvider(new TestingUtilities.PackageProvider());    
   }
 
-
+  public static boolean runningAsSurefire() {
+    return "true".equals(System.getProperty("runningAsSurefire") != null ? System.getProperty("runningAsSurefire").toLowerCase(Locale.ENGLISH) : "");
+  }
 }
