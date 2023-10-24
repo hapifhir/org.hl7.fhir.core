@@ -135,7 +135,7 @@ public class Runner implements IEvaluationContext {
       focus.add(b);
     }
 
-//  } else if (select.has("union")) {
+//  } else if (select.has("unionAll")) {
 //    focus.addAll(executeUnion(select, b));
 
     List<List<Cell>> tempRows = new ArrayList<>();
@@ -149,7 +149,7 @@ public class Runner implements IEvaluationContext {
         executeColumn(column, f, rowsToAdd);
       }
 
-      for (JsonObject sub : select.getJsonObjects("union")) {
+      for (JsonObject sub : select.getJsonObjects("unionAll")) {
         executeSelect(sub, f, rowsToAdd);
       }
       

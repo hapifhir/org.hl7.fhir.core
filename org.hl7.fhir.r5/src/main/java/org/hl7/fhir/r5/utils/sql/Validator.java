@@ -106,8 +106,8 @@ public class Validator {
           checkForEach(path, viewDefinition, viewDefinition.get("forEach"), t);
         } else if (viewDefinition.has("forEachOrNull")) {
           checkForEachOrNull(path, viewDefinition, viewDefinition.get("forEachOrNull"), t);
-        } else if (viewDefinition.has("union")) {
-          checkUnion(path, viewDefinition, viewDefinition.get("union"), t);
+        } else if (viewDefinition.has("unionAll")) {
+          checkUnion(path, viewDefinition, viewDefinition.get("unionAll"), t);
         } else {
           i = 0;
           if (checkAllObjects(path, viewDefinition, "select")) {
@@ -135,8 +135,8 @@ public class Validator {
     if (t != null) {
       boolean content = false;
 
-      if (select.has("union")) {
-        content = checkUnion(path, select, select.get("union"), t);
+      if (select.has("unionAll")) {
+        content = checkUnion(path, select, select.get("unionAll"), t);
       } 
       
       if (select.has("column")) {
@@ -181,7 +181,7 @@ public class Validator {
 
 
   private boolean checkUnion(String path, JsonObject focus, JsonElement expression,  TypeDetails t) {
-    JsonElement a = focus.get("union");
+    JsonElement a = focus.get("unionAll");
     if (!(a instanceof JsonArray)) {
       error(path+".union", a, "union is not an array", IssueType.INVALID);
       return false;
