@@ -1375,7 +1375,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (valueSet != null) {
       pIn.addParameter().setName("valueSet").setResource(valueSet);
     }
-    pIn.addParameter().setName("profile").setResource(expParameters);
+    
+    pIn.addParameters(expParameters);
     return pIn;
   }
 
@@ -1388,7 +1389,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (vsUrl != null) {
       pIn.addParameter().setName("url").setValue(new CanonicalType(vsUrl));
     }
-    pIn.addParameter().setName("profile").setResource(expParameters);
+    pIn.addParameters(expParameters);
     return pIn;
   }
 
@@ -1548,7 +1549,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (expParameters == null) {
       throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
     }
-    pin.addParameter().setName("profile").setResource(expParameters);
+    pin.addParameters(expParameters);
 
     if (options.isDisplayWarningMode()) {
       pin.addParameter("mode","lenient-display-validation");
