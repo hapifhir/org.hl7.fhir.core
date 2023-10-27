@@ -511,6 +511,7 @@ public class FHIRPathEngine {
         }
         types.addType(sd.getUrl());
       } else {
+        boolean checkTypeName = false;
         String ctxt = null;
         if (t.contains("#")) {
           ctxt = t.substring(0, t.indexOf('#'));
@@ -518,6 +519,7 @@ public class FHIRPathEngine {
         } else if (Utilities.isAbsoluteUrl(t)) {
           ctxt = t;
           t = ctxt.substring(ctxt.lastIndexOf("/")+1);
+          checkTypeName = true;
         } else {
           ctxt = t.substring(0, t.indexOf('.'));
         }
@@ -525,7 +527,9 @@ public class FHIRPathEngine {
         if (sd == null) {
           throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT, t);
         }
-        ElementDefinitionMatch ed = getElementDefinition(sd, t, true, expr);
+        String tn = checkTypeName ? sd.getSnapshot().getElementFirstRep().getPath() : t;          
+
+        ElementDefinitionMatch ed = getElementDefinition(sd, tn, true, expr);
         if (ed == null) {
           throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT_ELEMENT, t);
         }
@@ -3646,7 +3650,7 @@ public class FHIRPathEngine {
 
 
   private void checkContextString(TypeDetails focus, String name, ExpressionNode expr, boolean sing) throws PathEngineException {
-    if (!focus.hasNoTypes() && !focus.hasType(worker, "string") && !focus.hasType(worker, "code") && !focus.hasType(worker, "uri") && !focus.hasType(worker, "canonical") && !focus.hasType(worker, "id")) {
+    if (!focus.hasNoTypes() && !focus.hasType(worker, "string") && !focus.hasType(worker, "code") && !focus.hasType(worker, "uri") && !focus.hasType(worker, "url") && !focus.hasType(worker, "canonical") && !focus.hasType(worker, "id")) {
       throw makeException(expr, sing ? I18nConstants.FHIRPATH_STRING_SING_ONLY : I18nConstants.FHIRPATH_STRING_ORD_ONLY, name, focus.describe());
     }
   }
@@ -6087,6 +6091,7 @@ public class FHIRPathEngine {
 
 
   public ElementDefinitionMatch getElementDefinition(StructureDefinition sd, String path, boolean allowTypedName, ExpressionNode expr) throws PathEngineException {
+
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ed.getPath().equals(path)) {
         if (ed.hasContentReference()) {
