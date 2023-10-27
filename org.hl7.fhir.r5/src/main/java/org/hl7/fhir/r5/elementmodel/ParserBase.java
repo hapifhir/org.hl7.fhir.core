@@ -130,7 +130,6 @@ public abstract class ParserBase {
 
   public abstract void compose(Element e, OutputStream destination, OutputStyle style, String base)  throws FHIRException, IOException;
 
-	//FIXME: i18n should be done here
 	public void logError(List<ValidationMessage> errors, String ruleDate, int line, int col, String path, IssueType type, String message, IssueSeverity level) throws FHIRFormatError {
 	  if (errors != null) {
 	    if (policy == ValidationPolicy.EVERYTHING) {
