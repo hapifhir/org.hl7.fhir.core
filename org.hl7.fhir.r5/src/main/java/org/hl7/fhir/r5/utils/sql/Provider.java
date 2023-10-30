@@ -7,5 +7,5 @@ import org.hl7.fhir.r5.model.Base;
 public interface Provider {
   List<Base> fetch(String resourceType);
 
-  Base resolveReference(String ref, String resourceType);
+  Base resolveReference(Base rootResource, String ref, String specifiedResourceType);
 }

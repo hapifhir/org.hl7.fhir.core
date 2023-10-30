@@ -13,6 +13,12 @@ public class Cell {
     this.column = column;
   }
   
+  public Cell(Column column, Value value) {
+    super();
+    this.column = column;
+    this.values.add(value);
+  }
+  
   public Column getColumn() {
     return column;
   }

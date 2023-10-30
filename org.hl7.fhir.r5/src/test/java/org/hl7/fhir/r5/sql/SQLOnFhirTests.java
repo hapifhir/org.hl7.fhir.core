@@ -54,7 +54,7 @@ public class SQLOnFhirTests {
     }
 
     @Override
-    public Base resolveReference(String ref, String rt) {
+    public Base resolveReference(Base rootResource, String ref, String rt) {
       if (ref == null) {
         return null;
       }
@@ -109,7 +109,7 @@ public class SQLOnFhirTests {
   @SuppressWarnings("deprecation")
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
-  @Disabled
+  //@Disabled
   public void test(String name, TestDetails test) throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
     this.details = test;
     Runner runner = new Runner();
@@ -126,6 +126,7 @@ public class SQLOnFhirTests {
       runner.execute(test.path+".view", test.testCase.getJsonObject("view"));
       results = store.getRows();
     } catch (Exception e) {
+      e.printStackTrace();
       Assertions.assertTrue(test.testCase.has("expectError"), e.getMessage());
     }
     if (results != null) {
