@@ -48,7 +48,9 @@ public class StorageJson implements Storage {
   }
 
   private JsonElement makeJsonNode(Value value) {
-    if (value.getValueInt() != null) {
+    if (value == null) {
+      return new JsonNull();
+    } else if (value.getValueInt() != null) {
       return new JsonNumber(value.getValueInt().intValue());
     }
     if (value.getValueBoolean() != null) {

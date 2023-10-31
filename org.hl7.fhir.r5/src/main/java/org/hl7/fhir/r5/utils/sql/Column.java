@@ -7,6 +7,7 @@ public class Column {
   private String type;
   private ColumnKind kind;
   private boolean isColl;
+  private boolean duplicateReported;
   
   protected Column() {
     super();
@@ -56,6 +57,42 @@ public class Column {
 
   public void setColl(boolean isColl) {
     this.isColl = isColl;
+  }
+
+  public String diff(Column other) {
+    if (!name.equals(other.name)) {
+      return "Names differ: '"+name+"' vs '"+other.name+"'"; 
+    }
+    if (kind != ColumnKind.Null && other.kind != ColumnKind.Null) {
+      if (length != other.length) {
+        return "Lengths differ: '"+length+"' vs '"+other.length+"'"; 
+      }
+      if (kind != other.kind) {
+        return "Kinds differ: '"+kind+"' vs '"+other.kind+"'"; 
+      }
+      if (isColl != other.isColl) {
+        return "Collection status differs: '"+isColl+"' vs '"+other.isColl+"'"; 
+      }
+    } else if (kind == ColumnKind.Null) {
+      kind = other.kind;
+      length = other.length;
+      isColl = other.isColl;
+    }
+    return null;
+  }
+
+  public boolean isDuplicateReported() {
+    return duplicateReported;
+  }
+
+  public void setDuplicateReported(boolean duplicateReported) {
+    this.duplicateReported = duplicateReported;
+  }
+
+  @Override
+  public String toString() {
+    return "Column [name=" + name + ", length=" + length + ", type=" + type + ", kind=" + kind + ", isColl=" + isColl
+        + "]";
   }
   
   
