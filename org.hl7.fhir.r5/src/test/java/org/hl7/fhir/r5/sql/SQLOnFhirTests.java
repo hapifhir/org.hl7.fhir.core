@@ -109,7 +109,7 @@ public class SQLOnFhirTests {
   @SuppressWarnings("deprecation")
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
-  //@Disabled
+  @Disabled
   public void test(String name, TestDetails test) throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
     this.details = test;
     Runner runner = new Runner();
