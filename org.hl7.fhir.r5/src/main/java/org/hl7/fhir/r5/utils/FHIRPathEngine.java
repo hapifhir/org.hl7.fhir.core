@@ -78,6 +78,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+import ca.uhn.fhir.fhirpath.FhirPathExecutionException;
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.util.ElementUtil;
 
@@ -3091,7 +3092,12 @@ public class FHIRPathEngine {
     } else if (hostServices == null) {
       throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, s);
     } else {
-      return hostServices.resolveConstantType(this, context.appInfo, s, explicitConstant);
+      TypeDetails v = hostServices.resolveConstantType(this, context.appInfo, s, explicitConstant);
+      if (v == null) {
+        throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, s); 
+      } else {
+        return v;
+      }
     }
   }
 
@@ -3145,7 +3151,7 @@ public class FHIRPathEngine {
   }
 
   private TypeDetails executeType(String type, ExpressionNode exp, boolean atEntry, TypeDetails focus, Set<ElementDefinition> elementDependencies) throws PathEngineException, DefinitionException {
-    if (atEntry && Character.isUpperCase(exp.getName().charAt(0)) && hashTail(type).equals(exp.getName())) { // special case for start up
+    if (atEntry && Character.isUpperCase(exp.getName().charAt(0)) && (hashTail(type).equals(exp.getName()) || isAncestor(type, exp.getName()) )) { // special case for start up
       return new TypeDetails(CollectionStatus.SINGLETON, type);
     }
     TypeDetails result = new TypeDetails(focus.getCollectionStatus());
@@ -3153,6 +3159,21 @@ public class FHIRPathEngine {
     return result;
   }
 
+
+  private boolean isAncestor(String wanted, String stated) {
+    try {
+      StructureDefinition sd = worker.fetchTypeDefinition(wanted);
+      while (sd != null) {
+        if (stated.equals(sd.getTypeName())) {
+          return true;
+        }
+        sd = worker.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      }
+      return false;
+    } catch (Exception e) { 
+      return false;
+    }
+  }
 
   private String hashTail(String type) {
     return type.contains("#") ? "" : type.substring(type.lastIndexOf("/")+1);
@@ -4318,7 +4339,11 @@ public class FHIRPathEngine {
     if (x == null) {
       return makeBoolean(false);                
     }
-    return makeBoolean(checkHtmlNames(x));    
+    boolean ok = checkHtmlNames(x, true);
+    if (ok && VersionUtilities.isR6Plus(this.worker.getVersion())) {
+      ok = checkForContent(x);
+    }
+    return makeBoolean(ok);    
   }
 
   private List<Base> funcHtmlChecks2(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
@@ -4387,18 +4412,25 @@ public class FHIRPathEngine {
     return null;
   }
 
-  private boolean checkHtmlNames(XhtmlNode node) {
+  private boolean checkHtmlNames(XhtmlNode node, boolean block) {
     if (node.getNodeType() == NodeType.Comment) {
       if (node.getContent().startsWith("DOCTYPE"))
         return false;
     }
     if (node.getNodeType() == NodeType.Element) {
-      if (!Utilities.existsInList(node.getName(),
-          "p", "br", "div", "h1", "h2", "h3", "h4", "h5", "h6", "a", "span", "b", "em", "i", "strong",
-          "small", "big", "tt", "small", "dfn", "q", "var", "abbr", "acronym", "cite", "blockquote", "hr", "address", "bdo", "kbd", "q", "sub", "sup",
-          "ul", "ol", "li", "dl", "dt", "dd", "pre", "table", "caption", "colgroup", "col", "thead", "tr", "tfoot", "tbody", "th", "td",
-          "code", "samp", "img", "map", "area")) {
-        return false;
+      if (block) {
+        if (!Utilities.existsInList(node.getName(),
+            "p", "br", "div", "h1", "h2", "h3", "h4", "h5", "h6", "a", "span", "b", "em", "i", "strong",
+            "small", "big", "tt", "small", "dfn", "q", "var", "abbr", "acronym", "cite", "blockquote", "hr", "address", "bdo", "kbd", "q", "sub", "sup",
+            "ul", "ol", "li", "dl", "dt", "dd", "pre", "table", "caption", "colgroup", "col", "thead", "tr", "tfoot", "tbody", "th", "td",
+            "code", "samp", "img", "map", "area")) {
+          return false;
+        }        
+      } else {
+        if (!Utilities.existsInList(node.getName(),
+            "a", "span", "b", "em", "i", "strong", "small", "big", "small", "q", "var", "abbr", "acronym", "cite", "kbd", "q", "sub", "sup", "code", "samp", "img", "map", "area")) {
+          return false;
+        }
       }
       for (String an : node.getAttributes().keySet()) {
         boolean ok = an.startsWith("xmlns") || Utilities.existsInList(an,
@@ -4417,7 +4449,7 @@ public class FHIRPathEngine {
         }
       }
       for (XhtmlNode c : node.getChildNodes()) {
-        if (!checkHtmlNames(c)) {
+        if (!checkHtmlNames(c, block && !"p".equals(c))) {
           return false;
         }
       }
