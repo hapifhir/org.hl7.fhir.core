@@ -542,7 +542,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
             } else if (pcv.hasValueStringType() && Utilities.isAbsoluteUrlLinkable(pcv.getValue().primitiveValue())) {
               td.ah(pcv.getValue().primitiveValue()).tx(pcv.getValue().primitiveValue());
             } else if ("parent".equals(pcv.getCode())) {              
-              td.ah("#"+cs.getId()+"-"+pcv.getValue().primitiveValue()).addText(pcv.getValue().primitiveValue());
+              td.ah("#"+cs.getId()+"-"+Utilities.nmtokenize(pcv.getValue().primitiveValue())).addText(pcv.getValue().primitiveValue());
             } else {
               td.addText(pcv.getValue().primitiveValue());
             }

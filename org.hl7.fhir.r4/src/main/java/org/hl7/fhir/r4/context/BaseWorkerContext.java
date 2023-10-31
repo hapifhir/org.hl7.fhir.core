@@ -469,10 +469,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     tlog("$expand on " + txCache.summary(vs));
     try {
       ValueSet result = txClient.expandValueset(vs, p, params);
-      if (!result.hasUrl())
-        result.setUrl(vs.getUrl());
-      if (!result.hasUrl())
-        throw new Error("no url in expand value set 2");
+      if (result != null) {
+        if (!result.hasUrl())
+          result.setUrl(vs.getUrl());
+        if (!result.hasUrl())
+          throw new Error("no url in expand value set 2");
+      }
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(),
