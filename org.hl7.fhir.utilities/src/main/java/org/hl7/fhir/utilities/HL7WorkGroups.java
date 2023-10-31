@@ -125,7 +125,7 @@ public class HL7WorkGroups {
     case "sd": return "Structured Documents";
     case "sec": return "Security";
     case "soa": return "Services Oriented Architecture";
-    case "ti": return "Terminology Infrastructure Work Group";
+    case "ti": return "Terminology Infrastructure";
     case "tsmg": return "Terminology Services Management Group (TSMG)";
     case "us": return "US Realm Steering Committee";
     case "v2": return "V2 Management Group";
