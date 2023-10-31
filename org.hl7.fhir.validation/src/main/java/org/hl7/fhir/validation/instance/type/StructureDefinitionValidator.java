@@ -38,6 +38,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -46,6 +47,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
+import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
 public class StructureDefinitionValidator extends BaseValidator {
 
@@ -152,12 +154,20 @@ public class StructureDefinitionValidator extends BaseValidator {
           }
         }
       }
+
       List<Element> extensions = src.getChildren("extension");
       int c = 0;
       for (Element extension : extensions) {
         if (ToolingExtensions.EXT_OBLIGATION_INHERITS.equals(extension.getNamedChildValue("url"))) {
           ok = validateInheritsObligationProfile(errors, extension, stack.push(extension, c, null, null), src) && ok;
         }
+        c++;
+      }
+        
+      List<Element> contextInvariants = src.getChildren("contextInvariant");
+      c = 0;
+      for (Element contextInvariant : contextInvariants) {
+        ok = validateContextInvariant(errors, contextInvariant, src, stack.push(contextInvariant, c, null, null)) && ok;
         c++;
       }
       
@@ -344,7 +354,7 @@ public class StructureDefinitionValidator extends BaseValidator {
           cv = ec.primitiveValue();
         }
         if ("element".equals(ct) && "Element".equals(cv)) {
-          warning(errors, "2023-04-23", IssueType.BUSINESSRULE, n.getLiteralPath(), false, I18nConstants.SD_CONTEXT_SHOULD_NOT_BE_ELEMENT, cv);
+          warning(errors, "2023-04-23", IssueType.BUSINESSRULE, n.getLiteralPath(), false, I18nConstants.SD_CONTEXT_SHOULD_NOT_BE_ELEMENT, cv, src.getNamedChildValue("id"));
         }          
       } else {
         ok = rule(errors, "2023-04-23", IssueType.INVALID, n.getLiteralPath(), false, I18nConstants.SD_NO_CONTEXT_WHEN_NOT_EXTENSION, type) && ok;
@@ -545,10 +555,11 @@ public class StructureDefinitionValidator extends BaseValidator {
                   types.add(elements.get(0).getNamedChildValue("path"));
                 }
                 List<String> warnings = new ArrayList<>();
+                ValidationContext vc = new ValidationContext(invariant);
                 if (Utilities.existsInList(rootPath, context.getResourceNames())) {
-                  fpe.checkOnTypes(invariant, rootPath, types, fpe.parse(exp), warnings);
+                  fpe.checkOnTypes(vc, rootPath, types, fpe.parse(exp), warnings);
                 } else {
-                  fpe.checkOnTypes(invariant, "DomainResource", types, fpe.parse(exp), warnings);
+                  fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
                 }
                 for (String s : warnings) {
                   warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, false, key+": "+s);
@@ -569,6 +580,61 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     return ok;
+  }
+
+  private boolean validateContextInvariant(List<ValidationMessage> errors, Element invariant, Element sd, NodeStack stack) {
+    boolean ok = true;
+    String expression = invariant.getValue();
+    if (!Utilities.noString(expression)) {
+      // we have to figure out the context, and we might be in type slicing. 
+      String exp = expression;
+      List<String> types = listTypeContexts(sd);
+      if (types.size() == 0) {
+        hint(errors, "2023-10-31", IssueType.INFORMATIONAL, stack, false, I18nConstants.UNABLE_TO_DETERMINE_TYPE_CONTEXT_INV, listContexts(sd));
+      } else 
+        try {
+          List<String> warnings = new ArrayList<>();
+          ValidationContext vc = new ValidationContext(invariant);
+          fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
+          for (String s : warnings) {
+            warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, false, s);
+          }
+        } catch (Exception e) {
+          if (debug) {
+            e.printStackTrace();
+          }
+          ok = rule(errors, "2023-06-19", IssueType.INVALID, stack, false, I18nConstants.ED_CONTEXT_INVARIANT_EXPRESSION_ERROR, expression, e.getMessage()) && ok;
+        }         
+    }        
+    return ok;
+  }
+
+  private Object listContexts(Element sd) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (Element e : sd.getChildren("context")) {
+      b.append(e.getNamedChildValue("type")+"="+e.getNamedChildValue("expression"));
+    }
+    return b.toString();
+  }
+
+  private List<String> listTypeContexts(Element sd) {
+    List<String> types = new ArrayList<>();
+    for (Element e : sd.getChildren("context")) {
+      switch (e.getNamedChildValue("type")) {
+      case "fhirpath" :
+        break;
+      case "element" :
+        types.add(e.getNamedChildValue("expression"));
+        break;
+      case "extension" :
+        // this isn't defined?
+        types.add(e.getNamedChildValue("Extension"));
+        types.add(e.getNamedChildValue("Extension.value"));
+        break;
+      default:
+      }
+    }
+    return types;
   }
 
   private boolean haseHasInvariant(StructureDefinition base, String key) {

@@ -1856,6 +1856,18 @@ public String toString() {
     getParameter().removeIf(p -> name.equals(p.getName()));  
   }
 
+  public void addParameters(Parameters expParameters) {
+    addParameters(expParameters.getParameter());    
+  }
+
+  private void addParameters(List<ParametersParameterComponent> parameters) {
+    for (ParametersParameterComponent p : parameters) {
+      if (!hasParameter(p.getName())) {
+        addParameter(p);
+      }
+    }
+  }
+
   // end addition
 
 }

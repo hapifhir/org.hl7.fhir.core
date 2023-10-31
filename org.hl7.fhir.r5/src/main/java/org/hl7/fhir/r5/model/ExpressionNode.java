@@ -729,5 +729,9 @@ public class ExpressionNode {
     }    
     return names;
   }
+
+  public boolean isNullSet() {
+    return kind == Kind.Constant && constant == null;
+  }
 		
 }
