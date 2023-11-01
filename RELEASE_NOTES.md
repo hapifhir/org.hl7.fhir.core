@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Backport: Use https for primary packages server
