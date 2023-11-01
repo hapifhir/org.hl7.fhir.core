@@ -181,25 +181,25 @@ public class Params {
           cliContext.addProfile(p);
         }
       } else if (args[i].equals(BUNDLE)) {
-        String p = null;
-        String r = null;
+        String profile = null;
+        String rule = null;
         if (i + 1 == args.length) {
           throw new Error("Specified -profile without indicating bundle rule ");
         } else {
-          r = args[++i];
+          rule = args[++i];
         }
         if (i + 1 == args.length) {
           throw new Error("Specified -profile without indicating profile source");
         } else {
-          p = args[++i];
+          profile = args[++i];
         }
-        cliContext.getBundleValidationRules().add(new BundleValidationRule(r, p));
+        cliContext.getBundleValidationRules().add(new BundleValidationRule().setRule(rule).setProfile(profile));
       } else if (args[i].equals(QUESTIONNAIRE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -questionnaire without indicating questionnaire mode");
         else {
-          String q = args[++i];
-          cliContext.setQuestionnaireMode(QuestionnaireMode.fromCode(q));
+          String questionnaireMode = args[++i];
+          cliContext.setQuestionnaireMode(QuestionnaireMode.fromCode(questionnaireMode));
         }
       } else if (args[i].equals(LEVEL)) {
         if (i + 1 == args.length)

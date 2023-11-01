@@ -161,9 +161,17 @@ public class DataRenderer extends Renderer implements CodeResolver {
         if (p == null)
           p = getContext().getWorker().fetchResource(StructureDefinition.class, link);
         if (p != null) {
+          if ("Extension".equals(p.getType())) {
+            path = null;
+          } else if (p.hasSnapshot()) {
+            path = p.getSnapshot().getElementFirstRep().getPath();
+          } else if (Utilities.isAbsoluteUrl(path)) {
+            path = null;
+          }
           url = p.getWebPath();
-          if (url == null)
+          if (url == null) {
             url = p.getUserString("filename");
+          }
         } else
           throw new DefinitionException("Unable to resolve markdown link "+link);
   

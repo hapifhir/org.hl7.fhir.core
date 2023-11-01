@@ -287,7 +287,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
     val.getBundleValidationRules().clear();
     if (content.has("bundle-param")) {
-      val.getBundleValidationRules().add(new BundleValidationRule(content.getAsJsonObject("bundle-param").get("rule").getAsString(), content.getAsJsonObject("bundle-param").get("profile").getAsString()));
+      val.getBundleValidationRules().add(new BundleValidationRule().setRule(content.getAsJsonObject("bundle-param").get("rule").getAsString()).setProfile( content.getAsJsonObject("bundle-param").get("profile").getAsString()));
     }
     if (content.has("profiles")) {
       for (JsonElement je : content.getAsJsonArray("profiles")) {

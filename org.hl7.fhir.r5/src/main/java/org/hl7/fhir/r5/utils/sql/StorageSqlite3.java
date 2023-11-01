@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.utils.sql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLType;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -27,7 +28,7 @@ public class StorageSqlite3 implements Storage {
   private Connection conn;
   private int nextKey = 0;
   
-  protected StorageSqlite3(Connection conn) {
+  public StorageSqlite3(Connection conn) {
     super();
     this.conn = conn;
   }
@@ -38,7 +39,7 @@ public class StorageSqlite3 implements Storage {
       CommaSeparatedStringBuilder fields = new CommaSeparatedStringBuilder(", ");
       CommaSeparatedStringBuilder values = new CommaSeparatedStringBuilder(", ");
       StringBuilder b = new StringBuilder();
-      b.append("Create Table "+name+" { ");
+      b.append("Create Table "+name+" ( ");
       b.append("ViewRowKey integer NOT NULL");
       for (Column column : columns) {
         b.append(", "+column.getName()+" "+sqliteType(column.getKind())+" NULL"); // index columns are always nullable
@@ -48,7 +49,7 @@ public class StorageSqlite3 implements Storage {
       b.append(", PRIMARY KEY (ViewRowKey))\r\n");
       conn.createStatement().execute(b.toString());
 
-      String isql = "Insert into "+name+" ("+fields.toString()+") values ("+values.toString()+")";
+      String isql = "Insert into "+name+" (ViewRowKey, "+fields.toString()+") values (?, "+values.toString()+")";
       PreparedStatement psql = conn.prepareStatement(isql);
       return new SQLiteStore(name, psql);
     } catch (Exception e) {
@@ -79,6 +80,8 @@ public class StorageSqlite3 implements Storage {
       for (int i = 0; i < cells.size(); i++) {
         Cell c = cells.get(i);
         switch (c.getColumn().getKind()) {
+        case Null: 
+          p.setNull(i+2, java.sql.Types.NVARCHAR);
         case Binary:
           p.setBytes(i+2, c.getValues().size() == 0 ? null : c.getValues().get(0).getValueBinary());
           break;
@@ -103,6 +106,7 @@ public class StorageSqlite3 implements Storage {
         case Complex: throw new FHIRException("SQLite runner does not handle complexes");
         }
       }
+      p.execute();
     } catch (Exception e) {
       throw new FHIRException(e);
     }

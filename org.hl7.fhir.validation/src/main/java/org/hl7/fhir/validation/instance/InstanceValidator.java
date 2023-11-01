@@ -5871,10 +5871,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (!definition.getPath().contains(".") && profile.hasExtension(ToolingExtensions.EXT_PROFILE_STYLE) && "cda".equals(ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_PROFILE_STYLE))) {
       List<Element> templates = element.getChildren("templateId");
       for (Element t : templates) {
-        String tid = "urn:hl7ii:"+t.getChildValue("root")+(t.hasChild("extension") ? ":"+t.getChildValue("extension") : "");
+        String tid = t.hasChild("extension") ? "urn:hl7ii:"+t.getChildValue("root")+ ":"+t.getChildValue("extension") : "urn:oid:"+t.getChildValue("root");
         StructureDefinition sd = cu.fetchProfileByIdentifier(tid);
         if (sd == null) {
-          ok = rule(errors, "2023-10-20", IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, t.hasChild("extension") ? I18nConstants.CDA_UNKNOWN_TEMPLATE_EXT : I18nConstants.CDA_UNKNOWN_TEMPLATE, t.getChildValue("root"), t.getChildValue("extension")) && ok;
+          hint(errors, "2023-10-20", IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, t.hasChild("extension") ? I18nConstants.CDA_UNKNOWN_TEMPLATE_EXT : I18nConstants.CDA_UNKNOWN_TEMPLATE, t.getChildValue("root"), t.getChildValue("extension"));
         } else {
           ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
           if (!element.hasValidated(sd, ed)) {

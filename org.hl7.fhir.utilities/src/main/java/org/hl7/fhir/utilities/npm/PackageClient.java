@@ -119,7 +119,6 @@ public class PackageClient {
     try {
       return obj.hasString("date") ? obj.asDate("date") : null;
     } catch (DateTimeParseException e) {
-      //FIXME Some IGs use an older date format:
       try {
         return new SimpleDateFormat("yyyyMMddhhmmss").parse(obj.getJsonString("date").asString()).toInstant();
       } catch (ParseException ex) {
