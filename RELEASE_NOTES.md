@@ -1,7 +1,7 @@
 ## Validator Changes
 
-* None
+* no changes
 
 ## Other code changes
 
-* Backport: Use https for primary packages server
+* no changes
