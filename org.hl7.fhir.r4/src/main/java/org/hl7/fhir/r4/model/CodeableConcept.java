@@ -255,6 +255,17 @@ public class CodeableConcept extends Type implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("coding")) {
+      this.getCoding().remove(castToCoding(value));
+    } else if (name.equals("text")) {
+      this.text = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1355086998:

@@ -907,6 +907,34 @@ public class Requirements extends CanonicalResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("key")) {
+          this.key = null;
+        } else if (name.equals("label")) {
+          this.label = null;
+        } else if (name.equals("conformance")) {
+          value = new ConformanceExpectationEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getConformance().remove((Enumeration) value);
+        } else if (name.equals("conditionality")) {
+          this.conditionality = null;
+        } else if (name.equals("requirement")) {
+          this.requirement = null;
+        } else if (name.equals("derivedFrom")) {
+          this.derivedFrom = null;
+        } else if (name.equals("parent")) {
+          this.parent = null;
+        } else if (name.equals("satisfiedBy")) {
+          this.getSatisfiedBy().remove(value);
+        } else if (name.equals("reference")) {
+          this.getReference().remove(value);
+        } else if (name.equals("source")) {
+          this.getSource().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2506,6 +2534,56 @@ public class Requirements extends CanonicalResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("url")) {
+          this.url = null;
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("version")) {
+          this.version = null;
+        } else if (name.equals("versionAlgorithm[x]")) {
+          this.versionAlgorithm = null;
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("status")) {
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
+        } else if (name.equals("experimental")) {
+          this.experimental = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("publisher")) {
+          this.publisher = null;
+        } else if (name.equals("contact")) {
+          this.getContact().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("useContext")) {
+          this.getUseContext().remove(value);
+        } else if (name.equals("jurisdiction")) {
+          this.getJurisdiction().remove(value);
+        } else if (name.equals("purpose")) {
+          this.purpose = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else if (name.equals("copyrightLabel")) {
+          this.copyrightLabel = null;
+        } else if (name.equals("derivedFrom")) {
+          this.getDerivedFrom().remove(value);
+        } else if (name.equals("reference")) {
+          this.getReference().remove(value);
+        } else if (name.equals("actor")) {
+          this.getActor().remove(value);
+        } else if (name.equals("statement")) {
+          this.getStatement().remove((RequirementsStatementComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

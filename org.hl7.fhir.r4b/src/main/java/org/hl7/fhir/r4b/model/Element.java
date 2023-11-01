@@ -271,6 +271,17 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("id")) {
+      this.id = null;
+    } else if (name.equals("extension")) {
+      this.getExtension().remove(value);
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 3355:
@@ -427,57 +438,121 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     return this;
   }
 
-  /**
-   * Returns an unmodifiable list containing all extensions on this element which
-   * match the given URL.
-   * 
-   * Note: BackbdoneElements override this to add matching Modifier Extensions too
-   * 
-   * @param theUrl The URL. Must not be blank or null.
-   * @return an unmodifiable list containing all extensions on this element which
-   *         match the given URL
-   */
-  public List<Extension> getExtensionsByUrl(String theUrl) {
-    org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
-    ArrayList<Extension> retVal = new ArrayList<Extension>();
-    for (Extension next : getExtension()) {
-      if (theUrl.equals(next.getUrl())) {
-        retVal.add(next);
-      }
-    }
-    return java.util.Collections.unmodifiableList(retVal);
-  }
+   /**
+    * Returns an unmodifiable list containing all extensions on this element which 
+    * match the given URL.
+    * 
+    * Note: BackbdoneElements override this to add matching Modifier Extensions too
+    * 
+    * @param theUrl The URL. Must not be blank or null.
+    * @return an unmodifiable list containing all extensions on this element which match the given URL
+    */
+   public List<Extension> getExtensionsByUrl(String theUrl) {
+     if (theUrl == null) {
+       throw new NullPointerException("theUrl must not be null");
+     } else if (theUrl.length() == 0) {
+       throw new IllegalArgumentException("theUrl must not be empty");
+     }
+     ArrayList<Extension> retVal = new ArrayList<>();
+     for (Extension next : getExtension()) {
+       if (theUrl.equals(next.getUrl())) {
+         retVal.add(next);
+       }
+     }
+     return java.util.Collections.unmodifiableList(retVal);
+   }
+   
+   public List<Extension> getExtensionsByUrl(String... theUrls) {
+     
+     ArrayList<Extension> retVal = new ArrayList<>();
+     for (Extension next : getExtension()) {
+       if (Utilities.existsInList(next.getUrl(), theUrls)) {
+         retVal.add(next);
+       }
+     }
+     return java.util.Collections.unmodifiableList(retVal);
+   }
+   
 
-  /**
-   * Returns an true if this element has an extension that matchs the given URL.
-   * 
-   * Note: BackbdoneElements override this to check Modifier Extensions too
-   * 
-   * @param theUrl The URL. Must not be blank or null.
-   */
-  public boolean hasExtension(String theUrl) {
-    return !getExtensionsByUrl(theUrl).isEmpty();
-  }
+   public boolean hasExtension(String... theUrls) {
+     for (Extension next : getExtension()) {
+       if (Utilities.existsInList(next.getUrl(), theUrls)) {
+         return true;
+       }
+     }
+     return false;
+   }
 
-  /**
-   * Returns the value as a string if this element has only one extension that
-   * matches the given URL, and that can be converted to a string.
-   * 
-   * Note: BackbdoneElements override this to check Modifier Extensions too
-   * 
-   * @param theUrl The URL. Must not be blank or null.
-   */
+
+   /**
+    * Returns an true if this element has an extension that matchs the given URL.
+    * 
+    * Note: BackbdoneElements override this to check Modifier Extensions too
+    * 
+    * @param theUrl The URL. Must not be blank or null.
+    */
+   public boolean hasExtension(String theUrl) {
+     if (extension == null || extension.size() == 0) {
+       return false;
+     }
+
+     for (Extension ext : extension) {
+       if (theUrl.equals(ext.getUrl())) {
+         return true;
+       }
+     }
+
+     return false;
+   }
+
+   /**
+    * Returns the value as a string if this element has only one extension that matches the given URL, and that can be converted to a string.
+    * 
+    * Note: BackbdoneElements override this to check Modifier Extensions too
+    * 
+    * @param theUrl The URL. Must not be blank or null.
+    */
   public String getExtensionString(String theUrl) throws FHIRException {
-    List<Extension> ext = getExtensionsByUrl(theUrl);
-    if (ext.isEmpty())
+    List<Extension> ext = getExtensionsByUrl(theUrl); 
+    if (ext.isEmpty()) 
+      return null; 
+    if (ext.size() > 1) 
+      throw new FHIRException("Multiple matching extensions found for extension '"+theUrl+"'");
+    if (!ext.get(0).hasValue())
       return null;
-    if (ext.size() > 1)
-      throw new FHIRException("Multiple matching extensions found");
     if (!ext.get(0).getValue().isPrimitive())
-      throw new FHIRException("Extension could not be converted to a string");
+      throw new FHIRException("Extension '"+theUrl+"' could not be converted to a string");
     return ext.get(0).getValue().primitiveValue();
   }
 
+
+  public boolean hasExtension(Extension ext) {
+    if (hasExtension()) {
+      for (Extension t : getExtension()) {
+        if (Base.compareDeep(t, ext, false)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
+  public void copyExtensions(org.hl7.fhir.r4b.model.Element src, String... urls) {
+    for (Extension e : src.getExtension()) {
+      if (Utilities.existsInList(e.getUrl(), urls)) {
+        addExtension(e.copy());
+      }
+    }    
+  }
+
+  public void copyNewExtensions(org.hl7.fhir.r4b.model.Element src, String... urls) {
+    for (Extension e : src.getExtension()) {
+      if (Utilities.existsInList(e.getUrl(), urls) && !!hasExtension(e.getUrl())) {
+        addExtension(e.copy());
+      }
+    }    
+  }
+  
 // end addition
 
 }

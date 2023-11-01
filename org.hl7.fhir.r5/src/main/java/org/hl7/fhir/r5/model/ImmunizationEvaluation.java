@@ -922,6 +922,40 @@ public class ImmunizationEvaluation extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new ImmunizationEvaluationStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<ImmunizationEvaluationStatusCodes>
+        } else if (name.equals("patient")) {
+          this.patient = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("authority")) {
+          this.authority = null;
+        } else if (name.equals("targetDisease")) {
+          this.targetDisease = null;
+        } else if (name.equals("immunizationEvent")) {
+          this.immunizationEvent = null;
+        } else if (name.equals("doseStatus")) {
+          this.doseStatus = null;
+        } else if (name.equals("doseStatusReason")) {
+          this.getDoseStatusReason().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("series")) {
+          this.series = null;
+        } else if (name.equals("doseNumber")) {
+          this.doseNumber = null;
+        } else if (name.equals("seriesDoses")) {
+          this.seriesDoses = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {

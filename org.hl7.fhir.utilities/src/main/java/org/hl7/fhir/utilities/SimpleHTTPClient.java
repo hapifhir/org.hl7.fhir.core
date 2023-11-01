@@ -25,7 +25,7 @@ public class SimpleHTTPClient {
     TOKEN
   }
 
-	public class Header {
+	public static class Header {
     private String name;
     private String value;
     public Header(String name, String value) {
@@ -44,7 +44,7 @@ public class SimpleHTTPClient {
   private static final int MAX_REDIRECTS = 5;
   private static int counter = 1;
 
-  public class HTTPResult {
+  public static class HTTPResult {
     private int code;
     private String contentType;
     private byte[] content;
@@ -90,6 +90,10 @@ public class SimpleHTTPClient {
 
     public String getMessage() {
       return message;
+    }
+
+    public String getContentAsString() {
+      return new String(content, StandardCharsets.UTF_8);
     }    
   }
 

@@ -117,6 +117,16 @@ public class CommaSeparatedStringBuilder {
   public static String join(String sep, Collection<String> list) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(sep);
     for (String s : list) {
+      if (s != null) {
+        b.append(s);
+      }
+    }
+    return b.toString();
+  }
+
+  public static String join(String sep, String[] list) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(sep);
+    for (String s : list) {
       b.append(s);
     }
     return b.toString();
@@ -130,6 +140,15 @@ public class CommaSeparatedStringBuilder {
     return self.toString();
   }
 
+
+  public static String buildObjects(List<? extends Object> list) {
+    CommaSeparatedStringBuilder self = new CommaSeparatedStringBuilder();
+    for (Object s : list) {
+      self.append(s.toString());
+    }
+    return self.toString();
+  }
+  
   public static Set<String> toSet(String source) {
     if (source == null) {
       return null;

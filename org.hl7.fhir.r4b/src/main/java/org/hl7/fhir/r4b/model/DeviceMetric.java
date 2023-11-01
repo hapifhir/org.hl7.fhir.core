@@ -1203,6 +1203,19 @@ public class DeviceMetric extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("state")) {
+        this.state = null;
+      } else if (name.equals("time")) {
+        this.time = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2051,6 +2064,33 @@ public class DeviceMetric extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("unit")) {
+      this.unit = null;
+    } else if (name.equals("source")) {
+      this.source = null;
+    } else if (name.equals("parent")) {
+      this.parent = null;
+    } else if (name.equals("operationalStatus")) {
+      this.operationalStatus = null;
+    } else if (name.equals("color")) {
+      this.color = null;
+    } else if (name.equals("category")) {
+      this.category = null;
+    } else if (name.equals("measurementPeriod")) {
+      this.measurementPeriod = null;
+    } else if (name.equals("calibration")) {
+      this.getCalibration().remove((DeviceMetricCalibrationComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

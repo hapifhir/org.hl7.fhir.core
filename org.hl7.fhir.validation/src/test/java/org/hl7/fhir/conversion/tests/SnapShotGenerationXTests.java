@@ -316,12 +316,12 @@ public class SnapShotGenerationXTests {
 
     // FHIRPath methods
     @Override
-    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
       throw new Error("Not implemented yet");
     }
 
     @Override
-    public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
       throw new Error("Not implemented yet");
     }
 
@@ -332,21 +332,21 @@ public class SnapShotGenerationXTests {
     }
 
     @Override
-    public FunctionDetails resolveFunction(String functionName) {
+    public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
       if ("fixture".equals(functionName))
         return new FunctionDetails("Access a fixture defined in the testing context", 0, 1);
       return null;
     }
 
     @Override
-    public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
+    public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
       if ("fixture".equals(functionName))
         return new TypeDetails(CollectionStatus.SINGLETON, UtilitiesXTests.context(version).getResourceNamesAsSet());
       return null;
     }
 
     @Override
-    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+    public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
       if ("fixture".equals(functionName)) {
         String id = fp.convertToString(parameters.get(0));
         Resource res = fetchFixture(id);
@@ -361,13 +361,13 @@ public class SnapShotGenerationXTests {
     }
 
     @Override
-    public Base resolveReference(Object appContext, String url, Base refContext) {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) {
       // TODO Auto-generated method stub
       return null;
     }
 
     @Override
-    public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
+    public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
       IResourceValidator val = UtilitiesXTests.context(version).newValidator();
       List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
       if (item instanceof Resource) {
@@ -393,10 +393,14 @@ public class SnapShotGenerationXTests {
     }
 
     @Override
-    public ValueSet resolveValueSet(Object appContext, String url) {
+    public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
       throw new Error("Not implemented yet");
     }
 
+    @Override
+    public boolean paramIsType(String name, int index) {
+      return false;
+    }
   }
 
   private static FHIRPathEngine fp;
@@ -577,4 +581,6 @@ public class SnapShotGenerationXTests {
     }
     return sd;
   }
+  
+
 }

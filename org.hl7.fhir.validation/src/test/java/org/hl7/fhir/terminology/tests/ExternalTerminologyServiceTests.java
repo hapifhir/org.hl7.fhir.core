@@ -47,8 +47,6 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   }
 
   private static final String SERVER = FhirSettings.getTxFhirDevelopment();  
-// private static final String SERVER = FhirSettings.getTxFhirLocal();  
-// private static final String SERVER = "https://r4.ontoserver.csiro.au/fhir";
 
   
   @Parameters(name = "{index}: id {0}")

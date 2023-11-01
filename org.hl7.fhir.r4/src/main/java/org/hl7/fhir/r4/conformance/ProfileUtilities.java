@@ -5268,5 +5268,31 @@ public class ProfileUtilities extends TranslatingUtilities {
   public void setDebug(boolean debug) {
     this.debug = debug;
   }
+  
+
+  public static boolean isExtensionDefinition(StructureDefinition sd) {
+    return sd.getDerivation() == TypeDerivationRule.CONSTRAINT && sd.getType().equals("Extension");
+  }
+
+  public static boolean isSimpleExtension(StructureDefinition sd) {
+    if (!isExtensionDefinition(sd)) {
+      return false;
+    }
+    ElementDefinition value = sd.getSnapshot().getElementByPath("Extension.value");
+    return value != null && !value.isProhibited();
+  }
+
+  public static boolean isComplexExtension(StructureDefinition sd) {
+    if (!isExtensionDefinition(sd)) {
+      return false;
+    }
+    ElementDefinition value = sd.getSnapshot().getElementByPath("Extension.value");
+    return value == null || value.isProhibited();
+  }
+
+  public static boolean isModifierExtension(StructureDefinition sd) {
+    ElementDefinition defn = sd.getSnapshot().getElementByPath("Extension");
+    return defn.getIsModifier();
+  }
 
 }

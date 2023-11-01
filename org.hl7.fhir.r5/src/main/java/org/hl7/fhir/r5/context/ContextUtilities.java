@@ -42,7 +42,6 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
 
   private IWorkerContext context;
   private boolean suppressDebugMessages;
-  private boolean ignoreProfileErrors;
   private XVerExtensionManager xverManager;
   private Map<String, String> oidCache = new HashMap<>();
   private List<StructureDefinition> allStructuresList = new ArrayList<StructureDefinition>();
@@ -61,14 +60,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   public void setSuppressDebugMessages(boolean suppressDebugMessages) {
     this.suppressDebugMessages = suppressDebugMessages;
   }
-  public boolean isIgnoreProfileErrors() {
-    return ignoreProfileErrors;
-  }
-
-  public void setIgnoreProfileErrors(boolean ignoreProfileErrors) {
-    this.ignoreProfileErrors = ignoreProfileErrors;
-  }
-
+  
   public String oid2Uri(String oid) {
     if (oid != null && oid.startsWith("urn:oid:")) {
       oid = oid.substring(8);
@@ -231,7 +223,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
           } catch (Exception e) {
             if (!isSuppressDebugMessages()) {
               System.out.println("Unable to generate snapshot @2 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
-              if (context.getLogger().isDebugLogging()) {
+              if (context.getLogger() != null && context.getLogger().isDebugLogging()) {
                 e.printStackTrace();
               }
             }
@@ -258,11 +250,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
    * @throws FHIRException
    */
   public void generateSnapshot(StructureDefinition p) throws DefinitionException, FHIRException {
-    generateSnapshot(p, false);
-  }
-  
-  public void generateSnapshot(StructureDefinition p, boolean ifLogical) {
-    if ((!p.hasSnapshot() || isProfileNeedsRegenerate(p) ) && (ifLogical || p.getKind() != StructureDefinitionKind.LOGICAL)) {
+    if ((!p.hasSnapshot() || isProfileNeedsRegenerate(p))) {
       if (!p.hasBaseDefinition())
         throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE___HAS_NO_BASE_AND_NO_SNAPSHOT, p.getName(), p.getUrl()));
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getBaseDefinition(), p);
@@ -291,7 +279,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       }
       pu.generateSnapshot(sd, p, p.getUrl(), sd.getUserString("webroot"), p.getName());
       for (ValidationMessage msg : msgs) {
-        if ((!ignoreProfileErrors && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL) {
+        if ((!ProfileUtilities.isSuppressIgnorableExceptions() && msg.getLevel() == ValidationMessage.IssueSeverity.ERROR) || msg.getLevel() == ValidationMessage.IssueSeverity.FATAL) {
           if (!msg.isIgnorableError()) {
             throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE___ELEMENT__ERROR_GENERATING_SNAPSHOT_, p.getName(), p.getUrl(), msg.getLocation(), msg.getMessage()));
           } else {
@@ -318,8 +306,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
 
   @Override
   public boolean isPrimitiveType(String type) {
-    StructureDefinition sd = context.fetchTypeDefinition(type);
-    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
+    return context.isPrimitiveType(type);
   }
 
   @Override
@@ -370,11 +357,6 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   @Override
   public boolean prependLinks() {
     return false;
-  }
-
-  public boolean isPrimitiveDatatype(String type) {
-    StructureDefinition sd = context.fetchTypeDefinition(type);
-    return sd != null && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
   }
 
   public StructureDefinition fetchByJsonName(String key) {
@@ -438,6 +420,17 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     }
     if (candidates.size() == 1) {
       return candidates.get(0);
+    }
+    return null;
+  }
+
+  public StructureDefinition fetchProfileByIdentifier(String tid) {
+    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
+      for (Identifier ii : sd.getIdentifier()) {
+        if (tid.equals(ii.getValue())) {
+          return sd;
+        }
+      }
     }
     return null;
   }

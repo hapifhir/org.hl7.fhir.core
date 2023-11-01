@@ -205,6 +205,17 @@ public class MedicinalProductDefinition extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("contact")) {
+        this.contact = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -607,6 +618,21 @@ public class MedicinalProductDefinition extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("productName")) {
+        this.productName = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("namePart")) {
+        this.getNamePart().remove((MedicinalProductDefinitionNameNamePartComponent) value);
+      } else if (name.equals("countryLanguage")) {
+        this.getCountryLanguage().remove((MedicinalProductDefinitionNameCountryLanguageComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -883,6 +909,17 @@ public class MedicinalProductDefinition extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("part")) {
+        this.part = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1156,6 +1193,19 @@ public class MedicinalProductDefinition extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("country")) {
+        this.country = null;
+      } else if (name.equals("jurisdiction")) {
+        this.jurisdiction = null;
+      } else if (name.equals("language")) {
+        this.language = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1400,6 +1450,17 @@ public class MedicinalProductDefinition extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("product")) {
+        this.product = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1764,6 +1825,21 @@ public class MedicinalProductDefinition extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("effectiveDate")) {
+        this.effectiveDate = null;
+      } else if (name.equals("organization")) {
+        this.getOrganization().remove(value);
+      } else if (name.equals("confidentialityIndicator")) {
+        this.confidentialityIndicator = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2106,6 +2182,17 @@ public class MedicinalProductDefinition extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("value[x]")) {
+        this.value = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -4286,6 +4373,69 @@ public class MedicinalProductDefinition extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("domain")) {
+      this.domain = null;
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("statusDate")) {
+      this.statusDate = null;
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("combinedPharmaceuticalDoseForm")) {
+      this.combinedPharmaceuticalDoseForm = null;
+    } else if (name.equals("route")) {
+      this.getRoute().remove(value);
+    } else if (name.equals("indication")) {
+      this.indication = null;
+    } else if (name.equals("legalStatusOfSupply")) {
+      this.legalStatusOfSupply = null;
+    } else if (name.equals("additionalMonitoringIndicator")) {
+      this.additionalMonitoringIndicator = null;
+    } else if (name.equals("specialMeasures")) {
+      this.getSpecialMeasures().remove(value);
+    } else if (name.equals("pediatricUseIndicator")) {
+      this.pediatricUseIndicator = null;
+    } else if (name.equals("classification")) {
+      this.getClassification().remove(value);
+    } else if (name.equals("marketingStatus")) {
+      this.getMarketingStatus().remove(value);
+    } else if (name.equals("packagedMedicinalProduct")) {
+      this.getPackagedMedicinalProduct().remove(value);
+    } else if (name.equals("ingredient")) {
+      this.getIngredient().remove(value);
+    } else if (name.equals("impurity")) {
+      this.getImpurity().remove(value);
+    } else if (name.equals("attachedDocument")) {
+      this.getAttachedDocument().remove(value);
+    } else if (name.equals("masterFile")) {
+      this.getMasterFile().remove(value);
+    } else if (name.equals("contact")) {
+      this.getContact().remove((MedicinalProductDefinitionContactComponent) value);
+    } else if (name.equals("clinicalTrial")) {
+      this.getClinicalTrial().remove(value);
+    } else if (name.equals("code")) {
+      this.getCode().remove(value);
+    } else if (name.equals("name")) {
+      this.getName().remove((MedicinalProductDefinitionNameComponent) value);
+    } else if (name.equals("crossReference")) {
+      this.getCrossReference().remove((MedicinalProductDefinitionCrossReferenceComponent) value);
+    } else if (name.equals("operation")) {
+      this.getOperation().remove((MedicinalProductDefinitionOperationComponent) value);
+    } else if (name.equals("characteristic")) {
+      this.getCharacteristic().remove((MedicinalProductDefinitionCharacteristicComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

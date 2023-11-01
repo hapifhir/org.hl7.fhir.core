@@ -151,13 +151,13 @@ public class ConceptMap14_50 {
     return tgt;
   }
 
-  public static org.hl7.fhir.dstu2016may.model.Enumeration<ConceptMapEquivalence> convertConceptMapEquivalence(Enumeration<ConceptMapRelationship> src) throws FHIRException {
+  public static org.hl7.fhir.dstu2016may.model.Enumeration<ConceptMapEquivalence> convertConceptMapEquivalence(Enumeration<ConceptMapRelationship> src, org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent ccm) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.Enumeration<ConceptMapEquivalence> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<ConceptMapEquivalence>(new org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalenceEnumFactory());
-    ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt, VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
-    if (src.hasExtension(VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
-      tgt.setValueAsString(src.getExtensionString(VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE));
+    ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
+    if (ccm.hasExtension(VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE)) {
+      tgt.setValueAsString(ccm.getExtensionString(VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE));
     } else {
       switch (src.getValue()) {
         case EQUIVALENT:
@@ -180,12 +180,12 @@ public class ConceptMap14_50 {
     return tgt;
   }
 
-  public static Enumeration<ConceptMapRelationship> convertConceptMapRelationship(org.hl7.fhir.dstu2016may.model.Enumeration<ConceptMapEquivalence> src) throws FHIRException {
+  public static Enumeration<ConceptMapRelationship> convertConceptMapRelationship(org.hl7.fhir.dstu2016may.model.Enumeration<ConceptMapEquivalence> src, org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent tgtCtxt) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     Enumeration<ConceptMapRelationship> tgt = new Enumeration<ConceptMapRelationship>(new Enumerations.ConceptMapRelationshipEnumFactory());
     ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
-    ToolingExtensions.setCodeExtension(tgt, VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE, src.getValueAsString());
+    ToolingExtensions.setCodeExtensionMod(tgtCtxt, VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE, src.getValueAsString());
     switch (src.getValue()) {
       case EQUIVALENT:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship.EQUIVALENT);
@@ -293,13 +293,13 @@ public class ConceptMap14_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2016may.model.ConceptMap.TargetElementComponent tgt = new org.hl7.fhir.dstu2016may.model.ConceptMap.TargetElementComponent();
-    ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyBackboneElement(src,tgt);
+    ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyBackboneElement(src,tgt, VersionConvertorConstants.EXT_OLD_CONCEPTMAP_EQUIVALENCE);
     if (g.hasTarget())
       tgt.setSystem(g.getTarget());
     if (src.hasCode())
       tgt.setCodeElement(Code14_50.convertCode(src.getCodeElement()));
     if (src.hasRelationship())
-      tgt.setEquivalenceElement(convertConceptMapEquivalence(src.getRelationshipElement()));
+      tgt.setEquivalenceElement(convertConceptMapEquivalence(src.getRelationshipElement(), src));
     if (src.hasComment())
       tgt.setCommentsElement(String14_50.convertString(src.getCommentElement()));
     for (org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent t : src.getDependsOn())
@@ -317,7 +317,7 @@ public class ConceptMap14_50 {
     if (src.hasCode())
       tgt.setCodeElement(Code14_50.convertCode(src.getCodeElement()));
     if (src.hasEquivalence())
-      tgt.setRelationshipElement(convertConceptMapRelationship(src.getEquivalenceElement()));
+      tgt.setRelationshipElement(convertConceptMapRelationship(src.getEquivalenceElement(), tgt));
     if (src.hasComments())
       tgt.setCommentElement(String14_50.convertString(src.getCommentsElement()));
     for (org.hl7.fhir.dstu2016may.model.ConceptMap.OtherElementComponent t : src.getDependsOn())

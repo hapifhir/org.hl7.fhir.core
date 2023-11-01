@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -112,6 +113,7 @@ public class NpmPackage {
     private String filename;
     private String supplements;
     private String stype;
+    private String derivation;
     
     public PackageResourceInformation(String root, JsonObject fi) throws IOException {
       super();
@@ -122,6 +124,7 @@ public class NpmPackage {
       filename = Utilities.path(root, fi.asString("filename"));
       supplements = fi.asString("supplements");
       stype = fi.asString("type");
+      derivation = fi.asString("derivation");
     }
     public String getId() {
       return id;
@@ -146,6 +149,9 @@ public class NpmPackage {
     }
     public boolean hasId() {
       return !Utilities.noString(id);
+    }
+    public String getDerivation() {
+      return derivation;
     }
     
   }
@@ -201,6 +207,10 @@ public class NpmPackage {
       return folderName;
     }
 
+    public String getFolderPath() {
+      return folder == null ? null : folder.getAbsolutePath();
+    }
+    
     public boolean readIndex(JsonObject index, Map<String, List<String>> typeMap) {
       if (!index.has("index-version") || (index.asInteger("index-version") != NpmPackageIndexBuilder.CURRENT_INDEX_VERSION)) {
         return false;
@@ -222,13 +232,13 @@ public class NpmPackage {
       List<String> res = new ArrayList<>();
       if (folder != null) {
         for (File f : folder.listFiles()) {
-          if (!f.isDirectory() && !Utilities.existsInList(f.getName(), "package.json", ".index.json")) {
+          if (!f.isDirectory() && !Utilities.existsInList(f.getName(), "package.json", ".index.json", ".index.db", ".oids.json", ".oids.db")) {
             res.add(f.getName());
           }
         }
       } else {
         for (String s : content.keySet()) {
-          if (!Utilities.existsInList(s, "package.json", ".index.json")) {
+          if (!Utilities.existsInList(s, "package.json", ".index.json", ".index.db", ".oids.json", ".oids.db")) {
             res.add(s);
           }
         }
@@ -305,6 +315,20 @@ public class NpmPackage {
         }
       }
     }
+    public JsonObject oidIndex() throws IOException {
+      if (folder == null) {
+        return null;
+      } else {
+        File ij = new File(fn(".oids.json"));
+        if (ij.exists()) {
+          return JsonParser.parseObject(ij);
+        } else {
+          return null;
+        }
+      }
+    }
+
+
   }
 
   private String path;
@@ -591,14 +615,15 @@ public class NpmPackage {
       JsonObject index = folder.index();
       if (index == null || index.forceArray("files").size() == 0) {
         indexFolder(desc, folder);
-      } 
+      }  
     }
   }
+
 
   public void indexFolder(String desc, NpmPackageFolder folder) throws FileNotFoundException, IOException {
     List<String> remove = new ArrayList<>();
     NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
-    indexer.start();
+    indexer.start(folder.folder != null ? Utilities.path(folder.folder.getAbsolutePath(), ".index.db") : null);
     for (String n : folder.listFiles()) {
       if (!indexer.seeFile(n, folder.fetchFile(n))) {
         remove.add(n);
@@ -669,9 +694,17 @@ public class NpmPackage {
   public List<String> list(String folder) throws IOException {
     List<String> res = new ArrayList<String>();
     if (folders.containsKey(folder)) {
-      res.addAll(folders.get(folder).listFiles());
+      for (String s : folders.get(folder).listFiles()) {
+        if (!s.startsWith(".")) {
+          res.add(s);
+        }
+      }
     } else if (folders.containsKey(Utilities.path("package", folder))) {
-      res.addAll(folders.get(Utilities.path("package", folder)).listFiles());
+      for (String s : folders.get(Utilities.path("package", folder)).listFiles()) {
+        if (!s.startsWith(".")) {
+          res.add(s);
+        }
+      }
     }
     return res;
   }
@@ -1076,7 +1109,7 @@ public class NpmPackage {
         Utilities.createDirectory(pd.getAbsolutePath());
       }
       NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
-      indexer.start();
+      indexer.start(Utilities.path(dir.getAbsolutePath(), n, ".index.db"));
       for (String s : folder.content.keySet()) {
         byte[] b = folder.content.get(s);
         indexer.seeFile(s, b);
@@ -1094,12 +1127,12 @@ public class NpmPackage {
   public void save(OutputStream stream) throws IOException {
     assert !minimalMemory;
     TarArchiveOutputStream tar;
-    ByteArrayOutputStream OutputStream;
-    BufferedOutputStream bufferedOutputStream;
+//    ByteArrayOutputStream OutputStream;
+//    BufferedOutputStream bufferedOutputStream;
     GzipCompressorOutputStream gzipOutputStream;
 
-    OutputStream = new ByteArrayOutputStream();
-    bufferedOutputStream = new BufferedOutputStream(OutputStream);
+//    OutputStream = new ByteArrayOutputStream();
+//    bufferedOutputStream = new BufferedOutputStream(OutputStream);
     GzipParameters gp = new GzipParameters();
     gp.setCompressionLevel(Deflater.BEST_COMPRESSION);
     gzipOutputStream = new GzipCompressorOutputStream(stream, gp);
@@ -1112,7 +1145,8 @@ public class NpmPackage {
         n = "package/"+n;
       }
       NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
-      indexer.start();
+      String filename = Utilities.path("[tmp]", "tmp-"+UUID.randomUUID().toString()+".db");
+      indexer.start(filename);
       for (String s : folder.content.keySet()) {
         byte[] b = folder.content.get(s);
         String name = n+"/"+s;
@@ -1120,7 +1154,7 @@ public class NpmPackage {
           System.out.println(name+" is null");
         } else {
           indexer.seeFile(s, b);
-          if (!s.equals(".index.json") && !s.equals("package.json")) {
+          if (!s.equals(".index.json") && !s.equals(".index.db") && !s.equals("package.json")) {
             TarArchiveEntry entry = new TarArchiveEntry(name);
             entry.setSize(b.length);
             tar.putArchiveEntry(entry);
@@ -1135,6 +1169,16 @@ public class NpmPackage {
       tar.putArchiveEntry(entry);
       tar.write(cnt);
       tar.closeArchiveEntry();
+      var file = new File(filename);
+      if (file.exists()) {
+        cnt = TextFile.fileToBytes(file);
+        file.delete();
+        entry = new TarArchiveEntry(n+"/.index.db");
+        entry.setSize(cnt.length);
+        tar.putArchiveEntry(entry);
+        tar.write(cnt);
+        tar.closeArchiveEntry();
+      }
     }
     byte[] cnt = TextFile.stringToBytes(JsonParser.compose(npm, true), false);
     TarArchiveEntry entry = new TarArchiveEntry("package/package.json");
@@ -1146,10 +1190,10 @@ public class NpmPackage {
     tar.finish();
     tar.close();
     gzipOutputStream.close();
-    bufferedOutputStream.close();
-    OutputStream.close();
-    byte[] b = OutputStream.toByteArray();
-    stream.write(b);
+//    bufferedOutputStream.close();
+//    OutputStream.close();
+//    byte[] b = OutputStream.toByteArray();
+//    stream.write(b);
   }
 
   /**
@@ -1187,14 +1231,18 @@ public class NpmPackage {
   }
 
   public void unPack(String dir) throws IOException {
-    unPack (dir, false);
+    unPack (dir, false, new ArrayList<>());
   }
 
-  public void unPackWithAppend(String dir) throws IOException {
-    unPack (dir, true);
+  public void unPackWithAppend(String dir, List<String> files) throws IOException {
+    unPack (dir, true, files);
   }
 
   public void unPack(String dir, boolean withAppend) throws IOException {
+    unPack (dir, withAppend, new ArrayList<>());
+  }
+  
+  public void unPack(String dir, boolean withAppend, List<String> files) throws IOException {
     assert !minimalMemory;
     
     for (NpmPackageFolder folder : folders.values()) {
@@ -1213,15 +1261,16 @@ public class NpmPackage {
         File f = new File(fn);
         if (withAppend && f.getName().startsWith("_append.")) {
           String appendFn = Utilities.path(dn, s.substring(8));
-          if (new File(appendFn).exists())
+          f = new File(appendFn);
+          files.add(f.getAbsolutePath());
+          if (f.exists())
             TextFile.appendBytesToFile(folder.fetchFile(s), appendFn);        
           else
             TextFile.bytesToFile(folder.fetchFile(s), appendFn);        
         } else
+          files.add(f.getAbsolutePath());
           TextFile.bytesToFile(folder.fetchFile(s), fn);
-      }
-//      if (path != null)
-//        FileUtils.copyDirectory(new File(path), new File(dir));      
+      }      
     }
   }
 

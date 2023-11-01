@@ -186,6 +186,18 @@ public class AdditionalBindingsRenderer {
     return abr;
   }
 
+  protected AdditionalBindingDetail additionalBinding(ElementDefinitionBindingAdditionalComponent ab) {
+    AdditionalBindingDetail abr = new AdditionalBindingDetail();
+    abr.purpose =  ab.getPurpose().toCode();
+    abr.valueSet =  ab.getValueSet();
+    abr.doco =  ab.getDocumentation();
+    abr.docoShort =  ab.getShortDoco();
+    abr.usage = ab.hasUsage() ? ab.getUsageFirstRep() : null;
+    abr.any = ab.getAny();
+    abr.isUnchanged = ab.hasUserData(ProfileUtilities.UD_DERIVATION_EQUALS);
+    return abr;
+  }
+
   public String render() throws IOException {
     if (bindings.isEmpty()) {
       return "";
@@ -452,6 +464,42 @@ public class AdditionalBindingsRenderer {
     abr.purpose =  purpose;
     abr.valueSet =  ref;
     bindings.add(abr);
+    
+  }
+
+  public void seeAdditionalBindings(ElementDefinition definition, ElementDefinition compDef, boolean compare) {
+    HashMap<String, AdditionalBindingDetail> compBindings = new HashMap<String, AdditionalBindingDetail>();
+    if (compare && compDef.getBinding().getAdditional() != null) {
+      for (ElementDefinitionBindingAdditionalComponent ab : compDef.getBinding().getAdditional()) {
+        AdditionalBindingDetail abr = additionalBinding(ab);
+        if (compBindings.containsKey(abr.getKey())) {
+          abr.incrementCount();
+        }
+        compBindings.put(abr.getKey(), abr);
+      }
+    }
+
+    for (ElementDefinitionBindingAdditionalComponent ab : definition.getBinding().getAdditional()) {
+      AdditionalBindingDetail abr = additionalBinding(ab);
+      if (compare && compDef != null) {
+        AdditionalBindingDetail match = null;
+        do {
+          match = compBindings.get(abr.getKey());
+          if (abr.alreadyMatched())
+            abr.incrementCount();
+        } while (match!=null && abr.alreadyMatched());
+        if (match!=null)
+          abr.setCompare(match);
+        bindings.add(abr);
+        if (abr.compare!=null)
+          compBindings.remove(abr.compare.getKey());
+      } else
+        bindings.add(abr);
+    }
+    for (AdditionalBindingDetail b: compBindings.values()) {
+      b.removed = true;
+      bindings.add(b);
+    }
     
   }
 

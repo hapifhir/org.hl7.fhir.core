@@ -611,6 +611,17 @@ public class ActivityDefinition extends CanonicalResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("role")) {
+        this.role = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -904,6 +915,17 @@ public class ActivityDefinition extends CanonicalResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("path")) {
+        this.path = null;
+      } else if (name.equals("expression")) {
+        this.expression = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -4890,6 +4912,105 @@ public class ActivityDefinition extends CanonicalResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("subtitle")) {
+      this.subtitle = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("subject[x]")) {
+      this.subject = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(value);
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(value);
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(value);
+    } else if (name.equals("purpose")) {
+      this.purpose = null;
+    } else if (name.equals("usage")) {
+      this.usage = null;
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("approvalDate")) {
+      this.approvalDate = null;
+    } else if (name.equals("lastReviewDate")) {
+      this.lastReviewDate = null;
+    } else if (name.equals("effectivePeriod")) {
+      this.effectivePeriod = null;
+    } else if (name.equals("topic")) {
+      this.getTopic().remove(value);
+    } else if (name.equals("author")) {
+      this.getAuthor().remove(value);
+    } else if (name.equals("editor")) {
+      this.getEditor().remove(value);
+    } else if (name.equals("reviewer")) {
+      this.getReviewer().remove(value);
+    } else if (name.equals("endorser")) {
+      this.getEndorser().remove(value);
+    } else if (name.equals("relatedArtifact")) {
+      this.getRelatedArtifact().remove(value);
+    } else if (name.equals("library")) {
+      this.getLibrary().remove(value);
+    } else if (name.equals("kind")) {
+      this.kind = null;
+    } else if (name.equals("profile")) {
+      this.profile = null;
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("intent")) {
+      this.intent = null;
+    } else if (name.equals("priority")) {
+      this.priority = null;
+    } else if (name.equals("doNotPerform")) {
+      this.doNotPerform = null;
+    } else if (name.equals("timing[x]")) {
+      this.timing = null;
+    } else if (name.equals("location")) {
+      this.location = null;
+    } else if (name.equals("participant")) {
+      this.getParticipant().remove((ActivityDefinitionParticipantComponent) value);
+    } else if (name.equals("product[x]")) {
+      this.product = null;
+    } else if (name.equals("quantity")) {
+      this.quantity = null;
+    } else if (name.equals("dosage")) {
+      this.getDosage().remove(value);
+    } else if (name.equals("bodySite")) {
+      this.getBodySite().remove(value);
+    } else if (name.equals("specimenRequirement")) {
+      this.getSpecimenRequirement().remove(value);
+    } else if (name.equals("observationRequirement")) {
+      this.getObservationRequirement().remove(value);
+    } else if (name.equals("observationResultRequirement")) {
+      this.getObservationResultRequirement().remove(value);
+    } else if (name.equals("transform")) {
+      this.transform = null;
+    } else if (name.equals("dynamicValue")) {
+      this.getDynamicValue().remove((ActivityDefinitionDynamicValueComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

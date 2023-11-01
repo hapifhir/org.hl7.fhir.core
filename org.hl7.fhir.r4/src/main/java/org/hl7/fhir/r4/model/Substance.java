@@ -409,6 +409,19 @@ public class Substance extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identifier")) {
+        this.identifier = null;
+      } else if (name.equals("expiry")) {
+        this.expiry = null;
+      } else if (name.equals("quantity")) {
+        this.quantity = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -685,6 +698,17 @@ public class Substance extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("quantity")) {
+        this.quantity = null;
+      } else if (name.equals("substance[x]")) {
+        this.substance = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1334,6 +1358,27 @@ public class Substance extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove(castToCodeableConcept(value));
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("instance")) {
+      this.getInstance().remove((SubstanceInstanceComponent) value);
+    } else if (name.equals("ingredient")) {
+      this.getIngredient().remove((SubstanceIngredientComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

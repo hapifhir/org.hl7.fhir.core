@@ -826,6 +826,21 @@ public class ObservationDefinition extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("customaryUnit")) {
+        this.customaryUnit = null;
+      } else if (name.equals("unit")) {
+        this.unit = null;
+      } else if (name.equals("conversionFactor")) {
+        this.conversionFactor = null;
+      } else if (name.equals("decimalPrecision")) {
+        this.decimalPrecision = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1481,6 +1496,29 @@ public class ObservationDefinition extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("category")) {
+        this.category = null;
+      } else if (name.equals("range")) {
+        this.range = null;
+      } else if (name.equals("context")) {
+        this.context = null;
+      } else if (name.equals("appliesTo")) {
+        this.getAppliesTo().remove(value);
+      } else if (name.equals("gender")) {
+        this.gender = null;
+      } else if (name.equals("age")) {
+        this.age = null;
+      } else if (name.equals("gestationalAge")) {
+        this.gestationalAge = null;
+      } else if (name.equals("condition")) {
+        this.condition = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2508,6 +2546,39 @@ public class ObservationDefinition extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("category")) {
+      this.getCategory().remove(value);
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("permittedDataType")) {
+      this.getPermittedDataType().remove((Enumeration) value);
+    } else if (name.equals("multipleResultsAllowed")) {
+      this.multipleResultsAllowed = null;
+    } else if (name.equals("method")) {
+      this.method = null;
+    } else if (name.equals("preferredReportName")) {
+      this.preferredReportName = null;
+    } else if (name.equals("quantitativeDetails")) {
+      this.quantitativeDetails = (ObservationDefinitionQuantitativeDetailsComponent) value; // ObservationDefinitionQuantitativeDetailsComponent
+    } else if (name.equals("qualifiedInterval")) {
+      this.getQualifiedInterval().remove((ObservationDefinitionQualifiedIntervalComponent) value);
+    } else if (name.equals("validCodedValueSet")) {
+      this.validCodedValueSet = null;
+    } else if (name.equals("normalCodedValueSet")) {
+      this.normalCodedValueSet = null;
+    } else if (name.equals("abnormalCodedValueSet")) {
+      this.abnormalCodedValueSet = null;
+    } else if (name.equals("criticalCodedValueSet")) {
+      this.criticalCodedValueSet = null;
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

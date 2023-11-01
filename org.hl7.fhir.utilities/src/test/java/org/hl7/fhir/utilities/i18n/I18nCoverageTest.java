@@ -23,7 +23,8 @@ public class I18nCoverageTest {
     Locale.ENGLISH,
     Locale.GERMAN,
     Locale.forLanguageTag("es"),
-    Locale.forLanguageTag("nl")
+    Locale.forLanguageTag("nl"),
+    Locale.forLanguageTag("ja")
   );
 
   @Test

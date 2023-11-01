@@ -27,7 +27,6 @@ public class I18nConstants {
   public static final String BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED = "BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED";
   public static final String BUNDLE_BUNDLE_ENTRY_NOPROFILE_EXPL = "Bundle_BUNDLE_Entry_NoProfile_EXPL";
   public static final String BUNDLE_BUNDLE_ENTRY_NOPROFILE_TYPE = "Bundle_BUNDLE_Entry_NoProfile_TYPE";
-  public static final String BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES = "BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND = "Bundle_BUNDLE_Entry_NotFound";
   public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN_DOCUMENT = "Bundle_BUNDLE_Entry_Orphan_DOCUMENT";
   public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN_MESSAGE = "Bundle_BUNDLE_Entry_Orphan_MESSAGE";
@@ -178,7 +177,7 @@ public class I18nConstants {
   public static final String FHIRPATH_ORDERED_ONLY = "FHIRPATH_ORDERED_ONLY";
   public static final String FHIRPATH_PARAM_WRONG = "FHIRPATH_PARAM_WRONG";
   public static final String FHIRPATH_PRIMITIVE_ONLY = "FHIRPATH_PRIMITIVE_ONLY";
-  public static final String FHIRPATH_REFERENCE_ONLY = "FHIRPATH_ORDERED_ONLY";
+  public static final String FHIRPATH_REFERENCE_ONLY = "FHIRPATH_REFERENCE_ONLY";
   public static final String FHIRPATH_RESOLVE_DISCRIMINATOR_CANT_FIND = "FHIRPATH_RESOLVE_DISCRIMINATOR_CANT_FIND";
   public static final String FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET = "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET";
   public static final String FHIRPATH_RIGHT_VALUE = "FHIRPATH_RIGHT_VALUE";
@@ -208,6 +207,7 @@ public class I18nConstants {
   public static final String INTERNAL_INT_BAD_TYPE = "Internal_INT_Bad_Type";
 //  public static final String INTERNAL_RECURSION_DETECTION_FIND_LOOP_PATH_RECURSION____CHECK_PATHS_ARE_VALID_FOR_PATH_ = "Internal_recursion_detection_find_loop_path_recursion____check_paths_are_valid_for_path_";
   public static final String INV_FAILED = "INV_FAILED";
+  public static final String INV_FAILED_SOURCE = "INV_FAILED_SOURCE";
   public static final String INVALID_SLICING__THERE_IS_MORE_THAN_ONE_TYPE_SLICE_AT__BUT_ONE_OF_THEM__HAS_MIN__1_SO_THE_OTHER_SLICES_CANNOT_EXIST = "Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist";
   public static final String LANGUAGE_XHTML_LANG_DIFFERENT1 = "Language_XHTML_Lang_Different1";
   public static final String LANGUAGE_XHTML_LANG_DIFFERENT2 = "Language_XHTML_Lang_Different2";
@@ -583,7 +583,7 @@ public class I18nConstants {
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES = "Unable_to_resolve_system__value_set_has_multiple_matches";
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_NO_SYSTEM = "Unable_to_resolve_system__value_set_has_include_with_no_system";
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_UNKNOWN_SYSTEM = "Unable_to_resolve_system__value_set_has_include_with_unknown_system";
-//  public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_FILTER = "Unable_to_resolve_system__value_set_has_include_with_filter";
+  public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_FILTER = "Unable_to_resolve_system__value_set_has_include_with_filter";
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_INCLUDES_OR_EXPANSION = "Unable_to_resolve_system__value_set_has_no_includes_or_expansion";
   public static final String UNABLE_TO_RESOLVE_VALUE_SET_ = "Unable_to_resolve_value_Set_";
   public static final String UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER = "Unable_to_validate_code_without_using_server";
@@ -850,8 +850,10 @@ public class I18nConstants {
   public static final String CONCEPTMAP_GROUP_TARGET_MISSING = "CONCEPTMAP_GROUP_TARGET_MISSING";
   public static final String CONCEPTMAP_GROUP_TARGET_UNKNOWN = "CONCEPTMAP_GROUP_TARGET_UNKNOWN";
   public static final String CONCEPTMAP_GROUP_SOURCE_CODE_INVALID = "CONCEPTMAP_GROUP_SOURCE_CODE_INVALID";
+  public static final String CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS = "CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS";
   public static final String CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID = "CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID";
   public static final String CONCEPTMAP_GROUP_TARGET_CODE_INVALID = "CONCEPTMAP_GROUP_TARGET_CODE_INVALID";
+  public static final String CONCEPTMAP_GROUP_TARGET_CODE_INVALID_VS = "CONCEPTMAP_GROUP_TARGET_CODE_INVALID_VS";
   public static final String CONCEPTMAP_GROUP_TARGET_DISPLAY_INVALID = "CONCEPTMAP_GROUP_TARGET_DISPLAY_INVALID";
   public static final String CONCEPTMAP_GROUP_TARGET_PROPERTY_INVALID = "CONCEPTMAP_GROUP_TARGET_PROPERTY_INVALID";
   public static final String CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_MISMATCH = "CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_MISMATCH";
@@ -983,6 +985,35 @@ public class I18nConstants {
   public static final String CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED = "CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED";
   public static final String VALUESET_CIRCULAR_REFERENCE = "VALUESET_CIRCULAR_REFERENCE";
   public static final String VALUESET_SUPPLEMENT_MISSING = "VALUESET_SUPPLEMENT_MISSING";
+  public static final String CONCEPTMAP_VS_TOO_MANY_CODES = "CONCEPTMAP_VS_TOO_MANY_CODES";
+  public static final String CONCEPTMAP_VS_INVALID_CONCEPT_CODE = "CONCEPTMAP_VS_INVALID_CONCEPT_CODE";
+  public static final String CONCEPTMAP_VS_INVALID_CONCEPT_CODE_VER = "CONCEPTMAP_VS_INVALID_CONCEPT_CODE_VER";
+  public static final String VALUESET_INC_TOO_MANY_CODES = "VALUESET_INC_TOO_MANY_CODES";
+  public static final String BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH = "BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH";
+  public static final String BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_MULTIPLE_MATCHES = "BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_MULTIPLE_MATCHES";
+  public static final String BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON = "BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES_NO_MATCH_REASON";
+  public static final String VALIDATION_HL7_WG_NEEDED = "VALIDATION_HL7_WG_NEEDED";
+  public static final String VALIDATION_HL7_WG_UNKNOWN = "VALIDATION_HL7_WG_UNKNOWN";
+  public static final String VALIDATION_HL7_PUBLISHER_MISMATCH = "VALIDATION_HL7_PUBLISHER_MISMATCH";
+  public static final String VALIDATION_HL7_WG_URL = "VALIDATION_HL7_WG_URL";
+  public static final String VALIDATION_HL7_PUBLISHER_MISSING = "VALIDATION_HL7_PUBLISHER_MISSING";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS = "TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS_NO_UNIT = "TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS_NO_UNIT";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS_NOT_IN_UNIT = "TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS_NOT_IN_UNIT";
+  public static final String CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM = "CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM";
+  public static final String LOGICAL_MODEL_NAME_MISMATCH = "LOGICAL_MODEL_NAME_MISMATCH";
+  public static final String LOGICAL_MODEL_QNAME_MISMATCH = "LOGICAL_MODEL_QNAME_MISMATCH";
+  public static final String FHIRPATH_CHOICE_NO_TYPE_SPECIFIER = "FHIRPATH_CHOICE_NO_TYPE_SPECIFIER";
+  public static final String FHIRPATH_CHOICE_SPURIOUS_TYPE_SPECIFIER = "FHIRPATH_CHOICE_SPURIOUS_TYPE_SPECIFIER";
+  public static final String FHIRPATH_NOT_A_COLLECTION = "FHIRPATH_NOT_A_COLLECTION";
+  public static final String TERMINOLOGY_TX_UNKNOWN_OID = "TERMINOLOGY_TX_UNKNOWN_OID";
+  public static final String XSI_TYPE_WRONG = "XSI_TYPE_WRONG";
+  public static final String XSI_TYPE_UNNECESSARY = "XSI_TYPE_UNNECESSARY";
+  public static final String TERMINOLOGY_TX_OID_MULTIPLE_MATCHES = "TERMINOLOGY_TX_OID_MULTIPLE_MATCHES";
+  public static final String CDA_UNKNOWN_TEMPLATE = "CDA_UNKNOWN_TEMPLATE";
+  public static final String CDA_UNKNOWN_TEMPLATE_EXT = "CDA_UNKNOWN_TEMPLATE_EXT";
+  public static final String UNABLE_TO_DETERMINE_TYPE_CONTEXT_INV = "UNABLE_TO_DETERMINE_TYPE_CONTEXT_INV";
+  public static final String ED_CONTEXT_INVARIANT_EXPRESSION_ERROR = "ED_CONTEXT_INVARIANT_EXPRESSION_ERROR";
 }
 
 

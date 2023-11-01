@@ -1474,6 +1474,31 @@ public class MolecularSequence extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("chromosome")) {
+        this.chromosome = null;
+      } else if (name.equals("genomeBuild")) {
+        this.genomeBuild = null;
+      } else if (name.equals("orientation")) {
+        this.orientation = null;
+      } else if (name.equals("referenceSeqId")) {
+        this.referenceSeqId = null;
+      } else if (name.equals("referenceSeqPointer")) {
+        this.referenceSeqPointer = null;
+      } else if (name.equals("referenceSeqString")) {
+        this.referenceSeqString = null;
+      } else if (name.equals("strand")) {
+        this.strand = null;
+      } else if (name.equals("windowStart")) {
+        this.windowStart = null;
+      } else if (name.equals("windowEnd")) {
+        this.windowEnd = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2169,6 +2194,25 @@ public class MolecularSequence extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("start")) {
+        this.start = null;
+      } else if (name.equals("end")) {
+        this.end = null;
+      } else if (name.equals("observedAllele")) {
+        this.observedAllele = null;
+      } else if (name.equals("referenceAllele")) {
+        this.referenceAllele = null;
+      } else if (name.equals("cigar")) {
+        this.cigar = null;
+      } else if (name.equals("variantPointer")) {
+        this.variantPointer = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3620,6 +3664,43 @@ public class MolecularSequence extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("standardSequence")) {
+        this.standardSequence = null;
+      } else if (name.equals("start")) {
+        this.start = null;
+      } else if (name.equals("end")) {
+        this.end = null;
+      } else if (name.equals("score")) {
+        this.score = null;
+      } else if (name.equals("method")) {
+        this.method = null;
+      } else if (name.equals("truthTP")) {
+        this.truthTP = null;
+      } else if (name.equals("queryTP")) {
+        this.queryTP = null;
+      } else if (name.equals("truthFN")) {
+        this.truthFN = null;
+      } else if (name.equals("queryFP")) {
+        this.queryFP = null;
+      } else if (name.equals("gtFP")) {
+        this.gtFP = null;
+      } else if (name.equals("precision")) {
+        this.precision = null;
+      } else if (name.equals("recall")) {
+        this.recall = null;
+      } else if (name.equals("fScore")) {
+        this.fScore = null;
+      } else if (name.equals("roc")) {
+        this.roc = (MolecularSequenceQualityRocComponent) value; // MolecularSequenceQualityRocComponent
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -4471,6 +4552,27 @@ public class MolecularSequence extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("score")) {
+        this.getScore().remove(value);
+      } else if (name.equals("numTP")) {
+        this.getNumTP().remove(value);
+      } else if (name.equals("numFP")) {
+        this.getNumFP().remove(value);
+      } else if (name.equals("numFN")) {
+        this.getNumFN().remove(value);
+      } else if (name.equals("precision")) {
+        this.getPrecision().remove(value);
+      } else if (name.equals("sensitivity")) {
+        this.getSensitivity().remove(value);
+      } else if (name.equals("fMeasure")) {
+        this.getFMeasure().remove(value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -5157,6 +5259,25 @@ public class MolecularSequence extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("url")) {
+        this.url = null;
+      } else if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("datasetId")) {
+        this.datasetId = null;
+      } else if (name.equals("variantsetId")) {
+        this.variantsetId = null;
+      } else if (name.equals("readsetId")) {
+        this.readsetId = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -5587,6 +5708,23 @@ public class MolecularSequence extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("variantType")) {
+        this.variantType = null;
+      } else if (name.equals("exact")) {
+        this.exact = null;
+      } else if (name.equals("length")) {
+        this.length = null;
+      } else if (name.equals("outer")) {
+        this.outer = (MolecularSequenceStructureVariantOuterComponent) value; // MolecularSequenceStructureVariantOuterComponent
+      } else if (name.equals("inner")) {
+        this.inner = (MolecularSequenceStructureVariantInnerComponent) value; // MolecularSequenceStructureVariantInnerComponent
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -5902,6 +6040,17 @@ public class MolecularSequence extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("start")) {
+        this.start = null;
+      } else if (name.equals("end")) {
+        this.end = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -6191,6 +6340,17 @@ public class MolecularSequence extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("start")) {
+        this.start = null;
+      } else if (name.equals("end")) {
+        this.end = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -7397,6 +7557,45 @@ public class MolecularSequence extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("type")) {
+      this.type = null;
+    } else if (name.equals("coordinateSystem")) {
+      this.coordinateSystem = null;
+    } else if (name.equals("patient")) {
+      this.patient = null;
+    } else if (name.equals("specimen")) {
+      this.specimen = null;
+    } else if (name.equals("device")) {
+      this.device = null;
+    } else if (name.equals("performer")) {
+      this.performer = null;
+    } else if (name.equals("quantity")) {
+      this.quantity = null;
+    } else if (name.equals("referenceSeq")) {
+      this.referenceSeq = (MolecularSequenceReferenceSeqComponent) value; // MolecularSequenceReferenceSeqComponent
+    } else if (name.equals("variant")) {
+      this.getVariant().remove((MolecularSequenceVariantComponent) value);
+    } else if (name.equals("observedSeq")) {
+      this.observedSeq = null;
+    } else if (name.equals("quality")) {
+      this.getQuality().remove((MolecularSequenceQualityComponent) value);
+    } else if (name.equals("readCoverage")) {
+      this.readCoverage = null;
+    } else if (name.equals("repository")) {
+      this.getRepository().remove((MolecularSequenceRepositoryComponent) value);
+    } else if (name.equals("pointer")) {
+      this.getPointer().remove(value);
+    } else if (name.equals("structureVariant")) {
+      this.getStructureVariant().remove((MolecularSequenceStructureVariantComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

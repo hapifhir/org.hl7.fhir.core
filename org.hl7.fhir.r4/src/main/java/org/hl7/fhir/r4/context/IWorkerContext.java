@@ -168,6 +168,7 @@ public interface IWorkerContext {
    * @throws Exception
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
 
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
 
@@ -488,4 +489,6 @@ public interface IWorkerContext {
   public void setUcumService(UcumService ucumService);
 
   public String getLinkForUrl(String corePath, String s);
+
+  public boolean isPrimitiveType(String code);
 }

@@ -449,8 +449,14 @@ public class FHIRToolingClient {
         throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
             (OperationOutcome) result.getPayload());
       }
-    } catch (IOException e) {
-      throw new FHIRException(e);
+    } catch (EFhirClientException e) {
+      if (e.getServerErrors().size() > 0) {
+        throw new EFhirClientException(e.getMessage(), e.getServerErrors().get(0));
+      } else {
+        throw new EFhirClientException(e.getMessage(), e);
+      }
+    } catch (Exception e) {
+      throw new EFhirClientException(e.getMessage(), e);
     }
     return result == null ? null : (ValueSet) result.getPayload();
   }
@@ -588,5 +594,24 @@ public class FHIRToolingClient {
 
   public void setLanguage(String lang) {
     this.acceptLang = lang;
+  }
+
+  public Bundle search(String type, String criteria) {
+    return fetchFeed(Utilities.pathURL(base, type+criteria));
+  }
+
+  public <T extends Resource> T fetchResource(Class<T> resourceClass, String id) {
+    org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
+    try {
+      result = client.issueGetResourceRequest(resourceAddress.resolveGetResource(resourceClass, id),
+          getPreferredResourceFormat(), generateHeaders(), resourceClass.getName()+"/"+id, TIMEOUT_NORMAL);
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
+          (OperationOutcome) result.getPayload());
+    }
+    return (T) result.getPayload();
   }
 }

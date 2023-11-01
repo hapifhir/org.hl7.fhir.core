@@ -985,6 +985,35 @@ public class Address extends DataType implements ICompositeType {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("use")) {
+          value = new AddressUseEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.use = (Enumeration) value; // Enumeration<AddressUse>
+        } else if (name.equals("type")) {
+          value = new AddressTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<AddressType>
+        } else if (name.equals("text")) {
+          this.text = null;
+        } else if (name.equals("line")) {
+          this.getLine().remove(value);
+        } else if (name.equals("city")) {
+          this.city = null;
+        } else if (name.equals("district")) {
+          this.district = null;
+        } else if (name.equals("state")) {
+          this.state = null;
+        } else if (name.equals("postalCode")) {
+          this.postalCode = null;
+        } else if (name.equals("country")) {
+          this.country = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {

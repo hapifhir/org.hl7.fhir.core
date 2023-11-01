@@ -918,6 +918,39 @@ public class PaymentReconciliation extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.identifier = null;
+        } else if (name.equals("predecessor")) {
+          this.predecessor = null;
+        } else if (name.equals("target")) {
+          this.target = null;
+        } else if (name.equals("targetItem[x]")) {
+          this.targetItem = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("account")) {
+          this.account = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("submitter")) {
+          this.submitter = null;
+        } else if (name.equals("response")) {
+          this.response = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("responsible")) {
+          this.responsible = null;
+        } else if (name.equals("payee")) {
+          this.payee = null;
+        } else if (name.equals("amount")) {
+          this.amount = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1261,6 +1294,18 @@ public class PaymentReconciliation extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new NoteTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<NoteType>
+        } else if (name.equals("text")) {
+          this.text = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2884,6 +2929,73 @@ public class PaymentReconciliation extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("status")) {
+          value = new FinancialResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FinancialResourceStatusCodes>
+        } else if (name.equals("kind")) {
+          this.kind = null;
+        } else if (name.equals("period")) {
+          this.period = null;
+        } else if (name.equals("created")) {
+          this.created = null;
+        } else if (name.equals("enterer")) {
+          this.enterer = null;
+        } else if (name.equals("issuerType")) {
+          this.issuerType = null;
+        } else if (name.equals("paymentIssuer")) {
+          this.paymentIssuer = null;
+        } else if (name.equals("request")) {
+          this.request = null;
+        } else if (name.equals("requestor")) {
+          this.requestor = null;
+        } else if (name.equals("outcome")) {
+          value = new PaymentOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.outcome = (Enumeration) value; // Enumeration<PaymentOutcome>
+        } else if (name.equals("disposition")) {
+          this.disposition = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("location")) {
+          this.location = null;
+        } else if (name.equals("method")) {
+          this.method = null;
+        } else if (name.equals("cardBrand")) {
+          this.cardBrand = null;
+        } else if (name.equals("accountNumber")) {
+          this.accountNumber = null;
+        } else if (name.equals("expirationDate")) {
+          this.expirationDate = null;
+        } else if (name.equals("processor")) {
+          this.processor = null;
+        } else if (name.equals("referenceNumber")) {
+          this.referenceNumber = null;
+        } else if (name.equals("authorization")) {
+          this.authorization = null;
+        } else if (name.equals("tenderedAmount")) {
+          this.tenderedAmount = null;
+        } else if (name.equals("returnedAmount")) {
+          this.returnedAmount = null;
+        } else if (name.equals("amount")) {
+          this.amount = null;
+        } else if (name.equals("paymentIdentifier")) {
+          this.paymentIdentifier = null;
+        } else if (name.equals("allocation")) {
+          this.getAllocation().remove((PaymentReconciliationAllocationComponent) value);
+        } else if (name.equals("formCode")) {
+          this.formCode = null;
+        } else if (name.equals("processNote")) {
+          this.getProcessNote().remove((NotesComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

@@ -12,7 +12,6 @@ v: {
   "display" : "application/octet-stream",
   "code" : "application/octet-stream",
   "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -31,7 +30,6 @@ v: {
 v: {
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -51,7 +49,6 @@ v: {
   "display" : "application/pdf",
   "code" : "application/pdf",
   "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -73,7 +70,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Patient Authorization Signature' for http://loinc.org#59284-0 - should be one of 2 choices: 'Consent Document' or 'Consent' (for the language(s) 'en') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -93,7 +89,6 @@ v: {
   "display" : "image/*",
   "code" : "image/*",
   "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -114,7 +109,6 @@ v: {
   "code" : "d",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -133,7 +127,6 @@ v: {
 v: {
   "code" : "en-IN",
   "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -153,7 +146,6 @@ v: {
   "display" : "image/jpg",
   "code" : "image/jpg",
   "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -174,7 +166,6 @@ v: {
   "code" : "min",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -195,7 +186,6 @@ v: {
   "code" : "mmol/L",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -216,7 +206,6 @@ v: {
   "code" : "%",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -237,7 +226,6 @@ v: {
   "code" : "kg",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -257,7 +245,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#cm' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -278,7 +265,6 @@ v: {
   "code" : "cm",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -298,7 +284,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#kg/m2' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -321,7 +306,6 @@ v: {
   "code" : "112144000",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -341,7 +325,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#kg' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -361,7 +344,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#kg/m2' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -382,7 +364,6 @@ v: {
   "code" : "wk",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -405,7 +386,6 @@ v: {
   "code" : "722446000",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -428,7 +408,6 @@ v: {
   "code" : "371531000",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -451,7 +430,6 @@ v: {
   "code" : "4241000179101",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -474,7 +452,6 @@ v: {
   "code" : "422735006",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -494,7 +471,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#min' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -514,7 +490,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#min' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -534,7 +509,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#min' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -554,7 +528,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#mmol/L' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -574,7 +547,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#mmol/L' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -594,7 +566,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#mmol/L' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -614,7 +585,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#%' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -634,7 +604,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#%' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -654,7 +623,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#%' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -674,7 +642,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#wk' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -694,7 +661,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#wk' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -714,7 +680,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#kg' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -735,7 +700,6 @@ v: {
   "code" : "kg",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -755,7 +719,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#cm' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -776,7 +739,6 @@ v: {
   "code" : "cm",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -796,7 +758,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#kg/m2' is not in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -817,7 +778,6 @@ v: {
   "code" : "kg/m2",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -838,7 +798,6 @@ v: {
   "code" : "wk",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -858,7 +817,6 @@ v: {
   "display" : "json",
   "code" : "json",
   "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -878,7 +836,6 @@ v: {
   "display" : "xml",
   "code" : "xml",
   "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -898,7 +855,6 @@ v: {
   "display" : "application/fhir+json",
   "code" : "application/fhir+json",
   "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -918,7 +874,6 @@ v: {
   "display" : "text/plain",
   "code" : "text/plain",
   "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -940,7 +895,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Progress note' for http://snomed.info/sct#371532007 - should be one of 3 choices: 'Progress report', 'Report of subsequent visit' or 'Progress report (record artifact)' (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -963,7 +917,6 @@ v: {
   "code" : "371525003",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -983,7 +936,6 @@ v: {
   "display" : "text/css",
   "code" : "text/css",
   "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1003,7 +955,6 @@ v: {
   "display" : "German (Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1026,7 +977,6 @@ v: {
   "code" : "34133-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1046,7 +996,6 @@ v: {
   "display" : "English (United States)",
   "code" : "en-US",
   "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1066,7 +1015,6 @@ v: {
   "display" : "application/xml",
   "code" : "application/xml",
   "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1086,7 +1034,6 @@ v: {
   "display" : "text/xml",
   "code" : "text/xml",
   "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1109,7 +1056,6 @@ v: {
   "code" : "US",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1129,7 +1075,6 @@ v: {
   "display" : "text/cql.identifier",
   "code" : "text/cql.identifier",
   "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1174,7 +1119,6 @@ v: {
   "code" : "Not-at-all",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "version" : "3.0.0",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1219,7 +1163,6 @@ v: {
   "code" : "Several-days",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "version" : "3.0.0",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1264,7 +1207,6 @@ v: {
   "code" : "More than half the days",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "version" : "3.0.0",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1309,7 +1251,6 @@ v: {
   "code" : "Nearly every day",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "version" : "3.0.0",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1330,7 +1271,6 @@ v: {
   "code" : "kg",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1349,7 +1289,6 @@ v: {
 v: {
   "code" : "en-AU",
   "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1369,7 +1308,6 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1388,7 +1326,6 @@ v: {
 v: {
   "code" : "en-US",
   "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1409,7 +1346,6 @@ v: {
   "code" : "wk",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1431,7 +1367,6 @@ v: {
   "code" : "US",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1451,6 +1386,85 @@ v: {
   "severity" : "error",
   "error" : "Unknown Code '[%payloadFormat%]' in the system 'urn:ietf:bcp:13'; The provided code 'urn:ietf:bcp:13#[%payloadFormat%]' is not in the value set 'http://hl7.org/fhir/ValueSet/mimetypes|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:iso:std:iso:3166",
+  "code" : "CHE"
+}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Switzerland",
+  "code" : "CHE",
+  "system" : "urn:iso:std:iso:3166",
+  "version" : "2018",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en-US"
+}, "url": "http://terminology.hl7.org/ValueSet/v3-HumanLanguage", "version": "2.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "The CodeSystem http://terminology.hl7.org/CodeSystem/ietf3066 is unknown; Unable to check whether the code is in the value set http://terminology.hl7.org/ValueSet/v3-HumanLanguage|2.0.0 (from Tx-Server)",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "unknown-systems" : "http://terminology.hl7.org/CodeSystem/ietf3066",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "PRN"
+}, "valueSet" :null, "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "The CodeSystem  is unknown (from Tx-Server)",
+  "class" : "UNKNOWN",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en-US"
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "English (Region=United States)",
+  "code" : "en-US",
+  "system" : "urn:ietf:bcp:47",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

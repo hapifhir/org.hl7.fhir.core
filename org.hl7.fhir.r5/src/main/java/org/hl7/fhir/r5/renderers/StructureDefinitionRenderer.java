@@ -68,6 +68,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.InternalMarkdownProcessor;
+import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.SourcedElementDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
@@ -94,68 +95,24 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 public class StructureDefinitionRenderer extends ResourceRenderer {
 
-  //  public class ObligationWrapper {
-  //
-  //    private Extension ext;
-  //
-  //    public ObligationWrapper(Extension ext) {
-  //      this.ext = ext;
-  //    }
-  //
-  //    public boolean hasActor() {
-  //      return ext.hasExtension("actor");
-  //    }
-  //
-  //    public boolean hasActor(String id) {
-  //      return ext.hasExtension("actor") && id.equals(ext.getExtensionByUrl("actor").getValue().primitiveValue());
-  //    }
-  //
-  //    public Coding getCode() {
-  //      Extension code = ext.getExtensionByUrl("obligation");
-  //      if (code != null && code.hasValueCoding()) {
-  //        return code.getValueCoding();
-  //      }
-  //      if (code != null && code.hasValueCodeType()) {
-  //        return new Coding().setSystem("http://hl7.org/fhir/tools/CodeSystem/obligation").setCode(code.getValueCodeType().primitiveValue());
-  //      }
-  //      return null;
-  //    }
-  //
-  //    public boolean hasFilter() {
-  //      return ext.hasExtension("filter");
-  //    }
-  //
-  //    public String getFilter() {
-  //      Extension code = ext.getExtensionByUrl("filter");
-  //      if (code != null && code.getValue() != null) {
-  //        return code.getValue().primitiveValue();
-  //      }
-  //      return null;
-  //    }
-  //
-  //    public boolean hasUsage() {
-  //      return ext.hasExtension("usage");
-  //    }
-  //
-  //    public String getFilterDocumentation() {
-  //      Extension code = ext.getExtensionByUrl("filter-desc");
-  //      if (code != null && code.getValue() != null) {
-  //        return code.getValue().primitiveValue();
-  //      }
-  //      return null;
-  //    }
-  //
-  //    public List<UsageContext> getUsage() {
-  //      List<UsageContext> usage = new ArrayList<>();
-  //      for (Extension u : ext.getExtensionsByUrl("usage" )) {
-  //        if (u.hasValueUsageContext()) {
-  //          usage.add(u.getValueUsageContext());
-  //        }
-  //      }
-  //      return usage;
-  //    }
-  //
-  //  }
+  public class SourcedElementDefinition {
+    private StructureDefinition profile;
+    private ElementDefinition definition;
+    
+    
+    protected SourcedElementDefinition(StructureDefinition profile, ElementDefinition definition) {
+      super();
+      this.profile = profile;
+      this.definition = definition;
+    }
+    public StructureDefinition getProfile() {
+      return profile;
+    }
+    public ElementDefinition getDefinition() {
+      return definition;
+    }
+    
+  }
 
   public class InternalMarkdownProcessor implements IMarkdownProcessor {
 
@@ -770,7 +727,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         row.setLineColor(0);
       boolean hasDef = element != null;
       boolean ext = false;
-      if (tail(element.getPath()).equals("extension")) {
+      if (tail(element.getPath()).equals("extension") && isExtension(element)) {
         if (element.hasType() && element.getType().get(0).hasProfile() && extensionIsComplex(element.getType().get(0).getProfile().get(0).getValue()))
           row.setIcon("icon_extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
         else
@@ -801,7 +758,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
       } else if (hasDef && element.getType().get(0).getWorkingCode() != null && element.getType().get(0).getWorkingCode().startsWith("@")) {
         row.setIcon("icon_reuse.png", HierarchicalTableGenerator.TEXT_ICON_REUSE);
-      } else if (hasDef && isPrimitive(element.getType().get(0).getWorkingCode())) {
+      } else if (hasDef && context.getContext().isPrimitiveType(element.getType().get(0).getWorkingCode())) {
         if (keyRows.contains(element.getId())) {
           row.setIcon("icon-key.png", HierarchicalTableGenerator.TEXT_ICON_KEY);
         } else {
@@ -809,7 +766,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
       } else if (hasDef && element.getType().get(0).hasTarget()) {
         row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
-      } else if (hasDef && isDataType(element.getType().get(0).getWorkingCode())) {
+      } else if (hasDef && context.getContext().isDataType(element.getType().get(0).getWorkingCode())) {
         row.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
       } else if (hasDef && element.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) {
         row.setIcon("icon-object-box.png", HierarchicalTableGenerator.TEXT_ICON_OBJECT_BOX);
@@ -828,8 +785,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (element.hasSliceName())
         sName = sName +":"+element.getSliceName();
       used.used = true;
-      if (logicalModel && element.hasRepresentation(PropertyRepresentation.XMLATTR))
-        sName = "@"+sName;
+      if (logicalModel) {
+        if (element.hasRepresentation(PropertyRepresentation.XMLATTR)) {
+          sName = "@"+sName;
+        } else if (element.hasUserData("derived.pointer")) {
+          ElementDefinition drv = (ElementDefinition) element.getUserData("derived.pointer");
+          if (drv.hasRepresentation(PropertyRepresentation.XMLATTR)) {
+            sName = "@"+sName;
+          }
+        }
+      }
       Cell nc = genElementNameCell(gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName, all);
       switch (context.getStructureMode()) {
       case BINDINGS:
@@ -841,7 +806,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       case SUMMARY:
         genElementCells(gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName, nc, mustSupport, true, rc);
         break;
-
       }
       if (element.hasSlicing()) {
         if (standardExtensionSlicing(element)) {
@@ -942,6 +906,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
     }
     return slicingRow;
+  }
+
+  private boolean isExtension(ElementDefinition element) {
+    if (element.getType().isEmpty()) {
+      return true;
+    }
+    String type = element.getTypeFirstRep().getWorkingCode();
+    return "Extension".equals(type);
   }
 
   private void genElementObligations(HierarchicalTableGenerator gen, ElementDefinition element, List<Column> columns, Row row, String corePath, StructureDefinition profile) throws IOException {
@@ -1309,8 +1281,24 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             boolean first = true;
             for (StructureDefinition sd : children) {
               if (first) first = false; else c.addPiece(gen.new Piece(null, ", ", null));
-              c.addPiece(gen.new Piece(sd.getWebPath(), sd.getTypeName(), null));
+              c.addPiece(gen.new Piece(sd.getWebPath(), sd.getName(), null));
             }
+          }
+        }
+        if (logicalModel) {
+          List<SourcedElementDefinition> ancestors = new ArrayList<>();
+          getAncestorElements(profile, ancestors);
+          if (ancestors.size() > 0) {
+            c.addPiece(gen.new Piece("br"));
+            c.addPiece(gen.new Piece(null, "Elements defined in Ancestors: ", null));
+            boolean first = true;
+            for (SourcedElementDefinition ed : ancestors) {
+              if (first)
+                first = false;
+              else
+                c.addPiece(gen.new Piece(null, ", ", null));
+              c.addPiece(gen.new Piece(ed.getProfile().getWebPath(), (isAttr(ed) ? "@" : "")+ed.getDefinition().getName(), ed.getDefinition().getDefinition()));
+            }     
           }
         }
       }
@@ -1422,6 +1410,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.getPieces().add(gen.new Piece(null, "An ID is not allowed in this context", null));     
           }
         }
+        if (definition.hasExtension(ToolingExtensions.EXT_ID_CHOICE_GROUP)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          c.getPieces().add(gen.new Piece(null, translate("sd.table", "Choice Group")+": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, "This is a repeating choice group that does not appear directly in the instance", null));
+        }
         if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           if (definition.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE)) {
@@ -1438,6 +1431,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML Namespace")+": ", null).addStyle("font-weight:bold"));
           c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAMESPACE), null));          
+        }
+        if (root && ToolingExtensions.readBoolExtension(profile, ToolingExtensions.EXT_XML_NO_ORDER)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML Order")+": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, "The properties of this type can appear in any order in the XML", null));   
         }
         if (definition.hasExtension(ToolingExtensions.EXT_JSON_EMPTY)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
@@ -1505,11 +1503,29 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           addCanonicalListExt(gen, c, profile.getExtensionsByUrl(ToolingExtensions.EXT_SD_COMPLIES_WITH_PROFILE), "This profile also complies with the profile", true);
 
           if (profile.getKind() == StructureDefinitionKind.LOGICAL) {
-            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
-            if (ToolingExtensions.readBoolExtension(profile, ToolingExtensions.EXT_LOGICAL_TARGET)) {
-              c.addPiece(gen.new Piece(null, "This logical model can be the target of a reference", null).addStyle("font-weight:bold"));  
+            Extension lt = ToolingExtensions.getExtension(profile, ToolingExtensions.EXT_LOGICAL_TARGET);
+            if (lt == null || !lt.hasValueBooleanType()) {
+              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+              c.addPiece(gen.new Piece(null, "Instances of this logical model are not marked to be the target of a Reference", null).addStyle("font-weight:bold"));  ;        
+            } else if (lt.getValue().hasExtension(ToolingExtensions.DAR)) {                 
+            } else if (!lt.getValueBooleanType().hasValue()) {
+                if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+                c.addPiece(gen.new Piece(null, "Instances of this logical model are not marked to be the target of a Reference", null).addStyle("font-weight:bold"));  ;        
+            } else if (lt.getValueBooleanType().booleanValue()) {
+              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+              c.addPiece(gen.new Piece(null, "Instances of this logical model can be the target of a Reference", null).addStyle("font-weight:bold"));        
             } else {
-              c.addPiece(gen.new Piece(null, "This logical model cannot be the target of a reference", null).addStyle("font-weight:bold"));                
+              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+              c.addPiece(gen.new Piece(null, "Instances of this logical model cannot be the target of a Reference", null).addStyle("font-weight:bold"));  
+            }            
+            String ps = ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_PROFILE_STYLE);
+            if (ps != null) {
+              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+              if ("cda".equals(ps)) {
+                c.addPiece(gen.new Piece(null, "Instances of this type are validated by templateId", null).addStyle("font-weight:bold"));
+              } else {
+                c.addPiece(gen.new Piece(null, "Instances of this type are validated using an unknown approach: "+ps, null).addStyle("font-weight:bold"));
+              }              
             }
           }
         }
@@ -1536,6 +1552,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             } 
 
             AdditionalBindingsRenderer abr = new AdditionalBindingsRenderer(context.getPkp(), corePath, profile, definition.getPath(), rc, null, this);
+            abr.seeAdditionalBindings(definition, null, false);
             if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET)) {
               abr.seeMaxBinding(ToolingExtensions.getExtension(binding, ToolingExtensions.EXT_MAX_VALUESET));
             }
@@ -1635,6 +1652,26 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return c;
   }
 
+  private boolean isAttr(SourcedElementDefinition ed) {
+    for (Enumeration<PropertyRepresentation> t : ed.getDefinition().getRepresentation()) {
+      if (t.getValue() == PropertyRepresentation.XMLATTR) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private void getAncestorElements(StructureDefinition profile, List<SourcedElementDefinition> ancestors) {
+    StructureDefinition base = context.getContext().fetchResource(StructureDefinition.class, profile.getBaseDefinition());
+    if (base != null) {
+      getAncestorElements(base, ancestors);
+      for (ElementDefinition ed : base.getDifferential().getElement()) {
+        if (Utilities.charCount(ed.getPath(), '.') == 1) {
+          ancestors.add(new SourcedElementDefinition(base, ed));
+        }
+      }
+    }
+  }
 
   private void addCanonicalListExt(HierarchicalTableGenerator gen, Cell c, List<Extension> list, String start, boolean bold) {
     List<CanonicalType> clist = new ArrayList<>();
@@ -1754,7 +1791,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
         tl = t;
         if (t.hasTarget()) {
-          c.getPieces().add(gen.new Piece(corePath+"references.html", t.getWorkingCode(), null));
+          if (t.hasProfile()) {
+            StructureDefinition tsd = context.getContext().fetchResource(StructureDefinition.class, t.getProfile().get(0).asStringValue());
+            if (tsd != null) {
+              c.getPieces().add(gen.new Piece(tsd.getWebPath(), tsd.getName(), tsd.present()));
+            } else {
+              c.getPieces().add(gen.new Piece(corePath+"references.html", t.getWorkingCode(), null));
+            }
+          } else {
+            c.getPieces().add(gen.new Piece(corePath+"references.html", t.getWorkingCode(), null));
+          }
           if (!mustSupportMode && isMustSupportDirect(t) && e.getMustSupport()) {
             c.addPiece(gen.new Piece(null, " ", null));
             c.addStyledText(translate("sd.table", "This type must be supported"), "S", "white", "red", null, false);
@@ -2113,7 +2159,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (!pattern) {
               c.addPiece(gen.new Piece(null, "0..0", null));
               row.setIcon("icon_fixed.gif", "Fixed Value" /*HierarchicalTableGenerator.TEXT_ICON_FIXED*/);
-            } else if (isPrimitive(t.getTypeCode())) {
+            } else if (context.getContext().isPrimitiveType(t.getTypeCode())) {
               row.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
               c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null));
             } else if (isReference(t.getTypeCode())) { 
@@ -2441,28 +2487,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return path;
   }
 
-
-
-
-
-  protected boolean isPrimitive(String value) {
-    StructureDefinition sd = context.getWorker().fetchTypeDefinition(value);
-    if (sd == null) // might be running before all SDs are available
-      return Utilities.existsInList(value, "base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant", "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri", "url", "uuid");
-    else 
-      return sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
-  }
-
-
-  private boolean isDataType(String value) {
-    StructureDefinition sd = context.getWorker().fetchTypeDefinition(value);
-    if (sd == null) // might be running before all SDs are available
-      return Utilities.existsInList(value, "Address", "Age", "Annotation", "Attachment", "CodeableConcept", "Coding", "ContactPoint", "Count", "Distance", "Duration", "HumanName", "Identifier", "Money", "Period", "Quantity", "Range", "Ratio", "Reference", "SampledData", "Signature", "Timing", 
-          "ContactDetail", "Contributor", "DataRequirement", "Expression", "ParameterDefinition", "RelatedArtifact", "TriggerDefinition", "UsageContext");
-    else 
-      return sd.getKind() == StructureDefinitionKind.COMPLEXTYPE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION;
-  }
-
   private boolean slicesExist(List<ElementDefinition> elements, ElementDefinition element) {
     if (elements == null) {
       return true;
@@ -2544,9 +2568,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     // create a child for each choice
     for (TypeRefComponent tr : element.getType()) {
       if (!mustSupportMode || allTypesMustSupport(element) || isMustSupport(tr)) {
+        boolean used = false;
         Row choicerow = gen.new Row();
         String t = tr.getWorkingCode();
         if (isReference(t)) {
+          used = true;
           choicerow.getCells().add(gen.new Cell(null, null, tail(element.getPath()).replace("[x]", Utilities.capitalize(t)), null, null));
           choicerow.getCells().add(gen.new Cell());
           choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
@@ -2591,6 +2617,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             System.out.println("Unable to find "+t);
             sd = context.getWorker().fetchTypeDefinition(t);
           } else if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
+            used = true;
             choicerow.getCells().add(gen.new Cell(null, null, tail(element.getPath()).replace("[x]",  Utilities.capitalize(t)), sd.getDescription(), null));
             choicerow.getCells().add(gen.new Cell());
             choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
@@ -2602,6 +2629,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.addStyledText(translate("sd.table", "This type must be supported"), "S", "white", "red", null, false);
             }
           } else {
+            used = true;
             choicerow.getCells().add(gen.new Cell(null, null, tail(element.getPath()).replace("[x]",  Utilities.capitalize(t)), sd.getDescription(), null));
             choicerow.getCells().add(gen.new Cell());
             choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
@@ -2613,7 +2641,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               c.addStyledText(translate("sd.table", "This type must be supported"), "S", "white", "red", null, false);
             }
           }
-          if (tr.hasProfile()) {
+          if (tr.hasProfile() && used) {
             Cell typeCell = choicerow.getCells().get(3);
             typeCell.addPiece(gen.new Piece(null, "(", null));
             boolean first = true;
@@ -2634,8 +2662,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             typeCell.addPiece(gen.new Piece(null, ")", null));
           }
         }    
-        choicerow.getCells().add(gen.new Cell());
-        subRows.add(choicerow);
+        if (used) {
+          choicerow.getCells().add(gen.new Cell());
+          subRows.add(choicerow);
+        }
       }
     }
   }
@@ -3532,7 +3562,25 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
     }
     if (root && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-      tableRow(tbl, "Logical Model", null, strikethrough, ToolingExtensions.readBoolExtension(sd, ToolingExtensions.EXT_LOGICAL_TARGET) ? "This logical model can be the target of a reference" : "This logical model cannot be the target of a reference");
+      Extension lt = ToolingExtensions.getExtension(sd, ToolingExtensions.EXT_LOGICAL_TARGET);
+      if (lt == null || !lt.hasValue()) {
+        tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model are not marked to be the target of a Reference");        
+      } else if (lt.getValue().hasExtension(ToolingExtensions.DAR)) {        
+      } else if (lt.getValueBooleanType().hasValue()) {
+        tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model are not marked to be the target of a Reference");        
+      } else if (lt.getValueBooleanType().booleanValue()) {
+        tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model can be the target of a Reference");        
+      } else {
+        tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model cannot be the target of a Reference");
+      }
+      String ps = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_PROFILE_STYLE);
+      if (ps != null) {
+        if ("cda".equals(ps)) {
+          tableRow(tbl, "Validation", null, strikethrough, "Instances of this type are validated by templateId");
+        } else {
+          tableRow(tbl, "Validation", null, strikethrough, "Instances of this type are validated using an unknown approach: "+ps);
+        }              
+      }
     }
 
     if (root && sd.hasExtension(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
@@ -3574,6 +3622,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         tableRow(tbl, "ID Expectation", null, strikethrough, "An ID is not allowed in this context");
       }
     }
+
+    if (d.hasExtension(ToolingExtensions.EXT_ID_CHOICE_GROUP)) {
+      tableRow(tbl, "Choice Group", null, strikethrough, "This is a repeating choice group that does not appear directly in the instance");          
+    }
+    
     // tooling extensions for formats
     if (ToolingExtensions.hasExtensions(d, ToolingExtensions.EXT_JSON_EMPTY, ToolingExtensions.EXT_JSON_PROP_KEY, ToolingExtensions.EXT_JSON_NULLABLE, 
         ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) {
@@ -3679,7 +3732,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     boolean no = root && ToolingExtensions.readBoolExtension(profile, ToolingExtensions.EXT_XML_NO_ORDER);
     if (no) {
-      ret.tx("The children of this property can appear in any order in the XML.");
+      ret.tx("The children of this type can appear in any order in the XML.");
     }
     return ret;
   }
@@ -3802,7 +3855,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
   private boolean hasPrimitiveTypes(ElementDefinition d) {
     for (TypeRefComponent tr : d.getType()) {
-      if (isPrimitive(tr.getCode())) {
+      if (context.getContext().isPrimitiveType(tr.getCode())) {
         return true;
       }
     }

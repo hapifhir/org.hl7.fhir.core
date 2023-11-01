@@ -958,6 +958,19 @@ public class TestReport extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("uri")) {
+        this.uri = null;
+      } else if (name.equals("display")) {
+        this.display = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1166,6 +1179,15 @@ public class TestReport extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("action")) {
+        this.getAction().remove((SetupActionComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1378,6 +1400,17 @@ public class TestReport extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("operation")) {
+        this.operation = (SetupActionOperationComponent) value; // SetupActionOperationComponent
+      } else if (name.equals("assert")) {
+        this.assert_ = (SetupActionAssertComponent) value; // SetupActionAssertComponent
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1730,6 +1763,19 @@ public class TestReport extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("result")) {
+        this.result = null;
+      } else if (name.equals("message")) {
+        this.message = null;
+      } else if (name.equals("detail")) {
+        this.detail = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2089,6 +2135,19 @@ public class TestReport extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("result")) {
+        this.result = null;
+      } else if (name.equals("message")) {
+        this.message = null;
+      } else if (name.equals("detail")) {
+        this.detail = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2458,6 +2517,19 @@ public class TestReport extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = null;
+      } else if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("action")) {
+        this.getAction().remove((TestActionComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2691,6 +2763,17 @@ public class TestReport extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("operation")) {
+        this.operation = (SetupActionOperationComponent) value; // SetupActionOperationComponent
+      } else if (name.equals("assert")) {
+        this.assert_ = (SetupActionAssertComponent) value; // SetupActionAssertComponent
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -2894,6 +2977,15 @@ public class TestReport extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("action")) {
+        this.getAction().remove((TeardownActionComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -3072,6 +3164,15 @@ public class TestReport extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("operation")) {
+        this.operation = (SetupActionOperationComponent) value; // SetupActionOperationComponent
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -4047,6 +4148,37 @@ public class TestReport extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.identifier = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("testScript")) {
+      this.testScript = null;
+    } else if (name.equals("result")) {
+      this.result = null;
+    } else if (name.equals("score")) {
+      this.score = null;
+    } else if (name.equals("tester")) {
+      this.tester = null;
+    } else if (name.equals("issued")) {
+      this.issued = null;
+    } else if (name.equals("participant")) {
+      this.getParticipant().remove((TestReportParticipantComponent) value);
+    } else if (name.equals("setup")) {
+      this.setup = (TestReportSetupComponent) value; // TestReportSetupComponent
+    } else if (name.equals("test")) {
+      this.getTest().remove((TestReportTestComponent) value);
+    } else if (name.equals("teardown")) {
+      this.teardown = (TestReportTeardownComponent) value; // TestReportTeardownComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

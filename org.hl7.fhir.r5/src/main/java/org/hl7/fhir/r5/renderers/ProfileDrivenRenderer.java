@@ -14,6 +14,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
@@ -1054,7 +1055,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             if (pe == null) {
               if (ed == null) {
                 if (url != null && url.startsWith("http://hl7.org/fhir") && !url.startsWith("http://hl7.org/fhir/us")) {
-                  throw new DefinitionException("unknown extension "+url);
+                  if (!ProfileUtilities.isSuppressIgnorableExceptions()) {
+                    throw new DefinitionException("unknown extension "+url);
+                  }
                 }
                 // System.out.println("unknown extension "+url);
                 pe = new PropertyWrapperDirect(this.context, new Property(p.getName()+"["+url+"]", p.getTypeCode(), p.getDefinition(), p.getMinCardinality(), p.getMaxCardinality(), ex), null);

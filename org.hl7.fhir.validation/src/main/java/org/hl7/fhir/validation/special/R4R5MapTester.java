@@ -348,7 +348,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
 
   private int testRoundTrip(JsonObject json, StructureDefinition sd, StructureDefinition tsd, ResolvedGroup tgtG, ResolvedGroup srcG, Stats stats, InputStream stream, String code) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
     stats.example();
-    Element r4 = new org.hl7.fhir.r5.elementmodel.JsonParser(context).setLogical(tsd).parseSingle(stream);
+    Element r4 = new org.hl7.fhir.r5.elementmodel.JsonParser(context).setLogical(tsd).parseSingle(stream, null);
     stats.parsed();
     int elementCountBefore = r4.countDescendents()+1;
     String id = r4.getIdBase();

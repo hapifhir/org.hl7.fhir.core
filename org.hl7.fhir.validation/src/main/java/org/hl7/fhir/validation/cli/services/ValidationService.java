@@ -29,6 +29,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.elementmodel.ValidatedFragment;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Bundle;
@@ -61,10 +62,7 @@ import org.hl7.fhir.utilities.i18n.XLIFFProducer;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.validation.IgLoader;
-import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.ValidationRecord;
-import org.hl7.fhir.validation.ValidatorUtils;
+import org.hl7.fhir.validation.*;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
@@ -114,13 +112,43 @@ public class ValidationService {
 
     ValidationResponse response = new ValidationResponse().setSessionId(sessionId);
 
-    for (FileInfo fp : request.getFilesToValidate()) {
+    for (FileInfo fileToValidate : request.getFilesToValidate()) {
+      if (fileToValidate.getFileType() == null) {
+        Manager.FhirFormat format = ResourceChecker.checkIsResource(validator.getContext(),
+          false,
+          fileToValidate.getFileContent().getBytes(),
+          fileToValidate.getFileName(),
+          false);
+        fileToValidate.setFileType(format.getExtension());
+      }
+
       List<ValidationMessage> messages = new ArrayList<>();
-      validator.validate(fp.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fp.getFileType()),
+
+      List<ValidatedFragment> validatedFragments = validator.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
         request.getCliContext().getProfiles(), messages);
-      ValidationOutcome outcome = new ValidationOutcome().setFileInfo(fp);
-      messages.forEach(outcome::addMessage);
-      response.addOutcome(outcome);
+
+      if (validatedFragments.size() == 1 && !validatedFragments.get(0).isDerivedContent()) {
+        ValidatedFragment validatedFragment = validatedFragments.get(0);
+        ValidationOutcome outcome = new ValidationOutcome();
+          FileInfo fileInfo = new FileInfo(
+          fileToValidate.getFileName(),
+          new String(validatedFragment.getContent()),
+          validatedFragment.getExtension());
+        outcome.setMessages(validatedFragment.getErrors());
+        outcome.setFileInfo(fileInfo);
+        response.addOutcome(outcome);
+      } else {
+        for (ValidatedFragment validatedFragment : validatedFragments) {
+          ValidationOutcome outcome = new ValidationOutcome();
+          FileInfo fileInfo = new FileInfo(
+            validatedFragment.getFilename(),
+            new String(validatedFragment.getContent()),
+            validatedFragment.getExtension());
+          outcome.setMessages(validatedFragment.getErrors());
+          outcome.setFileInfo(fileInfo);
+          response.addOutcome(outcome);
+        }
+      }
     }
     System.out.println("  Max Memory: "+Runtime.getRuntime().maxMemory());
     return response;
@@ -338,11 +366,7 @@ public class ValidationService {
       List<StructureDefinition> structures =  cu.allStructures();
       for (StructureDefinition sd : structures) {
         if (!sd.hasSnapshot()) {
-          if (sd.getKind() != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-            cu.generateSnapshot(sd, true);
-          } else {
-            cu.generateSnapshot(sd, false);
-          }
+          cu.generateSnapshot(sd);
         }
       }
       validator.setMapLog(cliContext.getMapLog());
@@ -374,11 +398,7 @@ public class ValidationService {
       List<StructureDefinition> structures = cu.allStructures();
       for (StructureDefinition sd : structures) {
         if (!sd.hasSnapshot()) {
-          if (sd.getKind() != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-            cu.generateSnapshot(sd, true);
-          } else {
-            cu.generateSnapshot(sd, false);
-          }
+          cu.generateSnapshot(sd);
         }
       }
       validator.setMapLog(cliContext.getMapLog());
@@ -471,6 +491,7 @@ public class ValidationService {
     validationEngine.setNoUnicodeBiDiControlChars(cliContext.isNoUnicodeBiDiControlChars());
     validationEngine.setNoInvariantChecks(cliContext.isNoInvariants());
     validationEngine.setDisplayWarnings(cliContext.isDisplayWarnings());
+    validationEngine.setBestPracticeLevel(cliContext.getBestPracticeLevel());
     validationEngine.setCheckIPSCodes(cliContext.isCheckIPSCodes());
     validationEngine.setWantInvariantInMessage(cliContext.isWantInvariantsInMessages());
     validationEngine.setSecurityChecks(cliContext.isSecurityChecks());

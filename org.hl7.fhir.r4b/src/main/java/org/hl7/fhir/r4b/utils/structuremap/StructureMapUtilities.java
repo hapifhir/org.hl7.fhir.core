@@ -109,9 +109,9 @@ public class StructureMapUtilities {
   private static final boolean RENDER_MULTIPLE_TARGETS_ONELINE = true;
   private static final String AUTO_VAR_NAME = "vvv";
 
-  private class FFHIRPathHostServices implements IEvaluationContext {
+  private class FHIRPathHostServices implements IEvaluationContext {
 
-    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext)
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant)
         throws PathEngineException {
       Variables vars = (Variables) appContext;
       List<Base> list = new ArrayList<Base>();
@@ -126,7 +126,7 @@ public class StructureMapUtilities {
     }
 
     @Override
-    public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
       if (!(appContext instanceof VariablesForProfiling))
         throw new Error(
             "Internal Logic Error (wrong type '" + appContext.getClass().getName() + "' in resolveConstantType)");
@@ -143,31 +143,31 @@ public class StructureMapUtilities {
     }
 
     @Override
-    public FunctionDetails resolveFunction(String functionName) {
+    public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
       return null; // throw new Error("Not Implemented Yet");
     }
 
     @Override
-    public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters)
+    public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters)
         throws PathEngineException {
       throw new Error("Not Implemented Yet");
     }
 
     @Override
-    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName,
+    public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName,
         List<List<Base>> parameters) {
       throw new Error("Not Implemented Yet");
     }
 
     @Override
-    public Base resolveReference(Object appContext, String url, Base base) throws FHIRException {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base base) throws FHIRException {
       if (services == null)
         return null;
       return services.resolveReference(appContext, url);
     }
 
     @Override
-    public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
+    public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
       IResourceValidator val = worker.newValidator();
       List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
       if (item instanceof Resource) {
@@ -177,11 +177,11 @@ public class StructureMapUtilities {
           ok = ok && v.getLevel().isError();
         return ok;
       }
-      throw new NotImplementedException("Not done yet (FFHIRPathHostServices.conformsToProfile), when item is element");
+      throw new NotImplementedException("Not done yet (FHIRPathHostServices.conformsToProfile), when item is element");
     }
 
     @Override
-    public ValueSet resolveValueSet(Object appContext, String url) {
+    public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
       throw new Error("Not Implemented Yet");
     }
 
@@ -201,7 +201,7 @@ public class StructureMapUtilities {
     this.services = services;
     this.pkp = pkp;
     fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FFHIRPathHostServices());
+    fpe.setHostServices(new FHIRPathHostServices());
     profileUtilities = new ProfileUtilities(worker, null, null);
   }
 
@@ -210,7 +210,7 @@ public class StructureMapUtilities {
     this.worker = worker;
     this.services = services;
     fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FFHIRPathHostServices());
+    fpe.setHostServices(new FHIRPathHostServices());
     profileUtilities = new ProfileUtilities(worker, null, null);
   }
 
@@ -218,7 +218,7 @@ public class StructureMapUtilities {
     super();
     this.worker = worker;
     fpe = new FHIRPathEngine(worker);
-    fpe.setHostServices(new FFHIRPathHostServices());
+    fpe.setHostServices(new FHIRPathHostServices());
     profileUtilities = new ProfileUtilities(worker, null, null);
 
   }

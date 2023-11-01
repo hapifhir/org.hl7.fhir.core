@@ -211,6 +211,17 @@ public class Ingredient extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("role")) {
+        this.role = null;
+      } else if (name.equals("manufacturer")) {
+        this.manufacturer = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -472,6 +483,17 @@ public class Ingredient extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("strength")) {
+        this.getStrength().remove((IngredientSubstanceStrengthComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1185,6 +1207,27 @@ public class Ingredient extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("presentation[x]")) {
+        this.presentation = null;
+      } else if (name.equals("presentationText")) {
+        this.presentationText = null;
+      } else if (name.equals("concentration[x]")) {
+        this.concentration = null;
+      } else if (name.equals("concentrationText")) {
+        this.concentrationText = null;
+      } else if (name.equals("measurementPoint")) {
+        this.measurementPoint = null;
+      } else if (name.equals("country")) {
+        this.getCountry().remove(value);
+      } else if (name.equals("referenceStrength")) {
+        this.getReferenceStrength().remove((IngredientSubstanceStrengthReferenceStrengthComponent) value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1670,6 +1713,21 @@ public class Ingredient extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("substance")) {
+        this.substance = null;
+      } else if (name.equals("strength[x]")) {
+        this.strength = null;
+      } else if (name.equals("measurementPoint")) {
+        this.measurementPoint = null;
+      } else if (name.equals("country")) {
+        this.getCountry().remove(value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2360,6 +2418,29 @@ public class Ingredient extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.identifier = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("for")) {
+      this.getFor().remove(value);
+    } else if (name.equals("role")) {
+      this.role = null;
+    } else if (name.equals("function")) {
+      this.getFunction().remove(value);
+    } else if (name.equals("allergenicIndicator")) {
+      this.allergenicIndicator = null;
+    } else if (name.equals("manufacturer")) {
+      this.getManufacturer().remove((IngredientManufacturerComponent) value);
+    } else if (name.equals("substance")) {
+      this.substance = (IngredientSubstanceComponent) value; // IngredientSubstanceComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

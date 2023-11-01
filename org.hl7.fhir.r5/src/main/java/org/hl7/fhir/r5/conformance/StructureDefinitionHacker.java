@@ -8,7 +8,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 /**
- * This doesn't do anythign at this time
+ * This works around known issues in struture definitions
  * 
  * @author graha
  *
@@ -48,8 +48,28 @@ public class StructureDefinitionHacker {
           ed.setComment("e.g. The patient is a pregnant, has congestive heart failure, has an Adenocarcinoma, and is allergic to penicillin.");
         }
       }
+    }    
+    if (sd.getUrl().startsWith("http://hl7.org/fhir/uv/subscriptions-backport")) {
+      for (ElementDefinition ed : sd.getDifferential().getElement()) {
+        fixMarkdownR4BURLs(ed);
+      }
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        fixMarkdownR4BURLs(ed);
+      }
     }
     return sd;
+  }
+
+  private void fixMarkdownR4BURLs(ElementDefinition ed) {
+    if (ed.hasDefinition()) {
+      ed.setDefinition(ed.getDefinition().replace("http://hl7.org/fhir/R4B/", "http://hl7.org/fhir/R4/"));
+    } 
+    if (ed.hasComment()) {
+      ed.setComment(ed.getComment().replace("http://hl7.org/fhir/R4B/", "http://hl7.org/fhir/R4/"));
+    }
+    if (ed.hasRequirements()) {
+      ed.setRequirements(ed.getRequirements().replace("http://hl7.org/fhir/R4B/", "http://hl7.org/fhir/R4/"));
+    }
   }
 
   private void fixDocSecURL(ElementDefinition ed) {

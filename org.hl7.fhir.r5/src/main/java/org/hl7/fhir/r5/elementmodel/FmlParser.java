@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.elementmodel;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -44,10 +45,14 @@ public class FmlParser extends ParserBase {
   }
 
   @Override
-  public List<NamedElement> parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+  public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+    byte[] content = TextFile.streamToBytes(inStream);
+    ByteArrayInputStream stream = new ByteArrayInputStream(content);
     String text = TextFile.streamToString(stream);
-    List<NamedElement> result = new ArrayList<>();
-    result.add(new NamedElement(null, parse(text)));
+    List<ValidatedFragment> result = new ArrayList<>();
+    ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "fml", content, false);
+    focusFragment.setElement(parse(focusFragment.getErrors(), text));
+    result.add(focusFragment);
     return result;
   }
 
@@ -57,7 +62,7 @@ public class FmlParser extends ParserBase {
     throw new Error("Not done yet");
   }
 
-  public Element parse(String text) throws FHIRException {
+  public Element parse(List<ValidationMessage> errors, String text) throws FHIRException {
     FHIRLexer lexer = new FHIRLexer(text, "source", true, true);
     if (lexer.done())
       throw lexer.error("Map Input cannot be empty");
@@ -112,13 +117,13 @@ public class FmlParser extends ParserBase {
       if (policy == ValidationPolicy.NONE) {
         throw e;
       } else {
-        logError("2023-02-24", e.getLocation().getLine(), e.getLocation().getColumn(), "??", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
+        logError(errors, "2023-02-24", e.getLocation().getLine(), e.getLocation().getColumn(), "??", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
       }
     } catch (Exception e) {
       if (policy == ValidationPolicy.NONE) {
         throw e;
       } else {
-        logError("2023-02-24", -1, -1, "?", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
+        logError(errors, "2023-02-24", -1, -1, "?", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
       }
     }
     result.setIgnorePropertyOrder(true);
@@ -417,7 +422,7 @@ public class FmlParser extends ParserBase {
     lexer.token("(");
     boolean done = false;
     while (!done) {
-      parseParameter(ref, lexer);
+      parseParameter(ref, lexer, false);
       done = !lexer.hasToken(",");
       if (!done)
         lexer.next();
@@ -522,7 +527,7 @@ public class FmlParser extends ParserBase {
       target.makeElement("transform").markLocation(loc).setValue(name);
       lexer.token("(");
       if (target.getChildValue("transform").equals(StructureMapTransform.EVALUATE.toCode())) {
-        parseParameter(target, lexer);
+        parseParameter(target, lexer, true);
         lexer.token(",");
         loc = lexer.getCurrentLocation();
         ExpressionNode node = fpe.parse(lexer);
@@ -530,7 +535,7 @@ public class FmlParser extends ParserBase {
         target.addElement("parameter").markLocation(loc).makeElement("valueString").setValue(node.toString());
       } else {
         while (!lexer.hasToken(")")) {
-          parseParameter(target, lexer);
+          parseParameter(target, lexer, true);
           if (!lexer.hasToken(")"))
             lexer.token(",");
         }
@@ -563,10 +568,12 @@ public class FmlParser extends ParserBase {
     }
   }
 
-  private void parseParameter(Element ref, FHIRLexer lexer) throws FHIRLexerException, FHIRFormatError {
+  private void parseParameter(Element ref, FHIRLexer lexer, boolean isTarget) throws FHIRLexerException, FHIRFormatError {
     boolean r5 = VersionUtilities.isR5Plus(context.getVersion());
-    String name = r5 ? "parameter" : "variable";
-    if (!lexer.isConstant()) {
+    String name = r5 || isTarget ? "parameter" : "variable";
+    if (ref.hasChildren(name) && !ref.getChildByName(name).isList()) {
+      throw lexer.error("variable on target is not a list, so can't add an element");
+    } else if (!lexer.isConstant()) {
       ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueId" : "value").setValue(lexer.take());
     } else if (lexer.isStringConstant())
       ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueString" : "value").setValue(lexer.readConstant("??"));

@@ -581,6 +581,19 @@ public class ChargeItemDefinition extends MetadataResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("language")) {
+        this.language = null;
+      } else if (name.equals("expression")) {
+        this.expression = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -885,6 +898,17 @@ public class ChargeItemDefinition extends MetadataResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("applicability")) {
+        this.getApplicability().remove((ChargeItemDefinitionApplicabilityComponent) value);
+      } else if (name.equals("priceComponent")) {
+        this.getPriceComponent().remove((ChargeItemDefinitionPropertyGroupPriceComponentComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1296,6 +1320,21 @@ public class ChargeItemDefinition extends MetadataResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("factor")) {
+        this.factor = null;
+      } else if (name.equals("amount")) {
+        this.amount = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3251,6 +3290,59 @@ public class ChargeItemDefinition extends MetadataResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("url")) {
+      this.url = null;
+    } else if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("version")) {
+      this.version = null;
+    } else if (name.equals("title")) {
+      this.title = null;
+    } else if (name.equals("derivedFromUri")) {
+      this.getDerivedFromUri().remove(castToUri(value));
+    } else if (name.equals("partOf")) {
+      this.getPartOf().remove(castToCanonical(value));
+    } else if (name.equals("replaces")) {
+      this.getReplaces().remove(castToCanonical(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("experimental")) {
+      this.experimental = null;
+    } else if (name.equals("date")) {
+      this.date = null;
+    } else if (name.equals("publisher")) {
+      this.publisher = null;
+    } else if (name.equals("contact")) {
+      this.getContact().remove(castToContactDetail(value));
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("useContext")) {
+      this.getUseContext().remove(castToUsageContext(value));
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(castToCodeableConcept(value));
+    } else if (name.equals("copyright")) {
+      this.copyright = null;
+    } else if (name.equals("approvalDate")) {
+      this.approvalDate = null;
+    } else if (name.equals("lastReviewDate")) {
+      this.lastReviewDate = null;
+    } else if (name.equals("effectivePeriod")) {
+      this.effectivePeriod = null;
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("instance")) {
+      this.getInstance().remove(castToReference(value));
+    } else if (name.equals("applicability")) {
+      this.getApplicability().remove((ChargeItemDefinitionApplicabilityComponent) value);
+    } else if (name.equals("propertyGroup")) {
+      this.getPropertyGroup().remove((ChargeItemDefinitionPropertyGroupComponent) value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

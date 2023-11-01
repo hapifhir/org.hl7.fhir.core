@@ -179,6 +179,17 @@ public class PackagedProductDefinition extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("jurisdiction")) {
+          this.jurisdiction = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1008,6 +1019,35 @@ public class PackagedProductDefinition extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("componentPart")) {
+          this.componentPart = null;
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("material")) {
+          this.getMaterial().remove(value);
+        } else if (name.equals("alternateMaterial")) {
+          this.getAlternateMaterial().remove(value);
+        } else if (name.equals("shelfLifeStorage")) {
+          this.getShelfLifeStorage().remove(value);
+        } else if (name.equals("manufacturer")) {
+          this.getManufacturer().remove(value);
+        } else if (name.equals("property")) {
+          this.getProperty().remove((PackagedProductDefinitionPackagingPropertyComponent) value);
+        } else if (name.equals("containedItem")) {
+          this.getContainedItem().remove((PackagedProductDefinitionPackagingContainedItemComponent) value);
+        } else if (name.equals("packaging")) {
+          this.getPackaging().remove((PackagedProductDefinitionPackagingComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1388,6 +1428,17 @@ public class PackagedProductDefinition extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1612,6 +1663,17 @@ public class PackagedProductDefinition extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("item")) {
+          this.item = null;
+        } else if (name.equals("amount")) {
+          this.amount = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2648,6 +2710,43 @@ public class PackagedProductDefinition extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("packageFor")) {
+          this.getPackageFor().remove(value);
+        } else if (name.equals("status")) {
+          this.status = null;
+        } else if (name.equals("statusDate")) {
+          this.statusDate = null;
+        } else if (name.equals("containedItemQuantity")) {
+          this.getContainedItemQuantity().remove(value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("legalStatusOfSupply")) {
+          this.getLegalStatusOfSupply().remove((PackagedProductDefinitionLegalStatusOfSupplyComponent) value);
+        } else if (name.equals("marketingStatus")) {
+          this.getMarketingStatus().remove(value);
+        } else if (name.equals("copackagedIndicator")) {
+          this.copackagedIndicator = null;
+        } else if (name.equals("manufacturer")) {
+          this.getManufacturer().remove(value);
+        } else if (name.equals("attachedDocument")) {
+          this.getAttachedDocument().remove(value);
+        } else if (name.equals("packaging")) {
+          this.packaging = (PackagedProductDefinitionPackagingComponent) value; // PackagedProductDefinitionPackagingComponent
+        } else if (name.equals("characteristic")) {
+          this.getCharacteristic().remove((PackagedProductDefinitionPackagingPropertyComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

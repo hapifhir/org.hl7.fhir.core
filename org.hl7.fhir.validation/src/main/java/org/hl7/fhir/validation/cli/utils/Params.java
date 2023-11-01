@@ -7,6 +7,7 @@ import java.util.Locale;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
+import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.model.CliContext;
@@ -87,6 +88,8 @@ public class Params {
   public static final String TGT_LANG = "-tgt-lang";
   public static final String ALLOW_DOUBLE_QUOTES = "-allow-double-quotes-in-fhirpath";
   public static final String CHECK_IPS_CODES = "-check-ips-codes";
+  public static final String BEST_PRACTICE = "-best-practice";
+  
   
 
   public static final String RUN_TESTS = "-run-tests";
@@ -178,25 +181,25 @@ public class Params {
           cliContext.addProfile(p);
         }
       } else if (args[i].equals(BUNDLE)) {
-        String p = null;
-        String r = null;
+        String profile = null;
+        String rule = null;
         if (i + 1 == args.length) {
           throw new Error("Specified -profile without indicating bundle rule ");
         } else {
-          r = args[++i];
+          rule = args[++i];
         }
         if (i + 1 == args.length) {
           throw new Error("Specified -profile without indicating profile source");
         } else {
-          p = args[++i];
+          profile = args[++i];
         }
-        cliContext.getBundleValidationRules().add(new BundleValidationRule(r, p));
+        cliContext.getBundleValidationRules().add(new BundleValidationRule().setRule(rule).setProfile(profile));
       } else if (args[i].equals(QUESTIONNAIRE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -questionnaire without indicating questionnaire mode");
         else {
-          String q = args[++i];
-          cliContext.setQuestionnaireMode(QuestionnaireMode.fromCode(q));
+          String questionnaireMode = args[++i];
+          cliContext.setQuestionnaireMode(QuestionnaireMode.fromCode(questionnaireMode));
         }
       } else if (args[i].equals(LEVEL)) {
         if (i + 1 == args.length)
@@ -243,6 +246,13 @@ public class Params {
           } else {
             cliContext.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.fromCode(q));
           }
+        }
+      } else if (args[i].equals(BEST_PRACTICE)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified "+BEST_PRACTICE+" without indicating mode");
+        else {
+          String q = args[++i];
+          cliContext.setBestPracticeLevel(readBestPractice(q));
         }
       } else if (args[i].equals(LOCALE)) {
         if (i + 1 == args.length) {
@@ -437,6 +447,23 @@ public class Params {
     }
     
     return cliContext;
+  }
+
+  private static BestPracticeWarningLevel readBestPractice(String s) {
+    if (s == null) {
+      return BestPracticeWarningLevel.Warning;
+    }
+    switch (s.toLowerCase()) {
+    case "warning" : return BestPracticeWarningLevel.Warning;
+    case "error" : return BestPracticeWarningLevel.Error;
+    case "hint" : return BestPracticeWarningLevel.Hint;
+    case "ignore" : return BestPracticeWarningLevel.Ignore;
+    case "w" : return BestPracticeWarningLevel.Warning;
+    case "e" : return BestPracticeWarningLevel.Error;
+    case "h" : return BestPracticeWarningLevel.Hint;
+    case "i" : return BestPracticeWarningLevel.Ignore;
+    }
+    throw new Error("The best-practice level ''"+s+"'' is not valid");
   }
 
   private static int readInteger(String name, String value) {

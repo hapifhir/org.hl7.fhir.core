@@ -429,6 +429,21 @@ public class PractitionerRole extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("daysOfWeek")) {
+        this.getDaysOfWeek().remove((Enumeration) value);
+      } else if (name.equals("allDay")) {
+        this.allDay = null;
+      } else if (name.equals("availableStartTime")) {
+        this.availableStartTime = null;
+      } else if (name.equals("availableEndTime")) {
+        this.availableEndTime = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -708,6 +723,17 @@ public class PractitionerRole extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("during")) {
+        this.during = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1832,6 +1858,41 @@ public class PractitionerRole extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("active")) {
+      this.active = null;
+    } else if (name.equals("period")) {
+      this.period = null;
+    } else if (name.equals("practitioner")) {
+      this.practitioner = null;
+    } else if (name.equals("organization")) {
+      this.organization = null;
+    } else if (name.equals("code")) {
+      this.getCode().remove(value);
+    } else if (name.equals("specialty")) {
+      this.getSpecialty().remove(value);
+    } else if (name.equals("location")) {
+      this.getLocation().remove(value);
+    } else if (name.equals("healthcareService")) {
+      this.getHealthcareService().remove(value);
+    } else if (name.equals("telecom")) {
+      this.getTelecom().remove(value);
+    } else if (name.equals("availableTime")) {
+      this.getAvailableTime().remove((PractitionerRoleAvailableTimeComponent) value);
+    } else if (name.equals("notAvailable")) {
+      this.getNotAvailable().remove((PractitionerRoleNotAvailableComponent) value);
+    } else if (name.equals("availabilityExceptions")) {
+      this.availabilityExceptions = null;
+    } else if (name.equals("endpoint")) {
+      this.getEndpoint().remove(value);
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

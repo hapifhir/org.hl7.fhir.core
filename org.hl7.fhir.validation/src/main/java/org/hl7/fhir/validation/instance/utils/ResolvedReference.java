@@ -50,11 +50,11 @@ public class ResolvedReference {
         return focus;
     }
 
-    public ValidatorHostContext hostContext(ValidatorHostContext hostContext, StructureDefinition profile) {
+    public ValidationContext valContext(ValidationContext valContext, StructureDefinition profile) {
         if (external) {
-            return hostContext.forRemoteReference(profile, resource);
+            return valContext.forRemoteReference(profile, resource);
         } else {
-            return hostContext.forLocalReference(profile, resource);
+            return valContext.forLocalReference(profile, resource);
         }
     }
 }

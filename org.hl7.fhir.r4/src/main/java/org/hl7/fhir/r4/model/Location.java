@@ -901,6 +901,19 @@ public class Location extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("longitude")) {
+        this.longitude = null;
+      } else if (name.equals("latitude")) {
+        this.latitude = null;
+      } else if (name.equals("altitude")) {
+        this.altitude = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1339,6 +1352,21 @@ public class Location extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("daysOfWeek")) {
+        this.getDaysOfWeek().remove((Enumeration) value);
+      } else if (name.equals("allDay")) {
+        this.allDay = null;
+      } else if (name.equals("openingTime")) {
+        this.openingTime = null;
+      } else if (name.equals("closingTime")) {
+        this.closingTime = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2752,6 +2780,47 @@ public class Location extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("operationalStatus")) {
+      this.operationalStatus = null;
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("alias")) {
+      this.getAlias().remove(castToString(value));
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("mode")) {
+      this.mode = null;
+    } else if (name.equals("type")) {
+      this.getType().remove(castToCodeableConcept(value));
+    } else if (name.equals("telecom")) {
+      this.getTelecom().remove(castToContactPoint(value));
+    } else if (name.equals("address")) {
+      this.address = null;
+    } else if (name.equals("physicalType")) {
+      this.physicalType = null;
+    } else if (name.equals("position")) {
+      this.position = (LocationPositionComponent) value; // LocationPositionComponent
+    } else if (name.equals("managingOrganization")) {
+      this.managingOrganization = null;
+    } else if (name.equals("partOf")) {
+      this.partOf = null;
+    } else if (name.equals("hoursOfOperation")) {
+      this.getHoursOfOperation().remove((LocationHoursOfOperationComponent) value);
+    } else if (name.equals("availabilityExceptions")) {
+      this.availabilityExceptions = null;
+    } else if (name.equals("endpoint")) {
+      this.getEndpoint().remove(castToReference(value));
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

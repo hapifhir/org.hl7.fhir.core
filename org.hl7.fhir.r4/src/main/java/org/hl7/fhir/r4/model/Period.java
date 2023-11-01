@@ -282,6 +282,17 @@ public class Period extends Type implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("start")) {
+      this.start = null;
+    } else if (name.equals("end")) {
+      this.end = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 109757538:

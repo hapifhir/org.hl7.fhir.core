@@ -312,6 +312,21 @@ public class Population extends BackboneType implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("age[x]")) {
+      this.age = null;
+    } else if (name.equals("gender")) {
+      this.gender = null;
+    } else if (name.equals("race")) {
+      this.race = null;
+    } else if (name.equals("physiologicalCondition")) {
+      this.physiologicalCondition = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1419716831:

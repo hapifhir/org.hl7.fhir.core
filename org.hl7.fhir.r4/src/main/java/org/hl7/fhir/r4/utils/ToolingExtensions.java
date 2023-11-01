@@ -92,6 +92,7 @@ import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.r4.model.UrlType;
 import org.hl7.fhir.r4.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r4.model.BackboneElement;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -550,6 +551,30 @@ public class ToolingExtensions {
     else
       element.getExtension().add(new Extension(new UriType(uri)).setValue(new CodeType(value)));
   }
+  
+
+  public static void setCodeExtensionMod(DomainResource resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new CodeType(value));
+    else
+      resource.getModifierExtension().add(new Extension(uri).setValue(new CodeType(value)));
+  }
+
+  public static void setCodeExtensionMod(BackboneElement resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new CodeType(value));
+    else
+      resource.getModifierExtension().add(new Extension(uri).setValue(new CodeType(value)));
+  }
+  
 
   public static void setIntegerExtension(DomainResource resource, String uri, int value) {
     Extension ext = getExtension(resource, uri);

@@ -20,7 +20,7 @@
     <properties>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.4.1</validator_test_case_version>
+        <validator_test_case_version>1.4.14</validator_test_case_version>
         <jackson_version>2.15.2</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
@@ -28,8 +28,8 @@
         <maven_clean_version>3.1.0</maven_clean_version>
         <okhttp.version>4.11.0</okhttp.version>
         <jacoco_version>0.8.9</jacoco_version>
-        <lombok_version>1.18.22</lombok_version>
-        <byte_buddy_version>1.12.14</byte_buddy_version>
+        <lombok_version>1.18.30</lombok_version>
+        <byte_buddy_version>1.14.8</byte_buddy_version>
         <apache_poi_version>5.2.1</apache_poi_version>
         <saxon_he_version>9.8.0-15</saxon_he_version>
         <maven.compiler.release>11</maven.compiler.release>
@@ -283,6 +283,20 @@
                 <artifactId>xpp3</artifactId>
                 <version>1.1.6</version>
             </dependency>
+
+
+            <dependency>
+              <groupId>com.nimbusds</groupId>
+              <artifactId>nimbus-jose-jwt</artifactId>
+              <version>9.30.2</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
+            <dependency>
+                <groupId>org.xerial</groupId>
+                <artifactId>sqlite-jdbc</artifactId>
+                <version>3.43.0.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -327,8 +341,13 @@
                         <argLine>@{argLine} -Xmx5632m</argLine>
                         <systemPropertyVariables>
                             <java.locale.providers>COMPAT</java.locale.providers>
+                            <!--    For JUnit4 use TestUtilities.runningAsSurefire() or
+                                    TestingUtilities.runningAsSurefire() to exclude a test from surefire executions-->
+                            <runningAsSurefire>true</runningAsSurefire>
                         </systemPropertyVariables>
                         <redirectTestOutputToFile>false</redirectTestOutputToFile>
+                        <!-- For JUnit5 use an excludedInSurefire tag to exclude a test from surefire executions -->
+                        <excludedGroups>excludedInSurefire</excludedGroups>
                     </configuration>
                 </plugin>
 

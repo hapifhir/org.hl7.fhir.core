@@ -11,6 +11,7 @@ public class VersionUtilitiesTest {
   public void isValidSemVer() {
     assertTrue(VersionUtilities.isSemVer("0.1.1"));
     assertTrue(VersionUtilities.isSemVer("0.1.1-ballot1"));
+    assertTrue(VersionUtilities.isSemVer("0.0.0-alpha.0.131"));
     assertFalse(VersionUtilities.isSemVer("0.1.a"));
   }
 
@@ -53,4 +54,8 @@ public class VersionUtilitiesTest {
     assertFalse(VersionUtilities.isThisOrLater("0.9.x", "0.8.1"));
   }
 
+  @Test 
+  public void bugFixTests() {
+    assertTrue(VersionUtilities.isThisOrLater("1.0.0-ballot", "1.0.1"));
+  }
 }

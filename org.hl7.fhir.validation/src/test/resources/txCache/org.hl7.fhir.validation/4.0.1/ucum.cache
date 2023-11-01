@@ -14,7 +14,6 @@ v: {
   "code" : "%",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -36,7 +35,6 @@ v: {
   "code" : "L/min",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -58,7 +56,6 @@ v: {
   "code" : "%",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -79,7 +76,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#L/min' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-vitals-common--0|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -101,7 +97,6 @@ v: {
   "code" : "cm",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -122,7 +117,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#cm' is not in the value set 'https://bb/ValueSet/BBDemographicAgeUnit--0|20190731' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -144,7 +138,6 @@ v: {
   "code" : "min",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -166,7 +159,6 @@ v: {
   "code" : "mmol/L",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -188,7 +180,6 @@ v: {
   "code" : "kg",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -210,7 +201,6 @@ v: {
   "code" : "kg/m2",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -232,7 +222,6 @@ v: {
   "code" : "mm[Hg]",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -254,7 +243,6 @@ v: {
   "code" : "wk",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -276,7 +264,6 @@ v: {
   "code" : "mm[Hg]",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -298,7 +285,6 @@ v: {
   "code" : "{capsule}",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -320,7 +306,6 @@ v: {
   "code" : "{patch}",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -342,7 +327,6 @@ v: {
   "code" : "m",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -363,7 +347,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#m' is not in the value set 'http://hl7.org/fhir/ValueSet/age-units--0|4.0.1' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -385,7 +368,6 @@ v: {
   "code" : "/min",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -407,7 +389,6 @@ v: {
   "code" : "mg",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -429,7 +410,6 @@ v: {
   "code" : "mm",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -451,7 +431,6 @@ v: {
   "code" : "kg",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -473,7 +452,6 @@ v: {
   "code" : "Cel",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -495,7 +473,6 @@ v: {
   "code" : "g",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -517,7 +494,6 @@ v: {
   "code" : "mm[Hg]{hg}",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -538,7 +514,6 @@ v: {
   "severity" : "error",
   "error" : "Error processing Unit: 'fmm[Hg]': The unit \"fmm[Hg]\" is unknown at character 1; Unknown Code 'fmm[Hg]' in the system 'http://unitsofmeasure.org'; The provided code 'http://unitsofmeasure.org#fmm[Hg]' is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -558,6 +533,71 @@ v: {
 v: {
   "display" : "J/C",
   "code" : "J/C",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "h"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "h",
+  "code" : "h",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "ar"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "ar",
+  "code" : "ar",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "l"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "l",
+  "code" : "l",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "unknown-systems" : "",

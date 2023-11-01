@@ -1291,6 +1291,42 @@ public class VisionPrescription extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("product")) {
+          this.product = null;
+        } else if (name.equals("eye")) {
+          value = new VisionEyesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.eye = (Enumeration) value; // Enumeration<VisionEyes>
+        } else if (name.equals("sphere")) {
+          this.sphere = null;
+        } else if (name.equals("cylinder")) {
+          this.cylinder = null;
+        } else if (name.equals("axis")) {
+          this.axis = null;
+        } else if (name.equals("prism")) {
+          this.getPrism().remove((PrismComponent) value);
+        } else if (name.equals("add")) {
+          this.add = null;
+        } else if (name.equals("power")) {
+          this.power = null;
+        } else if (name.equals("backCurve")) {
+          this.backCurve = null;
+        } else if (name.equals("diameter")) {
+          this.diameter = null;
+        } else if (name.equals("duration")) {
+          this.duration = null;
+        } else if (name.equals("color")) {
+          this.color = null;
+        } else if (name.equals("brand")) {
+          this.brand = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1651,6 +1687,18 @@ public class VisionPrescription extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("amount")) {
+          this.amount = null;
+        } else if (name.equals("base")) {
+          value = new VisionBaseEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.base = (Enumeration) value; // Enumeration<VisionBase>
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2219,6 +2267,30 @@ public class VisionPrescription extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new FinancialResourceStatusCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<FinancialResourceStatusCodes>
+        } else if (name.equals("created")) {
+          this.created = null;
+        } else if (name.equals("patient")) {
+          this.patient = null;
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("dateWritten")) {
+          this.dateWritten = null;
+        } else if (name.equals("prescriber")) {
+          this.prescriber = null;
+        } else if (name.equals("lensSpecification")) {
+          this.getLensSpecification().remove((VisionPrescriptionLensSpecificationComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

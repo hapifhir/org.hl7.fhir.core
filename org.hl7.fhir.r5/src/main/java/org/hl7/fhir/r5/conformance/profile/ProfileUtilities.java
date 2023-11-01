@@ -92,6 +92,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingCompo
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
@@ -136,6 +137,9 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  */
 public class ProfileUtilities extends TranslatingUtilities {
 
+  private static boolean suppressIgnorableExceptions;
+
+  
   public class ElementDefinitionCounter {
     int countMin = 0;
     int countMax = 0;
@@ -908,7 +912,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       derived.clearUserData("profileutils.snapshot.generating");
       snapshotStack.remove(derived.getUrl());
     }
+    derived.setUserData("profileutils.snapshot.generated", true); // used by the publisher
   }
+
 
   private XVerExtensionManager makeXVer() {
     if (xver == null) {
@@ -2350,6 +2356,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     }
     if (profile != null) {
+      if (profile.getSnapshot().getElement().isEmpty()) {
+        throw new DefinitionException(context.formatMessage(I18nConstants.SNAPSHOT_IS_EMPTY, profile.getVersionedUrl()));
+      }
       ElementDefinition e = profile.getSnapshot().getElement().get(0);
       String webroot = profile.getUserString("webroot");
 
@@ -2686,6 +2695,14 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (d.hasValueSet()) {
             nb.setValueSet(d.getValueSet());
           }
+          for (ElementDefinitionBindingAdditionalComponent ab : d.getAdditional()) {
+            ElementDefinitionBindingAdditionalComponent eab = getMatchingAdditionalBinding(nb, ab);
+            if (eab != null) {
+              mergeAdditionalBinding(eab, ab);
+            } else {
+              nb.getAdditional().add(ab);
+            }
+          }
           base.setBinding(nb); 
         } else if (trimDifferential)
           derived.setBinding(null);
@@ -2785,6 +2802,42 @@ public class ProfileUtilities extends TranslatingUtilities {
     //updateURLs(url, webUrl, dest);
   }
 
+  private void mergeAdditionalBinding(ElementDefinitionBindingAdditionalComponent dest, ElementDefinitionBindingAdditionalComponent source) {
+    for (UsageContext t : source.getUsage()) {
+      if (!hasUsage(dest, t)) {
+        dest.addUsage(t);
+      }
+    }
+    if (source.getAny()) {
+      source.setAny(true);
+    }
+    if (source.hasShortDoco()) {
+      dest.setShortDoco(source.getShortDoco());
+    }
+    if (source.hasDocumentation()) {
+      dest.setDocumentation(source.getDocumentation());
+    }
+    
+  }
+
+  private boolean hasUsage(ElementDefinitionBindingAdditionalComponent dest, UsageContext tgt) {
+    for (UsageContext t : dest.getUsage()) {
+      if (t.getCode() != null && t.getCode().matches(tgt.getCode()) && t.getValue() != null && t.getValue().equals(tgt.getValue())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private ElementDefinitionBindingAdditionalComponent getMatchingAdditionalBinding(ElementDefinitionBindingComponent nb,ElementDefinitionBindingAdditionalComponent ab) {
+    for (ElementDefinitionBindingAdditionalComponent t : nb.getAdditional()) {
+      if (t.getValueSet() != null && t.getValueSet().equals(ab.getValueSet()) && t.getPurpose() == ab.getPurpose()) {
+        return t;
+      }
+    }
+    return null;
+  }
+
   private void mergeExtensions(Element tgt, Element src) {
      tgt.getExtension().addAll(src.getExtension());
   }
@@ -2839,10 +2892,11 @@ public class ProfileUtilities extends TranslatingUtilities {
     boolean ok = false;
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     String t = ts.getWorkingCode();
+    String tDesc = ts.toString();
     for (TypeRefComponent td : base.getType()) {;
       boolean matchType = false;
       String tt = td.getWorkingCode();
-      b.append(tt);
+      b.append(td.toString());
       if (td.hasCode() && (tt.equals(t))) {
         matchType = true;
       }
@@ -2869,20 +2923,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           // check that any derived target has a reference chain back to one of the base target profiles
           for (UriType u : ts.getTargetProfile()) {
             String url = u.getValue();
-            boolean tgtOk = !td.hasTargetProfile() || td.hasTargetProfile(url);
-            while (url != null && !tgtOk) {
-              StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
-              if (sd == null) {
-                if (messages != null) {
-                  messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, "Cannot check whether the target profile " + url + " on "+derived.getPath()+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
-                }
-                url = null;
-                tgtOk = true; // suppress error message
-              } else {
-                url = sd.getBaseDefinition();
-                tgtOk = td.hasTargetProfile(url);
-              }
-            }
+            boolean tgtOk = !td.hasTargetProfile() || sdConformsToTargets(path, derived.getPath(), url, td);            
             if (tgtOk) {
               ok = true;
             } else {
@@ -2898,11 +2939,34 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
     }
-    if (!ok) {
-      throw new DefinitionException(context.formatMessage(I18nConstants.STRUCTUREDEFINITION__AT__ILLEGAL_CONSTRAINED_TYPE__FROM__IN_, purl, derived.getPath(), t, b.toString(), srcSD.getUrl()));
+    if (!ok && !isSuppressIgnorableExceptions()) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.STRUCTUREDEFINITION__AT__ILLEGAL_CONSTRAINED_TYPE__FROM__IN_, purl, derived.getPath(), tDesc, b.toString(), srcSD.getUrl()));
     }
   }
 
+
+  private boolean sdConformsToTargets(String path, String dPath, String url, TypeRefComponent td) {
+    if (td.hasTargetProfile(url)) {
+      return true;
+    }
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+    if (sd == null) {
+      if (messages != null) {
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, "Cannot check whether the target profile " + url + " on "+dPath+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
+      }
+      return true;
+    } else {
+      if (sd.hasBaseDefinition() && sdConformsToTargets(path, dPath, sd.getBaseDefinition(), td)) {
+        return true;
+      }
+      for (Extension ext : sd.getExtensionsByUrl(ToolingExtensions.EXT_SD_IMPOSE_PROFILE)) {
+        if (sdConformsToTargets(path, dPath, ext.getValueCanonicalType().asStringValue(), td)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
   private void checkTypeOk(ElementDefinition dest, String ft, StructureDefinition sd, String fieldName) {
     boolean ok = false;
@@ -3415,7 +3479,8 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private void compareDiffs(List<ElementDefinition> diffList, List<ElementDefinition> newDiff, List<String> errors) {
     if (diffList.size() != newDiff.size()) {
-      errors.add("The diff list size changed when sorting - was "+diffList.size()+" is now "+newDiff.size());
+      errors.add("The diff list size changed when sorting - was "+diffList.size()+" is now "+newDiff.size()+
+          " ["+CommaSeparatedStringBuilder.buildObjects(diffList)+"]/["+CommaSeparatedStringBuilder.buildObjects(newDiff)+"]");
     } else {
       for (int i = 0; i < Integer.min(diffList.size(), newDiff.size()); i++) {
         ElementDefinition e = diffList.get(i);
@@ -4435,9 +4500,17 @@ public class ProfileUtilities extends TranslatingUtilities {
     return value != null && !value.isProhibited();
   }
 
+  public static boolean isComplexExtension(StructureDefinition sd) {
+    if (!isExtensionDefinition(sd)) {
+      return false;
+    }
+    ElementDefinition value = sd.getSnapshot().getElementByPath("Extension.value");
+    return value == null || value.isProhibited();
+  }
+
   public static boolean isModifierExtension(StructureDefinition sd) {
     ElementDefinition defn = sd.getSnapshot().getElementByPath("Extension");
-    return defn.getIsModifier();
+    return defn != null && defn.getIsModifier();
   }
 
   public boolean isForPublication() {
@@ -4454,6 +4527,24 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   public static boolean isResourceBoundary(ElementDefinition ed) {
     return ed.getType().size() == 1 && "Resource".equals(ed.getTypeFirstRep().getCode());
+  }
+
+  public static boolean isSuppressIgnorableExceptions() {
+    return suppressIgnorableExceptions;
+  }
+
+  public static void setSuppressIgnorableExceptions(boolean suppressIgnorableExceptions) {
+    ProfileUtilities.suppressIgnorableExceptions = suppressIgnorableExceptions;
+  }
+
+  public void setMessages(List<ValidationMessage> messages) {
+    this.messages = messages; 
+  }
+
+  private Map<String, List<Property>> propertyCache = new HashMap<>();
+  
+  public Map<String, List<Property>> getCachedPropertyList() {
+    return propertyCache;
   }
 
 }

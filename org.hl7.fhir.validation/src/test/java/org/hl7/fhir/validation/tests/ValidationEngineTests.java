@@ -192,7 +192,7 @@ public class ValidationEngineTests {
     int w = warnings(op);
     int h = hints(op);
     Assertions.assertEquals(1, e);
-    Assertions.assertEquals(0, w);
+    Assertions.assertEquals(2, w);
     Assertions.assertEquals(1, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
@@ -270,7 +270,7 @@ public class ValidationEngineTests {
     int w = warnings(op);
     int h = hints(op);
     Assertions.assertEquals(0, e);
-    Assertions.assertEquals(2, w);
+    Assertions.assertEquals(4, w);
     Assertions.assertEquals(0, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)

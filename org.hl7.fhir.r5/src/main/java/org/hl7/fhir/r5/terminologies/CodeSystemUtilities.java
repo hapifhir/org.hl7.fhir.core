@@ -70,7 +70,7 @@ import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
-public class CodeSystemUtilities {
+public class CodeSystemUtilities extends TerminologyUtilities {
 
   public static class SystemReference {
     private String link;
@@ -105,7 +105,7 @@ public class CodeSystemUtilities {
 
     @Override
     public int compare(ConceptDefinitionComponent o1, ConceptDefinitionComponent o2) {
-      return o1.getCode().compareToIgnoreCase(o2.getCode());
+      return o1.hasCode() ? o1.getCode().compareToIgnoreCase(o2.getCode()) : 0;
     }
 
   }
@@ -252,7 +252,7 @@ public class CodeSystemUtilities {
   private static String defineProperty(CodeSystem cs, String code, PropertyType pt) {
     String url = "http://hl7.org/fhir/concept-properties#"+code;
     for (PropertyComponent p : cs.getProperty()) {
-      if (p.getCode().equals(code)) {
+      if (p.hasCode() && p.getCode().equals(code)) {
         if (!p.getUri().equals(url)) {
           throw new Error("URI mismatch for code "+code+" url = "+p.getUri()+" vs "+url);
         }
@@ -391,7 +391,7 @@ public class CodeSystemUtilities {
 
   public static void defineCodeSystemProperty(CodeSystem cs, String code, String description, PropertyType type) {
     for (PropertyComponent p : cs.getProperty()) {
-      if (p.getCode().equals(code))
+      if (p.hasCode() && p.getCode().equals(code))
         return;
     }
     cs.addProperty().setCode(code).setDescription(description).setType(type).setUri("http://hl7.org/fhir/concept-properties#"+code);
@@ -466,7 +466,7 @@ public class CodeSystemUtilities {
 
   public static ConceptDefinitionComponent findCode(List<ConceptDefinitionComponent> list, String code) {
     for (ConceptDefinitionComponent c : list) {
-      if (c.getCode().equals(code))
+      if (c.hasCode() && c.getCode().equals(code))
         return c;
       ConceptDefinitionComponent s = findCode(c.getConcept(), code);
       if (s != null)
@@ -477,7 +477,7 @@ public class CodeSystemUtilities {
 
   public static ConceptDefinitionComponent findCodeOrAltCode(List<ConceptDefinitionComponent> list, String code, String use) {
     for (ConceptDefinitionComponent c : list) {
-      if (c.getCode().equals(code))
+      if (c.hasCode() && c.getCode().equals(code))
         return c;
       for (ConceptPropertyComponent p : c.getProperty()) {
         if ("alternateCode".equals(p.getCode()) && (use == null || hasUse(p, use)) && p.hasValue() && p.getValue().isPrimitive() && code.equals(p.getValue().primitiveValue())) {
@@ -537,28 +537,29 @@ public class CodeSystemUtilities {
  
   public static DataType readProperty(ConceptDefinitionComponent concept, String code) {
     for (ConceptPropertyComponent p : concept.getProperty())
-      if (p.getCode().equals(code))
+      if (p.hasCode() && p.getCode().equals(code))
         return p.getValue(); 
     return null;
   }
 
   public static ConceptPropertyComponent getProperty(ConceptDefinitionComponent concept, String code) {
     for (ConceptPropertyComponent p : concept.getProperty())
-      if (p.getCode().equals(code))
+      if (p.hasCode() && p.getCode().equals(code))
         return p; 
     return null;
   }
   
   public static List<ConceptPropertyComponent> getPropertyValues(ConceptDefinitionComponent concept, String code) {
     List<ConceptPropertyComponent> res = new ArrayList<>();
-    for (ConceptPropertyComponent p : concept.getProperty()) {
-      if (p.getCode().equals(code)) {
-        res.add(p); 
+    if (code != null) {
+      for (ConceptPropertyComponent p : concept.getProperty()) {
+        if (code.equals(p.getCode())) {
+          res.add(p); 
+        }
       }
     }
     return res;
   }
-
 
   // see http://hl7.org/fhir/R4/codesystem.html#hierachy
   // returns additional parents not in the heirarchy
@@ -828,7 +829,7 @@ public class CodeSystemUtilities {
 
   private static String defineProperty(CodeSystem cs, PropertyComponent pd, PropertyType pt) {
     for (PropertyComponent p : cs.getProperty()) {
-      if (p.getCode().equals(pd.getCode())) {
+      if (p.hasCode() && p.getCode().equals(pd.getCode())) {
         if (!p.getUri().equals(pd.getUri())) {
           throw new Error("URI mismatch for code "+pd.getCode()+" url = "+p.getUri()+" vs "+pd.getUri());
         }
@@ -846,7 +847,7 @@ public class CodeSystemUtilities {
 
   private static PropertyComponent getPropertyDefinition(CodeSystem cs, ConceptPropertyComponent p) {
     for (PropertyComponent t : cs.getProperty()) {
-      if (t.getCode().equals(p.getCode())) {
+      if (t.hasCode() && t.getCode().equals(p.getCode())) {
         return t;
       }
     }
@@ -881,7 +882,7 @@ public class CodeSystemUtilities {
 
   public static boolean hasPropertyDef(CodeSystem cs, String property) {
     for (PropertyComponent pd : cs.getProperty()) {
-      if (pd.getCode().equals(property)) {
+      if (pd.hasCode() && pd.getCode().equals(property)) {
         return true;
       }
     }

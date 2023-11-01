@@ -435,6 +435,17 @@ public class HealthcareService extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("code")) {
+        this.code = null;
+      } else if (name.equals("comment")) {
+        this.comment = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -891,6 +902,21 @@ public class HealthcareService extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("daysOfWeek")) {
+        this.getDaysOfWeek().remove((Enumeration) value);
+      } else if (name.equals("allDay")) {
+        this.allDay = null;
+      } else if (name.equals("availableStartTime")) {
+        this.availableStartTime = null;
+      } else if (name.equals("availableEndTime")) {
+        this.availableEndTime = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -1168,6 +1194,17 @@ public class HealthcareService extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("description")) {
+        this.description = null;
+      } else if (name.equals("during")) {
+        this.during = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -3248,6 +3285,61 @@ public class HealthcareService extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("active")) {
+      this.active = null;
+    } else if (name.equals("providedBy")) {
+      this.providedBy = null;
+    } else if (name.equals("category")) {
+      this.getCategory().remove(castToCodeableConcept(value));
+    } else if (name.equals("type")) {
+      this.getType().remove(castToCodeableConcept(value));
+    } else if (name.equals("specialty")) {
+      this.getSpecialty().remove(castToCodeableConcept(value));
+    } else if (name.equals("location")) {
+      this.getLocation().remove(castToReference(value));
+    } else if (name.equals("name")) {
+      this.name = null;
+    } else if (name.equals("comment")) {
+      this.comment = null;
+    } else if (name.equals("extraDetails")) {
+      this.extraDetails = null;
+    } else if (name.equals("photo")) {
+      this.photo = null;
+    } else if (name.equals("telecom")) {
+      this.getTelecom().remove(castToContactPoint(value));
+    } else if (name.equals("coverageArea")) {
+      this.getCoverageArea().remove(castToReference(value));
+    } else if (name.equals("serviceProvisionCode")) {
+      this.getServiceProvisionCode().remove(castToCodeableConcept(value));
+    } else if (name.equals("eligibility")) {
+      this.getEligibility().remove((HealthcareServiceEligibilityComponent) value);
+    } else if (name.equals("program")) {
+      this.getProgram().remove(castToCodeableConcept(value));
+    } else if (name.equals("characteristic")) {
+      this.getCharacteristic().remove(castToCodeableConcept(value));
+    } else if (name.equals("communication")) {
+      this.getCommunication().remove(castToCodeableConcept(value));
+    } else if (name.equals("referralMethod")) {
+      this.getReferralMethod().remove(castToCodeableConcept(value));
+    } else if (name.equals("appointmentRequired")) {
+      this.appointmentRequired = null;
+    } else if (name.equals("availableTime")) {
+      this.getAvailableTime().remove((HealthcareServiceAvailableTimeComponent) value);
+    } else if (name.equals("notAvailable")) {
+      this.getNotAvailable().remove((HealthcareServiceNotAvailableComponent) value);
+    } else if (name.equals("availabilityExceptions")) {
+      this.availabilityExceptions = null;
+    } else if (name.equals("endpoint")) {
+      this.getEndpoint().remove(castToReference(value));
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

@@ -422,6 +422,21 @@ public class ListResource extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("flag")) {
+          this.flag = null;
+        } else if (name.equals("deleted")) {
+          this.deleted = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("item")) {
+          this.item = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1288,6 +1303,41 @@ public class ListResource extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("status")) {
+          value = new ListStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<ListStatus>
+        } else if (name.equals("mode")) {
+          value = new ListModeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.mode = (Enumeration) value; // Enumeration<ListMode>
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("subject")) {
+          this.getSubject().remove(value);
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("source")) {
+          this.source = null;
+        } else if (name.equals("orderedBy")) {
+          this.orderedBy = null;
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("entry")) {
+          this.getEntry().remove((ListResourceEntryComponent) value);
+        } else if (name.equals("emptyReason")) {
+          this.emptyReason = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

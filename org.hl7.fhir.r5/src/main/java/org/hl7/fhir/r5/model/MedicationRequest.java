@@ -901,6 +901,31 @@ public class MedicationRequest extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("initialFill")) {
+          this.initialFill = (MedicationRequestDispenseRequestInitialFillComponent) value; // MedicationRequestDispenseRequestInitialFillComponent
+        } else if (name.equals("dispenseInterval")) {
+          this.dispenseInterval = null;
+        } else if (name.equals("validityPeriod")) {
+          this.validityPeriod = null;
+        } else if (name.equals("numberOfRepeatsAllowed")) {
+          this.numberOfRepeatsAllowed = null;
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("expectedSupplyDuration")) {
+          this.expectedSupplyDuration = null;
+        } else if (name.equals("dispenser")) {
+          this.dispenser = null;
+        } else if (name.equals("dispenserInstruction")) {
+          this.getDispenserInstruction().remove(value);
+        } else if (name.equals("doseAdministrationAid")) {
+          this.doseAdministrationAid = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1159,6 +1184,17 @@ public class MedicationRequest extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("duration")) {
+          this.duration = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1398,6 +1434,17 @@ public class MedicationRequest extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("allowed[x]")) {
+          this.allowed = null;
+        } else if (name.equals("reason")) {
+          this.reason = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -3369,6 +3416,82 @@ public class MedicationRequest extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().remove(value);
+        } else if (name.equals("priorPrescription")) {
+          this.priorPrescription = null;
+        } else if (name.equals("groupIdentifier")) {
+          this.groupIdentifier = null;
+        } else if (name.equals("status")) {
+          value = new MedicationrequestStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<MedicationrequestStatus>
+        } else if (name.equals("statusReason")) {
+          this.statusReason = null;
+        } else if (name.equals("statusChanged")) {
+          this.statusChanged = null;
+        } else if (name.equals("intent")) {
+          value = new MedicationRequestIntentEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.intent = (Enumeration) value; // Enumeration<MedicationRequestIntent>
+        } else if (name.equals("category")) {
+          this.getCategory().remove(value);
+        } else if (name.equals("priority")) {
+          value = new RequestPriorityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.priority = (Enumeration) value; // Enumeration<RequestPriority>
+        } else if (name.equals("doNotPerform")) {
+          this.doNotPerform = null;
+        } else if (name.equals("medication")) {
+          this.medication = null;
+        } else if (name.equals("subject")) {
+          this.subject = null;
+        } else if (name.equals("informationSource")) {
+          this.getInformationSource().remove(value);
+        } else if (name.equals("encounter")) {
+          this.encounter = null;
+        } else if (name.equals("supportingInformation")) {
+          this.getSupportingInformation().remove(value);
+        } else if (name.equals("authoredOn")) {
+          this.authoredOn = null;
+        } else if (name.equals("requester")) {
+          this.requester = null;
+        } else if (name.equals("reported")) {
+          this.reported = null;
+        } else if (name.equals("performerType")) {
+          this.performerType = null;
+        } else if (name.equals("performer")) {
+          this.getPerformer().remove(value);
+        } else if (name.equals("device")) {
+          this.getDevice().remove(value);
+        } else if (name.equals("recorder")) {
+          this.recorder = null;
+        } else if (name.equals("reason")) {
+          this.getReason().remove(value);
+        } else if (name.equals("courseOfTherapyType")) {
+          this.courseOfTherapyType = null;
+        } else if (name.equals("insurance")) {
+          this.getInsurance().remove(value);
+        } else if (name.equals("note")) {
+          this.getNote().remove(value);
+        } else if (name.equals("renderedDosageInstruction")) {
+          this.renderedDosageInstruction = null;
+        } else if (name.equals("effectiveDosePeriod")) {
+          this.effectiveDosePeriod = null;
+        } else if (name.equals("dosageInstruction")) {
+          this.getDosageInstruction().remove(value);
+        } else if (name.equals("dispenseRequest")) {
+          this.dispenseRequest = (MedicationRequestDispenseRequestComponent) value; // MedicationRequestDispenseRequestComponent
+        } else if (name.equals("substitution")) {
+          this.substitution = (MedicationRequestSubstitutionComponent) value; // MedicationRequestSubstitutionComponent
+        } else if (name.equals("eventHistory")) {
+          this.getEventHistory().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

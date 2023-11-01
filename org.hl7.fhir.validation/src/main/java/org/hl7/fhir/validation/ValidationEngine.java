@@ -32,12 +32,8 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContextManager;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SystemOutLoggingService;
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.elementmodel.*;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.elementmodel.ObjectConverter;
-import org.hl7.fhir.r5.elementmodel.ParserBase;
-import org.hl7.fhir.r5.elementmodel.SHCParser;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -100,7 +96,7 @@ import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.cli.utils.SchemaValidator;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.InstanceValidator;
-import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
+import org.hl7.fhir.validation.instance.utils.ValidationContext;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.xml.sax.SAXException;
 
@@ -217,6 +213,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private HtmlInMarkdownCheck htmlInMarkdownCheck;
   @Getter @Setter private boolean allowDoubleQuotesInFHIRPath;
   @Getter @Setter private boolean checkIPSCodes;
+  @Getter @Setter private BestPracticeWarningLevel bestPracticeLevel;
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private List<String> extensionDomains = new ArrayList<>();
@@ -456,7 +453,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       if (userAgent != null) {
         contextBuilder.withUserAgent(userAgent);
       }
-      context = contextBuilder.fromDefinitions(source, ValidatorUtils.loaderForVersion(version), new PackageInformation(src, new Date()));
+      context = contextBuilder.fromDefinitions(source, ValidatorUtils.loaderForVersion(version), new PackageInformation(src, version, new Date()));
       ValidatorUtils.grabNatives(getBinaries(), source, "http://hl7.org/fhir");
     }
     // ucum-essence.xml should be in the class path. if it's not, ask about how to sort this out 
@@ -634,6 +631,13 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       return results.getEntryFirstRep().getResource();
   }
 
+
+  public List<ValidatedFragment> validateAsFragments(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
+    InstanceValidator validator = getValidator(cntType);
+    validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
+    return validator.validatedContent;
+  }
+
   public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
     InstanceValidator validator = getValidator(cntType);
 
@@ -700,7 +704,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (sourceSD.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL) {
       parser.setLogical(sourceSD);
     }
-    org.hl7.fhir.r5.elementmodel.Element src = parser.parseSingle(new ByteArrayInputStream(source.getBytes()));    
+    org.hl7.fhir.r5.elementmodel.Element src = parser.parseSingle(new ByteArrayInputStream(source.getBytes()), null);    
     scu.transform(null, src, map, resource);
     resource.populatePaths(null);
     return resource;
@@ -795,7 +799,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     FHIRPathEngine fpe = this.getValidator(null).getFHIRPathEngine();
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
     ExpressionNode exp = fpe.parse(expression);
-    return fpe.evaluateToString(new ValidatorHostContext(context, e), e, e, e, exp);
+    return fpe.evaluateToString(new ValidationContext(context, e), e, e, e, exp);
   }
 
   public StructureDefinition snapshot(String source, String version) throws FHIRException, IOException {
@@ -856,6 +860,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.setQuestionnaireMode(questionnaireMode);
     validator.setLevel(level);
     validator.setHtmlInMarkdownCheck(htmlInMarkdownCheck);
+    validator.setBestPracticeWarningLevel(bestPracticeLevel);
     validator.setAllowDoubleQuotesInFHIRPath(allowDoubleQuotesInFHIRPath);
     validator.setNoUnicodeBiDiControlChars(noUnicodeBiDiControlChars);
     validator.setDoImplicitFHIRPathStringConversion(doImplicitFHIRPathStringConversion);

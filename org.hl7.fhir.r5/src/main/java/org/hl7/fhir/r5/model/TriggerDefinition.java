@@ -733,6 +733,28 @@ public class TriggerDefinition extends DataType implements ICompositeType {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new TriggerTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<TriggerType>
+        } else if (name.equals("name")) {
+          this.name = null;
+        } else if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("subscriptionTopic")) {
+          this.subscriptionTopic = null;
+        } else if (name.equals("timing[x]")) {
+          this.timing = null;
+        } else if (name.equals("data")) {
+          this.getData().remove(value);
+        } else if (name.equals("condition")) {
+          this.condition = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {

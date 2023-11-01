@@ -168,6 +168,15 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("modifierExtension")) {
+          this.getModifierExtension().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -314,8 +323,49 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
      }    
    }
 
+   public List<Extension> getExtensionsByUrl(String... theUrls) {
 
+     ArrayList<Extension> retVal = new ArrayList<>();
+     for (Extension next : getModifierExtension()) {
+       if (Utilities.existsInList(next.getUrl(), theUrls)) {
+         retVal.add(next);
+       }
+     }
+     retVal.addAll(super.getExtensionsByUrl(theUrls));
+     return java.util.Collections.unmodifiableList(retVal);
+   }
    
+
+   public boolean hasExtension(String... theUrls) {
+     for (Extension next : getModifierExtension()) {
+       if (Utilities.existsInList(next.getUrl(), theUrls)) {
+         return true;
+       }
+     }
+     return super.hasExtension(theUrls);
+   }
+
+
+   public boolean hasExtension(String theUrl) {
+     for (Extension ext : getModifierExtension()) {
+       if (theUrl.equals(ext.getUrl())) {
+         return true;
+       }
+     }
+
+     return super.hasExtension(theUrl);
+   }
+
+
+   public void copyNewExtensions(org.hl7.fhir.r5.model.BackboneElement src, String... urls) {
+     for (Extension e : src.getModifierExtension()) {
+       if (Utilities.existsInList(e.getUrl(), urls) && !!hasExtension(e.getUrl())) {
+         addExtension(e.copy());
+       }
+     }    
+     super.copyNewExtensions(src, urls);
+   }
+
 // end addition
 
 }

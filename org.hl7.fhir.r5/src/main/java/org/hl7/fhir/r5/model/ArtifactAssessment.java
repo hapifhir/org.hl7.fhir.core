@@ -1217,6 +1217,34 @@ public class ArtifactAssessment extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("informationType")) {
+          value = new ArtifactAssessmentInformationTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.informationType = (Enumeration) value; // Enumeration<ArtifactAssessmentInformationType>
+        } else if (name.equals("summary")) {
+          this.summary = null;
+        } else if (name.equals("type")) {
+          this.type = null;
+        } else if (name.equals("classifier")) {
+          this.getClassifier().remove(value);
+        } else if (name.equals("quantity")) {
+          this.quantity = null;
+        } else if (name.equals("author")) {
+          this.author = null;
+        } else if (name.equals("path")) {
+          this.getPath().remove(value);
+        } else if (name.equals("relatedArtifact")) {
+          this.getRelatedArtifact().remove(value);
+        } else if (name.equals("freeToShare")) {
+          this.freeToShare = null;
+        } else if (name.equals("component")) {
+          this.getComponent().remove((ArtifactAssessmentContentComponent) value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2159,6 +2187,37 @@ public class ArtifactAssessment extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identifier")) {
+          this.getIdentifier().remove(value);
+        } else if (name.equals("title")) {
+          this.title = null;
+        } else if (name.equals("citeAs[x]")) {
+          this.citeAs = null;
+        } else if (name.equals("date")) {
+          this.date = null;
+        } else if (name.equals("copyright")) {
+          this.copyright = null;
+        } else if (name.equals("approvalDate")) {
+          this.approvalDate = null;
+        } else if (name.equals("lastReviewDate")) {
+          this.lastReviewDate = null;
+        } else if (name.equals("artifact[x]")) {
+          this.artifact = null;
+        } else if (name.equals("content")) {
+          this.getContent().remove((ArtifactAssessmentContentComponent) value);
+        } else if (name.equals("workflowStatus")) {
+          value = new ArtifactAssessmentWorkflowStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.workflowStatus = (Enumeration) value; // Enumeration<ArtifactAssessmentWorkflowStatus>
+        } else if (name.equals("disposition")) {
+          value = new ArtifactAssessmentDispositionEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.disposition = (Enumeration) value; // Enumeration<ArtifactAssessmentDisposition>
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

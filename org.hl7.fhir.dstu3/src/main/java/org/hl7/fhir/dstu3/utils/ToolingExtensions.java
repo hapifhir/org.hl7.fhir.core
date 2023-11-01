@@ -88,6 +88,8 @@ import org.hl7.fhir.dstu3.model.Type;
 import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.dstu3.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.dstu3.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.dstu3.model.BackboneElement;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 
@@ -432,6 +434,29 @@ public class ToolingExtensions {
       ext.setValue(new IntegerType(value));
     else
       resource.getExtension().add(new Extension(new UriType(uri)).setValue(new IntegerType(value)));
+  }
+  
+
+  public static void setCodeExtensionMod(DomainResource resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new CodeType(value));
+    else
+      resource.getModifierExtension().add(new Extension(uri).setValue(new CodeType(value)));
+  }
+
+  public static void setCodeExtensionMod(BackboneElement resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new CodeType(value));
+    else
+      resource.getModifierExtension().add(new Extension(uri).setValue(new CodeType(value)));
   }
 
 //  public static String getOID(CodeSystem define) {

@@ -322,6 +322,18 @@ public class Linkage extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new LinkageTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<LinkageType>
+        } else if (name.equals("resource")) {
+          this.resource = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -615,6 +627,19 @@ public class Linkage extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("active")) {
+          this.active = null;
+        } else if (name.equals("author")) {
+          this.author = null;
+        } else if (name.equals("item")) {
+          this.getItem().remove((LinkageItemComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

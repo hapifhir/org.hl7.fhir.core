@@ -626,6 +626,29 @@ public class BodyStructure extends DomainResource {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(value);
+    } else if (name.equals("active")) {
+      this.active = null;
+    } else if (name.equals("morphology")) {
+      this.morphology = null;
+    } else if (name.equals("location")) {
+      this.location = null;
+    } else if (name.equals("locationQualifier")) {
+      this.getLocationQualifier().remove(value);
+    } else if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("image")) {
+      this.getImage().remove(value);
+    } else if (name.equals("patient")) {
+      this.patient = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -1618432855:

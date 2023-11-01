@@ -16,6 +16,8 @@
 # Actually a BSD license https://mvnrepository.com/artifact/org.antlr/ST4/4.1
 (Unknown license) StringTemplate 4 (org.antlr:ST4:4.1 - http://nexus.sonatype.org/oss-repository-hosting.html/ST4)
 # without dependencies is incorrectly intepreted as a license name
-(Apache License, Version 2.0) Byte Buddy (without dependencies) (net.bytebuddy:byte-buddy:1.12.14 - https://bytebuddy.net/byte-buddy)
+(Apache License, Version 2.0) Byte Buddy (without dependencies) (net.bytebuddy:byte-buddy:1.14.8 - https://bytebuddy.net/byte-buddy)
 # Appears to be Apache 2.0: https://github.com/NCIP/lexevs/blob/master/lgSharedLibraries/apache/commons/jakarta-regexp-1.4.license.txt
 (Unknown license) jakarta-regexp (jakarta-regexp:jakarta-regexp:1.4 - no url defined)
+# License string includes nested brackets, causing parser breakage, but is a valid BSD license.
+(BSD 3-Clause "New" or "Revised" License (BSD-3-Clause)) abego TreeLayout Core (org.abego.treelayout:org.abego.treelayout.core:1.0.3 - http://treelayout.sourceforge.net)

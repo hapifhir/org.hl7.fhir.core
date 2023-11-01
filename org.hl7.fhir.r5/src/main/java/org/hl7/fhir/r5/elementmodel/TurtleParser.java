@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.elementmodel;
 
+import java.io.ByteArrayInputStream;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -43,6 +45,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -78,53 +81,52 @@ public class TurtleParser extends ParserBase {
     super(context);
   }
   @Override
-  public List<NamedElement> parse(InputStream input) throws IOException, FHIRException {
-    List<NamedElement> res = new ArrayList<>();
+  public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
+    byte[] content = TextFile.streamToBytes(inStream);
+    ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "ttl", content, false);
+    ByteArrayInputStream stream = new ByteArrayInputStream(content);
+
     Turtle src = new Turtle();
     if (policy == ValidationPolicy.EVERYTHING) {
       try {
-        src.parse(TextFile.streamToString(input));
+        src.parse(TextFile.streamToString(stream));
       } catch (Exception e) {  
-        logError(ValidationMessage.NO_RULE_DATE, -1, -1, "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_TURTLE_, e.getMessage()), IssueSeverity.FATAL);
+        logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, -1, -1, "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_TURTLE_, e.getMessage()), IssueSeverity.FATAL);
         return null;
       }
-      Element e = parse(src);
-      if (e != null) {
-        res.add(new NamedElement(null, e));
-      }
+      focusFragment.setElement(parse(focusFragment.getErrors(), src));
     } else {
-      src.parse(TextFile.streamToString(input));
-      Element e = parse(src);
-      if (e != null) {
-        res.add(new NamedElement(null, e));
-      }
+      src.parse(TextFile.streamToString(stream));
+      focusFragment.setElement(parse(focusFragment.getErrors(), src));
     }
+    List<ValidatedFragment> res = new ArrayList<>();
+    res.add(focusFragment);
     return res;
   }
   
-  private Element parse(Turtle src) throws FHIRException {
+  private Element parse(List<ValidationMessage> errors, Turtle src) throws FHIRException {
     // we actually ignore the stated URL here
     for (TTLComplex cmp : src.getObjects().values()) {
       for (String p : cmp.getPredicates().keySet()) {
         if ((FHIR_URI_BASE + "nodeRole").equals(p) && cmp.getPredicates().get(p).hasValue(FHIR_URI_BASE + "treeRoot")) {
-          return parse(src, cmp);
+          return parse(errors, src, cmp);
         }
       }
     }
     // still here: well, we didn't find a start point
     String msg = "Error parsing Turtle: unable to find any node maked as the entry point (where " + FHIR_URI_BASE + "nodeRole = " + FHIR_URI_BASE + "treeRoot)";
     if (policy == ValidationPolicy.EVERYTHING) {
-      logError(ValidationMessage.NO_RULE_DATE, -1, -1, "(document)", IssueType.INVALID, msg, IssueSeverity.FATAL);
+      logError(errors, ValidationMessage.NO_RULE_DATE, -1, -1, "(document)", IssueType.INVALID, msg, IssueSeverity.FATAL);
       return null;
     } else {
       throw new FHIRFormatError(msg);
     } 
   }
   
-  private Element parse(Turtle src, TTLComplex cmp) throws FHIRException {
+  private Element parse(List<ValidationMessage> errors, Turtle src, TTLComplex cmp) throws FHIRException {
     TTLObject type = cmp.getPredicates().get("http://www.w3.org/2000/01/rdf-schema#type");
     if (type == null) {
-      logError(ValidationMessage.NO_RULE_DATE, cmp.getLine(), cmp.getCol(), "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.UNKNOWN_RESOURCE_TYPE_MISSING_RDFSTYPE), IssueSeverity.FATAL);
+      logError(errors, ValidationMessage.NO_RULE_DATE, cmp.getLine(), cmp.getCol(), "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.UNKNOWN_RESOURCE_TYPE_MISSING_RDFSTYPE), IssueSeverity.FATAL);
       return null;
     }
     if (type instanceof TTLList) {
@@ -137,7 +139,7 @@ public class TurtleParser extends ParserBase {
       }
     }
     if (!(type instanceof TTLURL)) {
-      logError(ValidationMessage.NO_RULE_DATE, cmp.getLine(), cmp.getCol(), "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.UNEXPECTED_DATATYPE_FOR_RDFSTYPE), IssueSeverity.FATAL);
+      logError(errors, ValidationMessage.NO_RULE_DATE, cmp.getLine(), cmp.getCol(), "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.UNEXPECTED_DATATYPE_FOR_RDFSTYPE), IssueSeverity.FATAL);
       return null;
     }
     String name = ((TTLURL) type).getUri();
@@ -145,19 +147,19 @@ public class TurtleParser extends ParserBase {
     name = name.substring(name.lastIndexOf("/")+1);
     String path = "/"+name;
 
-    StructureDefinition sd = getDefinition(cmp.getLine(), cmp.getCol(), ns, name);
+    StructureDefinition sd = getDefinition(errors, cmp.getLine(), cmp.getCol(), ns, name);
     if (sd == null)
       return null;
 
-    Element result = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd));
+    Element result = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd)).setFormat(FhirFormat.TURTLE);
     result.markLocation(cmp.getLine(), cmp.getCol());
     result.setType(name);
-    parseChildren(src, path, cmp, result, false);
+    parseChildren(errors, src, path, cmp, result, false);
     result.numberChildren();
     return result;  
   }
   
-  private void parseChildren(Turtle src, String path, TTLComplex object, Element element, boolean primitive) throws FHIRException {
+  private void parseChildren(List<ValidationMessage> errors, Turtle src, String path, TTLComplex object, Element element, boolean primitive) throws FHIRException {
 
     List<Property> properties = element.getProperty().getChildProperties(element.getName(), null);
     Set<String> processed = new HashSet<String>();
@@ -170,10 +172,10 @@ public class TurtleParser extends ParserBase {
       if (property.isChoice()) {
         for (TypeRefComponent type : property.getDefinition().getType()) {
           String eName = property.getName().substring(0, property.getName().length()-3) + Utilities.capitalize(type.getCode());
-          parseChild(src, object, element, processed, property, path, getFormalName(property, eName));
+          parseChild(errors, src, object, element, processed, property, path, getFormalName(property, eName));
         }
       } else  {
-        parseChild(src, object, element, processed, property, path, getFormalName(property));
+        parseChild(errors, src, object, element, processed, property, path, getFormalName(property));
       } 
     }
 
@@ -182,13 +184,13 @@ public class TurtleParser extends ParserBase {
       for (String u : object.getPredicates().keySet()) {
         if (!processed.contains(u)) {
           TTLObject n = object.getPredicates().get(u);
-          logError(ValidationMessage.NO_RULE_DATE, n.getLine(), n.getCol(), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNRECOGNISED_PREDICATE_, u), IssueSeverity.ERROR);
+          logError(errors, ValidationMessage.NO_RULE_DATE, n.getLine(), n.getCol(), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNRECOGNISED_PREDICATE_, u), IssueSeverity.ERROR);
         }
       }
     }
   }
   
-  private void parseChild(Turtle src, TTLComplex object, Element context, Set<String> processed, Property property, String path, String name) throws FHIRException {
+  private void parseChild(List<ValidationMessage> errors, Turtle src, TTLComplex object, Element context, Set<String> processed, Property property, String path, String name) throws FHIRException {
     processed.add(name);
     String npath = path+"/"+property.getName();
     TTLObject e = object.getPredicates().get(FHIR_URI_BASE + name);
@@ -197,22 +199,22 @@ public class TurtleParser extends ParserBase {
     if (property.isList() && (e instanceof TTLList)) {
       TTLList arr = (TTLList) e;
       for (TTLObject am : arr.getList()) {
-        parseChildInstance(src, npath, object, context, property, name, am);
+        parseChildInstance(errors, src, npath, object, context, property, name, am);
       }
     } else {
-      parseChildInstance(src, npath, object, context, property, name, e);
+      parseChildInstance(errors, src, npath, object, context, property, name, e);
     }
   }
 
-  private void parseChildInstance(Turtle src, String npath, TTLComplex object, Element element, Property property, String name, TTLObject e) throws FHIRException {
+  private void parseChildInstance(List<ValidationMessage> errors, Turtle src, String npath, TTLComplex object, Element element, Property property, String name, TTLObject e) throws FHIRException {
     if (property.isResource())
-      parseResource(src, npath, object, element, property, name, e);
+      parseResource(errors, src, npath, object, element, property, name, e);
     else  if (e instanceof TTLComplex) {
       TTLComplex child = (TTLComplex) e;
-      Element n = new Element(tail(name), property).markLocation(e.getLine(), e.getCol());
+      Element n = new Element(tail(name), property).markLocation(e.getLine(), e.getCol()).setFormat(FhirFormat.TURTLE);
       element.getChildren().add(n);
       if (property.isPrimitive(property.getType(tail(name)))) {
-        parseChildren(src, npath, child, n, true);
+        parseChildren(errors, src, npath, child, n, true);
         TTLObject val = child.getPredicates().get(FHIR_URI_BASE + "value");
         if (val != null) {
           if (val instanceof TTLLiteral) {
@@ -221,13 +223,13 @@ public class TurtleParser extends ParserBase {
             // todo: check type
             n.setValue(value);
           } else
-            logError(ValidationMessage.NO_RULE_DATE, object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_LITERAL_NOT_, "a "+e.getClass().getName()), IssueSeverity.ERROR);
+            logError(errors, ValidationMessage.NO_RULE_DATE, object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_LITERAL_NOT_, "a "+e.getClass().getName()), IssueSeverity.ERROR);
         }
       } else 
-        parseChildren(src, npath, child, n, false);
+        parseChildren(errors, src, npath, child, n, false);
 
     } else 
-      logError(ValidationMessage.NO_RULE_DATE, object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_URI_OR_BNODE_NOT_, "a "+e.getClass().getName()), IssueSeverity.ERROR);
+      logError(errors, ValidationMessage.NO_RULE_DATE, object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_URI_OR_BNODE_NOT_, "a "+e.getClass().getName()), IssueSeverity.ERROR);
   }
 
 
@@ -235,7 +237,7 @@ public class TurtleParser extends ParserBase {
     return name.substring(name.lastIndexOf(".")+1);
   }
 
-  private void parseResource(Turtle src, String npath, TTLComplex object, Element element, Property property, String name, TTLObject e) throws FHIRException {
+  private void parseResource(List<ValidationMessage> errors, Turtle src, String npath, TTLComplex object, Element element, Property property, String name, TTLObject e) throws FHIRException {
     TTLComplex obj;
     if (e instanceof TTLComplex) 
       obj = (TTLComplex) e;
@@ -243,7 +245,7 @@ public class TurtleParser extends ParserBase {
       String url = ((TTLURL) e).getUri();
       obj = src.getObject(url);
       if (obj == null) {
-        logError(ValidationMessage.NO_RULE_DATE, e.getLine(), e.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.REFERENCE_TO__CANNOT_BE_RESOLVED, url), IssueSeverity.FATAL);
+        logError(errors, ValidationMessage.NO_RULE_DATE, e.getLine(), e.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.REFERENCE_TO__CANNOT_BE_RESOLVED, url), IssueSeverity.FATAL);
         return;
       }
     } else
@@ -251,7 +253,7 @@ public class TurtleParser extends ParserBase {
       
     TTLObject type = obj.getPredicates().get("http://www.w3.org/2000/01/rdf-schema#type");
     if (type == null) {
-      logError(ValidationMessage.NO_RULE_DATE, object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.UNKNOWN_RESOURCE_TYPE_MISSING_RDFSTYPE), IssueSeverity.FATAL);
+      logError(errors, ValidationMessage.NO_RULE_DATE, object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.UNKNOWN_RESOURCE_TYPE_MISSING_RDFSTYPE), IssueSeverity.FATAL);
       return;
   }
     if (type instanceof TTLList) {
@@ -264,22 +266,22 @@ public class TurtleParser extends ParserBase {
       }
     }
     if (!(type instanceof TTLURL)) {
-      logError(ValidationMessage.NO_RULE_DATE, object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.UNEXPECTED_DATATYPE_FOR_RDFSTYPE), IssueSeverity.FATAL);
+      logError(errors, ValidationMessage.NO_RULE_DATE, object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.UNEXPECTED_DATATYPE_FOR_RDFSTYPE), IssueSeverity.FATAL);
       return;
     }
     String rt = ((TTLURL) type).getUri();
     String ns = rt.substring(0, rt.lastIndexOf("/"));
     rt = rt.substring(rt.lastIndexOf("/")+1);
     
-    StructureDefinition sd = getDefinition(object.getLine(), object.getCol(), ns, rt);
+    StructureDefinition sd = getDefinition(errors, object.getLine(), object.getCol(), ns, rt);
     if (sd == null)
       return;
     
-    Element n = new Element(tail(name), property).markLocation(object.getLine(), object.getCol());
+    Element n = new Element(tail(name), property).markLocation(object.getLine(), object.getCol()).setFormat(FhirFormat.TURTLE);
     element.getChildren().add(n);
     n.updateProperty(new Property(this.context, sd.getSnapshot().getElement().get(0), sd), SpecialElement.fromProperty(n.getProperty()), property);
     n.setType(rt);
-    parseChildren(src, npath, obj, n, false);
+    parseChildren(errors, src, npath, obj, n, false);
   }
   
   private String getFormalName(Property property) {

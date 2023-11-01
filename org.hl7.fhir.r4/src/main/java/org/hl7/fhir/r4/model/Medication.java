@@ -468,6 +468,19 @@ public class Medication extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("item[x]")) {
+        this.item = null;
+      } else if (name.equals("isActive")) {
+        this.isActive = null;
+      } else if (name.equals("strength")) {
+        this.strength = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -759,6 +772,17 @@ public class Medication extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("lotNumber")) {
+        this.lotNumber = null;
+      } else if (name.equals("expirationDate")) {
+        this.expirationDate = null;
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -1407,6 +1431,29 @@ public class Medication extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("code")) {
+      this.code = null;
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("manufacturer")) {
+      this.manufacturer = null;
+    } else if (name.equals("form")) {
+      this.form = null;
+    } else if (name.equals("amount")) {
+      this.amount = null;
+    } else if (name.equals("ingredient")) {
+      this.getIngredient().remove((MedicationIngredientComponent) value);
+    } else if (name.equals("batch")) {
+      this.batch = (MedicationBatchComponent) value; // MedicationBatchComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

@@ -91,6 +91,10 @@ public class ResourceAddress {
     return baseServiceUri.resolve(nameForClassWithSlash(resourceClass) + "/" + opName);
   }
 
+  public <T extends Resource> URI resolveGetResource(Class<T> resourceClass, String id) {
+    return baseServiceUri.resolve(nameForClassWithSlash(resourceClass) + "/" + id);
+  }
+
   public <T extends Resource> URI resolveOperationUri(Class<T> resourceClass, String opName,
       Map<String, String> parameters) {
     return appendHttpParameters(baseServiceUri.resolve(nameForClassWithSlash(resourceClass) + "$" + opName),

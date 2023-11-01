@@ -22,6 +22,9 @@ public class FHIRPathExpressionFixer {
     if ("txt-2".equals(key)) {
       return "htmlChecks2()";
     }
+    if ("dom-6".equals(key)) {
+      return "(%rootResource != $this) or text.`div`.exists()";
+    }
     if ("generated='generated' implies source.empty()".equals(expr)) {
       return "generation='generated' implies source.empty()";
     }

@@ -146,7 +146,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     switch (mode) {
     case SYSTEM:
-      cacheFolder = new File(Utilities.path("var", "lib", ".fhir", "packages"));
+      if (Utilities.isWindows()) {
+        cacheFolder = new File(Utilities.path(System.getenv("ProgramData"), ".fhir", "packages"));
+      } else {
+        cacheFolder = new File(Utilities.path("/var", "lib", ".fhir", "packages"));
+      }
       break;
     case USER:
       cacheFolder = new File(Utilities.path(System.getProperty("user.home"), ".fhir", "packages"));
@@ -162,10 +166,17 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       break;    
     }
 
+    initCacheFolder();
+  }
+
+  protected void initCacheFolder() throws IOException {
     if (!(cacheFolder.exists()))
       Utilities.createDirectory(cacheFolder.getAbsolutePath());
-    if (!(new File(Utilities.path(cacheFolder, "packages.ini")).exists()))
-      TextFile.stringToFile("[cache]\r\nversion=" + CACHE_VERSION + "\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", Utilities.path(cacheFolder, "packages.ini"), false);
+    String packagesIniPath = Utilities.path(cacheFolder, "packages.ini");
+    File packagesIniFile = new File(packagesIniPath);
+    if (!(packagesIniFile.exists()))
+      packagesIniFile.createNewFile();
+    TextFile.stringToFile("[cache]\r\nversion=" + CACHE_VERSION + "\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", packagesIniPath, false);
     createIniFile();
     for (File f : cacheFolder.listFiles()) {
       if (f.isDirectory() && Utilities.isValidUUID(f.getName())) {
@@ -231,6 +242,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private NpmPackage loadPackageInfo(String path) throws IOException {
+    File f = new File(Utilities.path(path, "usage.ini"));
+    JsonObject j = f.exists() ? JsonParser.parseObject(f) : new JsonObject();
+    j.set("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+    JsonParser.compose(j, f, true);
+
     NpmPackage pi = minimalMemory ?  NpmPackage.fromFolderMinimal(path) : NpmPackage.fromFolder(path);
     return pi;
   }

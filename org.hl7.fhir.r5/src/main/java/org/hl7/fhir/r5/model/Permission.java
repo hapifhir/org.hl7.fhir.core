@@ -524,6 +524,17 @@ public class Permission extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("basis")) {
+          this.getBasis().remove(value);
+        } else if (name.equals("evidence")) {
+          this.getEvidence().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -925,6 +936,22 @@ public class Permission extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new ConsentProvisionTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ConsentProvisionType>
+        } else if (name.equals("data")) {
+          this.getData().remove((RuleDataComponent) value);
+        } else if (name.equals("activity")) {
+          this.getActivity().remove((RuleActivityComponent) value);
+        } else if (name.equals("limit")) {
+          this.getLimit().remove(value);
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1315,6 +1342,21 @@ public class Permission extends DomainResource {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("resource")) {
+          this.getResource().remove((RuleDataResourceComponent) value);
+        } else if (name.equals("security")) {
+          this.getSecurity().remove(value);
+        } else if (name.equals("period")) {
+          this.getPeriod().remove(value);
+        } else if (name.equals("expression")) {
+          this.expression = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1572,6 +1614,18 @@ public class Permission extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("meaning")) {
+          value = new ConsentDataMeaningEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.meaning = (Enumeration) value; // Enumeration<ConsentDataMeaning>
+        } else if (name.equals("reference")) {
+          this.reference = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1900,6 +1954,19 @@ public class Permission extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("actor")) {
+          this.getActor().remove(value);
+        } else if (name.equals("action")) {
+          this.getAction().remove(value);
+        } else if (name.equals("purpose")) {
+          this.getPurpose().remove(value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2434,6 +2501,29 @@ public class Permission extends DomainResource {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("status")) {
+          value = new PermissionStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PermissionStatus>
+        } else if (name.equals("asserter")) {
+          this.asserter = null;
+        } else if (name.equals("date")) {
+          this.getDate().remove(value);
+        } else if (name.equals("validity")) {
+          this.validity = null;
+        } else if (name.equals("justification")) {
+          this.justification = (PermissionJustificationComponent) value; // PermissionJustificationComponent
+        } else if (name.equals("combining")) {
+          value = new PermissionRuleCombiningEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.combining = (Enumeration) value; // Enumeration<PermissionRuleCombining>
+        } else if (name.equals("rule")) {
+          this.getRule().remove((RuleComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

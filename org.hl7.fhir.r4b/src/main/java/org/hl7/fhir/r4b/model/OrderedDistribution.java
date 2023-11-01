@@ -253,6 +253,17 @@ public class OrderedDistribution extends BackboneType implements ICompositeType 
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("rankOrder")) {
+        this.rankOrder = null;
+      } else if (name.equals("intervalStatistic")) {
+        this.getIntervalStatistic().remove(value);
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -774,6 +785,25 @@ public class OrderedDistribution extends BackboneType implements ICompositeType 
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("description")) {
+      this.description = null;
+    } else if (name.equals("note")) {
+      this.getNote().remove(value);
+    } else if (name.equals("numberOfIntervals")) {
+      this.numberOfIntervals = null;
+    } else if (name.equals("bottomOfFirstInterval")) {
+      this.bottomOfFirstInterval = null;
+    } else if (name.equals("interval")) {
+      this.getInterval().remove((OrderedDistributionIntervalComponent) value);
+    } else if (name.equals("topOfInterval")) {
+      this.topOfInterval = null;
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

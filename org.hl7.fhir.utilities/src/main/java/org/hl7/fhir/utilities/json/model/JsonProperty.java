@@ -3,14 +3,18 @@ package org.hl7.fhir.utilities.json.model;
 public class JsonProperty {
   private String name;
   private JsonElement value;
+  private int nameHash; // for faster name comparison
   
   boolean noComma; // parse in Json5 mode, but records this so the validator can complain
   boolean unquotedName;
   boolean unquotedValue;
+   
+  private int tag;
   
   public JsonProperty(String name, JsonElement value) {
     super();
     this.name = name;
+    this.nameHash = name.hashCode();
     this.value = value;
   }
 
@@ -54,5 +58,17 @@ public class JsonProperty {
   public String toString() {
     return "\""+name+"\" : "+value.toString();
   }
-  
+
+  public int getTag() {
+    return tag;
+  }
+
+  public void setTag(int tag) {
+    this.tag = tag;
+  }
+
+  public int getNameHash() {
+    return nameHash;
+  }
+
 }

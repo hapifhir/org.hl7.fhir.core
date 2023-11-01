@@ -391,6 +391,23 @@ public class MedicinalProductAuthorization extends DomainResource {
       return value;
     }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identifier")) {
+        this.getIdentifier().remove(castToIdentifier(value));
+      } else if (name.equals("country")) {
+        this.country = null;
+      } else if (name.equals("jurisdiction")) {
+        this.getJurisdiction().remove(castToCodeableConcept(value));
+      } else if (name.equals("legalStatusOfSupply")) {
+        this.legalStatusOfSupply = null;
+      } else if (name.equals("validityPeriod")) {
+        this.validityPeriod = null;
+      } else
+        super.removeChild(name, value);
+      
+    }
+
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
@@ -804,6 +821,21 @@ public class MedicinalProductAuthorization extends DomainResource {
       } else
         return super.setProperty(name, value);
       return value;
+    }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+      if (name.equals("identifier")) {
+        this.identifier = null;
+      } else if (name.equals("type")) {
+        this.type = null;
+      } else if (name.equals("date[x]")) {
+        this.date = null;
+      } else if (name.equals("application")) {
+        this.getApplication().remove((MedicinalProductAuthorizationProcedureComponent) value);
+      } else
+        super.removeChild(name, value);
+      
     }
 
     @Override
@@ -2050,6 +2082,46 @@ public class MedicinalProductAuthorization extends DomainResource {
     } else
       return super.setProperty(name, value);
     return value;
+  }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("identifier")) {
+      this.getIdentifier().remove(castToIdentifier(value));
+    } else if (name.equals("subject")) {
+      this.subject = null;
+    } else if (name.equals("country")) {
+      this.getCountry().remove(castToCodeableConcept(value));
+    } else if (name.equals("jurisdiction")) {
+      this.getJurisdiction().remove(castToCodeableConcept(value));
+    } else if (name.equals("status")) {
+      this.status = null;
+    } else if (name.equals("statusDate")) {
+      this.statusDate = null;
+    } else if (name.equals("restoreDate")) {
+      this.restoreDate = null;
+    } else if (name.equals("validityPeriod")) {
+      this.validityPeriod = null;
+    } else if (name.equals("dataExclusivityPeriod")) {
+      this.dataExclusivityPeriod = null;
+    } else if (name.equals("dateOfFirstAuthorization")) {
+      this.dateOfFirstAuthorization = null;
+    } else if (name.equals("internationalBirthDate")) {
+      this.internationalBirthDate = null;
+    } else if (name.equals("legalBasis")) {
+      this.legalBasis = null;
+    } else if (name.equals("jurisdictionalAuthorization")) {
+      this.getJurisdictionalAuthorization()
+          .remove((MedicinalProductAuthorizationJurisdictionalAuthorizationComponent) value);
+    } else if (name.equals("holder")) {
+      this.holder = null;
+    } else if (name.equals("regulator")) {
+      this.regulator = null;
+    } else if (name.equals("procedure")) {
+      this.procedure = (MedicinalProductAuthorizationProcedureComponent) value; // MedicinalProductAuthorizationProcedureComponent
+    } else
+      super.removeChild(name, value);
+    
   }
 
   @Override

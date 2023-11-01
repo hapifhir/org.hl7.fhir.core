@@ -32,7 +32,7 @@ import lombok.With;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProfilePathProcessor {
-
+  
   @Getter
   protected final ProfileUtilities profileUtilities;
 
@@ -95,6 +95,7 @@ public class ProfilePathProcessor {
   @Getter
   @With
   final PathSlicingParams slicing;
+
 
   private ProfilePathProcessor(
     ProfileUtilities profileUtilities
@@ -164,7 +165,7 @@ public class ProfilePathProcessor {
     ElementDefinition res = null;
     List<TypeSlice> typeList = new ArrayList<>();
     // just repeat processing entries until we run out of our allowed scope (1st entry, the allowed scope is all the entries)
-    while (cursors.baseCursor <= getBaseLimit()) {
+    while (cursors.baseCursor <= getBaseLimit() && cursors.baseCursor < cursors.base.getElement().size()) {
       // get the current focus of the base, and decide what to do
       ElementDefinition currentBase = cursors.base.getElement().get(cursors.baseCursor);
       String currentBasePath = profileUtilities.fixedPathSource(getContextPathSource(), currentBase.getPath(), getRedirector());
@@ -558,7 +559,9 @@ public class ProfilePathProcessor {
     ElementDefinition res;
     ElementDefinition template = null;
     if (diffMatches.get(0).hasType() && "Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode()) && !profileUtilities.isValidType(diffMatches.get(0).getType().get(0), currentBase)) {
-      throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT, getUrl(), diffMatches.get(0).getPath(), diffMatches.get(0).getType().get(0), currentBase.typeSummary()));
+      if (!ProfileUtilities.isSuppressIgnorableExceptions()) {
+        throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT, getUrl(), diffMatches.get(0).getPath(), diffMatches.get(0).getType().get(0), currentBase.typeSummary()));
+      }
     }
     String id = diffMatches.get(0).getId();
     String lid = profileUtilities.tail(id);
@@ -1157,7 +1160,7 @@ public class ProfilePathProcessor {
                     throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, diffMatches.get(0).getPath(), getDifferential().getElement().get(cursors.diffCursor).getPath(), profileUtilities.typeCode(outcome.getType()), getProfileName()));
                 }
               ElementDefinition.TypeRefComponent t = outcome.getType().get(0);
-              if (t.getCode().equals("BackboneElement")) {
+              if (Utilities.existsInList(t.getCode(), "Base", "Element", "BackboneElement")) {
                 int baseStart = cursors.base.getElement().indexOf(currentBase) + 1;
                 int baseMax = baseStart + 1;
                 while (baseMax < cursors.base.getElement().size() && cursors.base.getElement().get(baseMax).getPath().startsWith(currentBase.getPath() + "."))

@@ -1326,6 +1326,22 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("discriminator")) {
+          this.getDiscriminator().remove((ElementDefinitionSlicingDiscriminatorComponent) value);
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("ordered")) {
+          this.ordered = null;
+        } else if (name.equals("rules")) {
+          value = new SlicingRulesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.rules = (Enumeration) value; // Enumeration<SlicingRules>
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -1601,6 +1617,18 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new DiscriminatorTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<DiscriminatorType>
+        } else if (name.equals("path")) {
+          this.path = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -1917,6 +1945,19 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("path")) {
+          this.path = null;
+        } else if (name.equals("min")) {
+          this.min = null;
+        } else if (name.equals("max")) {
+          this.max = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -2415,6 +2456,25 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          this.code = null;
+        } else if (name.equals("profile")) {
+          this.getProfile().remove(value);
+        } else if (name.equals("targetProfile")) {
+          this.getTargetProfile().remove(value);
+        } else if (name.equals("aggregation")) {
+          value = new AggregationModeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getAggregation().remove((Enumeration) value);
+        } else if (name.equals("versioning")) {
+          value = new ReferenceVersionRulesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.versioning = (Enumeration) value; // Enumeration<ReferenceVersionRules>
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -2587,7 +2647,7 @@ public boolean hasTarget() {
       res = res + "}";
     }
     if (hasTargetProfile()) {
-      res = res + "->(";
+      res = res + "(";
       boolean first = true;
       for (CanonicalType s : getTargetProfile()) {
         if (first) first = false; else res = res + "|";
@@ -3624,6 +3684,17 @@ public boolean hasTarget() {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("label")) {
+          this.label = null;
+        } else if (name.equals("value[x]")) {
+          this.value = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -4404,6 +4475,28 @@ public boolean hasTarget() {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("key")) {
+          this.key = null;
+        } else if (name.equals("requirements")) {
+          this.requirements = null;
+        } else if (name.equals("severity")) {
+          value = new ConstraintSeverityEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.severity = (Enumeration) value; // Enumeration<ConstraintSeverity>
+        } else if (name.equals("suppress")) {
+          this.suppress = null;
+        } else if (name.equals("human")) {
+          this.human = null;
+        } else if (name.equals("expression")) {
+          this.expression = null;
+        } else if (name.equals("source")) {
+          this.source = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -4825,6 +4918,22 @@ public boolean hasTarget() {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("strength")) {
+          value = new BindingStrengthEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.strength = (Enumeration) value; // Enumeration<BindingStrength>
+        } else if (name.equals("description")) {
+          this.description = null;
+        } else if (name.equals("valueSet")) {
+          this.valueSet = null;
+        } else if (name.equals("additional")) {
+          this.getAdditional().remove((ElementDefinitionBindingAdditionalComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -5366,6 +5475,26 @@ public boolean hasTarget() {
         return value;
       }
 
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("purpose")) {
+          value = new AdditionalBindingPurposeVSEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.purpose = (Enumeration) value; // Enumeration<AdditionalBindingPurposeVS>
+        } else if (name.equals("valueSet")) {
+          this.valueSet = null;
+        } else if (name.equals("documentation")) {
+          this.documentation = null;
+        } else if (name.equals("shortDoco")) {
+          this.shortDoco = null;
+        } else if (name.equals("usage")) {
+          this.getUsage().remove(value);
+        } else if (name.equals("any")) {
+          this.any = null;
+        } else
+          super.removeChild(name, value);
+        
+      }
+
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
@@ -5775,6 +5904,21 @@ public boolean hasTarget() {
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("identity")) {
+          this.identity = null;
+        } else if (name.equals("language")) {
+          this.language = null;
+        } else if (name.equals("map")) {
+          this.map = null;
+        } else if (name.equals("comment")) {
+          this.comment = null;
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override
@@ -11647,6 +11791,86 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
         } else
           return super.setProperty(name, value);
         return value;
+      }
+
+  @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+        if (name.equals("path")) {
+          this.path = null;
+        } else if (name.equals("representation")) {
+          value = new PropertyRepresentationEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.getRepresentation().remove((Enumeration) value);
+        } else if (name.equals("sliceName")) {
+          this.sliceName = null;
+        } else if (name.equals("sliceIsConstraining")) {
+          this.sliceIsConstraining = null;
+        } else if (name.equals("label")) {
+          this.label = null;
+        } else if (name.equals("code")) {
+          this.getCode().remove(value);
+        } else if (name.equals("slicing")) {
+          this.slicing = (ElementDefinitionSlicingComponent) value; // ElementDefinitionSlicingComponent
+        } else if (name.equals("short")) {
+          this.short_ = null;
+        } else if (name.equals("definition")) {
+          this.definition = null;
+        } else if (name.equals("comment")) {
+          this.comment = null;
+        } else if (name.equals("requirements")) {
+          this.requirements = null;
+        } else if (name.equals("alias")) {
+          this.getAlias().remove(value);
+        } else if (name.equals("min")) {
+          this.min = null;
+        } else if (name.equals("max")) {
+          this.max = null;
+        } else if (name.equals("base")) {
+          this.base = (ElementDefinitionBaseComponent) value; // ElementDefinitionBaseComponent
+        } else if (name.equals("contentReference")) {
+          this.contentReference = null;
+        } else if (name.equals("type")) {
+          this.getType().remove((TypeRefComponent) value);
+        } else if (name.equals("defaultValue[x]")) {
+          this.defaultValue = null;
+        } else if (name.equals("meaningWhenMissing")) {
+          this.meaningWhenMissing = null;
+        } else if (name.equals("orderMeaning")) {
+          this.orderMeaning = null;
+        } else if (name.equals("fixed[x]")) {
+          this.fixed = null;
+        } else if (name.equals("pattern[x]")) {
+          this.pattern = null;
+        } else if (name.equals("example")) {
+          this.getExample().remove((ElementDefinitionExampleComponent) value);
+        } else if (name.equals("minValue[x]")) {
+          this.minValue = null;
+        } else if (name.equals("maxValue[x]")) {
+          this.maxValue = null;
+        } else if (name.equals("maxLength")) {
+          this.maxLength = null;
+        } else if (name.equals("condition")) {
+          this.getCondition().remove(value);
+        } else if (name.equals("constraint")) {
+          this.getConstraint().remove((ElementDefinitionConstraintComponent) value);
+        } else if (name.equals("mustHaveValue")) {
+          this.mustHaveValue = null;
+        } else if (name.equals("valueAlternatives")) {
+          this.getValueAlternatives().remove(value);
+        } else if (name.equals("mustSupport")) {
+          this.mustSupport = null;
+        } else if (name.equals("isModifier")) {
+          this.isModifier = null;
+        } else if (name.equals("isModifierReason")) {
+          this.isModifierReason = null;
+        } else if (name.equals("isSummary")) {
+          this.isSummary = null;
+        } else if (name.equals("binding")) {
+          this.binding = (ElementDefinitionBindingComponent) value; // ElementDefinitionBindingComponent
+        } else if (name.equals("mapping")) {
+          this.getMapping().remove((ElementDefinitionMappingComponent) value);
+        } else
+          super.removeChild(name, value);
+        
       }
 
       @Override

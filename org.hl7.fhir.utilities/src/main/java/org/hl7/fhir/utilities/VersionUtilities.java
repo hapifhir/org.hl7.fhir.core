@@ -251,14 +251,10 @@ public class VersionUtilities {
   }
 
   public static boolean isSemVer(String version) {
-    if (Utilities.charCount(version, '.') != 2) {
+    if (Utilities.noString(version)) {
       return false;
     }
-    String[] p = version.split("\\.");
-    if (p[2].contains("-")) {
-      p[2] = p[2].substring(0, p[2].indexOf("-"));
-    }
-    return Utilities.isInteger(p[0]) && Utilities.isInteger(p[1]) && Utilities.isInteger(p[2]);
+    return version.matches("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-\\+]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-\\+][0-9a-zA-Z-\\+]*))*))?$");
   }
 
   /** 
@@ -334,7 +330,8 @@ public class VersionUtilities {
       if (pc!=null) {
         if (pt.contains("-") && !pc.contains("-")) {
           pt = pt.substring(0, pt.indexOf("-"));
-          return pt.compareTo(pc) >= 0;
+          int res = pc.compareTo(pt);
+          return res >= 0;
         } else {
           return compareVersionPart(pt, pc);          
         }

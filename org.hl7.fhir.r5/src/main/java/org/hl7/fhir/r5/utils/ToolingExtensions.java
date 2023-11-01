@@ -74,6 +74,7 @@ import java.util.HashSet;
 import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.Utilities;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.BackboneElement;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -143,6 +144,10 @@ public class ToolingExtensions {
   public static final String EXT_PROFILE_MAPPING = "http://hl7.org/fhir/tools/StructureDefinition/profile-mapping";
   public static final String EXT_CS_ALTERNATE_USE = "http://hl7.org/fhir/StructureDefinition/alternate-code-use";
   public static final String EXT_CS_ALTERNATE_STATUS = "http://hl7.org/fhir/StructureDefinition/alternate-code-status";
+  public static final String EXT_OBLIGATION_PROFILE_FLAG = "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile";
+  public static final String EXT_OBLIGATION_INHERITS = "http://hl7.org/fhir/tools/StructureDefinition/inherit-obligations";
+  public static final String DAR = "http://hl7.org/fhir/StructureDefinition/data-absent-reason";
+
 
   // validated
   //  private static final String EXT_OID = "http://hl7.org/fhir/StructureDefinition/valueset-oid";
@@ -250,7 +255,13 @@ public class ToolingExtensions {
   public static final String EXT_OBLIGATION_TOOLS = "http://hl7.org/fhir/tools/StructureDefinition/obligation";
   public static final String EXT_OBLIGATION_CORE = "http://hl7.org/fhir/StructureDefinition/obligation";
   public static final String EXT_NO_BINDING = "http://hl7.org/fhir/tools/StructureDefinition/no-binding";
-  ;
+  public static final String EXT_ID_CHOICE_GROUP = "http://hl7.org/fhir/tools/StructureDefinition/xml-choice-group";
+  public static final String EXT_DATE_RULES = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-rules";
+  public static final String EXT_PROFILE_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/type-profile-style";
+  public static final String EXT_RESOURCE_NAME = "http://hl7.org/fhir/StructureDefinition/resource-instance-name";
+  public static final String EXT_RESOURCE_DESC = "http://hl7.org/fhir/StructureDefinition/resource-instance-description";
+  public static final String EXT_ARTIFACT_NAME = "http://hl7.org/fhir/StructureDefinition/artifact-name";
+  public static final String EXT_ARTIFACT_DESC = "http://hl7.org/fhir/StructureDefinition/artifact-description";
   
   // specific extension helpers
 
@@ -670,6 +681,28 @@ public class ToolingExtensions {
       resource.getExtension().add(new Extension(uri).setValue(new CodeType(value)));
   }
 
+  public static void setCodeExtensionMod(DomainResource resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new CodeType(value));
+    else
+      resource.getModifierExtension().add(new Extension(uri).setValue(new CodeType(value)));
+  }
+
+  public static void setCodeExtensionMod(BackboneElement resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new CodeType(value));
+    else
+      resource.getModifierExtension().add(new Extension(uri).setValue(new CodeType(value)));
+  }
+
   public static void setCodeExtension(Element element, String uri, String value) {
     if (Utilities.noString(value))
       return;
@@ -1080,8 +1113,5 @@ public class ToolingExtensions {
     }
     return res;
   }
-
-  public static final String EXT_OBLIGATION_PROFILE_FLAG = "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile";
-  public static final String EXT_OBLIGATION_INHERITS = "http://hl7.org/fhir/tools/StructureDefinition/inherit-obligations";
 
 }

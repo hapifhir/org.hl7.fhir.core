@@ -38,10 +38,10 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
-import org.hl7.fhir.validation.instance.EnableWhenEvaluator;
-import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
+import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
-import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
+import org.hl7.fhir.validation.instance.utils.ValidationContext;
+import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator.QStack;
 
 import ca.uhn.fhir.util.ObjectUtil;
 
@@ -431,7 +431,7 @@ public class QuestionnaireValidator extends BaseValidator {
     return list;
   }
 
-  public boolean validateQuestionannaireResponse(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack) throws FHIRException {
+  public boolean validateQuestionannaireResponse(ValidationContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack) throws FHIRException {
     if (questionnaireMode == QuestionnaireMode.NONE) {
       return true;
     }
@@ -481,8 +481,8 @@ public class QuestionnaireValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean validateQuestionnaireResponseItem(ValidatorHostContext hostContext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
-    BooleanValue ok = new BooleanValue(true);
+  private boolean validateQuestionnaireResponseItem(ValidationContext hostContext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+    BooleanHolder ok = new BooleanHolder();
     
     String text = element.getNamedChildValue("text");
     ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), Utilities.noString(text) || text.equals(qItem.getText()), I18nConstants.QUESTIONNAIRE_QR_ITEM_TEXT, qItem.getLinkId()));
@@ -584,7 +584,7 @@ public class QuestionnaireValidator extends BaseValidator {
       }
       if (qItem.getType() != QuestionnaireItemType.GROUP) {
         // if it's a group, we already have an error before getting here, so no need to hammer away on that 
-        validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, answer, stack, inProgress, questionnaireResponseRoot, qstack);
+        ok.see(validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, answer, stack, inProgress, questionnaireResponseRoot, qstack));
       }
       i++;
     }
@@ -601,14 +601,14 @@ public class QuestionnaireValidator extends BaseValidator {
     } else {
       ok.see(validateQuestionannaireResponseItems(hostContext, qsrc, qItem.getItem(), errors, element, stack, inProgress, questionnaireResponseRoot, qstack));
     }
-    return ok.isValue();
+    return ok.ok();
   }
 
   private boolean isAnswerRequirementFulfilled(QuestionnaireItemComponent qItem, List<Element> answers) {
     return !answers.isEmpty() || !qItem.getRequired() || qItem.getType() == QuestionnaireItemType.GROUP;
   }
 
-  private boolean validateQuestionnaireResponseItem(ValidatorHostContext hostcontext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<ElementWithIndex> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+  private boolean validateQuestionnaireResponseItem(ValidationContext hostcontext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, List<ElementWithIndex> elements, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     boolean ok = true;
     if (elements.size() > 1) {
       ok = rulePlural(errors, NO_RULE_DATE, IssueType.INVALID, elements.get(1).getElement().line(), elements.get(1).getElement().col(), stack.getLiteralPath(), qItem.getRepeats(), elements.size(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEI, qItem.getLinkId()) && ok;
@@ -628,7 +628,7 @@ public class QuestionnaireValidator extends BaseValidator {
     return -1;
   }
 
-  private boolean validateQuestionannaireResponseItems(ValidatorHostContext hostContext, QuestionnaireWithContext qsrc, List<QuestionnaireItemComponent> qItems, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
+  private boolean validateQuestionannaireResponseItems(ValidationContext hostContext, QuestionnaireWithContext qsrc, List<QuestionnaireItemComponent> qItems, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     boolean ok = true;
     List<Element> items = new ArrayList<Element>();
     element.getNamedChildren("item", items);
@@ -673,7 +673,7 @@ public class QuestionnaireValidator extends BaseValidator {
     return ok;
   }
 
-  public boolean validateQuestionnaireResponseItem(ValidatorHostContext hostContext, QuestionnaireWithContext qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<ElementWithIndex> mapItem, QStack qstack) {
+  public boolean validateQuestionnaireResponseItem(ValidationContext hostContext, QuestionnaireWithContext qsrc, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QuestionnaireItemComponent qItem, List<ElementWithIndex> mapItem, QStack qstack) {
     boolean ok = true;
     boolean enabled = myEnableWhenEvaluator.isQuestionEnabled(hostContext, qItem, qstack, fpe);
     if (mapItem != null) {
@@ -711,7 +711,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
   }
 
-  private String validateQuestionnaireResponseItemType(List<ValidationMessage> errors, Element element, NodeStack stack, BooleanValue ok, String... types) {
+  private String validateQuestionnaireResponseItemType(List<ValidationMessage> errors, Element element, NodeStack stack, BooleanHolder ok, String... types) {
     List<Element> values = new ArrayList<Element>();
     element.getNamedChildrenWithWildcard("value[x]", values);
     for (int i = 0; i < types.length; i++) {

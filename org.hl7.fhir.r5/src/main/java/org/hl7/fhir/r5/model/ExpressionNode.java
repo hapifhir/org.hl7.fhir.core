@@ -711,5 +711,27 @@ public class ExpressionNode {
 	public void setOpTypes(TypeDetails opTypes) {
 		this.opTypes = opTypes;
 	}
+
+  public List<String> getDistalNames() {
+    List<String> names = new ArrayList<String>();
+    if (operation != null) {
+      names.add(null);
+    } else if (inner != null) {
+      names.addAll(inner.getDistalNames());
+    } else if (group != null) {
+      names.addAll(group.getDistalNames());
+    } else if (function != null) {
+      names.add(null);
+    } else if (constant != null) {
+      names.add(null);
+    } else {
+      names.add(name);
+    }    
+    return names;
+  }
+
+  public boolean isNullSet() {
+    return kind == Kind.Constant && constant == null;
+  }
 		
 }

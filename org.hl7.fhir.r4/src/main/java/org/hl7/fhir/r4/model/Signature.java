@@ -672,6 +672,27 @@ public class Signature extends Type implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("type")) {
+      this.getType().remove(castToCoding(value));
+    } else if (name.equals("when")) {
+      this.when = null;
+    } else if (name.equals("who")) {
+      this.who = null;
+    } else if (name.equals("onBehalfOf")) {
+      this.onBehalfOf = null;
+    } else if (name.equals("targetFormat")) {
+      this.targetFormat = null;
+    } else if (name.equals("sigFormat")) {
+      this.sigFormat = null;
+    } else if (name.equals("data")) {
+      this.data = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case 3575610:

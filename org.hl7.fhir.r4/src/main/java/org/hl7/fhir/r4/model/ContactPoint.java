@@ -872,6 +872,23 @@ public class ContactPoint extends Type implements ICompositeType {
   }
 
   @Override
+  public void removeChild(String name, Base value) throws FHIRException {
+    if (name.equals("system")) {
+      this.system = null;
+    } else if (name.equals("value")) {
+      this.value = null;
+    } else if (name.equals("use")) {
+      this.use = null;
+    } else if (name.equals("rank")) {
+      this.rank = null;
+    } else if (name.equals("period")) {
+      this.period = null;
+    } else
+      super.removeChild(name, value);
+    
+  }
+
+  @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
     case -887328209:
