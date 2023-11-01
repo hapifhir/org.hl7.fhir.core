@@ -46,7 +46,7 @@ public class PackageServer {
     return url;
   }
 
-  public static final String PRIMARY_SERVER = "http://packages.fhir.org";
+  public static final String PRIMARY_SERVER = "https://packages.fhir.org";
   public static final String SECONDARY_SERVER = "https://packages2.fhir.org/packages";
 
   public static PackageServer primaryServer() {
