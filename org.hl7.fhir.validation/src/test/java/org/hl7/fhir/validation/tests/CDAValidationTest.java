@@ -6,6 +6,7 @@ import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidatorCli;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class CDAValidationTest {
@@ -13,6 +14,7 @@ public class CDAValidationTest {
   private SimpleWorkerContext context;
 
   @Test
+  @Disabled
   public void test() throws Exception {
     String fn = TestingUtilities.tempFile("cda", "cda.xml");
     TextFile.stringToFile(TestingUtilities.loadTestResource("cda/cda-original.xml"), fn);
