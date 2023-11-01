@@ -1,9 +1,7 @@
 ## Validator Changes
 
-* FHIRPath fixes checking types discovered testing R6 build
+* None
 
 ## Other code changes
 
-* Fix rendering of impose-profile extension
-* Improvements to performance tracking code
-* get FHIRFormat from SHC code
+* Backport: Use https for primary packages server
