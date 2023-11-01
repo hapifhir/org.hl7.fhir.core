@@ -952,11 +952,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     txLog("$expand on "+txCache.summary(vs));
     try {
       ValueSet result = tcc.getClient().expandValueset(vs, p, params);
-      if (!result.hasUrl()) {
-        result.setUrl(vs.getUrl());
-      }
-      if (!result.hasUrl()) {
-        throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
+      if (result != null) {
+        if (!result.hasUrl()) {
+          result.setUrl(vs.getUrl());
+        }
+        if (!result.hasUrl()) {
+          throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
+        }
       }
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
     } catch (Exception e) {
@@ -1375,7 +1377,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (valueSet != null) {
       pIn.addParameter().setName("valueSet").setResource(valueSet);
     }
-    pIn.addParameter().setName("profile").setResource(expParameters);
+    
+    pIn.addParameters(expParameters);
     return pIn;
   }
 
@@ -1388,7 +1391,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (vsUrl != null) {
       pIn.addParameter().setName("url").setValue(new CanonicalType(vsUrl));
     }
-    pIn.addParameter().setName("profile").setResource(expParameters);
+    pIn.addParameters(expParameters);
     return pIn;
   }
 
@@ -1548,7 +1551,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (expParameters == null) {
       throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
     }
-    pin.addParameter().setName("profile").setResource(expParameters);
+    pin.addParameters(expParameters);
 
     if (options.isDisplayWarningMode()) {
       pin.addParameter("mode","lenient-display-validation");

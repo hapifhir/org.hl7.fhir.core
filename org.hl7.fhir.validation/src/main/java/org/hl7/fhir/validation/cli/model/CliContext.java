@@ -131,8 +131,8 @@ public class CliContext {
 
   @JsonProperty("outputStyle")
   private String outputStyle = null;
-  
-  // TODO: Mark what goes here?
+
+  @JsonProperty("bundleValidationRules")
   private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
 
   @JsonProperty("jurisdiction")
@@ -191,9 +191,15 @@ public class CliContext {
     return this;
   }
 
-  // TODO: Mark what goes here?
+  @JsonProperty("bundleValidationRules")
   public List<BundleValidationRule> getBundleValidationRules() {
    return bundleValidationRules;
+  }
+
+  @JsonProperty("bundleValidationRules")
+  public CliContext setBundleValidationRules(List<BundleValidationRule> bundleValidationRules) {
+    this.bundleValidationRules = bundleValidationRules;
+    return this;
   }
 
   public CliContext addIg(String ig) {
@@ -322,13 +328,17 @@ public class CliContext {
     this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
   }
 
+  @JsonProperty("checkIPSCodes")
   public boolean isCheckIPSCodes() {
     return checkIPSCodes;
   }
 
-  public void setCheckIPSCodes(boolean checkIPSCodes) {
+  @JsonProperty("checkIPSCodes")
+  public CliContext setCheckIPSCodes(boolean checkIPSCodes) {
     this.checkIPSCodes = checkIPSCodes;
+    return this;
   }
+
 
   @JsonProperty("locale")
   public String getLanguageCode() {

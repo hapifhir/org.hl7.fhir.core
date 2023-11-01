@@ -54,7 +54,7 @@ public class SQLOnFhirTests {
     }
 
     @Override
-    public Base resolveReference(String ref, String rt) {
+    public Base resolveReference(Base rootResource, String ref, String rt) {
       if (ref == null) {
         return null;
       }
@@ -126,6 +126,7 @@ public class SQLOnFhirTests {
       runner.execute(test.path+".view", test.testCase.getJsonObject("view"));
       results = store.getRows();
     } catch (Exception e) {
+      e.printStackTrace();
       Assertions.assertTrue(test.testCase.has("expectError"), e.getMessage());
     }
     if (results != null) {
