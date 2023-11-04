@@ -1974,6 +1974,14 @@ public class Utilities {
     return res;
   }
 
+  public static String getRelativeUrlPath(String root, String path) {
+    String res = path.substring(root.length());
+    if (res.startsWith("/")) {
+      res = res.substring(1);
+    }
+    return res;
+  }
+
   public static List<String> listAllFiles(String path, List<String> ignoreList) {
     List<String> res = new ArrayList<>();
     addAllFiles(res, path, new File(path), ignoreList);
