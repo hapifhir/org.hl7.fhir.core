@@ -99,7 +99,7 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
     addStructureDefinitionMetadata(renderCanonicalResource(sd, forMultiple), sd);
     Sheet sheet = forMultiple && hasSheet("Elements") ? getSheet("Elements") : makeSheet("Elements");
 
-    if (sheet.getLastRowNum() == 0) {
+    if (sheet.getPhysicalNumberOfRows() == 0) {
       Row headerRow = sheet.createRow(0);
       int coffset = forMultiple ? 1 : 0;
       for (int i = 0; i < titles.length; i++) {
