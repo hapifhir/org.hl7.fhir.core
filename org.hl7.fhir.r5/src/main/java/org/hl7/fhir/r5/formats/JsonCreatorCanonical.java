@@ -261,6 +261,11 @@ public class JsonCreatorCanonical implements JsonCreator {
   }
 
   @Override
+  public void comment(String content) {
+    // canonical JSON ignores comments    
+  }
+
+  @Override
   public void link(String href) {
     // not used
   }
@@ -271,9 +276,8 @@ public class JsonCreatorCanonical implements JsonCreator {
   }
 
   @Override
-  public void comment(String content) {
-    // canonical JSON ignores comments
-    
+  public void externalLink(String string) {
+    // not used
   }
        
     

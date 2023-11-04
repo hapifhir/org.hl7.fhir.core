@@ -239,4 +239,8 @@ public class JsonCreatorDirect implements JsonCreator {
   }
        
 
+  @Override
+  public void externalLink(String string) {
+    // not used
+  }
 }

@@ -619,5 +619,24 @@ public class Property {
     return sd.getSnapshot().getElementFirstRep().getPath();
   }
 
+
+  public boolean isReference() {
+    if (type != null) {
+      return isRef(type);
+    }
+    for (TypeRefComponent tr : definition.getType()) {
+      boolean ref = isRef(tr);
+      if (ref) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  private boolean isRef(TypeRefComponent tr) {
+    return Utilities.existsInList(tr.getWorkingCode(), "Reference", "url", "uri", "canonical");
+  }
+
   
 }

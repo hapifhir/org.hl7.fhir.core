@@ -827,9 +827,15 @@ public class JsonParser extends ParserBase {
       if (prim) {
         openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
         for (Element item : list) {
-          if (item.hasValue())
+          if (item.hasValue()) {
+            if (linkResolver != null && item.getProperty().isReference()) {
+              String ref = linkResolver.resolveReference(getReferenceForElement(item));
+              if (ref != null) {
+                json.externalLink(ref);
+              }
+            }
             primitiveValue(null, item);
-          else
+          } else
             json.nullValue();
         }
         closeArray();
@@ -843,6 +849,12 @@ public class JsonParser extends ParserBase {
           open(null,null);
           if (item.getProperty().isResource()) {
             prop("resourceType", item.getType(), linkResolver == null ? null : linkResolver.resolveType(item.getType()));
+          }
+          if (linkResolver != null && item.getProperty().isReference()) {
+            String ref = linkResolver.resolveReference(getReferenceForElement(item));
+            if (ref != null) {
+              json.externalLink(ref);
+            }
           }
           Set<String> done = new HashSet<String>();
           for (Element child : item.getChildren()) {
@@ -891,6 +903,12 @@ public class JsonParser extends ParserBase {
       if (element.getProperty().isResource()) {
         prop("resourceType", element.getType(), linkResolver == null ? null : linkResolver.resolveType(element.getType()));
       }
+      if (linkResolver != null && element.getProperty().isReference()) {
+        String ref = linkResolver.resolveReference(getReferenceForElement(element));
+        if (ref != null) {
+          json.externalLink(ref);
+        }
+      }
       Set<String> done = new HashSet<String>();
       for (Element child : element.getChildren()) {
         compose(path+"."+element.getName(), element, done, child);
@@ -898,6 +916,7 @@ public class JsonParser extends ParserBase {
       close();
     }
   }
+
 
   public boolean isAllowComments() {
     return allowComments;
