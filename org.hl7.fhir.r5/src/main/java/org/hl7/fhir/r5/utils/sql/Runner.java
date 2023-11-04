@@ -444,6 +444,7 @@ public class Runner implements IEvaluationContext {
     }
     return null;
   }
+  
   @Override
   public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
     throw new Error("Not implemented yet: resolveReference");

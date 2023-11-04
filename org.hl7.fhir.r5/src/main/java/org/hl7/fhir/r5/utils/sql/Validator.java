@@ -54,7 +54,7 @@ public class Validator {
 
 
   public void checkViewDefinition(String path, JsonObject viewDefinition) {    
-    checkProperties(viewDefinition, path, "url", "identifier", "name", "version", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "copyright", "resource", "constant", "select", "where");
+    checkProperties(viewDefinition, path, "resourceType", "url", "identifier", "name", "version", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "copyright", "resource", "constant", "select", "where");
     
     JsonElement nameJ = viewDefinition.get("name");
     if (nameJ == null) {
@@ -310,9 +310,9 @@ public class Validator {
             }
             if (isColl) {
               if (arrays == null) {
-                warning(path, expression, "column appears to be a collection. Collections are not supported in all Runners");
+                warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path. Collections are not supported in all execution contexts");
               } else if (!arrays) {
-                warning(path, expression, "column appears to be a collection, but this is not allowed in this context");
+                warning(path, expression, "The column '"+columnName+"' appears to be a collection based on it's path, but this is not allowed in the current execution context");
               }
             }
             Set<String> types = new HashSet<>();
@@ -574,7 +574,7 @@ public class Validator {
         nameOk = nameOk || name.equals(p.getName());
       }
       if (!nameOk) {
-        error(path+"."+p.getName(), p.getValue(), "Unknown JSON "+p.getValue().type().name(), IssueType.UNKNOWN);
+        error(path+"."+p.getName(), p.getValue(), "Unknown JSON property "+p.getName(), IssueType.UNKNOWN);
       }
     }
     
