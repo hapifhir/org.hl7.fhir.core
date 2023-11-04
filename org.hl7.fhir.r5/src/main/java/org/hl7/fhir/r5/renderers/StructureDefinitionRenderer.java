@@ -1507,7 +1507,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (lt == null || !lt.hasValueBooleanType()) {
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
               c.addPiece(gen.new Piece(null, "Instances of this logical model are not marked to be the target of a Reference", null).addStyle("font-weight:bold"));  ;        
-            } else if (lt.getValue().hasExtension(ToolingExtensions.DAR)) {                 
+            } else if (lt.getValue().hasExtension(ToolingExtensions.EXT_DAR)) {                 
             } else if (!lt.getValueBooleanType().hasValue()) {
                 if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
                 c.addPiece(gen.new Piece(null, "Instances of this logical model are not marked to be the target of a Reference", null).addStyle("font-weight:bold"));  ;        
@@ -3565,7 +3565,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       Extension lt = ToolingExtensions.getExtension(sd, ToolingExtensions.EXT_LOGICAL_TARGET);
       if (lt == null || !lt.hasValue()) {
         tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model are not marked to be the target of a Reference");        
-      } else if (lt.getValue().hasExtension(ToolingExtensions.DAR)) {        
+      } else if (lt.getValue().hasExtension(ToolingExtensions.EXT_DAR)) {        
       } else if (lt.getValueBooleanType().hasValue()) {
         tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model are not marked to be the target of a Reference");        
       } else if (lt.getValueBooleanType().booleanValue()) {
