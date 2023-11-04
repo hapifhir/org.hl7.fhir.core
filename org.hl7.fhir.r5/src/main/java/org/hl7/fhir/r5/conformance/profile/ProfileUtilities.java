@@ -2508,18 +2508,36 @@ public class ProfileUtilities extends TranslatingUtilities {
             derived.getPattern().setUserData(UD_DERIVATION_EQUALS, true);
       }
 
+      List<ElementDefinitionExampleComponent> toDelB = new ArrayList<>();
+      List<ElementDefinitionExampleComponent> toDelD = new ArrayList<>();
       for (ElementDefinitionExampleComponent ex : derived.getExample()) {
-        boolean found = false;
-        for (ElementDefinitionExampleComponent exS : base.getExample())
-          if (Base.compareDeep(ex, exS, false))
-            found = true;
-        if (!found)
-          base.addExample(ex.copy());
-        else if (trimDifferential)
-          derived.getExample().remove(ex);
-        else
-          ex.setUserData(UD_DERIVATION_EQUALS, true);
+        boolean delete = ex.hasExtension(ToolingExtensions.EXT_ED_SUPPRESS);
+        if (delete && "$all".equals(ex.getLabel())) {
+          toDelB.addAll(base.getExample());
+        } else {
+          boolean found = false;
+          for (ElementDefinitionExampleComponent exS : base.getExample()) {
+            if (Base.compareDeep(ex.getLabel(), exS.getLabel(), false) && Base.compareDeep(ex.getValue(), exS.getValue(), false)) {
+              if (delete) {
+                toDelB.add(exS);
+              } else {
+                found = true;
+              }
+            }
+          }
+          if (delete) {
+            toDelD.add(ex);
+          } else if (!found) {
+            base.addExample(ex.copy());
+          } else if (trimDifferential) {
+            derived.getExample().remove(ex);
+          } else {
+            ex.setUserData(UD_DERIVATION_EQUALS, true);
+          }
+        }
       }
+      base.getExample().removeAll(toDelB);
+      derived.getExample().removeAll(toDelD);
 
       if (derived.hasMaxLengthElement()) {
         if (!Base.compareDeep(derived.getMaxLengthElement(), base.getMaxLengthElement(), false))
