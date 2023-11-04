@@ -556,7 +556,6 @@ v: {
   "code" : "h",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -578,7 +577,6 @@ v: {
   "code" : "ar",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -600,6 +598,26 @@ v: {
   "code" : "l",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unitsofmeasure.org",
+  "code" : "mm[Hg]{hg}"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-vitals-common--0", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "The provided code 'http://unitsofmeasure.org#mm[Hg]{hg}' is not in the value set 'http://hl7.org/fhir/ValueSet/ucum-vitals-common--0|4.0.1' (from Tx-Server)",
+  "class" : "UNKNOWN",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

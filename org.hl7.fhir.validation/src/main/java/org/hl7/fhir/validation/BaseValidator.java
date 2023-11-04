@@ -65,7 +65,9 @@ import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
+import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
@@ -166,7 +168,9 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected boolean forPublication;
   protected boolean debug;
   protected boolean warnOnDraftOrExperimental; 
-  protected Set<String> statusWarnings = new HashSet<>();
+  protected Set<String> statusWarnings = new HashSet<>();  
+  protected BestPracticeWarningLevel bpWarnings = BestPracticeWarningLevel.Warning;
+
 
   public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager, boolean debug) {
     super();
@@ -194,6 +198,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
     this.debug = parent.debug;
     this.warnOnDraftOrExperimental = parent.warnOnDraftOrExperimental;
     this.statusWarnings = parent.statusWarnings;
+    this.bpWarnings = parent.bpWarnings;
   }
   
   private boolean doingLevel(IssueSeverity error) {
@@ -1400,6 +1405,31 @@ public class BaseValidator implements IValidationContextResourceLoader {
       }
     }
     return ok;
+  }
+
+
+  public BestPracticeWarningLevel getBestPracticeWarningLevel() {
+    return bpWarnings;
+  }
+
+  
+  protected boolean bpCheck(List<ValidationMessage> errors, IssueType invalid, int line, int col, String literalPath, boolean test, String message, Object... theMessageArguments) {
+    if (bpWarnings != null) {
+      switch (bpWarnings) {
+        case Error:
+          rule(errors, NO_RULE_DATE, invalid, line, col, literalPath, test, message, theMessageArguments);
+          return test;
+        case Warning:
+          warning(errors, NO_RULE_DATE, invalid, line, col, literalPath, test, message, theMessageArguments);
+          return true;
+        case Hint:
+          hint(errors, NO_RULE_DATE, invalid, line, col, literalPath, test, message, theMessageArguments);
+          return true;
+        default: // do nothing
+          break;
+      }
+    }
+    return true;
   }
 
 }

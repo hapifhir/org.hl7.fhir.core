@@ -146,7 +146,10 @@ public class ToolingExtensions {
   public static final String EXT_CS_ALTERNATE_STATUS = "http://hl7.org/fhir/StructureDefinition/alternate-code-status";
   public static final String EXT_OBLIGATION_PROFILE_FLAG = "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile";
   public static final String EXT_OBLIGATION_INHERITS = "http://hl7.org/fhir/tools/StructureDefinition/inherit-obligations";
-  public static final String DAR = "http://hl7.org/fhir/StructureDefinition/data-absent-reason";
+  public static final String EXT_DAR = "http://hl7.org/fhir/StructureDefinition/data-absent-reason";
+  public static final String EXT_NF = "http://hl7.org/fhir/StructureDefinition/iso21090-nullFlavor";
+  public static final String EXT_OT = "http://hl7.org/fhir/StructureDefinition/originalText";
+  public static final String EXT_CQF_EXP = "http://hl7.org/fhir/StructureDefinition/cqf-expression";
 
 
   // validated
@@ -261,7 +264,8 @@ public class ToolingExtensions {
   public static final String EXT_RESOURCE_NAME = "http://hl7.org/fhir/StructureDefinition/resource-instance-name";
   public static final String EXT_RESOURCE_DESC = "http://hl7.org/fhir/StructureDefinition/resource-instance-description";
   public static final String EXT_ARTIFACT_NAME = "http://hl7.org/fhir/StructureDefinition/artifact-name";
-  public static final String EXT_ARTIFACT_DESC = "http://hl7.org/fhir/StructureDefinition/artifact-description";
+  public static final String EXT_ARTIFACT_DESC = "http://hl7.org/fhir/StructureDefinition/artifact-description";  
+  public static final String EXT_ED_SUPPRESS = "http://hl7.org/fhir/StructureDefinition/elementdefinition-suppress";
   
   // specific extension helpers
 

@@ -128,6 +128,7 @@ import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Range;
 import org.hl7.fhir.r5.model.Ratio;
@@ -203,6 +204,7 @@ import org.hl7.fhir.validation.instance.type.BundleValidator;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
 import org.hl7.fhir.validation.instance.type.ConceptMapValidator;
 import org.hl7.fhir.validation.instance.type.MeasureValidator;
+import org.hl7.fhir.validation.instance.type.ObservationValidator;
 import org.hl7.fhir.validation.instance.type.QuestionnaireValidator;
 import org.hl7.fhir.validation.instance.type.SearchParameterValidator;
 import org.hl7.fhir.validation.instance.type.StructureDefinitionValidator;
@@ -320,7 +322,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
       switch (functionName) {
       case "slice": return new FunctionDetails("Returns the given slice as defined in the given structure definition. If in an invariant, First parameter can be %profile - current profile", 2, 2);
-      default: throw new FHIRException(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESRESOLVEFUNCTION_, functionName));
+      case "getResourceKey" : return new FunctionDetails("Unique Key for resource", 0, 0);
+      case "getReferenceKey" : return new FunctionDetails("Unique Key for resource that is the target of the reference", 0, 1);
+      default: return null;
       }      
     }
 
@@ -331,7 +335,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       case "slice":
         // todo: check parameters 
         return focus;
-      
+
+      case "getResourceKey" : return new TypeDetails(CollectionStatus.SINGLETON, "string");
+      case "getReferenceKey" : return new TypeDetails(CollectionStatus.SINGLETON, "string");
       default: throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESCHECKFUNCTION));
       }
     }
@@ -339,11 +345,47 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     @Override
     public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
       switch (functionName) {
-      case "slice": return executeSlice(engine, appContext, focus, parameters);
+      case "slice": return executeSlice(engine, appContext, focus, parameters);case "getResourceKey" : return executeResourceKey(focus);
+      case "getReferenceKey" : return executeReferenceKey(null, focus, parameters);
       default: throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESEXECUTEFUNCTION));
       }
     }
 
+
+    private List<Base> executeResourceKey(List<Base> focus) {
+      List<Base> base = new ArrayList<Base>();
+      if (focus.size() == 1) {
+        Base res = focus.get(0);
+        base.add(new StringType(res.fhirType()+"/"+res.getIdBase()));
+      }
+      return base;
+    }
+    
+    private List<Base> executeReferenceKey(Base rootResource, List<Base> focus, List<List<Base>> parameters) {
+      List<Base> base = new ArrayList<Base>();
+      if (focus.size() == 1) {
+        Base res = focus.get(0);
+        String ref = null;
+        if (res.fhirType().equals("Reference")) {
+          ref = getRef(res);
+        } else if (res.isPrimitive()) {
+          ref = res.primitiveValue();
+        } else {
+          throw new FHIRException("Unable to generate a reference key based on a "+res.fhirType());
+        }
+        base.add(new StringType(ref));
+      }
+      return base;
+    }
+
+    private String getRef(Base res) {
+      Property prop = res.getChildByName("reference");
+      if (prop != null && prop.getValues().size() == 1) {
+        return prop.getValues().get(0).primitiveValue();
+      }
+      return null;
+    }
+    
     private List<Base> executeSlice(FHIRPathEngine engine, Object appContext, List<Base> focus, List<List<Base>> parameters) {
       ValidationContext c = (ValidationContext) appContext;
       
@@ -512,7 +554,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noTerminologyChecks;
   private boolean hintAboutNonMustSupport;
   private boolean showMessagesFromReferences;
-  private BestPracticeWarningLevel bpWarnings = BestPracticeWarningLevel.Warning;
   private String validationLanguage;
   private boolean baseOnly;
   private boolean noCheckAggregation;
@@ -716,26 +757,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return true;
     return false;
   }
-
-  private boolean bpCheck(List<ValidationMessage> errors, IssueType invalid, int line, int col, String literalPath, boolean test, String message, Object... theMessageArguments) {
-    if (bpWarnings != null) {
-      switch (bpWarnings) {
-        case Error:
-          rule(errors, NO_RULE_DATE, invalid, line, col, literalPath, test, message, theMessageArguments);
-          return test;
-        case Warning:
-          warning(errors, NO_RULE_DATE, invalid, line, col, literalPath, test, message, theMessageArguments);
-          return true;
-        case Hint:
-          hint(errors, NO_RULE_DATE, invalid, line, col, literalPath, test, message, theMessageArguments);
-          return true;
-        default: // do nothing
-          break;
-      }
-    }
-    return true;
-  }
-
   @Override
   public org.hl7.fhir.r5.elementmodel.Element validate(Object appContext, List<ValidationMessage> errors, InputStream stream, FhirFormat format) throws FHIRException {
     return validate(appContext, errors, stream, format, new ArrayList<>());
@@ -4105,10 +4126,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return null;
   }
 
-  public BestPracticeWarningLevel getBestPracticeWarningLevel() {
-    return bpWarnings;
-  }
-
   @Override
   public CheckDisplayOption getCheckDisplay() {
     return checkDisplay;
@@ -4649,14 +4666,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.anyExtensionsAllowed = anyExtensionsAllowed;
   }
 
-  public IResourceValidator setBestPracticeWarningLevel(BestPracticeWarningLevel value) {
-    if (value == null) {
-      bpWarnings = BestPracticeWarningLevel.Warning;   
-    } else {
-      bpWarnings = value;
-    }
-    return this;
-  }
 
   @Override
   public void setCheckDisplay(CheckDisplayOption checkDisplay) {
@@ -4724,15 +4733,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (!criteriaElement.getPath().contains("[") && discriminator.contains("[")) {
               discriminator = discriminator.substring(0, discriminator.indexOf('['));
               String lastNode = tail(discriminator);
-              type = tail(criteriaElement.getPath()).substring(lastNode.length());
-              type = type.substring(0, 1).toLowerCase() + type.substring(1);
+              type = makeTypeForFHIRPath(criteriaElement.getPath()).substring(lastNode.length());
             } else if (!criteriaElement.hasType() || criteriaElement.getType().size() == 1) {
               if (discriminator.contains("["))
                 discriminator = discriminator.substring(0, discriminator.indexOf('['));
               if (criteriaElement.hasType()) {
-                type = criteriaElement.getType().get(0).getWorkingCode();
+                type = makeTypeForFHIRPath(criteriaElement.getType().get(0).getWorkingCode());
               } else if (!criteriaElement.getPath().contains(".")) {
-                type = criteriaElement.getPath();
+                type = makeTypeForFHIRPath(criteriaElement.getPath());
               } else {
                 throw new DefinitionException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES, discriminator, ed.getId(), profile.getVersionedUrl()));
               }
@@ -4816,6 +4824,25 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return pass;
+  }
+
+  private String makeTypeForFHIRPath(String type) {
+    if (Utilities.isAbsoluteUrl(type)) {
+      if (type.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
+        return tail(type);
+      } else if (type.startsWith("http://hl7.org/cda/stds/core/StructureDefinition/")) {
+        return "CDA."+tail(type); 
+      } else {
+        return tail(type); // todo?
+      }
+    } else {
+      String ptype = type.substring(0, 1).toLowerCase() + type.substring(1);
+      if (context.isPrimitiveType(ptype)) {
+        return ptype;        
+      } else {
+        return type;
+      }
+    }
   }
 
   private boolean isBaseDefinition(String url) {
@@ -5425,7 +5452,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (element.getType().equals(BUNDLE)) {
         return new BundleValidator(this, serverBase).validateBundle(errors, element, stack, checkSpecials, valContext, pct, mode) && ok;
       } else if (element.getType().equals("Observation")) {
-        return validateObservation(errors, element, stack) && ok;
+        return new ObservationValidator(this).validateObservation(valContext, errors, element, stack, pct, mode) && ok;
       } else if (element.getType().equals("Questionnaire")) {
         return new QuestionnaireValidator(this, myEnableWhenEvaluator, fpe, questionnaireMode).validateQuestionannaire(errors, element, element, stack) && ok;
       } else if (element.getType().equals("QuestionnaireResponse")) {
@@ -6814,21 +6841,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return false;
   }
 
-  private boolean validateObservation(List<ValidationMessage> errors, Element element, NodeStack stack) {
-    boolean ok = true;
-    // all observations should have a subject, a performer, and a time
-
-    ok = bpCheck(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), element.getNamedChild("subject") != null, I18nConstants.ALL_OBSERVATIONS_SHOULD_HAVE_A_SUBJECT) && ok;
-    List<Element> performers = new ArrayList<>();
-    element.getNamedChildren("performer", performers);
-    ok = bpCheck(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), performers.size() > 0, I18nConstants.ALL_OBSERVATIONS_SHOULD_HAVE_A_PERFORMER) && ok;
-    ok = bpCheck(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), 
-          element.getNamedChild("effectiveDateTime") != null || element.getNamedChild("effectivePeriod") != null || 
-          element.getNamedChild("effectiveTiming") != null || element.getNamedChild("effectiveInstant") != null, 
-          I18nConstants.ALL_OBSERVATIONS_SHOULD_HAVE_AN_EFFECTIVEDATETIME_OR_AN_EFFECTIVEPERIOD, element.getProperty().typeSummary()) && ok;    
-    return ok;
-  }
-
   /*
    * The actual base entry point for internal use (re-entrant)
    */
@@ -7305,5 +7317,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public void setSignatureServices(IDigitalSignatureServices signatureServices) {
     this.signatureServices = signatureServices;
   }
-  
+
+  public IResourceValidator setBestPracticeWarningLevel(BestPracticeWarningLevel value) {
+    if (value == null) {
+      bpWarnings = BestPracticeWarningLevel.Warning;   
+    } else {
+      bpWarnings = value;
+    }
+    return this;
+  }
 }
