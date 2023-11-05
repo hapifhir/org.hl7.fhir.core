@@ -12,6 +12,7 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
+import org.hl7.fhir.r4.model.CapabilityStatement;
 import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueType;
@@ -42,6 +43,10 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     fhirToolingClient.setPassword(apiKey);
     fhirToolingClient.setTimeout(120000);
 
+    CapabilityStatement cs = fhirToolingClient.getCapabilitiesStatement();
+    JsonParser json = new JsonParser();
+    json.setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "vsac-capability-statmenet.json")), cs);
+    
     int i = 0;
     int j = 0;
     while (csv.line()) {
@@ -61,10 +66,10 @@ public class VSACImporter extends OIDBasedValueSetImporter {
             if (vs.getTitle().equals(vs.getDescription())) {
               vs.setTitle(vs.getName());              
             } else {
-              System.out.println(oid);
-              System.out.println("  name: "+vs.getName());
-              System.out.println("  title: "+vs.getTitle());
-              System.out.println("  desc: "+vs.getDescription());
+//              System.out.println(oid);
+//              System.out.println("  name: "+vs.getName());
+//              System.out.println("  title: "+vs.getTitle());
+//              System.out.println("  desc: "+vs.getDescription());
             }
           } else {
             vs.setTitle(vs.getName());
@@ -113,7 +118,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
         upper = true;
       }
     }
-    System.out.println(b.toString()+" from "+name);
+//    System.out.println(b.toString()+" from "+name);
     return b.toString();
   }
 }
