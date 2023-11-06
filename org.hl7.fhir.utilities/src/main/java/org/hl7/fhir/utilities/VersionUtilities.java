@@ -407,6 +407,17 @@ public class VersionUtilities {
   }
 
 
+  /** same as getCanonicalResourceNames but add R5 supported types that are canonical too */
+  public static Set<String> getExtendedCanonicalResourceNames(String version) {
+    Set<String> res = getCanonicalResourceNames(version);
+    if (isR4Ver(version)) {
+      res.add("ActorDefinition");
+      res.add("Requirements");
+      res.add("SubscriptionTopic");
+      res.add("TestPlan");
+    }
+    return res;
+  }
   public static Set<String> getCanonicalResourceNames(String version) {
 
     Set<String> res = new HashSet<String>();
