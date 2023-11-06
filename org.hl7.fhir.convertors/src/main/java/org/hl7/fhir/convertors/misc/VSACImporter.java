@@ -18,6 +18,7 @@ import org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
+import org.hl7.fhir.r4.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -62,6 +63,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
             errs.put(oid, "Expansion: " +e.getMessage());
             System.out.println(e.getMessage());
           }
+
           if (vs.hasTitle()) {
             if (vs.getTitle().equals(vs.getDescription())) {
               vs.setTitle(vs.getName());              
@@ -75,6 +77,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
             vs.setTitle(vs.getName());
           }
           vs.setName(makeValidName(vs.getName()));
+          JurisdictionUtilities.setJurisdictionCountry(vs.getJurisdiction(), "US");
           new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
         }
         i++;
