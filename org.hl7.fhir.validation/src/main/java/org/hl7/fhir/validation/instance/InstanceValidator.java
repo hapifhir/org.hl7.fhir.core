@@ -2218,7 +2218,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = true;
         } else if (en.equals("Resource") && container.isResource()) {
           ok = true;
-        } else if (en.equals("CanonicalResource") && VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(stack.getLiteralPath())) {
+        } else if (en.equals("CanonicalResource") && VersionUtilities.getExtendedCanonicalResourceNames(context.getVersion()).contains(stack.getLiteralPath())) {
           ok = true;
         } else if (hasElementName(plist, en) && pu == null) {
           ok = true;
