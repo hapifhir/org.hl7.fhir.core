@@ -12,11 +12,13 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
+import org.hl7.fhir.r4.model.CapabilityStatement;
 import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
+import org.hl7.fhir.r4.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -42,6 +44,10 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     fhirToolingClient.setPassword(apiKey);
     fhirToolingClient.setTimeout(120000);
 
+    CapabilityStatement cs = fhirToolingClient.getCapabilitiesStatement();
+    JsonParser json = new JsonParser();
+    json.setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "vsac-capability-statmenet.json")), cs);
+    
     int i = 0;
     int j = 0;
     while (csv.line()) {
@@ -57,19 +63,21 @@ public class VSACImporter extends OIDBasedValueSetImporter {
             errs.put(oid, "Expansion: " +e.getMessage());
             System.out.println(e.getMessage());
           }
+
           if (vs.hasTitle()) {
             if (vs.getTitle().equals(vs.getDescription())) {
               vs.setTitle(vs.getName());              
             } else {
-              System.out.println(oid);
-              System.out.println("  name: "+vs.getName());
-              System.out.println("  title: "+vs.getTitle());
-              System.out.println("  desc: "+vs.getDescription());
+//              System.out.println(oid);
+//              System.out.println("  name: "+vs.getName());
+//              System.out.println("  title: "+vs.getTitle());
+//              System.out.println("  desc: "+vs.getDescription());
             }
           } else {
             vs.setTitle(vs.getName());
           }
           vs.setName(makeValidName(vs.getName()));
+          JurisdictionUtilities.setJurisdictionCountry(vs.getJurisdiction(), "US");
           new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
         }
         i++;
@@ -113,7 +121,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
         upper = true;
       }
     }
-    System.out.println(b.toString()+" from "+name);
+//    System.out.println(b.toString()+" from "+name);
     return b.toString();
   }
 }

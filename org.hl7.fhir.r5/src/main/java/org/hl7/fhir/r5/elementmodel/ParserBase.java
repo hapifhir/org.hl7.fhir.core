@@ -73,6 +73,7 @@ public abstract class ParserBase {
     String resolveType(String type);
     String resolveProperty(Property property);
     String resolvePage(String string);
+    String resolveReference(String referenceForElement);
   }
   
   public enum ValidationPolicy { NONE, QUICK, EVERYTHING }
@@ -296,4 +297,11 @@ public abstract class ParserBase {
     this.signatureServices = signatureServices;
   }
 
+  protected String getReferenceForElement(Element element) {
+    if (element.isPrimitive()) {
+      return element.primitiveValue();
+    } else {
+      return element.getNamedChildValue("reference");
+    }
+  }
 }

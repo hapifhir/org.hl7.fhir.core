@@ -790,6 +790,12 @@ public class XmlParser extends ParserBase {
       if (linkResolver != null)
         xml.link(linkResolver.resolveProperty(element.getProperty()));
       xml.enter(element.getProperty().getXmlNamespace(),elementName);
+      if (linkResolver != null && element.getProperty().isReference()) {
+        String ref = linkResolver.resolveReference(getReferenceForElement(element));
+        if (ref != null) {
+          xml.externalLink(ref);
+        }
+      }
       xml.text(element.getValue());
       xml.exit(element.getProperty().getXmlNamespace(),elementName);   
     } else if (!element.hasChildren() && !element.hasValue()) {
@@ -820,6 +826,12 @@ public class XmlParser extends ParserBase {
           xml.link(linkResolver.resolveProperty(element.getProperty()));
         if (element.hasChildren()) {
           xml.enter(element.getProperty().getXmlNamespace(), elementName);
+          if (linkResolver != null && element.getProperty().isReference()) {
+            String ref = linkResolver.resolveReference(getReferenceForElement(element));
+            if (ref != null) {
+              xml.externalLink(ref);
+            }
+          }
           for (Element child : element.getChildren()) 
             composeElement(xml, child, child.getName(), false);
           xml.exit(element.getProperty().getXmlNamespace(),elementName);
@@ -854,10 +866,17 @@ public class XmlParser extends ParserBase {
         xml.namespace(element.getProperty().getXmlNamespace(), abbrev);
       }
       xml.enter(element.getProperty().getXmlNamespace(), elementName);
+
       if (!root && element.getSpecial() != null) {
         if (linkResolver != null)
           xml.link(linkResolver.resolveProperty(element.getProperty()));
         xml.enter(element.getProperty().getXmlNamespace(),element.getType());
+      }
+      if (linkResolver != null && element.getProperty().isReference()) {
+        String ref = linkResolver.resolveReference(getReferenceForElement(element));
+        if (ref != null) {
+          xml.externalLink(ref);
+        }
       }
       for (Element child : element.getChildren()) {
         if (wantCompose(element.getPath(), child)) {

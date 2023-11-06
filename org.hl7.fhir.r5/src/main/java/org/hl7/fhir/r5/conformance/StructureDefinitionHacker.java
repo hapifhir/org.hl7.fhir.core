@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.conformance;
 
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -49,6 +50,18 @@ public class StructureDefinitionHacker {
         }
       }
     }    
+    if (VersionUtilities.isR4Ver(version) && "http://hl7.org/fhir/StructureDefinition/Consent".equals(sd.getUrl())) {
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        if ("Consent.identifier".equals(ed.getPath())) {
+          ed.getExampleFirstRep().getValueIdentifier().setSystem("http://acme.org/identifier/local/eCMS");
+        }        
+      }
+      for (ElementDefinition ed : sd.getDifferential().getElement()) {
+        if ("Consent.identifier".equals(ed.getPath())) {
+          ed.getExampleFirstRep().getValueIdentifier().setSystem("http://acme.org/identifier/local/eCMS");
+        }        
+      }
+    }
     if (sd.getUrl().startsWith("http://hl7.org/fhir/uv/subscriptions-backport")) {
       for (ElementDefinition ed : sd.getDifferential().getElement()) {
         fixMarkdownR4BURLs(ed);
@@ -57,7 +70,23 @@ public class StructureDefinitionHacker {
         fixMarkdownR4BURLs(ed);
       }
     }
+    if ("http://hl7.org/fhir/StructureDefinition/vitalsigns".equals(sd.getUrl()) || "http://hl7.org/fhir/StructureDefinition/vitalsigns".equals(sd.getBaseDefinition())) {
+      for (ElementDefinition ed : sd.getDifferential().getElement()) {
+        checkVSConstraint(ed);
+      }
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        checkVSConstraint(ed);
+      }
+    }
     return sd;
+  }
+
+  private void checkVSConstraint(ElementDefinition ed) {
+    for (ElementDefinitionConstraintComponent constraint : ed.getConstraint()) {
+      if ("vs-1".equals(constraint.getKey())) {
+        constraint.setExpression("$this is dateTime implies $this.toString().length() >= 10");
+      }
+    }
   }
 
   private void fixMarkdownR4BURLs(ElementDefinition ed) {
