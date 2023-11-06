@@ -73,7 +73,6 @@ v: {
   "display" : "text/plain",
   "code" : "text/plain",
   "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -96,7 +95,6 @@ v: {
   "code" : "271649006",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -116,7 +114,6 @@ v: {
   "display" : "json",
   "code" : "json",
   "system" : "urn:ietf:bcp:13",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -137,7 +134,6 @@ v: {
   "display" : "World",
   "code" : "001",
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -156,7 +152,6 @@ v: {
 v: {
   "code" : "nl-NL",
   "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -175,7 +170,6 @@ v: {
 v: {
   "code" : "en-AU",
   "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -195,7 +189,6 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -217,6 +210,49 @@ v: {
   "display" : "World",
   "code" : "001",
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "27113001",
+  "display" : "Body weight"
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Body weight",
+  "code" : "27113001",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "[lb_av]"
+}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "[lb_av]",
+  "code" : "[lb_av]",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

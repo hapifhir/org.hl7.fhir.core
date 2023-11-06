@@ -2856,6 +2856,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public Set<String> urlsForOid(boolean codeSystem, String oid) {
+    Set<String> set = urlsForOid(codeSystem, oid, true);
+    if (set.size() > 1) {
+      set =  urlsForOid(codeSystem, oid, false);
+    }
+    return set;
+  }
+  
+  public Set<String> urlsForOid(boolean codeSystem, String oid, boolean retired) {
     if (oid == null) {
       return null;
     }
@@ -2869,14 +2877,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       if (os.db != null) {
         try {
-          PreparedStatement psql = os.db.prepareStatement("Select URL from OIDMap where OID = ?");
+          PreparedStatement psql = os.db.prepareStatement("Select URL, Status from OIDMap where OID = ?");
           psql.setString(1, oid);
           ResultSet rs = psql.executeQuery();
           while (rs.next()) {
-            urls.add(rs.getString(1));
+            if (retired || !"retired".equals(rs.getString(2))) {
+              urls.add(rs.getString(1));
+            }
           }
         } catch (Exception e) {
           // nothing, there would alreagy have been an error
+//          e.printStackTrace();
         }
       }
     }      
@@ -2884,6 +2895,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     switch (oid) {
     case "2.16.840.1.113883.6.1" :
       urls.add("http://loinc.org");
+      break;
+    case "2.16.840.1.113883.6.8" :
+      urls.add("http://unitsofmeasure.org");
       break;
     case "2.16.840.1.113883.6.96" :
       urls.add("http://snomed.info/sct");
@@ -2896,7 +2910,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private Connection connectToOidSource(String folder) {
     try {
       File ff = new File(folder);
-      File of = new File(Utilities.path(ff.getAbsolutePath(), ".oids.db"));
+      File of = new File(Utilities.path(ff.getAbsolutePath(), ".oid-map.db"));
       if (!of.exists()) {
         OidIndexBuilder oidBuilder = new OidIndexBuilder(ff, of);
         oidBuilder.build();

@@ -70,4 +70,5 @@ public interface JsonCreator {
   // only used by an creator that actually produces xhtml
   void link(String href);
   void anchor(String string);
+  void externalLink(String string);
 }

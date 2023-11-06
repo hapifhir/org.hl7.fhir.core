@@ -1,10 +1,10 @@
-package org.hl7.fhir.r5.terminologies;
+package org.hl7.fhir.r4.terminologies;
 
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.utilities.Utilities;
 
 public class JurisdictionUtilities {

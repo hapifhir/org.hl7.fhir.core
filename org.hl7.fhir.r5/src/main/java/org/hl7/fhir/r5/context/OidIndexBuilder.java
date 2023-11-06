@@ -34,9 +34,10 @@ public class OidIndexBuilder {
       stmt.execute("CREATE TABLE OIDMap (\r\n"+
           "OID            nvarchar NOT NULL,\r\n"+
           "URL            nvarchar NOT NULL,\r\n"+
+          "Status         nvarchar NOT NULL,\r\n"+
           "PRIMARY KEY (OID, URL))\r\n");
 
-      PreparedStatement psql = db.prepareStatement("Insert into OIDMap (OID, URL) values (?, ?)");;
+      PreparedStatement psql = db.prepareStatement("Insert into OIDMap (OID, URL, Status) values (?, ?, ?)");;
       for (File f : folder.listFiles()) {
         if (!f.getName().startsWith(".") && f.getName().endsWith(".json")) {
           try {
@@ -50,6 +51,7 @@ public class OidIndexBuilder {
       db.close();
     } catch (Exception e) {
       System.out.println("Error processing "+folder.getAbsolutePath()+" while generating OIDs: "+e.getMessage());
+//      e.printStackTrace();
     }
   }  
 
@@ -58,6 +60,7 @@ public class OidIndexBuilder {
     if (rt != null) {
       Set<String> oids = new HashSet<String>();
       String url = null;
+      String status = json.asString("status");
       if ("NamingSystem".equals(rt)) {        
         for (JsonObject id : json.getJsonObjects("uniqueId")) {
           String t = id.asString("type");
@@ -70,7 +73,7 @@ public class OidIndexBuilder {
         }
         if (url != null) {
           for (String s : oids) {
-            addOid(psql, matches, s, url);
+            addOid(psql, matches, s, url, status);
           }
         }
       } else {            
@@ -94,7 +97,7 @@ public class OidIndexBuilder {
           }
           if (!oids.isEmpty()) {
             for (String s : oids) {
-              addOid(psql, matches, s, url);
+              addOid(psql, matches, s, url, status);
             }
           }
         }
@@ -102,12 +105,13 @@ public class OidIndexBuilder {
     }
   }
 
-  private void addOid(PreparedStatement psql, Set<String> matches, String oid, String url) throws SQLException {
+  private void addOid(PreparedStatement psql, Set<String> matches, String oid, String url, String status) throws SQLException {
     String key = oid+"@"+url;
     if (!matches.contains(key)) {
       matches.add(key);
       psql.setString(1, oid);
       psql.setString(2, url);
+      psql.setString(3, status);
       psql.execute();
     }
 
