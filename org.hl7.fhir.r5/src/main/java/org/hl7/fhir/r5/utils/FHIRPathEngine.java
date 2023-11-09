@@ -62,6 +62,7 @@ import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
+import org.hl7.fhir.r5.utils.FHIRPathEngine.IssueMessage;
 import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.FHIRConstant;
 import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.ClassTypeInfo;
 import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.FunctionDetails;
@@ -119,6 +120,26 @@ import ca.uhn.fhir.util.ElementUtil;
  */
 public class FHIRPathEngine {
 
+  public class IssueMessage {
+
+    private String message;
+    private String id;
+    
+    public IssueMessage(String message, String id) {
+      this.message = message;
+      this.id = id;
+    }
+
+    public String getMessage() {
+      return message;
+    }
+
+    public String getId() {
+      return id;
+    }
+
+  }
+
   private enum Equality { Null, True, False }
   
   private IWorkerContext worker;
@@ -136,7 +157,7 @@ public class FHIRPathEngine {
   private boolean doNotEnforceAsSingletonRule;
   private boolean doNotEnforceAsCaseSensitive;
   private boolean allowDoubleQuotes;
-  private List<String> typeWarnings = new ArrayList<>();
+  private List<IssueMessage> typeWarnings = new ArrayList<>();
   private boolean emitSQLonFHIRWarning;
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
@@ -499,7 +520,7 @@ public class FHIRPathEngine {
    * @throws PathEngineException 
    * @if the path is not valid
    */
-  public TypeDetails checkOnTypes(Object appContext, String resourceType, List<String> typeList, ExpressionNode expr, List<String> warnings) throws FHIRLexerException, PathEngineException, DefinitionException {
+  public TypeDetails checkOnTypes(Object appContext, String resourceType, List<String> typeList, ExpressionNode expr, List<IssueMessage> warnings) throws FHIRLexerException, PathEngineException, DefinitionException {
     typeWarnings.clear();
 
     // if context is a path that refers to a type, do that conversion now 
@@ -550,7 +571,7 @@ public class FHIRPathEngine {
     return res;
   }
   
-  public TypeDetails checkOnTypes(Object appContext, String resourceType, TypeDetails types, ExpressionNode expr, List<String> warnings) throws FHIRLexerException, PathEngineException, DefinitionException {
+  public TypeDetails checkOnTypes(Object appContext, String resourceType, TypeDetails types, ExpressionNode expr, List<IssueMessage> warnings) throws FHIRLexerException, PathEngineException, DefinitionException {
     typeWarnings.clear();
     TypeDetails res = executeType(new ExecutionTypeContext(appContext, resourceType, types, types), types, expr, null, true, false, expr);
     warnings.addAll(typeWarnings);
@@ -589,9 +610,9 @@ public class FHIRPathEngine {
       fmt = fmt + " "+worker.formatMessagePlural(num, I18nConstants.FHIRPATH_LOCATION, location);
     }
     if (holder != null) {      
-       return new PathEngineException(fmt, holder.getStart(), holder.toString());
+       return new PathEngineException(fmt, constName, holder.getStart(), holder.toString());
     } else {
-      return new PathEngineException(fmt);
+      return new PathEngineException(fmt, constName);
     }
   }
   
@@ -601,9 +622,9 @@ public class FHIRPathEngine {
       fmt = fmt + " "+worker.formatMessage(I18nConstants.FHIRPATH_LOCATION, location);
     }
     if (holder != null) {      
-       return new PathEngineException(fmt, holder.getStart(), holder.toString());
+       return new PathEngineException(fmt, constName, holder.getStart(), holder.toString());
     } else {
-      return new PathEngineException(fmt);
+      return new PathEngineException(fmt, constName);
     }
   }
 
@@ -1600,10 +1621,10 @@ public class FHIRPathEngine {
       // special Logic for SQL-on-FHIR:
       if (focus.isChoice()) {
         if (expr.getInner() == null || expr.getInner().getFunction() != Function.OfType) {
-          typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_CHOICE_NO_TYPE_SPECIFIER, expr.toString()));
+          typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_CHOICE_NO_TYPE_SPECIFIER, expr.toString()), I18nConstants.FHIRPATH_CHOICE_NO_TYPE_SPECIFIER));
         }
       } else if (expr.getInner() != null && expr.getInner().getFunction() == Function.OfType) {
-        typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_CHOICE_SPURIOUS_TYPE_SPECIFIER, expr.toString()));
+        typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_CHOICE_SPURIOUS_TYPE_SPECIFIER, expr.toString()), I18nConstants.FHIRPATH_CHOICE_SPURIOUS_TYPE_SPECIFIER));
       }
     }
   }
@@ -1816,10 +1837,10 @@ public class FHIRPathEngine {
     } else {
       String tn = convertToString(right);
       if (!isKnownType(tn)) {
-        throw new PathEngineException("The type "+tn+" is not valid");
+        throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_INVALID_TYPE, tn), I18nConstants.FHIRPATH_INVALID_TYPE);
       }
       if (!doNotEnforceAsSingletonRule && left.size() > 1) {
-        throw new PathEngineException("Attempt to use as on more than one item ("+left.size()+", '"+expr.toString()+"')");
+        throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_AS_COLLECTION, left.size(), expr.toString()), I18nConstants.FHIRPATH_AS_COLLECTION); 
       }
       for (Base nextLeft : left) {
         if (compareTypeNames(tn, nextLeft.fhirType())) {
@@ -1904,18 +1925,18 @@ public class FHIRPathEngine {
 
   private void checkCardinalityForComparabilitySame(TypeDetails left, Operation operation, TypeDetails right, ExpressionNode expr) {
     if (left.isList() && !right.isList()) {
-      typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_LEFT, expr.toString()));
+      typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_LEFT, expr.toString()), I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_LEFT));
     } else if (!left.isList() && right.isList()) {
-      typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_RIGHT, expr.toString()));
+      typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_RIGHT, expr.toString()), I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_RIGHT));
     }
   }
 
   private void checkCardinalityForSingle(TypeDetails left, Operation operation, TypeDetails right, ExpressionNode expr) {
     if (left.isList()) {
-      typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_LEFT, expr.toString()));
+      typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_LEFT, expr.toString()), I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_LEFT));
     } 
     if (right.isList()) {
-      typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_RIGHT, expr.toString()));
+      typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_RIGHT, expr.toString()), I18nConstants.FHIRPATH_COLLECTION_STATUS_OPERATION_RIGHT));
     }
   }
   
@@ -1995,7 +2016,7 @@ public class FHIRPathEngine {
         if (right.hasType(worker, "Quantity")) {
           result.addType(left.getType());
         } else {
-          throw new PathEngineException(String.format("Error in date arithmetic: Unable to add type {0} to {1}", right.getType(), left.getType()), expr.getOpStart(), expr.toString());
+          throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_ARITHMETIC_PLUS, right.getType(), left.getType()), I18nConstants.FHIRPATH_ARITHMETIC_PLUS, expr.getOpStart(), expr.toString()); 
         }
       }
       return result;
@@ -2012,7 +2033,7 @@ public class FHIRPathEngine {
         if (right.hasType(worker, "Quantity")) {
           result.addType(left.getType());
         } else {
-          throw new PathEngineException(String.format("Error in date arithmetic: Unable to subtract type {0} from {1}", right.getType(), left.getType()));
+          throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_ARITHMETIC_MINUS, right.getType(), left.getType()), I18nConstants.FHIRPATH_ARITHMETIC_MINUS, expr.getOpStart(), expr.toString());
         }
       }
       return result;
@@ -2654,13 +2675,13 @@ public class FHIRPathEngine {
       result.add(Calendar.YEAR, value);
       break;
     case "a":
-      throw new PathEngineException(String.format("Error in date arithmetic: attempt to add a definite quantity duration time unit %s", q.getCode()));
+      throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_ARITHMETIC_QTY, q.getCode()), I18nConstants.FHIRPATH_ARITHMETIC_QTY, holder.getOpStart(), holder.toString());
     case "months": 
     case "month": 
       result.add(Calendar.MONTH, value);
       break;
     case "mo":
-      throw new PathEngineException(String.format("Error in date arithmetic: attempt to add a definite quantity duration time unit %s", q.getCode()), holder.getOpStart(), holder.toString());
+      throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_ARITHMETIC_QTY, q.getCode()), I18nConstants.FHIRPATH_ARITHMETIC_QTY, holder.getOpStart(), holder.toString());
     case "weeks": 
     case "week": 
     case "wk":
@@ -2692,7 +2713,7 @@ public class FHIRPathEngine {
       result.add(Calendar.MILLISECOND, value);
       break;
     default:
-      throw new PathEngineException(String.format("Error in date arithmetic: unrecognized time unit %s", q.getCode()));
+      throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_ARITHMETIC_UNIT, q.getCode()), I18nConstants.FHIRPATH_ARITHMETIC_UNIT, holder.getOpStart(), holder.toString());
     }
     return result;
   }
@@ -2730,7 +2751,7 @@ public class FHIRPathEngine {
         p = worker.getUcumService().multiply(pl, pr);
         result.add(pairToQty(p));
       } catch (UcumException e) {
-        throw new PathEngineException(e.getMessage(), expr.getOpStart(), expr.toString(), e);
+        throw new PathEngineException(e.getMessage(), null, expr.getOpStart(), expr.toString(), e); // #FIXME
       }
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "*", left.get(0).fhirType(), right.get(0).fhirType());
@@ -3221,7 +3242,7 @@ public class FHIRPathEngine {
     }
     if (exp.getFunction() == Function.First || exp.getFunction() == Function.Last || exp.getFunction() == Function.Tail || exp.getFunction() == Function.Skip || exp.getFunction() == Function.Take) {
       if (focus.getCollectionStatus() == CollectionStatus.SINGLETON) {
-        typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_NOT_A_COLLECTION, container.toString()));
+        typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_NOT_A_COLLECTION, container.toString()), I18nConstants.FHIRPATH_NOT_A_COLLECTION));
 
       }
     }
@@ -3297,7 +3318,7 @@ public class FHIRPathEngine {
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
       String tn = exp.getParameters().get(0).getName();
       if (typeCastIsImpossible(focus, tn)) {
-        typeWarnings.add(worker.formatMessage(I18nConstants.FHIRPATH_OFTYPE_IMPOSSIBLE, focus.describeMin(), tn, exp.toString()));
+        typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_OFTYPE_IMPOSSIBLE, focus.describeMin(), tn, exp.toString()), I18nConstants.FHIRPATH_OFTYPE_IMPOSSIBLE));
       }
       TypeDetails td = new TypeDetails(CollectionStatus.SINGLETON, tn);
       if (td.typesHaveTargets()) {
@@ -4871,10 +4892,10 @@ public class FHIRPathEngine {
       tn = "FHIR."+expr.getParameters().get(0).getName();
     }
     if (!isKnownType(tn)) {
-      throw new PathEngineException("The type "+tn+" is not valid");
+      throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_INVALID_TYPE, tn), I18nConstants.FHIRPATH_INVALID_TYPE); // #FIXME
     }
     if (!doNotEnforceAsSingletonRule && focus.size() > 1) {
-      throw new PathEngineException("Attempt to use as() on more than one item ("+focus.size()+")");
+      throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_AS_COLLECTION, focus.size(), expr.toString()), I18nConstants.FHIRPATH_AS_COLLECTION); // #FIXME
     }
     
     for (Base b : focus) {
@@ -4914,7 +4935,7 @@ public class FHIRPathEngine {
       tn = "FHIR."+expr.getParameters().get(0).getName();
     }
     if (!isKnownType(tn)) {
-      throw new PathEngineException("The type "+tn+" is not valid");
+      throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_INVALID_TYPE, tn), I18nConstants.FHIRPATH_INVALID_TYPE); // #FIXME
     }
 
     

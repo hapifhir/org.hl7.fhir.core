@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.r5.utils.FHIRPathEngine.IssueMessage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonBoolean;
@@ -253,7 +254,7 @@ public class Validator {
       } else {
         String expr = expression.asString();
 
-        List<String> warnings = new ArrayList<>();
+        List<IssueMessage> warnings = new ArrayList<>();
         TypeDetails td = null;
         ExpressionNode node = null;
         try {
@@ -264,8 +265,8 @@ public class Validator {
           error(path, expression, e.getMessage(), IssueType.INVALID);
         }
         if (td != null && node != null) {
-          for (String s : warnings) {
-            warning(path+".path", expression, s);
+          for (IssueMessage s : warnings) {
+            warning(path+".path", expression, s.getMessage());
           }
           String columnName = null;
           JsonElement nameJ = column.get("name");
@@ -419,7 +420,7 @@ public class Validator {
     } else {
       String expr = expression.asString();
 
-      List<String> warnings = new ArrayList<>();
+      List<IssueMessage> warnings = new ArrayList<>();
       TypeDetails td = null;
       try {
         ExpressionNode n = fpe.parse(expr);
@@ -429,8 +430,8 @@ public class Validator {
         error(path, expression, e.getMessage(), IssueType.INVALID);
       }
       if (td != null) {
-        for (String s : warnings) {
-          warning(path+".forEach", expression, s);
+        for (IssueMessage s : warnings) {
+          warning(path+".forEach", expression, s.getMessage());
         }
       }
       return td;
@@ -444,7 +445,7 @@ public class Validator {
     } else {
       String expr = expression.asString();
 
-      List<String> warnings = new ArrayList<>();
+      List<IssueMessage> warnings = new ArrayList<>();
       TypeDetails td = null;
       try {
         ExpressionNode n = fpe.parse(expr);
@@ -454,8 +455,8 @@ public class Validator {
         error(path, expression, e.getMessage(), IssueType.INVALID);
       }
       if (td != null) {
-        for (String s : warnings) {
-          warning(path+".forEachOrNull", expression, s);
+        for (IssueMessage s : warnings) {
+          warning(path+".forEachOrNull", expression, s.getMessage());
         }
       }
       return td;
@@ -546,7 +547,7 @@ public class Validator {
       error(path, where, "No path provided", IssueType.REQUIRED);
     }
     List<String> types = new ArrayList<>();
-    List<String> warnings = new ArrayList<>();
+    List<IssueMessage> warnings = new ArrayList<>();
     types.add(resourceName);
     TypeDetails td = null;
     try {
@@ -560,8 +561,8 @@ public class Validator {
       if (td.getCollectionStatus() != CollectionStatus.SINGLETON || td.getTypes().size() != 1 || !td.hasType("boolean")) {
         error(path+".path", where.get("path"), "A where path must return a boolean, but the expression "+expr+" returns a "+td.describe(), IssueType.BUSINESSRULE);
       } else {
-        for (String s : warnings) {
-          warning(path+".path", where.get("path"), s);
+        for (IssueMessage s : warnings) {
+          warning(path+".path", where.get("path"), s.getMessage());
         }
       }
     }
