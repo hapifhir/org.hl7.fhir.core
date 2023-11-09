@@ -270,6 +270,7 @@ public class ProfileUtilities extends TranslatingUtilities {
    */  
   public static final List<String> OVERRIDING_ED_URLS = Arrays.asList(
       "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-format",
+      ToolingExtensions.EXT_DATE_RULES,
       "http://hl7.org/fhir/StructureDefinition/designNote",
       "http://hl7.org/fhir/StructureDefinition/elementdefinition-allowedUnits",
       "http://hl7.org/fhir/StructureDefinition/elementdefinition-question",
