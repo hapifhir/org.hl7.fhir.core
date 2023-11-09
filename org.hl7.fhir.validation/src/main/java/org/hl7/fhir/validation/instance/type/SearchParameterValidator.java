@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.ExpressionNode.Kind;
 import org.hl7.fhir.r5.model.ExpressionNode.Operation;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.r5.utils.FHIRPathEngine.IssueMessage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -77,10 +78,10 @@ public class SearchParameterValidator extends BaseValidator {
   private boolean checkExpression(List<ValidationMessage> errors, NodeStack stack, String expression, List<String> bases) {
     boolean ok = true;
     try {
-      List<String> warnings = new ArrayList<>();
+      List<IssueMessage> warnings = new ArrayList<>();
       fpe.checkOnTypes(null, null, bases, fpe.parse(expression), warnings);
-      for (String s : warnings) {
-        warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, false, s);
+      for (IssueMessage m : warnings) {
+        warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, m.getId(), false, m.getMessage());
       }
     } catch (Exception e) {
       if (debug) {

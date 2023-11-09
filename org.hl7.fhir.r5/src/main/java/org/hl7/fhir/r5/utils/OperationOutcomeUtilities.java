@@ -54,10 +54,12 @@ public class OperationOutcomeUtilities {
       issue.addExpression(message.getLocation());
     }
     // pass through line/col if they're present
-    if (message.getLine() >= 0)
+    if (message.getLine() >= 0) {
       issue.addExtension().setUrl(ToolingExtensions.EXT_ISSUE_LINE).setValue(new IntegerType(message.getLine()));
-    if (message.getCol() >= 0)
+    }
+    if (message.getCol() >= 0) {
       issue.addExtension().setUrl(ToolingExtensions.EXT_ISSUE_COL).setValue(new IntegerType(message.getCol()));
+    }
     issue.setSeverity(convert(message.getLevel()));
     CodeableConcept c = new CodeableConcept();
     c.setText(message.getMessage());

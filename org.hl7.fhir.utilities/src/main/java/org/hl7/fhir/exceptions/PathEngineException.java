@@ -39,10 +39,8 @@ public class PathEngineException extends FHIRException {
   private static final long serialVersionUID = 31969342112856390L;
   private SourceLocation location;
   private String expression;
-  
-	public PathEngineException() {
-		super();
-	}
+  private String id;
+
 
   public PathEngineException(String message, Throwable cause) {
     super(message, cause);
@@ -58,6 +56,26 @@ public class PathEngineException extends FHIRException {
 
   public PathEngineException(String message, SourceLocation location, String expression) {
     super(message+rep(location, expression));
+  }
+  
+  public PathEngineException(String message, String id, Throwable cause) {
+    super(message, cause);
+    this.id = id;
+  }
+
+  public PathEngineException(String message, String id) {
+    super(message);
+    this.id = id;
+  }
+
+  public PathEngineException(String message, String id, SourceLocation location, String expression, Throwable cause) {
+    super(message+rep(location, expression), cause);
+    this.id = id;
+  }
+
+  public PathEngineException(String message, String id, SourceLocation location, String expression) {
+    super(message+rep(location, expression));
+    this.id = id;
   }
 
 	private static String rep(SourceLocation loc, String expr) {
@@ -92,6 +110,10 @@ public class PathEngineException extends FHIRException {
 
   public void setLocation(SourceLocation location) {
     this.location = location;
+  }
+
+  public String getId() {
+    return id;
   }
 
 }
