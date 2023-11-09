@@ -218,7 +218,14 @@ public class ProfileUtilities extends TranslatingUtilities {
     ALL_TYPES // allow any unknow profile
   }
 
-  private static final List<String> NON_INHERITED_ED_URLS = Arrays.asList(
+  /**
+   * These extensions are stripped in inherited profiles (and may be replaced by 
+   */
+  
+  public static final List<String> NON_INHERITED_ED_URLS = Arrays.asList(
+      "http://hl7.org/fhir/tools/StructureDefinition/binding-definition",
+      "http://hl7.org/fhir/tools/StructureDefinition/no-binding",
+      "http://hl7.org/fhir/StructureDefinition/elementdefinition-isCommonBinding",
       "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status",  
       "http://hl7.org/fhir/StructureDefinition/structuredefinition-category",
       "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm",
@@ -229,11 +236,61 @@ public class ProfileUtilities extends TranslatingUtilities {
       "http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version",
       "http://hl7.org/fhir/tools/StructureDefinition/obligation-profile",
       "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status-reason",
-      ToolingExtensions.EXT_SUMMARY,
+      ToolingExtensions.EXT_SUMMARY/*,
       ToolingExtensions.EXT_OBLIGATION_CORE,
-      ToolingExtensions.EXT_OBLIGATION_TOOLS);
+      ToolingExtensions.EXT_OBLIGATION_TOOLS*/);
 
+  public static final List<String> DEFAULT_INHERITED_ED_URLS = Arrays.asList(
+      "http://hl7.org/fhir/StructureDefinition/questionnaire-optionRestriction",
+      "http://hl7.org/fhir/StructureDefinition/questionnaire-referenceProfile",
+      "http://hl7.org/fhir/StructureDefinition/questionnaire-referenceResource",
+      "http://hl7.org/fhir/StructureDefinition/questionnaire-unitOption",
 
+      "http://hl7.org/fhir/StructureDefinition/mimeType");
+
+  /**
+   * These extensions are ignored when found in differentials
+   */  
+  public static final List<String> NON_OVERRIDING_ED_URLS = Arrays.asList(
+      "http://hl7.org/fhir/StructureDefinition/elementdefinition-translatable",
+      "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-json-name",
+      "http://hl7.org/fhir/tools/StructureDefinition/implied-string-prefix",
+      "http://hl7.org/fhir/tools/StructureDefinition/json-empty-behavior",
+      "http://hl7.org/fhir/tools/StructureDefinition/json-nullable",
+      "http://hl7.org/fhir/tools/StructureDefinition/json-primitive-choice",
+      "http://hl7.org/fhir/tools/StructureDefinition/json-property-key",
+      "http://hl7.org/fhir/tools/StructureDefinition/type-specifier",
+      "http://hl7.org/fhir/tools/StructureDefinition/xml-choice-group",
+      "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace",
+      "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype"
+      );
+
+  /**
+   * When these extensions are found, they override whatever is set on the ancestor element 
+   */  
+  public static final List<String> OVERRIDING_ED_URLS = Arrays.asList(
+      "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-date-format",
+      "http://hl7.org/fhir/StructureDefinition/designNote",
+      "http://hl7.org/fhir/StructureDefinition/elementdefinition-allowedUnits",
+      "http://hl7.org/fhir/StructureDefinition/elementdefinition-question",
+      "http://hl7.org/fhir/StructureDefinition/entryFormat",
+      "http://hl7.org/fhir/StructureDefinition/maxDecimalPlaces",
+      "http://hl7.org/fhir/StructureDefinition/maxSize",
+      "http://hl7.org/fhir/StructureDefinition/minLength",
+      "http://hl7.org/fhir/StructureDefinition/questionnaire-choiceOrientation",
+      "http://hl7.org/fhir/StructureDefinition/questionnaire-displayCategory",
+      "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden",
+      "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+      "http://hl7.org/fhir/StructureDefinition/questionnaire-signatureRequired",
+      "http://hl7.org/fhir/StructureDefinition/questionnaire-sliderStepValue",
+      "http://hl7.org/fhir/StructureDefinition/questionnaire-supportLink",
+      "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
+      "http://hl7.org/fhir/StructureDefinition/questionnaire-unitValueSet",
+      "http://hl7.org/fhir/StructureDefinition/questionnaire-usageMode",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-display-hint",
+      "http://hl7.org/fhir/StructureDefinition/structuredefinition-explicit-type-name"
+      );
+  
   public IWorkerContext getContext() {
     return this.context;
   }
@@ -1937,7 +1994,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (Character.isWhitespace(ch)) {
             // found the end of the processible link:
             String url = markdown.substring(linkLeft, i);
-            if (isLikelySourceURLReference(url, resourceNames, baseFilenames, localFilenames)) {
+            if (isLikelySourceURLReference(url, resourceNames, baseFilenames, localFilenames, webUrl)) {
               b.append(basePath);
               if (!Utilities.noString(basePath) && !basePath.endsWith("/")) {
                 b.append("/");
@@ -1967,7 +2024,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               // This code is trying to guess which relative references are actually to the
               // base specification.
               // 
-              if (isLikelySourceURLReference(url, resourceNames, baseFilenames, localFilenames)) {
+              if (isLikelySourceURLReference(url, resourceNames, baseFilenames, localFilenames, webUrl)) {
                 b.append("](");
                 b.append(basePath);
                 if (!Utilities.noString(basePath) && !basePath.endsWith("/")) {
@@ -2013,28 +2070,33 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private static boolean isLikelySourceURLReference(String url, List<String> resourceNames, Set<String> baseFilenames, Set<String> localFilenames) {
-    if (resourceNames != null) {
-      for (String n : resourceNames) {
-        if (n != null && url.startsWith(n.toLowerCase()+".html")) {
-          return true;
-        }
-        if (n != null && url.startsWith(n.toLowerCase()+"-definitions.html")) {
-          return true;
+  private static boolean isLikelySourceURLReference(String url, List<String> resourceNames, Set<String> baseFilenames, Set<String> localFilenames, String baseUrl) {
+    if (url == null) {
+      return false;
+    }
+    if (baseUrl != null && !baseUrl.startsWith("http://hl7.org/fhir/R")) {
+      if (resourceNames != null) {
+        for (String n : resourceNames) {
+          if (n != null && url.startsWith(n.toLowerCase()+".html")) {
+            return true;
+          }
+          if (n != null && url.startsWith(n.toLowerCase()+"-definitions.html")) {
+            return true;
+          }
         }
       }
-    }
-    if (localFilenames != null) {
-      for (String n : localFilenames) {
-        if (n != null && url.startsWith(n.toLowerCase())) {
-          return false;
+      if (localFilenames != null) {
+        for (String n : localFilenames) {
+          if (n != null && url.startsWith(n.toLowerCase())) {
+            return false;
+          }
         }
       }
-    }
-    if (baseFilenames != null) {
-      for (String n : baseFilenames) {
-        if (n != null && url.startsWith(n.toLowerCase())) {
-          return true;
+      if (baseFilenames != null) {
+        for (String n : baseFilenames) {
+          if (n != null && url.startsWith(n.toLowerCase())) {
+            return true;
+          }
         }
       }
     }
@@ -2306,20 +2368,12 @@ public class ProfileUtilities extends TranslatingUtilities {
       dest.getExtension().remove(elist.get(1));
     }
     
-    for (Extension ext : source.getExtension()) {
-      if (!Utilities.existsInList(ext.getUrl(), NON_INHERITED_ED_URLS) && !dest.hasExtension(ext.getUrl())) {
-        dest.getExtension().add(ext.copy());
-      }      
-    }
-    for (Extension ext : source.getExtension()) {
-      if (Utilities.existsInList(ext.getUrl(), ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
-        dest.getExtension().add(ext.copy());
-      }      
-    }
+    updateExtensionsFromDefinition(dest, source);
+
     for (ElementDefinition ed : obligationProfileElements) {
       for (Extension ext : ed.getExtension()) {
         if (Utilities.existsInList(ext.getUrl(), ToolingExtensions.EXT_OBLIGATION_CORE, ToolingExtensions.EXT_OBLIGATION_TOOLS)) {
-          dest.getExtension().add(ext.copy());
+          dest.getExtension().add(new Extension(ToolingExtensions.EXT_OBLIGATION_CORE, ext.getValue().copy()));
         }      
       }
     }
@@ -2638,6 +2692,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         hasBinding = hasBinding || ed.hasBinding();
       }
       if (hasBinding) {
+        updateExtensionsFromDefinition(dest.getBinding(), source.getBinding());
         ElementDefinitionBindingComponent binding = derived.getBinding();
         for (ElementDefinition ed : obligationProfileElements) {
           for (Extension ext : ed.getBinding().getExtension()) {
@@ -2726,8 +2781,9 @@ public class ProfileUtilities extends TranslatingUtilities {
           derived.setBinding(null);
         else
           derived.getBinding().setUserData(UD_DERIVATION_EQUALS, true);
-      } // else if (base.hasBinding() && doesn't have bindable type )
-        //  base
+      } else if (base.hasBinding()) {
+         base.getBinding().getExtension().removeIf(ext -> Utilities.existsInList(ext.getUrl(), ProfileUtilities.NON_INHERITED_ED_URLS));
+      }
 
       if (derived.hasIsSummaryElement()) {
         if (!Base.compareDeep(derived.getIsSummaryElement(), base.getIsSummaryElement(), false)) {
@@ -2818,6 +2874,22 @@ public class ProfileUtilities extends TranslatingUtilities {
       checkTypeOk(dest, dest.getPattern().fhirType(), srcSD, "pattern");
     }
     //updateURLs(url, webUrl, dest);
+  }
+
+  private void updateExtensionsFromDefinition(Element dest, Element source) {
+    dest.getExtension().removeIf(ext -> Utilities.existsInList(ext.getUrl(), NON_INHERITED_ED_URLS) || (Utilities.existsInList(ext.getUrl(), DEFAULT_INHERITED_ED_URLS) && source.hasExtension(ext.getUrl())));
+
+    for (Extension ext : source.getExtension()) {
+      if (!dest.hasExtension(ext.getUrl())) {
+        dest.getExtension().add(ext.copy());
+      } else if (Utilities.existsInList(ext.getUrl(), NON_OVERRIDING_ED_URLS)) {
+        // do nothing
+      } else if (Utilities.existsInList(ext.getUrl(), OVERRIDING_ED_URLS)) {
+        dest.getExtensionByUrl(ext.getUrl()).setValue(ext.getValue());
+      } else {
+        dest.getExtension().add(ext.copy());  
+      }
+    }
   }
 
   private void mergeAdditionalBinding(ElementDefinitionBindingAdditionalComponent dest, ElementDefinitionBindingAdditionalComponent source) {
@@ -4563,6 +4635,13 @@ public class ProfileUtilities extends TranslatingUtilities {
   
   public Map<String, List<Property>> getCachedPropertyList() {
     return propertyCache;
+  }
+
+  public void checkExtensions(ElementDefinition outcome) {
+    outcome.getExtension().removeIf(ext -> Utilities.existsInList(ext.getUrl(), ProfileUtilities.NON_INHERITED_ED_URLS));
+    if (outcome.hasBinding()) {
+      outcome.getBinding().getExtension().removeIf(ext -> Utilities.existsInList(ext.getUrl(), ProfileUtilities.NON_INHERITED_ED_URLS));      
+    }
   }
 
 }

@@ -842,6 +842,7 @@ public class ProfilePathProcessor {
     outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
     profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
     profileUtilities.updateConstraintSources(outcome, getSourceStructureDefinition().getUrl());
+    profileUtilities.checkExtensions(outcome);
     profileUtilities.updateFromObligationProfiles(outcome);
     profileUtilities.updateURLs(url, webUrl, outcome);
     profileUtilities.markDerived(outcome);
