@@ -560,7 +560,12 @@ public class StructureDefinitionValidator extends BaseValidator {
                 if (Utilities.existsInList(rootPath, context.getResourceNames())) {
                   fpe.checkOnTypes(vc, rootPath, types, fpe.parse(exp), warnings);
                 } else {
-                  fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
+                  StructureDefinition sd = context.fetchTypeDefinition(rootPath);
+                  if (sd != null) {
+                    fpe.checkOnTypes(vc, rootPath, types, fpe.parse(exp), warnings);
+                  } else {
+                    fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
+                  }
                 }
                 for (IssueMessage s : warnings) {
                   warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, s.getId(), false, key+": "+s.getMessage());
