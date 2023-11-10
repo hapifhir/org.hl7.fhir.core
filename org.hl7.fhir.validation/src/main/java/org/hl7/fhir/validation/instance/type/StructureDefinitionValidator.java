@@ -37,6 +37,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.r5.utils.FHIRPathEngine.IssueMessage;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -554,15 +555,20 @@ public class StructureDefinitionValidator extends BaseValidator {
                   // we got to the root before finding anything typed
                   types.add(elements.get(0).getNamedChildValue("path"));
                 }
-                List<String> warnings = new ArrayList<>();
+                List<IssueMessage> warnings = new ArrayList<>();
                 ValidationContext vc = new ValidationContext(invariant);
                 if (Utilities.existsInList(rootPath, context.getResourceNames())) {
                   fpe.checkOnTypes(vc, rootPath, types, fpe.parse(exp), warnings);
                 } else {
-                  fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
+                  StructureDefinition sd = context.fetchTypeDefinition(rootPath);
+                  if (sd != null) {
+                    fpe.checkOnTypes(vc, rootPath, types, fpe.parse(exp), warnings);
+                  } else {
+                    fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
+                  }
                 }
-                for (String s : warnings) {
-                  warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, false, key+": "+s);
+                for (IssueMessage s : warnings) {
+                  warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, s.getId(), false, key+": "+s.getMessage());
                 }
               } catch (Exception e) {
                 if (debug) {
@@ -593,11 +599,11 @@ public class StructureDefinitionValidator extends BaseValidator {
         hint(errors, "2023-10-31", IssueType.INFORMATIONAL, stack, false, I18nConstants.UNABLE_TO_DETERMINE_TYPE_CONTEXT_INV, listContexts(sd));
       } else 
         try {
-          List<String> warnings = new ArrayList<>();
+          List<IssueMessage> warnings = new ArrayList<>();
           ValidationContext vc = new ValidationContext(invariant);
           fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
-          for (String s : warnings) {
-            warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, false, s);
+          for (IssueMessage s : warnings) {
+            warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, s.getId(), false, s.getMessage());
           }
         } catch (Exception e) {
           if (debug) {

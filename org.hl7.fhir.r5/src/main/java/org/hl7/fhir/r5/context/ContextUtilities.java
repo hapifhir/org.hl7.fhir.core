@@ -435,5 +435,13 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return null;
   }
 
+  public boolean isAbstractType(String typeName) {
+    StructureDefinition sd = context.fetchTypeDefinition(typeName);
+    if (sd != null) {
+      return sd.getAbstract();
+    }
+    return false;
+  }
+
 }
 

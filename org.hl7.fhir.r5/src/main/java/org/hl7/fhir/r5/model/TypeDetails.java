@@ -62,12 +62,20 @@ public class TypeDetails {
   public static final Set<String> FP_NUMBERS = new HashSet<String>(Arrays.asList(FP_Integer, FP_Decimal));
 
   public static class ProfiledType {
+    @Override
+    public String toString() {
+      return uri;
+    }
+
     private String uri;
     private List<String> profiles; // or, not and
     private List<ElementDefinitionBindingComponent> bindings;
     
     public ProfiledType(String n) {
-      uri = ns(n);    
+      uri = ns(n); 
+      if (uri.equals("http://hl7.org/fhir/StructureDefinition/CDA")) {
+        System.out.println("!"); // #FIXME
+      }
     }
     
     public String getUri() {
