@@ -19,6 +19,7 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.Address;
@@ -53,6 +54,7 @@ import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.Money;
+import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
@@ -1198,7 +1200,14 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
   private String displayIdentifier(Identifier ii) {
     String s = Utilities.noString(ii.getValue()) ? "?ngen-9?" : ii.getValue();
-
+    NamingSystem ns = context.getContext().getNSUrlMap().get(ii.getSystem());
+    if (ns != null) {
+      if (ns.hasWebPath()) {
+        s = "<a href=\""+Utilities.escapeXml(ns.getWebPath())+"\">"+ns.present()+"</a>#"+s;        
+      } else {
+        s = ns.present()+"#"+s;
+      }
+    }
     if (ii.hasType()) {
       if (ii.getType().hasText())
         s = ii.getType().getText()+":\u00A0"+s;
