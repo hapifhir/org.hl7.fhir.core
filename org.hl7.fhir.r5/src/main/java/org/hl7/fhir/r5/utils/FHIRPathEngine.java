@@ -3308,7 +3308,8 @@ public class FHIRPathEngine {
     }
     case As : {
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
-      TypeDetails td = new TypeDetails(CollectionStatus.SINGLETON, exp.getParameters().get(0).getName());
+      String tn = checkType(focus, exp);
+      TypeDetails td = new TypeDetails(CollectionStatus.SINGLETON, tn);
       if (td.typesHaveTargets()) {
         td.addTargets(focus.getTargets());
       }
@@ -3316,10 +3317,7 @@ public class FHIRPathEngine {
     }
     case OfType : { 
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
-      String tn = exp.getParameters().get(0).getName();
-      if (typeCastIsImpossible(focus, tn)) {
-        typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_OFTYPE_IMPOSSIBLE, focus.describeMin(), tn, exp.toString()), I18nConstants.FHIRPATH_OFTYPE_IMPOSSIBLE));
-      }
+      String tn = checkType(focus, exp);
       TypeDetails td = new TypeDetails(CollectionStatus.SINGLETON, tn);
       if (td.typesHaveTargets()) {
         td.addTargets(focus.getTargets());
@@ -3637,6 +3635,27 @@ public class FHIRPathEngine {
       break;
     }
     throw new Error("not Implemented yet");
+  }
+
+  private String checkType(TypeDetails focus, ExpressionNode exp) {
+    String tn;
+    if (exp.getParameters().get(0).getInner() != null) {
+      tn = exp.getParameters().get(0).getName()+"."+exp.getParameters().get(0).getInner().getName();
+    } else {
+      tn = "FHIR."+exp.getParameters().get(0).getName();
+    }
+    if (tn.startsWith("System.")) {
+      tn = tn.substring(7);
+    } else if (tn.startsWith("FHIR.")) {
+      tn = Utilities.pathURL(Constants.NS_FHIR_ROOT, "StructureDefinition", tn.substring(5));
+    } else if (tn.startsWith("CDA.")) {
+      tn = Utilities.pathURL(Constants.NS_CDA_ROOT, "StructureDefinition", tn.substring(4));
+    }
+    
+    if (typeCastIsImpossible(focus, tn)) {
+      typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_OFTYPE_IMPOSSIBLE, focus.describeMin(), tn, exp.toString()), I18nConstants.FHIRPATH_OFTYPE_IMPOSSIBLE));
+    }
+    return tn;
   }
 
   private boolean typeCastIsImpossible(TypeDetails focus, String tn) {
@@ -5988,7 +6007,7 @@ public class FHIRPathEngine {
                 for (TypeRefComponent t : ed.getType()) {
                   if (t.hasCode() && t.getCodeElement().hasValue()) {
                     String tn = null;
-                    if (t.getCode().equals("Element") || t.getCode().equals("BackboneElement")) {
+                    if (Utilities.existsInList(t.getCode(), "Element", "BackboneElement", "Base") || cu.isAbstractType(t.getCode())) {
                       tn = sdi.getType()+"#"+ed.getPath();
                     } else {
                       tn = t.getCode();
