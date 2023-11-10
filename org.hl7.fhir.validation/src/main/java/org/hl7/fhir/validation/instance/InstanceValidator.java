@@ -4762,7 +4762,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
             List<CanonicalType> list = discriminator.endsWith(".resolve()") || discriminator.equals("resolve()") ? criteriaElement.getType().get(0).getTargetProfile() : criteriaElement.getType().get(0).getProfile();
             if (list.size() == 0) {
-              throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE_WITH_A_PROFILE__IN_PROFILE_, criteriaElement.getId(), profile.getVersionedUrl()));
+              // we don't have to find something 
+              // throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE_WITH_A_PROFILE__IN_PROFILE_, criteriaElement.getId(), profile.getVersionedUrl()));
             } else if (list.size() > 1) {
               CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(" or ");
               for (CanonicalType c : list) {
