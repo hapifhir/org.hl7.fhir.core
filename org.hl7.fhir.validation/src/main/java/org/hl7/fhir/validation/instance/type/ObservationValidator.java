@@ -54,7 +54,7 @@ public class ObservationValidator extends BaseValidator {
         ok = checkObservationAgainstProfile(valContext,errors, element, stack, "http://hl7.org/fhir/StructureDefinition/bodytemp", "Body temperature", "LOINC", codes, pct, mode) && ok;
       } else if (hasLoincCode(code, codes, "8302-2", "3137-7", "3138-5", "8302-2", "8306-3", "8308-9")) {
         ok = checkObservationAgainstProfile(valContext,errors, element, stack, "http://hl7.org/fhir/StructureDefinition/bodyheight", "Body height", "LOINC", codes, pct, mode) && ok;
-      } else if (hasLoincCode(code, codes, "9843-4", "8287-5", "9843-4", "8289-1")) {
+      } else if (hasLoincCode(code, codes, "9843-4", "8287-5", "9843-4")) {
         ok = checkObservationAgainstProfile(valContext,errors, element, stack, "http://hl7.org/fhir/StructureDefinition/headcircum", "Head circumference", "LOINC", codes, pct, mode) && ok;
       } else if (hasLoincCode(code, codes, "29463-7", "29463-7", "3141-9", "3142-7", "75292-3", "79348-9", "8350-1", "8351-9")) {
         ok = checkObservationAgainstProfile(valContext,errors, element, stack, "http://hl7.org/fhir/StructureDefinition/bodyweight", "Body weight", "LOINC", codes, pct, mode) && ok;
