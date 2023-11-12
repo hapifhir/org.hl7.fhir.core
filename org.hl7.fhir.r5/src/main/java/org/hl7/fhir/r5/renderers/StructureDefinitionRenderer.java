@@ -91,6 +91,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableGenerationMo
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.XhtmlNodeList;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 public class StructureDefinitionRenderer extends ResourceRenderer {
@@ -3381,55 +3382,68 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
       
   public XhtmlNode compareMarkdown(String location, PrimitiveType md, PrimitiveType compare, int mode) throws FHIRException, IOException {
+    XhtmlNode ndiv = new XhtmlNode(NodeType.Element, "div");
     if (compare == null || mode == GEN_MODE_DIFF) {
       if (md.hasValue()) {
         String xhtml = hostMd.processMarkdown(location, md);
         if (Utilities.noString(xhtml)) {
           return null;
         }
-        XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
         try {
-          renderStatusDiv(md, x).add(new XhtmlParser().parseFragment(xhtml));
+          renderStatusDiv(md, ndiv).addChildren(fixFontSizes(new XhtmlParser().parseMDFragment(xhtml), 11));
         } catch (Exception e) {
-          x.span("color: maroon").tx(e.getLocalizedMessage());          
+          ndiv.span("color: maroon").tx(e.getLocalizedMessage());       
+          e.printStackTrace();
         }
-        return x;
+        return ndiv;
       } else {
         return null;
       }
     } else if (areEqual(compare, md)) {
       if (md.hasValue()) {
-        String xhtml = "<div>"+hostMd.processMarkdown(location, md)+"</div>";
-        XhtmlNode div = new XhtmlParser().parseFragment(xhtml);
-        for (XhtmlNode n : div.getChildNodes()) {
+        String xhtml = hostMd.processMarkdown(location, md);
+        List<XhtmlNode> nodes = new XhtmlParser().parseMDFragment(xhtml);
+        for (XhtmlNode n : nodes) {
           if (n.getNodeType() == NodeType.Element) {
             n.style(unchangedStyle());
           }
         }
-        return div;
+        ndiv.addChildren(nodes);
+        return ndiv;
       } else {
         return null;
       }
     } else {
-      XhtmlNode ndiv = new XhtmlNode(NodeType.Element, "div");
       if (md.hasValue()) {
-        String xhtml = "<div>"+hostMd.processMarkdown(location, md)+"</div>";
-        XhtmlNode div = new XhtmlParser().parseFragment(xhtml);
-        ndiv.copyAllContent(div);
+        String xhtml = hostMd.processMarkdown(location, md);
+        List<XhtmlNode> div = new XhtmlParser().parseMDFragment(xhtml);
+        ndiv.addChildren(div);
       }
       if (compare.hasValue()) {
         String xhtml = "<div>"+hostMd.processMarkdown(location, compare)+"</div>";
-        XhtmlNode div = new XhtmlParser().parseFragment(xhtml);
-        for (XhtmlNode n : div.getChildNodes()) {
+        List<XhtmlNode> div = new XhtmlParser().parseMDFragment(xhtml);
+        for (XhtmlNode n : div) {
           if (n.getNodeType() == NodeType.Element) {
             n.style(removedStyle());
           }
         }
         ndiv.br();
-        ndiv.copyAllContent(div);
+        ndiv.addChildren(div);
       }
       return ndiv;
     }
+  }
+
+  private List<XhtmlNode> fixFontSizes(List<XhtmlNode> nodes, int size) {
+    for (XhtmlNode x : nodes) {
+      if (Utilities.existsInList(x.getName(), "p", "li") && !x.hasAttribute("style")) {
+        x.style("font-size: "+size+"px");
+      }
+      if (x.hasChildren()) {
+        fixFontSizes(x.getChildNodes(), size);
+      }
+    }
+    return nodes;
   }
 
   private boolean areEqual(PrimitiveType compare, PrimitiveType md) {
@@ -3934,7 +3948,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           list.merge(new DiscriminatorWithStatus(d));
         }
       }
-      x.tx(", and can be differentiated using the following discriminators: ");
       var ul = x.ul();
       for (DiscriminatorWithStatus rc : list) {
         rc.render(x.li());
@@ -4316,7 +4329,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         MarkdownType newBinding = PublicationHacker.fixBindingDescriptions(context.getContext(), binding.getDescriptionElement());
         if (mode == GEN_MODE_SNAP || mode == GEN_MODE_MS) {
           bindingDesc = new XhtmlNode(NodeType.Element, "div");
-          bindingDesc.add(new XhtmlParser().parseFragment(hostMd.processMarkdown("Binding.description", newBinding)));
+          bindingDesc.addChildren(new XhtmlParser().parseMDFragment(hostMd.processMarkdown("Binding.description", newBinding)));
         } else {
 
           StringType oldBinding = compBinding != null && compBinding.hasDescription() ? PublicationHacker.fixBindingDescriptions(context.getContext(), compBinding.getDescriptionElement()) : null;
