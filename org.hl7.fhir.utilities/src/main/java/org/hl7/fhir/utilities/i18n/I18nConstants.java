@@ -28,6 +28,7 @@ public class I18nConstants {
   public static final String BUNDLE_BUNDLE_ENTRY_NOPROFILE_EXPL = "Bundle_BUNDLE_Entry_NoProfile_EXPL";
   public static final String BUNDLE_BUNDLE_ENTRY_NOPROFILE_TYPE = "Bundle_BUNDLE_Entry_NoProfile_TYPE";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND = "Bundle_BUNDLE_Entry_NotFound";
+  public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT = "BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT";
   public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN_DOCUMENT = "Bundle_BUNDLE_Entry_Orphan_DOCUMENT";
   public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN_MESSAGE = "Bundle_BUNDLE_Entry_Orphan_MESSAGE";
   public static final String BUNDLE_BUNDLE_ENTRY_REVERSE_R4 = "BUNDLE_BUNDLE_ENTRY_REVERSE_R4";
@@ -1022,6 +1023,9 @@ public class I18nConstants {
   public static final String FHIRPATH_ARITHMETIC_UNIT = "FHIRPATH_ARITHMETIC_UNIT";
   public static final String FHIRPATH_ARITHMETIC_PLUS = "FHIRPATH_ARITHMETIC_PLUS";
   public static final String FHIRPATH_ARITHMETIC_MINUS = "FHIRPATH_ARITHMETIC_MINUS";
+  public static final String BUNDLE_ENTRY_URL_MATCHES_TYPE_ID = "BUNDLE_ENTRY_URL_MATCHES_TYPE_ID";
+  public static final String BUNDLE_ENTRY_URL_MATCHES_NO_ID = "BUNDLE_ENTRY_URL_MATCHES_NO_ID";
+  public static final String BUNDLE_ENTRY_URL_ABSOLUTE = "BUNDLE_ENTRY_URL_ABSOLUTE";
 }
 
 

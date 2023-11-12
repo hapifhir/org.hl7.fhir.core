@@ -58,7 +58,7 @@ public class BundleValidator extends BaseValidator {
     if (entries.size() == 0) {
       ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, stack.getLiteralPath(), !(type.equals(DOCUMENT) || type.equals(MESSAGE)), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRST) && ok;
     } else {
-      // Get the first entry, the MessageHeader
+      // Get the first entry, the MessageHeader or Document
       Element firstEntry = entries.get(0);
       // Get the stack of the first entry
       NodeStack firstStack = stack.push(firstEntry, 1, null, null);
@@ -75,16 +75,14 @@ public class BundleValidator extends BaseValidator {
           ok = handleSpecialCaseForLastUpdated(bundle, errors, stack) && ok;
         }
         ok = checkAllInterlinked(errors, entries, stack, bundle, false) && ok;
-      }
-      if (type.equals(MESSAGE)) {
+      } else if (type.equals(MESSAGE)) {
         Element resource = firstEntry.getNamedChild(RESOURCE);
         if (rule(errors, NO_RULE_DATE, IssueType.INVALID, firstEntry.line(), firstEntry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), resource != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE)) {
           String id = resource.getNamedChildValue(ID);
           ok = validateMessage(errors, entries, resource, firstStack.push(resource, -1, null, null), fullUrl, id) && ok;
           ok = checkAllInterlinked(errors, entries, stack, bundle, true) && ok;
         }
-      }
-      if (type.equals(SEARCHSET)) {
+      } else if (type.equals(SEARCHSET)) {
         ok = checkSearchSet(errors, bundle, entries, stack) && ok;
       }
       // We do not yet have rules requiring that the id and fullUrl match when dealing with messaging Bundles
@@ -101,8 +99,24 @@ public class BundleValidator extends BaseValidator {
       String fullUrl = entry.getNamedChildValue(FULL_URL);
       String url = getCanonicalURLForEntry(entry);
       String id = getIdForEntry(entry);
+      String rtype = getTypeForEntry(entry);
+      
+      if (!Utilities.noString(fullUrl)) {
+        if (Utilities.isAbsoluteUrl(fullUrl)) {
+          if (rtype != null &&  fullUrl.matches(urlRegex)) {
+            if (rule(errors, "2023-11-13", IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), id != null, I18nConstants.BUNDLE_ENTRY_URL_MATCHES_NO_ID, fullUrl)) {
+              ok = rule(errors, "2023-11-13", IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), fullUrl.endsWith("/"+rtype+"/"+id), I18nConstants.BUNDLE_ENTRY_URL_MATCHES_TYPE_ID, fullUrl, rtype, id) && ok;
+            } else {
+              ok = false;
+            }
+          }
+        } else {
+          ok = false;
+          rule(errors, "2023-11-13", IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), false, I18nConstants.BUNDLE_ENTRY_URL_ABSOLUTE, fullUrl);
+        }
+      }
       if (url != null) {
-        if (!(!url.equals(fullUrl) || (url.matches(uriRegexForVersion()) && url.endsWith("/" + id))) && !isV3orV2Url(url))
+        if (!(!url.equals(fullUrl) || (url.matches(urlRegex) && url.endsWith("/" + id))) && !isV3orV2Url(url))
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_MISMATCHIDURL, url, fullUrl, id) && ok;
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), !url.equals(fullUrl) || serverBase == null || (url.equals(Utilities.pathURL(serverBase, entry.getNamedChild(RESOURCE).fhirType(), id))), I18nConstants.BUNDLE_BUNDLE_ENTRY_CANONICAL, url, fullUrl) && ok;
       }
@@ -111,8 +125,7 @@ public class BundleValidator extends BaseValidator {
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), estack.getLiteralPath(), fullUrlOptional || fullUrl != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED) && ok;
       }
       // check bundle profile requests
-      if (entry.hasChild(RESOURCE)) {
-        String rtype = entry.getNamedChild(RESOURCE).fhirType();
+      if (rtype != null) {
         int rcount = counter.containsKey(rtype) ? counter.get(rtype)+1 : 0;
         counter.put(rtype, rcount);
         Element res = entry.getNamedChild(RESOURCE);
@@ -548,9 +561,12 @@ public class BundleValidator extends BaseValidator {
     }
 
     if (ref != null && !Utilities.noString(reference) && !reference.startsWith("#")) {
-      Element target = resolveInBundle(bundle, entries, reference, fullUrl, type, id);
-      return rule(errors, NO_RULE_DATE, IssueType.INVALID, ref.line(), ref.col(), stack.addToLiteralPath("reference"), target != null,
-        I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, reference, name);
+      ElementMatch target = resolveInBundle(bundle, entries, reference, fullUrl, type, id);
+      if (target == null) {
+        return rule(errors, NO_RULE_DATE, IssueType.INVALID, ref.line(), ref.col(), stack.addToLiteralPath("reference"), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, reference, name);        
+      } else {
+        return rule(errors, NO_RULE_DATE, IssueType.INVALID, ref.line(), ref.col(), stack.addToLiteralPath("reference"), target.isValid(), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT, reference, name);
+      }
     }
     return true;
   }
@@ -594,9 +610,9 @@ public class BundleValidator extends BaseValidator {
     for (EntrySummary e : entryList) {
       Set<String> references = findReferences(e.getEntry());
       for (String ref : references) {
-        Element tgt = resolveInBundle(bundle, entries, ref, e.getEntry().getChildValue(FULL_URL), e.getResource().fhirType(), e.getResource().getIdBase());
-        if (tgt != null) {
-          EntrySummary t = entryForTarget(entryList, tgt);
+        ElementMatch tgt = resolveInBundle(bundle, entries, ref, e.getEntry().getChildValue(FULL_URL), e.getResource().fhirType(), e.getResource().getIdBase());
+        if (tgt != null && tgt.isValid()) {
+          EntrySummary t = entryForTarget(entryList, tgt.getElement());
           if (t != null ) {
             if (t != e) {
 //              System.out.println("Entry "+e.getIndex()+" refers to "+t.getIndex()+" by ref '"+ref+"'");
@@ -689,13 +705,6 @@ public class BundleValidator extends BaseValidator {
     return Utilities.existsInList(fhirType, "Provenance");
   }
 
-  private String uriRegexForVersion() {
-    if (VersionUtilities.isR3Ver(context.getVersion()))
-      return URI_REGEX3;
-    else
-      return Constants.URI_REGEX;
-  }
-
   private String getCanonicalURLForEntry(Element entry) {
     Element e = entry.getNamedChild(RESOURCE);
     if (e == null)
@@ -708,6 +717,13 @@ public class BundleValidator extends BaseValidator {
     if (e == null)
       return null;
     return e.getNamedChildValue(ID);
+  }
+
+  private String getTypeForEntry(Element entry) {
+    Element e = entry.getNamedChild(RESOURCE);
+    if (e == null)
+      return null;
+    return e.fhirType();
   }
 
   /**
