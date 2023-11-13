@@ -55,6 +55,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -68,19 +69,41 @@ import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.validation.BaseValidator.ElementMatch;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class BaseValidator implements IValidationContextResourceLoader {
+
+
+  public class ElementMatch {
+
+    private Element element;
+    private boolean valid;
+    protected ElementMatch(Element element, boolean valid) {
+      super();
+      this.element = element;
+      this.valid = valid;
+    }
+    public Element getElement() {
+      return element;
+    }
+    public boolean isValid() {
+      return valid;
+    }
+
+  }
 
 
   public class BooleanHolder {
@@ -180,6 +203,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
       this.xverManager = new XVerExtensionManager(context);
     }
     this.debug = debug;
+    urlRegex = Constants.URI_REGEX_XVER.replace("$$", CommaSeparatedStringBuilder.join("|", context.getResourceNames()));
   }
   
   public BaseValidator(BaseValidator parent) {
@@ -199,6 +223,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
     this.warnOnDraftOrExperimental = parent.warnOnDraftOrExperimental;
     this.statusWarnings = parent.statusWarnings;
     this.bpWarnings = parent.bpWarnings;
+    this.urlRegex = parent.urlRegex;
   }
   
   private boolean doingLevel(IssueSeverity error) {
@@ -240,6 +265,8 @@ public class BaseValidator implements IValidationContextResourceLoader {
    * offered when the validator is hosted in some other process
    */
   private Map<String, ValidationControl> validationControl = new HashMap<>();
+
+  protected String urlRegex;
 
     /**
    * Test a rule and add a {@link IssueSeverity#FATAL} validation message if the validation fails
@@ -998,12 +1025,15 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return null;
   }
 
-  protected Element resolveInBundle(Element bundle, List<Element> entries, String ref, String fullUrl, String type, String id) {
+  protected ElementMatch resolveInBundle(Element bundle, List<Element> entries, String ref, String fullUrl, String type, String id) {
     @SuppressWarnings("unchecked")
     Map<String, Element> map = (Map<String, Element>) bundle.getUserData("validator.entrymap");
+    Map<String, Element> relMap = (Map<String, Element>) bundle.getUserData("validator.entrymapR");
     if (map == null) {
       map = new HashMap<>();
       bundle.setUserData("validator.entrymap", map);
+      relMap = new HashMap<>();
+      bundle.setUserData("validator.entrymapR", relMap);
       for (Element entry : entries) {
         String fu = entry.getNamedChildValue(FULL_URL);
         map.put(fu,  entry);
@@ -1011,14 +1041,25 @@ public class BaseValidator implements IValidationContextResourceLoader {
         if (resource != null) {
           String et = resource.getType();
           String eid = resource.getNamedChildValue(ID);
-          map.put(et+"/"+eid,  entry);
+          if (eid != null) {
+            if (VersionUtilities.isR4Plus(context.getVersion())) {
+              relMap.put(et+"/"+eid,  entry);
+            } else {
+              map.put(et+"/"+eid,  entry);
+            }
+          }
         }
       }      
     }
     
     if (Utilities.isAbsoluteUrl(ref)) {
       // if the reference is absolute, then you resolve by fullUrl. No other thinking is required.
-      return map.get(ref);
+      Element e = map.get(ref);
+      if (e == null) {
+        return null;
+      } else {
+        return new ElementMatch(e, true);
+      }
 //      for (Element entry : entries) {
 //        String fu = entry.getNamedChildValue(FULL_URL);
 //        if (ref.equals(fu))
@@ -1028,9 +1069,10 @@ public class BaseValidator implements IValidationContextResourceLoader {
     } else {
       // split into base, type, and id
       String u = null;
-      if (fullUrl != null && fullUrl.endsWith(type + "/" + id))
+      if (fullUrl != null && fullUrl.matches(urlRegex) && fullUrl.endsWith(type + "/" + id)) {
         // fullUrl = complex
         u = fullUrl.substring(0, fullUrl.length() - (type + "/" + id).length()) + ref;
+      }
 //        u = fullUrl.substring((type+"/"+id).length())+ref;
       String[] parts = ref.split("\\/");
       if (parts.length >= 2) {
@@ -1040,7 +1082,14 @@ public class BaseValidator implements IValidationContextResourceLoader {
         if (res == null) {
           res = map.get(t+"/"+i);
         }
-        return res;
+        if (res == null && relMap.containsKey(t+"/"+i)) {
+          res = relMap.get(t+"/"+i);
+          return new ElementMatch(res, false);
+        } else if (res == null) {
+          return null;
+        } else {
+          return new ElementMatch(res, true);
+        }
 //        for (Element entry : entries) {
 //          String fu = entry.getNamedChildValue(FULL_URL);
 //          if (fu != null && fu.equals(u))
