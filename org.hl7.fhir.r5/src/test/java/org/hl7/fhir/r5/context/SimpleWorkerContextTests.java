@@ -23,8 +23,11 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.junit.jupiter.api.Assertions;
@@ -60,7 +63,7 @@ public class SimpleWorkerContextTests {
   TerminologyCache.CacheToken cacheToken;
 
   @Mock
-  IWorkerContext.ValidationResult expectedValidationResult;
+  ValidationResult expectedValidationResult;
 
   @Mock
   ValueSetExpansionOutcome expectedExpansionResult;
@@ -137,7 +140,7 @@ public class SimpleWorkerContextTests {
 
   @Test
   public void testValidateCodingWithCache() throws IOException {
-    ValidationOptions validationOptions = new ValidationOptions().withGuessSystem().withVersionFlexible(false);
+    ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5).withGuessSystem().withVersionFlexible(false);
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
 
@@ -146,7 +149,7 @@ public class SimpleWorkerContextTests {
 
     ValidationContextCarrier ctxt = mock(ValidationContextCarrier.class);
 
-    IWorkerContext.ValidationResult actualValidationResult = context.validateCode(validationOptions, coding, valueSet, ctxt);
+    ValidationResult actualValidationResult = context.validateCode(validationOptions, coding, valueSet, ctxt);
 
     assertEquals(expectedValidationResult, actualValidationResult);
 
@@ -157,7 +160,7 @@ public class SimpleWorkerContextTests {
 
   @Test
   public void testValidateCodingWithValueSetChecker() throws IOException {
-    ValidationOptions validationOptions = new ValidationOptions().withGuessSystem().withVersionFlexible(false);
+    ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5).withGuessSystem().withVersionFlexible(false);
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
 
@@ -168,7 +171,7 @@ public class SimpleWorkerContextTests {
 
     ValidationContextCarrier ctxt = mock(ValidationContextCarrier.class);
 
-    IWorkerContext.ValidationResult actualValidationResult = context.validateCode(validationOptions, coding, valueSet, ctxt);
+    ValidationResult actualValidationResult = context.validateCode(validationOptions, coding, valueSet, ctxt);
 
     assertEquals(expectedValidationResult, actualValidationResult);
 
@@ -180,7 +183,7 @@ public class SimpleWorkerContextTests {
 
   @Test
   public void testValidateCodingWithServer() throws IOException {
-    ValidationOptions validationOptions = new ValidationOptions().withGuessSystem().withVersionFlexible(false).withNoClient();
+    ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5).withGuessSystem().withVersionFlexible(false).withNoClient();
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
 
@@ -190,7 +193,7 @@ public class SimpleWorkerContextTests {
 
     ValidationContextCarrier ctxt = mock(ValidationContextCarrier.class);
 
-    IWorkerContext.ValidationResult actualValidationResult = context.validateCode(validationOptions, coding, valueSet, ctxt);
+    ValidationResult actualValidationResult = context.validateCode(validationOptions, coding, valueSet, ctxt);
 
     assertEquals(expectedValidationResult, actualValidationResult);
 
@@ -207,7 +210,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters);
     Mockito.doReturn(expectedValidationResult).when(terminologyCache).getValidation(cacheToken);
 
-    IWorkerContext.ValidationResult actualValidationResult = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
+    ValidationResult actualValidationResult = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
     assertEquals(expectedValidationResult, actualValidationResult);
 
     Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("CodeableConcept", codeableConcept);
@@ -225,7 +228,7 @@ public class SimpleWorkerContextTests {
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters);
 
-    IWorkerContext.ValidationResult validationResultB = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
+    ValidationResult validationResultB = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
     assertEquals(expectedValidationResult, validationResultB);
 
     Mockito.verify(valueSetCheckerSimple).validateCode("CodeableConcept", codeableConcept);
@@ -247,7 +250,7 @@ public class SimpleWorkerContextTests {
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, codeableConcept, valueSet, expParameters);
 
-    IWorkerContext.ValidationResult validationResultB = context.validateCode(validationOptions, codeableConcept, valueSet);
+    ValidationResult validationResultB = context.validateCode(validationOptions, codeableConcept, valueSet);
 
     assertEquals(expectedValidationResult, validationResultB);
 

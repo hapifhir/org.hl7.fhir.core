@@ -61,7 +61,6 @@ import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
-import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.Bundle;
@@ -121,9 +120,13 @@ import org.hl7.fhir.r5.renderers.OperationOutcomeRenderer;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
@@ -134,6 +137,7 @@ import org.hl7.fhir.r5.utils.ResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.TranslationServices;
@@ -679,6 +683,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }  
 
   @Override
+  public CodeSystem fetchCodeSystem(String system, FhirPublication fhirVersion) {
+    return fetchCodeSystem(system);
+  }
+  
+  @Override
   public CodeSystem fetchCodeSystem(String system) {
     if (system == null) {
       return null;
@@ -701,6 +710,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return cs;
   } 
 
+
+  public CodeSystem fetchCodeSystem(String system, String version, FhirPublication fhirVersion) {
+    return fetchCodeSystem(system, version);
+  }
+  
   public CodeSystem fetchCodeSystem(String system, String version) {
     if (version == null) {
       return fetchCodeSystem(system);
@@ -717,6 +731,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     return cs;
   } 
+  
+
+  public CodeSystem fetchSupplementedCodeSystem(String system, FhirPublication fhirVersion) {
+    return fetchSupplementedCodeSystem(system);  
+  }
+  
+  public CodeSystem fetchSupplementedCodeSystem(String system, String version, FhirPublication fhirVersion) {
+    return fetchSupplementedCodeSystem(system, version);
+  }
   
   @Override
   public CodeSystem fetchSupplementedCodeSystem(String system) {
@@ -742,6 +765,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return cs;
   }
 
+
+  public boolean supportsSystem(String system, FhirPublication fhirVersion) throws TerminologyServiceException {
+    return supportsSystem(system);
+  }
+  
   @Override
   public boolean supportsSystem(String system) throws TerminologyServiceException {
     synchronized (lock) {
@@ -1762,6 +1790,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.name = name;
   }
 
+
+  public List<String> getResourceNames(FhirPublication fhirVersion) {
+    return getResourceNames();    
+  }
+  
+  public Set<String> getResourceNamesAsSet(FhirPublication fhirVersion) {
+    return getResourceNamesAsSet();
+  }
+  
   @Override
   public Set<String> getResourceNamesAsSet() {
     Set<String> res = new HashSet<String>();
@@ -2187,6 +2224,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
   
+  public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_, FhirPublication fhirVersion) {
+    return fetchResourcesByType(class_);
+  }
+  
   @SuppressWarnings("unchecked")
   public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_) {
 
@@ -2254,6 +2295,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean forPublication;
   private boolean cachingAllowed = true;
 
+  public Resource fetchResourceById(String type, String uri, FhirPublication fhirVersion) {
+    return fetchResourceById(type, uri);
+  }
+  
   @Override
   public Resource fetchResourceById(String type, String uri) {
     synchronized (lock) {
@@ -2286,6 +2331,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }    
   }
   
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, FhirPublication fhirVersion) {
+    return fetchResource(class_, uri);
+  }
+  
   public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
     try {
       return fetchResourceWithException(class_, uri, null);
@@ -2293,7 +2342,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       throw new Error(e);
     }
   }
-  
+
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, FhirPublication fhirVersion) {
+    return fetchResource(class_, uri, version);
+  }
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version) {
     try {
       return fetchResourceWithExceptionByVersion(class_, uri, version, null);
@@ -2335,6 +2387,46 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  @Override
+  public <T extends Resource> boolean hasResource(Class<T> class_, String uri, FhirPublication fhirVersion) {
+    try {
+      return fetchResourceWithException(class_, uri) != null;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public <T extends Resource> boolean hasResource(String cls, String uri, FhirPublication fhirVersion) {
+    try {
+      return fetchResourceWithException(cls, uri) != null;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public <T extends Resource> boolean hasResourceVersion(Class<T> class_, String uri, String version, FhirPublication fhirVersion) {
+    try {
+      return fetchResourceWithExceptionByVersion(class_, uri, version, null) != null;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public <T extends Resource> boolean hasResourceVersion(String cls, String uri, String version, FhirPublication fhirVersion) {
+    try {
+      return fetchResourceWithExceptionByVersion(cls, uri, version, null) != null;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public <T extends Resource> boolean hasResource(Class<T> class_, String uri, Resource sourceOfReference) {
+    try {
+      return fetchResourceWithExceptionByVersion(class_, uri, version, null) != null;
+    } catch (Exception e) {
+      return false;
+    }
+  }
 
   public TranslationServices translator() {
     return translator;
@@ -2540,6 +2632,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return logger;
   }
 
+
+  public StructureDefinition fetchTypeDefinition(String typeName, FhirPublication fhirVersion) {
+    return fetchTypeDefinition(typeName);
+  }
+
   @Override
   public StructureDefinition fetchTypeDefinition(String typeName) {
     if (Utilities.isAbsoluteUrl(typeName)) {
@@ -2578,6 +2675,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public List<StructureDefinition> fetchTypeDefinitions(String typeName) {
     return typeManager.getDefinitions(typeName);
   }
+
+  @Override
+  public List<StructureDefinition> fetchTypeDefinitions(String typeName, FhirPublication fhirVersion) {
+    return typeManager.getDefinitions(typeName);
+  }
+
 
   public boolean isPrimitiveType(String type) {
     return typeManager.isPrimitive(type);

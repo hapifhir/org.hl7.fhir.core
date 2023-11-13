@@ -99,6 +99,7 @@ import org.hl7.fhir.r4.utils.TranslatingUtilities;
 import org.hl7.fhir.r4.utils.formats.CSVWriter;
 import org.hl7.fhir.r4.utils.formats.XLSXWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -252,7 +253,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private ProfileKnowledgeProvider pkp;
   private boolean igmode;
   private boolean exception;
-  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions();
+  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions(FhirPublication.R4);
   private boolean newSlicingProcessing;
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp) {

@@ -18,7 +18,6 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -37,6 +36,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -241,7 +241,7 @@ public class TerminologyServiceTests {
     } else {
       vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
     }
-    ValidationOptions options = new ValidationOptions();
+    ValidationOptions options = new ValidationOptions(FhirPublication.R5);
     if (p.hasParameter("displayLanguage")) {
       options = options.withLanguage(p.getParameterString("displayLanguage"));
     } else if (lang != null ) {

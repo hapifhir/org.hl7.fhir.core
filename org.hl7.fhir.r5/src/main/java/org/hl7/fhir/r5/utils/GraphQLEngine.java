@@ -57,6 +57,7 @@ import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.graphql.Argument;
 import org.hl7.fhir.utilities.graphql.Argument.ArgumentListStatus;
@@ -125,6 +126,10 @@ public class GraphQLEngine implements IGraphQLEngine {
     @Override
     public Base copy() {
       throw new Error("Not Implemented");
+    }
+
+    public FhirPublication getFHIRPublicationVersion() {
+      return FhirPublication.R5; 
     }
   }
 
@@ -220,6 +225,9 @@ public class GraphQLEngine implements IGraphQLEngine {
       throw new Error("Not Implemented");
     }
 
+    public FhirPublication getFHIRPublicationVersion() {
+      return FhirPublication.R5; 
+    }
   }
   
   private IWorkerContext context;
