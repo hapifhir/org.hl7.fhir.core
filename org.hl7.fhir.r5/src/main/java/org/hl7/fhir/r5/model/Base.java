@@ -36,6 +36,8 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBase;
+import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -582,4 +584,5 @@ public abstract class Base implements Serializable, IBase, IElement {
     return validationMessages != null ? validationMessages : new ArrayList<>();
   }
 
+  public abstract FhirPublication getFHIRPublicationVersion();
 }

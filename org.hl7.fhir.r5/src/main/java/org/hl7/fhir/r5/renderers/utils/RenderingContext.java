@@ -157,7 +157,7 @@ public class RenderingContext {
   private boolean header;
   private boolean contained;
 
-  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R5);
   private boolean noSlowLookup;
   private String tooCostlyNoteEmpty;
   private String tooCostlyNoteNotEmpty;

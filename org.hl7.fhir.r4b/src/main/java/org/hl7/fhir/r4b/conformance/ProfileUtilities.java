@@ -116,6 +116,7 @@ import org.hl7.fhir.r4b.utils.XVerExtensionManager;
 import org.hl7.fhir.r4b.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r4b.utils.formats.CSVWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -341,7 +342,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private ProfileKnowledgeProvider pkp;
   private boolean igmode;
   private boolean exception;
-  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R4B);
   private boolean newSlicingProcessing;
   private String defWebRoot;
   private boolean autoFixSliceNames;
