@@ -339,6 +339,18 @@ public abstract class Base implements Serializable, IBase, IElement {
     return result;
   }
 
+  public Base getChildValueByName(String name) {
+    Property p = getChildByName(name);
+    if (p != null && p.hasValues()) {
+      if (p.getValues().size() > 1) {
+        throw new Error("Too manye values for "+name+" found");
+      } else {
+        return p.getValues().get(0);        
+      }
+    }
+    return null;
+  }
+  
   public Base[] listChildrenByName(String name, boolean checkValid) throws FHIRException {
   	if (name.equals("*")) {
   		List<Property> children = new ArrayList<Property>();
