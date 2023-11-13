@@ -5381,9 +5381,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (!Utilities.noString(ref)) {
         for (Element bundle : bundles) {
           List<Element> entries = bundle.getChildren(ENTRY);
-          Element tgt = resolveInBundle(bundle, entries, ref, fu, resource.fhirType(), resource.getIdBase());
-          if (tgt != null) {
-            element.setUserData("validator.bundle.resolution", tgt.getNamedChild(RESOURCE));
+          ElementMatch tgt = resolveInBundle(bundle, entries, ref, fu, resource.fhirType(), resource.getIdBase());
+          if (tgt != null && tgt.isValid()) {
+            element.setUserData("validator.bundle.resolution", tgt.getElement().getNamedChild(RESOURCE));
             return;
           }
         }

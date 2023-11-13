@@ -1285,6 +1285,11 @@ public class XhtmlParser {
     }
   }
 
+  public List<XhtmlNode> parseMDFragment(String source) throws IOException, FHIRException  {
+    XhtmlNode div = parseFragment( "<div>"+source+"</div>");
+    return div.getChildNodes();
+  }
+  
   public XhtmlNode parseFragment(String source) throws IOException, FHIRException  {
     rdr = new StringReader(source);
     try {
