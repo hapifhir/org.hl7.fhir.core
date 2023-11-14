@@ -346,7 +346,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(expectedExpansionResult).when(valueSetExpanderSimple).expand(eq(vs),
       argThat(new ParametersMatcher(pInWithDependentResources)));
 
-    Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple();
+    Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple(null);
 
     ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn);
 
@@ -373,7 +373,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(expectedExpansionResult).when(valueSetExpanderSimple).expand(eq(vs),
       argThat(new ParametersMatcher(pInWithDependentResources)));
 
-    Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple();
+    Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple(null);
 
     Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(eq(vs), argThat(new ParametersMatcher(pInWithDependentResources)), eq(params));
 

@@ -1120,7 +1120,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   // public API
   private boolean checkCode(List<ValidationMessage> errors, Element element, String path, String code, String system, String version, String display, boolean checkDisplay, NodeStack stack) throws TerminologyServiceException {
     long t = System.nanoTime();
-    boolean ss = context.supportsSystem(system);
+    boolean ss = context.supportsSystem(system, baseOptions.getFhirVersion());
     timeTracker.tx(t, "ss "+system);
     if (ss) {
       t = System.nanoTime();
@@ -1382,7 +1382,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   boolean atLeastOneSystemIsSupported = false;
                   for (Coding nextCoding : cc.getCoding()) {
                     String nextSystem = nextCoding.getSystem();
-                    if (isNotBlank(nextSystem) && context.supportsSystem(nextSystem)) {
+                    if (isNotBlank(nextSystem) && context.supportsSystem(nextSystem, baseOptions.getFhirVersion())) {
                       atLeastOneSystemIsSupported = true;
                       break;
                     }
@@ -1474,7 +1474,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public boolean checkBindings(List<ValidationMessage> errors, String path, Element element, NodeStack stack, ValueSet valueset, Coding nextCoding) {
     boolean ok = true;
-    if (isNotBlank(nextCoding.getCode()) && isNotBlank(nextCoding.getSystem()) && context.supportsSystem(nextCoding.getSystem())) {
+    if (isNotBlank(nextCoding.getCode()) && isNotBlank(nextCoding.getSystem()) && context.supportsSystem(nextCoding.getSystem(), baseOptions.getFhirVersion())) {
       ValidationResult vr = checkCodeOnServer(stack, valueset, nextCoding, false);
       if (vr != null && vr.isOk()) {
         for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
@@ -1535,7 +1535,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   boolean atLeastOneSystemIsSupported = false;
                   for (Coding nextCoding : cc.getCoding()) {
                     String nextSystem = nextCoding.getSystem();
-                    if (isNotBlank(nextSystem) && context.supportsSystem(nextSystem)) {
+                    if (isNotBlank(nextSystem) && context.supportsSystem(nextSystem, baseOptions.getFhirVersion())) {
                       atLeastOneSystemIsSupported = true;
                       break;
                     }
@@ -1596,7 +1596,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       String nextCode = nextCoding.getCode();
                       String nextSystem = nextCoding.getSystem();
                       String nextVersion = nextCoding.getVersion();
-                      if (isNotBlank(nextCode) && isNotBlank(nextSystem) && context.supportsSystem(nextSystem)) {
+                      if (isNotBlank(nextCode) && isNotBlank(nextSystem) && context.supportsSystem(nextSystem, baseOptions.getFhirVersion())) {
                         ValidationResult vr = checkCodeOnServer(stack, nextCode, nextSystem, nextVersion, null, false);
                         if (vr != null && vr.isOk()) {
                           for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
