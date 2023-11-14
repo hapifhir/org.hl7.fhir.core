@@ -13,10 +13,13 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.model.CapabilityStatement;
+import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueType;
+import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.r4.model.ValueSet;
+import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r4.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.CSVReader;
@@ -63,6 +66,16 @@ public class VSACImporter extends OIDBasedValueSetImporter {
             errs.put(oid, "Expansion: " +e.getMessage());
             System.out.println(e.getMessage());
           }
+          while (isIncomplete(vs.getExpansion())) {
+            Parameters p = new Parameters();
+            p.addParameter("offset", vs.getExpansion().getParameter("offset").getValueIntegerType().getValue() + vs.getExpansion().getParameter("count").getValueIntegerType().getValue());
+            ValueSet vse = fhirToolingClient.expandValueset(vs.getUrl(), p);    
+            vs.getExpansion().getContains().addAll(vse.getExpansion().getContains());
+            vs.getExpansion().setParameter(vse.getExpansion().getParameter());
+          }
+          vs.getExpansion().setOffsetElement(null);
+          vs.getExpansion().getParameter().clear();
+          
 
           if (vs.hasTitle()) {
             if (vs.getTitle().equals(vs.getDescription())) {
@@ -95,6 +108,12 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     }
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "other", "OperationOutcome-vsac-errors.json")), oo);
     System.out.println("Done. " + i + " ValueSets");
+  }
+
+  private boolean isIncomplete(ValueSetExpansionComponent expansion) {
+    IntegerType c = expansion.getParameter("count").getValueIntegerType();
+    IntegerType offset = expansion.getParameter("offset").getValueIntegerType();
+    return c.getValue() + offset.getValue() < expansion.getTotal();
   }
 
   private String makeValidName(String name) {
