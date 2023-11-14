@@ -34,6 +34,8 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,12 +44,21 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r5.model.TypeDetails.ProfiledTypeSorter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
 
-
 public class TypeDetails {
+  public class ProfiledTypeSorter implements Comparator<ProfiledType> {
+
+    @Override
+    public int compare(ProfiledType o1, ProfiledType o2) {
+      return o1.uri.compareTo(o2.uri);
+    }
+
+  }
+
   public static final String FHIR_NS = "http://hl7.org/fhir/StructureDefinition/";
   public static final String FP_NS = "http://hl7.org/fhirpath/";
   public static final String FP_String = "http://hl7.org/fhirpath/System.String";
@@ -419,20 +430,30 @@ public class TypeDetails {
     }
     return false;
   }
+  
   public String describe() {
-    return getTypes().toString();
+    return Utilities.sorted(getTypes()).toString();
   }
+  
   public String describeMin() {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-    for (ProfiledType pt : types)
+    for (ProfiledType pt : sortedTypes(types))
       b.append(pt.describeMin());
     return b.toString();
   }
+  
+  private List<ProfiledType> sortedTypes(List<ProfiledType> types2) {
+    List<ProfiledType> list = new ArrayList<>();
+    Collections.sort(list, new ProfiledTypeSorter());
+    return list;
+  }
+  
   public String getType() {
     for (ProfiledType pt : types)
       return pt.uri;
     return null;
   }
+  
   @Override
   public String toString() {
     return (collectionStatus == null ? collectionStatus.SINGLETON.toString() : collectionStatus.toString()) + getTypes().toString();
