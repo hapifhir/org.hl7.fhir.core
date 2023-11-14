@@ -331,6 +331,19 @@ public class SimpleWorkerContextTests {
     Mockito.verify(terminologyClient, times(0)).expandValueset(any(), any(), any());
   }
 
+  private class ValidationOptionsFhirPublicationMatcher implements ArgumentMatcher<ValidationOptions> {
+
+    final FhirPublication fhirPublication;
+
+    ValidationOptionsFhirPublicationMatcher(FhirPublication fhirPublication) {
+      this.fhirPublication = fhirPublication;
+    }
+    @Override
+    public boolean matches(ValidationOptions argument) {
+      return fhirPublication.toCode().equals(argument.getFhirVersion().toCode());
+    }
+  }
+
   @Test
   public void testExpandValueSet4ArgsWithValueSetExpanderSimple() throws IOException {
 
@@ -346,7 +359,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(expectedExpansionResult).when(valueSetExpanderSimple).expand(eq(vs),
       argThat(new ParametersMatcher(pInWithDependentResources)));
 
-    Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple(new ValidationOptions(vs.getFHIRPublicationVersion()));
+    Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple(argThat(new ValidationOptionsFhirPublicationMatcher(vs.getFHIRPublicationVersion())));
 
     ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn);
 
@@ -373,7 +386,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(expectedExpansionResult).when(valueSetExpanderSimple).expand(eq(vs),
       argThat(new ParametersMatcher(pInWithDependentResources)));
 
-    Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple(new ValidationOptions(vs.getFHIRPublicationVersion()));
+    Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple(argThat(new ValidationOptionsFhirPublicationMatcher(vs.getFHIRPublicationVersion())));
 
     Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(eq(vs), argThat(new ParametersMatcher(pInWithDependentResources)), eq(params));
 
