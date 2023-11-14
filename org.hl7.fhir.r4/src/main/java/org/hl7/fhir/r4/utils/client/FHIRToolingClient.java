@@ -383,6 +383,17 @@ public class FHIRToolingClient {
   public ValueSet expandValueset(String vsUrl, Parameters expParams) {
     Map<String, String> parameters = new HashMap<>();
     parameters.put("url", vsUrl);
+    if (expParams != null) {
+      for (ParametersParameterComponent p : expParams.getParameter()) {
+        if (p.getValue() == null) {
+          throw new FHIRException("Non-value Parameters are not supported for parameter '"+p.getName()+"'");
+        } else if (p.getValue() instanceof PrimitiveType) {
+          parameters.put(p.getName(), p.getValue().primitiveValue());        
+        } else {
+          throw new FHIRException("Complex Parameters are not supported for parameter '"+p.getName()+"'");
+        }
+      }
+    }
 
     org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
       try {

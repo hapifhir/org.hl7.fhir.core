@@ -3,13 +3,13 @@ package org.hl7.fhir.validation.instance.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;

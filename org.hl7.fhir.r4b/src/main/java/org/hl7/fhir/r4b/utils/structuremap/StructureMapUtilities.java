@@ -72,6 +72,7 @@ import org.hl7.fhir.r4b.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -192,7 +193,7 @@ public class StructureMapUtilities {
   private ITransformerServices services;
   private ProfileKnowledgeProvider pkp;
   private final Map<String, Integer> ids = new HashMap<String, Integer>();
-  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R4B);
   private final ProfileUtilities profileUtilities;
 
   public StructureMapUtilities(IWorkerContext worker, ITransformerServices services, ProfileKnowledgeProvider pkp) {

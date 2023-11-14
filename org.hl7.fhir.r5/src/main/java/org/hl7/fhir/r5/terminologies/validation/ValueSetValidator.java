@@ -44,7 +44,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.extensions.ExtensionConstants;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -83,11 +82,13 @@ import org.hl7.fhir.r5.terminologies.providers.URICodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
@@ -780,7 +781,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   
   private ConceptDefinitionComponent findCountryCode(String code) {
-    ValidationResult vr = context.validateCode(new ValidationOptions(), "urn:iso:std:iso:3166", null, code, null);
+    ValidationResult vr = context.validateCode(new ValidationOptions(FhirPublication.R5), "urn:iso:std:iso:3166", null, code, null);
     return vr == null || !vr.isOk() ? null : new ConceptDefinitionComponent(code).setDisplay(vr.getDisplay()).setDefinition(vr.getDefinition());
   }
 

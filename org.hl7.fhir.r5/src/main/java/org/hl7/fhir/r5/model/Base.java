@@ -36,6 +36,8 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBase;
+import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -339,6 +341,18 @@ public abstract class Base implements Serializable, IBase, IElement {
     return result;
   }
 
+  public Base getChildValueByName(String name) {
+    Property p = getChildByName(name);
+    if (p != null && p.hasValues()) {
+      if (p.getValues().size() > 1) {
+        throw new Error("Too manye values for "+name+" found");
+      } else {
+        return p.getValues().get(0);        
+      }
+    }
+    return null;
+  }
+  
   public Base[] listChildrenByName(String name, boolean checkValid) throws FHIRException {
   	if (name.equals("*")) {
   		List<Property> children = new ArrayList<Property>();
@@ -570,4 +584,5 @@ public abstract class Base implements Serializable, IBase, IElement {
     return validationMessages != null ? validationMessages : new ArrayList<>();
   }
 
+  public abstract FhirPublication getFHIRPublicationVersion();
 }

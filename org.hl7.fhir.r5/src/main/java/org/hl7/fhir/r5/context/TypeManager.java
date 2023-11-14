@@ -63,6 +63,15 @@ public class TypeManager {
         }
         types.add(sd);
       }
+      if (Utilities.isAbsoluteUrl(type)) {
+        type = sd.getTypeTail();
+        types = typeDefinitions.get(type);
+        if (types == null) {
+          types = new HashSet<>();
+          typeDefinitions.put(type, types);
+        }
+        types.add(sd);
+      }
       if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
         primitiveNames.add(sd.getType());
       } else if (sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {

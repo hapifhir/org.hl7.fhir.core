@@ -28,7 +28,6 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.BooleanType;
@@ -47,6 +46,7 @@ import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.model.ExpressionNode.Function;
 import org.hl7.fhir.r5.model.ExpressionNode.Kind;
 import org.hl7.fhir.r5.model.ExpressionNode.Operation;
+import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Property.PropertyMatcher;
@@ -60,6 +60,7 @@ import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.TypeDetails.ProfiledType;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IssueMessage;
@@ -68,6 +69,7 @@ import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.ClassTypeInfo;
 import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.TypedElementDefinition;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MergedList;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
@@ -148,7 +150,7 @@ public class FHIRPathEngine {
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
   private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for emptty sets, so when running for R2/R3, this is set ot true  
-  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R5);
   private ProfileUtilities profileUtilities;
   private String location; // for error messages
   private boolean allowPolymorphicNames;
@@ -1436,7 +1438,7 @@ public class FHIRPathEngine {
     case LowBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case HighBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case Precision: return checkParamCount(lexer, location, exp, 0);
-    
+    case hasTemplateIdOf: return checkParamCount(lexer, location, exp, 1);
     case Custom: return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
     }
     return false;
@@ -3141,7 +3143,7 @@ public class FHIRPathEngine {
         }
       } else {
         while (sd != null) {
-          if (sd.getType().equals(exp.getName())) {  
+          if (sd.getType().equals(exp.getName()) || sd.getTypeTail().equals(exp.getName())) {  
             result.add(item);
             break;
           }
@@ -3627,7 +3629,10 @@ public class FHIRPathEngine {
       checkContextContinuous(focus, exp.getFunction().toCode(), exp);      
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);       
     }
-    
+    case hasTemplateIdOf: {
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
+    }
     case Custom : {
       return hostServices.checkFunction(this, context.appInfo,exp.getName(), focus, paramTypes);
     }
@@ -3862,7 +3867,8 @@ public class FHIRPathEngine {
     case LowBoundary : return funcLowBoundary(context, focus, exp);
     case HighBoundary : return funcHighBoundary(context, focus, exp);
     case Precision : return funcPrecision(context, focus, exp);
-    
+    case hasTemplateIdOf: return funcHasTemplateIdOf(context, focus, exp);
+
 
     case Custom: { 
       List<List<Base>> params = new ArrayList<List<Base>>();
@@ -3890,6 +3896,53 @@ public class FHIRPathEngine {
     }
   }
 
+  private List<Base> funcHasTemplateIdOf(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
+    List<Base> result = new ArrayList<Base>();
+    List<Base> swb = execute(context, focus, exp.getParameters().get(0), true);
+    String sw = convertToString(swb);
+
+    StructureDefinition sd = this.worker.fetchResource(StructureDefinition.class, sw);
+    if (focus.size() == 1 && sd != null) {
+      boolean found = false;
+      for (Identifier id : sd.getIdentifier()) {
+        if (id.getValue().startsWith("urn:hl7ii:")) {   
+          String[] p = id.getValue().split("\\:");
+          if (p.length == 4) {
+            found = found || hasTemplateId(focus.get(0), p[2], p[3]);
+          }
+        } else if (id.getValue().startsWith("urn:oid:")) {
+          found = found || hasTemplateId(focus.get(0), id.getValue().substring(8));          
+        }
+      }
+      result.add(new BooleanType(found));
+    }
+    return result;
+  }
+
+  private boolean hasTemplateId(Base base, String rv) {
+    List<Base> templateIds = base.listChildrenByName("templateId");
+    for (Base templateId : templateIds) {
+      Base root = templateId.getChildValueByName("root");
+      Base extension = templateId.getChildValueByName("extension");
+      if (extension == null && root != null && rv.equals(root.primitiveValue())) {
+        return true;
+      }
+    }    
+    return false;
+  }
+
+  private boolean hasTemplateId(Base base, String rv, String ev) {
+    List<Base> templateIds = base.listChildrenByName("templateId");
+    for (Base templateId : templateIds) {
+      Base root = templateId.getChildValueByName("root");
+      Base extension = templateId.getChildValueByName("extension");
+      if (extension != null && ev.equals(extension.primitiveValue()) && root != null && rv.equals(root.primitiveValue())) {
+        return true;
+      }
+    }    
+    return false;
+  }
+  
   private List<Base> funcSqrt(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
     if (focus.size() != 1) {
       throw makeExceptionPlural(focus.size(), expr, I18nConstants.FHIRPATH_FOCUS, "sqrt", focus.size());

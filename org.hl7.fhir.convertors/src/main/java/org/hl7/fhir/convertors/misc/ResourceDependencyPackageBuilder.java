@@ -14,7 +14,7 @@ import org.hl7.fhir.convertors.loaders.loaderR5.R3ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R5ToR5Loader;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
+import org.hl7.fhir.r5.context.IContextResourceLoader;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.SimpleWorkerContextBuilder;
 import org.hl7.fhir.r5.model.CapabilityStatement;

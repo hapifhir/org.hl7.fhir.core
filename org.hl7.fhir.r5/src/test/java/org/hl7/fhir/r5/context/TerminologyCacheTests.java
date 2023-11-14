@@ -29,6 +29,8 @@ import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.jupiter.api.Test;
@@ -118,12 +120,12 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     terminologyCacheA.cacheTerminologyCapabilities(terminologyCapabilities);
     terminologyCacheA.cacheCapabilityStatement(capabilityStatement);
 
-    IWorkerContext.ValidationResult codingResultA = new IWorkerContext.ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
+    ValidationResult codingResultA = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
     TerminologyCache.CacheToken codingTokenA = terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
       coding, valueSet, new Parameters());
     terminologyCacheA.cacheValidation(codingTokenA, codingResultA, true);
 
-    IWorkerContext.ValidationResult codeableConceptResultA = new IWorkerContext.ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
+    ValidationResult codeableConceptResultA = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
     TerminologyCache.CacheToken codeableConceptTokenA = terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
       concept, valueSet, new Parameters());
     terminologyCacheA.cacheValidation(codeableConceptTokenA, codeableConceptResultA, true);
@@ -160,7 +162,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     assertTrue(a.equalsDeep(b));
   }
 
-  private void assertValidationResultEquals(IWorkerContext.ValidationResult a, IWorkerContext.ValidationResult b) {
+  private void assertValidationResultEquals(ValidationResult a, ValidationResult b) {
     assertEquals(a.getSeverity(), b.getSeverity());
     assertEquals(a.getMessage(), b.getMessage());
   }
