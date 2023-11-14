@@ -56,6 +56,7 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.NamedItemList;
 import org.hl7.fhir.utilities.NamedItemList.NamedItem;
 import org.hl7.fhir.utilities.SourceLocation;
@@ -1544,5 +1545,8 @@ public class Element extends Base implements NamedItem {
     return false;
   }
 
+  public FhirPublication getFHIRPublicationVersion() {
+    return FhirPublication.fromCode(property.getStructure().getVersion());
+  }
 
 }

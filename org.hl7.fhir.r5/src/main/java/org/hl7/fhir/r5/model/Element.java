@@ -48,6 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
 import org.hl7.fhir.instance.model.api.IBaseElement;
 import  org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 import  org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.FhirPublication;
 import  org.hl7.fhir.utilities.StandardsStatus;
 /**
  * Element Type: Base definition for all elements in a resource.
@@ -517,7 +518,10 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     }    
   }
   
-  
+
+  public FhirPublication getFHIRPublicationVersion() {
+    return FhirPublication.R5;
+  }
 // end addition
 
 }

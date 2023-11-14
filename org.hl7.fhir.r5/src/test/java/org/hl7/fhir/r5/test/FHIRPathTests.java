@@ -22,6 +22,8 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -102,11 +104,20 @@ public class FHIRPathTests {
   }
 
   private static FHIRPathEngine fp;
-  private final Map<String, Resource> resources = new HashMap<String, Resource>();
+  private final Map<String, Base> resources = new HashMap<String, Base>();
 
   @BeforeAll
-  public static void setUp() {
-    fp = new FHIRPathEngine(TestingUtilities.getSharedWorkerContext());
+  public static void setUp() throws FileNotFoundException, FHIRException, IOException {
+    if (!TestingUtilities.getSharedWorkerContext().hasPackage("hl7.cda.us.ccda", null)) {
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true);
+      NpmPackage npm = pcm.loadPackage("hl7.cda.uv.core", "2.0.0");
+      TestingUtilities.getSharedWorkerContext().loadFromPackage(npm, null);
+      npm = pcm.loadPackage("hl7.cda.us.ccda", "current");
+      TestingUtilities.getSharedWorkerContext().loadFromPackage(npm, null);
+    }
+    if (fp == null) {
+      fp = new FHIRPathEngine(TestingUtilities.getSharedWorkerContext());
+    }
   }
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {
@@ -168,7 +179,7 @@ public class FHIRPathTests {
       fail = TestResultType.EXECUTION;      
     };
     fp.setAllowPolymorphicNames("lenient/polymorphics".equals(test.getAttribute("mode")));
-    Resource res = null;
+    Base res = null;
 
     List<Base> outcome = new ArrayList<Base>();
 
@@ -187,7 +198,9 @@ public class FHIRPathTests {
       if (!Utilities.noString(input)) {
         res = resources.get(input);
         if (res == null) {
-          if (input.endsWith(".json")) {
+          if ("cda".equals(test.getAttribute("mode"))) {
+            res = Manager.makeParser(fp.getWorker(), FhirFormat.XML).parseSingle(TestingUtilities.loadTestResourceStream("r5", input), null);            
+          } else if (input.endsWith(".json")) {
             res = new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", input));              
           } else {
             res = new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", input));
@@ -200,7 +213,7 @@ public class FHIRPathTests {
         if (Utilities.noString(input)) {
           fp.check(null, null, node);
         } else {
-          fp.check(res, res.getResourceType().toString(), res.getResourceType().toString(), node);
+          fp.check(res, res.fhirType(), res.fhirType(), node);
         }
         Assertions.assertTrue(fail != TestResultType.SEMANTICS, String.format("Expected exception didn't occur checking %s", expression));
       } catch (Exception e) {

@@ -34,6 +34,7 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.utils.LiquidEngine;
 import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -252,7 +253,7 @@ public class ComparisonRenderer implements IEvaluationContext {
   private String processTemplate(String template, String name, Map<String, Base> vars) {
     LiquidEngine engine = new LiquidEngine(contextRight, this);
     LiquidDocument doc = engine.parse(template, name+".template");
-    return engine.evaluate(doc, Tuple.fromMap(vars), vars);
+    return engine.evaluate(doc, Tuple.fromMap(FhirPublication.R5, vars), vars);
   }
 
   @Override
