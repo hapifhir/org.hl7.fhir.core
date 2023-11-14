@@ -69,7 +69,7 @@ public class CodeSystemValidator  extends BaseValidator {
     } // todo... try getting the value set the other way...
 
     if (supp != null) {
-      if (context.supportsSystem(supp)) {
+      if (context.supportsSystem(supp, options.getFhirVersion())) {
         List<Element> concepts = cs.getChildrenByName("concept");
         int ce = 0;
         for (Element concept : concepts) {

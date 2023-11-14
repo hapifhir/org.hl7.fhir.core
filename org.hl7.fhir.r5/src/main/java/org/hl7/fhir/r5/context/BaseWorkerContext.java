@@ -767,11 +767,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
 
   public boolean supportsSystem(String system, FhirPublication fhirVersion) throws TerminologyServiceException {
-    return supportsSystem(system);
-  }
-  
-  @Override
-  public boolean supportsSystem(String system) throws TerminologyServiceException {
+//    return supportsSystem(system);
+//  }
+//  
+//  @Override
+//  public boolean supportsSystem(String system) throws TerminologyServiceException {
     synchronized (lock) {
       if (codeSystems.has(system) && codeSystems.get(system).getContent() != CodeSystemContentMode.NOTPRESENT) {
         return true;
@@ -945,7 +945,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     List<String> allErrors = new ArrayList<>();
     
     // ok, first we try to expand locally
-    ValueSetExpander vse = constructValueSetExpanderSimple();
+    ValueSetExpander vse = constructValueSetExpanderSimple(new ValidationOptions(vs.getFHIRPublicationVersion()));
     res = null;
     try {
       res = vse.expand(vs, p);
@@ -1357,16 +1357,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
-  protected ValueSetExpander constructValueSetExpanderSimple() {
-    return new ValueSetExpander(this, new TerminologyOperationContext(this));
+  protected ValueSetExpander constructValueSetExpanderSimple(ValidationOptions options) {
+    return new ValueSetExpander(this, new TerminologyOperationContext(this, options));
   }
 
-  protected ValueSetValidator constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
-    return new ValueSetValidator(this, new TerminologyOperationContext(this), options, vs, ctxt, expParameters, tcc.getTxcaps());
+  protected ValueSetValidator constructValueSetCheckerSimple(ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
+    return new ValueSetValidator(this, new TerminologyOperationContext(this, options), options, vs, ctxt, expParameters, tcc.getTxcaps());
   }
 
   protected ValueSetValidator constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs) {
-    return new ValueSetValidator(this, new TerminologyOperationContext(this), options, vs, expParameters, tcc.getTxcaps());
+    return new ValueSetValidator(this, new TerminologyOperationContext(this, options), options, vs, expParameters, tcc.getTxcaps());
   }
 
   protected Parameters constructParameters(ValueSet vs, boolean hierarchical) {
