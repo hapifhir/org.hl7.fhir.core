@@ -4748,7 +4748,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               throw new DefinitionException(context.formatMessagePlural(criteriaElement.getType().size(), I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_MULTIPLE_TYPES, discriminator, ed.getId(), profile.getVersionedUrl(), criteriaElement.typeSummary()));
             } else
               throw new DefinitionException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES, discriminator, ed.getId(), profile.getVersionedUrl()));
-            if (discriminator.isEmpty()) {
+            if (discriminator.isEmpty()) {     
               expression.append(" and $this is " + type);
             } else {
               expression.append(" and " + discriminator + " is " + type);
@@ -4830,11 +4830,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private String makeTypeForFHIRPath(String type) {
     if (Utilities.isAbsoluteUrl(type)) {
       if (type.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
-        return tail(type);
+        return typeTail(type);
       } else if (type.startsWith("http://hl7.org/cda/stds/core/StructureDefinition/")) {
-        return "CDA."+tail(type); 
+        return "CDA."+typeTail(type); 
       } else {
-        return tail(type); // todo?
+        return typeTail(type); // todo?
       }
     } else {
       String ptype = type.substring(0, 1).toLowerCase() + type.substring(1);
@@ -4844,6 +4844,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return type;
       }
     }
+  }
+
+  private String typeTail(String type) {
+    return type.contains("/") ? type.substring(type.lastIndexOf("/")+1) : type;
   }
 
   private boolean isBaseDefinition(String url) {
