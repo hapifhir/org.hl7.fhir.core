@@ -767,11 +767,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
 
   public boolean supportsSystem(String system, FhirPublication fhirVersion) throws TerminologyServiceException {
-//    return supportsSystem(system);
-//  }
-//  
-//  @Override
-//  public boolean supportsSystem(String system) throws TerminologyServiceException {
+    return supportsSystem(system);
+  }
+  
+  @Override
+  public boolean supportsSystem(String system) throws TerminologyServiceException {
     synchronized (lock) {
       if (codeSystems.has(system) && codeSystems.get(system).getContent() != CodeSystemContentMode.NOTPRESENT) {
         return true;
