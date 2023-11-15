@@ -25,12 +25,40 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.PercentageTracker;
+import org.hl7.fhir.validation.instance.type.BundleValidator.StringWithSource;
 import org.hl7.fhir.validation.instance.utils.EntrySummary;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
 public class BundleValidator extends BaseValidator {
+  public class StringWithSource {
+
+    private String reference;
+    private Element source;
+    private boolean warning;
+
+    public StringWithSource(String reference, Element source, boolean warning) {
+      this.reference = reference;
+      this.source = source;
+      this.warning = warning;
+    }
+
+    public String getReference() {
+      return reference;
+    }
+
+    public Element getSource() {
+      return source;
+    }
+
+    public boolean isWarning() {
+      return warning;
+    }
+
+  }
+
+
   public final static String URI_REGEX3 = "((http|https)://([A-Za-z0-9\\\\\\.\\:\\%\\$]*\\/)*)?(Account|ActivityDefinition|AllergyIntolerance|AdverseEvent|Appointment|AppointmentResponse|AuditEvent|Basic|Binary|BodySite|Bundle|CapabilityStatement|CarePlan|CareTeam|ChargeItem|Claim|ClaimResponse|ClinicalImpression|CodeSystem|Communication|CommunicationRequest|CompartmentDefinition|Composition|ConceptMap|Condition (aka Problem)|Consent|Contract|Coverage|DataElement|DetectedIssue|Device|DeviceComponent|DeviceMetric|DeviceRequest|DeviceUseStatement|DiagnosticReport|DocumentManifest|DocumentReference|EligibilityRequest|EligibilityResponse|Encounter|Endpoint|EnrollmentRequest|EnrollmentResponse|EpisodeOfCare|ExpansionProfile|ExplanationOfBenefit|FamilyMemberHistory|Flag|Goal|GraphDefinition|Group|GuidanceResponse|HealthcareService|ImagingManifest|ImagingStudy|Immunization|ImmunizationRecommendation|ImplementationGuide|Library|Linkage|List|Location|Measure|MeasureReport|Media|Medication|MedicationAdministration|MedicationDispense|MedicationRequest|MedicationStatement|MessageDefinition|MessageHeader|NamingSystem|NutritionOrder|Observation|OperationDefinition|OperationOutcome|Organization|Parameters|Patient|PaymentNotice|PaymentReconciliation|Person|PlanDefinition|Practitioner|PractitionerRole|Procedure|ProcedureRequest|ProcessRequest|ProcessResponse|Provenance|Questionnaire|QuestionnaireResponse|ReferralRequest|RelatedPerson|RequestGroup|ResearchStudy|ResearchSubject|RiskAssessment|Schedule|SearchParameter|Sequence|ServiceDefinition|Slot|Specimen|StructureDefinition|StructureMap|Subscription|Substance|SupplyDelivery|SupplyRequest|Task|TestScript|TestReport|ValueSet|VisionPrescription)\\/[A-Za-z0-9\\-\\.]{1,64}(\\/_history\\/[A-Za-z0-9\\-\\.]{1,64})?";
   private String serverBase;
 
@@ -524,20 +552,18 @@ public class BundleValidator extends BaseValidator {
 
   public boolean validateDocumentReference(List<ValidationMessage> errors, Element bundle, List<Element> entries, Element composition, NodeStack stack, String fullUrl, String id, boolean repeats, String propName, String title) {
     boolean ok = true;
+
+    List<Element> list = new ArrayList<>();
+    composition.getNamedChildren(propName, list);
     if (repeats) {
-      List<Element> list = new ArrayList<>();
-      composition.getNamedChildren(propName, list);
       int i = 1;
       for (Element elem : list) {
         ok = validateBundleReference(errors, bundle, entries, elem, title + "." + propName, stack.push(elem, i, null, null), fullUrl, "Composition", id) && ok;
         i++;
       }
-
-    } else {
-      Element elem = composition.getNamedChild(propName);
-      if (elem != null) {
-        ok = validateBundleReference(errors, bundle, entries, elem, title + "." + propName, stack.push(elem, -1, null, null), fullUrl, "Composition", id) && ok;
-      }
+    } else if (list.size() > 0) {
+      Element elem = list.get(0);
+      ok = validateBundleReference(errors, bundle, entries, elem, title + "." + propName, stack.push(elem, -1, null, null), fullUrl, "Composition", id) && ok;
     }
     return ok;
   }
@@ -561,11 +587,9 @@ public class BundleValidator extends BaseValidator {
     }
 
     if (ref != null && !Utilities.noString(reference) && !reference.startsWith("#")) {
-      ElementMatch target = resolveInBundle(bundle, entries, reference, fullUrl, type, id);
+      Element target = resolveInBundle(bundle, entries, reference, fullUrl, type, id, stack, errors, name, ref, false);
       if (target == null) {
-        return rule(errors, NO_RULE_DATE, IssueType.INVALID, ref.line(), ref.col(), stack.addToLiteralPath("reference"), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, reference, name);        
-      } else {
-        return rule(errors, NO_RULE_DATE, IssueType.INVALID, ref.line(), ref.col(), stack.addToLiteralPath("reference"), target.isValid(), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT, reference, name);
+        return false;
       }
     }
     return true;
@@ -602,26 +626,23 @@ public class BundleValidator extends BaseValidator {
       if (r != null) {
         EntrySummary e = new EntrySummary(i, entry, r);
         entryList.add(e);
-//        System.out.println("Found entry "+e.dbg());
       }
       i++;
     }
     
     for (EntrySummary e : entryList) {
-      Set<String> references = findReferences(e.getEntry());
-      for (String ref : references) {
-        ElementMatch tgt = resolveInBundle(bundle, entries, ref, e.getEntry().getChildValue(FULL_URL), e.getResource().fhirType(), e.getResource().getIdBase());
-        if (tgt != null && tgt.isValid()) {
-          EntrySummary t = entryForTarget(entryList, tgt.getElement());
-          if (t != null ) {
-            if (t != e) {
-//              System.out.println("Entry "+e.getIndex()+" refers to "+t.getIndex()+" by ref '"+ref+"'");
-              e.getTargets().add(t);
-            } else {
-//              System.out.println("Entry "+e.getIndex()+" refers to itself by '"+ref+"'");             
-            }
-          }
-        }
+      List<StringWithSource> references = findReferences(e.getEntry());
+      for (StringWithSource ref : references) {
+        Element tgt = resolveInBundle(bundle, entries, ref.getReference(), e.getEntry().getChildValue(FULL_URL), e.getResource().fhirType(), e.getResource().getIdBase(), stack, errors, ref.getSource().getPath(), ref.getSource(), ref.isWarning());
+        if (tgt != null) { 
+          EntrySummary t = entryForTarget(entryList, tgt); 
+          if (t != null ) { 
+            if (t != e) { 
+              e.getTargets().add(t); 
+            } else { 
+            } 
+          } 
+        } 
       }
     }
 
@@ -801,29 +822,40 @@ public class BundleValidator extends BaseValidator {
 //  }
 
 
-  private Set<String> findReferences(Element start) {
-    Set<String> references = new HashSet<String>();
+  private List<StringWithSource> findReferences(Element start) {
+    List<StringWithSource> references = new ArrayList<StringWithSource>();
     findReferences(start, references);
     return references;
   }
 
-  private void findReferences(Element start, Set<String> references) {
+  private void findReferences(Element start, List<StringWithSource> references) {
     for (Element child : start.getChildren()) {
       if (child.getType().equals("Reference")) {
         String ref = child.getChildValue("reference");
-        if (ref != null && !ref.startsWith("#"))
-          references.add(ref);
+        if (ref != null && !ref.startsWith("#") && !hasReference(ref, references))
+          references.add(new StringWithSource(ref, child, false));
       }
-      if (child.getType().equals("url") || child.getType().equals("uri") || child.getType().equals("canonical")) {
+      if (Utilities.existsInList(child.getType(), "url", "uri"/*, "canonical"*/) &&
+          !Utilities.existsInList(child.getName(), "system") &&
+          !Utilities.existsInList(child.getProperty().getDefinition().getPath(), "Bundle.entry.fullUrl", "Coding.system",  "Identifier.system", "Meta.profile", "Extension.url", "Quantity.system",
+              "MessageHeader.source.endpoint", "MessageHeader.destination.endpoint", "Endpoint.address")) {
         String ref = child.primitiveValue();
-        if (ref != null && !ref.startsWith("#"))
-          references.add(ref);
+        if (ref != null && !ref.startsWith("#") && !hasReference(ref, references))
+          references.add(new StringWithSource(ref, child, true));
       }
       findReferences(child, references);
     }
   }
 
 
+  private boolean hasReference(String ref, List<StringWithSource> references) {
+    for (StringWithSource t : references) {
+      if (ref.equals(t.getReference())) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   // hack for pre-UTG v2/v3
   private boolean isV3orV2Url(String url) {
