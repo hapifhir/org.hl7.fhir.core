@@ -245,5 +245,4 @@ public class NodeStack {
     return element.col();
   }
 
-
 }

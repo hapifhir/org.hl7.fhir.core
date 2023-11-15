@@ -115,7 +115,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   private static final boolean BUILD_NEW = true;
   private static final boolean CLONE = true;
 
-  @Parameters(name = "{index}: id {0}")
+  @Parameters(name = "{0} (#{index})")
   public static Iterable<Object[]> data() throws IOException {
     String contents = TestingUtilities.loadTestResource("validator", "manifest.json");
 
