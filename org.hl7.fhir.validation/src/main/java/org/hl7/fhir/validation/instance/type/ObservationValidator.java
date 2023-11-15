@@ -29,18 +29,18 @@ public class ObservationValidator extends BaseValidator {
     boolean ok = true;
     // all observations should have a subject, a performer, and a time
 
-    ok = bpCheck(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), element.getNamedChild("subject") != null, I18nConstants.ALL_OBSERVATIONS_SHOULD_HAVE_A_SUBJECT) && ok;
+    ok = bpCheck(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), element.getNamedChild("subject", false) != null, I18nConstants.ALL_OBSERVATIONS_SHOULD_HAVE_A_SUBJECT) && ok;
     List<Element> performers = new ArrayList<>();
     element.getNamedChildren("performer", performers);
     ok = bpCheck(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), performers.size() > 0, I18nConstants.ALL_OBSERVATIONS_SHOULD_HAVE_A_PERFORMER) && ok;
     ok = bpCheck(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), 
-          element.getNamedChild("effectiveDateTime") != null || element.getNamedChild("effectivePeriod") != null || 
-          element.getNamedChild("effectiveTiming") != null || element.getNamedChild("effectiveInstant") != null, 
+          element.getNamedChild("effectiveDateTime", false) != null || element.getNamedChild("effectivePeriod", false) != null || 
+          element.getNamedChild("effectiveTiming", false) != null || element.getNamedChild("effectiveInstant", false) != null, 
           I18nConstants.ALL_OBSERVATIONS_SHOULD_HAVE_AN_EFFECTIVEDATETIME_OR_AN_EFFECTIVEPERIOD, element.getProperty().typeSummary()) && ok;   
     
     // hook in the vital signs 
     if (VersionUtilities.isR4Plus(context.getVersion())) {
-      Element code = element.getNamedChild("code");
+      Element code = element.getNamedChild("code", false);
       List<String> codes = new ArrayList<>();
       if (hasLoincCode(code, codes, "85353-1")) {
         ok = checkObservationAgainstProfile(valContext, errors, element, stack, "http://hl7.org/fhir/StructureDefinition/vitalspanel", "Vital Signs Panel", "LOINC", codes, pct, mode) && ok;
@@ -102,8 +102,8 @@ public class ObservationValidator extends BaseValidator {
     if (code != null) {
       List<Element> codings = code.getChildren("coding");
       for (Element coding : codings) {
-        if ("http://loinc.org".equals(coding.getNamedChildValue("system")) && Utilities.existsInList(coding.getNamedChildValue("code"), values)) {
-          codes.add(coding.getNamedChildValue("code"));
+        if ("http://loinc.org".equals(coding.getNamedChildValue("system", false)) && Utilities.existsInList(coding.getNamedChildValue("code", false), values)) {
+          codes.add(coding.getNamedChildValue("code", false));
           return true;
         }
       }
@@ -115,8 +115,8 @@ public class ObservationValidator extends BaseValidator {
     if (code != null) {
       List<Element> codings = code.getChildren("coding");
       for (Element coding : codings) {
-        if ("http://snomed.info/sct".equals(coding.getNamedChildValue("system")) && Utilities.existsInList(coding.getNamedChildValue("code"), values)) {
-          codes.add(coding.getNamedChildValue("code"));
+        if ("http://snomed.info/sct".equals(coding.getNamedChildValue("system", false)) && Utilities.existsInList(coding.getNamedChildValue("code", false), values)) {
+          codes.add(coding.getNamedChildValue("code", false));
           return true;
         }
       }

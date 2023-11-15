@@ -1054,12 +1054,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkAddress(List<ValidationMessage> errors, String path, Element focus, Address fixed, String fixedSource, boolean pattern) {
     boolean ok = true;
-    ok = checkFixedValue(errors, path + ".use", focus.getNamedChild("use"), fixed.getUseElement(), fixedSource, "use", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".text", focus.getNamedChild("text"), fixed.getTextElement(), fixedSource, "text", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".city", focus.getNamedChild("city"), fixed.getCityElement(), fixedSource, "city", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".state", focus.getNamedChild("state"), fixed.getStateElement(), fixedSource, "state", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".country", focus.getNamedChild("country"), fixed.getCountryElement(), fixedSource, "country", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".zip", focus.getNamedChild("zip"), fixed.getPostalCodeElement(), fixedSource, "postalCode", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".use", focus.getNamedChild("use", false), fixed.getUseElement(), fixedSource, "use", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".text", focus.getNamedChild("text", false), fixed.getTextElement(), fixedSource, "text", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".city", focus.getNamedChild("city", false), fixed.getCityElement(), fixedSource, "city", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".state", focus.getNamedChild("state", false), fixed.getStateElement(), fixedSource, "state", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".country", focus.getNamedChild("country", false), fixed.getCountryElement(), fixedSource, "country", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".zip", focus.getNamedChild("zip", false), fixed.getPostalCodeElement(), fixedSource, "postalCode", focus, pattern) && ok;
 
     List<Element> lines = new ArrayList<Element>();
     focus.getNamedChildren("line", lines);
@@ -1106,13 +1106,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkAttachment(List<ValidationMessage> errors, String path, Element focus, Attachment fixed, String fixedSource, boolean pattern) {
     boolean ok = true;
-    ok = checkFixedValue(errors, path + ".contentType", focus.getNamedChild("contentType"), fixed.getContentTypeElement(), fixedSource, "contentType", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".language", focus.getNamedChild("language"), fixed.getLanguageElement(), fixedSource, "language", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".data", focus.getNamedChild("data"), fixed.getDataElement(), fixedSource, "data", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".url", focus.getNamedChild("url"), fixed.getUrlElement(), fixedSource, "url", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".size", focus.getNamedChild("size"), fixed.getSizeElement(), fixedSource, "size", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".hash", focus.getNamedChild("hash"), fixed.getHashElement(), fixedSource, "hash", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".title", focus.getNamedChild("title"), fixed.getTitleElement(), fixedSource, "title", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".contentType", focus.getNamedChild("contentType", false), fixed.getContentTypeElement(), fixedSource, "contentType", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".language", focus.getNamedChild("language", false), fixed.getLanguageElement(), fixedSource, "language", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".data", focus.getNamedChild("data", false), fixed.getDataElement(), fixedSource, "data", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".url", focus.getNamedChild("url", false), fixed.getUrlElement(), fixedSource, "url", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".size", focus.getNamedChild("size", false), fixed.getSizeElement(), fixedSource, "size", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".hash", focus.getNamedChild("hash", false), fixed.getHashElement(), fixedSource, "hash", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".title", focus.getNamedChild("title", false), fixed.getTitleElement(), fixedSource, "title", focus, pattern) && ok;
 
     return ok;
   }
@@ -1280,7 +1280,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkCodeableConcept(List<ValidationMessage> errors, String path, Element focus, CodeableConcept fixed, String fixedSource, boolean pattern) {
     boolean ok = true;
-    ok = checkFixedValue(errors, path + ".text", focus.getNamedChild("text"), fixed.getTextElement(), fixedSource, "text", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".text", focus.getNamedChild("text", false), fixed.getTextElement(), fixedSource, "text", focus, pattern) && ok;
     List<Element> codings = new ArrayList<Element>();
     focus.getNamedChildren("coding", codings);
     if (pattern) {
@@ -1733,14 +1733,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean convertCDACodeToCodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition logical, CodeableConcept cc) {
     boolean ok = true;
-    cc.setText(element.getNamedChildValue("originalText"));
-    if (element.hasChild("nullFlavor")) {
-      cc.addExtension("http://hl7.org/fhir/StructureDefinition/iso21090-nullFlavor", new CodeType(element.getNamedChildValue("nullFlavor")));
+    cc.setText(element.getNamedChildValue("originalText", false));
+    if (element.hasChild("nullFlavor", false)) {
+      cc.addExtension("http://hl7.org/fhir/StructureDefinition/iso21090-nullFlavor", new CodeType(element.getNamedChildValue("nullFlavor", false)));
     }
-    if (element.hasChild("code") || element.hasChild("codeSystem")) {
+    if (element.hasChild("code", false) || element.hasChild("codeSystem", false)) {
       Coding c = cc.addCoding();
       
-      String oid = element.getNamedChildValue("codeSystem");
+      String oid = element.getNamedChildValue("codeSystem", false);
       if (oid != null) {
         Set<String> urls = context.urlsForOid(true, oid);
         if (urls.size() != 1) {
@@ -1758,9 +1758,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE); 
       }
       
-      c.setCode(element.getNamedChildValue("code"));
-      c.setVersion(element.getNamedChildValue("codeSystemVersion"));
-      c.setDisplay(element.getNamedChildValue("displayName"));
+      c.setCode(element.getNamedChildValue("code", false));
+      c.setVersion(element.getNamedChildValue("codeSystemVersion", false));
+      c.setDisplay(element.getNamedChildValue("displayName", false));
     }
     // todo: translations
     return ok;
@@ -1920,22 +1920,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkCoding(List<ValidationMessage> errors, String path, Element focus, Coding fixed, String fixedSource, boolean pattern) {
     boolean ok = true;
-    ok = checkFixedValue(errors, path + ".system", focus.getNamedChild("system"), fixed.getSystemElement(), fixedSource, "system", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".version", focus.getNamedChild("version"), fixed.getVersionElement(), fixedSource, "version", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".code", focus.getNamedChild("code"), fixed.getCodeElement(), fixedSource, "code", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".display", focus.getNamedChild("display"), fixed.getDisplayElement(), fixedSource, "display", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".userSelected", focus.getNamedChild("userSelected"), fixed.getUserSelectedElement(), fixedSource, "userSelected", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".system", focus.getNamedChild("system", false), fixed.getSystemElement(), fixedSource, "system", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".version", focus.getNamedChild("version", false), fixed.getVersionElement(), fixedSource, "version", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".code", focus.getNamedChild("code", false), fixed.getCodeElement(), fixedSource, "code", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".display", focus.getNamedChild("display", false), fixed.getDisplayElement(), fixedSource, "display", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".userSelected", focus.getNamedChild("userSelected", false), fixed.getUserSelectedElement(), fixedSource, "userSelected", focus, pattern) && ok;
     return ok;
   }
 
   private boolean checkCoding(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay, NodeStack stack) {
-    String code = element.getNamedChildValue("code");
-    String system = element.getNamedChildValue("system");
+    String code = element.getNamedChildValue("code", false);
+    String system = element.getNamedChildValue("system", false);
     if (code != null && system == null) {
       warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE); 
     }
-    String version = element.getNamedChildValue("version");
-    String display = element.getNamedChildValue("display");
+    String version = element.getNamedChildValue("version", false);
+    String display = element.getNamedChildValue("display", false);
     return checkCodedElement(errors, path, element, profile, theElementCntext, inCodeableConcept, checkDisplay, stack, code, system, version, display);
   }
 
@@ -2051,16 +2051,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkContactPoint(List<ValidationMessage> errors, String path, Element focus, ContactPoint fixed, String fixedSource, boolean pattern) {
     boolean ok = true;
-    ok = checkFixedValue(errors, path + ".system", focus.getNamedChild("system"), fixed.getSystemElement(), fixedSource, "system", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".value", focus.getNamedChild("value"), fixed.getValueElement(), fixedSource, "value", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".use", focus.getNamedChild("use"), fixed.getUseElement(), fixedSource, "use", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getPeriod(), fixedSource, "period", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".system", focus.getNamedChild("system", false), fixed.getSystemElement(), fixedSource, "system", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".value", focus.getNamedChild("value", false), fixed.getValueElement(), fixedSource, "value", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".use", focus.getNamedChild("use", false), fixed.getUseElement(), fixedSource, "use", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".period", focus.getNamedChild("period", false), fixed.getPeriod(), fixedSource, "period", focus, pattern) && ok;
     return ok;
   }
 
   private boolean checkExtension(ValidationContext valContext, List<ValidationMessage> errors, String path, Element resource, Element container, Element element, ElementDefinition def, StructureDefinition profile, NodeStack stack, NodeStack containerStack, String extensionUrl, PercentageTracker pct, ValidationMode mode) throws FHIRException {
     boolean ok = true;
-    String url = element.getNamedChildValue("url");
+    String url = element.getNamedChildValue("url", false);
     String u = url.contains("|") ? url.substring(0, url.indexOf("|")) : url;
     boolean isModifier = element.getName().equals("modifierExtension");
     assert def.getIsModifier() == isModifier;
@@ -2262,10 +2262,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (stack.getElement().getName().startsWith("value")) {
           NodeStack estack = stack.getParent();
           if (estack != null && estack.getElement().fhirType().equals("Extension")) {
-            ext = estack.getElement().getNamedChildValue("url");
+            ext = estack.getElement().getNamedChildValue("url", false);
           }
         } else {
-          ext = stack.getElement().getNamedChildValue("url");
+          ext = stack.getElement().getNamedChildValue("url", false);
         }
         if (ctxt.getExpression().equals(ext)) {
           ok = true;
@@ -2496,7 +2496,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         for (Extension e : fixed.getExtension()) {
           Element ex = getExtensionByUrl(extensions, e.getUrl());
           if (rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, ex != null, I18nConstants.EXTENSION_EXT_COUNT_NOTFOUND, e.getUrl())) {
-            ok = checkFixedValue(errors, path, ex.getNamedChild("extension").getNamedChild("value"), e.getValue(), fixedSource, "extension.value", ex.getNamedChild("extension"), false) && ok;
+            ok = checkFixedValue(errors, path, ex.getNamedChild("extension", false).getNamedChild("value", false), e.getValue(), fixedSource, "extension.value", ex.getNamedChild("extension", false), false) && ok;
           } else {
             ok = false;
           }
@@ -2510,9 +2510,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkHumanName(List<ValidationMessage> errors, String path, Element focus, HumanName fixed, String fixedSource, boolean pattern) {
     boolean ok = true;
-    ok = checkFixedValue(errors, path + ".use", focus.getNamedChild("use"), fixed.getUseElement(), fixedSource, "use", focus, pattern);
-    ok = checkFixedValue(errors, path + ".text", focus.getNamedChild("text"), fixed.getTextElement(), fixedSource, "text", focus, pattern);
-    ok = checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getPeriod(), fixedSource, "period", focus, pattern);
+    ok = checkFixedValue(errors, path + ".use", focus.getNamedChild("use", false), fixed.getUseElement(), fixedSource, "use", focus, pattern);
+    ok = checkFixedValue(errors, path + ".text", focus.getNamedChild("text", false), fixed.getTextElement(), fixedSource, "text", focus, pattern);
+    ok = checkFixedValue(errors, path + ".period", focus.getNamedChild("period", false), fixed.getPeriod(), fixedSource, "period", focus, pattern);
 
     List<Element> parts = new ArrayList<Element>();
     if (!pattern || fixed.hasFamily()) {
@@ -2556,10 +2556,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkIdentifier(List<ValidationMessage> errors, String path, Element element, ElementDefinition context) {
     boolean ok = true;
-    String system = element.getNamedChildValue("system");
+    String system = element.getNamedChildValue("system", false);
     ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, system == null || isIdentifierSystemReferenceValid(system), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_SYSTEM) && ok;
     if ("urn:ietf:rfc:3986".equals(system)) {
-      String value = element.getNamedChildValue("value");
+      String value = element.getNamedChildValue("value", false);
       ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, value == null || isAbsolute(value), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE, value) && ok; 
     }
     return ok;
@@ -2567,19 +2567,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkIdentifier(List<ValidationMessage> errors, String path, Element focus, Identifier fixed, String fixedSource, boolean pattern) {
     boolean ok = true;
-    ok = checkFixedValue(errors, path + ".use", focus.getNamedChild("use"), fixed.getUseElement(), fixedSource, "use", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".type", focus.getNamedChild(TYPE), fixed.getType(), fixedSource, TYPE, focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".system", focus.getNamedChild("system"), fixed.getSystemElement(), fixedSource, "system", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".value", focus.getNamedChild("value"), fixed.getValueElement(), fixedSource, "value", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getPeriod(), fixedSource, "period", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".assigner", focus.getNamedChild("assigner"), fixed.getAssigner(), fixedSource, "assigner", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".use", focus.getNamedChild("use", false), fixed.getUseElement(), fixedSource, "use", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".type", focus.getNamedChild(TYPE, false), fixed.getType(), fixedSource, TYPE, focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".system", focus.getNamedChild("system", false), fixed.getSystemElement(), fixedSource, "system", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".value", focus.getNamedChild("value", false), fixed.getValueElement(), fixedSource, "value", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".period", focus.getNamedChild("period", false), fixed.getPeriod(), fixedSource, "period", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".assigner", focus.getNamedChild("assigner", false), fixed.getAssigner(), fixedSource, "assigner", focus, pattern) && ok;
     return ok;
   }
 
   private boolean checkPeriod(List<ValidationMessage> errors, String path, Element focus, Period fixed, String fixedSource, boolean pattern) {
     boolean ok = true;
-    ok = checkFixedValue(errors, path + ".start", focus.getNamedChild("start"), fixed.getStartElement(), fixedSource, "start", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".end", focus.getNamedChild("end"), fixed.getEndElement(), fixedSource, "end", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".start", focus.getNamedChild("start", false), fixed.getStartElement(), fixedSource, "start", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".end", focus.getNamedChild("end", false), fixed.getEndElement(), fixedSource, "end", focus, pattern) && ok;
     return ok;
   }
 
@@ -3409,20 +3409,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkQuantity(List<ValidationMessage> errors, String path, Element focus, Quantity fixed, String fixedSource, boolean pattern) {
     boolean ok = true;
-    ok = checkFixedValue(errors, path + ".value", focus.getNamedChild("value"), fixed.getValueElement(), fixedSource, "value", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".comparator", focus.getNamedChild("comparator"), fixed.getComparatorElement(), fixedSource, "comparator", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".unit", focus.getNamedChild("unit"), fixed.getUnitElement(), fixedSource, "unit", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".system", focus.getNamedChild("system"), fixed.getSystemElement(), fixedSource, "system", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".code", focus.getNamedChild("code"), fixed.getCodeElement(), fixedSource, "code", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".value", focus.getNamedChild("value", false), fixed.getValueElement(), fixedSource, "value", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".comparator", focus.getNamedChild("comparator", false), fixed.getComparatorElement(), fixedSource, "comparator", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".unit", focus.getNamedChild("unit", false), fixed.getUnitElement(), fixedSource, "unit", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".system", focus.getNamedChild("system", false), fixed.getSystemElement(), fixedSource, "system", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".code", focus.getNamedChild("code", false), fixed.getCodeElement(), fixedSource, "code", focus, pattern) && ok;
     return ok;
   }
 
   private boolean checkQuantity(List<ValidationMessage> errors, String path, Element element, StructureDefinition theProfile, ElementDefinition definition, NodeStack theStack) {
     boolean ok = true;
-    String value = element.hasChild("value") ? element.getNamedChild("value").getValue() : null;
-    String unit = element.hasChild("unit") ? element.getNamedChild("unit").getValue() : null;
-    String system = element.hasChild("system") ? element.getNamedChild("system").getValue() : null;
-    String code = element.hasChild("code") ? element.getNamedChild("code").getValue() : null;
+    String value = element.hasChild("value", false) ? element.getNamedChild("value", false).getValue() : null;
+    String unit = element.hasChild("unit", false) ? element.getNamedChild("unit", false).getValue() : null;
+    String system = element.hasChild("system", false) ? element.getNamedChild("system", false).getValue() : null;
+    String code = element.hasChild("code", false) ? element.getNamedChild("code", false).getValue() : null;
 
     // todo: allowedUnits http://hl7.org/fhir/StructureDefinition/elementdefinition-allowedUnits - codeableConcept, or canonical(ValueSet)
     // todo: http://hl7.org/fhir/StructureDefinition/iso21090-PQ-translation
@@ -3575,17 +3575,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     long size = -1;
     // first check size
     String fetchError = null;
-    if (element.hasChild("data")) {
+    if (element.hasChild("data", false)) {
       String b64 = element.getChildValue("data");
       // Note: If the value isn't valid, we're not adding an error here, as the test to the
       // child Base64Binary will catch it and we don't want to log it twice
       boolean bok = isValidBase64(b64);
-      if (bok && element.hasChild("size")) {
+      if (bok && element.hasChild("size", false)) {
         size = countBase64DecodedBytes(b64);
         String sz = element.getChildValue("size");
         ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, Long.toString(size).equals(sz), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT, sz, size) && ok;
       }
-    } else if (element.hasChild("size")) {
+    } else if (element.hasChild("size", false)) {
       String sz = element.getChildValue("size");
       if (rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, Utilities.isLong(sz), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_INVALID, sz)) {
         size = Long.parseLong(sz);
@@ -3593,7 +3593,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else {
         ok = false;
       }
-    } else if (element.hasChild("url")) {
+    } else if (element.hasChild("url", false)) {
       String url = element.getChildValue("url"); 
       if (definition.hasExtension(ToolingExtensions.EXT_MAX_SIZE)) {
         try {
@@ -3620,7 +3620,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, size <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG, size, def) && ok;
       }
     }
-    warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, (element.hasChild("data") || element.hasChild("url")) || (element.hasChild("contentType") || element.hasChild("language")), 
+    warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, (element.hasChild("data", false) || element.hasChild("url", false)) || (element.hasChild("contentType", false) || element.hasChild("language", false)), 
           I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT);
     return ok;
   }
@@ -3629,15 +3629,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkRange(List<ValidationMessage> errors, String path, Element focus, Range fixed, String fixedSource, boolean pattern) {
     boolean ok = true;
-    ok = checkFixedValue(errors, path + ".low", focus.getNamedChild("low"), fixed.getLow(), fixedSource, "low", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".high", focus.getNamedChild("high"), fixed.getHigh(), fixedSource, "high", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".low", focus.getNamedChild("low", false), fixed.getLow(), fixedSource, "low", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".high", focus.getNamedChild("high", false), fixed.getHigh(), fixedSource, "high", focus, pattern) && ok;
     return ok;
   }
 
   private boolean checkRatio(List<ValidationMessage> errors, String path, Element focus, Ratio fixed, String fixedSource, boolean pattern) {
     boolean ok = true;
-    ok = checkFixedValue(errors, path + ".numerator", focus.getNamedChild("numerator"), fixed.getNumerator(), fixedSource, "numerator", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".denominator", focus.getNamedChild("denominator"), fixed.getDenominator(), fixedSource, "denominator", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".numerator", focus.getNamedChild("numerator", false), fixed.getNumerator(), fixedSource, "numerator", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".denominator", focus.getNamedChild("denominator", false), fixed.getDenominator(), fixedSource, "denominator", focus, pattern) && ok;
     return ok;
   }
 
@@ -3657,7 +3657,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (!path.contains("element.pattern")) { // this business rule doesn't apply to patterns
         if (Utilities.noString(reference.getIdentifier().getSystem()) && Utilities.noString(reference.getIdentifier().getValue())) {
           warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path,
-            !Utilities.noString(element.getNamedChildValue("display")), I18nConstants.REFERENCE_REF_NODISPLAY);
+            !Utilities.noString(element.getNamedChildValue("display", false)), I18nConstants.REFERENCE_REF_NODISPLAY);
         }
       }
       return true;
@@ -4034,33 +4034,33 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkSampledData(List<ValidationMessage> errors, String path, Element focus, SampledData fixed, String fixedSource, boolean pattern) {
     boolean ok = true;
-    ok = checkFixedValue(errors, path + ".origin", focus.getNamedChild("origin"), fixed.getOrigin(), fixedSource, "origin", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".origin", focus.getNamedChild("origin", false), fixed.getOrigin(), fixedSource, "origin", focus, pattern) && ok;
     if (VersionUtilities.isR5VerOrLater(context.getVersion())) {
-      ok = checkFixedValue(errors, path + ".interval", focus.getNamedChild("period"), fixed.getIntervalElement(), fixedSource, "interval", focus, pattern) && ok;
-      ok = checkFixedValue(errors, path + ".intervalUnit", focus.getNamedChild("period"), fixed.getIntervalUnitElement(), fixedSource, "intervalUnit", focus, pattern) && ok;
+      ok = checkFixedValue(errors, path + ".interval", focus.getNamedChild("period", false), fixed.getIntervalElement(), fixedSource, "interval", focus, pattern) && ok;
+      ok = checkFixedValue(errors, path + ".intervalUnit", focus.getNamedChild("period", false), fixed.getIntervalUnitElement(), fixedSource, "intervalUnit", focus, pattern) && ok;
     } else {
-      ok = checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getIntervalElement(), fixedSource, "period", focus, pattern) && ok;
+      ok = checkFixedValue(errors, path + ".period", focus.getNamedChild("period", false), fixed.getIntervalElement(), fixedSource, "period", focus, pattern) && ok;
     }
-    ok = checkFixedValue(errors, path + ".factor", focus.getNamedChild("factor"), fixed.getFactorElement(), fixedSource, "factor", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".lowerLimit", focus.getNamedChild("lowerLimit"), fixed.getLowerLimitElement(), fixedSource, "lowerLimit", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".upperLimit", focus.getNamedChild("upperLimit"), fixed.getUpperLimitElement(), fixedSource, "upperLimit", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".dimensions", focus.getNamedChild("dimensions"), fixed.getDimensionsElement(), fixedSource, "dimensions", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".data", focus.getNamedChild("data"), fixed.getDataElement(), fixedSource, "data", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".factor", focus.getNamedChild("factor", false), fixed.getFactorElement(), fixedSource, "factor", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".lowerLimit", focus.getNamedChild("lowerLimit", false), fixed.getLowerLimitElement(), fixedSource, "lowerLimit", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".upperLimit", focus.getNamedChild("upperLimit", false), fixed.getUpperLimitElement(), fixedSource, "upperLimit", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".dimensions", focus.getNamedChild("dimensions", false), fixed.getDimensionsElement(), fixedSource, "dimensions", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".data", focus.getNamedChild("data", false), fixed.getDataElement(), fixedSource, "data", focus, pattern) && ok;
     return ok;
   }
 
   private boolean checkReference(List<ValidationMessage> errors, String path, Element focus, Reference fixed, String fixedSource, boolean pattern) {
     boolean ok = true;
-    ok = checkFixedValue(errors, path + ".reference", focus.getNamedChild("reference"), fixed.getReferenceElement_(), fixedSource, "reference", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".type", focus.getNamedChild("type"), fixed.getTypeElement(), fixedSource, "type", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".identifier", focus.getNamedChild("identifier"), fixed.getIdentifier(), fixedSource, "identifier", focus, pattern) && ok;
-    ok = checkFixedValue(errors, path + ".display", focus.getNamedChild("display"), fixed.getDisplayElement(), fixedSource, "display", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".reference", focus.getNamedChild("reference", false), fixed.getReferenceElement_(), fixedSource, "reference", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".type", focus.getNamedChild("type", false), fixed.getTypeElement(), fixedSource, "type", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".identifier", focus.getNamedChild("identifier", false), fixed.getIdentifier(), fixedSource, "identifier", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".display", focus.getNamedChild("display", false), fixed.getDisplayElement(), fixedSource, "display", focus, pattern) && ok;
     return ok;
   }
 
   private boolean checkTiming(List<ValidationMessage> errors, String path, Element focus, Timing fixed, String fixedSource, boolean pattern) {
     boolean ok = true;
-    ok = checkFixedValue(errors, path + ".repeat", focus.getNamedChild("repeat"), fixed.getRepeat(), fixedSource, "value", focus, pattern) && ok;
+    ok = checkFixedValue(errors, path + ".repeat", focus.getNamedChild("repeat", false), fixed.getRepeat(), fixedSource, "value", focus, pattern) && ok;
 
     List<Element> events = new ArrayList<Element>();
     focus.getNamedChildren("event", events);
@@ -4157,7 +4157,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     container.getNamedChildren("contained", contained);
     for (int i = 0; i < contained.size(); i++) {
       Element we = contained.get(i);
-      if (id.equals(we.getNamedChildValue(ID))) {
+      if (id.equals(we.getNamedChildValue(ID, false))) {
         return new IndexedElement(i, we, null);
       }
     }
@@ -4235,7 +4235,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private Element getExtensionByUrl(List<Element> extensions, String urlSimple) {
     for (Element e : extensions) {
-      if (urlSimple.equals(e.getNamedChildValue("url")))
+      if (urlSimple.equals(e.getNamedChildValue("url", false)))
         return e;
     }
     return null;
@@ -4556,8 +4556,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     int i = 0;
     for (Element child : params.getElement().getChildren("parameter")) {
       NodeStack p = params.push(child, i, child.getProperty().getDefinition(), child.getProperty().getDefinition());
-      if (child.hasChild("resource")) {
-        Element res = child.getNamedChild("resource");
+      if (child.hasChild("resource", false)) {
+        Element res = child.getNamedChild("resource", false);
         if ((res.fhirType()+"/"+res.getIdBase()).equals(ref)) {
           return p.push(res, -1, res.getProperty().getDefinition(), res.getProperty().getDefinition());
         }
@@ -4574,8 +4574,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     int i = 0;
     for (Element child : param.getChildren("part")) {
       NodeStack p = pp.push(child, i, child.getProperty().getDefinition(), child.getProperty().getDefinition());
-      if (child.hasChild("resource")) {
-        Element res = child.getNamedChild("resource");
+      if (child.hasChild("resource", false)) {
+        Element res = child.getNamedChild("resource", false);
         if ((res.fhirType()+"/"+res.getIdBase()).equals(ref)) {
           return p.push(res, -1, res.getProperty().getDefinition(), res.getProperty().getDefinition());
         }
@@ -5216,7 +5216,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   
   
-    Element meta = element.getNamedChild(META);
+    Element meta = element.getNamedChild(META, false);
     if (meta != null) {
       List<Element> profiles = new ArrayList<Element>();
       meta.getNamedChildren("profile", profiles);
@@ -5361,7 +5361,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       List<Element> entries = element.getChildrenByName(ENTRY);
       for (Element entry : entries) {
         String fu = entry.getChildValue(FULL_URL);
-        Element r = entry.getNamedChild(RESOURCE);
+        Element r = entry.getNamedChild(RESOURCE, false);
         if (r != null) {
           resolveBundleReferencesInResource(list, r, fu);
         }
@@ -5385,9 +5385,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (!Utilities.noString(ref)) {
         for (Element bundle : bundles) {
           List<Element> entries = bundle.getChildren(ENTRY);
-          ElementMatch tgt = resolveInBundle(bundle, entries, ref, fu, resource.fhirType(), resource.getIdBase());
-          if (tgt != null && tgt.isValid()) {
-            element.setUserData("validator.bundle.resolution", tgt.getElement().getNamedChild(RESOURCE));
+          Element tgt = resolveInBundle(bundle, entries, ref, fu, resource.fhirType(), resource.getIdBase(), null, null, null, element, false);
+          if (tgt != null) {
+            element.setUserData("validator.bundle.resolution", tgt.getNamedChild(RESOURCE, false));
             return;
           }
         }
@@ -5443,7 +5443,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(element.getType())) {
         Base base = element.getExtensionValue(ToolingExtensions.EXT_STANDARDS_STATUS);
         String standardsStatus = base != null && base.isPrimitive() ? base.primitiveValue() : null;
-        String status = element.getNamedChildValue("status");
+        String status = element.getNamedChildValue("status", false);
         if (!Utilities.noString(status) && !Utilities.noString(standardsStatus)) {
           if (warning(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT, status, standardsStatus)) {
             hint(errors, "2023-08-14", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), statusCodesDeeplyConsistent(status, standardsStatus), I18nConstants.VALIDATION_VAL_STATUS_INCONSISTENT_HINT, status, standardsStatus);          
@@ -5499,14 +5499,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkPublisherConsistency(List<ValidationMessage> errors, Element element, NodeStack stack) {
 
-    String pub = element.getNamedChildValue("publisher");
+    String pub = element.getNamedChildValue("publisher", false);
     Base wgT = element.getExtensionValue(ToolingExtensions.EXT_WORKGROUP);
     String wg = wgT == null ? null : wgT.primitiveValue();
     List<String> urls = new ArrayList<>();
     for (Element c : element.getChildren("contact")) {      
       for (Element t : c.getChildren("telecom")) {
-        if ("url".equals(t.getNamedChildValue("system")) && t.getNamedChildValue("value") != null) {
-          urls.add(t.getNamedChildValue("value"));
+        if ("url".equals(t.getNamedChildValue("system", false)) && t.getNamedChildValue("value", false) != null) {
+          urls.add(t.getNamedChildValue("value", false));
         }
       }
     }
@@ -5561,17 +5561,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private void checkLang(Element resource, NodeStack stack) {
-    String lang = resource.getNamedChildValue("language");
+    String lang = resource.getNamedChildValue("language", false);
     if (!Utilities.noString(lang))
       stack.setWorkingLang(lang);
   }
 
   private boolean validateResourceRules(List<ValidationMessage> errors, Element element, NodeStack stack) {
     boolean ok= true;
-    String lang = element.getNamedChildValue("language");
-    Element text = element.getNamedChild("text");
+    String lang = element.getNamedChildValue("language", false);
+    Element text = element.getNamedChild("text", false);
     if (text != null) {
-      Element div = text.getNamedChild("div");
+      Element div = text.getNamedChild("div", false);
       if (lang != null && div != null) {
         XhtmlNode xhtml = div.getXhtml();
         String l = xhtml.getAttribute("lang");
@@ -5593,14 +5593,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     // security tags are a set (system|code)
-    Element meta = element.getNamedChild(META);
+    Element meta = element.getNamedChild(META, false);
     if (meta != null) {
       Set<String> tags = new HashSet<>();
       List<Element> list = new ArrayList<>();
       meta.getNamedChildren("security", list);
       int i = 0;
       for (Element e : list) {
-        String s = e.getNamedChildValue("system") + "#" + e.getNamedChildValue("code");
+        String s = e.getNamedChildValue("system", false) + "#" + e.getNamedChildValue("code", false);
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, e.line(), e.col(), stack.getLiteralPath() + ".meta.profile[" + Integer.toString(i) + "]", !tags.contains(s), I18nConstants.META_RES_SECURITY_DUPLICATE, s) && ok;
         tags.add(s);
         i++;
@@ -5903,10 +5903,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (!definition.getPath().contains(".") && profile.hasExtension(ToolingExtensions.EXT_PROFILE_STYLE) && "cda".equals(ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_PROFILE_STYLE))) {
       List<Element> templates = element.getChildren("templateId");
       for (Element t : templates) {
-        String tid = t.hasChild("extension") ? "urn:hl7ii:"+t.getChildValue("root")+ ":"+t.getChildValue("extension") : "urn:oid:"+t.getChildValue("root");
+        String tid = t.hasChild("extension", false) ? "urn:hl7ii:"+t.getChildValue("root")+ ":"+t.getChildValue("extension") : "urn:oid:"+t.getChildValue("root");
         StructureDefinition sd = cu.fetchProfileByIdentifier(tid);
         if (sd == null) {
-          hint(errors, "2023-10-20", IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, t.hasChild("extension") ? I18nConstants.CDA_UNKNOWN_TEMPLATE_EXT : I18nConstants.CDA_UNKNOWN_TEMPLATE, t.getChildValue("root"), t.getChildValue("extension"));
+          hint(errors, "2023-10-20", IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, t.hasChild("extension", false) ? I18nConstants.CDA_UNKNOWN_TEMPLATE_EXT : I18nConstants.CDA_UNKNOWN_TEMPLATE, t.getChildValue("root"), t.getChildValue("extension"));
         } else {
           ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
           if (!element.hasValidated(sd, ed)) {
@@ -6152,7 +6152,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = checkReference(valContext, errors, ei.getPath(), ei.getElement(), profile, checkDefn, actualType, localStack, pct, mode) && ok;
         // We only check extensions if we're not in a complex extension or if the element we're dealing with is not defined as part of that complex extension
       } else if (type.equals("Extension")) {
-        Element eurl = ei.getElement().getNamedChild("url");
+        Element eurl = ei.getElement().getNamedChild("url", false);
         if (rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.getPath(), eurl != null, I18nConstants.EXTENSION_EXT_URL_NOTFOUND)) {
           String url = eurl.primitiveValue();
           thisExtension = url;
@@ -6178,7 +6178,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (defn != null && defn.hasExtension(ToolingExtensions.EXT_BINDING_STYLE)) {
           String style = ToolingExtensions.readStringExtension(defn, ToolingExtensions.EXT_BINDING_STYLE);
           if ("CDA".equals(style)) {
-            if (!ei.getElement().hasChild("nullFlavor")) {
+            if (!ei.getElement().hasChild("nullFlavor", false)) {
               if (cdaTypeIs(defn, "CS")) {
                 ok = checkCDACodeSimple(valContext, errors, ei.getPath(), ei.getElement(), profile, checkDefn, stack, defn) && ok;              
               } else if (cdaTypeIs(defn, "CV") || cdaTypeIs(defn, "PQ")) {
@@ -6299,8 +6299,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkCDACoding(List<ValidationMessage> errors, String path, boolean isPQ, Element element, StructureDefinition profile, ElementDefinition checkDefn, NodeStack stack, StructureDefinition defn, boolean inCodeableConcept, boolean checkDisplay) {
     boolean ok = true;
     String system = null;
-    String code = element.getNamedChildValue(isPQ ? "unit" : "code");
-    String oid = isPQ ? "2.16.840.1.113883.6.8" : element.getNamedChildValue("codeSystem");
+    String code = element.getNamedChildValue(isPQ ? "unit" : "code", false);
+    String oid = isPQ ? "2.16.840.1.113883.6.8" : element.getNamedChildValue("codeSystem", false);
     if (oid != null) {
       Set<String> urls = context.urlsForOid(true, oid);
       if (urls.size() != 1) {
@@ -6319,14 +6319,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, code == null, I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE);      
     }
     
-    String version = element.getNamedChildValue("codeSystemVersion");
-    String display = element.getNamedChildValue("displayName");
+    String version = element.getNamedChildValue("codeSystemVersion", false);
+    String display = element.getNamedChildValue("displayName", false);
     return checkCodedElement(errors, path, element, profile, checkDefn, inCodeableConcept, checkDisplay, stack, code, system, version, display) && ok;
   }
 
   private boolean checkCDACodeSimple(ValidationContext valContext, List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition checkDefn, NodeStack stack, StructureDefinition defn) {
-    if (element.hasChild("code")) {
-      return checkPrimitiveBinding(valContext, errors, path, "code", checkDefn, element.getNamedChild("code"), profile, stack);
+    if (element.hasChild("code", false)) {
+      return checkPrimitiveBinding(valContext, errors, path, "code", checkDefn, element.getNamedChild("code", false), profile, stack);
     } else {
       return false;
     }
@@ -6487,7 +6487,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (ed.hasSlicing()) {
         if (slicer != null && slicer.getPath().equals(ed.getPath())) {
           String errorContext = "profile " + profile.getVersionedUrl();
-          if (resource.hasChild(ID) && !resource.getChildValue(ID).isEmpty()) {
+          if (resource.hasChild(ID, false) && !resource.getChildValue(ID).isEmpty()) {
             errorContext += "; instance " + resource.getChildValue("id");
           }
           throw new DefinitionException(context.formatMessage(I18nConstants.SLICE_ENCOUNTERED_MIDWAY_THROUGH_SET_PATH___ID___, slicer.getPath(), slicer.getId(), errorContext));
@@ -6670,14 +6670,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (ei.getDefinition().hasExtension(ToolingExtensions.EXT_ID_EXPECTATION)) {
       return IdStatus.fromCode(ToolingExtensions.readStringExtension(ei.getDefinition(),ToolingExtensions.EXT_ID_EXPECTATION));
     } else if (isBundleEntry(ei.getPath())) {
-      Element req = ep.getNamedChild("request");
-      Element resp = ep.getNamedChild("response");
-      Element fullUrl = ep.getNamedChild(FULL_URL);
+      Element req = ep.getNamedChild("request", false);
+      Element resp = ep.getNamedChild("response", false);
+      Element fullUrl = ep.getNamedChild(FULL_URL, false);
       Element method = null;
       Element url = null;
       if (req != null) {
-        method = req.getNamedChild("method");
-        url = req.getNamedChild("url");
+        method = req.getNamedChild("method", false);
+        url = req.getNamedChild("url", false);
       }
       if (resp != null) {
         return IdStatus.OPTIONAL;
@@ -6840,7 +6840,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   
   private boolean IsExemptInvariant(String path, Element element, ElementDefinitionConstraintComponent inv) {
     if ("eld-24".equals(inv.getKey())) {
-      String p = element.getNamedChildValue("path");
+      String p = element.getNamedChildValue("path", false);
       return (p != null) && ((p.endsWith("xtension.url") || p.endsWith(".id")));
     }
     return false;
@@ -6883,13 +6883,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // todo: validate everything in this bundle.
     }
     if (rok) {
-      if (idstatus == IdStatus.REQUIRED && (element.getNamedChild(ID) == null)) {
+      if (idstatus == IdStatus.REQUIRED && (element.getNamedChild(ID, false) == null)) {
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MISSING) && ok;
-      } else if (idstatus == IdStatus.PROHIBITED && (element.getNamedChild(ID) != null)) {
+      } else if (idstatus == IdStatus.PROHIBITED && (element.getNamedChild(ID, false) != null)) {
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_PROHIBITED) && ok;
       }
-      if (element.getNamedChild(ID) != null) {
-        Element eid = element.getNamedChild(ID);
+      if (element.getNamedChild(ID, false) != null) {
+        Element eid = element.getNamedChild(ID, false);
         if (eid.getProperty() != null && eid.getProperty().getDefinition() != null && eid.getProperty().getDefinition().getBase().getPath().equals("Resource.id")) {
           NodeStack ns = stack.push(eid, -1, eid.getProperty().getDefinition(), null);
           if (eid.primitiveValue() != null && eid.primitiveValue().length() > 64) {
@@ -6958,7 +6958,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     bundle.getElement().getNamedChildren(ENTRY, list);
     if (list.isEmpty())
       return null;
-    Element resource = list.get(0).getNamedChild(RESOURCE);
+    Element resource = list.get(0).getNamedChild(RESOURCE, false);
     if (resource == null)
       return null;
     else {

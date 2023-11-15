@@ -12,6 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.naming.Context;
+
+import org.antlr.v4.codegen.model.decl.ContextTokenGetterDecl;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -79,32 +83,11 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
-import org.hl7.fhir.validation.BaseValidator.ElementMatch;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class BaseValidator implements IValidationContextResourceLoader {
-
-
-  public class ElementMatch {
-
-    private Element element;
-    private boolean valid;
-    protected ElementMatch(Element element, boolean valid) {
-      super();
-      this.element = element;
-      this.valid = valid;
-    }
-    public Element getElement() {
-      return element;
-    }
-    public boolean isValid() {
-      return valid;
-    }
-
-  }
-
 
   public class BooleanHolder {
     private boolean value = true;
@@ -488,6 +471,10 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return thePass;
   }
 
+  protected boolean rulePlural(List<ValidationMessage> errors, String ruleDate, IssueType type, NodeStack node, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
+    return rulePlural(errors, ruleDate, type, node.line(), node.col(), node.getLiteralPath(), thePass, num, theMessage, theMessageArguments);
+  }
+  
   protected boolean rulePlural(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingErrors()) {
       String message = context.formatMessagePlural(num, theMessage, theMessageArguments);
@@ -771,10 +758,30 @@ public class BaseValidator implements IValidationContextResourceLoader {
     trackedMessages.removeAll(messages);    
   }
   
+  protected boolean warningOrError(boolean isError, List<ValidationMessage> errors, String ruleDate, IssueType type, NodeStack stack, boolean thePass, String msg, Object... theMessageArguments) {
+    return warningOrError(isError, errors, ruleDate, type, stack.line(), stack.col(), stack.getLiteralPath(), thePass, msg, theMessageArguments);
+  }
+  
   protected boolean warningOrError(boolean isError, List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       IssueSeverity lvl = isError ? IssueSeverity.ERROR : IssueSeverity.WARNING;
+      if (doingLevel(lvl)) {
+        addValidationMessage(errors, ruleDate, type, line, col, path, nmsg, lvl, msg);
+      }
+    }
+    return thePass;
+
+  }
+
+  protected boolean hintOrError(boolean isError, List<ValidationMessage> errors, String ruleDate, IssueType type, NodeStack stack, boolean thePass, String msg, Object... theMessageArguments) {
+    return hintOrError(isError, errors, ruleDate, type, stack.line(), stack.col(), stack.getLiteralPath(), thePass, msg, theMessageArguments);
+  }
+  
+  protected boolean hintOrError(boolean isError, List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
+    if (!thePass) {
+      String nmsg = context.formatMessage(msg, theMessageArguments);
+      IssueSeverity lvl = isError ? IssueSeverity.ERROR : IssueSeverity.INFORMATION;
       if (doingLevel(lvl)) {
         addValidationMessage(errors, ruleDate, type, line, col, path, nmsg, lvl, msg);
       }
@@ -1010,7 +1017,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
       return null;
     if (bnd.fhirType().equals(BUNDLE)) {
       for (Element be : bnd.getChildrenByName(ENTRY)) {
-        Element res = be.getNamedChild(RESOURCE);
+        Element res = be.getNamedChild(RESOURCE, false);
         if (res != null) {
           String fullUrl = be.getChildValue(FULL_URL);
           String rt = res.fhirType();
@@ -1025,28 +1032,42 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return null;
   }
 
-  protected ElementMatch resolveInBundle(Element bundle, List<Element> entries, String ref, String fullUrl, String type, String id) {
+  protected Element resolveInBundle(Element bundle, List<Element> entries, String ref, String fullUrl, String type, String id, NodeStack stack, List<ValidationMessage> errors, String name, Element source, boolean isWarning) {
+    if ("MedicationStatement/d41ac499-c7e8-45fa-9246-69028bae178f".equals(ref)) {
+      System.out.println("!");
+    }
     @SuppressWarnings("unchecked")
-    Map<String, Element> map = (Map<String, Element>) bundle.getUserData("validator.entrymap");
-    Map<String, Element> relMap = (Map<String, Element>) bundle.getUserData("validator.entrymapR");
+    Map<String, List<Element>> map = (Map<String, List<Element>>) bundle.getUserData("validator.entrymap");
+    @SuppressWarnings("unchecked")
+    Map<String, List<Element>> relMap = (Map<String, List<Element>>) bundle.getUserData("validator.entrymapR");
+    List<Element> list = null;
+
     if (map == null) {
       map = new HashMap<>();
       bundle.setUserData("validator.entrymap", map);
       relMap = new HashMap<>();
       bundle.setUserData("validator.entrymapR", relMap);
       for (Element entry : entries) {
-        String fu = entry.getNamedChildValue(FULL_URL);
-        map.put(fu,  entry);
-        Element resource = entry.getNamedChild(RESOURCE);
+        String fu = entry.getNamedChildValue(FULL_URL, false);
+        list = map.get(fu);
+        if (list == null) {
+          list = new ArrayList<Element>();
+          map.put(fu, list);
+        }
+        list.add(entry);
+        
+        Element resource = entry.getNamedChild(RESOURCE, false);
         if (resource != null) {
           String et = resource.getType();
-          String eid = resource.getNamedChildValue(ID);
+          String eid = resource.getNamedChildValue(ID, false);
           if (eid != null) {
-            if (VersionUtilities.isR4Plus(context.getVersion())) {
-              relMap.put(et+"/"+eid,  entry);
-            } else {
-              map.put(et+"/"+eid,  entry);
+            String rl = et+"/"+eid;
+            list = relMap.get(rl);
+            if (list == null) {
+              list = new ArrayList<Element>();
+              relMap.put(rl, list);
             }
+            list.add(entry);
           }
         }
       }      
@@ -1054,61 +1075,88 @@ public class BaseValidator implements IValidationContextResourceLoader {
     
     if (Utilities.isAbsoluteUrl(ref)) {
       // if the reference is absolute, then you resolve by fullUrl. No other thinking is required.
-      Element e = map.get(ref);
-      if (e == null) {
+      List<Element> el = map.get(ref);
+      if (el == null) {
+        // if this something we complain about? 
+        // not if it's in a package, or it looks like a restful URL and it's one of the canonical resource types
+        boolean ok = context.hasResource(Resource.class, ref);
+        if (!ok && ref.matches(urlRegex)) {
+          String tt = extractResourceType(ref);
+          ok = VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(tt);
+        }
+        if (!ok && stack != null && !source.hasUserData("bundle.error.noted")) {
+          source.setUserData("bundle.error.noted", true);          
+          hintOrError(!isWarning, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, ref, name);
+        }
         return null;
+      } else if (el.size() == 1) {
+        return el.get(0);
       } else {
-        return new ElementMatch(e, true);
+        if (stack != null && !source.hasUserData("bundle.error.noted")) {
+          source.setUserData("bundle.error.noted", true);
+          rule(errors, "2023-11-15", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE, el.size(), ref, name);
+        }
+        return null;
       }
-//      for (Element entry : entries) {
-//        String fu = entry.getNamedChildValue(FULL_URL);
-//        if (ref.equals(fu))
-//          return entry;
-//      }
-//      return null;
     } else {
       // split into base, type, and id
       String u = null;
       if (fullUrl != null && fullUrl.matches(urlRegex) && fullUrl.endsWith(type + "/" + id)) {
-        // fullUrl = complex
         u = fullUrl.substring(0, fullUrl.length() - (type + "/" + id).length()) + ref;
       }
-//        u = fullUrl.substring((type+"/"+id).length())+ref;
-      String[] parts = ref.split("\\/");
-      if (parts.length >= 2) {
-        String t = parts[0];
-        String i = parts[1];
-        Element res = map.get(u);
-        if (res == null) {
-          res = map.get(t+"/"+i);
-        }
-        if (res == null && relMap.containsKey(t+"/"+i)) {
-          res = relMap.get(t+"/"+i);
-          return new ElementMatch(res, false);
-        } else if (res == null) {
-          return null;
+      List<Element> el = map.get(u);
+      if (el != null && el.size() > 0) {
+        if (el.size() == 1) {
+          return el.get(0);
         } else {
-          return new ElementMatch(res, true);
+          if (stack != null && !source.hasUserData("bundle.error.noted")) {
+            source.setUserData("bundle.error.noted", true);
+            rule(errors, "2023-11-15", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE, el.size(), ref, name);
+          }
+          return null;
         }
-//        for (Element entry : entries) {
-//          String fu = entry.getNamedChildValue(FULL_URL);
-//          if (fu != null && fu.equals(u))
-//            return entry;
-//          if (u == null) {
-//            Element resource = entry.getNamedChild(RESOURCE);
-//            if (resource != null) {
-//              String et = resource.getType();
-//              String eid = resource.getNamedChildValue(ID);
-//              if (t.equals(et) && i.equals(eid))
-//                return entry;
-//            }
-//          }
-//        }
+      } else {
+        String[] parts = ref.split("\\/");
+        if (parts.length >= 2) {
+          String t = parts[0];
+          if (context.getResourceNamesAsSet().contains(t)) {
+            String i = parts[1];
+            el = relMap.get(t+"/"+i);
+            if (el != null) {
+              Set<String> tl = new HashSet<>();
+              for (Element e : el) {
+                String fu = e.getNamedChildValue(FULL_URL, false);
+                tl.add(fu == null ? "<missing>" : fu);
+              }
+              if (!VersionUtilities.isR4Plus(context.getVersion())) {
+                if (el.size() == 1) {
+                  return el.get(0);
+                } else if (stack != null && !source.hasUserData("bundle.error.noted")) {
+                  source.setUserData("bundle.error.noted", true);
+                  rulePlural(errors, "2023-11-15", IssueType.INVALID, stack, false, el.size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT, ref, name, CommaSeparatedStringBuilder.join(",", Utilities.sorted(tl)));
+                }
+              } else if (stack != null && !source.hasUserData("bundle.error.noted")) {
+                source.setUserData("bundle.error.noted", true);
+                rulePlural(errors, "2023-11-15", IssueType.INVALID, stack, false, el.size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT, ref, name, CommaSeparatedStringBuilder.join(",", Utilities.sorted(tl)));
+              }
+            } else {
+              if (stack != null && !source.hasUserData("bundle.error.noted")) {
+                source.setUserData("bundle.error.noted", true);
+                hintOrError(!isWarning, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, ref, name);
+              }            
+            }
+          }
+        }
+        return null;    
       }
-      return null;
     }
   }
 
+
+  private String extractResourceType(String ref) {
+    String[] p = ref.split("\\/");
+    return p[p.length -2];
+  }
 
   protected IndexedElement getFromBundle(Element bundle, String ref, String fullUrl, List<ValidationMessage> errors, String path, String type, boolean isTransaction, BooleanHolder bh) {
     String targetUrl = null;
@@ -1173,7 +1221,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
     for (int i = 0; i < entries.size(); i++) {
       Element we = entries.get(i);
       if (targetUrl.equals(we.getChildValue(FULL_URL))) {
-        Element r = we.getNamedChild(RESOURCE);
+        Element r = we.getNamedChild(RESOURCE, false);
         if (version.isEmpty()) {
           rule(errors, NO_RULE_DATE, IssueType.FORBIDDEN, -1, -1, path, match == null, I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ref);
           match = r;
@@ -1203,8 +1251,8 @@ public class BaseValidator implements IValidationContextResourceLoader {
         if (p.length >= 2 && context.getResourceNamesAsSet().contains(p[0]) && Utilities.isValidId(p[1])) {
           for (int i = 0; i < entries.size(); i++) {
             Element we = entries.get(i);
-            Element r = we.getNamedChild(RESOURCE);
-            if (r != null && p[0].equals(r.fhirType()) && p[1].equals(r.getNamedChildValue("id")) ) {
+            Element r = we.getNamedChild(RESOURCE, false);
+            if (r != null && p[0].equals(r.fhirType()) && p[1].equals(r.getNamedChildValue("id", false)) ) {
               ml.add(we);
             }
           }          
