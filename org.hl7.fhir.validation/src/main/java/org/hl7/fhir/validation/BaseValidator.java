@@ -12,6 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.naming.Context;
+
+import org.antlr.v4.codegen.model.decl.ContextTokenGetterDecl;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -770,6 +774,22 @@ public class BaseValidator implements IValidationContextResourceLoader {
 
   }
 
+  protected boolean hintOrError(boolean isError, List<ValidationMessage> errors, String ruleDate, IssueType type, NodeStack stack, boolean thePass, String msg, Object... theMessageArguments) {
+    return hintOrError(isError, errors, ruleDate, type, stack.line(), stack.col(), stack.getLiteralPath(), thePass, msg, theMessageArguments);
+  }
+  
+  protected boolean hintOrError(boolean isError, List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
+    if (!thePass) {
+      String nmsg = context.formatMessage(msg, theMessageArguments);
+      IssueSeverity lvl = isError ? IssueSeverity.ERROR : IssueSeverity.INFORMATION;
+      if (doingLevel(lvl)) {
+        addValidationMessage(errors, ruleDate, type, line, col, path, nmsg, lvl, msg);
+      }
+    }
+    return thePass;
+
+  }
+
   /**
    * Test a rule and add a {@link IssueSeverity#WARNING} validation message if the validation fails
    * 
@@ -997,7 +1017,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
       return null;
     if (bnd.fhirType().equals(BUNDLE)) {
       for (Element be : bnd.getChildrenByName(ENTRY)) {
-        Element res = be.getNamedChild(RESOURCE);
+        Element res = be.getNamedChild(RESOURCE, false);
         if (res != null) {
           String fullUrl = be.getChildValue(FULL_URL);
           String rt = res.fhirType();
@@ -1028,7 +1048,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
       relMap = new HashMap<>();
       bundle.setUserData("validator.entrymapR", relMap);
       for (Element entry : entries) {
-        String fu = entry.getNamedChildValue(FULL_URL);
+        String fu = entry.getNamedChildValue(FULL_URL, false);
         list = map.get(fu);
         if (list == null) {
           list = new ArrayList<Element>();
@@ -1036,10 +1056,10 @@ public class BaseValidator implements IValidationContextResourceLoader {
         }
         list.add(entry);
         
-        Element resource = entry.getNamedChild(RESOURCE);
+        Element resource = entry.getNamedChild(RESOURCE, false);
         if (resource != null) {
           String et = resource.getType();
-          String eid = resource.getNamedChildValue(ID);
+          String eid = resource.getNamedChildValue(ID, false);
           if (eid != null) {
             String rl = et+"/"+eid;
             list = relMap.get(rl);
@@ -1057,9 +1077,16 @@ public class BaseValidator implements IValidationContextResourceLoader {
       // if the reference is absolute, then you resolve by fullUrl. No other thinking is required.
       List<Element> el = map.get(ref);
       if (el == null) {
-        if (stack != null && !source.hasUserData("bundle.error.noted")) {
+        // if this something we complain about? 
+        // not if it's in a package, or it looks like a restful URL and it's one of the canonical resource types
+        boolean ok = context.hasResource(Resource.class, ref);
+        if (!ok && ref.matches(urlRegex)) {
+          String tt = extractResourceType(ref);
+          ok = VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(tt);
+        }
+        if (!ok && stack != null && !source.hasUserData("bundle.error.noted")) {
           source.setUserData("bundle.error.noted", true);          
-          warningOrError(!isWarning, errors, NO_RULE_DATE, IssueType.INVALID, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, ref, name);
+          hintOrError(!isWarning, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, ref, name);
         }
         return null;
       } else if (el.size() == 1) {
@@ -1098,7 +1125,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
             if (el != null) {
               Set<String> tl = new HashSet<>();
               for (Element e : el) {
-                String fu = e.getNamedChildValue(FULL_URL);
+                String fu = e.getNamedChildValue(FULL_URL, false);
                 tl.add(fu == null ? "<missing>" : fu);
               }
               if (!VersionUtilities.isR4Plus(context.getVersion())) {
@@ -1115,7 +1142,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
             } else {
               if (stack != null && !source.hasUserData("bundle.error.noted")) {
                 source.setUserData("bundle.error.noted", true);
-                warningOrError(!isWarning, errors, NO_RULE_DATE, IssueType.INVALID, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, ref, name);
+                hintOrError(!isWarning, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, ref, name);
               }            
             }
           }
@@ -1125,6 +1152,11 @@ public class BaseValidator implements IValidationContextResourceLoader {
     }
   }
 
+
+  private String extractResourceType(String ref) {
+    String[] p = ref.split("\\/");
+    return p[p.length -2];
+  }
 
   protected IndexedElement getFromBundle(Element bundle, String ref, String fullUrl, List<ValidationMessage> errors, String path, String type, boolean isTransaction, BooleanHolder bh) {
     String targetUrl = null;
@@ -1189,7 +1221,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
     for (int i = 0; i < entries.size(); i++) {
       Element we = entries.get(i);
       if (targetUrl.equals(we.getChildValue(FULL_URL))) {
-        Element r = we.getNamedChild(RESOURCE);
+        Element r = we.getNamedChild(RESOURCE, false);
         if (version.isEmpty()) {
           rule(errors, NO_RULE_DATE, IssueType.FORBIDDEN, -1, -1, path, match == null, I18nConstants.BUNDLE_BUNDLE_MULTIPLEMATCHES, ref);
           match = r;
@@ -1219,8 +1251,8 @@ public class BaseValidator implements IValidationContextResourceLoader {
         if (p.length >= 2 && context.getResourceNamesAsSet().contains(p[0]) && Utilities.isValidId(p[1])) {
           for (int i = 0; i < entries.size(); i++) {
             Element we = entries.get(i);
-            Element r = we.getNamedChild(RESOURCE);
-            if (r != null && p[0].equals(r.fhirType()) && p[1].equals(r.getNamedChildValue("id")) ) {
+            Element r = we.getNamedChild(RESOURCE, false);
+            if (r != null && p[0].equals(r.fhirType()) && p[1].equals(r.getNamedChildValue("id", false)) ) {
               ml.add(we);
             }
           }          

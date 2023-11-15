@@ -358,7 +358,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       org.hl7.fhir.r5.elementmodel.Element bundleElement = rcontext.resolveElement(url, version);
       if (bundleElement != null) {
         String bundleUrl = null;
-        Element br = bundleElement.getNamedChild("resource");
+        Element br = bundleElement.getNamedChild("resource", false);
         if (br.getChildValue("id") != null) {
           bundleUrl = "#" + br.fhirType() + "_" + br.getChildValue("id");
         } else {

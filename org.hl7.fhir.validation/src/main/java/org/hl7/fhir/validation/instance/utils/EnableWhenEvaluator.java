@@ -395,7 +395,7 @@ public class EnableWhenEvaluator {
   }
 
   private boolean hasLinkId(Element item, String linkId) {
-    Element linkIdChild = item.getNamedChild(LINKID_ELEMENT);
+    Element linkIdChild = item.getNamedChild(LINKID_ELEMENT, false);
     if (linkIdChild != null && linkIdChild.getValue().equals(linkId)) {
       return true;
     }

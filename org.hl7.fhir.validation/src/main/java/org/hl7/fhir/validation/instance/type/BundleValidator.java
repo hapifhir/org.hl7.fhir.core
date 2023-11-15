@@ -69,7 +69,7 @@ public class BundleValidator extends BaseValidator {
 
   public boolean validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidationContext hostContext, PercentageTracker pct, ValidationMode mode) {
     boolean ok = true;
-    String type = bundle.getNamedChildValue(TYPE);
+    String type = bundle.getNamedChildValue(TYPE, false);
     type = StringUtils.defaultString(type);
     List<Element> entries = new ArrayList<Element>();
     bundle.getNamedChildren(ENTRY, entries);    
@@ -91,12 +91,12 @@ public class BundleValidator extends BaseValidator {
       // Get the stack of the first entry
       NodeStack firstStack = stack.push(firstEntry, 1, null, null);
 
-      String fullUrl = firstEntry.getNamedChildValue(FULL_URL);
+      String fullUrl = firstEntry.getNamedChildValue(FULL_URL, false);
 
       if (type.equals(DOCUMENT)) {
-        Element resource = firstEntry.getNamedChild(RESOURCE);
+        Element resource = firstEntry.getNamedChild(RESOURCE, false);
         if (rule(errors, NO_RULE_DATE, IssueType.INVALID, firstEntry.line(), firstEntry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), resource != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE)) {
-          String id = resource.getNamedChildValue(ID);
+          String id = resource.getNamedChildValue(ID, false);
           ok = validateDocument(errors, bundle, entries, resource, firstStack.push(resource, -1, null, null), fullUrl, id) && ok;
         }
         if (!VersionUtilities.isThisOrLater(FHIRVersion._4_0_1.getDisplay(), bundle.getProperty().getStructure().getFhirVersion().getDisplay())) {
@@ -104,9 +104,9 @@ public class BundleValidator extends BaseValidator {
         }
         ok = checkAllInterlinked(errors, entries, stack, bundle, false) && ok;
       } else if (type.equals(MESSAGE)) {
-        Element resource = firstEntry.getNamedChild(RESOURCE);
+        Element resource = firstEntry.getNamedChild(RESOURCE, false);
         if (rule(errors, NO_RULE_DATE, IssueType.INVALID, firstEntry.line(), firstEntry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), resource != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE)) {
-          String id = resource.getNamedChildValue(ID);
+          String id = resource.getNamedChildValue(ID, false);
           ok = validateMessage(errors, entries, resource, firstStack.push(resource, -1, null, null), fullUrl, id) && ok;
           ok = checkAllInterlinked(errors, entries, stack, bundle, true) && ok;
         }
@@ -124,7 +124,7 @@ public class BundleValidator extends BaseValidator {
     
     for (Element entry : entries) {
       NodeStack estack = stack.push(entry, count, null, null);
-      String fullUrl = entry.getNamedChildValue(FULL_URL);
+      String fullUrl = entry.getNamedChildValue(FULL_URL, false);
       String url = getCanonicalURLForEntry(entry);
       String id = getIdForEntry(entry);
       String rtype = getTypeForEntry(entry);
@@ -146,7 +146,7 @@ public class BundleValidator extends BaseValidator {
       if (url != null) {
         if (!(!url.equals(fullUrl) || (url.matches(urlRegex) && url.endsWith("/" + id))) && !isV3orV2Url(url))
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_MISMATCHIDURL, url, fullUrl, id) && ok;
-        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), !url.equals(fullUrl) || serverBase == null || (url.equals(Utilities.pathURL(serverBase, entry.getNamedChild(RESOURCE).fhirType(), id))), I18nConstants.BUNDLE_BUNDLE_ENTRY_CANONICAL, url, fullUrl) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), !url.equals(fullUrl) || serverBase == null || (url.equals(Utilities.pathURL(serverBase, entry.getNamedChild(RESOURCE, false).fhirType(), id))), I18nConstants.BUNDLE_BUNDLE_ENTRY_CANONICAL, url, fullUrl) && ok;
       }
 
       if (!VersionUtilities.isR2Ver(context.getVersion())) {
@@ -156,7 +156,7 @@ public class BundleValidator extends BaseValidator {
       if (rtype != null) {
         int rcount = counter.containsKey(rtype) ? counter.get(rtype)+1 : 0;
         counter.put(rtype, rcount);
-        Element res = entry.getNamedChild(RESOURCE);
+        Element res = entry.getNamedChild(RESOURCE, false);
         NodeStack rstack = estack.push(res, -1, null, null);
         for (BundleValidationRule bvr : validator().getBundleValidationRules()) {
           if (meetsRule(bvr, rtype, rcount, count)) {
@@ -207,7 +207,7 @@ public class BundleValidator extends BaseValidator {
 
   private boolean validateDocumentLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack, List<Element> entries) {
     boolean ok = true;
-    Element relE = link.getNamedChild("relation");
+    Element relE = link.getNamedChild("relation", false);
     if (relE != null) {
       NodeStack relStack = stack.push(relE, -1, null, null); 
       String rel = relE.getValue();
@@ -216,7 +216,7 @@ public class BundleValidator extends BaseValidator {
         ok = rule(errors, "2022-12-09", IssueType.INVALID, relE.line(), relE.col(), relStack.getLiteralPath(), relationshipUnique(rel, link, links), I18nConstants.BUNDLE_LINK_SEARCH_NO_DUPLICATES, rel) && ok;
       }
       if ("stylesheet".equals(rel)) {
-        Element urlE = link.getNamedChild("url");
+        Element urlE = link.getNamedChild("url", false);
         if (urlE != null) {
           NodeStack urlStack = stack.push(urlE, -1, null, null); 
           String url = urlE.getValue();
@@ -238,7 +238,7 @@ public class BundleValidator extends BaseValidator {
               // has to resolve in the bundle
               boolean found = false;
               for (Element e : entries) {
-                Element res = e.getNamedChild("resource");
+                Element res = e.getNamedChild(RESOURCE, false);
                 if (res != null && (""+res.fhirType()+"/"+res.getIdBase()).equals(url)) {
                   found = true;
                   break;
@@ -255,7 +255,7 @@ public class BundleValidator extends BaseValidator {
 
   private boolean validateMessageLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack, List<Element> entries) {
     boolean ok = true;
-    Element relE = link.getNamedChild("relation");
+    Element relE = link.getNamedChild("relation", false);
     if (relE != null) {
       NodeStack relStack = stack.push(relE, -1, null, null); 
       String rel = relE.getValue();
@@ -268,7 +268,7 @@ public class BundleValidator extends BaseValidator {
   }
 
   private boolean validateSearchLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link,  NodeStack stack) {
-    String rel = StringUtils.defaultString(link.getNamedChildValue("relation"));
+    String rel = StringUtils.defaultString(link.getNamedChildValue("relation", false));
     if (Utilities.existsInList(rel, "first", "previous", "next", "last", "self")) {
       return rule(errors, "2022-12-09", IssueType.INVALID, link.line(), link.col(), stack.getLiteralPath(), relationshipUnique(rel, link, links), I18nConstants.BUNDLE_LINK_SEARCH_NO_DUPLICATES, rel);
     } else {
@@ -278,7 +278,7 @@ public class BundleValidator extends BaseValidator {
 
   private boolean relationshipUnique(String rel, Element link, List<Element> links) {
     for (Element l : links) {
-      if (l != link && rel.equals(l.getNamedChildValue("relation"))) {
+      if (l != link && rel.equals(l.getNamedChildValue("relation", false))) {
         return false;
       }
       if (l == link) {
@@ -291,7 +291,7 @@ public class BundleValidator extends BaseValidator {
 
   private boolean validateCollectionLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack) {
     boolean ok = true;  
-    Element relE = link.getNamedChild("relation");
+    Element relE = link.getNamedChild("relation", false);
     if (relE != null) {
       NodeStack relStack = stack.push(relE, -1, null, null); 
       String rel = relE.getValue();
@@ -305,7 +305,7 @@ public class BundleValidator extends BaseValidator {
 
   private boolean validateSubscriptionLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack) {
     boolean ok = true;  
-    Element relE = link.getNamedChild("relation");
+    Element relE = link.getNamedChild("relation", false);
     if (relE != null) {
       NodeStack relStack = stack.push(relE, -1, null, null); 
       String rel = relE.getValue();
@@ -319,7 +319,7 @@ public class BundleValidator extends BaseValidator {
 
   private boolean validateTransactionOrBatchLink(List<ValidationMessage> errors, Element bundle, List<Element> links, Element link, NodeStack stack) {
     boolean ok = true;  
-    Element relE = link.getNamedChild("relation");
+    Element relE = link.getNamedChild("relation", false);
     if (relE != null) {
       NodeStack relStack = stack.push(relE, -1, null, null); 
       String rel = relE.getValue();
@@ -342,7 +342,7 @@ public class BundleValidator extends BaseValidator {
     if (selfLink == null) {
       warning(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_SEARCH_NOSELF);
     } else {
-      readSearchResourceTypes(selfLink.getNamedChildValue("url"), types);
+      readSearchResourceTypes(selfLink.getNamedChildValue("url", false), types);
       if (types.size() == 0) {
         hint(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_SEARCH_SELF_NOT_UNDERSTOOD);
       }
@@ -356,7 +356,7 @@ public class BundleValidator extends BaseValidator {
       for (Element entry : entries) {
         NodeStack estack = stack.push(entry, count, null, null);
         count++;
-        Element res = entry.getNamedChild("resource");
+        Element res = entry.getNamedChild(RESOURCE, false);
         if (rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), res != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE)) {
           NodeStack rstack = estack.push(res, -1, null, null);
           String rt = res.fhirType();
@@ -364,11 +364,11 @@ public class BundleValidator extends BaseValidator {
           if (bok == null) {
             typeProblem = true;
             hint(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), selfLink == null, I18nConstants.BUNDLE_SEARCH_ENTRY_TYPE_NOT_SURE);                       
-            String id = res.getNamedChildValue("id");
+            String id = res.getNamedChildValue("id", false);
             warning(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null || "OperationOutcome".equals(rt), I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
           } else if (bok) {
             if (!"OperationOutcome".equals(rt)) {
-              String id = res.getNamedChildValue("id");
+              String id = res.getNamedChildValue("id", false);
               warning(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
               if (rtype != null && !rt.equals(rtype)) {
                 typeProblem = true;
@@ -394,17 +394,17 @@ public class BundleValidator extends BaseValidator {
       for (Element entry : entries) {
         NodeStack estack = stack.push(entry, count, null, null);
         count++;
-        Element res = entry.getNamedChild("resource");
+        Element res = entry.getNamedChild(RESOURCE, false);
         String sm = null;
-        Element s = entry.getNamedChild("search");
+        Element s = entry.getNamedChild("search", false);
         if (s != null) {
-          sm = s.getNamedChildValue("mode");
+          sm = s.getNamedChildValue("mode", false);
         }
         warning(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), sm != null, I18nConstants.BUNDLE_SEARCH_NO_MODE);
         if (rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), res != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE)) {
           NodeStack rstack = estack.push(res, -1, null, null);
           String rt = res.fhirType();
-          String id = res.getNamedChildValue("id");
+          String id = res.getNamedChildValue("id", false);
           if (sm != null) {
             if ("match".equals(sm)) {
               ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID) && ok;
@@ -436,9 +436,9 @@ public class BundleValidator extends BaseValidator {
     boolean any = false;
     for (Element entry : entries) {
       String sm = null;
-      Element s = entry.getNamedChild("search");
+      Element s = entry.getNamedChild("search", false);
       if (s != null) {
-        sm = s.getNamedChildValue("mode");
+        sm = s.getNamedChildValue("mode", false);
       }
       if (sm != null) {
         any = true;
@@ -484,7 +484,7 @@ public class BundleValidator extends BaseValidator {
 
   private Element getSelfLink(List<Element> links) {
     for (Element link : links) {
-      if ("self".equals(link.getNamedChildValue("relation"))) {
+      if ("self".equals(link.getNamedChildValue("relation", false))) {
         return link;
       }
     }
@@ -582,7 +582,7 @@ public class BundleValidator extends BaseValidator {
   private boolean validateBundleReference(List<ValidationMessage> errors, Element bundle, List<Element> entries, Element ref, String name, NodeStack stack, String fullUrl, String type, String id) {
     String reference = null;
     try {
-      reference = ref.getNamedChildValue("reference");
+      reference = ref.getNamedChildValue("reference", false);
     } catch (Error e) {
     }
 
@@ -610,9 +610,9 @@ public class BundleValidator extends BaseValidator {
    * @param stack {@link NodeStack}
    */
   private boolean handleSpecialCaseForLastUpdated(Element bundle, List<ValidationMessage> errors, NodeStack stack) {
-    boolean ok = bundle.hasChild(META)
-      && bundle.getNamedChild(META).hasChild(LAST_UPDATED)
-      && bundle.getNamedChild(META).getNamedChild(LAST_UPDATED).hasValue();
+    boolean ok = bundle.hasChild(META, false)
+      && bundle.getNamedChild(META, false).hasChild(LAST_UPDATED, false)
+      && bundle.getNamedChild(META, false).getNamedChild(LAST_UPDATED, false).hasValue();
     ruleHtml(errors, NO_RULE_DATE, IssueType.REQUIRED, stack.getLiteralPath(), ok, I18nConstants.DOCUMENT_DATE_REQUIRED, I18nConstants.DOCUMENT_DATE_REQUIRED_HTML);
     return ok;
   }
@@ -622,7 +622,7 @@ public class BundleValidator extends BaseValidator {
     List<EntrySummary> entryList = new ArrayList<>();
     int i = 0;
     for (Element entry : entries) {
-      Element r = entry.getNamedChild(RESOURCE);
+      Element r = entry.getNamedChild(RESOURCE, false);
       if (r != null) {
         EntrySummary e = new EntrySummary(i, entry, r);
         entryList.add(e);
@@ -705,8 +705,8 @@ public class BundleValidator extends BaseValidator {
   private void visitBundleLinks(Set<EntrySummary> visited, List<EntrySummary> entryList, Element bundle) {
     List<Element> links = bundle.getChildrenByName("link");
     for (Element link : links) {
-      String rel = link.getNamedChildValue("relation");
-      String url = link.getNamedChildValue("url");
+      String rel = link.getNamedChildValue("relation", false);
+      String url = link.getNamedChildValue("url", false);
       if (rel != null && url != null) {
         if (Utilities.existsInList(rel, "stylesheet")) {
           for (EntrySummary e : entryList) {
@@ -727,21 +727,21 @@ public class BundleValidator extends BaseValidator {
   }
 
   private String getCanonicalURLForEntry(Element entry) {
-    Element e = entry.getNamedChild(RESOURCE);
+    Element e = entry.getNamedChild(RESOURCE, false);
     if (e == null)
       return null;
-    return e.getNamedChildValue("url");
+    return e.getNamedChildValue("url", false);
   }
 
   private String getIdForEntry(Element entry) {
-    Element e = entry.getNamedChild(RESOURCE);
+    Element e = entry.getNamedChild(RESOURCE, false);
     if (e == null)
       return null;
-    return e.getNamedChildValue(ID);
+    return e.getNamedChildValue(ID, false);
   }
 
   private String getTypeForEntry(Element entry) {
-    Element e = entry.getNamedChild(RESOURCE);
+    Element e = entry.getNamedChild(RESOURCE, false);
     if (e == null)
       return null;
     return e.fhirType();
@@ -760,9 +760,9 @@ public class BundleValidator extends BaseValidator {
     // TODO: Need to handle _version
     int i = 1;
     for (Element entry : entries) {
-      String fullUrl = entry.getNamedChildValue(FULL_URL);
-      Element resource = entry.getNamedChild(RESOURCE);
-      String id = resource != null ? resource.getNamedChildValue(ID) : null;
+      String fullUrl = entry.getNamedChildValue(FULL_URL, false);
+      Element resource = entry.getNamedChild(RESOURCE, false);
+      String id = resource != null ? resource.getNamedChildValue(ID, false) : null;
       if (id != null && fullUrl != null) {
         String urlId = null;
         if (fullUrl.startsWith("https://") || fullUrl.startsWith("http://")) {
@@ -801,7 +801,7 @@ public class BundleValidator extends BaseValidator {
 //
 //  private boolean followResourceLinks(Element entry, Map<String, Element> visitedResources, Map<Element, Element> candidateEntries, List<Element> candidateResources, List<ValidationMessage> errors, NodeStack stack, int depth) {
 //    boolean ok = true;
-//    Element resource = entry.getNamedChild(RESOURCE);
+//    Element resource = entry.getNamedChild(RESOURCE, false);
 //    if (visitedResources.containsValue(resource))
 //      return ok;
 //
