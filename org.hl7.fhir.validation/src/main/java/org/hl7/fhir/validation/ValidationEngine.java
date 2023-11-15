@@ -968,7 +968,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     org.hl7.fhir.r5.elementmodel.Element src = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
 
     // if the src has a url, we try to use the java code 
-    if ((canDoNative == null && src.hasChild("url")) || (canDoNative != null && canDoNative)) {
+    if ((canDoNative == null && src.hasChild("url", false)) || (canDoNative != null && canDoNative)) {
       try {
         if (VersionUtilities.isR2Ver(version)) {
           return VersionConvertor.convertVersionNativeR2(targetVer, cnt, format);

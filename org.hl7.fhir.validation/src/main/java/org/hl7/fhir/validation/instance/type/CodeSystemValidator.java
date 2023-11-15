@@ -29,16 +29,16 @@ public class CodeSystemValidator  extends BaseValidator {
 
   public boolean validateCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack, ValidationOptions options) {
     boolean ok = true;
-    String url = cs.getNamedChildValue("url");
-    String content = cs.getNamedChildValue("content");
-    String caseSensitive = cs.getNamedChildValue("caseSensitive");
-    String hierarchyMeaning = cs.getNamedChildValue("hierarchyMeaning");
-    String supp = cs.getNamedChildValue("supplements");
+    String url = cs.getNamedChildValue("url", false);
+    String content = cs.getNamedChildValue("content", false);
+    String caseSensitive = cs.getNamedChildValue("caseSensitive", false);
+    String hierarchyMeaning = cs.getNamedChildValue("hierarchyMeaning", false);
+    String supp = cs.getNamedChildValue("supplements", false);
     int count = countConcepts(cs); 
     
     metaChecks(errors, cs, stack, url, content, caseSensitive, hierarchyMeaning, !Utilities.noString(supp), count, supp);
 
-    String vsu = cs.getNamedChildValue("valueSet");
+    String vsu = cs.getNamedChildValue("valueSet", false);
     if (!Utilities.noString(vsu)) {
       hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), "complete".equals(content), I18nConstants.CODESYSTEM_CS_NO_VS_NOTCOMPLETE);
       ValueSet vs;
@@ -98,29 +98,29 @@ public class CodeSystemValidator  extends BaseValidator {
     if (parent.isForPublication()) { 
       if (isHL7(cs)) {
         boolean ok = true;
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "url") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("version"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "version") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "title") && ok;                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name"), I18nConstants.CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7, "name");                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("status"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "status") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("experimental"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "experimental") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("description"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "description") && ok; 
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("content"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "content") && ok; 
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "url") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("version", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "version") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "title") && ok;                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name", false), I18nConstants.CODESYSTEM_SHAREABLE_EXTRA_MISSING_HL7, "name");                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("status", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "status") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("experimental", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "experimental") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("description", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "description") && ok; 
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("content", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "content") && ok; 
         if (!"supplement".equals(cs.getChildValue("content"))) {
-          ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("caseSensitive"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "caseSensitive") && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("caseSensitive", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING_HL7, "caseSensitive") && ok;
         }
         return ok;
       } else {
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "url");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("version"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "version");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "title");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name"), I18nConstants.CODESYSTEM_SHAREABLE_EXTRA_MISSING, "name");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("status"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "status");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("experimental"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "experimental");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("description"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "description"); 
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("content"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "content"); 
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "url");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("version", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "version");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "title");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name", false), I18nConstants.CODESYSTEM_SHAREABLE_EXTRA_MISSING, "name");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("status", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "status");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("experimental", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "experimental");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("description", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "description"); 
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("content", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "content"); 
         if (!"supplement".equals(cs.getChildValue("content"))) {
-          warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("caseSensitive"), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "caseSensitive");
+          warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("caseSensitive", false), I18nConstants.CODESYSTEM_SHAREABLE_MISSING, "caseSensitive");
         }
       }
     }
@@ -130,15 +130,15 @@ public class CodeSystemValidator  extends BaseValidator {
   private void metaChecks(List<ValidationMessage> errors, Element cs, NodeStack stack, String url,  String content, String caseSensitive, String hierarchyMeaning, boolean isSupplement, int count, String supp) {
     if (isSupplement) {
       if (!"supplement".equals(content)) {
-        NodeStack s = stack.push(cs.getNamedChild("content"), -1, null, null);
+        NodeStack s = stack.push(cs.getNamedChild("content", false), -1, null, null);
         rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG);
       }
       if (!Utilities.noString(caseSensitive)) {
-        NodeStack s = stack.push(cs.getNamedChild("caseSensitive"), -1, null, null);
+        NodeStack s = stack.push(cs.getNamedChild("caseSensitive", false), -1, null, null);
         rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL, "caseSensitive");
       }
       if (!Utilities.noString(hierarchyMeaning)) {
-        NodeStack s = stack.push(cs.getNamedChild("hierarchyMeaning"), -1, null, null);
+        NodeStack s = stack.push(cs.getNamedChild("hierarchyMeaning", false), -1, null, null);
         rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL, "hierarchyMeaning");
       }
 
@@ -146,7 +146,7 @@ public class CodeSystemValidator  extends BaseValidator {
       boolean isHL7 = url != null && (url.contains("hl7.org") || url.contains("fhir.org"));
       if (Utilities.noString(content)) {
         NodeStack s = stack;
-        Element c = cs.getNamedChild("content");
+        Element c = cs.getNamedChild("content", false);
         if (c != null) {
           s = stack.push(c, -1, null, null);
         }
@@ -156,12 +156,12 @@ public class CodeSystemValidator  extends BaseValidator {
           warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_NONHL7_MISSING_ELEMENT, "content");          
         } 
       } else if ("supplement".equals(content)) {
-        NodeStack s = stack.push(cs.getNamedChild("content"), -1, null, null);
+        NodeStack s = stack.push(cs.getNamedChild("content", false), -1, null, null);
         rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING);        
       }
       if (Utilities.noString(caseSensitive)) {
         NodeStack s = stack;
-        Element c = cs.getNamedChild("caseSensitive");
+        Element c = cs.getNamedChild("caseSensitive", false);
         if (c != null) {
           s = stack.push(c, -1, null, null);
         }
@@ -173,7 +173,7 @@ public class CodeSystemValidator  extends BaseValidator {
       }      
       if (Utilities.noString(hierarchyMeaning) && hasHeirarchy(cs)) {
         NodeStack s = stack;
-        Element c = cs.getNamedChild("hierarchyMeaning");
+        Element c = cs.getNamedChild("hierarchyMeaning", false);
         if (c != null) {
           s = stack.push(c, -1, null, null);
         }
@@ -185,10 +185,10 @@ public class CodeSystemValidator  extends BaseValidator {
       }     
     }
 
-    if (cs.hasChild("count")) {
-      int statedCount = Utilities.parseInt(cs.getNamedChildValue("count"), -1);
+    if (cs.hasChild("count", false)) {
+      int statedCount = Utilities.parseInt(cs.getNamedChildValue("count", false), -1);
       if (statedCount > -1 && content != null) { // error elsewhere
-        var nstack = stack.push(cs.getNamedChild("count"), -1, null, null);
+        var nstack = stack.push(cs.getNamedChild("count", false), -1, null, null);
         switch (content) {
         case "complete": 
           rule(errors, "2023-08-15", IssueType.INVALID, nstack, count == statedCount, I18nConstants.CODESYSTEM_CS_COUNT_COMPLETE_WRONG, count, statedCount);
@@ -199,7 +199,7 @@ public class CodeSystemValidator  extends BaseValidator {
           break;
         case "not-present":
           if (cs.hasChildren("concept")) {
-            hint(errors, "2023-08-15", IssueType.INVALID, stack.push(cs.getNamedChild("concept"), -1, null, null), statedCount > 0, I18nConstants.CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO, statedCount);
+            hint(errors, "2023-08-15", IssueType.INVALID, stack.push(cs.getNamedChild("concept", false), -1, null, null), statedCount > 0, I18nConstants.CODESYSTEM_CS_COUNT_NOTPRESENT_ZERO, statedCount);
           }
           break;
         case "supplement": 
