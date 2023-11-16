@@ -22,7 +22,7 @@
       "telecom": [
         {
           "system": "url",
-          "value": "http://hl7.org/special/committees/fhir.htm"
+          "value": "http://www.hl7.org/Special/committees/fhir.htm"
         }
       ]
     }
