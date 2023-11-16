@@ -22,6 +22,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -73,6 +74,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonUtilities;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
@@ -80,6 +82,7 @@ import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.instance.InstanceValidator;
@@ -304,6 +307,26 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     } else {
       val.setDebug(false);
     }
+
+    StructureDefinition sd = null;
+    if (content.has("ips")) {
+      val.setCheckIPSCodes(true);
+      if (content.get("ips").getAsString().equals("uv")) {
+        val.getContext().loadFromPackage(loadPackage("hl7.fhir.uv.ips#1.1.0"), ValidatorUtils.loaderForVersion("4.0.1"));
+        sd = val.getContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips"); 
+        val.getBundleValidationRules().add(new BundleValidationRule().setRule("Composition:0").setProfile("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"));
+      } else if (content.get("ips").getAsString().equals("au")) {
+        val.getContext().loadFromPackage(loadPackage("hl7.fhir.au.ips#current"), ValidatorUtils.loaderForVersion("4.0.1"));
+        sd = val.getContext().fetchResource(StructureDefinition.class, "http://hl7.org.au/fhir/ips/StructureDefinition/Bundle-au-ips"); 
+        val.getBundleValidationRules().add(new BundleValidationRule().setRule("Composition:0").setProfile("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"));
+      } else if (content.get("ips").getAsString().equals("nz")) {
+        val.getContext().loadFromPackage(loadPackage("tewhatuora.fhir.nzps#current"), ValidatorUtils.loaderForVersion("4.0.1"));
+        sd = val.getContext().fetchResource(StructureDefinition.class, "https://standards.digital.health.nz/fhir/StructureDefinition/nzps-bundle"); 
+        val.getBundleValidationRules().add(new BundleValidationRule().setRule("Composition:0").setProfile("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"));
+      } else {
+        throw new Error("Unknown IPS "+content.get("ips").getAsString());
+      }
+    }
     if (content.has("best-practice")) {
       val.setBestPracticeWarningLevel(BestPracticeWarningLevel.valueOf(content.get("best-practice").getAsString()));
     }
@@ -356,7 +379,6 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           }
         }
       }
-      StructureDefinition sd = null;
       String filename = profile.get("source").getAsString();
       if (Utilities.isAbsoluteUrl(filename)) {
         sd = val.getContext().fetchResource(StructureDefinition.class, filename);
@@ -398,7 +420,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       }
       List<StructureDefinition> profiles = new ArrayList<>();
       if (logical.has("format")) {
-        StructureDefinition sd = val.getContext().fetchResource(StructureDefinition.class, JsonUtilities.str(logical, "format"));
+        sd = val.getContext().fetchResource(StructureDefinition.class, JsonUtilities.str(logical, "format"));
         if (sd != null) {
           profiles.add(sd);
         } else {
@@ -419,6 +441,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     logger.verifyHasNoRequests();
   }
 
+
+  private NpmPackage loadPackage(String idAndVer) throws IOException {
+    var pcm = new FilesystemPackageCacheManager(true);
+    return pcm.loadPackage(idAndVer);
+  }
 
   private ValidationEngine buildVersionEngine(String ver, String txLog) throws Exception {
     String server = FhirSettings.getTxFhirDevelopment();
