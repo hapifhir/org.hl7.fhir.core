@@ -3,19 +3,19 @@ package org.hl7.fhir.utilities.xhtml;
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
+
   Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
-    
-   * Redistributions of source code must retain the above copyright notice, this 
+
+ * Redistributions of source code must retain the above copyright notice, this 
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
+ * Redistributions in binary form must reproduce the above copyright notice, 
      this list of conditions and the following disclaimer in the documentation 
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
+ * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
-  
+
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
@@ -26,7 +26,7 @@ package org.hl7.fhir.utilities.xhtml;
   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
   POSSIBILITY OF SUCH DAMAGE.
-  
+
  */
 
 
@@ -48,10 +48,11 @@ public class XhtmlComposer {
   public static final String XHTML_NS = "http://www.w3.org/1999/xhtml";
   private boolean pretty;
   private boolean xml; 
-  
+  private boolean autoLinks;
+
   public static final boolean XML = true; 
   public static final boolean HTML = false; 
-  
+
   public XhtmlComposer(boolean xml, boolean pretty) {
     super();
     this.pretty = pretty;
@@ -99,11 +100,11 @@ public class XhtmlComposer {
 
   private void composeDoc(XhtmlDocument doc) throws IOException  {
     // headers....
-//    dst.append("<html>" + (pretty ? "\r\n" : ""));
+    //    dst.append("<html>" + (pretty ? "\r\n" : ""));
     for (XhtmlNode c : doc.getChildNodes()) {
       writeNode("  ", c, false);
     }
-//    dst.append("</html>" + (pretty ? "\r\n" : ""));
+    //    dst.append("</html>" + (pretty ? "\r\n" : ""));
   }
 
   private void writeNode(String indent, XhtmlNode node, boolean noPrettyOverride) throws IOException  {
@@ -126,50 +127,73 @@ public class XhtmlComposer {
     }
   }
 
+
+
+  private boolean isValidUrlChar(char c) {
+    return Character.isAlphabetic(c) || Character.isDigit(c) || Utilities.existsInList(c, ';', ',', '/', '?', ':', '@', '&', '=', '+', '$', '-', '_', '.', '!', '~', '*', '\'', '(', ')');
+  }
+  
   private void writeText(XhtmlNode node) throws IOException  {
-    for (char c : node.getContent().toCharArray())
-    {
-      if (c == '&') {
-        dst.append("&amp;");
-      } else if (c == '<') {
-        dst.append("&lt;");
-      } else if (c == '>') {
-        dst.append("&gt;");
-      } else if (xml) {
-        if (c == '"')
-          dst.append("&quot;");
-        else 
-          dst.append(c);
+    String src = node.getContent();
+    int i = 0;
+    while (i < src.length()) {
+      char c = src.charAt(i);
+      if (autoLinks && c == 'h' && Utilities.startsWithInList(src.substring(i), "http://", "https://")) {
+        int j = i;
+        while (i < src.length() && isValidUrlChar(src.charAt(i))) {
+          i++;
+        }
+        String url = src.substring(j, i);
+        if (url.endsWith(".") || url.endsWith(",")) {
+          i--;
+          url = url.substring(0, url.length()-1);
+        }
+        url = Utilities.escapeXml(url);
+        dst.append("<a href=\""+url+"\">"+ url +"</a>");
       } else {
-        if (c == XhtmlNode.NBSP.charAt(0))
-          dst.append("&nbsp;");
-        else if (c == (char) 0xA7)
-          dst.append("&sect;");
-        else if (c == (char) 169)
-          dst.append("&copy;");
-        else if (c == (char) 8482)
-          dst.append("&trade;");
-        else if (c == (char) 956)
-          dst.append("&mu;");
-        else if (c == (char) 174)
-          dst.append("&reg;");
-        else 
-          dst.append(c);
+        i++;
+        if (c == '&') {
+          dst.append("&amp;");
+        } else if (c == '<') {
+          dst.append("&lt;");
+        } else if (c == '>') {
+          dst.append("&gt;");
+        } else if (xml) {
+          if (c == '"')
+            dst.append("&quot;");
+          else 
+            dst.append(c);
+        } else {
+          if (c == XhtmlNode.NBSP.charAt(0))
+            dst.append("&nbsp;");
+          else if (c == (char) 0xA7)
+            dst.append("&sect;");
+          else if (c == (char) 169)
+            dst.append("&copy;");
+          else if (c == (char) 8482)
+            dst.append("&trade;");
+          else if (c == (char) 956)
+            dst.append("&mu;");
+          else if (c == (char) 174)
+            dst.append("&reg;");
+          else 
+            dst.append(c);
+        }
       }
     }
   }
 
   private void writeComment(String indent, XhtmlNode node, boolean noPrettyOverride) throws IOException {
     dst.append(indent + "<!-- " + node.getContent().trim() + " -->" + (pretty && !noPrettyOverride ? "\r\n" : ""));
-}
+  }
 
   private void writeDocType(XhtmlNode node) throws IOException {
     dst.append("<!" + node.getContent() + ">\r\n");
-}
+  }
 
   private void writeInstruction(XhtmlNode node) throws IOException {
     dst.append("<?" + node.getContent() + "?>\r\n");
-}
+  }
 
   private String escapeHtml(String s)  {
     if (s == null || s.equals(""))
@@ -188,14 +212,14 @@ public class XhtmlComposer {
         b.append(c);
     return b.toString();
   }
-  
+
   private String attributes(XhtmlNode node) {
     StringBuilder s = new StringBuilder();
     for (String n : node.getAttributes().keySet())
       s.append(" " + n + "=\"" + escapeHtml(node.getAttributes().get(n)) + "\"");
     return s.toString();
   }
-  
+
   private void writeElement(String indent, XhtmlNode node, boolean noPrettyOverride) throws IOException  {
     if (!pretty || noPrettyOverride)
       indent = "";
@@ -242,7 +266,7 @@ public class XhtmlComposer {
   public void compose(IXMLWriter xml, XhtmlNode node) throws IOException  {
     compose(xml, node, false);
   }
-  
+
   public void compose(IXMLWriter xml, XhtmlNode node, boolean noPrettyOverride) throws IOException  {
     if (node.getNodeType() == NodeType.Comment)
       xml.comment(node.getContent(), pretty && !noPrettyOverride);
@@ -257,11 +281,11 @@ public class XhtmlComposer {
   private void composeElement(IXMLWriter xml, XhtmlNode node, boolean noPrettyOverride) throws IOException  {
     for (String n : node.getAttributes().keySet()) {
       if (n.equals("xmlns")) 
-      	xml.setDefaultNamespace(node.getAttributes().get(n));
+        xml.setDefaultNamespace(node.getAttributes().get(n));
       else if (n.startsWith("xmlns:")) 
-      	xml.namespace(n.substring(6), node.getAttributes().get(n));
+        xml.namespace(n.substring(6), node.getAttributes().get(n));
       else
-      xml.attribute(n, node.getAttributes().get(n));
+        xml.attribute(n, node.getAttributes().get(n));
     }
     xml.enter(XHTML_NS, node.getName());
     for (XhtmlNode n : node.getChildNodes())
@@ -299,7 +323,7 @@ public class XhtmlComposer {
         b.append("* ");
         lastWS = true;
       }
-      
+
       for (XhtmlNode n : x.getChildNodes()) {
         lastWS = composePlainText(n, b, lastWS);
       }
@@ -379,5 +403,14 @@ public class XhtmlComposer {
     }
     return sdst.toString();
   }
-  
+
+  public boolean isAutoLinks() {
+    return autoLinks;
+  }
+
+  public XhtmlComposer setAutoLinks(boolean autoLinks) {
+    this.autoLinks = autoLinks;
+    return this;
+  }
+
 }
