@@ -1202,11 +1202,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     String s = Utilities.noString(ii.getValue()) ? "?ngen-9?" : ii.getValue();
     NamingSystem ns = context.getContext().getNSUrlMap().get(ii.getSystem());
     if (ns != null) {
-      if (ns.hasWebPath()) {
-        s = "<a href=\""+Utilities.escapeXml(ns.getWebPath())+"\">"+ns.present()+"</a>#"+s;        
-      } else {
-        s = ns.present()+"#"+s;
-      }
+      s = ns.present()+"#"+s;
     }
     if (ii.hasType()) {
       if (ii.getType().hasText())
@@ -1235,8 +1231,48 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return s;
   }
   
-  protected void renderIdentifier(XhtmlNode x, Identifier ii) {
-    x.addText(displayIdentifier(ii));
+  protected void renderIdentifier(XhtmlNode x, Identifier ii) {    
+    if (ii.hasType()) {
+      if (ii.getType().hasText())
+       x.tx(ii.getType().getText());
+      else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay())
+        x.tx(ii.getType().getCoding().get(0).getDisplay()+":");
+      else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
+        x.tx(lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getVersion(), ii.getType().getCoding().get(0).getCode())+":");
+    } else {
+      x.tx("id:");      
+    }
+    x.nbsp();
+
+    NamingSystem ns = context.getContext().getNSUrlMap().get(ii.getSystem());
+    if (ns != null) {
+      if (ns.hasWebPath()) {
+        x.ah(ns.getWebPath()).tx("#");        
+      } else {
+        x.tx(ns.present()+"#");
+      }
+    }
+    x.tx(Utilities.noString(ii.getValue()) ? "?ngen-9?" : ii.getValue());
+
+    if (ii.hasUse() || ii.hasPeriod()) {
+      x.nbsp();
+      x.tx("(");
+      if (ii.hasUse()) {
+        x.tx("use:");
+        x.nbsp();
+        x.tx(ii.getUse().toString());
+      }
+      if (ii.hasUse() && ii.hasPeriod()) {
+        x.tx(",");
+        x.nbsp();
+      }
+      if (ii.hasPeriod()) {
+        x.tx("period:");
+        x.nbsp();
+        x.tx(displayPeriod(ii.getPeriod()));
+      }
+      x.tx(")");
+    }        
   }
 
   public static String displayHumanName(HumanName name) {
