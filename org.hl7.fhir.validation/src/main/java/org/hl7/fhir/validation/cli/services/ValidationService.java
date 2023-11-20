@@ -64,11 +64,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.*;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
-import org.hl7.fhir.validation.cli.model.CliContext;
-import org.hl7.fhir.validation.cli.model.FileInfo;
-import org.hl7.fhir.validation.cli.model.ValidationOutcome;
-import org.hl7.fhir.validation.cli.model.ValidationRequest;
-import org.hl7.fhir.validation.cli.model.ValidationResponse;
+import org.hl7.fhir.validation.cli.model.*;
 import org.hl7.fhir.validation.cli.renderers.CSVRenderer;
 import org.hl7.fhir.validation.cli.renderers.CompactRenderer;
 import org.hl7.fhir.validation.cli.renderers.DefaultRenderer;
@@ -101,7 +97,8 @@ public class ValidationService {
 
     String definitions = VersionUtilities.packageForVersion(request.getCliContext().getSv()) + "#" + VersionUtilities.getCurrentVersion(request.getCliContext().getSv());
 
-    String sessionId = initializeValidator(request.getCliContext(), definitions, new TimeTracker(), request.sessionId);
+    TimeTracker timeTracker = new TimeTracker();
+    String sessionId = initializeValidator(request.getCliContext(), definitions, timeTracker, request.sessionId);
     ValidationEngine validator = sessionCache.fetchSessionValidatorEngine(sessionId);
 
     if (request.getCliContext().getProfiles().size() > 0) {
@@ -124,11 +121,11 @@ public class ValidationService {
 
       List<ValidationMessage> messages = new ArrayList<>();
 
-      List<ValidatedFragment> validatedFragments = validator.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
+      ValidatedFragments validatedFragments = validator.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
         request.getCliContext().getProfiles(), messages);
 
-      if (validatedFragments.size() == 1 && !validatedFragments.get(0).isDerivedContent()) {
-        ValidatedFragment validatedFragment = validatedFragments.get(0);
+      if (validatedFragments.getValidatedFragments().size() == 1 && !validatedFragments.getValidatedFragments().get(0).isDerivedContent()) {
+        ValidatedFragment validatedFragment = validatedFragments.getValidatedFragments().get(0);
         ValidationOutcome outcome = new ValidationOutcome();
           FileInfo fileInfo = new FileInfo(
           fileToValidate.getFileName(),
@@ -138,7 +135,7 @@ public class ValidationService {
         outcome.setFileInfo(fileInfo);
         response.addOutcome(outcome);
       } else {
-        for (ValidatedFragment validatedFragment : validatedFragments) {
+        for (ValidatedFragment validatedFragment : validatedFragments.getValidatedFragments()) {
           ValidationOutcome outcome = new ValidationOutcome();
           FileInfo fileInfo = new FileInfo(
             validatedFragment.getFilename(),
@@ -149,7 +146,13 @@ public class ValidationService {
           response.addOutcome(outcome);
         }
       }
+
+      if (request.getCliContext().isShowTimes())
+        response.setValidationTime(validatedFragments.getValidationTime()
+      );
     }
+
+
     System.out.println("  Max Memory: "+Runtime.getRuntime().maxMemory());
     return response;
   }
