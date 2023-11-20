@@ -13,6 +13,9 @@ public class ValidationResponse {
   @JsonProperty("sessionId")
   public String sessionId;
 
+  @JsonProperty("validationTime")
+  public ValidationTime validationTime;
+
   public ValidationResponse() {}
 
   public ValidationResponse(List<ValidationOutcome> outcomes) {
@@ -51,6 +54,17 @@ public class ValidationResponse {
       outcomes = new ArrayList<>();
     }
     outcomes.add(outcome);
+    return this;
+  }
+
+  @JsonProperty("validationTime")
+  public ValidationTime getValidationTime() {
+    return validationTime;
+  }
+
+  @JsonProperty("validationTime")
+  public ValidationResponse setValidationTime(ValidationTime validationTime) {
+    this.validationTime = validationTime;
     return this;
   }
 
