@@ -113,6 +113,10 @@ public class ResourceAddress {
     return baseServiceUri.resolve(nameForClass(resourceClass) + "/" + id);
   }
 
+  public URI resolveGetUriFromResourceClassAndId(String resourceClass, String id) {
+    return baseServiceUri.resolve(resourceClass + "/" + id);
+  }
+
   public <T extends Resource> URI resolveGetUriFromResourceClassAndIdAndVersion(Class<T> resourceClass, String id,
       String version) {
     return baseServiceUri.resolve(nameForClass(resourceClass) + "/" + id + "/_history/" + version);
