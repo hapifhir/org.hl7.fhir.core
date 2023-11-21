@@ -165,6 +165,22 @@ public class FHIRToolingClient {
     return capabilities;
   }
 
+  public Resource read(String resourceClass, String id) {// TODO Change this to AddressableResource
+    ResourceRequest<Resource> result = null;
+    try {
+      result = client.issueGetResourceRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
+          getPreferredResourceFormat(), generateHeaders(), "Read " + resourceClass + "/" + id,
+          TIMEOUT_NORMAL);
+      if (result.isUnsuccessfulRequest()) {
+        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
+            (OperationOutcome) result.getPayload());
+      }
+    } catch (Exception e) {
+      throw new FHIRException(e);
+    }
+    return result.getPayload();
+  }
+
   public <T extends Resource> T read(Class<T> resourceClass, String id) {// TODO Change this to AddressableResource
     ResourceRequest<T> result = null;
     try {
