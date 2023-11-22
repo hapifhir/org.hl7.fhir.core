@@ -10,12 +10,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 
@@ -107,7 +102,7 @@ public class ValidationService {
       System.out.println("  .. validate " + request.listSourceFiles());
     }
 
-    ValidationResponse response = new ValidationResponse().setSessionId(sessionId);
+    ValidationResponse response = new ValidationResponse().setSessionId(sessionId).setValidationTimes(new HashMap<>());
 
     for (FileInfo fileToValidate : request.getFilesToValidate()) {
       if (fileToValidate.getFileType() == null) {
@@ -127,7 +122,7 @@ public class ValidationService {
       if (validatedFragments.getValidatedFragments().size() == 1 && !validatedFragments.getValidatedFragments().get(0).isDerivedContent()) {
         ValidatedFragment validatedFragment = validatedFragments.getValidatedFragments().get(0);
         ValidationOutcome outcome = new ValidationOutcome();
-          FileInfo fileInfo = new FileInfo(
+        FileInfo fileInfo = new FileInfo(
           fileToValidate.getFileName(),
           new String(validatedFragment.getContent()),
           validatedFragment.getExtension());
@@ -147,11 +142,10 @@ public class ValidationService {
         }
       }
 
-      if (request.getCliContext().isShowTimes())
-        response.setValidationTime(validatedFragments.getValidationTime()
-      );
+      if (request.getCliContext().isShowTimes()) {
+        response.getValidationTimes().put(fileToValidate.getFileName(), validatedFragments.getValidationTime());
+      }
     }
-
 
     System.out.println("  Max Memory: "+Runtime.getRuntime().maxMemory());
     return response;

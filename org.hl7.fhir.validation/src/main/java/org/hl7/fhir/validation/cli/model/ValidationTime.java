@@ -1,81 +1,81 @@
 package org.hl7.fhir.validation.cli.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hl7.fhir.validation.TimeTracker;
+import org.hl7.fhir.validation.ValidationTimeTracker;
 
 public class ValidationTime {
 
-
+  public ValidationTime() {}
   @JsonProperty("overall")
   private long overall = 0;
 
   @JsonProperty("terminology")
-  private long txTime = 0;
+  private long terminology = 0;
 
   @JsonProperty("structureDefinition")
-  private long sdTime = 0;
+  private long structureDefinition = 0;
 
   @JsonProperty("resourceParse")
-  private long loadTime = 0;
+  private long resourceParse = 0;
 
   @JsonProperty("fhirPath")
-  private long fpeTime = 0;
+  private long fhirPath = 0;
 
   @JsonProperty("checkingSpecials")
-  private long specTime = 0;
+  private long checkingSpecials = 0;
 
   @JsonProperty("terminology")
-  public long getTxTime() {
-    return txTime;
+  public long getTerminology() {
+    return terminology;
   }
 
   @JsonProperty("terminology")
-  public ValidationTime setTxTime(long txTime) {
-    this.txTime = txTime;
+  public ValidationTime setTerminology(long terminology) {
+    this.terminology = terminology;
     return this;
   }
 
   @JsonProperty("structureDefinition")
-  public long getSdTime() {
-    return sdTime;
+  public long getStructureDefinition() {
+    return structureDefinition;
   }
 
   @JsonProperty("structureDefinition")
-  public ValidationTime setSdTime(long sdTime) {
-    this.sdTime = sdTime;
+  public ValidationTime setStructureDefinition(long structureDefinition) {
+    this.structureDefinition = structureDefinition;
     return this;
   }
 
   @JsonProperty("resourceParse")
-  public long getLoadTime() {
-    return loadTime;
+  public long getResourceParse() {
+    return resourceParse;
   }
 
   @JsonProperty("resourceParse")
-  public ValidationTime setLoadTime(long loadTime) {
-    this.loadTime = loadTime;
+  public ValidationTime setResourceParse(long resourceParse) {
+    this.resourceParse = resourceParse;
     return this;
   }
 
   @JsonProperty("fhirPath")
-  public long getFpeTime() {
-    return fpeTime;
+  public long getFhirPath() {
+    return fhirPath;
   }
 
   @JsonProperty("fhirPath")
-  public ValidationTime setFpeTime(long fpeTime) {
-    this.fpeTime = fpeTime;
+  public ValidationTime setFhirPath(long fpeTime) {
+    this.fhirPath = fpeTime;
     return this;
   }
 
   @JsonProperty("checkingSpecials")
-  public long getSpecTime() {
-    return specTime;
+  public long getCheckingSpecials() {
+    return checkingSpecials;
   }
 
   @JsonProperty("checkingSpecials")
-  public ValidationTime setSpecTime(long specTime) {
-    this.specTime = specTime;
+  public ValidationTime setCheckingSpecials(long checkingSpecials) {
+    this.checkingSpecials = checkingSpecials;
     return this;
   }
 
@@ -90,13 +90,13 @@ public class ValidationTime {
     return this;
   }
 
-  public static ValidationTime fromTimeTracker(TimeTracker timeTracker) {
+  public static ValidationTime fromTimeTracker(ValidationTimeTracker timeTracker) {
     return new ValidationTime()
-      .setSdTime(timeTracker.getSdTime())
-      .setTxTime(timeTracker.getTxTime())
-      .setSpecTime(timeTracker.getSpecTime())
-      .setFpeTime(timeTracker.getFpeTime())
+      .setStructureDefinition(timeTracker.getSdTime())
+      .setTerminology(timeTracker.getTxTime())
+      .setCheckingSpecials(timeTracker.getSpecTime())
+      .setFhirPath(timeTracker.getFpeTime())
       .setOverall(timeTracker.getOverall())
-      .setLoadTime(timeTracker.getLoadTime());
+      .setResourceParse(timeTracker.getLoadTime());
   }
 }
