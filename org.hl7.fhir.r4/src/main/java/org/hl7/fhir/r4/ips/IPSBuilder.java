@@ -84,6 +84,7 @@ public class IPSBuilder {
     dev.setId("java");
     dev.addDeviceName().setName("Java Core Library");
     dev.addVersion().setValue(VersionUtil.getVersion());
+    bnd.addEntry().setResource(dev).setFullUrl(Utilities.pathURL(url, "Device", dev.getIdBase()));
     return cmp;
   }
 
@@ -210,7 +211,7 @@ public class IPSBuilder {
   }
 
   private static void addConditions(Bundle bnd, Composition cmp, FHIRToolingClient server, String patientId) {
-    Bundle sb = server.search("Condition", "?patient="+patientId); //+"&_include=MedicationStatement:asserter");
+    Bundle sb = server.search("Condition", "?patient="+patientId+"&_include=Condition:asserter");
     SectionComponent sct = cmp.addSection();
     sct.setTitle("Problems");
     sct.getCode().addCoding().setSystem("http://loinc.org").setCode("11450-4");
