@@ -60,7 +60,7 @@ import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
+import org.hl7.fhir.r5.context.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.Bundle;
@@ -3024,4 +3024,30 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+
+  public void unload() {
+
+    codeSystems.unload();
+    valueSets.unload();
+    maps.unload();
+    transforms.unload();
+    structures.unload();
+    typeManager.unload();
+    measures.unload();
+    libraries.unload();
+    guides.unload();
+    capstmts.unload();
+    searchParameters.unload();
+    questionnaires.unload();
+    operations.unload();
+    plans.unload();
+    actors.unload();
+    requirements.unload();
+    systems.unload();
+
+    binaries.clear();
+    validationCache.clear();
+    txCache.clear();
+}
+  
 }
