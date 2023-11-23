@@ -61,6 +61,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.Timing;
+import org.hl7.fhir.r5.model.TriggerDefinition;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
@@ -512,6 +513,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       } else if (e instanceof DataRequirement) {
         DataRequirement p  = (DataRequirement) e;
         renderDataRequirement(x, p);
+      } else if (e instanceof TriggerDefinition) {
+        TriggerDefinition p  = (TriggerDefinition) e;
+        renderTriggerDefinition(x, p);
       } else if (e instanceof UsageContext) {
         UsageContext p  = (UsageContext) e;
         renderUsageContext(x, p);
