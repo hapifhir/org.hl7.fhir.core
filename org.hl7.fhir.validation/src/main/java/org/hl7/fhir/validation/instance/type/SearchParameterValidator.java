@@ -67,10 +67,17 @@ public class SearchParameterValidator extends BaseValidator {
           String expThis = canonicalise(cs.getNamedChildValue("expression", false), bases);
           String expOther = canonicalise(sp.getExpression(), bases); 
           warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE,stack.getLiteralPath(), expThis.equals(expOther), I18nConstants.SEARCHPARAMETER_EXP_WRONG, master, sp.getExpression(), cs.getNamedChildValue("expression", false));
-        }
-        
-        // todo: check compositions
+        }        
       }
+    }
+    if ("composite".equals(cs.getNamedChildValue("type", false))) {
+      List<Element> components = cs.getChildren("component");
+      if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), components.size() > 1, I18nConstants.SEARCHPARAMETER_MISSING_COMPONENTS)) {
+        // todo: check compositions        
+      } else {
+        ok = false;
+      }
+      
     }
     return ok;
   }
