@@ -133,8 +133,8 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
 
   @Override
-  public ITerminologyClient setTimeout(int i) {
-    client.setTimeout(i);
+  public ITerminologyClient setTimeout(int i) { // #FIXME
+    client.setTimeoutNormal(i);
     return this;
   }
 

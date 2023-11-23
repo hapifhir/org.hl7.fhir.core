@@ -87,7 +87,7 @@ public class TerminologyClientR4 implements TerminologyClient {
 
   @Override
   public void setTimeout(int i) {
-    client.setTimeout(i);
+    client.setTimeoutNormal(i); // #FIXME
   }
 
   @Override
