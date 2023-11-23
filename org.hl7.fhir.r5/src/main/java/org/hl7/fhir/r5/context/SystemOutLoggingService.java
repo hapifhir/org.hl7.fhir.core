@@ -3,7 +3,7 @@ package org.hl7.fhir.r5.context;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class SystemOutLoggingService implements IWorkerContext.ILoggingService {
+public class SystemOutLoggingService implements ILoggingService {
 
   private final boolean debug;
 
