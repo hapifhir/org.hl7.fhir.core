@@ -28,6 +28,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.context.ILoggingService;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContextManager;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -324,7 +325,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     private final boolean canRunWithoutTerminologyServer;
 
     @With
-    private final IWorkerContext.ILoggingService loggingService;
+    private final ILoggingService loggingService;
 
     @With
     private boolean THO = true;
@@ -342,7 +343,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       loggingService = new SystemOutLoggingService();
     }
 
-    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, IWorkerContext.ILoggingService loggingService, boolean THO) {
+    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, boolean THO) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
       this.version = version;
@@ -431,7 +432,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
    *
    * @see IgLoader#loadIgSource(String, boolean, boolean) loadIgSource for detailed description of the src parameter
    */
-  private void loadCoreDefinitions(String src, boolean recursive, String terminologyCachePath, String userAgent, TimeTracker tt, IWorkerContext.ILoggingService loggingService) throws FHIRException, IOException {
+  private void loadCoreDefinitions(String src, boolean recursive, String terminologyCachePath, String userAgent, TimeTracker tt, ILoggingService loggingService) throws FHIRException, IOException {
     NpmPackage npm = getPcm().loadPackage(src, null);
     if (npm != null) {
       version = npm.fhirVersion();
