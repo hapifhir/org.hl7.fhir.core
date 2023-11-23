@@ -3272,6 +3272,7 @@ public class FHIRPathEngine {
     case Count : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);
     case Where : 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean)); 
       // special case: where the focus is Reference, and the parameter to where is resolve() "is", we will suck up the target types
       if (focus.hasType("Reference")) {
         boolean canRestrictTargets = !exp.getParameters().isEmpty();
@@ -3298,6 +3299,7 @@ public class FHIRPathEngine {
     case Select : 
       return paramTypes.get(0);
     case All : 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Repeat : 
       return paramTypes.get(0); 
@@ -3681,7 +3683,7 @@ public class FHIRPathEngine {
   }
 
 
-  private void checkParamTypes(ExpressionNode expr, String funcName, List<TypeDetails> paramTypes, TypeDetails... typeSet) throws PathEngineException {
+  private void checkParamTypes(ExpressionNode expr, String funcName,List<TypeDetails> paramTypes, TypeDetails... typeSet) throws PathEngineException {
     int i = 0;
     for (TypeDetails pt : typeSet) {
       if (i == paramTypes.size()) {
