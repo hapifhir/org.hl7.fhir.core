@@ -2219,7 +2219,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = true;
         } else if (en.equals("Resource") && container.isResource()) {
           ok = true;
-        } else if (en.equals("CanonicalResource") && VersionUtilities.getExtendedCanonicalResourceNames(context.getVersion()).contains(stack.getLiteralPath())) {
+        } else if (en.equals("CanonicalResource") && containsAny(VersionUtilities.getExtendedCanonicalResourceNames(context.getVersion()), plist)) {
           ok = true;
         } else if (hasElementName(plist, en) && pu == null) {
           ok = true;
@@ -2308,6 +2308,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       return true;
     }
+  }
+
+  private boolean containsAny(Set<String> set, List<String> list) {
+    for (String p : list) {
+      if (set.contains(p)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean hasElementName(List<String> plist, String en) {
@@ -2726,7 +2735,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (dok) {
         try {
           DateTimeType dt = new DateTimeType(e.primitiveValue());
-          if (isCoreDefinition(profile) || (context.hasExtension(ToolingExtensions.EXT_DATE_RULES) && ToolingExtensions.readStringExtension(context, ToolingExtensions.EXT_DATE_RULES).contains("year-valid"))) {
+          if (isCoreDefinition(profile) || !context.hasExtension(ToolingExtensions.EXT_DATE_RULES) || ToolingExtensions.readStringExtension(context, ToolingExtensions.EXT_DATE_RULES).contains("year-valid")) {
             warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, yearIsValid(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REASONABLE, e.primitiveValue());
           }
         } catch (Exception ex) {
