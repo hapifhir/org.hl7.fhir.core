@@ -67,6 +67,7 @@ import org.hl7.fhir.r5.model.Timing;
 import org.hl7.fhir.r5.model.Timing.EventTiming;
 import org.hl7.fhir.r5.model.Timing.TimingRepeatComponent;
 import org.hl7.fhir.r5.model.Timing.UnitsOfTime;
+import org.hl7.fhir.r5.model.TriggerDefinition;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -1234,7 +1235,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   protected void renderIdentifier(XhtmlNode x, Identifier ii) {    
     if (ii.hasType()) {
       if (ii.getType().hasText())
-       x.tx(ii.getType().getText());
+       x.tx(ii.getType().getText()+":");
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay())
         x.tx(ii.getType().getCoding().get(0).getDisplay()+":");
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
@@ -1575,6 +1576,36 @@ public class DataRenderer extends Renderer implements CodeResolver {
     renderCoding(x,  u.getCode());
     x.tx(": ");
     render(x, u.getValue());    
+  }
+  
+  
+  public void renderTriggerDefinition(XhtmlNode x, TriggerDefinition td) throws FHIRFormatError, DefinitionException, IOException {
+    XhtmlNode tbl = x.table("grid");
+
+    XhtmlNode tr = tbl.tr();  
+    tr.td().b().tx("Type");
+    tr.td().tx(td.getType().getDisplay());
+
+    if (td.hasName()) {    
+      tr = tbl.tr();  
+      tr.td().b().tx("Name");
+      tr.td().tx(td.getType().getDisplay());
+    }
+    if (td.hasCode()) {    
+      tr = tbl.tr();  
+      tr.td().b().tx("Code");
+      renderCodeableConcept(tr.td(), td.getCode());
+    }
+    if (td.hasTiming()) {    
+      tr = tbl.tr();  
+      tr.td().b().tx("Timing");
+      render(tr.td(), td.getTiming());
+    }
+    if (td.hasCondition()) {    
+      tr = tbl.tr();  
+      tr.td().b().tx("Condition");
+      renderExpression(tr.td(), td.getCondition());
+    }    
   }
   
   public void renderDataRequirement(XhtmlNode x, DataRequirement dr) throws FHIRFormatError, DefinitionException, IOException {
