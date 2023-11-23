@@ -311,11 +311,13 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     StructureDefinition sd = null;
     if (content.has("ips")) {
       val.setCheckIPSCodes(true);
+      val.getContext().loadFromPackage(loadPackage("hl7.fhir.uv.ips#1.1.0"), ValidatorUtils.loaderForVersion("4.0.1"));
       if (content.get("ips").getAsString().equals("uv")) {
-        val.getContext().loadFromPackage(loadPackage("hl7.fhir.uv.ips#1.1.0"), ValidatorUtils.loaderForVersion("4.0.1"));
         sd = val.getContext().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips"); 
         val.getBundleValidationRules().add(new BundleValidationRule().setRule("Composition:0").setProfile("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"));
       } else if (content.get("ips").getAsString().equals("au")) {
+        val.getContext().loadFromPackage(loadPackage("hl7.fhir.au.base#current"), ValidatorUtils.loaderForVersion("4.0.1"));
+        val.getContext().loadFromPackage(loadPackage("hl7.fhir.au.core#current"), ValidatorUtils.loaderForVersion("4.0.1"));
         val.getContext().loadFromPackage(loadPackage("hl7.fhir.au.ips#current"), ValidatorUtils.loaderForVersion("4.0.1"));
         sd = val.getContext().fetchResource(StructureDefinition.class, "http://hl7.org.au/fhir/ips/StructureDefinition/Bundle-au-ips"); 
         val.getBundleValidationRules().add(new BundleValidationRule().setRule("Composition:0").setProfile("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"));
