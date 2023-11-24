@@ -24,7 +24,7 @@
 * Move json and xml extensions from extensions pack to tooling ig
 * Add support for rendering union and intersections of profiles in profile comparison
 * FHIRPath iif() test case fixes
-* *Add support for IPS validation in test cases
+* Add support for IPS validation in test cases
 * Fix for broken markdown re-processing
 * Improve identifier rendering
 * Fix committee URLs
