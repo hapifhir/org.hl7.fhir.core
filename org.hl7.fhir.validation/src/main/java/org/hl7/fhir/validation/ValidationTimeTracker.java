@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation;
 
-public class TimeTracker {
+public class ValidationTimeTracker {
   private long overall = 0;
   private long txTime = 0;
   private long sdTime = 0;
