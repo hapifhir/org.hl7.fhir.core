@@ -91,6 +91,8 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
+import org.hl7.fhir.validation.cli.model.ValidatedFragments;
+import org.hl7.fhir.validation.cli.model.ValidationTime;
 import org.hl7.fhir.validation.cli.services.IPackageInstaller;
 import org.hl7.fhir.validation.cli.utils.ProfileLoader;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
@@ -633,10 +635,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
 
-  public List<ValidatedFragment> validateAsFragments(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
+  public ValidatedFragments validateAsFragments(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
     InstanceValidator validator = getValidator(cntType);
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
-    return validator.validatedContent;
+    return new ValidatedFragments(validator.validatedContent,
+      ValidationTime.fromTimeTracker(validator.timeTracker));
   }
 
   public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
