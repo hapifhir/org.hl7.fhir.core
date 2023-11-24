@@ -1,18 +1,31 @@
 ## Validator Changes
 
-* Rework bundle references validation for R4+ - this is a *significant* change - many existing bundles that were previously erroneously passing will now fail
-* #1488 - don't fail on erroneously repeating elements
-* Fix problem creating CDA type discriminators
-* Fix problem with R3 expansion
-* Add support for CCDA .hasTemplateIdOf(canonical)
-* Add support for NZ IPS
+* Fix validator not allowing canonical resource extensions in canonical resources in bundles
+* Fix bundle validation error on intneral link checking
+* Check parameter type for FHIRPath where() and all()
+* Validate that composite search parameters have components
 
 
 ## Other code changes
 
-* Start work on making IWorkerContext a versioned API
-  * Add fhirVersion to R5 Base and IWorkerContext methods
-  * move IContextResourceLoader, ValidationResult and CodingValidationRequest out of IWorkerContext to their own clasess
-* Fix up VSAC import for large value sets
-* fix FHIRPath cda tests for empty package cache
-* Fix issue where markdown with multiple characters was being cut off sometimes when rendering profiles
+* Refactor timeout control on client
+* Support IPS in validation tests
+* Remove orphan R4B test
+* Improve expansion error messages
+* Fix expansion language - don't set for displayName parameter
+* Adjust value set rendering for fragment code systems
+* Fix NPE rendering some resources
+* Fix rendering of TriggerDefinition
+* Support parsing ad-hoc json data type fragments
+* More memory work for IG Publisher
+* Move ILoggingService & VersionUtil
+* Fix timeout issue in vsac
+* Introduce ips builder + Infrastructure changes for IPS builder
+* Move json and xml extensions from extensions pack to tooling ig
+* Add support for rendering union and intersections of profiles in profile comparison
+* FHIRPath iif() test case fixes
+* *Add support for IPS validation in test cases
+* Fix for broken markdown re-processing
+* Improve identifier rendering
+* Fix committee URLs
+
