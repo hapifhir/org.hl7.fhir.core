@@ -12,10 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.naming.Context;
-
-import org.antlr.v4.codegen.model.decl.ContextTokenGetterDecl;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -70,7 +66,6 @@ import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
-import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -164,7 +159,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected BaseValidator parent;
   protected Source source;
   protected IWorkerContext context;
-  protected TimeTracker timeTracker = new TimeTracker();
+  protected ValidationTimeTracker timeTracker = new ValidationTimeTracker();
   protected XVerExtensionManager xverManager;
   protected List<TrackedLocationRelatedMessage> trackedMessages = new ArrayList<>();
   protected List<ValidationMessage> messagesToRemove = new ArrayList<>();
