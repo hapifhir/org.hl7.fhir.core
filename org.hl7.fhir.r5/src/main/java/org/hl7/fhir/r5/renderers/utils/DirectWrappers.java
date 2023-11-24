@@ -219,8 +219,14 @@ public class DirectWrappers {
           Property family = b.getChildByName("family");
           Property given = wrapped.getChildByName("given");
           String s = given != null && given.hasValues() ? given.getValues().get(0).primitiveValue() : "";
-          if (family != null && family.hasValues())
-            s = s + " " + family.getValues().get(0).primitiveValue().toUpperCase();
+          if (family != null && family.hasValues()) {
+            String v = family.getValues().get(0).primitiveValue();
+            if (v == null) {
+              s = s + " " + "??";
+            } else {
+              s = s + " " + v.toUpperCase();
+            }
+          }
           return s;
         } else {
           Property p = b.getChildByName("name");

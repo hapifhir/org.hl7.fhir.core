@@ -177,6 +177,8 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       s = s + refCell(left);
       s = s + refCell(right);
       s = s + "<td><a href=\""+getId()+".html\">Comparison</a></td>";
+      s = s + "<td><a href=\""+getId()+"-union.html\">Union</a></td>";
+      s = s + "<td><a href=\""+getId()+"-intersection.html\">Intersection</a></td>";
       s = s + "<td>"+outcomeSummary()+"</td>";
       return "<tr style=\"background-color: "+color()+"\">"+s+"</tr>\r\n";
     }

@@ -1,4 +1,4 @@
-package org.hl7.fhir.validation.cli.utils;
+package org.hl7.fhir.utilities;
 
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang3.StringUtils.left;
@@ -34,11 +34,11 @@ import static org.apache.commons.lang3.StringUtils.left;
 
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
 import java.util.Properties;
 
-import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.utilities.Utilities;
 
 /**
@@ -93,12 +93,12 @@ public class VersionUtil {
 
   private static String getDurationSinceBuild() {
     try {
-      InstantType dt = new InstantType(ourBuildTime);
-      return Utilities.describeDuration(Duration.ofMillis(new Date().getTime() - dt.getValue().getTime()))+" old";
+//      InstantType dt = new InstantType(ourBuildTime);
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+      Date dt = sdf.parse(ourBuildTime.substring(0, 19));
+      return Utilities.describeDuration(Duration.ofMillis(new Date().getTime() - dt.getTime()))+" old";
     } catch (Exception e) {
       return "??";
     }
   }
-
-
 }

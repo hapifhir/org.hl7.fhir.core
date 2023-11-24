@@ -21,7 +21,7 @@
       "telecom": [
         {
           "system": "url",
-          "value": "http://hl7.org/special/committees/FHIR"
+          "value": "http://www.hl7.org/Special/committees/FHIR"
         }
       ]
     }
