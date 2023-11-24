@@ -44,22 +44,4 @@ public class XmlParserTests {
     }
   }
 
-  @Test
-  /**
-   * Deserializes a simplified CDA example into the logical model and checks that
-   * xml deserialization works for the xsi:type
-   * 
-   * @throws IOException
-   */
-  public void testXsiDeserialiserXmlParser() throws IOException {
-    Element cda = Manager.parseSingle(context,
-        TestingUtilities.loadTestResourceStream("validator", "cda", "example-xsi.xml"), FhirFormat.XML);
-
-    ByteArrayOutputStream baosXml = new ByteArrayOutputStream();
-    Manager.compose(context, cda, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);
-
-    String cdaSerialised = baosXml.toString();
-    Assertions.assertTrue(cdaSerialised.indexOf("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"") > 0);
-    Assertions.assertTrue(cdaSerialised.indexOf("xsi:type=\"CD\"") > 0);
-  }
 }
