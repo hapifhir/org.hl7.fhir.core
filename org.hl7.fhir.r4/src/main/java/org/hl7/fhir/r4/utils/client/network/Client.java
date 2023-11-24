@@ -16,13 +16,13 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 public class Client {
+  
+  
 
   public static final String DEFAULT_CHARSET = "UTF-8";
-  private static final long DEFAULT_TIMEOUT = 5000;
   private ToolingClientLogger logger;
   private FhirLoggingInterceptor fhirLoggingInterceptor;
   private int retryCount;
-  private long timeout = DEFAULT_TIMEOUT;
   private String base;
   
   public String getBase() {
@@ -49,14 +49,6 @@ public class Client {
 
   public void setRetryCount(int retryCount) {
     this.retryCount = retryCount;
-  }
-
-  public long getTimeout() {
-    return timeout;
-  }
-
-  public void setTimeout(long timeout) {
-    this.timeout = timeout;
   }
 
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat,
@@ -107,20 +99,20 @@ public class Client {
     return executeFhirRequest(request, resourceFormat, headers, message, retryCount, timeout);
   }
 
-  public boolean issueDeleteRequest(URI resourceUri) throws IOException {
+  public boolean issueDeleteRequest(URI resourceUri, int timeout) throws IOException {
     Request.Builder request = new Request.Builder().url(resourceUri.toURL()).delete();
     return executeFhirRequest(request, null, new Headers.Builder().build(), null, retryCount, timeout)
         .isSuccessfulRequest();
   }
 
-  public Bundle issueGetFeedRequest(URI resourceUri, String resourceFormat) throws IOException {
+  public Bundle issueGetFeedRequest(URI resourceUri, String resourceFormat, int timeout) throws IOException {
     Request.Builder request = new Request.Builder().url(resourceUri.toURL());
 
     return executeBundleRequest(request, resourceFormat, new Headers.Builder().build(), null, retryCount, timeout);
   }
 
   public Bundle issuePostFeedRequest(URI resourceUri, Map<String, String> parameters, String resourceName,
-      Resource resource, String resourceFormat) throws IOException {
+      Resource resource, String resourceFormat, int timeout) throws IOException {
     String boundary = "----WebKitFormBoundarykbMUo6H8QaUnYtRy";
     byte[] payload = ByteUtils.encodeFormSubmission(parameters, resourceName, resource, boundary);
     RequestBody body = RequestBody.create(MediaType.parse(resourceFormat + ";charset=" + DEFAULT_CHARSET), payload);

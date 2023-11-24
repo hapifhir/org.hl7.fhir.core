@@ -499,19 +499,6 @@ public interface IWorkerContext {
   public Map<String, NamingSystem> getNSUrlMap();
   public TranslationServices translator();
 
-  public interface ILoggingService {
-    public enum LogCategory {
-      INIT, 
-      PROGRESS,
-      TX, 
-      CONTEXT, 
-      GENERATE,
-      HTML 
-    }
-    public void logMessage(String message); // status messages, always display
-    public void logDebugMessage(LogCategory category, String message); // verbose; only when debugging 
-    public boolean isDebugLogging(); // whether to log debug information
-  }
   public void setLogger(@Nonnull ILoggingService logger);
   public ILoggingService getLogger();
 

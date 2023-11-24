@@ -362,8 +362,8 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   public StructureDefinition fetchByJsonName(String key) {
     for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
       ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
-      if (sd.getKind() == StructureDefinitionKind.LOGICAL && ed != null && ed.hasExtension(ToolingExtensions.EXT_JSON_NAME) && 
-          key.equals(ToolingExtensions.readStringExtension(ed, ToolingExtensions.EXT_JSON_NAME))) {
+      if (sd.getKind() == StructureDefinitionKind.LOGICAL && ed != null && ed.hasExtension(ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED) && 
+          key.equals(ToolingExtensions.readStringExtension(ed, ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED))) {
         return sd;
       }
     }

@@ -3272,6 +3272,7 @@ public class FHIRPathEngine {
     case Count : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);
     case Where : 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean)); 
       // special case: where the focus is Reference, and the parameter to where is resolve() "is", we will suck up the target types
       if (focus.hasType("Reference")) {
         boolean canRestrictTargets = !exp.getParameters().isEmpty();
@@ -3298,6 +3299,7 @@ public class FHIRPathEngine {
     case Select : 
       return paramTypes.get(0);
     case All : 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Repeat : 
       return paramTypes.get(0); 
@@ -3383,9 +3385,11 @@ public class FHIRPathEngine {
     }
     case Iif : {
       TypeDetails types = new TypeDetails(null);
-      types.update(paramTypes.get(0));
-      if (paramTypes.size() > 1) {
-        types.update(paramTypes.get(1));
+      checkSingleton(focus, "iif", exp);       
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean));       
+      types.update(paramTypes.get(1));
+      if (paramTypes.size() > 2) {
+        types.update(paramTypes.get(2));
       }
       return types;
     }
@@ -3679,7 +3683,7 @@ public class FHIRPathEngine {
   }
 
 
-  private void checkParamTypes(ExpressionNode expr, String funcName, List<TypeDetails> paramTypes, TypeDetails... typeSet) throws PathEngineException {
+  private void checkParamTypes(ExpressionNode expr, String funcName,List<TypeDetails> paramTypes, TypeDetails... typeSet) throws PathEngineException {
     int i = 0;
     for (TypeDetails pt : typeSet) {
       if (i == paramTypes.size()) {
@@ -3692,6 +3696,15 @@ public class FHIRPathEngine {
           throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, funcName, i, a, pt.toString());
         }
       }
+      if (actual.getCollectionStatus() != CollectionStatus.SINGLETON && pt.getCollectionStatus() == CollectionStatus.SINGLETON) {
+        typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_PARAMETER, funcName, i, expr.toString()), I18nConstants.FHIRPATH_COLLECTION_STATUS_PARAMETER));
+      }
+    }
+  }
+
+  private void checkSingleton(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
+    if (focus.getCollectionStatus() != CollectionStatus.SINGLETON) {
+      typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_CONTEXT, name, expr.toString()), I18nConstants.FHIRPATH_COLLECTION_STATUS_CONTEXT));
     }
   }
 
@@ -4811,9 +4824,12 @@ public class FHIRPathEngine {
 
 
   private List<Base> funcIif(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
+    if (focus.size() > 1) {
+      throw makeException(exp, I18nConstants.FHIRPATH_NO_COLLECTION, "iif", focus.size());    
+    }
+    
+    List<Base> n1 = execute(focus.isEmpty() ? context : changeThis(context, focus.get(0)), focus, exp.getParameters().get(0), true);
     Equality v = asBool(n1, exp);
-
     if (v == Equality.True) {
       return execute(context, focus, exp.getParameters().get(1), true);
     } else if (exp.getParameters().size() < 3) {

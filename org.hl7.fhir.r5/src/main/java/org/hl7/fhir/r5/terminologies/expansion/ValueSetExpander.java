@@ -668,8 +668,6 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     if (langs == null && focus.hasLanguage()) {
       langs = new AcceptLanguageHeader(focus.getLanguage(), true);
-    } else if (langs != null && langs.hasChosen()) {
-      focus.setLanguage(langs.getChosen());
     }
 
     try {
