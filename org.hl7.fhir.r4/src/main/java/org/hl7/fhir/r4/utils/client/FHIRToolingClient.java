@@ -25,6 +25,7 @@ import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.utils.client.network.ByteUtils;
 import org.hl7.fhir.r4.utils.client.network.Client;
 import org.hl7.fhir.r4.utils.client.network.ResourceRequest;
+import org.hl7.fhir.utilities.FHIRBaseToolingClient;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -60,19 +61,13 @@ import okhttp3.internal.http2.Header;
  *
  * @author Claude Nanjo
  */
-public class FHIRToolingClient {
+public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   public static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssK";
   public static final String DATE_FORMAT = "yyyy-MM-dd";
   public static final String hostKey = "http.proxyHost";
   public static final String portKey = "http.proxyPort";
 
-  private static final int DEFAULT_TIMEOUT_NORMAL = 1500;
-  private static final int DEFAULT_TIMEOUT_OPERATION = 30000;
-  private static final int DEFAULT_TIMEOUT_ENTRY = 500;
-  private static final int DEFAULT_TIMEOUT_OPERATION_LONG = 60000;
-  private static final int DEFAULT_TIMEOUT_OPERATION_EXPAND = 120000;
-  
   private String base;
   private ResourceAddress resourceAddress;
   private ResourceFormat preferredResourceFormat;
@@ -84,11 +79,6 @@ public class FHIRToolingClient {
   private String password;
   private String userAgent;
   private String acceptLang;
-  private int timeoutNormal = DEFAULT_TIMEOUT_NORMAL;
-  private int timeoutOperation = DEFAULT_TIMEOUT_OPERATION;
-  private int timeoutEntry = DEFAULT_TIMEOUT_ENTRY;
-  private int timeoutLong = DEFAULT_TIMEOUT_OPERATION_LONG;
-  private int timeoutExpand = DEFAULT_TIMEOUT_OPERATION_EXPAND;
 
   // Pass endpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
@@ -639,45 +629,5 @@ public class FHIRToolingClient {
     return (T) result.getPayload();
   }
   
-
-  public long getTimeoutNormal() {
-    return timeoutNormal;
-  }
-
-  public void setTimeoutNormal(int timeoutNormal) {
-    this.timeoutNormal = timeoutNormal;
-  }
-
-  public long getTimeoutOperation() {
-    return timeoutOperation;
-  }
-
-  public void setTimeoutOperation(int timeoutOperation) {
-    this.timeoutOperation = timeoutOperation;
-  }
-
-  public long getTimeoutEntry() {
-    return timeoutEntry;
-  }
-
-  public void setTimeoutEntry(int timeoutEntry) {
-    this.timeoutEntry = timeoutEntry;
-  }
-
-  public long getTimeoutLong() {
-    return timeoutLong;
-  }
-
-  public void setTimeoutLong(int timeoutLong) {
-    this.timeoutLong = timeoutLong;
-  }
-
-  public long getTimeoutExpand() {
-    return timeoutExpand;
-  }
-
-  public void setTimeoutExpand(int timeoutExpand) {
-    this.timeoutExpand = timeoutExpand;
-  }
 
 }
