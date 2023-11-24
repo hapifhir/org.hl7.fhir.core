@@ -262,7 +262,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       "http://hl7.org/fhir/tools/StructureDefinition/json-property-key",
       "http://hl7.org/fhir/tools/StructureDefinition/type-specifier",
       "http://hl7.org/fhir/tools/StructureDefinition/xml-choice-group",
-      "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace",
+      ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED,
       "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype"
       );
 

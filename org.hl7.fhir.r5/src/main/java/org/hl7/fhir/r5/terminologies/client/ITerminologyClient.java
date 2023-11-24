@@ -54,7 +54,7 @@ public interface ITerminologyClient {
   ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException;
   Parameters validateCS(Parameters pin) throws FHIRException;
   Parameters validateVS(Parameters pin) throws FHIRException;
-  ITerminologyClient setTimeout(int i) throws FHIRException;
+  ITerminologyClient setTimeoutFactor(int i) throws FHIRException;
   ITerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
   int getRetryCount() throws FHIRException;
   ITerminologyClient setRetryCount(int retryCount) throws FHIRException;

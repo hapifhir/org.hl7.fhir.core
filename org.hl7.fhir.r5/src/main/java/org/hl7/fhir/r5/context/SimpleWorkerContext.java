@@ -53,7 +53,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
+import org.hl7.fhir.r5.context.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -211,7 +211,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     private final boolean allowLoadingDuplicates;
 
     @With
-    private final IWorkerContext.ILoggingService loggingService;
+    private final ILoggingService loggingService;
 
     public SimpleWorkerContextBuilder() {
       cacheTerminologyClientErrors = false;
@@ -807,6 +807,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   public String getSpecUrl() {
     return VersionUtilities.getSpecUrl(getVersion())+"/";
   }
+
 
 
 }

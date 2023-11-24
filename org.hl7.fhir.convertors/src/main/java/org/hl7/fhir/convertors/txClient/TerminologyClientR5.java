@@ -117,8 +117,8 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
-  public ITerminologyClient setTimeout(int i) {
-    client.setTimeout(i);
+  public ITerminologyClient setTimeoutFactor(int i) {
+    client.setTimeoutFactor(i);
     return this;
   }
 

@@ -195,8 +195,13 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       } else {
         return resource instanceof StructureDefinition ? ((StructureDefinition) resource).getDerivationElement().primitiveValue() : null;
       }
-    }  
+    }
 
+    public void unload() {
+      if (proxy != null) {
+        resource = null;
+      }      
+    }  
   }
 
   public class MetadataResourceVersionComparator<T1 extends CachedCanonicalResource<T>> implements Comparator<T1> {
@@ -656,6 +661,14 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   public boolean isEnforceUniqueId() {
     return enforceUniqueId;
+  }
+
+
+  public void unload() {
+    for (CachedCanonicalResource<T> t : list) {
+      t.unload();
+    }
+   
   }
 
 

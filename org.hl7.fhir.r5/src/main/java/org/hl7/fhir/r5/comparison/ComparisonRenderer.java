@@ -79,6 +79,8 @@ public class ComparisonRenderer implements IEvaluationContext {
     b.append("  <td width=\"260\"><b>"+Utilities.escapeXml(leftName)+"</b></td>\r\n");
     b.append("  <td width=\"260\"><b>"+Utilities.escapeXml(rightName)+"</b></td>\r\n");
     b.append("  <td width=\"100\"><b>Difference</b></td>\r\n");
+    b.append("  <td width=\"100\"><b>Union</b></td>\r\n");
+    b.append("  <td width=\"100\"><b>Intersection</b></td>\r\n");
     b.append("  <td width=\"260\"><b>Notes</b></td>\r\n");
     b.append(" </tr>\r\n");
     
@@ -225,8 +227,22 @@ public class ComparisonRenderer implements IEvaluationContext {
     vars.put("errors", new StringType(new XhtmlComposer(true).compose(cs.renderErrors(comp))));
     vars.put("metadata", new StringType(new XhtmlComposer(true).compose(cs.renderMetadata(comp, "", ""))));
     vars.put("structure", new StringType(new XhtmlComposer(true).compose(cs.renderStructure(comp, "", "", "http://hl7.org/fhir"))));
-    String cnt = processTemplate(template, "CodeSystem", vars);
+    String union = new XhtmlComposer(true).compose(cs.renderUnion(comp, "", folder, "http://hl7.org/fhir"));
+    String intersection = new XhtmlComposer(true).compose(cs.renderIntersection(comp, "", folder, "http://hl7.org/fhir"));
+    vars.put("union", new StringType(union));
+    vars.put("intersection", new StringType(intersection));
+    
+    String cnt = processTemplate(template, "Profile", vars);
     TextFile.stringToFile(cnt, file(comp.getId()+".html"));
+
+    template = templates.get("Profile-Union");
+    cnt = processTemplate(template, "Profile-Union", vars);
+    TextFile.stringToFile(cnt, file(comp.getId()+"-union.html"));
+    
+    template = templates.get("Profile-Intersection");
+    cnt = processTemplate(template, "Profile-Intersection", vars);
+    TextFile.stringToFile(cnt, file(comp.getId()+"-intersection.html"));
+    
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
   }

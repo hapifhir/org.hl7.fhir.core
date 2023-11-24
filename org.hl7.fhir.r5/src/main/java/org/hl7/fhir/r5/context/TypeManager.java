@@ -126,5 +126,14 @@ public class TypeManager {
       return sd != null && sd.getKind() == StructureDefinitionKind.COMPLEXTYPE;      
     }
   }
+
+  public void unload() {
+
+    structures.unload();
+    typeDefinitions.clear(); 
+    fhirTypeDefinitions.clear();
+    primitiveNames.clear();
+    dataTypeNames.clear();
+  }
   
 }

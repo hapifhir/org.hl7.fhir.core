@@ -44,6 +44,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.TypeDetails.ProfiledTypeSorter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
@@ -249,6 +250,14 @@ public class TypeDetails {
         return true;
       if (Utilities.existsInList(n, "boolean", "string", "integer", "decimal", "Quantity", "dateTime", "time", "ClassInfo", "SimpleTypeInfo")) {
         t = FP_NS+"System."+Utilities.capitalize(n);
+        if (typesContains(t)) {
+          return true;
+        }
+      }
+      t = ProfiledType.ns(n);
+      StructureDefinition sd = context.fetchTypeDefinition(t);
+      if (sd != null && sd.getKind() != StructureDefinitionKind.LOGICAL && Utilities.existsInList(sd.getType(), "boolean", "string", "integer", "decimal", "Quantity", "dateTime", "time")) {
+        t = FP_NS+"System."+Utilities.capitalize(sd.getType());
         if (typesContains(t)) {
           return true;
         }

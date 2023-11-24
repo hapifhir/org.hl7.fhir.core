@@ -50,7 +50,7 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
 
 
   private static boolean localTxRunning() {
-    return new File("/Users/grahamegrieve/work/server/serverx").exists();
+    return new File("/Users/grahamegrieve/work/server/server").exists();
   }
 
 

@@ -63,9 +63,11 @@ public abstract class I18nBase {
   private boolean messageExistsForLocale(String message, boolean hasArgs) {
     checkResourceBundleIsLoaded();
     if (!messageKeyExistsForLocale(message)) {
-      if (warnAboutMissingMessages && (hasArgs || !message.contains(" "))) {
-        System.out.println("Attempting to localize message " + message + ", but no such equivalent message exists for" +
-            " the locale " + getLocale());
+      if (!message.contains(" ")) {
+        if (warnAboutMissingMessages && (hasArgs || !message.contains(" "))) {
+          System.out.println("Attempting to localize message " + message + ", but no such equivalent message exists for" +
+              " the locale " + getLocale());
+        }
       }
     }
     return messageKeyExistsForLocale(message);

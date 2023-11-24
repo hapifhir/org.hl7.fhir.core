@@ -633,7 +633,7 @@ public class BundleValidator extends BaseValidator {
     for (EntrySummary e : entryList) {
       List<StringWithSource> references = findReferences(e.getEntry());
       for (StringWithSource ref : references) {
-        Element tgt = resolveInBundle(bundle, entries, ref.getReference(), e.getEntry().getChildValue(FULL_URL), e.getResource().fhirType(), e.getResource().getIdBase(), stack, errors, ref.getSource().getPath(), ref.getSource(), ref.isWarning());
+        Element tgt = resolveInBundle(bundle, entries, ref.getReference(), e.getEntry().getChildValue(FULL_URL), e.getResource().fhirType(), e.getResource().getIdBase(), stack, errors, ref.getSource().getPath(), ref.getSource(), ref.isWarning() || true);
         if (tgt != null) { 
           EntrySummary t = entryForTarget(entryList, tgt); 
           if (t != null ) { 
