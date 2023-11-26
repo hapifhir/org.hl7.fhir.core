@@ -527,6 +527,12 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     val = XhtmlDt.preprocessXhtmlNamespaceDeclaration(val);
 
     try {
+    	new XhtmlParser().parse(val, "div");
+    } catch (Exception e) {
+        val = String.format("<div>%s</div>", val);
+    }
+    
+    try {
       XhtmlDocument fragment = new XhtmlParser().parse(val, "div");
       // Skip the <? .. ?> declaration if one was present
       XhtmlNodeList nodes = fragment.getChildNodes();
