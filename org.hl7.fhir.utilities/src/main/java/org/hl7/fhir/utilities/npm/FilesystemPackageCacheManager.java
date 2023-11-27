@@ -136,6 +136,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    */
   public FilesystemPackageCacheManager(String customFolder) throws IOException {
     this.cacheFolder = new File(customFolder);
+
     init(FilesystemPackageCacheMode.CUSTOM);  
   }
 
@@ -144,29 +145,30 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   protected void init(FilesystemPackageCacheMode mode) throws IOException {
     initPackageServers();
 
+    if (mode == FilesystemPackageCacheMode.CUSTOM) {
+      if (!this.cacheFolder.exists()) {
+        throw new FHIRException("The folder ''"+cacheFolder+"' could not be found");
+      }
+    } else {
+      this.cacheFolder = getCacheFolder(mode);
+    }
+    initCacheFolder();
+  }
+
+  public static File getCacheFolder(FilesystemPackageCacheMode mode) throws IOException {
     switch (mode) {
     case SYSTEM:
       if (Utilities.isWindows()) {
-        cacheFolder = new File(Utilities.path(System.getenv("ProgramData"), ".fhir", "packages"));
+        return new File(Utilities.path(System.getenv("ProgramData"), ".fhir", "packages"));
       } else {
-        cacheFolder = new File(Utilities.path("/var", "lib", ".fhir", "packages"));
+        return new File(Utilities.path("/var", "lib", ".fhir", "packages"));
       }
-      break;
     case USER:
-      cacheFolder = new File(Utilities.path(System.getProperty("user.home"), ".fhir", "packages"));
-      break;
+      return new File(Utilities.path(System.getProperty("user.home"), ".fhir", "packages"));
     case TESTING:
-      cacheFolder = new File(Utilities.path("[tmp]", ".fhir", "packages"));
-      break;
-    case CUSTOM:
-      if (!cacheFolder.exists()) {
-        throw new FHIRException("The folder ''"+cacheFolder+"' could not be found");
-      }
-    default:
-      break;    
+      return new File(Utilities.path("[tmp]", ".fhir", "packages"));
     }
-
-    initCacheFolder();
+    return null;
   }
 
   protected void initCacheFolder() throws IOException {
