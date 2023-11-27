@@ -189,12 +189,12 @@
         </dependency>
 
         <dependency>
-            <groupId>org.commonmark</groupId>
+            <groupId>com.atlassian.commonmark</groupId>
             <artifactId>commonmark</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.commonmark</groupId>
+            <groupId>com.atlassian.commonmark</groupId>
             <artifactId>commonmark-ext-gfm-tables</artifactId>
             <scope>compile</scope>
         </dependency>
@@ -296,6 +296,10 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
       </dependency>
+        <dependency>
+            <groupId>com.atlassian.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -318,7 +322,7 @@
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
-                            <!--<excludeScope>test</excludeScope>-->
+                            <excludeScope>test</excludeScope>
                             <includeScope>compile</includeScope>
                         </configuration>
                     </execution>
