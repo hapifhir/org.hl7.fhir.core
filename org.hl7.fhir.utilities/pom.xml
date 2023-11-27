@@ -31,12 +31,12 @@
 
         <!-- Markdown Utilities -->
         <dependency>
-            <groupId>org.commonmark</groupId>
+            <groupId>com.atlassian.commonmark</groupId>
             <artifactId>commonmark</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.commonmark</groupId>
+            <groupId>com.atlassian.commonmark</groupId>
             <artifactId>commonmark-ext-gfm-tables</artifactId>
             <optional>true</optional>
         </dependency>
