@@ -145,12 +145,12 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.atlassian.commonmark</groupId>
+			<groupId>org.commonmark</groupId>
 			<artifactId>commonmark</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.atlassian.commonmark</groupId>
+			<groupId>org.commonmark</groupId>
 			<artifactId>commonmark-ext-gfm-tables</artifactId>
 			<scope>test</scope>
 		</dependency>
