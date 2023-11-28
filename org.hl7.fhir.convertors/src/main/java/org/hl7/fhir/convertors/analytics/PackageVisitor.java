@@ -338,9 +338,14 @@ public class PackageVisitor {
     String fv = null;
     try {
       npm = pcm.loadPackage(pid, v);
+    } catch (Throwable e) {
+      System.out.println("Unable to load package: "+pid+"#"+v+": "+e.getMessage());
+    }
+
+    try {
       fv = npm.fhirVersion();
     } catch (Throwable e) {
-      System.out.println("Unable to process: "+pid+"#"+v+": "+e.getMessage());      
+      System.out.println("Unable to identify package FHIR version:: "+pid+"#"+v+": "+e.getMessage());
     }
     if (corePackages || !corePackage(npm)) {
       PackageContext ctxt = new PackageContext(pid+"#"+v, npm, fv);

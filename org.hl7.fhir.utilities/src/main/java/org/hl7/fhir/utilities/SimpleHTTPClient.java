@@ -44,6 +44,29 @@ public class SimpleHTTPClient {
   private static final int MAX_REDIRECTS = 5;
   private static int counter = 1;
 
+  public static class HTTPResultException extends Exception{
+    public final int httpCode;
+
+    public final String message;
+
+    public final String url;
+    public final String logPath;
+
+    public HTTPResultException(int httpCode, String message, String url, String logPath) {
+      this.httpCode = httpCode;
+      this.message = message;
+      this.url = url;
+      this.logPath = logPath;
+    }
+
+    public String getMessage() {
+      return "Invalid HTTP response "+httpCode+" from "+url+" ("+message+") (" + (
+        logPath != null ? "Response in " + logPath : "No response content")
+      + ")";
+    }
+
+  }
+
   public static class HTTPResult {
     private int code;
     private String contentType;
@@ -79,11 +102,13 @@ public class SimpleHTTPClient {
       if (code >= 300) {
         String filename = Utilities.path("[tmp]", "http-log", "fhir-http-"+(++counter)+".log");
         if (content == null || content.length == 0) {
-          throw new IOException("Invalid HTTP response "+code+" from "+source+" ("+message+") (no content)");          
+          HTTPResultException exception = new HTTPResultException(code, message, source, null);
+          throw new IOException(exception.message, exception);
         } else {
           Utilities.createDirectory(Utilities.path("[tmp]", "http-log"));
           TextFile.bytesToFile(content, filename);
-          throw new IOException("Invalid HTTP response "+code+" from "+source+" ("+message+") (content in "+filename+")");
+          HTTPResultException exception = new HTTPResultException(code, message, source, filename);
+          throw new IOException(exception.message, exception);
         }
       }      
     }
