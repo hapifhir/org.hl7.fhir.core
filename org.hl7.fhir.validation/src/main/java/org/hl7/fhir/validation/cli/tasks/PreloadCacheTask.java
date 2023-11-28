@@ -58,6 +58,12 @@ public class PreloadCacheTask extends StandaloneTask implements PackageVisitor.I
 
   @Override
   public Object startPackage(PackageVisitor.PackageContext context) throws FHIRException, IOException, EOperationOutcome {
+    System.out.println("currently loading" + context.getPid());
+    try {
+      Thread.sleep(45000);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
     return null;
   }
 
