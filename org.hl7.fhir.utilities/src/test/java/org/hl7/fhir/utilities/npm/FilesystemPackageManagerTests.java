@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -99,5 +101,35 @@ public class FilesystemPackageManagerTests {
       }
     };
     assertEquals( System.getenv("ProgramData") + "\\.fhir\\packages", filesystemPackageCacheManager.getFolder());
+  }
+
+  @Test
+  public void multithreadTest() throws IOException {
+    String pcmPath = Files.createTempDirectory("pcm-multithreadTest").toFile().getAbsolutePath();
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(pcmPath);
+    
+    List<Thread> threads = new ArrayList<>();
+    for (int i = 0 ; i < 3 ; i++) {
+      final int index = i;
+      Thread t = new Thread(() -> {
+
+		try {
+		  pcm.loadPackage("hl7.fhir.r4.core#4.0.1");
+		  System.out.println("Thread " + index + " completed");
+		} catch (Exception e) {
+		  e.printStackTrace();
+		  System.err.println("Thread " + index + " failed");
+		}
+	  });
+      t.start();
+      threads.add(t);
+    }
+      threads.forEach(t -> {
+        try {
+          t.join();
+        } catch (InterruptedException e) {
+
+        }
+      });
   }
 }
