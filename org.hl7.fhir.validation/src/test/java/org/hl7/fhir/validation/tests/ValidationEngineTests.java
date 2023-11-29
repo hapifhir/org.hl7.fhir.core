@@ -21,8 +21,8 @@ import org.junit.jupiter.api.Test;
 
 public class ValidationEngineTests {
 
-//  private static final String DEF_TX = FhirSettings.getTxFhirDevelopment();
-  private static final String DEF_TX = FhirSettings.getTxFhirLocal();
+  private static final String DEF_TX = FhirSettings.getTxFhirDevelopment();
+  //private static final String DEF_TX = FhirSettings.getTxFhirLocal();
 
   public static boolean inbuild;
 

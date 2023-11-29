@@ -40,6 +40,11 @@ public class TestsTask extends StandaloneTask{
       final String testModuleParam = Params.getParam(args, Params.TEST_MODULES);
       final String testClassnameFilter = Params.getParam(args, Params.TEST_NAME_FILTER);
       final String testCasesDirectory = Params.getParam(args, Params.TEST);
+      if (testCasesDirectory == null) {
+        System.out.println("No fhir-test-cases directory provided. Required usage: -tests <fhir-test-cases-directory>");
+        System.exit(1);
+      }
+
       final String txCacheDirectory = Params.getParam(args, Params.TERMINOLOGY_CACHE);
       assert TestExecutorParams.isValidModuleParam(testModuleParam) : "Invalid test module param: " + testModuleParam;
       final String[] moduleNamesArg = TestExecutorParams.parseModuleParam(testModuleParam);
