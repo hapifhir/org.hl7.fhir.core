@@ -126,14 +126,14 @@
                 <version>${hapi_fhir_version}</version>
             </dependency>
             <dependency>
-                <groupId>com.atlassian.commonmark</groupId>
+                <groupId>org.commonmark</groupId>
                 <artifactId>commonmark</artifactId>
-                <version>0.17.0</version>
+                <version>0.21.0</version>
             </dependency>
             <dependency>
-                <groupId>com.atlassian.commonmark</groupId>
+                <groupId>org.commonmark</groupId>
                 <artifactId>commonmark-ext-gfm-tables</artifactId>
-                <version>0.17.0</version>
+                <version>0.21.0</version>
             </dependency>
             <dependency>
                 <groupId>com.github.rjeschke</groupId>
