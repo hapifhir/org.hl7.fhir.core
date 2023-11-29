@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 
 public class FHIRPathUtilityClasses {
@@ -55,6 +56,10 @@ public class FHIRPathUtilityClasses {
     @Override
     public Base copy() {
       throw new Error("Not Implemented");
+    }
+    
+    public FhirPublication getFHIRPublicationVersion() {
+      return FhirPublication.R5; 
     }
   }
 
@@ -118,6 +123,10 @@ public class FHIRPathUtilityClasses {
     @Override
     public Base copy() {
       throw new Error("Not Implemented");
+    }
+
+    public FhirPublication getFHIRPublicationVersion() {
+      return FhirPublication.R5; 
     }
   }
 

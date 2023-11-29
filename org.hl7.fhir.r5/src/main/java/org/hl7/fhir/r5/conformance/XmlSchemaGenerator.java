@@ -239,8 +239,8 @@ public class XmlSchemaGenerator  {
 
   private String getNs(StructureDefinition sd) {
     String ns = "http://hl7.org/fhir";
-    if (sd.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE))
-      ns = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_XML_NAMESPACE);
+    if (sd.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED))
+      ns = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED);
     return ns;
   }
 

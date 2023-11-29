@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities.validation;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 
@@ -23,12 +24,14 @@ public class ValidationOptions {
   private boolean versionFlexible = true;
   private boolean useValueSetDisplays;
   private boolean englishOk = true;
+  private FhirPublication fhirVersion;
 
-  public ValidationOptions() {
+  public ValidationOptions(FhirPublication fhirVersion) {
     super();
+    this.fhirVersion = fhirVersion;
   }
 
-  public ValidationOptions(String language) {
+  public ValidationOptions(FhirPublication fhirVersion, String language) {
     super();
     if (!Utilities.noString(language)) {
       langs = new AcceptLanguageHeader(language, false);
@@ -36,7 +39,7 @@ public class ValidationOptions {
   }
 
   public static ValidationOptions defaults() {
-    return new ValidationOptions("en, en-US");
+    return new ValidationOptions(FhirPublication.R5, "en, en-US");
   }
   
   /**
@@ -262,7 +265,7 @@ public class ValidationOptions {
   }
 
   public ValidationOptions copy() {
-    ValidationOptions n = new ValidationOptions();
+    ValidationOptions n = new ValidationOptions(fhirVersion);
     n.langs = langs == null ? null : langs.copy();
     n.useServer = useServer;
     n.useClient = useClient;
@@ -293,6 +296,8 @@ public class ValidationOptions {
     }
   }
 
-
+  public FhirPublication getFhirVersion() {
+    return fhirVersion;
+  }
   
 }

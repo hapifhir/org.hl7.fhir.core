@@ -62,7 +62,7 @@ public enum Hl7WorkGroup {
   DEV,
   /**
    * Electronic Health Records
-   * (http://www.hl7.org/special/committees/ehr/index.cfm).
+   * (http://www.hl7.org/Special/committees/ehr/index.cfm).
    */
   EHR,
   /**
@@ -85,12 +85,12 @@ public enum Hl7WorkGroup {
   II,
   /**
    * Infrastructure And Messaging
-   * (http://www.hl7.org/special/committees/inm/index.cfm).
+   * (http://www.hl7.org/Special/committees/inm/index.cfm).
    */
   INM,
   /**
    * Implementable Technology Specifications
-   * (http://www.hl7.org/special/committees/xml/index.cfm).
+   * (http://www.hl7.org/Special/committees/xml/index.cfm).
    */
   ITS,
   /**
@@ -281,7 +281,7 @@ public enum Hl7WorkGroup {
     case DEV:
       return "Health Care Devices (http://www.hl7.org/Special/committees/healthcaredevices/index.cfm).";
     case EHR:
-      return "Electronic Health Records (http://www.hl7.org/special/committees/ehr/index.cfm).";
+      return "Electronic Health Records (http://www.hl7.org/Special/committees/ehr/index.cfm).";
     case FHIR:
       return "FHIR Infrastructure (http://www.hl7.org/Special/committees/fiwg/index.cfm).";
     case FM:
@@ -291,9 +291,9 @@ public enum Hl7WorkGroup {
     case II:
       return "Imaging Integration (http://www.hl7.org/Special/committees/imagemgt/index.cfm).";
     case INM:
-      return "Infrastructure And Messaging (http://www.hl7.org/special/committees/inm/index.cfm).";
+      return "Infrastructure And Messaging (http://www.hl7.org/Special/committees/inm/index.cfm).";
     case ITS:
-      return "Implementable Technology Specifications (http://www.hl7.org/special/committees/xml/index.cfm).";
+      return "Implementable Technology Specifications (http://www.hl7.org/Special/committees/xml/index.cfm).";
     case MNM:
       return "Modeling and Methodology (http://www.hl7.org/Special/committees/mnm/index.cfm).";
     case OO:

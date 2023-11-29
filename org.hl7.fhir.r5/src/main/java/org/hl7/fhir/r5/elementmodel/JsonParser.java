@@ -59,6 +59,7 @@ import org.hl7.fhir.r5.formats.JsonCreator;
 import org.hl7.fhir.r5.formats.JsonCreatorCanonical;
 import org.hl7.fhir.r5.formats.JsonCreatorDirect;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -104,18 +105,34 @@ public class JsonParser extends ParserBase {
   }
 
   public Element parse(String source, String type) throws Exception {
+    return parse(source, type, false);
+  }
+  
+  public Element parse(String source, String type, boolean inner) throws Exception {
     ValidatedFragment focusFragment = new ValidatedFragment(ValidatedFragment.FOCUS_NAME, "json", source.getBytes(StandardCharsets.UTF_8), false);
     JsonObject obj = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(source, true, true); 
     String path = "/"+type;
     StructureDefinition sd = getDefinition(focusFragment.getErrors(), -1, -1, type);
-    if (sd == null)
+    if (sd == null) {
       return null;
+    }
 
+    if (inner) {
+      // we have an anonymous wrapper that has an arbitrarily named property with the specified type. We're going to invent a snapshot for that 
+      sd = new StructureDefinition();
+      sd.setType("Wrapper");
+      ElementDefinition bEd = sd.getSnapshot().addElement();
+      ElementDefinition nEd = sd.getSnapshot().addElement();
+      bEd.setPath("Wrapper");
+      nEd.setPath("Wrapper."+obj.getProperties().get(0).getName());
+      nEd.addType().setCode(type);
+      nEd.setMax(obj.getProperties().get(0).getValue().isJsonArray() ? "*" : "1"); 
+    }
     Element result = new Element(type, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities)).setFormat(FhirFormat.JSON);
     result.setPath(type);
     checkObject(focusFragment.getErrors(), obj, result, path);
     result.setType(type);
-    parseChildren(focusFragment.getErrors(), path, obj, result, true, new ArrayList<>());
+    parseChildren(focusFragment.getErrors(), path, obj, result, true, null);
     result.numberChildren();
     return result;
   }
@@ -827,9 +844,15 @@ public class JsonParser extends ParserBase {
       if (prim) {
         openArray(name, linkResolver == null ? null : linkResolver.resolveProperty(list.get(0).getProperty()));
         for (Element item : list) {
-          if (item.hasValue())
+          if (item.hasValue()) {
+            if (linkResolver != null && item.getProperty().isReference()) {
+              String ref = linkResolver.resolveReference(getReferenceForElement(item));
+              if (ref != null) {
+                json.externalLink(ref);
+              }
+            }
             primitiveValue(null, item);
-          else
+          } else
             json.nullValue();
         }
         closeArray();
@@ -843,6 +866,12 @@ public class JsonParser extends ParserBase {
           open(null,null);
           if (item.getProperty().isResource()) {
             prop("resourceType", item.getType(), linkResolver == null ? null : linkResolver.resolveType(item.getType()));
+          }
+          if (linkResolver != null && item.getProperty().isReference()) {
+            String ref = linkResolver.resolveReference(getReferenceForElement(item));
+            if (ref != null) {
+              json.externalLink(ref);
+            }
           }
           Set<String> done = new HashSet<String>();
           for (Element child : item.getChildren()) {
@@ -891,6 +920,12 @@ public class JsonParser extends ParserBase {
       if (element.getProperty().isResource()) {
         prop("resourceType", element.getType(), linkResolver == null ? null : linkResolver.resolveType(element.getType()));
       }
+      if (linkResolver != null && element.getProperty().isReference()) {
+        String ref = linkResolver.resolveReference(getReferenceForElement(element));
+        if (ref != null) {
+          json.externalLink(ref);
+        }
+      }
       Set<String> done = new HashSet<String>();
       for (Element child : element.getChildren()) {
         compose(path+"."+element.getName(), element, done, child);
@@ -898,6 +933,7 @@ public class JsonParser extends ParserBase {
       close();
     }
   }
+
 
   public boolean isAllowComments() {
     return allowComments;

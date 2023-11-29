@@ -60,8 +60,7 @@ import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
-import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
-import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
+import org.hl7.fhir.r5.context.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.Bundle;
@@ -121,9 +120,13 @@ import org.hl7.fhir.r5.renderers.OperationOutcomeRenderer;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpander;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
@@ -134,6 +137,7 @@ import org.hl7.fhir.r5.utils.ResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.TranslationServices;
@@ -679,6 +683,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }  
 
   @Override
+  public CodeSystem fetchCodeSystem(String system, FhirPublication fhirVersion) {
+    return fetchCodeSystem(system);
+  }
+  
+  @Override
   public CodeSystem fetchCodeSystem(String system) {
     if (system == null) {
       return null;
@@ -701,6 +710,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return cs;
   } 
 
+
+  public CodeSystem fetchCodeSystem(String system, String version, FhirPublication fhirVersion) {
+    return fetchCodeSystem(system, version);
+  }
+  
   public CodeSystem fetchCodeSystem(String system, String version) {
     if (version == null) {
       return fetchCodeSystem(system);
@@ -717,6 +731,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     return cs;
   } 
+  
+
+  public CodeSystem fetchSupplementedCodeSystem(String system, FhirPublication fhirVersion) {
+    return fetchSupplementedCodeSystem(system);  
+  }
+  
+  public CodeSystem fetchSupplementedCodeSystem(String system, String version, FhirPublication fhirVersion) {
+    return fetchSupplementedCodeSystem(system, version);
+  }
   
   @Override
   public CodeSystem fetchSupplementedCodeSystem(String system) {
@@ -742,6 +765,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return cs;
   }
 
+
+  public boolean supportsSystem(String system, FhirPublication fhirVersion) throws TerminologyServiceException {
+    return supportsSystem(system);
+  }
+  
   @Override
   public boolean supportsSystem(String system) throws TerminologyServiceException {
     synchronized (lock) {
@@ -881,7 +909,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (pIn == null) {
       throw new Error(formatMessage(I18nConstants.NO_PARAMETERS_PROVIDED_TO_EXPANDVS));
     }
-    if (vs.getUrl().equals("http://hl7.org/fhir/ValueSet/all-time-units") || vs.getUrl().equals("http://hl7.org/fhir/ValueSet/all-distance-units")) {
+    if (vs.hasUrl() && (vs.getUrl().equals("http://hl7.org/fhir/ValueSet/all-time-units") || vs.getUrl().equals("http://hl7.org/fhir/ValueSet/all-distance-units"))) {
       return new ValueSetExpansionOutcome("This value set is not expanded correctly at this time (will be fixed in a future version)", TerminologyServiceErrorClass.VALUESET_UNSUPPORTED, false);
     }
     
@@ -917,7 +945,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     List<String> allErrors = new ArrayList<>();
     
     // ok, first we try to expand locally
-    ValueSetExpander vse = constructValueSetExpanderSimple();
+    ValueSetExpander vse = constructValueSetExpanderSimple(new ValidationOptions(vs.getFHIRPublicationVersion()));
     res = null;
     try {
       res = vse.expand(vs, p);
@@ -952,11 +980,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     txLog("$expand on "+txCache.summary(vs));
     try {
       ValueSet result = tcc.getClient().expandValueset(vs, p, params);
-      if (!result.hasUrl()) {
-        result.setUrl(vs.getUrl());
-      }
-      if (!result.hasUrl()) {
-        throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
+      if (result != null) {
+        if (!result.hasUrl()) {
+          result.setUrl(vs.getUrl());
+        }
+        if (!result.hasUrl()) {
+          throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
+        }
       }
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
     } catch (Exception e) {
@@ -1327,16 +1357,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
-  protected ValueSetExpander constructValueSetExpanderSimple() {
-    return new ValueSetExpander(this, new TerminologyOperationContext(this));
+  protected ValueSetExpander constructValueSetExpanderSimple(ValidationOptions options) {
+    return new ValueSetExpander(this, new TerminologyOperationContext(this, options));
   }
 
-  protected ValueSetValidator constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
-    return new ValueSetValidator(this, new TerminologyOperationContext(this), options, vs, ctxt, expParameters, tcc.getTxcaps());
+  protected ValueSetValidator constructValueSetCheckerSimple(ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
+    return new ValueSetValidator(this, new TerminologyOperationContext(this, options), options, vs, ctxt, expParameters, tcc.getTxcaps());
   }
 
   protected ValueSetValidator constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs) {
-    return new ValueSetValidator(this, new TerminologyOperationContext(this), options, vs, expParameters, tcc.getTxcaps());
+    return new ValueSetValidator(this, new TerminologyOperationContext(this, options), options, vs, expParameters, tcc.getTxcaps());
   }
 
   protected Parameters constructParameters(ValueSet vs, boolean hierarchical) {
@@ -1375,7 +1405,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (valueSet != null) {
       pIn.addParameter().setName("valueSet").setResource(valueSet);
     }
-    pIn.addParameter().setName("profile").setResource(expParameters);
+    
+    pIn.addParameters(expParameters);
     return pIn;
   }
 
@@ -1388,7 +1419,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (vsUrl != null) {
       pIn.addParameter().setName("url").setValue(new CanonicalType(vsUrl));
     }
-    pIn.addParameter().setName("profile").setResource(expParameters);
+    pIn.addParameters(expParameters);
     return pIn;
   }
 
@@ -1548,7 +1579,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (expParameters == null) {
       throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
     }
-    pin.addParameter().setName("profile").setResource(expParameters);
+    pin.addParameters(expParameters);
 
     if (options.isDisplayWarningMode()) {
       pin.addParameter("mode","lenient-display-validation");
@@ -1759,6 +1790,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.name = name;
   }
 
+
+  public List<String> getResourceNames(FhirPublication fhirVersion) {
+    return getResourceNames();    
+  }
+  
+  public Set<String> getResourceNamesAsSet(FhirPublication fhirVersion) {
+    return getResourceNamesAsSet();
+  }
+  
   @Override
   public Set<String> getResourceNamesAsSet() {
     Set<String> res = new HashSet<String>();
@@ -1790,6 +1830,22 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @SuppressWarnings("unchecked")
   public <T extends Resource> T fetchResourceWithExceptionByVersion(Class<T> class_, String uri, String version, Resource sourceForReference) throws FHIRException {
     if (uri == null) {
+      return null;
+    }
+    if (uri.startsWith("#")) {
+      if (sourceForReference != null && sourceForReference instanceof DomainResource) {
+        for (Resource r : ((DomainResource) sourceForReference).getContained()) {
+          if (r.getClass() == class_ &&( "#"+r.getIdBase()).equals(uri)) {
+            if (r instanceof CanonicalResource) {
+              CanonicalResource cr = (CanonicalResource) r;
+              if (!cr.hasUrl()) {
+                cr.setUrl(Utilities.makeUuidUrn());
+              }              
+            }
+            return (T) r;
+          }
+        }
+      }
       return null;
     }
     
@@ -2168,6 +2224,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
   
+  public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_, FhirPublication fhirVersion) {
+    return fetchResourcesByType(class_);
+  }
+  
   @SuppressWarnings("unchecked")
   public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_) {
 
@@ -2235,6 +2295,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean forPublication;
   private boolean cachingAllowed = true;
 
+  public Resource fetchResourceById(String type, String uri, FhirPublication fhirVersion) {
+    return fetchResourceById(type, uri);
+  }
+  
   @Override
   public Resource fetchResourceById(String type, String uri) {
     synchronized (lock) {
@@ -2267,6 +2331,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }    
   }
   
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, FhirPublication fhirVersion) {
+    return fetchResource(class_, uri);
+  }
+  
   public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
     try {
       return fetchResourceWithException(class_, uri, null);
@@ -2274,7 +2342,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       throw new Error(e);
     }
   }
-  
+
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, FhirPublication fhirVersion) {
+    return fetchResource(class_, uri, version);
+  }
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version) {
     try {
       return fetchResourceWithExceptionByVersion(class_, uri, version, null);
@@ -2316,6 +2387,46 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  @Override
+  public <T extends Resource> boolean hasResource(Class<T> class_, String uri, FhirPublication fhirVersion) {
+    try {
+      return fetchResourceWithException(class_, uri) != null;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public <T extends Resource> boolean hasResource(String cls, String uri, FhirPublication fhirVersion) {
+    try {
+      return fetchResourceWithException(cls, uri) != null;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public <T extends Resource> boolean hasResourceVersion(Class<T> class_, String uri, String version, FhirPublication fhirVersion) {
+    try {
+      return fetchResourceWithExceptionByVersion(class_, uri, version, null) != null;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public <T extends Resource> boolean hasResourceVersion(String cls, String uri, String version, FhirPublication fhirVersion) {
+    try {
+      return fetchResourceWithExceptionByVersion(cls, uri, version, null) != null;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public <T extends Resource> boolean hasResource(Class<T> class_, String uri, Resource sourceOfReference) {
+    try {
+      return fetchResourceWithExceptionByVersion(class_, uri, version, null) != null;
+    } catch (Exception e) {
+      return false;
+    }
+  }
 
   public TranslationServices translator() {
     return translator;
@@ -2521,6 +2632,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return logger;
   }
 
+
+  public StructureDefinition fetchTypeDefinition(String typeName, FhirPublication fhirVersion) {
+    return fetchTypeDefinition(typeName);
+  }
+
   @Override
   public StructureDefinition fetchTypeDefinition(String typeName) {
     if (Utilities.isAbsoluteUrl(typeName)) {
@@ -2546,7 +2662,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
       } catch (Exception e) {
         // not sure what to do in this case?
-        System.out.println("Unable to generate snapshot @4 for "+p.getVersionedUrl()+": "+e.getMessage());
+        System.out.println("Unable to generate snapshot @5 for "+p.getVersionedUrl()+": "+e.getMessage());
         if (logger.isDebugLogging()) {
           e.printStackTrace();
         }
@@ -2559,6 +2675,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public List<StructureDefinition> fetchTypeDefinitions(String typeName) {
     return typeManager.getDefinitions(typeName);
   }
+
+  @Override
+  public List<StructureDefinition> fetchTypeDefinitions(String typeName, FhirPublication fhirVersion) {
+    return typeManager.getDefinitions(typeName);
+  }
+
 
   public boolean isPrimitiveType(String type) {
     return typeManager.isPrimitive(type);
@@ -2837,6 +2959,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public Set<String> urlsForOid(boolean codeSystem, String oid) {
+    Set<String> set = urlsForOid(codeSystem, oid, true);
+    if (set.size() > 1) {
+      set =  urlsForOid(codeSystem, oid, false);
+    }
+    return set;
+  }
+  
+  public Set<String> urlsForOid(boolean codeSystem, String oid, boolean retired) {
     if (oid == null) {
       return null;
     }
@@ -2850,14 +2980,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       if (os.db != null) {
         try {
-          PreparedStatement psql = os.db.prepareStatement("Select URL from OIDMap where OID = ?");
+          PreparedStatement psql = os.db.prepareStatement("Select URL, Status from OIDMap where OID = ?");
           psql.setString(1, oid);
           ResultSet rs = psql.executeQuery();
           while (rs.next()) {
-            urls.add(rs.getString(1));
+            if (retired || !"retired".equals(rs.getString(2))) {
+              urls.add(rs.getString(1));
+            }
           }
         } catch (Exception e) {
           // nothing, there would alreagy have been an error
+//          e.printStackTrace();
         }
       }
     }      
@@ -2865,6 +2998,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     switch (oid) {
     case "2.16.840.1.113883.6.1" :
       urls.add("http://loinc.org");
+      break;
+    case "2.16.840.1.113883.6.8" :
+      urls.add("http://unitsofmeasure.org");
       break;
     case "2.16.840.1.113883.6.96" :
       urls.add("http://snomed.info/sct");
@@ -2877,7 +3013,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private Connection connectToOidSource(String folder) {
     try {
       File ff = new File(folder);
-      File of = new File(Utilities.path(ff.getAbsolutePath(), ".oids.db"));
+      File of = new File(Utilities.path(ff.getAbsolutePath(), ".oid-map.db"));
       if (!of.exists()) {
         OidIndexBuilder oidBuilder = new OidIndexBuilder(ff, of);
         oidBuilder.build();
@@ -2888,4 +3024,30 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+
+  public void unload() {
+
+    codeSystems.unload();
+    valueSets.unload();
+    maps.unload();
+    transforms.unload();
+    structures.unload();
+    typeManager.unload();
+    measures.unload();
+    libraries.unload();
+    guides.unload();
+    capstmts.unload();
+    searchParameters.unload();
+    questionnaires.unload();
+    operations.unload();
+    plans.unload();
+    actors.unload();
+    requirements.unload();
+    systems.unload();
+
+    binaries.clear();
+    validationCache.clear();
+    txCache.clear();
+}
+  
 }

@@ -119,7 +119,12 @@ public class JsonCreatorGson implements JsonCreator {
   @Override
   public void comment(String content) {
      // gson (dense json) ignores comments
-    
+  }
+  
+
+  @Override
+  public void externalLink(String string) {
+    // not used
   }
        
 }

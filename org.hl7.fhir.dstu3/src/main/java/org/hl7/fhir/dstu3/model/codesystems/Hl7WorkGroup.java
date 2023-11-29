@@ -60,7 +60,7 @@ public enum Hl7WorkGroup {
          */
         DEV, 
         /**
-         * Electronic Health Records (http://www.hl7.org/special/committees/ehr/index.cfm)
+         * Electronic Health Records (http://www.hl7.org/Special/committees/ehr/index.cfm)
          */
         EHR, 
         /**
@@ -80,11 +80,11 @@ public enum Hl7WorkGroup {
          */
         II, 
         /**
-         * Infrastructure And Messaging (http://www.hl7.org/special/committees/inm/index.cfm)
+         * Infrastructure And Messaging (http://www.hl7.org/Special/committees/inm/index.cfm)
          */
         INM, 
         /**
-         * Implementable Technology Specifications (http://www.hl7.org/special/committees/xml/index.cfm)
+         * Implementable Technology Specifications (http://www.hl7.org/Special/committees/xml/index.cfm)
          */
         ITS, 
         /**
@@ -225,13 +225,13 @@ public enum Hl7WorkGroup {
             case CQI: return "Clinical Quality Information (http://www.hl7.org/Special/committees/cqi/index.cfm)";
             case CG: return "Clinical Genomics (http://www.hl7.org/Special/committees/clingenomics/index.cfm)";
             case DEV: return "Health Care Devices (http://www.hl7.org/Special/committees/healthcaredevices/index.cfm)";
-            case EHR: return "Electronic Health Records (http://www.hl7.org/special/committees/ehr/index.cfm)";
+            case EHR: return "Electronic Health Records (http://www.hl7.org/Special/committees/ehr/index.cfm)";
             case FHIR: return "FHIR Infrastructure (http://www.hl7.org/Special/committees/fiwg/index.cfm)";
             case FM: return "Financial Management (http://www.hl7.org/Special/committees/fm/index.cfm)";
             case HSI: return "Health Standards Integration (http://www.hl7.org/Special/committees/hsi/index.cfm)";
             case II: return "Imaging Integration (http://www.hl7.org/Special/committees/imagemgt/index.cfm)";
-            case INM: return "Infrastructure And Messaging (http://www.hl7.org/special/committees/inm/index.cfm)";
-            case ITS: return "Implementable Technology Specifications (http://www.hl7.org/special/committees/xml/index.cfm)";
+            case INM: return "Infrastructure And Messaging (http://www.hl7.org/Special/committees/inm/index.cfm)";
+            case ITS: return "Implementable Technology Specifications (http://www.hl7.org/Special/committees/xml/index.cfm)";
             case OO: return "Orders and Observations (http://www.hl7.org/Special/committees/orders/index.cfm)";
             case PA: return "Patient Administration (http://www.hl7.org/Special/committees/pafm/index.cfm)";
             case PC: return "Patient Care (http://www.hl7.org/Special/committees/patientcare/index.cfm)";

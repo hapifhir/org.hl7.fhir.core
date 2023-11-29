@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.1.17-SNAPSHOT</version>
+        <version>6.2.6-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -75,14 +75,6 @@
             Any modules that are intended to be run via the validator -run-tests
             option need to be included here.
         -->
-
-        <dependency>
-            <groupId>org.hl7.fhir.testcases</groupId>
-            <artifactId>fhir-test-cases</artifactId>
-            <version>${validator_test_case_version}</version>
-            <scope>compile</scope>
-        </dependency>
-
 
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
@@ -189,12 +181,12 @@
         </dependency>
 
         <dependency>
-            <groupId>com.atlassian.commonmark</groupId>
+            <groupId>org.commonmark</groupId>
             <artifactId>commonmark</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.atlassian.commonmark</groupId>
+            <groupId>org.commonmark</groupId>
             <artifactId>commonmark-ext-gfm-tables</artifactId>
             <scope>compile</scope>
         </dependency>
@@ -219,14 +211,6 @@
             <optional>false</optional>
             <scope>compile</scope>
         </dependency>
-
-        <!--
-        <dependency>
-            <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf</artifactId>
-            <version>3.1.2.RELEASE</version>
-            <scope>compile</scope>
-        </dependency>-->
 
         <dependency>
             <groupId>org.everit.json</groupId>
@@ -264,6 +248,20 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>${hamcrest_version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>${hamcrest_version}</version>
+            <scope>compile</scope>
+        </dependency>
+
         <!-- /org.hl7.fhir.core test-jar dependencies -->
 
         <!--
@@ -271,6 +269,7 @@
         org.hl7.fhir.utilities (and others) but are required for the CLI to work,
         so we explicitly bring them in here.
         -->
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -296,10 +295,6 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
       </dependency>
-        <dependency>
-            <groupId>com.atlassian.commonmark</groupId>
-            <artifactId>commonmark</artifactId>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -322,7 +317,7 @@
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
-                            <excludeScope>test</excludeScope>
+                            <!--<excludeScope>test</excludeScope>-->
                             <includeScope>compile</includeScope>
                         </configuration>
                     </execution>

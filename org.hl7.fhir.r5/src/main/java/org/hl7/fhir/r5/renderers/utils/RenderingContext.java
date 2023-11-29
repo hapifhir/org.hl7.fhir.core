@@ -157,7 +157,7 @@ public class RenderingContext {
   private boolean header;
   private boolean contained;
 
-  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R5);
   private boolean noSlowLookup;
   private String tooCostlyNoteEmpty;
   private String tooCostlyNoteNotEmpty;
@@ -190,6 +190,7 @@ public class RenderingContext {
   private String changeVersion;
   
   private Map<KnownLinkType, String> links = new HashMap<>();
+  private Map<String, String> namedLinks = new HashMap<>();
   /**
    * 
    * @param context - access to all related resources that might be needed
@@ -720,5 +721,8 @@ public class RenderingContext {
     return this;
   }
 
-  
+  public Map<String, String> getNamedLinks() {
+    return namedLinks;
+  }
+
 }

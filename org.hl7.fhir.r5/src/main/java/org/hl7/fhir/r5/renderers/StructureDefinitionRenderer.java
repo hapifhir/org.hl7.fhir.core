@@ -20,7 +20,6 @@ import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ElementChoiceGroup;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ExtensionContext;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -74,6 +73,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.StructureDefinitionRendererMode;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.PublicationHacker;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -91,6 +91,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableGenerationMo
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.XhtmlNodeList;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 public class StructureDefinitionRenderer extends ResourceRenderer {
@@ -536,6 +537,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
 
   }
+  
   public XhtmlNode generateTable(String defFile, StructureDefinition profile, boolean diff, String imageFolder, boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, String imagePath,
       boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix) throws IOException, FHIRException {
     assert(diff != snapshot);// check it's ok to get rid of one of these
@@ -1255,14 +1257,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     row.getCells().add(c);
 
     if (used) {
-      if (logicalModel && ToolingExtensions.hasExtension(profile, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace")) {
+      if (logicalModel && ToolingExtensions.hasAnyOfExtensions(profile, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED)) {
         if (root) {
           c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML Namespace")+": ", null).addStyle("font-weight:bold"));
-          c.getPieces().add(gen.new Piece(null, ToolingExtensions.readStringExtension(profile, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"), null));        
-        } else if (!root && ToolingExtensions.hasExtension(definition, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace") && 
-            !ToolingExtensions.readStringExtension(definition, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace").equals(ToolingExtensions.readStringExtension(profile, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))) {
+          c.getPieces().add(gen.new Piece(null, ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED), null));        
+        } else if (!root && ToolingExtensions.hasAnyOfExtensions(definition, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED) && 
+            !ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED).equals(ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED))) {
           c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML Namespace")+": ", null).addStyle("font-weight:bold"));
-          c.getPieces().add(gen.new Piece(null, ToolingExtensions.readStringExtension(definition, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"), null));        
+          c.getPieces().add(gen.new Piece(null, ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED), null));        
         }
       }
       if (root) {
@@ -1415,27 +1417,22 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           c.getPieces().add(gen.new Piece(null, translate("sd.table", "Choice Group")+": ", null).addStyle("font-weight:bold"));
           c.getPieces().add(gen.new Piece(null, "This is a repeating choice group that does not appear directly in the instance", null));
         }
-        if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME)) {
+        if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME, ToolingExtensions.EXT_XML_NAME_DEPRECATED)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
-          if (definition.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE)) {
+          if (definition.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED)) {
             c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML")+": ", null).addStyle("font-weight:bold"));
-            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAME), null));
+            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAME, ToolingExtensions.EXT_XML_NAME_DEPRECATED), null));
             c.getPieces().add(gen.new Piece(null, " (", null));
-            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAMESPACE), null));
+            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED), null));
             c.getPieces().add(gen.new Piece(null, ")", null));            
           } else {
             c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML Element Name")+": ", null).addStyle("font-weight:bold"));
-            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAME), null));
+            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAME, ToolingExtensions.EXT_XML_NAME_DEPRECATED), null));
           }            
-        } else if (definition.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE)) {
+        } else if (definition.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML Namespace")+": ", null).addStyle("font-weight:bold"));
-          c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAMESPACE), null));          
-        }
-        if (root && ToolingExtensions.readBoolExtension(profile, ToolingExtensions.EXT_XML_NO_ORDER)) {
-          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
-          c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML Order")+": ", null).addStyle("font-weight:bold"));
-          c.getPieces().add(gen.new Piece(null, "The properties of this type can appear in any order in the XML", null));   
+          c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED), null));          
         }
         if (definition.hasExtension(ToolingExtensions.EXT_JSON_EMPTY)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
@@ -1446,7 +1443,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.getPieces().add(gen.new Piece(null, "JSON: This element may be present as a JSON Array even when there are no items in the instance", null));     
           }
         }
-        String jn = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_NAME);
+        String jn = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED);
         if (!Utilities.noString(jn)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           if (definition.getPath().contains(".")) {
@@ -1507,7 +1504,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (lt == null || !lt.hasValueBooleanType()) {
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
               c.addPiece(gen.new Piece(null, "Instances of this logical model are not marked to be the target of a Reference", null).addStyle("font-weight:bold"));  ;        
-            } else if (lt.getValue().hasExtension(ToolingExtensions.DAR)) {                 
+            } else if (lt.getValue().hasExtension(ToolingExtensions.EXT_DAR)) {                 
             } else if (!lt.getValueBooleanType().hasValue()) {
                 if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
                 c.addPiece(gen.new Piece(null, "Instances of this logical model are not marked to be the target of a Reference", null).addStyle("font-weight:bold"));  ;        
@@ -3381,55 +3378,68 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
       
   public XhtmlNode compareMarkdown(String location, PrimitiveType md, PrimitiveType compare, int mode) throws FHIRException, IOException {
+    XhtmlNode ndiv = new XhtmlNode(NodeType.Element, "div");
     if (compare == null || mode == GEN_MODE_DIFF) {
       if (md.hasValue()) {
         String xhtml = hostMd.processMarkdown(location, md);
         if (Utilities.noString(xhtml)) {
           return null;
         }
-        XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
         try {
-          renderStatusDiv(md, x).add(new XhtmlParser().parseFragment(xhtml));
+          renderStatusDiv(md, ndiv).addChildren(fixFontSizes(new XhtmlParser().parseMDFragment(xhtml), 11));
         } catch (Exception e) {
-          x.span("color: maroon").tx(e.getLocalizedMessage());          
+          ndiv.span("color: maroon").tx(e.getLocalizedMessage());       
+          e.printStackTrace();
         }
-        return x;
+        return ndiv;
       } else {
         return null;
       }
     } else if (areEqual(compare, md)) {
       if (md.hasValue()) {
-        String xhtml = "<div>"+hostMd.processMarkdown(location, md)+"</div>";
-        XhtmlNode div = new XhtmlParser().parseFragment(xhtml);
-        for (XhtmlNode n : div.getChildNodes()) {
+        String xhtml = hostMd.processMarkdown(location, md);
+        List<XhtmlNode> nodes = new XhtmlParser().parseMDFragment(xhtml);
+        for (XhtmlNode n : nodes) {
           if (n.getNodeType() == NodeType.Element) {
             n.style(unchangedStyle());
           }
         }
-        return div;
+        ndiv.addChildren(nodes);
+        return ndiv;
       } else {
         return null;
       }
     } else {
-      XhtmlNode ndiv = new XhtmlNode(NodeType.Element, "div");
       if (md.hasValue()) {
-        String xhtml = "<div>"+hostMd.processMarkdown(location, md)+"</div>";
-        XhtmlNode div = new XhtmlParser().parseFragment(xhtml);
-        ndiv.copyAllContent(div);
+        String xhtml = hostMd.processMarkdown(location, md);
+        List<XhtmlNode> div = new XhtmlParser().parseMDFragment(xhtml);
+        ndiv.addChildren(div);
       }
       if (compare.hasValue()) {
         String xhtml = "<div>"+hostMd.processMarkdown(location, compare)+"</div>";
-        XhtmlNode div = new XhtmlParser().parseFragment(xhtml);
-        for (XhtmlNode n : div.getChildNodes()) {
+        List<XhtmlNode> div = new XhtmlParser().parseMDFragment(xhtml);
+        for (XhtmlNode n : div) {
           if (n.getNodeType() == NodeType.Element) {
             n.style(removedStyle());
           }
         }
         ndiv.br();
-        ndiv.copyAllContent(div);
+        ndiv.addChildren(div);
       }
       return ndiv;
     }
+  }
+
+  private List<XhtmlNode> fixFontSizes(List<XhtmlNode> nodes, int size) {
+    for (XhtmlNode x : nodes) {
+      if (Utilities.existsInList(x.getName(), "p", "li") && !x.hasAttribute("style")) {
+        x.style("font-size: "+size+"px");
+      }
+      if (x.hasChildren()) {
+        fixFontSizes(x.getChildNodes(), size);
+      }
+    }
+    return nodes;
   }
 
   private boolean areEqual(PrimitiveType compare, PrimitiveType md) {
@@ -3565,7 +3575,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       Extension lt = ToolingExtensions.getExtension(sd, ToolingExtensions.EXT_LOGICAL_TARGET);
       if (lt == null || !lt.hasValue()) {
         tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model are not marked to be the target of a Reference");        
-      } else if (lt.getValue().hasExtension(ToolingExtensions.DAR)) {        
+      } else if (lt.getValue().hasExtension(ToolingExtensions.EXT_DAR)) {        
       } else if (lt.getValueBooleanType().hasValue()) {
         tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model are not marked to be the target of a Reference");        
       } else if (lt.getValueBooleanType().booleanValue()) {
@@ -3628,11 +3638,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     
     // tooling extensions for formats
-    if (ToolingExtensions.hasExtensions(d, ToolingExtensions.EXT_JSON_EMPTY, ToolingExtensions.EXT_JSON_PROP_KEY, ToolingExtensions.EXT_JSON_NULLABLE, 
-        ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) {
+    if (ToolingExtensions.hasAnyOfExtensions(d, ToolingExtensions.EXT_JSON_EMPTY, ToolingExtensions.EXT_JSON_PROP_KEY, ToolingExtensions.EXT_JSON_NULLABLE, 
+        ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) {
       tableRow(tbl, "JSON Format", null, strikethrough,  describeJson(d));          
     }
-    if (d.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE) || sd.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE) || d.hasExtension(ToolingExtensions.EXT_XML_NAME) || (root && sd.hasExtension(ToolingExtensions.EXT_XML_NO_ORDER)) ||
+    if (d.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED) || sd.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED) || 
+        d.hasExtension(ToolingExtensions.EXT_XML_NAME, ToolingExtensions.EXT_XML_NAME_DEPRECATED) || sd.hasExtension(ToolingExtensions.EXT_XML_NAME, ToolingExtensions.EXT_XML_NAME_DEPRECATED) ||
         d.hasRepresentation()) {
       tableRow(tbl, "XML Format", null, strikethrough, describeXml(sd, d, root));          
     }
@@ -3719,20 +3730,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
       }
     }
-    String name = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_XML_NAMESPACE);
+    String name = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED);
     if (name == null && root) {
-      name = ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_XML_NAMESPACE);
+      name = ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED);
     }
     if (name != null) {
       ret.codeWithText("In the XML format, this property has the namespace ", name, ".");
     }
-    name = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_XML_NAME);
+    name = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_XML_NAME, ToolingExtensions.EXT_XML_NAME_DEPRECATED);
     if (name != null) {
       ret.codeWithText("In the XML format, this property has the actual name", name, ".");
-    }
-    boolean no = root && ToolingExtensions.readBoolExtension(profile, ToolingExtensions.EXT_XML_NO_ORDER);
-    if (no) {
-      ret.tx("The children of this type can appear in any order in the XML.");
     }
     return ret;
   }
@@ -3740,7 +3747,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private XhtmlNode describeJson(ElementDefinition d) {
     XhtmlNode ret = new XhtmlNode(NodeType.Element, "div");
     var ul = ret.ul();
-    boolean list = ToolingExtensions.countExtensions(d, ToolingExtensions.EXT_JSON_EMPTY, ToolingExtensions.EXT_JSON_PROP_KEY, ToolingExtensions.EXT_JSON_NULLABLE, ToolingExtensions.EXT_JSON_NAME) > 1;
+    boolean list = ToolingExtensions.countExtensions(d, ToolingExtensions.EXT_JSON_EMPTY, ToolingExtensions.EXT_JSON_PROP_KEY, ToolingExtensions.EXT_JSON_NULLABLE, ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED) > 1;
 
     String code = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_JSON_EMPTY);
     if (code != null) {
@@ -3756,7 +3763,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         break;
       }
     }
-    String jn = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_JSON_NAME);
+    String jn = ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED);
     if (jn != null) {
       if (d.getPath().contains(".")) {
         ul.li().codeWithText("This property appears in JSON with the property name ", jn, null);
@@ -3934,7 +3941,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           list.merge(new DiscriminatorWithStatus(d));
         }
       }
-      x.tx(", and can be differentiated using the following discriminators: ");
       var ul = x.ul();
       for (DiscriminatorWithStatus rc : list) {
         rc.render(x.li());
@@ -4316,7 +4322,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         MarkdownType newBinding = PublicationHacker.fixBindingDescriptions(context.getContext(), binding.getDescriptionElement());
         if (mode == GEN_MODE_SNAP || mode == GEN_MODE_MS) {
           bindingDesc = new XhtmlNode(NodeType.Element, "div");
-          bindingDesc.add(new XhtmlParser().parseFragment(hostMd.processMarkdown("Binding.description", newBinding)));
+          bindingDesc.addChildren(new XhtmlParser().parseMDFragment(hostMd.processMarkdown("Binding.description", newBinding)));
         } else {
 
           StringType oldBinding = compBinding != null && compBinding.hasDescription() ? PublicationHacker.fixBindingDescriptions(context.getContext(), compBinding.getDescriptionElement()) : null;

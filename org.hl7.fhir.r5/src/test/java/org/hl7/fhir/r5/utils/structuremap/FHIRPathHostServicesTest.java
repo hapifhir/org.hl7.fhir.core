@@ -24,7 +24,7 @@ class FHIRPathHostServicesTest {
   public void testrResolveValueSet() throws IOException, FHIRException {
     StructureMapUtilities scu = new StructureMapUtilities(context);
     FHIRPathHostServices fphs = new FHIRPathHostServices(scu);
-    ValueSet v = fphs.resolveValueSet(null, "http://hl7.org/fhir/ValueSet/FHIR-version");
+    ValueSet v = fphs.resolveValueSet(null, null, "http://hl7.org/fhir/ValueSet/FHIR-version");
     Assertions.assertNotNull(v);
     Assertions.assertEquals("http://hl7.org/fhir/ValueSet/FHIR-version", v.getUrl());
   }

@@ -73,6 +73,7 @@ public abstract class ParserBase {
     String resolveType(String type);
     String resolveProperty(Property property);
     String resolvePage(String string);
+    String resolveReference(String referenceForElement);
   }
   
   public enum ValidationPolicy { NONE, QUICK, EVERYTHING }
@@ -130,7 +131,6 @@ public abstract class ParserBase {
 
   public abstract void compose(Element e, OutputStream destination, OutputStyle style, String base)  throws FHIRException, IOException;
 
-	//FIXME: i18n should be done here
 	public void logError(List<ValidationMessage> errors, String ruleDate, int line, int col, String path, IssueType type, String message, IssueSeverity level) throws FHIRFormatError {
 	  if (errors != null) {
 	    if (policy == ValidationPolicy.EVERYTHING) {
@@ -152,7 +152,7 @@ public abstract class ParserBase {
 	        expectedName = expectedName.substring(expectedName.lastIndexOf("/")+1);
 	      }
 	    }
-	    String expectedNamespace = ToolingExtensions.readStringExtension(logical, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
+	    String expectedNamespace = ToolingExtensions.readStringExtension(logical, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED);
 	    if (matchesNamespace(expectedNamespace, ns) && matchesName(expectedName, name)) {
 	      return logical;
 	    } else {
@@ -175,9 +175,9 @@ public abstract class ParserBase {
   	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
   	    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
   	      String type = urlTail(sd.getType());
-          if(name.equals(type) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
+          if(name.equals(type) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasAnyOfExtensions(sd, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED))
   	        return sd;
-  	      String sns = ToolingExtensions.readStringExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
+  	      String sns = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED);
   	      if ((name.equals(type) || name.equals(sd.getName())) && ns != null && ns.equals(sns))
   	        return sd;
   	    }
@@ -297,4 +297,11 @@ public abstract class ParserBase {
     this.signatureServices = signatureServices;
   }
 
+  protected String getReferenceForElement(Element element) {
+    if (element.isPrimitive()) {
+      return element.primitiveValue();
+    } else {
+      return element.getNamedChildValue("reference");
+    }
+  }
 }

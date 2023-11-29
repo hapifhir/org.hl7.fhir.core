@@ -907,6 +907,10 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
     attribute("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation", ns+" "+loc);
     
   }
+  @Override
+  public void externalLink(String ref) {
+    // ignore this    
+  }
 	
 	
 }

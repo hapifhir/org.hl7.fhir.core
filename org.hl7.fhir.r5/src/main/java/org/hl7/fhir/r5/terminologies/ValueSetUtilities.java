@@ -3,7 +3,9 @@ package org.hl7.fhir.r5.terminologies;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -66,7 +68,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
-public class ValueSetUtilities {
+public class ValueSetUtilities extends TerminologyUtilities {
 
 
   public static boolean isServerSide(String url) {
@@ -401,5 +403,20 @@ public class ValueSetUtilities {
     return i;
   }
 
+  public static Set<String> listSystems(IWorkerContext ctxt, ValueSet vs) {
+    Set<String> systems = new HashSet<>();
+    for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+      for (CanonicalType ct : inc.getValueSet()) {
+        ValueSet vsr = ctxt.fetchResource(ValueSet.class, ct.asStringValue(), vs);
+        if (vsr != null) {
+          systems.addAll(listSystems(ctxt, vsr));
+        }
+      }
+      if (inc.hasSystem()) {
+        systems.add(inc.getSystem());
+      }
+    }
+    return systems;
+  }
 
 }

@@ -14,13 +14,13 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.1.17-SNAPSHOT</version>
+    <version>6.2.6-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <guava_version>32.0.1-jre</guava_version>
         <hapi_fhir_version>6.4.1</hapi_fhir_version>
-        <validator_test_case_version>1.4.11</validator_test_case_version>
+        <validator_test_case_version>1.4.18</validator_test_case_version>
         <jackson_version>2.15.2</jackson_version>
         <junit_jupiter_version>5.9.2</junit_jupiter_version>
         <junit_platform_launcher_version>1.8.2</junit_platform_launcher_version>
@@ -126,14 +126,14 @@
                 <version>${hapi_fhir_version}</version>
             </dependency>
             <dependency>
-                <groupId>com.atlassian.commonmark</groupId>
+                <groupId>org.commonmark</groupId>
                 <artifactId>commonmark</artifactId>
-                <version>0.17.0</version>
+                <version>0.21.0</version>
             </dependency>
             <dependency>
-                <groupId>com.atlassian.commonmark</groupId>
+                <groupId>org.commonmark</groupId>
                 <artifactId>commonmark-ext-gfm-tables</artifactId>
-                <version>0.17.0</version>
+                <version>0.21.0</version>
             </dependency>
             <dependency>
                 <groupId>com.github.rjeschke</groupId>
@@ -341,8 +341,13 @@
                         <argLine>@{argLine} -Xmx5632m</argLine>
                         <systemPropertyVariables>
                             <java.locale.providers>COMPAT</java.locale.providers>
+                            <!--    For JUnit4 use TestUtilities.runningAsSurefire() or
+                                    TestingUtilities.runningAsSurefire() to exclude a test from surefire executions-->
+                            <runningAsSurefire>true</runningAsSurefire>
                         </systemPropertyVariables>
                         <redirectTestOutputToFile>false</redirectTestOutputToFile>
+                        <!-- For JUnit5 use an excludedInSurefire tag to exclude a test from surefire executions -->
+                        <excludedGroups>excludedInSurefire</excludedGroups>
                     </configuration>
                 </plugin>
 

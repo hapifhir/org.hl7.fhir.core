@@ -5,10 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.validation.ValidationRecord;
-import org.hl7.fhir.validation.cli.utils.VersionUtil;
 
 public class HTMLOutputGenerator {
 

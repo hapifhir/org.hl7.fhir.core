@@ -59,8 +59,10 @@ import org.hl7.fhir.r4.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r4.utils.FHIRPathUtilityClasses.FHIRConstant;
 import org.hl7.fhir.r4.utils.FHIRPathUtilityClasses.ClassTypeInfo;
 import org.hl7.fhir.r4.utils.FHIRPathUtilityClasses.TypedElementDefinition;
+import org.hl7.fhir.r4.utils.FHIRPathEngine;
 import org.hl7.fhir.r4.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MergedList;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.SourceLocation;
@@ -120,7 +122,7 @@ public class FHIRPathEngine {
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
   private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for emptty sets, so when
                               // running for R2/R3, this is set ot true
-  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R4);
   private ProfileUtilities profileUtilities;
   private String location; // for error messages
   private boolean allowPolymorphicNames;
@@ -150,9 +152,9 @@ public class FHIRPathEngine {
      * @return the value of the reference (or null, if it's not valid, though can
      *         throw an exception if desired)
      */
-    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException;
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException;
 
-    public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException;
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException;
 
     /**
      * when the .log() function is called
@@ -169,7 +171,7 @@ public class FHIRPathEngine {
      * @param functionName
      * @return null if the function is not known
      */
-    public FunctionDetails resolveFunction(String functionName);
+    public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName);
 
     /**
      * Check the function parameters, and throw an error if they are incorrect, or
@@ -179,7 +181,7 @@ public class FHIRPathEngine {
      * @param parameters
      * @return
      */
-    public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters)
+    public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters)
         throws PathEngineException;
 
     /**
@@ -188,7 +190,7 @@ public class FHIRPathEngine {
      * @param parameters
      * @return
      */
-    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName,
+    public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName,
         List<List<Base>> parameters);
 
     /**
@@ -200,14 +202,14 @@ public class FHIRPathEngine {
      * @return
      * @throws FHIRException
      */
-    public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException;
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException;
 
-    public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException;
+    public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException;
 
     /*
      * return the value set referenced by the url, which has been used in memberOf()
      */
-    public ValueSet resolveValueSet(Object appContext, String url);
+    public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url);
   }
 
   /**
@@ -1032,7 +1034,7 @@ public class FHIRPathEngine {
         FunctionDetails details = null;
         if (f == null) {
           if (hostServices != null) {
-            details = hostServices.resolveFunction(result.getName());
+            details = hostServices.resolveFunction(this, result.getName());
           }
           if (details == null) {
             throw lexer.error("The name " + result.getName() + " is not a valid function name");
@@ -1473,7 +1475,7 @@ public class FHIRPathEngine {
       work.addAll(work2);
       break;
     case Constant:
-      work.addAll(resolveConstant(context, exp.getConstant(), false, exp));
+      work.addAll(resolveConstant(context, exp.getConstant(), false, exp, true));
       break;
     case Group:
       work2 = execute(context, focus, exp.getGroup(), atEntry);
@@ -1563,7 +1565,7 @@ public class FHIRPathEngine {
       } else if (atEntry && exp.getName().equals("$index")) {
         result.addType(TypeDetails.FP_Integer);
       } else if (atEntry && focus == null) {
-        result.update(executeContextType(context, exp.getName(), exp));
+        result.update(executeContextType(context, exp.getName(), exp, false));
       } else {
         for (String s : focus.getTypes()) {
           result.update(executeType(s, exp, atEntry));
@@ -1582,7 +1584,7 @@ public class FHIRPathEngine {
       result.addType(TypeDetails.FP_Quantity);
       break;
     case Constant:
-      result.update(resolveConstantType(context, exp.getConstant(), exp));
+      result.update(resolveConstantType(context, exp.getConstant(), exp, true));
       break;
     case Group:
       result.update(executeType(context, focus, exp.getGroup(), atEntry));
@@ -1612,8 +1614,7 @@ public class FHIRPathEngine {
     return result;
   }
 
-  private List<Base> resolveConstant(ExecutionContext context, Base constant, boolean beforeContext,
-      ExpressionNode expr) throws PathEngineException {
+  private List<Base> resolveConstant(ExecutionContext context, Base constant, boolean beforeContext, ExpressionNode expr, boolean explicitConstant) throws PathEngineException {
     if (constant == null) {
       return new ArrayList<Base>();
     }
@@ -1622,7 +1623,7 @@ public class FHIRPathEngine {
     }
     FHIRConstant c = (FHIRConstant) constant;
     if (c.getValue().startsWith("%")) {
-      return resolveConstant(context, c.getValue(), beforeContext, expr);
+      return resolveConstant(context, c.getValue(), beforeContext, expr, explicitConstant);
     } else if (c.getValue().startsWith("@")) {
       return new ArrayList<Base>(Arrays.asList(processDateConstant(context.appInfo, c.getValue().substring(1), expr)));
     } else {
@@ -1692,7 +1693,7 @@ public class FHIRPathEngine {
     }
   }
 
-  private List<Base> resolveConstant(ExecutionContext context, String s, boolean beforeContext, ExpressionNode expr)
+  private List<Base> resolveConstant(ExecutionContext context, String s, boolean beforeContext, ExpressionNode expr, boolean explicitConstant)
       throws PathEngineException {
     if (s.equals("%sct")) {
       return new ArrayList<Base>(Arrays.asList(new StringType("http://snomed.info/sct").noExtensions()));
@@ -1726,7 +1727,7 @@ public class FHIRPathEngine {
     } else if (hostServices == null) {
       throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, s);
     } else {
-      return hostServices.resolveConstant(context.appInfo, s.substring(1), beforeContext);
+      return hostServices.resolveConstant(this, context.appInfo, s.substring(1), beforeContext, explicitConstant);
     }
   }
 
@@ -2549,7 +2550,7 @@ public class FHIRPathEngine {
       throws FHIRException {
     boolean ans = false;
     String url = right.get(0).primitiveValue();
-    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(context.appInfo, url)
+    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url)
         : worker.fetchResource(ValueSet.class, url);
     if (vs != null) {
       for (Base l : left) {
@@ -3079,7 +3080,7 @@ public class FHIRPathEngine {
     return result;
   }
 
-  private TypeDetails resolveConstantType(ExecutionTypeContext context, Base constant, ExpressionNode expr)
+  private TypeDetails resolveConstantType(ExecutionTypeContext context, Base constant, ExpressionNode expr, boolean explicitConstant)
       throws PathEngineException {
     if (constant instanceof BooleanType) {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
@@ -3090,7 +3091,7 @@ public class FHIRPathEngine {
     } else if (constant instanceof Quantity) {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Quantity);
     } else if (constant instanceof FHIRConstant) {
-      return resolveConstantType(context, ((FHIRConstant) constant).getValue(), expr);
+      return resolveConstantType(context, ((FHIRConstant) constant).getValue(), expr, explicitConstant);
     } else if (constant == null) {
       return new TypeDetails(CollectionStatus.SINGLETON);
     } else {
@@ -3098,7 +3099,7 @@ public class FHIRPathEngine {
     }
   }
 
-  private TypeDetails resolveConstantType(ExecutionTypeContext context, String s, ExpressionNode expr)
+  private TypeDetails resolveConstantType(ExecutionTypeContext context, String s, ExpressionNode expr, boolean explicitConstant)
       throws PathEngineException {
     if (s.startsWith("@")) {
       if (s.startsWith("@T")) {
@@ -3137,7 +3138,7 @@ public class FHIRPathEngine {
     } else if (hostServices == null) {
       throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, s);
     } else {
-      return hostServices.resolveConstantType(context.appInfo, s);
+      return hostServices.resolveConstantType(this, context.appInfo, s, explicitConstant);
     }
   }
 
@@ -3146,7 +3147,7 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     if (atEntry && context.appInfo != null && hostServices != null) {
       // we'll see if the name matches a constant known by the context.
-      List<Base> temp = hostServices.resolveConstant(context.appInfo, exp.getName(), true);
+      List<Base> temp = hostServices.resolveConstant(this, context.appInfo, exp.getName(), true, false);
       if (!temp.isEmpty()) {
         result.addAll(temp);
         return result;
@@ -3177,7 +3178,7 @@ public class FHIRPathEngine {
       // constant known by the context.
       // (if the name does match, and the user wants to get the constant value,
       // they'll have to try harder...
-      result.addAll(hostServices.resolveConstant(context.appInfo, exp.getName(), false));
+      result.addAll(hostServices.resolveConstant(this, context.appInfo, exp.getName(), false, false));
     }
     return result;
   }
@@ -3186,12 +3187,12 @@ public class FHIRPathEngine {
     return null;
   }
 
-  private TypeDetails executeContextType(ExecutionTypeContext context, String name, ExpressionNode expr)
+  private TypeDetails executeContextType(ExecutionTypeContext context, String name, ExpressionNode expr, boolean explicitConstant)
       throws PathEngineException, DefinitionException {
     if (hostServices == null) {
       throw makeException(expr, I18nConstants.FHIRPATH_HO_HOST_SERVICES, "Context Reference");
     }
-    return hostServices.resolveConstantType(context.appInfo, name);
+    return hostServices.resolveConstantType(this, context.appInfo, name, explicitConstant);
   }
 
   private TypeDetails executeType(String type, ExpressionNode exp, boolean atEntry)
@@ -3337,9 +3338,11 @@ public class FHIRPathEngine {
     }
     case Iif: {
       TypeDetails types = new TypeDetails(null);
-      types.update(paramTypes.get(0));
-      if (paramTypes.size() > 1) {
-        types.update(paramTypes.get(1));
+      checkSingleton(focus, "iif", exp);       
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean));       
+      types.update(paramTypes.get(1));
+      if (paramTypes.size() > 2) {
+        types.update(paramTypes.get(2));
       }
       return types;
     }
@@ -3607,7 +3610,7 @@ public class FHIRPathEngine {
     }
 
     case Custom: {
-      return hostServices.checkFunction(context.appInfo, exp.getName(), paramTypes);
+      return hostServices.checkFunction(this, context.appInfo, exp.getName(), focus, paramTypes);
     }
     default:
       break;
@@ -3642,6 +3645,12 @@ public class FHIRPathEngine {
           throw makeException(expr, I18nConstants.FHIRPATH_WRONG_PARAM_TYPE, funcName, i, a, pt.toString());
         }
       }
+    }
+  }
+
+  private void checkSingleton(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
+    if (focus.getCollectionStatus() != CollectionStatus.SINGLETON) {
+//      typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_COLLECTION_STATUS_CONTEXT, name, expr.toString()), I18nConstants.FHIRPATH_COLLECTION_STATUS_CONTEXT));
     }
   }
 
@@ -3932,7 +3941,7 @@ public class FHIRPathEngine {
       for (ExpressionNode p : exp.getParameters()) {
         params.add(execute(context, focus, p, true));
       }
-      return hostServices.executeFunction(context.appInfo, focus, exp.getName(), params);
+      return hostServices.executeFunction(this, context.appInfo, focus, exp.getName(), params);
     }
     default:
       throw new Error("not Implemented yet");
@@ -4605,7 +4614,7 @@ public class FHIRPathEngine {
     }
 
     String url = nl.get(0).primitiveValue();
-    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(context.appInfo, url)
+    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url)
         : worker.fetchResource(ValueSet.class, url);
     if (vs == null) {
       return new ArrayList<Base>();
@@ -4805,9 +4814,12 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcIif(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
+    if (focus.size() > 1) {
+      throw makeException(exp, I18nConstants.FHIRPATH_NO_COLLECTION, "iif", focus.size());    
+    }
+    
+    List<Base> n1 = execute(focus.isEmpty() ? context : changeThis(context, focus.get(0)), focus, exp.getParameters().get(0), true);
     Equality v = asBool(n1, exp);
-
     if (v == Equality.True) {
       return execute(context, focus, exp.getParameters().get(1), true);
     } else if (exp.getParameters().size() < 3) {
@@ -4816,7 +4828,7 @@ public class FHIRPathEngine {
       return execute(context, focus, exp.getParameters().get(2), true);
     }
   }
-
+  
   private List<Base> funcTake(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
     int i1 = Integer.parseInt(n1.get(0).primitiveValue());
@@ -4848,7 +4860,7 @@ public class FHIRPathEngine {
     for (Base item : focus) {
       result.add(item);
     }
-    for (Base item : execute(context, focus, exp.getParameters().get(0), true)) {
+    for (Base item : execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true)) {
       result.add(item);
     }
     return result;
@@ -5210,7 +5222,7 @@ public class FHIRPathEngine {
           }
         } else if (hostServices != null) {
           try {
-            res = hostServices.resolveReference(context.appInfo, s, refContext);
+            res = hostServices.resolveReference(this, context.appInfo, s, refContext);
           } catch (Exception e) {
             res = null;
           }
@@ -5740,7 +5752,7 @@ public class FHIRPathEngine {
       result.add(new BooleanType(false).noExtensions());
     } else {
       String url = convertToString(execute(context, focus, expr.getParameters().get(0), true));
-      result.add(new BooleanType(hostServices.conformsToProfile(context.appInfo, focus.get(0), url)).noExtensions());
+      result.add(new BooleanType(hostServices.conformsToProfile(this, context.appInfo, focus.get(0), url)).noExtensions());
     }
     return result;
   }

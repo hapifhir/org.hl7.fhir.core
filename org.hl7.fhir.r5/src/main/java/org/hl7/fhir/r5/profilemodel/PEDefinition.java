@@ -37,6 +37,7 @@ import org.apache.xmlbeans.impl.xb.xsdschema.All;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -236,10 +237,15 @@ public abstract class PEDefinition {
   /**
    * @return True if the element has a fixed value. This will always be false if fixedProps = false when the builder is created
    */
-  public boolean fixedValue() {
+  public boolean hasFixedValue() {
     return definition.hasFixed() || definition.hasPattern();
   }
+
+  public DataType getFixedValue() {
+    return definition.hasFixed() ? definition.getFixed() : definition.getPattern();
+  }
   
+
   protected abstract void makeChildren(String typeUrl, List<PEDefinition> children, boolean allFixed);
 
   @Override
@@ -290,7 +296,7 @@ public abstract class PEDefinition {
 
 
   public boolean isList() {
-    return "*".equals(definition.getMax());
+    return "*".equals(definition.getMax()) || (Utilities.parseInt(definition.getMax(), 2) > 1);
   }
 
 

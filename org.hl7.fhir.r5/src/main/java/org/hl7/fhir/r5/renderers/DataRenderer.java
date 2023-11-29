@@ -19,8 +19,8 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.BackboneType;
@@ -53,6 +53,7 @@ import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.Money;
+import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
@@ -66,6 +67,7 @@ import org.hl7.fhir.r5.model.Timing;
 import org.hl7.fhir.r5.model.Timing.EventTiming;
 import org.hl7.fhir.r5.model.Timing.TimingRepeatComponent;
 import org.hl7.fhir.r5.model.Timing.UnitsOfTime;
+import org.hl7.fhir.r5.model.TriggerDefinition;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -77,6 +79,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -161,9 +164,17 @@ public class DataRenderer extends Renderer implements CodeResolver {
         if (p == null)
           p = getContext().getWorker().fetchResource(StructureDefinition.class, link);
         if (p != null) {
+          if ("Extension".equals(p.getType())) {
+            path = null;
+          } else if (p.hasSnapshot()) {
+            path = p.getSnapshot().getElementFirstRep().getPath();
+          } else if (Utilities.isAbsoluteUrl(path)) {
+            path = null;
+          }
           url = p.getWebPath();
-          if (url == null)
+          if (url == null) {
             url = p.getUserString("filename");
+          }
         } else
           throw new DefinitionException("Unable to resolve markdown link "+link);
   
@@ -1190,7 +1201,10 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
   private String displayIdentifier(Identifier ii) {
     String s = Utilities.noString(ii.getValue()) ? "?ngen-9?" : ii.getValue();
-
+    NamingSystem ns = context.getContext().getNSUrlMap().get(ii.getSystem());
+    if (ns != null) {
+      s = ns.present()+"#"+s;
+    }
     if (ii.hasType()) {
       if (ii.getType().hasText())
         s = ii.getType().getText()+":\u00A0"+s;
@@ -1218,8 +1232,48 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return s;
   }
   
-  protected void renderIdentifier(XhtmlNode x, Identifier ii) {
-    x.addText(displayIdentifier(ii));
+  protected void renderIdentifier(XhtmlNode x, Identifier ii) {    
+    if (ii.hasType()) {
+      if (ii.getType().hasText())
+       x.tx(ii.getType().getText()+":");
+      else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay())
+        x.tx(ii.getType().getCoding().get(0).getDisplay()+":");
+      else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
+        x.tx(lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getVersion(), ii.getType().getCoding().get(0).getCode())+":");
+    } else {
+      x.tx("id:");      
+    }
+    x.nbsp();
+
+    NamingSystem ns = context.getContext().getNSUrlMap().get(ii.getSystem());
+    if (ns != null) {
+      if (ns.hasWebPath()) {
+        x.ah(ns.getWebPath()).tx("#");        
+      } else {
+        x.tx(ns.present()+"#");
+      }
+    }
+    x.tx(Utilities.noString(ii.getValue()) ? "?ngen-9?" : ii.getValue());
+
+    if (ii.hasUse() || ii.hasPeriod()) {
+      x.nbsp();
+      x.tx("(");
+      if (ii.hasUse()) {
+        x.tx("use:");
+        x.nbsp();
+        x.tx(ii.getUse().toString());
+      }
+      if (ii.hasUse() && ii.hasPeriod()) {
+        x.tx(",");
+        x.nbsp();
+      }
+      if (ii.hasPeriod()) {
+        x.tx("period:");
+        x.nbsp();
+        x.tx(displayPeriod(ii.getPeriod()));
+      }
+      x.tx(")");
+    }        
   }
 
   public static String displayHumanName(HumanName name) {
@@ -1522,6 +1576,36 @@ public class DataRenderer extends Renderer implements CodeResolver {
     renderCoding(x,  u.getCode());
     x.tx(": ");
     render(x, u.getValue());    
+  }
+  
+  
+  public void renderTriggerDefinition(XhtmlNode x, TriggerDefinition td) throws FHIRFormatError, DefinitionException, IOException {
+    XhtmlNode tbl = x.table("grid");
+
+    XhtmlNode tr = tbl.tr();  
+    tr.td().b().tx("Type");
+    tr.td().tx(td.getType().getDisplay());
+
+    if (td.hasName()) {    
+      tr = tbl.tr();  
+      tr.td().b().tx("Name");
+      tr.td().tx(td.getType().getDisplay());
+    }
+    if (td.hasCode()) {    
+      tr = tbl.tr();  
+      tr.td().b().tx("Code");
+      renderCodeableConcept(tr.td(), td.getCode());
+    }
+    if (td.hasTiming()) {    
+      tr = tbl.tr();  
+      tr.td().b().tx("Timing");
+      render(tr.td(), td.getTiming());
+    }
+    if (td.hasCondition()) {    
+      tr = tbl.tr();  
+      tr.td().b().tx("Condition");
+      renderExpression(tr.td(), td.getCondition());
+    }    
   }
   
   public void renderDataRequirement(XhtmlNode x, DataRequirement dr) throws FHIRFormatError, DefinitionException, IOException {

@@ -52,7 +52,7 @@ public class HL7WorkGroups {
     case "claims": return "http://www.hl7.org/Special/committees/claims";
     case "cqi": return "http://www.hl7.org/Special/committees/cqi";
     case "dev": return "http://www.hl7.org/Special/committees/healthcaredevices";
-    case "ehr": return "http://www.hl7.org/special/committees/ehr";
+    case "ehr": return "http://www.hl7.org/Special/committees/ehr";
     case "ec": return "http://www.hl7.org/Special/committees/emergencycare";
     case "fhir": return "http://www.hl7.org/Special/committees/fiwg";
     case "fmg": return "http://www.hl7.org/Special/committees/fhirmg";
@@ -62,8 +62,8 @@ public class HL7WorkGroups {
     case "hta": return "http://www.hl7.org/Special/committees/termauth";
     case "ictc": return "http://www.hl7.org/Special/committees/ictc";
     case "ii": return "http://www.hl7.org/Special/committees/imagemgt";
-    case "inm": return "http://www.hl7.org/special/committees/inm";
-    case "its": return "http://www.hl7.org/special/committees/xml";
+    case "inm": return "http://www.hl7.org/Special/committees/inm";
+    case "its": return "http://www.hl7.org/Special/committees/xml";
     case "lhs": return "http://www.hl7.org/Special/committees/lhs";
     case "mnm": return "http://www.hl7.org/Special/committees/mnm";
     case "mobile": return "http://www.hl7.org/Special/committees/mobile";
@@ -125,7 +125,7 @@ public class HL7WorkGroups {
     case "sd": return "Structured Documents";
     case "sec": return "Security";
     case "soa": return "Services Oriented Architecture";
-    case "ti": return "Terminology Infrastructure Work Group";
+    case "ti": return "Terminology Infrastructure";
     case "tsmg": return "Terminology Services Management Group (TSMG)";
     case "us": return "US Realm Steering Committee";
     case "v2": return "V2 Management Group";

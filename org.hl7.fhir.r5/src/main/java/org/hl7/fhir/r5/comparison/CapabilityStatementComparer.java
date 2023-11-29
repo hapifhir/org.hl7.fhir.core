@@ -183,20 +183,22 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
 
   private void compareRestSecurityService(CapabilityStatementRestSecurityComponent left, CapabilityStatementRestSecurityComponent right, StructuralMatch<Element> combined, CapabilityStatementRestSecurityComponent union, CapabilityStatementRestSecurityComponent intersection, CapabilityStatement csU, CapabilityStatement csI, CapabilityStatementComparison res, String path) {
     List<CodeableConcept> matchR = new ArrayList<>();
-    for (CodeableConcept l : left.getService()) {
-      CodeableConcept r = findInList(right.getService(), l);
-      if (r == null) {
-        union.getService().add(l);
-        combined.getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.INFORMATION, "Removed this item", path)));
-      } else {
-        matchR.add(r);
-        CodeableConcept cdM = CodeableConcept.merge(l, r);
-        CodeableConcept cdI = CodeableConcept.intersect(l, r);
-        union.getService().add(cdM);
-        intersection.getService().add(cdI);
-        StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r);
-        compare(sm, l, r, path, res);
-        combined.getChildren().add(sm);
+    if (left != null) {
+      for (CodeableConcept l : left.getService()) {
+        CodeableConcept r = findInList(right.getService(), l);
+        if (r == null) {
+          union.getService().add(l);
+          combined.getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.INFORMATION, "Removed this item", path)));
+        } else {
+          matchR.add(r);
+          CodeableConcept cdM = CodeableConcept.merge(l, r);
+          CodeableConcept cdI = CodeableConcept.intersect(l, r);
+          union.getService().add(cdM);
+          intersection.getService().add(cdI);
+          StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r);
+          compare(sm, l, r, path, res);
+          combined.getChildren().add(sm);
+        }
       }
     }
     if (right != null) {
@@ -257,23 +259,23 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
   }
 
   private void compareExpectations(StructuralMatch<Element> combined, Element left, Element right, String path, CapabilityStatementComparison res, Element union, Element intersection) {
-    Extension l = left.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT);
-    Extension r = right.getExtensionByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT);
-    if (l != null || r != null) {
-      if (l == null) {
-        union.addExtension(r.copy());
-        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added this expectation", path), r));        
-      } else if (r == null) {
-        union.addExtension(l.copy());
-        combined.getChildren().add(new StructuralMatch<Element>(l, vmI(IssueSeverity.INFORMATION, "Removed this expectation", path)));              
-      } else {
-        StructuralMatch<Element> sm = new StructuralMatch<Element>(l, r);
+    List<Extension> l = left.getExtensionsByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT);
+    List<Extension> r = right.getExtensionsByUrl(ToolingExtensions.EXT_CAP_STMT_EXPECT);
+    if (l.size() == 1 || r.size() == 1) {
+      if (l.size() == 0) {
+        union.addExtension(r.get(0).copy());
+        combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.INFORMATION, "Added this expectation", path), r.get(0)));        
+      } else if (r.size() == 0) {
+        union.addExtension(l.get(0).copy());
+        combined.getChildren().add(new StructuralMatch<Element>(l.get(0), vmI(IssueSeverity.INFORMATION, "Removed this expectation", path)));              
+      } else if (l.size() == 1 && r.size() == 1) {
+        StructuralMatch<Element> sm = new StructuralMatch<Element>(l.get(0), r.get(0));
         combined.getChildren().add(sm);
-        String ls = l.getValue().primitiveValue();
-        String rs = r.getValue().primitiveValue();
+        String ls = l.get(0).getValue().primitiveValue();
+        String rs = r.get(0).getValue().primitiveValue();
         if (ls.equals(rs)) {
-          union.addExtension(l.copy());
-          intersection.addExtension(l.copy());
+          union.addExtension(l.get(0).copy());
+          intersection.addExtension(l.get(0).copy());
         } else {
           sm.getMessages().add(new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path+".extension('http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation')", "Changed value for expectation: '"+ls+"' vs '"+rs+"'", IssueSeverity.WARNING));
           String lowest = lower(ls, rs) ? ls : rs;

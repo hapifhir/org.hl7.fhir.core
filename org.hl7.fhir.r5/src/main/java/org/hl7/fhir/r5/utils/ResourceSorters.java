@@ -10,7 +10,13 @@ public class ResourceSorters {
 
     @Override
     public int compare(CanonicalResource arg0, CanonicalResource arg1) {
-      return arg0.getUrl().compareTo(arg1.getUrl());
+      if (arg0.getUrl() != null) {
+        return arg0.getUrl().compareTo(arg1.getUrl());        
+      } else if (arg1.getUrl() != null) {
+        return -arg1.getUrl().compareTo(arg0.getUrl());        
+      } else {
+        return 0;
+      }
     }
 
   }

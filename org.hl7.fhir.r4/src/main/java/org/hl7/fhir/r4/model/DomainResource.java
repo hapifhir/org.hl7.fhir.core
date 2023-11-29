@@ -579,6 +579,15 @@ public abstract class DomainResource extends Resource
     }
   }
 
+  public Resource getContained(String reference) {
+    for (Resource c : getContained()) {
+      if (reference.equals("#"+c.getId())) {
+        return c;
+      }
+    }
+    return null;
+  }
+
 // end addition
 
 }

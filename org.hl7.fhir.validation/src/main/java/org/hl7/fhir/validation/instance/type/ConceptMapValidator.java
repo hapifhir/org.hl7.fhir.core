@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -15,18 +12,15 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
-import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
-import org.hl7.fhir.validation.TimeTracker;
-import org.hl7.fhir.validation.instance.InstanceValidator;
-import org.hl7.fhir.validation.instance.type.ValueSetValidator.VSCodingValidationRequest;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 
@@ -187,13 +181,13 @@ public class ConceptMapValidator  extends BaseValidator {
 
   private VSReference readVSReference(Element cm, String... names) {
     for (String n : names) {
-      if (cm.hasChild(n)) {
-        Element e = cm.getNamedChild(n);
+      if (cm.hasChild(n, false)) {
+        Element e = cm.getNamedChild(n, false);
         String ref = null;
         if (e.isPrimitive()) {
           ref = e.primitiveValue();
-        } else if (e.hasChild("reference")) {
-          ref = e.getNamedChildValue("reference");
+        } else if (e.hasChild("reference", false)) {
+          ref = e.getNamedChildValue("reference", false);
         }
         if (ref != null) {
           VSReference res = new VSReference();
@@ -218,9 +212,9 @@ public class ConceptMapValidator  extends BaseValidator {
     ctxt.sourceScope = sourceScope;
     ctxt.targetScope = targetScope;
     
-    Element e = grp.getNamedChild("source");
+    Element e = grp.getNamedChild("source", false);
     if (warning(errors, "2023-03-05", IssueType.REQUIRED, grp.line(), grp.col(), stack.getLiteralPath(), e != null, I18nConstants.CONCEPTMAP_GROUP_SOURCE_MISSING)) {
-      ctxt.source = readCSReference(e, grp.getNamedChild("sourceVersion"));
+      ctxt.source = readCSReference(e, grp.getNamedChild("sourceVersion", false));
       if (ctxt.source.cs != null) {
         if (ctxt.source.cs.getContent() == CodeSystemContentMode.NOTPRESENT) {
           ctxt.source.cs = null;
@@ -231,9 +225,9 @@ public class ConceptMapValidator  extends BaseValidator {
         warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), sourceScope != null, I18nConstants.CONCEPTMAP_GROUP_SOURCE_UNKNOWN, e.getValue());
       }
     }
-    e = grp.getNamedChild("target");
+    e = grp.getNamedChild("target", false);
     if (warning(errors, "2023-03-05", IssueType.REQUIRED, grp.line(), grp.col(), stack.getLiteralPath(), e != null, I18nConstants.CONCEPTMAP_GROUP_TARGET_MISSING)) {
-      ctxt.target = readCSReference(e, grp.getNamedChild("targetVersion"));
+      ctxt.target = readCSReference(e, grp.getNamedChild("targetVersion", false));
       if (ctxt.target.cs != null) {                              
         if (ctxt.target.cs.getContent() == CodeSystemContentMode.NOTPRESENT) {
           ctxt.target.cs = null;
@@ -274,14 +268,14 @@ public class ConceptMapValidator  extends BaseValidator {
   private boolean validateGroupElement(List<ValidationMessage> errors, Element src, NodeStack stack, Map<String, PropertyDefinition> props, Map<String, String> attribs, ValidationOptions options, GroupContext ctxt) {
     boolean ok = true;
     
-    Element code = src.getNamedChild("code");
+    Element code = src.getNamedChild("code", false);
     if (code != null) {
       NodeStack cstack = stack.push(code, -1, null, null);
       if (ctxt.hasSourceCS()) {
         String c = code.getValue();
         ConceptDefinitionComponent cd = CodeSystemUtilities.getCode(ctxt.source.cs, c);
         if (warningOrError(ctxt.source.cs.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-03-05", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), cd != null, I18nConstants.CONCEPTMAP_GROUP_SOURCE_CODE_INVALID, c, ctxt.source.cs.getVersionedUrl())) {
-          Element display = src.getNamedChild("display");
+          Element display = src.getNamedChild("display", false);
           if (display != null) {
             warning(errors, "2023-03-05", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), CodeSystemUtilities.checkDisplay(ctxt.source.cs, cd, display.getValue()), I18nConstants.CONCEPTMAP_GROUP_SOURCE_DISPLAY_INVALID, display.getValue(), CodeSystemUtilities.getDisplays(ctxt.source.cs, cd));
           }
@@ -311,14 +305,14 @@ public class ConceptMapValidator  extends BaseValidator {
   private boolean validateGroupElementTarget(List<ValidationMessage> errors, Element tgt, NodeStack stack, Map<String, PropertyDefinition> props, Map<String, String> attribs, ValidationOptions options, GroupContext ctxt) {
     boolean ok = true;
 
-    Element code = tgt.getNamedChild("code");
+    Element code = tgt.getNamedChild("code", false);
     if (code != null) {
       NodeStack cstack = stack.push(code, -1, null, null);
       if (ctxt.hasTargetCS()) {
         String c = code.getValue();
         ConceptDefinitionComponent cd = CodeSystemUtilities.getCode(ctxt.target.cs, c);
         if (warningOrError(ctxt.target.cs.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-03-05", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), cd != null, I18nConstants.CONCEPTMAP_GROUP_TARGET_CODE_INVALID, c, ctxt.target.cs.getVersionedUrl())) {
-          Element display = tgt.getNamedChild("display");
+          Element display = tgt.getNamedChild("display", false);
           if (display != null) {          
             warning(errors, "2023-03-05", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), CodeSystemUtilities.checkDisplay(ctxt.target.cs, cd, display.getValue()), I18nConstants.CONCEPTMAP_GROUP_TARGET_DISPLAY_INVALID, display.getValue(), CodeSystemUtilities.getDisplays(ctxt.target.cs, cd));
           }
@@ -329,7 +323,7 @@ public class ConceptMapValidator  extends BaseValidator {
             }
           }
         } else {
-          ok = (ctxt.source.cs.getContent() != CodeSystemContentMode.COMPLETE) & ok;
+          ok = (ctxt.target.cs.getContent() != CodeSystemContentMode.COMPLETE) & ok;
         }
       } else {
         addToBatch(code, cstack, ctxt.target, ctxt.targetScope);
@@ -362,8 +356,8 @@ public class ConceptMapValidator  extends BaseValidator {
   
   private boolean validateGroupElementTargetProperty(List<ValidationMessage> errors, Element property, NodeStack stack, Map<String, PropertyDefinition> props) {
     boolean ok = true;
-    Element codeE = property.getNamedChild("code");
-    Element valueE = property.getNamedChild("value");
+    Element codeE = property.getNamedChild("code", false);
+    Element valueE = property.getNamedChild("value", false);
     String code = codeE.getValue();
     if (rule(errors, "2023-03-05", IssueType.REQUIRED, codeE.line(), codeE.col(), stack.push(codeE, -1, null, null).getLiteralPath(), props.containsKey(code), I18nConstants.CONCEPTMAP_GROUP_TARGET_PROPERTY_INVALID, code, props.keySet())) {
       PropertyDefinition defn = props.get(code);
@@ -388,8 +382,8 @@ public class ConceptMapValidator  extends BaseValidator {
 
   private boolean validateGroupElementTargetAttribute(List<ValidationMessage> errors, Element attribute, NodeStack stack, Map<String, String> attribs) {
     boolean ok = true;
-    Element codeE = attribute.getNamedChild("attribute");
-    Element valueE = attribute.getNamedChild("value");
+    Element codeE = attribute.getNamedChild("attribute", false);
+    Element valueE = attribute.getNamedChild("value", false);
     String code = codeE.getValue();
     if (rule(errors, "2023-03-05", IssueType.REQUIRED, codeE.line(), codeE.col(), stack.push(codeE, -1, null, null).getLiteralPath(), attribs.containsKey(code), I18nConstants.CONCEPTMAP_GROUP_TARGET_PROPERTY_INVALID, code, attribs.keySet())) {
       NodeStack stackV = stack.push(valueE, -1, null, null);
@@ -404,22 +398,22 @@ public class ConceptMapValidator  extends BaseValidator {
     if (parent.isForPublication()) { 
       if (isHL7(cs)) {
         boolean ok = true;
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url"), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING_HL7, "url") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("version"), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING_HL7, "version") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title"), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING_HL7, "title") && ok;                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name"), I18nConstants.CONCEPTMAP_SHAREABLE_EXTRA_MISSING_HL7, "name");                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("status"), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING_HL7, "status") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("experimental"), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING_HL7, "experimental") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("description"), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING_HL7, "description") && ok; 
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url", false), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING_HL7, "url") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("version", false), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING_HL7, "version") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title", false), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING_HL7, "title") && ok;                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name", false), I18nConstants.CONCEPTMAP_SHAREABLE_EXTRA_MISSING_HL7, "name");                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("status", false), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING_HL7, "status") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("experimental", false), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING_HL7, "experimental") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("description", false), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING_HL7, "description") && ok; 
         return ok;
       } else {
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url"), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING, "url");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("version"), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING, "version");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title"), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING, "title");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name"), I18nConstants.CONCEPTMAP_SHAREABLE_EXTRA_MISSING, "name");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("status"), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING, "status");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("experimental"), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING, "experimental");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("description"), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING, "description"); 
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("url", false), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING, "url");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("version", false), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING, "version");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("title", false), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING, "title");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("name", false), I18nConstants.CONCEPTMAP_SHAREABLE_EXTRA_MISSING, "name");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("status", false), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING, "status");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("experimental", false), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING, "experimental");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, cs.line(), cs.col(), stack.getLiteralPath(), cs.hasChild("description", false), I18nConstants.CONCEPTMAP_SHAREABLE_MISSING, "description"); 
       }
     }
     return true;

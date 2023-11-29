@@ -24,6 +24,7 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 
 public class Runner implements IEvaluationContext {
@@ -33,9 +34,8 @@ public class Runner implements IEvaluationContext {
   private List<String> prohibitedNames = new ArrayList<String>();
   private FHIRPathEngine fpe;
 
-  private List<Column> columns = new ArrayList<>();
-
   private String resourceName;
+  private List<ValidationMessage> issues;
 
 
   public IWorkerContext getContext() {
@@ -86,15 +86,15 @@ public class Runner implements IEvaluationContext {
     }
     Validator validator = new Validator(context, fpe, prohibitedNames, storage.supportsArrays(), storage.supportsComplexTypes(), storage.needsName());
     validator.checkViewDefinition(path, viewDefinition);
+    issues = validator.getIssues();
     validator.dump();
     validator.check();
     resourceName = validator.getResourceName();
-    columns = validator.getColumns();
     evaluate(viewDefinition);
   }
 
   private void evaluate(JsonObject vd) {
-    Store store = storage.createStore(vd.asString("name"), columns);
+    Store store = storage.createStore(vd.asString("name"), (List<Column>) vd.getUserData("columns"));
 
     List<Base> data = provider.fetch(resourceName);
 
@@ -130,12 +130,25 @@ public class Runner implements IEvaluationContext {
     if (select.has("forEach")) {
       focus.addAll(executeForEach(select, b));
     } else if (select.has("forEachOrNull")) {
+      
       focus.addAll(executeForEachOrNull(select, b));  
+      if (focus.isEmpty()) {
+        List<Column> columns = (List<Column>) select.getUserData("columns");
+        for (List<Cell> row : rows) {
+          for (Column c : columns) {
+            Cell cell = cell(row, c.getName());
+            if (cell == null) {
+              row.add(new Cell(c, null));
+            }
+          }
+        }
+        return;
+      }
     } else {
       focus.add(b);
     }
 
-//  } else if (select.has("union")) {
+//  } else if (select.has("unionAll")) {
 //    focus.addAll(executeUnion(select, b));
 
     List<List<Cell>> tempRows = new ArrayList<>();
@@ -149,19 +162,30 @@ public class Runner implements IEvaluationContext {
         executeColumn(column, f, rowsToAdd);
       }
 
-      for (JsonObject sub : select.getJsonObjects("union")) {
-        executeSelect(sub, f, rowsToAdd);
-      }
-      
       for (JsonObject sub : select.getJsonObjects("select")) {
         executeSelect(sub, f, rowsToAdd);
       }
+      
+      executeUnionAll(select.getJsonObjects("unionAll"), f, rowsToAdd);
+      
       rows.addAll(rowsToAdd);
     }
   }
 
-  private List<Base> executeUnion(JsonObject focus,  Base b, List<List<Cell>> rows) {
-    throw new FHIRException("union is not supported");   
+  private void executeUnionAll(List<JsonObject> unionList,  Base b, List<List<Cell>> rows) {
+    if (unionList.isEmpty()) {
+      return;
+    }
+    List<List<Cell>> sourceRows = new ArrayList<>();
+    sourceRows.addAll(rows);
+    rows.clear();
+
+    for (JsonObject union : unionList) {
+      List<List<Cell>> tempRows = new ArrayList<>();
+      tempRows.addAll(sourceRows);      
+      executeSelect(union, b, tempRows);
+      rows.addAll(tempRows);
+    }
   }
 
   private List<List<Cell>> cloneRows(List<List<Cell>> rows) {
@@ -191,9 +215,6 @@ public class Runner implements IEvaluationContext {
     ExpressionNode n = (ExpressionNode) focus.getUserData("forEachOrNull");
     List<Base> result = new ArrayList<>();
     result.addAll(fpe.evaluate(b, n));
-    if (result.size() == 0) {
-      result.add(null);
-    }
     return result;  
   }
 
@@ -203,23 +224,27 @@ public class Runner implements IEvaluationContext {
     if (b != null) {
       bl2.addAll(fpe.evaluate(b, n));
     }
-    String name = column.getUserString("name");
-    for (List<Cell> row : rows) {
-      Cell c = cell(row, name);
-      if (c == null) {
-        c = new Cell(column(name));
-        row.add(c);
-      }      
-      if (!bl2.isEmpty()) {
-        if (bl2.size() + c.getValues().size() > 1) {
-          // this is a problem if collection != true or if the storage can't deal with it 
-          // though this should've been picked up before now - but there are circumstances where it wouldn't be
-          if (!c.getColumn().isColl()) {
-            throw new FHIRException("The column "+c.getColumn().getName()+" is not allowed multiple values, but at least one row has multiple values");
+    Column col = (Column) column.getUserData("column");
+    if (col == null) {
+      System.out.println("Error");
+    } else {
+      for (List<Cell> row : rows) {
+        Cell c = cell(row, col.getName());
+        if (c == null) {
+          c = new Cell(col);
+          row.add(c);
+        }      
+        if (!bl2.isEmpty()) {
+          if (bl2.size() + c.getValues().size() > 1) {
+            // this is a problem if collection != true or if the storage can't deal with it 
+            // though this should've been picked up before now - but there are circumstances where it wouldn't be
+            if (!c.getColumn().isColl()) {
+              throw new FHIRException("The column "+c.getColumn().getName()+" is not allowed multiple values, but at least one row has multiple values");
+            }
           }
-        }
-        for (Base b2 : bl2) {
-          c.getValues().add(genValue(c.getColumn(), b2));
+          for (Base b2 : bl2) {
+            c.getValues().add(genValue(c.getColumn(), b2));
+          }
         }
       }
     }
@@ -299,7 +324,7 @@ public class Runner implements IEvaluationContext {
     }
   }
   
-  private Column column(String columnName) {
+  private Column column(String columnName, List<Column> columns) {
     for (Column t : columns) {
       if (t.getName().equalsIgnoreCase(columnName)) {
         return t;
@@ -318,12 +343,12 @@ public class Runner implements IEvaluationContext {
   }
   
   @Override
-  public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
     throw new Error("Not implemented yet: resolveConstant");
   }
 
   @Override
-  public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
     throw new Error("Not implemented yet: resolveConstantType");
   }
 
@@ -333,7 +358,7 @@ public class Runner implements IEvaluationContext {
   }
 
   @Override
-  public FunctionDetails resolveFunction(String functionName) {
+  public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
     switch (functionName) {
     case "getResourceKey" : return new FunctionDetails("Unique Key for resource", 0, 0);
     case "getReferenceKey" : return new FunctionDetails("Unique Key for resource that is the target of the reference", 0, 1);
@@ -341,7 +366,7 @@ public class Runner implements IEvaluationContext {
     }
   }
   @Override
-  public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
+  public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
     switch (functionName) {
     case "getResourceKey" : return new TypeDetails(CollectionStatus.SINGLETON, "string");
     case "getReferenceKey" : return new TypeDetails(CollectionStatus.SINGLETON, "string");
@@ -350,10 +375,10 @@ public class Runner implements IEvaluationContext {
   }
 
   @Override
-  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+  public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
     switch (functionName) {
     case "getResourceKey" : return executeResourceKey(focus);
-    case "getReferenceKey" : return executeReferenceKey(focus, parameters);
+    case "getReferenceKey" : return executeReferenceKey(null, focus, parameters);
     default: throw new Error("Not known: "+functionName);
     }
   }
@@ -375,7 +400,7 @@ public class Runner implements IEvaluationContext {
     return base;
   }
   
-  private List<Base> executeReferenceKey(List<Base> focus, List<List<Base>> parameters) {
+  private List<Base> executeReferenceKey(Base rootResource, List<Base> focus, List<List<Base>> parameters) {
     String rt = null;
     if (parameters.size() > 0) {
       rt = parameters.get(0).get(0).primitiveValue();
@@ -395,7 +420,7 @@ public class Runner implements IEvaluationContext {
         throw new FHIRException("Unable to generate a reference key based on a "+res.fhirType());
       }
       if (ref !=  null) {
-        Base target = provider.resolveReference(ref, rt);
+        Base target = provider.resolveReference(rootResource, ref, rt);
         if (target != null) {
           if (!res.hasUserData("Storage.key")) {
             String key = storage.getKeyForTargetResource(target);
@@ -419,23 +444,27 @@ public class Runner implements IEvaluationContext {
     }
     return null;
   }
+  
   @Override
-  public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
     throw new Error("Not implemented yet: resolveReference");
   }
 
   @Override
-  public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
+  public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
     throw new Error("Not implemented yet: conformsToProfile");
   }
 
   @Override
-  public ValueSet resolveValueSet(Object appContext, String url) {
+  public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
     throw new Error("Not implemented yet: resolveValueSet");
   }
   @Override
   public boolean paramIsType(String name, int index) {
     return "getReferenceKey".equals(name);
+  }
+  public List<ValidationMessage> getIssues() {
+    return issues;
   }
 
 

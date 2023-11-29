@@ -90,8 +90,8 @@ public class Property {
 	}
 
   public String getJsonName() {
-    if (definition.hasExtension(ToolingExtensions.EXT_JSON_NAME)) {
-      return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_NAME);
+    if (definition.hasExtension(ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED)) {
+      return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED);
     } else {
       return getName();
     }
@@ -100,16 +100,18 @@ public class Property {
   public String getXmlName() {
     if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME)) {
       return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_XML_NAME);
+    } else if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME_DEPRECATED)) {
+      return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_XML_NAME_DEPRECATED);
     } else {
       return getName();
     }
   }
 
   public String getXmlNamespace() {
-    if (ToolingExtensions.hasExtension(definition, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace")) {
-      return ToolingExtensions.readStringExtension(definition, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
-    } else if (ToolingExtensions.hasExtension(structure, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace")) {
-      return ToolingExtensions.readStringExtension(structure, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
+    if (ToolingExtensions.hasAnyOfExtensions(definition, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED)) {
+      return ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED);
+    } else if (ToolingExtensions.hasAnyOfExtensions(structure, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED)) {
+      return ToolingExtensions.readStringExtension(structure, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED);
     } else {
       return FormatUtilities.FHIR_NS;
     }
@@ -596,7 +598,7 @@ public class Property {
 
 
   public boolean hasJsonName() {
-    return definition.hasExtension(ToolingExtensions.EXT_JSON_NAME);
+    return definition.hasExtension(ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED);
   }
 
 
@@ -617,6 +619,25 @@ public class Property {
     }
     StructureDefinition sd = context.fetchTypeDefinition(tr.getWorkingCode());
     return sd.getSnapshot().getElementFirstRep().getPath();
+  }
+
+
+  public boolean isReference() {
+    if (type != null) {
+      return isRef(type);
+    }
+    for (TypeRefComponent tr : definition.getType()) {
+      boolean ref = isRef(tr);
+      if (ref) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  private boolean isRef(TypeRefComponent tr) {
+    return Utilities.existsInList(tr.getWorkingCode(), "Reference", "url", "uri", "canonical");
   }
 
   

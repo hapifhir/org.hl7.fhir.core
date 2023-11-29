@@ -122,7 +122,7 @@ public class IPAValidator {
       List<Element> entries = bundle.getChildren("entry");
       int i = 0;
       for (Element entry : entries) {
-        Element resource = entry.getNamedChild("resource");
+        Element resource = entry.getNamedChild("resource", false);
         if (resource != null && resource.fhirType().equals("Patient")) {
           validator.validate(this, vn.getIssues(), "Bundle.entry["+i+"].resource", resource, "http://hl7.org/fhir/uv/ipa/StructureDefinition/ipa-patient");        
           list.add(resource);
@@ -145,8 +145,8 @@ public class IPAValidator {
     // we check that there's a self link 
     Element sl = null;
     for (Element e : bundle.getChildren("link")) {
-      if ("self".equals(e.getNamedChildValue("relation"))) {
-        sl = e.getNamedChild("url");
+      if ("self".equals(e.getNamedChildValue("relation", false))) {
+        sl = e.getNamedChild("url", false);
       }
     }
     if (sl == null) {

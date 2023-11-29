@@ -251,14 +251,10 @@ public class VersionUtilities {
   }
 
   public static boolean isSemVer(String version) {
-    if (Utilities.charCount(version, '.') != 2) {
+    if (Utilities.noString(version)) {
       return false;
     }
-    String[] p = version.split("\\.");
-    if (p[2].contains("-")) {
-      p[2] = p[2].substring(0, p[2].indexOf("-"));
-    }
-    return Utilities.isInteger(p[0]) && Utilities.isInteger(p[1]) && Utilities.isInteger(p[2]);
+    return version.matches("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-\\+]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-\\+][0-9a-zA-Z-\\+]*))*))?$");
   }
 
   /** 
@@ -411,6 +407,17 @@ public class VersionUtilities {
   }
 
 
+  /** same as getCanonicalResourceNames but add R5 supported types that are canonical too */
+  public static Set<String> getExtendedCanonicalResourceNames(String version) {
+    Set<String> res = getCanonicalResourceNames(version);
+    if (isR4Ver(version)) {
+      res.add("ActorDefinition");
+      res.add("Requirements");
+      res.add("SubscriptionTopic");
+      res.add("TestPlan");
+    }
+    return res;
+  }
   public static Set<String> getCanonicalResourceNames(String version) {
 
     Set<String> res = new HashSet<String>();

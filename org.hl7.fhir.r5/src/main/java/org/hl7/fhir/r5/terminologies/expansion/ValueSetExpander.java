@@ -129,6 +129,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 public class ValueSetExpander extends ValueSetProcessBase {
 
@@ -540,7 +541,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     // importValueSet(imp.getValue(), params, expParams);
 
     CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem());
-    if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.supportsSystem(exc.getSystem())) {
+    if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.supportsSystem(exc.getSystem(), opContext.getOptions().getFhirVersion())) {
       ValueSetExpansionOutcome vse = context.expandVS(exc, false, false);
       ValueSet valueset = vse.getValueset();
       if (valueset == null)
@@ -667,8 +668,6 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     if (langs == null && focus.hasLanguage()) {
       langs = new AcceptLanguageHeader(focus.getLanguage(), true);
-    } else if (langs != null && langs.hasChosen()) {
-      focus.setLanguage(langs.getChosen());
     }
 
     try {

@@ -885,6 +885,13 @@ public class Parameters extends Resource implements IBaseParameters {
     return this;
   }
 
+
+  public Parameters addParameter(String name, int i) {
+    addParameter().setName(name).setValue(new IntegerType(i));
+    return this;
+  }
+
+  
   public Parameters addParameter(String name, String s) {
     if (s != null)
       addParameter().setName(name).setValue(new StringType(s));

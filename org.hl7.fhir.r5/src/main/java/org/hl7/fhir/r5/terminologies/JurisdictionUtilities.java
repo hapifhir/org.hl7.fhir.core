@@ -1,5 +1,9 @@
 package org.hl7.fhir.r5.terminologies;
 
+import java.util.List;
+
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -6014,6 +6018,17 @@ public class JurisdictionUtilities {
 
   public static boolean isJurisdiction(String system) {
     return Utilities.existsInList(system, "http://unstats.un.org/unsd/methods/m49/m49.htm", "urn:iso:std:iso:3166", "urn:iso:std:iso:3166:-2");
+  }
+
+  public static void setJurisdictionCountry(List<CodeableConcept> list, String code) {
+    CodeableConcept cc = new CodeableConcept();
+    cc.addCoding().setCode(code).setSystem("urn:iso:std:iso:3166");
+    String disp = country(cc.getCodingFirstRep());
+    if (disp.contains("Unknown country")) {
+      throw new FHIRException(disp);
+    }
+    list.clear();
+    list.add(cc);    
   }
 }
 

@@ -56,7 +56,7 @@ public class ExpressionNode {
     Encode, Decode, Escape, Unescape, Trim, Split, Join, LowBoundary, HighBoundary, Precision,
     
     // Local extensions to FHIRPath
-    HtmlChecks1, HtmlChecks2, AliasAs, Alias, Comparable;
+    HtmlChecks1, HtmlChecks2, AliasAs, Alias, Comparable, hasTemplateIdOf;
 
     public static Function fromCode(String name) {
       if (name.equals("empty")) return Function.Empty;
@@ -157,6 +157,7 @@ public class ExpressionNode {
       if (name.equals("lowBoundary")) return Function.LowBoundary;  
       if (name.equals("highBoundary")) return Function.HighBoundary;  
       if (name.equals("precision")) return Function.Precision;  
+      if (name.equals("hasTemplateIdOf")) return Function.hasTemplateIdOf;  
 
       return null;
     }
@@ -260,6 +261,7 @@ public class ExpressionNode {
       case LowBoundary: return "lowBoundary";
       case HighBoundary: return "highBoundary";
       case Precision: return "precision";
+      case hasTemplateIdOf: return "hasTemplateIdOf";
       default: return "?custom?";
       }
     }
@@ -721,13 +723,17 @@ public class ExpressionNode {
     } else if (group != null) {
       names.addAll(group.getDistalNames());
     } else if (function != null) {
-      names.addAll(null);
+      names.add(null);
     } else if (constant != null) {
-      names.addAll(null);
+      names.add(null);
     } else {
       names.add(name);
     }    
     return names;
+  }
+
+  public boolean isNullSet() {
+    return kind == Kind.Constant && constant == null;
   }
 		
 }
