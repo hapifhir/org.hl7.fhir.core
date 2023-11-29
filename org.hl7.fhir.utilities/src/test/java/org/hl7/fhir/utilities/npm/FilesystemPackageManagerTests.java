@@ -116,7 +116,7 @@ public class FilesystemPackageManagerTests {
       final int index = i;
       Thread t = new Thread(() -> {
         try {
-          pcm.loadPackage("hl7.fhir.r4.core#4.0.1");
+          pcm.loadPackage("hl7.fhir.xver-extensions#0.0.12");
           totalSuccessful.incrementAndGet();
           System.out.println("Thread " + index + " completed");
         } catch (Exception e) {
