@@ -20,8 +20,6 @@ public class IpsBuilderTest {
   @DisplayName("Test IPS Generation")
   void testIpsGeneration() throws URISyntaxException, FileNotFoundException, IOException {
     FHIRToolingClient server = new FHIRToolingClient("https://hl7auconnectathon.salessbx.smiledigitalhealth.com/fhir-request", "FHIR-Validator");
-    server.setUsername("HL7AU");
-    server.setPassword("Connectathon123");
     Bundle bnd = IPSBuilder.generateIPS(server, "wang-li");
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "ips-gen.json")), bnd);
     
