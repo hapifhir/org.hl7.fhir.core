@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 public class IpsBuilderTest {
 
   @Test
-  @Disabled
+  @Disabled("Work in progress.")
   @DisplayName("Test IPS Generation")
   void testIpsGeneration() throws URISyntaxException, FileNotFoundException, IOException {
     FHIRToolingClient server = new FHIRToolingClient("https://hl7auconnectathon.salessbx.smiledigitalhealth.com/fhir-request", "FHIR-Validator");
