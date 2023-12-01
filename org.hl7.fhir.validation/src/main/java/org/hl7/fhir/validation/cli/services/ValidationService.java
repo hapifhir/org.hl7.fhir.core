@@ -154,7 +154,7 @@ public class ValidationService {
   public VersionSourceInformation scanForVersions(CliContext cliContext) throws Exception {
     VersionSourceInformation versions = new VersionSourceInformation();
     IgLoader igLoader = new IgLoader(
-      new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER),
+      new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build(),
       new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing(),
       null);
     for (String src : cliContext.getIgs()) {

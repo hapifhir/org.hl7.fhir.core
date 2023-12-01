@@ -35,7 +35,7 @@ public class ParsingTests {
   }
 
   public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
 //    npm = pcm.loadPackage("hl7.fhir.r5.examples", "5.0.0");
     npm = NpmPackage.fromPackage(TestingUtilities.loadTestResourceStream("r5", "packages", "hl7.fhir.r5.examples.tgz"));
     List<Arguments> objects = new ArrayList<>();

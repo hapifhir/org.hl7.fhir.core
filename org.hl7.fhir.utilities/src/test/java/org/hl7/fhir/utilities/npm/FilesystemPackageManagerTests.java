@@ -53,7 +53,8 @@ public class FilesystemPackageManagerTests {
 
   @Nonnull
   private FilesystemPackageCacheManager getFilesystemPackageCacheManager(final boolean ignoreDefaultPackageServers) throws IOException {
-    return new FilesystemPackageCacheManager(FilesystemPackageCacheManager.FilesystemPackageCacheMode.TESTING) {
+
+    FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder builder = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder() {
       protected boolean isIgnoreDefaultPackageServers() {
         return ignoreDefaultPackageServers;
       }
@@ -67,6 +68,9 @@ public class FilesystemPackageManagerTests {
         return dummyPrivateServers;
       }
     };
+
+    return builder.build();
+
   }
 
   @Test

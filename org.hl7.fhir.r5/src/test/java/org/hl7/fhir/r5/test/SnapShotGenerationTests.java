@@ -540,7 +540,7 @@ public class SnapShotGenerationTests {
     pu.setIds(test.getSource(), false);
     pu.setAllowUnknownProfile(test.allow);
     if (!TestingUtilities.getSharedWorkerContext().hasPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER)) {
-      NpmPackage npm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER).loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
+      NpmPackage npm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build().loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
       TestingUtilities.getSharedWorkerContext().loadFromPackage(npm, new TestPackageLoader(Utilities.strings("StructureDefinition")), Utilities.strings("StructureDefinition"));
     }
     pu.setXver(new XVerExtensionManager(TestingUtilities.getSharedWorkerContext()));

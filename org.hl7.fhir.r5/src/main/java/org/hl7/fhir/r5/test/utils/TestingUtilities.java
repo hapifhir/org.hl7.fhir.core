@@ -80,7 +80,7 @@ public class TestingUtilities extends BaseTestingUtilities {
 
     FilesystemPackageCacheManager pcm;
     try {
-      pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+      pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
       IWorkerContext fcontext = null;
       if (VersionUtilities.isR5Ver(version)) {
         // for purposes of stability, the R5 core package comes from the test case repository

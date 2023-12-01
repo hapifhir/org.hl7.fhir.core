@@ -85,8 +85,7 @@ public class TestingUtilities extends BaseTestingUtilities {
     if (!fcontexts.containsKey(v)) {
       FilesystemPackageCacheManager pcm;
       try {
-        pcm = new FilesystemPackageCacheManager(
-            org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+        pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
         IWorkerContext fcontext = SimpleWorkerContext
             .fromPackage(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
         fcontext.setUcumService(

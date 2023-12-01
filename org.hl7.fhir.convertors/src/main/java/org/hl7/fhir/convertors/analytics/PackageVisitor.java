@@ -145,8 +145,8 @@ public class PackageVisitor {
 
   public void visitPackages() throws IOException, ParserConfigurationException, SAXException, FHIRException, EOperationOutcome {
     System.out.println("Finding packages");
-    pc = new PackageClient(PackageServer.primaryServer());
-    pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+    pc = new PackageClient(PackageServer.secondaryServer());
+    pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
 
     Set<String> pidList = getAllPackages();
 

@@ -194,25 +194,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     this.myPackageServers = packageServers;
     initCacheFolder();
   }
-  public FilesystemPackageCacheManager(boolean userMode) throws IOException {
-    init(userMode ? FilesystemPackageCacheMode.USER : FilesystemPackageCacheMode.SYSTEM);  
-  }
-  
-  public FilesystemPackageCacheManager(FilesystemPackageCacheMode mode) throws IOException {
-    init(mode);
-  }
-  
-  /**
-   * Defined for use on Android
-   * 
-   * @param customFolder
-   * @throws IOException
-   */
-  public FilesystemPackageCacheManager(String customFolder) throws IOException {
-    this.cacheFolder = new File(customFolder);
-
-    init(FilesystemPackageCacheMode.CUSTOM);  
-  }
 
   protected void init(FilesystemPackageCacheMode mode) throws IOException {
     initPackageServers();

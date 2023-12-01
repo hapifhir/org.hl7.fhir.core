@@ -15,7 +15,7 @@ public class OIDBasedValueSetImporter {
   protected IWorkerContext context;
 
   protected void init() throws FHIRException, IOException {
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
     NpmPackage npm = pcm.loadPackage("hl7.fhir.r5.core", "5.0.0");
     SimpleWorkerContext context = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm);
     context.loadFromPackage(pcm.loadPackage("hl7.terminology"), null);
