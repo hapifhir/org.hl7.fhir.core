@@ -71,7 +71,7 @@ public class PETests {
   public void load() throws IOException {
     if (ctxt == null) {
       ctxt = TestingUtilities.getSharedWorkerContext();
-      FilesystemPackageCacheManager pc = new FilesystemPackageCacheManager(true);
+      FilesystemPackageCacheManager pc = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
       NpmPackage npm = pc.loadPackage("hl7.fhir.us.core", "5.0.0");
       ctxt.loadFromPackage(npm, new TestPackageLoader(Utilities.strings("StructureDefinition" )));
       

@@ -54,7 +54,7 @@ public class CmdLineApp {
 
   private void execute() throws IOException {
     System.out.print("Loading...");
-    NpmPackage npm = new FilesystemPackageCacheManager(true).loadPackage("hl7.fhir.r4.core");
+    NpmPackage npm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build().loadPackage("hl7.fhir.r4.core");
     context = SimpleWorkerContext.fromPackage(npm);
     fpe = new FHIRPathEngine(context);
     System.out.println(" Done");

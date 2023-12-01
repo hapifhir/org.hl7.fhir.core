@@ -71,10 +71,7 @@ public class FilesystemPackageManagerTests {
 
   @Test
   public void testUserCacheDirectory() throws IOException {
-    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager(true) {
-      protected void initCacheFolder() throws IOException {
-      }
-    };
+    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
     assertEquals(System.getProperty("user.home") + File.separator + ".fhir" + File.separator + "packages", filesystemPackageCacheManager.getFolder());
   }
 
@@ -84,20 +81,15 @@ public class FilesystemPackageManagerTests {
   @Test
   @DisabledOnOs(OS.WINDOWS)
   public void testSystemCacheDirectory() throws IOException {
-    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager(false) {
-      protected void initCacheFolder() throws IOException {
-      }
-    };
-    assertEquals( "/var/lib/.fhir/packages", filesystemPackageCacheManager.getFolder());
+    File folder = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().withSystemCacheFolder().getCacheFolder();
+
+    assertEquals( "/var/lib/.fhir/packages", folder.getAbsolutePath());
   }
 
   @Test
   @EnabledOnOs(OS.WINDOWS)
   public void testSystemCacheDirectoryWin() throws IOException {
-    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager(false) {
-      protected void initCacheFolder() throws IOException {
-      }
-    };
-    assertEquals( System.getenv("ProgramData") + "\\.fhir\\packages", filesystemPackageCacheManager.getFolder());
+    File folder = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().withSystemCacheFolder().getCacheFolder();
+    assertEquals( System.getenv("ProgramData") + "\\.fhir\\packages", folder.getAbsolutePath());
   }
 }

@@ -26,6 +26,10 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.With;
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.IniFile;
@@ -103,8 +107,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     InputStreamWithSrc provide(String id, String version) throws IOException;
   }
   private static IPackageProvider packageProvider;
-
-  //  private static final String SECONDARY_SERVER = "http://local.fhir.org:8080/packages";
   public static final String PACKAGE_REGEX = "^[a-zA-Z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+$";
   public static final String PACKAGE_VERSION_REGEX = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+\\#[A-Za-z0-9\\-\\_\\$]+(\\.[A-Za-z0-9\\-\\_\\$]+)*$";
   public static final String PACKAGE_VERSION_REGEX_OPT = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+(\\#[A-Za-z0-9\\-\\_]+(\\.[A-Za-z0-9\\-\\_]+)*)?$";
@@ -118,8 +120,80 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private JsonArray buildInfo;
   private boolean suppressErrors;
   private boolean minimalMemory;
- 
-  
+
+  public static class FilesystemPackageCacheManagerBuilder {
+
+    @Getter
+    private final File cacheFolder;
+
+    @With @Getter
+    private final List<PackageServer> packageServers;
+
+    public FilesystemPackageCacheManagerBuilder() throws IOException {
+      this.cacheFolder = getUserCacheFolder();
+      this.packageServers = getPackageServersFromFHIRSettings();
+    }
+
+    private File getUserCacheFolder() throws IOException {
+      return new File(Utilities.path(System.getProperty("user.home"), ".fhir", "packages"));
+    }
+    private List<PackageServer> getPackageServersFromFHIRSettings() {
+      List<PackageServer> packageServers = new ArrayList<>(getConfiguredServers());
+      if (!isIgnoreDefaultPackageServers()) {
+        packageServers.addAll(getDefaultServers());
+      }
+      return packageServers;
+    }
+
+    protected boolean isIgnoreDefaultPackageServers() {
+      return FhirSettings.isIgnoreDefaultPackageServers();
+    }
+
+    @Nonnull
+    protected List<PackageServer> getDefaultServers() {
+      return PackageServer.defaultServers();
+    }
+
+    protected List<PackageServer> getConfiguredServers() {
+      return PackageServer.getConfiguredServers();
+    }
+    public FilesystemPackageCacheManagerBuilder(File cacheFolder, List<PackageServer> packageServers) {
+      this.cacheFolder = cacheFolder;
+      this.packageServers = packageServers;
+    }
+
+    public FilesystemPackageCacheManagerBuilder withCacheFolder (String cacheFolderPath) throws IOException {
+      File cacheFolder = new File(cacheFolderPath);
+      if (!this.cacheFolder.exists()) {
+        throw new FHIRException("The folder ''"+cacheFolder+"' could not be found");
+      }
+      return new FilesystemPackageCacheManagerBuilder(cacheFolder, this.packageServers);
+    }
+
+    public FilesystemPackageCacheManagerBuilder withSystemCacheFolder() throws IOException {
+      final File systemCacheFolder;
+      if (Utilities.isWindows()) {
+       systemCacheFolder = new File(Utilities.path(System.getenv("ProgramData"), ".fhir", "packages"));
+      } else {
+        systemCacheFolder = new File(Utilities.path("/var", "lib", ".fhir", "packages"));
+      }
+      return new FilesystemPackageCacheManagerBuilder(systemCacheFolder, this.packageServers);
+    }
+
+    public FilesystemPackageCacheManagerBuilder withTestingCacheFolder() throws IOException {
+      return new FilesystemPackageCacheManagerBuilder(new File(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers);
+    }
+
+    public FilesystemPackageCacheManager build() throws IOException {
+      return new FilesystemPackageCacheManager(cacheFolder, packageServers);
+    }
+  }
+
+  private FilesystemPackageCacheManager(File cacheFolder, List<PackageServer> packageServers) throws IOException {
+    this.cacheFolder = cacheFolder;
+    this.myPackageServers = packageServers;
+    initCacheFolder();
+  }
   public FilesystemPackageCacheManager(boolean userMode) throws IOException {
     init(userMode ? FilesystemPackageCacheMode.USER : FilesystemPackageCacheMode.SYSTEM);  
   }
@@ -139,8 +213,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     init(FilesystemPackageCacheMode.CUSTOM);  
   }
-
-
 
   protected void init(FilesystemPackageCacheMode mode) throws IOException {
     initPackageServers();

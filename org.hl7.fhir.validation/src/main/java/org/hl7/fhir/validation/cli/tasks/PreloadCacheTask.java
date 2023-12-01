@@ -46,8 +46,8 @@ public class PreloadCacheTask extends StandaloneTask implements PackageVisitor.I
   @Override
   public void executeTask(CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
     PackageVisitor pv = new PackageVisitor();
-
     FilesystemPackageCacheManager.getCacheFolder(FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER).getAbsolutePath();
+
     pv.setProcessor(this);
     pv.setCache("/Users/david.otasek/IN/2023-11-27-preload-cache/package-cache");
     pv.setOldVersions(true);
@@ -59,11 +59,11 @@ public class PreloadCacheTask extends StandaloneTask implements PackageVisitor.I
   @Override
   public Object startPackage(PackageVisitor.PackageContext context) throws FHIRException, IOException, EOperationOutcome {
     System.out.println("currently loading" + context.getPid());
-    try {
+    /*try {
       Thread.sleep(45000);
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
-    }
+    }*/
     return null;
   }
 

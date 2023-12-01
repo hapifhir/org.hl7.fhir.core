@@ -445,7 +445,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
 
   private NpmPackage loadPackage(String idAndVer) throws IOException {
-    var pcm = new FilesystemPackageCacheManager(true);
+    var pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
     return pcm.loadPackage(idAndVer);
   }
 

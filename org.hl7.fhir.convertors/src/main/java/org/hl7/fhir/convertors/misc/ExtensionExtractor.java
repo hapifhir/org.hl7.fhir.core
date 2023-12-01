@@ -37,7 +37,7 @@ public class ExtensionExtractor {
 
   private void process(String dst) throws IOException {
     Set<String> ids = new HashSet<>();
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true);
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
     NpmPackage r5 = pcm.loadPackage("hl7.fhir.r5.core",  "current");
     CanonicalResourceManager<CodeSystem> cslist = new CanonicalResourceManager<CodeSystem>(true, false);
     for (String r : r5.listResources("CodeSystem")) {
