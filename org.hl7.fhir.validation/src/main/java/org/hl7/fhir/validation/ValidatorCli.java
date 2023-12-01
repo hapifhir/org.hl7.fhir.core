@@ -371,12 +371,12 @@ public class ValidatorCli {
       if (cliContext.getSv() == null) {
         cliContext.setSv(myValidationService.determineVersion(cliContext));
       }
-        ValidationEngine validationEngine = getValidationEngine(tt, cliContext);
-        tts.end();
-        ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, cliContext, params, tt, tts);
-      } else if (cliTask instanceof StandaloneTask) {
-        ((StandaloneTask) cliTask).executeTask(cliContext,params,tt,tts);
-      }
+      ValidationEngine validationEngine = getValidationEngine(tt, cliContext);
+      tts.end();
+      ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, cliContext, params, tt, tts);
+    } else if (cliTask instanceof StandaloneTask) {
+      ((StandaloneTask) cliTask).executeTask(cliContext,params,tt,tts);
+    }
 
     System.out.println("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     SystemExitManager.finish();

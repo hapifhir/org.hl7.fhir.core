@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+package org.hl7.fhir.r5.fhirpath;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -34,6 +34,9 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Quantity;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
 

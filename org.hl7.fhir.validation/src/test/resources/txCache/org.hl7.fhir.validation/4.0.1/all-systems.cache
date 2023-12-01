@@ -1643,7 +1643,6 @@ v: {
   "code" : "NZ",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1664,7 +1663,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#26643006' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1685,7 +1683,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#767525000' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1706,7 +1703,6 @@ v: {
   "code" : "237599002",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1727,7 +1723,6 @@ v: {
   "code" : "1201005",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1748,7 +1743,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#109081006' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1769,7 +1763,6 @@ v: {
   "code" : "5913000",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1790,7 +1783,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#292954005' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1811,7 +1803,6 @@ v: {
   "code" : "52910006",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1832,7 +1823,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#428673006' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1853,7 +1843,6 @@ v: {
   "code" : "265132005",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1874,7 +1863,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#7947003' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1895,7 +1883,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#81464008' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1916,7 +1903,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#48546005' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1937,7 +1923,6 @@ v: {
   "code" : "40425004",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1958,7 +1943,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#158965000' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1979,7 +1963,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#96309000' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2000,7 +1983,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#714081009' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2021,7 +2003,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#25246002' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2042,7 +2023,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#96067005' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2063,7 +2043,6 @@ v: {
   "code" : "90560007",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2084,7 +2063,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#34206005' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2105,7 +2083,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#108537001' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2126,7 +2103,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#126212009' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2147,7 +2123,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#292360004' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2168,7 +2143,6 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#16217701000119102' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2188,6 +2162,26 @@ v: {
 v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#287903004' is not in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
+  "class" : "UNKNOWN",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "16076005"
+}, "valueSet" :http://terminology.hl7.org/ValueSet/snomed-intl-ips, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "The provided code 'http://snomed.info/sct#16076005' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027' (from Tx-Server)",
   "class" : "UNKNOWN",
   "unknown-systems" : "",
   "issues" : {
