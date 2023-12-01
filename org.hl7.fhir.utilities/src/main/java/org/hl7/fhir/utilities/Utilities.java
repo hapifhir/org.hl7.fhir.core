@@ -1447,12 +1447,14 @@ public class Utilities {
     long secs = ms / (1000) % 60;
     ms = ms % 1000;
     if (days > 0) {
-      return ""+days+"d "+hours+":"+mins+":"+secs+"."+ms;      
+      return ""+days+"d "+pad(hours,2)+":"+pad(mins,2)+":"+pad(secs,2)+"."+ms;      
     } else {
-      return ""+hours+":"+mins+":"+secs+"."+ms;
+      return ""+pad(hours, 2)+":"+pad(mins,2)+":"+pad(secs,2)+"."+ms;
     }
+  }
 
-
+  private static String pad(long v, int i) {
+    return padLeft(Long.toString(v), '0', i);
   }
 
   public static boolean startsWithInList(String s, String... list) {

@@ -338,8 +338,9 @@ public class ImplementationGuide40_50 {
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     if (src.hasIsExample())
       tgt.setExample(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getIsExampleElement()));
-    if (src.hasProfile())
+    if (src.hasProfile() && (!src.hasIsExample() || src.getIsExample())) {
       tgt.setExample(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getProfile().get(0)));
+    }
     if (src.hasGroupingId())
       tgt.setGroupingIdElement(Id40_50.convertId(src.getGroupingIdElement()));
     return tgt;

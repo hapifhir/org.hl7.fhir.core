@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.model;
+package org.hl7.fhir.r4b.fhirpath;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -37,9 +37,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
-import org.hl7.fhir.r4.context.IWorkerContext;
-import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r4.model.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r4b.context.IWorkerContext;
+import org.hl7.fhir.r4b.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r4b.model.CanonicalType;
+import org.hl7.fhir.r4b.model.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.r4b.model.StructureDefinition;
+import org.hl7.fhir.r4b.model.UriType;
 import org.hl7.fhir.utilities.Utilities;
 
 public class TypeDetails {

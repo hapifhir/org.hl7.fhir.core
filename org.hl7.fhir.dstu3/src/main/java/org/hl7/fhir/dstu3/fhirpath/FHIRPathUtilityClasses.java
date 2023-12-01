@@ -1,11 +1,10 @@
-package org.hl7.fhir.dstu3.utils;
+package org.hl7.fhir.dstu3.fhirpath;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.dstu3.model.Base;
-import org.hl7.fhir.dstu3.model.TypeDetails;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class FHIRPathUtilityClasses {

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.model;
+package org.hl7.fhir.r5.fhirpath;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -42,10 +42,12 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.TypeDetails.ProfiledTypeSorter;
+import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 

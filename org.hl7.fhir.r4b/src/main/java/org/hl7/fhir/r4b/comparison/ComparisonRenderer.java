@@ -14,7 +14,6 @@ import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r4b.utils.FHIRPathEngine;
 import org.hl7.fhir.r4b.comparison.CodeSystemComparer.CodeSystemComparison;
 import org.hl7.fhir.r4b.comparison.ProfileComparer.ProfileComparison;
 import org.hl7.fhir.r4b.comparison.ResourceComparer.PlaceHolderComparison;
@@ -23,16 +22,16 @@ import org.hl7.fhir.r4b.comparison.ValueSetComparer.ValueSetComparison;
 
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
 import org.hl7.fhir.r4b.context.IWorkerContext;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r4b.fhirpath.TypeDetails;
+import org.hl7.fhir.r4b.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4b.model.Base;
-import org.hl7.fhir.r4b.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4b.model.StringType;
 import org.hl7.fhir.r4b.model.Tuple;
-
-import org.hl7.fhir.r4b.model.TypeDetails;
 import org.hl7.fhir.r4b.model.ValueSet;
-import org.hl7.fhir.r4b.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r4b.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.utils.LiquidEngine;
 import org.hl7.fhir.r4b.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.TextFile;
