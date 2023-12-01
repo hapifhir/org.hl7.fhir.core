@@ -9,6 +9,7 @@ import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.PackageServer;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.utils.Params;
@@ -16,6 +17,7 @@ import org.hl7.fhir.validation.special.TxTester;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.List;
 
 public class PreloadCacheTask extends StandaloneTask implements PackageVisitor.IPackageVisitorProcessor {
   @Override
@@ -46,6 +48,8 @@ public class PreloadCacheTask extends StandaloneTask implements PackageVisitor.I
   @Override
   public void executeTask(CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
     PackageVisitor pv = new PackageVisitor();
+    pv.setClientPackageServer(PackageServer.secondaryServer());
+    pv.setCachePackageServers(List.of(PackageServer.secondaryServer()));
     FilesystemPackageCacheManager.getCacheFolder(FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER).getAbsolutePath();
 
     pv.setProcessor(this);

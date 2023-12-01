@@ -34,6 +34,16 @@ import org.xml.sax.SAXException;
 
 public class PackageVisitor {
 
+  private PackageServer clientPackageServer = null;
+
+  public void setClientPackageServer(PackageServer packageServer) {
+    this.clientPackageServer = packageServer;
+  }
+  private List<PackageServer> cachePackageServers = null;
+  public void setCachePackageServers(List<PackageServer> packageServers) {
+    this.cachePackageServers = packageServers;
+  }
+
   public static class PackageContext {
     private String pid;
     private NpmPackage npm;
@@ -145,8 +155,13 @@ public class PackageVisitor {
 
   public void visitPackages() throws IOException, ParserConfigurationException, SAXException, FHIRException, EOperationOutcome {
     System.out.println("Finding packages");
-    pc = new PackageClient(PackageServer.secondaryServer());
-    pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+    pc = clientPackageServer == null
+      ? new PackageClient(PackageServer.primaryServer())
+      : new PackageClient(clientPackageServer);
+
+    pcm = cachePackageServers == null
+      ? new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build()
+      : new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().withPackageServers(cachePackageServers).build();
 
     Set<String> pidList = getAllPackages();
 
