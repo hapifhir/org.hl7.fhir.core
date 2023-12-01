@@ -50,7 +50,6 @@ public class PreloadCacheTask extends StandaloneTask implements PackageVisitor.I
     PackageVisitor pv = new PackageVisitor();
     pv.setClientPackageServer(PackageServer.secondaryServer());
     pv.setCachePackageServers(List.of(PackageServer.secondaryServer()));
-    FilesystemPackageCacheManager.getCacheFolder(FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER).getAbsolutePath();
 
     pv.setProcessor(this);
     pv.setCache("/Users/david.otasek/IN/2023-11-27-preload-cache/package-cache");

@@ -92,12 +92,7 @@ import org.slf4j.LoggerFactory;
  */
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
 
-
   public static final String INI_TIMESTAMP_FORMAT = "yyyyMMddHHmmss";
-
-  public enum FilesystemPackageCacheMode {
-    USER, SYSTEM, TESTING, CUSTOM
-  }
 
   // When running in testing mode, some packages are provided from the test case repository rather than by the normal means
   // the PackageProvider is responsible for this. if no package provider is defined, or it declines to handle the package, 
@@ -157,7 +152,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     protected List<PackageServer> getConfiguredServers() {
       return PackageServer.getConfiguredServers();
     }
-    public FilesystemPackageCacheManagerBuilder(File cacheFolder, List<PackageServer> packageServers) {
+    private FilesystemPackageCacheManagerBuilder(File cacheFolder, List<PackageServer> packageServers) {
       this.cacheFolder = cacheFolder;
       this.packageServers = packageServers;
     }
@@ -193,35 +188,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     this.cacheFolder = cacheFolder;
     this.myPackageServers = packageServers;
     initCacheFolder();
-  }
-
-  protected void init(FilesystemPackageCacheMode mode) throws IOException {
-    initPackageServers();
-
-    if (mode == FilesystemPackageCacheMode.CUSTOM) {
-      if (!this.cacheFolder.exists()) {
-        throw new FHIRException("The folder ''"+cacheFolder+"' could not be found");
-      }
-    } else {
-      this.cacheFolder = getCacheFolder(mode);
-    }
-    initCacheFolder();
-  }
-
-  public static File getCacheFolder(FilesystemPackageCacheMode mode) throws IOException {
-    switch (mode) {
-    case SYSTEM:
-      if (Utilities.isWindows()) {
-        return new File(Utilities.path(System.getenv("ProgramData"), ".fhir", "packages"));
-      } else {
-        return new File(Utilities.path("/var", "lib", ".fhir", "packages"));
-      }
-    case USER:
-      return new File(Utilities.path(System.getProperty("user.home"), ".fhir", "packages"));
-    case TESTING:
-      return new File(Utilities.path("[tmp]", ".fhir", "packages"));
-    }
-    return null;
   }
 
   protected void initCacheFolder() throws IOException {
