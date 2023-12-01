@@ -31,7 +31,8 @@ package org.hl7.fhir.r4.model;
 
 import java.util.Map;
 
-import org.hl7.fhir.r4.utils.FHIRPathEngine;
+import org.hl7.fhir.r4.fhirpath.ExpressionNode;
+import org.hl7.fhir.r4.fhirpath.FHIRPathEngine;
 
 /**
  * This class is the base class for Profile classes - whether generated or

@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -52,7 +53,8 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     FHIRToolingClient fhirToolingClient = new FHIRToolingClient("https://cts.nlm.nih.gov/fhir", "fhir/vsac");
     fhirToolingClient.setUsername("apikey");
     fhirToolingClient.setPassword(apiKey);
-    fhirToolingClient.setTimeoutNormal(6000);
+    fhirToolingClient.setTimeoutNormal(30000);
+    fhirToolingClient.setTimeoutExpand(30000);
 
     CapabilityStatement cs = fhirToolingClient.getCapabilitiesStatement();
     JsonParser json = new JsonParser();
@@ -62,18 +64,30 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     List<String> oids = new ArrayList<>();
     while (csv.line()) {
       String oid = csv.cell("OID");
-      oids.add(oid);
+      if (!onlyNew || !(new File(Utilities.path(dest, "ValueSet-" + oid + ".json")).exists())) {
+        oids.add(oid);
+      }
     }
     Collections.sort(oids);
     System.out.println("Go: "+oids.size()+" oids");
     int i = 0;
     int j = 0;
+    long t = System.currentTimeMillis();
+    long tt = System.currentTimeMillis();
     for (String oid : oids) {
       try {
-        j = processOid(dest, onlyNew, errs, fhirToolingClient, j, oid.trim());
+        long t3 = System.currentTimeMillis();
+        if (processOid(dest, onlyNew, errs, fhirToolingClient, oid.trim())) {
+          j++;
+        }
         i++;
+        System.out.print(":"+((System.currentTimeMillis() - t3) / 1000));
         if (i % 100 == 0) {
-          System.out.println(":"+i+" ("+j+")");
+          long elapsed = System.currentTimeMillis() - t;
+          System.out.println("");
+          System.out.println(i+": "+j+" ("+((j * 100) / i)+"%) @ "+Utilities.describeDuration(elapsed)
+              +", "+(elapsed/100000)+"sec/vs, estimated "+Utilities.describeDuration(estimate(i, oids.size(), tt))+" remaining");
+          t = System.currentTimeMillis();
         }
       } catch (Exception e) {
         System.out.println("Unable to fetch OID " + oid + ": " + e.getMessage());
@@ -85,63 +99,70 @@ public class VSACImporter extends OIDBasedValueSetImporter {
       oo.addIssue().setSeverity(IssueSeverity.ERROR).setCode(IssueType.EXCEPTION).setDiagnostics(errs.get(oid)).addLocation(oid);
     }
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "other", "OperationOutcome-vsac-errors.json")), oo);
-    System.out.println("Done. " + i + " ValueSets");
+    System.out.println("Done. " + i + " ValueSets in "+Utilities.describeDuration(System.currentTimeMillis() - tt));
   }
 
-  private int processOid(String dest, boolean onlyNew, Map<String, String> errs, FHIRToolingClient fhirToolingClient, int j, String oid)
+  private long estimate(int i, int size, long tt) {
+    long elapsed = System.currentTimeMillis() - tt;
+    long average = elapsed / i;
+    return (size - i) * average;
+  }
+
+  private boolean processOid(String dest, boolean onlyNew, Map<String, String> errs, FHIRToolingClient fhirToolingClient, String oid)
       throws IOException, InterruptedException, FileNotFoundException {
-    if (!onlyNew || !(new File(Utilities.path(dest, "ValueSet-" + oid + ".json")).exists())) {
+    
+      long t = System.currentTimeMillis();
       ValueSet vs = null;
       try {
         vs = fhirToolingClient.read(ValueSet.class, oid);
       } catch (Exception e) {
         errs.put(oid, "Read: " +e.getMessage());
-        System.out.println("Read "+oid+" failed: "+e.getMessage());
+        System.out.println("Read "+oid+" failed @ "+Utilities.describeDuration(System.currentTimeMillis()-t)+"ms: "+e.getMessage());
+        return false;
       }
-      if (vs != null) {
+      t = System.currentTimeMillis();
+      try {
+        ValueSet vse = fhirToolingClient.expandValueset(vs.getUrl(), null);
+        vs.setExpansion(vse.getExpansion());
+      } catch (Exception e) {
+        errs.put(oid, "Expansion: " +e.getMessage());
+        System.out.println("Expand "+oid+" failed @ "+Utilities.describeDuration(System.currentTimeMillis()-t)+"ms: "+e.getMessage());
+      }
+      while (isIncomplete(vs.getExpansion())) {
+        Parameters p = new Parameters();
+        int offset = vs.getExpansion().getParameter("offset").getValueIntegerType().getValue() + vs.getExpansion().getParameter("count").getValueIntegerType().getValue();
+        p.addParameter("offset", offset);
+        t = System.currentTimeMillis();
         try {
-          ValueSet vse = fhirToolingClient.expandValueset(vs.getUrl(), null);
-          vs.setExpansion(vse.getExpansion());
-          j++;
-        } catch (Exception e) {
-          errs.put(oid, "Expansion: " +e.getMessage());
-          System.out.println("Expand "+oid+" failed: "+e.getMessage());
-        }
-        while (isIncomplete(vs.getExpansion())) {
-          Parameters p = new Parameters();
-          int offset = vs.getExpansion().getParameter("offset").getValueIntegerType().getValue() + vs.getExpansion().getParameter("count").getValueIntegerType().getValue();
-          p.addParameter("offset", offset);
-          try {
-            ValueSet vse = fhirToolingClient.expandValueset(vs.getUrl(), p);    
-            vs.getExpansion().getContains().addAll(vse.getExpansion().getContains());
-            vs.getExpansion().setParameter(vse.getExpansion().getParameter());
-          } catch (Exception e2) {
-            errs.put(oid, "Expansion: " +e2.getMessage()+" @ "+offset);
-            System.out.println("Expand "+oid+" @ "+offset+" failed: "+e2.getMessage());
-          } 
-        }
-        vs.getExpansion().setOffsetElement(null);
-        vs.getExpansion().getParameter().clear();
-
-
-        if (vs.hasTitle()) {
-          if (vs.getTitle().equals(vs.getDescription())) {
-            vs.setTitle(vs.getName());              
-          } else {
-            //              System.out.println(oid);
-            //              System.out.println("  name: "+vs.getName());
-            //              System.out.println("  title: "+vs.getTitle());
-            //              System.out.println("  desc: "+vs.getDescription());
-          }
-        } else {
-          vs.setTitle(vs.getName());
-        }
-        vs.setName(makeValidName(vs.getName()));
-        JurisdictionUtilities.setJurisdictionCountry(vs.getJurisdiction(), "US");
-        new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
+          ValueSet vse = fhirToolingClient.expandValueset(vs.getUrl(), p);    
+          vs.getExpansion().getContains().addAll(vse.getExpansion().getContains());
+          vs.getExpansion().setParameter(vse.getExpansion().getParameter());
+        } catch (Exception e2) {
+          errs.put(oid, "Expansion: " +e2.getMessage()+" @ "+offset);
+          System.out.println("Expand "+oid+" @ "+offset+" failed @ "+Utilities.describeDuration(System.currentTimeMillis()-t)+"ms: "+e2.getMessage());
+        } 
       }
-    }
-    return j;
+      vs.getExpansion().setOffsetElement(null);
+      vs.getExpansion().getParameter().clear();
+
+
+      if (vs.hasTitle()) {
+        if (vs.getTitle().equals(vs.getDescription())) {
+          vs.setTitle(vs.getName());              
+        } else {
+          //              System.out.println(oid);
+          //              System.out.println("  name: "+vs.getName());
+          //              System.out.println("  title: "+vs.getTitle());
+          //              System.out.println("  desc: "+vs.getDescription());
+        }
+      } else {
+        vs.setTitle(vs.getName());
+      }
+      vs.setName(makeValidName(vs.getName()));
+      JurisdictionUtilities.setJurisdictionCountry(vs.getJurisdiction(), "US");
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
+    
+    return true;
   }
 
   private boolean isIncomplete(ValueSetExpansionComponent expansion) {

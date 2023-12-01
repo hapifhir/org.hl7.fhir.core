@@ -37,11 +37,13 @@ public class BundleValidator extends BaseValidator {
     private String reference;
     private Element source;
     private boolean warning;
+    private boolean nlLink;
 
-    public StringWithSource(String reference, Element source, boolean warning) {
+    public StringWithSource(String reference, Element source, boolean warning, boolean nlLink) {
       this.reference = reference;
       this.source = source;
       this.warning = warning;
+      this.nlLink = nlLink;
     }
 
     public String getReference() {
@@ -54,6 +56,10 @@ public class BundleValidator extends BaseValidator {
 
     public boolean isWarning() {
       return warning;
+    }
+
+    public boolean isNlLink() {
+      return nlLink;
     }
 
   }
@@ -587,7 +593,7 @@ public class BundleValidator extends BaseValidator {
     }
 
     if (ref != null && !Utilities.noString(reference) && !reference.startsWith("#")) {
-      Element target = resolveInBundle(bundle, entries, reference, fullUrl, type, id, stack, errors, name, ref, false);
+      Element target = resolveInBundle(bundle, entries, reference, fullUrl, type, id, stack, errors, name, ref, false, false);
       if (target == null) {
         return false;
       }
@@ -633,7 +639,7 @@ public class BundleValidator extends BaseValidator {
     for (EntrySummary e : entryList) {
       List<StringWithSource> references = findReferences(e.getEntry());
       for (StringWithSource ref : references) {
-        Element tgt = resolveInBundle(bundle, entries, ref.getReference(), e.getEntry().getChildValue(FULL_URL), e.getResource().fhirType(), e.getResource().getIdBase(), stack, errors, ref.getSource().getPath(), ref.getSource(), ref.isWarning() || true);
+        Element tgt = resolveInBundle(bundle, entries, ref.getReference(), e.getEntry().getChildValue(FULL_URL), e.getResource().fhirType(), e.getResource().getIdBase(), stack, errors, ref.getSource().getPath(), ref.getSource(), ref.isWarning() || true, ref.isNlLink());
         if (tgt != null) { 
           EntrySummary t = entryForTarget(entryList, tgt); 
           if (t != null ) { 
@@ -673,7 +679,7 @@ public class BundleValidator extends BaseValidator {
             if (VersionUtilities.isR5VerOrLater(context.getVersion())) {
               hint(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, e.getEntry().line(), e.getEntry().col(), 
                   stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), isExpectedToBeReverse(e.getResource().fhirType()), 
-                  I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE_R4, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));              
+                  I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE_R5, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));              
             } else {
               warning(errors, NO_RULE_DATE, IssueType.INVALID, e.getEntry().line(), e.getEntry().col(), 
                 stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), isExpectedToBeReverse(e.getResource().fhirType()), 
@@ -833,7 +839,7 @@ public class BundleValidator extends BaseValidator {
       if (child.getType().equals("Reference")) {
         String ref = child.getChildValue("reference");
         if (ref != null && !ref.startsWith("#") && !hasReference(ref, references))
-          references.add(new StringWithSource(ref, child, false));
+          references.add(new StringWithSource(ref, child, false, false));
       }
       if (Utilities.existsInList(child.getType(), "url", "uri"/*, "canonical"*/) &&
           !Utilities.existsInList(child.getName(), "system") &&
@@ -841,12 +847,16 @@ public class BundleValidator extends BaseValidator {
               "MessageHeader.source.endpoint", "MessageHeader.destination.endpoint", "Endpoint.address")) {
         String ref = child.primitiveValue();
         if (ref != null && !ref.startsWith("#") && !hasReference(ref, references))
-          references.add(new StringWithSource(ref, child, true));
+          references.add(new StringWithSource(ref, child, true, isNLLink(start)));
       }
       findReferences(child, references);
     }
   }
 
+
+  private boolean isNLLink(Element parent) {
+    return parent != null && "extension".equals(parent.getName()) && "http://hl7.org/fhir/StructureDefinition/narrativeLink".equals(parent.getNamedChildValue("url", false));
+  }
 
   private boolean hasReference(String ref, List<StringWithSource> references) {
     for (StringWithSource t : references) {

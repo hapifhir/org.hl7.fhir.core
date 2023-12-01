@@ -10,10 +10,11 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.context.IWorkerContext;
+import org.hl7.fhir.r4b.fhirpath.ExpressionNode;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r4b.model.Base;
 import org.hl7.fhir.r4b.model.Bundle;
 import org.hl7.fhir.r4b.model.Expression;
-import org.hl7.fhir.r4b.model.ExpressionNode;
 import org.hl7.fhir.r4b.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4b.model.GraphDefinition;
 import org.hl7.fhir.r4b.model.GraphDefinition.GraphDefinitionLinkComponent;

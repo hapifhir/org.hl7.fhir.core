@@ -1,4 +1,4 @@
-package org.hl7.fhir.r4.utils;
+package org.hl7.fhir.r4.fhirpath;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -26,6 +26,17 @@ import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.context.IWorkerContext.ValidationResult;
+import org.hl7.fhir.r4.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r4.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r4.fhirpath.ExpressionNode.Function;
+import org.hl7.fhir.r4.fhirpath.ExpressionNode.Kind;
+import org.hl7.fhir.r4.fhirpath.ExpressionNode.Operation;
+import org.hl7.fhir.r4.fhirpath.FHIRLexer.FHIRLexerException;
+import org.hl7.fhir.r4.fhirpath.FHIRPathUtilityClasses.ClassTypeInfo;
+import org.hl7.fhir.r4.fhirpath.FHIRPathUtilityClasses.FHIRConstant;
+import org.hl7.fhir.r4.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
+import org.hl7.fhir.r4.fhirpath.FHIRPathUtilityClasses.TypedElementDefinition;
+import org.hl7.fhir.r4.fhirpath.TypeDetails.ProfiledType;
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.BaseDateTimeType;
 import org.hl7.fhir.r4.model.BooleanType;
@@ -37,11 +48,6 @@ import org.hl7.fhir.r4.model.DecimalType;
 import org.hl7.fhir.r4.model.Element;
 import org.hl7.fhir.r4.model.ElementDefinition;
 import org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r4.model.ExpressionNode;
-import org.hl7.fhir.r4.model.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r4.model.ExpressionNode.Function;
-import org.hl7.fhir.r4.model.ExpressionNode.Kind;
-import org.hl7.fhir.r4.model.ExpressionNode.Operation;
 import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.Property;
 import org.hl7.fhir.r4.model.Property.PropertyMatcher;
@@ -52,15 +58,7 @@ import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r4.model.TimeType;
-import org.hl7.fhir.r4.model.TypeDetails;
-import org.hl7.fhir.r4.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r4.model.ValueSet;
-import org.hl7.fhir.r4.utils.FHIRLexer.FHIRLexerException;
-import org.hl7.fhir.r4.utils.FHIRPathUtilityClasses.FHIRConstant;
-import org.hl7.fhir.r4.utils.FHIRPathUtilityClasses.ClassTypeInfo;
-import org.hl7.fhir.r4.utils.FHIRPathUtilityClasses.TypedElementDefinition;
-import org.hl7.fhir.r4.utils.FHIRPathEngine;
-import org.hl7.fhir.r4.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MergedList;
@@ -4532,7 +4530,7 @@ public class FHIRPathEngine {
         return false;
       }
       for (String an : node.getAttributes().keySet()) {
-        boolean ok = an.startsWith("xmlns") || Utilities.existsInList(an, "title", "style", "class", "id", "lang",
+        boolean ok = an.startsWith("xmlns") || Utilities.existsInList(an, "title", "style", "class", "id", "idref", "lang",
             "xml:lang", "dir", "accesskey", "tabindex",
             // tables
             "span", "width", "align", "valign", "char", "charoff", "abbr", "axis", "headers", "scope", "rowspan",
