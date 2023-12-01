@@ -18,6 +18,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.StructureMap.StructureMapGroupTypeMode;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
+import org.hl7.fhir.r5.fhirpath.FHIRPathConstant;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DecimalType;
@@ -25,7 +26,6 @@ import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent;
-import org.hl7.fhir.r5.utils.FHIRPathConstant;
 import org.hl7.fhir.utilities.Utilities;
 
 /*

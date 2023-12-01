@@ -1,7 +1,7 @@
 package org.hl7.fhir.r4b.utils.structuremap;
 
 import org.hl7.fhir.r4b.elementmodel.Property;
-import org.hl7.fhir.r4b.model.TypeDetails;
+import org.hl7.fhir.r4b.fhirpath.TypeDetails;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 
 import java.util.ArrayList;

@@ -38,15 +38,16 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r4.context.IWorkerContext;
+import org.hl7.fhir.r4.fhirpath.ExpressionNode;
+import org.hl7.fhir.r4.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r4.fhirpath.TypeDetails;
+import org.hl7.fhir.r4.fhirpath.FHIRPathEngine.ExpressionNodeWithOffset;
+import org.hl7.fhir.r4.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4.model.Base;
-import org.hl7.fhir.r4.model.ExpressionNode;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.Tuple;
-import org.hl7.fhir.r4.model.TypeDetails;
 import org.hl7.fhir.r4.model.ValueSet;
-import org.hl7.fhir.r4.utils.FHIRPathEngine.ExpressionNodeWithOffset;
-import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r4.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.utilities.Utilities;
 
 public class LiquidEngine implements IEvaluationContext {
