@@ -750,7 +750,7 @@ public class TerminologyCache {
   }
 
   public String summary(Coding code) {
-    return code.getSystem()+"#"+code.getCode()+": \""+code.getDisplay()+"\"";
+    return code.getSystem()+"#"+code.getCode()+(code.hasDisplay() ? ": \""+code.getDisplay()+"\"" : "");
   }
 
   public String summary(CodeableConcept code) {
