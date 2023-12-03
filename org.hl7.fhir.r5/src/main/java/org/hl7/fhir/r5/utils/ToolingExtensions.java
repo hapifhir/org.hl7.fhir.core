@@ -875,7 +875,7 @@ public class ToolingExtensions {
     Iterator<Extension> i = focus.getExtension().iterator();
     while (i.hasNext()) {
       Extension e = i.next(); // must be called before you can call i.remove()
-      if (e.getUrl().equals(url)) {
+      if (url.equals(e.getUrl())) {
         i.remove();
       }
     }
