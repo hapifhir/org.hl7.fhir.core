@@ -159,7 +159,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     public FilesystemPackageCacheManagerBuilder withCacheFolder (String cacheFolderPath) throws IOException {
       File cacheFolder = new File(cacheFolderPath);
-      if (!this.cacheFolder.exists()) {
+      if (!cacheFolder.exists()) {
         throw new FHIRException("The folder '"+cacheFolder+"' could not be found");
       }
       return new FilesystemPackageCacheManagerBuilder(cacheFolder, this.packageServers);
