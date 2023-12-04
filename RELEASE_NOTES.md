@@ -20,3 +20,4 @@
 * Give kinder error message for missing param
 * Fix commonmark group and bump version (#1500)
 * Remove dep used for local testing
+* Fix StringType element properties not being copied in various Address, HumanName convertors
