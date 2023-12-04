@@ -1,7 +1,6 @@
 package org.hl7.fhir.r4b.test;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -18,7 +17,6 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,7 +34,7 @@ public class ParsingTests {
 
   public static Stream<Arguments> data()
       throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     npm = pcm.loadPackage("hl7.fhir.r4b.examples", "4.3.0");
     List<Arguments> objects = new ArrayList<>();
     List<String> names = npm.list("package");

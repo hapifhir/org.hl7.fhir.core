@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -26,11 +25,11 @@ public class CDARoundTripTests {
 
 	@BeforeAll
 	public static void setUp() throws Exception {
-	  FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+	  FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
 	  context = TestingUtilities.getWorkerContext(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
 	  fp = new FHIRPathEngine(context);
 
-	  NpmPackage npm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build().loadPackage("hl7.cda.uv.core", "current");
+	  NpmPackage npm = new FilesystemPackageCacheManager.Builder().build().loadPackage("hl7.cda.uv.core", "current");
 	  context.loadFromPackage(npm, null);
 	}
 

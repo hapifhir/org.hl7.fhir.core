@@ -28,20 +28,14 @@ package org.hl7.fhir.r5.profiles;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.Comparison;
-import org.hl7.fhir.r5.model.Enumerations.ObservationStatus;
 import org.hl7.fhir.r5.model.Observation;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.profilemodel.PEDefinition;
@@ -71,7 +65,7 @@ public class PETests {
   public void load() throws IOException {
     if (ctxt == null) {
       ctxt = TestingUtilities.getSharedWorkerContext();
-      FilesystemPackageCacheManager pc = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+      FilesystemPackageCacheManager pc = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pc.loadPackage("hl7.fhir.us.core", "5.0.0");
       ctxt.loadFromPackage(npm, new TestPackageLoader(Utilities.strings("StructureDefinition" )));
       

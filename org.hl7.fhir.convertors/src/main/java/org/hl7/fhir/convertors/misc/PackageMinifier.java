@@ -18,7 +18,7 @@ public class PackageMinifier {
   }
 
   private void process(String source, String target) throws FileNotFoundException, IOException {
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage src = pcm.loadPackage(source);
     NpmPackage tgt = NpmPackage.empty();
     tgt.setNpm(src.getNpm().deepCopy());

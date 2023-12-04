@@ -87,7 +87,7 @@ public class UtilitiesXTests {
 	  if (!fcontexts.containsKey(version)) {
 	    FilesystemPackageCacheManager pcm;
 	    try {
-	      pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+	      pcm = new FilesystemPackageCacheManager.Builder().build();
 	      IWorkerContext fcontext = TestingUtilities.getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version), loaderForVersion(version));
 	      fcontext.setUcumService(new UcumEssenceService(UtilitiesXTests.loadTestResourceStream("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionProfile(new Parameters());

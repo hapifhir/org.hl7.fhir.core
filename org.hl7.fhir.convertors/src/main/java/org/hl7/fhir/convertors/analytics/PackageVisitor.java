@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors.analytics;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -160,8 +159,8 @@ public class PackageVisitor {
       : new PackageClient(clientPackageServer);
 
     pcm = cachePackageServers == null
-      ? new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build()
-      : new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().withPackageServers(cachePackageServers).build();
+      ? new FilesystemPackageCacheManager.Builder().build()
+      : new FilesystemPackageCacheManager.Builder().withPackageServers(cachePackageServers).build();
 
     Set<String> pidList = getAllPackages();
 

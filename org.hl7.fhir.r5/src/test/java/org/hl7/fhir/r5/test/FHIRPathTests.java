@@ -41,7 +41,6 @@ import org.xml.sax.SAXException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class FHIRPathTests {
 
@@ -111,7 +110,7 @@ public class FHIRPathTests {
   @BeforeAll
   public static void setUp() throws FileNotFoundException, FHIRException, IOException {
     if (!TestingUtilities.getSharedWorkerContext().hasPackage("hl7.cda.us.ccda", null)) {
-      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pcm.loadPackage("hl7.cda.uv.core", "2.0.0");
       TestingUtilities.getSharedWorkerContext().loadFromPackage(npm, null);
       npm = pcm.loadPackage("hl7.cda.us.ccda", "current");

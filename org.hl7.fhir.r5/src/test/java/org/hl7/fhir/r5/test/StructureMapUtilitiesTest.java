@@ -27,7 +27,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
 
   @BeforeAll
   static public void setUp() throws Exception {
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     context = TestingUtilities.getWorkerContext(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
   }
 

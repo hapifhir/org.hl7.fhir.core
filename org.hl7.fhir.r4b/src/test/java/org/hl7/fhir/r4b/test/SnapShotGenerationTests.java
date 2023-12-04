@@ -46,7 +46,6 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -581,7 +580,7 @@ public class SnapShotGenerationTests {
     pu.setDebug(test.isDebug());
     pu.setIds(test.getSource(), false);
     if (!TestingUtilities.context().hasPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER)) {
-      NpmPackage npm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build()
+      NpmPackage npm = new FilesystemPackageCacheManager.Builder().build()
               .loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
       TestingUtilities.context().loadFromPackage(npm, new TestLoader(new String[] { "StructureDefinition" }),
           new String[] { "StructureDefinition" });

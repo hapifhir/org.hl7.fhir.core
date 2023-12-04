@@ -1,7 +1,6 @@
 package org.hl7.fhir.r5.profiles;
 
 
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Patient;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -22,7 +21,7 @@ public class PEModelTest1343 {
   public void Load() throws Exception {
     if (ctxt == null) {
       ctxt = TestingUtilities.getSharedWorkerContext("4.0.1");
-      FilesystemPackageCacheManager pc = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+      FilesystemPackageCacheManager pc = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pc.loadPackage("hl7.fhir.fr.core", "1.1.0");
       ctxt.loadFromPackage(npm, new TestPackageLoader(Utilities.strings(SimpleWorkerContext.defaultTypesToLoad().stream().toArray(String[]::new))));
     }

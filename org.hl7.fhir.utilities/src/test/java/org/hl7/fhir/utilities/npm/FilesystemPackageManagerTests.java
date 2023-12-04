@@ -54,7 +54,7 @@ public class FilesystemPackageManagerTests {
   @Nonnull
   private FilesystemPackageCacheManager getFilesystemPackageCacheManager(final boolean ignoreDefaultPackageServers) throws IOException {
 
-    FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder builder = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder() {
+    FilesystemPackageCacheManager.Builder builder = new FilesystemPackageCacheManager.Builder() {
       protected boolean isIgnoreDefaultPackageServers() {
         return ignoreDefaultPackageServers;
       }
@@ -75,7 +75,7 @@ public class FilesystemPackageManagerTests {
 
   @Test
   public void testUserCacheDirectory() throws IOException {
-    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager.Builder().build();
     assertEquals(System.getProperty("user.home") + File.separator + ".fhir" + File.separator + "packages", filesystemPackageCacheManager.getFolder());
   }
 
@@ -85,7 +85,7 @@ public class FilesystemPackageManagerTests {
   @Test
   @DisabledOnOs(OS.WINDOWS)
   public void testSystemCacheDirectory() throws IOException {
-    File folder = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().withSystemCacheFolder().getCacheFolder();
+    File folder = new FilesystemPackageCacheManager.Builder().withSystemCacheFolder().getCacheFolder();
 
     assertEquals( "/var/lib/.fhir/packages", folder.getAbsolutePath());
   }
@@ -93,7 +93,7 @@ public class FilesystemPackageManagerTests {
   @Test
   @EnabledOnOs(OS.WINDOWS)
   public void testSystemCacheDirectoryWin() throws IOException {
-    File folder = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().withSystemCacheFolder().getCacheFolder();
+    File folder = new FilesystemPackageCacheManager.Builder().withSystemCacheFolder().getCacheFolder();
     assertEquals( System.getenv("ProgramData") + "\\.fhir\\packages", folder.getAbsolutePath());
   }
 }

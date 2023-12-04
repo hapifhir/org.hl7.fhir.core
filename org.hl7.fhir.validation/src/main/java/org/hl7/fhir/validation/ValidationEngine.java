@@ -29,7 +29,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.ILoggingService;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContextManager;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SystemOutLoggingService;
@@ -1055,7 +1054,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public FilesystemPackageCacheManager getPcm() throws IOException {
     if (pcm == null) {
       //System.out.println("Creating Package manager?");
-      pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+      pcm = new FilesystemPackageCacheManager.Builder().build();
     }
     return pcm;
   }

@@ -35,7 +35,7 @@ public class ResourceDependencyPackageBuilder {
   
   public static void main(String[] args) throws IOException {
 
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     System.out.println("Load Core");
     NpmPackage src = pcm.loadPackage(VersionUtilities.packageForVersion(args[0]));
     SimpleWorkerContext ctxt = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(src);

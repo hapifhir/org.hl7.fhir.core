@@ -79,7 +79,7 @@ public class TestingUtilities {
     if (fcontext == null) {
       FilesystemPackageCacheManager pcm;
       try {
-        pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+        pcm = new FilesystemPackageCacheManager.Builder().build();
         fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
         fcontext
             .setUcumService(new UcumEssenceService(TestingUtilities.resourceNameToFile("ucum", "ucum-essence.xml")));

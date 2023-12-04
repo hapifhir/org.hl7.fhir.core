@@ -20,7 +20,7 @@ public class PackageValidator {
   }
 
   private void execute() throws IOException {
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     
     PackageClient pc = new PackageClient(PackageServer.primaryServer());
     for (PackageInfo t : pc.search(null, null, null, false)) {

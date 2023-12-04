@@ -26,8 +26,6 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.With;
 import org.apache.commons.io.FileUtils;
@@ -116,7 +114,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private boolean suppressErrors;
   private boolean minimalMemory;
 
-  public static class FilesystemPackageCacheManagerBuilder {
+  public static class Builder {
 
     @Getter
     private final File cacheFolder;
@@ -124,7 +122,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     @With @Getter
     private final List<PackageServer> packageServers;
 
-    public FilesystemPackageCacheManagerBuilder() throws IOException {
+    public Builder() throws IOException {
       this.cacheFolder = getUserCacheFolder();
       this.packageServers = getPackageServersFromFHIRSettings();
     }
@@ -152,31 +150,31 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     protected List<PackageServer> getConfiguredServers() {
       return PackageServer.getConfiguredServers();
     }
-    private FilesystemPackageCacheManagerBuilder(File cacheFolder, List<PackageServer> packageServers) {
+    private Builder(File cacheFolder, List<PackageServer> packageServers) {
       this.cacheFolder = cacheFolder;
       this.packageServers = packageServers;
     }
 
-    public FilesystemPackageCacheManagerBuilder withCacheFolder (String cacheFolderPath) throws IOException {
+    public Builder withCacheFolder (String cacheFolderPath) throws IOException {
       File cacheFolder = new File(cacheFolderPath);
       if (!cacheFolder.exists()) {
         throw new FHIRException("The folder '"+cacheFolder+"' could not be found");
       }
-      return new FilesystemPackageCacheManagerBuilder(cacheFolder, this.packageServers);
+      return new Builder(cacheFolder, this.packageServers);
     }
 
-    public FilesystemPackageCacheManagerBuilder withSystemCacheFolder() throws IOException {
+    public Builder withSystemCacheFolder() throws IOException {
       final File systemCacheFolder;
       if (Utilities.isWindows()) {
        systemCacheFolder = new File(Utilities.path(System.getenv("ProgramData"), ".fhir", "packages"));
       } else {
         systemCacheFolder = new File(Utilities.path("/var", "lib", ".fhir", "packages"));
       }
-      return new FilesystemPackageCacheManagerBuilder(systemCacheFolder, this.packageServers);
+      return new Builder(systemCacheFolder, this.packageServers);
     }
 
-    public FilesystemPackageCacheManagerBuilder withTestingCacheFolder() throws IOException {
-      return new FilesystemPackageCacheManagerBuilder(new File(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers);
+    public Builder withTestingCacheFolder() throws IOException {
+      return new Builder(new File(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers);
     }
 
     public FilesystemPackageCacheManager build() throws IOException {

@@ -64,7 +64,6 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.*;
-import org.hl7.fhir.utilities.json.parser.*;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -127,7 +126,7 @@ public class ComparisonTests {
     if (context == null) {
       System.out.println("---- Load R5 ----------------------------------------------------------------");
       context = TestingUtilities.getSharedWorkerContext();
-      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pcm.loadPackage("hl7.fhir.us.core#3.1.0");
       BaseWorkerContext bc = (BaseWorkerContext) context;
       boolean dupl = bc.isAllowLoadingDuplicates();
@@ -140,7 +139,7 @@ public class ComparisonTests {
     if (!new File(Utilities.path("[tmp]", "comparison")).exists()) {
       System.out.println("---- Set up Output ----------------------------------------------------------");
       Utilities.createDirectory(Utilities.path("[tmp]", "comparison"));
-      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.FilesystemPackageCacheManagerBuilder().build();
+      FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pcm.loadPackage(CommonPackages.ID_PUBPACK, CommonPackages.VER_PUBPACK);
       for (String f : npm.list("other")) {
         TextFile.streamToFile(npm.load("other", f), Utilities.path("[tmp]", "comparison", f));
