@@ -1333,7 +1333,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     String csumm =cachingAllowed && txCache != null ? txCache.summary(code) : null;
     if (cachingAllowed && txCache != null) {
-      txLog("$validate "+csumm+" for "+ txCache.summary(vs));
+      txLog("$validate "+csumm+(vs == null ? "" : " for "+ txCache.summary(vs)));
     } else {
       txLog("$validate "+csumm+" before cache exists");
     }
