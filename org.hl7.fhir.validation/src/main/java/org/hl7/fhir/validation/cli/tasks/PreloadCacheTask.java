@@ -5,6 +5,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -13,13 +14,14 @@ import org.hl7.fhir.utilities.npm.PackageServer;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.utils.Params;
+import org.hl7.fhir.validation.packages.PackageCacheDownloader;
 import org.hl7.fhir.validation.special.TxTester;
 
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
 
-public class PreloadCacheTask extends StandaloneTask implements PackageVisitor.IPackageVisitorProcessor {
+public class PreloadCacheTask extends StandaloneTask {
   @Override
   public String getName() {
     return "preloadCache";
@@ -47,41 +49,9 @@ public class PreloadCacheTask extends StandaloneTask implements PackageVisitor.I
 
   @Override
   public void executeTask(CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) throws Exception {
-    PackageVisitor pv = new PackageVisitor();
-    pv.setClientPackageServer(PackageServer.secondaryServer());
-    pv.setCachePackageServers(List.of(PackageServer.secondaryServer()));
-
-    pv.setProcessor(this);
-    pv.setCache("/Users/david.otasek/IN/2023-11-27-preload-cache/package-cache");
-    pv.setOldVersions(true);
-    pv.setCorePackages(true);
-
+    PackageVisitor pv = new PackageCacheDownloader();
     pv.visitPackages();
   }
 
-  @Override
-  public Object startPackage(PackageVisitor.PackageContext context) throws FHIRException, IOException, EOperationOutcome {
-    System.out.println("currently loading" + context.getPid());
-    /*try {
-      Thread.sleep(45000);
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
-    }*/
-    return null;
-  }
 
-  @Override
-  public void processResource(PackageVisitor.PackageContext context, Object clientContext, String type, String id, byte[] content) throws FHIRException, IOException, EOperationOutcome {
-
-  }
-
-  @Override
-  public void finishPackage(PackageVisitor.PackageContext context) throws FHIRException, IOException, EOperationOutcome {
-
-  }
-
-  @Override
-  public void alreadyVisited(String pid) throws FHIRException, IOException, EOperationOutcome {
-
-  }
 }
