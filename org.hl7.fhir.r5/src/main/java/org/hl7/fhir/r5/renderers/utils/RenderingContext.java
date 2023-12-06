@@ -701,8 +701,9 @@ public class RenderingContext {
   public GenerationRules getRules() {
     return rules;
   }
-  public void setRules(GenerationRules rules) {
+  public RenderingContext setRules(GenerationRules rules) {
     this.rules = rules;
+    return this;
   }
   public StandardsStatus getDefaultStandardsStatus() {
     return defaultStandardsStatus;
