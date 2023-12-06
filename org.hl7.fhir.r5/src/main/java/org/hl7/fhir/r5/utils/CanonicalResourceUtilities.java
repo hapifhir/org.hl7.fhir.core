@@ -82,7 +82,7 @@ public class CanonicalResourceUtilities {
       if (wgext == null) {
         wgext = res.getOwnerDocument().createElementNS(Constants.NS_FHIR_ROOT, "extension");
         wgext.setAttribute("url", ToolingExtensions.EXT_WORKGROUP);
-        org.w3c.dom.Element after = XMLUtil.getFirstChild(res, "modifierExtension", "url", "identifier", "version", "status");
+        org.w3c.dom.Element after = XMLUtil.getFirstChild(res, "modifierExtension", "url", "identifier", "version", "status", "name", "title");
         if (after == null) {
           after = XMLUtil.getLastChild(res, "id", "meta", "text", "implicitRules", "language", "text", "contained");
           if (after != null) {
@@ -90,6 +90,7 @@ public class CanonicalResourceUtilities {
           }
         }
         res.insertBefore(wgext, after);
+        res.insertBefore(res.getOwnerDocument().createTextNode("/n  "), after);
       }
       XMLUtil.clearChildren(wgext);
       org.w3c.dom.Element valueCode = res.getOwnerDocument().createElementNS(Constants.NS_FHIR_ROOT, "valueCode"); 
@@ -99,7 +100,7 @@ public class CanonicalResourceUtilities {
       org.w3c.dom.Element pub = XMLUtil.getNamedChild(res, "publisher");
       if (pub == null) {
         pub = res.getOwnerDocument().createElementNS(Constants.NS_FHIR_ROOT, "publisher");
-        org.w3c.dom.Element after = XMLUtil.getFirstChild(res, "contact", "description", "useContext", "jurisdiction", "purpose", "copyright");
+        org.w3c.dom.Element after = XMLUtil.getFirstChild(res, "contact", "relatedArtifact", "description", "useContext", "jurisdiction", "purpose", "copyright");
         res.insertBefore(pub, after);
       }
       pub.setAttribute("value", "HL7 International / "+wg.getName());
