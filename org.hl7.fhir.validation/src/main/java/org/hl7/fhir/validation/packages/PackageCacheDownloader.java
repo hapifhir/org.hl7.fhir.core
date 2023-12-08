@@ -37,7 +37,7 @@ public class PackageCacheDownloader extends PackageVisitor implements PackageVis
 
   @Override
   public Object startPackage(PackageVisitor.PackageContext context) throws FHIRException {
-    System.out.println("Currently loading" + context.getPid());
+    System.out.println("Currently loading " + context.getPid());
     return null;
   }
 
