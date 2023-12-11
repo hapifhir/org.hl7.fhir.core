@@ -63,6 +63,12 @@ public class CanonicalResourceUtilities {
     }    
   }
 
+  /**
+   * for use in the core build where the context is not fully populated. Only known safe for R6 resources
+   * 
+   * @param res
+   * @param code
+   */
   public static void setHl7WG(org.w3c.dom.Element res, String code) {
     String rt = res.getNodeName();
     if (VersionUtilities.getExtendedCanonicalResourceNames("5.0.0").contains(rt)) {
@@ -82,14 +88,12 @@ public class CanonicalResourceUtilities {
       if (wgext == null) {
         wgext = res.getOwnerDocument().createElementNS(Constants.NS_FHIR_ROOT, "extension");
         wgext.setAttribute("url", ToolingExtensions.EXT_WORKGROUP);
-        org.w3c.dom.Element after = XMLUtil.getFirstChild(res, "modifierExtension", "url", "identifier", "version", "status");
-        if (after == null) {
-          after = XMLUtil.getLastChild(res, "id", "meta", "text", "implicitRules", "language", "text", "contained");
-          if (after != null) {
-            after = XMLUtil.getNextSibling(after);
-          }
+        org.w3c.dom.Element after = XMLUtil.getLastChild(res, "id", "meta", "text", "implicitRules", "language", "text", "contained");
+        if (after != null) {
+          after = XMLUtil.getNextSibling(after);
         }
         res.insertBefore(wgext, after);
+        res.insertBefore(res.getOwnerDocument().createTextNode("\n  "), after);
       }
       XMLUtil.clearChildren(wgext);
       org.w3c.dom.Element valueCode = res.getOwnerDocument().createElementNS(Constants.NS_FHIR_ROOT, "valueCode"); 
@@ -99,10 +103,55 @@ public class CanonicalResourceUtilities {
       org.w3c.dom.Element pub = XMLUtil.getNamedChild(res, "publisher");
       if (pub == null) {
         pub = res.getOwnerDocument().createElementNS(Constants.NS_FHIR_ROOT, "publisher");
-        org.w3c.dom.Element after = XMLUtil.getFirstChild(res, "contact", "description", "useContext", "jurisdiction", "purpose", "copyright");
+        org.w3c.dom.Element after = XMLUtil.getLastChild(res, "id", "meta", "text", "implicitRules", "language", "text", "contained", "extension", "modifierExtension", 
+            "url", "identifier", "version", "versionAlgorithmString", "versionAlgorithmCoding", "name", "title", "status", "experimental", "date", ("EvidenceReport".equals(rt) ? "subject" : "xx"));
+        if (after != null) {
+          after = XMLUtil.getNextSibling(after);
+        }
         res.insertBefore(pub, after);
+        res.insertBefore(res.getOwnerDocument().createTextNode("\n  "), after);
       }
       pub.setAttribute("value", "HL7 International / "+wg.getName());
+
+      org.w3c.dom.Element contact = XMLUtil.getNamedChild(res, "contact");
+      if (contact == null) {
+        contact = res.getOwnerDocument().createElementNS(Constants.NS_FHIR_ROOT, "contact");
+        res.insertBefore(contact, XMLUtil.getNextSibling(pub));
+        res.insertBefore(res.getOwnerDocument().createTextNode("\n  "), contact.getNextSibling());
+      }
+
+      org.w3c.dom.Element telecom = XMLUtil.getNamedChild(contact, "telecom");
+      if (telecom == null) {
+        contact.appendChild(res.getOwnerDocument().createTextNode("\n    "));
+        telecom = res.getOwnerDocument().createElementNS(Constants.NS_FHIR_ROOT, "telecom");
+        contact.appendChild(telecom);
+        contact.appendChild(res.getOwnerDocument().createTextNode("\n  "));
+      }
+      
+      org.w3c.dom.Element system = XMLUtil.getNamedChild(telecom, "system");
+      if (system == null) {
+        system = res.getOwnerDocument().createElementNS(Constants.NS_FHIR_ROOT, "system");
+        org.w3c.dom.Element after = XMLUtil.getLastChild(telecom, "id", "extension");
+        if (after != null) {
+          after = XMLUtil.getNextSibling(after);
+        }
+        telecom.insertBefore(system, after);
+        telecom.insertBefore(res.getOwnerDocument().createTextNode("\n      "), after);
+      }
+      system.setAttribute("value", "url");
+    
+
+      org.w3c.dom.Element value = XMLUtil.getNamedChild(telecom, "value");
+      if (value == null) {
+        value = res.getOwnerDocument().createElementNS(Constants.NS_FHIR_ROOT, "value");
+        org.w3c.dom.Element after = XMLUtil.getLastChild(telecom, "id", "extension", "system");
+        if (after != null) {
+          after = XMLUtil.getNextSibling(after);
+        }
+        telecom.insertBefore(system, after);
+        telecom.insertBefore(res.getOwnerDocument().createTextNode("\n      "), after);
+      }
+      value.setAttribute("value", wg.getLink());
     }
   }
 }
