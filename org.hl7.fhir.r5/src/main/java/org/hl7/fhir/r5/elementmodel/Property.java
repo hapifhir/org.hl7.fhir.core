@@ -41,6 +41,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefiniti
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.formats.FormatUtilities;
+import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
@@ -345,12 +346,13 @@ public class Property {
     }
     ElementDefinition ed = definition;
     StructureDefinition sd = structure;
+    boolean isCDA = isCDAElement(structure);
     SourcedChildDefinitions children = profileUtilities.getChildMap(sd, ed);
     String url = null;
     if (children.getList().isEmpty() || isElementWithOnlyExtension(ed, children.getList())) {
       // ok, find the right definitions
       String t = null;
-      if (ed.getType().size() == 1)
+      if (ed.getType().size() == 1 && (statedType == null || !isCDA))
         t = ed.getType().get(0).getWorkingCode();
       else if (ed.getType().size() == 0)
         throw new Error("types == 0, and no children found on "+getDefinition().getPath());
@@ -363,9 +365,9 @@ public class Property {
             break;
           }
         }
-        if (!all) {
+        if (!all || (isCDA && statedType != null)) {
           // ok, it's polymorphic
-          if (ed.hasRepresentation(PropertyRepresentation.TYPEATTR)) {
+          if (ed.hasRepresentation(PropertyRepresentation.TYPEATTR) || isCDA) {
             t = statedType;
             if (t == null && ToolingExtensions.hasExtension(ed, "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype"))
               t = ToolingExtensions.readStringExtension(ed, "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype");
@@ -379,13 +381,21 @@ public class Property {
                   url = tr.getWorkingCode();
                   ok = true;
                 }
+                if (!ok) {
+                  sdt = findAncestor(t, sdt);
+                  if (sdt != null) {
+                    url = sdt.getUrl();
+                    ok = true;
+                  }
+                }
               }
-              if (ok)
+              if (ok) {
                 break;
+              }
             }
-             if (!ok)
-               throw new DefinitionException("Type '"+t+"' is not an acceptable type for '"+elementName+"' on property "+definition.getPath());
-            
+            if (!ok) {
+              throw new DefinitionException("Type '"+t+"' is not an acceptable type for '"+elementName+"' on property "+definition.getPath());
+            }
           } else {
             t = elementName.substring(tail(ed.getPath()).length() - 3);
             if (isPrimitive(lowFirst(t)))
@@ -420,6 +430,26 @@ public class Property {
     profileUtilities.getCachedPropertyList().put(cacheKey, properties);
     return properties;
   }
+
+  private StructureDefinition findAncestor(String type, StructureDefinition sdt) {
+    if (sdt != null) {
+      StructureDefinition sd = context.fetchTypeDefinition(type);
+      StructureDefinition t = sd;
+      while (t != null) {
+        if (t == sdt) {
+          return sd; 
+        }
+        t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
+      }
+    }
+    return null;
+  }
+
+
+  private boolean isCDAElement(StructureDefinition sd) {
+    return sd.getUrl().startsWith(Constants.NS_CDA_ROOT);
+  }
+
 
   protected List<Property> getChildProperties(TypeDetails type) throws DefinitionException {
     ElementDefinition ed = definition;
