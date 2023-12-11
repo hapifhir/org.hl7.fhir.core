@@ -59,6 +59,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
@@ -601,5 +602,36 @@ public class XMLUtil {
     return e == null ? null : e.getTextContent();
   }
 
- 	
+  public static Element getFirstChild(Element res, String... names) {
+    Element node = getFirstChild(res);
+    while (node != null && !Utilities.existsInList(node.getLocalName(), names)) {
+      node = getNextSibling(node);
+    }
+    return node;
+  }
+
+  public static Element getLastChild(Element res, String... names) {
+    Element result = null;
+    Element node = getFirstChild(res);
+    while (node != null) {
+      if (Utilities.existsInList(node.getLocalName(), names)) {
+        result = node;
+      }
+      node = getNextSibling(node);
+    }
+    return result;
+  }
+
+  public static void clearChildren(Node node) {
+    NodeList nodeList = node.getChildNodes();
+    for (int i = nodeList.getLength() - 1; i >= 0; i--) {
+      Node item = nodeList.item(i);
+      if (item.hasChildNodes()) {
+        clearChildren(item);
+      }
+      node.removeChild(item);
+    };
+  }
+
+
 }

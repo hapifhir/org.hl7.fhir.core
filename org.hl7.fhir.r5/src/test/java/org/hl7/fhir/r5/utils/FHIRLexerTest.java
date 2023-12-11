@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.utils;
 
+import org.hl7.fhir.r5.fhirpath.FHIRLexer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

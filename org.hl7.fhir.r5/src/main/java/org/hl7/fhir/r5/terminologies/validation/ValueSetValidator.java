@@ -260,7 +260,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         info.getIssues().addAll(makeIssue(IssueSeverity.WARNING, unknownSystems.isEmpty() ? IssueType.CODEINVALID : IssueType.NOTFOUND, path, msg));
       } else if (!result) {
         msg = context.formatMessagePlural(code.getCoding().size(), I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), b.toString());
-        info.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path, msg));
+        info.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, code.getCoding().size() == 1 ? path+".coding[0].code" : path, msg));
       }
     }
     if (vcc.hasCoding() && code.hasText()) {
@@ -520,7 +520,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 //            {
               String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), "'"+code.toString()+"'");
               res.addToMessage(msg).setSeverity(IssueSeverity.ERROR);
-              res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path, msg));
+              res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path+".code", msg));
               res.setDefinition(null);
               res.setSystem(null);
               res.setDisplay(null);
@@ -542,7 +542,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       } else if ((res != null && !res.isOk())) {
         String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), "'"+code.toString()+"'");
         res.setMessage(res.getMessage()+"; "+msg);
-        res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path, msg));
+        res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path+".code", msg));
       }
     }
     if (res != null && res.getSeverity() == IssueSeverity.INFORMATION) {

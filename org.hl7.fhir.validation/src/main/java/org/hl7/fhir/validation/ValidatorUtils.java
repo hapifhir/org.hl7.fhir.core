@@ -23,12 +23,12 @@ import org.hl7.fhir.convertors.loaders.loaderR5.R5ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R6ToR5Loader;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.Utilities;
@@ -163,6 +163,7 @@ public class ValidatorUtils {
     if (Common.isNetworkPath(name)) {
       SourceFile src = addSourceFile(refs, name);
       src.date = Long.MAX_VALUE;
+      src.process = true;
     } else if (Common.isWildcardPath(name)) {
       AsteriskFilter filter = new AsteriskFilter(name);
       File[] files = new File(filter.getDir()).listFiles(filter);

@@ -1580,32 +1580,63 @@ public class DataRenderer extends Renderer implements CodeResolver {
   
   
   public void renderTriggerDefinition(XhtmlNode x, TriggerDefinition td) throws FHIRFormatError, DefinitionException, IOException {
-    XhtmlNode tbl = x.table("grid");
+    if (x.isPara()) {
+      x.b().tx("Type");
+      x.tx(": ");
+      x.tx(td.getType().getDisplay());
 
-    XhtmlNode tr = tbl.tr();  
-    tr.td().b().tx("Type");
-    tr.td().tx(td.getType().getDisplay());
+      if (td.hasName()) {    
+        x.tx(", ");
+        x.b().tx("Name");
+        x.tx(": ");
+        x.tx(td.getType().getDisplay());
+      }
+      if (td.hasCode()) {    
+        x.tx(", ");
+        x.b().tx("Code");
+        x.tx(": ");
+        renderCodeableConcept(x, td.getCode());
+      }
+      if (td.hasTiming()) {    
+        x.tx(", ");
+        x.b().tx("Timing");
+        x.tx(": ");
+        render(x, td.getTiming());
+      }
+      if (td.hasCondition()) {    
+        x.tx(", ");
+        x.b().tx("Condition");
+        x.tx(": ");
+        renderExpression(x, td.getCondition());
+      }    
+    } else {
+      XhtmlNode tbl = x.table("grid");
 
-    if (td.hasName()) {    
-      tr = tbl.tr();  
-      tr.td().b().tx("Name");
+      XhtmlNode tr = tbl.tr();  
+      tr.td().b().tx("Type");
       tr.td().tx(td.getType().getDisplay());
+
+      if (td.hasName()) {    
+        tr = tbl.tr();  
+        tr.td().b().tx("Name");
+        tr.td().tx(td.getType().getDisplay());
+      }
+      if (td.hasCode()) {    
+        tr = tbl.tr();  
+        tr.td().b().tx("Code");
+        renderCodeableConcept(tr.td(), td.getCode());
+      }
+      if (td.hasTiming()) {    
+        tr = tbl.tr();  
+        tr.td().b().tx("Timing");
+        render(tr.td(), td.getTiming());
+      }
+      if (td.hasCondition()) {    
+        tr = tbl.tr();  
+        tr.td().b().tx("Condition");
+        renderExpression(tr.td(), td.getCondition());
+      }    
     }
-    if (td.hasCode()) {    
-      tr = tbl.tr();  
-      tr.td().b().tx("Code");
-      renderCodeableConcept(tr.td(), td.getCode());
-    }
-    if (td.hasTiming()) {    
-      tr = tbl.tr();  
-      tr.td().b().tx("Timing");
-      render(tr.td(), td.getTiming());
-    }
-    if (td.hasCondition()) {    
-      tr = tbl.tr();  
-      tr.td().b().tx("Condition");
-      renderExpression(tr.td(), td.getCondition());
-    }    
   }
   
   public void renderDataRequirement(XhtmlNode x, DataRequirement dr) throws FHIRFormatError, DefinitionException, IOException {

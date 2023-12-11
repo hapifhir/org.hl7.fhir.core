@@ -1,7 +1,7 @@
 package org.hl7.fhir.r5.utils.structuremap;
 
 import org.hl7.fhir.r5.elementmodel.Property;
-import org.hl7.fhir.r5.model.TypeDetails;
+import org.hl7.fhir.r5.fhirpath.TypeDetails;
 
 public class PropertyWithType {
   private String path;

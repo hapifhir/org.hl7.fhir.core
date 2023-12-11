@@ -8,8 +8,9 @@ import static org.mockito.Mockito.times;
 import java.util.List;
 
 import org.hl7.fhir.dstu3.context.IWorkerContext;
+import org.hl7.fhir.dstu3.fhirpath.ExpressionNode;
+import org.hl7.fhir.dstu3.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.dstu3.model.Base;
-import org.hl7.fhir.dstu3.model.ExpressionNode;
 import org.hl7.fhir.dstu3.model.StringType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
