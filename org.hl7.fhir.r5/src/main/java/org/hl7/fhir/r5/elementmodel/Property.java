@@ -447,7 +447,7 @@ public class Property {
 
 
   private boolean isCDAElement(StructureDefinition sd) {
-    return sd.getUrl().startsWith(Constants.NS_CDA_ROOT);
+    return sd.hasUrl() && sd.getUrl().startsWith(Constants.NS_CDA_ROOT);
   }
 
 
