@@ -21,3 +21,5 @@
 (Unknown license) jakarta-regexp (jakarta-regexp:jakarta-regexp:1.4 - no url defined)
 # License string includes nested brackets, causing parser breakage, but is a valid BSD license.
 (BSD 3-Clause "New" or "Revised" License (BSD-3-Clause)) abego TreeLayout Core (org.abego.treelayout:org.abego.treelayout.core:1.0.3 - http://treelayout.sourceforge.net)
+# License name includes brackets (javax.xml.bind)
+ (The Apache Software License, Version 2.0) Jackson module: Old JAXB Annotations (javax.xml.bind) (com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.16.0 - https://github.com/FasterXML/jackson-modules-base)

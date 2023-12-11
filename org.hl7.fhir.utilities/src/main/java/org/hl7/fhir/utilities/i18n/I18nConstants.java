@@ -534,6 +534,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY = "Type_Specific_Checks_DT_Primitive_NotEmpty";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX = "Type_Specific_Checks_DT_Primitive_Regex";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE = "Type_Specific_Checks_DT_Primitive_Regex_Type";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE_ALT = "TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE_ALT";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_EXCEPTION = "TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_EXCEPTION";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_VALUEEXT = "Type_Specific_Checks_DT_Primitive_ValueExt";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS = "Type_Specific_Checks_DT_Primitive_WS";
@@ -626,6 +627,7 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_MATCHMULTIPLE = "Validation_VAL_Profile_MatchMultiple";
   public static final String VALIDATION_VAL_PROFILE_MAXIMUM = "Validation_VAL_Profile_Maximum";
   public static final String VALIDATION_VAL_PROFILE_MINIMUM = "Validation_VAL_Profile_Minimum";
+  public static final String VALIDATION_VAL_PROFILE_MINIMUM_MAGIC = "VALIDATION_VAL_PROFILE_MINIMUM_MAGIC";
   public static final String VALIDATION_VAL_PROFILE_MULTIPLEMATCHES = "Validation_VAL_Profile_MultipleMatches";
   public static final String VALIDATION_VAL_PROFILE_NOCHECKMAX = "Validation_VAL_Profile_NoCheckMax";
   public static final String VALIDATION_VAL_PROFILE_NOCHECKMIN = "Validation_VAL_Profile_NoCheckMin";
@@ -997,6 +999,7 @@ public class I18nConstants {
   public static final String VALIDATION_HL7_WG_NEEDED = "VALIDATION_HL7_WG_NEEDED";
   public static final String VALIDATION_HL7_WG_UNKNOWN = "VALIDATION_HL7_WG_UNKNOWN";
   public static final String VALIDATION_HL7_PUBLISHER_MISMATCH = "VALIDATION_HL7_PUBLISHER_MISMATCH";
+  public static final String VALIDATION_HL7_PUBLISHER_MISMATCH2 = "VALIDATION_HL7_PUBLISHER_MISMATCH2";
   public static final String VALIDATION_HL7_WG_URL = "VALIDATION_HL7_WG_URL";
   public static final String VALIDATION_HL7_PUBLISHER_MISSING = "VALIDATION_HL7_PUBLISHER_MISSING";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS = "TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS";
@@ -1034,6 +1037,7 @@ public class I18nConstants {
   public static final String BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE_FRAGMENT = "BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE_FRAGMENT";
   public static final String XHTML_IDREF_NOT_FOUND = "XHTML_IDREF_NOT_FOUND";
   public static final String XHTML_IDREF_NOT_MULTIPLE_MATCHES = "XHTML_IDREF_NOT_MULTIPLE_MATCHES";
+  public static final String SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH = "SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH";
 }
 
 
