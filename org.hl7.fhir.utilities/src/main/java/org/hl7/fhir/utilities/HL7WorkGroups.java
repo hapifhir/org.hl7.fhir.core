@@ -5,13 +5,15 @@ public class HL7WorkGroups {
   public static class HL7WorkGroup {
     private String link;
     private String name;
+    private String name2;
     private String code;
 
 
-    protected HL7WorkGroup(String code, String name, String link) {
+    protected HL7WorkGroup(String code, String name, String name2, String link) {
       super();
       this.code = code;
       this.name = name;
+      this.name2 = name2;
       this.link = link;
     }
     public String getLink() {
@@ -20,6 +22,9 @@ public class HL7WorkGroups {
     public String getName() {
       return name;
     }
+    public String getName2() {
+      return name2;
+    }
     public String getCode() {
       return code;
     }
@@ -27,9 +32,10 @@ public class HL7WorkGroups {
 
   public static HL7WorkGroup find(String wg) {
     String name = nameForWG(wg);
+    String name2 = name2ForWG(wg);
     String url = urlForWG(wg);
     if (name != null) {
-      return new HL7WorkGroup(wg, name, url);
+      return new HL7WorkGroup(wg, name, name2, url);
     } else {
       return null;
     }
@@ -125,7 +131,7 @@ public class HL7WorkGroups {
     case "sd": return "Structured Documents";
     case "sec": return "Security";
     case "soa": return "Services Oriented Architecture";
-    case "ti": return "Vocabulary";
+    case "ti": return "Terminology Infrastructure";
     case "tsmg": return "Terminology Services Management Group (TSMG)";
     case "us": return "US Realm Steering Committee";
     case "v2": return "V2 Management Group";
@@ -134,5 +140,12 @@ public class HL7WorkGroups {
     return null;
   }
 
+  private static String name2ForWG(String wg) {
+    switch (wg) {
+    case "ti": return "Vocabulary";
+    case "vocab": return "Vocabulary";
+    }
+    return null;
+  }
 
 }

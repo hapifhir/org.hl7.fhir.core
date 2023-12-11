@@ -53,6 +53,10 @@ public class FHIRPathExpressionFixer {
     if (expr.equals("name.matches('[A-Z]([A-Za-z0-9_]){0,254}')")) {
       return ("name.exists() implies name.matches('[A-Z]([A-Za-z0-9_]){0,254}')");
     }
+    // con-3 in R4
+    if (expr.equals("clinicalStatus.exists() or verificationStatus.coding.where(system='http://terminology.hl7.org/CodeSystem/condition-ver-status' and code = 'entered-in-error').exists() or category.select($this='problem-list-item').empty()")) {
+      return "clinicalStatus.exists() or verificationStatus.coding.where(system='http://terminology.hl7.org/CodeSystem/condition-ver-status' and code = 'entered-in-error').exists() or category.coding.exists(system='http://terminology.hl7.org/CodeSystem/condition-category' and code ='problem-list-item').empty()";
+    }
     
     // R5 ballot
     if (expr.equals("url.matches('([^|#])*')")) {
