@@ -23,19 +23,8 @@ public interface SessionCache {
    */
   String cacheSession(String sessionId, ValidationEngine validationEngine);
 
-  /**
-   * Allows for configuration of whether or not cachedSession entry expiration times reset
-   * after they are accessed.
-   * @param reset The boolean determining session expiration policy
-   * @return The {@link SessionCache} with the explicit expiration policy
-   */
-  SessionCache setExpirationAfterAccess(boolean reset);
 
-  /**
-   * When called, this actively checks the cache for expired entries and removes
-   * them.
-   */
-  void removeExpiredSessions();
+
 
   /**
    * Checks if the passed in {@link String} id exists in the set of stored session id.

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class SessionCacheTest {
+class PassiveExpiringSessionCacheTest {
 
   @Test
   @DisplayName("test session expiration works")
@@ -50,10 +50,10 @@ class SessionCacheTest {
   }
 
   @Test
-  @DisplayName("test that explicit removeExiredSessions works")
+  @DisplayName("test that explicit removeExpiredSessions works")
   void testRemoveExpiredSessions() throws InterruptedException, IOException {
     final long EXPIRE_TIME = 5L;
-    SessionCache cache = new PassiveExpiringSessionCache(EXPIRE_TIME, TimeUnit.SECONDS);
+    PassiveExpiringSessionCache cache = new PassiveExpiringSessionCache(EXPIRE_TIME, TimeUnit.SECONDS);
     ValidationEngine testEngine = new ValidationEngine.ValidationEngineBuilder().fromNothing();
     String sessionId = cache.cacheSession(testEngine);
     Assertions.assertTrue(cache.sessionExists(sessionId));
@@ -65,13 +65,14 @@ class SessionCacheTest {
   @Test
   @DisplayName("test that explicitly configured expiration reset works")
   void testConfigureDuration() throws InterruptedException, IOException {
-    final long EXPIRE_TIME = 5L;
-    SessionCache cache = new PassiveExpiringSessionCache(EXPIRE_TIME, TimeUnit.SECONDS).setExpirationAfterAccess(true);
+    final long EXPIRE_TIME = 15L;
+    PassiveExpiringSessionCache cache = new PassiveExpiringSessionCache(EXPIRE_TIME, TimeUnit.SECONDS).setResetExpirationAfterFetch(true);
     ValidationEngine testEngine = new ValidationEngine.ValidationEngineBuilder().fromNothing();
     String sessionId = cache.cacheSession(testEngine);
-    TimeUnit.SECONDS.sleep(4L);
+    TimeUnit.SECONDS.sleep(10L);
     Assertions.assertTrue(cache.sessionExists(sessionId));
-    TimeUnit.SECONDS.sleep(3L);
+    cache.fetchSessionValidatorEngine(sessionId);
+    TimeUnit.SECONDS.sleep(10L);
     Assertions.assertTrue(cache.sessionExists(sessionId));
   }
 }

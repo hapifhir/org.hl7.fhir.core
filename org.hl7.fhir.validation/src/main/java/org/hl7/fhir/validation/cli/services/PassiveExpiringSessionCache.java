@@ -15,7 +15,7 @@ public class PassiveExpiringSessionCache implements SessionCache {
 
   protected static final long TIME_TO_LIVE = 60;
   protected static final TimeUnit TIME_UNIT = TimeUnit.MINUTES;
-  protected boolean resetExpirationAfterAccess = false;
+  protected boolean resetExpirationAfterFetch = false;
 
   private final PassiveExpiringMap<String, ValidationEngine> cachedSessions;
 
@@ -60,14 +60,13 @@ public class PassiveExpiringSessionCache implements SessionCache {
     return sessionId;
   }
 
-   /**
-   * Allows for configuration of whether or not cachedSession entry expiration times reset
-   * after they are accessed.
-   * @param reset The boolean determining session expiration policy
+  /**
+   * Sets whether or not a cached Session entry's expiration time is reset after session fetches are performed.
+   * @param resetExpirationAfterFetch If true, when sessions are fetched, their expiry time will be reset to sessionLength
    * @return The {@link SessionCache} with the explicit expiration policy
    */
-  public SessionCache setExpirationAfterAccess(boolean reset) {
-    this.resetExpirationAfterAccess = reset;
+  public PassiveExpiringSessionCache setResetExpirationAfterFetch(boolean resetExpirationAfterFetch) {
+    this.resetExpirationAfterFetch = resetExpirationAfterFetch;
     return this;
   }
 
@@ -75,7 +74,7 @@ public class PassiveExpiringSessionCache implements SessionCache {
    * When called, this actively checks the cache for expired entries and removes
    * them.
    */
-  public void removeExpiredSessions() {
+  protected void removeExpiredSessions() {
     /*
     The PassiveExpiringMap will remove entries when accessing the mapped value
     for a key, OR when invoking methods that involve accessing the entire map
@@ -85,11 +84,15 @@ public class PassiveExpiringSessionCache implements SessionCache {
   }
 
   /**
-   * Checks if the passed in {@link String} id exists in the set of stored session id.
+   * Checks if the passed in {@link String} id exists in the set of stored session ids.
+   *
+   * As an optimization, when this is called, any expired sessions are also removed.
+   *
    * @param sessionId The {@link String} id to search for.
    * @return {@link Boolean#TRUE} if such id exists.
    */
   public boolean sessionExists(String sessionId) {
+    removeExpiredSessions();
     return cachedSessions.containsKey(sessionId);
   }
 
@@ -100,7 +103,7 @@ public class PassiveExpiringSessionCache implements SessionCache {
    */
   public ValidationEngine fetchSessionValidatorEngine(String sessionId) {
     ValidationEngine engine = cachedSessions.get(sessionId);
-    if (this.resetExpirationAfterAccess) {
+    if (this.resetExpirationAfterFetch) {
       cachedSessions.put(sessionId, engine);
     }   
     return engine;
