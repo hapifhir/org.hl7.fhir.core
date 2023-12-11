@@ -78,6 +78,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.validation.cli.utils.ValidationLevel;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
@@ -1027,10 +1028,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return null;
   }
 
-  protected Element resolveInBundle(Element bundle, List<Element> entries, String ref, String fullUrl, String type, String id, NodeStack stack, List<ValidationMessage> errors, String name, Element source, boolean isWarning) {
-    if ("MedicationStatement/d41ac499-c7e8-45fa-9246-69028bae178f".equals(ref)) {
-      System.out.println("!");
-    }
+  protected Element resolveInBundle(Element bundle, List<Element> entries, String ref, String fullUrl, String type, String id, NodeStack stack, List<ValidationMessage> errors, String name, Element source, boolean isWarning, boolean isNLLink) {
     @SuppressWarnings("unchecked")
     Map<String, List<Element>> map = (Map<String, List<Element>>) bundle.getUserData("validator.entrymap");
     @SuppressWarnings("unchecked")
@@ -1068,6 +1066,12 @@ public class BaseValidator implements IValidationContextResourceLoader {
       }      
     }
     
+    String fragment = null;
+    if (ref != null && ref.contains("#")) {
+      fragment = ref.substring(ref.indexOf("#")+1);
+      ref = ref.substring(0, ref.indexOf("#"));
+    }
+    
     if (Utilities.isAbsoluteUrl(ref)) {
       // if the reference is absolute, then you resolve by fullUrl. No other thinking is required.
       List<Element> el = map.get(ref);
@@ -1085,6 +1089,16 @@ public class BaseValidator implements IValidationContextResourceLoader {
         }
         return null;
       } else if (el.size() == 1) {
+        if (fragment != null) {
+          int i = countFragmentMatches(el.get(0), fragment);
+          if (i == 0) {
+            source.setUserData("bundle.error.noted", true);
+            hintOrError(isNLLink, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT, ref, fragment, name);            
+          } else if (i > 1) {
+            source.setUserData("bundle.error.noted", true);
+            rule(errors, "2023-11-15", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE_FRAGMENT, i, ref, fragment, name);            
+          }
+        }
         return el.get(0);
       } else {
         if (stack != null && !source.hasUserData("bundle.error.noted")) {
@@ -1147,6 +1161,35 @@ public class BaseValidator implements IValidationContextResourceLoader {
     }
   }
 
+
+  protected int countFragmentMatches(Element element, String fragment) {
+    int count = 0;
+    if (fragment.equals(element.getIdBase())) {
+      count++;
+    }
+    if (element.getXhtml() != null) {
+      count = count + countFragmentMatches(element.getXhtml(), fragment);
+    }
+    if (element.hasChildren()) {
+      for (Element child : element.getChildren()) {
+        count = count + countFragmentMatches(child, fragment);
+      }
+    }
+    return count;
+  }
+
+  private int countFragmentMatches(XhtmlNode node, String fragment) {
+    int count = 0;
+    if (fragment.equals(node.getAttribute("id"))) {
+      count++;
+    }
+    if (node.hasChildren()) {
+      for (XhtmlNode child : node.getChildNodes()) {
+        count = count + countFragmentMatches(child, fragment);
+      }
+    }
+    return count;
+  }
 
   private String extractResourceType(String ref) {
     String[] p = ref.split("\\/");
