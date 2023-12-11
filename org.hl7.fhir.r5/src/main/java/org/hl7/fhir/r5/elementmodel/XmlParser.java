@@ -60,6 +60,7 @@ import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
@@ -232,7 +233,7 @@ public class XmlParser extends ParserBase {
 
     Element result = new Element(element.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd)).setFormat(FhirFormat.XML);
     result.setPath(element.getLocalName());
-    checkElement(errors, element, path, result.getProperty(), false);
+    checkElement(errors, element, result, path, result.getProperty(), false);
     result.markLocation(line(element, false), col(element, false));
     result.setType(element.getLocalName());
     parseChildren(errors, path, element, result);
@@ -274,7 +275,7 @@ public class XmlParser extends ParserBase {
     return true;
   }
 
-  private void checkElement(List<ValidationMessage> errors, org.w3c.dom.Element element, String path, Property prop, boolean xsiTypeChecked) throws FHIRFormatError {
+  private void checkElement(List<ValidationMessage> errors, org.w3c.dom.Element element, Element e, String path, Property prop, boolean xsiTypeChecked) throws FHIRFormatError {
     if (policy == ValidationPolicy.EVERYTHING) {
       if (empty(element) && FormatUtilities.FHIR_NS.equals(element.getNamespaceURI())) // this rule only applies to FHIR Content
         logError(errors, ValidationMessage.NO_RULE_DATE, line(element, false), col(element, false), path, IssueType.INVALID, context.formatMessage(I18nConstants.ELEMENT_MUST_HAVE_SOME_CONTENT), IssueSeverity.ERROR);
@@ -290,22 +291,40 @@ public class XmlParser extends ParserBase {
         String xsiType = element.getAttributeNS(FormatUtilities.NS_XSI, "type");
         if (!Utilities.noString(xsiType)) {
           String actualType = prop.getXmlTypeName();
-          if (!xsiType.equals(actualType)) {
-            logError(errors, "2023-10-12", line(element, false), col(element, false), path, IssueType.INVALID, context.formatMessage(I18nConstants.XSI_TYPE_WRONG, xsiType, actualType), IssueSeverity.ERROR);           
-          } else {
+          if (xsiType.equals(actualType)) {
             logError(errors, "2023-10-12", line(element, false), col(element, false), path, IssueType.INVALID, context.formatMessage(I18nConstants.XSI_TYPE_UNNECESSARY), IssueSeverity.INFORMATION);            
-          }          
+          } else {
+            StructureDefinition sd = findLegalConstraint(xsiType, actualType);
+            if (sd != null) {
+              e.setType(sd.getType());
+              e.setExplicitType(xsiType);
+            } else {
+              logError(errors, "2023-10-12", line(element, false), col(element, false), path, IssueType.INVALID, context.formatMessage(I18nConstants.XSI_TYPE_WRONG, xsiType, actualType), IssueSeverity.ERROR);           
+            }  
+          }
         }
       }
     }
   }
 
+  private StructureDefinition findLegalConstraint(String xsiType, String actualType) {
+    StructureDefinition sdA = context.fetchTypeDefinition(actualType);
+    StructureDefinition sd = context.fetchTypeDefinition(xsiType);
+    while (sd != null) {
+      if (sd == sdA) {
+        return sd;
+      }
+      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    }
+    return null;
+  }
+  
   public Element parse(List<ValidationMessage> errors, org.w3c.dom.Element base, String type) throws Exception {
     StructureDefinition sd = getDefinition(errors, 0, 0, FormatUtilities.FHIR_NS, type);
     Element result = new Element(base.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd)).setFormat(FhirFormat.XML).setNativeObject(base);
     result.setPath(base.getLocalName());
     String path = "/"+pathPrefix(base.getNamespaceURI())+base.getLocalName();
-    checkElement(errors, base, path, result.getProperty(), false);
+    checkElement(errors, base, result, path, result.getProperty(), false);
     result.setType(base.getLocalName());
     parseChildren(errors, path, base, result);
     result.numberChildren();
@@ -469,7 +488,7 @@ public class XmlParser extends ParserBase {
               } else
                 n.setType(n.getType());
             }
-            checkElement(errors, (org.w3c.dom.Element) child, npath, n.getProperty(), xsiTypeChecked);
+            checkElement(errors, (org.w3c.dom.Element) child, n, npath, n.getProperty(), xsiTypeChecked);
             element.getChildren().add(n);
             if (ok) {
               if (property.isResource())
@@ -500,7 +519,7 @@ public class XmlParser extends ParserBase {
               Element n = new Element(name, property).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML).setNativeObject(child);
               cgn.getChildren().add(n);
               n.setPath(element.getPath()+"."+property.getName());
-              checkElement(errors, (org.w3c.dom.Element) child, npath, n.getProperty(), false);
+              checkElement(errors, (org.w3c.dom.Element) child, n, npath, n.getProperty(), false);
               parseChildren(errors, npath, (org.w3c.dom.Element) child, n);
             }
           }
@@ -748,6 +767,11 @@ public class XmlParser extends ParserBase {
     for (Element c : e.getChildren()) {
       if (hasTypeAttr(c))
         return true;
+    }
+    // xsi_type is always allowed on CDA elements. right now, I'm not sure where to indicate this in the model, 
+    // so it's just hardcoded here 
+    if (e.getType() != null && e.getType().startsWith(Constants.NS_CDA_ROOT)) {
+      return true;
     }
     return false;
   }
