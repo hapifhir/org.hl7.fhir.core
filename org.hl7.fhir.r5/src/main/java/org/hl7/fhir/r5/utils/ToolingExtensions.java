@@ -264,6 +264,7 @@ public class ToolingExtensions {
   public static final String EXT_ARTIFACT_NAME = "http://hl7.org/fhir/StructureDefinition/artifact-name";
   public static final String EXT_ARTIFACT_DESC = "http://hl7.org/fhir/StructureDefinition/artifact-description";  
   public static final String EXT_ED_SUPPRESS = "http://hl7.org/fhir/StructureDefinition/elementdefinition-suppress";
+  public static final String EXT_SEARCH_PARAMETER_BASE = "http://hl7.org/fhir/tools/StructureDefinition/searchparameter-base-type";;
   
   // specific extension helpers
 
