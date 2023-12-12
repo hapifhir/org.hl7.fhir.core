@@ -47,7 +47,9 @@ public class SearchParameterValidator extends BaseValidator {
       for (Element b : cs.getChildrenByName("base")) {
         bases.add(b.primitiveValue());
       }
-      ok = checkExpression(errors, stack.push(cs.getNamedChild("expression", false), -1, null, null), cs.getNamedChildValue("expression", false), bases) && ok;
+      if (!bases.isEmpty()) {
+        ok = checkExpression(errors, stack.push(cs.getNamedChild("expression", false), -1, null, null), cs.getNamedChildValue("expression", false), bases) && ok;
+      }
     }
     String master = cs.getNamedChildValue("derivedFrom", false);
     if (!Utilities.noString(master)) {
