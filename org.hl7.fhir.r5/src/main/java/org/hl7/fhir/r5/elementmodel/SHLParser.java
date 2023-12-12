@@ -288,7 +288,7 @@ public class SHLParser extends ParserBase {
 
   private HTTPResult fetchFile(String url, String ct) throws IOException {
     SimpleHTTPClient fetcher = new SimpleHTTPClient();
-    fetcher.addHeader("Accept", ct);
+    fetcher.addHeader("accept", ct);
     HTTPResult res = fetcher.get(url);
     res.checkThrowException();
     return res;

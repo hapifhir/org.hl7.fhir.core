@@ -30,9 +30,9 @@ import okhttp3.Response;
 
 public class FhirRequestBuilder {
 
-  protected static final String HTTP_PROXY_USER = "http.proxyUser";
-  protected static final String HTTP_PROXY_PASS = "http.proxyPassword";
-  protected static final String HEADER_PROXY_AUTH = "Proxy-Authorization";
+  protected static final String HTTP_PROXY_USER_SYSTEM_PROPERTY = "http.proxyUser";
+  protected static final String HTTP_PROXY_PASS_SYSTEM_PROPERTY = "http.proxyPassword";
+  protected static final String PROXY_AUTHORIZATION_HEADER = "proxy-authorization";
   protected static final String LOCATION_HEADER = "location";
   protected static final String CONTENT_LOCATION_HEADER = "content-location";
   protected static final String DEFAULT_CHARSET = "UTF-8";
@@ -193,11 +193,11 @@ public class FhirRequestBuilder {
   @Nonnull
   private static Authenticator getAuthenticator() {
     return (route, response) -> {
-      final String httpProxyUser = System.getProperty(HTTP_PROXY_USER);
-      final String httpProxyPass = System.getProperty(HTTP_PROXY_PASS);
+      final String httpProxyUser = System.getProperty(HTTP_PROXY_USER_SYSTEM_PROPERTY);
+      final String httpProxyPass = System.getProperty(HTTP_PROXY_PASS_SYSTEM_PROPERTY);
       if (httpProxyUser != null && httpProxyPass != null) {
         String credential = Credentials.basic(httpProxyUser, httpProxyPass);
-        return response.request().newBuilder().header(HEADER_PROXY_AUTH, credential).build();
+        return response.request().newBuilder().header(PROXY_AUTHORIZATION_HEADER, credential).build();
       }
       return response.request().newBuilder().build();
     };

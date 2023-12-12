@@ -117,8 +117,8 @@ public class ValidatorCli {
   public static final String HTTPS_PROXY_HOST = "https.proxyHost";
 
   public static final String HTTPS_PROXY_PORT = "https.proxyPort";
-  public static final String HTTP_PROXY_USER = "http.proxyUser";
-  public static final String HTTP_PROXY_PASS = "http.proxyPassword";
+  public static final String HTTP_PROXY_USER_SYSTEM_PROPERTY = "http.proxyUser";
+  public static final String HTTP_PROXY_PASS_SYSTEM_PROPERTY = "http.proxyPassword";
   public static final String JAVA_DISABLED_TUNNELING_SCHEMES = "jdk.http.auth.tunneling.disabledSchemes";
   public static final String JAVA_DISABLED_PROXY_SCHEMES = "jdk.http.auth.proxying.disabledSchemes";
   public static final String JAVA_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
@@ -248,8 +248,8 @@ public class ValidatorCli {
         }
       );
 
-      System.setProperty(HTTP_PROXY_USER, authUser);
-      System.setProperty(HTTP_PROXY_PASS, authPass);
+      System.setProperty(HTTP_PROXY_USER_SYSTEM_PROPERTY, authUser);
+      System.setProperty(HTTP_PROXY_PASS_SYSTEM_PROPERTY, authPass);
       System.setProperty(JAVA_USE_SYSTEM_PROXIES, "true");
 
       /*
