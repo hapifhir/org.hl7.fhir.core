@@ -12,9 +12,9 @@ public class HumanName30_40 {
     if (src.hasUse()) tgt.setUseElement(convertNameUse(src.getUseElement()));
     if (src.hasText()) tgt.setTextElement(String30_40.convertString(src.getTextElement()));
     if (src.hasFamily()) tgt.setFamilyElement(String30_40.convertString(src.getFamilyElement()));
-    for (org.hl7.fhir.dstu3.model.StringType t : src.getGiven()) tgt.addGiven(t.getValue());
-    for (org.hl7.fhir.dstu3.model.StringType t : src.getPrefix()) tgt.addPrefix(t.getValue());
-    for (org.hl7.fhir.dstu3.model.StringType t : src.getSuffix()) tgt.addSuffix(t.getValue());
+    for (org.hl7.fhir.dstu3.model.StringType t : src.getGiven()) tgt.getGiven().add(String30_40.convertString(t));
+    for (org.hl7.fhir.dstu3.model.StringType t : src.getPrefix()) tgt.getPrefix().add(String30_40.convertString(t));
+    for (org.hl7.fhir.dstu3.model.StringType t : src.getSuffix()) tgt.getSuffix().add(String30_40.convertString(t));
     if (src.hasPeriod()) tgt.setPeriod(Period30_40.convertPeriod(src.getPeriod()));
     return tgt;
   }
@@ -26,9 +26,9 @@ public class HumanName30_40 {
     if (src.hasUse()) tgt.setUseElement(convertNameUse(src.getUseElement()));
     if (src.hasText()) tgt.setTextElement(String30_40.convertString(src.getTextElement()));
     if (src.hasFamily()) tgt.setFamilyElement(String30_40.convertString(src.getFamilyElement()));
-    for (org.hl7.fhir.r4.model.StringType t : src.getGiven()) tgt.addGiven(t.getValue());
-    for (org.hl7.fhir.r4.model.StringType t : src.getPrefix()) tgt.addPrefix(t.getValue());
-    for (org.hl7.fhir.r4.model.StringType t : src.getSuffix()) tgt.addSuffix(t.getValue());
+    for (org.hl7.fhir.r4.model.StringType t : src.getGiven()) tgt.getGiven().add(String30_40.convertString(t));
+    for (org.hl7.fhir.r4.model.StringType t : src.getPrefix()) tgt.getPrefix().add(String30_40.convertString(t));
+    for (org.hl7.fhir.r4.model.StringType t : src.getSuffix()) tgt.getSuffix().add(String30_40.convertString(t));
     if (src.hasPeriod()) tgt.setPeriod(Period30_40.convertPeriod(src.getPeriod()));
     return tgt;
   }
