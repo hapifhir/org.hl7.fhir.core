@@ -3,12 +3,8 @@ package org.hl7.fhir.utilities.npm;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -118,8 +114,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private JsonArray buildInfo;
   private boolean suppressErrors;
   private boolean minimalMemory;
- 
-  
+
   public FilesystemPackageCacheManager(boolean userMode) throws IOException {
     init(userMode ? FilesystemPackageCacheMode.USER : FilesystemPackageCacheMode.SYSTEM);  
   }
@@ -139,34 +134,33 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     init(FilesystemPackageCacheMode.CUSTOM);  
   }
 
-
-
   protected void init(FilesystemPackageCacheMode mode) throws IOException {
     initPackageServers();
 
-    switch (mode) {
-    case SYSTEM:
-      if (Utilities.isWindows()) {
-        cacheFolder = new File(Utilities.path(System.getenv("ProgramData"), ".fhir", "packages"));
-      } else {
-        cacheFolder = new File(Utilities.path("/var", "lib", ".fhir", "packages"));
-      }
-      break;
-    case USER:
-      cacheFolder = new File(Utilities.path(System.getProperty("user.home"), ".fhir", "packages"));
-      break;
-    case TESTING:
-      cacheFolder = new File(Utilities.path("[tmp]", ".fhir", "packages"));
-      break;
-    case CUSTOM:
-      if (!cacheFolder.exists()) {
+    if (mode == FilesystemPackageCacheMode.CUSTOM) {
+      if (!this.cacheFolder.exists()) {
         throw new FHIRException("The folder ''"+cacheFolder+"' could not be found");
       }
-    default:
-      break;    
+    } else {
+      this.cacheFolder = getCacheFolder(mode);
     }
-
     initCacheFolder();
+  }
+
+  public static File getCacheFolder(FilesystemPackageCacheMode mode) throws IOException {
+    switch (mode) {
+      case SYSTEM:
+        if (Utilities.isWindows()) {
+          return new File(Utilities.path(System.getenv("ProgramData"), ".fhir", "packages"));
+        } else {
+          return new File(Utilities.path("/var", "lib", ".fhir", "packages"));
+        }
+      case USER:
+        return new File(Utilities.path(System.getProperty("user.home"), ".fhir", "packages"));
+      case TESTING:
+        return new File(Utilities.path("[tmp]", ".fhir", "packages"));
+    }
+    return null;
   }
 
   protected void initCacheFolder() throws IOException {
@@ -254,7 +248,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private void clearCache() throws IOException {
     for (File f : cacheFolder.listFiles()) {
       if (f.isDirectory()) {
-        new CacheLock(f.getName()).doWithLock(() -> {
+        new FilesystemPackageCacheLock(cacheFolder, f.getName()).doWriteWithLock(() -> {
           Utilities.clearDirectory(f.getAbsolutePath());
           try {
             FileUtils.deleteDirectory(f);
@@ -399,7 +393,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * @throws IOException
    */
   public void removePackage(String id, String ver) throws IOException {
-    new CacheLock(id + "#" + ver).doWithLock(() -> {
+    new FilesystemPackageCacheLock(cacheFolder, id + "#" + ver).doWriteWithLock(() -> {
       String f = Utilities.path(cacheFolder, id + "#" + ver);
       File ff = new File(f);
       if (ff.exists()) {
@@ -490,7 +484,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     String v = version;
-    return new CacheLock(id + "#" + version).doWithLock(() -> {
+    return new FilesystemPackageCacheLock(cacheFolder, id + "#" + version).doWriteWithLock(() -> {
       NpmPackage pck = null;
       String packRoot = Utilities.path(cacheFolder, id + "#" + v);
       try {
@@ -1012,34 +1006,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     public PackageEntry(String name, byte[] bytes) {
       this.name = name;
       this.bytes = bytes;
-    }
-  }
-
-  public class CacheLock {
-
-    private final File lockFile;
-
-    public CacheLock(String name) throws IOException {
-      this.lockFile = new File(cacheFolder, name + ".lock");
-      if (!lockFile.isFile()) {
-        TextFile.stringToFile("", lockFile);
-      }
-    }
-
-    public <T> T doWithLock(CacheLockFunction<T> f) throws FileNotFoundException, IOException {
-      try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
-        final FileLock fileLock = channel.lock();
-        T result = null;
-        try {
-          result = f.get();
-        } finally {
-          fileLock.release();
-        }
-        if (!lockFile.delete()) {
-          lockFile.deleteOnExit();
-        }
-        return result;
-      }
     }
   }
 
