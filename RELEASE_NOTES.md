@@ -8,6 +8,11 @@
 * Improvements to vital signs related messages
 * Fix R4 con-3 FHIRPath expression
 * Fix bug loading packages with partially specified version that doesn't exist
+* Fix for occasional missing warnings around bundle link validation
+* Fix using wrong resource type when validating constraints in data type definitions during R6 build
+* Fix NPE in validator processing CCDA examples
+* Fix problem with version dependencies when loading npm packages directly as files
+* Fix for SearchParameter validation using custom resource types
 
 ## Other code changes
 
@@ -27,3 +32,9 @@
 * Remove dep used for local testing
 * Bump jackson & logback versions
 * Fix StringType element properties not being copied in various Address, HumanName convertors
+* Start checking HTTP header use for case insensitivity.
+* Handle all initial value types when rendering Questionnaires
+* Ensure Address.line[] element data is copied over
+* Write locking on FilesystemPackageCacheManager
+* Fix problems setting owning committee consistently
+
