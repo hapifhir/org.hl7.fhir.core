@@ -574,7 +574,7 @@ public class StructureDefinitionValidator extends BaseValidator {
                   fpe.checkOnTypes(vc, rootPath, types, fpe.parse(exp), warnings);
                 } else {
                   StructureDefinition sd = context.fetchTypeDefinition(rootPath);
-                  if (sd != null) {
+                  if (sd != null && sd.getKind() == StructureDefinitionKind.RESOURCE) {
                     fpe.checkOnTypes(vc, rootPath, types, fpe.parse(exp), warnings);
                   } else {
                     fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
