@@ -11,10 +11,10 @@ public class HumanName14_30 {
     ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
     if (src.hasUse()) tgt.setUseElement(convertNameUse(src.getUseElement()));
     if (src.hasText()) tgt.setTextElement(String14_30.convertString(src.getTextElement()));
-    for (org.hl7.fhir.dstu2016may.model.StringType t : src.getFamily()) tgt.setFamily(t.getValue());
-    for (org.hl7.fhir.dstu2016may.model.StringType t : src.getGiven()) tgt.addGiven(t.getValue());
-    for (org.hl7.fhir.dstu2016may.model.StringType t : src.getPrefix()) tgt.addPrefix(t.getValue());
-    for (org.hl7.fhir.dstu2016may.model.StringType t : src.getSuffix()) tgt.addSuffix(t.getValue());
+    for (org.hl7.fhir.dstu2016may.model.StringType t : src.getFamily()) tgt.setFamilyElement(String14_30.convertString(t));
+    for (org.hl7.fhir.dstu2016may.model.StringType t : src.getGiven()) tgt.getGiven().add(String14_30.convertString(t));
+    for (org.hl7.fhir.dstu2016may.model.StringType t : src.getPrefix()) tgt.getPrefix().add(String14_30.convertString(t));
+    for (org.hl7.fhir.dstu2016may.model.StringType t : src.getSuffix()) tgt.getSuffix().add(String14_30.convertString(t));
     if (src.hasPeriod()) tgt.setPeriod(Period14_30.convertPeriod(src.getPeriod()));
     return tgt;
   }
@@ -25,10 +25,10 @@ public class HumanName14_30 {
     ConversionContext14_30.INSTANCE.getVersionConvertor_14_30().copyElement(src, tgt);
     if (src.hasUse()) tgt.setUseElement(convertNameUse(src.getUseElement()));
     if (src.hasText()) tgt.setTextElement(String14_30.convertString(src.getTextElement()));
-    if (src.hasFamily()) tgt.addFamily(src.getFamily());
-    for (org.hl7.fhir.dstu3.model.StringType t : src.getGiven()) tgt.addGiven(t.getValue());
-    for (org.hl7.fhir.dstu3.model.StringType t : src.getPrefix()) tgt.addPrefix(t.getValue());
-    for (org.hl7.fhir.dstu3.model.StringType t : src.getSuffix()) tgt.addSuffix(t.getValue());
+    if (src.hasFamily()) tgt.getFamily().add(String14_30.convertString(src.getFamilyElement()));
+    for (org.hl7.fhir.dstu3.model.StringType t : src.getGiven()) tgt.getGiven().add(String14_30.convertString(t));
+    for (org.hl7.fhir.dstu3.model.StringType t : src.getPrefix()) tgt.getPrefix().add(String14_30.convertString(t));
+    for (org.hl7.fhir.dstu3.model.StringType t : src.getSuffix()) tgt.getSuffix().add(String14_30.convertString(t));
     if (src.hasPeriod()) tgt.setPeriod(Period14_30.convertPeriod(src.getPeriod()));
     return tgt;
   }
