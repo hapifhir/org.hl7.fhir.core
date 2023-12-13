@@ -32,9 +32,9 @@
 * Remove dep used for local testing
 * Bump jackson & logback versions
 * Fix StringType element properties not being copied in various Address, HumanName convertors
-* Start checking HTTP header use for case insensitivity.
 * Handle all initial value types when rendering Questionnaires
 * Ensure Address.line[] element data is copied over
 * Write locking on FilesystemPackageCacheManager
 * Fix problems setting owning committee consistently
+* Utility classes for fule system package cache pre-loading
 
