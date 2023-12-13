@@ -22,7 +22,6 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
-import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -39,7 +38,6 @@ import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
-import org.hl7.fhir.r5.elementmodel.SHLParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -445,7 +443,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
 
   private NpmPackage loadPackage(String idAndVer) throws IOException {
-    var pcm = new FilesystemPackageCacheManager(true);
+    var pcm = new FilesystemPackageCacheManager.Builder().build();
     return pcm.loadPackage(idAndVer);
   }
 

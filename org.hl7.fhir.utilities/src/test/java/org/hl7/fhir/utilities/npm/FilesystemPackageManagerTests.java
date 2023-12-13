@@ -56,7 +56,8 @@ public class FilesystemPackageManagerTests {
 
   @Nonnull
   private FilesystemPackageCacheManager getFilesystemPackageCacheManager(final boolean ignoreDefaultPackageServers) throws IOException {
-    return new FilesystemPackageCacheManager(FilesystemPackageCacheManager.FilesystemPackageCacheMode.TESTING) {
+
+    FilesystemPackageCacheManager.Builder builder = new FilesystemPackageCacheManager.Builder() {
       protected boolean isIgnoreDefaultPackageServers() {
         return ignoreDefaultPackageServers;
       }
@@ -70,14 +71,14 @@ public class FilesystemPackageManagerTests {
         return dummyPrivateServers;
       }
     };
+
+    return builder.build();
+
   }
 
   @Test
   public void testUserCacheDirectory() throws IOException {
-    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager(true) {
-      protected void initCacheFolder() throws IOException {
-      }
-    };
+    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager.Builder().build();
     assertEquals(System.getProperty("user.home") + File.separator + ".fhir" + File.separator + "packages", filesystemPackageCacheManager.getFolder());
   }
 
@@ -87,27 +88,22 @@ public class FilesystemPackageManagerTests {
   @Test
   @DisabledOnOs(OS.WINDOWS)
   public void testSystemCacheDirectory() throws IOException {
-    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager(false) {
-      protected void initCacheFolder() throws IOException {
-      }
-    };
-    assertEquals( "/var/lib/.fhir/packages", filesystemPackageCacheManager.getFolder());
+    File folder = new FilesystemPackageCacheManager.Builder().withSystemCacheFolder().getCacheFolder();
+
+    assertEquals( "/var/lib/.fhir/packages", folder.getAbsolutePath());
   }
 
   @Test
   @EnabledOnOs(OS.WINDOWS)
   public void testSystemCacheDirectoryWin() throws IOException {
-    FilesystemPackageCacheManager filesystemPackageCacheManager = new FilesystemPackageCacheManager(false) {
-      protected void initCacheFolder() throws IOException {
-      }
-    };
-    assertEquals( System.getenv("ProgramData") + "\\.fhir\\packages", filesystemPackageCacheManager.getFolder());
+    File folder = new FilesystemPackageCacheManager.Builder().withSystemCacheFolder().getCacheFolder();
+    assertEquals( System.getenv("ProgramData") + "\\.fhir\\packages", folder.getAbsolutePath());
   }
 
   @Test
   public void multithreadingTest() throws IOException {
     String pcmPath = Files.createTempDirectory("fpcm-multithreadingTest").toFile().getAbsolutePath();
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(pcmPath);
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
 
     final AtomicInteger totalSuccessful = new AtomicInteger();
 

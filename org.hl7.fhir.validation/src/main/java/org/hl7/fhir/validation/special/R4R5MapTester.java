@@ -167,7 +167,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
     log("Load Test Outcomes");
     JsonObject json = JsonParser.parseObjectFromFile(Utilities.path(src, "input", "_data", "conversions.json"));
     log("Load R5");
-    pcm = new FilesystemPackageCacheManager(true);
+    pcm = new FilesystemPackageCacheManager.Builder().build();
     context = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(pcm.loadPackage("hl7.fhir.r5.core#current"));
     log("Load Maps");
 //     context.loadFromPackage(pcm.loadPackage(), null);
