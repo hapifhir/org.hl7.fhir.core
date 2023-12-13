@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors.analytics;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,6 +32,16 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class PackageVisitor {
+
+  private PackageServer clientPackageServer = null;
+
+  public void setClientPackageServer(PackageServer packageServer) {
+    this.clientPackageServer = packageServer;
+  }
+  private List<PackageServer> cachePackageServers = null;
+  public void setCachePackageServers(List<PackageServer> packageServers) {
+    this.cachePackageServers = packageServers;
+  }
 
   public static class PackageContext {
     private String pid;
@@ -145,8 +154,13 @@ public class PackageVisitor {
 
   public void visitPackages() throws IOException, ParserConfigurationException, SAXException, FHIRException, EOperationOutcome {
     System.out.println("Finding packages");
-    pc = new PackageClient(PackageServer.primaryServer());
-    pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+    pc = clientPackageServer == null
+      ? new PackageClient(PackageServer.primaryServer())
+      : new PackageClient(clientPackageServer);
+
+    pcm = cachePackageServers == null
+      ? new FilesystemPackageCacheManager.Builder().build()
+      : new FilesystemPackageCacheManager.Builder().withPackageServers(cachePackageServers).build();
 
     Set<String> pidList = getAllPackages();
 
@@ -338,9 +352,14 @@ public class PackageVisitor {
     String fv = null;
     try {
       npm = pcm.loadPackage(pid, v);
+    } catch (Throwable e) {
+      System.out.println("Unable to load package: "+pid+"#"+v+": "+e.getMessage());
+    }
+
+    try {
       fv = npm.fhirVersion();
     } catch (Throwable e) {
-      System.out.println("Unable to process: "+pid+"#"+v+": "+e.getMessage());      
+      System.out.println("Unable to identify package FHIR version:: "+pid+"#"+v+": "+e.getMessage());
     }
     if (corePackages || !corePackage(npm)) {
       PackageContext ctxt = new PackageContext(pid+"#"+v, npm, fv);

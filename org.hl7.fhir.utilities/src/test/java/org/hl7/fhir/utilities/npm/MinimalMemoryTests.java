@@ -17,7 +17,7 @@ public class MinimalMemoryTests {
     } else {
       Utilities.createDirectory(folder.getAbsolutePath());
     }
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(folder.getAbsolutePath());
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(folder.getAbsolutePath()).build();
     pcm.setMinimalMemory(true);
     NpmPackage npm = pcm.loadPackage("hl7.fhir.us.core", "5.0.0");
     Assertions.assertTrue(npm.isMinimalMemory());
