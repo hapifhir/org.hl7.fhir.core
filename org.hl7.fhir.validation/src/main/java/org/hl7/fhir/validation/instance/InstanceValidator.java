@@ -4311,7 +4311,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         StructureDefinition sdt = context.fetchTypeDefinition(type);
         StructureDefinition tt = sdt;
         while (tt != null) {
-          if (tt.getBaseDefinition().equals(sd.getUrl())) {
+          if (sd.getUrl().equals(tt.getBaseDefinition())) {
             return sdt;
           }
           tt = context.fetchResource(StructureDefinition.class, tt.getBaseDefinition());
