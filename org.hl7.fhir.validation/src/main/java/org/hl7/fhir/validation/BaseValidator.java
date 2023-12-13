@@ -172,6 +172,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected boolean warnOnDraftOrExperimental; 
   protected Set<String> statusWarnings = new HashSet<>();  
   protected BestPracticeWarningLevel bpWarnings = BestPracticeWarningLevel.Warning;
+  protected String sessionId = Utilities.makeUuidLC();
 
 
   public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager, boolean debug) {
@@ -1083,8 +1084,8 @@ public class BaseValidator implements IValidationContextResourceLoader {
           String tt = extractResourceType(ref);
           ok = VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(tt);
         }
-        if (!ok && stack != null && !source.hasUserData("bundle.error.noted")) {
-          source.setUserData("bundle.error.noted", true);          
+        if (!ok && stack != null && !sessionId.equals(source.getUserString("bundle.error.noted"))) {
+          source.setUserData("bundle.error.noted", sessionId);          
           hintOrError(!isWarning, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, ref, name);
         }
         return null;
@@ -1092,17 +1093,17 @@ public class BaseValidator implements IValidationContextResourceLoader {
         if (fragment != null) {
           int i = countFragmentMatches(el.get(0), fragment);
           if (i == 0) {
-            source.setUserData("bundle.error.noted", true);
+            source.setUserData("bundle.error.noted", sessionId);
             hintOrError(isNLLink, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT, ref, fragment, name);            
           } else if (i > 1) {
-            source.setUserData("bundle.error.noted", true);
+            source.setUserData("bundle.error.noted", sessionId);
             rule(errors, "2023-11-15", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE_FRAGMENT, i, ref, fragment, name);            
           }
         }
         return el.get(0);
       } else {
-        if (stack != null && !source.hasUserData("bundle.error.noted")) {
-          source.setUserData("bundle.error.noted", true);
+        if (stack != null && !sessionId.equals(source.getUserString("bundle.error.noted"))) {
+          source.setUserData("bundle.error.noted", sessionId);
           rule(errors, "2023-11-15", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE, el.size(), ref, name);
         }
         return null;
@@ -1118,8 +1119,8 @@ public class BaseValidator implements IValidationContextResourceLoader {
         if (el.size() == 1) {
           return el.get(0);
         } else {
-          if (stack != null && !source.hasUserData("bundle.error.noted")) {
-            source.setUserData("bundle.error.noted", true);
+          if (stack != null && !sessionId.equals(source.getUserString("bundle.error.noted"))) {
+            source.setUserData("bundle.error.noted", sessionId);
             rule(errors, "2023-11-15", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_FOUND_MULTIPLE, el.size(), ref, name);
           }
           return null;
@@ -1140,17 +1141,17 @@ public class BaseValidator implements IValidationContextResourceLoader {
               if (!VersionUtilities.isR4Plus(context.getVersion())) {
                 if (el.size() == 1) {
                   return el.get(0);
-                } else if (stack != null && !source.hasUserData("bundle.error.noted")) {
-                  source.setUserData("bundle.error.noted", true);
+                } else if (stack != null && !sessionId.equals(source.getUserString("bundle.error.noted"))) {
+                  source.setUserData("bundle.error.noted", sessionId);
                   rulePlural(errors, "2023-11-15", IssueType.INVALID, stack, false, el.size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT, ref, name, CommaSeparatedStringBuilder.join(",", Utilities.sorted(tl)));
                 }
-              } else if (stack != null && !source.hasUserData("bundle.error.noted")) {
-                source.setUserData("bundle.error.noted", true);
+              } else if (stack != null && !sessionId.equals(source.getUserString("bundle.error.noted"))) {
+                source.setUserData("bundle.error.noted", sessionId);
                 rulePlural(errors, "2023-11-15", IssueType.INVALID, stack, false, el.size(), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT, ref, name, CommaSeparatedStringBuilder.join(",", Utilities.sorted(tl)));
               }
             } else {
-              if (stack != null && !source.hasUserData("bundle.error.noted")) {
-                source.setUserData("bundle.error.noted", true);
+              if (stack != null && !sessionId.equals(source.getUserString("bundle.error.noted"))) {
+                source.setUserData("bundle.error.noted", sessionId);
                 hintOrError(!isWarning, errors, NO_RULE_DATE, IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOTFOUND, ref, name);
               }            
             }
