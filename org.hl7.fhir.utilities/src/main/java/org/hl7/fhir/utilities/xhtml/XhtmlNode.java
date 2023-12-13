@@ -538,7 +538,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       this.nodeType= root.getNodeType();
     } catch (Exception e) {
       // TODO: composer shouldn't throw exception like this
-      throw new RuntimeException(e);
+      //throw new RuntimeException(e);
     }
   }
 
