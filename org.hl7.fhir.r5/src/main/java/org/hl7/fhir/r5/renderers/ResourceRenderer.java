@@ -39,8 +39,10 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 
 public abstract class ResourceRenderer extends DataRenderer {
 
@@ -215,6 +217,82 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   public void renderReference(ResourceWrapper rw, XhtmlNode x, Reference r) throws UnsupportedEncodingException, IOException {
     renderReference(rw, x, r, true); 
+  }
+
+  public void renderReference(Resource res, HierarchicalTableGenerator gen, List<Piece> pieces, Reference r, boolean allowLinks) throws UnsupportedEncodingException, IOException {
+    if (r == null) { 
+      pieces.add(gen.new Piece(null, "null!", null));
+      return;
+    }
+    ResourceWrapper rw = new ResourceWrapperDirect(this.context, res);
+    ResourceWithReference tr = null;
+    String link = null;
+    StringBuilder text = new StringBuilder();
+    if (r.hasReferenceElement() && allowLinks) {
+      tr = resolveReference(rw, r.getReference());
+
+      if (!r.getReference().startsWith("#")) {
+        if (tr != null && tr.getReference() != null) {
+          link = tr.getReference();
+        } else if (r.getReference().contains("?")) {
+          text.append("Conditional Reference: ");
+        } else {
+          link = r.getReference();
+        }
+      } 
+    }
+    if (tr != null && tr.getReference() != null && tr.getReference().startsWith("#")) {
+      text.append("See above (");
+    }
+    // what to display: if text is provided, then that. if the reference was resolved, then show the name, or the generated narrative
+    String display = r.hasDisplayElement() ? r.getDisplay() : null;
+    String name = tr != null && tr.getResource() != null ? tr.getResource().getNameFromResource() : null; 
+    
+    if (display == null && (tr == null || tr.getResource() == null)) {
+      if (!Utilities.noString(r.getReference())) {
+        text.append(r.getReference());
+      } else if (r.hasIdentifier()) {
+        text.append(displayIdentifier(r.getIdentifier()));
+      } else {
+        text.append("??");        
+      }
+    } else if (context.isTechnicalMode()) {
+      text.append(r.getReference());
+      if (display != null) {
+        text.append(": "+display);
+      }
+      if ((tr == null || (tr.getReference() != null && !tr.getReference().startsWith("#"))) && name != null) {
+        text.append(" \""+name+"\"");
+      }
+      if (r.hasExtension(ToolingExtensions.EXT_TARGET_ID) || r.hasExtension(ToolingExtensions.EXT_TARGET_PATH)) {
+        text.append("(");
+        for (Extension ex : r.getExtensionsByUrl(ToolingExtensions.EXT_TARGET_ID)) {
+          if (ex.hasValue()) {
+            text.append(", ");
+            text.append("#"+ex.getValue().primitiveValue());
+          }
+        }
+        for (Extension ex : r.getExtensionsByUrl(ToolingExtensions.EXT_TARGET_PATH)) {
+          if (ex.hasValue()) {
+            text.append(", ");
+            text.append("/#"+ex.getValue().primitiveValue());
+          }
+        }
+        text.append(")");
+      }  
+    } else {
+      if (display != null) {
+        text.append(display);
+      } else if (name != null) {
+        text.append(name);
+      } else {
+        text.append(". Description: (todo)");
+      }
+    }
+    if (tr != null && tr.getReference() != null && tr.getReference().startsWith("#")) {
+      text.append(")");
+    }      
+    pieces.add(gen.new Piece(link,text.toString(), null));
   }
   
   public void renderReference(ResourceWrapper rw, XhtmlNode x, Reference r, boolean allowLinks) throws UnsupportedEncodingException, IOException {

@@ -350,8 +350,14 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         defn.getPieces().add(gen.new Piece(null, " = ", null));
         if (v.getValue().isPrimitive()) {
           defn.getPieces().add(gen.new Piece(null, v.getValue().primitiveValue(), null));
-        } else {
+        } else if (v.hasValueCoding()) {
           renderCoding(gen, defn.getPieces(), v.getValueCoding());          
+        } else if (v.hasValueQuantity()) {
+          renderQuantity(gen, defn.getPieces(), v.getValueQuantity(), false);        
+        } else if (v.hasValueReference()) {
+          renderReference(q, gen, defn.getPieces(), v.getValueReference(), true);       
+        } else if (v.hasValueAttachment()) {
+          // renderAttachment(gen, defn.getPieces(), v.getValueAttachment());          
         }
       }
     }
@@ -528,8 +534,14 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         defn.getPieces().add(gen.new Piece(null, " = ", null));
         if (v.getValue().isPrimitive()) {
           defn.getPieces().add(gen.new Piece(null, v.getValue().primitiveValue(), null));
-        } else {
+        } else if (v.hasValueCoding()) {
           renderCoding(gen, defn.getPieces(), v.getValueCoding());          
+        } else if (v.hasValueQuantity()) {
+          renderQuantity(gen, defn.getPieces(), v.getValueQuantity(), false);          
+        } else if (v.hasValueReference()) {
+          renderReference(q, gen, defn.getPieces(), v.getValueReference(), false);          
+//        } else if (v.hasValueAttachment()) {
+//          renderAttachment(gen, defn.getPieces(), v.getValueAttachment());          
         }
       }
     }
@@ -759,8 +771,14 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         if (first) first = false; else vi.tx(", ");
         if (v.getValue().isPrimitive()) {
           vi.tx(v.getValue().primitiveValue());
-        } else {
+        } else if (v.hasValueCoding()) {
           renderCoding(vi, v.getValueCoding(), true);           
+        } else if (v.hasValueReference()) {
+          renderReference(vi, v.getValueReference());           
+        } else if (v.hasValueQuantity()) {
+          renderQuantity(vi, v.getValueQuantity());           
+//        } else if (v.hasValueAttachment()) {
+//          renderAttachment(vi, v.getValueAttachment());           
         }
       }
     }
