@@ -10,7 +10,6 @@ import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 import org.hl7.fhir.r4b.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.r4b.utils.structuremap.ITransformerServices;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -24,8 +23,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
 
   @BeforeAll
   static public void setUp() throws Exception {
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(
-        org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
   }
 

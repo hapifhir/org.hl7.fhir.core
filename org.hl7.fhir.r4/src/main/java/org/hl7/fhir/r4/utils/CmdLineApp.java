@@ -11,7 +11,6 @@ import org.hl7.fhir.r4.context.SimpleWorkerContext;
 import org.hl7.fhir.r4.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
-import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.Bundle;
@@ -27,8 +26,6 @@ import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.r4.model.HumanName;
-import org.hl7.fhir.r4.model.Immunization;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Procedure;
@@ -55,7 +52,7 @@ public class CmdLineApp {
 
   private void execute() throws IOException {
     System.out.print("Loading...");
-    NpmPackage npm = new FilesystemPackageCacheManager(true).loadPackage("hl7.fhir.r4.core");
+    NpmPackage npm = new FilesystemPackageCacheManager.Builder().build().loadPackage("hl7.fhir.r4.core");
     context = SimpleWorkerContext.fromPackage(npm);
     fpe = new FHIRPathEngine(context);
     System.out.println(" Done");

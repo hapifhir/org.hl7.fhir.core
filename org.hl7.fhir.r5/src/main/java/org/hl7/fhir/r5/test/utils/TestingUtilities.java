@@ -13,15 +13,12 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
-import org.hl7.fhir.r5.utils.R5Hacker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager.InputStreamWithSrc;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.IPackageProvider;
 import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.hl7.fhir.utilities.tests.TestConfig;
 
@@ -80,7 +77,7 @@ public class TestingUtilities extends BaseTestingUtilities {
 
     FilesystemPackageCacheManager pcm;
     try {
-      pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+      pcm = new FilesystemPackageCacheManager.Builder().build();
       IWorkerContext fcontext = null;
       if (VersionUtilities.isR5Ver(version)) {
         // for purposes of stability, the R5 core package comes from the test case repository
