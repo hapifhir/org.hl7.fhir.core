@@ -11,10 +11,10 @@ public class HumanName10_40 {
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasUse()) tgt.setUseElement(convertNameUse(src.getUseElement()));
     if (src.hasTextElement()) tgt.setTextElement(String10_40.convertString(src.getTextElement()));
-    for (org.hl7.fhir.dstu2.model.StringType t : src.getFamily()) tgt.setFamily(t.getValue());
-    for (org.hl7.fhir.dstu2.model.StringType t : src.getGiven()) tgt.addGiven(t.getValue());
-    for (org.hl7.fhir.dstu2.model.StringType t : src.getPrefix()) tgt.addPrefix(t.getValue());
-    for (org.hl7.fhir.dstu2.model.StringType t : src.getSuffix()) tgt.addSuffix(t.getValue());
+    for (org.hl7.fhir.dstu2.model.StringType t : src.getFamily()) tgt.setFamilyElement(String10_40.convertString(t));
+    for (org.hl7.fhir.dstu2.model.StringType t : src.getGiven()) tgt.getGiven().add(String10_40.convertString(t));
+    for (org.hl7.fhir.dstu2.model.StringType t : src.getPrefix()) tgt.getPrefix().add(String10_40.convertString(t));
+    for (org.hl7.fhir.dstu2.model.StringType t : src.getSuffix()) tgt.getSuffix().add(String10_40.convertString(t));
     if (src.hasPeriod()) tgt.setPeriod(Period10_40.convertPeriod(src.getPeriod()));
     return tgt;
   }
@@ -25,10 +25,10 @@ public class HumanName10_40 {
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasUse()) tgt.setUseElement(convertNameUse(src.getUseElement()));
     if (src.hasTextElement()) tgt.setTextElement(String10_40.convertString(src.getTextElement()));
-    if (src.hasFamily()) tgt.addFamily(src.getFamily());
-    for (org.hl7.fhir.r4.model.StringType t : src.getGiven()) tgt.addGiven(t.getValue());
-    for (org.hl7.fhir.r4.model.StringType t : src.getPrefix()) tgt.addPrefix(t.getValue());
-    for (org.hl7.fhir.r4.model.StringType t : src.getSuffix()) tgt.addSuffix(t.getValue());
+    if (src.hasFamily()) tgt.getFamily().add(String10_40.convertString(src.getFamilyElement()));
+    for (org.hl7.fhir.r4.model.StringType t : src.getGiven()) tgt.getGiven().add(String10_40.convertString(t));
+    for (org.hl7.fhir.r4.model.StringType t : src.getPrefix()) tgt.getPrefix().add(String10_40.convertString(t));
+    for (org.hl7.fhir.r4.model.StringType t : src.getSuffix()) tgt.getSuffix().add(String10_40.convertString(t));
     if (src.hasPeriod()) tgt.setPeriod(Period10_40.convertPeriod(src.getPeriod()));
     return tgt;
   }

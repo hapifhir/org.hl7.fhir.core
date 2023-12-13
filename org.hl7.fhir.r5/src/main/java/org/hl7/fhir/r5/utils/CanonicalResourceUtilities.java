@@ -6,6 +6,8 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CompartmentDefinition;
 import org.hl7.fhir.r5.model.Constants;
+import org.hl7.fhir.r5.model.ContactDetail;
+import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.utilities.HL7WorkGroups;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -14,17 +16,33 @@ import org.hl7.fhir.utilities.xml.XMLUtil;
 public class CanonicalResourceUtilities {
 
   public static void setHl7WG(CanonicalResource cr, String wgc) {
+    if ("http://hl7.org/fhir/days-of-week".equals(cr.getUrl())) {
+      System.out.println("!");
+    }
     var wg = HL7WorkGroups.find(wgc);
     if (wg == null) {
       throw new Error("Unknown WG "+wgc);
     }
     ToolingExtensions.setCodeExtension(cr, ToolingExtensions.EXT_WORKGROUP, wg.getCode());
     cr.setPublisher("HL7 International / "+wg.getName());
-    cr.getContact().clear();
-    cr.addContact().addTelecom().setSystem(ContactPointSystem.URL).setValue(wg.getLink());
+    boolean found = false;
+    for (ContactDetail c : cr.getContact()) {
+      for (ContactPoint t : c.getTelecom()) {
+        if ((t.getSystem() == ContactPointSystem.URL) && wg.getLink().equals(t.getValue())) {
+          found = true;
+        }
+      }
+    }
+    if (!found) {
+      cr.addContact().addTelecom().setSystem(ContactPointSystem.URL).setValue(wg.getLink());
+    }
   }
 
   public static void setHl7WG(CanonicalResource cr) {
+    if ("http://hl7.org/fhir/days-of-week".equals(cr.getUrl())) {
+      System.out.println("!");
+    }
+
     String wgc = ToolingExtensions.readStringExtension(cr, ToolingExtensions.EXT_WORKGROUP);
     if (wgc == null) {
       wgc = "fhir";      
@@ -35,8 +53,17 @@ public class CanonicalResourceUtilities {
     }
     ToolingExtensions.setCodeExtension(cr, ToolingExtensions.EXT_WORKGROUP, wg.getCode());
     cr.setPublisher("HL7 International / "+wg.getName());
-    cr.getContact().clear();
-    cr.addContact().addTelecom().setSystem(ContactPointSystem.URL).setValue(wg.getLink());
+    boolean found = false;
+    for (ContactDetail c : cr.getContact()) {
+      for (ContactPoint t : c.getTelecom()) {
+        if ((t.getSystem() == ContactPointSystem.URL) && wg.getLink().equals(t.getValue())) {
+          found = true;
+        }
+      }
+    }
+    if (!found) {
+      cr.addContact().addTelecom().setSystem(ContactPointSystem.URL).setValue(wg.getLink());
+    }
   }
 
   public static void setHl7WG(Element res, String code) {

@@ -12,7 +12,7 @@ public class Address30_50 {
     if (src.hasUse()) tgt.setUseElement(convertAddressUse(src.getUseElement()));
     if (src.hasType()) tgt.setTypeElement(convertAddressType(src.getTypeElement()));
     if (src.hasText()) tgt.setTextElement(String30_50.convertString(src.getTextElement()));
-    for (org.hl7.fhir.dstu3.model.StringType t : src.getLine()) tgt.addLine(t.getValue());
+    for (org.hl7.fhir.dstu3.model.StringType t : src.getLine()) tgt.getLine().add(String30_50.convertString(t));
     if (src.hasCity()) tgt.setCityElement(String30_50.convertString(src.getCityElement()));
     if (src.hasDistrict()) tgt.setDistrictElement(String30_50.convertString(src.getDistrictElement()));
     if (src.hasState()) tgt.setStateElement(String30_50.convertString(src.getStateElement()));
@@ -29,7 +29,7 @@ public class Address30_50 {
     if (src.hasUse()) tgt.setUseElement(convertAddressUse(src.getUseElement()));
     if (src.hasType()) tgt.setTypeElement(convertAddressType(src.getTypeElement()));
     if (src.hasText()) tgt.setTextElement(String30_50.convertString(src.getTextElement()));
-    for (org.hl7.fhir.r5.model.StringType t : src.getLine()) tgt.addLine(t.getValue());
+    for (org.hl7.fhir.r5.model.StringType t : src.getLine()) tgt.getLine().add(String30_50.convertString(t));
     if (src.hasCity()) tgt.setCityElement(String30_50.convertString(src.getCityElement()));
     if (src.hasDistrict()) tgt.setDistrictElement(String30_50.convertString(src.getDistrictElement()));
     if (src.hasState()) tgt.setStateElement(String30_50.convertString(src.getStateElement()));

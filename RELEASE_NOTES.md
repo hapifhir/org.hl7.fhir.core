@@ -26,3 +26,4 @@
 * Fix commonmark group and bump version (#1500)
 * Remove dep used for local testing
 * Bump jackson & logback versions
+* Fix StringType element properties not being copied in various Address, HumanName convertors

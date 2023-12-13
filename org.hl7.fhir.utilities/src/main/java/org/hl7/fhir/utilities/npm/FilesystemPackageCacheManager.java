@@ -3,12 +3,8 @@ package org.hl7.fhir.utilities.npm;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -273,7 +269,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private void clearCache() throws IOException {
     for (File f : cacheFolder.listFiles()) {
       if (f.isDirectory()) {
-        new CacheLock(f.getName()).doWithLock(() -> {
+        new FilesystemPackageCacheLock(cacheFolder, f.getName()).doWriteWithLock(() -> {
           Utilities.clearDirectory(f.getAbsolutePath());
           try {
             FileUtils.deleteDirectory(f);
@@ -418,7 +414,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    * @throws IOException
    */
   public void removePackage(String id, String ver) throws IOException {
-    new CacheLock(id + "#" + ver).doWithLock(() -> {
+    new FilesystemPackageCacheLock(cacheFolder, id + "#" + ver).doWriteWithLock(() -> {
       String f = Utilities.path(cacheFolder, id + "#" + ver);
       File ff = new File(f);
       if (ff.exists()) {
@@ -509,7 +505,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     String v = version;
-    return new CacheLock(id + "#" + version).doWithLock(() -> {
+    return new FilesystemPackageCacheLock(cacheFolder, id + "#" + version).doWriteWithLock(() -> {
       NpmPackage pck = null;
       String packRoot = Utilities.path(cacheFolder, id + "#" + v);
       try {
@@ -1031,34 +1027,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     public PackageEntry(String name, byte[] bytes) {
       this.name = name;
       this.bytes = bytes;
-    }
-  }
-
-  public class CacheLock {
-
-    private final File lockFile;
-
-    public CacheLock(String name) throws IOException {
-      this.lockFile = new File(cacheFolder, name + ".lock");
-      if (!lockFile.isFile()) {
-        TextFile.stringToFile("", lockFile);
-      }
-    }
-
-    public <T> T doWithLock(CacheLockFunction<T> f) throws FileNotFoundException, IOException {
-      try (FileChannel channel = new RandomAccessFile(lockFile, "rw").getChannel()) {
-        final FileLock fileLock = channel.lock();
-        T result = null;
-        try {
-          result = f.get();
-        } finally {
-          fileLock.release();
-        }
-        if (!lockFile.delete()) {
-          lockFile.deleteOnExit();
-        }
-        return result;
-      }
     }
   }
 

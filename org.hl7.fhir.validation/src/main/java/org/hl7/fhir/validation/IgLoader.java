@@ -105,6 +105,14 @@ public class IgLoader implements IValidationEngineLoader {
     }
 
     NpmPackage npm = srcPackage.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !new File(srcPackage).exists() ? getPackageCacheManager().loadPackage(srcPackage, null) : null;
+    if (npm == null && new File(srcPackage).exists()) {
+      // try treating the file as an npm
+      try {
+        npm = NpmPackage.fromPackage(new FileInputStream(srcPackage));
+      } catch (Exception e) {
+        // nothing - any errors will be properly handled later in the process
+      }
+    }
     if (npm != null) {
       for (String s : npm.dependencies()) {
         if (!getContext().getLoadedPackages().contains(s)) {

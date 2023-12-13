@@ -4,7 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nonnull;
 
@@ -95,5 +98,38 @@ public class FilesystemPackageManagerTests {
   public void testSystemCacheDirectoryWin() throws IOException {
     File folder = new FilesystemPackageCacheManager.Builder().withSystemCacheFolder().getCacheFolder();
     assertEquals( System.getenv("ProgramData") + "\\.fhir\\packages", folder.getAbsolutePath());
+  }
+
+  @Test
+  public void multithreadingTest() throws IOException {
+    String pcmPath = Files.createTempDirectory("fpcm-multithreadingTest").toFile().getAbsolutePath();
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
+
+    final AtomicInteger totalSuccessful = new AtomicInteger();
+
+    List<Thread> threads = new ArrayList<>();
+    for (int i = 0; i < 3; i++) {
+      final int index = i;
+      Thread t = new Thread(() -> {
+        try {
+          pcm.loadPackage("hl7.fhir.xver-extensions#0.0.12");
+          totalSuccessful.incrementAndGet();
+          System.out.println("Thread " + index + " completed");
+        } catch (Exception e) {
+          e.printStackTrace();
+          System.err.println("Thread " + index + " failed");
+        }
+      });
+      t.start();
+      threads.add(t);
+    }
+    threads.forEach(t -> {
+      try {
+        t.join();
+      } catch (InterruptedException e) {
+
+      }
+    });
+    assertEquals(3, totalSuccessful.get());
   }
 }
