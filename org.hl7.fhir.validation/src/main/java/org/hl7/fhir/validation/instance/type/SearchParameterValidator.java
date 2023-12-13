@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Operation;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
 import org.hl7.fhir.r5.model.SearchParameter;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -45,9 +46,15 @@ public class SearchParameterValidator extends BaseValidator {
     if (cs.hasChild("expression", false)) {
       List<String> bases = new ArrayList<>();
       for (Element b : cs.getChildrenByName("base")) {
-        bases.add(b.primitiveValue());
+        if (b.hasExtension(ToolingExtensions.EXT_SEARCH_PARAMETER_BASE)) {
+          bases.add(b.getExtensionValue(ToolingExtensions.EXT_SEARCH_PARAMETER_BASE).primitiveValue());
+        } else {
+          bases.add(b.primitiveValue());
+        }
       }
-      ok = checkExpression(errors, stack.push(cs.getNamedChild("expression", false), -1, null, null), cs.getNamedChildValue("expression", false), bases) && ok;
+      if (!bases.isEmpty()) { // that'd be an error somewhere else
+        ok = checkExpression(errors, stack.push(cs.getNamedChild("expression", false), -1, null, null), cs.getNamedChildValue("expression", false), bases) && ok;
+      }
     }
     String master = cs.getNamedChildValue("derivedFrom", false);
     if (!Utilities.noString(master)) {
