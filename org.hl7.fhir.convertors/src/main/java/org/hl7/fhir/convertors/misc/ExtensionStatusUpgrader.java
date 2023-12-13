@@ -25,7 +25,7 @@ public class ExtensionStatusUpgrader implements IResourceObserver {
   Map<String, CanonicalResource> r5 = new HashMap<>();
 
   private void execute(String folder) throws IOException {
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true);
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     
     // load R4
     NpmPackage npm = pcm.loadPackage("hl7.fhir.r4.core");

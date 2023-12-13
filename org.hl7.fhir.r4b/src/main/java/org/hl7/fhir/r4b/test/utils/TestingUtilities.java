@@ -20,8 +20,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
+
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -85,8 +84,7 @@ public class TestingUtilities extends BaseTestingUtilities {
     if (!fcontexts.containsKey(v)) {
       FilesystemPackageCacheManager pcm;
       try {
-        pcm = new FilesystemPackageCacheManager(
-            org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+        pcm = new FilesystemPackageCacheManager.Builder().build();
         IWorkerContext fcontext = SimpleWorkerContext
             .fromPackage(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
         fcontext.setUcumService(

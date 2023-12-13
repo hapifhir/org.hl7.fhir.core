@@ -3,23 +3,13 @@ package org.hl7.fhir.r5.profiles;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Observation;
-import org.hl7.fhir.r5.model.Patient;
-import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
@@ -36,7 +26,7 @@ public class GeneratedPEModelTest {
   public void load() throws Exception {
     if (ctxt == null) {
       ctxt = TestingUtilities.getSharedWorkerContext();
-      FilesystemPackageCacheManager pc = new FilesystemPackageCacheManager(true);
+      FilesystemPackageCacheManager pc = new FilesystemPackageCacheManager.Builder().build();
       NpmPackage npm = pc.loadPackage("hl7.fhir.us.core", "5.0.0");
       ctxt.loadFromPackage(npm, new TestPackageLoader(Utilities.strings("StructureDefinition" )));
       

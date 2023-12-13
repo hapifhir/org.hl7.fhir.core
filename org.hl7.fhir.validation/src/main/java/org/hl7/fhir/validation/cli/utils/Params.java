@@ -69,6 +69,8 @@ public class Params {
   public static final String LEFT = "-left";
   public static final String RIGHT = "-right";
   public static final String NO_INTERNAL_CACHING = "-no-internal-caching";
+
+  public static final String PRELOAD_CACHE = "-preload-cache";
   public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
   public static final String NO_UNICODE_BIDI_CONTROL_CHARS = "-no_unicode_bidi_control_chars";
   public static final String NO_INVARIANTS = "-no-invariants";
