@@ -749,7 +749,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     }
   }
 
-  private void renderReference(XhtmlNode x, Reference ref) {
+  protected void renderReference(XhtmlNode x, Reference ref) {
      if (ref.hasDisplay()) {
        x.tx(ref.getDisplay());
      } else if (ref.hasReference()) {
@@ -1199,7 +1199,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     }
   }
 
-  private String displayIdentifier(Identifier ii) {
+  protected String displayIdentifier(Identifier ii) {
     String s = Utilities.noString(ii.getValue()) ? "?ngen-9?" : ii.getValue();
     NamingSystem ns = context.getContext().getNSUrlMap().get(ii.getSystem());
     if (ns != null) {
@@ -1526,6 +1526,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (showCodeDetails && q.hasCode()) {
       x.span("background: LightGoldenRodYellow", null).tx(" (Details: "+TerminologyRenderer.describeSystem(q.getSystem())+" code "+q.getCode()+" = '"+lookupCode(q.getSystem(), null, q.getCode())+"')");
     }
+  }
+
+  
+  protected void renderQuantity(HierarchicalTableGenerator gen, List<Piece> pieces, Quantity q, boolean showCodeDetails) {
+    pieces.add(gen.new Piece(null, displayQuantity(q), null));
   }
 
   public String displayRange(Range q) {

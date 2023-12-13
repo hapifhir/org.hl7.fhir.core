@@ -75,6 +75,8 @@ public class BundleValidator extends BaseValidator {
 
   public boolean validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidationContext hostContext, PercentageTracker pct, ValidationMode mode) {
     boolean ok = true;
+    sessionId = Utilities.makeUuidLC();
+    
     String type = bundle.getNamedChildValue(TYPE, false);
     type = StringUtils.defaultString(type);
     List<Element> entries = new ArrayList<Element>();
