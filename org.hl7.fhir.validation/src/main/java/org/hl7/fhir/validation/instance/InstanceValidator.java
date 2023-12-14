@@ -162,6 +162,7 @@ import org.hl7.fhir.r5.utils.BuildExtensions;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.sql.Validator;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -2696,7 +2697,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             Utilities.existsInList(cc, "1.3.160", "1.3.88")), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID, cc) && ok;
       }
 
-      if (isCanonicalURLElement(e)) {
+      if (isCanonicalURLElement(e, node)) {
         // we get to here if this is a defining canonical URL (e.g. CodeSystem.url)
         // the URL must be an IRI if present
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isAbsoluteUrl(url), 
@@ -3143,7 +3144,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return Utilities.existsInList(t, "Resource", "CanonicalResource") || t.equals(r.fhirType());
   }
 
-  private boolean isCanonicalURLElement(Element e) {
+  private boolean isCanonicalURLElement(Element e, NodeStack parent) {
+    if (parent != null && parent.getElement().getName().equals("extension")) {
+      String url = parent.getElement().getChildValue("url");
+      if (xverManager.status(url) == XVerExtensionStatus.Valid && url.contains("-")) {
+        String path = url.substring(url.lastIndexOf("-")+1);
+        if (path.contains(".")) {
+          String type = path.substring(0, path.indexOf('.'));
+          String tail = path.substring(path.indexOf('.')+1);
+          if ("url".equals(tail) && VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(type)) {
+            return true;
+          }
+        }
+      }
+    }
     if (e.getProperty() == null || e.getProperty().getDefinition() == null) {
       return false;
     }
