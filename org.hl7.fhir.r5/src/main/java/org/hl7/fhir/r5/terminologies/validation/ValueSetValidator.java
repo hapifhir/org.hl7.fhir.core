@@ -448,7 +448,24 @@ public class ValueSetValidator extends ValueSetProcessBase {
         return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path, msg));        
       }
       if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
-        warningMessage = "Resolved system "+system+(cs.hasVersion() ? " (v"+cs.getVersion()+")" : "")+", but the definition is not complete";
+        warningMessage = "Resolved system "+system+(cs.hasVersion() ? " (v"+cs.getVersion()+")" : "")+", but the definition ";
+        switch (cs.getContent()) {
+        case EXAMPLE:
+          warningMessage = warningMessage +"only has example content";
+          break;
+        case FRAGMENT:
+          warningMessage = warningMessage + "is only a fragment";
+          break;
+        case NOTPRESENT:
+          warningMessage = warningMessage + "doesn't include any codes";
+          break;
+        case SUPPLEMENT:
+          warningMessage = warningMessage + " is for a supplement to "+cs.getSupplements();
+          break;
+        default:
+          break;
+        }
+        warningMessage = warningMessage + ", so the code has not been validated";
         if (!inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) { // we're going to give it a go if it's a fragment
           throw new VSCheckerException(warningMessage, null, true);
         }
