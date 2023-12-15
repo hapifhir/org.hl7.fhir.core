@@ -145,7 +145,7 @@ public abstract class ParserBase {
 	
 	protected StructureDefinition getDefinition(List<ValidationMessage> errors, int line, int col, String ns, String name) throws FHIRFormatError {
 	  if (logical != null) {
-	    String expectedName = ToolingExtensions.readStringExtension(logical, "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name");
+	    String expectedName = ToolingExtensions.readStringExtension(logical, ToolingExtensions.EXT_XML_NAME);
 	    if (expectedName == null) {
 	      expectedName = logical.getType();
 	      if (Utilities.isAbsoluteUrl(expectedName)) {

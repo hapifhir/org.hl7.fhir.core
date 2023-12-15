@@ -143,6 +143,7 @@ public class ToolingExtensions {
   public static final String EXT_BINDING_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style";
   public static final String EXT_EXTENSION_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-extension-style";
   public static final String EXT_LOGICAL_TARGET = "http://hl7.org/fhir/tools/StructureDefinition/logical-target";
+  public static final String EXT_LOGICAL_CONTAINER = "http://hl7.org/fhir/tools/StructureDefinition/logical-container";
   public static final String EXT_PROFILE_MAPPING = "http://hl7.org/fhir/tools/StructureDefinition/profile-mapping";
   public static final String EXT_CS_ALTERNATE_USE = "http://hl7.org/fhir/StructureDefinition/alternate-code-use";
   public static final String EXT_CS_ALTERNATE_STATUS = "http://hl7.org/fhir/StructureDefinition/alternate-code-status";
