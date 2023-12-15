@@ -7046,7 +7046,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return true;
     }
     if (format == FhirFormat.XML) {
-      String xn = ToolingExtensions.readStringExtension(defn, "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name");
+      String xn = ToolingExtensions.readStringExtension(defn, ToolingExtensions.EXT_XML_NAME);
       if (resourceName.equals(xn)) {
         return true;
       }
