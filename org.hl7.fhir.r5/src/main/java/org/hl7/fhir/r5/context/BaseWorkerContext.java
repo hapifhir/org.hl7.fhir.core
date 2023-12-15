@@ -1348,7 +1348,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } else if (!res.isOk() && res.getUnknownSystems() != null && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
       // we had some problem evaluating locally, but the server doesn't know the code system, so we'll just go with the local error
       res.setMessage(localWarning);
-      res.setDiagnostics("Local Error: "+localWarning.trim()+". Server Error: "+res.getMessage());
+      res.setSeverity(IssueSeverity.WARNING);
+      res.setDiagnostics("Local Warning: "+localWarning.trim()+". Server Error: "+res.getMessage());
     }
     updateUnsupportedCodeSystems(res, code, codeKey);
     if (cachingAllowed && txCache != null) { // we never cache unsupported code systems - we always keep trying (but only once per run)
