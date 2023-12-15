@@ -1132,7 +1132,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return true;
       if (s != null && s.isOk()) {
         for (OperationOutcomeIssueComponent iss : s.getIssues()) {
-          txIssue(errors, "2023-08-19", s.getTxLink(), element.line(), element.col(), path, iss);
+          if (!iss.getDetails().getText().equals(s.getMessage())) {
+            txIssue(errors, "2023-08-19", s.getTxLink(), element.line(), element.col(), path, iss);
+          }
         }
       }
       if (s.isOk()) {
