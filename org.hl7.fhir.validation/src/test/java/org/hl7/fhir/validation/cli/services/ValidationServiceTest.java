@@ -55,7 +55,7 @@ class ValidationServiceTest  {
   @Test
   void validateSources() throws Exception {
     TestingUtilities.injectCorePackageLoader();
-    SessionCache sessionCache = Mockito.spy(new SessionCache());
+    SessionCache sessionCache = Mockito.spy(new PassiveExpiringSessionCache());
     ValidationService myService = new ValidationService(sessionCache);
 
     String resource = IOUtils.toString(getFileFromResourceAsStream("detected_issues.json"), StandardCharsets.UTF_8);

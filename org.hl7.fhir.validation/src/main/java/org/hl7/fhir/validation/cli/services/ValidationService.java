@@ -75,11 +75,11 @@ public class ValidationService {
   private String runDate;
 
   public ValidationService() {
-    sessionCache = new SessionCache();
+    sessionCache = new PassiveExpiringSessionCache();
     runDate = new SimpleDateFormat("hh:mm:ss", new Locale("en", "US")).format(new Date());
   }
 
-  protected ValidationService(SessionCache cache) {
+  public ValidationService(SessionCache cache) {
     this.sessionCache = cache;
   }
 
@@ -438,7 +438,7 @@ public class ValidationService {
 
   public String initializeValidator(CliContext cliContext, String definitions, TimeTracker tt, String sessionId) throws Exception {
     tt.milestone();
-    sessionCache.removeExpiredSessions();
+
     if (!sessionCache.sessionExists(sessionId)) {
       if (sessionId != null) {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
