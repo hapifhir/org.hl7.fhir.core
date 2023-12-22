@@ -1038,6 +1038,7 @@ public class I18nConstants {
   public static final String XHTML_IDREF_NOT_FOUND = "XHTML_IDREF_NOT_FOUND";
   public static final String XHTML_IDREF_NOT_MULTIPLE_MATCHES = "XHTML_IDREF_NOT_MULTIPLE_MATCHES";
   public static final String SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH = "SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH";
+  public static final String TX_GENERAL_CC_ERROR_MESSAGE = "TX_GENERAL_CC_ERROR_MESSAGE";
 }
 
 
