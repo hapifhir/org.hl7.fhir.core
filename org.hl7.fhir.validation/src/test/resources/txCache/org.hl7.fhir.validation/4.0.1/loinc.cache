@@ -7258,7 +7258,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'History of Procedures' for http://loinc.org#47519-4 - should be one of 40 choices: 'History of Procedures Document', 'Procedures Hx Doc', '临床文档型' (zh-CN), '临床文档' (zh-CN), '文档' (zh-CN), '文书' (zh-CN), '医疗文书' (zh-CN), '临床医疗文书 事件发生的地方' (zh-CN), '场景' (zh-CN), '环境' (zh-CN), '背景 历史纪录与体格检查 历史纪录与体格检查.历史记录' (zh-CN), '历史纪录与体格检查.历史记录类' (zh-CN), '历史纪录与体格检查.历史记录类别' (zh-CN), '历史纪录与体格检查.病史' (zh-CN), '历史纪录与体格检查.病史类' (zh-CN), '历史纪录与体格检查.病史类别' (zh-CN), '历史纪录与体格检查.病史记录' (zh-CN), '历史纪录与体格检查.病史记录类' (zh-CN), '历史纪录与体格检查.病史记录类别' (zh-CN), '历史纪录与体格检查小节.历史记录' (zh-CN), '历史纪录与体格检查小节.历史记录类' (zh-CN), '历史纪录与体格检查小节.历史记录类别' (zh-CN), '历史纪录与体格检查小节.病史' (zh-CN), '历史纪录与体格检查小节.病史类' (zh-CN), '历史纪录与体格检查小节.病史类别 历史纪录与体格检查小节 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 操作历史' (zh-CN), '操作项目历史' (zh-CN), '操作项目史 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 未加明确说明的角色 病史与体格检查' (zh-CN), 'Procedures Hx' (pt-BR), 'Finding' (pt-BR), 'Findings' (pt-BR), 'Point in time' (pt-BR), 'Random' (pt-BR) or 'Anamnesi Osservazione Punto nel tempo (episodio) Ruolo non specificato' (it-IT) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -7280,7 +7279,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Medical Devices' for http://loinc.org#46240-8 - should be one of 55 choices: 'History of Hospitalizations+Outpatient visits Narrative', 'Hx of Hospitalizations+OP visits', '住院治疗历史+门诊就诊历史' (zh-CN), '住院治疗史+门诊就医史' (zh-CN), '住院治疗史+门诊患者就诊史' (zh-CN), '住院治疗史+门诊病人就诊史 医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 医院收容' (zh-CN), '入院' (zh-CN), '住院期' (zh-CN), '收治入院 历史' (zh-CN), '史' (zh-CN), '病史 历史纪录与体格检查 历史纪录与体格检查.历史记录' (zh-CN), '历史纪录与体格检查.历史记录类' (zh-CN), '历史纪录与体格检查.历史记录类别' (zh-CN), '历史纪录与体格检查.病史' (zh-CN), '历史纪录与体格检查.病史类' (zh-CN), '历史纪录与体格检查.病史类别' (zh-CN), '历史纪录与体格检查.病史记录' (zh-CN), '历史纪录与体格检查.病史记录类' (zh-CN), '历史纪录与体格检查.病史记录类别' (zh-CN), '历史纪录与体格检查小节.历史记录' (zh-CN), '历史纪录与体格检查小节.历史记录类' (zh-CN), '历史纪录与体格检查小节.历史记录类别' (zh-CN), '历史纪录与体格检查小节.病史' (zh-CN), '历史纪录与体格检查小节.病史类' (zh-CN), '历史纪录与体格检查小节.病史类别 历史纪录与体格检查小节 叙述' (zh-CN), '叙述性文字' (zh-CN), '报告' (zh-CN), '报告型' (zh-CN), '文字叙述' (zh-CN), '文本叙述型' (zh-CN), '文本描述' (zh-CN), '文本描述型 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 病史与体格检查 门诊就诊类（就诊、就诊过程类、就诊过程、就医过程类、就医类、就医过程、就医）' (zh-CN), '门诊就诊类' (zh-CN), 'Outpatient visits Hx' (pt-BR), 'Hospitalizations+OP visits Hx' (pt-BR), 'Hospitalizations Hx' (pt-BR), 'Finding' (pt-BR), 'Findings' (pt-BR), 'Point in time' (pt-BR), 'Random' (pt-BR), 'Narrative' (pt-BR), 'Report' (pt-BR), 'Anamnesi paziente Punto nel tempo (episodio) Storia' (it-IT), 'Anamnesi visite paziente ambulatoriale' (it-IT), 'Анамнез госпитализаций+Анамнез амбулаторных посещений История Описательный Точка во времени' (ru-RU), 'Момент' (ru-RU) or 'anamnese' (nl-NL) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -7302,7 +7300,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Diagnostic Results' for http://loinc.org#30954-2 - should be one of 42 choices: 'Relevant diagnostic tests/laboratory data Narrative', 'Relevant Dx tests/lab data', '医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 叙述' (zh-CN), '叙述性文字' (zh-CN), '报告' (zh-CN), '报告型' (zh-CN), '文字叙述' (zh-CN), '文本叙述型' (zh-CN), '文本描述' (zh-CN), '文本描述型 接种' (zh-CN), '接种记录' (zh-CN), '疫苗' (zh-CN), '疫苗接种 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 检验科' (zh-CN), '化验室' (zh-CN), '化验科 相关诊断试验/实验室数据' (zh-CN), '相关诊断试验和或实验室资料' (zh-CN), '相关诊断试验和或实验室检验数据' (zh-CN), '相关诊断试验和或检验数据' (zh-CN), '相关诊断试验和或化验数据' (zh-CN), 'Relevant Dx tests/lAc data' (pt-BR), 'Finding' (pt-BR), 'Findings' (pt-BR), 'Point in time' (pt-BR), 'Random' (pt-BR), 'Narrative' (pt-BR), 'Report' (pt-BR), 'VACCINE' (pt-BR), 'Osservazione paziente Punto nel tempo (episodio) Test diagnostici rilevanti/dati di laboratorio Vaccinazioni' (it-IT), 'Описательный Точка во времени' (ru-RU) or 'Момент' (ru-RU) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -7325,7 +7322,6 @@ v: {
   "code" : "8716-3",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -7347,7 +7343,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Pregnancy Information' for http://loinc.org#10162-6 - should be one of 39 choices: 'History of pregnancies Narrative', 'Pregnancies Hx', '历史' (zh-CN), '史' (zh-CN), '病史 历史纪录与体格检查 历史纪录与体格检查.历史记录' (zh-CN), '历史纪录与体格检查.历史记录类' (zh-CN), '历史纪录与体格检查.历史记录类别' (zh-CN), '历史纪录与体格检查.病史' (zh-CN), '历史纪录与体格检查.病史类' (zh-CN), '历史纪录与体格检查.病史类别' (zh-CN), '历史纪录与体格检查.病史记录' (zh-CN), '历史纪录与体格检查.病史记录类' (zh-CN), '历史纪录与体格检查.病史记录类别' (zh-CN), '历史纪录与体格检查小节.历史记录' (zh-CN), '历史纪录与体格检查小节.历史记录类' (zh-CN), '历史纪录与体格检查小节.历史记录类别' (zh-CN), '历史纪录与体格检查小节.病史' (zh-CN), '历史纪录与体格检查小节.病史类' (zh-CN), '历史纪录与体格检查小节.病史类别 历史纪录与体格检查小节 叙述' (zh-CN), '叙述性文字' (zh-CN), '报告' (zh-CN), '报告型' (zh-CN), '文字叙述' (zh-CN), '文本叙述型' (zh-CN), '文本描述' (zh-CN), '文本描述型 怀孕' (zh-CN), '怀孕期' (zh-CN), '妊娠期' (zh-CN), '妊娠类' (zh-CN), '妊娠（复数） 怀孕史' (zh-CN), '妊娠历史 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 病史与体格检查' (zh-CN), 'Anamnesi Apparato riproduttore Punto nel tempo (episodio) Storia' (it-IT), 'Anamnesi' (it-IT), 'Акушерский анамнез История Описательный Точка во времени' (ru-RU), 'Момент' (ru-RU) or 'anamnese' (nl-NL) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -7369,7 +7364,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'History of Past Illness' for http://loinc.org#11348-0 - should be one of 40 choices: 'History of Past illness Narrative', 'Hx of Past illness', '医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 历史' (zh-CN), '史' (zh-CN), '病史 历史纪录与体格检查 历史纪录与体格检查.历史记录' (zh-CN), '历史纪录与体格检查.历史记录类' (zh-CN), '历史纪录与体格检查.历史记录类别' (zh-CN), '历史纪录与体格检查.病史' (zh-CN), '历史纪录与体格检查.病史类' (zh-CN), '历史纪录与体格检查.病史类别' (zh-CN), '历史纪录与体格检查.病史记录' (zh-CN), '历史纪录与体格检查.病史记录类' (zh-CN), '历史纪录与体格检查.病史记录类别' (zh-CN), '历史纪录与体格检查小节.历史记录' (zh-CN), '历史纪录与体格检查小节.历史记录类' (zh-CN), '历史纪录与体格检查小节.历史记录类别' (zh-CN), '历史纪录与体格检查小节.病史' (zh-CN), '历史纪录与体格检查小节.病史类' (zh-CN), '历史纪录与体格检查小节.病史类别 历史纪录与体格检查小节 叙述' (zh-CN), '叙述性文字' (zh-CN), '报告' (zh-CN), '报告型' (zh-CN), '文字叙述' (zh-CN), '文本叙述型' (zh-CN), '文本描述' (zh-CN), '文本描述型 既往疾病史' (zh-CN), '既往疾病历史 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 病史与体格检查' (zh-CN), 'Anamnesi Malattie passate paziente Punto nel tempo (episodio) Storia' (it-IT), 'Anamnesi' (it-IT), 'Анамнез заболеваний История Описательный Точка во времени' (ru-RU), 'Момент' (ru-RU) or 'anamnese' (nl-NL) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -7391,7 +7385,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Functional Status' for http://loinc.org#47420-5 - should be one of 39 choices: 'Functional status assessment note', 'Functional status note', '临床文档型' (zh-CN), '临床文档' (zh-CN), '文档' (zh-CN), '文书' (zh-CN), '医疗文书' (zh-CN), '临床医疗文书 事件发生的地方' (zh-CN), '场景' (zh-CN), '环境' (zh-CN), '背景 功能（机能）状态（状况、情况）（评价、估计、估价、评论、估定、估算）记录' (zh-CN), '功能状况评估记录' (zh-CN), '功能情况评估记录 功能状况' (zh-CN), '功能情况 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 文档本体' (zh-CN), '临床文档本体' (zh-CN), '文档本体' (zh-CN), '文书本体' (zh-CN), '医疗文书本体' (zh-CN), '临床医疗文书本体 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 未加明确说明的角色 状况' (zh-CN), '情况 笔记' (zh-CN), '按语' (zh-CN), '注释' (zh-CN), '说明' (zh-CN), '票据' (zh-CN), '单据' (zh-CN), '证明书 评价' (zh-CN), '估计' (zh-CN), '估价' (zh-CN), '评论' (zh-CN), '估定' (zh-CN), '估算' (zh-CN) or 'Documentazione dell'ontologia Nota di valutazione dello stato funzionale Osservazione Punto nel tempo (episodio) Ruolo non specificato' (it-IT) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -7413,7 +7406,6 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Plan of Care' for http://loinc.org#18776-5 - should be one of 30 choices: 'Plan of care note', 'Plan of care note', '临床文档型' (zh-CN), '临床文档' (zh-CN), '文档' (zh-CN), '文书' (zh-CN), '医疗文书' (zh-CN), '临床医疗文书 事件发生的地方' (zh-CN), '场景' (zh-CN), '环境' (zh-CN), '背景 医疗服务（照护服务、护理服务、护理、照护、医疗照护、诊疗、诊疗服务、照顾、看护）计划（方案）记录 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 文档本体' (zh-CN), '临床文档本体' (zh-CN), '文档本体' (zh-CN), '文书本体' (zh-CN), '医疗文书本体' (zh-CN), '临床医疗文书本体 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 未加明确说明的角色 笔记' (zh-CN), '按语' (zh-CN), '注释' (zh-CN), '说明' (zh-CN), '票据' (zh-CN), '单据' (zh-CN), '证明书' (zh-CN) or 'Documentazione dell'ontologia Osservazione Piano di cura Punto nel tempo (episodio) Ruolo non specificato' (it-IT) (for the language(s) '--') (from Tx-Server)",
   "class" : "UNKNOWN",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -7435,6 +7427,74 @@ v: {
   "severity" : "error",
   "error" : "Unknown Code '42349-0' in the system 'http://loinc.org|2.74'; The provided code 'http://loinc.org#42349-0' was not found in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
   "class" : "UNKNOWN",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "59408-5",
+  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
+  "code" : "59408-5",
+  "system" : "http://loinc.org",
+  "version" : "2.74",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "3151-8",
+  "display" : "Inhaled oxygen flow rate"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Inhaled oxygen flow rate",
+  "code" : "3151-8",
+  "system" : "http://loinc.org",
+  "version" : "2.74",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "59408-5",
+  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry"
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Oxygen saturation in Arterial blood by Pulse oximetry",
+  "code" : "59408-5",
+  "system" : "http://loinc.org",
+  "version" : "2.74",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
