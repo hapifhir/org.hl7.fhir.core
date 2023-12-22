@@ -3,6 +3,10 @@ package org.hl7.fhir.r5.utils.client;
 import okhttp3.Headers;
 import okhttp3.internal.http2.Header;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.utils.client.EFhirClientException;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -200,6 +204,23 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return capabilities;
   }
 
+  public Resource read(String resourceClass, String id) {// TODO Change this to AddressableResource
+    ResourceRequest<Resource> result = null;
+    try {
+      result = client.issueGetResourceRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
+          getPreferredResourceFormat(), generateHeaders(), "Read " + resourceClass + "/" + id,
+          timeoutNormal);
+      if (result.isUnsuccessfulRequest()) {
+        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
+            (OperationOutcome) result.getPayload());
+      }
+    } catch (Exception e) {
+      throw new FHIRException(e);
+    }
+    return result.getPayload();
+  }
+
+  
   public <T extends Resource> T read(Class<T> resourceClass, String id) {//TODO Change this to AddressableResource
     ResourceRequest<T> result = null;
     try {
@@ -622,7 +643,25 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   public void setLanguage(String lang) {
     this.acceptLang = lang;
   }
+
+  public Bundle search(String type, String criteria) {
+    return fetchFeed(Utilities.pathURL(base, type+criteria));
+  }
   
+  public <T extends Resource> T fetchResource(Class<T> resourceClass, String id) {
+    org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
+    try {
+      result = client.issueGetResourceRequest(resourceAddress.resolveGetResource(resourceClass, id),
+          getPreferredResourceFormat(), generateHeaders(), resourceClass.getName()+"/"+id, timeoutNormal);
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
+          (OperationOutcome) result.getPayload());
+    }
+    return (T) result.getPayload();
+  }
   
 }
 
