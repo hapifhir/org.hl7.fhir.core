@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Constants;
@@ -142,9 +143,9 @@ public class TerminologyServiceTests {
       engine.getContext().setExpansionProfile((org.hl7.fhir.r5.model.Parameters) loadResource("parameters-default.json"));
     }
     if (setup.test.asString("operation").equals("expand")) {
-      expand(engine, req, resp, setup.test.asString("Accept-Language"), fp, ext);
+      expand(engine, req, resp, setup.test.asString("Content-Language"), fp, ext);
     } else if (setup.test.asString("operation").equals("validate-code")) {
-      validate(engine, setup.test.asString("name"), req, resp, setup.test.asString("Accept-Language"), fp, ext);      
+      validate(engine, setup.test.asString("name"), req, resp, setup.test.asString("Content-Language"), fp, ext);      
     } else {
       Assertions.fail("Unknown Operation "+setup.test.asString("operation"));
     }
@@ -260,13 +261,23 @@ public class TerminologyServiceTests {
       }
     }
     ValidationResult vm;
+    String code = null;
+    String system = null;
+    String version = null;
+    CodeableConcept cc = null;
     if (p.hasParameter("code")) {
+      code = p.getParameterString("code");
+      system = p.getParameterString("system");
+      version = p.getParameterString("systemVersion"); 
       vm = engine.getContext().validateCode(options.withGuessSystem(), p.getParameterString("system"), p.getParameterString("systemVersion"), p.getParameterString("code"), p.getParameterString("display"), vs);
     } else if (p.hasParameter("coding")) {
       Coding coding = (Coding) p.getParameterValue("coding");
+      code = coding.getCode();
+      system = coding.getSystem();
+      version = coding.getVersion();
       vm = engine.getContext().validateCode(options, coding, vs);
     } else if (p.hasParameter("codeableConcept")) {
-      CodeableConcept cc = (CodeableConcept) p.getParameterValue("codeableConcept");
+      cc = (CodeableConcept) p.getParameterValue("codeableConcept");
       vm = engine.getContext().validateCode(options, cc, vs);
     } else {
       throw new Error("validate not done yet for this steup");
@@ -289,9 +300,13 @@ public class TerminologyServiceTests {
       org.hl7.fhir.r5.model.Parameters res = new org.hl7.fhir.r5.model.Parameters();
       if (vm.getSystem() != null) {
         res.addParameter("system", new UriType(vm.getSystem()));
+      } else if (system != null) {
+        res.addParameter("system", new UriType(system));
       }
       if (vm.getCode() != null) {
         res.addParameter("code", new CodeType(vm.getCode()));
+      } else if (code != null) {
+        res.addParameter("code", new CodeType(code));
       }
       if (vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR) {
         res.addParameter("result", false);
@@ -303,13 +318,17 @@ public class TerminologyServiceTests {
       }
       if (vm.getVersion() != null) {
         res.addParameter("version", vm.getVersion());
+      } else if (version != null) {
+        res.addParameter("version", new StringType(version));
       }
       if (vm.getDisplay() != null) {
         res.addParameter("display", vm.getDisplay());
       }
       if (vm.getCodeableConcept() != null) {
         res.addParameter("codeableConcept", vm.getCodeableConcept());
-      }
+      } else if (cc != null) {
+        res.addParameter("codeableConcept", cc);
+      } 
       if (vm.isInactive()) {
         res.addParameter("inactive", true);
       }

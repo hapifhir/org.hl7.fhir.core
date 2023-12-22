@@ -1685,24 +1685,29 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
           unknownSystems.add(((PrimitiveType<?>) p.getValue()).asStringValue());      
         } else if (p.getName().equals("warning-withdrawn")) {
+          String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_WITHDRAWN : I18nConstants.MSG_WITHDRAWN_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_WITHDRAWN : I18nConstants.MSG_WITHDRAWN_SRC, msg, vs, impliedType(msg)));              
           issues.add(iss);
         } else if (p.getName().equals("warning-deprecated")) {
+          String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DEPRECATED : I18nConstants.MSG_DEPRECATED_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DEPRECATED : I18nConstants.MSG_DEPRECATED_SRC, msg, vs, impliedType(msg)));              
           issues.add(iss);
         } else if (p.getName().equals("warning-retired")) {
+          String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_RETIRED : I18nConstants.MSG_RETIRED_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_RETIRED : I18nConstants.MSG_RETIRED_SRC, msg, vs, impliedType(msg)));              
           issues.add(iss);
         } else if (p.getName().equals("warning-experimental")) {
+          String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_EXPERIMENTAL : I18nConstants.MSG_EXPERIMENTAL_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_EXPERIMENTAL : I18nConstants.MSG_EXPERIMENTAL_SRC, msg, vs, impliedType(msg)));              
           issues.add(iss);
         } else if (p.getName().equals("warning-draft")) {
+          String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DRAFT : I18nConstants.MSG_DRAFT_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DRAFT : I18nConstants.MSG_DRAFT_SRC, msg, vs, impliedType(msg)));              
           issues.add(iss);
         } else if (p.getName().equals("cause")) {
           try {
@@ -1739,6 +1744,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   // --------------------------------------------------------------------------------------------------------------------------------------------------------
   
+  private Object impliedType(String msg) {
+    if (msg.contains("/CodeSystem")) {
+      return "CodeSystem";
+    }
+    if (msg.contains("/ValueSet")) {
+      return "ValueSet";
+    }
+    return "item";
+  }
+
   protected void initTS(String cachePath) throws IOException {
     if (cachePath != null && !new File(cachePath).exists()) {
       Utilities.createDirectory(cachePath);

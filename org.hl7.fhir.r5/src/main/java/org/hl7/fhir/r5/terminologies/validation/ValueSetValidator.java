@@ -259,6 +259,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
         msg = context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), b.toString());
         info.getIssues().addAll(makeIssue(IssueSeverity.WARNING, unknownSystems.isEmpty() ? IssueType.CODEINVALID : IssueType.NOTFOUND, path, msg));
       } else if (!result) {
+        // to match Ontoserver
+        OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, org.hl7.fhir.r5.model.OperationOutcome.IssueType.INVALID);
+        iss.getDetails().setText(context.formatMessage(I18nConstants.TX_GENERAL_CC_ERROR_MESSAGE, valueset.getVersionedUrl()));
+        info.getIssues().add(iss);
+
         msg = context.formatMessagePlural(code.getCoding().size(), I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), b.toString());
         info.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, code.getCoding().size() == 1 ? path+".coding[0].code" : path, msg));
       }
