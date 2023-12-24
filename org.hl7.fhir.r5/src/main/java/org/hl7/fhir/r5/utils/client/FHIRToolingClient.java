@@ -104,6 +104,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
 
   private String acceptLang;
+  private String contentLang;
 
   //Pass endpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
@@ -608,6 +609,10 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       builder.add("Accept-Language: "+acceptLang);
     }
     
+    if (!Utilities.noString(contentLang)) {
+      builder.add("Content-Language: "+contentLang);
+    }
+    
     return builder.build();
   }
 
@@ -640,8 +645,12 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return capabilities == null ? null : capabilities.getSoftware().getVersion();
   }
 
-  public void setLanguage(String lang) {
+  public void setAcceptLanguage(String lang) {
     this.acceptLang = lang;
+  }
+
+  public void setContentLanguage(String lang) {
+    this.contentLang = lang;
   }
 
   public Bundle search(String type, String criteria) {

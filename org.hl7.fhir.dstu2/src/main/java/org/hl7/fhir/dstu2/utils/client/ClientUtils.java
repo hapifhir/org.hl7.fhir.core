@@ -106,6 +106,7 @@ public class ClientUtils {
   private int retryCount;
   private String userAgent;
   private String acceptLang;
+  private String contentLang;
 
   public HttpHost getProxy() {
     return proxy;
@@ -297,6 +298,9 @@ public class ClientUtils {
     }
     if (!Utilities.noString(acceptLang)) {
       request.addHeader("Accept-Language", acceptLang);
+    }
+    if (!Utilities.noString(contentLang)) {
+      request.addHeader("Content-Language", acceptLang);
     }
 
     if (format != null) {
@@ -726,7 +730,10 @@ public class ClientUtils {
     this.userAgent = userAgent;
   }
 
-  public void setLanguage(String language) {
+  public void setAcceptLanguage(String language) {
     this.acceptLang = language;
+  }
+  public void setContentLanguage(String language) {
+    this.contentLang = language;
   }
 }

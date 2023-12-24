@@ -65,6 +65,7 @@ public interface ITerminologyClient {
   ClientHeaders getClientHeaders();
   ITerminologyClient setClientHeaders(ClientHeaders clientHeaders);
   ITerminologyClient setUserAgent(String userAgent);
-  ITerminologyClient setLanguage(String lang);
+  ITerminologyClient setAcceptLanguage(String lang);
+  ITerminologyClient setContentLanguage(String lang);
   String getUserAgent();
 }
