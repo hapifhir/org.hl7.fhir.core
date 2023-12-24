@@ -324,9 +324,10 @@ public class TerminologyServiceTests {
       if (vm.getDisplay() != null) {
         res.addParameter("display", vm.getDisplay());
       }
-      if (vm.getCodeableConcept() != null) {
-        res.addParameter("codeableConcept", vm.getCodeableConcept());
-      } else if (cc != null) {
+//      if (vm.getCodeableConcept() != null) {
+//        res.addParameter("codeableConcept", vm.getCodeableConcept());
+//      } else
+      if (cc != null) {
         res.addParameter("codeableConcept", cc);
       } 
       if (vm.isInactive()) {
