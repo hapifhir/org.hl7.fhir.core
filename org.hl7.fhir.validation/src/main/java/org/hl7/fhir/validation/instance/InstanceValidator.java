@@ -1442,7 +1442,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                         txHint(errors, "2023-07-03", vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
                       } else {
                         checkDisp = false;
-                        txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+                        if (!vr.messageIsInIssues()) {
+                          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+                        }
                       }
                     } else {
                       if (binding.getStrength() == BindingStrength.EXTENSIBLE) {

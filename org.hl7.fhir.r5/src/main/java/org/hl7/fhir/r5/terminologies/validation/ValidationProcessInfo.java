@@ -49,4 +49,12 @@ public class ValidationProcessInfo {
     Collections.sort(msgs);
     return CommaSeparatedStringBuilder.join("; ", msgs);
   }
+  public List<String> summaryList() {
+    List<String> msgs = new ArrayList<>();
+    for (OperationOutcomeIssueComponent issue : issues) {
+      msgs.add(issue.getDetails().getText());
+    }
+    Collections.sort(msgs);
+    return msgs;
+  }
 }

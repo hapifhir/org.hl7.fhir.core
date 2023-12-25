@@ -36,7 +36,9 @@ public class ValidationResult {
 
   public ValidationResult(IssueSeverity severity, String message, List<OperationOutcomeIssueComponent> issues) {
     this.severity = severity;
-    this.messages.add(message);
+    if (message != null) {
+      this.messages.add(message);
+    }
     if (issues != null) {
       this.issues.addAll(issues);
     }
@@ -51,7 +53,20 @@ public class ValidationResult {
 
   public ValidationResult(IssueSeverity severity, String message, String system, String version, ConceptDefinitionComponent definition, String preferredDisplay, List<OperationOutcomeIssueComponent>  issues) {
     this.severity = severity;
-    this.messages.add(message);
+    if (message != null) {
+      this.messages.add(message);
+    }
+    this.system = system;
+    this.version = version;
+    this.definition = definition;
+    this.preferredDisplay = preferredDisplay;
+    if (issues != null) {
+      this.issues.addAll(issues);
+    }
+  }
+  public ValidationResult(IssueSeverity severity, List<String> messages, String system, String version, ConceptDefinitionComponent definition, String preferredDisplay, List<OperationOutcomeIssueComponent>  issues) {
+    this.severity = severity;
+    this.messages.addAll(messages);
     this.system = system;
     this.version = version;
     this.definition = definition;
@@ -63,7 +78,9 @@ public class ValidationResult {
 
   public ValidationResult(IssueSeverity severity, String message, TerminologyServiceErrorClass errorClass, List<OperationOutcomeIssueComponent>  issues) {
     this.severity = severity;
-    this.messages.add(message);
+    if (message != null) {
+      this.messages.add(message);
+    }
     this.errorClass = errorClass;
     if (issues != null) {
       this.issues.addAll(issues);
@@ -145,12 +162,16 @@ public class ValidationResult {
 
   public ValidationResult setMessage(String message) {
     this.messages.clear();
-    this.messages.add(message);
+    if (message != null) {
+      this.messages.add(message);
+    }
     return this;
   }
   
   public ValidationResult addMessage(String message) {
-    this.messages.add(message);
+    if (message != null) {
+      this.messages.add(message);
+    }
     return this;
   }
   
@@ -261,6 +282,24 @@ public class ValidationResult {
       this.status = status;
     }
     return this;
+  }
+
+  public boolean messageIsInIssues() {
+    // the message is sometimes a summary of the issues that are already tracked. 
+    // this returns true in that case, so that duplication of messages is suppressed
+    
+    for (String s : messages) {
+      boolean found = false;
+      for (OperationOutcomeIssueComponent iss : issues) {
+        if (iss.getSeverity().ordinal() <= getSeverity().ordinal() && s.equals(iss.getDetails().getText())) {
+          found = true;
+        }
+      }
+      if (!found) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }
