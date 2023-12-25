@@ -1442,7 +1442,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                         txHint(errors, "2023-07-03", vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
                       } else {
                         checkDisp = false;
-                        txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+                        if (!vr.messageIsInIssues()) {
+                          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+                        }
                       }
                     } else {
                       if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
@@ -3258,8 +3260,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean isDefinitionURL(String url) {
-    return Utilities.existsInList(url, "http://hl7.org/fhirpath/System.Boolean", "http://hl7.org/fhirpath/System.String", "http://hl7.org/fhirpath/System.Integer",
-      "http://hl7.org/fhirpath/System.Decimal", "http://hl7.org/fhirpath/System.Date", "http://hl7.org/fhirpath/System.Time", "http://hl7.org/fhirpath/System.DateTime", "http://hl7.org/fhirpath/System.Quantity");
+    return Utilities.existsInList(url,
+        
+        "http://hl7.org/fhirpath/System.Boolean", "http://hl7.org/fhirpath/System.String", "http://hl7.org/fhirpath/System.Integer", "http://hl7.org/fhirpath/System.Decimal", 
+        "http://hl7.org/fhirpath/System.Date", "http://hl7.org/fhirpath/System.Time", "http://hl7.org/fhirpath/System.DateTime", "http://hl7.org/fhirpath/System.Quantity",
+        
+        "http://hl7.org/fhir/SearchParameter/Resource-filter");
   }
 
   private boolean checkInnerNames(List<ValidationMessage> errors, Element e, String path, List<XhtmlNode> list, boolean inPara) {

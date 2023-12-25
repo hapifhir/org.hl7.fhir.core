@@ -143,7 +143,7 @@ public class ValueSetProcessBase {
   }
 
   private List<OperationOutcomeIssueComponent> makeStatusIssue(String path, String id, String msg, CanonicalResource resource) {
-    List<OperationOutcomeIssueComponent> iss = makeIssue(IssueSeverity.INFORMATION, IssueType.BUSINESSRULE, path, context.formatMessage(msg, resource.getVersionedUrl()));
+    List<OperationOutcomeIssueComponent> iss = makeIssue(IssueSeverity.INFORMATION, IssueType.BUSINESSRULE, null, context.formatMessage(msg, resource.getVersionedUrl(), null, resource.fhirType()));
 
     // this is a testing hack - see TerminologyServiceTests
     iss.get(0).setUserData("status-msg-name", "warning-"+id);

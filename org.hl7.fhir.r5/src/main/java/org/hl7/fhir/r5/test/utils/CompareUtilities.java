@@ -427,6 +427,8 @@ private boolean isOptional(JsonElement e) {
         if (externals != null) {
           String s = externals.asString(cmd[1]);
           return actualJsonString.equals(s);
+        } else if (cmd.length <= 2) {
+          return true;
         } else {
           List<String> fragments = readChoices(cmd[2]);
           for (String f : fragments) {
