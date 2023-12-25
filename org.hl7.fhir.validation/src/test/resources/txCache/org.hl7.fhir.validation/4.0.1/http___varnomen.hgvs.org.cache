@@ -10,9 +10,11 @@
   }]
 }}####
 v: {
-  "severity" : "error",
-  "error" : "Error from server: HGVS is not supported at this time",
-  "class" : "SERVER_ERROR",
+  "display" : "NC_000019.8:g.1171707G>A",
+  "code" : "NC_000019.8:g.1171707G>A",
+  "system" : "http://varnomen.hgvs.org",
+  "version" : "2.0",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -30,9 +32,33 @@ v: {
   }]
 }}####
 v: {
-  "severity" : "error",
-  "error" : "Error from server: HGVS is not supported at this time",
-  "class" : "SERVER_ERROR",
+  "display" : "NC_000019.8:g.1171707G>A",
+  "code" : "NC_000019.8:g.1171707G>A",
+  "system" : "http://varnomen.hgvs.org",
+  "version" : "2.0",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://varnomen.hgvs.org",
+  "code" : "NC_000019.8:g.1171707G>A"
+}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs", "version": "1.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "NC_000019.8:g.1171707G>A",
+  "code" : "NC_000019.8:g.1171707G>A",
+  "system" : "http://varnomen.hgvs.org",
+  "version" : "2.0",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -51,8 +77,9 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Error from server: HGVS is not supported at this time",
-  "class" : "SERVER_ERROR",
+  "error" : "The provided code 'http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX' was not found in the value set 'http://hl7.org/fhir/ValueSet/@all'; Unknown Code 'NC_000019.8:g.1171707G>AXXX' in the system 'http://varnomen.hgvs.org|2.0' (from Tx-Server)",
+  "class" : "UNKNOWN",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -71,8 +98,9 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Error from server: HGVS is not supported at this time",
-  "class" : "SERVER_ERROR",
+  "error" : "The provided code 'http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX' was not found in the value set 'http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0'; Unknown Code 'NC_000019.8:g.1171707G>AXXX' in the system 'http://varnomen.hgvs.org|2.0' (from Tx-Server)",
+  "class" : "UNKNOWN",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }

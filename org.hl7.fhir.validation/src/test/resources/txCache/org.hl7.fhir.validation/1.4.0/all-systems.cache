@@ -10,7 +10,7 @@
 }}####
 v: {
   "severity" : "error",
-  "error" : "The CodeSystem http://canadapost.ca/CodeSystem/ProvinceCodes is unknown; The provided code 'http://canadapost.ca/CodeSystem/ProvinceCodes#Foo' is not in the value set 'https://fhir.infoway-inforoute.ca/ValueSet/canadianjurisdiction|20170626' (from Tx-Server)",
+  "error" : "The code system http://canadapost.ca/CodeSystem/ProvinceCodes could not be found; The provided code 'http://canadapost.ca/CodeSystem/ProvinceCodes#Foo' was not found in the value set 'https://fhir.infoway-inforoute.ca/ValueSet/canadianjurisdiction|20170626' (from Tx-Server)",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "unknown-systems" : "http://canadapost.ca/CodeSystem/ProvinceCodes",
   "issues" : {
