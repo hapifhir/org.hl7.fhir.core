@@ -894,8 +894,12 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return conf == null ? null : conf.getSoftware().getVersion();
   }
 
-  public void setLanguage(String lang) {
-    utils.setLanguage(lang);
+  public void setContentLanguage(String lang) {
+    utils.setContentLanguage(lang);
+  }
+
+  public void setAcceptLanguage(String lang) {
+    utils.setAcceptLanguage(lang);
   }
 
 }

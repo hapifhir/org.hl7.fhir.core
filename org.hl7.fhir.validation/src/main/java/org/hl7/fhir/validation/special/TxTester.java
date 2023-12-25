@@ -190,7 +190,7 @@ public class TxTester {
         }
         JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
 
-        String lang = test.asString("Accept-Language");
+        String lang = test.asString("Content-Language");
         String msg = null;
         if (test.asString("operation").equals("expand")) {
           msg = expand(tx, setup, req, resp, fp, lang, profile, ext);
@@ -248,7 +248,7 @@ public class TxTester {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
-    tx.setLanguage(lang);
+    tx.setContentLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
     String vsj;
     try {
@@ -274,7 +274,7 @@ public class TxTester {
       p.addParameter().setName("tx-resource").setResource(r);
     }
     p.getParameter().addAll(profile.getParameter());
-    tx.setLanguage(lang);
+    tx.setContentLanguage(lang);
     String pj;
     try {
       Parameters po = tx.validateVS(p);

@@ -11,7 +11,7 @@
 }}####
 v: {
   "severity" : "error",
-  "error" : "The CodeSystem http://something/something is unknown (from Tx-Server)",
+  "error" : "The code system http://something/something could not be found (from Tx-Server)",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "unknown-systems" : "http://something/something",
   "issues" : {

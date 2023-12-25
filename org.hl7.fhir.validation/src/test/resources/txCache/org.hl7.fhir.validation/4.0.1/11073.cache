@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "27113001",
-  "display" : "Body weight"
+  "system" : "urn:iso:std:iso:11073:10101",
+  "code" : "150456",
+  "display" : "MDC_PULS_OXIM_SAT_O2"
 }, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
@@ -11,10 +11,11 @@
   }]
 }}####
 v: {
-  "display" : "Body weight",
-  "code" : "27113001",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "display" : "MDC_PULS_OXIM_SAT_O2",
+  "code" : "150456",
+  "system" : "urn:iso:std:iso:11073:10101",
+  "version" : "2022-02-04",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -22,10 +23,9 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "27113001",
-  "display" : "Body weight"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "system" : "urn:iso:std:iso:11073:10101",
+  "code" : "150456"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -33,10 +33,10 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Body weight",
-  "code" : "27113001",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "display" : "MDC_PULS_OXIM_SAT_O2",
+  "code" : "150456",
+  "system" : "urn:iso:std:iso:11073:10101",
+  "version" : "2022-02-04",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

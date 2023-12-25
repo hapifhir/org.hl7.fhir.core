@@ -11,7 +11,7 @@
 }}####
 v: {
   "severity" : "error",
-  "error" : "The CodeSystem http://www.ncbi.nlm.nih.gov/clinvar is unknown; Unable to check whether the code is in the value set http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0 (from Tx-Server)",
+  "error" : "The code system http://www.ncbi.nlm.nih.gov/clinvar could not be found; Unable to check whether the code is in the value set http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0 (from Tx-Server)",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "unknown-systems" : "http://www.ncbi.nlm.nih.gov/clinvar",
   "issues" : {

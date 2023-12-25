@@ -265,6 +265,7 @@ public class I18nConstants {
   public static final String NEEDS_A_SNAPSHOT = "needs_a_snapshot";
   public static final String NODE_TYPE__IS_NOT_ALLOWED = "Node_type__is_not_allowed";
   public static final String NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "None_of_the_provided_codes_are_in_the_value_set";
+  public static final String NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ONE = "None_of_the_provided_codes_are_in_the_value_set_one";
   public static final String UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_";
   public static final String NOT_DONE_YET = "Not_done_yet";
   public static final String NOT_DONE_YET_CANT_FETCH_ = "not_done_yet_cant_fetch_";
@@ -1038,6 +1039,7 @@ public class I18nConstants {
   public static final String XHTML_IDREF_NOT_FOUND = "XHTML_IDREF_NOT_FOUND";
   public static final String XHTML_IDREF_NOT_MULTIPLE_MATCHES = "XHTML_IDREF_NOT_MULTIPLE_MATCHES";
   public static final String SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH = "SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH";
+  public static final String TX_GENERAL_CC_ERROR_MESSAGE = "TX_GENERAL_CC_ERROR_MESSAGE";
 }
 
 

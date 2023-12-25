@@ -161,7 +161,11 @@ public class TextFile {
   }
   
   public static String fileToString(String src) throws FileNotFoundException, IOException  {
-    FileInputStream fs = new FileInputStream(new CSFile(src));
+    CSFile f = new CSFile(src);
+    if (!f.exists()) {
+      throw new IOException("File "+src+" not found");
+    }
+    FileInputStream fs = new FileInputStream(f);
     try {
       return streamToString(fs);
     } finally {
