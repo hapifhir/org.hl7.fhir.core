@@ -9,6 +9,7 @@
   }]
 }}####
 v: {
+  "display" : "Finnish",
   "code" : "fi",
   "system" : "urn:ietf:bcp:47",
   "unknown-systems" : "",

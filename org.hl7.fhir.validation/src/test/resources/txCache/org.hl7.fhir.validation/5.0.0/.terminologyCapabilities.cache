@@ -5,7 +5,7 @@
   "version" : "2.0.0",
   "name" : "FHIR Reference Server Teminology Capability Statement",
   "status" : "active",
-  "date" : "2023-08-28T13:43:12.307Z",
+  "date" : "2023-12-25T11:39:21.252Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -111,6 +111,9 @@
   },
   {
     "uri" : "http://hl7.org/fhir/audit-event-action"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/audit-event-outcome"
   },
   {
     "uri" : "http://hl7.org/fhir/binding-strength"
@@ -432,6 +435,9 @@
   },
   {
     "uri" : "http://hl7.org/fhir/guide-page-generation"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/guide-parameter-code"
   },
   {
     "uri" : "http://hl7.org/fhir/history-status"
@@ -785,6 +791,9 @@
     "uri" : "http://hl7.org/fhir/structure-definition-kind"
   },
   {
+    "uri" : "http://hl7.org/fhir/subscription-channel-type"
+  },
+  {
     "uri" : "http://hl7.org/fhir/subscription-status"
   },
   {
@@ -1035,6 +1044,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/conceptdomains"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/condition-category"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/condition-clinical"

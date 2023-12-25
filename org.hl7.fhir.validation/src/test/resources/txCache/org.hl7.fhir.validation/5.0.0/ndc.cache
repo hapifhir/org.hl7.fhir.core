@@ -12,7 +12,7 @@
 }}####
 v: {
   "severity" : "error",
-  "error" : "Code \"2501-813-16\" not found in NDC; Unknown Code '2501-813-16' in the system 'http://hl7.org/fhir/sid/ndc'; The provided code 'http://hl7.org/fhir/sid/ndc#2501-813-16' is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "error" : "Code \"2501-813-16\" not found in NDC; The provided code 'http://hl7.org/fhir/sid/ndc#2501-813-16' was not found in the value set 'http://hl7.org/fhir/ValueSet/@all'; Unknown Code '2501-813-16' in the system 'http://hl7.org/fhir/sid/ndc' (from Tx-Server)",
   "class" : "UNKNOWN",
   "unknown-systems" : "",
   "issues" : {
