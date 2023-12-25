@@ -301,7 +301,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       String disp = lookupDisplay(foundCoding);
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
       cd.setDisplay(disp);
-      return new ValidationResult(IssueSeverity.WARNING, info.summary(), foundCoding.getSystem(), getVersion(foundCoding), cd, disp, info.getIssues()).addCodeableConcept(vcc);
+      return new ValidationResult(IssueSeverity.WARNING, info.summaryList(), foundCoding.getSystem(), getVersion(foundCoding), cd, disp, info.getIssues()).addCodeableConcept(vcc);
     } else {
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
       cd.setDisplay(lookupDisplay(foundCoding));
