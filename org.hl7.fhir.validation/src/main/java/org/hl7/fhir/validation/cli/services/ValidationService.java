@@ -495,9 +495,11 @@ public class ValidationService {
     validationEngine.setForPublication(cliContext.isForPublication());
     validationEngine.setShowTimes(cliContext.isShowTimes());
     validationEngine.setAllowExampleUrls(cliContext.isAllowExampleUrls());
-    StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validationEngine.getPcm(), validationEngine.getContext(), validationEngine);
-    validationEngine.setFetcher(fetcher);
-    validationEngine.getContext().setLocator(fetcher);
+    if (!cliContext.isDoNotFetchUnknownProfiles()) {
+      StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validationEngine.getPcm(), validationEngine.getContext(), validationEngine);
+      validationEngine.setFetcher(fetcher);
+      validationEngine.getContext().setLocator(fetcher);
+    }
     validationEngine.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
     validationEngine.setJurisdiction(CodeSystemUtilities.readCoding(cliContext.getJurisdiction()));
     TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());

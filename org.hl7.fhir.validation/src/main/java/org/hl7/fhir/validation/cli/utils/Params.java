@@ -89,6 +89,7 @@ public class Params {
   public static final String SRC_LANG = "-src-lang";
   public static final String TGT_LANG = "-tgt-lang";
   public static final String ALLOW_DOUBLE_QUOTES = "-allow-double-quotes-in-fhirpath";
+  public static final String DO_NOT_FETCH_UNKNOWN_PROFILES = "-do-not-fetch-unknown-profiles";
   public static final String CHECK_IPS_CODES = "-check-ips-codes";
   public static final String BEST_PRACTICE = "-best-practice";
   
@@ -270,6 +271,8 @@ public class Params {
         cliContext.setNoExtensibleBindingMessages(true);
       } else if (args[i].equals(ALLOW_DOUBLE_QUOTES)) {
         cliContext.setAllowDoubleQuotesInFHIRPath(true);       
+      } else if (args[i].equals(DO_NOT_FETCH_UNKNOWN_PROFILES)) {
+        cliContext.setDoNotFetchUnknownProfiles(true);
       } else if (args[i].equals(CHECK_IPS_CODES)) {
         cliContext.setCheckIPSCodes(true);       
       } else if (args[i].equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {

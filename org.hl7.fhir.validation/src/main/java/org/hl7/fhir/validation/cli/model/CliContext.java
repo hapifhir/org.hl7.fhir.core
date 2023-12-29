@@ -56,6 +56,8 @@ public class CliContext {
   private HtmlInMarkdownCheck htmlInMarkdownCheck = HtmlInMarkdownCheck.WARNING;
   @JsonProperty("allowDoubleQuotesInFHIRPath")  
   private boolean allowDoubleQuotesInFHIRPath = false;
+  @JsonProperty("doNotFetchUnknownProfiles")
+  private boolean doNotFetchUnknownProfiles = false;
   @JsonProperty("checkIPSCodes")  
   private boolean checkIPSCodes;
   @JsonProperty("langTransform")
@@ -326,6 +328,16 @@ public class CliContext {
   @JsonProperty("allowDoubleQuotesInFHIRPath")  
   public void setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
     this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
+  }
+
+  @JsonProperty("doNotFetchUnknownProfiles")
+  public boolean isDoNotFetchUnknownProfiles() {
+    return doNotFetchUnknownProfiles;
+  }
+
+  @JsonProperty("doNotFetchUnknownProfiles")
+  public void setDoNotFetchUnknownProfiles(boolean doNotFetchUnknownProfiles) {
+    this.doNotFetchUnknownProfiles = doNotFetchUnknownProfiles;
   }
 
   @JsonProperty("checkIPSCodes")
