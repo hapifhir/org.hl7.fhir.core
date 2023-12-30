@@ -505,6 +505,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
 
   private Source source;
+  private String server;
   private int line;
   private int col;
   private String location; // fhirPath
@@ -929,7 +930,13 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   public void setSliceInfo(List<ValidationMessage> sliceInfo) {
     this.sliceInfo = sliceInfo;
   }
-  
-  
+
+  public String getServer() {
+    return server;
+  }
+
+  public void setServer(String server) {
+    this.server = server;
+  }  
   
 }

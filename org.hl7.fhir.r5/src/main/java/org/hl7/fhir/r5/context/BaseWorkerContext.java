@@ -1736,7 +1736,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (p.getName().equals("issues")) {
           OperationOutcome oo = (OperationOutcome) p.getResource();
           for (OperationOutcomeIssueComponent iss : oo.getIssue()) {
-            iss.addExtension("http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server", new UrlType(server));
+            iss.addExtension(ToolingExtensions.EXT_ISSUE_SERVER, new UrlType(server));
             issues.add(iss);
           }
         } else {

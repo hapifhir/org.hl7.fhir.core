@@ -267,6 +267,7 @@ public class ToolingExtensions {
   public static final String EXT_ED_SUPPRESS = "http://hl7.org/fhir/StructureDefinition/elementdefinition-suppress";
   public static final String EXT_SEARCH_PARAMETER_BASE = "http://hl7.org/fhir/tools/StructureDefinition/searchparameter-base-type";
   public static final String EXT_ISSUE_SLICE_INFO = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-slicetext";
+  public static final String EXT_ISSUE_SERVER = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server";
   
   // specific extension helpers
 
