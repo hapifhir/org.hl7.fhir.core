@@ -3,7 +3,7 @@
   "system" : "http://www.whocc.no/atc",
   "code" : "N02AA",
   "display" : "Barbiturates and derivatives"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -11,12 +11,31 @@
   }]
 }}####
 v: {
+  "display" : "Natural opium alkaloids",
+  "code" : "N02AA",
   "severity" : "error",
-  "error" : "Wrong Display Name 'Barbiturates and derivatives' for http://www.whocc.no/atc#N02AA - should be 'Natural opium alkaloids' (for the language(s) '--') (from Tx-Server)",
+  "error" : "Wrong Display Name 'Barbiturates and derivatives' for http://www.whocc.no/atc#N02AA - should be 'Natural opium alkaloids' (for the language(s) '--')",
   "class" : "UNKNOWN",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://local.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-display"
+      }],
+      "text" : "Wrong Display Name 'Barbiturates and derivatives' for http://www.whocc.no/atc#N02AA - should be 'Natural opium alkaloids' (for the language(s) '--')"
+    },
+    "location" : ["Coding.display"],
+    "expression" : ["Coding.display"]
+  }]
 }
 
 }

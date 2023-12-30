@@ -556,7 +556,7 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
       }
       
       public String toString() {
-        String base = getSystem();
+        String base = hasSystem() ? getSystem() : "";
         if (hasVersion())
           base = base+"|"+getVersion();
         base = base + "#"+getCode();

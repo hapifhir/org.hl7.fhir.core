@@ -2567,6 +2567,15 @@ public class CodeSystem extends MetadataResource {
 
     }
 
+    public ConceptPropertyComponent forceProperty(String code) {
+      for (ConceptPropertyComponent prop : getProperty()) {
+        if (code.equals(prop.getCode())) {
+          return prop;
+        }
+      }
+      return addProperty().setCode(code);
+    }
+
   }
 
   @Block()
