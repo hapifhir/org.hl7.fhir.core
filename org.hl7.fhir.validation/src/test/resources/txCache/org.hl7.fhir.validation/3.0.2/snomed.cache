@@ -117,7 +117,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -158,7 +158,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -434,7 +434,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -474,7 +474,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -514,7 +514,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -554,7 +554,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -594,7 +594,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -634,7 +634,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -674,7 +674,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -714,7 +714,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -754,7 +754,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -794,7 +794,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -834,7 +834,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -874,7 +874,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -914,7 +914,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -954,7 +954,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -994,7 +994,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -1203,7 +1203,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
