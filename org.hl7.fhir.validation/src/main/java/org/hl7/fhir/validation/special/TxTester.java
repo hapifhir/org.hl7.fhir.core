@@ -95,7 +95,9 @@ public class TxTester {
       ITerminologyClient tx = connectToServer();
       boolean ok = checkClient(tx);
       for (JsonObject suite : tests.getJsonObjects("suites")) {
-        ok = runSuite(suite, tx, modes, filter, json.forceArray("suites")) && ok;
+        if (!suite.has("mode") || modes.contains(suite.asString("mode"))) {
+          ok = runSuite(suite, tx, modes, filter, json.forceArray("suites")) && ok;
+        }
       }
       TextFile.stringToFile(JsonParser.compose(json, true), Utilities.path(output, "test-results.json"));
       if (ok) {
@@ -196,6 +198,8 @@ public class TxTester {
           msg = expand(tx, setup, req, resp, fp, lang, profile, ext);
         } else if (test.asString("operation").equals("validate-code")) {
           msg = validate(tx, setup, req, resp, fp, lang, profile, ext);      
+        } else if (test.asString("operation").equals("cs-validate-code")) {
+          msg = validateCS(tx, setup, req, resp, fp, lang, profile, ext);      
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -278,6 +282,31 @@ public class TxTester {
     String pj;
     try {
       Parameters po = tx.validateVS(p);
+      TxTesterScrubbers.scrubParams(po);
+      TxTesterSorters.sortParameters(po);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+    } catch (EFhirClientException e) {
+      OperationOutcome oo = e.getServerError(); 
+      oo.setText(null);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+    }
+    String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, false, ext);
+    if (diff != null) {
+      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
+      TextFile.stringToFile(pj, fp);        
+    }
+    return diff;
+  }
+  
+  private String validateCS(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+    for (Resource r : setup) {
+      p.addParameter().setName("tx-resource").setResource(r);
+    }
+    p.getParameter().addAll(profile.getParameter());
+    tx.setContentLanguage(lang);
+    String pj;
+    try {
+      Parameters po = tx.validateCS(p);
       TxTesterScrubbers.scrubParams(po);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);

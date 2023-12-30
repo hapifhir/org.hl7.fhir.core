@@ -1,0 +1,42 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://hl7.org/fhir/referencerange-meaning",
+    "code" : "normal",
+    "display" : "Normal Range"
+  }],
+  "text" : "TÃ¯Â¿Â½ssÃ¯Â¿Â½ tekstiÃ¯Â¿Â½"
+}, "langs":"fi", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Normal Range",
+  "code" : "normal",
+  "system" : "http://hl7.org/fhir/referencerange-meaning",
+  "version" : "3.0.2",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://local.fhir.org/r3"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to experimental CodeSystem http://hl7.org/fhir/referencerange-meaning|3.0.2"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------

@@ -237,6 +237,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
     val.setPolicyAdvisor(this);
 
+    if (content.has("wrong-displays"))
+      val.getBaseOptions().setDisplayWarningMode("warning".equals(content.get("wrong-displays").getAsString()));
     if (content.has("allowed-extension-domain"))
       val.getExtensionDomains().add(content.get("allowed-extension-domain").getAsString());
     if (content.has("allowed-extension-domains"))
@@ -448,7 +450,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   private ValidationEngine buildVersionEngine(String ver, String txLog) throws Exception {
-    String server = FhirSettings.getTxFhirDevelopment();
+    String server = FhirSettings.getTxFhirLocal();
     switch (ver) {
     case "1.0": return TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", server, txLog, FhirPublication.DSTU2, true, "1.0.2");
     case "1.4": return TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", server, txLog, FhirPublication.DSTU2016May, true, "1.4.0"); 
@@ -765,7 +767,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("validateCodedContent"))
       return CodedContentValidationPolicy.valueOf(content.get("validateCodedContent").getAsString());
     else
-      return CodedContentValidationPolicy.VALUESET;
+      return CodedContentValidationPolicy.CODE;
   }
   @Override
   public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical) throws IOException, FHIRException {

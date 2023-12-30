@@ -1,8 +1,49 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://terminology.hl7.org/CodeSystem/condition-clinical",
+  "version" : "0.5.0",
+  "code" : "active",
+  "display" : "Active"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "code" : "active",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem http://terminology.hl7.org/CodeSystem/condition-clinical version 0.5.0 could not be found, so the code cannot be validated. Valid versions: [2.0.0,4.0.1]",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "unknown-systems" : "http://terminology.hl7.org/CodeSystem/condition-clinical|0.5.0",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://local.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem http://terminology.hl7.org/CodeSystem/condition-clinical version 0.5.0 could not be found, so the code cannot be validated. Valid versions: [2.0.0,4.0.1]"
+    },
+    "location" : ["CodeableConcept.coding[0].system"],
+    "expression" : ["CodeableConcept.coding[0].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://terminology.hl7.org/CodeSystem/condition-clinical",
   "code" : "active"
-}, "url": "http://hl7.org/fhir/ValueSet/condition-clinical--0", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/condition-clinical--0", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -15,51 +56,6 @@ v: {
   "system" : "http://terminology.hl7.org/CodeSystem/condition-clinical",
   "version" : "2.0.0",
   "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://terminology.hl7.org/CodeSystem/condition-clinical",
-  "version" : "0.5.0",
-  "code" : "active",
-  "display" : "Active"
-}, "url": "http://hl7.org/fhir/ValueSet/condition-clinical", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "severity" : "error",
-  "error" : "Unable to check whether the code is in the value set http://hl7.org/fhir/ValueSet/condition-clinical|4.0.1 (from Tx-Server)",
-  "class" : "CODESYSTEM_UNSUPPORTED",
-  "unknown-systems" : "http://terminology.hl7.org/CodeSystem/condition-clinical|0.5.0",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://terminology.hl7.org/CodeSystem/condition-clinical",
-  "version" : "0.5.0",
-  "code" : "active"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "severity" : "error",
-  "error" : "The code system http://terminology.hl7.org/CodeSystem/condition-clinical version 0.5.0 could not be found. Valid versions: [2.0.0,4.0.1] (from Tx-Server)",
-  "class" : "CODESYSTEM_UNSUPPORTED",
-  "unknown-systems" : "http://terminology.hl7.org/CodeSystem/condition-clinical|0.5.0",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
