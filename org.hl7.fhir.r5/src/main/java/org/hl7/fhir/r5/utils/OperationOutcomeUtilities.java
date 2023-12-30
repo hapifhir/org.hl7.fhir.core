@@ -40,6 +40,7 @@ import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
@@ -153,6 +154,9 @@ public class OperationOutcomeUtilities {
     issue.setDetails(c);
     if (message.sliceText != null) {
       issue.addExtension(ToolingExtensions.EXT_ISSUE_SLICE_INFO, new StringType(CommaSeparatedStringBuilder.join("; ", message.sliceText)));
+    }
+    if (message.getServer() != null) {
+      issue.addExtension(ToolingExtensions.EXT_ISSUE_SERVER, new UrlType(message.getServer()));
     }
     return issue;
   }

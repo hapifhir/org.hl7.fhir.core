@@ -724,11 +724,8 @@ public class BaseValidator implements IValidationContextResourceLoader {
     IssueType code = IssueType.fromCode(issue.getCode().toCode());
     IssueSeverity severity = IssueSeverity.fromCode(issue.getSeverity().toCode());
     ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, code, line, col, path, issue.getDetails().getText(), severity).setTxLink(txLink);
-//      if (checkMsgId(msg, vmsg)) {
+    vmsg.setServer(issue.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER));
     errors.add(vmsg);
-//      }
-//    }
-//    return thePass;
     return vmsg;
   }
   
