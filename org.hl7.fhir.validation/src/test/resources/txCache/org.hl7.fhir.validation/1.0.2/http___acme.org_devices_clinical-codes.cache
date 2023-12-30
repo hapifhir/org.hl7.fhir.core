@@ -21,7 +21,7 @@ v: {
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r2"
+      "valueUrl" : "http://tx-dev.fhir.org/r2"
     }],
     "severity" : "error",
     "code" : "not-found",
