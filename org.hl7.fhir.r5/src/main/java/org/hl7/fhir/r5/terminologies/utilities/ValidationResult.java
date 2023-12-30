@@ -263,6 +263,14 @@ public class ValidationResult {
             iss.getLocation().get(i).setValueAsString(s.substring(prefix.length()+1));                
           }            
         }
+        for (int i = iss.getExpression().size() -1; i >= 0; i--) {
+          var s = iss.getExpression().get(i).primitiveValue();
+          if (prefix.equals(s)) {
+            iss.getExpression().remove(i);
+          } else if (s.startsWith(prefix+".")) {
+            iss.getExpression().get(i).setValueAsString(s.substring(prefix.length()+1));                
+          }            
+        }
       }
     }      
     
