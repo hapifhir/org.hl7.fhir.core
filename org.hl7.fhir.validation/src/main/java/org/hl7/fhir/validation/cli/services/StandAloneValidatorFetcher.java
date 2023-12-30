@@ -298,7 +298,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   @Override
   public CodedContentValidationPolicy policyForCodedContent(IResourceValidator validator, Object appContext, String stackPath, ElementDefinition definition,
       StructureDefinition structure, BindingKind kind, ValueSet valueSet, List<String> systems) {
-    return CodedContentValidationPolicy.VALUESET;
+    return CodedContentValidationPolicy.CODE;
   }
 
 }

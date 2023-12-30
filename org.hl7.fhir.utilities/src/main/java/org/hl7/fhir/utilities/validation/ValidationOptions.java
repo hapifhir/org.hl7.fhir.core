@@ -10,20 +10,18 @@ import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 import com.google.gson.JsonElement;
 
 public class ValidationOptions {
-  public enum ValueSetMode {
-    ALL_CHECKS, CHECK_MEMERSHIP_ONLY, NO_MEMBERSHIP_CHECK
-  }
   
   private AcceptLanguageHeader langs = null;
   private boolean useServer = true;
   private boolean useClient = true;
   private boolean guessSystem = false;
-  private ValueSetMode valueSetMode = ValueSetMode.ALL_CHECKS;
+  private boolean membershipOnly = false;
   private boolean displayWarningMode = false;
   private boolean vsAsUrl;
   private boolean versionFlexible = true;
   private boolean useValueSetDisplays;
   private boolean englishOk = true;
+  private boolean activeOnly = false;
   private FhirPublication fhirVersion;
 
   public ValidationOptions(FhirPublication fhirVersion) {
@@ -87,15 +85,11 @@ public class ValidationOptions {
   public boolean isGuessSystem() {
     return guessSystem;
   }
-
-  /**
-   * See {link}
-   * @return
-   */
-  public ValueSetMode getValueSetMode() {
-    return valueSetMode;
-  }
   
+  public boolean isActiveOnly() {
+    return activeOnly;
+  }
+
   /**
    * Don't know what this does
    * 
@@ -121,6 +115,10 @@ public class ValidationOptions {
    */
   public boolean isUseValueSetDisplays() {
     return useValueSetDisplays;
+  }
+
+  public boolean isMembershipOnly() {
+    return membershipOnly;
   }
 
   /**
@@ -159,16 +157,17 @@ public class ValidationOptions {
     n.guessSystem = true;
     return n;
   }
-  
-  public ValidationOptions withCheckValueSetOnly() {
+
+  public ValidationOptions withActiveOnly() {
     ValidationOptions n = this.copy();
-    n.valueSetMode = ValueSetMode.CHECK_MEMERSHIP_ONLY;
+    n.activeOnly = true;
     return n;
   }
-
-  public ValidationOptions withNoCheckValueSetMembership() {
+  
+  /** Only for additional bindings **/
+  public ValidationOptions withCheckValueSetOnly() {
     ValidationOptions n = this.copy();
-    n.valueSetMode = ValueSetMode.NO_MEMBERSHIP_CHECK;
+    n.membershipOnly = true;
     return n;
   }
 
@@ -225,13 +224,13 @@ public class ValidationOptions {
     return this;
   }
   
-  public ValidationOptions setCheckValueSetOnly() {
-    this.valueSetMode = ValueSetMode.CHECK_MEMERSHIP_ONLY;
+  public ValidationOptions setActiveOnly(boolean activeOnly) {
+    this.activeOnly = activeOnly;
     return this;
   }
-
-  public ValidationOptions setNoCheckValueSetMembership() {
-    this.valueSetMode = ValueSetMode.NO_MEMBERSHIP_CHECK;
+  
+  public ValidationOptions setCheckValueSetOnly() {
+    this.membershipOnly = true;
     return this;
   }
 
@@ -270,9 +269,10 @@ public class ValidationOptions {
     n.useServer = useServer;
     n.useClient = useClient;
     n.guessSystem = guessSystem; 
+    n.activeOnly = activeOnly; 
     n.vsAsUrl = vsAsUrl;
     n.versionFlexible = versionFlexible;
-    n.valueSetMode = valueSetMode;
+    n.membershipOnly = membershipOnly;
     n.useValueSetDisplays = useValueSetDisplays;   
     n.displayWarningMode = displayWarningMode;
     return n;
@@ -281,7 +281,7 @@ public class ValidationOptions {
 
   public String toJson() {
     return "\"langs\":\""+( langs == null ? "" : langs.toString())+"\", \"useServer\":\""+Boolean.toString(useServer)+"\", \"useClient\":\""+Boolean.toString(useClient)+"\", "+
-       "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"valueSetMode\":\""+valueSetMode.toString()+"\", \"displayWarningMode\":\""+Boolean.toString(displayWarningMode)+"\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\"";
+       "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"activeOnly\":\""+Boolean.toString(activeOnly)+"\", \"membershipOnly\":\""+Boolean.toString(membershipOnly)+"\", \"displayWarningMode\":\""+Boolean.toString(displayWarningMode)+"\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\"";
   }
 
   public String langSummary() {

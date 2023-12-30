@@ -550,9 +550,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
       wc.getExcludeSystems().add(exc.getSystem());
     }
 
-    for (UriType imp : exc.getValueSet())
+    for (UriType imp : exc.getValueSet()) {
       excludeCodes(wc, importValueSetForExclude(wc, imp.getValue(), exp, expParams, false, vs).getExpansion());
-
+    }
+    
     CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem());
     if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.supportsSystem(exc.getSystem(), opContext.getOptions().getFhirVersion())) {
       ValueSetExpansionOutcome vse = context.expandVS(exc, false, false);

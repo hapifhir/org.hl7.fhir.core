@@ -2,7 +2,31 @@
 {"code" : {
   "system" : "http://varnomen.hgvs.org",
   "code" : "NC_000019.8:g.1171707G>A"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "NC_000019.8:g.1171707G>A",
+  "code" : "NC_000019.8:g.1171707G>A",
+  "system" : "http://varnomen.hgvs.org",
+  "version" : "2.0",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://varnomen.hgvs.org",
+    "code" : "NC_000019.8:g.1171707G>A"
+  }]
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -24,7 +48,7 @@ v: {
 {"code" : {
   "system" : "http://varnomen.hgvs.org",
   "code" : "NC_000019.8:g.1171707G>A"
-}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0", "version": "1.0.0", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0", "version": "1.0.0", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -46,7 +70,7 @@ v: {
 {"code" : {
   "system" : "http://varnomen.hgvs.org",
   "code" : "NC_000019.8:g.1171707G>A"
-}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs", "version": "1.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs", "version": "1.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -68,7 +92,7 @@ v: {
 {"code" : {
   "system" : "http://varnomen.hgvs.org",
   "code" : "NC_000019.8:g.1171707G>AXXX"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -76,12 +100,30 @@ v: {
   }]
 }}####
 v: {
+  "code" : "NC_000019.8:g.1171707G>AXXX",
   "severity" : "error",
-  "error" : "The provided code 'http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX' was not found in the value set 'http://hl7.org/fhir/ValueSet/@all'; Unknown Code 'NC_000019.8:g.1171707G>AXXX' in the system 'http://varnomen.hgvs.org|2.0' (from Tx-Server)",
+  "error" : "Unknown code 'NC_000019.8:g.1171707G>AXXX' in the CodeSystem 'http://varnomen.hgvs.org' version '2.0'",
   "class" : "UNKNOWN",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'NC_000019.8:g.1171707G>AXXX' in the CodeSystem 'http://varnomen.hgvs.org' version '2.0'"
+    },
+    "location" : ["CodeableConcept.coding[0].code"],
+    "expression" : ["CodeableConcept.coding[0].code"]
+  }]
 }
 
 }
@@ -89,7 +131,7 @@ v: {
 {"code" : {
   "system" : "http://varnomen.hgvs.org",
   "code" : "NC_000019.8:g.1171707G>AXXX"
-}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0", "version": "1.0.0", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0", "version": "1.0.0", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -97,12 +139,47 @@ v: {
   }]
 }}####
 v: {
+  "code" : "NC_000019.8:g.1171707G>AXXX",
   "severity" : "error",
-  "error" : "The provided code 'http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX' was not found in the value set 'http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0'; Unknown Code 'NC_000019.8:g.1171707G>AXXX' in the system 'http://varnomen.hgvs.org|2.0' (from Tx-Server)",
+  "error" : "The provided code 'http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX' was not found in the value set 'http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0'; Unknown code 'NC_000019.8:g.1171707G>AXXX' in the CodeSystem 'http://varnomen.hgvs.org' version '2.0'",
   "class" : "UNKNOWN",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'NC_000019.8:g.1171707G>AXXX' in the CodeSystem 'http://varnomen.hgvs.org' version '2.0'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX' was not found in the value set 'http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
 }
 
 }
