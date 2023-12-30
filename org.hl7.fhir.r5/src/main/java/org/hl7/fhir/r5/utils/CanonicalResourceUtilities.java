@@ -16,9 +16,6 @@ import org.hl7.fhir.utilities.xml.XMLUtil;
 public class CanonicalResourceUtilities {
 
   public static void setHl7WG(CanonicalResource cr, String wgc) {
-    if ("http://hl7.org/fhir/days-of-week".equals(cr.getUrl())) {
-      System.out.println("!");
-    }
     var wg = HL7WorkGroups.find(wgc);
     if (wg == null) {
       throw new Error("Unknown WG "+wgc);
@@ -39,10 +36,6 @@ public class CanonicalResourceUtilities {
   }
 
   public static void setHl7WG(CanonicalResource cr) {
-    if ("http://hl7.org/fhir/days-of-week".equals(cr.getUrl())) {
-      System.out.println("!");
-    }
-
     String wgc = ToolingExtensions.readStringExtension(cr, ToolingExtensions.EXT_WORKGROUP);
     if (wgc == null) {
       wgc = "fhir";      

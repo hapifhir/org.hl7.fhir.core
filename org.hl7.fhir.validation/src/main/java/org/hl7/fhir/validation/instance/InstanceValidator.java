@@ -246,7 +246,6 @@ import org.w3c.dom.Document;
 
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
   
-
   private static final String EXECUTED_CONSTRAINT_LIST = "validator.executed.invariant.list";
   private static final String EXECUTION_ID = "validator.execution.id";
   private static final String HTML_FRAGMENT_REGEX = "[a-zA-Z]\\w*(((\\s+)(\\S)*)*)";
