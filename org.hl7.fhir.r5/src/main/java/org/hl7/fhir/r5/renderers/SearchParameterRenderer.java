@@ -98,17 +98,24 @@ public class SearchParameterRenderer extends TerminologyRenderer {
         }
       }
     }
-    tr = tbl.tr();
+    tr = tbl.tr();    
     tr.td().tx("Multiples");
-    if (spd.getMultipleAnd() && spd.getMultipleOr()) {
-      tr.td().tx("The parameter can repeat (and) and can have repeating values (or)");      
-    } else if (spd.getMultipleOr()) {
-      tr.td().tx("The parameter can repeat (and) but each repeat can only have one value");      
+    XhtmlNode ul = tr.td().ul();
+    if (!spd.hasMultipleAnd()) {
+      ul.li().tx("multipleAnd: It's up to the server whether the parameter may repeat in order to specify multiple values that must all be true");
     } else if (spd.getMultipleAnd()) {
-      tr.td().tx("The parameter cannot repeat (and) but the single parameter can have multiple values (or)");      
-    } else { 
-      tr.td().tx("The parameter cannot repeat or have multiple values");
+      ul.li().tx("multipleAnd: The parameter may repeat in order to specify multiple values that must all be true");
+    } else {
+      ul.li().tx("multipleAnd: The parameter may only appear once");
     }
+    if (!spd.hasMultipleOr()) {
+      ul.li().tx("multipleOr: It's up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true");
+    } else if (spd.getMultipleOr()) {
+      ul.li().tx("multipleOr: The parameter may have multiple values (separated by comma) where at least one must be true");
+    } else {
+      ul.li().tx("multipleOr: The parameter may only have one value (no comma separators)");
+    }
+
     if (spd.hasComparator()) {
       tr = tbl.tr();
       tr.td().tx("Comparators");

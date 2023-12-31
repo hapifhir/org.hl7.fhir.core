@@ -351,5 +351,14 @@ public class PackageList {
     return list;
   }
 
+  public boolean hasPath(String pathVer) {
+    for (PackageListEntry t : versions) {
+      if (t.path() != null && t.path().equals(pathVer)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 
 }

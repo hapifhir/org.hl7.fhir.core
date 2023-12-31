@@ -36,13 +36,13 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
 import org.hl7.fhir.r4b.context.IWorkerContext;
+import org.hl7.fhir.r4b.fhirpath.TypeDetails;
 import org.hl7.fhir.r4b.formats.FormatUtilities;
 import org.hl7.fhir.r4b.model.ElementDefinition;
 import org.hl7.fhir.r4b.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r4b.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r4b.model.TypeDetails;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.r4b.utils.TypesUtilities;
 import org.hl7.fhir.utilities.Utilities;
@@ -72,9 +72,9 @@ public class Property {
   }
 
   public String getXmlName() {
-    if (definition.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name")) {
+    if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME)) {
       return ToolingExtensions.readStringExtension(definition,
-          "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name");
+          ToolingExtensions.EXT_XML_NAME);
     } else {
       return getName();
     }

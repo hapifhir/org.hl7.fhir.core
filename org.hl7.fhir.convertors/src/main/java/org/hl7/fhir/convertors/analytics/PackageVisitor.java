@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors.analytics;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,6 +32,16 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class PackageVisitor {
+
+  private PackageServer clientPackageServer = null;
+
+  public void setClientPackageServer(PackageServer packageServer) {
+    this.clientPackageServer = packageServer;
+  }
+  private List<PackageServer> cachePackageServers = null;
+  public void setCachePackageServers(List<PackageServer> packageServers) {
+    this.cachePackageServers = packageServers;
+  }
 
   public static class PackageContext {
     private String pid;
@@ -145,8 +154,13 @@ public class PackageVisitor {
 
   public void visitPackages() throws IOException, ParserConfigurationException, SAXException, FHIRException, EOperationOutcome {
     System.out.println("Finding packages");
-    pc = new PackageClient(PackageServer.primaryServer());
-    pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+    pc = clientPackageServer == null
+      ? new PackageClient(PackageServer.primaryServer())
+      : new PackageClient(clientPackageServer);
+
+    pcm = cachePackageServers == null
+      ? new FilesystemPackageCacheManager.Builder().build()
+      : new FilesystemPackageCacheManager.Builder().withPackageServers(cachePackageServers).build();
 
     Set<String> pidList = getAllPackages();
 
@@ -155,7 +169,7 @@ public class PackageVisitor {
     System.out.println("Go: "+cpidMap.size()+" current packages");
     int i = 0;
     for (String s : cpidMap.keySet()) {
-      processCurrentPackage(s, cpidMap.get(s), cpidSet, i, cpidMap.size()); 
+      processCurrentPackage(cpidMap.get(s), s, cpidSet, i, cpidMap.size()); 
       i++;
     }
 
@@ -266,12 +280,20 @@ public class PackageVisitor {
   }
 
   private Map<String, String> getAllCIPackages() throws IOException {
+    System.out.println("Fetch https://build.fhir.org/ig/qas.json");
     Map<String, String> res = new HashMap<>();
     if (current) {
       JsonArray json = (JsonArray) JsonParser.parseFromUrl("https://build.fhir.org/ig/qas.json");
       for (JsonObject o  : json.asJsonObjects()) {
         String url = o.asString("repo");
-        res.put(url, o.asString("package-id"));
+        String pid = o.asString("package-id");
+        if (url.contains("/branches/master") || url.contains("/branches/main") ) {
+          if (!res.containsKey(pid)) {
+            res.put(pid, url);
+          } else if (!url.equals(res.get(pid))) {
+            System.out.println("Ignore "+url+" already encountered "+pid +" @ "+res.get(pid));
+          }
+        }
       }
     }
     return res;
@@ -330,9 +352,14 @@ public class PackageVisitor {
     String fv = null;
     try {
       npm = pcm.loadPackage(pid, v);
+    } catch (Throwable e) {
+      System.out.println("Unable to load package: "+pid+"#"+v+": "+e.getMessage());
+    }
+
+    try {
       fv = npm.fhirVersion();
     } catch (Throwable e) {
-      System.out.println("Unable to process: "+pid+"#"+v+": "+e.getMessage());      
+      System.out.println("Unable to identify package FHIR version:: "+pid+"#"+v+": "+e.getMessage());
     }
     if (corePackages || !corePackage(npm)) {
       PackageContext ctxt = new PackageContext(pid+"#"+v, npm, fv);

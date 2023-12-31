@@ -19,6 +19,7 @@ class WorkingContext {
   
   private boolean canBeHeirarchy = true;
   private int offset;
+  private boolean offs;
   private int count;
   private int total;
   
@@ -55,7 +56,12 @@ class WorkingContext {
   }
   
   public void setOffset(int offset) {
+    this.offs = true;
     this.offset = offset;
+  }
+  
+  public boolean hasOffset() {
+    return offs;
   }
   
   public int getCount() {

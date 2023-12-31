@@ -122,7 +122,6 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
-import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
 
 import com.google.gson.JsonObject;
 
@@ -805,11 +804,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     tlog("$expand on " + txCache.summary(vs));
     try {
       ValueSet result = txClient.expandValueset(vs, p, params);
-      if (!result.hasUrl()) {
-        result.setUrl(vs.getUrl());
-      }
-      if (!result.hasUrl()) {
-        throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
+      if (result != null) {
+        if (!result.hasUrl()) {
+          result.setUrl(vs.getUrl());
+        }
+        if (!result.hasUrl()) {
+          throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
+        }
       }
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());
     } catch (Exception e) {
@@ -1051,8 +1052,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (options.hasLanguages()) {
       pIn.addParameter("displayLanguage", options.getLanguages().toString());
     }
-    if (options.getValueSetMode() != ValueSetMode.ALL_CHECKS) {
-      pIn.addParameter("valueSetMode", options.getValueSetMode().toString());
+    if (options.isMembershipOnly()) {
+      pIn.addParameter("valueset-membership-only", true);
+    }
+    if (options.isDisplayWarningMode()) {
+      pIn.addParameter("lenient-display-validation", true);
     }
     if (options.isVersionFlexible()) {
       pIn.addParameter("default-to-latest-version", true);

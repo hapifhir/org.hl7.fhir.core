@@ -44,6 +44,15 @@ import org.hl7.fhir.r4b.context.IWorkerContext;
 import org.hl7.fhir.r4b.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r4b.elementmodel.Element;
 import org.hl7.fhir.r4b.elementmodel.Property;
+import org.hl7.fhir.r4b.fhirpath.ExpressionNode;
+import org.hl7.fhir.r4b.fhirpath.FHIRLexer;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r4b.fhirpath.TypeDetails;
+import org.hl7.fhir.r4b.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r4b.fhirpath.FHIRLexer.FHIRLexerException;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
+import org.hl7.fhir.r4b.fhirpath.TypeDetails.ProfiledType;
 import org.hl7.fhir.r4b.model.*;
 import org.hl7.fhir.r4b.model.ConceptMap.ConceptMapEquivalence;
 import org.hl7.fhir.r4b.model.ConceptMap.ConceptMapGroupComponent;
@@ -55,23 +64,17 @@ import org.hl7.fhir.r4b.model.Enumeration;
 import org.hl7.fhir.r4b.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r4b.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r4b.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4b.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4b.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r4b.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r4b.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r4b.model.StructureMap.*;
-import org.hl7.fhir.r4b.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r4b.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r4b.renderers.TerminologyRenderer;
 import org.hl7.fhir.r4b.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.r4b.utils.FHIRLexer;
-import org.hl7.fhir.r4b.utils.FHIRLexer.FHIRLexerException;
-import org.hl7.fhir.r4b.utils.FHIRPathEngine;
-import org.hl7.fhir.r4b.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r4b.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -111,7 +114,7 @@ public class StructureMapUtilities {
 
   private class FHIRPathHostServices implements IEvaluationContext {
 
-    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext)
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant)
         throws PathEngineException {
       Variables vars = (Variables) appContext;
       List<Base> list = new ArrayList<Base>();
@@ -126,7 +129,7 @@ public class StructureMapUtilities {
     }
 
     @Override
-    public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
       if (!(appContext instanceof VariablesForProfiling))
         throw new Error(
             "Internal Logic Error (wrong type '" + appContext.getClass().getName() + "' in resolveConstantType)");
@@ -143,31 +146,31 @@ public class StructureMapUtilities {
     }
 
     @Override
-    public FunctionDetails resolveFunction(String functionName) {
+    public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
       return null; // throw new Error("Not Implemented Yet");
     }
 
     @Override
-    public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters)
+    public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters)
         throws PathEngineException {
       throw new Error("Not Implemented Yet");
     }
 
     @Override
-    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName,
+    public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName,
         List<List<Base>> parameters) {
       throw new Error("Not Implemented Yet");
     }
 
     @Override
-    public Base resolveReference(Object appContext, String url, Base base) throws FHIRException {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base base) throws FHIRException {
       if (services == null)
         return null;
       return services.resolveReference(appContext, url);
     }
 
     @Override
-    public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
+    public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
       IResourceValidator val = worker.newValidator();
       List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
       if (item instanceof Resource) {
@@ -181,7 +184,7 @@ public class StructureMapUtilities {
     }
 
     @Override
-    public ValueSet resolveValueSet(Object appContext, String url) {
+    public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
       throw new Error("Not Implemented Yet");
     }
 
@@ -192,7 +195,7 @@ public class StructureMapUtilities {
   private ITransformerServices services;
   private ProfileKnowledgeProvider pkp;
   private final Map<String, Integer> ids = new HashMap<String, Integer>();
-  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R4B);
   private final ProfileUtilities profileUtilities;
 
   public StructureMapUtilities(IWorkerContext worker, ITransformerServices services, ProfileKnowledgeProvider pkp) {

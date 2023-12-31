@@ -18,22 +18,22 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.conformance.ProfileUtilities.ProfileKnowledgeProvider;
+import org.hl7.fhir.r4.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r4.fhirpath.TypeDetails;
+import org.hl7.fhir.r4.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r4.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r4.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r4.model.TypeDetails;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
-import org.hl7.fhir.r4.utils.FHIRPathEngine;
-import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r4.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4.utils.NarrativeGenerator;
 import org.hl7.fhir.r4.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.Utilities;
@@ -300,13 +300,13 @@ public class SnapShotGenerationTests {
 
     // FHIRPath methods
     @Override
-    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext)
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant)
         throws PathEngineException {
       throw new Error("Not implemented yet");
     }
 
     @Override
-    public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
       throw new Error("Not implemented yet");
     }
 
@@ -317,14 +317,14 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public FunctionDetails resolveFunction(String functionName) {
+    public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
       if ("fixture".equals(functionName))
         return new FunctionDetails("Access a fixture defined in the testing context", 0, 1);
       return null;
     }
 
     @Override
-    public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters)
+    public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters)
         throws PathEngineException {
       if ("fixture".equals(functionName))
         return new TypeDetails(CollectionStatus.SINGLETON, TestingUtilities.context().getResourceNamesAsSet());
@@ -332,7 +332,7 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName,
+    public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName,
         List<List<Base>> parameters) {
       if ("fixture".equals(functionName)) {
         String id = fp.convertToString(parameters.get(0));
@@ -348,13 +348,13 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public Base resolveReference(Object appContext, String url, Base base) {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base base) {
       // TODO Auto-generated method stub
       return null;
     }
 
     @Override
-    public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
+    public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
       IResourceValidator val = TestingUtilities.context().newValidator();
       List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
       if (item instanceof Resource) {
@@ -381,7 +381,7 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public ValueSet resolveValueSet(Object appContext, String url) {
+    public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
       throw new Error("Not implemented yet");
     }
 

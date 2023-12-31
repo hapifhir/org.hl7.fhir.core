@@ -40,9 +40,10 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.stringtemplate.v4.ST;
 
 public class ShExGenerator {

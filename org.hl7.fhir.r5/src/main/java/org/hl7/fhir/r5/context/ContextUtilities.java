@@ -250,11 +250,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
    * @throws FHIRException
    */
   public void generateSnapshot(StructureDefinition p) throws DefinitionException, FHIRException {
-    generateSnapshot(p, false);
-  }
-  
-  public void generateSnapshot(StructureDefinition p, boolean ifLogical) {
-    if ((!p.hasSnapshot() || isProfileNeedsRegenerate(p) ) && (ifLogical || p.getKind() != StructureDefinitionKind.LOGICAL)) {
+    if ((!p.hasSnapshot() || isProfileNeedsRegenerate(p))) {
       if (!p.hasBaseDefinition())
         throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE___HAS_NO_BASE_AND_NO_SNAPSHOT, p.getName(), p.getUrl()));
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getBaseDefinition(), p);
@@ -366,8 +362,8 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   public StructureDefinition fetchByJsonName(String key) {
     for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
       ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
-      if (sd.getKind() == StructureDefinitionKind.LOGICAL && ed != null && ed.hasExtension(ToolingExtensions.EXT_JSON_NAME) && 
-          key.equals(ToolingExtensions.readStringExtension(ed, ToolingExtensions.EXT_JSON_NAME))) {
+      if (sd.getKind() == StructureDefinitionKind.LOGICAL && ed != null && ed.hasExtension(ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED) && 
+          key.equals(ToolingExtensions.readStringExtension(ed, ToolingExtensions.EXT_JSON_NAME, ToolingExtensions.EXT_JSON_NAME_DEPRECATED))) {
         return sd;
       }
     }
@@ -426,6 +422,25 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       return candidates.get(0);
     }
     return null;
+  }
+
+  public StructureDefinition fetchProfileByIdentifier(String tid) {
+    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
+      for (Identifier ii : sd.getIdentifier()) {
+        if (tid.equals(ii.getValue())) {
+          return sd;
+        }
+      }
+    }
+    return null;
+  }
+
+  public boolean isAbstractType(String typeName) {
+    StructureDefinition sd = context.fetchTypeDefinition(typeName);
+    if (sd != null) {
+      return sd.getAbstract();
+    }
+    return false;
   }
 
 }

@@ -44,7 +44,7 @@ public class XVerExtensionManager {
   }
   
   public XVerExtensionStatus status(String url) throws FHIRException {
-    if (url.length() < 24) {
+    if (url.length() < 54) {
       return XVerExtensionStatus.Invalid;
     }
     String v = url.substring(20, 23);

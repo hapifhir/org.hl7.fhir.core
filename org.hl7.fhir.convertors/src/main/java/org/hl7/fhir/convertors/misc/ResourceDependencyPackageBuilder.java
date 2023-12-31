@@ -14,7 +14,7 @@ import org.hl7.fhir.convertors.loaders.loaderR5.R3ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R5ToR5Loader;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
+import org.hl7.fhir.r5.context.IContextResourceLoader;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.SimpleWorkerContextBuilder;
 import org.hl7.fhir.r5.model.CapabilityStatement;
@@ -35,7 +35,7 @@ public class ResourceDependencyPackageBuilder {
   
   public static void main(String[] args) throws IOException {
 
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true);
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     System.out.println("Load Core");
     NpmPackage src = pcm.loadPackage(VersionUtilities.packageForVersion(args[0]));
     SimpleWorkerContext ctxt = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(src);

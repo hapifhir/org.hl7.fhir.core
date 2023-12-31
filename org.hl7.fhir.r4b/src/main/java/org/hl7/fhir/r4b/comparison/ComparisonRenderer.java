@@ -22,16 +22,16 @@ import org.hl7.fhir.r4b.comparison.ValueSetComparer.ValueSetComparison;
 
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
 import org.hl7.fhir.r4b.context.IWorkerContext;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r4b.fhirpath.TypeDetails;
+import org.hl7.fhir.r4b.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4b.model.Base;
-import org.hl7.fhir.r4b.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4b.model.StringType;
 import org.hl7.fhir.r4b.model.Tuple;
-
-import org.hl7.fhir.r4b.model.TypeDetails;
 import org.hl7.fhir.r4b.model.ValueSet;
-import org.hl7.fhir.r4b.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r4b.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.utils.LiquidEngine;
 import org.hl7.fhir.r4b.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.TextFile;
@@ -231,7 +231,7 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   @Override
-  public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
     @SuppressWarnings("unchecked")
     Map<String, Base> vars = (Map<String, Base>) appContext;
     List<Base> res = new ArrayList<>();
@@ -242,7 +242,7 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   @Override
-  public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
     @SuppressWarnings("unchecked")
     Map<String, Base> vars = (Map<String, Base>) appContext;
     Base b = vars.get(name);
@@ -255,34 +255,34 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   @Override
-  public FunctionDetails resolveFunction(String functionName) {
+  public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
     return null;
   }
 
   @Override
-  public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters)
+  public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters)
       throws PathEngineException {
     return null;
   }
 
   @Override
-  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName,
+  public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName,
       List<List<Base>> parameters) {
     return null;
   }
 
   @Override
-  public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
     return null;
   }
 
   @Override
-  public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
+  public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
     return false;
   }
 
   @Override
-  public ValueSet resolveValueSet(Object appContext, String url) {
+  public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
     return null;
   }
 

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>ca.uhn.hapi.fhir</groupId>
 		<artifactId>org.hl7.fhir.core</artifactId>
-		<version>6.1.13-SNAPSHOT</version>
+		<version>6.2.8-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -149,12 +149,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.atlassian.commonmark</groupId>
+			<groupId>org.commonmark</groupId>
 			<artifactId>commonmark</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.atlassian.commonmark</groupId>
+			<groupId>org.commonmark</groupId>
 			<artifactId>commonmark-ext-gfm-tables</artifactId>
 			<scope>test</scope>
 		</dependency>

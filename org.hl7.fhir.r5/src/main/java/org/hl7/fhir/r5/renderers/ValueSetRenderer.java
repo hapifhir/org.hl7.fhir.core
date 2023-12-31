@@ -15,10 +15,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
-import org.hl7.fhir.r5.context.TerminologyCache;
-import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
-import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
@@ -53,7 +49,11 @@ import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
@@ -187,6 +187,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (vs.hasCopyright())
         generateCopyright(x, vs);
     }
+    boolean hasFragment = generateContentModeNotices(x, vs.getExpansion(), vs);
+    generateVersionNotice(x, vs.getExpansion(), vs);
+    
     if (ToolingExtensions.hasExtension(vs.getExpansion(), ToolingExtensions.EXT_EXP_TOOCOSTLY)) {
       List<Extension> exl = vs.getExpansion().getExtensionsByUrl(ToolingExtensions.EXT_EXP_TOOCOSTLY);
       boolean other = false;
@@ -203,11 +206,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (count == null)
         x.para().tx("This value set does not contain a fixed number of concepts");
       else
-        x.para().tx("This value set contains "+count.toString()+" concepts");
+        x.para().tx("This value set contains "+(hasFragment ? "at least " : "")+count.toString()+" concepts");
     }
     
-    generateContentModeNotices(x, vs.getExpansion(), vs);
-    generateVersionNotice(x, vs.getExpansion(), vs);
 
     boolean doLevel = false;
     for (ValueSetExpansionContainsComponent cc : vs.getExpansion().getContains()) {
@@ -319,12 +320,13 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return false;
   }
 
-  private void generateContentModeNotices(XhtmlNode x, ValueSetExpansionComponent expansion, Resource vs) {
+  private boolean generateContentModeNotices(XhtmlNode x, ValueSetExpansionComponent expansion, Resource vs) {
     generateContentModeNotice(x, expansion, "example", "Expansion based on example code system", vs); 
-    generateContentModeNotice(x, expansion, "fragment", "Expansion based on code system fragment", vs); 
+    return generateContentModeNotice(x, expansion, "fragment", "Expansion based on code system fragment", vs); 
   }
   
-  private void generateContentModeNotice(XhtmlNode x, ValueSetExpansionComponent expansion, String mode, String text, Resource vs) {
+  private boolean generateContentModeNotice(XhtmlNode x, ValueSetExpansionComponent expansion, String mode, String text, Resource vs) {
+    boolean res = false;
     Multimap<String, String> versions = HashMultimap.create();
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals(mode)) {
@@ -343,6 +345,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
             XhtmlNode p = x.para().style("border: black 1px dotted; background-color: #ffcccc; padding: 8px; margin-bottom: 8px");
             p.tx(text+" ");
             expRef(p, s, v, vs);
+            res = true;
           }
         } else {
           for (String v : versions.get(s)) {
@@ -351,12 +354,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
               div.para().tx(text+"s: ");
               ul = div.ul();
               first = false;
+              res = true;
             }
             expRef(ul.li(), s, v, vs);
           }
         }
       }
     }
+    return res;
   }
 
   private boolean checkDoSystem(ValueSet vs, ValueSet src) {
@@ -1224,7 +1229,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
               } else if ("concept".equals(f.getProperty()) && inc.hasSystem()) {
                 wli.addText(f.getValue());
                 ValidationResult vr = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), inc.getVersion(), f.getValue(), null);
-                if (vr.isOk()) {
+                if (vr.isOk() && vr.getDisplay() != null) {
                   wli.tx(" ("+vr.getDisplay()+")");
                 }
               }

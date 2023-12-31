@@ -16,23 +16,7 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.services.ValidatorWatchMode;
-import org.hl7.fhir.validation.cli.tasks.CliTask;
-import org.hl7.fhir.validation.cli.tasks.CompareTask;
-import org.hl7.fhir.validation.cli.tasks.CompileTask;
-import org.hl7.fhir.validation.cli.tasks.ConvertTask;
-import org.hl7.fhir.validation.cli.tasks.FhirpathTask;
-import org.hl7.fhir.validation.cli.tasks.InstallTask;
-import org.hl7.fhir.validation.cli.tasks.LangTransformTask;
-import org.hl7.fhir.validation.cli.tasks.NarrativeTask;
-import org.hl7.fhir.validation.cli.tasks.ScanTask;
-import org.hl7.fhir.validation.cli.tasks.SnapshotTask;
-import org.hl7.fhir.validation.cli.tasks.SpecialTask;
-import org.hl7.fhir.validation.cli.tasks.SpreadsheetTask;
-import org.hl7.fhir.validation.cli.tasks.TestsTask;
-import org.hl7.fhir.validation.cli.tasks.TransformTask;
-import org.hl7.fhir.validation.cli.tasks.TxTestsTask;
-import org.hl7.fhir.validation.cli.tasks.ValidateTask;
-import org.hl7.fhir.validation.cli.tasks.VersionTask;
+import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.cli.utils.Params;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -73,6 +57,12 @@ public class ValidatorCliTests {
   SnapshotTask snapshotTask;
   @Spy
   SpreadsheetTask spreadsheetTask;
+
+  @Spy
+  PreloadCacheTask preloadCacheTask = new PreloadCacheTask() {
+    @Override
+    public void executeTask(CliContext cliContext, String[] args, TimeTracker tt, TimeTracker.Session tts) {}
+  };
 
   @Spy
   TestsTask testsTask = new TestsTask() {
@@ -119,6 +109,7 @@ public class ValidatorCliTests {
           installTask,
           langTransformTask,
           narrativeTask,
+          preloadCacheTask,
           scanTask,
           snapshotTask,
           specialTask,
@@ -302,6 +293,16 @@ public class ValidatorCliTests {
     cli.readParamsAndExecuteTask(cliContext, args);
     Mockito.verify(validationService).determineVersion(same(cliContext));
     Mockito.verify(compareTask).executeTask(same(validationService), same(validationEngine), same(cliContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
+  }
+
+  @Test
+  public void preloadCacheTest() throws Exception {
+    final String[] args = new String[]{"-preload-cache"};
+    CliContext cliContext = Params.loadCliContext(args);
+    ValidatorCli cli = mockValidatorCli();
+    cli.readParamsAndExecuteTask(cliContext, args);
+
+    Mockito.verify(preloadCacheTask).executeTask(same(cliContext), eq(args), any(TimeTracker.class), any(TimeTracker.Session.class));
   }
 
   @Test

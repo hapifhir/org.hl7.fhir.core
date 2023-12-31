@@ -70,8 +70,8 @@ public class TxTesterSorters {
         s2 = o2.hasCode() ? o2.getCode().toCode() : "";
         ret = s1.compareTo(s2);
         if (ret == 0) {
-          s1 = o1.hasLocation() ? o1.getLocation().get(0).primitiveValue() : "";
-          s2 = o2.hasLocation() ? o2.getLocation().get(0).primitiveValue() : "";
+          s1 = o1.hasExpressionOrLocation() ? o1.getExpressionOrLocation().get(0).primitiveValue() : "";
+          s2 = o2.hasExpressionOrLocation() ? o2.getExpressionOrLocation().get(0).primitiveValue() : "";
           ret = s1.compareTo(s2);
           if (ret == 0) {
             s1 = o1.getDetails().hasText() ? o1.getDetails().getText() : "";

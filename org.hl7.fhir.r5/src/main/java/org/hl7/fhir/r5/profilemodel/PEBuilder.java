@@ -36,6 +36,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -48,7 +49,6 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceFactory;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -531,7 +531,7 @@ public class PEBuilder {
   protected void populateByProfile(Base base, PEDefinition definition) {
     if (definition.types().size() == 1) {
       for (PEDefinition pe : definition.directChildren(true)) {
-        if (pe.fixedValue()) {
+        if (pe.hasFixedValue()) {
           if (pe.definition().hasPattern()) {
             base.setProperty(pe.schemaName(), pe.definition().getPattern());
           } else { 

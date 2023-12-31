@@ -1,422 +1,9 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://snomed.info/sct",
-  "code" : "27113001",
-  "display" : "Body weight"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Body weight",
-  "code" : "27113001",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "90655003"
-}, "url": "http://hl7.org/fhir/ValueSet/c80-practice-codes--0", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "severity" : "error",
-  "error" : "The provided code 'http://snomed.info/sct#90655003' is not in the value set 'http://hl7.org/fhir/ValueSet/c80-practice-codes--0|5.0.0' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "90655003",
-  "display" : "Geriatrics specialist"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Geriatrics specialist",
-  "code" : "90655003",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "439401001"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Diagnosis (observable entity)",
-  "code" : "439401001",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "24484000"
-}, "url": "http://hl7.org/fhir/ValueSet/condition-severity--0", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Severe",
-  "code" : "24484000",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "24484000",
-  "display" : "Severe"
-}, "url": "http://hl7.org/fhir/ValueSet/condition-severity", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Severe",
-  "code" : "24484000",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "24484000"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Severe",
-  "code" : "24484000",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "39065001",
-  "display" : "Burn of ear"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Burn of ear",
-  "code" : "39065001",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "49521004",
-  "display" : "Left external ear structure"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Left external ear",
-  "code" : "49521004",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "443849008",
-  "display" : "Apgar score at 20 minutes"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Apgar score at 20 minutes (observable entity)",
-  "code" : "443849008",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "249227004",
-  "display" : "Apgar color score"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Apgar color score",
-  "code" : "249227004",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "249223000",
-  "display" : "Apgar heart rate score"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Apgar heart rate score",
-  "code" : "249223000",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "249226008",
-  "display" : "Apgar response to stimulus score"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Apgar response to stimulus score",
-  "code" : "249226008",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "249225007",
-  "display" : "Apgar muscle tone score"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Apgar muscle tone score",
-  "code" : "249225007",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "249224006",
-  "display" : "Apgar respiratory effort score"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Apgar respiratory effort score",
-  "code" : "249224006",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "194828000",
-  "display" : "Angina (disorder)"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Angina",
-  "code" : "194828000",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "22298006",
-  "display" : "Myocardial infarction (disorder)"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Myocardial infarction",
-  "code" : "22298006",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "54485002",
-  "display" : "Ophthalmic route (qualifier value)"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Ophthalmic route",
-  "code" : "54485002",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "421538008",
-  "display" : "Instill - dosing instruction imperative (qualifier value)"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Instill - dosing instruction imperative (qualifier value)",
-  "code" : "421538008",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
   "code" : "368209003",
   "display" : "Right arm"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -427,7 +14,32 @@ v: {
   "display" : "Right upper arm",
   "code" : "368209003",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "368209003",
+    "display" : "Right arm"
+  }]
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Right upper arm",
+  "code" : "368209003",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -439,7 +51,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "271649006",
   "display" : "Systolic blood pressure"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -450,29 +62,7 @@ v: {
   "display" : "Systolic blood pressure",
   "code" : "271649006",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "271649006"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Systolic blood pressure",
-  "code" : "271649006",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -485,7 +75,7 @@ v: {
   "version" : "http://snomed.info/sct/731000124108/version/20210201",
   "code" : "132037003",
   "display" : "Pineywoods pig breed"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -493,12 +83,30 @@ v: {
   }]
 }}####
 v: {
+  "code" : "132037003",
   "severity" : "error",
-  "error" : "The CodeSystem http://snomed.info/sct version http://snomed.info/sct/731000124108/version/20210201 is unknown. Valid versions: [http://snomed.info/sct/11000146104/version/20230331,http://snomed.info/sct/11000172109/version/20221115,http://snomed.info/sct/2011000195101/version/20230607,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20220731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230301,http://snomed.info/sct/83821000000107/version/20230412,http://snomed.info/sct/900000000000207008/version/20230131,http://snomed.info/sct/900000000000207008/version/20230731] (from Tx-Server)",
+  "error" : "A definition for CodeSystem http://snomed.info/sct version http://snomed.info/sct/731000124108/version/20210201 could not be found, so the code cannot be validated. Valid versions: [http://snomed.info/sct/11000146104/version/20230331,http://snomed.info/sct/11000172109/version/20231115,http://snomed.info/sct/2011000195101/version/20230607,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20230731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230901,http://snomed.info/sct/827022005/version/20221130,http://snomed.info/sct/83821000000107/version/20230412,http://snomed.info/sct/900000000000207008/version/20230131,http://snomed.info/sct/900000000000207008/version/20230731,http://snomed.info/sct/900000000000207008/version/20230901]",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "unknown-systems" : "http://snomed.info/sct|http://snomed.info/sct/731000124108/version/20210201",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem http://snomed.info/sct version http://snomed.info/sct/731000124108/version/20210201 could not be found, so the code cannot be validated. Valid versions: [http://snomed.info/sct/11000146104/version/20230331,http://snomed.info/sct/11000172109/version/20231115,http://snomed.info/sct/2011000195101/version/20230607,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20230731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230901,http://snomed.info/sct/827022005/version/20221130,http://snomed.info/sct/83821000000107/version/20230412,http://snomed.info/sct/900000000000207008/version/20230131,http://snomed.info/sct/900000000000207008/version/20230731,http://snomed.info/sct/900000000000207008/version/20230901]"
+    },
+    "location" : ["CodeableConcept.coding[0].system"],
+    "expression" : ["CodeableConcept.coding[0].system"]
+  }]
 }
 
 }
@@ -508,7 +116,7 @@ v: {
   "version" : "http://snomed.info/sct/731000124108/version/20210201",
   "code" : "132037003",
   "display" : "Pineywoods pig breed"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -519,7 +127,33 @@ v: {
   "display" : "Pineywoods pig",
   "code" : "132037003",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/731000124108/version/20230301",
+  "version" : "http://snomed.info/sct/731000124108/version/20230901",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "version" : "http://snomed.info/sct/731000124108/version/20210201",
+    "code" : "132037003",
+    "display" : "Pineywoods pig breed"
+  }]
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Pineywoods pig",
+  "code" : "132037003",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/731000124108/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -539,7 +173,7 @@ v: {
   "version" : "http://snomed.info/sct/11000172109/version/20221115",
   "code" : "132037003",
   "display" : "Pineywoods pig breed. Not."
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -547,18 +181,29 @@ v: {
   }]
 }}####
 v: {
+  "code" : "132037003",
   "severity" : "error",
-  "error" : "Wrong Display Name 'Pineywoods pig breed. Not.' for http://snomed.info/sct#132037003 - should be one of 3 choices: 'Pineywoods pig', 'Pineywoods pig breed (organism)' or 'Pineywoods pig breed' (for the language(s) '--') (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
+  "error" : "A definition for CodeSystem http://snomed.info/sct version http://snomed.info/sct/11000172109/version/20221115 could not be found, so the code cannot be validated. Valid versions: [http://snomed.info/sct/11000146104/version/20230331,http://snomed.info/sct/11000172109/version/20231115,http://snomed.info/sct/2011000195101/version/20230607,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20230731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230901,http://snomed.info/sct/827022005/version/20221130,http://snomed.info/sct/83821000000107/version/20230412,http://snomed.info/sct/900000000000207008/version/20230131,http://snomed.info/sct/900000000000207008/version/20230731,http://snomed.info/sct/900000000000207008/version/20230901]",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "unknown-systems" : "http://snomed.info/sct|http://snomed.info/sct/11000172109/version/20221115",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
-    "severity" : "information",
-    "code" : "invalid",
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
     "details" : {
-      "text" : "The code is not active"
-    }
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem http://snomed.info/sct version http://snomed.info/sct/11000172109/version/20221115 could not be found, so the code cannot be validated. Valid versions: [http://snomed.info/sct/11000146104/version/20230331,http://snomed.info/sct/11000172109/version/20231115,http://snomed.info/sct/2011000195101/version/20230607,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20230731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230901,http://snomed.info/sct/827022005/version/20221130,http://snomed.info/sct/83821000000107/version/20230412,http://snomed.info/sct/900000000000207008/version/20230131,http://snomed.info/sct/900000000000207008/version/20230731,http://snomed.info/sct/900000000000207008/version/20230901]"
+    },
+    "location" : ["CodeableConcept.coding[0].system"],
+    "expression" : ["CodeableConcept.coding[0].system"]
   }]
 }
 
@@ -568,7 +213,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "109006",
   "display" : "Anxiety disorder of childhood OR adolescence"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -579,7 +224,32 @@ v: {
   "display" : "Anxiety disorder of childhood OR adolescence",
   "code" : "109006",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "109006",
+    "display" : "Anxiety disorder of childhood OR adolescence"
+  }]
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Anxiety disorder of childhood OR adolescence",
+  "code" : "109006",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -590,7 +260,7 @@ v: {
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "109006"
-}, "url": "http://hl7.org/fhir/ValueSet/clinical-findings--0", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/clinical-findings--0", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -601,7 +271,7 @@ v: {
   "display" : "Anxiety disorder of childhood OR adolescence",
   "code" : "109006",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -613,7 +283,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "109006",
   "display" : "Anxiety disorder of childhood OR adolescence"
-}, "url": "http://hl7.org/fhir/ValueSet/clinical-findings", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/clinical-findings", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -624,29 +294,7 @@ v: {
   "display" : "Anxiety disorder of childhood OR adolescence",
   "code" : "109006",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "109006"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Anxiety disorder of childhood OR adolescence",
-  "code" : "109006",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -658,7 +306,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "106004",
   "display" : "Posterior carpal region"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -669,7 +317,32 @@ v: {
   "display" : "Posterior carpal region",
   "code" : "106004",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "106004",
+    "display" : "Posterior carpal region"
+  }]
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Posterior carpal region",
+  "code" : "106004",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -680,29 +353,7 @@ v: {
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "106004"
-}, "url": "http://hl7.org/fhir/ValueSet/clinical-findings--0", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"CHECK_MEMERSHIP_ONLY", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "severity" : "error",
-  "error" : "The provided code 'http://snomed.info/sct#106004' is not in the value set 'http://hl7.org/fhir/ValueSet/clinical-findings--0|5.0.0' (from Tx-Server)",
-  "class" : "UNKNOWN",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "106004",
-  "display" : "Posterior carpal region"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/clinical-findings--0", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -712,11 +363,29 @@ v: {
 v: {
   "display" : "Posterior carpal region",
   "code" : "106004",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "severity" : "error",
+  "error" : "The provided code 'http://snomed.info/sct#106004' was not found in the value set 'http://hl7.org/fhir/ValueSet/clinical-findings--0|5.0.0'",
+  "class" : "UNKNOWN",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://snomed.info/sct#106004' was not found in the value set 'http://hl7.org/fhir/ValueSet/clinical-findings--0|5.0.0'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
 }
 
 }
@@ -731,7 +400,7 @@ v: {
       "system" : "http://snomed.info/sct"
     }]
   }
-}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -742,7 +411,7 @@ v: {
   "display" : "Posterior carpal region",
   "code" : "106004",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -754,7 +423,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "85600001",
   "display" : "Triacylglycerol"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -765,7 +434,7 @@ v: {
   "display" : "Triacylglycerol",
   "code" : "85600001",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -777,7 +446,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "58108001",
   "display" : "Golden retriever"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -788,38 +457,10 @@ v: {
   "display" : "Golden retriever",
   "code" : "58108001",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "severity" : "information",
-    "code" : "invalid",
-    "details" : {
-      "text" : "The code '58108001' is valid but is not active"
-    }
-  },
-  {
-    "severity" : "information",
-    "code" : "invalid",
-    "details" : {
-      "text" : "The code '58108001' is valid but is not active"
-    }
-  },
-  {
-    "severity" : "information",
-    "code" : "invalid",
-    "details" : {
-      "text" : "The code '58108001' is valid but is not active"
-    }
-  },
-  {
-    "severity" : "information",
-    "code" : "invalid",
-    "details" : {
-      "text" : "The code '58108001' is valid but is not active"
-    }
-  }]
+  "resourceType" : "OperationOutcome"
 }
 
 }
@@ -828,7 +469,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "122555007",
   "display" : "Venous blood specimen"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -839,7 +480,32 @@ v: {
   "display" : "Venous blood specimen",
   "code" : "122555007",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "122555007",
+    "display" : "Venous blood specimen"
+  }]
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Venous blood specimen",
+  "code" : "122555007",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -851,7 +517,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "263678003",
   "display" : "At rest"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -862,7 +528,32 @@ v: {
   "display" : "At rest",
   "code" : "263678003",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "263678003",
+    "display" : "At rest"
+  }]
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "At rest",
+  "code" : "263678003",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -874,7 +565,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "119364003",
   "display" : "Serum specimen"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -885,7 +576,32 @@ v: {
   "display" : "Serum specimen",
   "code" : "119364003",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "119364003",
+    "display" : "Serum specimen"
+  }]
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Serum specimen",
+  "code" : "119364003",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -897,7 +613,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "61088005",
   "display" : "plastic"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -908,7 +624,32 @@ v: {
   "display" : "Plastic",
   "code" : "61088005",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "61088005",
+    "display" : "plastic"
+  }]
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Plastic",
+  "code" : "61088005",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -920,7 +661,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "702281005",
   "display" : "Evacuated blood collection tube, thrombin/clot activator/gel separator"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -931,7 +672,32 @@ v: {
   "display" : "Evacuated blood collection tube, thrombin/clot activator/gel separator",
   "code" : "702281005",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "702281005",
+    "display" : "Evacuated blood collection tube, thrombin/clot activator/gel separator"
+  }]
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Evacuated blood collection tube, thrombin/clot activator/gel separator",
+  "code" : "702281005",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -943,7 +709,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "119361006",
   "display" : "Plasma specimen"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -954,7 +720,32 @@ v: {
   "display" : "Plasma specimen",
   "code" : "119361006",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "119361006",
+    "display" : "Plasma specimen"
+  }]
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Plasma specimen",
+  "code" : "119361006",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -966,7 +757,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "32039001",
   "display" : "glass"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -977,7 +768,32 @@ v: {
   "display" : "Glass",
   "code" : "32039001",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://snomed.info/sct",
+    "code" : "32039001",
+    "display" : "glass"
+  }]
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Glass",
+  "code" : "32039001",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -988,7 +804,7 @@ v: {
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "230993007"
-}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -996,9 +812,10 @@ v: {
   }]
 }}####
 v: {
+  "display" : "Worsening",
   "code" : "230993007",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1009,7 +826,7 @@ v: {
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "385633008"
-}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1017,9 +834,10 @@ v: {
   }]
 }}####
 v: {
+  "display" : "Improving (qualifier value)",
   "code" : "385633008",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1030,7 +848,7 @@ v: {
 {"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "260388006"
-}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1038,9 +856,10 @@ v: {
   }]
 }}####
 v: {
+  "display" : "No status change",
   "code" : "260388006",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

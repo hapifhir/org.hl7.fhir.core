@@ -30,6 +30,18 @@ public abstract class XhtmlFluent {
     return addTag("h"+Integer.toString(level));
   }
   
+  /* Add header with an ID */
+  public XhtmlNode h(int level, String id) {
+    if (level < 1 || level > 6) {
+      throw new FHIRException("Illegal Header level "+level);
+    }
+    XhtmlNode res =  addTag("h"+Integer.toString(level));
+    if (!Utilities.noString(id)) {
+      res.attribute("id", id);
+    }
+    return res;
+  }
+
   public XhtmlNode h3() {
     return addTag("h3");
   }

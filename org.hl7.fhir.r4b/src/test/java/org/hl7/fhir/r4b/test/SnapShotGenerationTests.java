@@ -20,13 +20,17 @@ import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r4b.context.IWorkerContext.IContextResourceLoader;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r4b.fhirpath.TypeDetails;
+import org.hl7.fhir.r4b.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4b.formats.JsonParser;
 import org.hl7.fhir.r4b.formats.XmlParser;
 import org.hl7.fhir.r4b.model.Base;
 import org.hl7.fhir.r4b.model.Bundle;
 import org.hl7.fhir.r4b.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r4b.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.model.StructureDefinition.StructureDefinitionKind;
@@ -34,19 +38,14 @@ import org.hl7.fhir.r4b.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r4b.renderers.RendererFactory;
 import org.hl7.fhir.r4b.renderers.utils.RenderingContext;
 import org.hl7.fhir.r4b.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r4b.model.TypeDetails;
 import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
-import org.hl7.fhir.r4b.utils.FHIRPathEngine;
-import org.hl7.fhir.r4b.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r4b.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.r4b.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -368,13 +367,13 @@ public class SnapShotGenerationTests {
 
     // FHIRPath methods
     @Override
-    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext)
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant)
         throws PathEngineException {
       throw new Error("Not implemented yet");
     }
 
     @Override
-    public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
       throw new Error("Not implemented yet");
     }
 
@@ -385,14 +384,14 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public FunctionDetails resolveFunction(String functionName) {
+    public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
       if ("fixture".equals(functionName))
         return new FunctionDetails("Access a fixture defined in the testing context", 0, 1);
       return null;
     }
 
     @Override
-    public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters)
+    public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters)
         throws PathEngineException {
       if ("fixture".equals(functionName))
         return new TypeDetails(CollectionStatus.SINGLETON, TestingUtilities.context().getResourceNamesAsSet());
@@ -400,7 +399,7 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName,
+    public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName,
         List<List<Base>> parameters) {
       if ("fixture".equals(functionName)) {
         String id = fp.convertToString(parameters.get(0));
@@ -416,13 +415,13 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public Base resolveReference(Object appContext, String url, Base refContext) {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) {
       // TODO Auto-generated method stub
       return null;
     }
 
     @Override
-    public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
+    public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
       IResourceValidator val = TestingUtilities.context().newValidator();
       List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
       if (item instanceof Resource) {
@@ -451,7 +450,7 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public ValueSet resolveValueSet(Object appContext, String url) {
+    public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
       throw new Error("Not implemented yet");
     }
 
@@ -581,8 +580,7 @@ public class SnapShotGenerationTests {
     pu.setDebug(test.isDebug());
     pu.setIds(test.getSource(), false);
     if (!TestingUtilities.context().hasPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER)) {
-      NpmPackage npm = new FilesystemPackageCacheManager(
-          org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER)
+      NpmPackage npm = new FilesystemPackageCacheManager.Builder().build()
               .loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
       TestingUtilities.context().loadFromPackage(npm, new TestLoader(new String[] { "StructureDefinition" }),
           new String[] { "StructureDefinition" });

@@ -30,12 +30,12 @@ import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
-import org.hl7.fhir.validation.cli.utils.VersionUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,7 +55,7 @@ class ValidationServiceTest  {
   @Test
   void validateSources() throws Exception {
     TestingUtilities.injectCorePackageLoader();
-    SessionCache sessionCache = Mockito.spy(new SessionCache());
+    SessionCache sessionCache = Mockito.spy(new PassiveExpiringSessionCache());
     ValidationService myService = new ValidationService(sessionCache);
 
     String resource = IOUtils.toString(getFileFromResourceAsStream("detected_issues.json"), StandardCharsets.UTF_8);

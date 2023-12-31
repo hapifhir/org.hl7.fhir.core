@@ -3,19 +3,19 @@ package org.hl7.fhir.r4b.utils;
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
+
   Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
-    
-   * Redistributions of source code must retain the above copyright notice, this 
+
+ * Redistributions of source code must retain the above copyright notice, this 
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
+ * Redistributions in binary form must reproduce the above copyright notice, 
      this list of conditions and the following disclaimer in the documentation 
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
+ * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
-  
+
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
@@ -26,7 +26,7 @@ package org.hl7.fhir.r4b.utils;
   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
   POSSIBILITY OF SUCH DAMAGE.
-  
+
  */
 
 /*
@@ -97,6 +97,7 @@ import org.hl7.fhir.r4b.model.UriType;
 import org.hl7.fhir.r4b.model.UrlType;
 import org.hl7.fhir.r4b.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r4b.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r4b.model.BackboneElement;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -106,8 +107,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 public class ToolingExtensions {
 
   // validated
-//  private static final String EXT_OID = "http://hl7.org/fhir/StructureDefinition/valueset-oid";
-//  public static final String EXT_DEPRECATED = "http://hl7.org/fhir/StructureDefinition/codesystem-deprecated";
+  //  private static final String EXT_OID = "http://hl7.org/fhir/StructureDefinition/valueset-oid";
+  //  public static final String EXT_DEPRECATED = "http://hl7.org/fhir/StructureDefinition/codesystem-deprecated";
   public static final String EXT_DEFINITION = "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition";
   public static final String EXT_CS_COMMENT = "http://hl7.org/fhir/StructureDefinition/codesystem-concept-comments";
   public static final String EXT_VS_COMMENT = "http://hl7.org/fhir/StructureDefinition/valueset-concept-comments";
@@ -134,12 +135,12 @@ public class ToolingExtensions {
   public static final String EXT_MAPPING_PREFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-prefix";
   public static final String EXT_MAPPING_SUFFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-suffix";
 
-//  public static final String EXT_FLYOVER = "http://hl7.org/fhir/Profile/questionnaire-extensions#flyover";
+  //  public static final String EXT_FLYOVER = "http://hl7.org/fhir/Profile/questionnaire-extensions#flyover";
   public static final String EXT_QTYPE = "http://hl7.org/fhir/StructureDefinition/questionnnaire-baseType";
-//  private static final String EXT_QREF = "http://www.healthintersections.com.au/fhir/Profile/metadata#reference";
-//  private static final String EXTENSION_FILTER_ONLY = "http://www.healthintersections.com.au/fhir/Profile/metadata#expandNeedsFilter";
-//  private static final String EXT_TYPE = "http://www.healthintersections.com.au/fhir/Profile/metadata#type";
-//  private static final String EXT_REFERENCE = "http://www.healthintersections.com.au/fhir/Profile/metadata#reference";
+  //  private static final String EXT_QREF = "http://www.healthintersections.com.au/fhir/Profile/metadata#reference";
+  //  private static final String EXTENSION_FILTER_ONLY = "http://www.healthintersections.com.au/fhir/Profile/metadata#expandNeedsFilter";
+  //  private static final String EXT_TYPE = "http://www.healthintersections.com.au/fhir/Profile/metadata#type";
+  //  private static final String EXT_REFERENCE = "http://www.healthintersections.com.au/fhir/Profile/metadata#reference";
   private static final String EXT_FHIRTYPE = "http://hl7.org/fhir/StructureDefinition/questionnaire-fhirType";
   private static final String EXT_ALLOWABLE_UNITS = "http://hl7.org/fhir/StructureDefinition/elementdefinition-allowedUnits";
   public static final String EXT_CIMI_REFERENCE = "http://hl7.org/fhir/StructureDefinition/cimi-reference";
@@ -166,8 +167,8 @@ public class ToolingExtensions {
   public static final String EXT_IGP_MAPPING_CSV = "http://hl7.org/fhir/StructureDefinition/igpublisher-mapping-csv";
   public static final String EXT_IGP_BUNDLE = "http://hl7.org/fhir/StructureDefinition/igpublisher-bundle";
   public static final String EXT_IGP_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/resource-information";
-//  public static final String EXT_IGP_CONTAINED_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/contained-resource-information";
-//  public static final String EXT_IGP_LOADVERSION = "http://hl7.org/fhir/StructureDefinition/igpublisher-loadversion";
+  //  public static final String EXT_IGP_CONTAINED_RESOURCE_INFO = "http://hl7.org/fhir/tools/StructureDefinition/contained-resource-information";
+  //  public static final String EXT_IGP_LOADVERSION = "http://hl7.org/fhir/StructureDefinition/igpublisher-loadversion";
   public static final String EXT_MAX_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet";
   public static final String EXT_MIN_VALUESET = "http://hl7.org/fhir/StructureDefinition/elementdefinition-minValueSet";
   public static final String EXT_PROFILE_ELEMENT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-profile-element";
@@ -223,15 +224,15 @@ public class ToolingExtensions {
     return getExtension(e, url) != null;
   }
 
-//  public static void addStringExtension(DomainResource dr, String url, String content) {
-//    if (!StringUtils.isBlank(content)) {
-//      Extension ex = getExtension(dr, url);
-//      if (ex != null)
-//        ex.setValue(new StringType(content));
-//      else
-//        dr.getExtension().add(Factory.newExtension(url, new StringType(content), true));   
-//    }
-//  }
+  //  public static void addStringExtension(DomainResource dr, String url, String content) {
+  //    if (!StringUtils.isBlank(content)) {
+  //      Extension ex = getExtension(dr, url);
+  //      if (ex != null)
+  //        ex.setValue(new StringType(content));
+  //      else
+  //        dr.getExtension().add(Factory.newExtension(url, new StringType(content), true));   
+  //    }
+  //  }
 
   public static void addMarkdownExtension(DomainResource dr, String url, String content) {
     if (!StringUtils.isBlank(content)) {
@@ -320,10 +321,10 @@ public class ToolingExtensions {
       nc.getExtension().add(Factory.newExtension(EXT_CS_COMMENT, Factory.newString_(comment), true));
   }
 
-//  public static void markDeprecated(Element nc) {
-//    setDeprecated(nc);   
-//  }
-//
+  //  public static void markDeprecated(Element nc) {
+  //    setDeprecated(nc);   
+  //  }
+  //
 
   public static void addDefinition(Element nc, String definition) {
     if (!StringUtils.isBlank(definition))
@@ -459,18 +460,18 @@ public class ToolingExtensions {
   public static String getCSComment(ConceptDefinitionComponent c) {
     return readStringExtension(c, EXT_CS_COMMENT);
   }
-//
-//  public static Boolean getDeprecated(Element c) {
-//    return readBooleanExtension(c, EXT_DEPRECATED);    
-//  }
+  //
+  //  public static Boolean getDeprecated(Element c) {
+  //    return readBooleanExtension(c, EXT_DEPRECATED);    
+  //  }
 
   public static boolean hasCSComment(ConceptDefinitionComponent c) {
     return findStringExtension(c, EXT_CS_COMMENT);
   }
 
-//  public static boolean hasDeprecated(Element c) {
-//    return findBooleanExtension(c, EXT_DEPRECATED);    
-//  }
+  //  public static boolean hasDeprecated(Element c) {
+  //    return findBooleanExtension(c, EXT_DEPRECATED);    
+  //  }
 
   public static void addFlyOver(QuestionnaireItemComponent item, String text, String linkId) {
     if (!StringUtils.isBlank(text)) {
@@ -582,6 +583,28 @@ public class ToolingExtensions {
       element.getExtension().add(new Extension(uri).setValue(new CodeType(value)));
   }
 
+  public static void setCodeExtensionMod(DomainResource resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new CodeType(value));
+    else
+      resource.getModifierExtension().add(new Extension(uri).setValue(new CodeType(value)));
+  }
+
+  public static void setCodeExtensionMod(BackboneElement resource, String uri, String value) {
+    if (Utilities.noString(value))
+      return;
+
+    Extension ext = getExtension(resource, uri);
+    if (ext != null)
+      ext.setValue(new CodeType(value));
+    else
+      resource.getModifierExtension().add(new Extension(uri).setValue(new CodeType(value)));
+  }
+
   public static void setIntegerExtension(DomainResource resource, String uri, int value) {
     Extension ext = getExtension(resource, uri);
     if (ext != null)
@@ -590,34 +613,34 @@ public class ToolingExtensions {
       resource.getExtension().add(new Extension(uri).setValue(new IntegerType(value)));
   }
 
-//  public static String getOID(CodeSystem define) {
-//    return readStringExtension(define, EXT_OID);    
-//  }
-//
-//  public static String getOID(ValueSet vs) {
-//    return readStringExtension(vs, EXT_OID);    
-//  }
-//
-//  public static void setOID(CodeSystem define, String oid) throws FHIRFormatError, URISyntaxException {
-//    if (!oid.startsWith("urn:oid:"))
-//      throw new FHIRFormatError("Error in OID format");
-//    if (oid.startsWith("urn:oid:urn:oid:"))
-//      throw new FHIRFormatError("Error in OID format");
-//    if (!hasExtension(define, EXT_OID))
-//    define.getExtension().add(Factory.newExtension(EXT_OID, Factory.newUri(oid), false));       
-//    else if (!oid.equals(readStringExtension(define, EXT_OID)))
-//      throw new Error("Attempt to assign multiple OIDs to a code system");
-//  }
-//  public static void setOID(ValueSet vs, String oid) throws FHIRFormatError, URISyntaxException {
-//    if (!oid.startsWith("urn:oid:"))
-//      throw new FHIRFormatError("Error in OID format");
-//    if (oid.startsWith("urn:oid:urn:oid:"))
-//      throw new FHIRFormatError("Error in OID format");
-//    if (!hasExtension(vs, EXT_OID))
-//    vs.getExtension().add(Factory.newExtension(EXT_OID, Factory.newUri(oid), false));       
-//    else if (!oid.equals(readStringExtension(vs, EXT_OID)))
-//      throw new Error("Attempt to assign multiple OIDs to value set "+vs.getName()+" ("+vs.getUrl()+"). Has "+readStringExtension(vs, EXT_OID)+", trying to add "+oid);
-//  }
+  //  public static String getOID(CodeSystem define) {
+  //    return readStringExtension(define, EXT_OID);    
+  //  }
+  //
+  //  public static String getOID(ValueSet vs) {
+  //    return readStringExtension(vs, EXT_OID);    
+  //  }
+  //
+  //  public static void setOID(CodeSystem define, String oid) throws FHIRFormatError, URISyntaxException {
+  //    if (!oid.startsWith("urn:oid:"))
+  //      throw new FHIRFormatError("Error in OID format");
+  //    if (oid.startsWith("urn:oid:urn:oid:"))
+  //      throw new FHIRFormatError("Error in OID format");
+  //    if (!hasExtension(define, EXT_OID))
+  //    define.getExtension().add(Factory.newExtension(EXT_OID, Factory.newUri(oid), false));       
+  //    else if (!oid.equals(readStringExtension(define, EXT_OID)))
+  //      throw new Error("Attempt to assign multiple OIDs to a code system");
+  //  }
+  //  public static void setOID(ValueSet vs, String oid) throws FHIRFormatError, URISyntaxException {
+  //    if (!oid.startsWith("urn:oid:"))
+  //      throw new FHIRFormatError("Error in OID format");
+  //    if (oid.startsWith("urn:oid:urn:oid:"))
+  //      throw new FHIRFormatError("Error in OID format");
+  //    if (!hasExtension(vs, EXT_OID))
+  //    vs.getExtension().add(Factory.newExtension(EXT_OID, Factory.newUri(oid), false));       
+  //    else if (!oid.equals(readStringExtension(vs, EXT_OID)))
+  //      throw new Error("Attempt to assign multiple OIDs to value set "+vs.getName()+" ("+vs.getUrl()+"). Has "+readStringExtension(vs, EXT_OID)+", trying to add "+oid);
+  //  }
 
   public static boolean hasLanguageTranslation(Element element, String lang) {
     for (Extension e : element.getExtension()) {
@@ -687,23 +710,23 @@ public class ToolingExtensions {
     return results;
   }
 
-//  public static void addDEReference(DataElement de, String value) {
-//    for (Extension e : de.getExtension()) 
-//      if (e.getUrl().equals(EXT_CIMI_REFERENCE)) {
-//        e.setValue(new UriType(value));
-//        return;
-//      }
-//    de.getExtension().add(new Extension().setUrl(EXT_CIMI_REFERENCE).setValue(new UriType(value)));
-//  }
+  //  public static void addDEReference(DataElement de, String value) {
+  //    for (Extension e : de.getExtension()) 
+  //      if (e.getUrl().equals(EXT_CIMI_REFERENCE)) {
+  //        e.setValue(new UriType(value));
+  //        return;
+  //      }
+  //    de.getExtension().add(new Extension().setUrl(EXT_CIMI_REFERENCE).setValue(new UriType(value)));
+  //  }
 
-//  public static void setDeprecated(Element nc) {
-//    for (Extension e : nc.getExtension()) 
-//      if (e.getUrl().equals(EXT_DEPRECATED)) {
-//        e.setValue(new BooleanType(true));
-//        return;
-//      }
-//    nc.getExtension().add(new Extension().setUrl(EXT_DEPRECATED).setValue(new BooleanType(true)));    
-//  }
+  //  public static void setDeprecated(Element nc) {
+  //    for (Extension e : nc.getExtension()) 
+  //      if (e.getUrl().equals(EXT_DEPRECATED)) {
+  //        e.setValue(new BooleanType(true));
+  //        return;
+  //      }
+  //    nc.getExtension().add(new Extension().setUrl(EXT_DEPRECATED).setValue(new BooleanType(true)));    
+  //  }
 
   public static void setExtension(Element focus, String url, Coding c) {
     for (Extension e : focus.getExtension())
@@ -908,14 +931,14 @@ public class ToolingExtensions {
     return type.primitiveValue();
   }
 
-//  public static boolean hasOID(ValueSet vs) {
-//    return hasExtension(vs, EXT_OID);
-//  }
-//  
-//  public static boolean hasOID(CodeSystem cs) {
-//    return hasExtension(cs, EXT_OID);
-//  }
-//  
+  //  public static boolean hasOID(ValueSet vs) {
+  //    return hasExtension(vs, EXT_OID);
+  //  }
+  //  
+  //  public static boolean hasOID(CodeSystem cs) {
+  //    return hasExtension(cs, EXT_OID);
+  //  }
+  //  
   public static void addUrlExtension(Element e, String url, String content) {
     if (!StringUtils.isBlank(content)) {
       Extension ex = getExtension(e, url);

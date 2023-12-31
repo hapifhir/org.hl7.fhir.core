@@ -53,6 +53,15 @@ import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r4.elementmodel.Element;
 import org.hl7.fhir.r4.elementmodel.Property;
+import org.hl7.fhir.r4.fhirpath.ExpressionNode;
+import org.hl7.fhir.r4.fhirpath.FHIRLexer;
+import org.hl7.fhir.r4.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r4.fhirpath.TypeDetails;
+import org.hl7.fhir.r4.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r4.fhirpath.FHIRLexer.FHIRLexerException;
+import org.hl7.fhir.r4.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r4.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
+import org.hl7.fhir.r4.fhirpath.TypeDetails.ProfiledType;
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.CanonicalType;
@@ -75,8 +84,6 @@ import org.hl7.fhir.r4.model.Enumeration;
 import org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence;
 import org.hl7.fhir.r4.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.ExpressionNode;
-import org.hl7.fhir.r4.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4.model.IdType;
 import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.Narrative;
@@ -106,17 +113,13 @@ import org.hl7.fhir.r4.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r4.model.StructureMap.StructureMapTargetListMode;
 import org.hl7.fhir.r4.model.StructureMap.StructureMapTransform;
 import org.hl7.fhir.r4.model.Type;
-import org.hl7.fhir.r4.model.TypeDetails;
-import org.hl7.fhir.r4.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.r4.utils.FHIRLexer.FHIRLexerException;
-import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r4.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -177,7 +180,7 @@ public class StructureMapUtilities {
 
   private class FHIRPathHostServices implements IEvaluationContext {
 
-    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext)
+    public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant)
         throws PathEngineException {
       Variables vars = (Variables) appContext;
       Base res = vars.get(VariableMode.INPUT, name);
@@ -190,7 +193,7 @@ public class StructureMapUtilities {
     }
 
     @Override
-    public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+    public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
       if (!(appContext instanceof VariablesForProfiling))
         throw new Error(
             "Internal Logic Error (wrong type '" + appContext.getClass().getName() + "' in resolveConstantType)");
@@ -207,31 +210,31 @@ public class StructureMapUtilities {
     }
 
     @Override
-    public FunctionDetails resolveFunction(String functionName) {
+    public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
       return null; // throw new Error("Not Implemented Yet");
     }
 
     @Override
-    public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters)
+    public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters)
         throws PathEngineException {
       throw new Error("Not Implemented Yet");
     }
 
     @Override
-    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName,
+    public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName,
         List<List<Base>> parameters) {
       throw new Error("Not Implemented Yet");
     }
 
     @Override
-    public Base resolveReference(Object appContext, String url, Base base) throws FHIRException {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base base) throws FHIRException {
       if (services == null)
         return null;
       return services.resolveReference(appContext, url);
     }
 
     @Override
-    public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
+    public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
       IResourceValidator val = worker.newValidator();
       List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
       if (item instanceof Resource) {
@@ -245,7 +248,7 @@ public class StructureMapUtilities {
     }
 
     @Override
-    public ValueSet resolveValueSet(Object appContext, String url) {
+    public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
       throw new Error("Not Implemented Yet");
     }
 
@@ -256,7 +259,7 @@ public class StructureMapUtilities {
   private ITransformerServices services;
   private ProfileKnowledgeProvider pkp;
   private Map<String, Integer> ids = new HashMap<String, Integer>();
-  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions();
+  private TerminologyServiceOptions terminologyServiceOptions = new TerminologyServiceOptions(FhirPublication.R4);
 
   public StructureMapUtilities(IWorkerContext worker, ITransformerServices services, ProfileKnowledgeProvider pkp) {
     super();

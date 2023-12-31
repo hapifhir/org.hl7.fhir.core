@@ -28,12 +28,14 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.ILoggingService;
 import org.hl7.fhir.r5.context.IWorkerContextManager;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SystemOutLoggingService;
 import org.hl7.fhir.r5.elementmodel.*;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -45,7 +47,6 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.PackageInformation;
@@ -59,7 +60,6 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
@@ -90,6 +90,8 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
+import org.hl7.fhir.validation.cli.model.ValidatedFragments;
+import org.hl7.fhir.validation.cli.model.ValidationTime;
 import org.hl7.fhir.validation.cli.services.IPackageInstaller;
 import org.hl7.fhir.validation.cli.utils.ProfileLoader;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
@@ -324,7 +326,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     private final boolean canRunWithoutTerminologyServer;
 
     @With
-    private final IWorkerContext.ILoggingService loggingService;
+    private final ILoggingService loggingService;
 
     @With
     private boolean THO = true;
@@ -342,7 +344,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       loggingService = new SystemOutLoggingService();
     }
 
-    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, IWorkerContext.ILoggingService loggingService, boolean THO) {
+    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, boolean THO) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
       this.version = version;
@@ -431,7 +433,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
    *
    * @see IgLoader#loadIgSource(String, boolean, boolean) loadIgSource for detailed description of the src parameter
    */
-  private void loadCoreDefinitions(String src, boolean recursive, String terminologyCachePath, String userAgent, TimeTracker tt, IWorkerContext.ILoggingService loggingService) throws FHIRException, IOException {
+  private void loadCoreDefinitions(String src, boolean recursive, String terminologyCachePath, String userAgent, TimeTracker tt, ILoggingService loggingService) throws FHIRException, IOException {
     NpmPackage npm = getPcm().loadPackage(src, null);
     if (npm != null) {
       version = npm.fhirVersion();
@@ -632,10 +634,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
 
-  public List<ValidatedFragment> validateAsFragments(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
+  public ValidatedFragments validateAsFragments(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
     InstanceValidator validator = getValidator(cntType);
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
-    return validator.validatedContent;
+    return new ValidatedFragments(validator.validatedContent,
+      ValidationTime.fromTimeTracker(validator.timeTracker));
   }
 
   public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
@@ -968,7 +971,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     org.hl7.fhir.r5.elementmodel.Element src = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
 
     // if the src has a url, we try to use the java code 
-    if ((canDoNative == null && src.hasChild("url")) || (canDoNative != null && canDoNative)) {
+    if ((canDoNative == null && src.hasChild("url", false)) || (canDoNative != null && canDoNative)) {
       try {
         if (VersionUtilities.isR2Ver(version)) {
           return VersionConvertor.convertVersionNativeR2(targetVer, cnt, format);
@@ -1051,7 +1054,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public FilesystemPackageCacheManager getPcm() throws IOException {
     if (pcm == null) {
       //System.out.println("Creating Package manager?");
-      pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+      pcm = new FilesystemPackageCacheManager.Builder().build();
     }
     return pcm;
   }

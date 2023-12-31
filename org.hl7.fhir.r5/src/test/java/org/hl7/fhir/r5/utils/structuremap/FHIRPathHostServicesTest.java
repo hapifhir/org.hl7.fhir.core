@@ -16,7 +16,7 @@ class FHIRPathHostServicesTest {
 
   @BeforeAll
   static public void setUp() throws Exception {
-    FilesystemPackageCacheManager pcm = new org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager(true);
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     context = TestingUtilities.getWorkerContext(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
   }
 
@@ -24,7 +24,7 @@ class FHIRPathHostServicesTest {
   public void testrResolveValueSet() throws IOException, FHIRException {
     StructureMapUtilities scu = new StructureMapUtilities(context);
     FHIRPathHostServices fphs = new FHIRPathHostServices(scu);
-    ValueSet v = fphs.resolveValueSet(null, "http://hl7.org/fhir/ValueSet/FHIR-version");
+    ValueSet v = fphs.resolveValueSet(null, null, "http://hl7.org/fhir/ValueSet/FHIR-version");
     Assertions.assertNotNull(v);
     Assertions.assertEquals("http://hl7.org/fhir/ValueSet/FHIR-version", v.getUrl());
   }

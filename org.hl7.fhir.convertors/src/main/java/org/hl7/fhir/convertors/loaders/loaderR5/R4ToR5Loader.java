@@ -43,7 +43,7 @@ import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r5.conformance.StructureDefinitionHacker;
-import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
+import org.hl7.fhir.r5.context.IContextResourceLoader;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
@@ -123,7 +123,7 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
     if (killPrimitives) {
       throw new FHIRException("Cannot kill primitives when using deferred loading");
     }
-    if (r5 instanceof StructureDefinition && VersionUtilities.isR4Ver(version)) {
+    if (r5 instanceof StructureDefinition) {
       r5 = new StructureDefinitionHacker(version).fixSD((StructureDefinition) r5);
     }
     if (patchUrls) {

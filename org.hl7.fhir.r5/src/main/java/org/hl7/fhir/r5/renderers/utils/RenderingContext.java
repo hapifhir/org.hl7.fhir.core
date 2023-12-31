@@ -15,10 +15,10 @@ import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
-import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
@@ -157,7 +157,7 @@ public class RenderingContext {
   private boolean header;
   private boolean contained;
 
-  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R5);
   private boolean noSlowLookup;
   private String tooCostlyNoteEmpty;
   private String tooCostlyNoteNotEmpty;
@@ -190,6 +190,7 @@ public class RenderingContext {
   private String changeVersion;
   
   private Map<KnownLinkType, String> links = new HashMap<>();
+  private Map<String, String> namedLinks = new HashMap<>();
   /**
    * 
    * @param context - access to all related resources that might be needed
@@ -700,8 +701,9 @@ public class RenderingContext {
   public GenerationRules getRules() {
     return rules;
   }
-  public void setRules(GenerationRules rules) {
+  public RenderingContext setRules(GenerationRules rules) {
     this.rules = rules;
+    return this;
   }
   public StandardsStatus getDefaultStandardsStatus() {
     return defaultStandardsStatus;
@@ -720,5 +722,8 @@ public class RenderingContext {
     return this;
   }
 
-  
+  public Map<String, String> getNamedLinks() {
+    return namedLinks;
+  }
+
 }

@@ -109,6 +109,12 @@ public class Utilities {
     return inf.pluralize(word);
   }
 
+  public static String singularise(String word) {
+    Inflector inf = new Inflector();
+    return inf.singularize(word);
+  }
+
+  
   public static boolean isInteger(String string) {
     if (isBlank(string)) {
       return false;
@@ -556,6 +562,8 @@ public class Utilities {
     return b.toString();
   }
 
+
+    
   public static String unescapeJson(String json) throws FHIRException {
     if (json == null)
       return null;
@@ -991,6 +999,23 @@ public class Utilities {
   }
 
 
+  public static String escapeCSV(String value) {
+    if (value == null)
+      return "";
+
+    StringBuilder b = new StringBuilder();
+    for (char c : value.toCharArray()) {
+      if (c == '"')
+        b.append("\"\"");
+      else if (isWhitespace(c)) 
+        b.append(" ");
+      else
+        b.append(c);
+    }
+    return b.toString();
+  }
+
+
   public static String escapeJson(String value) {
     if (value == null)
       return "";
@@ -1422,12 +1447,14 @@ public class Utilities {
     long secs = ms / (1000) % 60;
     ms = ms % 1000;
     if (days > 0) {
-      return ""+days+"d "+hours+":"+mins+":"+secs+"."+ms;      
+      return ""+days+"d "+pad(hours,2)+":"+pad(mins,2)+":"+pad(secs,2)+"."+ms;      
     } else {
-      return ""+hours+":"+mins+":"+secs+"."+ms;
+      return ""+pad(hours, 2)+":"+pad(mins,2)+":"+pad(secs,2)+"."+ms;
     }
+  }
 
-
+  private static String pad(long v, int i) {
+    return padLeft(Long.toString(v), '0', i);
   }
 
   public static boolean startsWithInList(String s, String... list) {
@@ -1944,6 +1971,14 @@ public class Utilities {
   public static String getRelativePath(String root, String path) {
     String res = path.substring(root.length());
     if (res.startsWith(File.separator)) {
+      res = res.substring(1);
+    }
+    return res;
+  }
+
+  public static String getRelativeUrlPath(String root, String path) {
+    String res = path.substring(root.length());
+    if (res.startsWith("/")) {
       res = res.substring(1);
     }
     return res;

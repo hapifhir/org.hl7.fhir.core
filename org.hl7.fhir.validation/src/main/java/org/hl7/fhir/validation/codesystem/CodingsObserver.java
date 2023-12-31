@@ -10,9 +10,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;

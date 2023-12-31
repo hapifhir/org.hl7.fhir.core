@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "code" : "Not-at-all"
-}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -10,12 +10,28 @@
   }]
 }}####
 v: {
+  "display" : "Not at all",
   "code" : "Not-at-all",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "version" : "3.0.0",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to draft CodeSystem http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9|3.0.0"
+    }
+  }]
 }
 
 }
@@ -23,7 +39,7 @@ v: {
 {"code" : {
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "code" : "Several-days"
-}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -31,12 +47,28 @@ v: {
   }]
 }}####
 v: {
+  "display" : "Several days",
   "code" : "Several-days",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "version" : "3.0.0",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to draft CodeSystem http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9|3.0.0"
+    }
+  }]
 }
 
 }
@@ -44,7 +76,7 @@ v: {
 {"code" : {
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "code" : "More than half the days"
-}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -52,12 +84,28 @@ v: {
   }]
 }}####
 v: {
+  "display" : "More than half the days",
   "code" : "More than half the days",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "version" : "3.0.0",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to draft CodeSystem http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9|3.0.0"
+    }
+  }]
 }
 
 }
@@ -65,7 +113,7 @@ v: {
 {"code" : {
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "code" : "Nearly every day"
-}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -73,12 +121,28 @@ v: {
   }]
 }}####
 v: {
+  "display" : "Nearly every day",
   "code" : "Nearly every day",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "version" : "3.0.0",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to draft CodeSystem http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9|3.0.0"
+    }
+  }]
 }
 
 }

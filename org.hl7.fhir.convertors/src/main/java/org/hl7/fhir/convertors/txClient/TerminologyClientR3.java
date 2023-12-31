@@ -123,8 +123,8 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
-  public ITerminologyClient setTimeout(int i) {
-    client.setTimeout(i);
+  public ITerminologyClient setTimeoutFactor(int i) {
+    client.setTimeoutFactor(i);
     return this;
   }
 
@@ -213,8 +213,14 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
-  public ITerminologyClient setLanguage(String lang) {
-    client.setLanguage(lang);
+  public ITerminologyClient setAcceptLanguage(String lang) {
+    client.setAcceptLanguage(lang);
+    return this;
+  }
+  
+  @Override
+  public ITerminologyClient setContentLanguage(String lang) {
+    client.setContentLanguage(lang);
     return this;
   }
 }

@@ -38,6 +38,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -78,8 +79,7 @@ public class TestingUtilities {
     if (fcontext == null) {
       FilesystemPackageCacheManager pcm;
       try {
-        pcm = new FilesystemPackageCacheManager(
-            org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+        pcm = new FilesystemPackageCacheManager.Builder().build();
         fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
         fcontext
             .setUcumService(new UcumEssenceService(TestingUtilities.resourceNameToFile("ucum", "ucum-essence.xml")));
@@ -528,4 +528,7 @@ public class TestingUtilities {
     }
   }
 
+  public static boolean runningAsSurefire() {
+    return "true".equals(System.getProperty("runningAsSurefire") != null ? System.getProperty("runningAsSurefire").toLowerCase(Locale.ENGLISH) : "");
+  }
 }

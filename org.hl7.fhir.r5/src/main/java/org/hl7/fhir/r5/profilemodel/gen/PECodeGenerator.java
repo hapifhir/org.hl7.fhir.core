@@ -33,22 +33,30 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Observation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
 import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.profilemodel.PEDefinition;
 import org.hl7.fhir.r5.profilemodel.PEInstance;
 import org.hl7.fhir.r5.profilemodel.PEType;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -73,7 +81,12 @@ public class PECodeGenerator {
     private String doco;
     private String url;
     private boolean isResource;
+    private Set<String> unfixed = new HashSet<>();
+    private Set<String> enumNames = new HashSet<>();
+    
+    private StringBuilder inits = new StringBuilder();
     private StringBuilder fields = new StringBuilder();
+    private StringBuilder enums = new StringBuilder();
     private StringBuilder load = new StringBuilder();
     private StringBuilder save = new StringBuilder();
     private StringBuilder clear = new StringBuilder();
@@ -82,10 +95,10 @@ public class PECodeGenerator {
     private StringBuilder hash = new StringBuilder();
     public void genId() {
       if (isResource) {
-        genField(true, "id", "String", "id", "", false, "");
-        genAccessors(true, false, "id", "String", "", "String", "String", "Id", "Ids", false, "", false);   
-        genLoad(true, false, "id", "id", "IdType", "", "String", "String", "Id", "Ids", false, false, null);
-        genSave(true, false, "id", "id", "IdType", "", "String", "String", "Id", "Ids", false, false, false, null);
+        genField(true, "id", "String", "id", "", false, "", 0, 1, null);
+        genAccessors(true, false, "id", "String", "", "String", "String", "Id", "Ids", false, "", false, false);   
+        genLoad(true, false, "id", "id", "IdType", "", "String", "String", "Id", "Ids", false, false, null, false);
+        genSave(true, false, "id", "id", "IdType", "", "String", "String", "Id", "Ids", false, false, false, null, false);
         genClear(false, "id");
       }
     }
@@ -106,15 +119,27 @@ public class PECodeGenerator {
         w(b, "  private static final String CANONICAL_URL = \""+url+"\";");
         w(b);        
       }
+      if (enums.length() > 0) {
+        w(b, enums.toString());
+      }
       w(b, fields.toString());
-      jdoc(b, "Parameter-less constructor. If you use this, the fixed values won't be filled out - they'll be missing. They'll be filled in if/when you call build, so they won't be missing from the resource, only from this particular object model", 2, true);
+      if (unfixed.isEmpty()) {
+        jdoc(b, "Parameter-less constructor.", 2, true);
+      } else {
+        jdoc(b, "Parameter-less constructor. If you use this, the fixed values on "+CommaSeparatedStringBuilder.join(",", unfixed)+" won't be filled out - they'll be missing. They'll be filled in if/when you call build, so they won't be missing from the resource, only from this particular object model", 2, true);
+      }
       w(b, "  public "+name+"() {");
-      w(b, "    // todo");
+      if (inits.length() > 0) {
+        w(b, "    initFixedValues();");
+      }
       w(b, "  }");
       w(b);
       if (isResource) {
         jdoc(b, "Construct an instance of the object, and fill out all the fixed values ", 2, true);
         w(b, "  public "+name+"(IWorkerContext context) {");
+        if (inits.length() > 0) {
+          w(b, "    initFixedValues();");
+        }
         w(b, "    workerContext = context;");
         w(b, "    PEBuilder builder = new PEBuilder(context, PEElementPropertiesPolicy.EXTENSION, true);");
         w(b, "    PEInstance src = builder.buildPEInstance(CANONICAL_URL, builder.createResource(CANONICAL_URL, false));");
@@ -158,7 +183,7 @@ public class PECodeGenerator {
         w(b, "    return theThing;");
         w(b, "  }");
         w(b);
-        jdoc(b, "Save this profile class into an existing resource (overwriting enything that exists in the profile) ", 2, true);
+        jdoc(b, "Save this profile class into an existing resource (overwriting anything that exists in the profile) ", 2, true);
         w(b, "  public void save(IWorkerContext context, "+base+" dest, boolean nulls) {");
         w(b, "    workerContext = context;");
         w(b, "    PEBuilder builder = new PEBuilder(context, PEElementPropertiesPolicy.EXTENSION, true);");
@@ -171,6 +196,12 @@ public class PECodeGenerator {
       w(b, save.toString());
       w(b, "  }");  
       w(b);
+      if (inits.length() > 0) {
+        w(b, "  private void initFixedValues() {");
+        w(b, inits.toString());
+        w(b, "  }");  
+        w(b);
+      }
       w(b, accessors.toString());
       w(b);
       w(b, "  public void clear() {");
@@ -180,10 +211,114 @@ public class PECodeGenerator {
       w(b, "}");  
     }
 
+    private String generateEnum(PEDefinition source, PEDefinition field) {
+      if (field.definition().hasBinding() && !field.hasFixedValue()) {
+        ElementDefinitionBindingComponent binding = field.definition().getBinding();
+        if (binding.getStrength() == org.hl7.fhir.r5.model.Enumerations.BindingStrength.REQUIRED && binding.hasValueSet()) {
+          org.hl7.fhir.r5.model.ValueSet vs = workerContext.fetchResource(org.hl7.fhir.r5.model.ValueSet.class, binding.getValueSet(), field.getProfile());
+          if (vs != null) {
+            ValueSetExpansionOutcome vse = workerContext.expandVS(vs, false, false);
+            if (vse.isOk()) {
+              String baseName = Utilities.nmtokenize(Utilities.singularise(vs.getName()));
+              String name = baseName;
+              int c = 0;
+              while (enumNames.contains(name)) {
+                c++;
+                name = baseName+c;
+              }
+              w(enums, "  public enum "+name+" {");
+              for (int i = 0; i < vse.getValueset().getExpansion().getContains().size(); i++) {
+                ValueSetExpansionContainsComponent cc = vse.getValueset().getExpansion().getContains().get(i);
+                String code = Utilities.nmtokenize(cc.getCode()).toUpperCase();
+                if (cc.getAbstract()) {
+                  code = "_"+code;
+                }
+                cc.setUserData("java.code", code);
+                w(enums, "    "+code+(i < vse.getValueset().getExpansion().getContains().size() - 1 ? "," : ";")+" // \""+cc.getDisplay()+"\" = "+cc.getSystem()+"#"+cc.getCode());
+              }
+              w(enums, "");
+              w(enums, "    public static "+name+" fromCode(String s) {");
+              w(enums, "      switch (s) {");
+              for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
+                w(enums, "      case \""+cc.getCode()+"\": return "+cc.getUserString("java.code")+";");                
+              }
+              w(enums, "      default: return null;");
+              w(enums, "      }");
+              w(enums, "    }");
+              w(enums, "");
+              w(enums, "    public static "+name+" fromCoding(Coding c) {");
+              for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
+                if (cc.hasVersion()) {
+                  w(enums, "      if (\""+cc.getSystem()+"\".equals(c.getSystem()) && \""+cc.getCode()+"\".equals(c.getCode()) && (!c.hasVersion() || \""+cc.getVersion()+"\".equals(c.getVersion()))) {");                  
+                } else {
+                  w(enums, "      if (\""+cc.getSystem()+"\".equals(c.getSystem()) && \""+cc.getCode()+"\".equals(c.getCode())) {");
+                }
+                w(enums, "        return "+cc.getUserString("java.code")+";");                
+                w(enums, "      }");
+              }
+              w(enums, "      return null;");
+              w(enums, "    }");
+              w(enums, "");
+              w(enums, "    public static "+name+" fromCodeableConcept(CodeableConcept cc) {");
+              w(enums, "      for (Coding c : cc.getCoding()) {");
+              w(enums, "        "+name+" v = fromCoding(c);");
+              w(enums, "        if (v != null) {");
+              w(enums, "          return v;");
+              w(enums, "        }");
+              w(enums, "      }");              
+              w(enums, "      return null;");
+              w(enums, "    }");
+              w(enums, "");
+
+              w(enums, "    public String toDisplay() {");
+              w(enums, "      switch (this) {");
+              for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
+                w(enums, "      case "+cc.getUserString("java.code")+": return \""+Utilities.escapeJava(cc.getDisplay())+"\";");                
+              }
+              w(enums, "      default: return null;");
+              w(enums, "      }");
+              w(enums, "    }");
+              w(enums, "");
+              
+              w(enums, "    public String toCode() {");
+              w(enums, "      switch (this) {");
+              for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
+                w(enums, "      case "+cc.getUserString("java.code")+": return \""+cc.getCode()+"\";");                
+              }
+              w(enums, "      default: return null;");
+              w(enums, "      }");
+              w(enums, "    }");
+              w(enums, "");
+              w(enums, "    public Coding toCoding() {");
+              w(enums, "      switch (this) {");
+              for (ValueSetExpansionContainsComponent cc : vse.getValueset().getExpansion().getContains()) {
+                if (cc.hasVersion()) {
+                  w(enums, "      case "+cc.getUserString("java.code")+": return new Coding().setSystem(\""+cc.getSystem()+"\").setVersion(\""+cc.getVersion()+"\").setCode()\""+cc.getCode()+"\";");
+                } else {
+                  w(enums, "      case "+cc.getUserString("java.code")+": return new Coding().setSystem(\""+cc.getSystem()+"\").setCode(\""+cc.getCode()+"\");");
+                }
+              }
+              w(enums, "      default: return null;");
+              w(enums, "      }");
+              w(enums, "    }");
+              w(enums, "");
+              w(enums, "    public CodeableConcept toCodeableConcept() {");
+              w(enums, "      Coding c = toCoding();");
+              w(enums, "      return c == null ? null : new CodeableConcept().addCoding(c);");
+              w(enums, "    }");
+              w(enums, "  }");
+              return name;
+            }
+          }
+        }
+      }
+      return null;
+    }
     private void defineField(PEDefinition source, PEDefinition field) {
       if (field.types().size() == 1) {
         StructureDefinition sd = workerContext.fetchTypeDefinition(field.types().get(0).getUrl());
         if (sd != null) {
+          String enumName = generateEnum(source, field);
           boolean isPrim = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE;
           boolean isAbstract = sd.getAbstract();
           String name = field.name().replace("[x]", "");
@@ -191,7 +326,12 @@ public class PECodeGenerator {
           String type = null;
           String init = "";
           String ptype = type;
-          if (isPrim) {
+          boolean isEnum = false;
+          if (enumName != null) {
+            type = enumName;
+            ptype = enumName;
+            isEnum = true;
+          } else if (isPrim) {
             // todo: are we extension-less?
             type = Utilities.capitalize(field.types().get(0).getName()+"Type");
             ptype = getPrimitiveType(sd);
@@ -210,18 +350,20 @@ public class PECodeGenerator {
           String csname = Utilities.capitalize(sname);
           String nn = field.min() == 1 ? "// @NotNull" : "";
           boolean isExtension = field.isExtension();
-          genField(isPrim, name, ptype, ltype, nn, field.isList(), field.shortDocumentation());
-          genAccessors(isPrim, isAbstract, name, type, init, ptype, ltype, cname, csname, field.isList(), field.documentation(), field.fixedValue());   
-          genLoad(isPrim, isAbstract, name, sname, type, init, ptype, ltype, cname, csname, field.isList(), field.fixedValue(), field.types().get(0)); 
-          genSave(isPrim, isAbstract, name, sname, type, init, ptype, ltype, cname, csname, field.isList(), field.fixedValue(), isExtension, field.types().get(0));
+          genField(isPrim, name, ptype, ltype, nn, field.isList(), field.shortDocumentation(), field.min(), field.max(), field.definition());
+          if (isPrim && field.hasFixedValue()) {
+            genFixed(name, ptype, field.getFixedValue());
+          }
+          genAccessors(isPrim, isAbstract, name, type, init, ptype, ltype, cname, csname, field.isList(), field.documentation(), field.hasFixedValue(), isEnum);   
+          genLoad(isPrim, isAbstract, name, sname, type, init, ptype, ltype, cname, csname, field.isList(), field.hasFixedValue(), field.types().get(0), isEnum); 
+          genSave(isPrim, isAbstract, name, sname, type, init, ptype, ltype, cname, csname, field.isList(), field.hasFixedValue(), isExtension, field.types().get(0), isEnum);
           genClear(field.isList(), name);
         }
       } else {
         // ignoring polymorphics for now
       }
-
     }
-
+    
     private void genClear(boolean list, String name) {
       if (list) {
         w(clear, "    "+name+".clear();");        
@@ -230,11 +372,21 @@ public class PECodeGenerator {
       }
     }
     
-    private void genLoad(boolean isPrim, boolean isAbstract, String name, String sname, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, boolean isFixed, PEType typeInfo) {
+    private void genLoad(boolean isPrim, boolean isAbstract, String name, String sname, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, boolean isFixed, PEType typeInfo, boolean isEnum) {
       if (isList) {
         w(load, "    for (PEInstance item : src.children(\""+sname+"\")) {");
         w(load, "      "+name+".add(("+type+") item.asDataType());");
         w(load, "    }");
+      } else if (isEnum) {
+        w(load, "    if (src.hasChild(\""+name+"\")) {");
+        if ("CodeableConcept".equals(typeInfo.getName())) {
+        w(load, "      "+name+" = "+type+".fromCodeableConcept((CodeableConcept) src.child(\""+name+"\").asDataType());");
+        } else if ("Coding".equals(typeInfo.getName())) {
+          w(load, "      "+name+" = "+type+".fromCoding((Coding) src.child(\""+name+"\").asDataType());");
+        } else {
+          w(load, "      "+name+" = "+type+".fromCode(src.child(\""+name+"\").asDataType()).primitiveValue());");
+        }  
+        w(load, "    }");      
       } else if (isPrim) {
         w(load, "    if (src.hasChild(\""+name+"\")) {");
         if ("CodeType".equals(type)) {
@@ -255,7 +407,7 @@ public class PECodeGenerator {
       }
     }
 
-    private void genSave(boolean isPrim, boolean isAbstract, String name, String sname, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, boolean isFixed, boolean isExtension, PEType typeInfo) {
+    private void genSave(boolean isPrim, boolean isAbstract, String name, String sname, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, boolean isFixed, boolean isExtension, PEType typeInfo, boolean isEnum) {
       w(save, "    tgt.clear(\""+sname+"\");");
       if (isList) {
         w(save, "    for ("+type+" item : "+name+") {");
@@ -265,6 +417,16 @@ public class PECodeGenerator {
           w(save, "      tgt.addChild(\""+sname+"\", item);");
         }
         w(save, "    }");
+      } else if (isEnum) {
+        w(save, "    if ("+name+" != null) {");
+        if ("CodeableConcept".equals(typeInfo.getName())) {
+          w(save, "      tgt.addChild(\""+sname+"\", "+name+".toCodeableConcept());");
+        } else if ("Coding".equals(typeInfo.getName())) {
+          w(save, "      tgt.addChild(\""+sname+"\", "+name+".toCoding());");
+        } else {
+          w(save, "      tgt.addChild(\""+sname+"\", "+name+").toCode();");
+        }  
+        w(save, "    }");      
       } else if (isPrim) {
         w(save, "    if ("+name+" != null) {");
         if (isExtension) {
@@ -290,21 +452,27 @@ public class PECodeGenerator {
       }
     }
 
-    private void genAccessors(boolean isPrim, boolean isAbstract, String name, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, String shortDoco, boolean isFixed) {
+    private void genAccessors(boolean isPrim, boolean isAbstract, String name, String type, String init, String ptype, String ltype, String cname, String csname, boolean isList, String shortDoco, boolean isFixed, boolean isEnum) {
       jdoc(accessors, doco, 2, true);
-      if (isPrim && extensionPolicy != ExtensionPolicy.Primitives && !isList) {
+      if ((isEnum || isPrim) && extensionPolicy != ExtensionPolicy.Primitives && !isList) {
         w(accessors, "  public "+ptype+" get"+cname+"() {");
         w(accessors, "    return "+name+";");
         w(accessors, "  }");
         w(accessors);
-        w(accessors, "  public "+this.name+" set"+cname+"("+ptype+" value) {");
-        w(accessors, "    this."+name+" = value;");
-        w(accessors, "    return this;");
-        w(accessors, "  }");
-        w(accessors);
-        w(accessors, "  public boolean has"+cname+"() {");
-        w(accessors, "    return "+name+" != null;");
-        w(accessors, "  }");
+        if (isFixed) {
+          w(accessors, "  public boolean has"+cname+"() {");
+          w(accessors, "    return true;");
+          w(accessors, "  }");  
+        } else {
+          w(accessors, "  public "+this.name+" set"+cname+"("+ptype+" value) {");
+          w(accessors, "    this."+name+" = value;");
+          w(accessors, "    return this;");
+          w(accessors, "  }");
+          w(accessors);
+          w(accessors, "  public boolean has"+cname+"() {");
+          w(accessors, "    return "+name+" != null;");
+          w(accessors, "  }");  
+        }
       } else {
         if (isPrim && !isList) {
           w(accessors, "  public "+ptype+" get"+cname+"() {");
@@ -379,14 +547,44 @@ public class PECodeGenerator {
       w(accessors);
     }
 
-    private void genField(boolean isPrim, String name, String ptype, String ltype, String nn, boolean isList, String shortDoco) {
-      // jdoc(fields, field.documentation(), 2, true);
+    private void genField(boolean isPrim, String name, String ptype, String ltype, String nn, boolean isList, String shortDoco, int min, int max, ElementDefinition ed) {
+//      jdoc(fields, shortDoco, 2, true);
+      w(fields, "  @Min(\""+min+"\") @Max(\""+(max == Integer.MAX_VALUE ? "*" : max) +"\")"+(" @Doco(\""+Utilities.escapeJava(shortDoco)+"\")"));
+      if (ed != null) {
+        if (ed.hasBinding() && ed.getBinding().hasValueSet()) {
+          w(fields, "  @BindingStrength(\""+ed.getBinding().getStrength().toCode()+"\") @ValueSet(\""+ed.getBinding().getValueSet()+"\")");
+        }
+        if (ed.getMustSupport()) {
+          w(fields, "  @MustSupport(true)");          
+        }
+        if (ed.hasLabel() || ed.hasDefinition()) {
+          String s = "";
+          if (ed.hasLabel()) {
+            s = s + " @Label(\""+Utilities.escapeJava(ed.getLabel())+"\")";
+          }
+          if (ed.hasDefinition()) {
+            s = s + " @Definition(\""+Utilities.escapeJava(ed.getDefinition())+"\")";
+          }
+          w(fields, " "+s);          
+        }
+      }
       if (isPrim && extensionPolicy != ExtensionPolicy.Primitives && !isList) {
         w(fields, "  private "+ptype+" "+name+";"+nn+"  // "+shortDoco);
       } else if (isList) {
         w(fields, "  private "+ltype+" "+name+" = new ArrayList<>();"+nn+"  // "+shortDoco);
       } else {
         w(fields, "  private "+ltype+" "+name+";"+nn+"  // "+shortDoco);             
+      }
+      w(fields, "");
+    }
+
+
+    private void genFixed(String name, String pType, DataType fixedValue) {
+      if ("String".equals(pType)) {
+        w(inits, "    "+name+" = \""+Utilities.escapeJava(fixedValue.primitiveValue())+"\";");                     
+      } else {
+        unfixed.add(name);
+        System.out.println("Unable to handle the fixed value for "+name+" of type "+pType+" = "+fixedValue.toString());
       }
     }
   }
@@ -501,6 +699,8 @@ public class PECodeGenerator {
    * 
    */
   public void execute() throws IOException {
+    imports = new StringBuilder();
+    
     PEDefinition source = new PEBuilder(workerContext, PEElementPropertiesPolicy.EXTENSION, true).buildPEDefinition(canonical);
     w(imports, "import java.util.List;");
     w(imports, "import java.util.ArrayList;");
@@ -513,6 +713,16 @@ public class PECodeGenerator {
     w(imports, "import org.hl7.fhir.r5.profilemodel.PEInstance;");
     w(imports, "import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;");
     w(imports, "import org.hl7.fhir.r5.profilemodel.gen.PEGeneratedBase;");
+    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.Min;");
+    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.Max;");
+    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.Label;");
+    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.Doco;");
+    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.BindingStrength;");
+    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.ValueSet;");
+    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.MustSupport;");
+    w(imports, "import org.hl7.fhir.r5.profilemodel.gen.Definition;");
+      
+      
     PEGenClass cls = genClass(source);
     StringBuilder b = new StringBuilder();
     w(b, "package "+pkgName+";");

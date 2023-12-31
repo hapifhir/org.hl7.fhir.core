@@ -7,8 +7,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -37,7 +40,6 @@ public class NpmPackageIndexBuilder {
     index.add("index-version", CURRENT_INDEX_VERSION);
     files = new JsonArray();
     index.add("files", files);
-
 
     dbFilename = filename;
     if (filename != null) {
@@ -109,6 +111,7 @@ public class NpmPackageIndexBuilder {
           if (json.hasPrimitive("derivation")) {
             fi.add("derivation", json.asString("derivation"));
           }
+          
           if (psql != null) {
             psql.setString(1, name); // FileName); 
             psql.setString(2, json.asString("resourceType")); // ResourceType"); 
@@ -133,7 +136,7 @@ public class NpmPackageIndexBuilder {
     }
     return true;
   }
-  
+
   public String build() {
     try {
       if (conn != null) {
@@ -214,5 +217,6 @@ public class NpmPackageIndexBuilder {
   public String getDbFilename() {
     return dbFilename;
   }
+
 
 }

@@ -15,12 +15,12 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities;
 import org.hl7.fhir.r4b.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r4b.context.IWorkerContext;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r4b.model.Base;
 import org.hl7.fhir.r4b.model.DomainResource;
 import org.hl7.fhir.r4b.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r4b.renderers.utils.Resolver.IReferenceResolver;
 import org.hl7.fhir.r4b.renderers.utils.Resolver.ResourceContext;
-import org.hl7.fhir.r4b.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
@@ -117,7 +117,7 @@ public class RenderingContext {
   private boolean header;
   private boolean contained;
 
-  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R4B);
   private boolean noSlowLookup;
   private String tooCostlyNoteEmpty;
   private String tooCostlyNoteNotEmpty;

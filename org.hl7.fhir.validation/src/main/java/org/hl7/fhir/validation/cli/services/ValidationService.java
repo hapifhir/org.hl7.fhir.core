@@ -10,12 +10,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 
@@ -24,7 +19,6 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.SystemOutLoggingService;
-import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -39,7 +33,6 @@ import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
@@ -47,6 +40,7 @@ import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.TextFile;
@@ -64,11 +58,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.*;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
-import org.hl7.fhir.validation.cli.model.CliContext;
-import org.hl7.fhir.validation.cli.model.FileInfo;
-import org.hl7.fhir.validation.cli.model.ValidationOutcome;
-import org.hl7.fhir.validation.cli.model.ValidationRequest;
-import org.hl7.fhir.validation.cli.model.ValidationResponse;
+import org.hl7.fhir.validation.cli.model.*;
 import org.hl7.fhir.validation.cli.renderers.CSVRenderer;
 import org.hl7.fhir.validation.cli.renderers.CompactRenderer;
 import org.hl7.fhir.validation.cli.renderers.DefaultRenderer;
@@ -85,11 +75,11 @@ public class ValidationService {
   private String runDate;
 
   public ValidationService() {
-    sessionCache = new SessionCache();
+    sessionCache = new PassiveExpiringSessionCache();
     runDate = new SimpleDateFormat("hh:mm:ss", new Locale("en", "US")).format(new Date());
   }
 
-  protected ValidationService(SessionCache cache) {
+  public ValidationService(SessionCache cache) {
     this.sessionCache = cache;
   }
 
@@ -101,7 +91,8 @@ public class ValidationService {
 
     String definitions = VersionUtilities.packageForVersion(request.getCliContext().getSv()) + "#" + VersionUtilities.getCurrentVersion(request.getCliContext().getSv());
 
-    String sessionId = initializeValidator(request.getCliContext(), definitions, new TimeTracker(), request.sessionId);
+    TimeTracker timeTracker = new TimeTracker();
+    String sessionId = initializeValidator(request.getCliContext(), definitions, timeTracker, request.sessionId);
     ValidationEngine validator = sessionCache.fetchSessionValidatorEngine(sessionId);
 
     if (request.getCliContext().getProfiles().size() > 0) {
@@ -110,7 +101,7 @@ public class ValidationService {
       System.out.println("  .. validate " + request.listSourceFiles());
     }
 
-    ValidationResponse response = new ValidationResponse().setSessionId(sessionId);
+    ValidationResponse response = new ValidationResponse().setSessionId(sessionId).setValidationTimes(new HashMap<>());
 
     for (FileInfo fileToValidate : request.getFilesToValidate()) {
       if (fileToValidate.getFileType() == null) {
@@ -124,13 +115,13 @@ public class ValidationService {
 
       List<ValidationMessage> messages = new ArrayList<>();
 
-      List<ValidatedFragment> validatedFragments = validator.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
+      ValidatedFragments validatedFragments = validator.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
         request.getCliContext().getProfiles(), messages);
 
-      if (validatedFragments.size() == 1 && !validatedFragments.get(0).isDerivedContent()) {
-        ValidatedFragment validatedFragment = validatedFragments.get(0);
+      if (validatedFragments.getValidatedFragments().size() == 1 && !validatedFragments.getValidatedFragments().get(0).isDerivedContent()) {
+        ValidatedFragment validatedFragment = validatedFragments.getValidatedFragments().get(0);
         ValidationOutcome outcome = new ValidationOutcome();
-          FileInfo fileInfo = new FileInfo(
+        FileInfo fileInfo = new FileInfo(
           fileToValidate.getFileName(),
           new String(validatedFragment.getContent()),
           validatedFragment.getExtension());
@@ -138,7 +129,7 @@ public class ValidationService {
         outcome.setFileInfo(fileInfo);
         response.addOutcome(outcome);
       } else {
-        for (ValidatedFragment validatedFragment : validatedFragments) {
+        for (ValidatedFragment validatedFragment : validatedFragments.getValidatedFragments()) {
           ValidationOutcome outcome = new ValidationOutcome();
           FileInfo fileInfo = new FileInfo(
             validatedFragment.getFilename(),
@@ -149,7 +140,12 @@ public class ValidationService {
           response.addOutcome(outcome);
         }
       }
+
+      if (request.getCliContext().isShowTimes()) {
+        response.getValidationTimes().put(fileToValidate.getFileName(), validatedFragments.getValidationTime());
+      }
     }
+
     System.out.println("  Max Memory: "+Runtime.getRuntime().maxMemory());
     return response;
   }
@@ -157,7 +153,7 @@ public class ValidationService {
   public VersionSourceInformation scanForVersions(CliContext cliContext) throws Exception {
     VersionSourceInformation versions = new VersionSourceInformation();
     IgLoader igLoader = new IgLoader(
-      new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER),
+      new FilesystemPackageCacheManager.Builder().build(),
       new SimpleWorkerContext.SimpleWorkerContextBuilder().fromNothing(),
       null);
     for (String src : cliContext.getIgs()) {
@@ -366,11 +362,7 @@ public class ValidationService {
       List<StructureDefinition> structures =  cu.allStructures();
       for (StructureDefinition sd : structures) {
         if (!sd.hasSnapshot()) {
-          if (sd.getKind() != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-            cu.generateSnapshot(sd, true);
-          } else {
-            cu.generateSnapshot(sd, false);
-          }
+          cu.generateSnapshot(sd);
         }
       }
       validator.setMapLog(cliContext.getMapLog());
@@ -402,11 +394,7 @@ public class ValidationService {
       List<StructureDefinition> structures = cu.allStructures();
       for (StructureDefinition sd : structures) {
         if (!sd.hasSnapshot()) {
-          if (sd.getKind() != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-            cu.generateSnapshot(sd, true);
-          } else {
-            cu.generateSnapshot(sd, false);
-          }
+          cu.generateSnapshot(sd);
         }
       }
       validator.setMapLog(cliContext.getMapLog());
@@ -450,7 +438,7 @@ public class ValidationService {
 
   public String initializeValidator(CliContext cliContext, String definitions, TimeTracker tt, String sessionId) throws Exception {
     tt.milestone();
-    sessionCache.removeExpiredSessions();
+
     if (!sessionCache.sessionExists(sessionId)) {
       if (sessionId != null) {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");

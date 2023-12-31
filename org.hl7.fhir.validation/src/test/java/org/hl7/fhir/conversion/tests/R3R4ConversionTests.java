@@ -308,7 +308,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
     if (contextR3 != null)
       return;
 
-    pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+    pcm = new FilesystemPackageCacheManager.Builder().build();
     R3ToR4Loader ldr = (R3ToR4Loader) new R3ToR4Loader().setPatchUrls(true).setKillPrimitives(true);
 
     System.out.println("loading R3");

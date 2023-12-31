@@ -165,7 +165,7 @@ public class ProfilePathProcessor {
     ElementDefinition res = null;
     List<TypeSlice> typeList = new ArrayList<>();
     // just repeat processing entries until we run out of our allowed scope (1st entry, the allowed scope is all the entries)
-    while (cursors.baseCursor <= getBaseLimit()) {
+    while (cursors.baseCursor <= getBaseLimit() && cursors.baseCursor < cursors.base.getElement().size()) {
       // get the current focus of the base, and decide what to do
       ElementDefinition currentBase = cursors.base.getElement().get(cursors.baseCursor);
       String currentBasePath = profileUtilities.fixedPathSource(getContextPathSource(), currentBase.getPath(), getRedirector());
@@ -842,6 +842,7 @@ public class ProfilePathProcessor {
     outcome.setPath(profileUtilities.fixedPathDest(getContextPathTarget(), outcome.getPath(), getRedirector(), getContextPathSource()));
     profileUtilities.updateFromBase(outcome, currentBase, getSourceStructureDefinition().getUrl());
     profileUtilities.updateConstraintSources(outcome, getSourceStructureDefinition().getUrl());
+    profileUtilities.checkExtensions(outcome);
     profileUtilities.updateFromObligationProfiles(outcome);
     profileUtilities.updateURLs(url, webUrl, outcome);
     profileUtilities.markDerived(outcome);

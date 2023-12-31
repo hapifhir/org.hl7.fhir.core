@@ -25,8 +25,8 @@ public class JsonObject extends JsonElement {
   }
 
   public JsonObject add(String name, JsonElement value) throws JsonException {
-    check(name != null, "Name is null");
-    check(value != null, "Value is null");
+    check(name != null, "Json Property Name is null");
+    check(value != null, "Json Property Value is null");
     if (get(name) != null) {
       check(false, "Name '"+name+"' already exists (value = "+get(name).toString()+")");
     }
@@ -135,6 +135,17 @@ public class JsonObject extends JsonElement {
   }
 
   public JsonObject set(String name, int value) throws JsonException {
+    check(name != null, "Name is null");
+    JsonProperty p = propMap.get(name);
+    if (p != null) {
+      p.setValue(new JsonNumber(value));
+      return this;
+    } else {
+      return add(name, new JsonNumber(value));
+    }
+  }
+
+  public JsonObject set(String name, long value) throws JsonException {
     check(name != null, "Name is null");
     JsonProperty p = propMap.get(name);
     if (p != null) {

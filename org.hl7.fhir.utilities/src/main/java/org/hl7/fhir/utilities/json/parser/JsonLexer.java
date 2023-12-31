@@ -49,6 +49,7 @@ public class JsonLexer {
   private boolean allowUnquotedStrings;
   private List<JsonComment> comments = new ArrayList<>();
   private boolean isUnquoted;
+  private String sourceName;
 
   public JsonLexer(String source, boolean allowComments, boolean allowUnquotedStrings) throws IOException {
     this.source = source;
@@ -116,7 +117,7 @@ public class JsonLexer {
   }
 
   public IOException error(String msg) {
-    return new IOException("Error parsing JSON source: "+msg+" at Line "+Integer.toString(location.getLine())+" (path=["+path()+"])");
+    return new IOException("Error parsing JSON source: "+msg+" at Line "+Integer.toString(location.getLine())+" (path=["+path()+"])"+(sourceName == null ? "" : " from '"+sourceName+"'"));
   }
 
   private String path() {
@@ -298,6 +299,14 @@ public class JsonLexer {
   @Override
   public String toString() {
     return "JsonLexer [cursor=" + cursor + ", peek=" + peek + ", type=" + type + ", location=" + location.toString() + "]";
+  }
+
+  public String getSourceName() {
+    return sourceName;
+  }
+
+  public void setSourceName(String sourceName) {
+    this.sourceName = sourceName;
   }
 
 

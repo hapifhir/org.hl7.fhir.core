@@ -107,6 +107,13 @@ public class R5ToR5Loader extends BaseLoaderR5 {
     if (patchUrls) {
       doPatchUrls(r5);
     }
+    if (r5 instanceof StructureDefinition) {
+      StructureDefinition sd = (StructureDefinition) r5;
+      if ("http://hl7.org/fhir/StructureDefinition/Base".equals(sd.getUrl())) {
+        sd.getSnapshot().getElementFirstRep().getConstraint().clear();
+        
+      }
+    }
     return r5;
   }
   

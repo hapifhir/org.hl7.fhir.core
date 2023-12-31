@@ -64,13 +64,14 @@ import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Meta;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.utils.CanonicalResourceUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
-public class CodeSystemUtilities {
+public class CodeSystemUtilities extends TerminologyUtilities {
 
   public static class SystemReference {
     private String link;
@@ -504,7 +505,7 @@ public class CodeSystemUtilities {
     if (wg != null) {
       if (!ToolingExtensions.hasExtension(cs, ToolingExtensions.EXT_WORKGROUP) || 
           (Utilities.existsInList(ToolingExtensions.readStringExtension(cs, ToolingExtensions.EXT_WORKGROUP), "fhir", "vocab") && !Utilities.existsInList(wg, "fhir", "vocab"))) {
-        ToolingExtensions.setCodeExtension(cs, ToolingExtensions.EXT_WORKGROUP, wg);
+        CanonicalResourceUtilities.setHl7WG(cs, wg);
       }
     }
     if (status != null) {

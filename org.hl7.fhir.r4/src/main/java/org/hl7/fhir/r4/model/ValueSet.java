@@ -3268,6 +3268,14 @@ public class ValueSet extends MetadataResource {
 
     }
 
+    public ValueSetExpansionParameterComponent getParameter(String name) {
+      for (ValueSetExpansionParameterComponent t : getParameter()) {
+        if (name.equals(t.getName())) {
+          return t;
+        }
+      }
+      return null;
+    }
   }
 
   @Block()
@@ -6241,6 +6249,8 @@ public class ValueSet extends MetadataResource {
     return ResourceType.ValueSet;
   }
 
+
+  
   /**
    * Search parameter: <b>date</b>
    * <p>

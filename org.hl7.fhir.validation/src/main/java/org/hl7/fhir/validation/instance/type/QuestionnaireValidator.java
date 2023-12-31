@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DateType;
 import org.hl7.fhir.r5.model.IntegerType;
@@ -24,10 +24,11 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
-import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -153,11 +154,11 @@ public class QuestionnaireValidator extends BaseValidator {
         Element ext = e.getExtension("http://hl7.org/fhir/StructureDefinition/questionnaire-derivationType");
         if (warning(errors, "2023-06-15", IssueType.BUSINESSRULE, ns, ext != null, I18nConstants.QUESTIONNAIRE_Q_NO_DERIVATION_TYPE, url)) {
           NodeStack next = ns.push(ext, -1, ext.getProperty().getDefinition(), ext.getProperty().getDefinition());
-          Element v = ext.getNamedChild("value");
+          Element v = ext.getNamedChild("value", false);
           if (warning(errors, "2023-06-15", IssueType.BUSINESSRULE, next, v != null, I18nConstants.QUESTIONNAIRE_Q_NO_DERIVATION_TYPE_VALUE)) {
             NodeStack nv = next.push(v, -1, v.getProperty().getDefinition(), v.getProperty().getDefinition());
-            String s = v.getNamedChildValue("system");
-            String c = v.getNamedChildValue("code");
+            String s = v.getNamedChildValue("system", false);
+            String c = v.getNamedChildValue("code", false);
             if ("http://hl7.org/fhir/questionnaire-derivationType".equals(s) && "extends".equals(c)) {
               derivations.add(new QuestionnaireDerivation(q, QuestionnaireDerivationMode.EXTENDS));
             } else if ("http://hl7.org/fhir/questionnaire-derivationType".equals(s) && "compliesWith".equals(c)) { 
@@ -195,7 +196,7 @@ public class QuestionnaireValidator extends BaseValidator {
     if ((VersionUtilities.isR4Plus(context.getVersion())) && (item.hasChildren("enableWhen"))) {
       List<Element> ewl = item.getChildren("enableWhen");
       for (Element ew : ewl) {
-        String ql = ew.getNamedChildValue("question");
+        String ql = ew.getNamedChildValue("question", false);
         if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns, ql != null, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_NOLINK)) {
           Element tgt = getQuestionById(item, ql);
           if (rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns, tgt == null, I18nConstants.QUESTIONNAIRE_Q_ENABLEWHEN_ISINNER)) {
@@ -227,7 +228,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
   private boolean validateQuestionnaireElementDerivation(List<ValidationMessage> errors, NodeStack ns, Element questionnaire, Element item, QuestionnaireDerivation derivation) {
     boolean ok = true;
-    String linkId = item.getNamedChildValue("linkId");
+    String linkId = item.getNamedChildValue("linkId", false);
     QuestionnaireItemComponent qi = derivation.questionnaire.getQuestion(linkId);
     if (qi == null) {
       ok = rule(errors, "2023-06-15", IssueType.NOTFOUND, ns.getLiteralPath(), derivation.mode == QuestionnaireDerivationMode.EXTENDS, I18nConstants.QUESTIONNAIRE_Q_ITEM_NOT_DERIVED, derivation.questionnaire.getUrl(), linkId) && ok;
@@ -236,7 +237,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
       // type must be the same
       if (qi.hasType()) {
-        Element e = item.getNamedChild("type");
+        Element e = item.getNamedChild("type", false);
         if (e != null) {
           NodeStack ne = ns.push(e, -1, e.getProperty().getDefinition(), e.getProperty().getDefinition());
           ok = rule(errors, "2023-06-15", IssueType.BUSINESSRULE, ne, qi.getType().toCode().equals(e.primitiveValue()), I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_NC_TYPE, derivation.questionnaire.getUrl(), linkId, qi.getType().toCode(), e.primitiveValue()) && ok;
@@ -245,7 +246,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
       // if it doesn't repeat, it can't start repeating
       if (!qi.getRepeats()) {
-        Element e = item.getNamedChild("repeats");
+        Element e = item.getNamedChild("repeats", false);
         if (e != null) {
           NodeStack ne = ns.push(e, -1, e.getProperty().getDefinition(), e.getProperty().getDefinition());
           ok = rule(errors, "2023-06-15", IssueType.BUSINESSRULE, ne, !"true".equals(e.primitiveValue()), I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_NC_REPEATS, derivation.questionnaire.getUrl(), linkId) && ok;
@@ -254,7 +255,7 @@ public class QuestionnaireValidator extends BaseValidator {
       
       // if it is required, it can't become un-required
       if (qi.getRequired()) {
-        Element e = item.getNamedChild("required");
+        Element e = item.getNamedChild("required", false);
         if (e != null) {
           NodeStack ne = ns.push(e, -1, e.getProperty().getDefinition(), e.getProperty().getDefinition());
           ok = rule(errors, "2023-06-15", IssueType.BUSINESSRULE, ne, "true".equals(e.primitiveValue()), I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_NC_REQUIRED, derivation.questionnaire.getUrl(), linkId) && ok;
@@ -263,7 +264,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
       // if it has a definition, it shouldn't change
       if (qi.hasDefinition()) {
-        Element e = item.getNamedChild("definition");
+        Element e = item.getNamedChild("definition", false);
         if (e != null) {
           NodeStack ne = ns.push(e, -1, e.getProperty().getDefinition(), e.getProperty().getDefinition());
           hint(errors, "2023-06-15", IssueType.BUSINESSRULE, ne, "true".equals(e.primitiveValue()), I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_NC_DEFINITION, derivation.questionnaire.getUrl(), linkId, qi.getDefinition());
@@ -274,7 +275,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
       // if it has maxLength, that can't get longer
       if (qi.hasMaxLength()) {
-        Element e = item.getNamedChild("maxlength");
+        Element e = item.getNamedChild("maxlength", false);
         if (e != null) {
           NodeStack ne = ns.push(e, -1, e.getProperty().getDefinition(), e.getProperty().getDefinition());
           int ml = Utilities.parseInt(e.primitiveValue(), 0);
@@ -285,7 +286,7 @@ public class QuestionnaireValidator extends BaseValidator {
       }
 
       if (qi.hasAnswerOption()) {
-        Element e = item.getNamedChild("answerValueSet");
+        Element e = item.getNamedChild("answerValueSet", false);
         if (rule(errors, "2023-06-15", IssueType.BUSINESSRULE, ns, e == null, I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_NC_ANSWER_TYPE, derivation.questionnaire.getUrl(), linkId, "Option", "ValueSet")) {
           // for each answer option here, there must be a matching answer option in the source
           List<Element> list = new ArrayList<>();
@@ -294,7 +295,7 @@ public class QuestionnaireValidator extends BaseValidator {
             for (int i = 0; i < list.size(); i++) {
               Element ao = list.get(i);
               NodeStack nao = ns.push(ao, i, ao.getProperty().getDefinition(), ao.getProperty().getDefinition());
-              Element v = ao.getNamedChild("value");
+              Element v = ao.getNamedChild("value", false);
               if (v != null) {
                 boolean aok = false;
                 switch (v.fhirType()) {
@@ -311,10 +312,10 @@ public class QuestionnaireValidator extends BaseValidator {
                   aok = findAOPrimitive(qi.getAnswerOption(), "string", v.primitiveValue());
                   break;
                 case "Coding": 
-                  aok = findAOCoding(qi.getAnswerOption(), new Coding().setSystem(v.getNamedChildValue("system")).setVersion(v.getNamedChildValue("version")).setCode(v.getNamedChildValue("code")));
+                  aok = findAOCoding(qi.getAnswerOption(), new Coding().setSystem(v.getNamedChildValue("system", false)).setVersion(v.getNamedChildValue("version", false)).setCode(v.getNamedChildValue("code", false)));
                   break;
                 case "Reference": 
-                  aok = findAOReference(qi.getAnswerOption(), new Reference().setReference(v.getNamedChildValue("reference")));
+                  aok = findAOReference(qi.getAnswerOption(), new Reference().setReference(v.getNamedChildValue("reference", false)));
                   break;
                 }
                 ok= rule(errors, "2023-06-15", IssueType.BUSINESSRULE, nao, aok, I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_ANSWER_OPTIONS_NEW, derivation.questionnaire.getUrl(), linkId) && ok;
@@ -328,7 +329,7 @@ public class QuestionnaireValidator extends BaseValidator {
         }
       }
       if (qi.hasAnswerValueSet()) {
-        Element e = item.getNamedChild("answerOption");
+        Element e = item.getNamedChild("answerOption", false);
         if (rule(errors, "2023-06-15", IssueType.BUSINESSRULE, ns, e == null, I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_NC_ANSWER_TYPE, derivation.questionnaire.getUrl(), linkId, "ValueSet", "Option")) {
           warning(errors, "2023-06-15", IssueType.BUSINESSRULE, ns, e == null, I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_NI_ANSWER_VS, derivation.questionnaire.getUrl(), linkId);
         } else {
@@ -414,7 +415,7 @@ public class QuestionnaireValidator extends BaseValidator {
   private Element getQuestionById(Element focus, String ql) {
     List<Element> list = getItems(focus);
     for (Element item : list) {
-      String v = item.getNamedChildValue("linkId");
+      String v = item.getNamedChildValue("linkId", false);
       if (ql.equals(v))
         return item;
       Element tgt = getQuestionById(item, ql);
@@ -436,7 +437,7 @@ public class QuestionnaireValidator extends BaseValidator {
       return true;
     }
     boolean ok = true;
-    Element q = element.getNamedChild("questionnaire");
+    Element q = element.getNamedChild("questionnaire", false);
     String questionnaire = null;
     if (q != null) {
       /*
@@ -474,7 +475,7 @@ public class QuestionnaireValidator extends BaseValidator {
         qok = warning(errors, NO_RULE_DATE, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
       }
       if (qok) {
-        boolean inProgress = "in-progress".equals(element.getNamedChildValue("status"));
+        boolean inProgress = "in-progress".equals(element.getNamedChildValue("status", false));
         ok = validateQuestionannaireResponseItems(hostContext, qsrc, qsrc.q().getItem(), errors, element, stack, inProgress, element, new QStack(qsrc, element)) && ok;
       }
     }
@@ -484,7 +485,7 @@ public class QuestionnaireValidator extends BaseValidator {
   private boolean validateQuestionnaireResponseItem(ValidationContext hostContext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean inProgress, Element questionnaireResponseRoot, QStack qstack) {
     BooleanHolder ok = new BooleanHolder();
     
-    String text = element.getNamedChildValue("text");
+    String text = element.getNamedChildValue("text", false);
     ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), Utilities.noString(text) || text.equals(qItem.getText()), I18nConstants.QUESTIONNAIRE_QR_ITEM_TEXT, qItem.getLinkId()));
 
     List<Element> answers = new ArrayList<Element>();
@@ -637,7 +638,7 @@ public class QuestionnaireValidator extends BaseValidator {
     int lastIndex = -1;
     int counter = 0;
     for (Element item : items) {
-      String linkId = item.getNamedChildValue("linkId");
+      String linkId = item.getNamedChildValue("linkId", false);
       if (rule(errors, NO_RULE_DATE, IssueType.REQUIRED, item.line(), item.col(), stack.getLiteralPath(), !Utilities.noString(linkId), I18nConstants.QUESTIONNAIRE_QR_ITEM_NOLINKID)) {
         int index = getLinkIdIndex(qItems, linkId);
         if (index == -1) {
@@ -767,7 +768,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
         long t = System.nanoTime();
         ValidationContextCarrier vc = makeValidationContext(errors, qSrc);
-        ValidationResult res = context.validateCode(new ValidationOptions(stack.getWorkingLang()), c, vs, vc);
+        ValidationResult res = context.validateCode(new ValidationOptions(FhirPublication.R5, stack.getWorkingLang()), c, vs, vc);
         timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
         if (!res.isOk()) {
           if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
@@ -798,7 +799,7 @@ public class QuestionnaireValidator extends BaseValidator {
   }
 
   private boolean validateAnswerCode(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean theOpenChoice) {
-    Element v = answer.getNamedChild("valueCoding");
+    Element v = answer.getNamedChild("valueCoding", false);
     NodeStack ns = stack.push(v, -1, null, null);
     if (qItem.getAnswerOption().size() > 0)
       checkCodingOption(errors, answer, stack, qSrc, qItem, theOpenChoice);
@@ -825,7 +826,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
   private boolean checkIntegerOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
     boolean ok = true;
-    Element v = answer.getNamedChild("valueInteger");
+    Element v = answer.getNamedChild("valueInteger", false);
     NodeStack ns = stack.push(v, -1, null, null);
     if (qItem.getAnswerOption().size() > 0) {
       List<IntegerType> list = new ArrayList<IntegerType>();
@@ -858,7 +859,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
   private boolean checkDateOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
     boolean ok = true;
-    Element v = answer.getNamedChild("valueDate");
+    Element v = answer.getNamedChild("valueDate", false);
     NodeStack ns = stack.push(v, -1, null, null);
     if (qItem.getAnswerOption().size() > 0) {
       List<DateType> list = new ArrayList<DateType>();
@@ -891,7 +892,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
   private boolean checkTimeOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
     boolean ok = true;
-    Element v = answer.getNamedChild("valueTime");
+    Element v = answer.getNamedChild("valueTime", false);
     NodeStack ns = stack.push(v, -1, null, null);
     if (qItem.getAnswerOption().size() > 0) {
       List<TimeType> list = new ArrayList<TimeType>();
@@ -924,7 +925,7 @@ public class QuestionnaireValidator extends BaseValidator {
 
   private boolean checkStringOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
     boolean ok = true;
-    Element v = answer.getNamedChild("valueString");
+    Element v = answer.getNamedChild("valueString", false);
     NodeStack ns = stack.push(v, -1, null, null);
     if (qItem.getAnswerOption().size() > 0) {
       List<StringType> list = new ArrayList<StringType>();
@@ -962,9 +963,9 @@ public class QuestionnaireValidator extends BaseValidator {
   private boolean checkCodingOption(List<ValidationMessage> errors, Element answer, NodeStack stack, QuestionnaireWithContext qSrc, QuestionnaireItemComponent qItem, boolean openChoice) {
     boolean ok = true;
     
-    Element v = answer.getNamedChild("valueCoding");
-    String system = v.getNamedChildValue("system");
-    String code = v.getNamedChildValue("code");
+    Element v = answer.getNamedChild("valueCoding", false);
+    String system = v.getNamedChildValue("system", false);
+    String code = v.getNamedChildValue("code", false);
     NodeStack ns = stack.push(v, -1, null, null);
     if (qItem.getAnswerOption().size() > 0) {
       List<Coding> list = new ArrayList<Coding>();

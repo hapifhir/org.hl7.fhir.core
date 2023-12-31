@@ -1,68 +1,7 @@
 -------------------------------------------------------------------------------------
 {"code" : {
-  "code" : "fr-CA"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "French (Canada)",
-  "code" : "fr-CA",
-  "system" : "urn:ietf:bcp:47",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "439401001",
-  "display" : "Diagnosis"
-}, "url": "http://hl7.org/fhir/ValueSet/condition-category", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Diagnosis (observable entity)",
-  "code" : "439401001",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "d"
-}, "url": "http://hl7.org/fhir/ValueSet/units-of-time", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "day",
-  "code" : "d",
-  "system" : "http://unitsofmeasure.org",
-  "version" : "2.0.1",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
   "code" : "text/plain"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -81,31 +20,8 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "271649006",
-  "display" : "Systolic blood pressure"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Systolic blood pressure",
-  "code" : "271649006",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
   "code" : "json"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -126,7 +42,7 @@ v: {
 {"code" : {
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
   "code" : "001"
-}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -139,14 +55,29 @@ v: {
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0"
+    }
+  }]
 }
 
 }
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "nl-NL"
-}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0", "langs":"nl-NL", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0", "langs":"nl-NL", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -154,6 +85,7 @@ v: {
   }]
 }}####
 v: {
+  "display" : "Dutch (Region=Netherlands)",
   "code" : "nl-NL",
   "system" : "urn:ietf:bcp:47",
   "unknown-systems" : "",
@@ -164,8 +96,21 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "code" : "en-AU"
-}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0", "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "8480-6",
+    "display" : "Systolic blood pressure"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "code" : "271649006",
+    "display" : "Systolic blood pressure"
+  },
+  {
+    "system" : "http://fhir.ch/ig/local",
+    "code" : "3456"
+  }]
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -173,6 +118,165 @@ v: {
   }]
 }}####
 v: {
+  "display" : "Systolic blood pressure",
+  "code" : "271649006",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem http://fhir.ch/ig/local could not be found, so the code cannot be validated",
+  "class" : "UNKNOWN",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem http://fhir.ch/ig/local could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[2].system"],
+    "expression" : ["CodeableConcept.coding[2].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "8462-4",
+    "display" : "Diastolic blood pressure"
+  },
+  {
+    "system" : "http://fhir.ch/ig/local",
+    "code" : "7890"
+  }]
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Diastolic blood pressure",
+  "code" : "8462-4",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem http://fhir.ch/ig/local could not be found, so the code cannot be validated",
+  "class" : "UNKNOWN",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem http://fhir.ch/ig/local could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[1].system"],
+    "expression" : ["CodeableConcept.coding[1].system"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "271649006",
+  "display" : "Systolic blood pressure"
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Systolic blood pressure",
+  "code" : "271649006",
+  "severity" : "error",
+  "error" : "The provided code 'http://snomed.info/sct#271649006 ('Systolic blood pressure')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'",
+  "class" : "UNKNOWN",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://snomed.info/sct#271649006 ('Systolic blood pressure')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "35200-5",
+    "display" : "Cholest SerPl-msCnc"
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "code" : "85600001",
+    "display" : "Triacylglycerol"
+  }],
+  "text" : "Cholesterol"
+}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Triacylglycerol",
+  "code" : "85600001",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en-AU"
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0", "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "English (Region=Australia)",
   "code" : "en-AU",
   "system" : "urn:ietf:bcp:47",
   "unknown-systems" : "",
@@ -184,7 +288,7 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "en"
-}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -206,7 +310,7 @@ v: {
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
   "code" : "001",
   "display" : "World"
-}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"NO_MEMBERSHIP_CHECK", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/jurisdiction", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -219,7 +323,22 @@ v: {
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0"
+    }
+  }]
 }
 
 }

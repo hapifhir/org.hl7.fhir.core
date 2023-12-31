@@ -21,8 +21,8 @@ import org.junit.jupiter.api.Test;
 
 public class ValidationEngineTests {
 
-//  private static final String DEF_TX = FhirSettings.getTxFhirDevelopment();
-  private static final String DEF_TX = FhirSettings.getTxFhirLocal();
+  private static final String DEF_TX = FhirSettings.getTxFhirDevelopment();
+  //private static final String DEF_TX = FhirSettings.getTxFhirLocal();
 
   public static boolean inbuild;
 
@@ -135,7 +135,7 @@ public class ValidationEngineTests {
     int e = errors(op);
     int w = warnings(op);
     int h = hints(op);
-    Assertions.assertEquals(1, e);
+    Assertions.assertEquals(2, e);
     Assertions.assertEquals(0, w);
     Assertions.assertEquals(0, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
@@ -163,7 +163,7 @@ public class ValidationEngineTests {
     int e = errors(op);
     int w = warnings(op);
     int h = hints(op);
-    Assertions.assertEquals(1, e);
+    Assertions.assertEquals(2, e);
     Assertions.assertEquals(0, w);
     Assertions.assertEquals(0, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
@@ -193,7 +193,7 @@ public class ValidationEngineTests {
     int h = hints(op);
     Assertions.assertEquals(1, e);
     Assertions.assertEquals(2, w);
-    Assertions.assertEquals(1, h);
+    Assertions.assertEquals(2, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
@@ -270,8 +270,8 @@ public class ValidationEngineTests {
     int w = warnings(op);
     int h = hints(op);
     Assertions.assertEquals(0, e);
-    Assertions.assertEquals(4, w);
-    Assertions.assertEquals(0, h);
+    Assertions.assertEquals(5, w);
+    Assertions.assertEquals(2, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");

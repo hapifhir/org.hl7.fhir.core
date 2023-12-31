@@ -5,10 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,8 +20,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
+
 import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -88,8 +84,7 @@ public class TestingUtilities extends BaseTestingUtilities {
     if (!fcontexts.containsKey(v)) {
       FilesystemPackageCacheManager pcm;
       try {
-        pcm = new FilesystemPackageCacheManager(
-            org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+        pcm = new FilesystemPackageCacheManager.Builder().build();
         IWorkerContext fcontext = SimpleWorkerContext
             .fromPackage(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
         fcontext.setUcumService(
@@ -498,5 +493,9 @@ public class TestingUtilities extends BaseTestingUtilities {
       Utilities.createDirectory(path);
       return path;
     }
+  }
+
+  public static boolean runningAsSurefire() {
+    return "true".equals(System.getProperty("runningAsSurefire") != null ? System.getProperty("runningAsSurefire").toLowerCase(Locale.ENGLISH) : "");
   }
 }

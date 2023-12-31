@@ -49,6 +49,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -72,6 +73,7 @@ public abstract class ParserBase {
     String resolveType(String type);
     String resolveProperty(Property property);
     String resolvePage(String string);
+    String resolveReference(String referenceForElement);
   }
   
   public enum ValidationPolicy { NONE, QUICK, EVERYTHING }
@@ -86,6 +88,7 @@ public abstract class ParserBase {
   protected boolean showDecorations;
   protected IdRenderingPolicy idPolicy = IdRenderingPolicy.All;
   protected StructureDefinition logical;
+  protected IDigitalSignatureServices signatureServices;
   
 	public ParserBase(IWorkerContext context) {
 		super();
@@ -128,7 +131,6 @@ public abstract class ParserBase {
 
   public abstract void compose(Element e, OutputStream destination, OutputStyle style, String base)  throws FHIRException, IOException;
 
-	//FIXME: i18n should be done here
 	public void logError(List<ValidationMessage> errors, String ruleDate, int line, int col, String path, IssueType type, String message, IssueSeverity level) throws FHIRFormatError {
 	  if (errors != null) {
 	    if (policy == ValidationPolicy.EVERYTHING) {
@@ -143,14 +145,14 @@ public abstract class ParserBase {
 	
 	protected StructureDefinition getDefinition(List<ValidationMessage> errors, int line, int col, String ns, String name) throws FHIRFormatError {
 	  if (logical != null) {
-	    String expectedName = ToolingExtensions.readStringExtension(logical, "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name");
+	    String expectedName = ToolingExtensions.readStringExtension(logical, ToolingExtensions.EXT_XML_NAME);
 	    if (expectedName == null) {
 	      expectedName = logical.getType();
 	      if (Utilities.isAbsoluteUrl(expectedName)) {
 	        expectedName = expectedName.substring(expectedName.lastIndexOf("/")+1);
 	      }
 	    }
-	    String expectedNamespace = ToolingExtensions.readStringExtension(logical, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
+	    String expectedNamespace = ToolingExtensions.readStringExtension(logical, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED);
 	    if (matchesNamespace(expectedNamespace, ns) && matchesName(expectedName, name)) {
 	      return logical;
 	    } else {
@@ -173,9 +175,9 @@ public abstract class ParserBase {
   	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
   	    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
   	      String type = urlTail(sd.getType());
-          if(name.equals(type) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
+          if(name.equals(type) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasAnyOfExtensions(sd, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED))
   	        return sd;
-  	      String sns = ToolingExtensions.readStringExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
+  	      String sns = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED);
   	      if ((name.equals(type) || name.equals(sd.getName())) && ns != null && ns.equals(sns))
   	        return sd;
   	    }
@@ -218,7 +220,13 @@ public abstract class ParserBase {
 	    }
 	  }
     for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
-      if (name.equals(sd.getType()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+      if (name.equals(sd.getTypeName()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+        new ContextUtilities(context).generateSnapshot(sd); 
+        return sd;
+      }
+    }
+    for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
+      if (name.equals(sd.getUrl()) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         new ContextUtilities(context).generateSnapshot(sd); 
         return sd;
       }
@@ -281,4 +289,19 @@ public abstract class ParserBase {
     return this;
   }
 
+  public IDigitalSignatureServices getSignatureServices() {
+    return signatureServices;
+  }
+
+  public void setSignatureServices(IDigitalSignatureServices signatureServices) {
+    this.signatureServices = signatureServices;
+  }
+
+  protected String getReferenceForElement(Element element) {
+    if (element.isPrimitive()) {
+      return element.primitiveValue();
+    } else {
+      return element.getNamedChildValue("reference");
+    }
+  }
 }

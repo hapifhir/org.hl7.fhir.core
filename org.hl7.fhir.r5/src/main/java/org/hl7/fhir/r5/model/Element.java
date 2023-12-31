@@ -48,6 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
 import org.hl7.fhir.instance.model.api.IBaseElement;
 import  org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 import  org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.FhirPublication;
 import  org.hl7.fhir.utilities.StandardsStatus;
 /**
  * Element Type: Base definition for all elements in a resource.
@@ -468,18 +469,27 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     * 
     * @param theUrl The URL. Must not be blank or null.
     */
-  public String getExtensionString(String theUrl) throws FHIRException {
-    List<Extension> ext = getExtensionsByUrl(theUrl); 
-    if (ext.isEmpty()) 
-      return null; 
-    if (ext.size() > 1) 
-      throw new FHIRException("Multiple matching extensions found for extension '"+theUrl+"'");
-    if (!ext.get(0).hasValue())
-      return null;
-    if (!ext.get(0).getValue().isPrimitive())
-      throw new FHIRException("Extension '"+theUrl+"' could not be converted to a string");
-    return ext.get(0).getValue().primitiveValue();
-  }
+   public String getExtensionString(String theUrl) throws FHIRException {
+     List<Extension> ext = getExtensionsByUrl(theUrl); 
+     if (ext.isEmpty()) 
+       return null; 
+     if (ext.size() > 1) 
+       throw new FHIRException("Multiple matching extensions found for extension '"+theUrl+"'");
+     if (!ext.get(0).hasValue())
+       return null;
+     if (!ext.get(0).getValue().isPrimitive())
+       throw new FHIRException("Extension '"+theUrl+"' could not be converted to a string");
+     return ext.get(0).getValue().primitiveValue();
+   }
+
+   public String getExtensionString(String... theUrls) throws FHIRException {
+     for (String url : theUrls) {
+       if (hasExtension(url)) {
+         return getExtensionString(url);
+       }
+     }
+     return null;
+   }
 
 
   public StandardsStatus getStandardsStatus() {
@@ -517,7 +527,10 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     }    
   }
   
-  
+
+  public FhirPublication getFHIRPublicationVersion() {
+    return FhirPublication.R5;
+  }
 // end addition
 
 }

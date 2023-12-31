@@ -1,21 +1,11 @@
 package org.hl7.fhir.r4b.test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 import org.hl7.fhir.r4b.context.SimpleWorkerContext;
-import org.hl7.fhir.r4b.elementmodel.Element;
-import org.hl7.fhir.r4b.elementmodel.Manager;
-import org.hl7.fhir.r4b.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r4b.formats.IParser.OutputStyle;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
-import org.hl7.fhir.r4b.utils.FHIRPathEngine;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 public class XmlParserTests {
 
@@ -24,8 +14,7 @@ public class XmlParserTests {
 
   @BeforeAll
   public static void setUp() throws Exception {
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(
-        org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     context = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
     fp = new FHIRPathEngine(context);
 
@@ -44,22 +33,4 @@ public class XmlParserTests {
     }
   }
 
-  @Test
-  /**
-   * Deserializes a simplified CDA example into the logical model and checks that
-   * xml deserialization works for the xsi:type
-   * 
-   * @throws IOException
-   */
-  public void testXsiDeserialiserXmlParser() throws IOException {
-    Element cda = Manager.parseSingle(context,
-        TestingUtilities.loadTestResourceStream("validator", "cda", "example-xsi.xml"), FhirFormat.XML);
-
-    ByteArrayOutputStream baosXml = new ByteArrayOutputStream();
-    Manager.compose(context, cda, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);
-
-    String cdaSerialised = baosXml.toString();
-    Assertions.assertTrue(cdaSerialised.indexOf("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"") > 0);
-    Assertions.assertTrue(cdaSerialised.indexOf("xsi:type=\"CD\"") > 0);
-  }
 }

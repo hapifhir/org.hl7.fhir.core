@@ -22,17 +22,19 @@ import org.hl7.fhir.r5.comparison.StructureDefinitionComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r5.fhirpath.TypeDetails;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.Tuple;
-import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.utils.LiquidEngine;
 import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -77,6 +79,8 @@ public class ComparisonRenderer implements IEvaluationContext {
     b.append("  <td width=\"260\"><b>"+Utilities.escapeXml(leftName)+"</b></td>\r\n");
     b.append("  <td width=\"260\"><b>"+Utilities.escapeXml(rightName)+"</b></td>\r\n");
     b.append("  <td width=\"100\"><b>Difference</b></td>\r\n");
+    b.append("  <td width=\"100\"><b>Union</b></td>\r\n");
+    b.append("  <td width=\"100\"><b>Intersection</b></td>\r\n");
     b.append("  <td width=\"260\"><b>Notes</b></td>\r\n");
     b.append(" </tr>\r\n");
     
@@ -223,8 +227,22 @@ public class ComparisonRenderer implements IEvaluationContext {
     vars.put("errors", new StringType(new XhtmlComposer(true).compose(cs.renderErrors(comp))));
     vars.put("metadata", new StringType(new XhtmlComposer(true).compose(cs.renderMetadata(comp, "", ""))));
     vars.put("structure", new StringType(new XhtmlComposer(true).compose(cs.renderStructure(comp, "", "", "http://hl7.org/fhir"))));
-    String cnt = processTemplate(template, "CodeSystem", vars);
+    String union = new XhtmlComposer(true).compose(cs.renderUnion(comp, "", folder, "http://hl7.org/fhir"));
+    String intersection = new XhtmlComposer(true).compose(cs.renderIntersection(comp, "", folder, "http://hl7.org/fhir"));
+    vars.put("union", new StringType(union));
+    vars.put("intersection", new StringType(intersection));
+    
+    String cnt = processTemplate(template, "Profile", vars);
     TextFile.stringToFile(cnt, file(comp.getId()+".html"));
+
+    template = templates.get("Profile-Union");
+    cnt = processTemplate(template, "Profile-Union", vars);
+    TextFile.stringToFile(cnt, file(comp.getId()+"-union.html"));
+    
+    template = templates.get("Profile-Intersection");
+    cnt = processTemplate(template, "Profile-Intersection", vars);
+    TextFile.stringToFile(cnt, file(comp.getId()+"-intersection.html"));
+    
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
     new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
   }
@@ -251,11 +269,11 @@ public class ComparisonRenderer implements IEvaluationContext {
   private String processTemplate(String template, String name, Map<String, Base> vars) {
     LiquidEngine engine = new LiquidEngine(contextRight, this);
     LiquidDocument doc = engine.parse(template, name+".template");
-    return engine.evaluate(doc, Tuple.fromMap(vars), vars);
+    return engine.evaluate(doc, Tuple.fromMap(FhirPublication.R5, vars), vars);
   }
 
   @Override
-  public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
     @SuppressWarnings("unchecked")
     Map<String, Base> vars = (Map<String, Base>) appContext;
     List<Base> res = new ArrayList<>();
@@ -266,7 +284,7 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   @Override
-  public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
     @SuppressWarnings("unchecked")
     Map<String, Base> vars = (Map<String, Base>) appContext;
     Base b = vars.get(name);
@@ -279,33 +297,38 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   @Override
-  public FunctionDetails resolveFunction(String functionName) {
+  public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
     return null;
   }
 
   @Override
-  public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
+  public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
     return null;
   }
 
   @Override
-  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+  public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
     return null;
   }
 
   @Override
-  public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
     return null;
   }
 
   @Override
-  public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
+  public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
     return false;
   }
 
   @Override
-  public ValueSet resolveValueSet(Object appContext, String url) {
+  public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
     return null;
+  }
+
+  @Override
+  public boolean paramIsType(String name, int index) {
+    return false;
   }
 
 }

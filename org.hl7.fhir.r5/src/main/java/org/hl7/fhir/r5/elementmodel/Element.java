@@ -38,6 +38,7 @@ import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.elementmodel.Element.SliceDefinition;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.extensions.ExtensionsUtils;
 import org.hl7.fhir.r5.model.Base;
@@ -55,6 +56,7 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.NamedItemList;
 import org.hl7.fhir.utilities.NamedItemList.NamedItem;
 import org.hl7.fhir.utilities.SourceLocation;
@@ -73,6 +75,32 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  *
  */
 public class Element extends Base implements NamedItem {
+  public class SliceDefinition {
+
+    private StructureDefinition profile;
+    private ElementDefinition definition;
+    private ElementDefinition slice;
+
+    public SliceDefinition(StructureDefinition profile, ElementDefinition definition, ElementDefinition slice) {
+      this.profile = profile;
+      this.definition = definition;
+      this.slice = slice;
+    }
+
+    public StructureDefinition getProfile() {
+      return profile;
+    }
+
+    public ElementDefinition getDefinition() {
+      return definition;
+    }
+
+    public ElementDefinition getSlice() {
+      return slice;
+    }
+
+  }
+
   private static final HashSet<String> extensionList = new HashSet<>(Arrays.asList("extension", "modifierExtension"));
 
   public enum SpecialElement {
@@ -132,6 +160,8 @@ public class Element extends Base implements NamedItem {
   private Base source;
   private boolean ignorePropertyOrder;
   private FhirFormat format;
+  private Object nativeObject;
+  private List<SliceDefinition> sliceDefinitions;
 
 	public Element(String name) {
 		super();
@@ -655,13 +685,16 @@ public class Element extends Base implements NamedItem {
   }
 
   public Element getNamedChild(String name) {
+    return getNamedChild(name, true);
+  }
+  public Element getNamedChild(String name, boolean exception) {
     if (children == null)
       return null;
     if (children.size() > 20) {
       List<Element> l = children.getByName(name);
       if (l == null || l.size() == 0) {
         // try the other way (in case of complicated naming rules)
-      } else if (l.size() > 1) {
+      } else if (l.size() > 1 && exception) {
         throw new Error("Attempt to read a single element when there is more than one present ("+name+")");
       } else {
         return l.get(0);
@@ -699,7 +732,11 @@ public class Element extends Base implements NamedItem {
   }
 
   public String getNamedChildValue(String name) {
-  	Element child = getNamedChild(name);
+    return getNamedChildValue(name, true);
+  }
+  
+  public String getNamedChildValue(String name, boolean exception) {
+  	Element child = getNamedChild(name, exception);
   	return child == null ? null : child.value;
   }
 
@@ -751,7 +788,11 @@ public class Element extends Base implements NamedItem {
   }
 
   public boolean hasChild(String name) {
-    return getNamedChild(name) != null;
+    return getNamedChild(name, true) != null;
+  }
+
+  public boolean hasChild(String name, boolean exception) {
+    return getNamedChild(name, exception) != null;
   }
 
   public boolean hasChildren(String name) {
@@ -989,15 +1030,15 @@ public class Element extends Base implements NamedItem {
       return c;   
     } else if ("Coding".equals(fhirType())) {
       ICodingImpl c = new ICodingImpl(true, true, true, true);
-      c.system = getNamedChildValue("system");
-      c.code = getNamedChildValue("code");
-      c.display = getNamedChildValue("display");
-      c.version = getNamedChildValue("version");
+      c.system = getNamedChildValue("system", false);
+      c.code = getNamedChildValue("code", false);
+      c.display = getNamedChildValue("display", false);
+      c.version = getNamedChildValue("version", false);
       return c;
     } else if ("Quantity".equals(fhirType())) {
       ICodingImpl c = new ICodingImpl(true, true, false, false);
-      c.system = getNamedChildValue("system");
-      c.code = getNamedChildValue("code");
+      c.system = getNamedChildValue("system", false);
+      c.code = getNamedChildValue("code", false);
       return c;
     } else 
       return null;
@@ -1042,7 +1083,7 @@ public class Element extends Base implements NamedItem {
         if (Utilities.existsInList(child.getName(), "extension", "modifierExtension")) {
           String u = child.getChildValue("url");
           if (url.equals(u)) {
-            return child.getNamedChild("value");
+            return child.getNamedChild("value", false);
           }
         }
       }
@@ -1294,7 +1335,7 @@ public class Element extends Base implements NamedItem {
 
     for (Property p : property.getChildProperties(this.name, type)) {
       if (p.getName().equals(name)) {
-        if (!p.isList() && hasChild(name)) {
+        if (!p.isList() && hasChild(name, false)) {
           throw new Error(name+" on "+this.name+" is not a list, so can't add an element"); 
         }
         Element ne = new Element(name, p).setFormat(format);
@@ -1382,17 +1423,17 @@ public class Element extends Base implements NamedItem {
   public String getTranslation(String lang) {
     for (Element e : getChildren()) {
       if (e.fhirType().equals("Extension")) {
-        String url = e.getNamedChildValue("url");
+        String url = e.getNamedChildValue("url", false);
         if (ToolingExtensions.EXT_TRANSLATION.equals(url)) {
           String l = null;
           String v = null;
           for (Element g : e.getChildren()) {
             if (g.fhirType().equals("Extension")) {
-              String u = g.getNamedChildValue("url");
+              String u = g.getNamedChildValue("url", false);
               if ("lang".equals(u)) {
-                l = g.getNamedChildValue("value");
+                l = g.getNamedChildValue("value", false);
               } else if ("value".equals(u)) {
-                v = g.getNamedChildValue("value");
+                v = g.getNamedChildValue("value", false);
               }
             }
           }
@@ -1421,17 +1462,17 @@ public class Element extends Base implements NamedItem {
   public void setTranslation(String lang, String translation) {
     for (Element e : getChildren()) {
       if (e.fhirType().equals("Extension")) {
-        String url = e.getNamedChildValue("url");
+        String url = e.getNamedChildValue("url", false);
         if (ToolingExtensions.EXT_TRANSLATION.equals(url)) {
           String l = null;
           Element v = null;
           for (Element g : e.getChildren()) {
             if (g.fhirType().equals("Extension")) {
-              String u = g.getNamedChildValue("url");
+              String u = g.getNamedChildValue("url", false);
               if ("lang".equals(u)) {
-                l = g.getNamedChildValue("value");
+                l = g.getNamedChildValue("value", false);
               } else if ("value".equals(u)) {
-                v = g.getNamedChild("value");
+                v = g.getNamedChild("value", false);
               }
             }
           }
@@ -1476,6 +1517,47 @@ public class Element extends Base implements NamedItem {
   public Element setFormat(FhirFormat format) {
     this.format = format;
     return this;
+  }
+
+  public Object getNativeObject() {
+    return nativeObject;
+  }
+
+  public Element setNativeObject(Object nativeObject) {
+    this.nativeObject = nativeObject;
+    return this;
+  }
+
+  public void removeExtension(String url) {
+    List<Element> rem = new ArrayList<>();
+    for (Element e : children) {
+      if ("extension".equals(e.getName()) && url.equals(e.getChildValue("url"))) {
+        rem.add(e);
+      }
+    }
+    children.removeAll(rem);
+  }
+
+  public void addSliceDefinition(StructureDefinition profile, ElementDefinition definition, ElementDefinition slice) {
+    if (sliceDefinitions == null) {
+      sliceDefinitions = new ArrayList<>();
+    }
+    sliceDefinitions.add(new SliceDefinition(profile, definition, slice));
+  }
+
+  public boolean hasSlice(StructureDefinition sd, String sliceName) {
+    if (sliceDefinitions != null) {
+      for (SliceDefinition def : sliceDefinitions) {
+        if (def.profile == sd && sliceName.equals(def.definition.getSliceName())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public FhirPublication getFHIRPublicationVersion() {
+    return FhirPublication.fromCode(property.getStructure().getVersion());
   }
 
 }

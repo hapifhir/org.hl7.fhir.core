@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.dstu3.context.IWorkerContext;
-
+import org.hl7.fhir.dstu3.fhirpath.ExpressionNode;
+import org.hl7.fhir.dstu3.fhirpath.FHIRPathEngine;
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -44,7 +45,6 @@ import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.dstu3.model.Bundle.BundleLinkComponent;
 import org.hl7.fhir.dstu3.model.DomainResource;
 import org.hl7.fhir.dstu3.model.Element;
-import org.hl7.fhir.dstu3.model.ExpressionNode;
 import org.hl7.fhir.dstu3.model.IntegerType;
 import org.hl7.fhir.dstu3.model.Property;
 import org.hl7.fhir.dstu3.model.Reference;

@@ -40,10 +40,16 @@ import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Property;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode;
+import org.hl7.fhir.r5.fhirpath.FHIRLexer;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r5.fhirpath.TypeDetails;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
+import org.hl7.fhir.r5.fhirpath.FHIRLexer.FHIRLexerException;
+import org.hl7.fhir.r5.fhirpath.TypeDetails.ProfiledType;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedMode;
@@ -55,20 +61,17 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap.*;
-import org.hl7.fhir.r5.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.renderers.TerminologyRenderer;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.FHIRLexer;
-import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
-import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -105,7 +108,7 @@ public class StructureMapUtilities {
   private ITransformerServices services;
   private ProfileKnowledgeProvider pkp;
   private final Map<String, Integer> ids = new HashMap<String, Integer>();
-  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R5);
   private final ProfileUtilities profileUtilities;
   private boolean exceptionsForChecks = true;
   private boolean debug;
@@ -1256,7 +1259,7 @@ public class StructureMapUtilities {
       vars.add(VariableMode.OUTPUT, getInputName(g, StructureMapInputMode.TARGET, "target"), target);
     else if (getInputName(g, StructureMapInputMode.TARGET, null) != null) {
       String type = getInputType(g, StructureMapInputMode.TARGET);
-      throw new Error("not handled yet: creating a type of " + type);
+      throw new FHIRException("not handled yet: creating a type of " + type);
     }
 
     executeGroup("", context, map, vars, g, true);
@@ -1424,7 +1427,7 @@ public class StructureMapUtilities {
     Set<String> check = new HashSet<String>();
     for (StructureMap sm : res) {
       if (check.contains(sm.getUrl()))
-        throw new Error("duplicate");
+        throw new FHIRException("duplicate");
       else
         check.add(sm.getUrl());
     }
@@ -1753,7 +1756,7 @@ public class StructureMapUtilities {
             else if (srcVar != null) {
               tn = determineTypeFromSourceType(map, group, vars.get(VariableMode.INPUT, srcVar), types);
             } else
-              throw new Error("Cannot determine type implicitly because there is no single input variable");
+              throw new FHIRException("Cannot determine type implicitly because there is no single input variable");
           } else {
             tn = getParamStringNoNull(vars, tgt.getParameter().get(0), tgt.toString());
             // ok, now we resolve the type name against the import statements
@@ -1799,7 +1802,7 @@ public class StructureMapUtilities {
           }
           return new StringType(src);
         case ESCAPE:
-          throw new Error("Rule \"" + rulePath + "\": Transform " + tgt.getTransform().toCode() + " not supported yet");
+          throw new FHIRException("Rule \"" + rulePath + "\": Transform " + tgt.getTransform().toCode() + " not supported yet");
         case CAST:
           src = getParamString(vars, tgt.getParameter().get(0));
           if (tgt.getParameter().size() == 1)
@@ -1870,7 +1873,7 @@ public class StructureMapUtilities {
             return new StringType(b.fhirType() + "/" + id);
           }
         case DATEOP:
-          throw new Error("Rule \"" + rulePath + "\": Transform " + tgt.getTransform().toCode() + " not supported yet");
+          throw new FHIRException("Rule \"" + rulePath + "\": Transform " + tgt.getTransform().toCode() + " not supported yet");
         case UUID:
           return new IdType(UUID.randomUUID().toString());
         case POINTER:
@@ -1887,7 +1890,7 @@ public class StructureMapUtilities {
           Coding c = buildCoding(getParamStringNoNull(vars, tgt.getParameter().get(0), tgt.toString()), getParamStringNoNull(vars, tgt.getParameter().get(1), tgt.toString()));
           return c;
         default:
-          throw new Error("Rule \"" + rulePath + "\": Transform Unknown: " + tgt.getTransform().toCode());
+          throw new FHIRException("Rule \"" + rulePath + "\": Transform Unknown: " + tgt.getTransform().toCode());
       }
     } catch (Exception e) {
       throw new FHIRException("Exception executing transform " + tgt.toString() + " on Rule \"" + rulePath + "\": " + e.getMessage(), e);
@@ -2214,7 +2217,7 @@ public class StructureMapUtilities {
       TypeDetails type = new TypeDetails(CollectionStatus.SINGLETON);
       for (TypeRefComponent tr : element.getDefinition().getType()) {
         if (!tr.hasCode())
-          throw new Error("Rule \"" + ruleId + "\": Element has no type");
+          throw new FHIRException("Rule \"" + ruleId + "\": Element has no type");
         ProfiledType pt = new ProfiledType(tr.getWorkingCode());
         if (tr.hasProfile())
           pt.addProfiles(tr.getProfile());
@@ -2268,7 +2271,7 @@ public class StructureMapUtilities {
       }
       if (mapsSrc) {
         if (var == null)
-          throw new Error("Rule \"" + ruleId + "\": Attempt to assign with no context");
+          throw new FHIRException("Rule \"" + ruleId + "\": Attempt to assign with no context");
         tw.valueAssignment(tgt.getContext(), var.getProperty().getPath() + "." + tgt.getElement() + getTransformSuffix(tgt.getTransform()));
       } else if (tgt.hasContext()) {
         if (isSignificantElement(var.getProperty(), tgt.getElement())) {
@@ -2531,8 +2534,10 @@ public class StructureMapUtilities {
         TypeDetails td = new TypeDetails(CollectionStatus.SINGLETON);
         td.addType("Reference", profile);
         return td;
+      case UUID:
+        return new TypeDetails(CollectionStatus.SINGLETON, "id");
       default:
-        throw new Error("Transform Unknown or not handled yet: " + tgt.getTransform().toCode());
+        throw new FHIRException("Transform Unknown or not handled yet: " + tgt.getTransform().toCode());
     }
   }
 

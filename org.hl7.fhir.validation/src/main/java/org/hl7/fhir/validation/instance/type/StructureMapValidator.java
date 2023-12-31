@@ -7,6 +7,8 @@ import java.util.List;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -20,14 +22,12 @@ import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapInputMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
-import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ConceptMapUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.structuremap.ResolvedGroup;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -355,7 +355,7 @@ public class StructureMapValidator extends BaseValidator {
   private boolean hasInputTypes(Element group) {
     List<Element> inputs = group.getChildrenByName("input");
     for (Element input : inputs) {
-      if (!input.hasChild("type")) {
+      if (!input.hasChild("type", false)) {
         return false;
       }
     }
@@ -385,7 +385,7 @@ public class StructureMapValidator extends BaseValidator {
       grpNames.add(name);
     }
     
-    Element extend = group.getNamedChild("extends");
+    Element extend = group.getNamedChild("extends", false);
     if (extend != null) {
       ResolvedGroup grp = resolveGroup(extend.primitiveValue(), src);
       if (rule(errors, "2023-03-01", IssueType.NOTSUPPORTED, extend.line(), extend.col(), stack.push(extend, -1, null, null).getLiteralPath(), grp != null, I18nConstants.SM_RULEGROUP_NOT_FOUND, extend.primitiveValue())) {
@@ -774,14 +774,14 @@ public class StructureMapValidator extends BaseValidator {
                 break;
               case "cc" :
                 ok = rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 2 || params.size() == 3, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform) && ok;
-                ok = checkParamExistsOrPrimitive(errors, params.size() > 0 ? params.get(0).getNamedChild("value") : null, "cc", "system", target, variables, stack, ok, true);
-                ok = checkParamExistsOrPrimitive(errors, params.size() > 1 ? params.get(1).getNamedChild("value") : null, "cc", "code", target, variables, stack, ok, true);
-                ok = checkParamExistsOrPrimitive(errors, params.size() > 2 ? params.get(2).getNamedChild("value") : null, "cc", "display", target, variables, stack, ok, false);
+                ok = checkParamExistsOrPrimitive(errors, params.size() > 0 ? params.get(0).getNamedChild("value", false) : null, "cc", "system", target, variables, stack, ok, true);
+                ok = checkParamExistsOrPrimitive(errors, params.size() > 1 ? params.get(1).getNamedChild("value", false) : null, "cc", "code", target, variables, stack, ok, true);
+                ok = checkParamExistsOrPrimitive(errors, params.size() > 2 ? params.get(2).getNamedChild("value", false) : null, "cc", "display", target, variables, stack, ok, false);
                 break;                
               case "append" :
                 ok = rule(errors, "2023-05-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() > 0, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform) && ok;
                 for (int i = 0; i  < params.size(); i++) {
-                  ok = checkParamExistsOrPrimitive(errors, params.get(1).getNamedChild("value"), "cc", "parameter "+i, target, variables, stack, ok, false);
+                  ok = checkParamExistsOrPrimitive(errors, params.get(1).getNamedChild("value", false), "cc", "parameter "+i, target, variables, stack, ok, false);
                 }
                 break;                
               case "uuid" :
@@ -789,9 +789,9 @@ public class StructureMapValidator extends BaseValidator {
                 break;                
               case "translate":
                 ok = rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 3, I18nConstants.SM_TARGET_TRANSFORM_MISSING_PARAMS, transform) && ok;
-                Element srcE = params.size() > 0 ? params.get(0).getNamedChild("value") : null;
-                Element mapE = params.size() > 1? params.get(1).getNamedChild("value") : null;
-                Element modeE = params.size() > 2 ? params.get(2).getNamedChild("value") : null;
+                Element srcE = params.size() > 0 ? params.get(0).getNamedChild("value", false) : null;
+                Element mapE = params.size() > 1? params.get(1).getNamedChild("value", false) : null;
+                Element modeE = params.size() > 2 ? params.get(2).getNamedChild("value", false) : null;
                 VariableDefn sv = null;
                 // srcE - if it's an id, the variable must exist
                 if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), srcE != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_NO_PARAM, "source")) {
@@ -1205,7 +1205,7 @@ public class StructureMapValidator extends BaseValidator {
     List<Element> structures = map.getChildrenByName("structure");
     for (Element structure : structures) {
       String alias = structure.getChildValue("alias");
-      if ((alias != null && alias.equals(type)) && (mode == null || mode.equals(structure.getNamedChildValue("mode")))) {
+      if ((alias != null && alias.equals(type)) && (mode == null || mode.equals(structure.getNamedChildValue("mode", false)))) {
         return structure.getChildValue("url");
       }
     }      
@@ -1301,7 +1301,7 @@ public class StructureMapValidator extends BaseValidator {
 
   private VariableDefn getParameter(List<ValidationMessage> errors, Element param, NodeStack pstack, VariableSet variables, StructureMapInputMode mode) {
     if (VersionUtilities.isR5Plus(context.getVersion())) {
-      Element v = param.getNamedChild("value");
+      Element v = param.getNamedChild("value", false);
       if (v.fhirType().equals("id")) {
         return variables.getVariable(v.primitiveValue(), mode == StructureMapInputMode.SOURCE);
       } else {

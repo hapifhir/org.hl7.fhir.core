@@ -44,7 +44,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.extensions.ExtensionConstants;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -82,23 +81,46 @@ import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
 import org.hl7.fhir.r5.terminologies.providers.URICodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
+import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator.StringWithCode;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
-import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
 
 import com.google.j2objc.annotations.ReflectionSupport.Level;
 
 public class ValueSetValidator extends ValueSetProcessBase {
+
+  public static final String NO_TRY_THE_SERVER = "The local terminology server cannot handle this request";
+
+
+  public class StringWithCode {
+    private OpIssueCode code;
+    private String message;
+    protected StringWithCode(OpIssueCode code, String message) {
+      super();
+      this.code = code;
+      this.message = message;
+    }
+    public OpIssueCode getCode() {
+      return code;
+    }
+    public String getMessage() {
+      return message;
+    }
+    
+  }
+
 
   private ValueSet valueset;
   private Map<String, ValueSetValidator> inner = new HashMap<>();
@@ -199,67 +221,86 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
     CodeableConcept vcc = new CodeableConcept();
     
-    if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
+    if (!options.isMembershipOnly()) {
       int i = 0;
       for (Coding c : code.getCoding()) {
-        if (!c.hasSystem()) {
-          info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.UNKNOWN, path, context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE)));
-        }
-        VersionInfo vi = new VersionInfo(this);
-        checkExpansion(c, vi);
-        checkInclude(c, vi);
-        CodeSystem cs = resolveCodeSystem(c.getSystem(), vi.getVersion(c.getSystem(), c.getVersion()));
-        ValidationResult res = null;
-        if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
-          if (context.isNoTerminologyServer()) {
-            if (c.hasVersion()) {
-              String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, c.getSystem(), c.getVersion() , resolveCodeSystemVersions(c.getSystem()).toString());
+        if (!c.hasSystem() && !c.hasUserData("val.sys.error")) {
+          c.setUserData("val.sys.error", true);
+          info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.UNKNOWN, path+".coding["+i+"]", context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE), OpIssueCode.NotFound));
+        } else {
+          VersionInfo vi = new VersionInfo(this);
+          checkExpansion(c, vi);
+          checkInclude(c, vi);
+          CodeSystem cs = resolveCodeSystem(c.getSystem(), vi.getVersion(c.getSystem(), c.getVersion()));
+          ValidationResult res = null;
+          if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
+            if (context.isNoTerminologyServer()) {
+              if (c.hasVersion()) {
+                String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, c.getSystem(), c.getVersion() , resolveCodeSystemVersions(c.getSystem()).toString());
                 unknownSystems.add(c.getSystem()+"|"+c.getVersion());
-              res = new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg)).setUnknownSystems(unknownSystems);
-            } else {
-              String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, c.getSystem(), c.getVersion());
+                res = new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg, OpIssueCode.NotFound)).setUnknownSystems(unknownSystems);
+              } else {
+                String msg = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, c.getSystem(), c.getVersion());
                 unknownSystems.add(c.getSystem());
-              res = new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg)).setUnknownSystems(unknownSystems);
+                res = new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".coding["+i+"].system", msg, OpIssueCode.NotFound)).setUnknownSystems(unknownSystems);
+              }
+            } else {
+              res = context.validateCode(options.withNoClient(), c, null);
+              for (OperationOutcomeIssueComponent iss : res.getIssues()) {
+                iss.resetPath("Coding", path+".coding["+i+"]");
+              }
             }
           } else {
-            res = context.validateCode(options.withNoClient(), c, null);
+            c.setUserData("cs", cs);
+            res = validateCode(path+".coding["+i+"]", c, cs, vcc, info);
           }
-        } else {
-          c.setUserData("cs", cs);
-          res = validateCode(path+".coding["+i+"]", c, cs, vcc, info);
+          info.getIssues().addAll(res.getIssues());
         }
-        info.getIssues().addAll(res.getIssues());
         i++;
       }
     }
     Coding foundCoding = null;
     String msg = null;
     Boolean result = false;
-    if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
+    if (valueset != null) {
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
       
+      int i = 0;
       for (Coding c : code.getCoding()) {
-        b.append("'"+c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "")+"#"+c.getCode()+"'");
+        String cs = "'"+c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "")+"#"+c.getCode()+(c.hasDisplay() ? " ('"+c.getDisplay()+"')" : "")+"'";
+        String cs2 = c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "");
+        b.append(cs2);
         Boolean ok = codeInValueSet(path, c.getSystem(), c.getVersion(), c.getCode(), info);
         if (ok == null && result != null && result == false) {
           result = null;
         } else if (ok != null && ok) {
           result = true;
           foundCoding = c;
-          if (options.getValueSetMode() == ValueSetMode.CHECK_MEMERSHIP_ONLY) {
+          if (!options.isMembershipOnly()) {
             vcc.addCoding().setSystem(c.getSystem()).setVersion(c.getVersion()).setCode(c.getCode());
           }
         }
         if (ok == null || !ok) {
           vcc.removeCoding(c.getSystem(), c.getVersion(), c.getCode());          
         }
+        if (ok != null && !ok) {
+          msg = context.formatMessage(I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ONE, null, valueset.getVersionedUrl(), cs);
+          info.getIssues().addAll(makeIssue(IssueSeverity.INFORMATION, IssueType.CODEINVALID, path+".coding["+i+"].code", msg, OpIssueCode.ThisNotInVS));
+        }
+        i++;
       }
       if (result == null) {
         msg = context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), b.toString());
-        info.getIssues().addAll(makeIssue(IssueSeverity.WARNING, unknownSystems.isEmpty() ? IssueType.CODEINVALID : IssueType.NOTFOUND, path, msg));
+        info.getIssues().addAll(makeIssue(IssueSeverity.WARNING, unknownSystems.isEmpty() ? IssueType.CODEINVALID : IssueType.NOTFOUND, path, msg, OpIssueCode.VSProcessing));
       } else if (!result) {
-        msg = context.formatMessagePlural(code.getCoding().size(), I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), b.toString());
-        info.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path, msg));
+        // to match Ontoserver
+        OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, org.hl7.fhir.r5.model.OperationOutcome.IssueType.CODEINVALID);
+        iss.getDetails().setText(context.formatMessage(I18nConstants.TX_GENERAL_CC_ERROR_MESSAGE, valueset.getVersionedUrl()));
+        iss.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", OpIssueCode.NotInVS.toCode(), null);
+        info.getIssues().add(iss);
+
+//        msg = context.formatMessagePlural(code.getCoding().size(), I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), b.toString());
+//        info.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, code.getCoding().size() == 1 ? path+".coding[0].code" : path, msg));
       }
     }
     if (vcc.hasCoding() && code.hasText()) {
@@ -274,7 +315,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         cd.setDisplay(lookupDisplay(foundCoding));
         res.setDefinition(cd);
         res.setSystem(foundCoding.getSystem());
-        res.setVersion(foundCoding.hasVersion() ? foundCoding.getVersion() : ((CodeSystem) foundCoding.getUserData("cs")).getVersion());
+        res.setVersion(foundCoding.hasVersion() ? foundCoding.getVersion() : foundCoding.hasUserData("cs") ? ((CodeSystem) foundCoding.getUserData("cs")).getVersion() : null);
         res.setDisplay(cd.getDisplay());
       }
       res.setUnknownSystems(unknownSystems);
@@ -282,13 +323,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return res;
     } else if (result == null) {
       return new ValidationResult(IssueSeverity.WARNING, info.summary(), info.getIssues());
-    } else if (foundCoding == null) {
-      return new ValidationResult(IssueSeverity.ERROR, "Internal Error that should not happen", makeIssue(IssueSeverity.FATAL, IssueType.EXCEPTION, path, "Internal Error that should not happen"));
+    } else if (foundCoding == null && valueset != null) {
+      return new ValidationResult(IssueSeverity.ERROR, "Internal Error that should not happen", makeIssue(IssueSeverity.FATAL, IssueType.EXCEPTION, path, "Internal Error that should not happen", OpIssueCode.VSProcessing));
     } else if (info.getIssues().size() > 0) {
       String disp = lookupDisplay(foundCoding);
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
       cd.setDisplay(disp);
-      return new ValidationResult(IssueSeverity.WARNING, info.summary(), foundCoding.getSystem(), getVersion(foundCoding), cd, disp, info.getIssues()).addCodeableConcept(vcc);
+      return new ValidationResult(IssueSeverity.WARNING, info.summaryList(), foundCoding.getSystem(), getVersion(foundCoding), cd, disp, info.getIssues()).addCodeableConcept(vcc);
     } else {
       ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
       cd.setDisplay(lookupDisplay(foundCoding));
@@ -382,19 +423,23 @@ public class ValueSetValidator extends ValueSetProcessBase {
     checkCanonical(issues, path, valueset, valueset);
 
     String system = code.hasSystem() ? code.getSystem() : getValueSetSystemOrNull();
-    if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
-      if (system == null && !code.hasDisplay()) { // dealing with just a plain code (enum)
-        List<String> problems = new ArrayList<>();
+    if (!options.isMembershipOnly()) {
+      if (system == null && !code.hasDisplay() && options.isGuessSystem()) { // dealing with just a plain code (enum)
+        List<StringWithCode> problems = new ArrayList<>();
         system = systemForCodeInValueSet(code.getCode(), problems);
         if (system == null) {
           if (problems.size() == 0) {
             throw new Error("Unable to resolve systems but no reason why"); // this is an error in the java code
           } else if (problems.size() == 1) {
-            return new ValidationResult(IssueSeverity.ERROR, problems.get(0), makeIssue(IssueSeverity.ERROR, IssueType.UNKNOWN, path, problems.get(0)));
+            return new ValidationResult(IssueSeverity.ERROR, problems.get(0).getMessage(), makeIssue(IssueSeverity.ERROR, IssueType.UNKNOWN, path, problems.get(0).getMessage(), problems.get(0).getCode()));
           } else {
-            ValidationResult vr = new ValidationResult(IssueSeverity.ERROR, problems.toString(), null);
-            for (String s : problems) {
-              vr.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.UNKNOWN, path, s));
+            CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("; ");
+            for (StringWithCode s : problems) {
+              b.append(s.getMessage());
+            }            
+            ValidationResult vr = new ValidationResult(IssueSeverity.ERROR, b.toString(), null);
+            for (StringWithCode s : problems) {
+              vr.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.UNKNOWN, path, s.getMessage(), s.getCode()));
             }
             return vr;
           }
@@ -406,81 +451,117 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
         code.setSystem(system);
       }
-      inExpansion = checkExpansion(code, vi);
-      inInclude = checkInclude(code, vi);
-      String wv = vi.getVersion(system, code.getVersion());
-      CodeSystem cs = resolveCodeSystem(system, wv);
-      if (cs == null) {
-        if (wv == null) {
-          warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, system);
-          unknownSystems.add(system);
-        } else {
-          warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, system, wv, resolveCodeSystemVersions(system).toString());
-          unknownSystems.add(system+"|"+wv);
+      if (!code.hasSystem()) {
+        res = new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE), null);
+        if (!code.hasUserData("val.sys.error")) {
+          code.setUserData("val.sys.error", true);
+          res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE), OpIssueCode.InvalidData));
         }
-        if (!inExpansion) {
-          if (valueset != null && valueset.hasExpansion()) {
-            String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_UNK_EXPANSION,
-                valueset.getUrl(), 
-                code.getSystem(), 
-                code.getCode().toString());
-            issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path, msg));
-            throw new VSCheckerException(msg, issues);
+      } else {
+        if (!Utilities.isAbsoluteUrl(system)) {
+          String msg = context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE);
+          issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path+".system", msg, OpIssueCode.InvalidData));                
+        }
+        inExpansion = checkExpansion(code, vi);
+        inInclude = checkInclude(code, vi);
+        String wv = vi.getVersion(system, code.getVersion());
+        CodeSystem cs = resolveCodeSystem(system, wv);
+        if (cs == null) {
+          OpIssueCode oic = OpIssueCode.NotFound;
+          IssueType itype = IssueType.NOTFOUND;
+          ValueSet vs = context.fetchResource(ValueSet.class, system);
+          if (vs != null) {
+            warningMessage = context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, system);  
+            oic = OpIssueCode.InvalidData;
+            itype = IssueType.INVALID;
+          } else if (wv == null) {
+            warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, system);
+            unknownSystems.add(system);
           } else {
-            issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path+".system", warningMessage));
-            res = new ValidationResult(IssueSeverity.WARNING, warningMessage, issues);              
-            if (valueset == null) {
-              throw new VSCheckerException(warningMessage, issues);
+            warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, system, wv, resolveCodeSystemVersions(system).toString());
+            unknownSystems.add(system+"|"+wv);
+          }
+          if (!inExpansion) {
+            if (valueset != null && valueset.hasExpansion()) {
+              String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_UNK_EXPANSION,
+                  valueset.getUrl(), 
+                  code.getSystem(), 
+                  code.getCode().toString());
+              issues.addAll(makeIssue(IssueSeverity.ERROR, itype, path, msg, OpIssueCode.VSProcessing));
+              throw new VSCheckerException(msg, issues, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
             } else {
-//              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), code.toString());
-//              issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
-              // we don't do this yet
-              // throw new VSCheckerException(warningMessage, issues); 
+              issues.addAll(makeIssue(IssueSeverity.ERROR, itype, path+".system", warningMessage, oic));
+              res = new ValidationResult(IssueSeverity.WARNING, warningMessage, issues);              
+              if (valueset == null) {
+                throw new VSCheckerException(warningMessage, issues, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
+              } else {
+                //              String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl(), code.toString());
+                //              issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, path, msg));
+                // we don't do this yet
+                // throw new VSCheckerException(warningMessage, issues); 
+              }
             }
           }
+        } else {
+          checkCanonical(issues, path, cs, valueset);
         }
-      } else {
-        checkCanonical(issues, path, cs, valueset);
-      }
-      if (cs != null && cs.hasSupplements()) {
-        String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getUrl());
-        return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path, msg));        
-      }
-      if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
-        warningMessage = "Resolved system "+system+(cs.hasVersion() ? " (v"+cs.getVersion()+")" : "")+", but the definition is not complete";
-        if (!inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) { // we're going to give it a go if it's a fragment
-          throw new VSCheckerException(warningMessage, null, true);
+        if (cs != null && cs.hasSupplements()) {
+          String msg = context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getUrl());
+          return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, path, msg, OpIssueCode.VSProcessing));        
         }
-      }
+        if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
+          warningMessage = "Resolved system "+system+(cs.hasVersion() ? " (v"+cs.getVersion()+")" : "")+", but the definition ";
+          switch (cs.getContent()) {
+          case EXAMPLE:
+            warningMessage = warningMessage +"only has example content";
+            break;
+          case FRAGMENT:
+            warningMessage = warningMessage + "is only a fragment";
+            break;
+          case NOTPRESENT:
+            warningMessage = warningMessage + "doesn't include any codes";
+            break;
+          case SUPPLEMENT:
+            warningMessage = warningMessage + " is for a supplement to "+cs.getSupplements();
+            break;
+          default:
+            break;
+          }
+          warningMessage = warningMessage + ", so the code has not been validated";
+          if (!inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) { // we're going to give it a go if it's a fragment
+            throw new VSCheckerException(warningMessage, null, true);
+          }
+        }
 
-      if (cs != null /*&& (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)*/) {
-        if (!(cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
-          if (inInclude) {
-            ConceptReferenceComponent cc = findInInclude(code);
-            if (cc != null) {
-              // we'll take it on faith
-              String disp = getPreferredDisplay(cc);
-              res = new ValidationResult(system, cs.getVersion(), new ConceptDefinitionComponent().setCode(cc.getCode()).setDisplay(disp), disp);
-              res.addToMessage("Resolved system "+system+", but the definition is not complete, so assuming value set include is correct");
-              return res;
+        if (cs != null /*&& (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)*/) {
+          if (!(cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
+            if (inInclude) {
+              ConceptReferenceComponent cc = findInInclude(code);
+              if (cc != null) {
+                // we'll take it on faith
+                String disp = getPreferredDisplay(cc);
+                res = new ValidationResult(system, cs.getVersion(), new ConceptDefinitionComponent().setCode(cc.getCode()).setDisplay(disp), disp);
+                res.addMessage("Resolved system "+system+", but the definition is not complete, so assuming value set include is correct");
+                return res;
+              }
             }
+            // we can't validate that here. 
+            throw new FHIRException("Unable to evaluate based on empty code system");
           }
-          // we can't validate that here. 
-          throw new FHIRException("Unable to evaluate based on empty code system");
-        }
-        res = validateCode(path, code, cs, null, info);
-        res.setIssues(issues);
-      } else if (cs == null && valueset.hasExpansion() && inExpansion) {
-        // we just take the value set as face value then
-        res = new ValidationResult(system, wv, new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()), code.getDisplay());
-        if (!preferServerSide(system)) {
-          res.addToMessage("Code System unknown, so assuming value set expansion is correct ("+warningMessage+")");
-        }
-      } else {
-        // well, we didn't find a code system - try the expansion? 
-        // disabled waiting for discussion
-        if (throwToServer) {
-          throw new FHIRException("No; try the server");
+          res = validateCode(path, code, cs, null, info);
+          res.setIssues(issues);
+        } else if (cs == null && valueset.hasExpansion() && inExpansion) {
+          // we just take the value set as face value then
+          res = new ValidationResult(system, wv, new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()), code.getDisplay());
+          if (!preferServerSide(system)) {
+            res.addMessage("Code System unknown, so assuming value set expansion is correct ("+warningMessage+")");
+          }
+        } else {
+          // well, we didn't find a code system - try the expansion? 
+          // disabled waiting for discussion
+          if (throwToServer) {
+            throw new FHIRException(NO_TRY_THE_SERVER);
+          }
         }
       }
     } else {
@@ -494,7 +575,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
     
     // then, if we have a value set, we check it's in the value set
-    if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
+    if (valueset != null) {
       if ((res==null || res.isOk())) { 
         Boolean ok = codeInValueSet(path, system, wv, code.getCode(), info);
         if (ok == null || !ok) {
@@ -505,9 +586,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
             res.setErrorClass(info.getErr());
           }
           if (ok == null) {
-            String m = "Unable to check whether the code is in the value set "+valueset.getVersionedUrl();
-            res.addToMessage(m);
-            res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.NOTFOUND, path, m));
+            String m = context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), CommaSeparatedStringBuilder.join(",", unknownSystems));
+            res.addMessage(m);
+            res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.NOTFOUND, path, m, OpIssueCode.VSProcessing));
             res.setUnknownSystems(unknownSystems);
             res.setSeverity(IssueSeverity.ERROR); // back patching for display logic issue
             res.setErrorClass(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
@@ -518,8 +599,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
 //            } else
 //            {
               String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), "'"+code.toString()+"'");
-              res.addToMessage(msg).setSeverity(IssueSeverity.ERROR);
-              res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path, msg));
+              res.addMessage(msg).setSeverity(IssueSeverity.ERROR);
+              res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path+".code", msg, OpIssueCode.NotInVS));
               res.setDefinition(null);
               res.setSystem(null);
               res.setDisplay(null);
@@ -527,21 +608,21 @@ public class ValueSetValidator extends ValueSetProcessBase {
 //            }
           } else if (warningMessage!=null) {
             String msg = context.formatMessage(I18nConstants.CODE_FOUND_IN_EXPANSION_HOWEVER_, warningMessage);
-            res = new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.WARNING, IssueType.EXCEPTION, path, msg));
+            res = new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.WARNING, IssueType.EXCEPTION, path, msg, OpIssueCode.VSProcessing));
           } else if (inExpansion) {
             res.setMessage("Code found in expansion, however: " + res.getMessage());
-            res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.EXCEPTION, path, res.getMessage()));
+            res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.EXCEPTION, path, res.getMessage(), OpIssueCode.VSProcessing));
           } else if (inInclude) {
             res.setMessage("Code found in include, however: " + res.getMessage());
-            res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.EXCEPTION, path, res.getMessage()));
+            res.getIssues().addAll(makeIssue(IssueSeverity.WARNING, IssueType.EXCEPTION, path, res.getMessage(), OpIssueCode.VSProcessing));
           }
         } else if (res == null) {
           res = new ValidationResult(system, wv, null, null);
         }
       } else if ((res != null && !res.isOk())) {
         String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), "'"+code.toString()+"'");
-        res.setMessage(res.getMessage()+"; "+msg);
-        res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path, msg));
+        res.addMessage(msg);
+        res.getIssues().addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path+".code", msg, OpIssueCode.NotInVS));
       }
     }
     if (res != null && res.getSeverity() == IssueSeverity.INFORMATION) {
@@ -691,11 +772,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     if (cc == null) {
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
-        String msg = context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_FRAGMENT, code.getCode(), cs.getVersionedUrl());
-        return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path+".code", msg));        
+        String msg = context.formatMessage(I18nConstants.UNKNOWN_CODE_IN_FRAGMENT, code.getCode(), cs.getUrl(),  cs.getVersion());
+        return new ValidationResult(IssueSeverity.WARNING, msg, makeIssue(IssueSeverity.WARNING, IssueType.CODEINVALID, path+".code", msg, OpIssueCode.InvalidCode));        
       } else {
-        String msg = context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_, code.getCode(), cs.getVersionedUrl());
-        return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path+".code", msg));
+        String msg = context.formatMessage(I18nConstants.UNKNOWN_CODE_IN_VERSION, code.getCode(), cs.getUrl(), cs.getVersion());
+        return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path+".code", msg, OpIssueCode.InvalidCode));
       }
     }
     Coding vc = new Coding().setCode(cc.getCode()).setSystem(cs.getUrl()).setVersion(cs.getVersion()).setDisplay(getPreferredDisplay(cc, cs));
@@ -755,10 +836,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     if (b.count() == 0) {
       String msg = context.formatMessagePlural(options.getLanguages().getLangs().size(), I18nConstants.NO_VALID_DISPLAY_FOUND, code.getSystem(), code.getCode(), code.getDisplay(), options.langSummary());
-      return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg)).setStatus(inactive, status);      
+      return new ValidationResult(IssueSeverity.WARNING, msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg, OpIssueCode.Display)).setStatus(inactive, status);      
     } else {
       String msg = context.formatMessagePlural(b.count(), ws ? I18nConstants.DISPLAY_NAME_WS_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF : I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF, code.getSystem(), code.getCode(), b.toString(), code.getDisplay(), options.langSummary());
-      return new ValidationResult(dispWarningStatus(), msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(dispWarning(), IssueType.INVALID, path+".display", msg)).setStatus(inactive, status);
+      return new ValidationResult(dispWarningStatus(), msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs), makeIssue(dispWarning(), IssueType.INVALID, path+".display", msg, OpIssueCode.Display)).setStatus(inactive, status);
     }
   }
 
@@ -780,7 +861,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   
   private ConceptDefinitionComponent findCountryCode(String code) {
-    ValidationResult vr = context.validateCode(new ValidationOptions(), "urn:iso:std:iso:3166", null, code, null);
+    ValidationResult vr = context.validateCode(new ValidationOptions(FhirPublication.R5), "urn:iso:std:iso:3166", null, code, null);
     return vr == null || !vr.isOk() ? null : new ConceptDefinitionComponent(code).setDisplay(vr.getDisplay()).setDefinition(vr.getDefinition());
   }
 
@@ -838,6 +919,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   private String getValueSetSystemOrNull() throws FHIRException {
     if (valueset == null) {
+      return null;
+    }
+    if (!options.isGuessSystem()) {
       return null;
     }
     if (valueset.getCompose().getInclude().size() == 0) {
@@ -928,24 +1012,27 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   
-  private String systemForCodeInValueSet(String code, List<String> problems) {
+  private String systemForCodeInValueSet(String code, List<StringWithCode> problems) {
     Set<String> sys = new HashSet<>();
     if (!scanForCodeInValueSet(code, sys, problems)) {
       return null;
     }
-    if (sys.size() != 1) {
-      problems.add(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES, sys.toString()));
+    if (sys.size() == 0) {
+      problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_MATCHES, code)));
+      return null;
+    } else if (sys.size() > 1) {
+      problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES, sys.toString())));
       return null;
     } else {
       return sys.iterator().next();
     }
   }
   
-  private boolean scanForCodeInValueSet(String code, Set<String> sys, List<String> problems) {
+  private boolean scanForCodeInValueSet(String code, Set<String> sys, List<StringWithCode> problems) {
     if (valueset.hasCompose()) {
       //  ignore excludes - they can't make any difference
       if (!valueset.getCompose().hasInclude() && !valueset.getExpansion().hasContains()) {
-        problems.add(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_INCLUDES_OR_EXPANSION, valueset.getVersionedUrl()));
+        problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_INCLUDES_OR_EXPANSION, valueset.getVersionedUrl())));
       }
 
       int i = 0;
@@ -958,19 +1045,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
             }
           }
         } else if (!vsi.hasSystem()) { 
-          problems.add(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_NO_SYSTEM, valueset.getVersionedUrl(), i));
+          problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_NO_SYSTEM, valueset.getVersionedUrl(), i)));
           return false;
         }
         if (vsi.hasSystem()) {
           if (vsi.hasFilter()) {
-            problems.add(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_FILTER, valueset.getVersionedUrl(), i, vsi.getSystem()));
+            problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_FILTER, valueset.getVersionedUrl(), i, vsi.getSystem())));
             return false;
           }
           CodeSystemProvider csp = CodeSystemProvider.factory(vsi.getSystem());
           if (csp != null) {
             Boolean ok = csp.checkCode(code);
             if (ok == null) {
-              problems.add(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE, valueset.getVersionedUrl(), vsi.getSystem()));
+              problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE, valueset.getVersionedUrl(), vsi.getSystem())));
               sys.add(vsi.getSystem());
             } else if (ok) {
               sys.add(vsi.getSystem());
@@ -1007,7 +1094,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
                   return false;
                 }
               } else {
-                problems.add(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_UNKNOWN_SYSTEM, valueset.getVersionedUrl(), i, vsi.getSystem(), vse.getAllErrors().toString()));              
+                problems.add(new StringWithCode(OpIssueCode.NotFound, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_UNKNOWN_SYSTEM, valueset.getVersionedUrl(), i, vsi.getSystem(), vse.getAllErrors().toString())));              
                 return false;
               }
             }
@@ -1024,7 +1111,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return true;
   }
 
-  private boolean checkForCodeInValueSet(String code, String uri, Set<String> sys, List<String> problems) {
+  private boolean checkForCodeInValueSet(String code, String uri, Set<String> sys, List<StringWithCode> problems) {
     ValueSetValidator vs = getVs(uri);
     return vs.scanForCodeInValueSet(code, sys, problems);
   }
@@ -1033,7 +1120,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
    * Recursively go through all codes in the expansion and for any coding that matches the specified code, add the system for that coding
    * to the passed list. 
    */
-  private boolean checkSystems(List<ValueSetExpansionContainsComponent> contains, String code, Set<String> systems, List<String> problems) {
+  private boolean checkSystems(List<ValueSetExpansionContainsComponent> contains, String code, Set<String> systems, List<StringWithCode> problems) {
     for (ValueSetExpansionContainsComponent c: contains) {
       opContext.deadCheck();
       if (c.getCode().equals(code)) {
@@ -1133,7 +1220,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
           if (info != null && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
             // server didn't know the code system either - we'll take it face value
-            info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.UNKNOWN, path, context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system)));
+            info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.UNKNOWN, path, context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system), OpIssueCode.NotFound));
             for (ConceptReferenceComponent cc : vsi.getConcept()) {
               if (cc.getCode().equals(code)) {
                 return true;
@@ -1160,8 +1247,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     } else {
       checkCanonical(info.getIssues(), path, cs, valueset);
-      if (valueset.getCompose().hasInactive() && !valueset.getCompose().getInactive()) {
+      if ((valueset.getCompose().hasInactive() && !valueset.getCompose().getInactive()) || options.isActiveOnly()) {
         if (CodeSystemUtilities.isInactive(cs, code)) {
+          info.addIssue(makeIssue(IssueSeverity.ERROR, IssueType.BUSINESSRULE, path+".code", context.formatMessage(I18nConstants.STATUS_CODE_WARNING_CODE, "not active", code), OpIssueCode.CodeRule));        
           return false;
         }
       }
@@ -1265,7 +1353,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
 
   public boolean validateCodeInConceptList(String code, CodeSystem def, List<ConceptDefinitionComponent> list, AlternateCodesProcessingRules altCodeRules) {
     opContext.deadCheck();
-    if (def.getCaseSensitive()) {
+    if (def.hasUserData("tx.cs.special")) {
+      return ((SpecialCodeSystem) def.getUserData("tx.cs.special")).findConcept(new Coding().setCode(code)) != null; 
+    } else if (def.getCaseSensitive()) {
       for (ConceptDefinitionComponent cc : list) {
         if (cc.getCode().equals(code)) { 
           return true;

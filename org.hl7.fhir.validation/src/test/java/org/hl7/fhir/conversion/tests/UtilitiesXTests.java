@@ -54,8 +54,8 @@ import org.hl7.fhir.convertors.loaders.loaderR5.R2016MayToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R2ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R3ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
+import org.hl7.fhir.r5.context.IContextResourceLoader;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.CSFile;
@@ -87,7 +87,7 @@ public class UtilitiesXTests {
 	  if (!fcontexts.containsKey(version)) {
 	    FilesystemPackageCacheManager pcm;
 	    try {
-	      pcm = new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER);
+	      pcm = new FilesystemPackageCacheManager.Builder().build();
 	      IWorkerContext fcontext = TestingUtilities.getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version), loaderForVersion(version));
 	      fcontext.setUcumService(new UcumEssenceService(UtilitiesXTests.loadTestResourceStream("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionProfile(new Parameters());

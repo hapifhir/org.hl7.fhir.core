@@ -3,13 +3,13 @@ package org.hl7.fhir.validation.instance.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
-import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -62,7 +62,7 @@ public class ValueSetValidator extends BaseValidator {
       List<Element> composes = vs.getChildrenByName("compose");
       int cc = 0;
       for (Element compose : composes) {
-        ok = validateValueSetCompose(errors, compose, stack.push(compose, composes.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url"), "retired".equals(vs.getNamedChildValue("url"))) & ok;
+        ok = validateValueSetCompose(errors, compose, stack.push(compose, composes.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url", false), "retired".equals(vs.getNamedChildValue("url", false))) & ok;
         cc++;
       }
     }
@@ -76,22 +76,22 @@ public class ValueSetValidator extends BaseValidator {
     if (parent.isForPublication()) { 
       if (isHL7(vs)) {
         boolean ok = true;
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("url"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "url") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("version"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "version") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("title"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "title") && ok;                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("name"), I18nConstants.VALUESET_SHAREABLE_EXTRA_MISSING_HL7, "name");                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("status"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "status") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("experimental"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "experimental") && ok;                      
-        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("description"), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "description") && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("url", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "url") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("version", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "version") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("title", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "title") && ok;                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("name", false), I18nConstants.VALUESET_SHAREABLE_EXTRA_MISSING_HL7, "name");                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("status", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "status") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("experimental", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "experimental") && ok;                      
+        ok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("description", false), I18nConstants.VALUESET_SHAREABLE_MISSING_HL7, "description") && ok;
         return ok;
       } else {
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("url"), I18nConstants.VALUESET_SHAREABLE_MISSING, "url");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("version"), I18nConstants.VALUESET_SHAREABLE_MISSING, "version");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("title"), I18nConstants.VALUESET_SHAREABLE_MISSING, "title");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("name"), I18nConstants.VALUESET_SHAREABLE_EXTRA_MISSING, "name");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("status"), I18nConstants.VALUESET_SHAREABLE_MISSING, "status");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("experimental"), I18nConstants.VALUESET_SHAREABLE_MISSING, "experimental");                      
-        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("description"), I18nConstants.VALUESET_SHAREABLE_MISSING, "description");
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("url", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "url");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("version", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "version");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("title", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "title");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("name", false), I18nConstants.VALUESET_SHAREABLE_EXTRA_MISSING, "name");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("status", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "status");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("experimental", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "experimental");                      
+        warning(errors, NO_RULE_DATE, IssueType.REQUIRED, vs.line(), vs.col(), stack.getLiteralPath(), vs.hasChild("description", false), I18nConstants.VALUESET_SHAREABLE_MISSING, "description");
       }
     }
     return true;

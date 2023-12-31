@@ -74,25 +74,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ValidationService;
-import org.hl7.fhir.validation.cli.tasks.CliTask;
-import org.hl7.fhir.validation.cli.tasks.CompareTask;
-import org.hl7.fhir.validation.cli.tasks.CompileTask;
-import org.hl7.fhir.validation.cli.tasks.ConvertTask;
-import org.hl7.fhir.validation.cli.tasks.FhirpathTask;
-import org.hl7.fhir.validation.cli.tasks.InstallTask;
-import org.hl7.fhir.validation.cli.tasks.LangTransformTask;
-import org.hl7.fhir.validation.cli.tasks.NarrativeTask;
-import org.hl7.fhir.validation.cli.tasks.ScanTask;
-import org.hl7.fhir.validation.cli.tasks.SnapshotTask;
-import org.hl7.fhir.validation.cli.tasks.SpecialTask;
-import org.hl7.fhir.validation.cli.tasks.SpreadsheetTask;
-import org.hl7.fhir.validation.cli.tasks.StandaloneTask;
-import org.hl7.fhir.validation.cli.tasks.TestsTask;
-import org.hl7.fhir.validation.cli.tasks.TransformTask;
-import org.hl7.fhir.validation.cli.tasks.TxTestsTask;
-import org.hl7.fhir.validation.cli.tasks.ValidateTask;
-import org.hl7.fhir.validation.cli.tasks.ValidationEngineTask;
-import org.hl7.fhir.validation.cli.tasks.VersionTask;
+import org.hl7.fhir.validation.cli.tasks.*;
 import org.hl7.fhir.validation.cli.utils.Display;
 import org.hl7.fhir.validation.cli.utils.Params;
 
@@ -144,6 +126,7 @@ public class ValidatorCli {
       new InstallTask(),
       new LangTransformTask(),
       new NarrativeTask(),
+      new PreloadCacheTask(),
       new ScanTask(),
       new SnapshotTask(),
       new SpecialTask(),
@@ -301,6 +284,19 @@ public class ValidatorCli {
         res.add("-bundle");
         res.add("Composition:0");
         res.add("http://hl7.org.au/fhir/ips/StructureDefinition/Composition-au-ips");
+      } else if (a.equals("-ips:nz")) {
+        res.add("-version");
+        res.add("4.0");
+        res.add("-check-ips-codes");
+        res.add("-ig");
+        res.add("tewhatuora.fhir.nzps#current");
+        res.add("-profile");
+        res.add("https://standards.digital.health.nz/fhir/StructureDefinition/nzps-bundle");
+        res.add("-extension");
+        res.add("any");
+        res.add("-bundle");
+        res.add("Composition:0");
+        res.add("https://standards.digital.health.nz/fhir/StructureDefinition/nzps-composition");
       } else if (a.equals("-ips#")) {
         res.add("-version");
         res.add("4.0");
@@ -331,12 +327,17 @@ public class ValidatorCli {
         res.add("-version");
         res.add("5.0");
         res.add("-ig");
-        res.add("hl7.cda.uv.core#2.1.0-draft1");
+        res.add("hl7.cda.uv.core#2.0.0-sd-ballot");
       } else if (a.equals("-ccda")) {
         res.add("-version");
         res.add("5.0");
         res.add("-ig");
-        res.add("hl7.cda.uv.core#2.1.0-draft1");
+        res.add("hl7.cda.us.ccda#current");
+      } else if (a.equals("-view-definition")) {
+        res.add("-version");
+        res.add("5.0");
+        res.add("-ig");
+        res.add("hl7.fhir.uv.sql-on-fhir#current");
       } else {
         res.add(a);
       }
@@ -370,12 +371,12 @@ public class ValidatorCli {
       if (cliContext.getSv() == null) {
         cliContext.setSv(myValidationService.determineVersion(cliContext));
       }
-        ValidationEngine validationEngine = getValidationEngine(tt, cliContext);
-        tts.end();
-        ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, cliContext, params, tt, tts);
-      } else if (cliTask instanceof StandaloneTask) {
-        ((StandaloneTask) cliTask).executeTask(cliContext,params,tt,tts);
-      }
+      ValidationEngine validationEngine = getValidationEngine(tt, cliContext);
+      tts.end();
+      ((ValidationEngineTask) cliTask).executeTask(myValidationService, validationEngine, cliContext, params, tt, tts);
+    } else if (cliTask instanceof StandaloneTask) {
+      ((StandaloneTask) cliTask).executeTask(cliContext,params,tt,tts);
+    }
 
     System.out.println("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
     SystemExitManager.finish();

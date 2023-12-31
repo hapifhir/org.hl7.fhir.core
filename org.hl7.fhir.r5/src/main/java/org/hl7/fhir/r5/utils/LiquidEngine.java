@@ -39,14 +39,16 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode;
+import org.hl7.fhir.r5.fhirpath.FHIRLexer;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r5.fhirpath.TypeDetails;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.ExpressionNodeWithOffset;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.Tuple;
-import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.utils.FHIRPathEngine.ExpressionNodeWithOffset;
-import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.r5.utils.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -741,7 +743,7 @@ public class LiquidEngine implements IEvaluationContext {
   }
 
   @Override
-  public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+  public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
     if (ctxt.loopVars.containsKey(name))
       return new ArrayList<Base>(Arrays.asList(ctxt.loopVars.get(name)));
@@ -749,15 +751,15 @@ public class LiquidEngine implements IEvaluationContext {
       return new ArrayList<Base>(Arrays.asList(ctxt.globalVars.get(name)));
     if (externalHostServices == null)
       return new ArrayList<Base>();
-    return externalHostServices.resolveConstant(ctxt.externalContext, name, beforeContext);
+    return externalHostServices.resolveConstant(engine, ctxt.externalContext, name, beforeContext, explicitConstant);
   }
 
   @Override
-  public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException {
+  public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, boolean explicitConstant) throws PathEngineException {
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
-    return externalHostServices.resolveConstantType(ctxt.externalContext, name);
+    return externalHostServices.resolveConstantType(engine, ctxt.externalContext, name, explicitConstant);
   }
 
   @Override
@@ -768,49 +770,49 @@ public class LiquidEngine implements IEvaluationContext {
   }
 
   @Override
-  public FunctionDetails resolveFunction(String functionName) {
+  public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
     if (externalHostServices == null)
       return null;
-    return externalHostServices.resolveFunction(functionName);
+    return externalHostServices.resolveFunction(engine, functionName);
   }
 
   @Override
-  public TypeDetails checkFunction(Object appContext, String functionName, List<TypeDetails> parameters) throws PathEngineException {
-    if (externalHostServices == null)
-      return null;
-    LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
-    return externalHostServices.checkFunction(ctxt.externalContext, functionName, parameters);
-  }
-
-  @Override
-  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+  public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
-    return externalHostServices.executeFunction(ctxt.externalContext, focus, functionName, parameters);
+    return externalHostServices.checkFunction(engine, ctxt.externalContext, functionName, focus, parameters);
   }
 
   @Override
-  public Base resolveReference(Object appContext, String url, Base refContext) throws FHIRException {
+  public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
-    return resolveReference(ctxt.externalContext, url, refContext);
+    return externalHostServices.executeFunction(engine, ctxt.externalContext, focus, functionName, parameters);
   }
 
   @Override
-  public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+    if (externalHostServices == null)
+      return null;
+    LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
+    return resolveReference(engine, ctxt.externalContext, url, refContext);
+  }
+
+  @Override
+  public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
     if (externalHostServices == null)
       return false;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
-    return conformsToProfile(ctxt.externalContext, item, url);
+    return conformsToProfile(engine, ctxt.externalContext, item, url);
   }
 
   @Override
-  public ValueSet resolveValueSet(Object appContext, String url) {
+  public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
     if (externalHostServices != null)
-      return externalHostServices.resolveValueSet(ctxt.externalContext, url);
+      return externalHostServices.resolveValueSet(engine, ctxt.externalContext, url);
     else
       return engine.getWorker().fetchResource(ValueSet.class, url);
   }
@@ -853,4 +855,8 @@ public class LiquidEngine implements IEvaluationContext {
     return replaced;
   }
 
+  @Override
+  public boolean paramIsType(String name, int index) {
+    return false;
+  }
 }

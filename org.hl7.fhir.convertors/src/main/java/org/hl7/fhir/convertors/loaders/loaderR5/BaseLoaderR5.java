@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
+import org.hl7.fhir.r5.context.IContextResourceLoader;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;

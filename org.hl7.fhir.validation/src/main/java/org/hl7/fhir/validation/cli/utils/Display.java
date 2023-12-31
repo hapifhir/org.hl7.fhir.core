@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 import org.apache.commons.io.IOUtils;
+import org.hl7.fhir.utilities.VersionUtil;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 
 /**
@@ -20,7 +21,7 @@ public class Display {
   }
 
   public static void printCliParamsAndInfo(String[] args) throws IOException {
-    System.out.println("  Paths:  Current = " + System.getProperty("user.dir") + ", Package Cache = " + new FilesystemPackageCacheManager(org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.FilesystemPackageCacheMode.USER).getFolder());
+    System.out.println("  Paths:  Current = " + System.getProperty("user.dir") + ", Package Cache = " + new FilesystemPackageCacheManager.Builder().build().getFolder());
     System.out.print("  Params:");
     for (String s : args) {
       System.out.print(s.contains(" ") ? " \"" + s + "\"" : " " + s);
