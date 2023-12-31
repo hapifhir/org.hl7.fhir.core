@@ -377,7 +377,7 @@ public class ClientUtils {
   protected Bundle unmarshalFeed(HttpResponse response, String format) {
     Bundle feed = null;
     byte[] cnt = log(response);
-    String contentType = response.getHeaders("Content-Type")[0].getValue();
+    String contentType = response.getHeaders("content-type")[0].getValue();
     OperationOutcome error = null;
     try {
       if (cnt != null) {

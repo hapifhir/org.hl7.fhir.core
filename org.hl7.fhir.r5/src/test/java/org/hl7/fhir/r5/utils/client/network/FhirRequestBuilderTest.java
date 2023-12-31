@@ -13,6 +13,11 @@ import okhttp3.Request;
 
 class FhirRequestBuilderTest {
 
+  public static final String ACCEPT_HEADER = "Accept";
+  public static final String CONTENT_TYPE_HEADER = "Content-Type";
+  public static final String USER_AGENT_HEADER = "User-Agent";
+  public static final String ACCEPT_CHARSET_HEADER = "Accept-Charset";
+
   @Test
   @DisplayName("Test default headers are added correctly.")
   void addDefaultHeaders() {
@@ -20,12 +25,12 @@ class FhirRequestBuilderTest {
     FhirRequestBuilder.addDefaultHeaders(request, null);
 
     Map<String, List<String>> headersMap = request.build().headers().toMultimap();
-    Assertions.assertNotNull(headersMap.get("User-Agent"), "User-Agent header null.");
-    Assertions.assertEquals("hapi-fhir-tooling-client", headersMap.get("User-Agent").get(0),
+    Assertions.assertNotNull(headersMap.get(USER_AGENT_HEADER), "User-Agent header null.");
+    Assertions.assertEquals("hapi-fhir-tooling-client", headersMap.get(USER_AGENT_HEADER).get(0),
       "User-Agent header not populated with expected value \"hapi-fhir-tooling-client\".");
 
-    Assertions.assertNotNull(headersMap.get("Accept-Charset"), "Accept-Charset header null.");
-    Assertions.assertEquals(FhirRequestBuilder.DEFAULT_CHARSET, headersMap.get("Accept-Charset").get(0),
+    Assertions.assertNotNull(headersMap.get(ACCEPT_CHARSET_HEADER), "Accept-Charset header null.");
+    Assertions.assertEquals(FhirRequestBuilder.DEFAULT_CHARSET, headersMap.get(ACCEPT_CHARSET_HEADER).get(0),
       "Accept-Charset header not populated with expected value " + FhirRequestBuilder.DEFAULT_CHARSET);
   }
 
@@ -37,22 +42,24 @@ class FhirRequestBuilderTest {
     FhirRequestBuilder.addResourceFormatHeaders(request, testFormat);
 
     Map<String, List<String>> headersMap = request.build().headers().toMultimap();
-    Assertions.assertNotNull(headersMap.get("Accept"), "Accept header null.");
-    Assertions.assertEquals(testFormat, headersMap.get("Accept").get(0),
+
+    Assertions.assertNotNull(headersMap.get(ACCEPT_HEADER), "Accept header null.");
+    Assertions.assertNotNull(headersMap.get(ACCEPT_HEADER.toLowerCase()), "Accept header null.");
+    Assertions.assertEquals(testFormat, headersMap.get(ACCEPT_HEADER).get(0),
       "Accept header not populated with expected value " + testFormat + ".");
 
-    Assertions.assertNotNull(headersMap.get("Content-Type"), "Content-Type header null.");
-    Assertions.assertEquals(testFormat + ";charset=" + FhirRequestBuilder.DEFAULT_CHARSET, headersMap.get("Content-Type").get(0),
+    Assertions.assertNotNull(headersMap.get(CONTENT_TYPE_HEADER), "Content-Type header null.");
+    Assertions.assertEquals(testFormat + ";charset=" + FhirRequestBuilder.DEFAULT_CHARSET, headersMap.get(CONTENT_TYPE_HEADER).get(0),
       "Content-Type header not populated with expected value \"" + testFormat + ";charset=" + FhirRequestBuilder.DEFAULT_CHARSET + "\".");
   }
 
   @Test
   @DisplayName("Test a list of provided headers are added correctly.")
   void addHeaders() {
-    String headerName1 = "headerName1";
-    String headerValue1 = "headerValue1";
-    String headerName2 = "headerName2";
-    String headerValue2 = "headerValue2";
+    final String headerName1 = "headerName1";
+    final String headerValue1 = "headerValue1";
+    final String headerName2 = "headerName2";
+    final String headerValue2 = "headerValue2";
 
     Headers headers = new Headers.Builder()
       .add(headerName1, headerValue1)
@@ -141,5 +148,24 @@ class FhirRequestBuilderTest {
     Headers headers = new Headers.Builder()
       .build();
     Assertions.assertNull(FhirRequestBuilder.getLocationHeader(headers));
+  }
+
+
+  /**
+   * Assert that our header exists and that it its key is managed case inse
+   *
+   * @param headers
+   * @param headerName
+   * @param headerValue
+   */
+  private void assertHeaderNotNullAndEquals(Headers headers, String headerName, String headerValue) {
+
+    Map<String, List<String>> headersMap = headers.toMultimap();
+    Assertions.assertNotNull(headers.get(headerName), headerName + " header null.");
+    Assertions.assertNotNull(headers.get(headerName.toLowerCase()), headerName + " header null.");
+    Assertions.assertNotNull(headers.get(headerName.toUpperCase()), headerName + " header null.");
+    Assertions.assertEquals(headerValue, headersMap.get(headerName).get(0),
+      headerName + " header not populated with expected value " + headerValue + ".");
+
   }
 }
