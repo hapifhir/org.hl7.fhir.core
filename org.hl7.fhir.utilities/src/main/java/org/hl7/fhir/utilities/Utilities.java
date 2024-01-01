@@ -2191,4 +2191,36 @@ public class Utilities {
     return s.replace("'", "''");
   }
 
+  public static String[] simpleSplit(String cnt, String div) {
+    if (cnt == null) {
+      return new String[] {};
+    }
+    List<String> parts = new ArrayList<>();
+    int cursor = 0;
+    int last = 0;
+    while (cursor < cnt.length()) {
+      if (matches(cnt, div, cursor)) {
+        parts.add(cnt.substring(last, cursor));
+        cursor = cursor + div.length();
+        last = cursor;
+      } else {
+        cursor++;
+      }
+    }
+    parts.add(cnt.substring(last, cursor));
+    return parts.toArray(new String[] {});
+  }
+
+  private static boolean matches(String cnt, String div, int cursor) {
+    if (div.length() + cursor > cnt.length()) {
+      return false;
+    }
+    for (int i = 0; i < div.length(); i++) {
+      if (cnt.charAt(cursor+i) != div.charAt(i)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }

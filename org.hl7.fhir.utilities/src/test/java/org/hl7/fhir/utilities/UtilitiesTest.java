@@ -458,5 +458,24 @@ class UtilitiesTest {
     Utilities.createDirectory(path);
     Utilities.clearDirectory(path);
   }
+
+  @Test
+  void testSimpleSplit() throws IOException {
+    checkEquals(new String[] {}, Utilities.simpleSplit(null, ","));
+    checkEquals(new String[] {""}, Utilities.simpleSplit("", ","));
+    checkEquals(new String[] {"", ""}, Utilities.simpleSplit(",", ","));
+    checkEquals(new String[] {"A"}, Utilities.simpleSplit("A", ","));
+    checkEquals(new String[] {"A", "B"}, Utilities.simpleSplit("A,B", ","));
+    checkEquals(new String[] {"", "A", "", "B", ""}, Utilities.simpleSplit(",A,,B,", ","));
+    checkEquals(new String[] {"", "ONE", "", "TWO", "", "", "THREE", "", ""}, Utilities.simpleSplit("[stop]ONE[stop][stop]TWO[stop][stop][stop]THREE[stop][stop]", "[stop]"));
+  }
+
+  private void checkEquals(String[] left, String[] right) {
+    for (int i =0; i < Integer.min(left.length, right.length); i++) {
+      Assertions.assertEquals(left[i], right[i], "String["+i+"] differs");
+    }
+    Assertions.assertEquals(left.length, right.length, "String[].length() differs");
+    
+  }
 }
 
