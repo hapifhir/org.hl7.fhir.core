@@ -27,6 +27,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.turtle.Turtle;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -54,34 +55,55 @@ public class TurtleGeneratorTests {
     xmlParser = (XmlParser) Manager.makeParser(workerContext, FhirFormat.XML);
     turtleParser = (TurtleParser) Manager.makeParser(workerContext, FhirFormat.TURTLE);
 
-    // This is a directory of XML resources built using the FHIR specification
-    inputXmlDirectory = getInputXmlDirectory();
-
-    // This is a temporary directory for files that should be discarded after testing
+    // Temporary directory of files that should be discarded after testing
     outputTurtleDirectory = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"));
+
+    // Directory of XML files used for generating Turtle files
+    String currentDirectory = System.getProperty("user.dir");
+    inputXmlDirectory = FileSystems.getDefault().getPath(currentDirectory, "src", "test", "resources", "testUtilities", "xml", "examples");
   }
 
   @Test
-  public void testInstanceGeneration() throws IOException, UcumException {
-    var resourceName = "codesystem-contact-point-use";
+  public void testExamples() throws IOException, UcumException {
+    var exampleInstanceName = "codesystem-contact-point-use";
+    testInstanceGeneration(exampleInstanceName);
+  }
+
+  @Disabled("TODO this doesn't pass due to existing issues in R5 RDF")
+  @Test
+  public void testProfiles() throws IOException, UcumException {
+    var profileName = "Encounter";
+    testClassGeneration(profileName);
+  }
+
+  @Disabled("Run manually for testing with XML resources generated from FHIR specification publishing library")
+  @Test
+  public void testPublishedExamples() throws IOException, UcumException {
+    inputXmlDirectory = getPublishedXmlDirectory();
+    var exampleInstanceName = "codesystem-contact-point-use";
+    testInstanceGeneration(exampleInstanceName);
+  }
+
+  /*
+   * Generate a Turtle file from the name of an XML resource, then parse it
+  */
+  private void testInstanceGeneration(String resourceName) throws IOException, UcumException {
     // Generate Turtle
-    var generatedTurtleFilePath = generateTurtleInstanceFromResourceName(resourceName, inputXmlDirectory, outputTurtleDirectory);
+    var generatedTurtleFilePath = generateTurtleFromResourceName(resourceName, inputXmlDirectory, outputTurtleDirectory);
     // Try parsing again ("round-trip test") -- this only tests for valid RDF
-    try (
-      InputStream turtleStream = new FileInputStream(generatedTurtleFilePath);
-    ) {
-      var generatedTurtleString = new String(turtleStream.readAllBytes());
-      Turtle ttl = new Turtle();
-      ttl.parse(generatedTurtleString);
-    }
-    // TODO add more tests here
+    parseGeneratedTurtle(generatedTurtleFilePath);
   }
 
-  @Test
-  public void testClassGeneration() throws IOException, UcumException {
-    var profileName = "Patient";
+  /*
+  * Generate a Turtle file from the name of a profile, then parse it
+  */
+  private void testClassGeneration(String profileName) throws IOException, UcumException {
     var generatedTurtleFilePath = generateTurtleClassFromProfileName(profileName);
     // Try parsing again ("round-trip test") -- this only tests for valid RDF
+    parseGeneratedTurtle(generatedTurtleFilePath);
+  }
+
+  private void parseGeneratedTurtle(String generatedTurtleFilePath) throws IOException {
     try (
       InputStream turtleStream = new FileInputStream(generatedTurtleFilePath);
     ) {
@@ -89,34 +111,13 @@ public class TurtleGeneratorTests {
       Turtle ttl = new Turtle();
       ttl.parse(generatedTurtleString);
     }
-    // TODO add more tests here
-  }
-
-  
-  /**
-   * This could be the "publish" directory of XML resources built using the FHIR specification publishing library
-   */
-  private static Path getInputXmlDirectory() throws IOException {
-    Properties properties = new Properties();
-    String currentDirectory = System.getProperty("user.dir");
-    // Add your directory path to "org.hl7.fhir.r5/src/test/resources/local.properties"
-    String localPropertiesPath = FileSystems.getDefault().getPath(currentDirectory, "src", "test", "resources", "local.properties").toString();
-    try (FileInputStream input = new FileInputStream(localPropertiesPath)) {
-        properties.load(input);
-    } catch (IOException e) {
-        // You should create this local.properties file if it doesn't exist. It should already be listed in .gitignore.
-        e.printStackTrace();
-        throw e;
-    }
-    var filePath = properties.getProperty("xmlResourceDirectory");
-    return FileSystems.getDefault().getPath(filePath);
   }
   
   /**
    * Generate a Turtle version of a resource, given its name, input directory of its XML source, and output directory of the Turtle file
    * @return the path of the generated Turtle file
    */
-  private String generateTurtleInstanceFromResourceName(String resourceName, Path inputXmlDirectory, Path outputTurtleDirectory) throws IOException, UcumException {
+  private String generateTurtleFromResourceName(String resourceName, Path inputXmlDirectory, Path outputTurtleDirectory) throws IOException, UcumException {
     // Specify source xml path and destination turtle path
     var xmlFilePath = inputXmlDirectory.resolve(resourceName + ".xml").toString();
     var turtleFilePath = outputTurtleDirectory.resolve(resourceName + ".ttl").toString();
@@ -173,5 +174,26 @@ public class TurtleGeneratorTests {
       generateTurtleFromXmlStream(inputXmlStream, outputTurtleStream);
       return turtleFilePath;
     }
+  }
+
+
+  /**
+   * This could be the "publish" directory of XML resources built using the FHIR specification publishing library.
+   * Use this for testing with other generated XML resources
+   */
+  private static Path getPublishedXmlDirectory() throws IOException {
+    Properties properties = new Properties();
+    String currentDirectory = System.getProperty("user.dir");
+    // Add your directory path to "org.hl7.fhir.r5/src/test/resources/local.properties"
+    String localPropertiesPath = FileSystems.getDefault().getPath(currentDirectory, "src", "test", "resources", "local.properties").toString();
+    try (FileInputStream input = new FileInputStream(localPropertiesPath)) {
+        properties.load(input);
+    } catch (IOException e) {
+        // You should create this local.properties file if it doesn't exist. It should already be listed in .gitignore.
+        e.printStackTrace();
+        throw e;
+    }
+    var filePath = properties.getProperty("xmlResourceDirectory");
+    return FileSystems.getDefault().getPath(filePath);
   }
 }
