@@ -103,6 +103,9 @@ import javax.annotation.Nonnull;
 
 public interface IWorkerContext {
 
+  public interface ILoggingService extends org.hl7.fhir.r5.context.ILoggingService{
+
+  }
   /**
    * Get the version of the base definitions loaded in context
    * This *does not* have to be 5.0 (R5) - the context can load other versions
@@ -499,8 +502,8 @@ public interface IWorkerContext {
   public Map<String, NamingSystem> getNSUrlMap();
   public TranslationServices translator();
 
-  public void setLogger(@Nonnull ILoggingService logger);
-  public ILoggingService getLogger();
+  public void setLogger(@Nonnull org.hl7.fhir.r5.context.ILoggingService logger);
+  public org.hl7.fhir.r5.context.ILoggingService getLogger();
 
   public boolean isNoTerminologyServer();
   public Set<String> getCodeSystemsUsed();

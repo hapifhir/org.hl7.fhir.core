@@ -211,7 +211,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     private final boolean allowLoadingDuplicates;
 
     @With
-    private final ILoggingService loggingService;
+    private final org.hl7.fhir.r5.context.ILoggingService loggingService;
 
     public SimpleWorkerContextBuilder() {
       cacheTerminologyClientErrors = false;
