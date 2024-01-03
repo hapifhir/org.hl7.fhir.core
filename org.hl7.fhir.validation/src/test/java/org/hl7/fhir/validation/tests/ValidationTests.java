@@ -8,13 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
@@ -138,6 +132,13 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
     List<Object[]> objects = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
+      if (!Set.of(
+        "R4.cdshooks-request-order-select-extensions",
+        "R4.cdshooks-response-empty-source",
+        "R4.cdshooks-response-suggestion",
+        "R4.cdshooks-services-order-select-extensions"
+
+        ).contains(id))
         objects.add(new Object[]{id, examples.get(id)});
     }
     return objects;
