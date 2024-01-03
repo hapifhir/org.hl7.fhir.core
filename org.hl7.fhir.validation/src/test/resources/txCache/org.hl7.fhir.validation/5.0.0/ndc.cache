@@ -3,7 +3,7 @@
   "system" : "http://hl7.org/fhir/sid/ndc",
   "code" : "2501-813-16",
   "display" : "Timoptic 5mg/ml solution"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -11,12 +11,47 @@
   }]
 }}####
 v: {
+  "code" : "2501-813-16",
   "severity" : "error",
-  "error" : "Code \"2501-813-16\" not found in NDC; Unknown Code '2501-813-16' in the system 'http://hl7.org/fhir/sid/ndc'; The provided code 'http://hl7.org/fhir/sid/ndc#2501-813-16' is not in the value set 'http://hl7.org/fhir/ValueSet/@all' (from Tx-Server)",
+  "error" : "Unknown code '2501-813-16' in the CodeSystem 'http://hl7.org/fhir/sid/ndc' version ''",
   "class" : "UNKNOWN",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code '2501-813-16' in the CodeSystem 'http://hl7.org/fhir/sid/ndc' version ''"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Code \"2501-813-16\" not found in NDC"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
 }
 
 }

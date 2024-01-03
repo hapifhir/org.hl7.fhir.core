@@ -143,6 +143,7 @@ public class ToolingExtensions {
   public static final String EXT_BINDING_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-binding-style";
   public static final String EXT_EXTENSION_STYLE = "http://hl7.org/fhir/tools/StructureDefinition/elementdefinition-extension-style";
   public static final String EXT_LOGICAL_TARGET = "http://hl7.org/fhir/tools/StructureDefinition/logical-target";
+  public static final String EXT_LOGICAL_CONTAINER = "http://hl7.org/fhir/tools/StructureDefinition/logical-container";
   public static final String EXT_PROFILE_MAPPING = "http://hl7.org/fhir/tools/StructureDefinition/profile-mapping";
   public static final String EXT_CS_ALTERNATE_USE = "http://hl7.org/fhir/StructureDefinition/alternate-code-use";
   public static final String EXT_CS_ALTERNATE_STATUS = "http://hl7.org/fhir/StructureDefinition/alternate-code-status";
@@ -264,7 +265,9 @@ public class ToolingExtensions {
   public static final String EXT_ARTIFACT_NAME = "http://hl7.org/fhir/StructureDefinition/artifact-name";
   public static final String EXT_ARTIFACT_DESC = "http://hl7.org/fhir/StructureDefinition/artifact-description";  
   public static final String EXT_ED_SUPPRESS = "http://hl7.org/fhir/StructureDefinition/elementdefinition-suppress";
-  public static final String EXT_SEARCH_PARAMETER_BASE = "http://hl7.org/fhir/tools/StructureDefinition/searchparameter-base-type";;
+  public static final String EXT_SEARCH_PARAMETER_BASE = "http://hl7.org/fhir/tools/StructureDefinition/searchparameter-base-type";
+  public static final String EXT_ISSUE_SLICE_INFO = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-slicetext";
+  public static final String EXT_ISSUE_SERVER = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server";
   
   // specific extension helpers
 

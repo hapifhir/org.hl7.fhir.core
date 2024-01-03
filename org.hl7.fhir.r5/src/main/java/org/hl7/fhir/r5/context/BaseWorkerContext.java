@@ -107,6 +107,7 @@ import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
@@ -153,7 +154,6 @@ import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
-import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -1106,7 +1106,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         BundleEntryComponent r = resp.getEntry().get(i);
 
         if (r.getResource() instanceof Parameters) {
-          t.setResult(processValidationResult((Parameters) r.getResource(), vs != null ? vs.getUrl() : t.getVsObj() != null ? t.getVsObj().getUrl() : null));
+          t.setResult(processValidationResult((Parameters) r.getResource(), vs != null ? vs.getUrl() : t.getVsObj() != null ? t.getVsObj().getUrl() : null, tcc.getClient().getAddress()));
           if (txCache != null) {
             txCache.cacheValidation(t.getCacheToken(), t.getResult(), TerminologyCache.PERMANENT);
           }
@@ -1211,7 +1211,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         BundleEntryComponent r = resp.getEntry().get(i);
 
         if (r.getResource() instanceof Parameters) {
-          t.setResult(processValidationResult((Parameters) r.getResource(), vsUrl));
+          t.setResult(processValidationResult((Parameters) r.getResource(), vsUrl, tcc.getClient().getAddress()));
           if (txCache != null) {
             txCache.cacheValidation(t.getCacheToken(), t.getResult(), TerminologyCache.PERMANENT);
           }
@@ -1272,6 +1272,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     
     String localError = null;
     String localWarning = null;
+    TerminologyServiceErrorClass type = TerminologyServiceErrorClass.UNKNOWN;
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
@@ -1294,6 +1295,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (e.getIssues() != null) {
           issues.addAll(e.getIssues());
         }
+        type = e.getType();
       } catch (TerminologyServiceProtectionException e) {
         OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, e.getType());
         iss.getDetails().setText(e.getMessage());
@@ -1343,12 +1345,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage(), null).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
     }
+    if (!res.isOk() && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && (localError != null && !localError.equals(ValueSetValidator.NO_TRY_THE_SERVER))) {
+      res = new ValidationResult(IssueSeverity.ERROR, localError, null).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(type);
+    } 
     if (!res.isOk() && localError != null) {
       res.setDiagnostics("Local Error: "+localError.trim()+". Server Error: "+res.getMessage());
     } else if (!res.isOk() && res.getUnknownSystems() != null && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
       // we had some problem evaluating locally, but the server doesn't know the code system, so we'll just go with the local error
       res.setMessage(localWarning);
-      res.setDiagnostics("Local Error: "+localWarning.trim()+". Server Error: "+res.getMessage());
+      res.setSeverity(IssueSeverity.WARNING);
+      res.setDiagnostics("Local Warning: "+localWarning.trim()+". Server Error: "+res.getMessage());
     }
     updateUnsupportedCodeSystems(res, code, codeKey);
     if (cachingAllowed && txCache != null) { // we never cache unsupported code systems - we always keep trying (but only once per run)
@@ -1433,8 +1439,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (options.hasLanguages()) {
       pIn.addParameter("displayLanguage", options.getLanguages().toString());
     }
-    if (options.getValueSetMode() != ValueSetMode.ALL_CHECKS) {
-      pIn.addParameter("valueSetMode", options.getValueSetMode().toString());
+    if (options.isMembershipOnly()) {
+      pIn.addParameter("valueset-membership-only", true);
+    }
+    if (options.isDisplayWarningMode()) {
+      pIn.addParameter("lenient-display-validation", true);
     }
     if (options.isVersionFlexible()) {
       pIn.addParameter("default-to-latest-version", true);     
@@ -1551,7 +1560,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } else {
       pOut = tcc.getClient().validateVS(pin);
     }
-    return processValidationResult(pOut, vs == null ? null : vs.getUrl());
+    return processValidationResult(pOut, vs == null ? null : vs.getUrl(), tcc.getClient().getAddress());
   }
 
   protected void addServerValidationParameters(ValueSet vs, Parameters pin, ValidationOptions options) {
@@ -1649,7 +1658,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return false;
   }
 
-  public ValidationResult processValidationResult(Parameters pOut, String vs) {
+  public ValidationResult processValidationResult(Parameters pOut, String vs, String server) {
     boolean ok = false;
     String message = "No Message returned";
     String display = null;
@@ -1684,24 +1693,29 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
           unknownSystems.add(((PrimitiveType<?>) p.getValue()).asStringValue());      
         } else if (p.getName().equals("warning-withdrawn")) {
+          String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_WITHDRAWN : I18nConstants.MSG_WITHDRAWN_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_WITHDRAWN : I18nConstants.MSG_WITHDRAWN_SRC, msg, vs, impliedType(msg)));              
           issues.add(iss);
         } else if (p.getName().equals("warning-deprecated")) {
+          String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DEPRECATED : I18nConstants.MSG_DEPRECATED_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DEPRECATED : I18nConstants.MSG_DEPRECATED_SRC, msg, vs, impliedType(msg)));              
           issues.add(iss);
         } else if (p.getName().equals("warning-retired")) {
+          String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_RETIRED : I18nConstants.MSG_RETIRED_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_RETIRED : I18nConstants.MSG_RETIRED_SRC, msg, vs, impliedType(msg)));              
           issues.add(iss);
         } else if (p.getName().equals("warning-experimental")) {
+          String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_EXPERIMENTAL : I18nConstants.MSG_EXPERIMENTAL_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_EXPERIMENTAL : I18nConstants.MSG_EXPERIMENTAL_SRC, msg, vs, impliedType(msg)));              
           issues.add(iss);
         } else if (p.getName().equals("warning-draft")) {
+          String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
           OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DRAFT : I18nConstants.MSG_DRAFT_SRC, ((PrimitiveType<?>) p.getValue()).asStringValue(), vs));              
+          iss.getDetails().setText(formatMessage(vs == null ? I18nConstants.MSG_DRAFT : I18nConstants.MSG_DRAFT_SRC, msg, vs, impliedType(msg)));              
           issues.add(iss);
         } else if (p.getName().equals("cause")) {
           try {
@@ -1718,13 +1732,27 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           } catch (FHIRException e) {
           }
         }
+      } else if (p.hasResource()) {
+        if (p.getName().equals("issues")) {
+          OperationOutcome oo = (OperationOutcome) p.getResource();
+          for (OperationOutcomeIssueComponent iss : oo.getIssue()) {
+            iss.addExtension(ToolingExtensions.EXT_ISSUE_SERVER, new UrlType(server));
+            issues.add(iss);
+          }
+        } else {
+          // nothing?
+        }
       }
     }
     ValidationResult res = null;
     if (!ok) {
-      res = new ValidationResult(IssueSeverity.ERROR, message+" (from "+tcc.getClient().getId()+")", err, null).setTxLink(txLog.getLastId());
+      res = new ValidationResult(IssueSeverity.ERROR, message, err, null).setTxLink(txLog.getLastId());
+      if (code != null) {
+        res.setDefinition(new ConceptDefinitionComponent().setDisplay(display).setCode(code));
+        res.setDisplay(display);
+      }
     } else if (message != null && !message.equals("No Message returned")) { 
-      res = new ValidationResult(IssueSeverity.WARNING, message+" (from "+tcc.getClient().getId()+")", system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog.getLastId());
+      res = new ValidationResult(IssueSeverity.WARNING, message, system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog.getLastId());
     } else if (display != null) {
       res = new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog.getLastId());
     } else {
@@ -1738,6 +1766,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   // --------------------------------------------------------------------------------------------------------------------------------------------------------
   
+  private Object impliedType(String msg) {
+    if (msg.contains("/CodeSystem")) {
+      return "CodeSystem";
+    }
+    if (msg.contains("/ValueSet")) {
+      return "ValueSet";
+    }
+    return "item";
+  }
+
   protected void initTS(String cachePath) throws IOException {
     if (cachePath != null && !new File(cachePath).exists()) {
       Utilities.createDirectory(cachePath);

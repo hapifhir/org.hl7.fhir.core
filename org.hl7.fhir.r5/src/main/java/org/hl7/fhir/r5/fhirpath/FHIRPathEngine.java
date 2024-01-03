@@ -4383,7 +4383,7 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1) {
       String cnt = focus.get(0).primitiveValue();
-      String[] sl = Pattern.compile(param, Pattern.LITERAL).split(cnt);
+      String[] sl = Utilities.simpleSplit(cnt, param);
       for (String s : sl) {
         result.add(new StringType(s));
       }
@@ -6017,7 +6017,7 @@ public class FHIRPathEngine {
         if (url.startsWith(TypeDetails.FP_NS)) {
           return;
         } else {
-          throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, url, "getChildTypesByName");          
+          throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, url, "getChildTypesByName#1");          
         }
       }
       List<StructureDefinition> sdl = new ArrayList<StructureDefinition>();
@@ -6028,14 +6028,14 @@ public class FHIRPathEngine {
         if (m.fixedType != null)  {
           StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(m.fixedType, null), sd);
           if (dt == null) {
-            throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, ProfileUtilities.sdNs(m.fixedType, null), "getChildTypesByName");
+            throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, ProfileUtilities.sdNs(m.fixedType, null), "getChildTypesByName#2");
           }
           sdl.add(dt);
         } else
           for (TypeRefComponent t : m.definition.getType()) {
             StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(t.getCode(), null));
             if (dt == null) {
-              throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, ProfileUtilities.sdNs(t.getCode(), null), "getChildTypesByName");
+              throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, ProfileUtilities.sdNs(t.getCode(), null), "getChildTypesByName#3");
             }
             addTypeAndDescendents(sdl, dt, cu.allStructures());
             // also add any descendant types

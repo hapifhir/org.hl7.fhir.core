@@ -57,8 +57,8 @@ public class DefaultRenderer extends ValidationOutputRenderer {
       int line = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, -1);
       int col = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, -1);
       loc = " @ "+issue.getExpression().get(0).asStringValue() + (line >= 0 && col >= 0 ? " (line " + Integer.toString(line) + ", col" + Integer.toString(col) + ")" : "");
-    } else if (issue.hasLocation()) {
-      loc = " @ "+issue.getLocation().get(0).asStringValue();
+    } else if (issue.hasExpressionOrLocation()) {
+      loc = " @ "+issue.getExpressionOrLocation().get(0).asStringValue();
     } else {
       int line = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, -1);
       int col = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, -1);

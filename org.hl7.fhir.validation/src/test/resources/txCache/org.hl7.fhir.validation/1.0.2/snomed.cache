@@ -3,7 +3,7 @@
   "system" : "http://snomed.info/sct",
   "code" : "27113001",
   "display" : "Body weight"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -14,7 +14,7 @@ v: {
   "display" : "Body weight",
   "code" : "27113001",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -25,7 +25,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "code" : "27113001",
   "display" : "Body weight"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -36,7 +36,7 @@ v: {
   "display" : "Body weight",
   "code" : "27113001",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230731",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

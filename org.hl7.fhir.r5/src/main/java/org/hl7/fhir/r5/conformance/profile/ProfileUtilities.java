@@ -263,6 +263,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       "http://hl7.org/fhir/tools/StructureDefinition/type-specifier",
       "http://hl7.org/fhir/tools/StructureDefinition/xml-choice-group",
       ToolingExtensions.EXT_XML_NAMESPACE, ToolingExtensions.EXT_XML_NAMESPACE_DEPRECATED,
+      ToolingExtensions.EXT_XML_NAME, ToolingExtensions.EXT_XML_NAME_DEPRECATED,
       "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype"
       );
 
