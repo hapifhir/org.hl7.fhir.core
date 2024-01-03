@@ -14,15 +14,16 @@
 }}####
 v: {
   "severity" : "error",
-  "error" : "A definition for CodeSystem urn:oid:2.16.840.1.113883.2.4.4.16.34 could not be found, so the code cannot be validated",
+  "error" : "A definition for CodeSystem 'urn:oid:2.16.840.1.113883.2.4.4.16.34' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "http://local.fhir.org/r3",
   "unknown-systems" : "urn:oid:2.16.840.1.113883.2.4.4.16.34",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -31,7 +32,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-found"
       }],
-      "text" : "A definition for CodeSystem urn:oid:2.16.840.1.113883.2.4.4.16.34 could not be found, so the code cannot be validated"
+      "text" : "A definition for CodeSystem 'urn:oid:2.16.840.1.113883.2.4.4.16.34' could not be found, so the code cannot be validated"
     },
     "location" : ["CodeableConcept.coding[0].system"],
     "expression" : ["CodeableConcept.coding[0].system"]

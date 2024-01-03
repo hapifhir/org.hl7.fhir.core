@@ -15,15 +15,16 @@ v: {
   "severity" : "error",
   "error" : "Coding has no system. A code with no system has no defined meaning, and it cannot be validated. A system should be provided",
   "class" : "UNKNOWN",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
-    "severity" : "error",
+    "severity" : "warning",
     "code" : "invalid",
     "details" : {
       "coding" : [{
@@ -54,15 +55,16 @@ v: {
   "severity" : "error",
   "error" : "Coding has no system. A code with no system has no defined meaning, and it cannot be validated. A system should be provided",
   "class" : "UNKNOWN",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
-    "severity" : "error",
+    "severity" : "warning",
     "code" : "invalid",
     "details" : {
       "coding" : [{

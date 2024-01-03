@@ -572,6 +572,18 @@ public class TerminologyCache {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"definition\" : \""+Utilities.escapeJson(ce.v.getDefinition()).trim()+"\"");
           }
+          if (ce.v.getStatus() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"status\" : \""+Utilities.escapeJson(ce.v.getStatus()).trim()+"\"");
+          }
+          if (ce.v.getServer() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"server\" : \""+Utilities.escapeJson(ce.v.getServer()).trim()+"\"");
+          }
+          if (ce.v.isInactive()) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"inactive\" : true");
+          }
           if (ce.v.getUnknownSystems() != null) {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"unknown-systems\" : \""+Utilities.escapeJson(CommaSeparatedStringBuilder.join(",", ce.v.getUnknownSystems())).trim()+"\"");
@@ -638,12 +650,17 @@ public class TerminologyCache {
       String system = loadJS(o.get("system"));
       String version = loadJS(o.get("version"));
       String definition = loadJS(o.get("definition"));
+      String server = loadJS(o.get("server"));
+      String status = loadJS(o.get("status"));
+      boolean inactive = "true".equals(loadJS(o.get("inactive")));
       String unknownSystems = loadJS(o.get("unknown-systems"));
       OperationOutcome oo = o.has("issues") ? (OperationOutcome) new JsonParser().parse(o.getAsJsonObject("issues")) : null;
       t = loadJS(o.get("class")); 
       TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
       ce.v = new ValidationResult(severity, error, system, version, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code), display, null).setErrorClass(errorClass);
       ce.v.setUnknownSystems(CommaSeparatedStringBuilder.toSet(unknownSystems));
+      ce.v.setServer(server);
+      ce.v.setStatus(inactive, status);
       if (oo != null) {
         ce.v.setIssues(oo.getIssue());
       }
@@ -780,6 +797,26 @@ public class TerminologyCache {
 
   public String getFolder() {
     return folder;
+  }
+
+  public Map<String, String> servers() {
+    Map<String, String> servers = new HashMap<>();
+    servers.put("http://local.fhir.org/r2", "tx.fhir.org");
+    servers.put("http://local.fhir.org/r3", "tx.fhir.org");
+    servers.put("http://local.fhir.org/r4", "tx.fhir.org");
+    servers.put("http://local.fhir.org/r5", "tx.fhir.org");
+
+    servers.put("http://tx-dev.fhir.org/r2", "tx.fhir.org");
+    servers.put("http://tx-dev.fhir.org/r3", "tx.fhir.org");
+    servers.put("http://tx-dev.fhir.org/r4", "tx.fhir.org");
+    servers.put("http://tx-dev.fhir.org/r5", "tx.fhir.org");
+
+    servers.put("http://tx.fhir.org/r2", "tx.fhir.org");
+    servers.put("http://tx.fhir.org/r3", "tx.fhir.org");
+    servers.put("http://tx.fhir.org/r4", "tx.fhir.org");
+    servers.put("http://tx.fhir.org/r5", "tx.fhir.org");
+
+    return servers;
   }
 
 

@@ -16,13 +16,14 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Foreign Facility's United States Agent' for http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C73330 - should be 'UNITED STATES AGENT' (for the language(s) '--')",
   "class" : "UNKNOWN",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -55,30 +56,7 @@ v: {
   "display" : "MANUFACTURE",
   "code" : "C43360",
   "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
-    "code" : "C43360",
-    "display" : "manufacture"
-  }]
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "MANUFACTURE",
-  "code" : "C43360",
-  "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -101,30 +79,7 @@ v: {
   "display" : "Manufactures human prescription drug products",
   "code" : "C106643",
   "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
-    "code" : "C106643",
-    "display" : "Manufactures human prescription drug products"
-  }]
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Manufactures human prescription drug products",
-  "code" : "C106643",
-  "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

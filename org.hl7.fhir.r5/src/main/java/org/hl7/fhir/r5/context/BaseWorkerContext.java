@@ -1761,6 +1761,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     res.setIssues(issues);
     res.setStatus(inactive, status);
     res.setUnknownSystems(unknownSystems);
+    res.setServer(server);
     return res;
   }
 

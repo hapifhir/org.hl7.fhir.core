@@ -18,13 +18,14 @@ v: {
   "code" : "normal",
   "system" : "http://hl7.org/fhir/referencerange-meaning",
   "version" : "3.0.2",
+  "server" : "http://local.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r3"
+      "valueUrl" : "http://local.fhir.org/r3"
     }],
     "severity" : "information",
     "code" : "business-rule",
