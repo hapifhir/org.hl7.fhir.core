@@ -13,6 +13,7 @@ v: {
   "display" : "World",
   "code" : "001",
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -34,6 +35,7 @@ v: {
   "display" : "World",
   "code" : "001",
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -56,6 +58,7 @@ v: {
   "display" : "World",
   "code" : "001",
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

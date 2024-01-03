@@ -12,15 +12,16 @@
 v: {
   "code" : "obs1",
   "severity" : "error",
-  "error" : "A definition for CodeSystem http://example.org/obs-code could not be found, so the code cannot be validated",
+  "error" : "A definition for CodeSystem 'http://example.org/obs-code' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "http://example.org/obs-code",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -29,7 +30,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-found"
       }],
-      "text" : "A definition for CodeSystem http://example.org/obs-code could not be found, so the code cannot be validated"
+      "text" : "A definition for CodeSystem 'http://example.org/obs-code' could not be found, so the code cannot be validated"
     },
     "location" : ["Coding.system"],
     "expression" : ["Coding.system"]

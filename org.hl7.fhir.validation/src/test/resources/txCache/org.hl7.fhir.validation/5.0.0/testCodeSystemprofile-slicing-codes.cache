@@ -12,15 +12,16 @@
 v: {
   "code" : "profile2",
   "severity" : "error",
-  "error" : "A definition for CodeSystem http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes could not be found, so the code cannot be validated",
+  "error" : "A definition for CodeSystem 'http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -29,47 +30,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-found"
       }],
-      "text" : "A definition for CodeSystem http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes could not be found, so the code cannot be validated"
-    },
-    "location" : ["CodeableConcept.coding[0].system"],
-    "expression" : ["CodeableConcept.coding[0].system"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes",
-    "code" : "profile3"
-  }]
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "severity" : "error",
-  "error" : "A definition for CodeSystem http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes could not be found, so the code cannot be validated",
-  "class" : "CODESYSTEM_UNSUPPORTED",
-  "unknown-systems" : "http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "not-found",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-found"
-      }],
-      "text" : "A definition for CodeSystem http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes could not be found, so the code cannot be validated"
+      "text" : "A definition for CodeSystem 'http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes' could not be found, so the code cannot be validated"
     },
     "location" : ["CodeableConcept.coding[0].system"],
     "expression" : ["CodeableConcept.coding[0].system"]
@@ -91,15 +52,16 @@ v: {
 v: {
   "code" : "profile1",
   "severity" : "error",
-  "error" : "A definition for CodeSystem http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes could not be found, so the code cannot be validated",
+  "error" : "A definition for CodeSystem 'http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -108,7 +70,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-found"
       }],
-      "text" : "A definition for CodeSystem http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes could not be found, so the code cannot be validated"
+      "text" : "A definition for CodeSystem 'http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes' could not be found, so the code cannot be validated"
     },
     "location" : ["Coding.system"],
     "expression" : ["Coding.system"]

@@ -16,13 +16,14 @@ v: {
   "code" : "medications",
   "system" : "http://terminology.hl7.org/CodeSystem/list-example-use-codes",
   "version" : "4.0.1",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",

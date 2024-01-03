@@ -14,13 +14,14 @@ v: {
   "code" : "Not-at-all",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "version" : "3.0.0",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",
@@ -51,13 +52,14 @@ v: {
   "code" : "Several-days",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "version" : "3.0.0",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",
@@ -88,13 +90,14 @@ v: {
   "code" : "More than half the days",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "version" : "3.0.0",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",
@@ -125,13 +128,14 @@ v: {
   "code" : "Nearly every day",
   "system" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
   "version" : "3.0.0",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",
