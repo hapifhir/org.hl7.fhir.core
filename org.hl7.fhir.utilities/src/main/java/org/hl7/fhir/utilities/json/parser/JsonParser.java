@@ -52,46 +52,43 @@ import org.hl7.fhir.utilities.json.parser.JsonLexer.TokenType;
 public class JsonParser {
 
   public static JsonObject parseObject(InputStream stream) throws IOException, JsonException {
-    return new JsonParser().parseJsonObject(TextFile.streamToString(stream), false, false);
+    return parseObject(TextFile.streamToString(stream));
   }
   
-  public static JsonObject parseObject(byte[] content) throws IOException, JsonException {
-    return new JsonParser().parseJsonObject(TextFile.bytesToString(content), false, false);
+  public static JsonObject parseObject(byte[] stream) throws IOException, JsonException {
+    return parseObject(TextFile.bytesToString(stream));
   }
 
   public static JsonObject parseObject(String source) throws IOException, JsonException {
-    return new JsonParser().parseJsonObject(source, false, false);
+    return parseObject(source, false);
   }
   
   public static JsonObject parseObject(File source) throws IOException, JsonException {
-    if (!source.exists()) {
-      throw new IOException("File "+source+" not found");
-    }
-    return new JsonParser().setSourceName(source.getAbsolutePath()).parseJsonObject(TextFile.fileToString(source), false, false);
+    return parseObject(TextFile.fileToString(source));
   }
   
   public static JsonObject parseObjectFromFile(String source) throws IOException, JsonException {
-    return new JsonParser().setSourceName(source).parseJsonObject(TextFile.fileToString(source), false, false);
+    return parseObject(TextFile.fileToString(source));
   }
   
   public static JsonObject parseObjectFromUrl(String source) throws IOException, JsonException {
-    return new JsonParser().setSourceName(source).parseJsonObject(TextFile.bytesToString(fetch(source)), false, false);
+    return parseObject(fetch(source));
   }
   
   public static JsonObject parseObject(InputStream stream, boolean isJson5) throws IOException, JsonException {
-    return new JsonParser().parseJsonObject(TextFile.streamToString(stream), isJson5, false);
+    return parseObject(TextFile.streamToString(stream), isJson5);
   }
   
-  public static JsonObject parseObject(byte[] content, boolean isJson5) throws IOException, JsonException {
-    return new JsonParser().parseJsonObject(TextFile.bytesToString(content), isJson5, false);
+  public static JsonObject parseObject(byte[] stream, boolean isJson5) throws IOException, JsonException {
+    return parseObject(TextFile.bytesToString(stream), isJson5);
   }
     
   public static JsonObject parseObject(String source, boolean isJson5) throws IOException, JsonException {
-    return new JsonParser().parseJsonObject(source, isJson5, false);
+    return parseObject(source, isJson5, false);
   }
   
   public static JsonObject parseObjectFromUrl(String source, boolean isJson5) throws IOException, JsonException {
-    return new JsonParser().setSourceName(source).parseJsonObject(TextFile.bytesToString(fetch(source)), isJson5, false);
+    return parseObject(fetch(source), isJson5);
   }
   
   public static JsonObject parseObject(InputStream stream, boolean isJson5, boolean allowDuplicates) throws IOException, JsonException {
@@ -101,7 +98,7 @@ public class JsonParser {
   public static JsonObject parseObject(byte[] stream, boolean isJson5, boolean allowDuplicates) throws IOException, JsonException {
     return parseObject(TextFile.bytesToString(stream), isJson5, allowDuplicates);
   }
-
+    
   public static JsonObject parseObject(String source, boolean isJson5, boolean allowDuplicates) throws IOException, JsonException {
     return new JsonParser().parseJsonObject(source, isJson5, allowDuplicates);
   }
@@ -219,7 +216,6 @@ public class JsonParser {
   private boolean allowUnquotedStrings;
   private boolean itemUnquoted;
   private boolean valueUnquoted;
-  private String sourceName;
 
   private JsonObject parseJsonObject(String source, boolean isJson5, boolean allowDuplicates) throws IOException, JsonException {
     this.allowDuplicates = allowDuplicates;
@@ -231,7 +227,6 @@ public class JsonParser {
 
   private JsonObject parseSource(String source) throws IOException, JsonException {
     lexer = new JsonLexer(source, allowComments, allowUnquotedStrings);
-    lexer.setSourceName(sourceName);
     JsonObject result = new JsonObject();
     lexer.takeComments(result);
     result.setStart(lexer.getLastLocationAWS().copy());
@@ -676,15 +671,4 @@ public class JsonParser {
     res.checkThrowException();
     return res.getContent();
   }
-
-  public String getSourceName() {
-    return sourceName;
-  }
-
-  public JsonParser setSourceName(String sourceName) {
-    this.sourceName = sourceName;
-    return this;
-  }
-  
-  
 }

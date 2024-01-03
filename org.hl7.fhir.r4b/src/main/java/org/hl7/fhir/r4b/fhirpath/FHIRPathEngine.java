@@ -4401,7 +4401,7 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     if (focus.size() == 1) {
       String cnt = focus.get(0).primitiveValue();
-      String[] sl = Utilities.simpleSplit(cnt, param);
+      String[] sl = Pattern.compile(param, Pattern.LITERAL).split(cnt);
       for (String s : sl) {
         result.add(new StringType(s));
       }

@@ -54,7 +54,6 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
@@ -238,8 +237,6 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
     val.setPolicyAdvisor(this);
 
-    if (content.has("wrong-displays"))
-      val.getBaseOptions().setDisplayWarningMode("warning".equals(content.get("wrong-displays").getAsString()));
     if (content.has("allowed-extension-domain"))
       val.getExtensionDomains().add(content.get("allowed-extension-domain").getAsString());
     if (content.has("allowed-extension-domains"))
@@ -656,11 +653,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   private OperationOutcomeIssueComponent findMatchingIssue(OperationOutcome oo, OperationOutcomeIssueComponent iss) {
     for (OperationOutcomeIssueComponent t : oo.getIssue()) {
-      if (t.getExpression().get(0).getValue().equals(iss.getExpression().get(0).getValue()) &&
-          t.getCode() == iss.getCode() && t.getSeverity() == iss.getSeverity() && 
-          (t.hasDiagnostics() ? t.getDiagnostics().equals(iss.getDiagnostics()) : !iss.hasDiagnostics()) && 
-          (t.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER) != null ? t.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER).equals(iss.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER)) : iss.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER) == null) && 
-          textMatches(t.getDetails().getText(), iss.getDetails().getText())) {
+      if (t.getExpression().get(0).getValue().equals(iss.getExpression().get(0).getValue()) && t.getCode() == iss.getCode() && t.getSeverity() == iss.getSeverity()
+          && (t.hasDiagnostics() ? t.getDiagnostics().equals(iss.getDiagnostics()) : !iss.hasDiagnostics()) && textMatches(t.getDetails().getText(), iss.getDetails().getText())) {
         return t;
       }
     }
@@ -771,7 +765,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("validateCodedContent"))
       return CodedContentValidationPolicy.valueOf(content.get("validateCodedContent").getAsString());
     else
-      return CodedContentValidationPolicy.CODE;
+      return CodedContentValidationPolicy.VALUESET;
   }
   @Override
   public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical) throws IOException, FHIRException {

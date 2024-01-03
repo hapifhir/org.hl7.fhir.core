@@ -1,7 +1,6 @@
 package org.hl7.fhir.r5.terminologies.validation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
@@ -42,19 +41,10 @@ public class ValidationProcessInfo {
     return false;
   }
   public String summary() {
-    List<String> msgs = new ArrayList<>();
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("; ");
     for (OperationOutcomeIssueComponent issue : issues) {
-      msgs.add(issue.getDetails().getText());
+      b.append(issue.getDetails().getText());
     }
-    Collections.sort(msgs);
-    return CommaSeparatedStringBuilder.join("; ", msgs);
-  }
-  public List<String> summaryList() {
-    List<String> msgs = new ArrayList<>();
-    for (OperationOutcomeIssueComponent issue : issues) {
-      msgs.add(issue.getDetails().getText());
-    }
-    Collections.sort(msgs);
-    return msgs;
+    return b.toString();
   }
 }

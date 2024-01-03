@@ -13,8 +13,7 @@
   "useServer": "true",
   "useClient": "true",
   "guessSystem": "true",
-  "activeOnly": "false",
-  "membershipOnly": "false",
+  "valueSetMode": "ALL_CHECKS",
   "displayWarningMode":"false",
   "versionFlexible": "false",
   "profile":{

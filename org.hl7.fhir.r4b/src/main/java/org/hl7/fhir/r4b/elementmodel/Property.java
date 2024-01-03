@@ -72,9 +72,9 @@ public class Property {
   }
 
   public String getXmlName() {
-    if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME)) {
+    if (definition.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name")) {
       return ToolingExtensions.readStringExtension(definition,
-          ToolingExtensions.EXT_XML_NAME);
+          "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name");
     } else {
       return getName();
     }

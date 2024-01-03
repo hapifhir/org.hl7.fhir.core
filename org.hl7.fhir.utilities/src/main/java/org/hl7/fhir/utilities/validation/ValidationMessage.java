@@ -65,7 +65,6 @@ import java.text.SimpleDateFormat;
 
 import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -505,7 +504,6 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
 
   private Source source;
-  private String server;
   private int line;
   private int col;
   private String location; // fhirPath
@@ -526,8 +524,6 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private boolean matched; // internal use counting matching filters
   private boolean ignorableError;
   private String invId;
-  private String comment;
-  private List<ValidationMessage> sliceInfo;
 
   /**
    * Constructor
@@ -914,29 +910,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   public void setInvId(String invId) {
     this.invId = invId;
   }
-
-  public String getComment() {
-    return comment;
-  }
-
-  public void setComment(String comment) {
-    this.comment = comment;
-  }
-
-  public List<ValidationMessage> getSliceInfo() {
-    return sliceInfo;
-  }
-
-  public void setSliceInfo(List<ValidationMessage> sliceInfo) {
-    this.sliceInfo = sliceInfo;
-  }
-
-  public String getServer() {
-    return server;
-  }
-
-  public void setServer(String server) {
-    this.server = server;
-  }  
+  
+  
   
 }

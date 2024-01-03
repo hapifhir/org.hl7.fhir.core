@@ -5,7 +5,7 @@
   "version" : "2.0.0",
   "name" : "FHIR Reference Server Teminology Capability Statement",
   "status" : "active",
-  "date" : "2023-12-30T11:30:29.370Z",
+  "date" : "2023-08-28T13:43:31.663Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -14,9 +14,6 @@
   }],
   "description" : "Standard Teminology Capability Statement for the open source Reference FHIR Server provided by Health Intersections",
   "codeSystem" : [{
-    "uri" : "http://cap.org/eCP"
-  },
-  {
     "uri" : "http://cds-hooks.hl7.org/CodeSystem/indicator"
   },
   {
@@ -114,9 +111,6 @@
   },
   {
     "uri" : "http://hl7.org/fhir/audit-event-action"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/audit-event-outcome"
   },
   {
     "uri" : "http://hl7.org/fhir/binding-strength"
@@ -438,9 +432,6 @@
   },
   {
     "uri" : "http://hl7.org/fhir/guide-page-generation"
-  },
-  {
-    "uri" : "http://hl7.org/fhir/guide-parameter-code"
   },
   {
     "uri" : "http://hl7.org/fhir/history-status"
@@ -794,9 +785,6 @@
     "uri" : "http://hl7.org/fhir/structure-definition-kind"
   },
   {
-    "uri" : "http://hl7.org/fhir/subscription-channel-type"
-  },
-  {
     "uri" : "http://hl7.org/fhir/subscription-status"
   },
   {
@@ -845,6 +833,9 @@
     "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-provenance-participant-type"
   },
   {
+    "uri" : "http://hl7.org/fhir/us/core/CodeSystem/us-core-sex-for-clinical-use"
+  },
+  {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/assemble-expectation"
   },
   {
@@ -888,9 +879,6 @@
   },
   {
     "uri" : "http://loinc.org"
-  },
-  {
-    "uri" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl"
   },
   {
     "uri" : "http://nucc.org/provider-taxonomy"
@@ -992,9 +980,6 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/catalogType"
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/cdshooks-indicator"
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/certainty-rating"
   },
   {
@@ -1050,9 +1035,6 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/conceptdomains"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/condition-category"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/condition-clinical"
@@ -1307,9 +1289,6 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra"
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/icd-o-3"
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status"
   },
   {
@@ -1358,9 +1337,6 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/match-grade"
   },
   {
-    "uri" : "http://terminology.hl7.org/CodeSystem/measure-aggregate-method"
-  },
-  {
     "uri" : "http://terminology.hl7.org/CodeSystem/measure-data-usage"
   },
   {
@@ -1371,9 +1347,6 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/measure-scoring"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/measure-supplemental-data"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/measure-type"
@@ -1581,9 +1554,6 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/service-type"
-  },
-  {
-    "uri" : "http://terminology.hl7.org/CodeSystem/sex-parameter-for-clinical-use"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/smart-capabilities"
@@ -3579,9 +3549,6 @@
   },
   {
     "uri" : "http://www.ama-assn.org/go/cpt"
-  },
-  {
-    "uri" : "http://www.cms.gov/Medicare/Coding/ICD10"
   },
   {
     "uri" : "http://www.nlm.nih.gov/research/umls/rxnorm"

@@ -265,7 +265,6 @@ public class I18nConstants {
   public static final String NEEDS_A_SNAPSHOT = "needs_a_snapshot";
   public static final String NODE_TYPE__IS_NOT_ALLOWED = "Node_type__is_not_allowed";
   public static final String NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "None_of_the_provided_codes_are_in_the_value_set";
-  public static final String NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ONE = "None_of_the_provided_codes_are_in_the_value_set_one";
   public static final String UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_";
   public static final String NOT_DONE_YET = "Not_done_yet";
   public static final String NOT_DONE_YET_CANT_FETCH_ = "not_done_yet_cant_fetch_";
@@ -584,7 +583,6 @@ public class I18nConstants {
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_EXPANSION_HAS_MULTIPLE_SYSTEMS = "Unable_to_resolve_system__value_set_expansion_has_multiple_systems";
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_IMPORTS = "Unable_to_resolve_system__value_set_has_imports";
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES = "Unable_to_resolve_system__value_set_has_multiple_matches";
-  public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_MATCHES = "Unable_to_resolve_system__value_set_has_no_matches";
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_NO_SYSTEM = "Unable_to_resolve_system__value_set_has_include_with_no_system";
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_UNKNOWN_SYSTEM = "Unable_to_resolve_system__value_set_has_include_with_unknown_system";
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_FILTER = "Unable_to_resolve_system__value_set_has_include_with_filter";
@@ -598,9 +596,8 @@ public class I18nConstants {
   public static final String UNEXPECTED_CONDITION_IN_DIFFERENTIAL_TYPESLICETYPELISTSIZE__1_AT_ = "Unexpected_condition_in_differential_typeslicetypelistsize__1_at_";
   public static final String UNEXPECTED_DATATYPE_FOR_RDFSTYPE = "Unexpected_datatype_for_rdfstype";
   public static final String UNHANDLED_SITUATION_RESOURCE_IS_PROFILED_TO_MORE_THAN_ONE_OPTION__CANNOT_SORT_PROFILE = "Unhandled_situation_resource_is_profiled_to_more_than_one_option__cannot_sort_profile";
-  public static final String UNKNOWN_CODE_IN = "Unknown_Code_in";
-  public static final String UNKNOWN_CODE_IN_VERSION = "Unknown_Code_in_Version";
-  public static final String UNKNOWN_CODE_IN_FRAGMENT = "UNKNOWN_CODE_IN_FRAGMENT";
+  public static final String UNKNOWN_CODE__IN_ = "Unknown_Code__in_";
+  public static final String UNKNOWN_CODE__IN_FRAGMENT = "UNKNOWN_CODE__IN_FRAGMENT";
   public static final String UNKNOWN_DATA_FORMAT_ = "Unknown_Data_format_";
   public static final String UNKNOWN_DATE_FORMAT_ = "Unknown_Date_format_";
   public static final String UNKNOWN_RESOURCE_TYPE_MISSING_RDFSTYPE = "Unknown_resource_type_missing_rdfstype";
@@ -1041,7 +1038,6 @@ public class I18nConstants {
   public static final String XHTML_IDREF_NOT_FOUND = "XHTML_IDREF_NOT_FOUND";
   public static final String XHTML_IDREF_NOT_MULTIPLE_MATCHES = "XHTML_IDREF_NOT_MULTIPLE_MATCHES";
   public static final String SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH = "SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH";
-  public static final String TX_GENERAL_CC_ERROR_MESSAGE = "TX_GENERAL_CC_ERROR_MESSAGE";
 }
 
 

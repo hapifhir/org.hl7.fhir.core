@@ -57,7 +57,7 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
         tr.td().addText(i.getSeverity().toString());
         XhtmlNode td = tr.td();
         boolean d = false;
-        for (StringType s : i.hasExpression() ? i.getExpression() : i.getLocation()) {
+        for (StringType s : i.getLocation()) {
           if (d)
             td.tx(", ");
           else

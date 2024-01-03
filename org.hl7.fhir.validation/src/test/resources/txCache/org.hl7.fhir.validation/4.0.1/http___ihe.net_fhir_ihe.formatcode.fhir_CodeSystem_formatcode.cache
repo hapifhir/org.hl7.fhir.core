@@ -1,7 +1,8 @@
 -------------------------------------------------------------------------------------
 {"code" : {
-  "system" : "http://hl7.org/fhir/sid/icd-9-cm",
-  "code" : "99.00"
+  "system" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
+  "code" : "urn:ihe:iti:xds:2017:mimeTypeSufficient",
+  "display" : "MimeType sufficient"
 }, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
@@ -10,10 +11,10 @@
   }]
 }}####
 v: {
-  "display" : "Perioperative autologous transfusion of whole blood or blood components",
-  "code" : "99.00",
-  "system" : "http://hl7.org/fhir/sid/icd-9-cm",
-  "version" : "2015",
+  "display" : "mimeType Sufficient",
+  "code" : "urn:ihe:iti:xds:2017:mimeTypeSufficient",
+  "system" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
+  "version" : "1.1.0",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

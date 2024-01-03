@@ -87,6 +87,9 @@ public class TypeDetails {
     
     public ProfiledType(String n) {
       uri = ns(n); 
+      if (uri.equals("http://hl7.org/fhir/StructureDefinition/CDA")) {
+        System.out.println("!"); // #FIXME
+      }
     }
     
     public String getUri() {

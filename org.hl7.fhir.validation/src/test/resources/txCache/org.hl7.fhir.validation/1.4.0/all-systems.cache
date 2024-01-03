@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "Foo"
-}, "url": "https://fhir.infoway-inforoute.ca/ValueSet/canadianjurisdiction", "version": "20170626", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "https://fhir.infoway-inforoute.ca/ValueSet/canadianjurisdiction", "version": "20170626", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "valueSetMode":"ALL_CHECKS", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -10,8 +10,9 @@
 }}####
 v: {
   "severity" : "error",
-  "error" : "The code provided (Foo) is not in the expansion in the value set https://fhir.infoway-inforoute.ca/ValueSet/canadianjurisdiction, and a code is required from this value set. The system http://canadapost.ca/CodeSystem/ProvinceCodes could not be found.",
+  "error" : "The CodeSystem http://canadapost.ca/CodeSystem/ProvinceCodes is unknown; The provided code 'http://canadapost.ca/CodeSystem/ProvinceCodes#Foo' is not in the value set 'https://fhir.infoway-inforoute.ca/ValueSet/canadianjurisdiction|20170626' (from Tx-Server)",
   "class" : "CODESYSTEM_UNSUPPORTED",
+  "unknown-systems" : "http://canadapost.ca/CodeSystem/ProvinceCodes",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }

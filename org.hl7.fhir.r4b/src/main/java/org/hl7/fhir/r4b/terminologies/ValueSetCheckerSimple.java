@@ -62,6 +62,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
 
 public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChecker {
 
@@ -121,7 +122,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     // first, we validate the codings themselves
     List<String> errors = new ArrayList<String>();
     List<String> warnings = new ArrayList<String>();
-    if (!options.isMembershipOnly()) {
+    if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
       for (Coding c : code.getCoding()) {
         if (!c.hasSystem()) {
           warnings.add(context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE));
@@ -140,7 +141,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         }
       }
     }
-    if (valueset != null) {
+    if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       Boolean result = false;
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(",", " and ");
       for (Coding c : code.getCoding()) {
@@ -190,7 +191,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     boolean inExpansion = false;
     boolean inInclude = false;
     String system = code.hasSystem() ? code.getSystem() : getValueSetSystemOrNull();
-    if (!options.isMembershipOnly()) {
+    if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
       if (system == null && !code.hasDisplay()) { // dealing with just a plain code (enum)
         system = systemForCodeInValueSet(code.getCode());
       }
@@ -253,7 +254,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     List<String> warnings = new ArrayList<>();
 
     // then, if we have a value set, we check it's in the value set
-    if (valueset != null) {
+    if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       if ((res == null || res.isOk())) {
         Boolean ok = codeInValueSet(system, code.getCode(), warnings);
         if (ok == null || !ok) {
@@ -365,10 +366,10 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     if (cc == null) {
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
         return new ValidationResult(IssueSeverity.WARNING,
-            context.formatMessage(I18nConstants.UNKNOWN_CODE_IN_FRAGMENT, code, cs.getUrl()));
+            context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_FRAGMENT, code, cs.getUrl()));
       } else {
         return new ValidationResult(IssueSeverity.ERROR,
-            context.formatMessage(I18nConstants.UNKNOWN_CODE_IN, code, cs.getUrl()));
+            context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_, code, cs.getUrl()));
       }
     }
     if (code.getDisplay() == null) {

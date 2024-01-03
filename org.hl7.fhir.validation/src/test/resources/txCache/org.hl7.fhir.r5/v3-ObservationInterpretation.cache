@@ -4,7 +4,24 @@
   "compose" : {
     "inactive" : true,
     "include" : [{
-      "system" : "urn:ietf:bcp:13"
+      "system" : "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+      "concept" : [{
+        "code" : "LL"
+      },
+      {
+        "code" : "HH"
+      },
+      {
+        "code" : "L",
+        "display" : "Extra Low"
+      },
+      {
+        "code" : "H",
+        "display" : "higher"
+      },
+      {
+        "code" : "P"
+      }]
     }]
   }
 }}####

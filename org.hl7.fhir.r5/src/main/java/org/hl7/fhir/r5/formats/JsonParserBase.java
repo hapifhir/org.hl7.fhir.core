@@ -176,17 +176,6 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     return (JsonArray) j;
   }
   
-  protected JsonObject getJsonObjectFromArray(JsonArray array, int i) throws IOException {
-    JsonElement e = array.get(i);
-    if (e.isJsonObject()) {
-      return (JsonObject) e;
-    }
-    if (e.isJsonNull()) {
-      return new JsonObject();
-    }
-    throw new IOException("Array item "+i+" is a "+e.getClass()+" looking for an Object");
-  }
-  
   /**
    * Compose a resource to a stream, possibly using pretty presentation for a human reader (used in the spec, for example, but not normally in production)
    * @throws IOException 

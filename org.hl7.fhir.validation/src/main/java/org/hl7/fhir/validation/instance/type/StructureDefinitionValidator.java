@@ -576,9 +576,6 @@ public class StructureDefinitionValidator extends BaseValidator {
                   StructureDefinition sd = context.fetchTypeDefinition(rootPath);
                   if (sd != null && sd.getKind() == StructureDefinitionKind.RESOURCE) {
                     fpe.checkOnTypes(vc, rootPath, types, fpe.parse(exp), warnings);
-                  } else if (sd != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
-                    String tn = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_LOGICAL_CONTAINER);
-                    fpe.checkOnTypes(vc, tn == null ? rootPath : tn, types, fpe.parse(exp), warnings);
                   } else {
                     fpe.checkOnTypes(vc, "DomainResource", types, fpe.parse(exp), warnings);
                   }
@@ -1081,7 +1078,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         }
       }
     }
-    if (ToolingExtensions.readBoolExtension(t,  ToolingExtensions.EXT_LOGICAL_TARGET)) {
+    if (ToolingExtensions.readBoolExtension(t,  "http://hl7.org/fhir/tools/StructureDefinition/logical-target")) {
       return true;
     }
     return false;

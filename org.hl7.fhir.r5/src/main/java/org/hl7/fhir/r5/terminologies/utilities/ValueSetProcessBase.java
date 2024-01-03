@@ -24,26 +24,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 public class ValueSetProcessBase {
 
-  public enum OpIssueCode {
-    NotInVS, ThisNotInVS, InvalidCode, Display, NotFound, CodeRule, VSProcessing, InferFailed, StatusCheck, InvalidData;
-    
-    public String toCode() {
-      switch (this) {
-      case CodeRule: return "code-rule";
-      case Display: return "invalid-display";
-      case InferFailed: return "cannot-infer";
-      case InvalidCode: return "invalid-code";
-      case NotFound: return "not-found";
-      case NotInVS: return "not-in-vs";
-      case InvalidData: return "invalid-data";
-      case StatusCheck: return "status-check";
-      case ThisNotInVS: return "this-code-not-in-vs";
-      case VSProcessing: return "vs-invalid";
-      default:
-        return "??";      
-      }
-    }
-  }
   protected IWorkerContext context;
   protected TerminologyOperationContext opContext;
   protected List<String> requiredSupplements = new ArrayList<>();
@@ -116,7 +96,7 @@ public class ValueSetProcessBase {
   }
 
 
-  protected List<OperationOutcomeIssueComponent> makeIssue(IssueSeverity level, IssueType type, String location, String message, OpIssueCode code) {
+  protected List<OperationOutcomeIssueComponent> makeIssue(IssueSeverity level, IssueType type, String location, String message) {
     OperationOutcomeIssueComponent result = new OperationOutcomeIssueComponent();
     switch (level) {
     case ERROR:
@@ -135,12 +115,8 @@ public class ValueSetProcessBase {
     result.setCode(type);
     if (location != null) {
       result.addLocation(location);
-      result.addExpression(location);
     }
     result.getDetails().setText(message);
-    if (code != null) {
-      result.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", code.toCode(), null);
-    }
     ArrayList<OperationOutcomeIssueComponent> list = new ArrayList<>();
     list.add(result);
     return list;
@@ -167,7 +143,7 @@ public class ValueSetProcessBase {
   }
 
   private List<OperationOutcomeIssueComponent> makeStatusIssue(String path, String id, String msg, CanonicalResource resource) {
-    List<OperationOutcomeIssueComponent> iss = makeIssue(IssueSeverity.INFORMATION, IssueType.BUSINESSRULE, null, context.formatMessage(msg, resource.getVersionedUrl(), null, resource.fhirType()), OpIssueCode.StatusCheck);
+    List<OperationOutcomeIssueComponent> iss = makeIssue(IssueSeverity.INFORMATION, IssueType.BUSINESSRULE, path, context.formatMessage(msg, resource.getVersionedUrl()));
 
     // this is a testing hack - see TerminologyServiceTests
     iss.get(0).setUserData("status-msg-name", "warning-"+id);

@@ -1524,19 +1524,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 c.addPiece(gen.new Piece(null, "Instances of this type are validated using an unknown approach: "+ps, null).addStyle("font-weight:bold"));
               }              
             }
-            Extension lc = ToolingExtensions.getExtension(profile, ToolingExtensions.EXT_LOGICAL_CONTAINER);
-            if (lc != null && lc.hasValueUriType()) {
-              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
-              c.getPieces().add(gen.new Piece(null, translate("sd.table", "Logical Container")+": ", "The root class that contains instances of this class").addStyle("font-weight:bold"));
-              
-              String uri = lc.getValue().primitiveValue();
-              StructureDefinition lct = context.getContext().fetchTypeDefinition(uri);
-              if (lct != null) {
-                c.addPiece(gen.new Piece(lct.getWebPath(), lct.present(), null));                       
-              } else {
-                c.addPiece(gen.new Piece(null, uri, null));                       
-              }
-            }
           }
         }
         if (definition != null) {
@@ -3596,18 +3583,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } else {
         tableRow(tbl, "Logical Model", null, strikethrough, "Instances of this logical model cannot be the target of a Reference");
       }
-
-      Extension lc = ToolingExtensions.getExtension(sd, ToolingExtensions.EXT_LOGICAL_CONTAINER);
-      if (lc != null && lc.hasValueUriType()) {
-        String uri = lc.getValue().primitiveValue();
-        StructureDefinition lct = context.getContext().fetchTypeDefinition(uri);
-        if (lct != null) {
-          tableRowLink(tbl, "Logical Container", null, strikethrough, lct.present(), lct.getWebPath());        
-        } else {
-          tableRow(tbl, "Logical Container", null, strikethrough, uri);        
-        }
-      }
-      
       String ps = ToolingExtensions.readStringExtension(sd, ToolingExtensions.EXT_PROFILE_STYLE);
       if (ps != null) {
         if ("cda".equals(ps)) {
@@ -4006,17 +3981,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
       addFirstCell(name, defRef, tr);
       tr.td().tx(text);
-    }
-  }
-
-  private void tableRowLink(XhtmlNode x, String name, String defRef, boolean strikethrough, String text, String link) throws IOException {
-    if (!Utilities.noString(text)) {
-      var tr = x.tr();
-      if (strikethrough) {
-        tr.style("text-decoration: line-through");
-      }
-      addFirstCell(name, defRef, tr);
-      tr.td().ah(link).tx(text);
     }
   }
 

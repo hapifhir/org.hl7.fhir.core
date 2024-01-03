@@ -201,14 +201,8 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
-  public ITerminologyClient setAcceptLanguage(String lang) {
-    client.setAcceptLanguage(lang);
-    return this;
-  }
-  
-  @Override
-  public ITerminologyClient setContentLanguage(String lang) {
-    client.setContentLanguage(lang);
+  public ITerminologyClient setLanguage(String lang) {
+    client.setLanguage(lang);
     return this;
   }
 }
