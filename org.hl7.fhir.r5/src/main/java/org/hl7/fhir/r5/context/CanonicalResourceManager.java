@@ -377,9 +377,6 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     List<CachedCanonicalResource<T>> set = listForUrl.get(cr.getUrl());
     set.add(cr);
     if (set.size() > 1) {
-      if ("urn:oid:2.16.840.1.113883.6.238".equals(cr.getUrl())) {
-        System.out.println("!");
-      }
       Collections.sort(set, new MetadataResourceVersionComparator<CachedCanonicalResource<T>>());
     }
 

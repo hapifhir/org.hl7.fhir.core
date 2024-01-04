@@ -1,0 +1,67 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:ietf:bcp:47",
+  "code" : "fr-CA"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "French (Region=Canada)",
+  "code" : "fr-CA",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:ietf:bcp:47",
+  "code" : "fr-CA"
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages--0", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "French (Region=Canada)",
+  "code" : "fr-CA",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:ietf:bcp:47",
+  "code" : "fr-CA"
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "French (Region=Canada)",
+  "code" : "fr-CA",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

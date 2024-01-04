@@ -1,0 +1,40 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://terminology.hl7.org/CodeSystem/v2-0360|2.7",
+  "code" : "BS",
+  "display" : "Bachelor of Science"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Bachelor of Science",
+  "code" : "BS",
+  "system" : "http://terminology.hl7.org/CodeSystem/v2-0360|2.7",
+  "version" : "0360",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to draft CodeSystem http://terminology.hl7.org/CodeSystem/v2-0360|2.7|0360"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
