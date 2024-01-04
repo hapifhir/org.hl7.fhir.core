@@ -172,6 +172,22 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     public boolean isHint() {
       return this == INFORMATION;
     }
+    
+    public static IssueSeverity max(IssueSeverity l1, IssueSeverity l2) {
+      switch (l1) {
+      case ERROR:
+        return l1 == FATAL ? FATAL : ERROR;
+      case FATAL:
+        return FATAL;
+      case INFORMATION:
+        return l2;
+      case NULL:
+        return l2;
+      case WARNING:
+        return l2 == INFORMATION ? WARNING : l2;
+      }
+      return null;
+    }
   }
 
   public enum IssueType {
@@ -702,7 +718,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   }
 
   public String summary() {
-    return level.toString()+" @ "+location+(line>= 0 && col >= 0 ? " (line "+Integer.toString(line)+", col"+Integer.toString(col)+"): " : ": ") +message +(source != null ? " (src = "+source+")" : "");
+    return level.toString()+" @ "+location+(line>= 0 && col >= 0 ? " (line "+Integer.toString(line)+", col"+Integer.toString(col)+"): " : ": ") +message +(server != null ? " (src = "+server+")" : "");
   }
 
 

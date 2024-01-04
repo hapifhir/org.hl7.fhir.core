@@ -466,47 +466,6 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "1419004",
-    "display" : "Injury of prostate without open wound into abdominal cavity"
-  }],
-  "text" : "Injury of prostate without open wound into abdominal cavity"
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Injury of prostate without open wound into abdominal cavity",
-  "code" : "1419004",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
-  "server" : "http://local.fhir.org/r4",
-  "inactive" : true,
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "invalid",
-    "details" : {
-      "text" : "The code '1419004' is valid but is not active"
-    },
-    "location" : ["CodeableConcept.coding[0].code"],
-    "expression" : ["CodeableConcept.coding[0].code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "93880001",
   "display" : "Primary malignant neoplasm of lung (disorder)"
@@ -789,46 +748,6 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "324252006",
-    "display" : "Azithromycin (as azithromycin dihydrate) 250 mg oral capsule"
-  }]
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Azithromycin (as azithromycin dihydrate) 250 mg oral capsule",
-  "code" : "324252006",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
-  "server" : "http://local.fhir.org/r4",
-  "inactive" : true,
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "invalid",
-    "details" : {
-      "text" : "The code '324252006' is valid but is not active"
-    },
-    "location" : ["CodeableConcept.coding[0].code"],
-    "expression" : ["CodeableConcept.coding[0].code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
   "system" : "http://snomed.info/sct",
   "code" : "11840006",
   "display" : "Traveller's Diarrhea (disorder)"
@@ -999,46 +918,6 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "code-rule"
       }],
-      "text" : "The code '602001' is valid but is not active"
-    },
-    "location" : ["CodeableConcept.coding[0].code"],
-    "expression" : ["CodeableConcept.coding[0].code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "602001",
-    "display" : "Ross river fever"
-  }]
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Ross river fever",
-  "code" : "602001",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
-  "server" : "http://local.fhir.org/r4",
-  "inactive" : true,
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "invalid",
-    "details" : {
       "text" : "The code '602001' is valid but is not active"
     },
     "location" : ["CodeableConcept.coding[0].code"],
@@ -1572,47 +1451,6 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "code-rule"
       }],
-      "text" : "The code '1419004' is valid but is not active"
-    },
-    "location" : ["CodeableConcept.coding[0].code"],
-    "expression" : ["CodeableConcept.coding[0].code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "1419004",
-    "display" : "Injury of prostate without open wound into abdominal cavity"
-  }],
-  "text" : "Injury of prostate without open wound into abdominal cavity"
-}, "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Injury of prostate without open wound into abdominal cavity",
-  "code" : "1419004",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
-  "server" : "http://local.fhir.org/r4",
-  "inactive" : true,
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "invalid",
-    "details" : {
       "text" : "The code '1419004' is valid but is not active"
     },
     "location" : ["CodeableConcept.coding[0].code"],

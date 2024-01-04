@@ -46,6 +46,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -171,6 +172,7 @@ import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidationProfileUsageTracker;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.CodedContentValidationAction;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
@@ -1132,7 +1134,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
       if (s == null)
         return true;
-      ok = processTxIssues(errors, s, element, path, false) & ok;
+      ok = processTxIssues(errors, s, element, path, null, false) & ok;
 
       if (s.isOk()) {
         if (s.getMessage() != null && !s.messageIsInIssues()) {
@@ -1396,7 +1398,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   } else {
                     checked = true;
                     ValidationResult vr = checkCodeOnServer(stack, valueset, cc);
-                    bh.see(processTxIssues(errors, vr, element, path, !isBindingStrengthMakesUnknownsMatter(binding)));
+                    bh.see(processTxIssues(errors, vr, element, path, notFoundSeverityForBinding(binding), false));
                     if (!vr.isOk()) {
                       bindingsOk = false;
                       if (vr.getErrorClass() != null && vr.getErrorClass() == TerminologyServiceErrorClass.NOSERVICE) { 
@@ -1475,7 +1477,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (cc.hasCoding()) {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, null, cc);
-        bh.see(processTxIssues(errors, vr, element, path, true));
+        bh.see(processTxIssues(errors, vr, element, path, org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, false));
         timeTracker.tx(t, "vc "+cc.toString());
       }
     }
@@ -1489,25 +1491,30 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * @param binding
    * @return
    */
-  private boolean isBindingStrengthMakesUnknownsMatter(ElementDefinitionBindingComponent binding) {
-    return binding.getStrength() == BindingStrength.REQUIRED || binding.getStrength() != BindingStrength.EXTENSIBLE;
+  private org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity notFoundSeverityForBinding(ElementDefinitionBindingComponent binding) {
+    if (binding.getStrength() == BindingStrength.REQUIRED) {
+      return org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR;
+    } else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
+      return org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
+    } else {
+      return org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION;      
+    }
   }
 
-  private boolean processTxIssues(List<ValidationMessage> errors, ValidationResult vr, Element element, String path, boolean downGradeNotFounds) {
+  private boolean processTxIssues(List<ValidationMessage> errors, ValidationResult vr, Element element, String path, 
+      org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity notFoundLevel, boolean ignoreCantInfer) {
     boolean ok = true;
     if (vr != null) {
       for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
         if (!iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-in-vs") && 
-            !iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "this-code-not-in-vs")) {
+            !iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "this-code-not-in-vs")
+            && !(ignoreCantInfer || iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "cannot-infer"))) {
           OperationOutcomeIssueComponent i = iss.copy();
-          if (downGradeNotFounds && i.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found")) {
-            i.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION);
+          if (notFoundLevel != null && (i.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found"))) {
+            i.setSeverity(notFoundLevel);
           }
           if (baseOptions.isDisplayWarningMode() && i.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR && i.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-display")) {
             i.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING);
-          }
-          if (i.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-display")) {
-            System.out.println("!");
           }
           var vmsg = txIssue(errors, null, vr.getTxLink(), element.line(), element.col(), path, i);
           if (vmsg.isError()) {
@@ -1523,9 +1530,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = true;
     if (isNotBlank(nextCoding.getCode()) && isNotBlank(nextCoding.getSystem()) && context.supportsSystem(nextCoding.getSystem(), baseOptions.getFhirVersion())) {
       ValidationResult vr = checkCodeOnServer(stack, valueset, nextCoding);
-      ok = processTxIssues(errors, vr, element, path, false) && ok;
+      ok = processTxIssues(errors, vr, element, path, null, false) && ok;
 
-      if (vr.getSeverity() != null/* && vr.hasMessage()*/) {
+      if (vr.getSeverity() != null && !vr.messageIsInIssues()) {
         if (vr.getSeverity() == IssueSeverity.INFORMATION) {
           txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
         } else if (vr.getSeverity() == IssueSeverity.WARNING) {
@@ -1589,7 +1596,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     // ignore this since we can't validate but it doesn't matter..
                   } else {
                     ValidationResult vr = checkCodeOnServer(stack, valueset, cc); 
-                    ok = processTxIssues(errors, vr, element, path, !isBindingStrengthMakesUnknownsMatter(binding)) && ok;
+                    ok = processTxIssues(errors, vr, element, path, notFoundSeverityForBinding(binding), false) && ok;
                     if (!vr.isOk()) {
                       bindingsOk = false;
                       if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
@@ -1638,7 +1645,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       String nextVersion = nextCoding.getVersion();
                       if (isNotBlank(nextCode) && isNotBlank(nextSystem) && context.supportsSystem(nextSystem, baseOptions.getFhirVersion())) {
                         ValidationResult vr = checkCodeOnServer(stack, nextCode, nextSystem, nextVersion, null, false);
-                        ok = (processTxIssues(errors, vr, element, path, false)) && ok;
+                        ok = (processTxIssues(errors, vr, element, path, null, false)) && ok;
                         if (!vr.isOk()) {
                           txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_NOTVALID, nextCode, nextSystem);
                         }
@@ -1702,7 +1709,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     if (binding.getStrength() == BindingStrength.REQUIRED) {
                       removeTrackedMessagesForLocation(errors, element, path);
                     }
-                    ok = processTxIssues(errors, vr, element, path, !isBindingStrengthMakesUnknownsMatter(binding)) && ok;
+                    ok = processTxIssues(errors, vr, element, path, notFoundSeverityForBinding(binding), false) && ok;
                     timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
                     if (vr != null && !vr.isOk()) {
                       if (vr.IsNoService())
@@ -1844,7 +1851,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, cc);
-        ok = processTxIssues(errors, vr, element, path, false) && ok;
+        ok = processTxIssues(errors, vr, element, path, null, false) && ok;
         timeTracker.tx(t, "vc "+cc.toString());
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -1883,7 +1890,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, c);
-        ok = processTxIssues(errors, vr, element, path, false) && ok;
+        ok = processTxIssues(errors, vr, element, path, null, false) && ok;
 
         timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
         if (!vr.isOk()) {
@@ -1914,7 +1921,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, value, baseOptions.withLanguage(stack.getWorkingLang()));
-        ok = processTxIssues(errors, vr, element, path, false) && ok;
+        ok = processTxIssues(errors, vr, element, path, null, false) && ok;
         timeTracker.tx(t, "vc "+value);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -1991,7 +1998,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     checked = true;
                     vr = checkCodeOnServer(stack, valueset, c);
                   }
-                  ok = processTxIssues(errors, vr, element, path, !isBindingStrengthMakesUnknownsMatter(binding)) && ok;
+                  ok = processTxIssues(errors, vr, element, path, notFoundSeverityForBinding(binding), binding.getStrength() == BindingStrength.EXTENSIBLE) && ok;
 
                   timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
                   if (binding.getStrength() == BindingStrength.REQUIRED) {
@@ -3430,20 +3437,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = false;
         }
       } else {
-        CodedContentValidationPolicy validationPolicy = getPolicyAdvisor() == null ?
-            CodedContentValidationPolicy.CODE : getPolicyAdvisor().policyForCodedContent(this, valContext, stack.getLiteralPath(), elementContext, profile, BindingKind.PRIMARY, vs, new ArrayList<>());
+        EnumSet<CodedContentValidationAction> validationPolicy = getPolicyAdvisor() == null ?
+            EnumSet.allOf(CodedContentValidationAction.class) : getPolicyAdvisor().policyForCodedContent(this, valContext, stack.getLiteralPath(), elementContext, profile, BindingKind.PRIMARY, null, vs, new ArrayList<>());
 
-        if (validationPolicy != CodedContentValidationPolicy.IGNORE) {
+        if (!validationPolicy.isEmpty()) {
           long t = System.nanoTime();
           ValidationResult vr = null;
           if (binding.getStrength() != BindingStrength.EXAMPLE) {
             ValidationOptions options = baseOptions.withLanguage(stack.getWorkingLang()).withGuessSystem();
-            if (validationPolicy == CodedContentValidationPolicy.VALUESET) {
+            if (!validationPolicy.contains(CodedContentValidationAction.InvalidCode) && !validationPolicy.contains(CodedContentValidationAction.InvalidDisplay)) {
               options = options.withCheckValueSetOnly();              
             }
             vr = checkCodeOnServer(stack, vs, value, options);
           }
-          ok = processTxIssues(errors, vr, element, path, !isBindingStrengthMakesUnknownsMatter(binding)) && ok;
+          ok = processTxIssues(errors, vr, element, path, notFoundSeverityForBinding(binding), binding.getStrength() == BindingStrength.EXTENSIBLE) && ok;
 
           timeTracker.tx(t, "vc "+value+"");
           if (binding.getStrength() == BindingStrength.REQUIRED) {
@@ -5756,7 +5763,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
       ContainedReferenceValidationPolicy containedValidationPolicy = getPolicyAdvisor() == null ?
           ContainedReferenceValidationPolicy.CHECK_VALID : getPolicyAdvisor().policyForContained(this,
-              valContext, context.fhirType(), context.getId(), special, path, parentProfile.getUrl());
+              valContext, parentProfile, child, context.fhirType(), context.getId(), special, path, parentProfile.getUrl());
 
       if (containedValidationPolicy.ignore()) {
         return ok;
@@ -7232,7 +7239,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
 
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet vs, String value, ValidationOptions options) {
-    return checkForInactive(filterOutSpecials(context.validateCode(options, value, vs)), new CodeType(value));
+    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), vs, context.validateCode(options, value, vs)), new CodeType(value));
   }
 
 
@@ -7243,28 +7250,28 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       lang = validationLanguage;
     }
     codingObserver.seeCode(stack, system, version, code, display);
-    return checkForInactive(filterOutSpecials(context.validateCode(baseOptions.withLanguage(lang), system, version, code, checkDisplay ? display : null)), new Coding(system, version, code, display));
+    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), null, context.validateCode(baseOptions.withLanguage(lang), system, version, code, checkDisplay ? display : null)), new Coding(system, version, code, display));
   }
 
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, Coding c) {
     codingObserver.seeCode(stack, c);
     if (false) { // #FIXME
-      return checkForInactive(filterOutSpecials(context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), c, valueset)), c);   
+      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), c, valueset)), c);   
     } else {
-      return checkForInactive(filterOutSpecials(context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), c, valueset)), c);
+      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), c, valueset)), c);
     }
   }
   
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc) {
     codingObserver.seeCode(stack, cc);
     if (false) { // #FIXME
-      return checkForInactive(filterOutSpecials(context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), cc, valueset)), cc);
+      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), cc, valueset)), cc);
     } else {
-      return checkForInactive(filterOutSpecials(context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), cc, valueset)), cc);
+      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), cc, valueset)), cc);
     }
   }
 
-  private ValidationResult filterOutSpecials(ValidationResult vr) {
+  private ValidationResult filterOutSpecials(String path, ValueSet vs, ValidationResult vr) {
     // this is where we hack around problems in the infrastructure that lead to technically correct errors
     // but that are wrong to the validator user
     
@@ -7274,6 +7281,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return new ValidationResult("http://hl7.org/fhirpath/System", null, null, null);
       }
     }
+    
     return vr; 
     
   }

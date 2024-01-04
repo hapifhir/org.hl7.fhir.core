@@ -133,47 +133,6 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "version" : "http://snomed.info/sct/731000124108/version/20210201",
-    "code" : "132037003",
-    "display" : "Pineywoods pig breed"
-  }]
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Pineywoods pig",
-  "code" : "132037003",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/731000124108/version/20230901",
-  "server" : "http://local.fhir.org/r4",
-  "inactive" : true,
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "invalid",
-    "details" : {
-      "text" : "The code '132037003' is valid but is not active"
-    },
-    "location" : ["CodeableConcept.coding[0].code"],
-    "expression" : ["CodeableConcept.coding[0].code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/11000172109/version/20221115",
   "code" : "132037003",

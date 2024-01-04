@@ -86,6 +86,7 @@ import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator.StringWithCode
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
+import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
@@ -348,10 +349,18 @@ public class ValueSetValidator extends ValueSetProcessBase {
     } else if (foundCoding == null && valueset != null) {
       return new ValidationResult(IssueSeverity.ERROR, "Internal Error that should not happen", makeIssue(IssueSeverity.FATAL, IssueType.EXCEPTION, path, "Internal Error that should not happen", OpIssueCode.VSProcessing, null));
     } else if (info.getIssues().size() > 0) {
-      String disp = lookupDisplay(foundCoding);
-      ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
-      cd.setDisplay(disp);
-      return new ValidationResult(IssueSeverity.WARNING, info.summaryList(), foundCoding.getSystem(), getVersion(foundCoding), cd, disp, info.getIssues()).addCodeableConcept(vcc);
+      if (foundCoding == null) {
+        IssueSeverity lvl = IssueSeverity.INFORMATION; 
+        for (OperationOutcomeIssueComponent iss : info.getIssues()) {
+          lvl = IssueSeverity.max(lvl, OperationOutcomeUtilities.convert(iss.getSeverity()));
+        }
+        return new ValidationResult(lvl, info.summary(), info.getIssues());        
+      } else {
+        String disp = lookupDisplay(foundCoding);
+        ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
+        cd.setDisplay(disp);
+        return new ValidationResult(IssueSeverity.WARNING, info.summaryList(), foundCoding.getSystem(), getVersion(foundCoding), cd, disp, info.getIssues()).addCodeableConcept(vcc);
+      }
     } else if (!result) {
       if (valueset != null) {
         throw new Error("what?");
