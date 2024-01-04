@@ -207,5 +207,17 @@ public class XhtmlNodeTest {
     Assertions.assertEquals("<div><p>This <b>is</b> a <b>long</b> paragraph</p></div>", new XhtmlComposer(true, false).compose(x));
   }
 
+  @Test
+  public void testEntityNumberGreaterThanFFFF_Decimal() throws IOException {
+    XhtmlNode x = new XhtmlParser().parse("<div>&#128567;</div>", "div");
+    Assertions.assertEquals("\uD83D\uDE37", x.getFirstElement().getChildNodes().get(0).getContent());
+  }
+
+  @Test
+  public void testEntityNumberGreaterThanFFFF_Hex() throws IOException {
+    XhtmlNode x = new XhtmlParser().parse("<div>&#x1F637;</div>", "div");
+    Assertions.assertEquals("\uD83D\uDE37", x.getFirstElement().getChildNodes().get(0).getContent());
+  }
+
 
 }
