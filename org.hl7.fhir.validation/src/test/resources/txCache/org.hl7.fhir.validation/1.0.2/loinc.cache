@@ -15,6 +15,7 @@ v: {
   "code" : "3141-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r2",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -37,6 +38,7 @@ v: {
   "code" : "3141-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r2",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

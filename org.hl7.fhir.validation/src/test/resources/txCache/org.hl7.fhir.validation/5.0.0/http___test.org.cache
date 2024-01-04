@@ -12,8 +12,9 @@
 v: {
   "code" : "x",
   "severity" : "error",
-  "error" : "A definition for CodeSystem http://test.org could not be found, so the code cannot be validated; The provided code 'http://test.org#x' was not found in the value set 'http://hl7.org/fhir/ValueSet/security-labels|5.0.0'",
+  "error" : "A definition for CodeSystem 'http://test.org' could not be found, so the code cannot be validated; The provided code 'http://test.org#x' was not found in the value set 'http://hl7.org/fhir/ValueSet/security-labels|5.0.0'",
   "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "http://test.org",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -44,7 +45,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-found"
       }],
-      "text" : "A definition for CodeSystem http://test.org could not be found, so the code cannot be validated"
+      "text" : "A definition for CodeSystem 'http://test.org' could not be found, so the code cannot be validated"
     },
     "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
