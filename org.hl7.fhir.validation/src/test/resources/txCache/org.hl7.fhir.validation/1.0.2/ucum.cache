@@ -14,7 +14,7 @@ v: {
   "code" : "[lb_av]",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://local.fhir.org/r2",
+  "server" : "http://tx-dev.fhir.org/r2",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

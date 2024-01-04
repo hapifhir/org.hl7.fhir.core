@@ -12,7 +12,7 @@ v: {
   "display" : "text/plain",
   "code" : "text/plain",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -33,7 +33,7 @@ v: {
   "display" : "json",
   "code" : "json",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -55,14 +55,14 @@ v: {
   "display" : "World",
   "code" : "001",
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",
@@ -91,7 +91,7 @@ v: {
   "display" : "Dutch (Region=Netherlands)",
   "code" : "nl-NL",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -112,7 +112,7 @@ v: {
   "display" : "English (Region=Australia)",
   "code" : "en-AU",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -133,7 +133,7 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -156,14 +156,14 @@ v: {
   "display" : "World",
   "code" : "001",
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",

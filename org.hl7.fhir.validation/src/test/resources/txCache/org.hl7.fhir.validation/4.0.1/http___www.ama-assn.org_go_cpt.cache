@@ -14,7 +14,7 @@ v: {
   "code" : "99234",
   "system" : "http://www.ama-assn.org/go/cpt",
   "version" : "2023",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

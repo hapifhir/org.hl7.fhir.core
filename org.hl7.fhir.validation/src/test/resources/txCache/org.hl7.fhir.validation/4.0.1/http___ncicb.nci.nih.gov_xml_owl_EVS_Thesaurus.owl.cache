@@ -11,31 +11,30 @@
   }]
 }}####
 v: {
-  "display" : "UNITED STATES AGENT",
   "code" : "C73330",
   "severity" : "error",
-  "error" : "Wrong Display Name 'Foreign Facility's United States Agent' for http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C73330 - should be 'UNITED STATES AGENT' (for the language(s) '--')",
-  "class" : "UNKNOWN",
-  "server" : "http://local.fhir.org/r4",
-  "unknown-systems" : "",
+  "error" : "A definition for CodeSystem 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
-    "code" : "invalid",
+    "code" : "not-found",
     "details" : {
       "coding" : [{
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "invalid-display"
+        "code" : "not-found"
       }],
-      "text" : "Wrong Display Name 'Foreign Facility's United States Agent' for http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C73330 - should be 'UNITED STATES AGENT' (for the language(s) '--')"
+      "text" : "A definition for CodeSystem 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl' could not be found, so the code cannot be validated"
     },
-    "location" : ["CodeableConcept.coding[0].display"],
-    "expression" : ["CodeableConcept.coding[0].display"]
+    "location" : ["CodeableConcept.coding[0].system"],
+    "expression" : ["CodeableConcept.coding[0].system"]
   }]
 }
 
@@ -53,13 +52,31 @@ v: {
   }]
 }}####
 v: {
-  "display" : "MANUFACTURE",
   "code" : "C43360",
-  "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
-  "server" : "http://local.fhir.org/r4",
-  "unknown-systems" : "",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl' could not be found, so the code cannot be validated"
+    },
+    "location" : ["CodeableConcept.coding[0].system"],
+    "expression" : ["CodeableConcept.coding[0].system"]
+  }]
 }
 
 }
@@ -76,13 +93,31 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Manufactures human prescription drug products",
   "code" : "C106643",
-  "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
-  "server" : "http://local.fhir.org/r4",
-  "unknown-systems" : "",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl' could not be found, so the code cannot be validated",
+  "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
   "issues" : {
-  "resourceType" : "OperationOutcome"
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl' could not be found, so the code cannot be validated"
+    },
+    "location" : ["Coding.system"],
+    "expression" : ["Coding.system"]
+  }]
 }
 
 }

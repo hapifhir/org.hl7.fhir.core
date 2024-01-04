@@ -14,7 +14,7 @@ v: {
   "code" : "NA",
   "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
   "version" : "2.1.0",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
