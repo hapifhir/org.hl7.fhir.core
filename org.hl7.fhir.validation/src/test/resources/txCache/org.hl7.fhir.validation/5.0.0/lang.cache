@@ -13,6 +13,7 @@ v: {
   "display" : "French (Region=Canada)",
   "code" : "fr-CA",
   "system" : "urn:ietf:bcp:47",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -34,6 +35,7 @@ v: {
   "display" : "French (Region=Canada)",
   "code" : "fr-CA",
   "system" : "urn:ietf:bcp:47",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -55,6 +57,7 @@ v: {
   "display" : "French (Region=Canada)",
   "code" : "fr-CA",
   "system" : "urn:ietf:bcp:47",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

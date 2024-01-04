@@ -12,6 +12,7 @@ v: {
   "display" : "text/plain",
   "code" : "text/plain",
   "system" : "urn:ietf:bcp:13",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -31,6 +32,7 @@ v: {
   "display" : "json",
   "code" : "json",
   "system" : "urn:ietf:bcp:13",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -51,6 +53,7 @@ v: {
   "display" : "World",
   "code" : "001",
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -85,173 +88,7 @@ v: {
   "display" : "Dutch (Region=Netherlands)",
   "code" : "nl-NL",
   "system" : "urn:ietf:bcp:47",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://loinc.org",
-    "code" : "8480-6",
-    "display" : "Systolic blood pressure"
-  },
-  {
-    "system" : "http://snomed.info/sct",
-    "code" : "271649006",
-    "display" : "Systolic blood pressure"
-  },
-  {
-    "system" : "http://fhir.ch/ig/local",
-    "code" : "3456"
-  }]
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Systolic blood pressure",
-  "code" : "271649006",
-  "severity" : "error",
-  "error" : "A definition for CodeSystem http://fhir.ch/ig/local could not be found, so the code cannot be validated",
-  "class" : "UNKNOWN",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "not-found",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-found"
-      }],
-      "text" : "A definition for CodeSystem http://fhir.ch/ig/local could not be found, so the code cannot be validated"
-    },
-    "location" : ["CodeableConcept.coding[2].system"],
-    "expression" : ["CodeableConcept.coding[2].system"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://loinc.org",
-    "code" : "8462-4",
-    "display" : "Diastolic blood pressure"
-  },
-  {
-    "system" : "http://fhir.ch/ig/local",
-    "code" : "7890"
-  }]
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Diastolic blood pressure",
-  "code" : "8462-4",
-  "severity" : "error",
-  "error" : "A definition for CodeSystem http://fhir.ch/ig/local could not be found, so the code cannot be validated",
-  "class" : "UNKNOWN",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "not-found",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-found"
-      }],
-      "text" : "A definition for CodeSystem http://fhir.ch/ig/local could not be found, so the code cannot be validated"
-    },
-    "location" : ["CodeableConcept.coding[1].system"],
-    "expression" : ["CodeableConcept.coding[1].system"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://snomed.info/sct",
-  "code" : "271649006",
-  "display" : "Systolic blood pressure"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Systolic blood pressure",
-  "code" : "271649006",
-  "severity" : "error",
-  "error" : "The provided code 'http://snomed.info/sct#271649006 ('Systolic blood pressure')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'",
-  "class" : "UNKNOWN",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://snomed.info/sct#271649006 ('Systolic blood pressure')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://loinc.org",
-    "code" : "35200-5",
-    "display" : "Cholest SerPl-msCnc"
-  },
-  {
-    "system" : "http://snomed.info/sct",
-    "code" : "85600001",
-    "display" : "Triacylglycerol"
-  }],
-  "text" : "Cholesterol"
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Triacylglycerol",
-  "code" : "85600001",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -271,6 +108,7 @@ v: {
   "display" : "English (Region=Australia)",
   "code" : "en-AU",
   "system" : "urn:ietf:bcp:47",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -290,6 +128,7 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -311,6 +150,7 @@ v: {
   "display" : "World",
   "code" : "001",
   "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -345,8 +185,9 @@ v: {
 v: {
   "code" : "internal-label",
   "severity" : "error",
-  "error" : "A definition for CodeSystem http://acme.com/config/fhir/codesystems/internal could not be found, so the code cannot be validated; The provided code 'http://acme.com/config/fhir/codesystems/internal#internal-label' was not found in the value set 'http://hl7.org/fhir/ValueSet/designation-use|5.0.0'",
+  "error" : "A definition for CodeSystem 'http://acme.com/config/fhir/codesystems/internal' could not be found, so the code cannot be validated; The provided code 'http://acme.com/config/fhir/codesystems/internal#internal-label' was not found in the value set 'http://hl7.org/fhir/ValueSet/designation-use|5.0.0'",
   "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "http://acme.com/config/fhir/codesystems/internal",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -362,7 +203,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-found"
       }],
-      "text" : "A definition for CodeSystem http://acme.com/config/fhir/codesystems/internal could not be found, so the code cannot be validated"
+      "text" : "A definition for CodeSystem 'http://acme.com/config/fhir/codesystems/internal' could not be found, so the code cannot be validated"
     },
     "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
@@ -402,6 +243,7 @@ v: {
   "code" : "[lb_av]",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -422,6 +264,7 @@ v: {
   "display" : "French (Canada)",
   "code" : "fr-CA",
   "system" : "urn:ietf:bcp:47",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -446,6 +289,7 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#439401001 ('Diagnosis')' was not found in the value set 'http://hl7.org/fhir/ValueSet/condition-category|5.0.0'",
   "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -484,6 +328,7 @@ v: {
   "code" : "d",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

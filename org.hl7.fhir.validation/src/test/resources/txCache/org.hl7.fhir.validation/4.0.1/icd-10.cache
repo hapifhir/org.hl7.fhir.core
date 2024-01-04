@@ -15,46 +15,7 @@ v: {
   "code" : "C18.0",
   "system" : "http://hl7.org/fhir/sid/icd-10",
   "version" : "2019-covid-expanded",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "business-rule",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "status-check"
-      }],
-      "text" : "Reference to experimental CodeSystem http://hl7.org/fhir/sid/icd-10|2019-covid-expanded"
-    }
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://hl7.org/fhir/sid/icd-10",
-    "code" : "C18.0",
-    "display" : "Malignant neoplasm: Caecum"
-  }]
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Caecum",
-  "code" : "C18.0",
-  "system" : "http://hl7.org/fhir/sid/icd-10",
-  "version" : "2019-covid-expanded",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -94,6 +55,7 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Malignant neoplasm of pyriform sinus' for http://hl7.org/fhir/sid/icd-10#C12 - should be 'Malignant neoplasm of piriform sinus' (for the language(s) '--')",
   "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
