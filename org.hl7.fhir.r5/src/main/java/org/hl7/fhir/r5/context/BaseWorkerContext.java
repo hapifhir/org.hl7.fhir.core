@@ -409,7 +409,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       case "ValueSet":
         valueSets.register(r, packageInfo);
         break;
-      case "CodeSystem":
+      case "CodeSystem":        
         codeSystems.register(r, packageInfo);
         break;
       case "ImplementationGuide":
@@ -1352,9 +1352,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       res.setDiagnostics("Local Error: "+localError.trim()+". Server Error: "+res.getMessage());
     } else if (!res.isOk() && res.getUnknownSystems() != null && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
       // we had some problem evaluating locally, but the server doesn't know the code system, so we'll just go with the local error
-      res.setMessage(localWarning);
-      res.setSeverity(IssueSeverity.WARNING);
+      res = new ValidationResult(IssueSeverity.WARNING, localWarning, null);
       res.setDiagnostics("Local Warning: "+localWarning.trim()+". Server Error: "+res.getMessage());
+      return res;
     }
     updateUnsupportedCodeSystems(res, code, codeKey);
     if (cachingAllowed && txCache != null) { // we never cache unsupported code systems - we always keep trying (but only once per run)

@@ -448,52 +448,6 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "coding" : [{
-    "system" : "http://snomed.info/sct",
-    "code" : "112144000",
-    "display" : "Blood group A (finding)"
-  },
-  {
-    "system" : "https://mednet.swiss/fhir/CodeSystem/mni-obs-bloodGroup",
-    "code" : "A",
-    "display" : "Blood group A"
-  }]
-}, "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Blood group A",
-  "code" : "A",
-  "system" : "https://mednet.swiss/fhir/CodeSystem/mni-obs-bloodGroup",
-  "version" : "0.5.0",
-  "server" : "http://local.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "business-rule",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "status-check"
-      }],
-      "text" : "Reference to draft CodeSystem https://mednet.swiss/fhir/CodeSystem/mni-obs-bloodGroup|0.5.0"
-    }
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
   "code" : "kg"
 }, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
@@ -3011,57 +2965,6 @@ v: {
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://loinc.org",
-    "code" : "2708-6",
-    "display" : "Oxygen saturation in Arterial blood"
-  },
-  {
-    "system" : "http://loinc.org",
-    "code" : "59408-5",
-    "display" : "Oxygen saturation in Arterial blood by Pulse oximetry"
-  },
-  {
-    "system" : "urn:iso:std:iso:11073:10101",
-    "code" : "150456",
-    "display" : "MDC_PULS_OXIM_SAT_O2"
-  }]
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "MDC_PULS_OXIM_SAT_O2",
-  "code" : "150456",
-  "system" : "urn:iso:std:iso:11073:10101",
-  "version" : "2023-04-26",
-  "server" : "http://local.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "business-rule",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "status-check"
-      }],
-      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2023-04-26"
-    }
-  }]
 }
 
 }
