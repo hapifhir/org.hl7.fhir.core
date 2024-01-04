@@ -8,11 +8,11 @@
       "display" : "Subsetted"
     }]
   },
-  "url" : "http://localhost/r4/metadata",
+  "url" : "http://tx-dev.fhir.org/r4/metadata",
   "version" : "4.0.1-3.0.0",
   "name" : "FHIR Reference Server Conformance Statement",
   "status" : "active",
-  "date" : "2024-01-04T02:13:07.282Z",
+  "date" : "2024-01-04T06:43:06.502Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -27,8 +27,8 @@
     "releaseDate" : "2023-06-19T19:50:55.040Z"
   },
   "implementation" : {
-    "description" : "FHIR Server running at http://localhost/r4",
-    "url" : "http://localhost/r4"
+    "description" : "FHIR Server running at http://tx-dev.fhir.org/r4",
+    "url" : "http://tx-dev.fhir.org/r4"
   },
   "fhirVersion" : "4.0.1",
   "format" : ["application/fhir+xml",
@@ -60,7 +60,7 @@
     },
     {
       "name" : "versions",
-      "definition" : "http://localhost/r4/OperationDefinition/fso-versions"
+      "definition" : "http://tx-dev.fhir.org/r4/OperationDefinition/fso-versions"
     }]
   }]
 }

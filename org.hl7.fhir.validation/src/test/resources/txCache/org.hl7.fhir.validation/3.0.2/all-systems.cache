@@ -12,7 +12,7 @@ v: {
   "display" : "Finnish",
   "code" : "fi",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://local.fhir.org/r3",
+  "server" : "http://tx-dev.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -34,7 +34,7 @@ v: {
   "code" : "d",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://local.fhir.org/r3",
+  "server" : "http://tx-dev.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -62,7 +62,7 @@ v: {
   "display" : "image/jpg",
   "code" : "image/jpg",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://local.fhir.org/r3",
+  "server" : "http://tx-dev.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -90,7 +90,7 @@ v: {
   "display" : "application/pdf",
   "code" : "application/pdf",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://local.fhir.org/r3",
+  "server" : "http://tx-dev.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -111,7 +111,7 @@ v: {
   "display" : "German (Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://local.fhir.org/r3",
+  "server" : "http://tx-dev.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -135,14 +135,14 @@ v: {
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode' could not be found, so the code cannot be validated; The provided code 'http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode#urn:ihe:iti:xds:2017:mimeTypeSufficient ('MimeType sufficient')' was not found in the value set 'http://hl7.org/fhir/ValueSet/formatcodes|20150326'",
   "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "http://local.fhir.org/r3",
+  "server" : "http://tx-dev.fhir.org/r3",
   "unknown-systems" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -159,7 +159,7 @@ v: {
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r3"
+      "valueUrl" : "http://tx-dev.fhir.org/r3"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -193,7 +193,7 @@ v: {
   "code" : "US",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://local.fhir.org/r3",
+  "server" : "http://tx-dev.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -214,7 +214,7 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://local.fhir.org/r3",
+  "server" : "http://tx-dev.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
