@@ -26,6 +26,10 @@ public class ValidationOptions {
   private boolean englishOk = true;
   private FhirPublication fhirVersion;
 
+  public ValidationOptions() {
+    this(FhirPublication.R5);
+  }
+
   public ValidationOptions(FhirPublication fhirVersion) {
     super();
     this.fhirVersion = fhirVersion;
