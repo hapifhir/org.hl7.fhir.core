@@ -6566,10 +6566,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (count < ed.getMin()) {
               if (isObservationMagicValue(profile, ed)) {                
                 ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_MINIMUM_MAGIC, ed.getSliceName(), getFixedLOINCCode(ed, profile), profile.getVersionedUrl()) && ok;
-              } else if (ed.hasSliceName()) {
-                ok = rulePlural(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, ed.getMin(), I18nConstants.VALIDATION_VAL_PROFILE_MINIMUM_SLICE, profile.getVersionedUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), count) && ok;
               } else {
-                ok = rulePlural(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, count, I18nConstants.VALIDATION_VAL_PROFILE_MINIMUM, profile.getVersionedUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), ed.getMin()) && ok;
+                ok = rulePlural(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, count, I18nConstants.VALIDATION_VAL_PROFILE_MINIMUM, profile.getVersionedUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), Integer.toString(ed.getMin())) && ok;
               }
             }
           }
