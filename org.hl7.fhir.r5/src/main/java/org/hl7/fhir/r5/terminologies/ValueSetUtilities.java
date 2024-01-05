@@ -339,26 +339,31 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static void addProperty(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, String value) {
+  public static org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent addProperty(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, String value) {
     if (value != null) {
-      addProperty(vs, ctxt, url, code, new StringType(value));
+      return addProperty(vs, ctxt, url, code, new StringType(value));
+    } else {
+      return null;
     }
   }
 
-  public static void addProperty(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, Integer value) {
+  public static org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent addProperty(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, Integer value) {
     if (value != null) {
-      addProperty(vs, ctxt, url, code, new IntegerType(value));
+      return addProperty(vs, ctxt, url, code, new IntegerType(value));
+    } else {
+      return null;
     }
   }
 
-  public static void addProperty(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, DataType value) {
+  public static org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent addProperty(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, DataType value) {
     code = defineProperty(vs, url, code);
     org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent p = getProperty(ctxt.getProperty(),  code);
-    if (p != null)
+    if (p != null) {
       p.setValue(value);
-    else
-      ctxt.addProperty().setCode(code).setValue(value);    
-
+    } else {
+      p = ctxt.addProperty().setCode(code).setValue(value);
+    }
+    return p;
   }
 
   private static org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent getProperty(List<org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent> list, String code) {

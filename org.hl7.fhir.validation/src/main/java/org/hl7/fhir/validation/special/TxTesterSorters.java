@@ -101,14 +101,24 @@ public class TxTesterSorters {
 
     @Override
     public int compare(ValueSetExpansionPropertyComponent o1, ValueSetExpansionPropertyComponent o2) {
-      int i = o1.getUri().compareTo(o2.getUri());
+      int i;
+      if (o1.getUri() == null || o2.getUri() == null) {
+        if (o1.getUri() == null && o2.getUri() == null) {
+          i = 0;
+        } else if (o1.getUri() == null) {
+          i = -1;
+        } else {
+          i = 1;
+        }
+      } else {
+        i = o1.getUri().compareTo(o2.getUri());
+      }
       if (i == 0) {
         return o1.getCode().compareTo(o2.getCode());
       } else {
         return i;
       }
     }
-
   }
 
   public static class ExtensionSorter implements Comparator<Extension> {
