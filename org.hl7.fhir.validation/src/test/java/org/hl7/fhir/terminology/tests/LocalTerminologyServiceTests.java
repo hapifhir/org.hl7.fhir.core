@@ -48,7 +48,6 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   private static final String SERVER = FhirSettings.getTxFhirLocal();  
   // private static final String SERVER = "https://r4.ontoserver.csiro.au/fhir";
 
-
   private static boolean localTxRunning() {
     return new File("/Users/grahamegrieve/work/server/server").exists();
   }

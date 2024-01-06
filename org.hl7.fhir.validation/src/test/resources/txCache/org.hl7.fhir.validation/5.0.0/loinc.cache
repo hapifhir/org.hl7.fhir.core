@@ -15,31 +15,7 @@ v: {
   "code" : "85354-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://loinc.org",
-    "code" : "85354-9",
-    "display" : "Blood pressure panel with all children optional"
-  }],
-  "text" : "Blood pressure systolic & diastolic"
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Blood pressure panel with all children optional",
-  "code" : "85354-9",
-  "system" : "http://loinc.org",
-  "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -62,6 +38,7 @@ v: {
   "code" : "8480-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -84,30 +61,7 @@ v: {
   "code" : "8462-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://loinc.org",
-    "code" : "8462-4",
-    "display" : "Diastolic blood pressure"
-  }]
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Diastolic blood pressure",
-  "code" : "8462-4",
-  "system" : "http://loinc.org",
-  "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -129,6 +83,7 @@ v: {
   "code" : "85354-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -151,6 +106,7 @@ v: {
   "code" : "85354-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -172,6 +128,7 @@ v: {
   "code" : "8480-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -193,6 +150,7 @@ v: {
   "code" : "8462-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -215,6 +173,7 @@ v: {
   "code" : "8462-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -238,6 +197,7 @@ v: {
   "code" : "56445-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -259,6 +219,7 @@ v: {
   "code" : "56445-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -282,6 +243,7 @@ v: {
   "code" : "56445-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -306,6 +268,7 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Allergies and adverse reactions' for http://loinc.org#48765-2 - should be one of 28 choices: 'Allergies and adverse reactions Document', 'Allergies &or adverse reactions Doc', '临床文档型' (zh-CN), '临床文档' (zh-CN), '文档' (zh-CN), '文书' (zh-CN), '医疗文书' (zh-CN), '临床医疗文书 医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 变态反应与不良反应 文档.其他' (zh-CN), '杂项类文档' (zh-CN), '其他文档 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 杂项' (zh-CN), '杂项类' (zh-CN), '杂项试验 过敏反应' (zh-CN), '过敏' (zh-CN), 'Allergie e reazioni avverse Documentazione miscellanea Miscellanea Osservazione paziente Punto nel tempo (episodio)' (it-IT), 'Документ Точка во времени' (ru-RU) or 'Момент' (ru-RU) (for the language(s) '--')",
   "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -346,6 +309,7 @@ v: {
   "code" : "56445-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -367,6 +331,7 @@ v: {
   "code" : "56445-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -390,6 +355,7 @@ v: {
   "code" : "56445-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -414,6 +380,7 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Allergies and adverse reactions' for http://loinc.org#48765-2 - should be one of 28 choices: 'Allergies and adverse reactions Document', 'Allergies &or adverse reactions Doc', '临床文档型' (zh-CN), '临床文档' (zh-CN), '文档' (zh-CN), '文书' (zh-CN), '医疗文书' (zh-CN), '临床医疗文书 医疗服务对象' (zh-CN), '客户' (zh-CN), '病人' (zh-CN), '病患' (zh-CN), '病号' (zh-CN), '超系统 - 病人 发现是一个原子型临床观察指标，并不是作为印象的概括陈述。体格检查、病史、系统检查及其他此类观察指标的属性均为发现。它们的标尺对于编码型发现可能是名义型，而对于叙述型文本之中所报告的发现，则可能是叙述型。' (zh-CN), '发现物' (zh-CN), '所见' (zh-CN), '结果' (zh-CN), '结论 变态反应与不良反应 文档.其他' (zh-CN), '杂项类文档' (zh-CN), '其他文档 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 杂项' (zh-CN), '杂项类' (zh-CN), '杂项试验 过敏反应' (zh-CN), '过敏' (zh-CN), 'Allergie e reazioni avverse Documentazione miscellanea Miscellanea Osservazione paziente Punto nel tempo (episodio)' (it-IT), 'Документ Точка во времени' (ru-RU) or 'Момент' (ru-RU) (for the language(s) '--')",
   "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -454,6 +421,7 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'ingeademde O2' for http://loinc.org#3151-8 - should be one of 2 choices: 'Inhaled oxygen flow rate' or 'Inhaled O2 flow rate' (for the language(s) 'en')",
   "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -493,52 +461,7 @@ v: {
   "code" : "3151-8",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://loinc.org",
-    "code" : "3151-8",
-    "display" : "ingeademde O2"
-  }]
-}, "langs":"nl-NL", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "ingeademde O2",
-  "code" : "3151-8",
-  "system" : "http://loinc.org",
-  "version" : "2.74",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "system" : "http://loinc.org",
-  "code" : "8480-6",
-  "display" : "Systolic blood pressure"
-}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "5.0.0", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Systolic blood pressure",
-  "code" : "8480-6",
-  "system" : "http://loinc.org",
-  "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -562,6 +485,7 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Cholesterol [Moles/​volume] in Serum or Plasma' for http://loinc.org#35200-5 - should be one of 50 choices: 'Cholesterol [Mass or Moles/volume] in Serum or Plasma', 'Cholest SerPl-msCnc', '化学' (zh-CN), '化学检验项目' (zh-CN), '化学检验项目类' (zh-CN), '化学类' (zh-CN), '化学试验' (zh-CN), '非刺激耐受型化学检验项目' (zh-CN), '非刺激耐受型化学检验项目类' (zh-CN), '非刺激耐受型化学试验' (zh-CN), '非刺激耐受型化学试验类 可用数量表示的' (zh-CN), '定量性' (zh-CN), '数值型' (zh-CN), '数量型' (zh-CN), '连续数值型标尺 总胆固醇' (zh-CN), '胆固醇总计' (zh-CN), '胆甾醇' (zh-CN), '脂类' (zh-CN), '脂质 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 血清或血浆 质量或摩尔浓度' (zh-CN), '质量或摩尔浓度(单位体积)' (zh-CN), '质量或物质的量浓度(单位体积)' (zh-CN), 'Juhuslik Kvantitatiivne Plasma Seerum Seerum või plasma' (et-EE), 'Cholest' (pt-BR), 'Chol' (pt-BR), 'Choles' (pt-BR), 'Lipid' (pt-BR), 'Cholesterol total' (pt-BR), 'Cholesterols' (pt-BR), 'Level' (pt-BR), 'Point in time' (pt-BR), 'Random' (pt-BR), 'SerPl' (pt-BR), 'SerPlas' (pt-BR), 'SerP' (pt-BR), 'Serum' (pt-BR), 'SR' (pt-BR), 'Plasma' (pt-BR), 'Pl' (pt-BR), 'Plsm' (pt-BR), 'Quantitative' (pt-BR), 'QNT' (pt-BR), 'Quant' (pt-BR), 'Quan' (pt-BR), 'Chemistry' (pt-BR), 'Chimica Concentrazione Sostanza o Massa Plasma Punto nel tempo (episodio) Siero Siero o Plasma' (it-IT), 'Количественный Массовая или Молярная Концентрация Плазма Сыворотка Сыворотка или Плазма Точка во времени' (ru-RU) or 'Момент Холестерин' (ru-RU) (for the language(s) '--')",
   "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -601,31 +525,7 @@ v: {
   "code" : "13457-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://loinc.org",
-    "code" : "13457-7",
-    "display" : "Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation"
-  }],
-  "text" : "Cholesterol"
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Cholesterol in LDL [Mass/volume] in Serum or Plasma by calculation",
-  "code" : "13457-7",
-  "system" : "http://loinc.org",
-  "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -648,30 +548,7 @@ v: {
   "code" : "29463-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "issues" : {
-  "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "coding" : [{
-    "system" : "http://loinc.org",
-    "code" : "29463-7",
-    "display" : "Body Weight"
-  }]
-}, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "Body weight",
-  "code" : "29463-7",
-  "system" : "http://loinc.org",
-  "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -693,6 +570,7 @@ v: {
   "code" : "29463-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -715,6 +593,7 @@ v: {
   "code" : "29463-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -737,6 +616,7 @@ v: {
   "code" : "35200-5",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -760,6 +640,7 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Triglyceride [Moles/​volume] in Serum or Plasma' for http://loinc.org#35217-9 - should be one of 50 choices: 'Triglyceride [Mass or Moles/volume] in Serum or Plasma', 'Trigl SerPl-msCnc', 'TG' (zh-CN), 'Trigly' (zh-CN), '甘油三脂' (zh-CN), '甘油三酸酯' (zh-CN), '三酸甘油酯' (zh-CN), '甘油三酸脂' (zh-CN), '三酸甘油脂 化学' (zh-CN), '化学检验项目' (zh-CN), '化学检验项目类' (zh-CN), '化学类' (zh-CN), '化学试验' (zh-CN), '非刺激耐受型化学检验项目' (zh-CN), '非刺激耐受型化学检验项目类' (zh-CN), '非刺激耐受型化学试验' (zh-CN), '非刺激耐受型化学试验类 可用数量表示的' (zh-CN), '定量性' (zh-CN), '数值型' (zh-CN), '数量型' (zh-CN), '连续数值型标尺 时刻' (zh-CN), '随机' (zh-CN), '随意' (zh-CN), '瞬间 血清或血浆 质量或摩尔浓度' (zh-CN), '质量或摩尔浓度(单位体积)' (zh-CN), '质量或物质的量浓度(单位体积)' (zh-CN), 'Juhuslik Kvantitatiivne Plasma Seerum Seerum või plasma' (et-EE), 'Trigl' (pt-BR), 'Triglycrides' (pt-BR), 'Trig' (pt-BR), 'Triglycerides' (pt-BR), 'Level' (pt-BR), 'Point in time' (pt-BR), 'Random' (pt-BR), 'SerPl' (pt-BR), 'SerPlas' (pt-BR), 'SerP' (pt-BR), 'Serum' (pt-BR), 'SR' (pt-BR), 'Plasma' (pt-BR), 'Pl' (pt-BR), 'Plsm' (pt-BR), 'Quantitative' (pt-BR), 'QNT' (pt-BR), 'Quant' (pt-BR), 'Quan' (pt-BR), 'Chemistry' (pt-BR), 'Chimica Concentrazione Sostanza o Massa Plasma Punto nel tempo (episodio) Siero Siero o Plasma' (it-IT), 'Количественный Массовая или Молярная Концентрация Плазма Сыворотка Сыворотка или Плазма Точка во времени' (ru-RU) or 'Момент' (ru-RU) (for the language(s) '--')",
   "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r4",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -799,6 +680,7 @@ v: {
   "code" : "29463-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -822,6 +704,7 @@ v: {
   "code" : "3141-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -844,6 +727,7 @@ v: {
   "code" : "29463-7",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -867,6 +751,7 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://loinc.org#3141-9' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|5.0.0'",
   "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -907,6 +792,7 @@ v: {
   "code" : "LA6724-4",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -930,6 +816,7 @@ v: {
   "code" : "LA6718-6",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -953,6 +840,7 @@ v: {
   "code" : "LA6721-0",
   "system" : "http://loinc.org",
   "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -977,6 +865,7 @@ v: {
   "severity" : "error",
   "error" : "Wrong whitespace in Display Name 'Active motion ' for http://loinc.org#LA6715-2 - should be 'Active motion' (for the language(s) '--')",
   "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -1018,6 +907,7 @@ v: {
   "severity" : "error",
   "error" : "Wrong whitespace in Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7 - should be 'Good, strong cry; normal rate and effort of breathing' (for the language(s) '--')",
   "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",

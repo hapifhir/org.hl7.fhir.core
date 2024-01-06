@@ -15,6 +15,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '2501-813-16' in the CodeSystem 'http://hl7.org/fhir/sid/ndc' version ''",
   "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",

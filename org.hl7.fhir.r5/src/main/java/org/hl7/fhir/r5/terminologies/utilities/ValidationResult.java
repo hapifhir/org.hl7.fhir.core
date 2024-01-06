@@ -27,6 +27,7 @@ public class ValidationResult {
   private Set<String> unknownSystems;
   private boolean inactive;
   private String status;
+  private String server;
   
   @Override
   public String toString() {
@@ -308,6 +309,14 @@ public class ValidationResult {
       }
     }
     return true;
+  }
+
+  public String getServer() {
+    return server;
+  }
+
+  public void setServer(String server) {
+    this.server = server;
   }
 
 }

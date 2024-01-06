@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.UriType;
+import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -116,7 +117,7 @@ public class ValueSetProcessBase {
   }
 
 
-  protected List<OperationOutcomeIssueComponent> makeIssue(IssueSeverity level, IssueType type, String location, String message, OpIssueCode code) {
+  protected List<OperationOutcomeIssueComponent> makeIssue(IssueSeverity level, IssueType type, String location, String message, OpIssueCode code, String server) {
     OperationOutcomeIssueComponent result = new OperationOutcomeIssueComponent();
     switch (level) {
     case ERROR:
@@ -141,6 +142,9 @@ public class ValueSetProcessBase {
     if (code != null) {
       result.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", code.toCode(), null);
     }
+    if (server != null) {
+      result.addExtension(ToolingExtensions.EXT_ISSUE_SERVER, new UrlType(server));
+    }
     ArrayList<OperationOutcomeIssueComponent> list = new ArrayList<>();
     list.add(result);
     return list;
@@ -162,12 +166,18 @@ public class ValueSetProcessBase {
             && !(source.getStatus() == PublicationStatus.DRAFT || ToolingExtensions.getStandardsStatus(source) == StandardsStatus.DRAFT)) {
           addToIssues(issues, makeStatusIssue(path, "draft", I18nConstants.MSG_DRAFT, resource));
         }
+      } else {
+        if (resource.getExperimental()) {
+          addToIssues(issues, makeStatusIssue(path, "experimental", I18nConstants.MSG_EXPERIMENTAL, resource));
+        } else if ((resource.getStatus() == PublicationStatus.DRAFT || standardsStatus == StandardsStatus.DRAFT)) {
+          addToIssues(issues, makeStatusIssue(path, "draft", I18nConstants.MSG_DRAFT, resource));
+        }
       }
     }
   }
 
   private List<OperationOutcomeIssueComponent> makeStatusIssue(String path, String id, String msg, CanonicalResource resource) {
-    List<OperationOutcomeIssueComponent> iss = makeIssue(IssueSeverity.INFORMATION, IssueType.BUSINESSRULE, null, context.formatMessage(msg, resource.getVersionedUrl(), null, resource.fhirType()), OpIssueCode.StatusCheck);
+    List<OperationOutcomeIssueComponent> iss = makeIssue(IssueSeverity.INFORMATION, IssueType.BUSINESSRULE, null, context.formatMessage(msg, resource.getVersionedUrl(), null, resource.fhirType()), OpIssueCode.StatusCheck, null);
 
     // this is a testing hack - see TerminologyServiceTests
     iss.get(0).setUserData("status-msg-name", "warning-"+id);

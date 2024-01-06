@@ -630,6 +630,7 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_MATCHMULTIPLE = "Validation_VAL_Profile_MatchMultiple";
   public static final String VALIDATION_VAL_PROFILE_MAXIMUM = "Validation_VAL_Profile_Maximum";
   public static final String VALIDATION_VAL_PROFILE_MINIMUM = "Validation_VAL_Profile_Minimum";
+  public static final String VALIDATION_VAL_PROFILE_MINIMUM_SLICE = "Validation_VAL_Profile_Minimum_SLICE";
   public static final String VALIDATION_VAL_PROFILE_MINIMUM_MAGIC = "VALIDATION_VAL_PROFILE_MINIMUM_MAGIC";
   public static final String VALIDATION_VAL_PROFILE_MULTIPLEMATCHES = "Validation_VAL_Profile_MultipleMatches";
   public static final String VALIDATION_VAL_PROFILE_NOCHECKMAX = "Validation_VAL_Profile_NoCheckMax";
@@ -1042,6 +1043,7 @@ public class I18nConstants {
   public static final String XHTML_IDREF_NOT_MULTIPLE_MATCHES = "XHTML_IDREF_NOT_MULTIPLE_MATCHES";
   public static final String SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH = "SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH";
   public static final String TX_GENERAL_CC_ERROR_MESSAGE = "TX_GENERAL_CC_ERROR_MESSAGE";
+  public static final String FHIRPATH_UNKNOWN_EXTENSION = "FHIRPATH_UNKNOWN_EXTENSION";
 }
 
 

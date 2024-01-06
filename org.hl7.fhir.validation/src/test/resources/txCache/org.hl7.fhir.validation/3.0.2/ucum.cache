@@ -14,6 +14,7 @@ v: {
   "code" : "L/min",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
+  "server" : "http://tx-dev.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -35,6 +36,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code '21612-7' in the CodeSystem 'http://unitsofmeasure.org' version '2.0.1'",
   "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -90,6 +92,7 @@ v: {
   "severity" : "error",
   "error" : "Unknown code 'tbl' in the CodeSystem 'http://unitsofmeasure.org' version '2.0.1'",
   "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -145,6 +148,7 @@ v: {
   "code" : "mmol/L",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
+  "server" : "http://tx-dev.fhir.org/r3",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -166,6 +170,7 @@ v: {
   "code" : "[lb_av]",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
+  "server" : "http://tx-dev.fhir.org/r3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
