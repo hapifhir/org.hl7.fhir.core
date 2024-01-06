@@ -12,8 +12,9 @@
 v: {
   "code" : "TURVAKIELTO",
   "severity" : "error",
-  "error" : "A definition for CodeSystem https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS could not be found, so the code cannot be validated; The provided code 'https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS#TURVAKIELTO' was not found in the value set 'http://hl7.org/fhir/ValueSet/security-labels|4.0.1'",
+  "error" : "A definition for CodeSystem 'https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS' could not be found, so the code cannot be validated; The provided code 'https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS#TURVAKIELTO' was not found in the value set 'http://hl7.org/fhir/ValueSet/security-labels|4.0.1'",
   "class" : "CODESYSTEM_UNSUPPORTED",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -44,7 +45,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-found"
       }],
-      "text" : "A definition for CodeSystem https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS could not be found, so the code cannot be validated"
+      "text" : "A definition for CodeSystem 'https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS' could not be found, so the code cannot be validated"
     },
     "location" : ["Coding.system"],
     "expression" : ["Coding.system"]

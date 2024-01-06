@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -59,6 +60,8 @@ import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.AdditionalBindingPurpose;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.CodedContentValidationAction;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.CodedContentValidationPolicy;
@@ -755,10 +758,15 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator, Object appContext,
-                                                               String containerType, String containerId,
-                                                               Element.SpecialElement containingResourceType,
-                                                               String path, String url) {
+  public ContainedReferenceValidationPolicy policyForContained(IResourceValidator validator,
+      Object appContext,
+      StructureDefinition structure,
+      ElementDefinition element,
+      String containerType,
+      String containerId,
+      Element.SpecialElement containingResourceType,
+      String path,
+      String url) {
     if (content.has("validateContains"))
       return ContainedReferenceValidationPolicy.valueOf(content.get("validateContains").getAsString());
     else
@@ -766,13 +774,18 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public CodedContentValidationPolicy policyForCodedContent(IResourceValidator validator, Object appContext, String stackPath, ElementDefinition definition,
-      StructureDefinition structure, BindingKind kind, ValueSet valueSet, List<String> systems) {
-    if (content.has("validateCodedContent"))
-      return CodedContentValidationPolicy.valueOf(content.get("validateCodedContent").getAsString());
-    else
-      return CodedContentValidationPolicy.CODE;
+  public EnumSet<CodedContentValidationAction> policyForCodedContent(IResourceValidator validator,
+      Object appContext,
+      String stackPath,
+      ElementDefinition definition,
+      StructureDefinition structure,
+      BindingKind kind,
+      AdditionalBindingPurpose purpose,
+      ValueSet valueSet,
+      List<String> systems) {
+    return EnumSet.allOf(CodedContentValidationAction.class);
   }
+  
   @Override
   public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical) throws IOException, FHIRException {
     return !url.contains("example.org") && !url.startsWith("http://hl7.org/fhir/invalid");
@@ -841,5 +854,17 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   @Override
   public boolean paramIsType(String name, int index) {
     return false;
+  }
+
+  @Override
+  public EnumSet<ResourceValidationAction> policyForResource(IResourceValidator validator, Object appContext,
+      StructureDefinition type, String path) {
+    return EnumSet.allOf(ResourceValidationAction.class);
+  }
+
+  @Override
+  public EnumSet<ElementValidationAction> policyForElement(IResourceValidator validator, Object appContext,
+      StructureDefinition structure, ElementDefinition element, String path) {
+    return EnumSet.allOf(ElementValidationAction.class);
   }
 }

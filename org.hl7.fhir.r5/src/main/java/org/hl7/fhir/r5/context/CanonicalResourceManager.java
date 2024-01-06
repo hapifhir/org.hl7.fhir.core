@@ -5,6 +5,7 @@ import java.util.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
@@ -35,14 +36,16 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     private String derivation;
     private CanonicalResource resource;
     private boolean hacked;
+    private String content;
     
-    public CanonicalResourceProxy(String type, String id, String url, String version, String supplements, String derivation) {
+    public CanonicalResourceProxy(String type, String id, String url, String version, String supplements, String derivation, String content) {
       super();
       this.type = type;
       this.id = id;
       this.url = url;
       this.version = version;
       this.supplements = supplements;
+      this.content = content;
     }
     
     public String getType() {
@@ -75,6 +78,11 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     
     public String getSupplements() {
       return supplements;
+    }
+
+    
+    public String getContent() {
+      return content;
     }
 
     public String getDerivation() {
@@ -175,6 +183,16 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     public boolean hasVersion() {
       return resource != null ? resource.hasVersion() : proxy.getVersion() != null;
     }
+    public String getContent() {
+      if (resource != null && resource instanceof CodeSystem) {
+        CodeSystemContentMode cnt = ((CodeSystem) resource).getContent();
+        return cnt == null ? null : cnt.toCode();
+      } else if (proxy != null) {
+        return proxy.getContent();
+      } else {
+        return null;
+      }
+    }
     
     @Override
     public String toString() {
@@ -207,6 +225,13 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   public class MetadataResourceVersionComparator<T1 extends CachedCanonicalResource<T>> implements Comparator<T1> {
     @Override
     public int compare(T1 arg1, T1 arg2) {
+      String c1 = arg1.getContent();
+      String c2 = arg2.getContent();
+      if (c1 != null && c2 != null && !c1.equals(c2)) {
+        int i1 = orderOfContent(c1);
+        int i2 = orderOfContent(c2);
+        return Integer.compare(i1, i2);
+      }
       String v1 = arg1.getVersion();
       String v2 = arg2.getVersion();
       if (v1 == null && v2 == null) {
@@ -224,6 +249,17 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
           return mm1.compareTo(mm2);
         }
       }
+    }
+
+    private int orderOfContent(String c) {
+      switch (c) {
+      case "not-present": return 1;
+      case "example": return 2;
+      case "fragment": return 3;
+      case "complete": return 5;
+      case "supplement": return 4;
+      }
+      return 0;
     }
   }
 
@@ -340,7 +376,9 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     addToSupplements(cr);
     List<CachedCanonicalResource<T>> set = listForUrl.get(cr.getUrl());
     set.add(cr);
-    Collections.sort(set, new MetadataResourceVersionComparator<CachedCanonicalResource<T>>());
+    if (set.size() > 1) {
+      Collections.sort(set, new MetadataResourceVersionComparator<CachedCanonicalResource<T>>());
+    }
 
     // -- 4. add to the map all the ways ---------------------------------------------------------------
     String pv = cr.getPackageInfo() != null ? cr.getPackageInfo().getVID() : null;

@@ -724,7 +724,9 @@ public class BaseValidator implements IValidationContextResourceLoader {
     IssueType code = IssueType.fromCode(issue.getCode().toCode());
     IssueSeverity severity = IssueSeverity.fromCode(issue.getSeverity().toCode());
     ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, code, line, col, path, issue.getDetails().getText(), severity).setTxLink(txLink);
-    vmsg.setServer(issue.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER));
+    if (issue.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER) != null) {
+      vmsg.setServer(issue.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER).replace("local.fhir.org", "tx-dev.fhir.org"));
+    }
     errors.add(vmsg);
     return vmsg;
   }

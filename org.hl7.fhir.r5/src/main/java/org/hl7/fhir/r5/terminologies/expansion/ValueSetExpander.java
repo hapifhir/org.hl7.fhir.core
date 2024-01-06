@@ -185,7 +185,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   
   private ValueSetExpansionContainsComponent addCode(WorkingContext wc, String system, String code, String display, String dispLang, ValueSetExpansionContainsComponent parent, List<ConceptDefinitionDesignationComponent> designations, Parameters expParams, 
       boolean isAbstract, boolean inactive, List<ValueSet> filters, boolean noInactive, boolean deprecated, List<ValueSetExpansionPropertyComponent> vsProp, 
-      List<ConceptPropertyComponent> csProps, List<org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent> expProps, List<Extension> csExtList, List<Extension> vsExtList, ValueSetExpansionComponent exp) throws ETooCostly {
+      List<ConceptPropertyComponent> csProps, CodeSystem cs, List<org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent> expProps, List<Extension> csExtList, List<Extension> vsExtList, ValueSetExpansionComponent exp) throws ETooCostly {
     opContext.deadCheck();
     
     if (filters != null && !filters.isEmpty() && !filterContainsCode(filters, system, code, exp))
@@ -280,14 +280,36 @@ public class ValueSetExpander extends ValueSetProcessBase {
         if (csProps != null && p.hasValue()) {
           for (ConceptPropertyComponent cp : csProps) {
             if (p.getValue().primitiveValue().equals(cp.getCode())) {
-              n.addProperty().setCode(cp.getCode()).setValue(cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
+              PropertyComponent pd = cs.getProperty(cp.getCode());
+              String url = pd == null ? null : pd.getUri();
+              if (url == null) {
+                if ("definition".equals(cp.getCode())) {
+                  url = "http://hl7.org/fhir/concept-properties#definition";
+                } else {
+                  // ??
+                }
+              }
+              ValueSetUtilities.addProperty(focus, n, url, cp.getCode(), cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
             }
           }
         }
         if (expProps != null && p.hasValue()) {
           for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent cp : expProps) {
             if (p.getValue().primitiveValue().equals(cp.getCode())) {
-              n.addProperty(cp).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
+              String url = null;
+              for (ValueSetExpansionPropertyComponent t : vsProp) {
+                if (t.hasCode() && t.getCode().equals(cp.getCode())) {
+                  url = t.getUri();
+                }
+              }
+              if (url == null) {
+                if ("definition".equals(cp.getCode())) {
+                  url = "http://hl7.org/fhir/concept-properties#definition";
+                } else {
+                  // TODO: try looking it up from the code system
+                }
+              }
+              ValueSetUtilities.addProperty(focus, n, url, cp.getCode(), cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
             }
           }
         }        
@@ -426,7 +448,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     ValueSetExpansionContainsComponent np = null;
     for (String code : getCodesForConcept(focus, expParams)) {
       ValueSetExpansionContainsComponent t = addCode(wc, focus.getSystem(), code, focus.getDisplay(), vsSrc.getLanguage(), parent, 
-           convert(focus.getDesignation()), expParams, focus.getAbstract(), focus.getInactive(), filters, noInactive, false, vsProps, makeCSProps(focus.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), focus.getProperty(), null, focus.getExtension(), exp);
+           convert(focus.getDesignation()), expParams, focus.getAbstract(), focus.getInactive(), filters, noInactive, false, vsProps, makeCSProps(focus.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), null, focus.getProperty(), null, focus.getExtension(), exp);
       if (np == null) {
         np = t;
       }
@@ -483,7 +505,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     boolean dep = CodeSystemUtilities.isDeprecated(cs, def, false);
     if ((includeAbstract || !abs)  && filterFunc.includeConcept(cs, def) && passesOtherFilters(otherFilters, cs, def.getCode())) {
       for (String code : getCodesForConcept(def, expParams)) {
-        ValueSetExpansionContainsComponent t = addCode(wc, system, code, def.getDisplay(), cs.getLanguage(), parent, def.getDesignation(), expParams, abs, inc, filters, noInactive, dep, vsProps, makeCSProps(def.getDefinition(), def.getProperty()), null, def.getExtension(), null, exp);
+        ValueSetExpansionContainsComponent t = addCode(wc, system, code, def.getDisplay(), cs.getLanguage(), parent, def.getDesignation(), expParams, abs, inc, filters, noInactive, dep, vsProps, makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), null, exp);
         if (np == null) {
           np = t;
         }
@@ -612,6 +634,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     } catch (ETooCostly e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false);
     } catch (Exception e) {
+      e.printStackTrace();
       // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
       // that might fail too, but it might not, later.
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e instanceof EFhirClientException || e instanceof TerminologyServiceException);
@@ -912,7 +935,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ValueSetExpansionContainsComponent c : list) {
       c.checkNoModifiers("Imported Expansion in Code System", "expanding");
       ValueSetExpansionContainsComponent np = addCode(dwc, c.getSystem(), c.getCode(), c.getDisplay(), vsSrc.getLanguage(), parent, null, expParams, c.getAbstract(), c.getInactive(), 
-          filter, noInactive, false, vsProps, makeCSProps(c.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), c.getProperty(), null, c.getExtension(), exp);
+          filter, noInactive, false, vsProps, makeCSProps(c.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), null, c.getProperty(), null, c.getExtension(), exp);
       copyImportContains(c.getContains(), np, expParams, filter, noInactive, vsProps, vsSrc, exp);
     }
   }
@@ -1045,7 +1068,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
           inactive = CodeSystemUtilities.isInactive(cs, def);
           isAbstract = CodeSystemUtilities.isNotSelectable(cs, def);
           addCode(dwc, inc.getSystem(), c.getCode(), !Utilities.noString(c.getDisplay()) ? c.getDisplay() : def.getDisplay(), c.hasDisplay() ? vsSrc.getLanguage() : cs.getLanguage(), null, mergeDesignations(def, convertDesignations(c.getDesignation())), 
-              expParams, isAbstract, inactive, imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), null, def.getExtension(), c.getExtension(), exp);
+              expParams, isAbstract, inactive, imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), c.getExtension(), exp);
         }
       }
     }
@@ -1109,7 +1132,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
             for (String code : getCodesForConcept(def, expParams)) {
               opContext.deadCheck();
               ValueSetExpansionContainsComponent t = addCode(wc, inc.getSystem(), code, def.getDisplay(), cs.getLanguage(), null, def.getDesignation(), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
-                  imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), null, def.getExtension(), null, exp);
+                  imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), null, exp);
             }
           }
         }

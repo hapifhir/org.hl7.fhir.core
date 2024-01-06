@@ -77,15 +77,26 @@ public class OperationOutcomeUtilities {
     return issue;
   }
 
-  private static IssueSeverity convert(org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity level) {
+  public static IssueSeverity convert(org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity level) {
     switch (level) {
     case FATAL : return IssueSeverity.FATAL;
     case ERROR : return IssueSeverity.ERROR;
     case WARNING : return IssueSeverity.WARNING;
     case INFORMATION : return IssueSeverity.INFORMATION;
-	 case NULL : return IssueSeverity.NULL;
+   case NULL : return IssueSeverity.NULL;
     }
     return IssueSeverity.NULL;
+  }
+
+  public static org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity convert(IssueSeverity level) {
+    switch (level) {
+    case FATAL : return org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.FATAL;
+    case ERROR : return org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR;
+    case WARNING : return org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.WARNING;
+    case INFORMATION : return org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.INFORMATION;
+   case NULL : return org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.NULL;
+    }
+    return org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.NULL;
   }
 
   private static IssueType convert(org.hl7.fhir.utilities.validation.ValidationMessage.IssueType type) {

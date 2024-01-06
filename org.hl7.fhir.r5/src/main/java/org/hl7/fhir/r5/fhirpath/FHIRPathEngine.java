@@ -3482,7 +3482,9 @@ public class FHIRPathEngine {
         StructureDefinition sd = worker.fetchResource(StructureDefinition.class, url);
         if (sd != null) {
           return new TypeDetails(CollectionStatus.ORDERED, new ProfiledType(url));
-        } 
+        } else {
+          typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_UNKNOWN_EXTENSION, url), I18nConstants.FHIRPATH_UNKNOWN_EXTENSION));
+        }
         return new TypeDetails(CollectionStatus.SINGLETON, "Extension");
       }
     }

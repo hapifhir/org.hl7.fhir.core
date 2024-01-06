@@ -14,7 +14,8 @@ v: {
   "display" : "MDC_PULS_OXIM_SAT_O2",
   "code" : "150456",
   "system" : "urn:iso:std:iso:11073:10101",
-  "version" : "2023-04-26",
+  "version" : "2022-02-04",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -30,7 +31,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "status-check"
       }],
-      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2023-04-26"
+      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2022-02-04"
     }
   }]
 }

@@ -277,10 +277,12 @@ public class TerminologyServiceTests {
     CodeableConcept cc = null;
     if (p.hasParameter("code")) {
       code = p.getParameterString("code");
-      system = p.getParameterString("system");
-      version = p.getParameterString("systemVersion"); 
+      system = p.getParameterString(isCS ? "url" : "system");
+      version = p.getParameterString(isCS ? "version" : "systemVersion"); 
       display = p.getParameterString("display"); 
-      vm = engine.getContext().validateCode(options.withGuessSystem(), p.getParameterString("system"), p.getParameterString("systemVersion"), p.getParameterString("code"), p.getParameterString("display"), vs);
+      vm = engine.getContext().validateCode(options.withGuessSystem(), 
+          p.getParameterString(isCS ? "url" : "system"), p.getParameterString(isCS ? "version" : "systemVersion"), 
+          p.getParameterString("code"), p.getParameterString("display"), vs);
     } else if (p.hasParameter("coding")) {
       Coding coding = (Coding) p.getParameterValue("coding");
       code = coding.getCode();
