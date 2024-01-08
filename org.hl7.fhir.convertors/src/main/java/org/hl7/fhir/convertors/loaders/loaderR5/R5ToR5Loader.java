@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -47,6 +49,7 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
 
 public class R5ToR5Loader extends BaseLoaderR5 {
 
@@ -127,5 +130,10 @@ public class R5ToR5Loader extends BaseLoaderR5 {
     return "5.0";
   }
 
+
+  @Override
+  public ITerminologyClientFactory txFactory() {
+    return new TerminologyClientFactory(versionString());
+  }
 
 }

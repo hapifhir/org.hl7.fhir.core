@@ -235,4 +235,11 @@ public class TerminologyClientR4 implements ITerminologyClient {
     client.setContentLanguage(lang);
     return this;
   }
+  
+  @Override
+  public int getUseCount() {
+    return client.getUseCount();
+  }
+
+  
 }

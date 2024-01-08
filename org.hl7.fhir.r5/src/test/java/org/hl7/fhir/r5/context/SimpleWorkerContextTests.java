@@ -93,7 +93,7 @@ public class SimpleWorkerContextTests {
   public void beforeEach() {
     context.txCache = terminologyCache;
     context.expParameters = expParameters;
-    context.tcc.setClient(terminologyClient);
+    context.tcc.setMasterClient(terminologyClient);
     context.txLog = txLog;
   }
 
@@ -189,7 +189,7 @@ public class SimpleWorkerContextTests {
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters);
     Mockito.doReturn(pIn).when(context).constructParameters(validationOptions, coding);
-    Mockito.doReturn(expectedValidationResult).when(context).validateOnServer(valueSet, pIn, validationOptions);
+    Mockito.doReturn(expectedValidationResult).when(context).validateOnServer(context.getTxClientManager().getMaster(), valueSet, pIn, validationOptions);
 
     ValidationContextCarrier ctxt = mock(ValidationContextCarrier.class);
 
@@ -233,7 +233,7 @@ public class SimpleWorkerContextTests {
 
     Mockito.verify(valueSetCheckerSimple).validateCode("CodeableConcept", codeableConcept);
     Mockito.verify(terminologyCache).cacheValidation(cacheToken, expectedValidationResult, false);
-    Mockito.verify(context, times(0)).validateOnServer(any(), any(), any());
+    Mockito.verify(context, times(0)).validateOnServer(context.getTxClientManager().getMaster(), any(), any(), any());
   }
 
 
@@ -246,7 +246,7 @@ public class SimpleWorkerContextTests {
     ValidationOptions validationOptions = CacheTestUtils.validationOptions.withNoClient();
     Mockito.doReturn(pIn).when(context).constructParameters(validationOptions, codeableConcept);
 
-    Mockito.doReturn(expectedValidationResult).when(context).validateOnServer(valueSet, pIn, validationOptions);
+    Mockito.doReturn(expectedValidationResult).when(context).validateOnServer(context.getTxClientManager().getMaster(), valueSet, pIn, validationOptions);
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, codeableConcept, valueSet, expParameters);
 
@@ -256,7 +256,7 @@ public class SimpleWorkerContextTests {
 
     Mockito.verify(valueSetCheckerSimple, times(0)).validateCode("CodeableConcept", codeableConcept);
     Mockito.verify(terminologyCache).cacheValidation(cacheToken, expectedValidationResult, true);
-    Mockito.verify(context).validateOnServer(valueSet, pIn, validationOptions);
+    Mockito.verify(context).validateOnServer(context.getTxClientManager().getMaster(),valueSet, pIn, validationOptions);
   }
 
   @Test
@@ -295,7 +295,8 @@ public class SimpleWorkerContextTests {
 
     Mockito.doReturn(cacheToken).when(terminologyCache).generateExpandToken(argThat(new ValueSetMatcher(vs)),eq(true));
 
-    Mockito.doReturn(expParameters).when(context).constructParameters(argThat(new ValueSetMatcher(vs)), eq(true));
+    // #FIXME
+//    Mockito.doReturn(expParameters).when(context).constructParameters(argThat(new ValueSetMatcher(vs)), eq(true));
 
     ValueSet expectedValueSet = new ValueSet();
 
@@ -408,7 +409,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(terminologyCapabilities).when(terminologyCache).getTerminologyCapabilities();
     Mockito.doReturn(capabilitiesStatement).when(terminologyCache).getCapabilityStatement();
 
-    String actual = context.connectToTSServer(terminologyClient, null);
+    String actual = context.connectToTSServer(null, terminologyClient, null);
 
     assertEquals("dummyVersion", actual);
 
@@ -430,7 +431,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(terminologyCapabilities).when(terminologyClient).getTerminologyCapabilities();
     Mockito.doReturn(capabilitiesStatement).when(terminologyClient).getCapabilitiesStatementQuick();
 
-    String actual = context.connectToTSServer(terminologyClient, null);
+    String actual = context.connectToTSServer(null, terminologyClient, null);
 
     assertEquals("dummyVersion", actual);
 

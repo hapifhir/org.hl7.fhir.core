@@ -750,6 +750,10 @@ public class Utilities {
     return f.getParent();
   }
 
+  public static String getDirectoryForURL(String url) {
+    return url.contains("/") && url.lastIndexOf("/") > 10 ? url.substring(0, url.lastIndexOf("/")) : url;
+  }
+
   public static String appendPeriod(String s) {
     if (Utilities.noString(s))
       return s;

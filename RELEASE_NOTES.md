@@ -16,3 +16,4 @@ major upgrade to validation - use terminology server to perform more logic, and 
 * R6 release support
 * IPS tool development
 * Improved errors publishing IGs
+* Refactor Context to support multiple terminology services

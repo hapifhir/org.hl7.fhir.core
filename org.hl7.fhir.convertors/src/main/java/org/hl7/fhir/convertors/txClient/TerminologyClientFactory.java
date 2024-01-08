@@ -3,36 +3,27 @@ package org.hl7.fhir.convertors.txClient;
 import java.net.URISyntaxException;
 
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 
-public class TerminologyClientFactory {
+public class TerminologyClientFactory implements ITerminologyClientFactory {
 
-  public static ITerminologyClient makeClient(String id, String url, String userAgent, FhirPublication v) throws URISyntaxException {
-    if (v == null)
-      return new TerminologyClientR5(id, checkEndsWith("/r4", url), userAgent);
-    switch (v) {
-      case DSTU2016May:
-        return new TerminologyClientR3(id, checkEndsWith("/r3", url), userAgent); // r3 is the least worst match
-      case DSTU1:
-        throw new Error("The version " + v + " is not currently supported");
-      case DSTU2:
-        return new TerminologyClientR2(id, checkEndsWith("/r2", url), userAgent);
-      case R4:
-        return new TerminologyClientR4(id, checkEndsWith("/r4", url), userAgent);
-      case R4B:
-        return new TerminologyClientR4(id, checkEndsWith("/r4", url), userAgent);
-      case R5:
-        return new TerminologyClientR5(id, checkEndsWith("/r4", url), userAgent); // r4 for now, since the terminology is currently the same
-      case STU3:
-        return new TerminologyClientR3(id, checkEndsWith("/r3", url), userAgent);
-      default:
-        throw new Error("The version " + v + " is not currently supported");
-    }
+  private String v;  
+
+  public TerminologyClientFactory(FhirPublication v) {
+    super();
+    this.v = v == null ? null : v.toCode();
+  }
+  
+  public TerminologyClientFactory(String version) {
+    super();
+    this.v = version;
   }
 
-  public static ITerminologyClient makeClient(String id, String url, String userAgent, String v) throws URISyntaxException {
+  public ITerminologyClient makeClient(String id, String url, String userAgent) throws URISyntaxException {
     if (v == null)
       return new TerminologyClientR5(id, checkEndsWith("/r4", url), userAgent);
     v = VersionUtilities.getMajMin(v);
@@ -57,13 +48,18 @@ public class TerminologyClientFactory {
     throw new Error("The version " + v + " is not currently supported");
   }
 
-  private static String checkEndsWith(String term, String url) {
+  private String checkEndsWith(String term, String url) {
     if (url.endsWith(term))
       return url;
     if (Utilities.isTxFhirOrgServer(url)) {
       return Utilities.pathURL(url, term);
     }
     return url;
+  }
+
+  @Override
+  public String getVersion() {
+    return v;
   }
 
 }

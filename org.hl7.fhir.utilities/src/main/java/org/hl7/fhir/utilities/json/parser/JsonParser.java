@@ -672,7 +672,8 @@ public class JsonParser {
   private static byte[] fetch(String source) throws IOException {
     SimpleHTTPClient fetcher = new SimpleHTTPClient();
     fetcher.addHeader("Accept", "application/json, application/fhir+json");
-    HTTPResult res = fetcher.get(source+"?nocache=" + System.currentTimeMillis());
+    String murl = source.contains("?") ? source+"&nocache=" + System.currentTimeMillis() : source+"?nocache=" + System.currentTimeMillis();
+    HTTPResult res = fetcher.get(murl);
     res.checkThrowException();
     return res.getContent();
   }
