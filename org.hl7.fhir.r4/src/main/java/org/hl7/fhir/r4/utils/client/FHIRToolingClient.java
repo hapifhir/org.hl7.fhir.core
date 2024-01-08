@@ -80,6 +80,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   private String userAgent;
   private String acceptLang;
   private String contentLang;
+  private int useCount;
 
   // Pass endpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
@@ -162,6 +163,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public Resource read(String resourceClass, String id) {// TODO Change this to AddressableResource
+    recordUse();
     ResourceRequest<Resource> result = null;
     try {
       result = client.issueGetResourceRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
@@ -178,6 +180,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public <T extends Resource> T read(Class<T> resourceClass, String id) {// TODO Change this to AddressableResource
+    recordUse();
     ResourceRequest<T> result = null;
     try {
       result = client.issueGetResourceRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
@@ -194,6 +197,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public <T extends Resource> T vread(Class<T> resourceClass, String id, String version) {
+    recordUse();
     ResourceRequest<T> result = null;
     try {
       result = client.issueGetResourceRequest(
@@ -211,6 +215,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public <T extends Resource> T getCanonical(Class<T> resourceClass, String canonicalURL) {
+    recordUse();
     ResourceRequest<T> result = null;
     try {
       result = client.issueGetResourceRequest(
@@ -233,6 +238,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public Resource update(Resource resource) {
+    recordUse();
     org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePutRequest(
@@ -263,6 +269,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public <T extends Resource> T update(Class<T> resourceClass, T resource, String id) {
+    recordUse();
     ResourceRequest<T> result = null;
     try {
       result = client.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
@@ -292,6 +299,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public <T extends Resource> Parameters operateType(Class<T> resourceClass, String name, Parameters params) throws IOException {
+    recordUse();
     boolean complex = false;
     for (ParametersParameterComponent p : params.getParameter())
       complex = complex || !(p.getValue() instanceof PrimitiveType);
@@ -324,6 +332,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public Bundle transaction(Bundle batch) {
+    recordUse();
     Bundle transactionResult = null;
     try {
       transactionResult = client.postBatchRequest(resourceAddress.getBaseServiceUri(),
@@ -337,6 +346,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   @SuppressWarnings("unchecked")
   public <T extends Resource> OperationOutcome validate(Class<T> resourceClass, T resource, String id) {
+    recordUse();
     ResourceRequest<T> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveValidateUri(resourceClass, id),
@@ -383,6 +393,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public Bundle fetchFeed(String url) {
+    recordUse();
     Bundle feed = null;
     try {
       feed = client.issueGetFeedRequest(new URI(url), getPreferredResourceFormat(), timeoutLong);
@@ -393,6 +404,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public ValueSet expandValueset(String vsUrl, Parameters expParams) {
+    recordUse();
     Map<String, String> parameters = new HashMap<>();
     parameters.put("url", vsUrl);
     if (expParams != null) {
@@ -422,6 +434,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public ValueSet expandValueset(ValueSet source, Parameters expParams) {
+    recordUse();
     Parameters p = expParams == null ? new Parameters() : expParams.copy();
     p.addParameter().setName("valueSet").setResource(source);
     org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
@@ -440,6 +453,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public Parameters lookupCode(Map<String, String> params) {
+    recordUse();
     org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup", params),
@@ -455,6 +469,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public ValueSet expandValueset(ValueSet source, Parameters expParams, Map<String, String> params) {
+    recordUse();
     Parameters p = expParams == null ? new Parameters() : expParams.copy();
     p.addParameter().setName("valueSet").setResource(source);
     if (params != null) {
@@ -489,6 +504,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public ConceptMap initializeClosure(String name) {
+    recordUse();
     Parameters params = new Parameters();
     params.addParameter().setName("name").setValue(new StringType(name));
     ResourceRequest<Resource> result = null;
@@ -508,6 +524,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public ConceptMap updateClosure(String name, Coding coding) {
+    recordUse();
     Parameters params = new Parameters();
     params.addParameter().setName("name").setValue(new StringType(name));
     params.addParameter().setName("concept").setValue(coding);
@@ -619,10 +636,12 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public Bundle search(String type, String criteria) {
+    recordUse();
     return fetchFeed(Utilities.pathURL(base, type+criteria));
   }
 
   public <T extends Resource> T fetchResource(Class<T> resourceClass, String id) {
+    recordUse();
     org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issueGetResourceRequest(resourceAddress.resolveGetResource(resourceClass, id),
@@ -636,6 +655,13 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     }
     return (T) result.getPayload();
   }
-  
+
+  public int getUseCount() {
+    return useCount;
+  }
+
+  private void recordUse() {
+    useCount++;    
+  }
 
 }

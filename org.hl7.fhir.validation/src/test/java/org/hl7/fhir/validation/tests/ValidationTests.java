@@ -199,7 +199,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       currentVersion = version;
     }
     vCurr = CLONE ? new ValidationEngine(currentEngine) : currentEngine;
-    vCurr.getContext().getTxClient().setLogger(logger);
+    vCurr.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     igLoader = new IgLoader(vCurr.getPcm(), vCurr.getContext(), vCurr.getVersion(), true);
 
     if (content.has("close-up")) {
