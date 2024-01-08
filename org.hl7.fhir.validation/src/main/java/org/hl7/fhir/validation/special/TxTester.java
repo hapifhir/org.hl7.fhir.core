@@ -139,7 +139,7 @@ public class TxTester {
 
   private ITerminologyClient connectToServer() throws URISyntaxException {
     System.out.println("Connect to "+server);
-    return TerminologyClientFactory.makeClient("Test-Server", server, "Tools/Java", FhirPublication.R4);  
+    return new TerminologyClientFactory(FhirPublication.R4).makeClient("Test-Server", server, "Tools/Java");  
   }
 
 

@@ -523,7 +523,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       return "n/a: No Terminology Server";
     } else {
       try {
-        return context.connectToTSServer(TerminologyClientFactory.makeClient("Tx-Server", url, context.getUserAgent(), version), log);
+        TerminologyClientFactory factory = new TerminologyClientFactory(version);
+        return context.connectToTSServer(factory, factory.makeClient("Tx-Server", url, context.getUserAgent()), log);
       } catch (Exception e) {
         if (context.isCanRunWithoutTerminology()) {
           return "n/a: Running without Terminology Server (error: " + e.getMessage() + ")";
