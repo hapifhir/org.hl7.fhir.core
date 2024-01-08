@@ -11,13 +11,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.TerminologyServiceException;
-import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
@@ -198,11 +195,11 @@ public class TerminologyClientManager {
     return map;
   }
 
-  public TerminologyCapabilities getTxcaps() {
+  public TerminologyCapabilities getTxCapabilities() {
     return hasClient() ? serverList.get(0).getTxcaps() : null;
   }
 
-  public void setTxcaps(TerminologyCapabilities txCaps) {
+  public void setTxCapabilities(TerminologyCapabilities txCaps) {
     serverList.get(0).setTxcaps(txCaps);    
   }
 
