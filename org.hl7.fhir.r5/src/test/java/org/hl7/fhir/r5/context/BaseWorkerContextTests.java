@@ -94,7 +94,7 @@ public class BaseWorkerContextTests {
   public void testAddServerValidationParametersDisplayWarning() throws IOException {
     BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
     Parameters pin = new Parameters();
-    baseWorkerContext.addServerValidationParameters(new ValueSet(), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())).setDisplayWarningMode(true));
+    baseWorkerContext.addServerValidationParameters(baseWorkerContext.getTxClientManager().getMaster(), new ValueSet(), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())).setDisplayWarningMode(true));
     assertEquals("lenient-display-validation", pin.getParameter("mode").getValue().primitiveValue());
   }
 
@@ -102,7 +102,7 @@ public class BaseWorkerContextTests {
   public void testAddServerValidationParametersVsAsUrl() throws IOException {
     BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
     Parameters pin = new Parameters();
-    baseWorkerContext.addServerValidationParameters(new ValueSet().setUrl("http://dummy.org/vs"), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())).setVsAsUrl(true));
+    baseWorkerContext.addServerValidationParameters(baseWorkerContext.getTxClientManager().getMaster(), new ValueSet().setUrl("http://dummy.org/vs"), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())).setVsAsUrl(true));
     assertEquals("uri", pin.getParameter("url").getValue().fhirType());
     assertEquals("http://dummy.org/vs", pin.getParameter("url").getValue().primitiveValue());
   }
@@ -112,7 +112,7 @@ public class BaseWorkerContextTests {
     BaseWorkerContext baseWorkerContext = getBaseWorkerContext();
 
     Parameters pin = new Parameters();
-    baseWorkerContext.addServerValidationParameters(new ValueSet(), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())));
+    baseWorkerContext.addServerValidationParameters(baseWorkerContext.getTxClientManager().getMaster(), new ValueSet(), pin, new ValidationOptions(FhirPublication.fromCode(baseWorkerContext.getVersion())));
     assertNull(pin.getParameter("mode"));
   }
 }

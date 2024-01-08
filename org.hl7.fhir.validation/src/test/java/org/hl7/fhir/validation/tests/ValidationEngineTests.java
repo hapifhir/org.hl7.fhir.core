@@ -32,7 +32,7 @@ public class ValidationEngineTests {
       System.out.println("TestCurrentXml: Validate patient-example.xml in Current version");
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
     CacheVerificationLogger logger = new CacheVerificationLogger();
-    ve.getContext().getTxClient().setLogger(logger);
+    ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient-example.xml"), null);
     int e = errors(op);
     int w = warnings(op);
@@ -55,7 +55,7 @@ public class ValidationEngineTests {
       System.out.println("TestCurrentJson: Validate patient-example.json in Current version");
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
     CacheVerificationLogger logger = new CacheVerificationLogger();
-    ve.getContext().getTxClient().setLogger(logger);
+    ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "patient-example.json"), null);
     int e = errors(op);
     int w = warnings(op);
@@ -74,7 +74,7 @@ public class ValidationEngineTests {
       System.out.println("TestCurrentXml: Validate patient-example.xml in Current version");
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", DEF_TX, FhirPublication.R4, "4.3.0");
     CacheVerificationLogger logger = new CacheVerificationLogger();
-    ve.getContext().getTxClient().setLogger(logger);
+    ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient-example.xml"), null);
     int e = errors(op);
     int w = warnings(op);
@@ -97,7 +97,7 @@ public class ValidationEngineTests {
       System.out.println("TestCurrentJson: Validate patient-example.json in Current version");
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4b.core#4.3.0", DEF_TX, FhirPublication.R4, "4.3.0");
     CacheVerificationLogger logger = new CacheVerificationLogger();
-    ve.getContext().getTxClient().setLogger(logger);
+    ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "patient-example.json"), null);
     int e = errors(op);
     int w = warnings(op);
@@ -126,7 +126,7 @@ public class ValidationEngineTests {
       System.out.println("Test140: Validate patient-example.xml in v1.4.0 version");
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r2b.core#1.4.0", DEF_TX, FhirPublication.DSTU2016May, "1.4.0");
     CacheVerificationLogger logger = new CacheVerificationLogger();
-    ve.getContext().getTxClient().setLogger(logger);
+    ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient140.xml"), null);
     if (!TestUtilities.silent)
       for (OperationOutcomeIssueComponent iss : op.getIssue()) {
@@ -154,7 +154,7 @@ public class ValidationEngineTests {
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, FhirPublication.DSTU2, "1.0.2");
     ve.setNoInvariantChecks(true);
     CacheVerificationLogger logger = new CacheVerificationLogger();
-    ve.getContext().getTxClient().setLogger(logger);
+    ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient102.xml"), null);
     if (!TestUtilities.silent)
       for (OperationOutcomeIssueComponent iss : op.getIssue()) {
@@ -182,7 +182,7 @@ public class ValidationEngineTests {
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, FhirPublication.DSTU2, "1.0.2");
     ve.setNoInvariantChecks(true);
     CacheVerificationLogger logger = new CacheVerificationLogger();
-    ve.getContext().getTxClient().setLogger(logger);
+    ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "observation102.json"), null);
     if (!TestUtilities.silent)
       for (OperationOutcomeIssueComponent iss : op.getIssue()) {
@@ -206,7 +206,7 @@ public class ValidationEngineTests {
       System.out.println("Test301: Validate observation301.xml against Core");
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, FhirPublication.STU3, "3.0.2");
     CacheVerificationLogger logger = new CacheVerificationLogger();
-    ve.getContext().getTxClient().setLogger(logger);
+    ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     if (!TestUtilities.silent)
       System.out.println("  .. load USCore");
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "observation301.xml"), null);
@@ -228,7 +228,7 @@ public class ValidationEngineTests {
       System.out.println("Test301USCore: Validate patient300.xml against US-Core");
     ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, FhirPublication.STU3, "3.0.2");
     CacheVerificationLogger logger = new CacheVerificationLogger();
-    ve.getContext().getTxClient().setLogger(logger);
+    ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     IgLoader igLoader = new IgLoader(ve.getPcm(), ve.getContext(), ve.getVersion(), true);
     if (!TestUtilities.silent)
       System.out.println("  .. load USCore");

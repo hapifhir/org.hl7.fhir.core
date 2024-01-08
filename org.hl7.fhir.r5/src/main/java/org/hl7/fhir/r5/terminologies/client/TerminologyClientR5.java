@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.txClient;
+package org.hl7.fhir.r5.terminologies.client;
 
 import java.net.URISyntaxException;
 import java.util.EnumSet;
@@ -44,6 +44,8 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5.TerminologyClientR5Factory;
 import org.hl7.fhir.r5.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -51,6 +53,28 @@ import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
 public class TerminologyClientR5 implements ITerminologyClient {
+
+  public static class TerminologyClientR5Factory implements ITerminologyClientFactory {
+
+    @Override
+    public ITerminologyClient makeClient(String id, String url, String userAgent) throws URISyntaxException {
+      return new TerminologyClientR5(id, checkEndsWith("/r4", url), userAgent);
+    }
+
+    private String checkEndsWith(String term, String url) {
+      if (url.endsWith(term))
+        return url;
+      if (Utilities.isTxFhirOrgServer(url)) {
+        return Utilities.pathURL(url, term);
+      }
+      return url;
+    }
+
+    @Override
+    public String getVersion() {
+      return "5.0.0";
+    }
+  }
 
   private final FHIRToolingClient client;
   private ClientHeaders clientHeaders;
@@ -211,4 +235,14 @@ public class TerminologyClientR5 implements ITerminologyClient {
     client.setContentLanguage(lang);
     return this;
   }
+  
+  @Override
+  public int getUseCount() {
+    return client.getUseCount();
+  }
+
+  public static ITerminologyClientFactory factory() {
+    return new TerminologyClientR5Factory();
+  }
+
 }

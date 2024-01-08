@@ -68,4 +68,5 @@ public interface ITerminologyClient {
   ITerminologyClient setAcceptLanguage(String lang);
   ITerminologyClient setContentLanguage(String lang);
   String getUserAgent();
+  int getUseCount();
 }

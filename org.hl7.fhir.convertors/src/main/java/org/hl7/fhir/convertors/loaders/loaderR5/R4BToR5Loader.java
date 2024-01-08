@@ -38,6 +38,7 @@ import java.util.UUID;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.XmlParser;
@@ -51,6 +52,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
 import org.hl7.fhir.utilities.VersionUtilities;
 
 public class R4BToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {
@@ -142,5 +144,10 @@ public class R4BToR5Loader extends BaseLoaderR5 implements IContextResourceLoade
     return "4.3";
   }
 
+
+  @Override
+  public ITerminologyClientFactory txFactory() {
+    return new TerminologyClientFactory(versionString());
+  }
 
 }

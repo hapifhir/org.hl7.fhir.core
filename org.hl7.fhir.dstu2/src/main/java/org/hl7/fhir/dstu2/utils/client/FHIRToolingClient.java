@@ -96,6 +96,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   private int maxResultSetSize = -1;// _count
   private Conformance conf;
   private ClientUtils utils = new ClientUtils();
+  private int useCount;
 
   // Pass enpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
@@ -213,6 +214,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public <T extends Resource> T read(Class<T> resourceClass, String id) {// TODO Change this to AddressableResource
+    recordUse();
     ResourceRequest<T> result = null;
     try {
       result = utils.issueGetResourceRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
@@ -231,6 +233,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public <T extends Resource> T vread(Class<T> resourceClass, String id, String version) {
+    recordUse();
     ResourceRequest<T> result = null;
     try {
       result = utils.issueGetResourceRequest(
@@ -254,6 +257,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   // fhir/ValueSet?url=http://hl7.org/fhir/ValueSet/clinical-findings&version=0.8
 
   public <T extends Resource> T getCanonical(Class<T> resourceClass, String canonicalURL) {
+    recordUse();
     ResourceRequest<T> result = null;
     try {
       result = utils.issueGetResourceRequest(
@@ -279,6 +283,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public Resource update(Resource resource) {
+    recordUse();
     ResourceRequest<Resource> result = null;
     try {
       List<Header> headers = null;
@@ -315,6 +320,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public <T extends Resource> T update(Class<T> resourceClass, T resource, String id) {
+    recordUse();
     ResourceRequest<T> result = null;
     try {
       List<Header> headers = null;
@@ -515,6 +521,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 //  }
 
   public <T extends Resource> Parameters operateType(Class<T> resourceClass, String name, Parameters params) {
+    recordUse();
     boolean complex = false;
     for (ParametersParameterComponent p : params.getParameter())
       complex = complex || !(p.getValue() instanceof PrimitiveType);
@@ -548,6 +555,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public Bundle transaction(Bundle batch) {
+    recordUse();
     Bundle transactionResult = null;
     try {
       transactionResult = utils.postBatchRequest(resourceAddress.getBaseServiceUri(),
@@ -561,6 +569,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   @SuppressWarnings("unchecked")
   public <T extends Resource> OperationOutcome validate(Class<T> resourceClass, T resource, String id) {
+    recordUse();
     ResourceRequest<T> result = null;
     try {
       result = utils.issuePostRequest(resourceAddress.resolveValidateUri(resourceClass, id),
@@ -705,6 +714,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public Bundle fetchFeed(String url) {
+    recordUse();
     Bundle feed = null;
     try {
       feed = utils.issueGetFeedRequest(new URI(url), getPreferredResourceFormat());
@@ -715,6 +725,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public ValueSet expandValueset(ValueSet source) {
+    recordUse();
     List<Header> headers = null;
     ResourceRequest<Resource> result = utils.issuePostRequest(
         resourceAddress.resolveOperationUri(ValueSet.class, "expand"),
@@ -734,6 +745,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public Parameters lookupCode(Map<String, String> params) {
+    recordUse();
     ResourceRequest<Resource> result = utils.issueGetResourceRequest(
         resourceAddress.resolveOperationUri(ValueSet.class, "lookup", params), getPreferredResourceFormat(),
         timeoutNormal);
@@ -751,6 +763,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public ValueSet expandValueset(ValueSet source, Parameters expParams, Map<String, String> params) {
+    recordUse();
     List<Header> headers = null;
     Parameters p = expParams == null ? new Parameters() : expParams.copy();
     p.addParameter().setName("valueSet").setResource(source);
@@ -794,6 +807,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public ConceptMap initializeClosure(String name) {
+    recordUse();
     Parameters params = new Parameters();
     params.addParameter().setName("name").setValue(new StringType(name));
     List<Header> headers = null;
@@ -815,6 +829,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   }
 
   public ConceptMap updateClosure(String name, Coding coding) {
+    recordUse();
     Parameters params = new Parameters();
     params.addParameter().setName("name").setValue(new StringType(name));
     params.addParameter().setName("concept").setValue(coding);
@@ -902,4 +917,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     utils.setAcceptLanguage(lang);
   }
 
+  public int getUseCount() {
+    return useCount;
+  }
+
+  private void recordUse() {
+    useCount++;    
+  }
 }

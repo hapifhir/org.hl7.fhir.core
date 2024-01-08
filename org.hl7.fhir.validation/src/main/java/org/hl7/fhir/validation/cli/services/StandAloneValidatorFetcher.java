@@ -289,7 +289,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
 
   @Nonnull
   protected ITerminologyClient getTerminologyClient(String root) throws URISyntaxException {
-    return TerminologyClientFactory.makeClient("source", root, Common.getValidatorUserAgent(), context.getVersion());
+    return new TerminologyClientFactory(context.getVersion()).makeClient("source", root, Common.getValidatorUserAgent());
   }
 
   private String getRoot(String[] p, String url) {

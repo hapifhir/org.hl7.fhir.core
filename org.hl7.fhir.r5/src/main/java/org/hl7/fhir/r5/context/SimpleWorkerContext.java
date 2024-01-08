@@ -36,7 +36,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -63,11 +62,11 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
-import org.hl7.fhir.r5.profilemodel.PEDefinition;
-import org.hl7.fhir.r5.profilemodel.PEBuilder;
-import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.R5Hacker;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
@@ -248,6 +247,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     public SimpleWorkerContext fromPackage(NpmPackage pi) throws IOException, FHIRException {
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
       context.setAllowLoadingDuplicates(allowLoadingDuplicates);
+      context.terminologyClientManager = new TerminologyClientManager(TerminologyClientR5.factory());
       context.loadFromPackage(pi, null);
       return build(context);
     }
@@ -256,6 +256,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
       context.setAllowLoadingDuplicates(allowLoadingDuplicates);      
       context.version = pi.getNpm().asString("version");
+      context.terminologyClientManager.setFactory(loader.txFactory());
       context.loadFromPackage(pi, loader);
       context.finishLoading(genSnapshots);
       return build(context);
@@ -327,22 +328,23 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       loadBytes(name, stream);
   }
 
-  public String connectToTSServer(ITerminologyClient client, String log) {
+  public String connectToTSServer(ITerminologyClientFactory factory, ITerminologyClient client, String log) {
     try {
       txLog("Connect to "+client.getAddress());
-      tcc.setClient(client);
+      terminologyClientManager.setFactory(factory);
+      terminologyClientManager.setMasterClient(client);
       if (log != null && (log.endsWith(".htm") || log.endsWith(".html"))) {
         txLog = new HTMLClientLogger(log);
       } else {
         txLog = new TextClientLogger(log);
       }
-      tcc.getClient().setLogger(txLog);
-      tcc.getClient().setUserAgent(userAgent);
+      terminologyClientManager.setLogger(txLog);
+      terminologyClientManager.setUserAgent(userAgent);
 
-      final CapabilityStatement capabilitiesStatementQuick = txCache.hasCapabilityStatement() ? txCache.getCapabilityStatement() : tcc.getClient().getCapabilitiesStatementQuick();
+      final CapabilityStatement capabilitiesStatementQuick = txCache.hasCapabilityStatement() ? txCache.getCapabilityStatement() : terminologyClientManager.getMasterClient().getCapabilitiesStatementQuick();
       txCache.cacheCapabilityStatement(capabilitiesStatementQuick);
 
-      final TerminologyCapabilities capabilityStatement = txCache.hasTerminologyCapabilities() ? txCache.getTerminologyCapabilities() : tcc.getClient().getTerminologyCapabilities();
+      final TerminologyCapabilities capabilityStatement = txCache.hasTerminologyCapabilities() ? txCache.getTerminologyCapabilities() : terminologyClientManager.getMasterClient().getTerminologyCapabilities();
       txCache.cacheTerminologyCapabilities(capabilityStatement);
 
       setTxCaps(capabilityStatement);
@@ -531,6 +533,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	    if (version.equals("current")) {
 	      version = "5.0.0";
 	    }
+	  }
+	  if (loader != null) {
+	    terminologyClientManager.setFactory(loader.txFactory());
 	  }
 	  return t;
 	}
