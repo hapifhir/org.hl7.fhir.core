@@ -197,7 +197,7 @@ public class SchematronWriter  extends TextStreamWriter  {
   private void addAllResourcesNote() throws IOException {
     ln("<!-- ");
     ln("  This file contains constraints for all resources");
-    ln("  Because of the way containment works, this file should always )");
+    ln("  Because of the way containment works, this file should always ");
     ln("  be used for validating resources. Alternatively you can use ");
     ln("  the resource specific files to build a smaller version of");
     ln("  this file (the contents are identical; only include those ");
