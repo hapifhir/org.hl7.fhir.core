@@ -768,6 +768,7 @@ public class PatientRenderer extends ResourceRenderer {
           } else {
             String n = UUID.randomUUID().toString().toLowerCase()+ext;
             TextFile.bytesToFile(att.getData(), new File(Utilities.path(context.getDestDir(), n)));
+            context.registerFile(n);
             td.img(n, "patient photo");            
           }
           return;
