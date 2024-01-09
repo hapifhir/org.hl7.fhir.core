@@ -131,7 +131,7 @@ public class TerminologyServiceTests {
       engine.seeResource(res);
     }
     Resource req = loadResource(setup.test.asString("request"));
-    String fn = setup.test.asString("response");
+    String fn = setup.test.has("response:tx.fhir.org") ? setup.test.asString("response:tx.fhir.org") : setup.test.asString("response");
     String resp = TestingUtilities.loadTestResource("tx", fn);
     String fp = Utilities.path("[tmp]", "tx", fn);
     JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
