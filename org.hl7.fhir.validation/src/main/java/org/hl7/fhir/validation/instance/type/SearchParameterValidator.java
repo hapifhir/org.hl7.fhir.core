@@ -93,7 +93,7 @@ public class SearchParameterValidator extends BaseValidator {
     boolean ok = true;
     try {
       List<IssueMessage> warnings = new ArrayList<>();
-      fpe.checkOnTypes(null, null, bases, fpe.parse(expression), warnings);
+      fpe.checkOnTypes(null, bases.size() == 1 ? bases.get(0) : "Resource", bases, fpe.parse(expression), warnings);
       for (IssueMessage m : warnings) {
         warning(errors, "2023-07-27", IssueType.BUSINESSRULE, stack, m.getId(), false, m.getMessage());
       }
