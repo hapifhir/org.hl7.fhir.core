@@ -77,7 +77,7 @@ public class TerminologyOperationContext {
   
   public void seeContext(String context) {
     if (contexts.contains(context)) {
-      throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_CIRCULAR_REFERENCE, context, contexts.toString()), TerminologyServiceErrorClass.BUSINESS_RULE, IssueType.BUSINESSRULE);
+      throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_CIRCULAR_REFERENCE, context, contexts.toString()), TerminologyServiceErrorClass.PROCESSING, IssueType.PROCESSING);
     }
     contexts.add(context);
   }

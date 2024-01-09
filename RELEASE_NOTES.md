@@ -17,3 +17,4 @@ major upgrade to validation - use terminology server to perform more logic, and 
 * IPS tool development
 * Improved errors publishing IGs
 * Refactor Context to support multiple terminology services
+* change type of error when value set circularity found

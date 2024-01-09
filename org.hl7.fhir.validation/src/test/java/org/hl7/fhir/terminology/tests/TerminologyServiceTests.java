@@ -207,6 +207,9 @@ public class TerminologyServiceTests {
       case TOO_COSTLY:
         e.setCode(IssueType.TOOCOSTLY);
         break;
+      case PROCESSING:
+        e.setCode(IssueType.PROCESSING);
+        break;
       case UNKNOWN:
         e.setCode(IssueType.UNKNOWN);
         break;
