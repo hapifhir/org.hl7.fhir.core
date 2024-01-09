@@ -137,50 +137,62 @@ public class XhtmlComposer {
     String src = node.getContent();
     int i = 0;
     while (i < src.length()) {
-      char c = src.charAt(i);
-      if (autoLinks && c == 'h' && Utilities.startsWithInList(src.substring(i), "http://", "https://")) {
-        int j = i;
-        while (i < src.length() && isValidUrlChar(src.charAt(i))) {
-          i++;
-        }
-        String url = src.substring(j, i);
-        if (url.endsWith(".") || url.endsWith(",")) {
-          i--;
-          url = url.substring(0, url.length()-1);
-        }
-        url = Utilities.escapeXml(url);
-        dst.append("<a href=\""+url+"\">"+ url +"</a>");
+      int ci = src.codePointAt(i);
+      if (ci > 65535) {
+        dst.append("&#x");
+        dst.append(Integer.toHexString(ci).toUpperCase());
+        dst.append(";");
+        i += Character.charCount(ci);
       } else {
-        i++;
-        if (c == '&') {
-          dst.append("&amp;");
-        } else if (c == '<') {
-          dst.append("&lt;");
-        } else if (c == '>') {
-          dst.append("&gt;");
-        } else if (xml) {
-          if (c == '"')
-            dst.append("&quot;");
-          else 
-            dst.append(c);
+        char c = (char) ci;
+        if (autoLinks && c == 'h' && Utilities.startsWithInList(src.substring(i), "http://", "https://")) {
+          int j = i;
+          while (i < src.length() && isValidUrlChar(src.charAt(i))) {
+            i++;
+          }
+          String url = src.substring(j, i);
+          if (url.endsWith(".") || url.endsWith(",")) {
+            i--;
+            url = url.substring(0, url.length()-1);
+          }
+          url = Utilities.escapeXml(url);
+          dst.append("<a href=\""+url+"\">"+ url +"</a>");
         } else {
-          if (c == XhtmlNode.NBSP.charAt(0))
-            dst.append("&nbsp;");
-          else if (c == (char) 0xA7)
-            dst.append("&sect;");
-          else if (c == (char) 169)
-            dst.append("&copy;");
-          else if (c == (char) 8482)
-            dst.append("&trade;");
-          else if (c == (char) 956)
-            dst.append("&mu;");
-          else if (c == (char) 174)
-            dst.append("&reg;");
-          else 
-            dst.append(c);
+          i++;
+          if (c == '&') {
+            dst.append("&amp;");
+          } else if (c == '<') {
+            dst.append("&lt;");
+          } else if (c == '>') {
+            dst.append("&gt;");
+          } else if (xml) {
+            if (c == '"')
+              dst.append("&quot;");
+            else 
+              dst.append(c);
+          } else {
+            if (c == XhtmlNode.NBSP.charAt(0))
+              dst.append("&nbsp;");
+            else if (c == (char) 0xA7)
+              dst.append("&sect;");
+            else if (c == (char) 169)
+              dst.append("&copy;");
+            else if (c == (char) 8482)
+              dst.append("&trade;");
+            else if (c == (char) 956)
+              dst.append("&mu;");
+            else if (c == (char) 174)
+              dst.append("&reg;");
+            else 
+              dst.append(c);            
+          }
         }
       }
     }
+  }
+
+  boolean isTwoCharUnicodeCodePoint(char c1, char c2) {
+    return false;
   }
 
   private void writeComment(String indent, XhtmlNode node, boolean noPrettyOverride) throws IOException {
