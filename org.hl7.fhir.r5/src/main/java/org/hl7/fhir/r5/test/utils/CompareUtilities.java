@@ -283,11 +283,12 @@ public class CompareUtilities extends BaseTestingUtilities {
 
   private String compareObjects(String path, JsonObject expectedJsonObject, JsonObject actualJsonObject) {
     List<String> optionals = listOptionals(expectedJsonObject);
+    List<String> countOnlys = listCountOnlys(expectedJsonObject);
     for (JsonProperty en : actualJsonObject.getProperties()) {
       String n = en.getName();
       if (!n.equals("fhir_comments")) {
         if (expectedJsonObject.has(n)) {
-          String s = compareNodes(path + '.' + n, expectedJsonObject.get(n), en.getValue());
+          String s = compareNodes(path + '.' + n, expectedJsonObject.get(n), en.getValue(), countOnlys.contains(n));
           if (!Utilities.noString(s))
             return s;
         } else
@@ -304,10 +305,11 @@ public class CompareUtilities extends BaseTestingUtilities {
     return null;
   }
 
- private List<String> listOptionals(JsonObject expectedJsonObject) {
+  private List<String> listOptionals(JsonObject expectedJsonObject) {
     List<String> res = new ArrayList<>();
     if (expectedJsonObject.has("$optional-properties$")) {
       res.add("$optional-properties$");
+      res.add("$count-arrays$");
       for (String s : expectedJsonObject.getStrings("$optional-properties$")) {
         res.add(s);
       }
@@ -315,7 +317,17 @@ public class CompareUtilities extends BaseTestingUtilities {
     return res;
   }
 
-  private String compareNodes(String path, JsonElement expectedJsonElement, JsonElement actualJsonElement) {
+  private List<String> listCountOnlys(JsonObject expectedJsonObject) {
+    List<String> res = new ArrayList<>();
+    if (expectedJsonObject.has("$count-arrays$")) {
+      for (String s : expectedJsonObject.getStrings("$count-arrays$")) {
+        res.add(s);
+      }
+    }
+    return res;
+  }
+
+  private String compareNodes(String path, JsonElement expectedJsonElement, JsonElement actualJsonElement, boolean countOnly) {
     if (!(expectedJsonElement instanceof JsonPrimitive && actualJsonElement instanceof JsonPrimitive)) {
       if (actualJsonElement.getClass() != expectedJsonElement.getClass()) {
         return createNotEqualMessage("properties differ at " + path, expectedJsonElement.getClass().getName(), actualJsonElement.getClass().getName());
@@ -350,9 +362,14 @@ public class CompareUtilities extends BaseTestingUtilities {
       JsonArray actualArray = (JsonArray) actualJsonElement;
       JsonArray expectedArray = (JsonArray) expectedJsonElement;
       
-      int expectedMin = countExpectedMin(expectedArray);
       int as = actualArray.size();
       int es = expectedArray.size();
+      if (countOnly) {
+        if (as != es) {
+          return createNotEqualMessage("array item count differs at " + path, Integer.toString(es), Integer.toString(as));
+        }
+      } else {
+      int expectedMin = countExpectedMin(expectedArray);
       int oc = optionalCount(expectedArray);
       
       if (as > es || as < expectedMin)
@@ -366,7 +383,7 @@ public class CompareUtilities extends BaseTestingUtilities {
             return "One or more array items did not match at "+path+" starting at index "+i;
           }
         }
-        String s = compareNodes(path + "[" + Integer.toString(i) + "]", expectedArray.get(i), actualArray.get(c));
+        String s = compareNodes(path + "[" + Integer.toString(i) + "]", expectedArray.get(i), actualArray.get(c), false);
         if (!Utilities.noString(s) && !isOptional(expectedArray.get(i))) {
           return s;
         }
@@ -376,6 +393,7 @@ public class CompareUtilities extends BaseTestingUtilities {
       }
       if (c < as) {
         return "Unexpected Node found in array at index "+c;
+      }
       }
     } else
       return "unhandled property " + actualJsonElement.getClass().getName();

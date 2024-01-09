@@ -90,6 +90,7 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
 
   public LocalTerminologyServiceTests(String name, JsonObjectPair setup) {
     this.setup = setup;
+    modes.add("tx.fhir.org");
   }
 
   @SuppressWarnings("deprecation")
