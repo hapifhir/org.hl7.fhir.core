@@ -1,6 +1,7 @@
 ## Validator Changes
 
+* no changes
+
 ## Other code changes
 
-* Added wrappers classes and methods for reverse compatibility with earlier releases.
-
+* no changes
