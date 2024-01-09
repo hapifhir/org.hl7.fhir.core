@@ -188,6 +188,7 @@ public class RenderingContext {
   private boolean copyButton;
   private ProfileKnowledgeProvider pkp;
   private String changeVersion;
+  private List<String> files = new ArrayList<String>(); // files created as by-products in destDir
   
   private Map<KnownLinkType, String> links = new HashMap<>();
   private Map<String, String> namedLinks = new HashMap<>();
@@ -726,4 +727,16 @@ public class RenderingContext {
     return namedLinks;
   }
 
+  public void registerFile(String n) {
+    try {
+      files.add(Utilities.path(destDir, n));
+    } catch (IOException e) {
+    }
+  }
+
+  public List<String> getFiles() {
+    return files;
+  }
+
+  
 }
