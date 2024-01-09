@@ -970,9 +970,9 @@ public class XhtmlParser {
       throw new FHIRFormatError("Invalid literal declaration following text: " + s);
     else if (c.charAt(0) == '#') {
       if (isInteger(c.substring(1), 10))
-        s.append((char) Integer.parseInt(c.substring(1)));
+        s.append(Character.toString(Integer.parseInt(c.substring(1))));
       else if (c.charAt(1) == 'x' && isInteger(c.substring(2), 16))
-        s.append((char) Integer.parseInt(c.substring(2), 16));
+        s.append(Character.toString(Integer.parseInt(c.substring(2), 16)));
     } else if (declaredEntities.containsKey(c)) {
       s.append(declaredEntities.get(c));
     } else {
