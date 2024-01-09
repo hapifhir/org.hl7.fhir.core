@@ -8,6 +8,7 @@ major upgrade to validation - use terminology server to perform more logic, and 
 * Fix bug handling null objects in JSON (R5)
 * Fix for missing search parameter definition in R4
 * fix bug handling XML name extension
+* Fix FHIRPath validation errors around use of %resource and %rootResource
 
 ## Other code changes
 
@@ -18,3 +19,4 @@ major upgrade to validation - use terminology server to perform more logic, and 
 * Improved errors publishing IGs
 * Refactor Context to support multiple terminology services
 * change type of error when value set circularity found
+* Track generated side files when rendering resources
