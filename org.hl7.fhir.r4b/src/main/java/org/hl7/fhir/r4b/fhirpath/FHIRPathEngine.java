@@ -1767,8 +1767,8 @@ public class FHIRPathEngine {
           break;
         case 'u':
           i++;
-          int uc = Integer.parseInt(s.substring(i, i + 4), 16);
-          b.append((char) uc);
+          int uc = Integer.parseInt(s.substring(i, i + 4), 32);
+          b.append(Character.toString(uc));
           i = i + 3;
           break;
         default:
