@@ -173,6 +173,7 @@ import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.r5.utils.validation.IValidationProfileUsageTracker;
 import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.CodedContentValidationAction;
+import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ElementValidationAction;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
@@ -6222,6 +6223,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (debug) {
       System.out.println("  check " + localStack.getLiteralPath()+" against "+ei.getDefinition().getId()+" in profile "+profile.getVersionedUrl()+time());
     }
+    EnumSet<ElementValidationAction> actionSet = policyAdvisor == null ? EnumSet.allOf(ElementValidationAction.class) : 
+      policyAdvisor.policyForElement(this, valContext.getAppContext(), profile, ei.getDefinition(), localStack.getLiteralPath());
+    
     String localStackLiteralPath = localStack.getLiteralPath();
     String eiPath = ei.getPath();
     if (!eiPath.equals(localStackLiteralPath)) {
@@ -6237,8 +6241,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     //      ok = checkInvariants(valContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, ei.getElement(), ei.getElement(), localStack, false) && ok;
     // but this isn't correct - when the invariant is on the element, the invariant is in the context of the resource that contains the element.
     // changed 18-Jul 2023 - see https://chat.fhir.org/#narrow/stream/179266-fhirpath/topic/FHIRPath.20.25resource.20variable
-    ok = checkInvariants(valContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, resource, ei.getElement(), localStack, false) && ok;
-
+    if (actionSet.contains(ElementValidationAction.Invariants)) {
+      ok = checkInvariants(valContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, resource, ei.getElement(), localStack, false) && ok;
+    }
+    
+    boolean checkBindings = actionSet.contains(ElementValidationAction.Bindings);
     ei.getElement().markValidation(profile, checkDefn);
     boolean elementValidated = false;
     if (type != null) {
@@ -6255,15 +6262,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.equals("Identifier")) {
         ok = checkIdentifier(errors, ei.getPath(), ei.getElement(), checkDefn) && ok;
       } else if (type.equals("Coding")) {
-        ok = checkCoding(errors, ei.getPath(), ei.getElement(), profile, checkDefn, inCodeableConcept, checkDisplayInContext, localStack) && ok;
+        ok = (checkCoding(checkBindings ? errors : new ArrayList<>(), ei.getPath(), ei.getElement(), profile, checkDefn, inCodeableConcept, checkDisplayInContext, localStack) || !checkBindings) && ok;
       } else if (type.equals("Quantity")) {
         ok = checkQuantity(errors, ei.getPath(), ei.getElement(), profile, checkDefn, localStack) && ok;
       } else if (type.equals("Attachment")) {
         ok = checkAttachment(errors, ei.getPath(), ei.getElement(), profile, checkDefn, inCodeableConcept, checkDisplayInContext, localStack) && ok;
       } else if (type.equals("CodeableConcept")) {
         BooleanHolder bh = new BooleanHolder();
-        checkDisplay = checkCodeableConcept(errors, ei.getPath(), ei.getElement(), profile, checkDefn, localStack, bh);
-        ok = bh.ok() & ok;
+        checkDisplay = checkCodeableConcept(checkBindings ? errors : new ArrayList<>(), ei.getPath(), ei.getElement(), profile, checkDefn, localStack, bh);
+        ok = (bh.ok() || !checkBindings) & ok;
         thisIsCodeableConcept = true;
       } else if (type.equals("Reference")) {
         ok = checkReference(valContext, errors, ei.getPath(), ei.getElement(), profile, checkDefn, actualType, localStack, pct, mode) && ok;
