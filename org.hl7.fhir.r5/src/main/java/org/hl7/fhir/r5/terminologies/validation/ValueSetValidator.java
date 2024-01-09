@@ -286,11 +286,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
     Boolean result = false;
     if (valueset != null) {
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(", ");
+      List<String> cpath = new ArrayList<>();
       
       int i = 0;
       for (Coding c : code.getCoding()) {
         String cs = "'"+c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "")+"#"+c.getCode()+(c.hasDisplay() ? " ('"+c.getDisplay()+"')" : "")+"'";
         String cs2 = c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "");
+        cpath.add(path+".coding["+i+"]");
         b.append(cs2);
         Boolean ok = codeInValueSet(path, c.getSystem(), c.getVersion(), c.getCode(), info);
         if (ok == null && result != null && result == false) {
@@ -313,7 +315,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
       if (result == null) {
         msg = context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), b.toString());
-        info.getIssues().addAll(makeIssue(IssueSeverity.WARNING, unknownSystems.isEmpty() ? IssueType.CODEINVALID : IssueType.NOTFOUND, path, msg, OpIssueCode.VSProcessing, null));
+        info.getIssues().addAll(makeIssue(IssueSeverity.WARNING, unknownSystems.isEmpty() ? IssueType.CODEINVALID : IssueType.NOTFOUND, cpath.size() == 1 ? cpath.get(0) : path, msg, OpIssueCode.VSProcessing, null));
       } else if (!result) {
         // to match Ontoserver
         OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, org.hl7.fhir.r5.model.OperationOutcome.IssueType.CODEINVALID);
