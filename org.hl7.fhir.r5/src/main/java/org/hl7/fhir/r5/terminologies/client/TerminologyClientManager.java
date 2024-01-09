@@ -135,7 +135,9 @@ public class TerminologyClientManager {
       if (!internalErrors.contains(msg)) {
         internalErrors.add(msg);
       }
-      e.printStackTrace();
+      if (!monitorServiceURL.contains("tx.fhir.org")) {
+        e.printStackTrace();
+      }
     }
     return getMasterClient().getAddress();
     
@@ -211,7 +213,7 @@ public class TerminologyClientManager {
     this.cache = cache;
     this.cacheFile = null;
 
-    if (cache != null) {
+    if (cache != null && cache.getFolder() != null) {
       try {
         cacheFile = new File(Utilities.path(cache.getFolder(), "system-map.json"));
         if (cacheFile.exists()) {
@@ -227,7 +229,7 @@ public class TerminologyClientManager {
   }
 
   private void save() {
-    if (cacheFile != null) {
+    if (cacheFile != null && cache.getFolder() != null) {
       JsonObject json = new JsonObject();
       for (String s : Utilities.sorted(resMap.keySet())) {
         JsonObject si = new JsonObject();
