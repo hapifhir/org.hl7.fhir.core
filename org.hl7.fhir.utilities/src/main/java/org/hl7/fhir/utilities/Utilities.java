@@ -528,7 +528,6 @@ public class Utilities {
     return value.replace("\r\n", "\r").replace("\n", "\r").replace("\r", "\r\n");
   }
 
-
   public static String unescapeXml(String xml) throws FHIRException {
     if (xml == null)
       return null;
@@ -601,7 +600,7 @@ public class Utilities {
           break;
         case 'u':
           String hex = json.substring(i + 1, i + 5);
-          b.append((char) Integer.parseInt(hex, 16));
+          b.append(Character.toString(Integer.parseInt(hex, 16)));
           break;
         default:
           throw new FHIRException("Unknown JSON escape \\" + ch);
