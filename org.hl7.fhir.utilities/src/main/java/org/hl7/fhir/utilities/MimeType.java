@@ -71,6 +71,18 @@ public class MimeType {
       return null;
   }
 
+  public String getSource() {
+    return source;
+  }
+
+  public String getBase() {
+    return base;
+  }
+
+  public Map<String, String> getParams() {
+    return params;
+  }
+
   public boolean hasParam(String name) {
     return params.containsKey(name);
   }
@@ -134,5 +146,6 @@ public class MimeType {
     }
     return null;
   }
+
 
 }

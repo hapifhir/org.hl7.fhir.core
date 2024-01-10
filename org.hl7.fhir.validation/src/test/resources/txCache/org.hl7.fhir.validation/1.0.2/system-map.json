@@ -1,0 +1,20 @@
+{
+  "systems" : [
+    {
+      "system" : "http://acme.org/devices/clinical-codes",
+      "server" : "http://tx-dev.fhir.org/r2"
+    },
+    {
+      "system" : "http://loinc.org",
+      "server" : "http://tx-dev.fhir.org/r2"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "server" : "http://tx-dev.fhir.org/r2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "server" : "http://tx-dev.fhir.org/r2"
+    }
+  ]
+}

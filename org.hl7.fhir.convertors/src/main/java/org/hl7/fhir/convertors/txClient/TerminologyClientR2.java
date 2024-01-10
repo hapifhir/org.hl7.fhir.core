@@ -84,6 +84,7 @@ public class TerminologyClientR2 implements ITerminologyClient {
 
   public TerminologyClientR2(String id, String address, String userAgent) throws URISyntaxException {
     client = new FHIRToolingClient(address, userAgent);
+    this.client.setVersionInMimeTypes(true);
     this.id = id;
   }
 

@@ -81,7 +81,7 @@ import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.dstu2.model.ResourceType;
 import org.hl7.fhir.dstu2.utils.ResourceUtilities;
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.utilities.MimeType;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -573,10 +573,11 @@ public class ClientUtils {
     if (StringUtils.isBlank(format)) {
       format = ResourceFormat.RESOURCE_XML.getHeader();
     }
-    if (format.equalsIgnoreCase("json") || format.equalsIgnoreCase(ResourceFormat.RESOURCE_JSON.getHeader())
+    MimeType mm = new MimeType(format);
+    if (mm.getBase().equalsIgnoreCase(ResourceFormat.RESOURCE_JSON.getHeader())
         || format.equalsIgnoreCase(ResourceFormat.RESOURCE_JSON.getHeader())) {
       return new JsonParser();
-    } else if (format.equalsIgnoreCase("xml") || format.equalsIgnoreCase(ResourceFormat.RESOURCE_XML.getHeader())
+    } else if (mm.getBase().equalsIgnoreCase(ResourceFormat.RESOURCE_XML.getHeader())
         || format.equalsIgnoreCase(ResourceFormat.RESOURCE_XML.getHeader())) {
       return new XmlParser();
     } else {

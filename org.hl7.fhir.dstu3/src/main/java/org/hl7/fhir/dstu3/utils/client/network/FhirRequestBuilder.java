@@ -20,6 +20,7 @@ import org.hl7.fhir.dstu3.utils.ResourceUtilities;
 import org.hl7.fhir.dstu3.utils.client.EFhirClientException;
 import org.hl7.fhir.dstu3.utils.client.ResourceFormat;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.MimeType;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
@@ -326,9 +327,10 @@ public class FhirRequestBuilder {
     if (StringUtils.isBlank(format)) {
       format = ResourceFormat.RESOURCE_XML.getHeader();
     }
-    if (format.equalsIgnoreCase("json") || format.equalsIgnoreCase(ResourceFormat.RESOURCE_JSON.getHeader())) {
+    MimeType mt = new MimeType(format);
+    if (mt.getBase().equalsIgnoreCase(ResourceFormat.RESOURCE_JSON.getHeader())) {
       return new JsonParser();
-    } else if (format.equalsIgnoreCase("xml") || format.equalsIgnoreCase(ResourceFormat.RESOURCE_XML.getHeader())) {
+    } else if (mt.getBase().equalsIgnoreCase(ResourceFormat.RESOURCE_XML.getHeader())) {
       return new XmlParser();
     } else {
       throw new EFhirClientException("Invalid format: " + format);
