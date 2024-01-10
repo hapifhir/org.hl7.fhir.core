@@ -1,0 +1,64 @@
+{
+  "systems" : [
+    {
+      "system" : "http://acme.com/config/fhir/codesystems/internal",
+      "server" : "http://tx-dev.fhir.org/r4"
+    },
+    {
+      "system" : "http://acme.org/devices/clinical-codes",
+      "server" : "http://tx-dev.fhir.org/r4"
+    },
+    {
+      "system" : "http://acme.ped/apgarcolor",
+      "server" : "http://tx-dev.fhir.org/r4"
+    },
+    {
+      "system" : "http://acme.ped/apgarheartrate",
+      "server" : "http://tx-dev.fhir.org/r4"
+    },
+    {
+      "system" : "http://acme.ped/apgarmuscletone",
+      "server" : "http://tx-dev.fhir.org/r4"
+    },
+    {
+      "system" : "http://acme.ped/apgarreflexirritability",
+      "server" : "http://tx-dev.fhir.org/r4"
+    },
+    {
+      "system" : "http://acme.ped/apgarrespiratoryeffort",
+      "server" : "http://tx-dev.fhir.org/r4"
+    },
+    {
+      "system" : "http://hl7.org/fhir/sid/ndc",
+      "server" : "http://tx-dev.fhir.org/r4"
+    },
+    {
+      "system" : "http://loinc.org",
+      "server" : "http://tx-dev.fhir.org/r4"
+    },
+    {
+      "system" : "http://snomed.info/sct",
+      "server" : "http://tx-dev.fhir.org/r4"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/condition-category",
+      "server" : "http://tx-dev.fhir.org/r4"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v2-0136",
+      "server" : "http://tx-dev.fhir.org/r4"
+    },
+    {
+      "system" : "http://terminology.hl7.org/CodeSystem/v2-0360|2.7",
+      "server" : "http://tx-dev.fhir.org/r4"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "server" : "http://tx-dev.fhir.org/r4"
+    },
+    {
+      "system" : "urn:ietf:bcp:47",
+      "server" : "http://tx-dev.fhir.org/r4"
+    }
+  ]
+}
