@@ -1,25 +1,7 @@
 ## Validator Changes
 
-* Major rework of tx and validation test cases associated with reworking terminology / validator interface and ongoing testing + reconciliation with Ontoserver
-major upgrade to validation - use terminology server to perform more logic, and standardise interface based on agreements with Vocab & Ontoserver
-* Improve slicing error message
-* Add warning to user when referencing an extension that doesn't exist in FHIRPath
-* Fix bugs in FHIRPath implementation of split() and join()
-* Fix bug handling null objects in JSON (R5)
-* Fix for missing search parameter definition in R4
-* fix bug handling XML name extension
-* Fix FHIRPath validation errors around use of %resource and %rootResource
-* Correct validator enforcement of minValue for decimal and integer (#1538)
-* Suppress date errors when searching for packages (some packages couldn't be installed)
+* no changes
 
 ## Other code changes
 
-* Properly populate property definitions in expansions
-* Add CVX Importer
-* R6 release support
-* IPS tool development
-* Improved errors publishing IGs
-* Refactor Context to support multiple terminology services
-* change type of error when value set circularity found
-* Track generated side files when rendering resources
-* Support for extended Unicode characters in XHTML / XML / JSON / Turtle
+* no changes
