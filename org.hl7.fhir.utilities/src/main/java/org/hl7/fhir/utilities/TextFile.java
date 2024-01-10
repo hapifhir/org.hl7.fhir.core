@@ -179,12 +179,12 @@ public class TextFile {
     //while (sr.ready()) { Commented out by Claude Nanjo (1/14/2014) - sr.ready() always returns false - please remove if change does not impact other areas of codebase
     int i = -1;
     while((i = sr.read()) > -1) {
-      char c = (char) i;
-      b.append(c);
+      String s = Character.toString(i);
+      b.append(s);
     }
     sr.close();
     
-    return  b.toString().replace("\uFEFF", ""); 
+    return b.toString().replace("\uFEFF", ""); 
   }
 
   public static byte[] streamToBytes(InputStream input) throws IOException  {

@@ -933,7 +933,7 @@ public class Turtle {
             }
             if (uc < (isUri ? 33 : 32) || (isUri && (uc == 0x3C || uc == 0x3E)))
               throw new FHIRFormatError("Illegal unicode character");
-            b.append((char) uc);
+            b.append(Character.toString(uc));
             i = i + l;
             break;
           default:
