@@ -21,3 +21,4 @@ major upgrade to validation - use terminology server to perform more logic, and 
 * Refactor Context to support multiple terminology services
 * change type of error when value set circularity found
 * Track generated side files when rendering resources
+* Support for extended Unicode characters in XHTML / XML / JSON / Turtle
