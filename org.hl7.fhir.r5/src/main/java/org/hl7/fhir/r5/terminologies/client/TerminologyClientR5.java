@@ -205,6 +205,7 @@ public class TerminologyClientR5 implements ITerminologyClient {
   public ITerminologyClient setClientHeaders(ClientHeaders clientHeaders) {
     this.clientHeaders = clientHeaders;
     this.client.setClientHeaders(this.clientHeaders.headers());
+    this.client.setVersionInMimeTypes(true);
     return this;
   }
 

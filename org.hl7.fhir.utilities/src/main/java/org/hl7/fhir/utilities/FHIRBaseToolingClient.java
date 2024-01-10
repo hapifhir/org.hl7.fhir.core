@@ -14,7 +14,9 @@ public class FHIRBaseToolingClient {
   protected int timeoutEntry = DEFAULT_TIMEOUT_ENTRY;
   protected int timeoutLong = DEFAULT_TIMEOUT_OPERATION_LONG;
   protected int timeoutExpand = DEFAULT_TIMEOUT_OPERATION_EXPAND;
-  
+
+  protected boolean versionInMimeTypes;
+
 
   public long getTimeoutNormal() {
     return timeoutNormal;
@@ -64,5 +66,17 @@ public class FHIRBaseToolingClient {
     timeoutLong = i * DEFAULT_TIMEOUT_OPERATION_LONG;
     timeoutExpand = i * DEFAULT_TIMEOUT_OPERATION_EXPAND;
   }
-  
+
+  protected String withVer(String header, String version) {
+    return header+(versionInMimeTypes ? "; fhirVersion="+version : "");
+  }
+
+  public boolean isVersionInMimeTypes() {
+    return versionInMimeTypes;
+  }
+
+  public void setVersionInMimeTypes(boolean versionInMimeTypes) {
+    this.versionInMimeTypes = versionInMimeTypes;
+  }
+
 }

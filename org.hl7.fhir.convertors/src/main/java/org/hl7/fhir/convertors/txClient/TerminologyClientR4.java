@@ -204,6 +204,7 @@ public class TerminologyClientR4 implements ITerminologyClient {
     if (this.clientHeaders != null) {
       this.client.setClientHeaders(this.clientHeaders.headers());
     }
+    this.client.setVersionInMimeTypes(true);
     return this;
   }
 
