@@ -9,6 +9,7 @@ major upgrade to validation - use terminology server to perform more logic, and 
 * Fix for missing search parameter definition in R4
 * fix bug handling XML name extension
 * Fix FHIRPath validation errors around use of %resource and %rootResource
+* Correct validator enforcement of minValue for decimal and integer (#1538)
 
 ## Other code changes
 
