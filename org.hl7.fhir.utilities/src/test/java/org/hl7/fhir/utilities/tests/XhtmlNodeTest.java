@@ -217,6 +217,8 @@ public class XhtmlNodeTest {
   public void testEntityNumberGreaterThanFFFF_Hex() throws IOException {
     XhtmlNode x = new XhtmlParser().parse("<div>&#x1F637;</div>", "div");
     Assertions.assertEquals("\uD83D\uDE37", x.getFirstElement().getChildNodes().get(0).getContent());
+    String html = new XhtmlComposer(false).compose(x);
+    Assertions.assertEquals("<div>&#x1F637;</div>", html);
   }
 
 

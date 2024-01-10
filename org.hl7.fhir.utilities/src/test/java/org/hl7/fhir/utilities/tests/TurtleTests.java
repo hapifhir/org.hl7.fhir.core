@@ -135,7 +135,7 @@ public class TurtleTests {
 
   @Test
   public void test_labeled_blank_node_with_PN_CHARS_BASE_character_boundaries() throws Exception {
-    doTest(BaseTestingUtilities.loadTestResource("turtle", "labeled_blank_node_with_PN_CHARS_BASE_character_boundaries.ttl"), false);
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "labeled_blank_node_with_PN_CHARS_BASE_character_boundaries.ttl"), true);
   }
 
   @Test
@@ -478,7 +478,7 @@ public class TurtleTests {
 
   @Test
   public void test_localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries() throws Exception {
-    doTest(BaseTestingUtilities.loadTestResource("turtle", "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.ttl"), false);
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.ttl"), true);
   }
 
   // don't need to support property names with ':'
@@ -517,7 +517,7 @@ public class TurtleTests {
 
   @Test
   public void test_localName_with_nfc_PN_CHARS_BASE_character_boundaries() throws Exception {
-    doTest(BaseTestingUtilities.loadTestResource("turtle", "localName_with_nfc_PN_CHARS_BASE_character_boundaries.ttl"), false);
+    doTest(BaseTestingUtilities.loadTestResource("turtle", "localName_with_nfc_PN_CHARS_BASE_character_boundaries.ttl"), true);
   }
 
   @Test

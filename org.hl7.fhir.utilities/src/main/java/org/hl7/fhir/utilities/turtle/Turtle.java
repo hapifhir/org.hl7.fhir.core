@@ -49,7 +49,7 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class Turtle {
 
-	public static final String GOOD_IRI_CHAR = "a-zA-Z0-9\u00A0-\uFFFE";
+	public static final String GOOD_IRI_CHAR = "a-zA-Z0-9\\x{00A0}-\\x{10FFFF}";
 
   public static final String IRI_URL = "(([a-z])+:)*((%[0-9a-fA-F]{2})|[&'\\(\\)*+,;:@_~?!$\\/\\-\\#.\\="+GOOD_IRI_CHAR+"])+"; 
   public static final String LANG_REGEX = "[a-z]{2}(\\-[a-zA-Z]{2})?";
@@ -974,15 +974,21 @@ public class Turtle {
 					case 'u':
 						i++;
 						int l = 4;
-						int uc = Integer.parseInt(s.substring(i, i+l), 16);
+						String ss = s.substring(i, i+l);
+            int uc = Integer.parseInt(ss, 16);
 						if (uc < (isUri ? 33 : 32)) {
 							l = 8;
-							uc = Integer.parseInt(s.substring(i, i+8), 16);
+							ss = s.substring(i, i+l);
+							uc = Integer.parseInt(ss, 16);
 						}
 						if (uc < (isUri ? 33 : 32) || (isUri && (uc == 0x3C || uc == 0x3E)))
               throw new FHIRFormatError("Illegal unicode character");
-						b.append((char) uc);
-						i = i + l;
+						try {
+						  b.append(Character.toString(uc));
+						} catch (Exception e) {
+						  throw new FHIRFormatError("Illegal Unicode Sequence: "+ss);
+						}
+						i = i + l - 1; // -1 cause we're about to i++
 						break;
 					default:
             throw new FHIRFormatError("Unknown character escape \\"+s.charAt(i));

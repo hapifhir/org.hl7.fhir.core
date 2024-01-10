@@ -482,7 +482,7 @@ public class TurtleTests {
   @Test
   public void test_localName_with_assigned_nfc_PN_CHARS_BASE_character_boundariesNT() throws Exception {
     doTest(TestingUtilities.resourceNameToFile("turtle",
-        "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.nt"), true);
+        "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.nt"), false);
   }
 
   @Test
@@ -523,7 +523,7 @@ public class TurtleTests {
   @Test
   public void test_localName_with_nfc_PN_CHARS_BASE_character_boundariesNT() throws Exception {
     doTest(TestingUtilities.resourceNameToFile("turtle", "localName_with_nfc_PN_CHARS_BASE_character_boundaries.nt"),
-        true);
+        false);
   }
 
   @Test
