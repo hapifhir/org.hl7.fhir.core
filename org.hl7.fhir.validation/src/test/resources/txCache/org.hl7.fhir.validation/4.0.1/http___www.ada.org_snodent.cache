@@ -1,0 +1,25 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://www.ada.org/snodent",
+  "code" : "210965D",
+  "display" : "Anterior part of lower alveolar ridge"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Anterior part of lower alveolar ridge",
+  "code" : "210965D",
+  "system" : "http://www.ada.org/snodent",
+  "version" : "2.1.0",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

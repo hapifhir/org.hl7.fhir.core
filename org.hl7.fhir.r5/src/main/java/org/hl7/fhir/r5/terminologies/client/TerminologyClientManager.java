@@ -72,6 +72,8 @@ public class TerminologyClientManager {
     serverList.addAll(other.serverList);
     serverMap.putAll(other.serverMap);
     resMap.putAll(other.resMap);
+    monitorServiceURL = other.monitorServiceURL;
+    factory = other.factory;
   }
 
   public boolean usingCache() {
