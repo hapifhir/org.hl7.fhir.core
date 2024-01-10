@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://acme.org/devices/clinical-codes",
-  "code" : "body-weight",
-  "display" : "Body Weight"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "code" : "bp-s",
+  "display" : "Systolic Blood pressure"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -11,7 +11,7 @@
   }]
 }}####
 v: {
-  "code" : "body-weight",
+  "code" : "bp-s",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
@@ -42,9 +42,9 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://acme.org/devices/clinical-codes",
-  "code" : "bp-s",
-  "display" : "Systolic Blood pressure"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "code" : "body-weight",
+  "display" : "Body Weight"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -52,7 +52,7 @@ v: {
   }]
 }}####
 v: {
-  "code" : "bp-s",
+  "code" : "body-weight",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
