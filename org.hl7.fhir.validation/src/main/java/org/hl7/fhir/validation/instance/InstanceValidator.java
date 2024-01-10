@@ -2865,10 +2865,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMaxValue(v, new BigDecimal(context.getMaxValueIntegerType().getValue())), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_GT, context.getMaxValueIntegerType()) && ok;
             }
             
-            if (context.hasMinValueDecimalType() && context.getMaxValueDecimalType().hasValue()) {
-              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMinValue(v, context.getMaxValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, context.getMaxValueDecimalType()) && ok;
-            } else if (context.hasMinValueIntegerType() && context.getMaxValueIntegerType().hasValue()) {
-              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMinValue(v, new BigDecimal(context.getMaxValueIntegerType().getValue())), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, context.getMaxValueIntegerType()) && ok;
+            if (context.hasMinValueDecimalType() && context.getMinValueDecimalType().hasValue()) {
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMinValue(v, context.getMinValueDecimalType().getValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, context.getMinValueDecimalType()) && ok;
+            } else if (context.hasMinValueIntegerType() && context.getMinValueIntegerType().hasValue()) {
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, checkDecimalMinValue(v, new BigDecimal(context.getMinValueIntegerType().getValue())), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DECIMAL_LT, context.getMinValueIntegerType()) && ok;
             }
           } catch (Exception ex) {
             // should never happen?
