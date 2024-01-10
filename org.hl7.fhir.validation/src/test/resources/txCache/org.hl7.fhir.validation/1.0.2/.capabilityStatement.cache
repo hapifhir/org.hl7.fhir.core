@@ -13,10 +13,10 @@
     "valueCode" : "both"
   }],
   "url" : "http://tx-dev.fhir.org/r2/metadata",
-  "version" : "1.0.2-3.0.0",
+  "version" : "1.0.2-3.1.0",
   "name" : "FHIR Reference Server Conformance Statement",
   "status" : "active",
-  "date" : "2024-01-04T06:37:42.409Z",
+  "date" : "2024-01-10T05:45:51.112Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -27,8 +27,8 @@
   "kind" : "instance",
   "software" : {
     "name" : "Reference Server",
-    "version" : "3.0.0",
-    "releaseDate" : "2023-06-19T19:50:55.040Z"
+    "version" : "3.1.0",
+    "releaseDate" : "2024-01-08T12:29:45.425Z"
   },
   "implementation" : {
     "description" : "FHIR Server running at http://tx-dev.fhir.org/r2",
