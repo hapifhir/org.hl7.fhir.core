@@ -284,7 +284,7 @@ public interface IWorkerContext {
    * 
    * Note that the Validation Options override these when they are specified on validateCode
    */
-  public void setExpansionProfile(Parameters expParameters);
+  public void setExpansionParameters(Parameters expParameters);
 
   // these are the terminology services used internally by the tools
   /**
