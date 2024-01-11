@@ -7264,20 +7264,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, Coding c) {
     codingObserver.seeCode(stack, c);
-    if (false) { // #FIXME
-      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), c, valueset)), c);   
-    } else {
-      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), c, valueset)), c);
-    }
+    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), c, valueset)), c);
   }
   
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc) {
     codingObserver.seeCode(stack, cc);
-    if (false) { // #FIXME
-      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()).withCheckValueSetOnly(), cc, valueset)), cc);
-    } else {
-      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), cc, valueset)), cc);
-    }
+    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), cc, valueset)), cc);
   }
 
   private ValidationResult filterOutSpecials(String path, ValueSet vs, ValidationResult vr) {

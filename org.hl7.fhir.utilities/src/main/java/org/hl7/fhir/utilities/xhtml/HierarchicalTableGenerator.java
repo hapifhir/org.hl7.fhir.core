@@ -671,7 +671,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     
     model.setAlternating(true);
     if (mode == TableGenerationMode.XML) {
-      model.setDocoImg(help16AsData()); // #FIXME      
+      model.setDocoImg(help16AsData());    
     } else {
       model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
     }
