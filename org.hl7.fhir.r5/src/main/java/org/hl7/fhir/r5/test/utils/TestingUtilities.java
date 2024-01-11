@@ -86,7 +86,7 @@ public class TestingUtilities extends BaseTestingUtilities {
         fcontext = getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version));
       }
       fcontext.setUcumService(new UcumEssenceService(TestingUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
-      fcontext.setExpansionProfile(new Parameters());
+      fcontext.setExpansionParameters(new Parameters());
       if (!fcontext.hasPackage("hl7.terminology.r5", null)) {
         NpmPackage utg = pcm.loadPackage("hl7.terminology.r5");
         System.out.println("Loading THO: "+utg.name()+"#"+utg.version());

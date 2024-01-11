@@ -196,7 +196,7 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
     validator.setDebug(false);
     validator.setForPublication(true);
     validator.setNoTerminologyChecks(true);
-    context.setExpansionProfile(new Parameters());
+    context.setExpansionParameters(new Parameters());
     
     log("Load R4 Examples");
     NpmPackage r4Examples = pcm.loadPackage("hl7.fhir.r4.examples");

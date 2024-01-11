@@ -1,6 +1,8 @@
 package org.hl7.fhir.r5.context;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5.TerminologyClientR5Factory;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -432,7 +434,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(terminologyCapabilities).when(terminologyCache).getTerminologyCapabilities();
     Mockito.doReturn(capabilitiesStatement).when(terminologyCache).getCapabilityStatement();
 
-    String actual = context.connectToTSServer(null, terminologyClient, null);
+    String actual = context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient, null);
 
     assertEquals("dummyVersion", actual);
 
@@ -454,7 +456,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(terminologyCapabilities).when(terminologyClient).getTerminologyCapabilities();
     Mockito.doReturn(capabilitiesStatement).when(terminologyClient).getCapabilitiesStatementQuick();
 
-    String actual = context.connectToTSServer(null, terminologyClient, null);
+    String actual = context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient, null);
 
     assertEquals("dummyVersion", actual);
 
