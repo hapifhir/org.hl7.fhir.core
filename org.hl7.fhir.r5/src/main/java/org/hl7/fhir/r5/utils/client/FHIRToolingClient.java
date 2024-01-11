@@ -658,7 +658,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       try {
         getCapabilitiesStatementQuick();
       } catch (Throwable e) {
-        //FIXME This is creepy. Shouldn't we report this at some level?
+        //#TODO  This is creepy. Shouldn't we report this at some level?
       }
     }
     return capabilities == null ? null : capabilities.getSoftware().getVersion();

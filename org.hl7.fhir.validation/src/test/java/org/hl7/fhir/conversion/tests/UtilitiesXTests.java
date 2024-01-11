@@ -125,7 +125,7 @@ public class UtilitiesXTests {
     if (!Utilities.noString(s))
       return s;
     s = "C:\\work\\org.hl7.fhir\\build";
-    // FIXME: change this back
+    // TODO - what should we do here?
 	  s = "/Users/jamesagnew/git/fhir";
     if (new File(s).exists())
       return s;
