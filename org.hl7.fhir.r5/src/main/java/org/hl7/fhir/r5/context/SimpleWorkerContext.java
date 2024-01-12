@@ -535,7 +535,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	      version = "5.0.0";
 	    }
 	  }
-	  if (loader != null) {
+	  if (loader != null && terminologyClientManager.getFactory() == null) {
 	    terminologyClientManager.setFactory(loader.txFactory());
 	  }
 	  return t;

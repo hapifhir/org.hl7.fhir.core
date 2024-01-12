@@ -140,9 +140,9 @@ public class TerminologyServiceTests {
       fo.delete();
     }
     if (setup.test.has("profile")) {
-      engine.getContext().setExpansionProfile((org.hl7.fhir.r5.model.Parameters) loadResource(setup.test.asString("profile")));
+      engine.getContext().setExpansionParameters((org.hl7.fhir.r5.model.Parameters) loadResource(setup.test.asString("profile")));
     } else {
-      engine.getContext().setExpansionProfile((org.hl7.fhir.r5.model.Parameters) loadResource("parameters-default.json"));
+      engine.getContext().setExpansionParameters((org.hl7.fhir.r5.model.Parameters) loadResource("parameters-default.json"));
     }
     if (setup.test.asString("operation").equals("expand")) {
       expand(engine, req, resp, setup.test.asString("Content-Language"), fp, ext);

@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* no changes
+* Fix issues with multiple terminology servers (should be live soon)
 
 ## Other code changes
 
