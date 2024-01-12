@@ -90,7 +90,7 @@ public class UtilitiesXTests {
 	      pcm = new FilesystemPackageCacheManager.Builder().build();
 	      IWorkerContext fcontext = TestingUtilities.getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version), loaderForVersion(version));
 	      fcontext.setUcumService(new UcumEssenceService(UtilitiesXTests.loadTestResourceStream("ucum", "ucum-essence.xml")));
-	      fcontext.setExpansionProfile(new Parameters());
+	      fcontext.setExpansionParameters(new Parameters());
 	      fcontexts.put(version, fcontext);
 	    } catch (Exception e) {
 	      throw new Error(e);

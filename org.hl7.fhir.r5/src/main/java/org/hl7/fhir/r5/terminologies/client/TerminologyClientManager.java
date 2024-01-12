@@ -2,7 +2,9 @@ package org.hl7.fhir.r5.terminologies.client;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,6 +13,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -37,10 +41,12 @@ public class TerminologyClientManager {
   private Map<String, TerminologyClientContext> serverMap = new HashMap<>(); // clients by server address
   private Map<String, String> resMap = new HashMap<>(); // client resolution list
   private List<String> internalErrors = new ArrayList<>();
+  protected Parameters expParameters;
 
   private TerminologyCache cache;
 
   private File cacheFile;
+  private String usage;
 
   private String monitorServiceURL;
 
@@ -65,7 +71,6 @@ public class TerminologyClientManager {
     this.isTxCaching = isTxCaching;
   }
   
-  
   public void copy(TerminologyClientManager other) {
     cacheId = other.cacheId;  
     isTxCaching = other.isTxCaching;
@@ -74,6 +79,7 @@ public class TerminologyClientManager {
     resMap.putAll(other.resMap);
     monitorServiceURL = other.monitorServiceURL;
     factory = other.factory;
+    usage = other.usage;
   }
 
   public boolean usingCache() {
@@ -105,6 +111,13 @@ public class TerminologyClientManager {
     String server = resMap.get(s);
     if (server == null) {
       server = decideWhichServer(s);
+      // testing support
+      if (server != null && server.contains("://tx.fhir.org")) {
+        try {
+          server = server.replace("tx.fhir.org", new URL(getMasterClient().getAddress()).getHost());
+        } catch (MalformedURLException e) {
+        }
+      }
       resMap.put(s, server);
       save();
     }
@@ -123,7 +136,27 @@ public class TerminologyClientManager {
   }
 
   private String decideWhichServer(String url) {
+    if (expParameters != null) {
+      if (!url.contains("|")) {
+        // the client hasn''t specified an explicit version, but the expansion parameters might
+        for (ParametersParameterComponent p : expParameters.getParameter()) {
+          if (Utilities.existsInList(p.getName(), "system-version", "force-system-version") && p.hasValuePrimitive() && p.getValue().primitiveValue().startsWith(url+"|")) {
+            url = p.getValue().primitiveValue();
+          }
+        }
+      } else {
+        // the expansion parameters might override the version
+        for (ParametersParameterComponent p : expParameters.getParameter()) {
+          if (Utilities.existsInList(p.getName(), "force-system-version") && p.hasValueCanonicalType() && p.getValue().primitiveValue().startsWith(url+"|")) {
+            url = p.getValue().primitiveValue();
+          }
+        }
+      }
+    }
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+url);
+    if (usage != null) {
+      request = request + "&usage="+usage;
+    } 
     try {
       JsonObject json = JsonParser.parseObjectFromUrl(request);
       for (JsonObject item : json.getJsonObjects("authoritative")) {
@@ -209,6 +242,7 @@ public class TerminologyClientManager {
 
   public void setFactory(ITerminologyClientFactory factory) {
     this.factory = factory;    
+    System.out.println("tcc factory version = "+factory.getVersion());
   }
 
   public void setCache(TerminologyCache cache) {
@@ -263,5 +297,21 @@ public class TerminologyClientManager {
   }
 
   
-  
+
+  public Parameters getExpansionParameters() {
+    return expParameters;
+  }
+
+  public void setExpansionParameters(Parameters expParameters) {
+    this.expParameters = expParameters;
+  }
+
+  public String getUsage() {
+    return usage;
+  }
+
+  public void setUsage(String usage) {
+    this.usage = usage;
+  }
+
 }

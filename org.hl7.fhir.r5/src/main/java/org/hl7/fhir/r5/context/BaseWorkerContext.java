@@ -231,7 +231,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private Object lock = new Object(); // used as a lock for the data that follows
   protected String version; // although the internal resources are all R5, the version of FHIR they describe may not be 
 
-  protected TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClientR5Factory());
+  protected TerminologyClientManager terminologyClientManager = new TerminologyClientManager(null);
   private boolean minimalMemory = false;
 
   private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
@@ -850,6 +850,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     Set<String> systems = findRelevantSystems(vs);
     TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, true);
+    if (tc == null) {
+      res = new ValueSetExpansionOutcome("No server available", TerminologyServiceErrorClass.INTERNAL_ERROR, true);      
+    }
     Parameters p = constructParameters(tc, vs, hierarchical);
     for (ConceptSetComponent incl : vs.getCompose().getInclude()) {
       codeSystemsUsed.add(incl.getSystem());
@@ -1885,8 +1888,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return expParameters;
   }
 
-  public void setExpansionProfile(Parameters expParameters) {
+  public void setExpansionParameters(Parameters expParameters) {
     this.expParameters = expParameters;
+    this.terminologyClientManager.setExpansionParameters(expParameters);
   }
 
   @Override

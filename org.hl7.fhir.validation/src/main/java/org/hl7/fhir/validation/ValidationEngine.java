@@ -477,7 +477,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     context.setCanNoTS(true);
     context.setCacheId(UUID.randomUUID().toString());
     context.setAllowLoadingDuplicates(true); // because of Forge
-    context.setExpansionProfile(makeExpProfile());
+    context.setExpansionParameters(makeExpProfile());
     if (tt != null) {
       context.setClock(tt);
     }
@@ -841,6 +841,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   public InstanceValidator getValidator(FhirFormat format) throws FHIRException, IOException {
     InstanceValidator validator = new InstanceValidator(context, null, null);
+    context.getTxClientManager().setUsage("validation");
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
     validator.getExtensionDomains().clear();
