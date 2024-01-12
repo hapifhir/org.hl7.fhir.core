@@ -9,11 +9,11 @@
     <property name="charset" value="UTF-8"/>
     <property name="fileExtensions" value="java, properties, xml, js, json"/>
     <module name="TreeWalker">
-        <!--
-        <module name="TodoComment">-->
+
+        <module name="TodoComment">
             <!-- The (?i) below means Case Insensitive -->
-        <!--<property name="format" value="(?i)FIXME"/>
--->
+        <property name="format" value="(?i)FIXME"/>
+    </module>
   <module name="RegexpSinglelineJava">
       <property name="format" value="org\.jetbrains\.annotations\.NotNull"/>
   </module>
