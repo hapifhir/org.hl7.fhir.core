@@ -88,35 +88,16 @@ public class TextFile {
 		s.close();
 	}
 	
-	
-  public static void stringToFile(String content, File file) throws IOException {
-    FileOutputStream fs = new FileOutputStream(file);
-    try {
-      OutputStreamWriter sw = new OutputStreamWriter(fs, "UTF-8");
-      sw.write('\ufeff');  // Unicode BOM, translates to UTF-8 with the configured outputstreamwriter
-      sw.write(content);
-      sw.flush();
-      sw.close();
-    } finally {
-      fs.close();
-    }
-  }
-  
-  public static void stringToStream(String content, OutputStream stream, boolean bom) throws IOException {
+  public static void stringToStream(String content, OutputStream stream) throws IOException {
     OutputStreamWriter sw = new OutputStreamWriter(stream, "UTF-8");
-    if (bom) {
-      sw.write('\ufeff');  // Unicode BOM, translates to UTF-8 with the configured outputstreamwriter
-    }
     sw.write(content);
     sw.flush();
     sw.close();
   }
   
-  public static byte[] stringToBytes(String content, boolean bom) throws IOException {
+  public static byte[] stringToBytes(String content) throws IOException {
     ByteArrayOutputStream bs = new ByteArrayOutputStream();
     OutputStreamWriter sw = new OutputStreamWriter(bs, "UTF-8");
-    if (bom)
-      sw.write('\ufeff');  // Unicode BOM, translates to UTF-8 with the configured outputstreamwriter
     sw.write(content);
     sw.flush();
     sw.close();
@@ -128,20 +109,33 @@ public class TextFile {
     stringToFile(content, file);
   }
 
-  public static void stringToFile(String content, File file, boolean bom) throws IOException  {
+
+  public static void stringToFile(String content, File file) throws IOException {
+    FileOutputStream fs = new FileOutputStream(file);
+    try {
+      OutputStreamWriter sw = new OutputStreamWriter(fs, "UTF-8");
+      sw.write(content);
+      sw.flush();
+      sw.close();
+    } finally {
+      fs.close();
+    }
+  }  
+  
+  public static void stringToFileWithBOM(String content, File file) throws IOException  {
     FileOutputStream fs = new FileOutputStream(file);
     OutputStreamWriter sw = new OutputStreamWriter(fs, "UTF-8");
-    if (bom)
-      sw.write('\ufeff');  // Unicode BOM, translates to UTF-8 with the configured outputstreamwriter
+    sw.write('\ufeff');  // Unicode BOM, translates to UTF-8 with the configured outputstreamwriter
     sw.write(content);
     sw.flush();
     sw.close();
   }
   
-  public static void stringToFile(String content, String path, boolean bom) throws IOException  {
+  public static void stringToFileWithBom(String content, String path) throws IOException  {
     File file = new CSFile(path);
-    stringToFile(content, file, bom);
+    stringToFileWithBOM(content, file);
   }
+  
 
   public static void stringToFileNoPrefix(String content, String path) throws IOException  {
     File file = new CSFile(path);

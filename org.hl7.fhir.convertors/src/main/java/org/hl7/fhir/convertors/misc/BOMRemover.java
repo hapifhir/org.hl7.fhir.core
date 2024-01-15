@@ -27,7 +27,7 @@ public class BOMRemover {
       String s = Utilities.stripBOM(src);
       if (!s.equals(src)) {
         System.out.println("Remove BOM from "+f.getAbsolutePath());
-        TextFile.stringToFile(s, f, false);
+        TextFile.stringToFile(s, f);
       }
     }
   }
