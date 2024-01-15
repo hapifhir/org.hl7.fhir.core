@@ -57,4 +57,23 @@ public class ValidationProcessInfo {
     Collections.sort(msgs);
     return msgs;
   }
+
+  public boolean hasMessage(String msg) {
+    for (OperationOutcomeIssueComponent iss : issues) {
+      if (msg.equals(iss.getDetails().getText())) {
+        return true;        
+      }
+    }
+    return false;
+  }
+
+  public boolean hasNotFound(String system) {
+    for (OperationOutcomeIssueComponent iss : issues) {
+      if (iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found") &&
+          iss.getDetails().hasText() && iss.getDetails().getText().contains(system)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

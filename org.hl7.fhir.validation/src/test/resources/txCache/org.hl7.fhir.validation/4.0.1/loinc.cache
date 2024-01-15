@@ -426,7 +426,7 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Error from http://tx-dev.fhir.org/r4: Unable to resolve value set \"http://hl7.org/fhir/ValueSet/birthDate\"",
+  "error" : "Error from http://tx-dev.fhir.org/r4: Error:A definition for the value Set 'http://hl7.org/fhir/ValueSet/birthDate' could not be found\r\n",
   "class" : "SERVER_ERROR",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -4999,6 +4999,31 @@ v: {
   "code" : "29463-7",
   "display" : "Body weight"
 }, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Body weight",
+  "code" : "29463-7",
+  "system" : "http://loinc.org",
+  "version" : "2.74",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "version" : "2.71",
+  "code" : "29463-7",
+  "display" : "Body weight"
+}, "url": "http://hl7.org/fhir/ValueSet/observation-vitalsignresult", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",

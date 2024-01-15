@@ -33,6 +33,8 @@ public class TerminologyClientManager {
   }
 
   public static final String UNRESOLVED_VALUESET = "--unknown--";
+
+  private static final boolean IGNORE_TX_REGISTRY = false;
   
   private ITerminologyClientFactory factory;
   private String cacheId;
@@ -136,6 +138,9 @@ public class TerminologyClientManager {
   }
 
   private String decideWhichServer(String url) {
+    if (IGNORE_TX_REGISTRY) {
+      return getMasterClient().getAddress();
+    }
     if (expParameters != null) {
       if (!url.contains("|")) {
         // the client hasn''t specified an explicit version, but the expansion parameters might
@@ -242,7 +247,6 @@ public class TerminologyClientManager {
 
   public void setFactory(ITerminologyClientFactory factory) {
     this.factory = factory;    
-    System.out.println("tcc factory version = "+factory.getVersion());
   }
 
   public void setCache(TerminologyCache cache) {

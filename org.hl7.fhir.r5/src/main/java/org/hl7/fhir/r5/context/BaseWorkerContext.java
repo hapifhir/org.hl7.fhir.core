@@ -2024,6 +2024,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (codeSystems.has(uri)) {
           return (T) codeSystems.get(uri, version, pvlist);
         } 
+        if (systems.has(uri)) {
+          return (T) systems.get(uri, version, pvlist);
+        } 
         if (operations.has(uri)) {
           return (T) operations.get(uri, version, pvlist);
         } 
@@ -2082,6 +2085,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return (T) structures.get(uri, version, pvlist);
       } else if (class_ == StructureMap.class) {
         return (T) transforms.get(uri, version, pvlist);
+      } else if (class_ == NamingSystem.class) {
+        return (T) systems.get(uri, version, pvlist);
       } else if (class_ == ValueSet.class) {
         return (T) valueSets.get(uri, version, pvlist);
       } else if (class_ == CodeSystem.class) {

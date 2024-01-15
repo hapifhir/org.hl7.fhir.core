@@ -12,7 +12,7 @@
 }}####
 v: {
   "code" : "05482",
-  "severity" : "error",
+  "severity" : "warning",
   "error" : "A definition for CodeSystem 'http://fhir.de/CodeSystem/ask' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "http://tx-dev.fhir.org/r4",
@@ -24,7 +24,7 @@ v: {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
       "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
-    "severity" : "error",
+    "severity" : "warning",
     "code" : "not-found",
     "details" : {
       "coding" : [{
@@ -53,7 +53,7 @@ v: {
 }}####
 v: {
   "code" : "06225",
-  "severity" : "error",
+  "severity" : "warning",
   "error" : "A definition for CodeSystem 'http://fhir.de/CodeSystem/ask' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "http://tx-dev.fhir.org/r4",
@@ -65,7 +65,7 @@ v: {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
       "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
-    "severity" : "error",
+    "severity" : "warning",
     "code" : "not-found",
     "details" : {
       "coding" : [{
@@ -94,7 +94,7 @@ v: {
 }}####
 v: {
   "code" : "1234",
-  "severity" : "error",
+  "severity" : "warning",
   "error" : "A definition for CodeSystem 'http://fhir.de/CodeSystem/ask' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "http://tx-dev.fhir.org/r4",
@@ -106,7 +106,7 @@ v: {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
       "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
-    "severity" : "error",
+    "severity" : "warning",
     "code" : "not-found",
     "details" : {
       "coding" : [{
@@ -135,7 +135,7 @@ v: {
 }}####
 v: {
   "code" : "10669",
-  "severity" : "error",
+  "severity" : "warning",
   "error" : "A definition for CodeSystem 'http://fhir.de/CodeSystem/ask' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "http://tx-dev.fhir.org/r4",
@@ -147,7 +147,7 @@ v: {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
       "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
-    "severity" : "error",
+    "severity" : "warning",
     "code" : "not-found",
     "details" : {
       "coding" : [{
@@ -176,7 +176,7 @@ v: {
 }}####
 v: {
   "code" : "03800",
-  "severity" : "error",
+  "severity" : "warning",
   "error" : "A definition for CodeSystem 'http://fhir.de/CodeSystem/ask' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "http://tx-dev.fhir.org/r4",
@@ -188,7 +188,7 @@ v: {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
       "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
-    "severity" : "error",
+    "severity" : "warning",
     "code" : "not-found",
     "details" : {
       "coding" : [{
