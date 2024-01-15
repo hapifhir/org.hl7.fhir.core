@@ -243,7 +243,7 @@ public class SHLParser extends ParserBase {
   }
 
   private void processContent(List<ValidatedFragment> res, List<ValidationMessage> errors, String path, String name, String jose, String ct) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
-    ValidatedFragment bin = addNamedElement(res, "encrypted", "jose", TextFile.stringToBytes(jose, false));
+    ValidatedFragment bin = addNamedElement(res, "encrypted", "jose", TextFile.stringToBytes(jose));
     byte[] cnt = null;
     JWEObject jwe;
     try {

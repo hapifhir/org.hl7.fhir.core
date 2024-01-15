@@ -554,7 +554,7 @@ public class IgLoader implements IValidationEngineLoader {
   private String readInfoVersion(ByteProvider bs) throws IOException {
     String is = TextFile.bytesToString(bs.getBytes());
     is = is.trim();
-    IniFile ini = new IniFile(new ByteArrayInputStream(TextFile.stringToBytes(is, false)));
+    IniFile ini = new IniFile(new ByteArrayInputStream(TextFile.stringToBytes(is)));
     return ini.getStringProperty("FHIR", "version");
   }
 

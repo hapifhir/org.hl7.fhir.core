@@ -1292,6 +1292,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
               for (ConceptReferenceComponent cc : vsi.getConcept()) {
                 if (cc.getCode().equals(code)) {
                   return true;
+                }
               }
             }
             info.setErr(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
