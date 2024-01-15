@@ -142,6 +142,9 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             default: return "?";
           }
         }
+        public boolean isHigherThan(IssueSeverity other) {
+          return this.ordinal() < other.ordinal();
+        }
     }
 
   public static class IssueSeverityEnumFactory implements EnumFactory<IssueSeverity> {

@@ -43,6 +43,7 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.ValidationEngine;
@@ -244,64 +245,80 @@ public class TerminologyServiceTests {
   private void validate(ValidationEngine engine, String name, Resource req, String resp, String lang, String fp, JsonObject ext, boolean isCS) throws JsonSyntaxException, FileNotFoundException, IOException {
     org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) req;
     ValueSet vs = null;
+    String vsurl = null;
     if (!isCS) {
       if (p.hasParameter("valueSetVersion")) {
+        vsurl = p.getParameterValue("url").primitiveValue()+"|"+p.getParameterValue("valueSetVersion").primitiveValue();
         vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), p.getParameterValue("valueSetVersion").primitiveValue());      
       } else {
+        vsurl = p.getParameterValue("url").primitiveValue();
         vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
       }
     }
-    ValidationOptions options = new ValidationOptions(FhirPublication.R5);
-    if (p.hasParameter("displayLanguage")) {
-      options = options.withLanguage(p.getParameterString("displayLanguage"));
-    } else if (lang != null ) {
-      options = options.withLanguage(lang);
-    }
-    if (p.hasParameter("valueset-membership-only") && "true".equals(p.getParameterString("valueset-membership-only"))) {
-      options = options.withCheckValueSetOnly();
-    }
-    if (p.hasParameter("lenient-display-validation") && "true".equals(p.getParameterString("lenient-display-validation"))) {
-      options = options.setDisplayWarningMode(true);
-    }
-    if (p.hasParameter("activeOnly") && "true".equals(p.getParameterString("activeOnly"))) {
-      options = options.setActiveOnly(true);
-    }
-    engine.getContext().getExpansionParameters().clearParameters("includeAlternateCodes");
-    for (ParametersParameterComponent pp : p.getParameter()) {
-      if ("includeAlternateCodes".equals(pp.getName())) {
-        engine.getContext().getExpansionParameters().addParameter(pp.copy());
-      }
-    }
-    ValidationResult vm;
+    ValidationResult vm = null;
     String code = null;
     String system = null;
     String version = null;
     String display = null;
     CodeableConcept cc = null;
-    if (p.hasParameter("code")) {
-      code = p.getParameterString("code");
-      system = p.getParameterString(isCS ? "url" : "system");
-      version = p.getParameterString(isCS ? "version" : "systemVersion"); 
-      display = p.getParameterString("display"); 
-      vm = engine.getContext().validateCode(options.withGuessSystem(), 
-          p.getParameterString(isCS ? "url" : "system"), p.getParameterString(isCS ? "version" : "systemVersion"), 
-          p.getParameterString("code"), p.getParameterString("display"), vs);
-    } else if (p.hasParameter("coding")) {
-      Coding coding = (Coding) p.getParameterValue("coding");
-      code = coding.getCode();
-      system = coding.getSystem();
-      version = coding.getVersion();
-      display = coding.getDisplay();
-      vm = engine.getContext().validateCode(options, coding, vs);
-    } else if (p.hasParameter("codeableConcept")) {
-      cc = (CodeableConcept) p.getParameterValue("codeableConcept");
-      vm = engine.getContext().validateCode(options, cc, vs);
+    org.hl7.fhir.r5.model.Parameters res = null;
+    OperationOutcome oo = null;
+    
+    if (vs == null && vsurl != null) {
+      String msg = engine.getContext().formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, vsurl);
+      oo = new OperationOutcome();
+      CodeableConcept cct = oo.addIssue().setSeverity(IssueSeverity.ERROR).setCode(IssueType.NOTFOUND).getDetails();
+      cct.addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
+      cct.setText(msg);      
     } else {
-      throw new Error("validate not done yet for this steup");
+      ValidationOptions options = new ValidationOptions(FhirPublication.R5);
+      if (p.hasParameter("displayLanguage")) {
+        options = options.withLanguage(p.getParameterString("displayLanguage"));
+      } else if (lang != null ) {
+        options = options.withLanguage(lang);
+      }
+      if (p.hasParameter("valueset-membership-only") && "true".equals(p.getParameterString("valueset-membership-only"))) {
+        options = options.withCheckValueSetOnly();
+      }
+      if (p.hasParameter("lenient-display-validation") && "true".equals(p.getParameterString("lenient-display-validation"))) {
+        options = options.setDisplayWarningMode(true);
+      }
+      if (p.hasParameter("activeOnly") && "true".equals(p.getParameterString("activeOnly"))) {
+        options = options.setActiveOnly(true);
+      }
+      engine.getContext().getExpansionParameters().clearParameters("includeAlternateCodes");
+      for (ParametersParameterComponent pp : p.getParameter()) {
+        if ("includeAlternateCodes".equals(pp.getName())) {
+          engine.getContext().getExpansionParameters().addParameter(pp.copy());
+        }
+      }
+      if (p.hasParameter("code")) {
+        code = p.getParameterString("code");
+        system = p.getParameterString(isCS ? "url" : "system");
+        version = p.getParameterString(isCS ? "version" : "systemVersion"); 
+        display = p.getParameterString("display"); 
+        vm = engine.getContext().validateCode(options.withGuessSystem(), 
+            p.getParameterString(isCS ? "url" : "system"), p.getParameterString(isCS ? "version" : "systemVersion"), 
+            p.getParameterString("code"), p.getParameterString("display"), vs);
+      } else if (p.hasParameter("coding")) {
+        Coding coding = (Coding) p.getParameterValue("coding");
+        code = coding.getCode();
+        system = coding.getSystem();
+        version = coding.getVersion();
+        display = coding.getDisplay();
+        vm = engine.getContext().validateCode(options, coding, vs);
+      } else if (p.hasParameter("codeableConcept")) {
+        cc = (CodeableConcept) p.getParameterValue("codeableConcept");
+        vm = engine.getContext().validateCode(options, cc, vs);
+      } else {
+        throw new Error("validate not done yet for this steup");
+      }
     }
-    if (vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.FATAL) {
-      OperationOutcome oo = new OperationOutcome();
+    if (oo == null && vm != null && vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.FATAL) {
+      oo = new OperationOutcome();
       oo.getIssue().addAll(vm.getIssues());
+    } 
+    if (oo != null) {
       TxTesterSorters.sortOperationOutcome(oo);
       TxTesterScrubbers.scrubOO(oo, false);
       
@@ -314,57 +331,60 @@ public class TerminologyServiceTests {
       }
       Assertions.assertTrue(diff == null, diff);
     } else {
-      org.hl7.fhir.r5.model.Parameters res = new org.hl7.fhir.r5.model.Parameters();
-      if (vm.getSystem() != null) {
-        res.addParameter("system", new UriType(vm.getSystem()));
-      } else if (system != null) {
-        res.addParameter("system", new UriType(system));
-      }
-      if (vm.getCode() != null) {
-        res.addParameter("code", new CodeType(vm.getCode()));
-      } else if (code != null) {
-        res.addParameter("code", new CodeType(code));
-      }
-      if (vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR) {
-        res.addParameter("result", false);
-      } else {
-        res.addParameter("result", true);
-      }
-      if (vm.getMessage() != null) {
-        res.addParameter("message", vm.getMessage());
-      }
-      if (vm.getVersion() != null) {
-        res.addParameter("version", vm.getVersion());
-      } else if (version != null) {
-        res.addParameter("version", new StringType(version));
-      }
-      if (vm.getDisplay() != null) {
-        res.addParameter("display", vm.getDisplay());
-      } else if (display != null) {
-        res.addParameter("display", new StringType(display));
-      }
-//      if (vm.getCodeableConcept() != null) {
-//        res.addParameter("codeableConcept", vm.getCodeableConcept());
-//      } else
-      if (cc != null) {
-        res.addParameter("codeableConcept", cc);
-      } 
-      if (vm.isInactive()) {
-        res.addParameter("inactive", true);
-      }
-      if (vm.getStatus() != null) {
-        res.addParameter("status", vm.getStatus());
-      }
-      if (vm.getUnknownSystems() != null) {
-        for (String s : vm.getUnknownSystems()) {
-          res.addParameter("x-caused-by-unknown-system", new CanonicalType(s));
+      if (res == null) {
+        res = new org.hl7.fhir.r5.model.Parameters();
+        if (vm.getSystem() != null) {
+          res.addParameter("system", new UriType(vm.getSystem()));
+        } else if (system != null) {
+          res.addParameter("system", new UriType(system));
+        }
+        if (vm.getCode() != null) {
+          res.addParameter("code", new CodeType(vm.getCode()));
+        } else if (code != null) {
+          res.addParameter("code", new CodeType(code));
+        }
+        if (vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR) {
+          res.addParameter("result", false);
+        } else {
+          res.addParameter("result", true);
+        }
+        if (vm.getMessage() != null) {
+          res.addParameter("message", vm.getMessage());
+        }
+        if (vm.getVersion() != null) {
+          res.addParameter("version", vm.getVersion());
+        } else if (version != null) {
+          res.addParameter("version", new StringType(version));
+        }
+        if (vm.getDisplay() != null) {
+          res.addParameter("display", vm.getDisplay());
+        } else if (display != null) {
+          res.addParameter("display", new StringType(display));
+        }
+        //      if (vm.getCodeableConcept() != null) {
+        //        res.addParameter("codeableConcept", vm.getCodeableConcept());
+        //      } else
+        if (cc != null) {
+          res.addParameter("codeableConcept", cc);
+        } 
+        if (vm.isInactive()) {
+          res.addParameter("inactive", true);
+        }
+        if (vm.getStatus() != null) {
+          res.addParameter("status", vm.getStatus());
+        }
+        if (vm.getUnknownSystems() != null) {
+          for (String s : vm.getUnknownSystems()) {
+            res.addParameter("x-caused-by-unknown-system", new CanonicalType(s));
+          }
+        }
+        if (vm.getIssues().size() > 0) {
+          oo = new OperationOutcome();
+          oo.getIssue().addAll(vm.getIssues());
+          res.addParameter().setName("issues").setResource(oo);
         }
       }
-      if (vm.getIssues().size() > 0) {
-        OperationOutcome oo = new OperationOutcome();
-        oo.getIssue().addAll(vm.getIssues());
-        res.addParameter().setName("issues").setResource(oo);
-      }
+
       TxTesterSorters.sortParameters(res);
       TxTesterScrubbers.scrubParams(res);
 

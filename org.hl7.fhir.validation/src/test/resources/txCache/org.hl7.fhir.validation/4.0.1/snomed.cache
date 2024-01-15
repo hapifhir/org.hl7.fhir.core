@@ -2339,7 +2339,7 @@ v: {
 }}####
 v: {
   "code" : "271872005",
-  "severity" : "error",
+  "severity" : "warning",
   "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000146104/version/20220930' could not be found, so the code cannot be validated. Valid versions: [http://snomed.info/sct/11000146104/version/20230331,http://snomed.info/sct/11000172109/version/20231115,http://snomed.info/sct/2011000195101/version/20230607,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20230731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230901,http://snomed.info/sct/827022005/version/20221130,http://snomed.info/sct/83821000000107/version/20230412,http://snomed.info/sct/900000000000207008/version/20230131,http://snomed.info/sct/900000000000207008/version/20230731,http://snomed.info/sct/900000000000207008/version/20230901]",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "http://tx-dev.fhir.org/r4",
@@ -2351,7 +2351,7 @@ v: {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
       "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
-    "severity" : "error",
+    "severity" : "warning",
     "code" : "not-found",
     "details" : {
       "coding" : [{
@@ -6488,7 +6488,7 @@ v: {
 }}####
 v: {
   "code" : "27113001",
-  "severity" : "error",
+  "severity" : "warning",
   "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20210731' could not be found, so the code cannot be validated. Valid versions: [http://snomed.info/sct/11000146104/version/20230331,http://snomed.info/sct/11000172109/version/20231115,http://snomed.info/sct/2011000195101/version/20230607,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20230731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230901,http://snomed.info/sct/827022005/version/20221130,http://snomed.info/sct/83821000000107/version/20230412,http://snomed.info/sct/900000000000207008/version/20230131,http://snomed.info/sct/900000000000207008/version/20230731,http://snomed.info/sct/900000000000207008/version/20230901]",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "http://tx-dev.fhir.org/r4",
@@ -6500,7 +6500,7 @@ v: {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
       "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
-    "severity" : "error",
+    "severity" : "warning",
     "code" : "not-found",
     "details" : {
       "coding" : [{
@@ -6530,7 +6530,7 @@ v: {
 }}####
 v: {
   "code" : "38266002",
-  "severity" : "error",
+  "severity" : "warning",
   "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20210731' could not be found, so the code cannot be validated. Valid versions: [http://snomed.info/sct/11000146104/version/20230331,http://snomed.info/sct/11000172109/version/20231115,http://snomed.info/sct/2011000195101/version/20230607,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20230731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230901,http://snomed.info/sct/827022005/version/20221130,http://snomed.info/sct/83821000000107/version/20230412,http://snomed.info/sct/900000000000207008/version/20230131,http://snomed.info/sct/900000000000207008/version/20230731,http://snomed.info/sct/900000000000207008/version/20230901]",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "http://tx-dev.fhir.org/r4",
@@ -6542,7 +6542,7 @@ v: {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
       "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
-    "severity" : "error",
+    "severity" : "warning",
     "code" : "not-found",
     "details" : {
       "coding" : [{
@@ -6573,7 +6573,7 @@ v: {
 v: {
   "code" : "27113001",
   "severity" : "error",
-  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20210731' could not be found, so the code cannot be validated. Valid versions: [http://snomed.info/sct/11000146104/version/20230331,http://snomed.info/sct/11000172109/version/20231115,http://snomed.info/sct/2011000195101/version/20230607,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20230731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230901,http://snomed.info/sct/827022005/version/20221130,http://snomed.info/sct/83821000000107/version/20230412,http://snomed.info/sct/900000000000207008/version/20230131,http://snomed.info/sct/900000000000207008/version/20230731,http://snomed.info/sct/900000000000207008/version/20230901]; Unable to check whether the code is in the value set https://fhir.kbv.de/ValueSet/KBV_VS_Base_Body_Weight_Snomed|1.2.1 because the code system http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20210731 was not found",
+  "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20210731' could not be found, so the code cannot be validated. Valid versions: [http://snomed.info/sct/11000146104/version/20230331,http://snomed.info/sct/11000172109/version/20231115,http://snomed.info/sct/2011000195101/version/20230607,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20230731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230901,http://snomed.info/sct/827022005/version/20221130,http://snomed.info/sct/83821000000107/version/20230412,http://snomed.info/sct/900000000000207008/version/20230131,http://snomed.info/sct/900000000000207008/version/20230731,http://snomed.info/sct/900000000000207008/version/20230901]; Unable to check whether the code is in the value set 'https://fhir.kbv.de/ValueSet/KBV_VS_Base_Body_Weight_Snomed|1.2.1' because the code system http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20210731 was not found",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20210731",
@@ -6608,10 +6608,8 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "vs-invalid"
       }],
-      "text" : "Unable to check whether the code is in the value set https://fhir.kbv.de/ValueSet/KBV_VS_Base_Body_Weight_Snomed|1.2.1 because the code system http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20210731 was not found"
-    },
-    "location" : ["Coding"],
-    "expression" : ["Coding"]
+      "text" : "Unable to check whether the code is in the value set 'https://fhir.kbv.de/ValueSet/KBV_VS_Base_Body_Weight_Snomed|1.2.1' because the code system http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20210731 was not found"
+    }
   }]
 }
 
@@ -6825,7 +6823,7 @@ v: {
 }}####
 v: {
   "code" : "459231000124102",
-  "severity" : "error",
+  "severity" : "warning",
   "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20210331' could not be found, so the code cannot be validated. Valid versions: [http://snomed.info/sct/11000146104/version/20230331,http://snomed.info/sct/11000172109/version/20231115,http://snomed.info/sct/2011000195101/version/20230607,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20230731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230901,http://snomed.info/sct/827022005/version/20221130,http://snomed.info/sct/83821000000107/version/20230412,http://snomed.info/sct/900000000000207008/version/20230131,http://snomed.info/sct/900000000000207008/version/20230731,http://snomed.info/sct/900000000000207008/version/20230901]",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "http://tx-dev.fhir.org/r4",
@@ -6837,7 +6835,7 @@ v: {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
       "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
-    "severity" : "error",
+    "severity" : "warning",
     "code" : "not-found",
     "details" : {
       "coding" : [{
@@ -6867,7 +6865,7 @@ v: {
 }}####
 v: {
   "code" : "36989005",
-  "severity" : "error",
+  "severity" : "warning",
   "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/11000146104/version/20220930' could not be found, so the code cannot be validated. Valid versions: [http://snomed.info/sct/11000146104/version/20230331,http://snomed.info/sct/11000172109/version/20231115,http://snomed.info/sct/2011000195101/version/20230607,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20230731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230901,http://snomed.info/sct/827022005/version/20221130,http://snomed.info/sct/83821000000107/version/20230412,http://snomed.info/sct/900000000000207008/version/20230131,http://snomed.info/sct/900000000000207008/version/20230731,http://snomed.info/sct/900000000000207008/version/20230901]",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "http://tx-dev.fhir.org/r4",
@@ -6879,7 +6877,7 @@ v: {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
       "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
-    "severity" : "error",
+    "severity" : "warning",
     "code" : "not-found",
     "details" : {
       "coding" : [{

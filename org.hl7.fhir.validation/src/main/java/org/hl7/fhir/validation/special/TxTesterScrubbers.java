@@ -89,6 +89,7 @@ public class TxTesterScrubbers {
 
   public static void scrubOO(OperationOutcome po, boolean tight) {
     scrubDR(po, tight);
+    po.getIssue().removeIf(i -> i.hasDiagnostics() & !i.hasDetails());
   }
 
 }

@@ -148,6 +148,21 @@ public class ValidationResult {
     return CommaSeparatedStringBuilder.join("; ", messages);
   }
 
+  public String getTrimmedMessage() {
+    List<String> toTrim = new ArrayList<>();
+    for (OperationOutcomeIssueComponent iss : getIssues()) {
+      toTrim.add(iss.getDetails().getText());
+    }
+    List<String> trimmed = new ArrayList<>();
+    trimmed.addAll(messages);
+    trimmed.removeAll(toTrim);
+    if (trimmed.size() == 0) {
+      return null;
+    }       
+    Collections.sort(trimmed);
+    return CommaSeparatedStringBuilder.join("; ", trimmed);
+  }
+
   public boolean IsNoService() {
     return errorClass == TerminologyServiceErrorClass.NOSERVICE;
   }
