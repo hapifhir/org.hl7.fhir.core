@@ -99,7 +99,7 @@ public class TextFile {
     }
   }
   
-  public static void stringToFileWithBom(final String content, final String path) throws IOException  {
+  public static void stringToFileWithBOM(final String content, final String path) throws IOException  {
     final File file = new CSFile(path);
     stringToFileWithBOM(content, file);
   }
