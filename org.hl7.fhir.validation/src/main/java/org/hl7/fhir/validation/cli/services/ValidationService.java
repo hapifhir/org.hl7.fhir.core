@@ -495,7 +495,7 @@ public class ValidationService {
     validationEngine.setForPublication(cliContext.isForPublication());
     validationEngine.setShowTimes(cliContext.isShowTimes());
     validationEngine.setAllowExampleUrls(cliContext.isAllowExampleUrls());
-    if (!cliContext.isDoNotFetchUnknownProfiles()) {
+    if (!cliContext.isDisableDefaultResourceFetcher()) {
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validationEngine.getPcm(), validationEngine.getContext(), validationEngine);
       validationEngine.setFetcher(fetcher);
       validationEngine.getContext().setLocator(fetcher);

@@ -10,8 +10,10 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.endsWith;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.ArgumentMatchers.startsWith;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -29,18 +31,13 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtil;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.settings.FhirSettings;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.FileInfo;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
-import org.hl7.fhir.validation.cli.model.ValidationResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -223,64 +220,6 @@ class ValidationServiceTest  {
 
   }
 
-  @Test
-  @DisplayName("Test that CliContext.doNotFetchUnknownProfiles is handled correctly")
-  public void testDoNotFetchUnknownProfiles() throws Exception {
-    TestingUtilities.injectCorePackageLoader();
-    ValidationService myService = new ValidationService();
-
-    // a Patient resource profiled with http://hl7.org/fhir/us/mcode/StructureDefinition/mcode-cancer-patient
-    // https://github.com/FHIR/fhir-test-cases/blob/master/validator/mcode-pat.json
-    String resource = TestingUtilities.loadTestResource("validator", "mcode-pat.json");
-
-    List<FileInfo> filesToValidate = new ArrayList<>();
-    filesToValidate.add(new FileInfo().setFileName("test_resource.json")
-                                      .setFileContent(resource)
-                                      .setFileType(Manager.FhirFormat.JSON.getExtension()));
-    CliContext cliContext = new CliContext().setTxServer(null)
-                                            .setSv("4.0.1")
-                                            .setBestPracticeLevel(BestPracticeWarningLevel.Ignore);
-
-    ValidationRequest request = new ValidationRequest().setCliContext(cliContext).setFilesToValidate(filesToValidate);
-    ValidationResponse response = myService.validateSources(request);
-
-    // Scenario 1: default behavior, doNotFetchUnknownProfiles is "false"
-    // -- this resource validates with no warnings or errors
-    response.getOutcomes().get(0).getMessages().forEach(m -> {
-      if (m.getLevel() == IssueSeverity.WARNING || m.getLevel() == IssueSeverity.ERROR) {
-        fail();
-      }
-    });
-
-    // Scenario 2: doNotFetchUnknownProfiles is "true"
-    // -- now there is a warning that the profile was not fetched
-    cliContext.setDoNotFetchUnknownProfiles(true);
-    response = myService.validateSources(request);
-
-    boolean found = false;
-    for (ValidationMessage m : response.getOutcomes().get(0).getMessages()) {
-      if (m.getLevel() == IssueSeverity.WARNING &&
-          m.getMessageId() == I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY) {
-        // "Profile reference '...' has not been checked because it could not be found,
-        //  and the validator is set to not fetch unknown profiles"
-        found = true;
-        break;
-      }
-    }
-    Assertions.assertTrue(found);
-
-    // Scenario 3: doNotFetchUnknownProfiles is "false" and the relevant IG is added to context
-    // -- this resource again validates with no warnings or errors
-    cliContext.addIg("hl7.fhir.us.mcode#1.0.0");
-    response = myService.validateSources(request);
-
-    response.getOutcomes().get(0).getMessages().forEach(m -> {
-      if (m.getLevel() == IssueSeverity.WARNING || m.getLevel() == IssueSeverity.ERROR) {
-        fail();
-      }
-    });
-  }
-
   private CliContext getCliContextSingleSource() {
     CliContext cliContext;
     cliContext = new CliContext().setSources(Arrays.asList(DUMMY_SOURCE));
@@ -299,17 +238,43 @@ class ValidationServiceTest  {
   */
   @Test
   public void buildValidationEngineTest() throws IOException, URISyntaxException {
-
-    final org.hl7.fhir.utilities.TimeTracker timeTracker = mock(org.hl7.fhir.utilities.TimeTracker.class);
-
+    final TimeTracker timeTracker = mock(TimeTracker.class);
     final SimpleWorkerContext workerContext = mock(SimpleWorkerContext.class);
 
-    final ValidationEngine validationEngine = mock(ValidationEngine.class);
-    when(validationEngine.getContext()).thenReturn(workerContext);
+    final ValidationEngine mockValidationEngine = mock(ValidationEngine.class);
+    when(mockValidationEngine.getContext()).thenReturn(workerContext);
 
-   final ValidationEngine.ValidationEngineBuilder validationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);;
+    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);;
+    final ValidationService validationService = createFakeValidationService(mockValidationEngineBuilder, mockValidationEngine);
 
-    final ValidationService validationService = new ValidationService() {
+    CliContext cliContext = new CliContext();
+    validationService.buildValidationEngine(cliContext, null, timeTracker);
+
+    verify(mockValidationEngine).setFetcher(notNull());
+    verify(mockValidationEngineBuilder).withUserAgent(eq("fhir/validator/" + VersionUtil.getVersion()));
+  }
+
+  @Test
+  public void buildValidationEngineDoNotFetchUnknownProfilesTest() throws IOException, URISyntaxException {
+    final TimeTracker timeTracker = mock(TimeTracker.class);
+    final SimpleWorkerContext workerContext = mock(SimpleWorkerContext.class);
+
+    final ValidationEngine mockValidationEngine = mock(ValidationEngine.class);
+    when(mockValidationEngine.getContext()).thenReturn(workerContext);
+
+    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);;
+    final ValidationService validationService = createFakeValidationService(mockValidationEngineBuilder, mockValidationEngine);
+
+    CliContext cliContext = new CliContext();
+    cliContext.setDisableDefaultResourceFetcher(true);
+    validationService.buildValidationEngine(cliContext, null, timeTracker);
+
+    verify(mockValidationEngine, never()).setFetcher(any());
+    verify(mockValidationEngineBuilder).withUserAgent(eq("fhir/validator/" + VersionUtil.getVersion()));
+  }
+
+  private static ValidationService createFakeValidationService(ValidationEngine.ValidationEngineBuilder validationEngineBuilder, ValidationEngine validationEngine) {
+    return new ValidationService() {
       @Override
       protected ValidationEngine.ValidationEngineBuilder getValidationEngineBuilder() {
         when(validationEngineBuilder.withTHO(anyBoolean())).thenReturn(validationEngineBuilder);
@@ -331,11 +296,5 @@ class ValidationServiceTest  {
         //Don't care. Do nothing.
       }
     };
-
-    CliContext cliContext = new CliContext();
-
-    validationService.buildValidationEngine(cliContext, null, timeTracker);
-
-    verify(validationEngineBuilder).withUserAgent(eq("fhir/validator/" + VersionUtil.getVersion()));
   }
 }
