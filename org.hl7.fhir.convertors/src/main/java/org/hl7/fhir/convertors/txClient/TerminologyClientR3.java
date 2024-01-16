@@ -230,4 +230,11 @@ public class TerminologyClientR3 implements ITerminologyClient {
     return client.getUseCount();
   }
 
+  @Override
+  public Bundle search(String type, String criteria) {   
+    org.hl7.fhir.dstu3.model.Bundle result = client.search(type, criteria);
+    return result == null ? null : (Bundle) VersionConvertorFactory_30_50.convertResource(result);
+
+  }
+
 }

@@ -246,4 +246,9 @@ public class TerminologyClientR5 implements ITerminologyClient {
     return new TerminologyClientR5Factory();
   }
 
+  @Override
+  public Bundle search(String type, String criteria) {
+    return client.search(type, criteria);
+  }
+
 }

@@ -69,4 +69,5 @@ public interface ITerminologyClient {
   ITerminologyClient setContentLanguage(String lang);
   String getUserAgent();
   int getUseCount();
+  Bundle search(String type, String criteria); 
 }
