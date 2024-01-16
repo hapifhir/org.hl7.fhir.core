@@ -2555,7 +2555,7 @@ public class FHIRPathEngine {
   private List<Base> opMemberOf(ExecutionContext context, List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     boolean ans = false;
     String url = right.get(0).primitiveValue();
-    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url) : worker.fetchResource(ValueSet.class, url);
+    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url) : worker.findTxResource(ValueSet.class, url);
     if (vs != null) {
       for (Base l : left) {
         if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
@@ -4620,7 +4620,7 @@ public class FHIRPathEngine {
     }
 
     String url = nl.get(0).primitiveValue();
-    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url) : worker.fetchResource(ValueSet.class, url);
+    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url) : worker.findTxResource(ValueSet.class, url);
     if (vs == null) {
       return new ArrayList<Base>();
     }

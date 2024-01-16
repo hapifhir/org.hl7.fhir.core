@@ -337,7 +337,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if ("fr-CA".equals(lang)) {
       return "French (Canadian)"; // this one was omitted from the value set
     }
-    ValueSet v = getContext().getWorker().fetchResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/languages");
+    ValueSet v = getContext().getWorker().findTxResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/languages");
     if (v != null) {
       ConceptReferenceComponent l = null;
       for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) {

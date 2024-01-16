@@ -522,7 +522,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         if (cs == null) {
           OpIssueCode oic = OpIssueCode.NotFound;
           IssueType itype = IssueType.NOTFOUND;
-          ValueSet vs = context.fetchResource(ValueSet.class, system);
+          ValueSet vs = context.findTxResource(ValueSet.class, system);
           if (vs != null) {
             warningMessage = context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, system);  
             oic = OpIssueCode.InvalidData;
@@ -1453,7 +1453,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (inner.containsKey(url)) {
       return inner.get(url);
     }
-    ValueSet vs = context.fetchResource(ValueSet.class, url, valueset);
+    ValueSet vs = context.findTxResource(ValueSet.class, url, valueset);
     if (vs == null && info != null) {
       unknownValueSets.add(url);
       info.addIssue(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, null, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, url), OpIssueCode.NotFound, null));

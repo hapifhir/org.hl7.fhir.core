@@ -852,7 +852,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private ValueSet importValueSet(WorkingContext wc, String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
     if (value == null)
       throw fail("unable to find value set with no identity");
-    ValueSet vs = context.fetchResource(ValueSet.class, value, valueSet);
+    ValueSet vs = context.findTxResource(ValueSet.class, value, valueSet);
     if (vs == null) {
       if (context.fetchResource(CodeSystem.class, value, valueSet) != null) {
         throw fail("Cannot include value set "+value+" because it's actually a code system");
@@ -899,7 +899,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private ValueSet importValueSetForExclude(WorkingContext wc, String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
     if (value == null)
       throw fail("unable to find value set with no identity");
-    ValueSet vs = context.fetchResource(ValueSet.class, value, valueSet);
+    ValueSet vs = context.findTxResource(ValueSet.class, value, valueSet);
     if (vs == null) {
       if (context.fetchResource(CodeSystem.class, value, valueSet) != null) {
         throw fail("Cannot include value set "+value+" because it's actually a code system");

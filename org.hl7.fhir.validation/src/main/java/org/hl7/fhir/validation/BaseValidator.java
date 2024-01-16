@@ -978,11 +978,11 @@ public class BaseValidator implements IValidationContextResourceLoader {
         return null;
       } else {
         long t = System.nanoTime();
-        ValueSet fr = context.fetchResource(ValueSet.class, reference, src);
+        ValueSet fr = context.findTxResource(ValueSet.class, reference, src);
         if (fr == null) {
           if (!Utilities.isAbsoluteUrl(reference)) {
             reference = resolve(uri, reference);
-            fr = context.fetchResource(ValueSet.class, reference, src);
+            fr = context.findTxResource(ValueSet.class, reference, src);
           }
         }
         if (fr == null) {

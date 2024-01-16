@@ -492,7 +492,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //          ans.ah(vs.getWebPath()).tx(vs.present());                              
 //        }
 //      } else {
-//        ValueSet vs = context.getWorker().fetchResource(ValueSet.class, i.getAnswerValueSet());
+//        ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.getAnswerValueSet());
 //        if (vs == null  || !vs.hasWebPath()) {
 //          ans.tx(i.getAnswerValueSet());                    
 //        } else {
@@ -579,7 +579,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //          vs.setUrl("urn:uuid:"+UUID.randomUUID().toString().toLowerCase());
 //        }
 //      } else {
-//        vs = context.getContext().fetchResource(ValueSet.class, i.getAnswerValueSet());
+//        vs = context.getContext().findTxResource(ValueSet.class, i.getAnswerValueSet());
 //      }
 //      if (vs != null) {
 //        ValueSetExpansionOutcome exp = context.getContext().expandVS(vs, true, false);
@@ -707,7 +707,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 //    // content control
 //    defn(tbl, "Max Length", qi.getMaxLength());
 //    if (qi.hasAnswerValueSet()) {
-//      defn(tbl, "Value Set", qi.getDefinition(), context.getWorker().fetchResource(ValueSet.class,  qi.getAnswerValueSet()));
+//      defn(tbl, "Value Set", qi.getDefinition(), context.getWorker().findTxResource(ValueSet.class,  qi.getAnswerValueSet()));
 //    }
 //    if (qi.hasAnswerOption()) {
 //      XhtmlNode tr = tbl.tr();

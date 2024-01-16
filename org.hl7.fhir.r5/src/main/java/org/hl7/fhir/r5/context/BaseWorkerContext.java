@@ -124,6 +124,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.Termi
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.CacheToken;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
@@ -851,7 +852,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Set<String> systems = findRelevantSystems(vs);
     TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, true);
     if (tc == null) {
-      res = new ValueSetExpansionOutcome("No server available", TerminologyServiceErrorClass.INTERNAL_ERROR, true);      
+      return new ValueSetExpansionOutcome("No server available", TerminologyServiceErrorClass.INTERNAL_ERROR, true);      
     }
     Parameters p = constructParameters(tc, vs, hierarchical);
     for (ConceptSetComponent incl : vs.getCompose().getInclude()) {
@@ -3172,5 +3173,59 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     validationCache.clear();
     txCache.clear();
 }
+  
+  private <T extends Resource> T doFindTxResource(Class<T> class_, String canonical) {
+    // well, we haven't found it locally. We're going look it up
+    if (class_ == ValueSet.class) {
+      SourcedValueSet svs = null;
+      if (txCache.hasValueSet(canonical)) {
+        svs = txCache.getValueSet(canonical);
+      }
+      if (svs == null) {
+        svs = terminologyClientManager.findValueSetOnServer(canonical);
+        txCache.cacheValueSet(canonical, svs);
+      }
+      if (svs != null) {
+        String web = ToolingExtensions.readStringExtension(svs.getVs(), ToolingExtensions.EXT_WEB_SOURCE);
+        if (web == null) {
+          web = Utilities.pathURL(svs.getServer(), "ValueSet", svs.getVs().getIdBase());
+        }
+        svs.getVs().setWebPath(web);
+        svs.getVs().setUserData("External.Link", svs.getServer()); // so we can render it differently
+      }      
+      if (svs == null) {
+        return null;
+      } else {
+        cacheResource(svs.getVs());
+        return (T) svs.getVs();
+      }
+    } else {
+      throw new Error("Not supported");
+    }
+  }
+
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, Resource sourceOfReference) {
+   T result = fetchResource(class_, canonical, sourceOfReference);
+   if (result == null) {
+     result = doFindTxResource(class_, canonical);
+   }
+   return result;
+  }
+
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical) {
+    T result = fetchResource(class_, canonical);
+    if (result == null) {
+      result = doFindTxResource(class_, canonical);
+    }
+    return result;
+  }
+  
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version) {
+    T result = fetchResource(class_, canonical, version);
+    if (result == null) {
+      result = doFindTxResource(class_, canonical+"|"+version);
+    }
+    return result;
+  }
   
 }

@@ -32,6 +32,7 @@ package org.hl7.fhir.r5.terminologies.utilities;
 
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -43,6 +44,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.*;
@@ -52,7 +54,10 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.IniFile;
+import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -74,6 +79,25 @@ import com.google.gson.JsonPrimitive;
  */
 public class TerminologyCache {
   
+  public static class SourcedValueSet {
+    private String server;
+    private ValueSet vs;
+    
+    public SourcedValueSet(String server, ValueSet vs) {
+      super();
+      this.server = server;
+      this.vs = vs;
+    }
+    public String getServer() {
+      return server;
+    }
+    public ValueSet getVs() {
+      return vs;
+    }
+    
+  }
+
+
   public static final boolean TRANSIENT = false;
   public static final boolean PERMANENT = true;
   private static final String NAME_FOR_NO_SYSTEM = "all-systems";
@@ -192,6 +216,7 @@ public class TerminologyCache {
   private CapabilityStatement capabilityStatementCache = null;
   private TerminologyCapabilities terminologyCapabilitiesCache = null;
   private Map<String, NamedCache> caches = new HashMap<String, NamedCache>();
+  private Map<String, StringPair> vsCache = new HashMap<>();
   @Getter @Setter private static boolean noCaching;
 
   @Getter @Setter private static boolean cacheErrors;
@@ -247,6 +272,7 @@ public class TerminologyCache {
 
   public void clear() {
     caches.clear();
+    vsCache.clear();
   }
 
   public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs, Parameters expParameters) {
@@ -703,7 +729,7 @@ public class TerminologyCache {
     }
   }
 
-  private void load() throws FHIRException {
+  private void load() throws FHIRException, IOException {
     for (String fn : new File(folder).list()) {
       if (fn.endsWith(CACHE_FILE_EXTENSION) && !fn.equals("validation" + CACHE_FILE_EXTENSION)) {
         try {
@@ -715,6 +741,14 @@ public class TerminologyCache {
         } catch (FHIRException e) {
           throw e;
         }
+      }
+    }
+    File fini = new File(Utilities.path(folder, "vs-external.ini"));
+    if (fini.exists()) {
+      IniFile ini = new IniFile(fini.getAbsolutePath());
+      for (String k : ini.getPropertyNames("valuesets")) {
+        String fn = ini.getStringProperty("valuesets", k);
+        vsCache.put(k, new StringPair(Utilities.noString(fn) ? null : fn, ini.getStringProperty("servers", k)));        
       }
     }
   }
@@ -817,6 +851,44 @@ public class TerminologyCache {
     servers.put("http://tx.fhir.org/r5", "tx.fhir.org");
 
     return servers;
+  }
+
+  public boolean hasValueSet(String canonical) {
+    return vsCache.containsKey(canonical);
+  }
+
+  public SourcedValueSet getValueSet(String canonical) {
+    StringPair sp = vsCache.get(canonical);
+    if (sp == null || sp.getName() == null) {
+      return null;
+    } else {
+      try {
+        return new SourcedValueSet(sp.getValue(), (ValueSet) new JsonParser().parse(new FileInputStream(Utilities.path(folder, sp.getName()))));
+      } catch (Exception e) {
+        return null;
+      }
+    }
+  }
+
+  public void cacheValueSet(String canonical, SourcedValueSet svs) {
+    try {
+      if (svs == null) {
+        vsCache.put(canonical, null);
+      } else {
+        String uuid = Utilities.makeUuidLC();
+        String fn = "vs-"+uuid+".json";
+        new JsonParser().compose(new FileOutputStream(Utilities.path(folder, fn)), svs.getVs());
+        vsCache.put(canonical, new StringPair(fn, svs.getServer()));
+      }    
+      File fini = new File(Utilities.path(folder, "vs-external.ini"));
+      IniFile ini = new IniFile(fini.getAbsolutePath());
+      for (String k : vsCache.keySet()) {
+        ini.setStringProperty("valuesets", k, vsCache.get(k).getName(), null);
+        ini.setStringProperty("servers", k, vsCache.get(k).getValue(), null);
+      }
+      ini.save();
+    } catch (Exception e) {
+    }
   }
 
 

@@ -783,11 +783,6 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return setAttribute("colspan", Integer.toString(n));
   }
   
-  // differs from tx because it returns the owner node, not the created text
-  public XhtmlNode txN(String cnt) {
-    addText(cnt);
-    return this;
-  }
 
 
   @Override
@@ -937,6 +932,32 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       x.copyAllContent(t);
     }
     return x;
+  }
+
+
+  // differs from tx because it returns the owner node, not the created text
+  public XhtmlNode txN(String cnt) {
+    addText(cnt);
+    return this;
+  }
+
+
+  public XhtmlNode iff(boolean test) {
+    if (test) {
+      return this;
+    } else {
+      return new XhtmlNode(NodeType.Element, "span"); // which will never be connected
+    }
+  }
+
+
+  public XhtmlNode button(String class_, String title) {
+    XhtmlNode btn = addTag("button");
+    btn.attribute("class", class_);
+    if (title != null) {
+      btn.attribute("title", title);
+    }
+    return btn;
   }
   
 }
