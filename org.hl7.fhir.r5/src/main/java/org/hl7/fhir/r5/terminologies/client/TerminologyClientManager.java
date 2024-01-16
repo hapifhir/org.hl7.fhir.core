@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,10 +14,18 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.context.CanonicalResourceManager;
+import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.TerminologyClientContextUseType;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -133,7 +142,7 @@ public class TerminologyClientManager {
       serverList.add(client);
       serverMap.put(server, client);
     }
-    client.seeUse(s, expand);
+    client.seeUse(s, expand ? TerminologyClientContextUseType.expand : TerminologyClientContextUseType.validate);
     return client;
   }
 
@@ -316,6 +325,85 @@ public class TerminologyClientManager {
 
   public void setUsage(String usage) {
     this.usage = usage;
+  }
+
+  public SourcedValueSet findValueSetOnServer(String canonical) {
+    if (IGNORE_TX_REGISTRY || getMasterClient() == null) {
+      return null;
+    }
+    String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+canonical);
+    if (usage != null) {
+      request = request + "&usage="+usage;
+    }
+    String server = null;
+    try {
+      JsonObject json = JsonParser.parseObjectFromUrl(request);
+      for (JsonObject item : json.getJsonObjects("authoritative")) {
+        if (server == null) {
+          server = item.asString("url");
+        }
+      }
+      for (JsonObject item : json.getJsonObjects("candidate")) {
+        if (server == null) {
+          server = item.asString("url");
+        }
+      }
+      if (server == null) {
+        return null;
+      }
+      if (server.contains("://tx.fhir.org")) {
+        try {
+          server = server.replace("tx.fhir.org", new URL(getMasterClient().getAddress()).getHost());
+        } catch (MalformedURLException e) {
+        }
+      }
+      TerminologyClientContext client = serverMap.get(server);
+      if (client == null) {
+        try {
+          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent()), false);
+        } catch (URISyntaxException e) {
+          throw new TerminologyServiceException(e);
+        }
+        serverList.add(client);
+        serverMap.put(server, client);
+      }
+      client.seeUse(canonical, TerminologyClientContextUseType.readVS);
+      String criteria = canonical.contains("|") ? 
+          "?url="+canonical.substring(0, canonical.lastIndexOf("|"))+"&version="+canonical.substring(canonical.lastIndexOf("|")+1) : 
+            "?url="+canonical;
+      Bundle bnd = client.getClient().search("ValueSet", criteria);
+      String rid = null;
+      if (bnd.getEntry().size() == 0) {
+        return null;
+      } else if (bnd.getEntry().size() > 1) {
+        List<ValueSet> vslist = new ArrayList<>();
+        for (BundleEntryComponent be : bnd.getEntry()) {
+          if (be.hasResource() && be.getResource() instanceof ValueSet) {
+            vslist.add((ValueSet) be.getResource());
+          }
+        }
+        Collections.sort(vslist, new ValueSetUtilities.ValueSetSorter());
+        rid = vslist.get(vslist.size()-1).getIdBase();
+      } else {
+        if (bnd.getEntryFirstRep().hasResource() && bnd.getEntryFirstRep().getResource() instanceof ValueSet) {
+          rid = bnd.getEntryFirstRep().getResource().getIdBase();
+        }
+      }
+      if (rid == null) {
+        return null;
+      }
+      ValueSet vs = (ValueSet) client.getClient().read("ValueSet", rid);
+      return new SourcedValueSet(server, vs);
+    } catch (Exception e) {
+      String msg = "Error resolving valueSet "+canonical+": "+e.getMessage()+" ("+request+")";
+      if (!internalErrors.contains(msg)) {
+        internalErrors.add(msg);
+      }
+      if (!monitorServiceURL.contains("tx.fhir.org")) {
+        e.printStackTrace();
+      }
+      return null;
+    }
   }
 
 }

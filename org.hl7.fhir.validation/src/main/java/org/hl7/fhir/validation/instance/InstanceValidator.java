@@ -537,7 +537,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         return null;
       }
-      return context.fetchResource(ValueSet.class, url);
+      return context.findTxResource(ValueSet.class, url);
     }
 
     @Override
@@ -1871,7 +1871,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
 //  private String describeValueSet(String url) {
-//    ValueSet vs = context.fetchResource(ValueSet.class, url);
+//    ValueSet vs = context.findTxResource(ValueSet.class, url);
 //    if (vs != null) {
 //      return "'"+vs.present()+"' ("+url+")";
 //    } else {

@@ -10,9 +10,20 @@ import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.TerminologyClientContextUseCount;
 
 public class TerminologyClientContext {
+  public enum TerminologyClientContextUseType {
+    expand, validate, readVS
+  }
   public class TerminologyClientContextUseCount {
     private int expands;
     private int validates;
+    private int readVS;
+    
+    public int getReadVS() {
+      return readVS;
+    }
+    public void setReadVS(int readVS) {
+      this.readVS = readVS;
+    }
     public int getExpands() {
       return expands;
     }
@@ -52,16 +63,24 @@ public class TerminologyClientContext {
     return client;
   }
 
-  public void seeUse(String s, boolean expand) {
+  public void seeUse(String s, TerminologyClientContextUseType useType) {
     TerminologyClientContextUseCount uc = useCounts.get(s);
     if (uc == null) {
       uc = new TerminologyClientContextUseCount();
       useCounts.put(s,uc);
     }
-    if (expand) {
+    switch (useType) {
+    case expand:
       uc.expands++;
-    } else {
+      break;
+    case readVS:
+      uc.readVS++;
+      break;
+    case validate:
       uc.validates++;
+      break;
+    default:
+      break;
     }
   }
 

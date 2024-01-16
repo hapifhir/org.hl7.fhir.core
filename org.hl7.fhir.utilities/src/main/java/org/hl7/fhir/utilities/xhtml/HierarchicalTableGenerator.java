@@ -141,6 +141,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     private String text;
     private String hint;
     private String style;
+    private String tagImg;
     private Map<String, String> attributes;
     private XhtmlNodeList children;
     
@@ -231,6 +232,16 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       attributes.put(name, value);
       return this;
     }
+
+    public String getTagImg() {
+      return tagImg;
+    }
+
+    public Piece setTagImg(String tagImg) {
+      this.tagImg = tagImg;
+      return this;
+    }
+    
   }
   
   public class Cell {
@@ -879,6 +890,14 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
           a.addChildren(p.getChildren());
         }
         addStyle(a, p);
+        if (p.getTagImg() != null) {
+          a.tx(" ");
+          a.img(p.getTagImg(), null);
+        }
+        
+        if (p.hasChildren()) {
+          tc.getChildNodes().addAll(p.getChildren());
+        }
       } else { 
         if (!Utilities.noString(p.getHint())) {
           XhtmlNode s = addStyle(tc.addTag("span"), p);
@@ -892,6 +911,10 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
         }
         if (p.hasChildren()) {
           tc.getChildNodes().addAll(p.getChildren());
+        }
+        if (p.getTagImg() != null) {
+          tc.tx(" ");
+          tc.img(p.getTagImg(), null);
         }
       }
     }

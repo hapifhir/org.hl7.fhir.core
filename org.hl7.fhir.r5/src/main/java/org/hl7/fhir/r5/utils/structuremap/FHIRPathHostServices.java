@@ -97,7 +97,7 @@ public class FHIRPathHostServices implements FHIRPathEngine.IEvaluationContext {
 
   @Override
   public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
-	return structureMapUtilities.getWorker().fetchResource(ValueSet.class, url);
+	return structureMapUtilities.getWorker().findTxResource(ValueSet.class, url);
   }
 
   @Override

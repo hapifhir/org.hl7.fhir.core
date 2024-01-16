@@ -287,7 +287,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     }      
     CanonicalResource vs = (CanonicalResource) res;
     if (vs == null)
-      vs = getContext().getWorker().fetchResource(ValueSet.class, value, source);
+      vs = getContext().getWorker().findTxResource(ValueSet.class, value, source);
     if (vs == null)
       vs = getContext().getWorker().fetchResource(StructureDefinition.class, value, source);
     if (vs == null)

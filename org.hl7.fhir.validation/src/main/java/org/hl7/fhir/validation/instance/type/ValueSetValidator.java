@@ -123,7 +123,7 @@ public class ValueSetValidator extends BaseValidator {
     int i = 0;
     for (Element ve : valuesets) {
       String v = ve.getValue();
-      ValueSet vs = context.fetchResource(ValueSet.class, v);
+      ValueSet vs = context.findTxResource(ValueSet.class, v);
       if (vs == null) {
         NodeStack ns = stack.push(ve, i, ve.getProperty().getDefinition(), ve.getProperty().getDefinition());
 

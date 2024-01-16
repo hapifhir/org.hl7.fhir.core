@@ -627,4 +627,17 @@ public interface IWorkerContext {
 
   public Set<String> urlsForOid(boolean codeSystem, String oid);
 
+  /**
+   * this first does a fetch resource, and if nothing is found, looks in the 
+   * terminology eco-system for a matching definition for the resource 
+   * 
+   * usually used (and so far only tested with) ValueSet.class
+   * 
+   * @param value
+   * @return
+   */
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, Resource sourceOfReference);
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical);
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version);
+
 }
