@@ -1,0 +1,8 @@
+{
+  "http://hl7.org/fhir/ValueSet/ucum-vitals-common|4.0.0" : null,
+  "http://hl7.org.au/fhir/ValueSet/au-hl7v2-0203" : null,
+  "http://hl7.org/fhir/ValueSet/name-use|4.0.1" : null,
+  "http://hl7.org/fhir/ValueSet/observation-status|4.0.0" : null,
+  "http://hl7.org/fhir/ValueSet/identifier-use|4.0.1" : null,
+  "http://snomed.info/sct?fhir_vs" : null
+}
