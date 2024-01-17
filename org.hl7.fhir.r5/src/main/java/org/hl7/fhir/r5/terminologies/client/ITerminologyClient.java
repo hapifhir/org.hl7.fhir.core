@@ -55,6 +55,7 @@ public interface ITerminologyClient {
   Parameters validateCS(Parameters pin) throws FHIRException;
   Parameters validateVS(Parameters pin) throws FHIRException;
   ITerminologyClient setTimeoutFactor(int i) throws FHIRException;
+  ToolingClientLogger getLogger();
   ITerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
   int getRetryCount() throws FHIRException;
   ITerminologyClient setRetryCount(int retryCount) throws FHIRException;
@@ -69,4 +70,5 @@ public interface ITerminologyClient {
   ITerminologyClient setContentLanguage(String lang);
   String getUserAgent();
   int getUseCount();
+  Bundle search(String type, String criteria); 
 }

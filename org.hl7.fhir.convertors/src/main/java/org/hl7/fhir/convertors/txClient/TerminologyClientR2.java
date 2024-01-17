@@ -132,6 +132,11 @@ public class TerminologyClientR2 implements ITerminologyClient {
   }
 
   @Override
+  public ToolingClientLogger getLogger() {
+    return client.getLogger();
+  }
+
+  @Override
   public ITerminologyClient setLogger(ToolingClientLogger txLog) {
     client.setLogger(txLog);
     return this;
@@ -226,5 +231,11 @@ public class TerminologyClientR2 implements ITerminologyClient {
   @Override
   public int getUseCount() {
     return client.getUseCount();
+  }
+
+  @Override
+  public Bundle search(String type, String criteria) {   
+    org.hl7.fhir.dstu2.model.Bundle result = client.search(type, criteria);
+    return result == null ? null : (Bundle) VersionConvertorFactory_10_50.convertResource(result);
   }
 }

@@ -10,4 +10,6 @@ public class BindingResolution {
   }
   public String display;
   public String url;
+  public String uri;
+  public boolean external;
 }

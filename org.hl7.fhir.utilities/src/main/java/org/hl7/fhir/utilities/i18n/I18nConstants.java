@@ -266,6 +266,8 @@ public class I18nConstants {
   public static final String NODE_TYPE__IS_NOT_ALLOWED = "Node_type__is_not_allowed";
   public static final String NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "None_of_the_provided_codes_are_in_the_value_set";
   public static final String NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ONE = "None_of_the_provided_codes_are_in_the_value_set_one";
+  public static final String UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_CS = "UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_CS";
+  public static final String UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_VS = "UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_VS";
   public static final String UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_";
   public static final String NOT_DONE_YET = "Not_done_yet";
   public static final String NOT_DONE_YET_CANT_FETCH_ = "not_done_yet_cant_fetch_";

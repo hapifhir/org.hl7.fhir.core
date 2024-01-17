@@ -11,7 +11,7 @@
 }}####
 v: {
   "code" : "619728",
-  "severity" : "error",
+  "severity" : "warning",
   "error" : "A definition for CodeSystem 'http://www.ncbi.nlm.nih.gov/clinvar' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "http://tx-dev.fhir.org/r4",
@@ -23,7 +23,7 @@ v: {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
       "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
-    "severity" : "error",
+    "severity" : "warning",
     "code" : "not-found",
     "details" : {
       "coding" : [{
@@ -52,7 +52,7 @@ v: {
 v: {
   "code" : "619728",
   "severity" : "error",
-  "error" : "A definition for CodeSystem 'http://www.ncbi.nlm.nih.gov/clinvar' could not be found, so the code cannot be validated; Unable to check whether the code is in the value set http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0 because the code system http://www.ncbi.nlm.nih.gov/clinvar| was not found",
+  "error" : "A definition for CodeSystem 'http://www.ncbi.nlm.nih.gov/clinvar' could not be found, so the code cannot be validated; Unable to check whether the code is in the value set 'http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0' because the code system http://www.ncbi.nlm.nih.gov/clinvar| was not found",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "http://www.ncbi.nlm.nih.gov/clinvar",
@@ -87,10 +87,8 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "vs-invalid"
       }],
-      "text" : "Unable to check whether the code is in the value set http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0 because the code system http://www.ncbi.nlm.nih.gov/clinvar| was not found"
-    },
-    "location" : ["Coding"],
-    "expression" : ["Coding"]
+      "text" : "Unable to check whether the code is in the value set 'http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0' because the code system http://www.ncbi.nlm.nih.gov/clinvar| was not found"
+    }
   }]
 }
 

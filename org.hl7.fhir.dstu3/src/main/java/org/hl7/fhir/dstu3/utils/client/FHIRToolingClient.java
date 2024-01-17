@@ -654,5 +654,10 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     useCount++;    
   }
 
+  public Bundle search(String type, String criteria) {
+    recordUse();
+    return fetchFeed(Utilities.pathURL(base, type+criteria));
+  }
+  
 }
 

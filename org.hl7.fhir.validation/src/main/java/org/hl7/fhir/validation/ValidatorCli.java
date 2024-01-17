@@ -363,8 +363,6 @@ public class ValidatorCli {
   private void readParamsAndExecuteTask(TimeTracker tt, TimeTracker.Session tts, CliContext cliContext, String[] params) throws Exception {
     Display.printCliParamsAndInfo(params);
 
-
-
     final CliTask cliTask = selectCliTask(cliContext, params);
 
     if (cliTask instanceof ValidationEngineTask) {

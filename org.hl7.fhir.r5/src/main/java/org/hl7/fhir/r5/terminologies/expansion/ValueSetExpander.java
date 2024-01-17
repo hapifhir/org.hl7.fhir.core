@@ -166,6 +166,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   
   private boolean checkCodesWhenExpanding;
   private boolean includeAbstract = true;
+  private boolean debug;
 
   private AcceptLanguageHeader langs;
   private List<Token> designations = new ArrayList<>();
@@ -522,6 +523,32 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
 
+  private void excludeCodeAndDescendents(WorkingContext wc, CodeSystem cs, String system, ConceptDefinitionComponent def, Parameters expParams, List<ValueSet> filters, 
+      ConceptDefinitionComponent exclusion, ConceptFilter filterFunc, List<WorkingContext> otherFilters, ValueSetExpansionComponent exp)  throws FHIRException, ETooCostly {
+    opContext.deadCheck();
+    def.checkNoModifiers("Code in Code System", "expanding");
+    if (exclusion != null) {
+      if (exclusion.getCode().equals(def.getCode()))
+        return; // excluded.
+    }
+    boolean abs = CodeSystemUtilities.isNotSelectable(cs, def);
+    if ((includeAbstract || !abs)  && filterFunc.includeConcept(cs, def) && passesOtherFilters(otherFilters, cs, def.getCode())) {
+      for (String code : getCodesForConcept(def, expParams)) {
+        if (!(filters != null && !filters.isEmpty() && !filterContainsCode(filters, system, code, exp)))
+          excludeCode(wc, system, code);
+      }
+    }
+    for (ConceptDefinitionComponent c : def.getConcept()) {
+      excludeCodeAndDescendents(wc, cs, system, c, expParams, filters, exclusion, filterFunc, otherFilters, exp);
+    }
+    if (def.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
+      List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) def.getUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK);
+      for (ConceptDefinitionComponent c : children)
+        excludeCodeAndDescendents(wc, cs, system, c, expParams, filters, exclusion, filterFunc, otherFilters, exp);
+    }
+  }
+
+
   private List<String> getCodesForConcept(ConceptDefinitionComponent focus, Parameters expParams) {
     List<String> codes = new ArrayList<>();
     codes.add(focus.getCode());
@@ -590,8 +617,20 @@ public class ValueSetExpander extends ValueSetProcessBase {
       excludeCode(wc, exc.getSystem(), c.getCode());
     }
 
-    if (exc.getFilter().size() > 0)
-      throw fail("not done yet - multiple filters");
+    if (exc.getFilter().size() > 0) {
+      if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
+        addFragmentWarning(exp, cs);
+      }
+      List<WorkingContext> filters = new ArrayList<>();
+      for (int i = 1; i < exc.getFilter().size(); i++) {
+        WorkingContext wc1 = new WorkingContext();
+        filters.add(wc1);
+        processFilter(exc, exp, expParams, null, cs, false, exc.getFilter().get(i), wc1, null, true);
+      }
+      ConceptSetFilterComponent fc = exc.getFilter().get(0);
+      WorkingContext wc1 = dwc;
+      processFilter(exc, exp, expParams, null, cs, false, fc, wc1, filters, false);
+    }
   }
 
   private void excludeCodes(WorkingContext wc, ValueSetExpansionComponent expand) {
@@ -634,7 +673,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
     } catch (ETooCostly e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false);
     } catch (Exception e) {
-      e.printStackTrace();
+      if (debug) {
+        e.printStackTrace();
+      }
       // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
       // that might fail too, but it might not, later.
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e instanceof EFhirClientException || e instanceof TerminologyServiceException);
@@ -814,7 +855,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private ValueSet importValueSet(WorkingContext wc, String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
     if (value == null)
       throw fail("unable to find value set with no identity");
-    ValueSet vs = context.fetchResource(ValueSet.class, value, valueSet);
+    ValueSet vs = context.findTxResource(ValueSet.class, value, valueSet);
     if (vs == null) {
       if (context.fetchResource(CodeSystem.class, value, valueSet) != null) {
         throw fail("Cannot include value set "+value+" because it's actually a code system");
@@ -861,7 +902,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private ValueSet importValueSetForExclude(WorkingContext wc, String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws ETooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
     if (value == null)
       throw fail("unable to find value set with no identity");
-    ValueSet vs = context.fetchResource(ValueSet.class, value, valueSet);
+    ValueSet vs = context.findTxResource(ValueSet.class, value, valueSet);
     if (vs == null) {
       if (context.fetchResource(CodeSystem.class, value, valueSet) != null) {
         throw fail("Cannot include value set "+value+" because it's actually a code system");
@@ -1083,16 +1124,16 @@ public class ValueSetExpander extends ValueSetProcessBase {
       for (int i = 1; i < inc.getFilter().size(); i++) {
         WorkingContext wc = new WorkingContext();
         filters.add(wc);
-        processFilter(inc, exp, expParams, imports, cs, noInactive, inc.getFilter().get(i), wc, null);
+        processFilter(inc, exp, expParams, imports, cs, noInactive, inc.getFilter().get(i), wc, null, false);
       }
       ConceptSetFilterComponent fc = inc.getFilter().get(0);
       WorkingContext wc = dwc;
-      processFilter(inc, exp, expParams, imports, cs, noInactive, fc, wc, filters);
+      processFilter(inc, exp, expParams, imports, cs, noInactive, fc, wc, filters, false);
     }
   }
 
-  private void processFilter(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams,
-      List<ValueSet> imports, CodeSystem cs, boolean noInactive, ConceptSetFilterComponent fc, WorkingContext wc, List<WorkingContext> filters)
+  private void processFilter(ConceptSetComponent inc, ValueSetExpansionComponent exp, Parameters expParams, List<ValueSet> imports, CodeSystem cs, boolean noInactive, 
+      ConceptSetFilterComponent fc, WorkingContext wc, List<WorkingContext> filters, boolean exclude)
       throws ETooCostly {
     opContext.deadCheck();
     if ("concept".equals(fc.getProperty()) && fc.getOp() == FilterOperator.ISA) {
@@ -1100,14 +1141,22 @@ public class ValueSetExpander extends ValueSetProcessBase {
       ConceptDefinitionComponent def = getConceptForCode(cs.getConcept(), fc.getValue());
       if (def == null)
         throw failTSE("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
-      addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
+      if (exclude) {
+        excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, new AllConceptsFilter(allErrors), filters, exp);
+      } else {
+        addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
+      }
     } else if ("concept".equals(fc.getProperty()) && fc.getOp() == FilterOperator.ISNOTA) {
       // special: all codes in the target code system that are not under the value
       ConceptDefinitionComponent defEx = getConceptForCode(cs.getConcept(), fc.getValue());
       if (defEx == null)
         throw failTSE("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
       for (ConceptDefinitionComponent def : cs.getConcept()) {
-        addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, defEx, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
+        if (exclude) {
+          excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, defEx, new AllConceptsFilter(allErrors), filters, exp);
+        } else {
+          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, defEx, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
+        }
       }
     } else if ("concept".equals(fc.getProperty()) && fc.getOp() == FilterOperator.DESCENDENTOF) {
       // special: all codes in the target code system under the value
@@ -1115,11 +1164,20 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (def == null)
         throw failTSE("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
       for (ConceptDefinitionComponent c : def.getConcept())
-        addCodeAndDescendents(wc, cs, inc.getSystem(), c, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
+        if (exclude) {
+          excludeCodeAndDescendents(wc, cs, inc.getSystem(), c, null, imports, null, new AllConceptsFilter(allErrors), filters, exp);
+        } else {
+          addCodeAndDescendents(wc, cs, inc.getSystem(), c, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
+        }
       if (def.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
         List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) def.getUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK);
-        for (ConceptDefinitionComponent c : children)
-          addCodeAndDescendents(wc, cs, inc.getSystem(), c, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
+        for (ConceptDefinitionComponent c : children) {
+          if (exclude) {
+            excludeCodeAndDescendents(wc, cs, inc.getSystem(), c, null, imports, null, new AllConceptsFilter(allErrors), filters, exp);
+          } else {
+            addCodeAndDescendents(wc, cs, inc.getSystem(), c, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), filters, exp);
+          }
+        }
       }
 
     } else if ("display".equals(fc.getProperty()) && fc.getOp() == FilterOperator.EQUAL) {
@@ -1131,19 +1189,31 @@ public class ValueSetExpander extends ValueSetProcessBase {
           if (def.getDisplay().contains(fc.getValue()) && passesOtherFilters(filters, cs, def.getCode())) {
             for (String code : getCodesForConcept(def, expParams)) {
               opContext.deadCheck();
-              ValueSetExpansionContainsComponent t = addCode(wc, inc.getSystem(), code, def.getDisplay(), cs.getLanguage(), null, def.getDesignation(), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
+              if (exclude) {
+                excludeCode(wc, inc.getSystem(), code);
+              } else {
+                addCode(wc, inc.getSystem(), code, def.getDisplay(), cs.getLanguage(), null, def.getDesignation(), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
                   imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), null, exp);
+              }
             }
           }
         }
       }
     } else if (isDefinedProperty(cs, fc.getProperty())) {
       for (ConceptDefinitionComponent def : cs.getConcept()) {
-        addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, new PropertyFilter(allErrors, fc, getPropertyDefinition(cs, fc.getProperty())), noInactive, exp.getProperty(), filters, exp);
+        if (exclude) {
+          excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, new PropertyFilter(allErrors, fc, getPropertyDefinition(cs, fc.getProperty())), filters, exp);
+        } else {
+          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, new PropertyFilter(allErrors, fc, getPropertyDefinition(cs, fc.getProperty())), noInactive, exp.getProperty(), filters, exp);
+        }
       }
     } else if ("code".equals(fc.getProperty()) && fc.getOp() == FilterOperator.REGEX) {
       for (ConceptDefinitionComponent def : cs.getConcept()) {
-        addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, new RegexFilter(allErrors, fc.getValue()), noInactive, exp.getProperty(), filters, exp);
+        if (exclude) {
+          excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, new RegexFilter(allErrors, fc.getValue()), filters, exp);
+        } else {
+          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, new RegexFilter(allErrors, fc.getValue()), noInactive, exp.getProperty(), filters, exp);
+        }
       }
     } else {
       throw fail("Filter by property[" + fc.getProperty() + "] and op[" + fc.getOp() + "] is not supported yet");
@@ -1258,4 +1328,15 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     return true;
   }
+
+  public boolean isDebug() {
+    return debug;
+  }
+
+  public ValueSetExpander setDebug(boolean debug) {
+    this.debug = debug;
+    return this;
+  }
+  
+  
 }

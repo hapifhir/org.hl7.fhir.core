@@ -58,26 +58,26 @@ public class FHIRLexer {
   private boolean allowDoubleQuotes;
 
   public FHIRLexer(String source, String name) throws FHIRLexerException {
-    this.source = source == null ? "" : source;
+    this.source = source == null ? "" : Utilities.stripBOM(source);
     this.name = name == null ? "??" : name;
     currentLocation = new SourceLocation(1, 1);
     next();
   }
   public FHIRLexer(String source, int i) throws FHIRLexerException {
-    this.source = source;
+    this.source = Utilities.stripBOM(source);
     this.cursor = i;
     currentLocation = new SourceLocation(1, 1);
     next();
   }
   public FHIRLexer(String source, int i, boolean allowDoubleQuotes) throws FHIRLexerException {
-    this.source = source;
+    this.source = Utilities.stripBOM(source);
     this.cursor = i;
     this.allowDoubleQuotes =  allowDoubleQuotes;
     currentLocation = new SourceLocation(1, 1);
     next();
   }
   public FHIRLexer(String source, String name, boolean metadataFormat, boolean allowDoubleQuotes) throws FHIRLexerException {
-    this.source = source == null ? "" : source;
+    this.source = source == null ? "" : Utilities.stripBOM(source);
     this.name = name == null ? "??" : name;
     this.metadataFormat = metadataFormat;
     this.allowDoubleQuotes =  allowDoubleQuotes;

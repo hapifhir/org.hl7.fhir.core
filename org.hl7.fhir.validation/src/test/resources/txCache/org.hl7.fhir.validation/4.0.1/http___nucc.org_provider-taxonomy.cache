@@ -14,7 +14,7 @@ v: {
   "display" : "General Practice Physician",
   "code" : "208D00000X",
   "severity" : "error",
-  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X - should be 'General Practice Physician' (for the language(s) '--')",
+  "error" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X. Valid display is 'General Practice Physician' (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
@@ -32,7 +32,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X - should be 'General Practice Physician' (for the language(s) '--')"
+      "text" : "Wrong Display Name 'General Practice' for http://nucc.org/provider-taxonomy#208D00000X. Valid display is 'General Practice Physician' (for the language(s) '--')"
     },
     "location" : ["CodeableConcept.coding[0].display"],
     "expression" : ["CodeableConcept.coding[0].display"]

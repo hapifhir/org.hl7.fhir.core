@@ -372,7 +372,9 @@ public class FhirRequestBuilder {
       headerMap.keySet().forEach(key -> headerMap.get(key).forEach(value -> headerList.add(key + ":" + value)));
 
       try {
-        logger.logResponse(Integer.toString(responseCode), headerList, responseBody);
+        if (logger != null) {
+          logger.logResponse(Integer.toString(responseCode), headerList, responseBody);
+        }
       } catch (Exception e) {
         System.out.println("Error parsing response body passed in to logger ->\n" + e.getLocalizedMessage());
       }

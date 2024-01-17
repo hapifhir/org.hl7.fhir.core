@@ -118,7 +118,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           re = new ConceptMapRenderInstructions(cm.present(), cm.getUrl(), false);
         }
         if (re != null) {
-          ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().fetchResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue(), cm) : null;
+          ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().findTxResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue(), cm) : null;
           res.add(new UsedConceptMap(re, vst == null ? cm.getWebPath() : vst.getWebPath(), cm));
         }
       }
@@ -141,7 +141,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 //    Map<ConceptMap, String> mymaps = new HashMap<ConceptMap, String>();
 //  for (ConceptMap a : context.getWorker().findMapsForSource(vs.getUrl())) {
 //    String url = "";
-//    ValueSet vsr = context.getWorker().fetchResource(ValueSet.class, ((Reference) a.getTarget()).getReference());
+//    ValueSet vsr = context.getWorker().findTxResource(ValueSet.class, ((Reference) a.getTarget()).getReference());
 //    if (vsr != null)
 //      url = (String) vsr.getUserData("filename");
 //    mymaps.put(a, url);
@@ -160,7 +160,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 //        ConceptMap cm = (ConceptMap) r;
 //        if (((Reference) cm.getSource()).getReference().equals(cs.getValueSet())) {
 //          String url = "";
-//          ValueSet vsr = context.getWorker().fetchResource(ValueSet.class, ((Reference) cm.getTarget()).getReference());
+//          ValueSet vsr = context.getWorker().findTxResource(ValueSet.class, ((Reference) cm.getTarget()).getReference());
 //          if (vsr != null)
 //              url = (String) vsr.getUserData("filename");
 //        mymaps.put(cm, url);
