@@ -863,7 +863,9 @@ public class IgLoader implements IValidationEngineLoader {
   }
 
   private void log(String s) {
-    if (isDebug()) System.out.println(s);
+    if (isDebug()) {
+      System.out.println(s);
+    }
   }
 
   @Override
