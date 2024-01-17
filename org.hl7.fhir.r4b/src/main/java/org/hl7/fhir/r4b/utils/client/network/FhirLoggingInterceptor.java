@@ -38,8 +38,10 @@ public class FhirLoggingInterceptor implements Interceptor {
       request.body().writeTo(buf);
       cnt = buf.readByteArray();
     }
-    logger.logRequest(request.method(), request.url().toString(), hdrs, cnt);
-
+    if (logger != null) {
+      logger.logRequest(request.method(), request.url().toString(), hdrs, cnt);
+    }
+    
     // Log Response
     Response response = null;
     response = chain.proceed(chain.request());
@@ -56,7 +58,9 @@ public class FhirLoggingInterceptor implements Interceptor {
     Map<String, List<String>> headerMap = response.headers().toMultimap();
     headerMap.keySet().forEach(key -> headerMap.get(key).forEach(value -> headerList.add(key + ":" + value)));
 
-    logger.logResponse(Integer.toString(response.code()), headerList, bodyBytes);
+    if (logger != null) {
+      logger.logResponse(Integer.toString(response.code()), headerList, bodyBytes);
+    }
 
     // Reading byte[] clears body. Need to recreate.
     ResponseBody body = ResponseBody.create(bodyBytes, contentType);
