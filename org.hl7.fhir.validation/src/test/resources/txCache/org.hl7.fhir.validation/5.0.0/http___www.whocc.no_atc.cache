@@ -14,7 +14,7 @@ v: {
   "display" : "Natural opium alkaloids",
   "code" : "N02AA",
   "severity" : "error",
-  "error" : "Wrong Display Name 'Barbiturates and derivatives' for http://www.whocc.no/atc#N02AA - should be 'Natural opium alkaloids' (for the language(s) '--')",
+  "error" : "Wrong Display Name 'Barbiturates and derivatives' for http://www.whocc.no/atc#N02AA. Valid display is 'Natural opium alkaloids' (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
@@ -32,7 +32,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'Barbiturates and derivatives' for http://www.whocc.no/atc#N02AA - should be 'Natural opium alkaloids' (for the language(s) '--')"
+      "text" : "Wrong Display Name 'Barbiturates and derivatives' for http://www.whocc.no/atc#N02AA. Valid display is 'Natural opium alkaloids' (for the language(s) '--')"
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]

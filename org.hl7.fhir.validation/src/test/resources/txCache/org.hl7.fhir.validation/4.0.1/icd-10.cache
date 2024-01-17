@@ -53,7 +53,7 @@ v: {
   "display" : "Malignant neoplasm of piriform sinus",
   "code" : "C12",
   "severity" : "error",
-  "error" : "Wrong Display Name 'Malignant neoplasm of pyriform sinus' for http://hl7.org/fhir/sid/icd-10#C12 - should be 'Malignant neoplasm of piriform sinus' (for the language(s) '--')",
+  "error" : "Wrong Display Name 'Malignant neoplasm of pyriform sinus' for http://hl7.org/fhir/sid/icd-10#C12. Valid display is 'Malignant neoplasm of piriform sinus' (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
@@ -86,7 +86,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'Malignant neoplasm of pyriform sinus' for http://hl7.org/fhir/sid/icd-10#C12 - should be 'Malignant neoplasm of piriform sinus' (for the language(s) '--')"
+      "text" : "Wrong Display Name 'Malignant neoplasm of pyriform sinus' for http://hl7.org/fhir/sid/icd-10#C12. Valid display is 'Malignant neoplasm of piriform sinus' (for the language(s) '--')"
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]

@@ -59,7 +59,7 @@ v: {
   "display" : "German (Switzerland)",
   "code" : "de-CH",
   "severity" : "error",
-  "error" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH - should be one of 7 choices: 'German (Switzerland)', 'German (Switzerland)' (en), 'Duits (Zwitserland)' (nl), 'Немецкий (Швейцария)' (ru), '德语 （瑞士）' (zh), 'Deutsch (Schweiz)' (de) or 'Tysk (Schweiz)' (da) (for the language(s) '--')",
+  "error" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH. Valid display is one of 7 choices: 'German (Switzerland)', 'German (Switzerland)' (en), 'Duits (Zwitserland)' (nl), 'Немецкий (Швейцария)' (ru), '德语 （瑞士）' (zh), 'Deutsch (Schweiz)' (de) or 'Tysk (Schweiz)' (da) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
@@ -77,7 +77,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH - should be one of 7 choices: 'German (Switzerland)', 'German (Switzerland)' (en), 'Duits (Zwitserland)' (nl), 'Немецкий (Швейцария)' (ru), '德语 （瑞士）' (zh), 'Deutsch (Schweiz)' (de) or 'Tysk (Schweiz)' (da) (for the language(s) '--')"
+      "text" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH. Valid display is one of 7 choices: 'German (Switzerland)', 'German (Switzerland)' (en), 'Duits (Zwitserland)' (nl), 'Немецкий (Швейцария)' (ru), '德语 （瑞士）' (zh), 'Deutsch (Schweiz)' (de) or 'Tysk (Schweiz)' (da) (for the language(s) '--')"
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
@@ -283,7 +283,7 @@ v: {
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH - should be one of 7 choices: 'German (Switzerland)', 'German (Switzerland)' (en), 'Duits (Zwitserland)' (nl), 'Немецкий (Швейцария)' (ru), '德语 （瑞士）' (zh), 'Deutsch (Schweiz)' (de) or 'Tysk (Schweiz)' (da) (for the language(s) '--')",
+  "error" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH. Valid display is one of 7 choices: 'German (Switzerland)', 'German (Switzerland)' (en), 'Duits (Zwitserland)' (nl), 'Немецкий (Швейцария)' (ru), '德语 （瑞士）' (zh), 'Deutsch (Schweiz)' (de) or 'Tysk (Schweiz)' (da) (for the language(s) '--')",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -300,7 +300,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH - should be one of 7 choices: 'German (Switzerland)', 'German (Switzerland)' (en), 'Duits (Zwitserland)' (nl), 'Немецкий (Швейцария)' (ru), '德语 （瑞士）' (zh), 'Deutsch (Schweiz)' (de) or 'Tysk (Schweiz)' (da) (for the language(s) '--')"
+      "text" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH. Valid display is one of 7 choices: 'German (Switzerland)', 'German (Switzerland)' (en), 'Duits (Zwitserland)' (nl), 'Немецкий (Швейцария)' (ru), '德语 （瑞士）' (zh), 'Deutsch (Schweiz)' (de) or 'Tysk (Schweiz)' (da) (for the language(s) '--')"
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
@@ -438,7 +438,7 @@ v: {
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
   "severity" : "warning",
-  "error" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH - should be one of 2 choices: 'German (Switzerland)' or 'German (Switzerland)' (en) (for the language(s) 'en')",
+  "error" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH. Valid display is one of 2 choices: 'German (Switzerland)' or 'German (Switzerland)' (en) (for the language(s) 'en')",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
@@ -455,7 +455,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH - should be one of 2 choices: 'German (Switzerland)' or 'German (Switzerland)' (en) (for the language(s) 'en')"
+      "text" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH. Valid display is one of 2 choices: 'German (Switzerland)' or 'German (Switzerland)' (en) (for the language(s) 'en')"
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
