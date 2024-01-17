@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -40,6 +41,15 @@ import org.hl7.fhir.utilities.VersionUtilities.SemVer;
 
 public class VersionUtilities {
 
+
+  public static class SemVerSorter implements Comparator<String> {
+
+    @Override
+    public int compare(String s1, String s2) {
+      return compareVersions(s1, s2);
+    }
+
+  }
 
   public static class SemVer {
     private String major;
