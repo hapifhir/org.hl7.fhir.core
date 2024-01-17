@@ -847,7 +847,7 @@ public class TerminologyCache {
             vsCache.put(p.getName(), null);
           } else {
             org.hl7.fhir.utilities.json.model.JsonObject j = p.getValue().asJsonObject();
-            vsCache.put(p.getName(), new SourcedValueSetEntry(j.asString("filename"), j.asString("server")));        
+            vsCache.put(p.getName(), new SourcedValueSetEntry(j.asString("server"), j.asString("filename")));        
           }
         }
       }

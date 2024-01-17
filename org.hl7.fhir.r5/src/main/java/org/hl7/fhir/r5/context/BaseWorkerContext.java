@@ -3161,8 +3161,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (class_ == ValueSet.class) {
       SourcedValueSet svs = null;
       if (txCache.hasValueSet(canonical)) {
-        System.out.println("doFindTxResource - in cache");
         svs = txCache.getValueSet(canonical);
+        System.out.println("doFindTxResource - in cache from "+svs.getServer());
       } else {
         System.out.println("doFindTxResource - not in cache");
         svs = terminologyClientManager.findValueSetOnServer(canonical);

@@ -1,14 +1,6 @@
 {
-  "http://loinc.org/vs/LL378-1" : null,
-  "http://www.rfc-editor.org/bcp/bcp13.txt" : null,
-  "http://loinc.org/vs/LL1971-2" : null,
-  "http://fhir.ch/ig/ch-ig/ValueSet/ch-ig-example" : null,
-  "http://hl7.org/fhir/us/qicore/ValueSet/qicore-negation-reason" : null,
   "https://healthterminologies.gov.au/fhir/ValueSet/australian-immunisation-register-vaccine-1" : {
     "server" : "https://tx.ontoserver.csiro.au/fhir",
-    "filename" : "vs-db2cdc27-160a-4752-bb5f-4d0e2ba3f2af.json"
-  },
-  "http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType" : null,
-  "http://loinc.org/vs/LL4048-6" : null,
-  "https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_ICD_SEITENLOKALISATION" : null
+    "filename" : "vs-85f7fe3d-bb1d-4112-ada7-72c47bf4b237.json"
+  }
 }
