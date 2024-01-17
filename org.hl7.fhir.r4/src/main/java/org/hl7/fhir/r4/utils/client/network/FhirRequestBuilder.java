@@ -25,8 +25,10 @@ import org.hl7.fhir.utilities.settings.FhirSettings;
 import okhttp3.Authenticator;
 import okhttp3.Credentials;
 import okhttp3.Headers;
+import okhttp3.Headers.Builder;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class FhirRequestBuilder {
@@ -259,10 +261,11 @@ public class FhirRequestBuilder {
   protected <T extends Resource> T unmarshalReference(Response response, String format) {
     T resource = null;
     OperationOutcome error = null;
-
+    byte[] body = null;
+    
     if (response.body() != null) {
       try {
-        byte[] body = response.body().bytes();
+        body = response.body().bytes();
         resource = (T) getParser(format).parse(body);
         if (resource instanceof OperationOutcome && hasError((OperationOutcome) resource)) {
           error = (OperationOutcome) resource;
@@ -276,12 +279,13 @@ public class FhirRequestBuilder {
 
     if (error != null) {
       String s = ResourceUtilities.getErrorDescription(error);
-      System.out.println(s);
+      System.out.println("Error from "+source+": " + s);
       throw new EFhirClientException("Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
     }
 
     return resource;
   }
+
 
   /**
    * Unmarshalls Bundle from response stream.
@@ -291,6 +295,7 @@ public class FhirRequestBuilder {
     OperationOutcome error = null;
     try {
       byte[] body = response.body().bytes();
+      TextFile.bytesToFile(body, "/Users/grahamegrieve/temp/http-body.txt");
       String contentType = response.header("Content-Type");
       if (body != null) {
         if (contentType.contains(ResourceFormat.RESOURCE_XML.getHeader())

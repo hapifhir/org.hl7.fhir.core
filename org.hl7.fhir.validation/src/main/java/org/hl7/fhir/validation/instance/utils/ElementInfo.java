@@ -26,92 +26,92 @@ public class ElementInfo {
     this.count = count;
   }
 
-    public List<ValidationMessage> getSliceInfo() {
-        return sliceInfo;
-    }
+  public List<ValidationMessage> getSliceInfo() {
+    return sliceInfo;
+  }
 
-    public ElementInfo setSliceInfo(List<ValidationMessage> sliceInfo) {
-        this.sliceInfo = sliceInfo;
-        return this;
-    }
+  public ElementInfo setSliceInfo(List<ValidationMessage> sliceInfo) {
+    this.sliceInfo = sliceInfo;
+    return this;
+  }
 
-    public int getIndex() {
-        return index;
-    }
+  public int getIndex() {
+    return index;
+  }
 
-    public ElementInfo setIndex(int index) {
-        this.index = index;
-        return this;
-    }
+  public ElementInfo setIndex(int index) {
+    this.index = index;
+    return this;
+  }
 
-    public int getSliceindex() {
-        return sliceindex;
-    }
+  public int getSliceindex() {
+    return sliceindex;
+  }
 
-    public ElementInfo setSliceindex(int sliceindex) {
-        this.sliceindex = sliceindex;
-        return this;
-    }
+  public ElementInfo setSliceindex(int sliceindex) {
+    this.sliceindex = sliceindex;
+    return this;
+  }
 
-    public int getCount() {
-        return count;
-    }
+  public int getCount() {
+    return count;
+  }
 
-    public ElementInfo setCount(int count) {
-        this.count = count;
-        return this;
-    }
+  public ElementInfo setCount(int count) {
+    this.count = count;
+    return this;
+  }
 
-    public ElementDefinition getDefinition() {
-        return definition;
-    }
+  public ElementDefinition getDefinition() {
+    return definition;
+  }
 
-    public ElementInfo setDefinition(ElementDefinition definition) {
-        this.definition = definition;
-        return this;
-    }
+  public ElementInfo setDefinition(ElementDefinition definition) {
+    this.definition = definition;
+    return this;
+  }
 
-    public ElementDefinition getSlice() {
-        return slice;
-    }
+  public ElementDefinition getSlice() {
+    return slice;
+  }
 
-    public ElementInfo setSlice(ElementDefinition slice) {
-        this.slice = slice;
-        return this;
-    }
+  public ElementInfo setSlice(ElementDefinition slice) {
+    this.slice = slice;
+    return this;
+  }
 
-    public boolean isAdditionalSlice() {
-        return additionalSlice;
-    }
+  public boolean isAdditionalSlice() {
+    return additionalSlice;
+  }
 
-    public ElementInfo setAdditionalSlice(boolean additionalSlice) {
-        this.additionalSlice = additionalSlice;
-        return this;
-    }
+  public ElementInfo setAdditionalSlice(boolean additionalSlice) {
+    this.additionalSlice = additionalSlice;
+    return this;
+  }
 
-    public Element getElement() {
-        return element;
-    }
+  public Element getElement() {
+    return element;
+  }
 
-    public ElementInfo setElement(Element element) {
-        this.element = element;
-        return this;
-    }
+  public ElementInfo setElement(Element element) {
+    this.element = element;
+    return this;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public ElementInfo setName(String name) {
-        this.name = name;
-        return this;
-    }
+  public ElementInfo setName(String name) {
+    this.name = name;
+    return this;
+  }
 
-    public String getPath() {
-        return path;
-    }
+  public String getPath() {
+    return path;
+  }
 
-    public int col() {
+  public int col() {
     return element.col();
   }
 

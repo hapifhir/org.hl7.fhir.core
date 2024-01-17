@@ -324,7 +324,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           defn.getPieces().add(gen.new Piece(vs.getWebPath(), vs.present(), null));                              
         }
       } else {
-        ValueSet vs = context.getWorker().fetchResource(ValueSet.class, i.getAnswerValueSet(), q);
+        ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.getAnswerValueSet(), q);
         if (vs == null  || !vs.hasWebPath()) {
           defn.getPieces().add(gen.new Piece(null, i.getAnswerValueSet(), null));                    
         } else {
@@ -513,7 +513,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           defn.getPieces().add(gen.new Piece(vs.getWebPath(), vs.present(), null));                              
         }
       } else {
-        ValueSet vs = context.getWorker().fetchResource(ValueSet.class, i.getAnswerValueSet(), q);
+        ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.getAnswerValueSet(), q);
         if (vs == null  || !vs.hasWebPath()) {
           defn.getPieces().add(gen.new Piece(null, i.getAnswerValueSet(), null));                    
         } else {
@@ -753,7 +753,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           ans.ah(vs.getWebPath()).tx(vs.present());                              
         }
       } else {
-        ValueSet vs = context.getWorker().fetchResource(ValueSet.class, i.getAnswerValueSet(), q);
+        ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.getAnswerValueSet(), q);
         if (vs == null  || !vs.hasWebPath()) {
           ans.tx(i.getAnswerValueSet());                    
         } else {
@@ -854,7 +854,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           vs.setUrl(q.getUrl()+"--"+q.getContained(i.getAnswerValueSet().substring(1)));
         }
       } else {
-        vs = context.getContext().fetchResource(ValueSet.class, i.getAnswerValueSet(), q);
+        vs = context.getContext().findTxResource(ValueSet.class, i.getAnswerValueSet(), q);
       }
       if (vs != null) {
         ValueSetExpansionOutcome exp = context.getContext().expandVS(vs, true, false);
@@ -975,7 +975,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     // content control
     defn(tbl, "Max Length", qi.getMaxLength());
     if (qi.hasAnswerValueSet()) {
-      defn(tbl, "Value Set", qi.getDefinition(), context.getWorker().fetchResource(ValueSet.class,  qi.getAnswerValueSet(), q));
+      defn(tbl, "Value Set", qi.getDefinition(), context.getWorker().findTxResource(ValueSet.class,  qi.getAnswerValueSet(), q));
     }
     if (qi.hasAnswerOption()) {
       XhtmlNode tr = tbl.tr();

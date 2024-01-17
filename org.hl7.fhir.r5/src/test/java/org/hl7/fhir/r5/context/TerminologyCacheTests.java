@@ -31,6 +31,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.jupiter.api.Test;
@@ -92,6 +93,8 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
   @Test
   public void testCachePersistence() throws IOException, URISyntaxException {
+    String address = "/...";
+    
     Object lock = new Object();
     Path tempCacheDirectory = createTempCacheDirectory();
     ValueSet valueSet = new ValueSet();
@@ -117,8 +120,8 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     // Add dummy results to the cache
     TerminologyCache terminologyCacheA = new TerminologyCache(lock, tempCacheDirectory.toString());
 
-    terminologyCacheA.cacheTerminologyCapabilities(terminologyCapabilities);
-    terminologyCacheA.cacheCapabilityStatement(capabilityStatement);
+    terminologyCacheA.cacheTerminologyCapabilities(address, terminologyCapabilities);
+    terminologyCacheA.cacheCapabilityStatement(address, capabilityStatement);
 
     ValidationResult codingResultA = new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null);
     TerminologyCache.CacheToken codingTokenA = terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions,
@@ -136,8 +139,8 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     terminologyCacheA.cacheExpansion(expansionTokenA, expansionOutcomeA, true);
     // Check that the in-memory cache is returning what we put in
     {
-      assertEquals(terminologyCapabilities, terminologyCacheA.getTerminologyCapabilities());
-      assertEquals(capabilityStatement, terminologyCacheA.getCapabilityStatement());
+      assertEquals(terminologyCapabilities, terminologyCacheA.getTerminologyCapabilities(address));
+      assertEquals(capabilityStatement, terminologyCacheA.getCapabilityStatement(address));
 
       assertValidationResultEquals(codingResultA, terminologyCacheA.getValidation(codingTokenA));
       assertValidationResultEquals(codeableConceptResultA, terminologyCacheA.getValidation(codeableConceptTokenA));
@@ -148,8 +151,8 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     {
     TerminologyCache terminologyCacheB = new TerminologyCache(lock, tempCacheDirectory.toString());
 
-      assertCanonicalResourceEquals(terminologyCapabilities, terminologyCacheB.getTerminologyCapabilities());
-      assertCanonicalResourceEquals(capabilityStatement, terminologyCacheB.getCapabilityStatement());
+      assertCanonicalResourceEquals(terminologyCapabilities, terminologyCacheB.getTerminologyCapabilities(address));
+      assertCanonicalResourceEquals(capabilityStatement, terminologyCacheB.getCapabilityStatement(address));
 
       assertValidationResultEquals(codingResultA, terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters())));
       assertValidationResultEquals(codeableConceptResultA, terminologyCacheB.getValidation(terminologyCacheA.generateValidationToken(CacheTestUtils.validationOptions, concept, valueSet, new Parameters())));

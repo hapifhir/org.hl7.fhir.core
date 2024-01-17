@@ -191,7 +191,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     File packagesIniFile = new File(packagesIniPath);
     if (!(packagesIniFile.exists()))
       packagesIniFile.createNewFile();
-    TextFile.stringToFile("[cache]\r\nversion=" + CACHE_VERSION + "\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", packagesIniPath, false);
+    TextFile.stringToFile("[cache]\r\nversion=" + CACHE_VERSION + "\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", packagesIniPath);
     createIniFile();
     for (File f : cacheFolder.listFiles()) {
       if (f.isDirectory() && Utilities.isValidUUID(f.getName())) {
@@ -541,7 +541,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
             npm.getNpm().remove("version");
             npm.getNpm().add("version", v);
           }
-          TextFile.stringToFile(JsonParser.compose(npm.getNpm(), true), Utilities.path(cacheFolder, id + "#" + v, "package", "package.json"), false);
+          TextFile.stringToFile(JsonParser.compose(npm.getNpm(), true), Utilities.path(cacheFolder, id + "#" + v, "package", "package.json"));
         }
         pck = loadPackageInfo(packRoot);
       } catch (Exception e) {

@@ -894,7 +894,7 @@ public class StructureMapValidator extends BaseValidator {
     ValueSet srcVS = null;
     if (srcED != null) {
       if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, srcED.getBinding().hasValueSet() && srcED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_SOURCE)) {
-        srcVS = context.fetchResource(ValueSet.class, srcED.getBinding().getValueSet());
+        srcVS = context.findTxResource(ValueSet.class, srcED.getBinding().getValueSet());
         if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, srcVS != null, I18nConstants.SM_TARGET_TRANSLATE_BINDING_VS_SOURCE)) {
           ValueSetExpansionOutcome vse = context.expandVS(srcVS, true, false);
           if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vse.isOk(), I18nConstants.SM_TARGET_TRANSLATE_BINDING_VSE_SOURCE, vse.getError())) {
@@ -913,7 +913,7 @@ public class StructureMapValidator extends BaseValidator {
     }
     if (srcED != null) {
       if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, tgtED.getBinding().hasValueSet() && tgtED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_TARGET)) {
-        ValueSet vs = context.fetchResource(ValueSet.class, tgtED.getBinding().getValueSet());
+        ValueSet vs = context.findTxResource(ValueSet.class, tgtED.getBinding().getValueSet());
         if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vs != null, I18nConstants.SM_TARGET_TRANSLATE_BINDING_VS_TARGET)) {
           ValueSetExpansionOutcome vse = context.expandVS(vs, true, false);
           if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vse.isOk(), I18nConstants.SM_TARGET_TRANSLATE_BINDING_VSE_TARGET, vse.getError())) {

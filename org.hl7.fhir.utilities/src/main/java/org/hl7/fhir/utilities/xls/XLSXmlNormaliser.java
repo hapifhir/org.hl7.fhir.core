@@ -126,7 +126,7 @@ public class XLSXmlNormaliser {
       String s = TextFile.fileToString(dest);
       s = s.replaceAll("\r\n","\n");
       s = replaceSignificantEoln(s);
-      TextFile.stringToFile(s, dest, false);
+      TextFile.stringToFile(s, dest);
       new File(dest).setLastModified(time);
     } catch (Exception e) {
       System.out.println("The file "+dest+" is still open in Excel, and you will have to run the build after closing Excel before committing");

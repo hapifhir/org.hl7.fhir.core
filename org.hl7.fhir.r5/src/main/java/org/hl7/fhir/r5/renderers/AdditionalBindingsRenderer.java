@@ -259,7 +259,11 @@ public class AdditionalBindingsRenderer {
       if (binding.compare!=null && binding.valueSet.equals(binding.compare.valueSet))
         valueset.style(STYLE_UNCHANGED);
       if (br.url != null) {
-        valueset.ah(determineUrl(br.url), binding.valueSet).tx(br.display);
+        XhtmlNode a = valueset.ah(determineUrl(br.url), br.uri).tx(br.display);
+        if (br.external) {
+          a.tx(" ");
+          a.img("external.png", null);
+        }
       } else {
         valueset.span(null, binding.valueSet).tx(br.display);
       }
@@ -411,7 +415,7 @@ public class AdditionalBindingsRenderer {
       return; // what should happen?
     }
     BindingResolution br = pkp.resolveBinding(profile, b.getValueSet(), corePath);
-    XhtmlNode a = children.ahOrCode(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, b.hasDocumentation() ? b.getDocumentation() : null);
+    XhtmlNode a = children.ahOrCode(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, b.hasDocumentation() ? b.getDocumentation() : br.uri);
     if (b.hasDocumentation()) {
       a.attribute("title", b.getDocumentation());
     } 

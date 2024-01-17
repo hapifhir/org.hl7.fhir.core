@@ -236,10 +236,6 @@ public interface IResourceValidator {
 
   public void setWantCheckSnapshotUnchanged(boolean wantCheckSnapshotUnchanged);
 
-  // FIXME: don't need that, gets never used?
-//  public String getValidationLanguage();
-//  public void setValidationLanguage(String value);
-
   /**
    * It's common to see references such as Patient/234234 - these usually mean a
    * reference to a Patient resource. But there's no actual technical rule that it

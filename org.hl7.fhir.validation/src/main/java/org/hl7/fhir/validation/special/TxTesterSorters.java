@@ -1,7 +1,9 @@
 package org.hl7.fhir.validation.special;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import org.hl7.fhir.ParametersParameter;
 import org.hl7.fhir.r5.model.Base;
@@ -10,12 +12,14 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 
 public class TxTesterSorters {
 
@@ -26,6 +30,17 @@ public class TxTesterSorters {
     for (ParametersParameterComponent p : po.getParameter()) {
       if (p.getResource() != null && p.getResource() instanceof OperationOutcome) {
         Collections.sort(((OperationOutcome) p.getResource()).getIssue(), new TxTesterSorters.OperationIssueSorter());
+      }
+      if ("message".equals(p.getName()) && p.hasValuePrimitive()) {
+        String pv = p.getValue().primitiveValue();
+        if (pv.contains("; ")) {
+          List<String> bits = new ArrayList<>();
+          for (String s : pv.split("\\; ")) {
+            bits.add(s);
+          }
+          Collections.sort(bits);
+          p.setValue(new StringType(CommaSeparatedStringBuilder.join("; ", bits)));
+        }
       }
     }
   }

@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -124,6 +125,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.Termi
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.CacheToken;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
@@ -136,6 +138,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.TranslationServices;
@@ -231,7 +234,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private Object lock = new Object(); // used as a lock for the data that follows
   protected String version; // although the internal resources are all R5, the version of FHIR they describe may not be 
 
-  protected TerminologyClientManager terminologyClientManager = new TerminologyClientManager(null);
+  protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(null, UUID.randomUUID().toString());
   private boolean minimalMemory = false;
 
   private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
@@ -269,7 +272,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private final Set<String> codeSystemsUsed = new HashSet<>();
   protected ToolingClientLogger txLog;
-  private boolean canRunWithoutTerminology;
+  protected boolean canRunWithoutTerminology;
   protected boolean noTerminologyServer;
   private int expandCodesLimit = 1000;
   protected ILoggingService logger = new SystemOutLoggingService();
@@ -278,7 +281,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private Map<String, PackageInformation> packages = new HashMap<>();
 
   @Getter
-  protected TerminologyCache txCache;
+  protected TerminologyCache txCache = new TerminologyCache(this, null);
   protected TimeTracker clock;
   private boolean tlogging = true;
   private IWorkerContextManager.ICanonicalResourceLocator locator;
@@ -774,12 +777,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (noTerminologyServer) {
           return false;
         }
-        if (terminologyClientManager.getTxCapabilities() == null) {
+        if (terminologyClientManager != null) {
           try {
-            logger.logMessage("Terminology server: Check for supported code systems for "+system);
-            final TerminologyCapabilities capabilityStatement = txCache.hasTerminologyCapabilities() ? txCache.getTerminologyCapabilities() : terminologyClientManager.getMasterClient().getTerminologyCapabilities();
-            txCache.cacheTerminologyCapabilities(capabilityStatement);
-            setTxCaps(capabilityStatement);
+            if (terminologyClientManager.supportsSystem(system)) {
+              supportedCodeSystems.add(system);
+            }
           } catch (Exception e) {
             if (canRunWithoutTerminology) {
               noTerminologyServer = true;
@@ -851,7 +853,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Set<String> systems = findRelevantSystems(vs);
     TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, true);
     if (tc == null) {
-      res = new ValueSetExpansionOutcome("No server available", TerminologyServiceErrorClass.INTERNAL_ERROR, true);      
+      return new ValueSetExpansionOutcome("No server available", TerminologyServiceErrorClass.INTERNAL_ERROR, true);      
     }
     Parameters p = constructParameters(tc, vs, hierarchical);
     for (ConceptSetComponent incl : vs.getCompose().getInclude()) {
@@ -1373,15 +1375,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected ValueSetExpander constructValueSetExpanderSimple(ValidationOptions options) {
-    return new ValueSetExpander(this, new TerminologyOperationContext(this, options));
+    return new ValueSetExpander(this, new TerminologyOperationContext(this, options)).setDebug(logger.isDebugLogging());
   }
 
   protected ValueSetValidator constructValueSetCheckerSimple(ValidationOptions options,  ValueSet vs,  ValidationContextCarrier ctxt) {
-    return new ValueSetValidator(this, new TerminologyOperationContext(this, options), options, vs, ctxt, expParameters, terminologyClientManager.getTxCapabilities());
+    return new ValueSetValidator(this, new TerminologyOperationContext(this, options), options, vs, ctxt, expParameters, terminologyClientManager);
   }
 
   protected ValueSetValidator constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs) {
-    return new ValueSetValidator(this, new TerminologyOperationContext(this, options), options, vs, expParameters, terminologyClientManager.getTxCapabilities());
+    return new ValueSetValidator(this, new TerminologyOperationContext(this, options), options, vs, expParameters, terminologyClientManager);
   }
 
   protected Parameters constructParameters(TerminologyClientContext tcd, ValueSet vs, boolean hierarchical) {
@@ -1645,8 +1647,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected void addServerValidationParameters(TerminologyClientContext terminologyClientContext, ValueSet vs, Parameters pin, ValidationOptions options) {
     boolean cache = false;
     if (vs != null) {
-      if (terminologyClientManager.isTxCaching() && terminologyClientManager.getCacheId() != null && vs.getUrl() != null && terminologyClientContext.getCached().contains(vs.getUrl()+"|"+ vs.getVersion())) {
-        pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+(vs.hasVersion() ? "|"+ vs.getVersion() : "")));
+      if (terminologyClientContext != null && terminologyClientContext.isTxCaching() && terminologyClientContext.getCacheId() != null && vs.getUrl() != null && terminologyClientContext.getCached().contains(vs.getUrl()+"|"+ vs.getVersion())) {
+        pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()));
+        if (vs.hasVersion()) {
+          pin.addParameter().setName("valueSetVersion").setValue(new StringType(vs.getVersion()));            
+        }
       } else if (options.getVsAsUrl()){
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()));
       } else {
@@ -1705,7 +1710,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean checkAddToParams(TerminologyClientContext tc, Parameters pin, CanonicalResource cr) {
     boolean cache = false;
     boolean addToParams = false;
-    if (terminologyClientManager.usingCache()) {
+    if (tc.usingCache()) {
       if (!tc.alreadyCached(cr)) {
         tc.addToCache(cr);
         if (logger.isDebugLogging()) {
@@ -1856,20 +1861,20 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return "item";
   }
 
-  protected void initTS(String cachePath) throws IOException {
-    if (cachePath != null && !new File(cachePath).exists()) {
-      Utilities.createDirectory(cachePath);
+  public void initTxCache(String cachePath) throws FileNotFoundException, FHIRException, IOException {
+    if (cachePath != null) {
+      txCache = new TerminologyCache(lock, cachePath);
+      initTxCache(txCache);
     }
-    txCache = new TerminologyCache(lock, cachePath);
+  }
+  
+  public void initTxCache(TerminologyCache cache) {
+    txCache = cache;
     terminologyClientManager.setCache(txCache);
   }
 
   public void clearTSCache(String url) throws Exception {
     txCache.removeCS(url);
-  }
-
-  public void clearTS() {
-    txCache.clear();
   }
 
   public boolean isCanRunWithoutTerminology() {
@@ -2024,6 +2029,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (codeSystems.has(uri)) {
           return (T) codeSystems.get(uri, version, pvlist);
         } 
+        if (systems.has(uri)) {
+          return (T) systems.get(uri, version, pvlist);
+        } 
         if (operations.has(uri)) {
           return (T) operations.get(uri, version, pvlist);
         } 
@@ -2082,6 +2090,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return (T) structures.get(uri, version, pvlist);
       } else if (class_ == StructureMap.class) {
         return (T) transforms.get(uri, version, pvlist);
+      } else if (class_ == NamingSystem.class) {
+        return (T) systems.get(uri, version, pvlist);
       } else if (class_ == ValueSet.class) {
         return (T) valueSets.get(uri, version, pvlist);
       } else if (class_ == CodeSystem.class) {
@@ -2988,33 +2998,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return terminologyClientManager.getCacheId();
   }
 
-  public void setCacheId(String cacheId) {
-    terminologyClientManager.setCacheId(cacheId);
-  }
-
-  public TerminologyCapabilities getTxCaps() {
-    return terminologyClientManager.getTxCapabilities();
-  }
-
-  public void setTxCaps(TerminologyCapabilities txCaps) {
-    this.terminologyClientManager.setTxCapabilities(txCaps);
-    if (txCaps != null) {
-      for (TerminologyCapabilitiesExpansionParameterComponent t : terminologyClientManager.getTxCapabilities().getExpansion().getParameter()) {
-        if ("cache-id".equals(t.getName())) {
-          terminologyClientManager.setTxCaching(true);
-        }
-      }
-      for (TerminologyCapabilitiesCodeSystemComponent tccs : terminologyClientManager.getTxCapabilities().getCodeSystem()) {
-        supportedCodeSystems.add(tccs.getUri());
-      }
-    }
-  }
-
   public TimeTracker clock() {
     return clock;
   }
  
-
   public int countAllCaches() {
     return codeSystems.size() + valueSets.size() + maps.size() + transforms.size() + structures.size() + measures.size() + libraries.size() + 
         guides.size() + capstmts.size() + searchParameters.size() + questionnaires.size() + operations.size() + plans.size() + 
@@ -3165,7 +3152,69 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     binaries.clear();
     validationCache.clear();
-    txCache.clear();
+    txCache.unload();
 }
+  
+  private <T extends Resource> T doFindTxResource(Class<T> class_, String canonical) {
+    // well, we haven't found it locally. We're going look it up
+    if (class_ == ValueSet.class) {
+      SourcedValueSet svs = null;
+      if (txCache.hasValueSet(canonical)) {
+        svs = txCache.getValueSet(canonical);
+      } else {
+        svs = terminologyClientManager.findValueSetOnServer(canonical);
+        txCache.cacheValueSet(canonical, svs);
+      }
+      if (svs != null) {
+        String web = ToolingExtensions.readStringExtension(svs.getVs(), ToolingExtensions.EXT_WEB_SOURCE);
+        if (web == null) {
+          web = Utilities.pathURL(svs.getServer(), "ValueSet", svs.getVs().getIdBase());
+        }
+        svs.getVs().setWebPath(web);
+        svs.getVs().setUserData("External.Link", svs.getServer()); // so we can render it differently
+      }      
+      if (svs == null) {
+        return null;
+      } else {
+        cacheResource(svs.getVs());
+        return (T) svs.getVs();
+      }
+    } else {
+      throw new Error("Not supported");
+    }
+  }
+
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, Resource sourceOfReference) {
+    if (canonical == null) {
+      return null;
+    }
+   T result = fetchResource(class_, canonical, sourceOfReference);
+   if (result == null) {
+     result = doFindTxResource(class_, canonical);
+   }
+   return result;
+  }
+
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical) {
+    if (canonical == null) {
+      return null;
+    }
+    T result = fetchResource(class_, canonical);
+    if (result == null) {
+      result = doFindTxResource(class_, canonical);
+    }
+    return result;
+  }
+  
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version) {
+    if (canonical == null) {
+      return null;
+    }
+    T result = fetchResource(class_, canonical, version);
+    if (result == null) {
+      result = doFindTxResource(class_, canonical+"|"+version);
+    }
+    return result;
+  }
   
 }

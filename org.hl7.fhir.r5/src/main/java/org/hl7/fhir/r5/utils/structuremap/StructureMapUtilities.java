@@ -2119,22 +2119,23 @@ public class StructureMapUtilities {
     StructureMapAnalysis result = new StructureMapAnalysis();
     TransformContext context = new TransformContext(appInfo);
     VariablesForProfiling vars = new VariablesForProfiling(this, false, false);
-    StructureMapGroupComponent start = map.getGroup().get(0);
-    for (StructureMapGroupInputComponent t : start.getInput()) {
-      PropertyWithType ti = resolveType(map, t.getType(), t.getMode());
-      if (t.getMode() == StructureMapInputMode.SOURCE)
-        vars.add(VariableMode.INPUT, t.getName(), ti);
-      else
-        vars.add(VariableMode.OUTPUT, t.getName(), createProfile(map, result.profiles, ti, start.getName(), start));
+    if (map.hasGroup()) {
+      StructureMapGroupComponent start = map.getGroup().get(0);
+      for (StructureMapGroupInputComponent t : start.getInput()) {
+        PropertyWithType ti = resolveType(map, t.getType(), t.getMode());
+        if (t.getMode() == StructureMapInputMode.SOURCE)
+          vars.add(VariableMode.INPUT, t.getName(), ti);
+        else
+          vars.add(VariableMode.OUTPUT, t.getName(), createProfile(map, result.profiles, ti, start.getName(), start));
+      }
+      result.summary = new XhtmlNode(NodeType.Element, "table").setAttribute("class", "grid");
+      XhtmlNode tr = result.summary.addTag("tr");
+      tr.addTag("td").addTag("b").addText("Source");
+      tr.addTag("td").addTag("b").addText("Target");
+
+      log("Start Profiling Transform " + map.getUrl());
+      analyseGroup("", context, map, vars, start, result);
     }
-
-    result.summary = new XhtmlNode(NodeType.Element, "table").setAttribute("class", "grid");
-    XhtmlNode tr = result.summary.addTag("tr");
-    tr.addTag("td").addTag("b").addText("Source");
-    tr.addTag("td").addTag("b").addText("Target");
-
-    log("Start Profiling Transform " + map.getUrl());
-    analyseGroup("", context, map, vars, start, result);
     ProfileUtilities pu = new ProfileUtilities(worker, null, pkp);
     for (StructureDefinition sd : result.getProfiles())
       pu.cleanUpDifferential(sd);

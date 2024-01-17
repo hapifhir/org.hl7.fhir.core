@@ -2555,7 +2555,7 @@ public class FHIRPathEngine {
   private List<Base> opMemberOf(ExecutionContext context, List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     boolean ans = false;
     String url = right.get(0).primitiveValue();
-    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url) : worker.fetchResource(ValueSet.class, url);
+    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url) : worker.findTxResource(ValueSet.class, url);
     if (vs != null) {
       for (Base l : left) {
         if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
@@ -2748,7 +2748,7 @@ public class FHIRPathEngine {
         p = worker.getUcumService().multiply(pl, pr);
         result.add(pairToQty(p));
       } catch (UcumException e) {
-        throw new PathEngineException(e.getMessage(), null, expr.getOpStart(), expr.toString(), e); // #FIXME
+        throw new PathEngineException(e.getMessage(), null, expr.getOpStart(), expr.toString(), e); // #TODO: i18n
       }
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "*", left.get(0).fhirType(), right.get(0).fhirType());
@@ -4620,7 +4620,7 @@ public class FHIRPathEngine {
     }
 
     String url = nl.get(0).primitiveValue();
-    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url) : worker.fetchResource(ValueSet.class, url);
+    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url) : worker.findTxResource(ValueSet.class, url);
     if (vs == null) {
       return new ArrayList<Base>();
     }
@@ -4977,10 +4977,10 @@ public class FHIRPathEngine {
       tn = "FHIR."+expr.getParameters().get(0).getName();
     }
     if (!isKnownType(tn)) {
-      throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_INVALID_TYPE, tn), I18nConstants.FHIRPATH_INVALID_TYPE); // #FIXME
+      throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_INVALID_TYPE, tn), I18nConstants.FHIRPATH_INVALID_TYPE);
     }
     if (!doNotEnforceAsSingletonRule && focus.size() > 1) {
-      throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_AS_COLLECTION, focus.size(), expr.toString()), I18nConstants.FHIRPATH_AS_COLLECTION); // #FIXME
+      throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_AS_COLLECTION, focus.size(), expr.toString()), I18nConstants.FHIRPATH_AS_COLLECTION); 
     }
     
     for (Base b : focus) {
@@ -5020,7 +5020,7 @@ public class FHIRPathEngine {
       tn = "FHIR."+expr.getParameters().get(0).getName();
     }
     if (!isKnownType(tn)) {
-      throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_INVALID_TYPE, tn), I18nConstants.FHIRPATH_INVALID_TYPE); // #FIXME
+      throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_INVALID_TYPE, tn), I18nConstants.FHIRPATH_INVALID_TYPE); 
     }
 
     

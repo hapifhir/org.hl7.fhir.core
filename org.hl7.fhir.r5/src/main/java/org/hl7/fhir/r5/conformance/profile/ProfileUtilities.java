@@ -2722,8 +2722,8 @@ public class ProfileUtilities extends TranslatingUtilities {
             messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "illegal attempt to change the binding on "+derived.getPath()+" from "+base.getBinding().getStrength().toCode()+" to "+derived.getBinding().getStrength().toCode(), ValidationMessage.IssueSeverity.ERROR));
 //            throw new DefinitionException("StructureDefinition "+pn+" at "+derived.getPath()+": illegal attempt to change a binding from "+base.getBinding().getStrength().toCode()+" to "+derived.getBinding().getStrength().toCode());
           else if (base.hasBinding() && derived.hasBinding() && base.getBinding().getStrength() == BindingStrength.REQUIRED && base.getBinding().hasValueSet() && derived.getBinding().hasValueSet()) {
-            ValueSet baseVs = context.fetchResource(ValueSet.class, base.getBinding().getValueSet(), srcSD);
-            ValueSet contextVs = context.fetchResource(ValueSet.class, derived.getBinding().getValueSet(), derivedSrc);
+            ValueSet baseVs = context.findTxResource(ValueSet.class, base.getBinding().getValueSet(), srcSD);
+            ValueSet contextVs = context.findTxResource(ValueSet.class, derived.getBinding().getValueSet(), derivedSrc);
             if (baseVs == null) {
               messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+base.getPath(), "Binding "+base.getBinding().getValueSet()+" could not be located", ValidationMessage.IssueSeverity.WARNING));
             } else if (contextVs == null) {

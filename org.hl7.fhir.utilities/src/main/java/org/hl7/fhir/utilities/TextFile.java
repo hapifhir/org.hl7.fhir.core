@@ -43,8 +43,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,230 +62,141 @@ public class TextFile {
 
 	public static List<String> readAllLines(String path) throws IOException
 	{
-		List<String> result = new ArrayList<String>();
-		
-		File file = new CSFile(path);
-		FileInputStream fs = new FileInputStream(file);
-		try {
-		  BufferedReader reader = new BufferedReader(new InputStreamReader(fs,"UTF-8"));
-
-		  while( reader.ready() )
-		    result.add(reader.readLine());
-
-		  reader.close();
-		  return result;
-		} finally {
-		  fs.close();
-		}
+	  final File file = new CSFile(path);
+    return Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
 	}
 	
 	public static void writeAllLines(String path, List<String> lines) throws IOException
 	{
-		File file = new CSFile(path);
-		FileOutputStream s = new FileOutputStream(file);
-		OutputStreamWriter sw = new OutputStreamWriter(s, "UTF-8");
-		for( String line : lines )
-			sw.write(line + "\r\n");
-		
-		sw.flush();
-		s.close();
+	  final File file = new CSFile(path);
+    Files.write(file.toPath(), lines, StandardCharsets.UTF_8);
 	}
 	
-	
-  public static void stringToFile(String content, File file) throws IOException {
-    FileOutputStream fs = new FileOutputStream(file);
-    try {
-      OutputStreamWriter sw = new OutputStreamWriter(fs, "UTF-8");
-      sw.write('\ufeff');  // Unicode BOM, translates to UTF-8 with the configured outputstreamwriter
-      sw.write(content);
-      sw.flush();
-      sw.close();
-    } finally {
-      fs.close();
-    }
+  public static void stringToStream(final String content, final OutputStream stream) throws IOException {
+    stream.write(content.getBytes(StandardCharsets.UTF_8));
   }
   
-  public static void stringToStream(String content, OutputStream stream, boolean bom) throws IOException {
-    OutputStreamWriter sw = new OutputStreamWriter(stream, "UTF-8");
-    if (bom) {
-      sw.write('\ufeff');  // Unicode BOM, translates to UTF-8 with the configured outputstreamwriter
-    }
-    sw.write(content);
-    sw.flush();
-    sw.close();
+  public static byte[] stringToBytes(final String content) throws IOException {
+    return content.getBytes(StandardCharsets.UTF_8);
   }
   
-  public static byte[] stringToBytes(String content, boolean bom) throws IOException {
-    ByteArrayOutputStream bs = new ByteArrayOutputStream();
-    OutputStreamWriter sw = new OutputStreamWriter(bs, "UTF-8");
-    if (bom)
-      sw.write('\ufeff');  // Unicode BOM, translates to UTF-8 with the configured outputstreamwriter
-    sw.write(content);
-    sw.flush();
-    sw.close();
-    return bs.toByteArray(); 
-  }
-  
-  public static void stringToFile(String content, String path) throws IOException  {
-    File file = new CSFile(path);
+  public static void stringToFile(final String content, final String path) throws IOException  {
+    final File file = new CSFile(path);
     stringToFile(content, file);
   }
 
-  public static void stringToFile(String content, File file, boolean bom) throws IOException  {
-    FileOutputStream fs = new FileOutputStream(file);
-    OutputStreamWriter sw = new OutputStreamWriter(fs, "UTF-8");
-    if (bom)
-      sw.write('\ufeff');  // Unicode BOM, translates to UTF-8 with the configured outputstreamwriter
-    sw.write(content);
-    sw.flush();
-    sw.close();
-  }
+
+  public static void stringToFile(final String content, final File file) throws IOException {
+    try (final OutputStream output = Files.newOutputStream(file.toPath())) {
+      output.write(content.getBytes(StandardCharsets.UTF_8));
+    }
+  }  
   
-  public static void stringToFile(String content, String path, boolean bom) throws IOException  {
-    File file = new CSFile(path);
-    stringToFile(content, file, bom);
-  }
-
-  public static void stringToFileNoPrefix(String content, String path) throws IOException  {
-    File file = new CSFile(path);
-    OutputStreamWriter sw = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
-    sw.write(content);
-    sw.flush();
-    sw.close();
-  }
-
-  public static String fileToString(File f) throws FileNotFoundException, IOException {
-    FileInputStream fs = new FileInputStream(f);
-    try {
-      return streamToString(fs);
-    } finally {
-      fs.close();
+  public static void stringToFileWithBOM(final String content, final File file) throws IOException  {
+    try (final OutputStream output = Files.newOutputStream(file.toPath())) {
+      output.write(new byte[]{(byte)239, (byte)187, (byte)191});
+      output.write(content.getBytes(StandardCharsets.UTF_8));
     }
   }
   
-  public static String fileToString(String src) throws FileNotFoundException, IOException  {
-    CSFile f = new CSFile(src);
+  public static void stringToFileWithBOM(final String content, final String path) throws IOException  {
+    final File file = new CSFile(path);
+    stringToFileWithBOM(content, file);
+  }
+  
+
+  public static String fileToString(final File f) throws FileNotFoundException, IOException {
+    // Files.readString(Path) will fail on invalid UTF-8 byte sequences, so we use Files.readAllBytes() instead.
+    // This would happen when reading an XSLX file, for example.
+    return new String(Files.readAllBytes(f.toPath()), StandardCharsets.UTF_8);
+  }
+  
+  public static String fileToString(final String src) throws FileNotFoundException, IOException  {
+    final CSFile f = new CSFile(src);
     if (!f.exists()) {
       throw new IOException("File "+src+" not found");
     }
-    FileInputStream fs = new FileInputStream(f);
-    try {
-      return streamToString(fs);
-    } finally {
-      fs.close();
-    }
+    return fileToString(f);
   }
 
-  public static String streamToString(InputStream input) throws IOException  {
-    InputStreamReader sr = new InputStreamReader(input, "UTF-8");    
-    StringBuilder b = new StringBuilder();
-    //while (sr.ready()) { Commented out by Claude Nanjo (1/14/2014) - sr.ready() always returns false - please remove if change does not impact other areas of codebase
-    int i = -1;
-    while((i = sr.read()) > -1) {
-      String s = Character.toString(i);
-      b.append(s);
-    }
-    sr.close();
-    
-    return b.toString().replace("\uFEFF", ""); 
+  public static String streamToString(final InputStream input) throws IOException  {
+    return new String(input.readAllBytes(), StandardCharsets.UTF_8).replace("\uFEFF", "");
   }
 
-  public static byte[] streamToBytes(InputStream input) throws IOException  {
-    if (input== null) {
+  public static byte[] streamToBytes(final InputStream input) throws IOException  {
+    if (input == null) {
       return null;
     }
-    ByteArrayOutputStream r = new ByteArrayOutputStream(2048);
-    byte[] read = new byte[512]; 
-    for (int i; -1 != (i = input.read(read)); r.write(read, 0, i));
+    final byte[] read = input.readAllBytes();
     input.close();
-    return r.toByteArray();
+    return read;
   }
 
-  public static byte[] streamToBytesNoClose(InputStream input) throws IOException  {
-    if (input== null) {
+  public static byte[] streamToBytesNoClose(final InputStream input) throws IOException  {
+    if (input == null) {
       return null;
     }
-    ByteArrayOutputStream r = new ByteArrayOutputStream(2048);
-    byte[] read = new byte[512]; 
-    for (int i; -1 != (i = input.read(read)); r.write(read, 0, i));
-    return r.toByteArray();
+    return input.readAllBytes();
   }
 
-  public static void bytesToFile(byte[] bytes, String path) throws IOException {
-    File file = new CSFile(path);
-    OutputStream sw = new FileOutputStream(file);
-    sw.write(bytes);
-    sw.flush();
-    sw.close(); 
+  public static void bytesToFile(final byte[] bytes, final String path) throws IOException {
+    try (final OutputStream sw = new FileOutputStream(new CSFile(path))) {
+      sw.write(bytes);
+    }
   }
   
-  public static void bytesToFile(byte[] bytes, File f) throws IOException {
-    OutputStream sw = new FileOutputStream(f);
-    sw.write(bytes);
-    sw.flush();
-    sw.close(); 
+  public static void bytesToFile(final byte[] bytes, final File f) throws IOException {
+    try (final OutputStream sw = new FileOutputStream(f)) {
+      sw.write(bytes);
+    }
   }
   
-  public static void appendBytesToFile(byte[] bytes, String path) throws IOException {
+  public static void appendBytesToFile(final byte[] bytes, final String path) throws IOException {
     byte[] linebreak = new byte[] {13, 10};
     Files.write(Paths.get(path), linebreak, StandardOpenOption.APPEND);
     Files.write(Paths.get(path), bytes, StandardOpenOption.APPEND);
   }
 
-  public static byte[] fileToBytes(String srcFile) throws FileNotFoundException, IOException {
-    FileInputStream fs = new FileInputStream(new CSFile(srcFile));
-    try {
-      return streamToBytes(fs);
-    } finally {
-      fs.close();
-    }
+  public static byte[] fileToBytes(final String srcFile) throws FileNotFoundException, IOException {
+    final File f = new CSFile(srcFile);
+    return Files.readAllBytes(f.toPath());
   }
 
   /**
    * 
-   * fileToBytes insists in case correctness to ensure that stuff works across linux and windows, but it's not always appropriate to ceheck case (e.g. validator parameters)
+   * fileToBytes insists in case correctness to ensure that stuff works across linux and windows, but it's not always appropriate to check case (e.g. validator parameters)
    * 
    * @param srcFile
    * @return
    * @throws FileNotFoundException
    * @throws IOException
    */
-  public static byte[] fileToBytesNCS(String srcFile) throws FileNotFoundException, IOException {
-    FileInputStream fs = new FileInputStream(new File(srcFile));
-    try {
-      return streamToBytes(fs);
-    } finally {
-      fs.close();
-    }
+  public static byte[] fileToBytesNCS(final String srcFile) throws FileNotFoundException, IOException {
+    return Files.readAllBytes(Path.of(srcFile));
   }
 
-  public static byte[] fileToBytes(File file) throws FileNotFoundException, IOException {
-    FileInputStream fs = new FileInputStream(file);
-    try {
-      return streamToBytes(fs);
-    } finally {
-      fs.close();
-    }
+  public static byte[] fileToBytes(final File file) throws FileNotFoundException, IOException {
+    return Files.readAllBytes(file.toPath());
   }
 
-  public static String bytesToString(byte[] bs) throws IOException {
-    return streamToString(new ByteArrayInputStream(bs));
+  public static String bytesToString(final byte[] bs) throws IOException {
+    return new String(bs, StandardCharsets.UTF_8);
   }
 
-  public static String bytesToString(byte[] bs, boolean removeBOM) throws IOException {
+  public static String bytesToString(final byte[] bs, final boolean removeBOM) throws IOException {
+    final String read = new String(bs, StandardCharsets.UTF_8);
     if (removeBOM)
-      return streamToString(new ByteArrayInputStream(bs)).replace("\uFEFF", "");
+      return read.replace("\uFEFF", "");
     else
-      return streamToString(new ByteArrayInputStream(bs));
+      return read;
   }
 
-  public static void streamToFile(InputStream stream, String filename) throws IOException {
-    byte[] cnt = streamToBytes(stream);
-    bytesToFile(cnt, filename);
+  public static void streamToFile(final InputStream stream, final String filename) throws IOException {
+    Files.copy(stream, Path.of(filename), StandardCopyOption.REPLACE_EXISTING);
+    stream.close();
   }
 
-  public static void streamToFileNoClose(InputStream stream, String filename) throws IOException {
-    byte[] cnt = streamToBytesNoClose(stream);
-    bytesToFile(cnt, filename);
+  public static void streamToFileNoClose(final InputStream stream, final String filename) throws IOException {
+    Files.copy(stream, Path.of(filename), StandardCopyOption.REPLACE_EXISTING);
   }
 }

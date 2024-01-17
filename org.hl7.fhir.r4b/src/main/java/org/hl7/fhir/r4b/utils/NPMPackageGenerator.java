@@ -364,11 +364,11 @@ public class NPMPackageGenerator {
     // also, for cache management on current builds, generate a little manifest
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String json = gson.toJson(packageManifest);
-    TextFile.stringToFile(json, Utilities.changeFileExt(destFile, ".manifest.json"), false);
+    TextFile.stringToFile(json, Utilities.changeFileExt(destFile, ".manifest.json"));
   }
 
   private void buildIndexJson() throws IOException {
-    byte[] content = TextFile.stringToBytes(indexer.build(), false);
+    byte[] content = TextFile.stringToBytes(indexer.build());
     addFile(Category.RESOURCE, ".index.json", content);
     content = TextFile.fileToBytes(indexdb);
     new File(indexdb).delete();
