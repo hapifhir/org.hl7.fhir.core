@@ -166,6 +166,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   
   private boolean checkCodesWhenExpanding;
   private boolean includeAbstract = true;
+  private boolean debug;
 
   private AcceptLanguageHeader langs;
   private List<Token> designations = new ArrayList<>();
@@ -672,7 +673,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
     } catch (ETooCostly e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.TOO_COSTLY, allErrors, false);
     } catch (Exception e) {
-      e.printStackTrace();
+      if (debug) {
+        e.printStackTrace();
+      }
       // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
       // that might fail too, but it might not, later.
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e instanceof EFhirClientException || e instanceof TerminologyServiceException);
@@ -1325,4 +1328,15 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     return true;
   }
+
+  public boolean isDebug() {
+    return debug;
+  }
+
+  public ValueSetExpander setDebug(boolean debug) {
+    this.debug = debug;
+    return this;
+  }
+  
+  
 }
