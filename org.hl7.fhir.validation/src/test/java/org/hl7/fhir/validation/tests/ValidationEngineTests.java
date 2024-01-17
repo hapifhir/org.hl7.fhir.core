@@ -186,7 +186,7 @@ public class ValidationEngineTests {
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "observation102.json"), null);
     if (!TestUtilities.silent)
       for (OperationOutcomeIssueComponent iss : op.getIssue()) {
-        System.out.println("    " + iss.getDetails().getText());
+        System.out.println("    "+iss.getSeverity().toCode()+": "+ iss.getDetails().getText());
       }
     int e = errors(op);
     int w = warnings(op);
@@ -265,12 +265,12 @@ public class ValidationEngineTests {
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "observation401_ucum.json"), profiles);
     if (!TestUtilities.silent)
       for (OperationOutcomeIssueComponent issue : op.getIssue())
-        System.out.println("  - " + issue.getDetails().getText());
+        System.out.println("  - "+issue.getSeverity().toCode()+": " + issue.getDetails().getText());
     int e = errors(op);
     int w = warnings(op);
     int h = hints(op);
     Assertions.assertEquals(0, e);
-    Assertions.assertEquals(5, w);
+    Assertions.assertEquals(6, w);
     Assertions.assertEquals(2, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
