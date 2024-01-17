@@ -152,7 +152,7 @@ public class TerminologyClientManager {
         }
       }
     }
-    String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+url);
+    String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode(url));
     if (usage != null) {
       request = request + "&usage="+usage;
     } 
@@ -309,7 +309,7 @@ public class TerminologyClientManager {
     if (IGNORE_TX_REGISTRY || getMasterClient() == null) {
       return null;
     }
-    String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+canonical);
+    String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+Utilities.URLEncode(canonical));
     if (usage != null) {
       request = request + "&usage="+usage;
     }
@@ -348,8 +348,8 @@ public class TerminologyClientManager {
       }
       client.seeUse(canonical, TerminologyClientContextUseType.readVS);
       String criteria = canonical.contains("|") ? 
-          "?_format=json&url="+canonical.substring(0, canonical.lastIndexOf("|"))+"&version="+canonical.substring(canonical.lastIndexOf("|")+1) : 
-            "?_format=json&url="+canonical;
+          "?_format=json&url="+Utilities.URLEncode(canonical.substring(0, canonical.lastIndexOf("|")))+"&version="+Utilities.URLEncode(canonical.substring(canonical.lastIndexOf("|")+1)): 
+            "?_format=json&url="+Utilities.URLEncode(canonical);
       request = Utilities.pathURL(client.getAddress(), "ValueSet"+ criteria);
       Bundle bnd = client.getClient().search("ValueSet", criteria);
       String rid = null;
