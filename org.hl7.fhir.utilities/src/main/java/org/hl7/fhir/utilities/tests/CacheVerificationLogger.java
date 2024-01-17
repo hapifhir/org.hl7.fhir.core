@@ -23,9 +23,11 @@ public class CacheVerificationLogger implements ToolingClientLogger {
           System.err.println("Header: " + header);
         }
       }
-      System.err.println("Body");
-      System.err.println("----");
-      System.err.println(new String(body, StandardCharsets.UTF_8));
+      if (body != null) {
+        System.err.println("Body");
+        System.err.println("----");
+        System.err.println(new String(body, StandardCharsets.UTF_8));
+      }
     }
     requests++;
   }

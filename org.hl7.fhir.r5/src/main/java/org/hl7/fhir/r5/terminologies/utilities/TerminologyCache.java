@@ -46,6 +46,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.context.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -60,6 +61,8 @@ import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.model.JsonNull;
+import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
@@ -98,6 +101,25 @@ public class TerminologyCache {
   }
 
 
+  public static class SourcedValueSetEntry {
+    private String server;
+    private String filename;
+    
+    public SourcedValueSetEntry(String server, String filename) {
+      super();
+      this.server = server;
+      this.filename = filename;
+    }
+    public String getServer() {
+      return server;
+    }
+    public String getFilename() {
+      return filename;
+    }
+    
+  }
+
+
   public static final boolean TRANSIENT = false;
   public static final boolean PERMANENT = true;
   private static final String NAME_FOR_NO_SYSTEM = "all-systems";
@@ -106,6 +128,7 @@ public class TerminologyCache {
   private static final String CACHE_FILE_EXTENSION = ".cache";
   private static final String CAPABILITY_STATEMENT_TITLE = ".capabilityStatement";
   private static final String TERMINOLOGY_CAPABILITIES_TITLE = ".terminologyCapabilities";
+  private static final String FIXED_CACHE_VERSION = "3"; // last change: when multiple servers were introduced
 
 
   private SystemNameKeyGenerator systemNameKeyGenerator = new SystemNameKeyGenerator();
@@ -213,10 +236,11 @@ public class TerminologyCache {
   @Getter private int requestCount;
   @Getter private int hitCount;
   @Getter private int networkCount;
-  private CapabilityStatement capabilityStatementCache = null;
-  private TerminologyCapabilities terminologyCapabilitiesCache = null;
+  private Map<String, CapabilityStatement> capabilityStatementCache = new HashMap<>();
+  private Map<String, TerminologyCapabilities> terminologyCapabilitiesCache = new HashMap<>();
   private Map<String, NamedCache> caches = new HashMap<String, NamedCache>();
-  private Map<String, StringPair> vsCache = new HashMap<>();
+  private Map<String, SourcedValueSetEntry> vsCache = new HashMap<>();
+  private Map<String, String> serverMap = new HashMap<>();
   @Getter @Setter private static boolean noCaching;
 
   @Getter @Setter private static boolean cacheErrors;
@@ -226,54 +250,104 @@ public class TerminologyCache {
   public TerminologyCache(Object lock, String folder) throws FileNotFoundException, IOException, FHIRException {
     super();
     this.lock = lock;
+    if (folder == null) {
+      folder = Utilities.path("[tmp]", "default-tx-cache");
+    }
     this.folder = folder;
     requestCount = 0;
     hitCount = 0;
     networkCount = 0;
 
+    
+    File f = new File(folder);
+    if (!f.exists()) {
+      Utilities.createDirectory(folder);
+    }
+    if (!f.exists()) {
+      throw new IOException("Unable to create terminology cache at "+folder);
+    }
+    checkVersion();      
+    load();
+  }
+
+  private void checkVersion() throws IOException {
+    File verFile = new File(Utilities.path(folder, "version.ctl"));
+    if (verFile.exists()) {
+      String ver = TextFile.fileToString(verFile);
+      if (!ver.equals(FIXED_CACHE_VERSION)) {
+        System.out.println("Terminology Cache Version has changed from 1 to "+FIXED_CACHE_VERSION+", so clearing txCache");
+        clear();
+      }
+      TextFile.stringToFile(FIXED_CACHE_VERSION, verFile);
+    } else {
+      TextFile.stringToFile(FIXED_CACHE_VERSION, verFile);
+    }
+  }
+
+  public String getServerId(String address) throws IOException  {
+    if (serverMap.containsKey(address)) {
+      return serverMap.get(address);
+    }
+    String id = address.replace("http://", "").replace("https://", "").replace("/", ".");
+    int i = 1;
+    while (serverMap.containsValue(id)) {
+      i++;
+      id =  address.replace("https:", "").replace("https:", "").replace("/", ".")+i;
+    }
+    serverMap.put(address, id);
     if (folder != null) {
-      load();
+      IniFile ini = new IniFile(Utilities.path(folder, "servers.ini"));
+      ini.setStringProperty("servers", id, address, null);
+      ini.save();
     }
+    return id;
   }
-
-  public boolean hasCapabilityStatement() {
-    return capabilityStatementCache != null;
-  }
-
-  public CapabilityStatement getCapabilityStatement() {
-    return capabilityStatementCache;
-  }
-
-  public void cacheCapabilityStatement(CapabilityStatement capabilityStatement) {
-    if (noCaching) {
-      return;
-    } 
-    this.capabilityStatementCache = capabilityStatement;
-    save(capabilityStatementCache, CAPABILITY_STATEMENT_TITLE);
-  }
-
-
-  public boolean hasTerminologyCapabilities() {
-    return terminologyCapabilitiesCache != null;
-  }
-
-  public TerminologyCapabilities getTerminologyCapabilities() {
-    return terminologyCapabilitiesCache;
-  }
-
-  public void cacheTerminologyCapabilities(TerminologyCapabilities terminologyCapabilities) {
-    if (noCaching) {
-      return;
-    }
-    this.terminologyCapabilitiesCache = terminologyCapabilities;
-    save(terminologyCapabilitiesCache, TERMINOLOGY_CAPABILITIES_TITLE);
-  }
-
-
-  public void clear() {
+  
+  public void unload() {
+    // not useable after this is called
     caches.clear();
     vsCache.clear();
   }
+  
+  private void clear() throws IOException {
+    Utilities.clearDirectory(folder);
+    caches.clear();
+    vsCache.clear();
+  }
+  
+  public boolean hasCapabilityStatement(String address) {
+    return capabilityStatementCache.containsKey(address);
+  }
+
+  public CapabilityStatement getCapabilityStatement(String address) {
+    return capabilityStatementCache.get(address);
+  }
+
+  public void cacheCapabilityStatement(String address, CapabilityStatement capabilityStatement) throws IOException {
+    if (noCaching) {
+      return;
+    } 
+    this.capabilityStatementCache.put(address, capabilityStatement);
+    save(capabilityStatement, CAPABILITY_STATEMENT_TITLE+"."+getServerId(address));
+  }
+
+
+  public boolean hasTerminologyCapabilities(String address) {
+    return terminologyCapabilitiesCache.containsKey(address);
+  }
+
+  public TerminologyCapabilities getTerminologyCapabilities(String address) {
+    return terminologyCapabilitiesCache.get(address);
+  }
+
+  public void cacheTerminologyCapabilities(String address, TerminologyCapabilities terminologyCapabilities) throws IOException {
+    if (noCaching) {
+      return;
+    }
+    this.terminologyCapabilitiesCache.put(address, terminologyCapabilities);
+    save(terminologyCapabilities, TERMINOLOGY_CAPABILITIES_TITLE+"."+getServerId(address));
+  }
+
 
   public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs, Parameters expParameters) {
     try {
@@ -640,19 +714,33 @@ public class TerminologyCache {
   private void loadCapabilityCache(String fn) {
     try {
       String src = TextFile.fileToString(Utilities.path(folder, fn));
+      String serverId = Utilities.getFileNameForName(fn).replace(CACHE_FILE_EXTENSION, "");
+      serverId = serverId.substring(serverId.indexOf(".")+1);
+      serverId = serverId.substring(serverId.indexOf(".")+1);
+      String address = getServerForId(serverId);
+      if (address != null) {
+        JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(src);
+        Resource resource = new JsonParser().parse(o);
 
-      JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(src);
-      Resource resource = new JsonParser().parse(o);
-
-      if (fn.startsWith(CAPABILITY_STATEMENT_TITLE)) {
-        this.capabilityStatementCache = (CapabilityStatement) resource;
-      } else if (fn.startsWith(TERMINOLOGY_CAPABILITIES_TITLE)) {
-        this.terminologyCapabilitiesCache = (TerminologyCapabilities) resource;
+        if (fn.startsWith(CAPABILITY_STATEMENT_TITLE)) {
+          this.capabilityStatementCache.put(address, (CapabilityStatement) resource);
+        } else if (fn.startsWith(TERMINOLOGY_CAPABILITIES_TITLE)) {
+          this.terminologyCapabilitiesCache.put(address, (TerminologyCapabilities) resource);
+        }
       }
     } catch (Exception e) {
       e.printStackTrace();
       throw new FHIRException("Error loading " + fn + ": " + e.getMessage(), e);
     }
+  }
+
+  private String getServerForId(String serverId) {
+    for (String n : serverMap.keySet()) {
+      if (serverMap.get(n).equals(serverId)) {
+        return n;
+      }
+    }
+    return null;
   }
 
   private CacheEntry getCacheEntry(String request, String resultString) throws IOException {
@@ -730,6 +818,13 @@ public class TerminologyCache {
   }
 
   private void load() throws FHIRException, IOException {
+    IniFile ini = new IniFile(Utilities.path(folder, "servers.ini"));
+    if (ini.hasSection("servers")) {
+      for (String n : ini.getPropertyNames("servers")) {
+        serverMap.put(ini.getStringProperty("servers", n), n);
+      }
+    }
+
     for (String fn : new File(folder).list()) {
       if (fn.endsWith(CACHE_FILE_EXTENSION) && !fn.equals("validation" + CACHE_FILE_EXTENSION)) {
         try {
@@ -743,13 +838,21 @@ public class TerminologyCache {
         }
       }
     }
-    File fini = new File(Utilities.path(folder, "vs-external.ini"));
-    if (fini.exists()) {
-      IniFile ini = new IniFile(fini.getAbsolutePath());
-      for (String k : ini.getPropertyNames("valuesets")) {
-        String fn = ini.getStringProperty("valuesets", k);
-        vsCache.put(k, new StringPair(Utilities.noString(fn) ? null : fn, ini.getStringProperty("servers", k)));        
+    try {
+      File f = new File(Utilities.path(folder, "vs-externals.json"));
+      if (f.exists()) {
+        org.hl7.fhir.utilities.json.model.JsonObject json = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(f);
+        for (JsonProperty p : json.getProperties()) {
+          if (p.getValue().isJsonNull()) {
+            vsCache.put(p.getName(), null);
+          } else {
+            org.hl7.fhir.utilities.json.model.JsonObject j = p.getValue().asJsonObject();
+            vsCache.put(p.getName(), new SourcedValueSetEntry(j.asString("filename"), j.asString("server")));        
+          }
+        }
       }
+    } catch (Exception e) {
+      System.out.println("Error loading vs external cache: "+e.getMessage());
     }
   }
 
@@ -858,12 +961,12 @@ public class TerminologyCache {
   }
 
   public SourcedValueSet getValueSet(String canonical) {
-    StringPair sp = vsCache.get(canonical);
-    if (sp == null || sp.getName() == null) {
+    SourcedValueSetEntry sp = vsCache.get(canonical);
+    if (sp == null) {
       return null;
     } else {
       try {
-        return new SourcedValueSet(sp.getValue(), (ValueSet) new JsonParser().parse(new FileInputStream(Utilities.path(folder, sp.getName()))));
+        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser().parse(new FileInputStream(Utilities.path(folder, sp.getFilename()))));
       } catch (Exception e) {
         return null;
       }
@@ -871,6 +974,9 @@ public class TerminologyCache {
   }
 
   public void cacheValueSet(String canonical, SourcedValueSet svs) {
+    if (canonical == null) {
+      return;
+    }
     try {
       if (svs == null) {
         vsCache.put(canonical, null);
@@ -878,16 +984,25 @@ public class TerminologyCache {
         String uuid = Utilities.makeUuidLC();
         String fn = "vs-"+uuid+".json";
         new JsonParser().compose(new FileOutputStream(Utilities.path(folder, fn)), svs.getVs());
-        vsCache.put(canonical, new StringPair(fn, svs.getServer()));
+        vsCache.put(canonical, new SourcedValueSetEntry(svs.getServer(), fn));
       }    
-      File fini = new File(Utilities.path(folder, "vs-external.ini"));
-      IniFile ini = new IniFile(fini.getAbsolutePath());
+      org.hl7.fhir.utilities.json.model.JsonObject j = new org.hl7.fhir.utilities.json.model.JsonObject();
       for (String k : vsCache.keySet()) {
-        ini.setStringProperty("valuesets", k, vsCache.get(k).getName(), null);
-        ini.setStringProperty("servers", k, vsCache.get(k).getValue(), null);
+        SourcedValueSetEntry sve = vsCache.get(k);
+        if (sve == null) {
+          j.add(k, new JsonNull());
+        } else {
+          org.hl7.fhir.utilities.json.model.JsonObject e = new org.hl7.fhir.utilities.json.model.JsonObject();
+          e.set("server", sve.getServer());
+          if (sve.getFilename() != null) {
+            e.set("filename", sve.getFilename());
+          }
+          j.add(k, e);
+        }
       }
-      ini.save();
+      org.hl7.fhir.utilities.json.parser.JsonParser.compose(j, new File(Utilities.path(folder, "vs-externals.json")), true);
     } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 

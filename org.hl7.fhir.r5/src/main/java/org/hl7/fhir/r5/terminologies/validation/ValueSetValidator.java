@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.terminologies.validation;
 
+import java.io.IOException;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -76,6 +78,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.providers.CodeSystemProvider;
 import org.hl7.fhir.r5.terminologies.providers.SpecialCodeSystem;
@@ -131,28 +134,28 @@ public class ValueSetValidator extends ValueSetProcessBase {
   private ValidationContextCarrier localContext;
   private List<CodeSystem> localSystems = new ArrayList<>();
   protected Parameters expansionProfile;
-  private TerminologyCapabilities txCaps;
+  private TerminologyClientManager tcm;
   private Set<String> unknownSystems;
   private Set<String> unknownValueSets = new HashSet<>();
   private boolean throwToServer;
 
-  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, Parameters expansionProfile, TerminologyCapabilities txCaps) {
+  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, Parameters expansionProfile, TerminologyClientManager tcm) {
     super(context, opContext);
     this.valueset = source;
     this.options = options;
     this.expansionProfile = expansionProfile;
-    this.txCaps = txCaps;
+    this.tcm = tcm;
     analyseValueSet();
   }
   
-  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, ValidationContextCarrier ctxt, Parameters expansionProfile, TerminologyCapabilities txCaps) {
+  public ValueSetValidator(IWorkerContext context, TerminologyOperationContext opContext, ValidationOptions options, ValueSet source, ValidationContextCarrier ctxt, Parameters expansionProfile, TerminologyClientManager tcm) {
     super(context, opContext);
     this.valueset = source;
     this.options = options.copy();
     this.options.setEnglishOk(true);
     this.localContext = ctxt;
     this.expansionProfile = expansionProfile;
-    this.txCaps = txCaps;
+    this.tcm = tcm;
     analyseValueSet();
   }
 
@@ -522,7 +525,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         if (cs == null) {
           OpIssueCode oic = OpIssueCode.NotFound;
           IssueType itype = IssueType.NOTFOUND;
-          ValueSet vs = context.findTxResource(ValueSet.class, system);
+          ValueSet vs = context.fetchResource(ValueSet.class, system);
           if (vs != null) {
             warningMessage = context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, system);  
             oic = OpIssueCode.InvalidData;
@@ -716,14 +719,15 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (SERVER_SIDE_LIST.contains(system)) {
       return true;
     }
-  
-    if (txCaps != null) {
-      for (TerminologyCapabilitiesCodeSystemComponent tccs : txCaps.getCodeSystem()) {
-        if (system.equals(tccs.getUri())) {
-          return true;
-        }
+    
+    try {
+      if (tcm.supportsSystem(system)) {
+        return true;
       }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+  
     return false;    
   }
 
@@ -1458,7 +1462,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       unknownValueSets.add(url);
       info.addIssue(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, null, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, url), OpIssueCode.NotFound, null));
     }
-    ValueSetValidator vsc = new ValueSetValidator(context, opContext.copy(), options, vs, localContext, expansionProfile, txCaps);
+    ValueSetValidator vsc = new ValueSetValidator(context, opContext.copy(), options, vs, localContext, expansionProfile, tcm);
     vsc.setThrowToServer(throwToServer);
     inner.put(url, vsc);
     return vsc;

@@ -139,6 +139,11 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
 
   @Override
+  public ToolingClientLogger getLogger() {
+    return client.getLogger();
+  }
+
+  @Override
   public ITerminologyClient setLogger(ToolingClientLogger txLog) {
     client.setLogger(txLog);
     return this;
