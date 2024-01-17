@@ -16,6 +16,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
   "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -40,6 +41,7 @@ v: {
   "error" : "Wrong Display Name 'X SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose' for http://hl7.org/fhir/sid/cvx#207 - should be 'SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose' (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -80,6 +82,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
   "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -103,6 +106,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
   "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -126,6 +130,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
   "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -149,6 +154,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
   "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -172,6 +178,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
   "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -195,6 +202,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
   "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -218,6 +226,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
   "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -241,6 +250,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
   "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -264,6 +274,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
   "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -287,6 +298,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20210406",
   "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
