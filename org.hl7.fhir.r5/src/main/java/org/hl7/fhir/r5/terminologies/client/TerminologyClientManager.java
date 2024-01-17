@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
@@ -37,7 +38,7 @@ public class TerminologyClientManager {
   }
 
   public interface ITerminologyClientFactory {
-    ITerminologyClient makeClient(String id, String url, String userAgent) throws URISyntaxException;
+    ITerminologyClient makeClient(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException;
     String getVersion();
   }
 
@@ -47,7 +48,6 @@ public class TerminologyClientManager {
   
   private ITerminologyClientFactory factory;
   private String cacheId;
-  private boolean isTxCaching;
   private List<TerminologyClientContext> serverList = new ArrayList<>(); // clients by server address
   private Map<String, TerminologyClientContext> serverMap = new HashMap<>(); // clients by server address
   private Map<String, String> resMap = new HashMap<>(); // client resolution list
@@ -61,40 +61,24 @@ public class TerminologyClientManager {
 
   private String monitorServiceURL;
 
-  public TerminologyClientManager(ITerminologyClientFactory factory) {
+  public TerminologyClientManager(ITerminologyClientFactory factory, String cacheId) {
     super();
     this.factory = factory;
+    this.cacheId = cacheId;
   }
   
   public String getCacheId() {
     return cacheId; 
   }
   
-  public void setCacheId(String cacheId) {
-    this.cacheId = cacheId;
-  }
-  
-  public boolean isTxCaching() {
-    return isTxCaching;
-  }
-  
-  public void setTxCaching(boolean isTxCaching) {
-    this.isTxCaching = isTxCaching;
-  }
-  
   public void copy(TerminologyClientManager other) {
     cacheId = other.cacheId;  
-    isTxCaching = other.isTxCaching;
     serverList.addAll(other.serverList);
     serverMap.putAll(other.serverMap);
     resMap.putAll(other.resMap);
     monitorServiceURL = other.monitorServiceURL;
     factory = other.factory;
     usage = other.usage;
-  }
-
-  public boolean usingCache() {
-    return isTxCaching && cacheId != null;
   }
 
 
@@ -135,10 +119,11 @@ public class TerminologyClientManager {
     TerminologyClientContext client = serverMap.get(server);
     if (client == null) {
       try {
-        client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent()), false);
+        client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
       } catch (URISyntaxException e) {
         throw new TerminologyServiceException(e);
       }
+      client.setTxCache(cache);
       serverList.add(client);
       serverMap.put(server, client);
     }
@@ -152,7 +137,7 @@ public class TerminologyClientManager {
     }
     if (expParameters != null) {
       if (!url.contains("|")) {
-        // the client hasn''t specified an explicit version, but the expansion parameters might
+        // the client hasn't specified an explicit version, but the expansion parameters might
         for (ParametersParameterComponent p : expParameters.getParameter()) {
           if (Utilities.existsInList(p.getName(), "system-version", "force-system-version") && p.hasValuePrimitive() && p.getValue().primitiveValue().startsWith(url+"|")) {
             url = p.getValue().primitiveValue();
@@ -176,7 +161,7 @@ public class TerminologyClientManager {
       for (JsonObject item : json.getJsonObjects("authoritative")) {
         return item.asString("url");
       }
-      for (JsonObject item : json.getJsonObjects("candidate")) {
+      for (JsonObject item : json.getJsonObjects("candidates")) {
         return item.asString("url");
       }
     } catch (Exception e) {
@@ -222,12 +207,14 @@ public class TerminologyClientManager {
     }
   }
 
-  public void setMasterClient(ITerminologyClient client) {
-    TerminologyClientContext details = new TerminologyClientContext(client, true);
+  public TerminologyClientContext setMasterClient(ITerminologyClient client) {
+    TerminologyClientContext details = new TerminologyClientContext(client, cacheId, true);
+    details.setTxCache(cache);
     serverList.clear();
     serverList.add(details);
     serverMap.put(client.getAddress(), details);  
     monitorServiceURL = Utilities.pathURL(Utilities.getDirectoryForURL(client.getAddress()), "tx-reg");
+    return details;
   }
   
   public TerminologyClientContext getMaster() {
@@ -246,13 +233,6 @@ public class TerminologyClientManager {
     return map;
   }
 
-  public TerminologyCapabilities getTxCapabilities() {
-    return hasClient() ? serverList.get(0).getTxcaps() : null;
-  }
-
-  public void setTxCapabilities(TerminologyCapabilities txCaps) {
-    serverList.get(0).setTxcaps(txCaps);    
-  }
 
   public void setFactory(ITerminologyClientFactory factory) {
     this.factory = factory;    
@@ -309,8 +289,6 @@ public class TerminologyClientManager {
     return monitorServiceURL;
   }
 
-  
-
   public Parameters getExpansionParameters() {
     return expParameters;
   }
@@ -343,7 +321,7 @@ public class TerminologyClientManager {
           server = item.asString("url");
         }
       }
-      for (JsonObject item : json.getJsonObjects("candidate")) {
+      for (JsonObject item : json.getJsonObjects("candidates")) {
         if (server == null) {
           server = item.asString("url");
         }
@@ -360,17 +338,19 @@ public class TerminologyClientManager {
       TerminologyClientContext client = serverMap.get(server);
       if (client == null) {
         try {
-          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent()), false);
+          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cacheId, false);
         } catch (URISyntaxException e) {
           throw new TerminologyServiceException(e);
         }
+        client.setTxCache(cache);
         serverList.add(client);
         serverMap.put(server, client);
       }
       client.seeUse(canonical, TerminologyClientContextUseType.readVS);
       String criteria = canonical.contains("|") ? 
-          "?url="+canonical.substring(0, canonical.lastIndexOf("|"))+"&version="+canonical.substring(canonical.lastIndexOf("|")+1) : 
-            "?url="+canonical;
+          "?_format=json&url="+canonical.substring(0, canonical.lastIndexOf("|"))+"&version="+canonical.substring(canonical.lastIndexOf("|")+1) : 
+            "?_format=json&url="+canonical;
+      request = Utilities.pathURL(client.getAddress(), "ValueSet"+ criteria);
       Bundle bnd = client.getClient().search("ValueSet", criteria);
       String rid = null;
       if (bnd.getEntry().size() == 0) {
@@ -395,15 +375,23 @@ public class TerminologyClientManager {
       ValueSet vs = (ValueSet) client.getClient().read("ValueSet", rid);
       return new SourcedValueSet(server, vs);
     } catch (Exception e) {
+      e.printStackTrace();
       String msg = "Error resolving valueSet "+canonical+": "+e.getMessage()+" ("+request+")";
       if (!internalErrors.contains(msg)) {
         internalErrors.add(msg);
       }
-      if (!monitorServiceURL.contains("tx.fhir.org")) {
-        e.printStackTrace();
-      }
+      e.printStackTrace();
       return null;
     }
+  }
+
+  public boolean supportsSystem(String system) throws IOException {
+    for (TerminologyClientContext client : serverList) {
+      if (client.supportsSystem(system)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

@@ -127,6 +127,11 @@ public class TerminologyClientR3 implements ITerminologyClient {
     client.setTimeoutFactor(i);
     return this;
   }
+  
+  @Override
+  public ToolingClientLogger getLogger() {
+    return client.getLogger();
+  }
 
   @Override
   public ITerminologyClient setLogger(ToolingClientLogger txLog) {

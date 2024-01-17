@@ -57,7 +57,7 @@ public class TerminologyClientR5 implements ITerminologyClient {
   public static class TerminologyClientR5Factory implements ITerminologyClientFactory {
 
     @Override
-    public ITerminologyClient makeClient(String id, String url, String userAgent) throws URISyntaxException {
+    public ITerminologyClient makeClient(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException {
       return new TerminologyClientR5(id, checkEndsWith("/r4", url), userAgent);
     }
 
@@ -146,6 +146,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
     return this;
   }
 
+  @Override
+  public ToolingClientLogger getLogger() {
+    return client.getLogger();
+  }
+  
   @Override
   public ITerminologyClient setLogger(ToolingClientLogger txLog) {
     client.setLogger(txLog);

@@ -475,7 +475,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   protected void initContext(TimeTracker tt) throws IOException {
     context.setCanNoTS(true);
-    context.setCacheId(UUID.randomUUID().toString());
     context.setAllowLoadingDuplicates(true); // because of Forge
     context.setExpansionParameters(makeExpProfile());
     if (tt != null) {
@@ -524,7 +523,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     } else {
       try {
         TerminologyClientFactory factory = new TerminologyClientFactory(version);
-        return context.connectToTSServer(factory, factory.makeClient("Tx-Server", url, context.getUserAgent()), log);
+        context.connectToTSServer(factory, url, context.getUserAgent(), log);
+        return "Connected to Terminology Server at "+url;
       } catch (Exception e) {
         if (context.isCanRunWithoutTerminology()) {
           return "n/a: Running without Terminology Server (error: " + e.getMessage() + ")";
