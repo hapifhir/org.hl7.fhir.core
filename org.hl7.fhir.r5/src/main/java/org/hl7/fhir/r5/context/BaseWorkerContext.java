@@ -3157,14 +3157,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   
   private <T extends Resource> T doFindTxResource(Class<T> class_, String canonical) {
     // well, we haven't found it locally. We're going look it up
-    System.out.println("doFindTxResource: "+canonical);
     if (class_ == ValueSet.class) {
       SourcedValueSet svs = null;
       if (txCache.hasValueSet(canonical)) {
         svs = txCache.getValueSet(canonical);
-        System.out.println("doFindTxResource - in cache from "+svs.getServer());
       } else {
-        System.out.println("doFindTxResource - not in cache");
         svs = terminologyClientManager.findValueSetOnServer(canonical);
         txCache.cacheValueSet(canonical, svs);
       }
