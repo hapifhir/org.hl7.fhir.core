@@ -255,7 +255,7 @@ class ValidationServiceTest  {
   }
 
   @Test
-  public void buildValidationEngineDoNotFetchUnknownProfilesTest() throws IOException, URISyntaxException {
+  public void buildValidationEngineDisableDefaultResourceFetcherTest() throws IOException, URISyntaxException {
     final TimeTracker timeTracker = mock(TimeTracker.class);
     final SimpleWorkerContext workerContext = mock(SimpleWorkerContext.class);
 
