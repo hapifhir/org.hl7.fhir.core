@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.FHIRTypes;
@@ -141,6 +142,20 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
       }
     } else
       td.ah(sd.getWebPath()).tx(actualType);
+    if (p.hasTargetProfile()) {
+      td.tx(" (");
+      boolean first = true;
+      for (CanonicalType tp : p.getTargetProfile()) {
+        if (first) { first = false;} else {td.tx(", ");};
+        StructureDefinition sdt = context.getWorker().fetchTypeDefinition(tp.asStringValue());
+        if (sdt == null || !sdt.hasWebPath()) {
+          td.code().tx(tp.asStringValue());
+        } else {
+          td.ah(sdt.getWebPath(), tp.asStringValue()).tx(sdt.present());
+        }
+      }
+      td.tx(")");
+    }
     if (p.hasSearchType()) {
       td.br();
       td.tx("(");
