@@ -295,7 +295,6 @@ public class FhirRequestBuilder {
     OperationOutcome error = null;
     try {
       byte[] body = response.body().bytes();
-      TextFile.bytesToFile(body, "/Users/grahamegrieve/temp/http-body.txt");
       String contentType = response.header("Content-Type");
       if (body != null) {
         if (contentType.contains(ResourceFormat.RESOURCE_XML.getHeader())
