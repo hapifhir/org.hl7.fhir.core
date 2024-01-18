@@ -279,6 +279,13 @@ public class FhirRequestBuilder {
 
     if (error != null) {
       String s = ResourceUtilities.getErrorDescription(error);
+      String reqid = response.header("x-request-id");
+      if (reqid == null) {
+        reqid = response.header("X-Request-Id");        
+      }
+      if (reqid != null) {
+        s = s + " ["+reqid+"]";
+      }
       System.out.println("Error from "+source+": " + s);
       throw new EFhirClientException("Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
     }
