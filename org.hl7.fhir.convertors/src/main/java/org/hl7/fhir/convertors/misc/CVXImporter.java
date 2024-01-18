@@ -66,7 +66,7 @@ public class CVXImporter {
     Element cvxCodes = xml.getDocumentElement();
     for (Element cvsInfo : XMLUtil.getNamedChildren(cvxCodes, "CVXInfo")) {
       String desc = XMLUtil.getNamedChildText(cvsInfo, "ShortDescription").trim();
-      String name = XMLUtil.getNamedChildText(cvsInfo, "FullVaccinename").trim();
+      String fullName = XMLUtil.getNamedChildText(cvsInfo, "FullVaccinename").trim();
       String code = XMLUtil.getNamedChildText(cvsInfo, "CVXCode").trim();
       String notes = XMLUtil.getNamedChildText(cvsInfo, "Notes");
       String status = XMLUtil.getNamedChildText(cvsInfo, "Status").trim();
@@ -78,8 +78,8 @@ public class CVXImporter {
       } else {
         def.getDesignation().clear();
       }
-      def.setDisplay(name);
-      def.addDesignation().setValue(desc).setLanguage("en").setUse(new Coding().setSystem("http://snomed.info/sct").setCode("900000000000013009").setDisplay("Synonym"));
+      def.setDisplay(desc);
+      def.addDesignation().setValue(fullName).setLanguage("en").setUse(new Coding().setSystem("http://snomed.info/sct").setCode("900000000000013009").setDisplay("Synonym"));
       if (!Utilities.noString(notes)) {
         def.forceProperty("notes").setValue(new StringType(notes.trim()));
       }
