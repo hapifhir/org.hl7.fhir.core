@@ -282,7 +282,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       if (i.hasExtension(ToolingExtensions.EXT_Q_DISPLAY_CAT)) {
         CodeableConcept cc = i.getExtensionByUrl(ToolingExtensions.EXT_Q_DISPLAY_CAT).getValueCodeableConcept();
         String code = cc.getCode("http://hl7.org/fhir/questionnaire-display-category");
-        flags.addPiece(gen.new Piece(getSDCLink("StructureDefinition-sdc-questionnaire-displayCategory.html"), null, "Category: "+code).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", getImgPath("icon-qi-" + code + ".png"))));
+        flags.addPiece(gen.new Piece("https://hl7.org/fhir/R4/extension-questionnaire-displayCategory.html", null, "Category: "+code).addHtml(new XhtmlNode(NodeType.Element, "img").attribute("alt", "icon").attribute("src", getImgPath("icon-qi-" + code + ".png"))));
       }
     }    
     Cell defn = gen.new Cell();
@@ -731,7 +731,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       CodeableConcept cc = i.getExtensionByUrl(ToolingExtensions.EXT_Q_DISPLAY_CAT).getValueCodeableConcept();
       String code = cc.getCode("http://hl7.org/fhir/questionnaire-display-category");
       hasFlag = true;
-      flags.ah(getSDCLink("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-displayCategory"), "Category: "+code).img(getImgPath("icon-qi-" + code + ".png"), "icon");
+      flags.ah("https://hl7.org/fhir/R4/extension-questionnaire-displayCategory.html", "Category: "+code).img(getImgPath("icon-qi-" + code + ".png"), "icon");
     }
 
     if (i.hasMaxLength()) {
