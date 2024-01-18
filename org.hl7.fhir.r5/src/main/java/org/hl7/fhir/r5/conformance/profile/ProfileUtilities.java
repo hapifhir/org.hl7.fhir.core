@@ -3449,10 +3449,12 @@ public class ProfileUtilities extends TranslatingUtilities {
 
     @Override
     public int compare(ElementDefinitionHolder o1, ElementDefinitionHolder o2) {
-      if (o1.getBaseIndex() == 0)
+      if (o1.getBaseIndex() == 0) {
         o1.setBaseIndex(find(o1.getSelf().getPath(), true));
-      if (o2.getBaseIndex() == 0)
+      }
+      if (o2.getBaseIndex() == 0) {
         o2.setBaseIndex(find(o2.getSelf().getPath(), true));
+      }
       return o1.getBaseIndex() - o2.getBaseIndex();
     }
 
@@ -3544,11 +3546,6 @@ public class ProfileUtilities extends TranslatingUtilities {
         break;
       }
       paths.add(elt.getPath());
-    }
-    if(!hasSlicing) {
-      // if Differential does not have slicing then safe to pre-sort the list
-      // so elements and subcomponents are together
-      Collections.sort(diffList, new ElementNameCompare());
     }
 
     processElementsIntoTree(edh, i, diff.getDifferential().getElement());
