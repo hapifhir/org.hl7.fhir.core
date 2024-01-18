@@ -65,6 +65,7 @@ public class I18nConstants {
   public static final String CODESYSTEM_CS_UNK_EXPANSION = "CODESYSTEM_CS_UNK_EXPANSION";
   public static final String CODE_FOUND_IN_EXPANSION_HOWEVER_ = "Code_found_in_expansion_however_";
   public static final String CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE = "Coding_has_no_system__cannot_validate";
+  public static final String Coding_has_no_system__cannot_validate_NO_INFER = "Coding_has_no_system__cannot_validate_NO_INFER";
   public static final String CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_ = "Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_";
   public static final String Could_not_match_discriminator_for_slice_in_profile = "Could_not_match_discriminator_for_slice_in_profile";
   public static final String DEFINED_IN_THE_PROFILE = "defined_in_the_profile";
