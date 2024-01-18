@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -191,22 +193,35 @@ public class ValueSetRenderer extends TerminologyRenderer {
     generateVersionNotice(x, vs.getExpansion(), vs);
     
     if (ToolingExtensions.hasExtension(vs.getExpansion(), ToolingExtensions.EXT_EXP_TOOCOSTLY)) {
-      List<Extension> exl = vs.getExpansion().getExtensionsByUrl(ToolingExtensions.EXT_EXP_TOOCOSTLY);
-      boolean other = false;
-      for (Extension ex : exl) {
-        if (ex.getValue() instanceof BooleanType) {
-          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? getContext().getTooCostlyNoteEmpty() : getContext().getTooCostlyNoteNotEmpty());
-        } else if (!other) {
-          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? getContext().getTooCostlyNoteEmptyDependent() : getContext().getTooCostlyNoteNotEmptyDependent());
-          other = true;
-        }
+//      List<Extension> exl = vs.getExpansion().getExtensionsByUrl(ToolingExtensions.EXT_EXP_TOOCOSTLY);
+//      boolean other = false;
+//      for (Extension ex : exl) {
+//        if (ex.getValue() instanceof BooleanType) {
+//          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? getContext().getTooCostlyNoteEmpty() : getContext().getTooCostlyNoteNotEmpty());
+//        } else if (!other) {
+//          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(vs.getExpansion().getContains().isEmpty() ? getContext().getTooCostlyNoteEmptyDependent() : getContext().getTooCostlyNoteNotEmptyDependent());
+//          other = true;
+//        }
+//      }
+      String msg = null;
+      if (vs.getExpansion().getContains().isEmpty()) {
+        msg = "This value set cannot be expanded because of the way it is defined - it has an infinite number of members"; // not sure that's true?
+      } else {
+        msg = "This value set cannot be fully expanded, but a selection ("+countMembership(vs)+" codes) of the whole set of codes is shown here";
       }
+      x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(msg);
     } else {
-      Integer count = countMembership(vs);
-      if (count == null)
-        x.para().tx("This value set does not contain a fixed number of concepts");
-      else
-        x.para().tx("This value set contains "+(hasFragment ? "at least " : "")+count.toString()+" concepts");
+      int count = conceptCount(vs.getExpansion().getContains());
+      if (vs.getExpansion().hasTotal()) {
+        if (count != vs.getExpansion().getTotal()) {
+          x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px")
+            .addText("This value set has "+(hasFragment ? "at least " : "")+vs.getExpansion().getTotal()+" codes in it. In order to keep the publication size manageable, only a selection ("+count+" codes) of the whole set of codes is shown");
+        } else {
+          x.para().tx("This value set contains "+(hasFragment ? "at least " : "")+vs.getExpansion().getTotal()+" concepts");          
+        }
+      } else {
+        x.para().tx("This value set expansion contains "+count+" concepts");
+      }
     }
     
 
@@ -403,7 +418,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return null;    
   }
 
-
   private Integer countMembership(ValueSet vs) {
     int count = 0;
     if (vs.hasExpansion())
@@ -457,9 +471,11 @@ public class ValueSetRenderer extends TerminologyRenderer {
   @SuppressWarnings("rawtypes")
   private void generateVersionNotice(XhtmlNode x, ValueSetExpansionComponent expansion, Resource vs) {
     Multimap<String, String> versions = HashMultimap.create();
+    Set<String> vlist = new HashSet<>();
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
-      if (p.getName().startsWith("used-") || p.getName().equals("version")) {
+      if ((p.getName().startsWith("used-") || p.getName().equals("version")) && !vlist.contains(p.getValue().primitiveValue())) {
         String name = p.getName().equals("version") ? "system" : p.getName().substring(5);
+        vlist.add(p.getValue().primitiveValue());
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
         if (parts.length == 2 && !Utilities.noString(parts[0]))
           versions.put(name+"|"+parts[0], parts[1]);

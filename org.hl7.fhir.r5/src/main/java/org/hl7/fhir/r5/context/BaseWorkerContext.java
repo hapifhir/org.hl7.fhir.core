@@ -866,16 +866,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (noTerminologyServer) {
       return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, false);
     }
-    Map<String, String> params = new HashMap<String, String>();
-    params.put("_limit", Integer.toString(expandCodesLimit ));
-    params.put("_incomplete", "true");
+    p.addParameter("count", expandCodesLimit);
+    p.addParameter("offset", 0);
     txLog("$expand on "+txCache.summary(vs)+" on "+tc.getAddress());
     if (addDependentResources(tc, p, vs)) {
       p.addParameter().setName("cache-id").setValue(new IdType(terminologyClientManager.getCacheId()));
     }
 
     try {
-      ValueSet result = tc.getClient().expandValueset(vs, p, params);
+      ValueSet result = tc.getClient().expandValueset(vs, p, null);
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, true);
@@ -904,6 +903,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean hierarchical, boolean incompleteOk, Parameters pIn)  {
+    return expandVS(vs, cacheOk, hierarchical, incompleteOk, pIn, false);
+  }
+  
+  public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean hierarchical, boolean incompleteOk, Parameters pIn, boolean noLimits)  {
     if (pIn == null) {
       throw new Error(formatMessage(I18nConstants.NO_PARAMETERS_PROVIDED_TO_EXPANDVS));
     }
@@ -934,7 +937,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return res;
       }
     }
-    
+
+    if (!noLimits) {
+      p.addParameter("count", expandCodesLimit);
+      p.addParameter("offset", 0);
+    }
     p.setParameter("excludeNested", !hierarchical);
     if (incompleteOk) {
       p.setParameter("incomplete-ok", true);      
@@ -973,15 +980,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Set<String> systems = findRelevantSystems(vs);
     TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, true);
     addDependentResources(tc, p, vs);
-    
-    Map<String, String> params = new HashMap<String, String>();
-    params.put("_limit", Integer.toString(expandCodesLimit ));
-    params.put("_incomplete", "true");
+
     
     txLog("$expand on "+txCache.summary(vs)+" on "+tc.getAddress());
     
     try {
-      ValueSet result = tc.getClient().expandValueset(vs, p, params);
+      ValueSet result = tc.getClient().expandValueset(vs, p, null);
       if (result != null) {
         if (!result.hasUrl()) {
           result.setUrl(vs.getUrl());

@@ -35,6 +35,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.MessageFormat;
 
 /*
  * Copyright (c) 2011+, HL7, Inc
@@ -186,7 +187,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   
   private ValueSetExpansionContainsComponent addCode(WorkingContext wc, String system, String code, String display, String dispLang, ValueSetExpansionContainsComponent parent, List<ConceptDefinitionDesignationComponent> designations, Parameters expParams, 
       boolean isAbstract, boolean inactive, List<ValueSet> filters, boolean noInactive, boolean deprecated, List<ValueSetExpansionPropertyComponent> vsProp, 
-      List<ConceptPropertyComponent> csProps, CodeSystem cs, List<org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent> expProps, List<Extension> csExtList, List<Extension> vsExtList, ValueSetExpansionComponent exp) throws ETooCostly {
+      List<ConceptPropertyComponent> csProps, CodeSystem cs, List<org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent> expProps, List<Extension> csExtList, List<Extension> vsExtList, ValueSetExpansionComponent exp, boolean countToTotal) throws ETooCostly {
     opContext.deadCheck();
     
     if (filters != null && !filters.isEmpty() && !filterContainsCode(filters, system, code, exp))
@@ -323,14 +324,16 @@ public class ValueSetExpander extends ValueSetProcessBase {
     } else {
       wc.getCodes().add(n);
       wc.getMap().put(s, n);
-      wc.incTotal();
-      if (wc == dwc && wc.getTotal() > maxExpansionSize) {
-        if (wc.getOffset()+wc.getCount() > 0 && wc.getTotal() > wc.getOffset()+wc.getCount()) {
-          wc.setTotal(-1);
-          throw new EFinished();
-        }
-        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getUrl(), ">" + Integer.toString(maxExpansionSize)));
+      if (countToTotal) {
+        wc.incTotal();
       }
+//      if (wc == dwc && wc.getTotal() > maxExpansionSize) {
+//        if (wc.getOffset()+wc.getCount() > 0 && wc.getTotal() > wc.getOffset()+wc.getCount()) {
+//          wc.setTotal(-1);
+//          throw new EFinished();
+//        }
+//        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getUrl(), ">" + Integer.toString(maxExpansionSize)));
+//      }
     }
     if (wc.isCanBeHeirarchy() && parent != null) {
       parent.getContains().add(n);
@@ -443,19 +446,19 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return null;
   }
 
-  private void addCodeAndDescendents(WorkingContext wc, ValueSetExpansionContainsComponent focus, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp)  throws FHIRException, ETooCostly {
+  private void addCodeAndDescendents(WorkingContext wc, ValueSetExpansionContainsComponent focus, ValueSetExpansionContainsComponent parent, Parameters expParams, List<ValueSet> filters, boolean noInactive, List<ValueSetExpansionPropertyComponent> vsProps, ValueSet vsSrc, ValueSetExpansionComponent exp, boolean countToTotal)  throws FHIRException, ETooCostly {
     opContext.deadCheck();
     focus.checkNoModifiers("Expansion.contains", "expanding");
     ValueSetExpansionContainsComponent np = null;
     for (String code : getCodesForConcept(focus, expParams)) {
       ValueSetExpansionContainsComponent t = addCode(wc, focus.getSystem(), code, focus.getDisplay(), vsSrc.getLanguage(), parent, 
-           convert(focus.getDesignation()), expParams, focus.getAbstract(), focus.getInactive(), filters, noInactive, false, vsProps, makeCSProps(focus.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), null, focus.getProperty(), null, focus.getExtension(), exp);
+           convert(focus.getDesignation()), expParams, focus.getAbstract(), focus.getInactive(), filters, noInactive, false, vsProps, makeCSProps(focus.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), null, focus.getProperty(), null, focus.getExtension(), exp, countToTotal);
       if (np == null) {
         np = t;
       }
     }
     for (ValueSetExpansionContainsComponent c : focus.getContains())
-      addCodeAndDescendents(wc, c, np, expParams, filters, noInactive, vsProps, vsSrc, exp);
+      addCodeAndDescendents(wc, c, np, expParams, filters, noInactive, vsProps, vsSrc, exp, countToTotal);
   }
   
   private List<ConceptPropertyComponent> makeCSProps(String definition, List<ConceptPropertyComponent> list) {
@@ -506,7 +509,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     boolean dep = CodeSystemUtilities.isDeprecated(cs, def, false);
     if ((includeAbstract || !abs)  && filterFunc.includeConcept(cs, def) && passesOtherFilters(otherFilters, cs, def.getCode())) {
       for (String code : getCodesForConcept(def, expParams)) {
-        ValueSetExpansionContainsComponent t = addCode(wc, system, code, def.getDisplay(), cs.getLanguage(), parent, def.getDesignation(), expParams, abs, inc, filters, noInactive, dep, vsProps, makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), null, exp);
+        ValueSetExpansionContainsComponent t = addCode(wc, system, code, def.getDisplay(), cs.getLanguage(), parent, def.getDesignation(), expParams, abs, inc, filters, noInactive, dep, vsProps, makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), null, exp, true);
         if (np == null) {
           np = t;
         }
@@ -579,7 +582,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         if (!existsInParams(params, p.getName(), p.getValue()))
           params.add(p);
       }
-
+      
       copyImportContains(expand.getContains(), null, expParams, filters, noInactive, vsProps, vsSrc, exp);
     }
   }
@@ -707,17 +710,17 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if ("offset".equals(name) && value instanceof IntegerType) {
       focus.getExpansion().getParameter().removeIf(p -> p.getName().equals(name));
       focus.getExpansion().addParameter().setName(name).setValue(value);
-      dwc.setOffset(((IntegerType) value).getValue());
-      if (dwc.getOffset() < 0) {
-        dwc.setOffset(0);
+      dwc.setOffsetParam(((IntegerType) value).getValue());
+      if (dwc.getOffsetParam() < 0) {
+        dwc.setOffsetParam(0);
       }
     }
     if ("count".equals(name)) {
       focus.getExpansion().getParameter().removeIf(p -> p.getName().equals(name));
       focus.getExpansion().addParameter().setName(name).setValue(value);
-      dwc.setCount(((IntegerType) value).getValue());
-      if (dwc.getCount() < 0) {
-        dwc.setCount(0);
+      dwc.setCountParam(((IntegerType) value).getValue());
+      if (dwc.getCountParam() < 0) {
+        dwc.setCountParam(0);
       }
     }
   }
@@ -757,7 +760,13 @@ public class ValueSetExpander extends ValueSetProcessBase {
       // nothing - we intended to trap this here
     }
 
-    if (dwc.isCanBeHeirarchy()) {
+    if (dwc.getTotal() > maxExpansionSize && dwc.getOffsetParam() + dwc.getCountParam() == 0) {
+      if (dwc.isNoTotal()) {
+        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));        
+      } else {
+        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_COUNT, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getTotal())));
+      }
+    } else if (dwc.isCanBeHeirarchy() && (dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size()) {
       for (ValueSetExpansionContainsComponent c : dwc.getRoots()) {
         focus.getExpansion().getContains().add(c);
       }
@@ -766,11 +775,11 @@ public class ValueSetExpander extends ValueSetProcessBase {
       int cc = 0;
       for (ValueSetExpansionContainsComponent c : dwc.getCodes()) {
         if (dwc.getMap().containsKey(key(c)) && (includeAbstract || !c.getAbstract())) { // we may have added abstract codes earlier while we still thought it might be heirarchical, but later we gave up, so now ignore them
-          if (dwc.getOffset() == 0 || i >= dwc.getOffset()) {
+          if (dwc.getOffsetParam() == 0 || i >= dwc.getOffsetParam()) {
             focus.getExpansion().getContains().add(c);
             c.getContains().clear(); // make sure any heirarchy is wiped
             cc++;
-            if (cc == dwc.getCount()) {
+            if (cc == dwc.getCountParam()) {
               break;
             }
           }
@@ -779,10 +788,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
 
-    if (dwc.hasOffset()) {
-      focus.getExpansion().setOffset(dwc.getOffset());
+    if (dwc.hasOffsetParam()) {
+      focus.getExpansion().setOffset(dwc.getOffsetParam());
     }
-    if (dwc.getTotal() >= 0) {
+    if (!dwc.isNoTotal()) {
       focus.getExpansion().setTotal(dwc.getTotal());
     }
     if (!requiredSupplements.isEmpty()) {      
@@ -826,7 +835,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     // Exclude comes first because we build up a map of things to exclude
     for (ConceptSetComponent inc : compose.getExclude())
       excludeCodes(dwc, inc, expParams, exp, valueSet);
-    dwc.setCanBeHeirarchy(!expParams.getParameterBool("excludeNested") && dwc.getExcludeKeys().isEmpty() && dwc.getExcludeSystems().isEmpty() && dwc.getOffset()+dwc.getCount() == 0);
+    dwc.setCanBeHeirarchy(!expParams.getParameterBool("excludeNested") && dwc.getExcludeKeys().isEmpty() && dwc.getExcludeSystems().isEmpty() && dwc.getOffsetParam() == 0);
     includeAbstract = !expParams.getParameterBool("excludeNotForUI");
     boolean first = true;
     for (ConceptSetComponent inc : compose.getInclude()) {
@@ -878,7 +887,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (!existsInParams(exp.getParameter(), "used-valueset", u))
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-valueset").setValue(u));
     }
-    for (Extension ex : vso.getValueset().getExpansion().getExtension()) {
+    ValueSetExpansionComponent evs = vso.getValueset().getExpansion();
+    for (Extension ex : evs.getExtension()) {
       if (ex.getUrl().equals(ToolingExtensions.EXT_EXP_TOOCOSTLY)) {
         if (ex.getValue() instanceof BooleanType) {
           exp.getExtension().add(new Extension(ToolingExtensions.EXT_EXP_TOOCOSTLY).setValue(new CanonicalType(value)));
@@ -887,12 +897,17 @@ public class ValueSetExpander extends ValueSetProcessBase {
         }
       } 
     }
-    for (ValueSetExpansionParameterComponent p : vso.getValueset().getExpansion().getParameter()) {
+    if (evs.hasTotal()) {
+      dwc.incTotal(evs.getTotal());
+    } else {
+      dwc.setNoTotal(true);
+    }
+    for (ValueSetExpansionParameterComponent p : evs.getParameter()) {
       if (!existsInParams(exp.getParameter(), p.getName(), p.getValue()))
         exp.getParameter().add(p);
     }
     if (isValueSetUnionImports(valueSet)) {
-      copyExpansion(wc, vso.getValueset().getExpansion().getContains());
+      copyExpansion(wc, evs.getContains());
     }
     wc.setCanBeHeirarchy(false); // if we're importing a value set, we have to be combining, so we won't try for a heirarchy
     return vso.getValueset();
@@ -976,7 +991,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ValueSetExpansionContainsComponent c : list) {
       c.checkNoModifiers("Imported Expansion in Code System", "expanding");
       ValueSetExpansionContainsComponent np = addCode(dwc, c.getSystem(), c.getCode(), c.getDisplay(), vsSrc.getLanguage(), parent, null, expParams, c.getAbstract(), c.getInactive(), 
-          filter, noInactive, false, vsProps, makeCSProps(c.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), null, c.getProperty(), null, c.getExtension(), exp);
+          filter, noInactive, false, vsProps, makeCSProps(c.getExtensionString(ToolingExtensions.EXT_DEFINITION), null), null, c.getProperty(), null, c.getExtension(), exp, false);
       copyImportContains(c.getContains(), np, expParams, filter, noInactive, vsProps, vsSrc, exp);
     }
   }
@@ -1031,6 +1046,11 @@ public class ValueSetExpander extends ValueSetProcessBase {
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-valueset").setValue(u));
       }
     }
+    if (vs.getExpansion().hasTotal()) {
+      dwc.incTotal(vs.getExpansion().getTotal());
+    } else {
+      dwc.setNoTotal(true);
+    }
     for (ValueSetExpansionParameterComponent p : vso.getValueset().getExpansion().getParameter()) {
       if (!existsInParams(exp.getParameter(), p.getName(), p.getValue())) {
         exp.getParameter().add(p);
@@ -1044,7 +1064,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
     for (ValueSetExpansionContainsComponent cc : vs.getExpansion().getContains()) {
-      addCodeAndDescendents(dwc, cc, null, expParams, imports, noInactive, vsProps, vs, exp);
+      addCodeAndDescendents(dwc, cc, null, expParams, imports, noInactive, vsProps, vs, exp, !vs.getExpansion().hasTotal());
     }
   }
 
@@ -1109,7 +1129,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
           inactive = CodeSystemUtilities.isInactive(cs, def);
           isAbstract = CodeSystemUtilities.isNotSelectable(cs, def);
           addCode(dwc, inc.getSystem(), c.getCode(), !Utilities.noString(c.getDisplay()) ? c.getDisplay() : def.getDisplay(), c.hasDisplay() ? vsSrc.getLanguage() : cs.getLanguage(), null, mergeDesignations(def, convertDesignations(c.getDesignation())), 
-              expParams, isAbstract, inactive, imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), c.getExtension(), exp);
+              expParams, isAbstract, inactive, imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), c.getExtension(), exp, true);
         }
       }
     }
@@ -1193,7 +1213,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
                 excludeCode(wc, inc.getSystem(), code);
               } else {
                 addCode(wc, inc.getSystem(), code, def.getDisplay(), cs.getLanguage(), null, def.getDesignation(), expParams, CodeSystemUtilities.isNotSelectable(cs, def), CodeSystemUtilities.isInactive(cs, def),
-                  imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), null, exp);
+                  imports, noInactive, false, exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), null, exp, true);
               }
             }
           }
