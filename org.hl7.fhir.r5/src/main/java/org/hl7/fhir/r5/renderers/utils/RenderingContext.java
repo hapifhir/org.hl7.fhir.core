@@ -140,6 +140,32 @@ public class RenderingContext {
     JSON_NAMES
     
   }
+  
+  public enum FixedValueFormat {
+    JSON, JSON_ALL, XML, XML_ALL;
+
+    public static FixedValueFormat fromCode(String value) {
+      if (value == null) {
+        return JSON;
+      }
+      switch (value.toLowerCase()) {
+      case "json" : return JSON;
+      case "json-all" : return JSON_ALL;
+      case "xml" : return XML;
+      case "xml-all" : return XML_ALL;
+      }
+      return JSON;
+    }
+
+    public boolean notPrimitives() {
+      return this == JSON || this == XML;
+    }
+
+    public boolean isXml() {
+      return this == XML_ALL || this == XML;
+    }
+  }
+  
   private IWorkerContext worker;
   private MarkDownProcessor markdown;
   private ResourceRendererMode mode;
@@ -159,10 +185,6 @@ public class RenderingContext {
 
   private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R5);
   private boolean noSlowLookup;
-  private String tooCostlyNoteEmpty;
-  private String tooCostlyNoteNotEmpty;
-  private String tooCostlyNoteEmptyDependent;
-  private String tooCostlyNoteNotEmptyDependent;
   private List<String> codeSystemPropList = new ArrayList<>();
 
   private ProfileUtilities profileUtilitiesR;
@@ -174,6 +196,7 @@ public class RenderingContext {
   private ExampleScenarioRendererMode scenarioMode = null;
   private QuestionnaireRendererMode questionnaireMode = QuestionnaireRendererMode.FORM;
   private StructureDefinitionRendererMode structureMode = StructureDefinitionRendererMode.SUMMARY;
+  private FixedValueFormat fixedFormat = FixedValueFormat.JSON;
   
   private boolean addGeneratedNarrativeHeader = true;
   private boolean showComments = false;
@@ -230,10 +253,6 @@ public class RenderingContext {
     res.contained = contained;
     
     res.noSlowLookup = noSlowLookup;
-    res.tooCostlyNoteEmpty = tooCostlyNoteEmpty;
-    res.tooCostlyNoteNotEmpty = tooCostlyNoteNotEmpty;
-    res.tooCostlyNoteEmptyDependent = tooCostlyNoteEmptyDependent;
-    res.tooCostlyNoteNotEmptyDependent = tooCostlyNoteNotEmptyDependent;
     res.codeSystemPropList.addAll(codeSystemPropList);
 
     res.profileUtilitiesR = profileUtilitiesR;
@@ -309,43 +328,6 @@ public class RenderingContext {
 
   public ValidationOptions getTerminologyServiceOptions() {
     return terminologyServiceOptions;
-  }
-
-
-  public String getTooCostlyNoteEmpty() {
-    return tooCostlyNoteEmpty;
-  }
-
-  public RenderingContext setTooCostlyNoteEmpty(String tooCostlyNoteEmpty) {
-    this.tooCostlyNoteEmpty = tooCostlyNoteEmpty;
-    return this;
-  }
-
-  public String getTooCostlyNoteNotEmpty() {
-    return tooCostlyNoteNotEmpty;
-  }
-
-  public RenderingContext setTooCostlyNoteNotEmpty(String tooCostlyNoteNotEmpty) {
-    this.tooCostlyNoteNotEmpty = tooCostlyNoteNotEmpty;
-    return this;
-  }
-
-  public String getTooCostlyNoteEmptyDependent() {
-    return tooCostlyNoteEmptyDependent;
-  }
-
-  public RenderingContext setTooCostlyNoteEmptyDependent(String tooCostlyNoteEmptyDependent) {
-    this.tooCostlyNoteEmptyDependent = tooCostlyNoteEmptyDependent;
-    return this;
-  }
-
-  public String getTooCostlyNoteNotEmptyDependent() {
-    return tooCostlyNoteNotEmptyDependent;
-  }
-
-  public RenderingContext setTooCostlyNoteNotEmptyDependent(String tooCostlyNoteNotEmptyDependent) {
-    this.tooCostlyNoteNotEmptyDependent = tooCostlyNoteNotEmptyDependent;
-    return this;
   }
 
   public int getHeaderLevelContext() {
@@ -736,6 +718,14 @@ public class RenderingContext {
 
   public List<String> getFiles() {
     return files;
+  }
+
+  public FixedValueFormat getFixedFormat() {
+    return fixedFormat;
+  }
+
+  public void setFixedFormat(FixedValueFormat fixedFormat) {
+    this.fixedFormat = fixedFormat;
   }
 
   
