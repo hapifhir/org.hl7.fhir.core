@@ -626,6 +626,9 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
   @Override
   public String toString() {
+    if (nodeType == null) {
+      return super.toString();
+    }
     switch (nodeType) {
     case Document: 
     case Element:
