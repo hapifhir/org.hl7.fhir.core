@@ -60,6 +60,7 @@ import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
+import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
@@ -455,6 +456,30 @@ public class ValueSetUtilities extends TerminologyUtilities {
       }
     }
     return systems;
+  }
+  
+
+  private static int conceptCount(List<ValueSetExpansionContainsComponent> list) {
+    int count = 0;
+    for (ValueSetExpansionContainsComponent c : list) {
+      if (!c.getAbstract())
+        count++;
+      count = count + conceptCount(c.getContains());
+    }
+    return count;
+  }
+  
+
+  public static boolean isIncompleteExpansion(ValueSet valueSet) {
+    if (valueSet.hasExpansion()) {
+      ValueSetExpansionComponent exp = valueSet.getExpansion();
+      if (exp.hasTotal()) {
+        if (exp.getTotal() != conceptCount(exp.getContains())) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 }

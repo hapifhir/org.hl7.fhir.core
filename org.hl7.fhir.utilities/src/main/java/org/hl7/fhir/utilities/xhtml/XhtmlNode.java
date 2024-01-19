@@ -940,6 +940,20 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     addText(cnt);
     return this;
   }
+  
+  public XhtmlNode txOrCode(boolean code, String cnt) {
+    if (code) {
+      XhtmlNode c = code();
+      boolean first = true;
+      for (String line : cnt.split("\\r?\\n")) {
+        if (first) first = false; else c.br();
+        c.tx(line.replace(" ", Character.toString(0xA0)));
+      }
+    } else {
+      addText(cnt);
+    }
+    return this;
+  }
 
 
   public XhtmlNode iff(boolean test) {
