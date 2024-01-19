@@ -96,10 +96,8 @@ public class TerminologyCache {
     }
     public ValueSet getVs() {
       return vs;
-    }
-    
+    } 
   }
-
 
   public static class SourcedValueSetEntry {
     private String server;
@@ -115,10 +113,8 @@ public class TerminologyCache {
     }
     public String getFilename() {
       return filename;
-    }
-    
+    }    
   }
-
 
   public static final boolean TRANSIENT = false;
   public static final boolean PERMANENT = true;
