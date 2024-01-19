@@ -205,22 +205,27 @@ public class ValueSetRenderer extends TerminologyRenderer {
 //      }
       String msg = null;
       if (vs.getExpansion().getContains().isEmpty()) {
-        msg = "This value set cannot be expanded because of the way it is defined - it has an infinite number of members"; // not sure that's true?
+        msg = "This value set cannot be expanded because of the way it is defined - it has an infinite number of members."; // not sure that's true?
       } else {
-        msg = "This value set cannot be fully expanded, but a selection ("+countMembership(vs)+" codes) of the whole set of codes is shown here";
+        msg = "This value set cannot be fully expanded, but a selection ("+countMembership(vs)+" codes) of the whole set of codes is shown here.";
       }
       x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(msg);
     } else {
-      int count = conceptCount(vs.getExpansion().getContains());
+      int count = ValueSetUtilities.countExpansion(vs);
       if (vs.getExpansion().hasTotal()) {
         if (count != vs.getExpansion().getTotal()) {
           x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px")
-            .addText("This value set has "+(hasFragment ? "at least " : "")+vs.getExpansion().getTotal()+" codes in it. In order to keep the publication size manageable, only a selection ("+count+" codes) of the whole set of codes is shown");
+            .addText("This value set has "+(hasFragment ? "at least " : "")+vs.getExpansion().getTotal()+" codes in it. In order to keep the publication size manageable, only a selection ("+count+" codes) of the whole set of codes is shown.");
         } else {
-          x.para().tx("This value set contains "+(hasFragment ? "at least " : "")+vs.getExpansion().getTotal()+" concepts");          
+          x.para().tx("This value set contains "+(hasFragment ? "at least " : "")+vs.getExpansion().getTotal()+" concepts.");          
         }
+      } else if (count == 1000) {
+        // it's possible that there's exactly 1000 codes, in which case wht we're about to do is wrong
+        // work in progress to tighten up the terminology system to always return a total...
+        String msg = "This value set has >1000 codes in it. In order to keep the publication size manageable, only a selection (1000 codes) of the whole set of codes is shown";    
+        x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(msg);        
       } else {
-        x.para().tx("This value set expansion contains "+count+" concepts");
+        x.para().tx("This value set expansion contains "+count+" concepts.");
       }
     }
     
@@ -421,14 +426,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private Integer countMembership(ValueSet vs) {
     int count = 0;
     if (vs.hasExpansion())
-      count = count + conceptCount(vs.getExpansion().getContains());
+      count = count + ValueSetUtilities.countExpansion(vs);
     else {
       if (vs.hasCompose()) {
         if (vs.getCompose().hasExclude()) {
           try {
             ValueSetExpansionOutcome vse = getContext().getWorker().expandVS(vs, true, false);
             count = 0;
-            count += conceptCount(vse.getValueset().getExpansion().getContains());
+            count += ValueSetUtilities.countExpansion(vse.getValueset());
             return count;
           } catch (Exception e) {
             return null;
@@ -446,15 +451,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return count;
   }
 
-  private int conceptCount(List<ValueSetExpansionContainsComponent> list) {
-    int count = 0;
-    for (ValueSetExpansionContainsComponent c : list) {
-      if (!c.getAbstract())
-        count++;
-      count = count + conceptCount(c.getContains());
-    }
-    return count;
-  }
 
   private void addCSRef(XhtmlNode x, String url) {
     CodeSystem cs = getContext().getWorker().fetchCodeSystem(url);

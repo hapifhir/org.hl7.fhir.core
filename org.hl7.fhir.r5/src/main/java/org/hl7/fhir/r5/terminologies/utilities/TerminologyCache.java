@@ -128,7 +128,7 @@ public class TerminologyCache {
   private static final String CACHE_FILE_EXTENSION = ".cache";
   private static final String CAPABILITY_STATEMENT_TITLE = ".capabilityStatement";
   private static final String TERMINOLOGY_CAPABILITIES_TITLE = ".terminologyCapabilities";
-  private static final String FIXED_CACHE_VERSION = "3"; // last change: when multiple servers were introduced
+  private static final String FIXED_CACHE_VERSION = "4"; // last change: change the way tx.fhir.org handles expansions
 
 
   private SystemNameKeyGenerator systemNameKeyGenerator = new SystemNameKeyGenerator();

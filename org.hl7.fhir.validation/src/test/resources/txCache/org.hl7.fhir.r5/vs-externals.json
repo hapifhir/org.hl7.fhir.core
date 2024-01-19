@@ -2,7 +2,5 @@
   "http://somewhere/something-else" : null,
   "http://loinc.org/vs/LL715-4" : null,
   "http://hl7.org/fhir/us/vrdr/ValueSet/vrdr-PlaceOfDeath" : null,
-  "http://somewhere/something" : null,
-  "https://fhir.infoway-inforoute.ca/ValueSet/issuetype|20190415" : null,
-  "https://fhir.infoway-inforoute.ca/ValueSet/issueseverity|20190415" : null
+  "http://somewhere/something" : null
 }

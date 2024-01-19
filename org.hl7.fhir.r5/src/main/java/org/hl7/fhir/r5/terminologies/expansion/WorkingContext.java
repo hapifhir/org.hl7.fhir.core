@@ -14,6 +14,7 @@ class WorkingContext {
   private List<ValueSetExpansionContainsComponent> codes = new ArrayList<ValueSet.ValueSetExpansionContainsComponent>();
   private List<ValueSetExpansionContainsComponent> roots = new ArrayList<ValueSet.ValueSetExpansionContainsComponent>();
   private Map<String, ValueSetExpansionContainsComponent> map = new HashMap<String, ValueSet.ValueSetExpansionContainsComponent>();
+  private Map<String, ValueSetExpansionContainsComponent> rootMap = new HashMap<String, ValueSet.ValueSetExpansionContainsComponent>();
   private Set<String> excludeKeys = new HashSet<String>();
   private Set<String> excludeSystems = new HashSet<String>();
   
@@ -33,6 +34,10 @@ class WorkingContext {
 
   public Map<String, ValueSetExpansionContainsComponent> getMap() {
     return map;
+  }
+
+  public Map<String, ValueSetExpansionContainsComponent> getRootMap() {
+    return rootMap;
   }
 
   public Set<String> getExcludeKeys() {
