@@ -337,7 +337,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     if (wc.isCanBeHeirarchy() && parent != null) {
       parent.getContains().add(n);
-    } else {
+    } else if (!wc.getRootMap().containsKey(s)) {
+      wc.getRootMap().put(s, n);
       wc.getRoots().add(n);
     }
     return n;
@@ -766,7 +767,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       } else {
         throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_COUNT, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getTotal())));
       }
-    } else if (dwc.isCanBeHeirarchy() && (dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size()) {
+    } else if (dwc.isCanBeHeirarchy() && ((dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size())) {
       for (ValueSetExpansionContainsComponent c : dwc.getRoots()) {
         focus.getExpansion().getContains().add(c);
       }
@@ -774,10 +775,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
       int i = 0;
       int cc = 0;
       for (ValueSetExpansionContainsComponent c : dwc.getCodes()) {
+        c.getContains().clear(); // make sure any heirarchy is wiped
         if (dwc.getMap().containsKey(key(c)) && (includeAbstract || !c.getAbstract())) { // we may have added abstract codes earlier while we still thought it might be heirarchical, but later we gave up, so now ignore them
           if (dwc.getOffsetParam() == 0 || i >= dwc.getOffsetParam()) {
             focus.getExpansion().getContains().add(c);
-            c.getContains().clear(); // make sure any heirarchy is wiped
             cc++;
             if (cc == dwc.getCountParam()) {
               break;
