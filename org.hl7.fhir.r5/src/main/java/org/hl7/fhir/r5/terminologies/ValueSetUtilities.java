@@ -434,6 +434,14 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return i;
   }
 
+  public static int countExpansion(List<ValueSetExpansionContainsComponent> list) {
+    int i = list.size();
+    for (ValueSetExpansionContainsComponent t : list) {
+      i = i + countExpansion(t);
+    }
+    return i;
+  }
+
   private static int countExpansion(ValueSetExpansionContainsComponent c) {
     int i = c.getContains().size();
     for (ValueSetExpansionContainsComponent t : c.getContains()) {
@@ -459,22 +467,11 @@ public class ValueSetUtilities extends TerminologyUtilities {
   }
   
 
-  private static int conceptCount(List<ValueSetExpansionContainsComponent> list) {
-    int count = 0;
-    for (ValueSetExpansionContainsComponent c : list) {
-      if (!c.getAbstract())
-        count++;
-      count = count + conceptCount(c.getContains());
-    }
-    return count;
-  }
-  
-
   public static boolean isIncompleteExpansion(ValueSet valueSet) {
     if (valueSet.hasExpansion()) {
       ValueSetExpansionComponent exp = valueSet.getExpansion();
       if (exp.hasTotal()) {
-        if (exp.getTotal() != conceptCount(exp.getContains())) {
+        if (exp.getTotal() != countExpansion(exp.getContains())) {
           return true;
         }
       }
