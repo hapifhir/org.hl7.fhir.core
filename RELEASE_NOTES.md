@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Fix for handling large expansions correctly
