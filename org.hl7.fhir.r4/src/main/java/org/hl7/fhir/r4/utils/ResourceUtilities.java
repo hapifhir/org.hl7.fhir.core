@@ -76,15 +76,19 @@ public class ResourceUtilities {
       return new XhtmlComposer(XhtmlComposer.XML).composePlainText(error.getText().getDiv());
 
     StringBuilder b = new StringBuilder();
-    for (OperationOutcomeIssueComponent t : error.getIssue())
+    boolean first = true;
+    for (OperationOutcomeIssueComponent t : error.getIssue()) {
+      if (first) first = false; else b.append("\r\n");
+      String txt = t.hasDiagnostics() ? t.getDiagnostics() : gen(t.getDetails());
       if (t.getSeverity() == IssueSeverity.ERROR)
-        b.append("Error:" + gen(t.getDetails()) + "\r\n");
+        b.append("Error:" + txt);
       else if (t.getSeverity() == IssueSeverity.FATAL)
-        b.append("Fatal:" + gen(t.getDetails()) + "\r\n");
+        b.append("Fatal:" + txt);
       else if (t.getSeverity() == IssueSeverity.WARNING)
-        b.append("Warning:" + gen(t.getDetails()) + "\r\n");
+        b.append("Warning:" + txt);
       else if (t.getSeverity() == IssueSeverity.INFORMATION)
-        b.append("Information:" + gen(t.getDetails()) + "\r\n");
+        b.append("Information:" + txt);
+    }
     return b.toString();
   }
 

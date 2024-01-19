@@ -164,7 +164,7 @@ public class TerminologyServiceTests {
     if (lang != null && !p.hasParameter("displayLanguage")) {
       p.addParameter("displayLanguage", new CodeType(lang));
     }
-    ValueSetExpansionOutcome vse = engine.getContext().expandVS(vs, false, hierarchical, false, p);
+    ValueSetExpansionOutcome vse = engine.getContext().expandVS(vs, false, hierarchical, false, p, true);
     if (resp.contains("\"ValueSet\"")) {
       if (vse.getValueset() == null) {
         Assertions.fail(vse.getError());

@@ -147,7 +147,7 @@ public class VocabTests {
   }
 
   private void testExpansion(TestDetails test, ValueSet sourceVS, ValueSet targetVS) throws Exception {
-    ValueSetExpansionOutcome outcome = context.expandVS(sourceVS, false, test.getParameters().containsKey("hierarchical"));  
+    ValueSetExpansionOutcome outcome = context.expandVS(sourceVS, false, test.getParameters().containsKey("hierarchical"), true);  
     if (outcome.isOk()) {
       outcome.getValueset().getExpansion().setIdentifier(null);
       outcome.getValueset().getExpansion().setTimestamp(null);
