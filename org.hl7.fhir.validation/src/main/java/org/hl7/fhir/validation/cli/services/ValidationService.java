@@ -74,10 +74,26 @@ public class ValidationService {
   private final SessionCache sessionCache;
   private String runDate;
 
+  private Map<String, ValidationEngine> baseEngines = new HashMap<>();
+
+  public void putBaseEngine(String key, CliContext cliContext) throws IOException, URISyntaxException {
+    //FIXME instantiate engine and put below
+    String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
+
+    ValidationEngine baseEngine = buildValidationEngine(cliContext, definitions, new TimeTracker());
+    baseEngines.put(key, baseEngine);
+  }
+
+  public ValidationEngine getBaseEngine(String key) {
+    return baseEngines.get(key);
+  }
+
   public ValidationService() {
     sessionCache = new PassiveExpiringSessionCache();
     runDate = new SimpleDateFormat("hh:mm:ss", new Locale("en", "US")).format(new Date());
   }
+
+
 
   public ValidationService(SessionCache cache) {
     this.sessionCache = cache;
@@ -443,7 +459,15 @@ public class ValidationService {
       if (sessionId != null) {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
-      ValidationEngine validator = buildValidationEngine(cliContext, definitions, tt);
+      ValidationEngine validator;
+      if (cliContext.isCheckIPSCodes()) {
+        System.out.println("Getting base engine: IPS");
+         validator = new ValidationEngine(baseEngines.get("ips"));
+      } else {
+        System.out.println("Building new validator engine.");
+        validator  = buildValidationEngine(cliContext, definitions, tt);
+      }
+
       sessionId = sessionCache.cacheSession(validator);
     } else {
       System.out.println("Cached session exists for session id " + sessionId + ", returning stored validator session id.");
