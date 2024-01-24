@@ -236,13 +236,16 @@ public class XhtmlComposer {
     if (!pretty || noPrettyOverride)
       indent = "";
 
-    // html self closing tags: http://xahlee.info/js/html5_non-closing_tag.html 
-    boolean concise = node.getChildNodes().size() == 0;
-    if (node.hasEmptyExpanded() && node.getEmptyExpanded()) {
-      concise = false;
-    }
-    if (!xml && Utilities.existsInList(node.getName(), "area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "menuitem", "meta", "param", "source", "track", "wbr")) {
-      concise = true;
+    boolean concise = false;
+    if (!node.hasChildren()) {
+      if (this.xml) {
+        // All elements can self-close in XML
+        concise = true;
+      } else if (Utilities.existsInList(node.getName(), "area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "menuitem", "meta", "param", "source", "track", "wbr")) {
+        // In HTML5, only these elements can self-close
+        // https://developer.mozilla.org/en-US/docs/Glossary/Void_element
+        concise = true;
+      }
     }
 
     if (concise)

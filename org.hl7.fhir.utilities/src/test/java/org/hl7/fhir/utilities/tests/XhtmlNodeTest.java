@@ -146,8 +146,8 @@ public class XhtmlNodeTest {
     XhtmlNode x = new XhtmlParser().parse(src, "xml");
    
     
-    String xml = new XhtmlComposer(false, false).compose(x);
-    Assertions.assertEquals(src.trim(), xml.trim());
+    String xml = new XhtmlComposer(true, false).compose(x);
+    Assertions.assertEquals("<xml xmlns=\"http://something\"><empty attr=\"1\"/><empty attr=\"2\"/></xml>", xml.trim());
   }
 
   @Test
