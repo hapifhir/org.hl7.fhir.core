@@ -259,7 +259,8 @@ public class AdditionalBindingsRenderer {
       if (binding.compare!=null && binding.valueSet.equals(binding.compare.valueSet))
         valueset.style(STYLE_UNCHANGED);
       if (br.url != null) {
-        XhtmlNode a = valueset.ah(determineUrl(br.url), br.uri).tx(br.display);
+        XhtmlNode a = valueset.ah(determineUrl(br.url), br.uri);
+        a.tx(br.display);
         if (br.external) {
           a.tx(" ");
           a.img("external.png", null);
