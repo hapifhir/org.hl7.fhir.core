@@ -482,9 +482,13 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     recordUse();
     Parameters p = expParams == null ? new Parameters() : expParams.copy();
     p.addParameter().setName("valueSet").setResource(source);
-    for (String n : params.keySet()) {
-      p.addParameter().setName(n).setValue(new StringType(params.get(n)));
+    if (params == null) {
+      params = new HashMap<>();
     }
+      for (String n : params.keySet()) {
+        p.addParameter().setName(n).setValue(new StringType(params.get(n)));
+      }
+
     org.hl7.fhir.dstu3.utils.client.network.ResourceRequest<Resource> result = null;
     try {
 
