@@ -23,6 +23,7 @@ import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r4.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r4.model.Parameters;
+import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
@@ -122,7 +123,9 @@ public class VSACImporter extends OIDBasedValueSetImporter {
       }
       t = System.currentTimeMillis();
       try {
-        ValueSet vse = fhirToolingClient.expandValueset(vs.getUrl(), null);
+        Parameters p = new Parameters();
+        p.addParameter("url", new UriType(vs.getUrl()));
+        ValueSet vse = fhirToolingClient.expandValueset(vs, p);
         vs.setExpansion(vse.getExpansion());
       } catch (Exception e) {
         errs.put(oid, "Expansion: " +e.getMessage());
@@ -132,9 +135,10 @@ public class VSACImporter extends OIDBasedValueSetImporter {
         Parameters p = new Parameters();
         int offset = vs.getExpansion().getParameter("offset").getValueIntegerType().getValue() + vs.getExpansion().getParameter("count").getValueIntegerType().getValue();
         p.addParameter("offset", offset);
+        p.addParameter("url", new UriType(vs.getUrl()));
         t = System.currentTimeMillis();
         try {
-          ValueSet vse = fhirToolingClient.expandValueset(vs.getUrl(), p);    
+          ValueSet vse = fhirToolingClient.expandValueset(vs, p);    
           vs.getExpansion().getContains().addAll(vse.getExpansion().getContains());
           vs.getExpansion().setParameter(vse.getExpansion().getParameter());
         } catch (Exception e2) {

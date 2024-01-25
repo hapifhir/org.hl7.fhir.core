@@ -60,6 +60,7 @@ import org.hl7.fhir.dstu3.model.Coding;
 import org.hl7.fhir.dstu3.model.ConceptMap;
 import org.hl7.fhir.dstu3.model.DataElement;
 import org.hl7.fhir.dstu3.model.ExpansionProfile;
+import org.hl7.fhir.dstu3.model.IntegerType;
 import org.hl7.fhir.dstu3.model.OperationDefinition;
 import org.hl7.fhir.dstu3.model.OperationOutcome;
 import org.hl7.fhir.dstu3.model.Parameters;
@@ -448,11 +449,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     try {
-      Map<String, String> params = new HashMap<String, String>();
-      params.put("_limit", Integer.toString(expandCodesLimit));
-      params.put("_incomplete", "true");
+      Parameters params = new Parameters();
+      params.addParameter().setName("profile").setResource(expProfile.setIncludeDefinition(false));
+      params.addParameter().setName("_limit").setValue(new IntegerType(expandCodesLimit));
+      params.addParameter().setName("_incomplete").setValue(new BooleanType("true"));
       tlog("Terminology Server: $expand on " + getVSSummary(vs));
-      ValueSet result = txServer.expandValueset(vs, expProfile.setIncludeDefinition(false), params);
+      ValueSet result = txServer.expandValueset(vs, params);
       return new ValueSetExpansionOutcome(result);
     } catch (Exception e) {
       return new ValueSetExpansionOutcome(
