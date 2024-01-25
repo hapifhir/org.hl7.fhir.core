@@ -88,6 +88,8 @@ public class ValidationService {
     return baseEngines.get(key);
   }
 
+  public boolean hasBaseEngineForKey(String key) { return baseEngines.containsKey(key); }
+
   public ValidationService() {
     sessionCache = new PassiveExpiringSessionCache();
     runDate = new SimpleDateFormat("hh:mm:ss", new Locale("en", "US")).format(new Date());
@@ -460,9 +462,9 @@ public class ValidationService {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
       ValidationEngine validator;
-      if (cliContext.isCheckIPSCodes()) {
+      if (hasBaseEngineForKey(cliContext.getBaseEngine())) {
         System.out.println("Getting base engine: IPS");
-         validator = new ValidationEngine(baseEngines.get("ips"));
+         validator = new ValidationEngine(getBaseEngine(cliContext.getBaseEngine()));
       } else {
         System.out.println("Building new validator engine.");
         validator  = buildValidationEngine(cliContext, definitions, tt);
