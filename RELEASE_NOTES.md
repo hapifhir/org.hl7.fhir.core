@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* Fix text creation on wrong xhtml node type
+* no changes
