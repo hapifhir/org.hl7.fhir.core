@@ -24,6 +24,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CliContext {
 
+  @JsonProperty("baseEngine")
+  private String baseEngine = null;
   @JsonProperty("doNative")
   private boolean doNative = false;
   @JsonProperty("hintAboutNonMustSupport")
@@ -156,7 +158,17 @@ public class CliContext {
   
   @JsonProperty("bestPracticeLevel")
   private BestPracticeWarningLevel bestPracticeLevel = BestPracticeWarningLevel.Warning;
-  
+
+  @JsonProperty("baseEngine")
+  public String getBaseEngine() {
+    return baseEngine;
+  }
+
+  @JsonProperty("baseEngine")
+  public CliContext setBaseEngine(String baseEngine) {
+    this.baseEngine = baseEngine;
+    return this;
+  }
 
   @JsonProperty("map")
   public String getMap() {
@@ -745,7 +757,8 @@ public class CliContext {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     CliContext that = (CliContext) o;
-    return doNative == that.doNative &&
+    return Objects.equals(baseEngine, that.baseEngine) &&
+      doNative == that.doNative &&
       hintAboutNonMustSupport == that.hintAboutNonMustSupport &&
       recursive == that.recursive &&
       doDebug == that.doDebug &&
@@ -798,7 +811,7 @@ public class CliContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
+    return Objects.hash(baseEngine, doNative, extensions, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching,
             noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
             targetVer, igs, questionnaireMode, level, profiles, sources, inputs, mode, locale, locations, crumbTrails, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars, watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel,
             htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
@@ -807,7 +820,8 @@ public class CliContext {
   @Override
   public String toString() {
     return "CliContext{" +
-      "doNative=" + doNative +
+      " baseEngine=" + baseEngine +
+      ", doNative=" + doNative +
       ", extensions=" + extensions +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
       ", recursive=" + recursive +
