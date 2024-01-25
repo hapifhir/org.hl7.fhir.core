@@ -470,7 +470,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return result == null ? null : (ValueSet) result.getPayload();
   }
 
-
   public Parameters lookupCode(Map<String, String> params) {
     recordUse();
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
@@ -487,36 +486,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
     }
     return (Parameters) result.getPayload();
-  }
-
-  public ValueSet expandValueset(ValueSet source, Parameters expParams, Map<String, String> params) {
-    recordUse();
-    Parameters p = expParams == null ? new Parameters() : expParams.copy();
-    if (source != null) {
-      p.addParameter().setName("valueSet").setResource(source);
-    }
-    if (params == null) {
-      params = new HashMap<>();
-    }
-    for (String n : params.keySet()) {
-      p.addParameter().setName(n).setValue(new StringType(params.get(n)));
-    }
-    org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
-    try {
-
-      result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand", params),
-        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())),
-        withVer(getPreferredResourceFormat(), "4.0"),
-        generateHeaders(),
-        source == null ? "ValueSet/$expand" : "ValueSet/$expand?url=" + source.getUrl(),
-        timeoutExpand);
-      if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return result == null ? null : (ValueSet) result.getPayload();
   }
 
   public String getAddress() {

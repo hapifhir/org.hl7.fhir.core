@@ -48,6 +48,7 @@ import org.hl7.fhir.dstu2.model.Coding;
 import org.hl7.fhir.dstu2.model.ConceptMap;
 import org.hl7.fhir.dstu2.model.Conformance;
 import org.hl7.fhir.dstu2.model.Extension;
+import org.hl7.fhir.dstu2.model.IntegerType;
 import org.hl7.fhir.dstu2.model.Parameters;
 import org.hl7.fhir.dstu2.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.dstu2.model.Reference;
@@ -115,11 +116,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk) {
     try {
-      Map<String, String> params = new HashMap<String, String>();
-      params.put("_limit", "10000");
-      params.put("_incomplete", "true");
-      params.put("profile", "http://www.healthintersections.com.au/fhir/expansion/no-details");
-      ValueSet result = txServer.expandValueset(vs, null, params);
+      Parameters params = new Parameters();
+      params.addParameter().setName("_limit").setValue(new IntegerType("10000"));
+      params.addParameter().setName("_incomplete").setValue(new BooleanType("true"));
+      params.addParameter().setName("profile").setValue(new UriType("http://www.healthintersections.com.au/fhir/expansion/no-details"));
+      ValueSet result = txServer.expandValueset(vs, params);
       return new ValueSetExpansionOutcome(result);
     } catch (Exception e) {
       return new ValueSetExpansionOutcome("Error expanding ValueSet \"" + vs.getUrl() + ": " + e.getMessage());

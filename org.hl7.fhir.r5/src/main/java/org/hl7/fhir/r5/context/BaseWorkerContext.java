@@ -874,7 +874,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     try {
-      ValueSet result = tc.getClient().expandValueset(vs, p, null);
+      ValueSet result = tc.getClient().expandValueset(vs, p);
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, true);
@@ -985,7 +985,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     txLog("$expand on "+txCache.summary(vs)+" on "+tc.getAddress());
     
     try {
-      ValueSet result = tc.getClient().expandValueset(vs, p, null);
+      ValueSet result = tc.getClient().expandValueset(vs, p);
       if (result != null) {
         if (!result.hasUrl()) {
           result.setUrl(vs.getUrl());

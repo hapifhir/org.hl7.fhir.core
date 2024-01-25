@@ -78,14 +78,11 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
 
   @Override
-  public ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException {
+  public ValueSet expandValueset(ValueSet vs, Parameters p) throws FHIRException {
     org.hl7.fhir.r4.model.ValueSet vs2 = vs == null ? null : (org.hl7.fhir.r4.model.ValueSet) VersionConvertorFactory_40_50.convertResource(vs);
     org.hl7.fhir.r4.model.Parameters p2 = p == null ? null :  (org.hl7.fhir.r4.model.Parameters) VersionConvertorFactory_40_50.convertResource(p);
-    if (params == null) {
-      params = new HashMap<>();
-    }
     try {
-      vs2 = client.expandValueset(vs2, p2, params); // todo: second parameter
+      vs2 = client.expandValueset(vs2, p2); // todo: second parameter
       return (ValueSet) VersionConvertorFactory_40_50.convertResource(vs2);
     } catch (org.hl7.fhir.r4.utils.client.EFhirClientException e) {
       if (e.getServerErrors().size() > 0) {
