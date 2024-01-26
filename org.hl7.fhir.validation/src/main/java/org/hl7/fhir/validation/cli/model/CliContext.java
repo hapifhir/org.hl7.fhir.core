@@ -336,8 +336,9 @@ public class CliContext {
   }
 
   @JsonProperty("disableDefaultResourceFetcher")
-  public void setDisableDefaultResourceFetcher(boolean disableDefaultResourceFetcher) {
+  public CliContext setDisableDefaultResourceFetcher(boolean disableDefaultResourceFetcher) {
     this.disableDefaultResourceFetcher = disableDefaultResourceFetcher;
+    return this;
   }
 
   @JsonProperty("checkIPSCodes")
