@@ -78,6 +78,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Identifier;
+import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.Measure;
@@ -101,9 +102,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent;
+
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -129,7 +128,6 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5.TerminologyClientR5Factory;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.utils.PackageHackerR5;
@@ -138,7 +136,6 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.TranslationServices;
@@ -874,7 +871,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     try {
-      ValueSet result = tc.getClient().expandValueset(vs, p, null);
+      ValueSet result = tc.getClient().expandValueset(vs, p);
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, true);
@@ -915,7 +912,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     
     Parameters p = pIn.copy();
-
+    p.setParameter("_limit",new IntegerType("10000"));
+    p.setParameter("_incomplete", new BooleanType("true"));
     if (vs.hasExpansion()) {
       return new ValueSetExpansionOutcome(vs.copy());
     }
@@ -985,7 +983,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     txLog("$expand on "+txCache.summary(vs)+" on "+tc.getAddress());
     
     try {
-      ValueSet result = tc.getClient().expandValueset(vs, p, null);
+      ValueSet result = tc.getClient().expandValueset(vs, p);
       if (result != null) {
         if (!result.hasUrl()) {
           result.setUrl(vs.getUrl());
