@@ -724,26 +724,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return feed;
   }
 
-  public ValueSet expandValueset(ValueSet source) {
-    recordUse();
-    List<Header> headers = null;
-    ResourceRequest<Resource> result = utils.issuePostRequest(
-        resourceAddress.resolveOperationUri(ValueSet.class, "expand"),
-        utils.getResourceAsByteArray(source, false, isJson(getPreferredResourceFormat())), withVer(getPreferredResourceFormat(), "1.0"),
-        headers, timeoutLong);
-    result.addErrorStatus(410);// gone
-    result.addErrorStatus(404);// unknown
-    result.addErrorStatus(405);
-    result.addErrorStatus(422);// Unprocessable Entity
-    result.addSuccessStatus(200);
-    result.addSuccessStatus(201);
-    if (result.isUnsuccessfulRequest()) {
-      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
-          (OperationOutcome) result.getPayload());
-    }
-    return (ValueSet) result.getPayload();
-  }
-
   public Parameters lookupCode(Map<String, String> params) {
     recordUse();
     ResourceRequest<Resource> result = utils.issueGetResourceRequest(
@@ -762,15 +742,13 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return (Parameters) result.getPayload();
   }
 
-  public ValueSet expandValueset(ValueSet source, Parameters expParams, Map<String, String> params) {
+  public ValueSet expandValueset(ValueSet source, Parameters expParams) {
     recordUse();
     List<Header> headers = null;
     Parameters p = expParams == null ? new Parameters() : expParams.copy();
     p.addParameter().setName("valueSet").setResource(source);
-    for (String n : params.keySet())
-      p.addParameter().setName(n).setValue(new StringType(params.get(n)));
     ResourceRequest<Resource> result = utils.issuePostRequest(
-        resourceAddress.resolveOperationUri(ValueSet.class, "expand", params),
+        resourceAddress.resolveOperationUri(ValueSet.class, "expand"),
         utils.getResourceAsByteArray(p, false, isJson(getPreferredResourceFormat())), withVer(getPreferredResourceFormat(), "1.0"),
         headers, 4);
     result.addErrorStatus(410); // gone
@@ -785,22 +763,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     }
     return (ValueSet) result.getPayload();
   }
-
-//  public ValueSet expandValueset(ValueSet source, ExpansionProfile profile, Map<String, String> params) {
-//    List<Header> headers = null;
-//    ResourceRequest<Resource> result = utils.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand", params), 
-//        utils.getResourceAsByteArray(source, false, isJson(getPreferredResourceFormat())), withVer(getPreferredResourceFormat(), "1.0"), headers, proxy);
-//    result.addErrorStatus(410);//gone
-//    result.addErrorStatus(404);//unknown
-//    result.addErrorStatus(405);
-//    result.addErrorStatus(422);//Unprocessable Entity
-//    result.addSuccessStatus(200);
-//    result.addSuccessStatus(201);
-//    if(result.isUnsuccessfulRequest()) {
-//      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome)result.getPayload());
-//    }
-//    return (ValueSet) result.getPayload();
-//  }
 
   public String getAddress() {
     return base;

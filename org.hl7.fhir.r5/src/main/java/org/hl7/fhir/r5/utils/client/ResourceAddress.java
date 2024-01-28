@@ -101,7 +101,7 @@ public class ResourceAddress {
 	}
 	
   public <T extends Resource> URI resolveOperationUri(Class<T> resourceClass, String opName) {
-    return baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"/"+opName);
+    return baseServiceUri.resolve(nameForClassWithSlash(resourceClass) +"$"+opName);
   }
   
   public <T extends Resource> URI resolveOperationUri(Class<T> resourceClass, String opName, Map<String,String> parameters) {

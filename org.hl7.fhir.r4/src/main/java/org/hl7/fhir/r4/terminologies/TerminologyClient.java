@@ -43,7 +43,7 @@ public interface TerminologyClient {
 
   public TerminologyCapabilities getTerminologyCapabilities() throws FHIRException;
 
-  public ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException;
+  public ValueSet expandValueset(ValueSet vs, Parameters p) throws FHIRException;
 
   public Parameters validateCS(Parameters pin) throws FHIRException;
 

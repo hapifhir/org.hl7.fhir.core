@@ -414,6 +414,25 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return feed;
   }
 
+  public Parameters lookupCode(Map<String, String> params) {
+    recordUse();
+    org.hl7.fhir.dstu3.utils.client.network.ResourceRequest<Resource> result = null;
+    try {
+      result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup", params),
+        withVer(getPreferredResourceFormat(), "3.0"),
+        generateHeaders(),
+        "CodeSystem/$lookup",
+        timeoutNormal);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+    }
+    return (Parameters) result.getPayload();
+  }
+  
+
   public ValueSet expandValueset(ValueSet source, Parameters expParams) {
     recordUse();
     Parameters p = expParams == null ? new Parameters() : expParams.copy();
@@ -434,75 +453,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     }
     return result == null ? null : (ValueSet) result.getPayload();
   }
-
-
-  public Parameters lookupCode(Map<String, String> params) {
-    recordUse();
-    org.hl7.fhir.dstu3.utils.client.network.ResourceRequest<Resource> result = null;
-    try {
-      result = client.issueGetResourceRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup", params),
-        withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
-        "CodeSystem/$lookup",
-        timeoutNormal);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    if (result.isUnsuccessfulRequest()) {
-      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
-    }
-    return (Parameters) result.getPayload();
-  }
-
-  public ValueSet expandValueset(ValueSet source, ExpansionProfile profile, Map<String, String> params) {
-    recordUse();
-    Parameters p = new Parameters();
-    p.addParameter().setName("valueSet").setResource(source);
-    if (profile != null)
-      p.addParameter().setName("profile").setResource(profile);
-
-    org.hl7.fhir.dstu3.utils.client.network.ResourceRequest<Resource> result = null;
-    try {
-      result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand", params),
-        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())),
-        withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
-        "ValueSet/$expand?url=" + source.getUrl(),
-        timeoutExpand);
-      if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return result == null ? null : (ValueSet) result.getPayload();
-  }
-
-  public ValueSet expandValueset(ValueSet source, Parameters expParams, Map<String, String> params) {
-    recordUse();
-    Parameters p = expParams == null ? new Parameters() : expParams.copy();
-    p.addParameter().setName("valueSet").setResource(source);
-    for (String n : params.keySet()) {
-      p.addParameter().setName(n).setValue(new StringType(params.get(n)));
-    }
-    org.hl7.fhir.dstu3.utils.client.network.ResourceRequest<Resource> result = null;
-    try {
-
-      result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand", params),
-        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())),
-        withVer(getPreferredResourceFormat(), "3.0"),
-        generateHeaders(),
-        "ValueSet/$expand?url=" + source.getUrl(),
-        timeoutExpand);
-      if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return result == null ? null : (ValueSet) result.getPayload();
-  }
-
+  
   public String getAddress() {
     return base;
   }
