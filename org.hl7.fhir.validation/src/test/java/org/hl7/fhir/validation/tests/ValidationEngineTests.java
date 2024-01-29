@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class ValidationEngineTests {
@@ -25,6 +27,88 @@ public class ValidationEngineTests {
   //private static final String DEF_TX = FhirSettings.getTxFhirLocal();
 
   public static boolean inbuild;
+
+  @Test
+  @DisplayName("A ValidationEngine copied from another validation engine shouldn't interfere with the original during validations")
+  void validateWithParallelCopiedEngine() throws Exception {
+
+    final String INPUT_1 = "patient-duplicate.json";
+    final String INPUT_2 = "patient-lang1.json";
+    final String INPUT_3 = "patient-id-bad-1.json";
+
+    final String[] ISSUE_CODES_1 = { "invalid" };
+    final String[] ISSUE_CODES_2 = {"business-rule"};
+    final String[] ISSUE_CODES_3 = {"invalid", "invariant"};
+
+    ValidationEngine originalEngine = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
+
+    final ValidationEngine[] validationEngines = new ValidationEngine[10];
+    validationEngines[0] = originalEngine;
+
+    final OperationOutcome[] outcomes = new OperationOutcome[validationEngines.length];
+
+    for (int i = 1; i < validationEngines.length; i++) {
+      validationEngines[i] = new ValidationEngine(originalEngine);
+    }
+
+    final String[] testInputs = {
+      INPUT_1,
+      INPUT_1,
+      INPUT_2,
+      INPUT_3,
+      INPUT_1,
+      INPUT_2,
+      INPUT_3,
+      INPUT_1,
+      INPUT_2,
+      INPUT_3
+    };
+    // Pick 3 validation cases
+    final String[][] testCodes = {
+      ISSUE_CODES_1,
+      ISSUE_CODES_1,
+      ISSUE_CODES_2,
+      ISSUE_CODES_3,
+      ISSUE_CODES_1,
+      ISSUE_CODES_2,
+      ISSUE_CODES_3,
+      ISSUE_CODES_1,
+      ISSUE_CODES_2,
+      ISSUE_CODES_3
+    };
+
+
+    List<Thread> threads = new ArrayList<>();
+    for (int i = 0; i < validationEngines.length; i++) {
+      final int index = i;
+    Thread t = new Thread(() -> {
+      try {
+        final String testInput = testInputs[index];
+         outcomes[index] = validationEngines[index].validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator",  testInput), null);
+      } catch (Exception e) {
+        e.printStackTrace();
+        System.err.println("Thread " + index + " failed");
+      }
+    });
+    t.start();
+    threads.add(t);
+  }
+    threads.forEach(t -> {
+    try {
+      t.join();
+    } catch (InterruptedException e) {
+
+    }
+  });
+
+    for (int i = 0; i < outcomes.length; i++) {
+      assertEquals(testCodes[i].length, outcomes[i].getIssue().size());
+      for (int j = 0; j < outcomes[i].getIssue().size(); j++) {
+        System.out.print(i + " " + j);
+        assertEquals(testCodes[i][j], outcomes[i].getIssue().get(j).getCode().toCode());
+      }
+    }
+  }
 
   @Test
   public void test401Xml() throws Exception {
@@ -43,9 +127,9 @@ public class ValidationEngineTests {
         System.out.println("    " + iss.getDetails().getText());
       }
     }
-    Assertions.assertEquals(0, e);
-    Assertions.assertEquals(0, w);
-    Assertions.assertEquals(1, h);
+    assertEquals(0, e);
+    assertEquals(0, w);
+    assertEquals(1, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
   }
 
@@ -60,9 +144,9 @@ public class ValidationEngineTests {
     int e = errors(op);
     int w = warnings(op);
     int h = hints(op);
-    Assertions.assertEquals(0, e);
-    Assertions.assertEquals(0, w);
-    Assertions.assertEquals(1, h);
+    assertEquals(0, e);
+    assertEquals(0, w);
+    assertEquals(1, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
@@ -85,9 +169,9 @@ public class ValidationEngineTests {
         System.out.println("    " + iss.getDetails().getText());
       }
     }
-    Assertions.assertEquals(0, e);
-    Assertions.assertEquals(0, w);
-    Assertions.assertEquals(1, h);
+    assertEquals(0, e);
+    assertEquals(0, w);
+    assertEquals(1, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
   }
 
@@ -108,9 +192,9 @@ public class ValidationEngineTests {
         System.out.println("    " + iss.getDetails().getText());
       }
     }
-    Assertions.assertEquals(0, e);
-    Assertions.assertEquals(0, w);
-    Assertions.assertEquals(1, h);
+    assertEquals(0, e);
+    assertEquals(0, w);
+    assertEquals(1, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
@@ -135,9 +219,9 @@ public class ValidationEngineTests {
     int e = errors(op);
     int w = warnings(op);
     int h = hints(op);
-    Assertions.assertEquals(2, e);
-    Assertions.assertEquals(0, w);
-    Assertions.assertEquals(0, h);
+    assertEquals(2, e);
+    assertEquals(0, w);
+    assertEquals(0, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
@@ -163,9 +247,9 @@ public class ValidationEngineTests {
     int e = errors(op);
     int w = warnings(op);
     int h = hints(op);
-    Assertions.assertEquals(2, e);
-    Assertions.assertEquals(0, w);
-    Assertions.assertEquals(0, h);
+    assertEquals(2, e);
+    assertEquals(0, w);
+    assertEquals(0, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
@@ -191,9 +275,9 @@ public class ValidationEngineTests {
     int e = errors(op);
     int w = warnings(op);
     int h = hints(op);
-    Assertions.assertEquals(1, e);
-    Assertions.assertEquals(2, w);
-    Assertions.assertEquals(2, h);
+    assertEquals(1, e);
+    assertEquals(2, w);
+    assertEquals(2, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
@@ -216,7 +300,7 @@ public class ValidationEngineTests {
     int e = errors(op);
     int w = warnings(op);
     int h = hints(op);
-    Assertions.assertEquals(0, e);
+    assertEquals(0, e);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
@@ -242,9 +326,9 @@ public class ValidationEngineTests {
     int e = errors(op);
     int w = warnings(op);
     int h = hints(op);
-    Assertions.assertEquals(1, e);
-    Assertions.assertEquals(0, w);
-    Assertions.assertEquals(0, h);
+    assertEquals(1, e);
+    assertEquals(0, w);
+    assertEquals(0, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
@@ -269,9 +353,9 @@ public class ValidationEngineTests {
     int e = errors(op);
     int w = warnings(op);
     int h = hints(op);
-    Assertions.assertEquals(0, e);
-    Assertions.assertEquals(6, w);
-    Assertions.assertEquals(2, h);
+    assertEquals(0, e);
+    assertEquals(6, w);
+    assertEquals(2, h);
     assertTrue(logger.verifyHasNoRequests(), "Unexpected request to TX server");
     if (!TestUtilities.silent)
       System.out.println("  .. done: " + Integer.toString(e) + " errors, " + Integer.toString(w) + " warnings, " + Integer.toString(h) + " information messages");
