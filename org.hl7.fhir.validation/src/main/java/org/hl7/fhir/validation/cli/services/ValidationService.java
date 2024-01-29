@@ -463,7 +463,7 @@ public class ValidationService {
       }
       ValidationEngine validator;
       if (hasBaseEngineForKey(cliContext.getBaseEngine())) {
-        System.out.println("Getting base engine: IPS");
+        System.out.println("Getting base engine: " + cliContext.getBaseEngine());
          validator = new ValidationEngine(getBaseEngine(cliContext.getBaseEngine()));
       } else {
         System.out.println("Building new validator engine.");
