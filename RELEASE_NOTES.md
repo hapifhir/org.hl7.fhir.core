@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* kindling related fixes for terminology stability

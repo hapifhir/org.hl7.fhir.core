@@ -255,7 +255,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
 
-    if (expParams.getParameterBool("includeDesignations")) {
+    if (expParams.getParameterBool("includeDesignations") && designations != null) {
       
       for (ConceptDefinitionDesignationComponent t : designations) {
         if (t != pref && (t.hasLanguage() || t.hasUse()) && t.getValue() != null && passesDesignationFilter(t)) {
@@ -882,6 +882,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (vso.getError() != null) {
       addErrors(vso.getAllErrors());
       throw fail("Unable to expand imported value set "+vs.getUrl()+": " + vso.getError());
+    } else if (vso.getValueset() == null) {
+      throw fail("Unable to expand imported value set "+vs.getUrl()+" but no error");      
     }
     if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
       UriType u = new UriType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
