@@ -126,8 +126,8 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
-  public ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) {
-    return client.expandValueset(vs, p, params);
+  public ValueSet expandValueset(ValueSet vs, Parameters p) {
+    return client.expandValueset(vs, p);
   }
 
   @Override

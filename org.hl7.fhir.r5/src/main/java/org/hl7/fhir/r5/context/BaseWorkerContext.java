@@ -78,6 +78,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Identifier;
+import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.Measure;
@@ -101,9 +102,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent;
+
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -129,8 +128,8 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5.TerminologyClientR5Factory;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.utils.PackageHackerR5;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
@@ -138,7 +137,6 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.TranslationServices;
@@ -234,7 +232,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private Object lock = new Object(); // used as a lock for the data that follows
   protected String version; // although the internal resources are all R5, the version of FHIR they describe may not be 
 
-  protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(null, UUID.randomUUID().toString());
+  protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClientR5.TerminologyClientR5Factory(), UUID.randomUUID().toString());
   private boolean minimalMemory = false;
 
   private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
@@ -851,7 +849,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return res;
     }
     Set<String> systems = findRelevantSystems(vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, true);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, true);
     if (tc == null) {
       return new ValueSetExpansionOutcome("No server available", TerminologyServiceErrorClass.INTERNAL_ERROR, true);      
     }
@@ -874,7 +872,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     try {
-      ValueSet result = tc.getClient().expandValueset(vs, p, null);
+      ValueSet result = tc.getClient().expandValueset(vs, p);
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, true);
@@ -915,7 +913,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     
     Parameters p = pIn.copy();
-
+    p.setParameter("_limit",new IntegerType("10000"));
+    p.setParameter("_incomplete", new BooleanType("true"));
     if (vs.hasExpansion()) {
       return new ValueSetExpansionOutcome(vs.copy());
     }
@@ -978,14 +977,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     p.addParameter().setName("cache-id").setValue(new IdType(terminologyClientManager.getCacheId()));
     Set<String> systems = findRelevantSystems(vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, true);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, true);
     addDependentResources(tc, p, vs);
 
     
     txLog("$expand on "+txCache.summary(vs)+" on "+tc.getAddress());
     
     try {
-      ValueSet result = tc.getClient().expandValueset(vs, p, null);
+      ValueSet result = tc.getClient().expandValueset(vs, p);
       if (result != null) {
         if (!result.hasUrl()) {
           result.setUrl(vs.getUrl());
@@ -1108,7 +1107,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     
     if (batch.getEntry().size() > 0) {
-      TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, false);
+      TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
       Bundle resp = processBatch(tc, batch, systems);      
       for (int i = 0; i < batch.getEntry().size(); i++) {
         CodingValidationRequest t = (CodingValidationRequest) batch.getEntry().get(i).getUserData("source");
@@ -1213,7 +1212,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         systems.add(codingValidationRequest.getCoding().getSystem());
       }
     }
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, false);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
     
     if (batch.getEntry().size() > 0) {
       Bundle resp = processBatch(tc, batch, systems);      
@@ -1346,7 +1345,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     Set<String> systems = findRelevantSystems(code, vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, false);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
     
     String csumm =cachingAllowed && txCache != null ? txCache.summary(code) : null;
     if (cachingAllowed && txCache != null) {
@@ -1365,7 +1364,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } 
     if (!res.isOk() && localError != null) {
       res.setDiagnostics("Local Error: "+localError.trim()+". Server Error: "+res.getMessage());
-    } else if (!res.isOk() && res.getUnknownSystems() != null && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
+    } else if (!res.isOk() && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && res.getUnknownSystems() != null && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
       // we had some problem evaluating locally, but the server doesn't know the code system, so we'll just go with the local error
       res = new ValidationResult(IssueSeverity.WARNING, localWarning, null);
       res.setDiagnostics("Local Warning: "+localWarning.trim()+". Server Error: "+res.getMessage());
@@ -1538,7 +1537,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return new ValidationResult(IssueSeverity.ERROR, "Error validating code: running without terminology services", TerminologyServiceErrorClass.NOSERVICE, null);
     }
     Set<String> systems = findRelevantSystems(code, vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, false);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
 
     txLog("$validate "+txCache.summary(code)+" for "+ txCache.summary(vs)+" on "+tc.getAddress());
     try {
@@ -1779,6 +1778,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           status = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("x-caused-by-unknown-system")) {
           err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
+          unknownSystems.add(((PrimitiveType<?>) p.getValue()).asStringValue());      
+        } else if (p.getName().equals("x-unknown-system")) {
           unknownSystems.add(((PrimitiveType<?>) p.getValue()).asStringValue());      
         } else if (p.getName().equals("warning-withdrawn")) {
           String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();

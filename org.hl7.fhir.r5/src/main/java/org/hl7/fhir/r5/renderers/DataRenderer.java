@@ -1212,8 +1212,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
         s = ii.getType().getCoding().get(0).getDisplay()+": "+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
         s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getVersion(), ii.getType().getCoding().get(0).getCode())+": "+s;
-    } else {
-      s = "id:\u00A0"+s;      
+    } else if (ii.hasSystem()) {
+      s = ii.getSystem()+"#"+s;
     }
 
     if (ii.hasUse() || ii.hasPeriod()) {
@@ -1234,24 +1234,32 @@ public class DataRenderer extends Renderer implements CodeResolver {
   
   protected void renderIdentifier(XhtmlNode x, Identifier ii) {    
     if (ii.hasType()) {
-      if (ii.getType().hasText())
-       x.tx(ii.getType().getText()+":");
-      else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay())
-        x.tx(ii.getType().getCoding().get(0).getDisplay()+":");
-      else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
-        x.tx(lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getVersion(), ii.getType().getCoding().get(0).getCode())+":");
-    } else {
-      x.tx("id:");      
-    }
-    x.nbsp();
-
-    NamingSystem ns = context.getContext().getNSUrlMap().get(ii.getSystem());
-    if (ns != null) {
-      if (ns.hasWebPath()) {
-        x.ah(ns.getWebPath()).tx("#");        
-      } else {
-        x.tx(ns.present()+"#");
+      if (ii.getType().hasText()) {
+        x.tx(ii.getType().getText());
+      } else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay()) {
+        x.tx(ii.getType().getCoding().get(0).getDisplay());
+      } else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode()) {
+        x.tx(lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getVersion(), ii.getType().getCoding().get(0).getCode()));
       }
+      x.tx("/");
+    } else if (ii.hasSystem()) {
+      NamingSystem ns = context.getContext().getNSUrlMap().get(ii.getSystem());
+      if (ns != null) {
+        if (ns.hasWebPath()) {
+          x.ah(ns.getWebPath(), ns.getDescription()).tx(ns.present());        
+        } else {
+          x.tx(ns.present());
+        }
+      } else {
+        switch (ii.getSystem()) {
+        case "urn:oid:2.51.1.3":
+          x.ah("https://www.gs1.org/standards/id-keys/gln", "Global Location Number").tx("GLN");
+          break;
+        default:
+          x.code(ii.getSystem());      
+        }
+      }
+      x.tx("/");
     }
     x.tx(Utilities.noString(ii.getValue()) ? "?ngen-9?" : ii.getValue());
 
