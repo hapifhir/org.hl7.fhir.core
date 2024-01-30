@@ -79,13 +79,13 @@ public class ResourceUtilities {
 		StringBuilder b = new StringBuilder();
 		for (OperationOutcomeIssueComponent t : error.getIssue()) {
 			if (t.getSeverity() == IssueSeverity.ERROR) {
-				b.append("Error:" +gen(t.getDetails())+"\r\n");
+				b.append("Error: " +gen(t.getDetails())+"\r\n");
 			} else if (t.getSeverity() == IssueSeverity.FATAL) {
-				b.append("Fatal:" +gen(t.getDetails())+"\r\n");
+				b.append("Fatal: " +gen(t.getDetails())+"\r\n");
 			} else if (t.getSeverity() == IssueSeverity.WARNING) {
-				b.append("Warning:" +gen(t.getDetails())+"\r\n");
+				b.append("Warning: " +gen(t.getDetails())+"\r\n");
 			} else if (t.getSeverity() == IssueSeverity.INFORMATION) {
-				b.append("Information:" +gen(t.getDetails())+"\r\n");
+				b.append("Information: " +gen(t.getDetails())+"\r\n");
 			}
 		}
 		return b.toString();
