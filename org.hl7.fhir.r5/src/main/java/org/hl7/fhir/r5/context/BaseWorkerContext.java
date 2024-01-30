@@ -849,7 +849,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return res;
     }
     Set<String> systems = findRelevantSystems(vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, true);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, true);
     if (tc == null) {
       return new ValueSetExpansionOutcome("No server available", TerminologyServiceErrorClass.INTERNAL_ERROR, true);      
     }
@@ -977,7 +977,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     p.addParameter().setName("cache-id").setValue(new IdType(terminologyClientManager.getCacheId()));
     Set<String> systems = findRelevantSystems(vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, true);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, true);
     addDependentResources(tc, p, vs);
 
     
@@ -1107,7 +1107,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     
     if (batch.getEntry().size() > 0) {
-      TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, false);
+      TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
       Bundle resp = processBatch(tc, batch, systems);      
       for (int i = 0; i < batch.getEntry().size(); i++) {
         CodingValidationRequest t = (CodingValidationRequest) batch.getEntry().get(i).getUserData("source");
@@ -1212,7 +1212,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         systems.add(codingValidationRequest.getCoding().getSystem());
       }
     }
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, false);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
     
     if (batch.getEntry().size() > 0) {
       Bundle resp = processBatch(tc, batch, systems);      
@@ -1345,7 +1345,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     Set<String> systems = findRelevantSystems(code, vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, false);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
     
     String csumm =cachingAllowed && txCache != null ? txCache.summary(code) : null;
     if (cachingAllowed && txCache != null) {
@@ -1364,7 +1364,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } 
     if (!res.isOk() && localError != null) {
       res.setDiagnostics("Local Error: "+localError.trim()+". Server Error: "+res.getMessage());
-    } else if (!res.isOk() && res.getUnknownSystems() != null && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
+    } else if (!res.isOk() && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && res.getUnknownSystems() != null && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
       // we had some problem evaluating locally, but the server doesn't know the code system, so we'll just go with the local error
       res = new ValidationResult(IssueSeverity.WARNING, localWarning, null);
       res.setDiagnostics("Local Warning: "+localWarning.trim()+". Server Error: "+res.getMessage());
@@ -1537,7 +1537,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return new ValidationResult(IssueSeverity.ERROR, "Error validating code: running without terminology services", TerminologyServiceErrorClass.NOSERVICE, null);
     }
     Set<String> systems = findRelevantSystems(code, vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, false);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
 
     txLog("$validate "+txCache.summary(code)+" for "+ txCache.summary(vs)+" on "+tc.getAddress());
     try {
@@ -1778,6 +1778,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           status = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("x-caused-by-unknown-system")) {
           err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
+          unknownSystems.add(((PrimitiveType<?>) p.getValue()).asStringValue());      
+        } else if (p.getName().equals("x-unknown-system")) {
           unknownSystems.add(((PrimitiveType<?>) p.getValue()).asStringValue());      
         } else if (p.getName().equals("warning-withdrawn")) {
           String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();

@@ -68,6 +68,16 @@ public class JsonObject extends JsonElement {
     return add(name, value == null ? new JsonNull() : new JsonString(value));
   }
 
+  public JsonObject add(String name, List<String> values) throws JsonException {
+    check(name != null, "Name is null");
+    JsonArray arr = new JsonArray();
+    add(name, arr);
+    for (String v : values) {
+      arr.add(v);
+    }
+    return this;
+  }
+
   public JsonObject addIfNotNull(String name, String value) throws JsonException {
     check(name != null, "Name is null");
     if (value == null) { 
