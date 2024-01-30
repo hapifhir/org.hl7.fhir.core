@@ -256,7 +256,7 @@ public class TxTester {
     p.getParameter().addAll(profile.getParameter());
     String vsj;
     try {
-      ValueSet vs = tx.expandValueset(null, p, null);
+      ValueSet vs = tx.expandValueset(null, p);
       TxTesterScrubbers.scrubVS(vs, tight);
       TxTesterSorters.sortValueSet(vs);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vs);

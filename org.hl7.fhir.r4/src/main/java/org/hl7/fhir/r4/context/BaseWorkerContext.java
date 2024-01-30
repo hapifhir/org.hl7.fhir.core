@@ -30,6 +30,7 @@ import org.hl7.fhir.r4.model.ConceptMap;
 import org.hl7.fhir.r4.model.Constants;
 import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r4.model.ImplementationGuide;
+import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.MetadataResource;
 import org.hl7.fhir.r4.model.NamingSystem;
 import org.hl7.fhir.r4.model.NamingSystem.NamingSystemIdentifierType;
@@ -403,12 +404,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (noTerminologyServer)
       return new ValueSetExpansionOutcome("Error expanding ValueSet: running without terminology services",
           TerminologyServiceErrorClass.NOSERVICE);
-    Map<String, String> params = new HashMap<String, String>();
-    params.put("_limit", Integer.toString(expandCodesLimit));
-    params.put("_incomplete", "true");
+
+    p.addParameter().setName("_limit").setValue(new IntegerType(expandCodesLimit));
+    p.addParameter().setName("_incomplete").setValue(new BooleanType("true"));
+    
     tlog("$expand on " + txCache.summary(vs));
     try {
-      ValueSet result = txClient.expandValueset(vs, p, params);
+      ValueSet result = txClient.expandValueset(vs, p);
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());
     } catch (Exception e) {
       res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(),
@@ -463,12 +465,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (noTerminologyServer)
       return new ValueSetExpansionOutcome("Error expanding ValueSet: running without terminology services",
           TerminologyServiceErrorClass.NOSERVICE);
-    Map<String, String> params = new HashMap<String, String>();
-    params.put("_limit", Integer.toString(expandCodesLimit));
-    params.put("_incomplete", "true");
+
+    p.addParameter().setName("_limit").setValue(new IntegerType(expandCodesLimit));
+    p.addParameter().setName("_incomplete").setValue(new BooleanType("true"));
+    
     tlog("$expand on " + txCache.summary(vs));
     try {
-      ValueSet result = txClient.expandValueset(vs, p, params);
+      ValueSet result = txClient.expandValueset(vs, p);
       if (result != null) {
         if (!result.hasUrl())
           result.setUrl(vs.getUrl());

@@ -24,15 +24,53 @@ import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.TerminologyClientContextUseType;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ServerOptionList;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 public class TerminologyClientManager {
+  public class ServerOptionList {
+    private List<String> authoritative = new ArrayList<String>();
+    private List<String> candidates = new ArrayList<String>();
+    
+    public ServerOptionList(String address) {
+      candidates.add(address);
+    }
+    
+    public ServerOptionList() {
+    }
+
+    public ServerOptionList(List<String> auth, List<String> cand) {
+      authoritative.addAll(auth);
+      candidates.addAll(cand);
+    }
+
+    public void replace(String src, String dst) {
+      for (int i = 0; i < candidates.size(); i++) {
+        if (candidates.get(i).contains("://"+src)) {
+          candidates.set(i, candidates.get(i).replace("://"+src, "://"+dst));
+        }
+      }
+      for (int i = 0; i < authoritative.size(); i++) {
+        if (authoritative.get(i).contains("://"+src)) {
+          authoritative.set(i, authoritative.get(i).replace("://"+src, "://"+dst));
+        }
+      }      
+    }
+
+    @Override
+    public String toString() {
+      return "auth = " + CommaSeparatedStringBuilder.join("|", authoritative)+ ", candidates=" + CommaSeparatedStringBuilder.join("|", candidates);
+    }    
+    
+  }
+
   public ITerminologyClientFactory getFactory() {
     return factory;
   }
@@ -50,8 +88,8 @@ public class TerminologyClientManager {
   private String cacheId;
   private List<TerminologyClientContext> serverList = new ArrayList<>(); // clients by server address
   private Map<String, TerminologyClientContext> serverMap = new HashMap<>(); // clients by server address
-  private Map<String, String> resMap = new HashMap<>(); // client resolution list
-  private List<String> internalErrors = new ArrayList<>();
+  private Map<String, ServerOptionList> resMap = new HashMap<>(); // client resolution list
+  private List<String> internalLog = new ArrayList<>();
   protected Parameters expParameters;
 
   private TerminologyCache cache;
@@ -82,40 +120,92 @@ public class TerminologyClientManager {
   }
 
 
-  public TerminologyClientContext chooseServer(Set<String> systems, boolean expand) throws TerminologyServiceException {
+  public TerminologyClientContext chooseServer(ValueSet vs, Set<String> systems, boolean expand) throws TerminologyServiceException {
     if (serverList.isEmpty()) {
       return null;
     }
-    if (systems.contains(UNRESOLVED_VALUESET)) {
+    if (systems.contains(UNRESOLVED_VALUESET) || systems.isEmpty()) {
       return serverList.get(0);
     }
     
-    Set<TerminologyClientContext> clients = new HashSet<>();
+    List<ServerOptionList> choices = new ArrayList<>();
     for (String s : systems) {
-      clients.add(findServerForSystem(s, expand));
+      choices.add(findServerForSystem(s, expand));
+    }    
+    
+    // first we look for a server that's authoritative for all of them
+    for (ServerOptionList ol : choices) {
+      for (String s : ol.authoritative) {
+        boolean ok = true;
+        for (ServerOptionList t : choices) {
+          if (!t.authoritative.contains(s)) {
+            ok = false;
+          }
+        }
+        if (ok) {
+          return findClient(s, systems, expand);
+        }
+      }
     }
-    if (clients.size() == 1) {
-      return clients.iterator().next();
+    
+    // now we look for a server that's authoritative for one of them and a candidate for the others
+    for (ServerOptionList ol : choices) {
+      for (String s : ol.authoritative) {
+        boolean ok = true;
+        for (ServerOptionList t : choices) {
+          if (!t.candidates.contains(s)) {
+            ok = false;
+          }
+        }
+        if (ok) {
+          return findClient(s, systems, expand);
+        }
+      }
+    }
+
+    // now we look for a server that's a candidate for all of them
+    for (ServerOptionList ol : choices) {
+      for (String s : ol.candidates) {
+        boolean ok = true;
+        for (ServerOptionList t : choices) {
+          if (!t.candidates.contains(s)) {
+            ok = false;
+          }
+        }
+        if (ok) {
+          return findClient(s, systems, expand);
+        }
+      }
+    }
+    
+    // no agreement? Then what we do depends     
+    if (vs != null) {
+      if (vs.hasUserData("External.Link")) {
+        if (systems.size() == 1) {
+          internalLog.add(vs.getVersionedUrl()+" uses the system "+systems.toString()+" not handled by any servers. Using source @ '"+vs.getUserString("External.Link")+"'");
+        } else {
+          internalLog.add(vs.getVersionedUrl()+" includes multiple systems "+systems.toString()+" best handled by multiple servers: "+choices.toString()+". Using source @ '"+vs.getUserString("External.Link")+"'");
+        }
+        return findClient(vs.getUserString("External.Link"), systems, expand);
+      } else {
+        if (systems.size() == 1) {
+          internalLog.add(vs.getVersionedUrl()+" uses the system "+systems.toString()+" not handled by any servers. Using master @ '"+serverList.get(0)+"'");
+        } else {
+          internalLog.add(vs.getVersionedUrl()+" includes multiple systems "+systems.toString()+" best handled by multiple servers: "+choices.toString()+". Using master @ '"+serverList.get(0)+"'");
+        }
+        return findClient(serverList.get(0).getAddress(), systems, expand);
+      }      
     } else {
-      System.out.println("systems: "+systems.toString());
-      return serverList.get(0);
+      if (systems.size() == 1) {
+        internalLog.add("Request for system "+systems.toString()+" not handled by any servers. Using master @ '"+serverList.get(0)+"'");
+      } else {
+        internalLog.add("Request for multiple systems "+systems.toString()+" best handled by multiple servers: "+choices.toString()+". Using master @ '"+serverList.get(0)+"'");
+      }
+      return findClient(serverList.get(0).getAddress(), systems, expand);
     }
   }
 
-  private TerminologyClientContext findServerForSystem(String s, boolean expand) throws TerminologyServiceException {
-    String server = resMap.get(s);
-    if (server == null) {
-      server = decideWhichServer(s);
-      // testing support
-      if (server != null && server.contains("://tx.fhir.org")) {
-        try {
-          server = server.replace("tx.fhir.org", new URL(getMasterClient().getAddress()).getHost());
-        } catch (MalformedURLException e) {
-        }
-      }
-      resMap.put(s, server);
-      save();
-    }
+  private TerminologyClientContext findClient(String server, Set<String> systems, boolean expand) {
     TerminologyClientContext client = serverMap.get(server);
     if (client == null) {
       try {
@@ -127,13 +217,28 @@ public class TerminologyClientManager {
       serverList.add(client);
       serverMap.put(server, client);
     }
-    client.seeUse(s, expand ? TerminologyClientContextUseType.expand : TerminologyClientContextUseType.validate);
+    client.seeUse(systems, expand ? TerminologyClientContextUseType.expand : TerminologyClientContextUseType.validate);
     return client;
   }
 
-  private String decideWhichServer(String url) {
+  private ServerOptionList findServerForSystem(String s, boolean expand) throws TerminologyServiceException {
+    ServerOptionList serverList = resMap.get(s);
+    if (serverList == null) {
+      serverList = decideWhichServer(s);
+      // testing support
+      try {
+        serverList.replace("tx.fhir.org", new URL(getMasterClient().getAddress()).getHost());
+      } catch (MalformedURLException e) {
+      }
+      resMap.put(s, serverList);
+      save();
+    }
+    return serverList;
+  }
+
+  private ServerOptionList decideWhichServer(String url) {
     if (IGNORE_TX_REGISTRY) {
-      return getMasterClient().getAddress();
+      return new ServerOptionList(getMasterClient().getAddress());
     }
     if (expParameters != null) {
       if (!url.contains("|")) {
@@ -157,23 +262,25 @@ public class TerminologyClientManager {
       request = request + "&usage="+usage;
     } 
     try {
+      ServerOptionList ret = new ServerOptionList();
       JsonObject json = JsonParser.parseObjectFromUrl(request);
       for (JsonObject item : json.getJsonObjects("authoritative")) {
-        return item.asString("url");
+        ret.authoritative.add(item.asString("url"));
       }
       for (JsonObject item : json.getJsonObjects("candidates")) {
-        return item.asString("url");
+        ret.candidates.add(item.asString("url"));
       }
+      return ret;
     } catch (Exception e) {
       String msg = "Error resolving system "+url+": "+e.getMessage()+" ("+request+")";
-      if (!internalErrors.contains(msg)) {
-        internalErrors.add(msg);
+      if (!internalLog.contains(msg)) {
+        internalLog.add(msg);
       }
       if (!monitorServiceURL.contains("tx.fhir.org")) {
         e.printStackTrace();
       }
     }
-    return getMasterClient().getAddress();
+    return new ServerOptionList( getMasterClient().getAddress());
     
   }
 
@@ -248,7 +355,11 @@ public class TerminologyClientManager {
         if (cacheFile.exists()) {
           JsonObject json = JsonParser.parseObject(cacheFile);
           for (JsonObject pair : json.getJsonObjects("systems")) {
-            resMap.put(pair.asString("system"), pair.asString("server"));
+            if (pair.has("server")) {
+              resMap.put(pair.asString("system"), new ServerOptionList(pair.asString("server")));
+            } else {
+              resMap.put(pair.asString("system"), new ServerOptionList(pair.getStrings("authoritative"), pair.getStrings("candidates")));
+            }
           }
         }
       } catch (Exception e) {
@@ -264,7 +375,8 @@ public class TerminologyClientManager {
         JsonObject si = new JsonObject();
         json.forceArray("systems").add(si);
         si.add("system", s);
-        si.add("server", resMap.get(s));
+        si.add("authoritative", resMap.get(s).authoritative);
+        si.add("candidates", resMap.get(s).candidates);
       }
       try {
         JsonParser.compose(json, cacheFile, true);
@@ -273,8 +385,8 @@ public class TerminologyClientManager {
     }
   }
 
-  public List<String> getInternalErrors() {
-    return internalErrors;
+  public List<String> getInternalLog() {
+    return internalLog;
   }
 
   public List<TerminologyClientContext> getServerList() {
@@ -377,8 +489,8 @@ public class TerminologyClientManager {
     } catch (Exception e) {
       e.printStackTrace();
       String msg = "Error resolving valueSet "+canonical+": "+e.getMessage()+" ("+request+")";
-      if (!internalErrors.contains(msg)) {
-        internalErrors.add(msg);
+      if (!internalLog.contains(msg)) {
+        internalLog.add(msg);
       }
       e.printStackTrace();
       return null;
@@ -393,5 +505,5 @@ public class TerminologyClientManager {
     }
     return false;
   }
-
+  
 }

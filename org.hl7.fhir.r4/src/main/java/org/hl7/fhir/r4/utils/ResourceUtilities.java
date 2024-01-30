@@ -81,13 +81,13 @@ public class ResourceUtilities {
       if (first) first = false; else b.append("\r\n");
       String txt = t.hasDiagnostics() ? t.getDiagnostics() : gen(t.getDetails());
       if (t.getSeverity() == IssueSeverity.ERROR)
-        b.append("Error:" + txt);
+        b.append("Error: " + txt);
       else if (t.getSeverity() == IssueSeverity.FATAL)
-        b.append("Fatal:" + txt);
+        b.append("Fatal: " + txt);
       else if (t.getSeverity() == IssueSeverity.WARNING)
-        b.append("Warning:" + txt);
+        b.append("Warning: " + txt);
       else if (t.getSeverity() == IssueSeverity.INFORMATION)
-        b.append("Information:" + txt);
+        b.append("Information: " + txt);
     }
     return b.toString();
   }

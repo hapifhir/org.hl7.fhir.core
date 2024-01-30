@@ -356,6 +356,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
         res.setVersion(foundCoding.hasVersion() ? foundCoding.getVersion() : foundCoding.hasUserData("cs") ? ((CodeSystem) foundCoding.getUserData("cs")).getVersion() : null);
         res.setDisplay(cd.getDisplay());
       }
+      if (info.getErr() != null) {
+        res.setErrorClass(info.getErr());
+      }
       res.setUnknownSystems(unknownSystems);
       res.addCodeableConcept(vcc);
       return res;
@@ -669,7 +672,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
               res.setDefinition(null);
               res.setSystem(null);
               res.setDisplay(null);
-              res.setUnknownSystems(unknownSystems);
+              res.setUnknownSystems(unknownSystems);              
 //            }
           } else if (warningMessage!=null) {
             String msg = context.formatMessage(I18nConstants.CODE_FOUND_IN_EXPANSION_HOWEVER_, warningMessage);
@@ -1309,6 +1312,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
         return res.isOk();
       } else {
+        info.setErr(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
         if (unknownSystems != null) {
           if (version == null) {
             unknownSystems.add(system);

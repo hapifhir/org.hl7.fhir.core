@@ -37,6 +37,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
@@ -375,7 +376,7 @@ public class TerminologyServiceTests {
         }
         if (vm.getUnknownSystems() != null) {
           for (String s : vm.getUnknownSystems()) {
-            res.addParameter("x-caused-by-unknown-system", new CanonicalType(s));
+            res.addParameter(vm.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED ? "x-caused-by-unknown-system" :  "x-unknown-system", new CanonicalType(s));
           }
         }
         if (vm.getIssues().size() > 0) {
