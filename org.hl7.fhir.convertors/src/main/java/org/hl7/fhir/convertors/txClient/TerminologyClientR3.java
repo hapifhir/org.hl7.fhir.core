@@ -101,10 +101,10 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
-  public ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException {
+  public ValueSet expandValueset(ValueSet vs, Parameters p) throws FHIRException {
     org.hl7.fhir.dstu3.model.ValueSet vs2 = (org.hl7.fhir.dstu3.model.ValueSet) VersionConvertorFactory_30_50.convertResource(vs);
     org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(p);
-    vs2 = client.expandValueset(vs2, p2, params); // todo: second parameter
+    vs2 = client.expandValueset(vs2, p2); // todo: second parameter
     return (ValueSet) VersionConvertorFactory_30_50.convertResource(vs2);
   }
 

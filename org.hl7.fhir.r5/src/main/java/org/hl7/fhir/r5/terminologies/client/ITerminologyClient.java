@@ -51,7 +51,7 @@ public interface ITerminologyClient {
   String getAddress();
   String getServerVersion();
   TerminologyCapabilities getTerminologyCapabilities() throws FHIRException;
-  ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException;
+  ValueSet expandValueset(ValueSet vs, Parameters p) throws FHIRException;
   Parameters validateCS(Parameters pin) throws FHIRException;
   Parameters validateVS(Parameters pin) throws FHIRException;
   ITerminologyClient setTimeoutFactor(int i) throws FHIRException;

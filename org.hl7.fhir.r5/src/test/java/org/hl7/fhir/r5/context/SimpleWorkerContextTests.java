@@ -101,12 +101,6 @@ public class SimpleWorkerContextTests {
     context.txLog = txLog;
   }
 
-  private final static Map<String, String> params = new HashMap<>();
-  static {
-    params.put("_limit", Integer.toString(1000));
-    params.put("_incomplete", "true");
-  }
-
   private final static Parameters pInWithDependentResources = new Parameters();
   static {
     pInWithDependentResources.addParameter("includeDefinition", false);
@@ -302,7 +296,7 @@ public class SimpleWorkerContextTests {
 
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
     Mockito.verify(terminologyCache, times(0)).cacheExpansion(any(), any(), anyBoolean());
-    Mockito.verify(terminologyClient, times(0)).expandValueset(any(), any(), any());
+    Mockito.verify(terminologyClient, times(0)).expandValueset(any(), any());
   }
 
   @Test
@@ -327,7 +321,7 @@ public class SimpleWorkerContextTests {
 
 
     Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(argThat(new ValueSetMatcher(vs)),
-      argThat(new ParametersMatcher(pInWithDependentResources)), eq(params));
+      argThat(new ParametersMatcher(pInWithDependentResources)));
 
     ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true, false);
 
@@ -354,7 +348,7 @@ public class SimpleWorkerContextTests {
 
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
     Mockito.verify(terminologyCache, times(0)).cacheExpansion(any(), any(), anyBoolean());
-    Mockito.verify(terminologyClient, times(0)).expandValueset(any(), any(), any());
+    Mockito.verify(terminologyClient, times(0)).expandValueset(any(), any());
   }
 
   private class ValidationOptionsFhirPublicationMatcher implements ArgumentMatcher<ValidationOptions> {
@@ -393,7 +387,7 @@ public class SimpleWorkerContextTests {
 
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
     Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, false);
-    Mockito.verify(terminologyClient, times(0)).expandValueset(any(), any(), any());
+    Mockito.verify(terminologyClient, times(0)).expandValueset(any(), any());
   }
 
   @Test
@@ -414,7 +408,7 @@ public class SimpleWorkerContextTests {
 
     Mockito.doReturn(valueSetExpanderSimple).when(context).constructValueSetExpanderSimple(argThat(new ValidationOptionsFhirPublicationMatcher(vs.getFHIRPublicationVersion())));
 
-    Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(eq(vs), argThat(new ParametersMatcher(pInWithDependentResources)), eq(params));
+    Mockito.doReturn(expectedValueSet).when(terminologyClient).expandValueset(eq(vs), argThat(new ParametersMatcher(pInWithDependentResources)));
 
     ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn, false);
 
