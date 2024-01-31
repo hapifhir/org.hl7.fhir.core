@@ -492,7 +492,13 @@ public class ValidationService {
       ValidationEngine validator;
       if (hasBaseEngineForKey(cliContext.getBaseEngine())) {
         System.out.println("Getting base engine: " + cliContext.getBaseEngine());
-         validator = new ValidationEngine(getBaseEngine(cliContext.getBaseEngine()));
+        validator = new ValidationEngine(getBaseEngine(cliContext.getBaseEngine()));
+        /* As a service, it wouldn't be efficient to have a base validation engine
+         * for every language. So we just use the baseEngine and set the language
+         * manually afterward.
+         */
+        validator.setLanguage(cliContext.getLang());
+        validator.setLocale(cliContext.getLocale());
       } else {
         System.out.println("Building new validator engine.");
         if (cliContext.getSv() == null) {
