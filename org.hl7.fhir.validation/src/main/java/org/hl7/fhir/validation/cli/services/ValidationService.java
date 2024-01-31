@@ -489,26 +489,26 @@ public class ValidationService {
       if (sessionId != null) {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
-      ValidationEngine validator;
+      ValidationEngine validationEngine;
       if (hasBaseEngineForKey(cliContext.getBaseEngine())) {
         System.out.println("Getting base engine: " + cliContext.getBaseEngine());
-        validator = new ValidationEngine(getBaseEngine(cliContext.getBaseEngine()));
+        validationEngine = new ValidationEngine(getBaseEngine(cliContext.getBaseEngine()));
         /* As a service, it wouldn't be efficient to have a base validation engine
          * for every language. So we just use the baseEngine and set the language
          * manually afterward.
          */
-        validator.setLanguage(cliContext.getLang());
-        validator.setLocale(cliContext.getLocale());
+        validationEngine.setLanguage(cliContext.getLang());
+        validationEngine.setLocale(cliContext.getLocale());
       } else {
         System.out.println("Building new validator engine.");
         if (cliContext.getSv() == null) {
           String sv = determineVersion(cliContext);
           cliContext.setSv(sv);
         }
-        validator  = buildValidationEngine(cliContext, definitions, tt);
+        validationEngine  = buildValidationEngine(cliContext, definitions, tt);
       }
 
-      sessionId = sessionCache.cacheSession(validator);
+      sessionId = sessionCache.cacheSession(validationEngine);
     } else {
       System.out.println("Cached session exists for session id " + sessionId + ", returning stored validator session id.");
     }
