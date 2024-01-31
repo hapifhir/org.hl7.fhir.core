@@ -102,10 +102,7 @@ public class ValidationService {
   }
 
   public ValidationResponse validateSources(ValidationRequest request) throws Exception {
-    if (request.getCliContext().getSv() == null) {
-      String sv = determineVersion(request.getCliContext(), request.sessionId);
-      request.getCliContext().setSv(sv);
-    }
+
 
     String definitions = VersionUtilities.packageForVersion(request.getCliContext().getSv()) + "#" + VersionUtilities.getCurrentVersion(request.getCliContext().getSv());
 
@@ -486,6 +483,8 @@ public class ValidationService {
   public String initializeValidator(CliContext cliContext, String definitions, TimeTracker tt, String sessionId) throws Exception {
     tt.milestone();
 
+
+
     if (!sessionCache.sessionExists(sessionId)) {
       if (sessionId != null) {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
@@ -496,6 +495,10 @@ public class ValidationService {
          validator = new ValidationEngine(getBaseEngine(cliContext.getBaseEngine()));
       } else {
         System.out.println("Building new validator engine.");
+        if (cliContext.getSv() == null) {
+          String sv = determineVersion(cliContext);
+          cliContext.setSv(sv);
+        }
         validator  = buildValidationEngine(cliContext, definitions, tt);
       }
 
@@ -579,12 +582,7 @@ public class ValidationService {
     System.out.println("  Package Summary: "+ validationEngine.getContext().loadedPackageSummary());
   }
 
-
   public String determineVersion(CliContext cliContext) throws Exception {
-    return determineVersion(cliContext, null);
-  }
-
-  public String determineVersion(CliContext cliContext, String sessionId) throws Exception {
     if (cliContext.getMode() != EngineMode.VALIDATION && cliContext.getMode() != EngineMode.INSTALL) {
       return "5.0";
     }
