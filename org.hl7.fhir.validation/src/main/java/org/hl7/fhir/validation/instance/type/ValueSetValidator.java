@@ -62,7 +62,7 @@ public class ValueSetValidator extends BaseValidator {
       List<Element> composes = vs.getChildrenByName("compose");
       int cc = 0;
       for (Element compose : composes) {
-        ok = validateValueSetCompose(errors, compose, stack.push(compose, composes.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url", false), "retired".equals(vs.getNamedChildValue("url", false))) & ok;
+        ok = validateValueSetCompose(errors, compose, stack.push(compose, composes.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url", false), "retired".equals(vs.getNamedChildValue("url", false)), vs) & ok;
         cc++;
       }
     }
@@ -98,24 +98,24 @@ public class ValueSetValidator extends BaseValidator {
   }
 
 
-  private boolean validateValueSetCompose(List<ValidationMessage> errors, Element compose, NodeStack stack, String vsid, boolean retired) {
+  private boolean validateValueSetCompose(List<ValidationMessage> errors, Element compose, NodeStack stack, String vsid, boolean retired, Element vsSrc) {
     boolean ok = true;
     List<Element> includes = compose.getChildrenByName("include");
     int ci = 0;
     for (Element include : includes) {
-      ok = validateValueSetInclude(errors, include, stack.push(include, ci, null, null), vsid, retired) && ok;
+      ok = validateValueSetInclude(errors, include, stack.push(include, ci, null, null), vsid, retired, vsSrc) && ok;
       ci++;
     }    
     List<Element> excludes = compose.getChildrenByName("exclude");
     int ce = 0;
     for (Element exclude : excludes) {
-      ok = validateValueSetInclude(errors, exclude, stack.push(exclude, ce, null, null), vsid, retired) && ok;
+      ok = validateValueSetInclude(errors, exclude, stack.push(exclude, ce, null, null), vsid, retired, vsSrc) && ok;
       ce++;
     }    
     return ok;
   }
   
-  private boolean validateValueSetInclude(List<ValidationMessage> errors, Element include, NodeStack stack, String vsid, boolean retired) {
+  private boolean validateValueSetInclude(List<ValidationMessage> errors, Element include, NodeStack stack, String vsid, boolean retired,  Element vsSrc) {
     boolean ok = true;
     String system = include.getChildValue("system");
     String version = include.getChildValue("version");
@@ -140,6 +140,25 @@ public class ValueSetValidator extends BaseValidator {
     }
     if (valuesets.size() > 1) {
       warning(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, stack.getLiteralPath(), false, I18nConstants.VALUESET_IMPORT_UNION_INTERSECTION);                  
+    }
+    if (system != null && system.startsWith("#")) {
+      List<Element> cs = new ArrayList<>();
+      for (Element contained : vsSrc.getChildrenByName("contained")) {
+        if (("#"+contained.getIdBase()).equals(system)) {
+          if (rule(errors, "2024-02-10", IssueType.INVALID, stack.getLiteralPath(), "CodeSystem".equals(contained.fhirType()), I18nConstants.VALUESET_INCLUDE_CS_NOT_CS, system, contained.fhirType())) {
+            if (version == null || version.equals(contained.getChildValue("version"))) {
+              cs.add(contained);
+            }            
+          } else {
+            ok = false;
+          }
+        }
+      }
+      if (cs.isEmpty()) {
+        ok = rule(errors, "2024-02-10", IssueType.INVALID, stack.getLiteralPath(), false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_NOT_FOUND : I18nConstants.VALUESET_INCLUDE_CSVER_NOT_FOUND, system, version) && ok;   
+      } else {
+        ok = rule(errors, "2024-02-10", IssueType.INVALID, stack.getLiteralPath(), cs.size() == 1, version == null ? I18nConstants.VALUESET_INCLUDE_CS_MULTI_FOUND : I18nConstants.VALUESET_INCLUDE_CSVER_MULTI_FOUND, system, version) && ok;   
+      }
     }
     List<Element> concepts = include.getChildrenByName("concept");
     List<Element> filters = include.getChildrenByName("filter");
