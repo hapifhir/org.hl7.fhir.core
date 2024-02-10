@@ -8,6 +8,7 @@
     "server" : "https://tx.ontoserver.csiro.au/fhir",
     "filename" : "vs-2a3253d9-d12e-45f3-877e-0dc2654b3904.json"
   },
+  "http://hl7.org/fhir/smart-app-launch/ValueSet/user-access-category" : null,
   "http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType" : null,
   "http://loinc.org/vs/LL4048-6" : null,
   "https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_ICD_SEITENLOKALISATION" : null
