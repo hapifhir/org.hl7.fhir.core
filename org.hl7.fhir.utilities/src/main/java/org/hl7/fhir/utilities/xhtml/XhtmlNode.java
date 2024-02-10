@@ -976,5 +976,27 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     }
     return btn;
   }
+
+
+  public XhtmlNode head() {
+    return addTag("head");
+  }
+  
+  public XhtmlNode body() {
+    return addTag("body");
+  }
+  public XhtmlNode title(String title) {
+    return addTag("title").tx(title);
+  }
+  
+  public XhtmlNode link(String rel, String href) {
+    return addTag("link").attribute("rel", rel).attribute("href", href);
+  }
+
+
+  public void wbr() {
+    addTag("wbr");
+    
+  }
   
 }
