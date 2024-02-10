@@ -82,6 +82,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   private static final int MAX_DESIGNATIONS_IN_LINE = 5;
 
+  private static final int MAX_BATCH_VALIDATION_SIZE = 1000;
+
   private List<ConceptMapRenderInstructions> renderingMaps = new ArrayList<ConceptMapRenderInstructions>();
 
   public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
@@ -1431,12 +1433,23 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
     }
     if (!context.isNoSlowLookup() && !serverList.isEmpty()) {
-      getContext().getWorker().validateCodeBatch(getContext().getTerminologyServiceOptions(), serverList, null);
-      for (CodingValidationRequest vr : serverList) {
-        ConceptDefinitionComponent v = vr.getResult().asConceptDefinition();
-        if (v != null) {
-          results.put(vr.getCoding().getCode(), v);
+      try {
+        // todo: split this into 10k batches 
+        int i = 0;
+        while (serverList.size() > i) { 
+          int len = Integer.min(serverList.size(), MAX_BATCH_VALIDATION_SIZE);
+          List<CodingValidationRequest> list = serverList.subList(i, i+len);
+          i += len;
+          getContext().getWorker().validateCodeBatch(getContext().getTerminologyServiceOptions(), list, null);
+          for (CodingValidationRequest vr : list) {
+            ConceptDefinitionComponent v = vr.getResult().asConceptDefinition();
+            if (v != null) {
+              results.put(vr.getCoding().getCode(), v);
+            }
+          }
         }
+      } catch (Exception e1) {
+        return null;
       }
     }
     return results;
