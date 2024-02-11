@@ -92,6 +92,12 @@ public abstract class ResourceRenderer extends DataRenderer {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     boolean hasExtensions;
     hasExtensions = render(x, r);
+    String an = r.fhirType()+"_"+r.getId();
+    if (context.isAddName()) {
+      if (!hasAnchorName(x, an)) {
+        injectAnchorName(x, an);
+      }
+    }
     inject(r, x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
   }
 
@@ -99,10 +105,51 @@ public abstract class ResourceRenderer extends DataRenderer {
     assert r.getContext() == context;
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     boolean hasExtensions = render(x, r);
+
+    String an = r.fhirType()+"_"+r.getId();
+    if (context.isAddName()) {
+      if (!hasAnchorName(x, an)) {
+        injectAnchorName(x, an);
+      }
+    }
     if (r.hasNarrative()) {
       r.injectNarrative(x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
     }
     return x;
+  }
+
+  public XhtmlNode checkNarrative(ResourceWrapper r) throws IOException, FHIRException, EOperationOutcome { 
+    assert r.getContext() == context;
+    XhtmlNode x = r.getNarrative();
+    String an = r.fhirType()+"_"+r.getId();
+    if (context.isAddName()) {
+      if (!hasAnchorName(x, an)) {
+        injectAnchorName(x, an);
+      }
+    }
+    return x;
+  }
+
+  private void injectAnchorName(XhtmlNode x, String an) {
+    XhtmlNode ip = x;
+    while (ip.hasChildren() && "div".equals(ip.getChildNodes().get(0).getName())) {
+      ip = ip.getChildNodes().get(0);
+    }
+    ip.addTag(0, "a").setAttribute("name", an).tx(" ");    
+  }
+
+  protected boolean hasAnchorName(XhtmlNode x, String an) {
+    if ("a".equals(x.getName()) && an.equals(x.getAttribute("name"))) {
+      return true;
+    }
+    if (x.hasChildren()) {
+      for (XhtmlNode c : x.getChildNodes()) {
+        if (hasAnchorName(c, an)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   public abstract boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome;
@@ -438,7 +485,11 @@ public abstract class ResourceRenderer extends DataRenderer {
         String bundleUrl = null;
         Element br = bundleElement.getNamedChild("resource", false);
         if (br.getChildValue("id") != null) {
-          bundleUrl = "#" + br.fhirType() + "_" + br.getChildValue("id");
+          if ("Bundle".equals(br.fhirType())) {
+            bundleUrl = "#";
+          } else {
+            bundleUrl = "#" + br.fhirType() + "_" + br.getChildValue("id");
+          }
         } else {
           bundleUrl = "#" +fullUrlToAnchor(bundleElement.getChildValue("fullUrl"));          
         }

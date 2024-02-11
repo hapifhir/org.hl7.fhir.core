@@ -215,6 +215,8 @@ public class RenderingContext {
   
   private Map<KnownLinkType, String> links = new HashMap<>();
   private Map<String, String> namedLinks = new HashMap<>();
+  private boolean addName = false;
+  
   /**
    * 
    * @param context - access to all related resources that might be needed
@@ -726,6 +728,15 @@ public class RenderingContext {
 
   public void setFixedFormat(FixedValueFormat fixedFormat) {
     this.fixedFormat = fixedFormat;
+  }
+
+  public boolean isAddName() {
+    return addName;
+  }
+
+  public RenderingContext setAddName(boolean addName) {
+    this.addName = addName;
+    return this;
   }
 
   

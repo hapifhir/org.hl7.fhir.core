@@ -85,7 +85,7 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class BaseValidator implements IValidationContextResourceLoader {
 
-  public class BooleanHolder {
+  public static class BooleanHolder {
     private boolean value = true;
 
     public BooleanHolder() {

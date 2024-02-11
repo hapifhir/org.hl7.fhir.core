@@ -190,7 +190,10 @@ public class R5ExtensionsLoader {
       context.cacheResourceFromPackage(vs, vs.getSourcePackage());
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
         for (CanonicalType t : inc.getValueSet()) {
-          loadValueSet(t.asStringValue(), context, valueSets, codeSystems);
+          ValueSet vsi = context.fetchResource(ValueSet.class, t.getValue());
+          if (vsi == null) {
+            loadValueSet(t.asStringValue(), context, valueSets, codeSystems);
+          }
         }
         if (inc.hasSystem()) {
           if (!inc.hasVersion()) {

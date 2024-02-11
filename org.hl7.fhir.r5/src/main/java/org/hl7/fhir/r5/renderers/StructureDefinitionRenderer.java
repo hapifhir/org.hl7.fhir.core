@@ -792,8 +792,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       UnusedTracker used = new UnusedTracker();
       String ref = defPath == null ? null : defPath + anchorPrefix + element.getId();
       String sName = tail(element.getPath());
-      if (element.hasSliceName())
+      if (element.hasSliceName()) { 
         sName = sName +":"+element.getSliceName();
+      }
       used.used = true;
       if (logicalModel) {
         if (element.hasRepresentation(PropertyRepresentation.XMLATTR)) {
@@ -1331,10 +1332,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           String ref2 = null;
           String fixedUrl = null;
           if (ed != null) {
-            String p = ed.getWebPath();
-            if (p != null) {
-              ref = p.startsWith("http:") || context.getRules() == GenerationRules.IG_PUBLISHER ? p : Utilities.pathURL(corePath, p);
-            }             
+            String p = ed.getWebPath();           
             fixedUrl = getFixedUrl(ed);
             if (fixedUrl != null) {// if its null, we guess that it's not a profiled extension?
               if (fixedUrl.equals(url))
@@ -3315,6 +3313,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!tl.contains(tc)) {
             aliases.add(name.replace("[x]", Utilities.capitalize(tc)));
             aliases.add(name+":"+name.replace("[x]", Utilities.capitalize(tc)));
+            aliases.add(name.replace("[x]", Utilities.capitalize(tc))+":"+name.replace("[x]", Utilities.capitalize(tc)));
             tl.add(tc);
           }
         }
@@ -3334,7 +3333,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       list.addAll(generated);
     }
     ElementDefinition ed = stack.get(stack.size()-1);
-
     // now we have all the possible names, but some of them might be inappropriate if we've
     // already generated a type slicer. On the other hand, if we've already done that, we're
     // going to steal any type specific ones off it.
