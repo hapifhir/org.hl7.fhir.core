@@ -729,5 +729,15 @@ public class VersionUtilities {
     }
   }
 
+  public static boolean includedInRange(String startVer, String stopVer, String ver) {
+    if (ver.equals(startVer)) {
+      return true;
+    }
+    if (ver.equals(stopVer)) {
+      return true;
+    }
+    return startVer.compareTo(ver) < 0 && stopVer.compareTo(ver) > 0;
+  }
+
 
 }
