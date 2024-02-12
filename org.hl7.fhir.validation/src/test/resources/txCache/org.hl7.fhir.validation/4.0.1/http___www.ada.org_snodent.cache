@@ -15,7 +15,7 @@ v: {
   "code" : "210965D",
   "system" : "http://www.ada.org/snodent",
   "version" : "2.1.0",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

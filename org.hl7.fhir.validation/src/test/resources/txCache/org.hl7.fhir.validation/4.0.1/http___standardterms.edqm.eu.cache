@@ -15,7 +15,7 @@ v: {
   "code" : "20049000",
   "system" : "http://standardterms.edqm.eu",
   "version" : "5 March 2019",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
