@@ -16,14 +16,14 @@ v: {
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://build.fhir.org/assert-response-code-types' version '4.4.0' could not be found, so the code cannot be validated. Valid versions: []",
   "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "http://build.fhir.org/assert-response-code-types|4.4.0",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",

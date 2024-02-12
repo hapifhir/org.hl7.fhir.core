@@ -1,6 +1,34 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "application/octet-stream"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "application/octet-stream",
+  "code" : "application/octet-stream",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "application/octet-stream"
 }, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
@@ -12,7 +40,7 @@ v: {
   "display" : "application/octet-stream",
   "code" : "application/octet-stream",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -30,10 +58,38 @@ v: {
   }]
 }}####
 v: {
-  "display" : "German (Switzerland)",
+  "display" : "German (Region=Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "application/pdf"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "application/pdf",
+  "code" : "application/pdf",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -54,7 +110,7 @@ v: {
   "display" : "application/pdf",
   "code" : "application/pdf",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -76,7 +132,7 @@ v: {
   "code" : "kg",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -98,7 +154,35 @@ v: {
   "code" : "cm",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "image/*"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "image/*",
+  "code" : "image/*",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -119,7 +203,7 @@ v: {
   "display" : "image/*",
   "code" : "image/*",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -137,11 +221,11 @@ v: {
   }]
 }}####
 v: {
-  "display" : "day",
+  "display" : "d",
   "code" : "d",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -159,10 +243,38 @@ v: {
   }]
 }}####
 v: {
-  "display" : "English (India)",
+  "display" : "English (Region=India)",
   "code" : "en-IN",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "image/jpg"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "image/jpg",
+  "code" : "image/jpg",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -183,7 +295,7 @@ v: {
   "display" : "image/jpg",
   "code" : "image/jpg",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -201,10 +313,10 @@ v: {
   }]
 }}####
 v: {
-  "display" : "German (Switzerland)",
+  "display" : "German (Region=Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -225,7 +337,36 @@ v: {
   "display" : "German (Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "min"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://unitsofmeasure.org"
+    }]
+  }
+}, "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "min",
+  "code" : "min",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -247,7 +388,36 @@ v: {
   "code" : "min",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "mmol/L"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://unitsofmeasure.org"
+    }]
+  }
+}, "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "mmol/L",
+  "code" : "mmol/L",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -269,7 +439,36 @@ v: {
   "code" : "mmol/L",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "%"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://unitsofmeasure.org"
+    }]
+  }
+}, "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "%",
+  "code" : "%",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -291,7 +490,7 @@ v: {
   "code" : "%",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -313,50 +512,10 @@ v: {
   "code" : "kg",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "cm"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "cm",
-  "code" : "cm",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#cm' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#cm' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
 }
 
 }
@@ -375,50 +534,10 @@ v: {
   "code" : "cm",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "kg/m2"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "kg/m2",
-  "code" : "kg/m2",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#kg/m2' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#kg/m2' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
 }
 
 }
@@ -439,90 +558,10 @@ v: {
   "code" : "112144000",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "kg"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "kg",
-  "code" : "kg",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#kg' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#kg' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "kg/m2"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "kg/m2",
-  "code" : "kg/m2",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#kg/m2' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#kg/m2' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
 }
 
 }
@@ -541,7 +580,7 @@ v: {
   "code" : "wk",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -565,7 +604,7 @@ v: {
   "code" : "722446000",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -589,7 +628,35 @@ v: {
   "code" : "371531000",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "application/pdf"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "application/pdf",
+  "code" : "application/pdf",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -610,7 +677,7 @@ v: {
   "display" : "application/pdf",
   "code" : "application/pdf",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -634,7 +701,7 @@ v: {
   "code" : "4241000179101",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -658,7 +725,7 @@ v: {
   "code" : "422735006",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -667,448 +734,15 @@ v: {
 }
 -------------------------------------------------------------------------------------
 {"code" : {
-  "code" : "min"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "min",
-  "code" : "min",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#min' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#min' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "min"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "min",
-  "code" : "min",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#min' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#min' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "min"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "min",
-  "code" : "min",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#min' was not found in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#min' was not found in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "mmol/L"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "mmol/L",
-  "code" : "mmol/L",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#mmol/L' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#mmol/L' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "mmol/L"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "mmol/L",
-  "code" : "mmol/L",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#mmol/L' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#mmol/L' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "mmol/L"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "mmol/L",
-  "code" : "mmol/L",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#mmol/L' was not found in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#mmol/L' was not found in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "%"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "%",
-  "code" : "%",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#%' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#%' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "%"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "%",
-  "code" : "%",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#%' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#%' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "%"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "%",
-  "code" : "%",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#%' was not found in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#%' was not found in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodyweight", "version": "4.0.1", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "wk",
-  "code" : "wk",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#wk' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#wk' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodyweight|4.0.1'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
-  "code" : "wk"
-}, "url": "http://hl7.org/fhir/ValueSet/ucum-bodylength", "version": "4.0.1", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
-  "resourceType" : "Parameters",
-  "parameter" : [{
-    "name" : "profile-url",
-    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
-  }]
-}}####
-v: {
-  "display" : "wk",
-  "code" : "wk",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#wk' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
-  "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#wk' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-bodylength|4.0.1'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
-}
-
-}
--------------------------------------------------------------------------------------
-{"code" : {
   "code" : "kg"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://unitsofmeasure.org"
+    }]
+  }
+}, "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1118,30 +752,12 @@ v: {
 v: {
   "display" : "kg",
   "code" : "kg",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#kg' was not found in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#kg' was not found in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
+  "resourceType" : "OperationOutcome"
 }
 
 }
@@ -1160,7 +776,7 @@ v: {
   "code" : "kg",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1170,7 +786,14 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "cm"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://unitsofmeasure.org"
+    }]
+  }
+}, "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1180,30 +803,12 @@ v: {
 v: {
   "display" : "cm",
   "code" : "cm",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#cm' was not found in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#cm' was not found in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
+  "resourceType" : "OperationOutcome"
 }
 
 }
@@ -1222,7 +827,7 @@ v: {
   "code" : "cm",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1232,7 +837,14 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "kg/m2"
-}, "url": "https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation", "version": "0.5.0", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://unitsofmeasure.org"
+    }]
+  }
+}, "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -1242,30 +854,12 @@ v: {
 v: {
   "display" : "kg/m2",
   "code" : "kg/m2",
-  "severity" : "error",
-  "error" : "The provided code 'http://unitsofmeasure.org#kg/m2' was not found in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0'",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "code-invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-in-vs"
-      }],
-      "text" : "The provided code 'http://unitsofmeasure.org#kg/m2' was not found in the value set 'https://mednet.swiss/fhir/ValueSet/mni-timeOfGestation|0.5.0'"
-    },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
-  }]
+  "resourceType" : "OperationOutcome"
 }
 
 }
@@ -1284,7 +878,36 @@ v: {
   "code" : "kg/m2",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "wk"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "http://unitsofmeasure.org"
+    }]
+  }
+}, "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"true", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "wk",
+  "code" : "wk",
+  "system" : "http://unitsofmeasure.org",
+  "version" : "2.0.1",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1306,7 +929,35 @@ v: {
   "code" : "wk",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "json"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "json",
+  "code" : "json",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1327,7 +978,35 @@ v: {
   "display" : "json",
   "code" : "json",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "xml"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "xml",
+  "code" : "xml",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1348,7 +1027,35 @@ v: {
   "display" : "xml",
   "code" : "xml",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "application/fhir+json"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "application/fhir+json",
+  "code" : "application/fhir+json",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1369,7 +1076,35 @@ v: {
   "display" : "application/fhir+json",
   "code" : "application/fhir+json",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en-US"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:47"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "English (Region=United States)",
+  "code" : "en-US",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1390,7 +1125,35 @@ v: {
   "display" : "English (Region=United States)",
   "code" : "en-US",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:47"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "English",
+  "code" : "en",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1411,7 +1174,35 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "text/plain"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "text/plain",
+  "code" : "text/plain",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1432,7 +1223,7 @@ v: {
   "display" : "text/plain",
   "code" : "text/plain",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1456,7 +1247,7 @@ v: {
   "code" : "371525003",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1479,7 +1270,35 @@ v: {
   "code" : "CHE",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "text/css"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "text/css",
+  "code" : "text/css",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1500,7 +1319,7 @@ v: {
   "display" : "text/css",
   "code" : "text/css",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1518,10 +1337,10 @@ v: {
   }]
 }}####
 v: {
-  "display" : "German (Switzerland)",
+  "display" : "German (Region=Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1546,14 +1365,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode#urn:ihe:iti:xds:2017:mimeTypeSufficient ('MimeType sufficient')' was not found in the value set 'http://hl7.org/fhir/ValueSet/formatcodes|4.0.1'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -1586,15 +1405,15 @@ v: {
   "code" : "urn:hl7-org:sdwg:ccda-structuredBody:2.1",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'urn:oid:1.3.6.1.4.1.19376.1.2.3' could not be found, so the code cannot be validated; The provided code 'urn:oid:1.3.6.1.4.1.19376.1.2.3#urn:hl7-org:sdwg:ccda-structuredBody:2.1 ('Documents following C-CDA constraints using a structured body')' was not found in the value set 'http://hl7.org/fhir/ValueSet/formatcodes|4.0.1'",
-  "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "class" : "UNKNOWN",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "urn:oid:1.3.6.1.4.1.19376.1.2.3",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -1611,7 +1430,7 @@ v: {
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -1645,7 +1464,7 @@ v: {
   "code" : "34133-9",
   "system" : "http://loinc.org",
   "version" : "2.74",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1663,10 +1482,10 @@ v: {
   }]
 }}####
 v: {
-  "display" : "English (United States)",
+  "display" : "English (Region=United States)",
   "code" : "en-US",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1689,15 +1508,15 @@ v: {
   "code" : "1",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'urn:oid:1.2.840.114350.1.72.1.7.7.10.696784.13260' could not be found, so the code cannot be validated; The provided code 'urn:oid:1.2.840.114350.1.72.1.7.7.10.696784.13260#1 ('Surgery Case')' was not found in the value set 'http://terminology.hl7.org/ValueSet/v3-ActEncounterCode|2.0.0'",
-  "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "class" : "UNKNOWN",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "urn:oid:1.2.840.114350.1.72.1.7.7.10.696784.13260",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -1714,7 +1533,7 @@ v: {
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -1742,10 +1561,10 @@ v: {
   }]
 }}####
 v: {
-  "display" : "English (New Zeland)",
+  "display" : "English (Region=New Zealand)",
   "code" : "en-NZ",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1763,11 +1582,11 @@ v: {
   }]
 }}####
 v: {
-  "display" : "day",
+  "display" : "d",
   "code" : "d",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1789,7 +1608,7 @@ v: {
   "code" : "Cel",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1811,7 +1630,7 @@ v: {
   "code" : "cm",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1833,7 +1652,7 @@ v: {
   "code" : "kg",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1855,7 +1674,7 @@ v: {
   "code" : "NZ",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1879,14 +1698,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#26643006' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -1920,14 +1739,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#767525000' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -1959,8 +1778,8 @@ v: {
   "display" : "Insulin treated type 2 diabetes mellitus (disorder)",
   "code" : "237599002",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1979,11 +1798,11 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Benign essential hypertension (disorder)",
+  "display" : "Benign essential hypertension",
   "code" : "1201005",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -2007,14 +1826,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#109081006' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2043,11 +1862,11 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Fracture of neck of femur (disorder)",
+  "display" : "Fracture of neck of femur",
   "code" : "5913000",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -2071,14 +1890,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#292954005' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2107,11 +1926,11 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Anxiety disorder due to a general medical condition (disorder)",
+  "display" : "Anxiety disorder due to a general medical condition",
   "code" : "52910006",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -2135,14 +1954,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#428673006' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2171,11 +1990,11 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Primary open reduction and internal fixation of proximal femoral fracture with screw/nail and plate device (procedure)",
+  "display" : "Primary open reduction and internal fixation of proximal femoral fracture with screw/nail and plate device",
   "code" : "265132005",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -2199,14 +2018,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#7947003' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2240,14 +2059,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#81464008' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2281,14 +2100,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#48546005' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2317,11 +2136,11 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Postconcussion syndrome (disorder)",
+  "display" : "Postconcussion syndrome",
   "code" : "40425004",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -2345,14 +2164,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#158965000' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2386,14 +2205,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#96309000' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2427,14 +2246,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#714081009' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2468,14 +2287,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#25246002' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2509,14 +2328,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#96067005' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2545,11 +2364,11 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Inflammatory disorder due to increased blood urate level (disorder)",
+  "display" : "Gout",
   "code" : "90560007",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -2573,14 +2392,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#34206005' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2614,14 +2433,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#108537001' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2655,14 +2474,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#126212009' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2696,14 +2515,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#292360004' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2737,14 +2556,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#16217701000119102' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2778,14 +2597,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#287903004' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2805,6 +2624,34 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "application/xml"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "application/xml",
+  "code" : "application/xml",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "application/xml"
 }, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
@@ -2816,7 +2663,35 @@ v: {
   "display" : "application/xml",
   "code" : "application/xml",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "text/xml"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "text/xml",
+  "code" : "text/xml",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -2837,7 +2712,7 @@ v: {
   "display" : "text/xml",
   "code" : "text/xml",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -2859,15 +2734,15 @@ v: {
   "code" : "URGENT",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://fhir.mimic.mit.edu/CodeSystem/admission-class' could not be found, so the code cannot be validated; The provided code 'http://fhir.mimic.mit.edu/CodeSystem/admission-class#URGENT' was not found in the value set 'http://terminology.hl7.org/ValueSet/v3-ActEncounterCode|2.0.0'",
-  "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "class" : "UNKNOWN",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "http://fhir.mimic.mit.edu/CodeSystem/admission-class",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -2884,7 +2759,7 @@ v: {
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -2894,6 +2769,63 @@ v: {
         "code" : "not-in-vs"
       }],
       "text" : "The provided code 'http://fhir.mimic.mit.edu/CodeSystem/admission-class#URGENT' was not found in the value set 'http://terminology.hl7.org/ValueSet/v3-ActEncounterCode|2.0.0'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://fhir.mimic.mit.edu/CodeSystem/admission-class",
+  "code" : "URGENT"
+}, "url": "http://mimic.fhir.mit.edu/ValueSet/admission-class", "version": "0.1.2", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "code" : "URGENT",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://fhir.mimic.mit.edu/CodeSystem/admission-class' could not be found, so the code cannot be validated; The provided code 'http://fhir.mimic.mit.edu/CodeSystem/admission-class#URGENT' was not found in the value set 'http://mimic.fhir.mit.edu/ValueSet/admission-class|0.1.2'",
+  "class" : "UNKNOWN",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "http://fhir.mimic.mit.edu/CodeSystem/admission-class",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://local.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://fhir.mimic.mit.edu/CodeSystem/admission-class' could not be found, so the code cannot be validated"
+    },
+    "location" : ["Coding.system"],
+    "expression" : ["Coding.system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://local.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://fhir.mimic.mit.edu/CodeSystem/admission-class#URGENT' was not found in the value set 'http://mimic.fhir.mit.edu/ValueSet/admission-class|0.1.2'"
     },
     "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
@@ -2918,7 +2850,35 @@ v: {
   "code" : "US",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "text/cql.identifier"
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "text/cql.identifier",
+  "code" : "text/cql.identifier",
+  "system" : "urn:ietf:bcp:13",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -2939,7 +2899,7 @@ v: {
   "display" : "text/cql.identifier",
   "code" : "text/cql.identifier",
   "system" : "urn:ietf:bcp:13",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -2963,15 +2923,15 @@ v: {
   "code" : "27113001",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20210731' could not be found, so the code cannot be validated. Valid versions: [http://snomed.info/sct/11000146104/version/20230331,http://snomed.info/sct/11000172109/version/20231115,http://snomed.info/sct/2011000195101/version/20230607,http://snomed.info/sct/20611000087101/version/20220930,http://snomed.info/sct/32506021000036107/version/20230731,http://snomed.info/sct/45991000052106/version/20210531,http://snomed.info/sct/554471000005108/version/20210930,http://snomed.info/sct/731000124108/version/20230901,http://snomed.info/sct/827022005/version/20221130,http://snomed.info/sct/83821000000107/version/20230412,http://snomed.info/sct/900000000000207008/version/20230131,http://snomed.info/sct/900000000000207008/version/20230731,http://snomed.info/sct/900000000000207008/version/20230901]; The provided code 'http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20210731#27113001 ('Body weight (observable entity)')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1'",
-  "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "class" : "UNKNOWN",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20210731",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -2988,7 +2948,7 @@ v: {
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -3016,11 +2976,11 @@ v: {
   }]
 }}####
 v: {
-  "display" : "kilogram",
+  "display" : "kg",
   "code" : "kg",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -3045,14 +3005,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'urn:iso:std:iso:11073:10101#150456 ('MDC_PULS_OXIM_SAT_O2')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",
@@ -3061,13 +3021,13 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "status-check"
       }],
-      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2022-02-04"
+      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2023-04-26"
     }
   },
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -3101,14 +3061,14 @@ v: {
   "severity" : "error",
   "error" : "The provided code 'http://snomed.info/sct#276885007' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -3140,7 +3100,7 @@ v: {
   "code" : "Cel",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -3158,10 +3118,10 @@ v: {
   }]
 }}####
 v: {
-  "display" : "English (Australia)",
+  "display" : "English (Region=Australia)",
   "code" : "en-AU",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -3182,7 +3142,7 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -3200,10 +3160,10 @@ v: {
   }]
 }}####
 v: {
-  "display" : "English (United States)",
+  "display" : "English (Region=United States)",
   "code" : "en-US",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -3226,7 +3186,7 @@ v: {
   "code" : "US",
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -3244,11 +3204,11 @@ v: {
   }]
 }}####
 v: {
-  "display" : "week",
+  "display" : "wk",
   "code" : "wk",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -3258,7 +3218,14 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "code" : "[%payloadFormat%]"
-}, "url": "http://hl7.org/fhir/ValueSet/mimetypes", "version": "4.0.1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "include" : [{
+      "system" : "urn:ietf:bcp:13"
+    }]
+  }
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -3268,33 +3235,33 @@ v: {
 v: {
   "code" : "[%payloadFormat%]",
   "severity" : "error",
-  "error" : "The provided code 'urn:ietf:bcp:13#[%payloadFormat%]' was not found in the value set 'http://hl7.org/fhir/ValueSet/mimetypes|4.0.1'; Unknown code '[%payloadFormat%]' in the CodeSystem 'urn:ietf:bcp:13' version ''",
+  "error" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:b3310b54-4cda-4296-8d3b-7cc6e191fc2c'; The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:b3310b54-4cda-4296-8d3b-7cc6e191fc2c'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
-    "code" : "code-invalid",
+    "code" : "not-found",
     "details" : {
       "coding" : [{
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "invalid-code"
+        "code" : "cannot-infer"
       }],
-      "text" : "Unknown code '[%payloadFormat%]' in the CodeSystem 'urn:ietf:bcp:13' version ''"
+      "text" : "The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:b3310b54-4cda-4296-8d3b-7cc6e191fc2c'"
     },
-    "location" : ["Coding.code"],
-    "expression" : ["Coding.code"]
+    "location" : ["code"],
+    "expression" : ["code"]
   },
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -3303,7 +3270,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "not-in-vs"
       }],
-      "text" : "The provided code 'urn:ietf:bcp:13#[%payloadFormat%]' was not found in the value set 'http://hl7.org/fhir/ValueSet/mimetypes|4.0.1'"
+      "text" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:b3310b54-4cda-4296-8d3b-7cc6e191fc2c'"
     },
     "location" : ["Coding.code"],
     "expression" : ["Coding.code"]

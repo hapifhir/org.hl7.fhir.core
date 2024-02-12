@@ -1290,7 +1290,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         vsc.setUnknownSystems(unknownSystems);
         vsc.setThrowToServer(options.isUseServer() && terminologyClientManager.hasClient());
         if (!ValueSetUtilities.isServerSide(code.getSystem())) {
-          res = vsc.validateCode(path, code);
+          res = vsc.validateCode(path, code.copy());
           if (txCache != null && cachingAllowed) {
             txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
           }
