@@ -15,14 +15,14 @@ v: {
   "severity" : "error",
   "error" : "A definition for CodeSystem 'https://fhir.hl7.org.uk/CodeSystem/UKCore-SDSJobRoleName' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "https://fhir.hl7.org.uk/CodeSystem/UKCore-SDSJobRoleName",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",

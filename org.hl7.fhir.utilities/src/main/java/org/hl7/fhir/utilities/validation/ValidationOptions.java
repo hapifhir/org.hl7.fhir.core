@@ -158,6 +158,13 @@ public class ValidationOptions {
     return n;
   }
 
+
+  public ValidationOptions withGuessSystem(boolean value) {
+    ValidationOptions n = this.copy();
+    n.guessSystem = value;
+    return n;
+  }
+  
   public ValidationOptions withActiveOnly() {
     ValidationOptions n = this.copy();
     n.activeOnly = true;
@@ -299,5 +306,6 @@ public class ValidationOptions {
   public FhirPublication getFhirVersion() {
     return fhirVersion;
   }
+
   
 }
