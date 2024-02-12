@@ -153,7 +153,7 @@ public class TerminologyClientManager {
       for (String s : ol.authoritative) {
         boolean ok = true;
         for (ServerOptionList t : choices) {
-          if (!t.candidates.contains(s)) {
+          if (!t.authoritative.contains(s) && !t.candidates.contains(s)) {
             ok = false;
           }
         }

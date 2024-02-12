@@ -481,7 +481,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     VersionInfo vi = new VersionInfo(this);
     checkCanonical(issues, path, valueset, valueset);
 
-    String system = code.hasSystem() ? code.getSystem() : getValueSetSystemOrNull();
+    String system = code.getSystem();
     if (!options.isMembershipOnly()) {
       if (system == null && !code.hasDisplay() && options.isGuessSystem()) { // dealing with just a plain code (enum)
         List<StringWithCode> problems = new ArrayList<>();
@@ -490,7 +490,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
           if (problems.size() == 0) {
             throw new Error("Unable to resolve systems but no reason why"); // this is an error in the java code
           } else if (problems.size() == 1) {
-            return new ValidationResult(IssueSeverity.ERROR, problems.get(0).getMessage(), makeIssue(IssueSeverity.ERROR, IssueType.UNKNOWN, path, problems.get(0).getMessage(), problems.get(0).getCode(), null));
+            String msg = context.formatMessagePlural(1, I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getVersionedUrl(), "'"+code.toString()+"'");
+            issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, "code", msg, OpIssueCode.NotInVS, null));
+            issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, "code", problems.get(0).getMessage(), problems.get(0).getCode(), null));
+            return new ValidationResult(IssueSeverity.ERROR, problems.get(0).getMessage()+"; "+msg, issues);
           } else {
             CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("; ");
             for (StringWithCode s : problems) {
@@ -986,40 +989,6 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return null;
   }
 
-  private String getValueSetSystemOrNull() throws FHIRException {
-    if (valueset == null) {
-      return null;
-    }
-    if (!options.isGuessSystem()) {
-      return null;
-    }
-    if (valueset.getCompose().getInclude().size() == 0) {
-      if (!valueset.hasExpansion() || valueset.getExpansion().getContains().size() == 0) {
-        return null;
-      } else {
-        String cs = valueset.getExpansion().getContains().get(0).getSystem();
-        if (cs != null && checkSystem(valueset.getExpansion().getContains(), cs)) {
-          return cs;
-        } else {
-          return null;
-        }
-      }
-    }
-    for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
-      if (inc.hasValueSet()) {
-        return null;
-      }
-      if (!inc.hasSystem()) {
-        return null;
-      }
-    }
-    if (valueset.getCompose().getInclude().size() == 1) {
-      return valueset.getCompose().getInclude().get(0).getSystem();
-    }
-
-    return null;
-  }
-
   /*
    * Check that all system values within an expansion correspond to the specified system value
    */
@@ -1087,10 +1056,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return null;
     }
     if (sys.size() == 0) {
-      problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_MATCHES, code)));
+      problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_MATCHES, code, valueset.getVersionedUrl())));
       return null;
     } else if (sys.size() > 1) {
-      problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES, sys.toString())));
+      problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES, code, valueset.getVersionedUrl(), sys.toString())));
       return null;
     } else {
       return sys.iterator().next();
@@ -1101,7 +1070,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (valueset.hasCompose()) {
       //  ignore excludes - they can't make any difference
       if (!valueset.getCompose().hasInclude() && !valueset.getExpansion().hasContains()) {
-        problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_INCLUDES_OR_EXPANSION, valueset.getVersionedUrl())));
+        problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_INCLUDES_OR_EXPANSION, code, valueset.getVersionedUrl())));
       }
 
       int i = 0;
@@ -1114,19 +1083,29 @@ public class ValueSetValidator extends ValueSetProcessBase {
             }
           }
         } else if (!vsi.hasSystem()) { 
-          problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_NO_SYSTEM, valueset.getVersionedUrl(), i)));
+          problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_NO_SYSTEM, code, valueset.getVersionedUrl(), i)));
           return false;
         }
         if (vsi.hasSystem()) {
           if (vsi.hasFilter()) {
-            problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_FILTER, valueset.getVersionedUrl(), i, vsi.getSystem())));
-            return false;
+            ValueSet vsDummy = new ValueSet();
+            vsDummy.setUrl(Utilities.makeUuidUrn());
+            vsDummy.setStatus(PublicationStatus.ACTIVE);
+            vsDummy.getCompose().addInclude(vsi);
+            Coding c = new Coding().setCode(code).setSystem(vsi.getSystem());
+            ValidationResult vr = context.validateCode(options.withGuessSystem(false), c, vsDummy);
+            if (vr.isOk()) {
+              sys.add(vsi.getSystem());
+            } else {
+              problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_FILTER, code, valueset.getVersionedUrl(), i, vsi.getSystem())));
+              return false;
+            }
           }
           CodeSystemProvider csp = CodeSystemProvider.factory(vsi.getSystem());
           if (csp != null) {
             Boolean ok = csp.checkCode(code);
             if (ok == null) {
-              problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE, valueset.getVersionedUrl(), vsi.getSystem())));
+              problems.add(new StringWithCode(OpIssueCode.InferFailed, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE, code, valueset.getVersionedUrl(), vsi.getSystem())));
               sys.add(vsi.getSystem());
             } else if (ok) {
               sys.add(vsi.getSystem());
@@ -1156,15 +1135,25 @@ public class ValueSetValidator extends ValueSetProcessBase {
                 }
               }
             } else {
-              // we'll try to expand this one then 
-              ValueSetExpansionOutcome vse = context.expandVS(vsi, false, false);
-              if (vse.isOk()) {
-                if (!checkSystems(vse.getValueset().getExpansion().getContains(), code, sys, problems)) {
+              ValueSet vsDummy = new ValueSet();
+              vsDummy.setUrl(Utilities.makeUuidUrn());
+              vsDummy.setStatus(PublicationStatus.ACTIVE);
+              vsDummy.getCompose().addInclude(vsi);
+              ValidationResult vr = context.validateCode(options.withNoClient(), code, vsDummy);
+              if (vr.isOk()) {
+                sys.add(vsi.getSystem());
+              } else {
+                // ok, we'll try to expand this one then 
+                ValueSetExpansionOutcome vse = context.expandVS(vsi, false, false);
+                if (vse.isOk()) {
+                  if (!checkSystems(vse.getValueset().getExpansion().getContains(), code, sys, problems)) {
+                    return false;
+                  }
+                } else {
+                  problems.add(new StringWithCode(OpIssueCode.NotFound, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_UNKNOWN_SYSTEM, code, valueset.getVersionedUrl(), i, vsi.getSystem(), vse.getAllErrors().toString())));              
                   return false;
                 }
-              } else {
-                problems.add(new StringWithCode(OpIssueCode.NotFound, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_UNKNOWN_SYSTEM, valueset.getVersionedUrl(), i, vsi.getSystem(), vse.getAllErrors().toString())));              
-                return false;
+
               }
             }
           }

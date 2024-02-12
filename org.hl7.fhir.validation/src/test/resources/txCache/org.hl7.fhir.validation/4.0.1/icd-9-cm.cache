@@ -14,7 +14,7 @@ v: {
   "code" : "99.00",
   "system" : "http://hl7.org/fhir/sid/icd-9-cm",
   "version" : "2015",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
