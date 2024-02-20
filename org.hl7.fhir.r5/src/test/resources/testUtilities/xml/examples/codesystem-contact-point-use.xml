@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CodeSystem xmlns="http://hl7.org/fhir">
+  <id value="contact-point-use"/>
+  <meta>
+    <lastUpdated value="2023-10-03T22:51:29.574-04:00"/>
+  </meta>
+  <text>
+    <status value="generated"/>
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p>This case-sensitive code system 
+        <code>http://hl7.org/fhir/contact-point-use</code> defines the following codes:
+      </p>
+      <table class="codes">
+        <tr>
+          <td style="white-space:nowrap">
+            <b>Code</b>
+          </td>
+          <td>
+            <b>Display</b>
+          </td>
+          <td>
+            <b>Definition</b>
+          </td>
+        </tr>
+        <tr>
+          <td style="white-space:nowrap">home
+            <a name="contact-point-use-home"> </a>
+          </td>
+          <td>Home</td>
+          <td>A communication contact point at a home; attempted contacts for business purposes might intrude privacy and chances are one will contact family or other household members instead of the person one wishes to call. Typically used with urgent cases, or if no other contacts are available.</td>
+        </tr>
+        <tr>
+          <td style="white-space:nowrap">work
+            <a name="contact-point-use-work"> </a>
+          </td>
+          <td>Work</td>
+          <td>An office contact point. First choice for business related contacts during business hours.</td>
+        </tr>
+        <tr>
+          <td style="white-space:nowrap">temp
+            <a name="contact-point-use-temp"> </a>
+          </td>
+          <td>Temp</td>
+          <td>A temporary contact point. The period can provide more detailed information.</td>
+        </tr>
+        <tr>
+          <td style="white-space:nowrap">old
+            <a name="contact-point-use-old"> </a>
+          </td>
+          <td>Old</td>
+          <td>This contact point is no longer in use (or was never correct, but retained for records).</td>
+        </tr>
+        <tr>
+          <td style="white-space:nowrap">mobile
+            <a name="contact-point-use-mobile"> </a>
+          </td>
+          <td>Mobile</td>
+          <td>A telecommunication device that moves and stays with its owner. May have characteristics of all other use codes, suitable for urgent matters, not the first choice for routine business.</td>
+        </tr>
+      </table>
+    </div>
+  </text>
+  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-wg">
+    <valueCode value="fhir"/>
+  </extension>
+  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status">
+    <valueCode value="normative"/>
+  </extension>
+  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version">
+    <valueCode value="4.0.0"/>
+  </extension>
+  <extension url="http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm">
+    <valueInteger value="5"/>
+  </extension>
+  <url value="http://hl7.org/fhir/contact-point-use"/>
+  <identifier>
+    <system value="urn:ietf:rfc:3986"/>
+    <value value="urn:oid:2.16.840.1.113883.4.642.1.74"/>
+  </identifier>
+  <version value="6.0.0-cibuild"/>
+  <name value="ContactPointUse"/>
+  <title value="ContactPointUse"/>
+  <status value="active"/>
+  <experimental value="false"/>
+  <date value="2023-10-03T22:51:29-04:00"/>
+  <publisher value="HL7 (FHIR Project)"/>
+  <contact>
+    <telecom>
+      <system value="url"/>
+      <value value="http://hl7.org/fhir"/>
+    </telecom>
+    <telecom>
+      <system value="email"/>
+      <value value="fhir@lists.hl7.org"/>
+    </telecom>
+  </contact>
+  <description value="Use of contact point."/>
+  <jurisdiction>
+    <coding>
+      <system value="http://unstats.un.org/unsd/methods/m49/m49.htm"/>
+      <code value="001"/>
+      <display value="World"/>
+    </coding>
+  </jurisdiction>
+  <caseSensitive value="true"/>
+  <valueSet value="http://hl7.org/fhir/ValueSet/contact-point-use"/>
+  <content value="complete"/>
+  <concept>
+    <code value="home"/>
+    <display value="Home"/>
+    <definition value="A communication contact point at a home; attempted contacts for business purposes might intrude privacy and chances are one will contact family or other household members instead of the person one wishes to call. Typically used with urgent cases, or if no other contacts are available."/>
+  </concept>
+  <concept>
+    <code value="work"/>
+    <display value="Work"/>
+    <definition value="An office contact point. First choice for business related contacts during business hours."/>
+  </concept>
+  <concept>
+    <code value="temp"/>
+    <display value="Temp"/>
+    <definition value="A temporary contact point. The period can provide more detailed information."/>
+  </concept>
+  <concept>
+    <code value="old"/>
+    <display value="Old"/>
+    <definition value="This contact point is no longer in use (or was never correct, but retained for records)."/>
+  </concept>
+  <concept>
+    <code value="mobile"/>
+    <display value="Mobile"/>
+    <definition value="A telecommunication device that moves and stays with its owner. May have characteristics of all other use codes, suitable for urgent matters, not the first choice for routine business."/>
+  </concept>
+</CodeSystem>
