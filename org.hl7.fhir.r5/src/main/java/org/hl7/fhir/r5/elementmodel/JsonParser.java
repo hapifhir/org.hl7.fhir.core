@@ -86,22 +86,15 @@ public class JsonParser extends ParserBase {
   private JsonCreator json;
   private boolean allowComments;
 
-  private ProfileUtilities profileUtilities;
   private Element baseElement;
-  private ContextUtilities contextUtilities;
 
   public JsonParser(IWorkerContext context, ProfileUtilities utilities) {
-    super(context);
+    super(context, utilities);
 
-    this.profileUtilities = utilities;
-    contextUtilities = new ContextUtilities(context);
   }
 
   public JsonParser(IWorkerContext context) {
     super(context);
-
-    this.profileUtilities = new ProfileUtilities(this.context, null, null, new FHIRPathEngine(context));
-    contextUtilities = new ContextUtilities(context);
   }
 
   public Element parse(String source, String type) throws Exception {
@@ -128,7 +121,7 @@ public class JsonParser extends ParserBase {
       nEd.addType().setCode(type);
       nEd.setMax(obj.getProperties().get(0).getValue().isJsonArray() ? "*" : "1"); 
     }
-    Element result = new Element(type, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities)).setFormat(FhirFormat.JSON);
+    Element result = new Element(type, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.getProfileUtilities(), this.getContextUtilities())).setFormat(FhirFormat.JSON);
     result.setPath(type);
     checkObject(focusFragment.getErrors(), obj, result, path);
     result.setType(type);
@@ -199,7 +192,7 @@ public class JsonParser extends ParserBase {
       name = sd.getType();
       path = sd.getTypeTail();
     }
-    baseElement = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities)).setFormat(FhirFormat.JSON);
+    baseElement = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.getProfileUtilities(), this.getContextUtilities())).setFormat(FhirFormat.JSON);
     checkObject(errors, object, baseElement, path);
     baseElement.markLocation(line(object), col(object));
     baseElement.setType(name);
@@ -259,9 +252,9 @@ public class JsonParser extends ParserBase {
     if (policy != ValidationPolicy.NONE) {
       for (JsonProperty e : children) {
         if (e.getTag() == 0) {
-          StructureDefinition sd = element.getProperty().isLogical() ? contextUtilities.fetchByJsonName(e.getName()) : null;
+          StructureDefinition sd = element.getProperty().isLogical() ? getContextUtilities().fetchByJsonName(e.getName()) : null;
           if (sd != null) {
-            Property property = new Property(context, sd.getSnapshot().getElementFirstRep(), sd, element.getProperty().getUtils());
+            Property property = new Property(context, sd.getSnapshot().getElementFirstRep(), sd, element.getProperty().getUtils(), element.getProperty().getContextUtils());
             parseChildItem(errors, path, children, element, property);
           } else if ("fhir_comments".equals(e.getName()) && (VersionUtilities.isR2BVer(context.getVersion()) || VersionUtilities.isR2Ver(context.getVersion()))) {
             if (!e.getValue().isJsonArray()) {
@@ -341,7 +334,7 @@ public class JsonParser extends ParserBase {
           if (type == null) {
             logError(errors, ValidationMessage.NO_RULE_DATE, line(je), col(je), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE, describeType(je), property.getName(), property.typeSummary()), IssueSeverity.ERROR);
           } else if (property.hasType(type)) {
-            Property np = new Property(property.getContext(), property.getDefinition(), property.getStructure(), property.getUtils(), type);
+            Property np = new Property(property.getContext(), property.getDefinition(), property.getStructure(), property.getUtils(), property.getContextUtils(), type);
             parseChildPrimitive(errors, jp, getJsonPropertyByName("_"+property.getJsonName(), children), context, np, path, property.getName(), false);
           } else {
             logError(errors, ValidationMessage.NO_RULE_DATE, line(je), col(je), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(je), property.getName(), type, property.typeSummary()), IssueSeverity.ERROR);
@@ -474,7 +467,7 @@ public class JsonParser extends ParserBase {
               if (type == null) {
                 logError(errors, ValidationMessage.NO_RULE_DATE, line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE, describeType(pv.getValue()), propV.getName(), propV.typeSummary()), IssueSeverity.ERROR);
               } else if (propV.hasType(type)) {
-                pvl = new Property(propV.getContext(), propV.getDefinition(), propV.getStructure(), propV.getUtils(), type);
+                pvl = new Property(propV.getContext(), propV.getDefinition(), propV.getStructure(), propV.getUtils(), propV.getContextUtils(), type);
                 ok = true;
               } else {
                 logError(errors, ValidationMessage.NO_RULE_DATE, line(pv.getValue()), col(pv.getValue()), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(pv.getValue()), propV.getName(), type, propV.typeSummary()), IssueSeverity.ERROR);
@@ -713,7 +706,7 @@ public class JsonParser extends ParserBase {
       if (sd == null) {
         logError(errors, ValidationMessage.NO_RULE_DATE, line(res), col(res), npath, IssueType.INVALID, context.formatMessage(I18nConstants.CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, name), IssueSeverity.FATAL);			    
       } else {
-        parent.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities), SpecialElement.fromProperty(parent.getProperty()), elementProperty);
+        parent.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd, this.getProfileUtilities(), this.getContextUtilities()), SpecialElement.fromProperty(parent.getProperty()), elementProperty);
         parent.setType(name);
         parseChildren(errors, npath, res, parent, true, null);
       }
