@@ -50,7 +50,7 @@ public class ResourceParser extends ParserBase {
     if (sd == null) {
       throw new FHIRException("No definition exists for "+resource.fhirType());
     }
-    Property p = new Property(context, sd.getSnapshot().getElement().get(0), sd, new ProfileUtilities(context, null, null));
+    Property p = new Property(context, sd.getSnapshot().getElement().get(0), sd, getProfileUtilities(), getContextUtilities());
     String path = resource.fhirType();
     
     Element e = new Element(resource.fhirType(), p);
@@ -106,7 +106,7 @@ public class ResourceParser extends ParserBase {
             StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(v.fhirType(), null));
             if (sd == null)
               throw new FHIRFormatError(context.formatMessage(I18nConstants.CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, v.fhirType()));
-            n.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd), SpecialElement.fromProperty(n.getProperty()), p);
+            n.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd, getProfileUtilities(), getContextUtilities()), SpecialElement.fromProperty(n.getProperty()), p);
             n.setType(v.fhirType());
             parseChildren(npath, v, n);
           } else {

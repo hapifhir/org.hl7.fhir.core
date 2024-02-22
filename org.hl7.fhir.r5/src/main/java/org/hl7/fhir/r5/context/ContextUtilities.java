@@ -47,6 +47,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   private List<StructureDefinition> allStructuresList = new ArrayList<StructureDefinition>();
   private List<String> canonicalResourceNames;
   private List<String> concreteResourceNames;
+  private Set<String> concreteResourceNameSet;
   
   public ContextUtilities(IWorkerContext context) {
     super();
@@ -317,6 +318,9 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
 
   @Override
   public boolean isResource(String t) {
+    if (getConcreteResourceSet().contains(t)) {
+      return true;
+    }
     StructureDefinition sd;
     try {
       sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+t);
@@ -370,16 +374,22 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return null;
   }
 
-  public List<String>  getConcreteResources() {
-    if (concreteResourceNames == null) {
-      concreteResourceNames =  new ArrayList<>();
+  public Set<String> getConcreteResourceSet() {
+    if (concreteResourceNameSet == null) {
+      concreteResourceNameSet =  new HashSet<>();
       Set<String> names = new HashSet<>();
       for (StructureDefinition sd : allStructures()) {
         if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract()) {
           names.add(sd.getType());
         }
       }
-      concreteResourceNames.addAll(Utilities.sorted(names));
+    }
+    return concreteResourceNameSet;
+  }
+
+  public List<String> getConcreteResources() {
+    if (concreteResourceNames == null) {
+      concreteResourceNames.addAll(Utilities.sorted(concreteResourceNameSet));
     }
     return concreteResourceNames;
   }
