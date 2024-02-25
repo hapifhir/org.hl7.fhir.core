@@ -63,7 +63,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
   @Test
   public void testSyntax() throws IOException, FHIRException {
     StructureMapUtilities scu = new StructureMapUtilities(context, this);
-    String fileMap = TestingUtilities.loadTestResource("r5", "structure-mapping", "syntax.map");
+    String fileMap = TestingUtilities.loadTestResource("r4b", "structure-mapping", "syntax.map");
     System.out.println(fileMap);
 
     StructureMap structureMap = scu.parse(fileMap, "Syntax");
