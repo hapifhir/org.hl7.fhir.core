@@ -596,6 +596,9 @@ public abstract class CanonicalResource extends DomainResource {
   }
   
   public String present() {
+    if (hasUserData("presentation")) {
+      return getUserString("presentation");
+    }
     if (hasTitle())
       return getTitle();
     if (hasName())

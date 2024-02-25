@@ -203,19 +203,16 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     }
   }
   
-  public XhtmlNode addTag(String name)
-  {
-
+  private XhtmlNode makeTag(String name) {
     if (!(nodeType == NodeType.Element || nodeType == NodeType.Document))  {
       throw new Error("Wrong node type - node is "+nodeType.toString()+" ('"+getName()+"/"+getContent()+"')");
     }
-    
-//    if (inPara && name.equals("p")) {
-//      throw new FHIRException("nested Para");
-//    }
-//    if (inLink && name.equals("a")) {
-//      throw new FHIRException("Nested Link");
-//    }
+//  if (inPara && name.equals("p")) {
+//  throw new FHIRException("nested Para");
+//}
+//if (inLink && name.equals("a")) {
+//  throw new FHIRException("Nested Link");
+//}
     XhtmlNode node = new XhtmlNode(NodeType.Element);
     node.setName(name);
     if (getChildNodes().isInPara() || name.equals("p")) {
@@ -224,35 +221,26 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     if (getChildNodes().isInLink() || name.equals("a")) {
       node.getChildNodes().setInLink(true);
     }
-    getChildNodes().add(node);
     if (Utilities.existsInList(name, "b", "big", "i", "small", "tt", "abbr", "acronym", "cite", "code", "dfn", "em", "kbd", "strong", "samp", "var", "a", "bdo", "br", "img", "map", "object", "q", "script", "span", "sub", "sup", " button", "input", "label", "select", "textarea")) {
       node.notPretty();
-    }
+    }        
+    return node;
+  }
+  
+  public XhtmlNode addTag(String name) {
+    XhtmlNode node = makeTag(name);
+    getChildNodes().add(node);
     return node;
   }
   
   
-  
-
-  public XhtmlNode addTag(int index, String name)
-  {
-
-    if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
-      throw new Error("Wrong node type. is "+nodeType.toString());
-    XhtmlNode node = new XhtmlNode(NodeType.Element);
-    if (getChildNodes().isInPara() || name.equals("p")) {
-      node.getChildNodes().setInPara(true);
-    }
-    if (getChildNodes().isInLink() || name.equals("a")) {
-      node.getChildNodes().setInLink(true);
-    }
-    node.setName(name);
+  public XhtmlNode addTag(int index, String name) {
+    XhtmlNode node = makeTag(name);
     getChildNodes().add(index, node);
     return node;
   }
 
-  public XhtmlNode addComment(String content)
-  {
+  public XhtmlNode addComment(String content) {
     if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
       throw new Error("Wrong node type");
     XhtmlNode node = new XhtmlNode(NodeType.Comment);
@@ -261,8 +249,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return node;
   }
 
-  public XhtmlNode addDocType(String content)
-  {
+  public XhtmlNode addDocType(String content) {
     if (!(nodeType == NodeType.Document)) 
       throw new Error("Wrong node type");
     XhtmlNode node = new XhtmlNode(NodeType.DocType);
@@ -271,8 +258,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return node;
   }
 
-  public XhtmlNode addInstruction(String content)
-  {
+  public XhtmlNode addInstruction(String content) {
     if (!(nodeType == NodeType.Document)) 
       throw new Error("Wrong node type");
     XhtmlNode node = new XhtmlNode(NodeType.Instruction);
@@ -280,8 +266,8 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     getChildNodes().add(node);
     return node;
   }
-  public XhtmlNode addText(String content)
-  {
+  
+  public XhtmlNode addText(String content) {
     if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
       throw new Error("Wrong node type");
     if (content != null) {
@@ -293,8 +279,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
       return null;
   }
 
-  public XhtmlNode addText(int index, String content)
-  {
+  public XhtmlNode addText(int index, String content) {
     if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
       throw new Error("Wrong node type");
     if (content == null)
@@ -306,8 +291,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return node;
   }
 
-  public boolean allChildrenAreText()
-  {
+  public boolean allChildrenAreText() {
     boolean res = true;
     if (hasChildren()) {
       for (XhtmlNode n : childNodes)
@@ -373,6 +357,17 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     if (value == null)
       throw new Error("value is null");
     getAttributes().put(name, value);
+    return this;
+  }
+
+  public XhtmlNode attributeNN(String name, String value) {
+    if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
+      throw new Error("Wrong node type");
+    if (name == null)
+      throw new Error("name is null");
+    if (value != null) {
+      getAttributes().put(name, value);
+    }
     return this;
   }
 
@@ -781,12 +776,18 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   public XhtmlNode colspan(String n) {
     return setAttribute("colspan", n);
   }
-  
+
   public XhtmlNode colspan(int n) {
     return setAttribute("colspan", Integer.toString(n));
   }
-  
 
+  public XhtmlNode rowspan(int n) {
+    if (n > 1) {
+      return setAttribute("rowspan", Integer.toString(n));      
+    } else {
+      return this;
+    }
+  }
 
   @Override
   protected void addChildren(XhtmlNodeList childNodes) {
@@ -928,6 +929,15 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
 
+  public XhtmlNode td(int index) {
+    XhtmlNode x = addTag(index, "td");
+    XhtmlNode t = (XhtmlNode) getUserData("cells");
+    if (t != null) {
+      x.copyAllContent(t);
+    }
+    return x;    
+  }
+  
   public XhtmlNode td() {
     XhtmlNode x = addTag("td");
     XhtmlNode t = (XhtmlNode) getUserData("cells");
@@ -936,6 +946,27 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     }
     return x;
   }
+
+  public XhtmlNode td(int index, String width) {
+    XhtmlNode x = addTag(index, "td");
+    x.attribute("width", width);
+    XhtmlNode t = (XhtmlNode) getUserData("cells");
+    if (t != null) {
+      x.copyAllContent(t);
+    }
+    return x;    
+  }
+  
+  public XhtmlNode tdW(int width) {
+    XhtmlNode x = addTag("td");
+    x.attribute("width", Integer.toString(width));
+    XhtmlNode t = (XhtmlNode) getUserData("cells");
+    if (t != null) {
+      x.copyAllContent(t);
+    }
+    return x;
+  }
+
 
 
   // differs from tx because it returns the owner node, not the created text
@@ -999,4 +1030,9 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     
   }
   
+  protected int indexOfNode(XhtmlNode node) {
+    return getChildNodes().indexOf(node);
+  }
+  
+
 }

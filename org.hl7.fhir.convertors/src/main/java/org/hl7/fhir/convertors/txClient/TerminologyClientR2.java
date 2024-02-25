@@ -117,6 +117,13 @@ public class TerminologyClientR2 implements ITerminologyClient {
     p2 = client.operateType(org.hl7.fhir.dstu2.model.ValueSet.class, "validate-code", p2);
     return (Parameters) VersionConvertorFactory_10_50.convertResource(p2);
   }
+  
+  @Override
+  public Parameters subsumes(Parameters pin) throws FHIRException {
+    org.hl7.fhir.dstu2.model.Parameters p2 = (org.hl7.fhir.dstu2.model.Parameters) VersionConvertorFactory_10_50.convertResource(pin);
+    p2 = client.operateType(org.hl7.fhir.dstu2.model.ValueSet.class, "subsumes", p2);
+    return (Parameters) VersionConvertorFactory_10_50.convertResource(p2);
+  }
 
   @Override
   public Parameters validateVS(Parameters pin) throws FHIRException {
@@ -238,4 +245,5 @@ public class TerminologyClientR2 implements ITerminologyClient {
     org.hl7.fhir.dstu2.model.Bundle result = client.search(type, criteria);
     return result == null ? null : (Bundle) VersionConvertorFactory_10_50.convertResource(result);
   }
+
 }
