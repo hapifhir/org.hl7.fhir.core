@@ -94,7 +94,7 @@ public class ObservationValidator extends BaseValidator {
     if (sd == null) {
       return false;
     } else {
-      return ((InstanceValidator) parent).startInner(valContext, errors, element, element, sd, stack, false, pct, mode);
+      return ((InstanceValidator) parent).startInner(valContext, errors, element, element, sd, stack, false, pct, mode, false);
     }
   }
 
