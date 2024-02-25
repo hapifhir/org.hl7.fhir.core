@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
@@ -79,7 +80,12 @@ public class ConceptMapValidator  extends BaseValidator {
     public boolean hasTargetVS() {
       return targetScope != null && targetScope.vs != null;
     }
-    
+    public ValueSet getSourceVS() {
+      return hasSourceVS() ? sourceScope.vs : null;
+    }
+    public ValueSet getTargetVS() {
+      return hasTargetVS() ? targetScope.vs : null;
+    }    
   }
   
 
@@ -215,11 +221,9 @@ public class ConceptMapValidator  extends BaseValidator {
     
     Element e = grp.getNamedChild("source", false);
     if (warning(errors, "2023-03-05", IssueType.REQUIRED, grp.line(), grp.col(), stack.getLiteralPath(), e != null, I18nConstants.CONCEPTMAP_GROUP_SOURCE_MISSING)) {
-      ctxt.source = readCSReference(e, grp.getNamedChild("sourceVersion", false));
+      ctxt.source = readCSReference(e, grp.getNamedChild("sourceVersion", false), ctxt.getSourceVS());
       if (ctxt.source.cs != null) {
-        if (ctxt.source.cs.getContent() == CodeSystemContentMode.NOTPRESENT) {
-          ctxt.source.cs = null;
-        } else if (!warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), isOkCodeSystem(ctxt.source.cs), I18nConstants.CONCEPTMAP_GROUP_SOURCE_INCOMPLETE, e.getValue(), ctxt.source.cs.getContent().toCode())) {
+        if (!warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), isOkCodeSystem(ctxt.source.cs), I18nConstants.CONCEPTMAP_GROUP_SOURCE_INCOMPLETE, e.getValue(), ctxt.source.cs.getContent().toCode())) {
           ctxt.source.cs = null;
         }
       } else {
@@ -228,11 +232,9 @@ public class ConceptMapValidator  extends BaseValidator {
     }
     e = grp.getNamedChild("target", false);
     if (warning(errors, "2023-03-05", IssueType.REQUIRED, grp.line(), grp.col(), stack.getLiteralPath(), e != null, I18nConstants.CONCEPTMAP_GROUP_TARGET_MISSING)) {
-      ctxt.target = readCSReference(e, grp.getNamedChild("targetVersion", false));
+      ctxt.target = readCSReference(e, grp.getNamedChild("targetVersion", false), ctxt.getTargetVS());
       if (ctxt.target.cs != null) {                              
-        if (ctxt.target.cs.getContent() == CodeSystemContentMode.NOTPRESENT) {
-          ctxt.target.cs = null;
-        } else if (!warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), isOkCodeSystem(ctxt.target.cs), I18nConstants.CONCEPTMAP_GROUP_TARGET_INCOMPLETE, e.getValue(), ctxt.target.cs.getContent().toCode())) {
+        if (!warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), isOkCodeSystem(ctxt.target.cs), I18nConstants.CONCEPTMAP_GROUP_TARGET_INCOMPLETE, e.getValue(), ctxt.target.cs.getContent().toCode())) {
           ctxt.target.cs = null;
         }
       } else {
@@ -249,7 +251,7 @@ public class ConceptMapValidator  extends BaseValidator {
     return ok;
   }
 
-  private CSReference readCSReference(Element ref, Element version) {
+  private CSReference readCSReference(Element ref, Element version, ValueSet vs) {
     CSReference res = new CSReference();
     res.url = ref.primitiveValue();
     if (version != null) {
@@ -257,13 +259,19 @@ public class ConceptMapValidator  extends BaseValidator {
     } else if (res.url.contains("|")) {
       res.version = res.url.substring(res.url.indexOf("|")+1);
       res.url = res.url.substring(0, res.url.indexOf("|"));
+    } else if (vs != null && res.url  != null) {
+      for (ConceptSetComponent vsi : vs.getCompose().getInclude()) {
+        if (res.url.equals(vsi.getSystem()) && vsi.hasVersion() ) {
+          res.version = vsi.getVersion();
+        }
+      }
     }
     res.cs = context.fetchCodeSystem(res.url, res.version);
     return res;
   }
 
   private boolean isOkCodeSystem(CodeSystem tgtCS) {
-    return tgtCS.getContent() != CodeSystemContentMode.EXAMPLE && tgtCS.getContent() != CodeSystemContentMode.FRAGMENT;
+    return tgtCS.getContent() != CodeSystemContentMode.NOTPRESENT && tgtCS.getContent() != CodeSystemContentMode.EXAMPLE && tgtCS.getContent() != CodeSystemContentMode.FRAGMENT;
   }
 
   private boolean validateGroupElement(List<ValidationMessage> errors, Element src, NodeStack stack, Map<String, PropertyDefinition> props, Map<String, String> attribs, ValidationOptions options, GroupContext ctxt) {
@@ -319,7 +327,7 @@ public class ConceptMapValidator  extends BaseValidator {
           }
           if (ctxt.hasTargetVS() && ctxt.target != null) {
             ValidationResult vr = context.validateCode(options.withCheckValueSetOnly().withNoServer(), ctxt.target.url, ctxt.target.version, c, null, ctxt.targetScope.vs);
-            if (!warningOrError(ctxt.target.cs.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-09-06", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS, c, ctxt.targetScope.vs.getVersionedUrl())) {
+            if (!warningOrError(ctxt.target.cs.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-09-06", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_TARGET_CODE_INVALID_VS, c, ctxt.targetScope.vs.getVersionedUrl())) {
               ok = (ctxt.target.cs.getContent() != CodeSystemContentMode.COMPLETE) && ok;
             }
           }
