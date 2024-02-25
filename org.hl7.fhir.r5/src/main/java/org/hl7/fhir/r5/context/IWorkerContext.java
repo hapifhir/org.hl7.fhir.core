@@ -640,4 +640,11 @@ public interface IWorkerContext {
   public <T extends Resource> T findTxResource(Class<T> class_, String canonical);
   public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version);
 
+  /**
+   * ask the terminology system whether parent subsumes child. 
+   * 
+   * @return true if it does, false if it doesn't, and null if it's not know whether it does
+   */
+  public Boolean subsumes(ValidationOptions options, Coding parent, Coding child);
+
 }
