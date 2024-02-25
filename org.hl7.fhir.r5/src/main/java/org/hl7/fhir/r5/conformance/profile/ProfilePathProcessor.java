@@ -1069,7 +1069,7 @@ public class ProfilePathProcessor {
       }
 //            throw new Error("Not done yet");
 //          } else if (currentBase.getType().get(0).getCode().equals("BackboneElement") && diffMatches.size() > 0 && diffMatches.get(0).hasSliceName()) {
-    } else if (currentBase.getType().get(0).getCode().equals("BackboneElement")) {
+    } else if (!currentBase.getType().isEmpty() && currentBase.getType().get(0).getCode().equals("BackboneElement")) {
       // We need to copy children of the backbone element before we start messing around with slices
       int newBaseLimit = profileUtilities.findEndOfElement(cursors.base, cursors.baseCursor);
       for (int i = cursors.baseCursor + 1; i <= newBaseLimit; i++) {

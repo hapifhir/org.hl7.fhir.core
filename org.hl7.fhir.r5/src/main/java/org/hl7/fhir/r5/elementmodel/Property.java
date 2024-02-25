@@ -38,6 +38,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.formats.FormatUtilities;
@@ -60,21 +61,24 @@ public class Property {
 	private ElementDefinition definition;
 	private StructureDefinition structure;
   private ProfileUtilities profileUtilities;
+  private ContextUtilities utils;
   private TypeRefComponent type;
 
-  public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities) {
+  public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities, ContextUtilities utils) {
 		this.context = context;
 		this.definition = definition;
 		this.structure = structure;
+		this.utils = utils;
     this.profileUtilities = profileUtilities;
 	}
 
 
-  public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities, String type) {
+  public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities, ContextUtilities utils, String type) {
     this.context = context;
     this.definition = definition;
     this.structure = structure;
     this.profileUtilities = profileUtilities;
+    this.utils = utils;
     for (TypeRefComponent tr : definition.getType()) {
       if (tr.getWorkingCode().equals(type)) {
         this.type = tr;
@@ -83,7 +87,7 @@ public class Property {
   }
   
 	public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure) {
-    this(context, definition, structure, new ProfileUtilities(context, null, null));
+    this(context, definition, structure, new ProfileUtilities(context, null, null), new ContextUtilities(context));
 	}
 
 	public String getName() {
@@ -265,10 +269,10 @@ public class Property {
 	public boolean isResource() {
 	  if (type != null) {
 	    String tc = type.getCode();
-      return (("Resource".equals(tc) || "DomainResource".equals(tc)) ||  Utilities.existsInList(tc, context.getResourceNames()));
+      return (("Resource".equals(tc) || "DomainResource".equals(tc)) || utils.isResource(tc));
 	  } else if (definition.getType().size() > 0) {
       String tc = definition.getType().get(0).getCode();
-      return definition.getType().size() == 1 && (("Resource".equals(tc) || "DomainResource".equals(tc)) ||  Utilities.existsInList(tc, context.getResourceNames()));
+      return definition.getType().size() == 1 && (("Resource".equals(tc) || "DomainResource".equals(tc)) ||  utils.isResource(tc));
     }
 	  else {
 	    return !definition.getPath().contains(".") && (structure.getKind() == StructureDefinitionKind.RESOURCE);
@@ -425,7 +429,7 @@ public class Property {
     }
     List<Property> properties = new ArrayList<Property>();
     for (ElementDefinition child : children.getList()) {
-      properties.add(new Property(context, child, sd, this.profileUtilities));
+      properties.add(new Property(context, child, sd, this.profileUtilities, this.utils));
     }
     profileUtilities.getCachedPropertyList().put(cacheKey, properties);
     return properties;
@@ -485,7 +489,7 @@ public class Property {
     }
     List<Property> properties = new ArrayList<Property>();
     for (ElementDefinition child : children.getList()) {
-      properties.add(new Property(context, child, sd, this.profileUtilities));
+      properties.add(new Property(context, child, sd, this.profileUtilities, this.utils));
     }
     return properties;
   }
@@ -612,6 +616,9 @@ public class Property {
 
   public ProfileUtilities getUtils() {
     return profileUtilities;
+  }
+  public ContextUtilities getContextUtils() {
+    return utils;
   }
 
   public boolean isJsonPrimitiveChoice() {

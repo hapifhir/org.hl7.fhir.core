@@ -176,12 +176,12 @@ public class BundleValidator extends BaseValidator {
                 res.addMessage(signpost(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, res.line(), res.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM, defn.getUrl()));
               }
               stack.resetIds();
-              ok = validator().startInner(hostContext, errors, res, res, defn, rstack, false, pct, mode) && ok;
+              ok = validator().startInner(hostContext, errors, res, res, defn, rstack, false, pct, mode, false) && ok;
             }
           }
         }
         // also, while we're here, check the specials, since this doesn't happen anywhere else 
-        ((InstanceValidator) parent).checkSpecials(hostContext, errors, res, rstack, true, pct, mode);
+        ((InstanceValidator) parent).checkSpecials(hostContext, errors, res, rstack, true, pct, mode, true);
       }
       
       // todo: check specials

@@ -1777,10 +1777,23 @@ public class ConceptMap extends MetadataResource {
 
   }
 
+  public SourceElementComponent getOrAddElement(String code) {
+    for (SourceElementComponent e : getElement()) {
+      if (code.equals(e.getCode())) {
+        return e;  
+      }
+    }
+    return addElement().setCode(code);
+  }
   }
 
     @Block()
     public static class SourceElementComponent extends BackboneElement implements IBaseBackboneElement {
+        @Override
+      public String toString() {
+        return "SourceElementComponent [code=" + code + ", display=" + display + ", noMap=" + noMap + "]";
+      }
+
         /**
          * Identity (code or path) or the element/item being mapped.
          */
@@ -2264,6 +2277,11 @@ public class ConceptMap extends MetadataResource {
 
     @Block()
     public static class TargetElementComponent extends BackboneElement implements IBaseBackboneElement {
+        @Override
+      public String toString() {
+        return "TargetElementComponent [code=" + code + ", relationship=" + relationship + "]";
+      }
+
         /**
          * Identity (code or path) or the element/item that the map refers to.
          */
