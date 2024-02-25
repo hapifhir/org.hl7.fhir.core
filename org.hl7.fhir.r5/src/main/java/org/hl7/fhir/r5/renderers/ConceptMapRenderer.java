@@ -24,18 +24,12 @@ import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.ConceptMapRenderer.MultipleMappingRow;
-import org.hl7.fhir.r5.renderers.ConceptMapRenderer.MultipleMappingRowSorter;
-import org.hl7.fhir.r5.renderers.ConceptMapRenderer.RenderMultiRowSortPolicy;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
-import org.hl7.fhir.utilities.xhtml.XhtmlFluent;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ConceptMapRenderer extends TerminologyRenderer {
