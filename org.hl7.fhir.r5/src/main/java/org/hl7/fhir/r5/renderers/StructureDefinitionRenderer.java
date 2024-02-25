@@ -1581,7 +1581,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             abr.render(gen, c);
           }
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) {
-            if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || allInvariants) {
+//            if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || allInvariants) {
+            if (!inv.hasSource() || profile == null || allInvariants || (!isAbstractBaseProfile(inv.getSource()) && !"http://hl7.org/fhir/StructureDefinition/Extension".equals(inv.getSource()))) {
               if (!c.getPieces().isEmpty()) 
                 c.addPiece(gen.new Piece("br"));
               c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getKey()+": ", null).addStyle("font-weight:bold")));
@@ -1666,6 +1667,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
     }
     return c;
+  }
+
+  private boolean isAbstractBaseProfile(String source) {
+    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, source);
+    return (sd != null) && sd.getAbstract() && sd.hasUrl() && sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/");
   }
 
   private Piece checkAddExternalFlag(BindingResolution br, Piece piece) {
@@ -2564,15 +2570,22 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   public String listConstraintsAndConditions(ElementDefinition element) {
+    Set<String> ids = new HashSet<>();
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (ElementDefinitionConstraintComponent con : element.getConstraint()) {
       if (!isBaseConstraint(con)) {
-        b.append(con.getKey());
+        if (!ids.contains(con.getKey())) {
+          ids.add(con.getKey());
+          b.append(con.getKey());
+        }
       }
     }
     for (IdType id : element.getCondition()) {
       if (!isBaseCondition(id)) {
-        b.append(id.asStringValue());
+        if (!ids.contains(id.asStringValue())) {
+          ids.add(id.asStringValue());
+          b.append(id.asStringValue());
+        }
       }
     }
     return b.toString();
