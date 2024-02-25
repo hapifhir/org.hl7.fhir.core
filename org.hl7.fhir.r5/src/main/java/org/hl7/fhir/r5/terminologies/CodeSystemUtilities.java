@@ -33,6 +33,7 @@ package org.hl7.fhir.r5.terminologies;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -204,6 +205,11 @@ public class CodeSystemUtilities extends TerminologyUtilities {
         return ((BooleanType) p.getValue()).getValue();
     }
     return false;
+  }
+
+  public static boolean isNotSelectable(CodeSystem cs, String code) {
+    ConceptDefinitionComponent cd = findCode(cs.getConcept(), code);
+    return cd == null ? false : isNotSelectable(cs, cd);
   }
 
   public static void setNotSelectable(CodeSystem cs, ConceptDefinitionComponent concept) throws FHIRFormatError {
@@ -474,6 +480,28 @@ public class CodeSystemUtilities extends TerminologyUtilities {
         return s;
     }
     return null;
+  }
+
+
+  public static List<ConceptDefinitionComponent> findCodeWithParents(List<ConceptDefinitionComponent> parents, List<ConceptDefinitionComponent> list, String code) {
+    for (ConceptDefinitionComponent c : list) {
+      if (c.hasCode() && c.getCode().equals(code)) {
+        return addToList(parents, c);
+      }
+      List<ConceptDefinitionComponent> s = findCodeWithParents(addToList(parents, c), c.getConcept(), code);
+      if (s != null)
+        return s;
+    }
+    return null;
+  }
+
+  private static List<ConceptDefinitionComponent> addToList(List<ConceptDefinitionComponent> parents, ConceptDefinitionComponent c) {
+    List<ConceptDefinitionComponent> res = new ArrayList<CodeSystem.ConceptDefinitionComponent>();
+    if (parents != null) {
+      res.addAll(parents);
+    }
+    res.add(c);
+    return res;
   }
 
   public static ConceptDefinitionComponent findCodeOrAltCode(List<ConceptDefinitionComponent> list, String code, String use) {
@@ -927,6 +955,36 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     } else {
       return v.primitiveValue();
     }
+  }
+
+  public static Boolean subsumes(CodeSystem cs, String pc, String cc) {
+    if (pc.equals(cc)) {
+      return true;
+    }
+    List<ConceptDefinitionComponent> child = findCodeWithParents(null, cs.getConcept(), cc);
+    for (ConceptDefinitionComponent item : child) {
+      if (pc.equals(item.getCode())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static Set<String> codes(CodeSystem cs) {
+    Set<String> res = new HashSet<>();
+    addCodes(res, cs.getConcept());
+    return res;
+  }
+
+  private static void addCodes(Set<String> res, List<ConceptDefinitionComponent> list) {
+    for (ConceptDefinitionComponent cd : list) {
+      if (cd.hasCode()) {
+        res.add(cd.getCode());
+      }
+      if (cd.hasConcept()) {
+        addCodes(res, cd.getConcept());
+      }
+    }    
   }
 }
 

@@ -838,7 +838,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private ValidationResult validateCode(String path, Coding code, CodeSystem cs, CodeableConcept vcc, ValidationProcessInfo info) {
-    ConceptDefinitionComponent cc = cs.hasUserData("tx.cs.special") ? ((SpecialCodeSystem) cs.getUserData("tx.cs.special")).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode(), allAltCodes);
+    ConceptDefinitionComponent cc = cs.hasUserData("tx.cs.special") ? ((SpecialCodeSystem) cs.getUserData("tx.cs.special")).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode(), cs.getCaseSensitive(), allAltCodes);
     if (cc == null) {
       cc = findSpecialConcept(code, cs);
     }
@@ -849,6 +849,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
       } else {
         String msg = context.formatMessage(I18nConstants.UNKNOWN_CODE_IN_VERSION, code.getCode(), cs.getUrl(), cs.getVersion());
         return new ValidationResult(IssueSeverity.ERROR, msg, makeIssue(IssueSeverity.ERROR, IssueType.CODEINVALID, path+".code", msg, OpIssueCode.InvalidCode, null));
+      }
+    } else {
+      if (!cc.getCode().equals(code.getCode())) {
+        String msg = context.formatMessage(I18nConstants.CODE_CASE_DIFFERENCE, code.getCode(), cc.getCode(), cs.getVersionedUrl());
+        info.addIssue(makeIssue(IssueSeverity.INFORMATION, IssueType.BUSINESSRULE, path+".code", msg, OpIssueCode.CodeRule, null));
       }
     }
     Coding vc = new Coding().setCode(cc.getCode()).setSystem(cs.getUrl()).setVersion(cs.getVersion()).setDisplay(getPreferredDisplay(cc, cs));
@@ -1001,19 +1006,19 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return true;
   }
 
-  private ConceptDefinitionComponent findCodeInConcept(ConceptDefinitionComponent concept, String code, AlternateCodesProcessingRules altCodeRules) {
+  private ConceptDefinitionComponent findCodeInConcept(ConceptDefinitionComponent concept, String code, boolean caseSensitive, AlternateCodesProcessingRules altCodeRules) {
     opContext.deadCheck();
     if (code.equals(concept.getCode())) {
       return concept;
     }
-    ConceptDefinitionComponent cc = findCodeInConcept(concept.getConcept(), code, altCodeRules);
+    ConceptDefinitionComponent cc = findCodeInConcept(concept.getConcept(), code, caseSensitive, altCodeRules);
     if (cc != null) {
       return cc;
     }
     if (concept.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
       List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) concept.getUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK);
       for (ConceptDefinitionComponent c : children) {
-        cc = findCodeInConcept(c, code, altCodeRules);
+        cc = findCodeInConcept(c, code, caseSensitive, altCodeRules);
         if (cc != null) {
           return cc;
         }
@@ -1022,15 +1027,15 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return null;
   }
   
-  private ConceptDefinitionComponent findCodeInConcept(List<ConceptDefinitionComponent> concept, String code, AlternateCodesProcessingRules altCodeRules) {
+  private ConceptDefinitionComponent findCodeInConcept(List<ConceptDefinitionComponent> concept, String code, boolean caseSensitive, AlternateCodesProcessingRules altCodeRules) {
     for (ConceptDefinitionComponent cc : concept) {
-      if (code.equals(cc.getCode())) {
+      if (code.equals(cc.getCode()) || (!caseSensitive && (code.equalsIgnoreCase(cc.getCode())))) {
         return cc;
       }
       if (Utilities.existsInList(code, alternateCodes(cc, altCodeRules))) {
         return cc;
       }
-      ConceptDefinitionComponent c = findCodeInConcept(cc, code, altCodeRules);
+      ConceptDefinitionComponent c = findCodeInConcept(cc, code, caseSensitive, altCodeRules);
       if (c != null) {
         return c;
       }
@@ -1122,7 +1127,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
                   }
                 }
               } else {
-                ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), code, allAltCodes);
+                ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), code, cs.getCaseSensitive(), allAltCodes);
                 if (cc != null) {
                   sys.add(vsi.getSystem());
                 }
@@ -1409,11 +1414,11 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (!excludeRoot && code.equals(f.getValue())) {
       return true;
     }
-    ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), f.getValue(), altCodeParams);
+    ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), f.getValue(), cs.getCaseSensitive(), altCodeParams);
     if (cc == null) {
       return false;
     }
-    ConceptDefinitionComponent cc2 = findCodeInConcept(cc, code, altCodeParams);
+    ConceptDefinitionComponent cc2 = findCodeInConcept(cc, code, cs.getCaseSensitive(), altCodeParams);
     return cc2 != null && cc2 != cc;
   }
 
