@@ -284,8 +284,15 @@ public class VersionUtilities {
   }
 
   public static String getMajMin(String version) {
-    if (version == null)
+    if (version == null) {
       return null;
+    }
+    if (version.startsWith("http://hl7.org/fhir/")) {
+      version = version.substring(20);
+      if (version.contains("/")) {
+        version = version.substring(0, version.indexOf("/"));
+      }
+    }
     
     if (Utilities.charCount(version, '.') == 1) {
       String[] p = version.split("\\.");
