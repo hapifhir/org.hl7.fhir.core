@@ -59,7 +59,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
 
   private void assertSerializeDeserialize(StructureMap structureMap) {
     Assertions.assertEquals("syntax", structureMap.getName());
-    Assertions.assertEquals("Title of this map\r\nAuthor", structureMap.getDescription());
+    Assertions.assertEquals("description", structureMap.getDescription());
     Assertions.assertEquals("http://github.com/FHIR/fhir-test-cases/r5/fml/syntax", structureMap.getUrl());
     Assertions.assertEquals("Patient", structureMap.getStructure().get(0).getAlias());
     Assertions.assertEquals("http://hl7.org/fhir/StructureDefinition/Patient", structureMap.getStructure().get(0).getUrl());
