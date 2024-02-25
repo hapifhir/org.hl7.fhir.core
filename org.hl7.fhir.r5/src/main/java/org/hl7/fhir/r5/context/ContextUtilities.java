@@ -377,10 +377,9 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   public Set<String> getConcreteResourceSet() {
     if (concreteResourceNameSet == null) {
       concreteResourceNameSet =  new HashSet<>();
-      Set<String> names = new HashSet<>();
-      for (StructureDefinition sd : allStructures()) {
-        if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract()) {
-          names.add(sd.getType());
+      for (StructureDefinition sd : getStructures()) {
+        if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract() && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+          concreteResourceNameSet.add(sd.getType());
         }
       }
     }
