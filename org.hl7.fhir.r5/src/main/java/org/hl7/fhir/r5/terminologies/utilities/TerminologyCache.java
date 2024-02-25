@@ -148,6 +148,21 @@ public class TerminologyCache {
     }
   }
 
+  public static class SubsumesResult {
+    
+    private Boolean result;
+
+    protected SubsumesResult(Boolean result) {
+      super();
+      this.result = result;
+    }
+
+    public Boolean getResult() {
+      return result;
+    }
+    
+  }
+  
   protected SystemNameKeyGenerator getSystemNameKeyGenerator() {
     return systemNameKeyGenerator;
   }
@@ -218,6 +233,7 @@ public class TerminologyCache {
     private boolean persistent;
     private ValidationResult v;
     private ValueSetExpansionOutcome e;
+    private SubsumesResult s;
   }
 
   private class NamedCache {
@@ -381,9 +397,9 @@ public class TerminologyCache {
       if (code.hasSystem()) {
         ct.setName(code.getSystem());
         ct.hasVersion = code.hasVersion();
-      }
-      else
+      } else {
         ct.name = NAME_FOR_NO_SYSTEM;
+      }
       ct.setName(vsUrl);
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
@@ -633,6 +649,9 @@ public class TerminologyCache {
           if (ce.e.getValueset() != null)
             sw.write("  \"valueSet\" : "+json.composeString(ce.e.getValueset()).trim()+",\r\n");
           sw.write("  \"error\" : \""+Utilities.escapeJson(ce.e.getError()).trim()+"\"\r\n}\r\n");
+        } else if (ce.s != null) {
+          sw.write("s: {\r\n");
+          sw.write("  \"result\" : "+ce.s.result+"\r\n}\r\n");
         } else {
           sw.write("v: {\r\n");
           boolean first = true;
@@ -743,15 +762,17 @@ public class TerminologyCache {
     CacheEntry ce = new CacheEntry();
     ce.persistent = true;
     ce.request = request;
-    boolean e = resultString.charAt(0) == 'e';
+    char e = resultString.charAt(0);
     resultString = resultString.substring(3);
     JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(resultString);
     String error = loadJS(o.get("error"));
-    if (e) {
+    if (e == 'e') {
       if (o.has("valueSet"))
         ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN, o.has("from-server"));
       else
         ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN, o.has("from-server"));
+    } else if (e == 's') {
+      ce.s = new SubsumesResult(o.get("result").getAsBoolean());
     } else {
       String t = loadJS(o.get("severity"));
       IssueSeverity severity = t == null ? null :  IssueSeverity.fromCode(t);
@@ -934,15 +955,15 @@ public class TerminologyCache {
 
   public Map<String, String> servers() {
     Map<String, String> servers = new HashMap<>();
-    servers.put("http://local.fhir.org/r2", "tx.fhir.org");
-    servers.put("http://local.fhir.org/r3", "tx.fhir.org");
-    servers.put("http://local.fhir.org/r4", "tx.fhir.org");
-    servers.put("http://local.fhir.org/r5", "tx.fhir.org");
-
-    servers.put("http://tx-dev.fhir.org/r2", "tx.fhir.org");
-    servers.put("http://tx-dev.fhir.org/r3", "tx.fhir.org");
-    servers.put("http://tx-dev.fhir.org/r4", "tx.fhir.org");
-    servers.put("http://tx-dev.fhir.org/r5", "tx.fhir.org");
+//    servers.put("http://local.fhir.org/r2", "tx.fhir.org");
+//    servers.put("http://local.fhir.org/r3", "tx.fhir.org");
+//    servers.put("http://local.fhir.org/r4", "tx.fhir.org");
+//    servers.put("http://local.fhir.org/r5", "tx.fhir.org");
+//
+//    servers.put("http://tx-dev.fhir.org/r2", "tx.fhir.org");
+//    servers.put("http://tx-dev.fhir.org/r3", "tx.fhir.org");
+//    servers.put("http://tx-dev.fhir.org/r4", "tx.fhir.org");
+//    servers.put("http://tx-dev.fhir.org/r5", "tx.fhir.org");
 
     servers.put("http://tx.fhir.org/r2", "tx.fhir.org");
     servers.put("http://tx.fhir.org/r3", "tx.fhir.org");
@@ -999,6 +1020,59 @@ public class TerminologyCache {
       org.hl7.fhir.utilities.json.parser.JsonParser.compose(j, new File(Utilities.path(folder, "vs-externals.json")), true);
     } catch (Exception e) {
       e.printStackTrace();
+    }
+  }
+
+  public CacheToken generateSubsumesToken(ValidationOptions options, Coding parent, Coding child, Parameters expParameters) {
+    try {
+      CacheToken ct = new CacheToken();
+      if (parent.hasSystem()) {
+        ct.setName(parent.getSystem());
+      }
+      if (child.hasSystem()) {
+        ct.setName(child.getSystem());
+      }
+      ct.hasVersion = parent.hasVersion() || child.hasVersion();
+      JsonParser json = new JsonParser();
+      json.setOutputStyle(OutputStyle.PRETTY);
+      String expJS = json.composeString(expParameters);
+      ct.request = "{\"op\": \"subsumes\", \"parent\" : "+json.composeString(parent, "code")+", \"child\" :"+json.composeString(child, "code")+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
+      ct.key = String.valueOf(hashJson(ct.request));
+      return ct;
+    } catch (IOException e) {
+      throw new Error(e);
+    }
+  }
+
+  public Boolean getSubsumes(CacheToken cacheToken) {
+   if (cacheToken.key == null) {
+     return null;
+   }
+   synchronized (lock) {
+     requestCount++;
+     NamedCache nc = getNamedCache(cacheToken);
+     CacheEntry e = nc.map.get(cacheToken.key);
+     if (e == null) {
+       networkCount++;
+       return null;
+     } else {
+       hitCount++;
+       return e.s.result;
+     }
+   }
+   
+  }
+
+  public void cacheSubsumes(CacheToken cacheToken, Boolean b, boolean persistent) {
+    if (cacheToken.key != null) {
+      synchronized (lock) {      
+        NamedCache nc = getNamedCache(cacheToken);
+        CacheEntry e = new CacheEntry();
+        e.request = cacheToken.request;
+        e.persistent = persistent;
+        e.s = new SubsumesResult(b);
+        store(cacheToken, persistent, nc, e);
+      }    
     }
   }
 

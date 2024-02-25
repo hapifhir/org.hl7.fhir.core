@@ -111,6 +111,25 @@ public class TerminologyClientR4 implements ITerminologyClient {
     }
   }
 
+
+  @Override
+  public Parameters subsumes(Parameters pin) throws FHIRException {
+    try {
+      org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) VersionConvertorFactory_40_50.convertResource(pin);
+      p2 = client.operateType(org.hl7.fhir.r4.model.CodeSystem.class, "subsumes", p2);
+      return (Parameters) VersionConvertorFactory_40_50.convertResource(p2);
+    } catch (EFhirClientException e) {
+      if (e.getServerErrors().size() == 1) {
+        OperationOutcome op =  (OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0));
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), op, e);
+      } else {
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), e);        
+      }
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
+  }
+
   @Override
   public Parameters validateVS(Parameters pin) throws FHIRException {
     try {
@@ -249,6 +268,5 @@ public class TerminologyClientR4 implements ITerminologyClient {
     org.hl7.fhir.r4.model.Bundle result = client.search(type, criteria);
     return result == null ? null : (Bundle) VersionConvertorFactory_40_50.convertResource(result);
   }
-
   
 }
