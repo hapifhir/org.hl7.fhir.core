@@ -123,6 +123,16 @@ public class SimpleWorkerContextTests {
     }
   }
 
+  public class CodingMatcher implements ArgumentMatcher<Coding> {
+    final private Coding left;
+
+    CodingMatcher(Coding left) { this.left = left; }
+
+    public boolean matches(Coding right) {
+      return left.equalsShallow(right);
+    }
+  }
+
   public class ParametersMatcher implements ArgumentMatcher<Parameters> {
     final private Parameters left;
 
@@ -187,7 +197,7 @@ public class SimpleWorkerContextTests {
 
     assertEquals(expectedValidationResult, actualValidationResult);
 
-  //  Mockito.verify(valueSetCheckerSimple).validateCode("Coding", coding);
+    Mockito.verify(valueSetCheckerSimple).validateCode(eq("Coding"), argThat(new CodingMatcher(coding)));
     Mockito.verify(terminologyCache).getValidation(cacheToken);
     Mockito.verify(terminologyCache).cacheValidation(cacheToken, expectedValidationResult,false);
   }
