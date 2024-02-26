@@ -1104,7 +1104,7 @@ public class StructureMapUtilities {
       start = null;
       lexer.token(".");
       target.setElement(lexer.take());
-    }
+    } 
     String name;
     boolean isConstant = false;
     if (lexer.hasToken("=")) {
@@ -1141,15 +1141,19 @@ public class StructureMapUtilities {
       }
       lexer.token(")");
     } else if (name != null) {
-      target.setTransform(StructureMapTransform.COPY);
-      if (!isConstant) {
-        String id = name;
-        while (lexer.hasToken(".")) {
-          id = id + lexer.take() + lexer.take();
-        }
-        target.addParameter().setValue(new IdType(id));
-      } else
-        target.addParameter().setValue(readConstant(name, lexer));
+      if (target.getContext() != null) {
+        target.setTransform(StructureMapTransform.COPY);
+        if (!isConstant) {
+          String id = name;
+          while (lexer.hasToken(".")) {
+            id = id + lexer.take() + lexer.take();
+          }
+          target.addParameter().setValue(new IdType(id));
+        } else
+          target.addParameter().setValue(readConstant(name, lexer));
+      } else {
+        target.setContext(name);
+      }
     }
     if (lexer.hasToken("as")) {
       lexer.take();
