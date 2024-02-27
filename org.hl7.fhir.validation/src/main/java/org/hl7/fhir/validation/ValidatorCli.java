@@ -327,12 +327,12 @@ public class ValidatorCli {
         res.add("-version");
         res.add("5.0");
         res.add("-ig");
-        res.add("hl7.cda.uv.core#2.0.0-sd-ballot");
+        res.add("hl7.cda.uv.core#2.0.0-sd-snapshot1");
       } else if (a.equals("-ccda")) {
         res.add("-version");
         res.add("5.0");
         res.add("-ig");
-        res.add("hl7.cda.us.ccda#current");
+        res.add("hl7.cda.us.ccda#3.0.0-ballot");
       } else if (a.equals("-view-definition")) {
         res.add("-version");
         res.add("5.0");
