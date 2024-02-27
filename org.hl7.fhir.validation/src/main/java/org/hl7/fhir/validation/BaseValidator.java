@@ -59,6 +59,7 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
@@ -75,6 +76,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
@@ -85,7 +87,7 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class BaseValidator implements IValidationContextResourceLoader {
 
-  public class BooleanHolder {
+  public static class BooleanHolder {
     private boolean value = true;
 
     public BooleanHolder() {
@@ -173,6 +175,8 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected Set<String> statusWarnings = new HashSet<>();  
   protected BestPracticeWarningLevel bpWarnings = BestPracticeWarningLevel.Warning;
   protected String sessionId = Utilities.makeUuidLC();
+  protected List<UsageContext> usageContexts = new ArrayList<UsageContext>();
+  protected ValidationOptions baseOptions = new ValidationOptions(FhirPublication.R5);
 
 
   public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager, boolean debug) {
@@ -204,6 +208,8 @@ public class BaseValidator implements IValidationContextResourceLoader {
     this.statusWarnings = parent.statusWarnings;
     this.bpWarnings = parent.bpWarnings;
     this.urlRegex = parent.urlRegex;
+    this.usageContexts.addAll(parent.usageContexts);
+    this.baseOptions = parent.baseOptions;
   }
   
   private boolean doingLevel(IssueSeverity error) {
@@ -1599,4 +1605,20 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return true;
   }
 
+  public List<UsageContext> getUsageContexts() {
+    return usageContexts;
+  }
+  
+  protected boolean hasUseContext(Coding use, Coding value) {
+    for (UsageContext usage : usageContexts)  {
+      if (isContext(use, value, usage)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean isContext(Coding use, Coding value, UsageContext usage) {
+    return usage.getValue() instanceof Coding && context.subsumes(baseOptions, usage.getCode(), use) && context.subsumes(baseOptions, (Coding) usage.getValue(), value);
+  }
 }

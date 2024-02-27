@@ -514,7 +514,7 @@ public class Element extends Base implements NamedItem {
   }
 
   private boolean isDataType(Base v) {
-    return v instanceof DataType && new ContextUtilities(property.getContext()).getTypeNames().contains(v.fhirType());
+    return v instanceof DataType && property.getContextUtils().getTypeNames().contains(v.fhirType());
   }
 
   @Override

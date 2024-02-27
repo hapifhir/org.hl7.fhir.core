@@ -284,8 +284,15 @@ public class VersionUtilities {
   }
 
   public static String getMajMin(String version) {
-    if (version == null)
+    if (version == null) {
       return null;
+    }
+    if (version.startsWith("http://hl7.org/fhir/")) {
+      version = version.substring(20);
+      if (version.contains("/")) {
+        version = version.substring(0, version.indexOf("/"));
+      }
+    }
     
     if (Utilities.charCount(version, '.') == 1) {
       String[] p = version.split("\\.");
@@ -727,6 +734,16 @@ public class VersionUtilities {
     } else {
       return ver1.compareTo(ver2);
     }
+  }
+
+  public static boolean includedInRange(String startVer, String stopVer, String ver) {
+    if (ver.equals(startVer)) {
+      return true;
+    }
+    if (ver.equals(stopVer)) {
+      return true;
+    }
+    return startVer.compareTo(ver) < 0 && stopVer.compareTo(ver) > 0;
   }
 
 

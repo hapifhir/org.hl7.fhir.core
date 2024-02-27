@@ -1290,7 +1290,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         vsc.setUnknownSystems(unknownSystems);
         vsc.setThrowToServer(options.isUseServer() && terminologyClientManager.hasClient());
         if (!ValueSetUtilities.isServerSide(code.getSystem())) {
-          res = vsc.validateCode(path, code);
+          res = vsc.validateCode(path, code.copy());
           if (txCache != null && cachingAllowed) {
             txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
           }
@@ -1347,7 +1347,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Set<String> systems = findRelevantSystems(code, vs);
     TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
     
-    String csumm =cachingAllowed && txCache != null ? txCache.summary(code) : null;
+    String csumm = cachingAllowed && txCache != null ? txCache.summary(code) : null;
     if (cachingAllowed && txCache != null) {
       txLog("$validate "+csumm+(vs == null ? "" : " for "+ txCache.summary(vs))+" on "+tc.getAddress());
     } else {
@@ -1375,6 +1375,83 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     }
     return res;
+  }
+
+
+  /**
+   * ask the terminology system whether parent subsumes child. 
+   * 
+   * @return true if it does, false if it doesn't, and null if it's not know whether it does
+   */
+  public Boolean subsumes(ValidationOptions optionsArg, Coding parent, Coding child) {
+    ValidationOptions options = optionsArg != null ? optionsArg : ValidationOptions.defaults();
+
+    if (parent.hasSystem()) {
+      codeSystemsUsed.add(parent.getSystem());
+    } else {
+      return null;
+    }
+    if (child.hasSystem()) {
+      codeSystemsUsed.add(child.getSystem());
+    } else {
+      return null;
+    }
+
+    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateSubsumesToken(options, parent, child, expParameters) : null;
+    if (cachingAllowed && txCache != null) {
+      Boolean res = txCache.getSubsumes(cacheToken);
+      if (res != null) {
+        return res;
+      }
+    }
+    
+    if (options.isUseClient() && parent.getSystem().equals(child.getSystem())) {
+      CodeSystem cs = fetchCodeSystem(parent.getSystem());
+      if (cs != null) {
+        Boolean b = CodeSystemUtilities.subsumes(cs, parent.getCode(), child.getCode());
+        if (txCache != null && cachingAllowed) {
+          txCache.cacheSubsumes(cacheToken, b, true);
+        }
+        return b;
+      }
+    }
+
+    if (!terminologyClientManager.hasClient() || !options.isUseServer() || unsupportedCodeSystems.contains(parent.getSystem()) || unsupportedCodeSystems.contains(child.getSystem()) || noTerminologyServer) {
+      return null;      
+    }
+
+    Set<String> systems = new HashSet<>();
+    systems.add(parent.getSystem());
+    systems.add(child.getSystem());
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(null, systems, false);
+    
+    txLog("$subsumes "+parent.toString()+" > "+child.toString()+" on "+tc.getAddress());
+
+    try {
+      Parameters pIn =  new Parameters();
+      pIn.addParameter().setName("codingA").setValue(parent);
+      pIn.addParameter().setName("codingB").setValue(child);
+      if (txLog != null) {
+        txLog.clearLastId();
+      }
+      Parameters pOut = tc.getClient().subsumes(pIn);
+      return processSubsumesResult(pOut, tc.getClient().getAddress());
+    } catch (Exception e) {
+      // e.printStackTrace();
+    }
+    return null;
+  }
+
+
+  public Boolean processSubsumesResult(Parameters pOut, String server) {
+    for (ParametersParameterComponent p : pOut.getParameter()) {
+      if (p.hasValue()) {
+        if (p.getName().equals("outcome")) {
+          return Utilities.existsInList(p.getValue().primitiveValue(), "equivalent", "subsumes");
+        }
+      }
+    }
+    return null;
   }
 
   protected ValueSetExpander constructValueSetExpanderSimple(ValidationOptions options) {

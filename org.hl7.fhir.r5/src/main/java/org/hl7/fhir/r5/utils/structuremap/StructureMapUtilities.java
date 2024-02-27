@@ -143,11 +143,11 @@ public class StructureMapUtilities {
 
   public static String render(StructureMap map) {
     StringBuilder b = new StringBuilder();
-    b.append("map \"");
-    b.append(map.getUrl());
-    b.append("\" = \"");
-    b.append(Utilities.escapeJson(map.getName()));
-    b.append("\"\r\n\r\n");
+    b.append("/// url = \""+map.getUrl()+"\"\r\n");
+    b.append("/// name = \""+map.getName()+"\"\r\n");
+    b.append("/// title = \""+map.getTitle()+"\"\r\n");
+    b.append("/// status = \""+map.getStatus().toCode()+"\"\r\n");
+    b.append("\r\n");
     if (map.getDescription() != null) {
       renderMultilineDoco(b, map.getDescription(), 0);
       b.append("\r\n");
@@ -385,7 +385,7 @@ public class StructureMapUtilities {
       for (int i = 0; i < indent; i++)
         b.append(' ');
       b.append("}");
-    } else {
+    } else if (!canBeAbbreviated) {
       if (r.hasDependent()) {
         b.append(" then ");
         boolean first = true;
@@ -450,7 +450,7 @@ public class StructureMapUtilities {
     return
       (r.getSource().size() == 1 && r.getSourceFirstRep().hasElement() && r.getSourceFirstRep().hasVariable()) &&
         (r.getTarget().size() == 1 && r.getTargetFirstRep().hasVariable() && (r.getTargetFirstRep().getTransform() == null || r.getTargetFirstRep().getTransform() == StructureMapTransform.CREATE) && r.getTargetFirstRep().getParameter().size() == 0) &&
-        (r.getDependent().size() == 0) && (r.getRule().size() == 0);
+        (r.getDependent().size() == 0 || (r.getDependent().size() == 1 && StructureMapUtilities.DEF_GROUP_NAME.equals(r.getDependentFirstRep().getName()))) && (r.getRule().size() == 0);
   }
 
   public static String sourceToString(StructureMapGroupRuleSourceComponent r) {
@@ -654,6 +654,9 @@ public class StructureMapUtilities {
           break;
         case "title" : 
           result.setTitle(lexer.readConstant("title"));
+          break;
+        case "description" : 
+          result.setTitle(lexer.readConstant("description"));
           break;
         case "status" : 
           result.setStatus(PublicationStatus.fromCode(lexer.readConstant("status")));

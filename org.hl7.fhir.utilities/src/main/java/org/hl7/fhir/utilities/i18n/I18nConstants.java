@@ -551,6 +551,8 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_UUID = "Type_Specific_Checks_DT_URI_UUID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_WS = "Type_Specific_Checks_DT_URI_WS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE = "Type_Specific_Checks_DT_URL_Resolve";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_XHTML_RESOLVE = "Type_Specific_Checks_DT_XHTML_Resolve";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_XHTML_RESOLVE_IMG = "Type_Specific_Checks_DT_XHTML_Resolve_Img";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE = "TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE";
   public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE";
   public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE";
@@ -1048,6 +1050,15 @@ public class I18nConstants {
   public static final String SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH = "SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH";
   public static final String TX_GENERAL_CC_ERROR_MESSAGE = "TX_GENERAL_CC_ERROR_MESSAGE";
   public static final String FHIRPATH_UNKNOWN_EXTENSION = "FHIRPATH_UNKNOWN_EXTENSION";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_XHTML_MULTIPLE_MATCHES = "TYPE_SPECIFIC_CHECKS_DT_XHTML_MULTIPLE_MATCHES";
+  public static final String CONTAINED_ORPHAN_DOM3 = "CONTAINED_ORPHAN_DOM3";
+  public static final String VALUESET_INCLUDE_CS_NOT_CS = "VALUESET_INCLUDE_CS_NOT_CS";
+  public static final String VALUESET_INCLUDE_CS_NOT_FOUND = "VALUESET_INCLUDE_CS_NOT_FOUND";
+  public static final String VALUESET_INCLUDE_CSVER_NOT_FOUND = "VALUESET_INCLUDE_CSVER_NOT_FOUND";
+  public static final String VALUESET_INCLUDE_CS_MULTI_FOUND = "VALUESET_INCLUDE_CS_MULTI_FOUND";
+  public static final String VALUESET_INCLUDE_CSVER_MULTI_FOUND = "VALUESET_INCLUDE_CSVER_MULTI_FOUND";
+  public static final String UNABLE_TO_INFER_CODESYSTEM = "UNABLE_TO_INFER_CODESYSTEM";
+  public static final String CODE_CASE_DIFFERENCE = "CODE_CASE_DIFFERENCE";
 }
 
 
