@@ -12,16 +12,16 @@
 v: {
   "code" : "E10.3211+TT1.2",
   "severity" : "error",
-  "error" : "Unknown code 'E10.3211+TT1.2' in the CodeSystem 'http://hl7.org/fhir/sid/icd-10-cm' version '2021'",
+  "error" : "Unknown code 'E10.3211+TT1.2' in the CodeSystem 'http://hl7.org/fhir/sid/icd-10-cm' version '2024'",
   "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
+      "valueUrl" : "http://local.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -30,7 +30,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code 'E10.3211+TT1.2' in the CodeSystem 'http://hl7.org/fhir/sid/icd-10-cm' version '2021'"
+      "text" : "Unknown code 'E10.3211+TT1.2' in the CodeSystem 'http://hl7.org/fhir/sid/icd-10-cm' version '2024'"
     },
     "location" : ["Coding.code"],
     "expression" : ["Coding.code"]

@@ -56,6 +56,8 @@ public class CliContext {
   private HtmlInMarkdownCheck htmlInMarkdownCheck = HtmlInMarkdownCheck.WARNING;
   @JsonProperty("allowDoubleQuotesInFHIRPath")  
   private boolean allowDoubleQuotesInFHIRPath = false;
+  @JsonProperty("disableDefaultResourceFetcher")
+  private boolean disableDefaultResourceFetcher = false;
   @JsonProperty("checkIPSCodes")  
   private boolean checkIPSCodes;
   @JsonProperty("langTransform")
@@ -326,6 +328,17 @@ public class CliContext {
   @JsonProperty("allowDoubleQuotesInFHIRPath")  
   public void setAllowDoubleQuotesInFHIRPath(boolean allowDoubleQuotesInFHIRPath) {
     this.allowDoubleQuotesInFHIRPath = allowDoubleQuotesInFHIRPath;
+  }
+
+  @JsonProperty("disableDefaultResourceFetcher")
+  public boolean isDisableDefaultResourceFetcher() {
+    return disableDefaultResourceFetcher;
+  }
+
+  @JsonProperty("disableDefaultResourceFetcher")
+  public CliContext setDisableDefaultResourceFetcher(boolean disableDefaultResourceFetcher) {
+    this.disableDefaultResourceFetcher = disableDefaultResourceFetcher;
+    return this;
   }
 
   @JsonProperty("checkIPSCodes")

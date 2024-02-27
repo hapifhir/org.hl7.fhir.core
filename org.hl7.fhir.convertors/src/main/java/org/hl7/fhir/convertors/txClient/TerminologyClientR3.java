@@ -242,4 +242,11 @@ public class TerminologyClientR3 implements ITerminologyClient {
 
   }
 
+  @Override
+  public Parameters subsumes(Parameters pin) throws FHIRException { 
+    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(pin);
+    p2 = client.operateType(org.hl7.fhir.dstu3.model.CodeSystem.class, "subsumes", p2);
+    return (Parameters) VersionConvertorFactory_30_50.convertResource(p2);
+  }
+
 }

@@ -11,6 +11,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent;
@@ -539,8 +540,15 @@ public class CodeSystemRenderer extends TerminologyRenderer {
             if (first) first = false; else td.addText(", ");
             if (pcv.hasValueCoding()) { 
               td.addText(pcv.getValueCoding().getCode());
-            } else if (pcv.hasValueStringType() && Utilities.isAbsoluteUrlLinkable(pcv.getValue().primitiveValue())) {
-              td.ah(pcv.getValue().primitiveValue()).tx(pcv.getValue().primitiveValue());
+            } else if (pcv.hasValueStringType() && Utilities.isAbsoluteUrl(pcv.getValue().primitiveValue())) {
+              CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, pcv.getValue().primitiveValue());
+              if (cr != null) {
+                td.ah(cr.getWebPath(), cr.getVersionedUrl()).tx(cr.present());
+              } else if (Utilities.isAbsoluteUrlLinkable(pcv.getValue().primitiveValue())) {
+                td.ah(pcv.getValue().primitiveValue()).tx(pcv.getValue().primitiveValue());
+              } else {
+                td.code(pcv.getValue().primitiveValue());                
+              }
             } else if ("parent".equals(pcv.getCode())) {              
               td.ah("#"+cs.getId()+"-"+Utilities.nmtokenize(pcv.getValue().primitiveValue())).addText(pcv.getValue().primitiveValue());
             } else {

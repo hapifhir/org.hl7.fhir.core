@@ -792,8 +792,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       UnusedTracker used = new UnusedTracker();
       String ref = defPath == null ? null : defPath + anchorPrefix + element.getId();
       String sName = tail(element.getPath());
-      if (element.hasSliceName())
+      if (element.hasSliceName()) { 
         sName = sName +":"+element.getSliceName();
+      }
       used.used = true;
       if (logicalModel) {
         if (element.hasRepresentation(PropertyRepresentation.XMLATTR)) {
@@ -1331,10 +1332,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           String ref2 = null;
           String fixedUrl = null;
           if (ed != null) {
-            String p = ed.getWebPath();
-            if (p != null) {
-              ref = p.startsWith("http:") || context.getRules() == GenerationRules.IG_PUBLISHER ? p : Utilities.pathURL(corePath, p);
-            }             
+            String p = ed.getWebPath();           
             fixedUrl = getFixedUrl(ed);
             if (fixedUrl != null) {// if its null, we guess that it's not a profiled extension?
               if (fixedUrl.equals(url))
@@ -1583,7 +1581,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             abr.render(gen, c);
           }
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) {
-            if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || allInvariants) {
+//            if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || allInvariants) {
+            if (!inv.hasSource() || profile == null || allInvariants || (!isAbstractBaseProfile(inv.getSource()) && !"http://hl7.org/fhir/StructureDefinition/Extension".equals(inv.getSource()))) {
               if (!c.getPieces().isEmpty()) 
                 c.addPiece(gen.new Piece("br"));
               c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getKey()+": ", null).addStyle("font-weight:bold")));
@@ -1668,6 +1667,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
     }
     return c;
+  }
+
+  private boolean isAbstractBaseProfile(String source) {
+    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, source);
+    return (sd != null) && sd.getAbstract() && sd.hasUrl() && sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/");
   }
 
   private Piece checkAddExternalFlag(BindingResolution br, Piece piece) {
@@ -2566,15 +2570,22 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   public String listConstraintsAndConditions(ElementDefinition element) {
+    Set<String> ids = new HashSet<>();
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (ElementDefinitionConstraintComponent con : element.getConstraint()) {
       if (!isBaseConstraint(con)) {
-        b.append(con.getKey());
+        if (!ids.contains(con.getKey())) {
+          ids.add(con.getKey());
+          b.append(con.getKey());
+        }
       }
     }
     for (IdType id : element.getCondition()) {
       if (!isBaseCondition(id)) {
-        b.append(id.asStringValue());
+        if (!ids.contains(id.asStringValue())) {
+          ids.add(id.asStringValue());
+          b.append(id.asStringValue());
+        }
       }
     }
     return b.toString();
@@ -3315,6 +3326,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!tl.contains(tc)) {
             aliases.add(name.replace("[x]", Utilities.capitalize(tc)));
             aliases.add(name+":"+name.replace("[x]", Utilities.capitalize(tc)));
+            aliases.add(name.replace("[x]", Utilities.capitalize(tc))+":"+name.replace("[x]", Utilities.capitalize(tc)));
             tl.add(tc);
           }
         }
@@ -3334,7 +3346,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       list.addAll(generated);
     }
     ElementDefinition ed = stack.get(stack.size()-1);
-
     // now we have all the possible names, but some of them might be inappropriate if we've
     // already generated a type slicer. On the other hand, if we've already done that, we're
     // going to steal any type specific ones off it.

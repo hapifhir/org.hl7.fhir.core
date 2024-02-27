@@ -11,8 +11,10 @@ import org.hl7.fhir.utilities.Utilities;
 public abstract class XhtmlFluent {
 
   protected abstract XhtmlNode addTag(String string);
+  protected abstract XhtmlNode addTag(int index, String string);
   protected abstract XhtmlNode addText(String cnt);
   protected abstract void addChildren(XhtmlNodeList childNodes);
+  protected abstract int indexOfNode(XhtmlNode node);
   
   public XhtmlNode h1() {
     return addTag("h1");
@@ -59,6 +61,14 @@ public abstract class XhtmlFluent {
   
   public XhtmlNode tr() {
     return addTag("tr");
+  }
+  
+  public XhtmlNode tr(XhtmlNode tr) {
+    return addTag(indexOfNode(tr)+1, "tr");
+  }
+  
+  public XhtmlNode th(int index) {
+    return addTag(index, "th");
   }
   
   public XhtmlNode th() {
@@ -182,7 +192,7 @@ public abstract class XhtmlFluent {
 
   public XhtmlNode img(String src, String alt) {
     if (alt == null) {
-      return addTag("img").attribute("src", src);
+      return addTag("img").attribute("src", src).attribute("alt", ".");
     } else {
       return addTag("img").attribute("src", src).attribute("alt", alt);
     }

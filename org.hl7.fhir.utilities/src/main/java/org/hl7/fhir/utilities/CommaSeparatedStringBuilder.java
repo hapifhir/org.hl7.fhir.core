@@ -161,4 +161,14 @@ public class CommaSeparatedStringBuilder {
     }
     return res;
   }
+
+  public static String joinWrapped(String sep, String leftWrap, String rightWrap, Collection<String> list) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(sep);
+    for (String s : list) {
+      if (s != null) {
+        b.append(leftWrap+s+rightWrap);
+      }
+    }
+    return b.toString();
+  }
 }

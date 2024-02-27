@@ -340,7 +340,12 @@ public class TerminologyServiceTests {
           res.addParameter("system", new UriType(system));
         }
         if (vm.getCode() != null) {
-          res.addParameter("code", new CodeType(vm.getCode()));
+          if (code != null && !code.equals(vm.getCode())) {
+            res.addParameter("code", new CodeType(code));
+            res.addParameter("normalized-code", new CodeType(vm.getCode()));
+          } else {
+            res.addParameter("code", new CodeType(vm.getCode()));
+          }
         } else if (code != null) {
           res.addParameter("code", new CodeType(code));
         }

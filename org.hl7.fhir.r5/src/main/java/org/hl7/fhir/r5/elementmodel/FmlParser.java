@@ -134,7 +134,7 @@ public class FmlParser extends ParserBase {
     lexer.token("conceptmap");
     Element map = structureMap.makeElement("contained");
     StructureDefinition sd = context.fetchTypeDefinition("ConceptMap");
-    map.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd), SpecialElement.fromProperty(map.getElementProperty() != null ? map.getElementProperty() : map.getProperty()), map.getProperty());
+    map.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd, getProfileUtilities(), getContextUtilities()), SpecialElement.fromProperty(map.getElementProperty() != null ? map.getElementProperty() : map.getProperty()), map.getProperty());
     map.setType("ConceptMap");
     Element eid = map.makeElement("id").markLocation(lexer.getCurrentLocation());
     String id = lexer.readConstant("map id");
@@ -224,6 +224,8 @@ public class FmlParser extends ParserBase {
   private ConceptMapRelationship readRelationship(FHIRLexer lexer) throws FHIRLexerException {
     String token = lexer.take();
     if (token.equals("-"))
+      return ConceptMapRelationship.RELATEDTO;
+    if (token.equals("=")) // temporary
       return ConceptMapRelationship.RELATEDTO;
     if (token.equals("=="))
       return ConceptMapRelationship.EQUIVALENT;

@@ -14,7 +14,7 @@ v: {
   "display" : "German (Region=Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -33,10 +33,10 @@ v: {
   }]
 }}####
 v: {
-  "display" : "German (Switzerland)",
+  "display" : "German (Region=Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -56,32 +56,13 @@ v: {
   }]
 }}####
 v: {
-  "display" : "German (Switzerland)",
+  "display" : "German (Region=Switzerland)",
   "code" : "de-CH",
-  "severity" : "error",
-  "error" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH. Valid display is one of 7 choices: 'German (Switzerland)', 'German (Switzerland)' (en), 'Duits (Zwitserland)' (nl), 'Немецкий (Швейцария)' (ru), '德语 （瑞士）' (zh), 'Deutsch (Schweiz)' (de) or 'Tysk (Schweiz)' (da) (for the language(s) '--')",
-  "class" : "UNKNOWN",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "error",
-    "code" : "invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "invalid-display"
-      }],
-      "text" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH. Valid display is one of 7 choices: 'German (Switzerland)', 'German (Switzerland)' (en), 'Duits (Zwitserland)' (nl), 'Немецкий (Швейцария)' (ru), '德语 （瑞士）' (zh), 'Deutsch (Schweiz)' (de) or 'Tysk (Schweiz)' (da) (for the language(s) '--')"
-    },
-    "location" : ["Coding.display"],
-    "expression" : ["Coding.display"]
-  }]
+  "resourceType" : "OperationOutcome"
 }
 
 }
@@ -101,7 +82,7 @@ v: {
   "display" : "French",
   "code" : "fr",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -123,7 +104,7 @@ v: {
   "display" : "French",
   "code" : "fr",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -146,7 +127,7 @@ v: {
   "display" : "French",
   "code" : "fr",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -169,7 +150,7 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -191,7 +172,7 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -214,7 +195,7 @@ v: {
   "display" : "English",
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -237,7 +218,7 @@ v: {
   "display" : "German (Region=Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -256,10 +237,10 @@ v: {
   }]
 }}####
 v: {
-  "display" : "German (Switzerland)",
+  "display" : "German (Region=Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -279,32 +260,13 @@ v: {
   }]
 }}####
 v: {
-  "display" : "German (Switzerland)",
+  "display" : "German (Region=Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "severity" : "warning",
-  "error" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH. Valid display is one of 7 choices: 'German (Switzerland)', 'German (Switzerland)' (en), 'Duits (Zwitserland)' (nl), 'Немецкий (Швейцария)' (ru), '德语 （瑞士）' (zh), 'Deutsch (Schweiz)' (de) or 'Tysk (Schweiz)' (da) (for the language(s) '--')",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "warning",
-    "code" : "invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "invalid-display"
-      }],
-      "text" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH. Valid display is one of 7 choices: 'German (Switzerland)', 'German (Switzerland)' (en), 'Duits (Zwitserland)' (nl), 'Немецкий (Швейцария)' (ru), '德语 （瑞士）' (zh), 'Deutsch (Schweiz)' (de) or 'Tysk (Schweiz)' (da) (for the language(s) '--')"
-    },
-    "location" : ["Coding.display"],
-    "expression" : ["Coding.display"]
-  }]
+  "resourceType" : "OperationOutcome"
 }
 
 }
@@ -324,7 +286,7 @@ v: {
   "display" : "French",
   "code" : "fr",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -346,7 +308,7 @@ v: {
   "display" : "French",
   "code" : "fr",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -369,7 +331,7 @@ v: {
   "display" : "French",
   "code" : "fr",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -392,7 +354,7 @@ v: {
   "display" : "German (Region=Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -414,7 +376,7 @@ v: {
   "display" : "German (Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -437,29 +399,10 @@ v: {
   "display" : "German (Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
-  "severity" : "warning",
-  "error" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH. Valid display is one of 2 choices: 'German (Switzerland)' or 'German (Switzerland)' (en) (for the language(s) 'en')",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "warning",
-    "code" : "invalid",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "invalid-display"
-      }],
-      "text" : "Wrong Display Name 'German (Region=Switzerland)' for urn:ietf:bcp:47#de-CH. Valid display is one of 2 choices: 'German (Switzerland)' or 'German (Switzerland)' (en) (for the language(s) 'en')"
-    },
-    "location" : ["Coding.display"],
-    "expression" : ["Coding.display"]
-  }]
+  "resourceType" : "OperationOutcome"
 }
 
 }
@@ -479,7 +422,7 @@ v: {
   "display" : "French",
   "code" : "fr",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -501,7 +444,7 @@ v: {
   "display" : "French",
   "code" : "fr",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -524,7 +467,7 @@ v: {
   "display" : "French",
   "code" : "fr",
   "system" : "urn:ietf:bcp:47",
-  "server" : "http://tx-dev.fhir.org/r4",
+  "server" : "http://local.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

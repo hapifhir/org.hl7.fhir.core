@@ -1084,6 +1084,9 @@
     "uri" : "http://hl7.org/fhir/slotstatus"
   },
   {
+    "uri" : "http://hl7.org/fhir/spdx-license"
+  },
+  {
     "uri" : "http://hl7.org/fhir/special-values"
   },
   {
@@ -3230,6 +3233,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/hl7-work-group"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/icd-o-3"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/immunization-evaluation-dose-status"

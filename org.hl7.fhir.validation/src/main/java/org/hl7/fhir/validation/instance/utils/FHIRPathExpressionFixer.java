@@ -9,10 +9,16 @@ public class FHIRPathExpressionFixer {
     // this is a hack work around for past publication of wrong FHIRPath expressions
 
     boolean r5 = VersionUtilities.isR5Ver(version);
-//    if (r5) {
-//      return expr;
-//    }
+    boolean r4 = VersionUtilities.isR4Ver(version) || VersionUtilities.isR4BVer(version);
 
+    // see https://chat.fhir.org/#narrow/stream/196008-ig-publishing-requirements/topic/Operation.20Definition.20Parameters.20table
+    if (r5 && "opd-3".equals(key)) {
+      return "targetProfile.exists() implies (type = 'Reference' or type = 'canonical' or type.memberOf('http://hl7.org/fhir/ValueSet/all-resource-types'))";
+    }    
+    if (r4 && "opd-3".equals(key)) {
+      return "targetProfile.exists() implies (type = 'Reference' or type = 'canonical' or type.memberOf('http://hl7.org/fhir/ValueSet/resource-types'))";
+    }
+    
     if ("probability is decimal implies (probability as decimal) <= 100".equals(expr)) {
       return "(probability.exists() and (probability is decimal)) implies ((probability as decimal) <= 100)";
     }
