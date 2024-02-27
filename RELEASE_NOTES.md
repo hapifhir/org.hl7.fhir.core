@@ -17,6 +17,7 @@
 * Don't require HL7 committee for contained resources in HL7 namespace
 * Fix where validator was ignoring minimum cardinality for XML attributes (especially in CDA)
 * Improved ConceptMap validation
+* Updated IG versions used for -cda and -ccda CLI validation options.
 
 ## Other code changes
 
