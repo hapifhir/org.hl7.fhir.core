@@ -1059,6 +1059,7 @@ public class I18nConstants {
   public static final String VALUESET_INCLUDE_CSVER_MULTI_FOUND = "VALUESET_INCLUDE_CSVER_MULTI_FOUND";
   public static final String UNABLE_TO_INFER_CODESYSTEM = "UNABLE_TO_INFER_CODESYSTEM";
   public static final String CODE_CASE_DIFFERENCE = "CODE_CASE_DIFFERENCE";
+  public static final String ILLEGAL_PROPERTY = "ILLEGAL_PROPERTY";
 }
 
 
