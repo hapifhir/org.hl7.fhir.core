@@ -2627,6 +2627,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkPrimitive(ValidationContext valContext, List<ValidationMessage> errors, String path, String type, ElementDefinition context, Element e, StructureDefinition profile, NodeStack node, NodeStack parentNode, Element resource) throws FHIRException {
     boolean ok = true;
+
+    // sanity check. The only children allowed are id and extension, but value might slip through in some circumstances. 
+    for (Element child : e.getChildren()) {
+      ok = rule(errors, "2024-02-28", IssueType.INVALID, child.line(), child.col(), path, !"value".equals(child.getName()), I18nConstants.ILLEGAL_PROPERTY, "value") && ok;
+    }
+    
     if (isBlank(e.primitiveValue())) {
       if (e.primitiveValue() == null)
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_VALUEEXT) && ok;
@@ -6116,7 +6122,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       childDefinitions = getActualTypeChildren(valContext, element, actualType);
     } else if (definition.getType().size() > 1) {
-      // this only happens when the profile constrains the abstract children but leaves th choice open.
+      // this only happens when the profile constrains the abstract children but leaves the choice open.
       if (actualType == null) {
         vi.setValid(false);
         return false; // there'll be an error elsewhere in this case, and we're going to stop.

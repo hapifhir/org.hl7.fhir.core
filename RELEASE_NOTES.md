@@ -18,6 +18,7 @@
 * Fix where validator was ignoring minimum cardinality for XML attributes (especially in CDA)
 * Improved ConceptMap validation
 * Updated IG versions used for -cda and -ccda CLI validation options.
+* Change validator so that it marks value properties in primitive data types as illegal
 
 ## Other code changes
 
@@ -32,3 +33,8 @@
 * Fix wrong URLs rendering Profiles and Questionnaires
 * Fix bug using wrong version constant for R3
 * Updates for R5 StructureMap syntax
+* Support for case sensitive Code system tests
+* Add TurtleGeneratorTests for R5
+* Introduce new validator cliContext option disableDefaultResourceFetcher (#1526)
+* Render contained resources when rendering Patient resources 
+* Fix bug in FML Parser 
