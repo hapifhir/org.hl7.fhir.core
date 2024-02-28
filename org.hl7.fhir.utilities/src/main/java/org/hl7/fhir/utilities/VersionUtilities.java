@@ -703,7 +703,11 @@ public class VersionUtilities {
   }
 
   public static String getNameForVersion(String v) {
-    switch (getMajMin(v)) {
+    String mm = getMajMin(v);
+    if (mm == null) {
+      throw new Error("Unable to determine version for '"+v+"'");
+    }
+    switch (mm) {
     case "1.0" : return "R2";
     case "1.4" : return "R2B";
     case "3.0" : return "R3";

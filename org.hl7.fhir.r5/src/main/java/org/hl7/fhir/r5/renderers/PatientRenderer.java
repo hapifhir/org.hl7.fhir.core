@@ -32,6 +32,7 @@ import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -269,7 +270,7 @@ public class PatientRenderer extends ResourceRenderer {
   }
 
   @Override
-  public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException {
+  public boolean render(XhtmlNode x, ResourceWrapper r) throws IOException, FHIRException, EOperationOutcome {
     // banner
     describe(makeBanner(x.para()), r);
     x.hr();
@@ -295,7 +296,20 @@ public class PatientRenderer extends ResourceRenderer {
     if (tbl.isEmpty()) {
       x.remove(tbl);
     }
+    if (r.has("contained") && context.isTechnicalMode()) {
+      x.hr();
+      x.para().b().tx("Contained Resources");
+      addContained(x, r.getContained());
+    }
     return false;
+  }
+
+  private void addContained(XhtmlNode x, List<ResourceWrapper> list) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
+    for (ResourceWrapper c : list) {
+      x.hr();
+      x.an(c.getId());
+      new RendererFactory().factory(c, context).render(x, c);
+    }
   }
 
   private void addExtensions(XhtmlNode tbl, ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {

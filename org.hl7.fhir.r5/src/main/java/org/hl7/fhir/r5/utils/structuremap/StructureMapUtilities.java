@@ -1104,7 +1104,7 @@ public class StructureMapUtilities {
       start = null;
       lexer.token(".");
       target.setElement(lexer.take());
-    }
+    } 
     String name;
     boolean isConstant = false;
     if (lexer.hasToken("=")) {
@@ -1141,15 +1141,19 @@ public class StructureMapUtilities {
       }
       lexer.token(")");
     } else if (name != null) {
-      target.setTransform(StructureMapTransform.COPY);
-      if (!isConstant) {
-        String id = name;
-        while (lexer.hasToken(".")) {
-          id = id + lexer.take() + lexer.take();
-        }
-        target.addParameter().setValue(new IdType(id));
-      } else
-        target.addParameter().setValue(readConstant(name, lexer));
+      if (target.getContext() != null) {
+        target.setTransform(StructureMapTransform.COPY);
+        if (!isConstant) {
+          String id = name;
+          while (lexer.hasToken(".")) {
+            id = id + lexer.take() + lexer.take();
+          }
+          target.addParameter().setValue(new IdType(id));
+        } else
+          target.addParameter().setValue(readConstant(name, lexer));
+      } else {
+        target.setContext(name);
+      }
     }
     if (lexer.hasToken("as")) {
       lexer.take();
@@ -1716,10 +1720,9 @@ public class StructureMapUtilities {
     Base dest = null;
     if (tgt.hasContext()) {
       dest = vars.get(VariableMode.OUTPUT, tgt.getContext());
-      if (dest == null)
-        throw new FHIRException("Rule \"" + rulePath + "\": target context not known: " + tgt.getContext());
-      if (!tgt.hasElement())
-        throw new FHIRException("Rule \"" + rulePath + "\": Not supported yet");
+      if (dest == null) {
+        throw new FHIRException("Rul \"" + rulePath + "\": target context not known: " + tgt.getContext());
+      }
     }
     Base v = null;
     if (tgt.hasTransform()) {
@@ -1738,8 +1741,10 @@ public class StructureMapUtilities {
           v = dest.makeProperty(tgt.getElement().hashCode(), tgt.getElement());
           sharedVars.add(VariableMode.SHARED, tgt.getListRuleId(), v);
         }
-      } else {
+      } else if (tgt.hasElement()) {
         v = dest.makeProperty(tgt.getElement().hashCode(), tgt.getElement());
+      } else {
+        v = dest;
       }
     }
     if (tgt.hasVariable() && v != null)
