@@ -1024,6 +1024,14 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     return addTag("link").attribute("rel", rel).attribute("href", href);
   }
 
+  public XhtmlNode ahOrNot(String href) {
+    if (href == null) {
+      return this;
+    }
+    XhtmlNode x = addTag("a").attribute("href", href);
+    return x;
+  }
+
 
   public void wbr() {
     addTag("wbr");
