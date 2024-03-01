@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -321,7 +323,6 @@ public class ConceptMapUtilities {
   }
 
   public static boolean checkReciprocal(ConceptMap left, ConceptMap right, List<String> issues) {
-    boolean altered = false;
     if (!Base.compareDeep(left.getTargetScope(), right.getSourceScope(), true)) {
       issues.add("scopes are not reciprocal: "+left.getTargetScope()+" vs "+right.getSourceScope());
     }
@@ -344,8 +345,7 @@ public class ConceptMapUtilities {
                 switch (tgtL.getRelationship()) {
                 case EQUIVALENT:
                   if (pairs.isEmpty()) {
-                    gr.getOrAddElement(tgtL.getCode()).addTarget().setCode(srcL.getCode()).setRelationship(ConceptMapRelationship.EQUIVALENT);  
-                    altered = true;
+                    issues.add("Left map says that "+srcL.getCode()+" is equivalent to "+tgtL.getCode()+" but there's no reverse relationship");
                   } else for (ElementMappingPair pair : pairs) {
                     if (pair.tgt.getRelationship() != ConceptMapRelationship.EQUIVALENT) {
                       issues.add("Left map says that "+srcL.getCode()+" is equivalent to "+tgtL.getCode()+" but the reverse relationship has type "+pair.tgt.getRelationship().toCode());
@@ -354,18 +354,16 @@ public class ConceptMapUtilities {
                   break;
                 case RELATEDTO:
                   if (pairs.isEmpty()) {
-                    gr.getOrAddElement(tgtL.getCode()).addTarget().setCode(srcL.getCode()).setRelationship(ConceptMapRelationship.RELATEDTO);  
-                    altered = true;
+                    issues.add("Left map says that "+srcL.getCode()+" is related to "+tgtL.getCode()+" but there's no reverse relationship");
                   } else for (ElementMappingPair pair : pairs) {
                     if (pair.tgt.getRelationship() != ConceptMapRelationship.EQUIVALENT && pair.tgt.getRelationship() != ConceptMapRelationship.RELATEDTO) {
-                      issues.add("Left map says that "+srcL.getCode()+" is equivalent to "+tgtL.getCode()+" but the reverse relationship has type "+pair.tgt.getRelationship().toCode());
+                      issues.add("Left map says that "+srcL.getCode()+" is related to "+tgtL.getCode()+" but the reverse relationship has type "+pair.tgt.getRelationship().toCode());
                     }
                   }
                   break;
                 case SOURCEISBROADERTHANTARGET:
                   if (pairs.isEmpty()) {
-                    gr.getOrAddElement(tgtL.getCode()).addTarget().setCode(srcL.getCode()).setRelationship(ConceptMapRelationship.SOURCEISNARROWERTHANTARGET);  
-                    altered = true; 
+                    issues.add("Left map says that "+srcL.getCode()+" is broader than "+tgtL.getCode()+" but there's no reverse relationship");
                   } else for (ElementMappingPair pair : pairs) {
                     if (pair.tgt.getRelationship() != ConceptMapRelationship.SOURCEISNARROWERTHANTARGET) {
                       issues.add("Left map says that "+srcL.getCode()+" is broader than "+tgtL.getCode()+" but the reverse relationship has type "+pair.tgt.getRelationship().toCode());
@@ -374,8 +372,7 @@ public class ConceptMapUtilities {
                   break;
                 case SOURCEISNARROWERTHANTARGET:
                   if (pairs.isEmpty()) {
-                    gr.getOrAddElement(tgtL.getCode()).addTarget().setCode(srcL.getCode()).setRelationship(ConceptMapRelationship.SOURCEISBROADERTHANTARGET);   
-                    altered = true;
+                    issues.add("Left map says that "+srcL.getCode()+" is narrower than "+tgtL.getCode()+" but there's no reverse relationship");
                   } else for (ElementMappingPair pair : pairs) {
                     if (pair.tgt.getRelationship() != ConceptMapRelationship.SOURCEISBROADERTHANTARGET) {
                       issues.add("Left map says that "+srcL.getCode()+" is narrower than "+tgtL.getCode()+" but the reverse relationship has type "+pair.tgt.getRelationship().toCode());
@@ -410,8 +407,7 @@ public class ConceptMapUtilities {
                 switch (tgtR.getRelationship()) {
                 case EQUIVALENT:
                   if (pairs.isEmpty()) {
-                    gl.getOrAddElement(tgtR.getCode()).addTarget().setCode(srcR.getCode()).setRelationship(ConceptMapRelationship.EQUIVALENT);  
-                    altered = true;
+                    issues.add("Right map says that "+srcR.getCode()+" is equivalent to "+tgtR.getCode()+" but there's no reverse relationship");
                   } else for (ElementMappingPair pair : pairs) {
                     if (pair.tgt.getRelationship() != ConceptMapRelationship.EQUIVALENT) {
                       issues.add("Right map says that "+srcR.getCode()+" is equivalent to "+tgtR.getCode()+" but the reverse relationship has type "+pair.tgt.getRelationship().toCode());
@@ -420,8 +416,7 @@ public class ConceptMapUtilities {
                   break;
                 case RELATEDTO:
                   if (pairs.isEmpty()) {
-                    gl.getOrAddElement(tgtR.getCode()).addTarget().setCode(srcR.getCode()).setRelationship(ConceptMapRelationship.RELATEDTO);  
-                    altered = true;
+                    issues.add("Right map says that "+srcR.getCode()+" is related to "+tgtR.getCode()+" but there's no reverse relationship");
                   } else for (ElementMappingPair pair : pairs) {
                     if (pair.tgt.getRelationship() != ConceptMapRelationship.EQUIVALENT && pair.tgt.getRelationship() != ConceptMapRelationship.RELATEDTO) {
                       issues.add("Right map says that "+srcR.getCode()+" is equivalent to "+tgtR.getCode()+" but the reverse relationship has type "+pair.tgt.getRelationship().toCode());
@@ -430,8 +425,7 @@ public class ConceptMapUtilities {
                   break;
                 case SOURCEISBROADERTHANTARGET:
                   if (pairs.isEmpty()) {
-                    gl.getOrAddElement(tgtR.getCode()).addTarget().setCode(srcR.getCode()).setRelationship(ConceptMapRelationship.SOURCEISNARROWERTHANTARGET);  
-                    altered = true; 
+                    issues.add("Right map says that "+srcR.getCode()+" is broader than "+tgtR.getCode()+" but there's no reverse relationship");
                   } else for (ElementMappingPair pair : pairs) {
                     if (pair.tgt.getRelationship() != ConceptMapRelationship.SOURCEISNARROWERTHANTARGET) {
                       issues.add("Right map says that "+srcR.getCode()+" is broader than "+tgtR.getCode()+" but the reverse relationship has type "+pair.tgt.getRelationship().toCode());
@@ -440,8 +434,7 @@ public class ConceptMapUtilities {
                   break;
                 case SOURCEISNARROWERTHANTARGET:
                   if (pairs.isEmpty()) {
-                    gl.getOrAddElement(tgtR.getCode()).addTarget().setCode(srcR.getCode()).setRelationship(ConceptMapRelationship.SOURCEISBROADERTHANTARGET);   
-                    altered = true;
+                    issues.add("Right map says that "+srcR.getCode()+" is narrower than "+tgtR.getCode()+" but there's no reverse relationship");
                   } else for (ElementMappingPair pair : pairs) {
                     if (pair.tgt.getRelationship() != ConceptMapRelationship.SOURCEISBROADERTHANTARGET) {
                       issues.add("Right map says that "+srcR.getCode()+" is narrower than "+tgtR.getCode()+" but the reverse relationship has type "+pair.tgt.getRelationship().toCode());
@@ -470,7 +463,7 @@ public class ConceptMapUtilities {
         }
       }
     }
-    return altered;
+    return false;
   }
 
   private static List<ElementMappingPair> getMappings(ConceptMapGroupComponent g, String source, String target) {
@@ -528,6 +521,30 @@ public class ConceptMapUtilities {
       }
     }
     return i;
+  }
+
+  public static Set<String> listCodesWithNoMappings(Set<String> set, ConceptMap map) {
+    Set<String> res = new HashSet<>();
+    for (String s : set) {
+      if (s != null) {
+        boolean found = false;
+        for (ConceptMapGroupComponent grp : map.getGroup()) {
+          for (SourceElementComponent src : grp.getElement()) {
+            if (s.equals(src.getCode())) {
+              for (TargetElementComponent tgt : src.getTarget()) {
+                if (tgt.getRelationship() == ConceptMapRelationship.RELATEDTO || tgt.getRelationship() == ConceptMapRelationship.EQUIVALENT || tgt.getRelationship() == ConceptMapRelationship.SOURCEISNARROWERTHANTARGET) {
+                  found = true;                
+                }
+              }
+            }
+          }
+        }
+        if (!found) {
+          res.add(s);
+        }
+      }
+    }    
+    return res;
   }
 
 }
