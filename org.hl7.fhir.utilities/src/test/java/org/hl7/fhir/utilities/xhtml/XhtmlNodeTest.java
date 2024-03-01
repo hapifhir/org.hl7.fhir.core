@@ -1,4 +1,4 @@
-package org.hl7.fhir.utilities.tests;
+package org.hl7.fhir.utilities.xhtml;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -145,9 +146,8 @@ public class XhtmlNodeTest {
     String src = BaseTestingUtilities.loadTestResource("xhtml", "xhtml-empty-elements.xml");
     XhtmlNode x = new XhtmlParser().parse(src, "xml");
    
-    
-    String xml = new XhtmlComposer(false, false).compose(x);
-    Assertions.assertEquals(src.trim(), xml.trim());
+    String xml = new XhtmlComposer(true, false).compose(x);
+    Assertions.assertEquals("<xml xmlns=\"http://something\"><empty attr=\"1\"/><empty attr=\"2\"/></xml>", xml.trim());
   }
 
   @Test

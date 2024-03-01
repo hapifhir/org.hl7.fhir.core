@@ -39,6 +39,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
 import org.w3c.dom.Element;
@@ -236,15 +237,18 @@ public class XhtmlComposer {
     if (!pretty || noPrettyOverride)
       indent = "";
 
-    // html self closing tags: http://xahlee.info/js/html5_non-closing_tag.html 
-    boolean concise = node.getChildNodes().size() == 0;
-    if (node.hasEmptyExpanded() && node.getEmptyExpanded()) {
-      concise = false;
+    boolean concise = false;
+    if (!node.hasChildren()) {
+      if (this.xml) {
+        concise = true;
+      } else if (!(node.hasEmptyExpanded() && node.getEmptyExpanded()) && 
+          Utilities.existsInList(node.getName(), "area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "menuitem", "meta", "param", "source", "track", "wbr")) {
+        // In HTML5, only these elements can self-close
+        // https://developer.mozilla.org/en-US/docs/Glossary/Void_element
+        concise = true;
+      }
     }
-    if (!xml && Utilities.existsInList(node.getName(), "area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "menuitem", "meta", "param", "source", "track", "wbr")) {
-      concise = true;
-    }
-
+    
     if (concise)
       dst.append(indent + "<" + node.getName() + attributes(node) + "/>" + (pretty && !noPrettyOverride ? "\r\n" : ""));
     else {
