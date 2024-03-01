@@ -39,8 +39,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
   }
 
-  public interface IConceptMapInformationProvider {
+  public interface IMultiMapRendererAdvisor {
     public List<Coding> getMembers(String uri);
+    public boolean describeMap(ConceptMap map, XhtmlNode x);
     public String getLink(String system, String code);
   }
   
@@ -723,11 +724,11 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     return null;
   }
 
-  public static XhtmlNode renderMultipleMaps(String start, List<ConceptMap> maps, IConceptMapInformationProvider linker, RenderMultiRowSortPolicy sort) {
+  public static XhtmlNode renderMultipleMaps(String start, String startLink, List<ConceptMap> maps, IMultiMapRendererAdvisor advisor, RenderMultiRowSortPolicy sort) {
     // 1+1 column for each provided map
     List<MultipleMappingRow> rowSets = new ArrayList<>();
     for (int i = 0; i < maps.size(); i++) {
-      populateRows(rowSets, maps.get(i), i, linker);
+      populateRows(rowSets, maps.get(i), i, advisor);
     }
     collateRows(rowSets);
     if (sort != RenderMultiRowSortPolicy.UNSORTED) {
@@ -736,16 +737,19 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
     XhtmlNode tbl = div.table("none").style("text-align: left; border-spacing: 0; padding: 5px");
     XhtmlNode tr = tbl.tr();
-    styleCell(tr.td(), false, true, 5).b().tx(start);
+    styleCell(tr.td(), false, true, 5).b().ahOrNot(startLink).tx(start);
     for (ConceptMap map : maps) {
-      if (map.hasWebPath()) {
-        styleCell(tr.td(), false, true, 5).colspan(2).b().ah(map.getWebPath(), map.getVersionedUrl()).tx(map.present());
-      } else {
-        styleCell(tr.td(), false, true, 5).colspan(2).b().tx(map.present());
+      XhtmlNode td = styleCell(tr.td(), false, true, 5).colspan(2);
+      if (!advisor.describeMap(map, td)) {
+        if (map.hasWebPath()) {
+          td.b().ah(map.getWebPath(), map.getVersionedUrl()).tx(map.present());
+        } else {
+          td.b().tx(map.present());
+        }
       }
     }
     for (MultipleMappingRow row : rowSets) {
-      renderMultiRow(tbl, row, maps, linker);
+      renderMultiRow(tbl, row, maps, advisor);
     }
     return div;
   }
@@ -765,7 +769,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     rowSets.removeAll(toDelete);    
   }
 
-  private static void renderMultiRow(XhtmlNode tbl, MultipleMappingRow rows, List<ConceptMap> maps, IConceptMapInformationProvider linker) {
+  private static void renderMultiRow(XhtmlNode tbl, MultipleMappingRow rows, List<ConceptMap> maps, IMultiMapRendererAdvisor advisor) {
     int rowCounter = 0;
     for (MultipleMappingRowItem row : rows.rowSets) {
       XhtmlNode tr = tbl.tr();
@@ -787,7 +791,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             if (cell.code == null) {
               styleCell(tr.td(), rowCounter == 0, true, 5).rowspan(c).style("background-color: #eeeeee");
             } else {
-              String link = linker.getLink(cell.system, cell.code);
+              String link = advisor.getLink(cell.system, cell.code);
               XhtmlNode x = null;
               if (link != null) {
                 x = styleCell(tr.td(), rowCounter == 0, true, 5).attributeNN("title", cell.display).rowspan(c).ah(link);
@@ -835,7 +839,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             if (cell.code == null) {
               styleCell(tr.td(), rowCounter == 0, true, 5).rowspan(c).style("background-color: #eeeeee");
             } else {
-              String link = linker.getLink(cell.system, cell.code);
+              String link = advisor.getLink(cell.system, cell.code);
               XhtmlNode x = null;
               if (link != null) {
                 x = styleCell(tr.td(), rowCounter == 0, true, 5).attributeNN("title", cell.display).rowspan(c).ah(link);
@@ -868,10 +872,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     return td;
   }
 
-  private static void populateRows(List<MultipleMappingRow> rowSets, ConceptMap map, int i, IConceptMapInformationProvider linker) {
+  private static void populateRows(List<MultipleMappingRow> rowSets, ConceptMap map, int i, IMultiMapRendererAdvisor advisor) {
     // if we can resolve the value set, we create entries for it
     if (map.hasSourceScope()) {
-      List<Coding> codings = linker.getMembers(map.getSourceScope().primitiveValue());
+      List<Coding> codings = advisor.getMembers(map.getSourceScope().primitiveValue());
       if (codings != null) {
         for (Coding c : codings) {
           MultipleMappingRow row = i == 0 ? null : findExistingRowBySource(rowSets, c.getSystem(), c.getCode(), i);
@@ -931,7 +935,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       }
     }
     if (map.hasTargetScope()) {
-      List<Coding> codings = linker.getMembers(map.getTargetScope().primitiveValue());
+      List<Coding> codings = advisor.getMembers(map.getTargetScope().primitiveValue());
       if (codings != null) {
         for (Coding c : codings) {
           MultipleMappingRow row = findExistingRowByTarget(rowSets, c.getSystem(), c.getCode(), i);
