@@ -1785,6 +1785,7 @@ public class ConceptMap extends MetadataResource {
     }
     return addElement().setCode(code);
   }
+
   }
 
     @Block()
@@ -2273,6 +2274,21 @@ public class ConceptMap extends MetadataResource {
 
   }
 
+  public boolean hasTargetCode(String code) {
+    for (TargetElementComponent tgt : getTarget()) {
+      if (code.equals(tgt.getCode())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public TargetElementComponent addTarget(String code, ConceptMapRelationship relationship) {
+    TargetElementComponent tgt = addTarget();
+    tgt.setCode(code);
+    tgt.setRelationship(relationship);
+    return tgt;
+  }
   }
 
     @Block()
@@ -8590,7 +8606,31 @@ public class ConceptMap extends MetadataResource {
   private String tail(String uri) {
     return uri.contains("/") ? uri.substring(uri.lastIndexOf("/")+1) : uri;
   }
+
+  public ConceptMapGroupComponent getGroup(String su, String tu) {
+    for (ConceptMapGroupComponent g : getGroup()) {
+      if (su.equals(g.getSource()) && tu.equals(g.getTarget())) {
+        return g;
+      }      
+    }
+    return null;
+  }
+
+  public ConceptMapGroupComponent forceGroup(String su, String tu) {
+    for (ConceptMapGroupComponent g : getGroup()) {
+      if (su.equals(g.getSource()) && tu.equals(g.getTarget())) {
+        return g;
+      }      
+    }
+    ConceptMapGroupComponent g = addGroup();
+    g.setSource(su);
+    g.setTarget(tu);
+    return g;
+    
+  }
+  
 // end addition
+
 
 }
 
