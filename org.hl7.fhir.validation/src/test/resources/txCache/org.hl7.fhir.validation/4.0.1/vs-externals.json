@@ -8,7 +8,7 @@
   "http://hl7.org/fhir/smart-app-launch/ValueSet/user-access-category" : null,
   "https://healthterminologies.gov.au/fhir/ValueSet/australian-immunisation-register-vaccine-1" : {
     "server" : "https://tx.ontoserver.csiro.au/fhir",
-    "filename" : "vs-10e6764a-b99b-4e4c-b5f8-7c3a7189cd3a.json"
+    "filename" : "vs-0ce1569f-f985-44cb-a5a0-9d205efd76b4.json"
   },
   "http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType" : null,
   "http://loinc.org/vs/LL4048-6" : null,

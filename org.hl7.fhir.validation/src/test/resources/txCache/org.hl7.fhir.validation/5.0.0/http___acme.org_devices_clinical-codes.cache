@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://acme.org/devices/clinical-codes",
-  "code" : "bp-s",
-  "display" : "Systolic Blood pressure"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "code" : "body-weight",
+  "display" : "Body Weight"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -11,18 +11,18 @@
   }]
 }}####
 v: {
-  "code" : "bp-s",
+  "code" : "body-weight",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "http://acme.org/devices/clinical-codes",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -42,9 +42,9 @@ v: {
 -------------------------------------------------------------------------------------
 {"code" : {
   "system" : "http://acme.org/devices/clinical-codes",
-  "code" : "body-weight",
-  "display" : "Body Weight"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "code" : "bp-s",
+  "display" : "Systolic Blood pressure"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -52,7 +52,7 @@ v: {
   }]
 }}####
 v: {
-  "code" : "body-weight",
+  "code" : "bp-s",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",

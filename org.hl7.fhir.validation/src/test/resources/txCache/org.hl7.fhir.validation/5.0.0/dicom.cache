@@ -15,7 +15,7 @@ v: {
   "code" : "110122",
   "system" : "http://dicom.nema.org/resources/ontology/DCM",
   "version" : "2024.1.20240120",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
