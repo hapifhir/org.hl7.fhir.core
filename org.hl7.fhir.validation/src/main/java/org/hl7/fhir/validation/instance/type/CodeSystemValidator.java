@@ -33,7 +33,20 @@ public class CodeSystemValidator  extends BaseValidator {
 
     String vsu = cs.getNamedChildValue("valueSet", false);
     if (!Utilities.noString(vsu)) {
-      hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), "complete".equals(content), I18nConstants.CODESYSTEM_CS_NO_VS_NOTCOMPLETE);
+      if ("supplement".equals(content)) {
+        CodeSystem csB = context.fetchCodeSystem(supp);
+        if (csB != null) {
+          if (csB.hasValueSet()) {
+            warning(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), vsu.equals(vsu), I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT2, csB.getValueSet());            
+          } else {
+            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT1);
+          }
+        } else {
+          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), "complete".equals(content), I18nConstants.CODESYSTEM_CS_NO_VS_NOTCOMPLETE);
+        }        
+      } else { 
+        hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), "complete".equals(content), I18nConstants.CODESYSTEM_CS_NO_VS_NOTCOMPLETE);
+      }
       ValueSet vs;
       try {
         vs = context.fetchResourceWithException(ValueSet.class, vsu);
@@ -61,22 +74,26 @@ public class CodeSystemValidator  extends BaseValidator {
       }
     } // todo... try getting the value set the other way...
 
-    if (supp != null) {
-      if (context.supportsSystem(supp, options.getFhirVersion())) {
-        List<Element> concepts = cs.getChildrenByName("concept");
-        int ce = 0;
-        for (Element concept : concepts) {
-          NodeStack nstack = stack.push(concept, ce, null, null);
-          if (ce == 0) {
-            rule(errors, "2023-08-15", IssueType.INVALID, nstack,  !"not-present".equals(content), I18nConstants.CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED);            
+    if ("supplement".equals(content) || supp != null) {      
+      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), !Utilities.noString(supp), I18nConstants.CODESYSTEM_CS_SUPP_NO_SUPP)) {
+        if (context.supportsSystem(supp, options.getFhirVersion())) {
+          List<Element> concepts = cs.getChildrenByName("concept");
+          int ce = 0;
+          for (Element concept : concepts) {
+            NodeStack nstack = stack.push(concept, ce, null, null);
+            if (ce == 0) {
+              rule(errors, "2023-08-15", IssueType.INVALID, nstack,  !"not-present".equals(content), I18nConstants.CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED);            
+            }
+            ok = validateSupplementConcept(errors, concept, nstack, supp, options) && ok;
+            ce++;
+          }    
+        } else {
+          if (cs.hasChildren("concept")) {
+            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_CANT_CHECK, supp);
           }
-          ok = validateSupplementConcept(errors, concept, nstack, supp, options) && ok;
-          ce++;
-        }    
-      } else {
-        if (cs.hasChildren("concept")) {
-          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_CANT_CHECK, supp);
         }
+      } else {
+        ok = false;
       }
     }
 

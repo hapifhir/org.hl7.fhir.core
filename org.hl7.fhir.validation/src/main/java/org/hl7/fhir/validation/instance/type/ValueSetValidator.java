@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.instance.type;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Resource;
@@ -141,23 +142,26 @@ public class ValueSetValidator extends BaseValidator {
     if (valuesets.size() > 1) {
       warning(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, stack.getLiteralPath(), false, I18nConstants.VALUESET_IMPORT_UNION_INTERSECTION);                  
     }
-    if (system != null && system.startsWith("#")) {
-      List<Element> cs = new ArrayList<>();
-      for (Element contained : vsSrc.getChildrenByName("contained")) {
-        if (("#"+contained.getIdBase()).equals(system)) {
-          if (rule(errors, "2024-02-10", IssueType.INVALID, stack.getLiteralPath(), "CodeSystem".equals(contained.fhirType()), I18nConstants.VALUESET_INCLUDE_CS_NOT_CS, system, contained.fhirType())) {
-            if (version == null || version.equals(contained.getChildValue("version"))) {
-              cs.add(contained);
-            }            
-          } else {
-            ok = false;
+    if (system != null) {
+      rule(errors, "2024-03-06", IssueType.INVALID, stack.getLiteralPath(), Utilities.isAbsoluteUrl(system), system.startsWith("#") ? I18nConstants.VALUESET_INCLUDE_SYSTEM_ABSOLUTE_FRAG : I18nConstants.VALUESET_INCLUDE_SYSTEM_ABSOLUTE, system);
+      if (system.startsWith("#")) {
+        List<Element> cs = new ArrayList<>();
+        for (Element contained : vsSrc.getChildrenByName("contained")) {
+          if (("#"+contained.getIdBase()).equals(system)) {
+            ok = false; // see absolute check above.
+
+            if (rule(errors, "2024-02-10", IssueType.INVALID, stack.getLiteralPath(), "CodeSystem".equals(contained.fhirType()), I18nConstants.VALUESET_INCLUDE_CS_NOT_CS, system, contained.fhirType())) {
+              if (version == null || version.equals(contained.getChildValue("version"))) {
+                cs.add(contained);
+              }            
+            } 
           }
         }
-      }
-      if (cs.isEmpty()) {
-        ok = rule(errors, "2024-02-10", IssueType.INVALID, stack.getLiteralPath(), false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_NOT_FOUND : I18nConstants.VALUESET_INCLUDE_CSVER_NOT_FOUND, system, version) && ok;   
-      } else {
-        ok = rule(errors, "2024-02-10", IssueType.INVALID, stack.getLiteralPath(), cs.size() == 1, version == null ? I18nConstants.VALUESET_INCLUDE_CS_MULTI_FOUND : I18nConstants.VALUESET_INCLUDE_CSVER_MULTI_FOUND, system, version) && ok;   
+        if (cs.isEmpty()) {
+          ok = rule(errors, "2024-02-10", IssueType.INVALID, stack.getLiteralPath(), false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_NOT_FOUND : I18nConstants.VALUESET_INCLUDE_CSVER_NOT_FOUND, system, version) && ok;   
+        } else {
+          ok = rule(errors, "2024-02-10", IssueType.INVALID, stack.getLiteralPath(), cs.size() == 1, version == null ? I18nConstants.VALUESET_INCLUDE_CS_MULTI_FOUND : I18nConstants.VALUESET_INCLUDE_CSVER_MULTI_FOUND, system, version) && ok;   
+        }
       }
     }
     List<Element> concepts = include.getChildrenByName("concept");
@@ -165,6 +169,23 @@ public class ValueSetValidator extends BaseValidator {
 
     CodeSystemChecker slv = getSystemValidator(system, errors);
     if (!Utilities.noString(system)) {
+      CodeSystem cs = context.fetchCodeSystem(system, version);
+      if (cs != null) { // if it's null, we can't analyse this
+        switch (cs.getContent()) {
+        case EXAMPLE:
+          warning(errors, "2024-03-06", IssueType.INVALID, stack.getLiteralPath(), false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_CONTENT : I18nConstants.VALUESET_INCLUDE_CSVER_CONTENT, system, cs.getContent().toCode(), version);             
+          break;
+        case FRAGMENT:
+          hint(errors, "2024-03-06", IssueType.INVALID, stack.getLiteralPath(), false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_CONTENT : I18nConstants.VALUESET_INCLUDE_CSVER_CONTENT, system, cs.getContent().toCode(), version);             
+          break;
+        case SUPPLEMENT:
+          ok = rule(errors, "2024-03-06", IssueType.INVALID, stack.getLiteralPath(), false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_SUPPLEMENT : I18nConstants.VALUESET_INCLUDE_CSVER_SUPPLEMENT, system, cs.getSupplements(), version) && ok;             
+          break;
+        default:
+          break;
+        }
+      }
+      
       boolean systemOk = true;
       int cc = 0;
       List<VSCodingValidationRequest> batch = new ArrayList<>();
