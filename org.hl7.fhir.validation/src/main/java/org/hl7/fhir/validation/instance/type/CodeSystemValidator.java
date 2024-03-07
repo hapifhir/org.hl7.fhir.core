@@ -1,11 +1,15 @@
 package org.hl7.fhir.validation.instance.type;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -13,6 +17,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
+import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
 public class CodeSystemValidator  extends BaseValidator {
 
@@ -20,7 +25,7 @@ public class CodeSystemValidator  extends BaseValidator {
     super(parent);
   }
 
-  public boolean validateCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack, ValidationOptions options) {
+  public boolean validateCodeSystem(ValidationContext valContext, List<ValidationMessage> errors, Element cs, NodeStack stack, ValidationOptions options) {
     boolean ok = true;
     String url = cs.getNamedChildValue("url", false);
     String content = cs.getNamedChildValue("content", false);
@@ -28,13 +33,14 @@ public class CodeSystemValidator  extends BaseValidator {
     String hierarchyMeaning = cs.getNamedChildValue("hierarchyMeaning", false);
     String supp = cs.getNamedChildValue("supplements", false);
     int count = countConcepts(cs); 
+    CodeSystem csB = null;
     
     metaChecks(errors, cs, stack, url, content, caseSensitive, hierarchyMeaning, !Utilities.noString(supp), count, supp);
 
     String vsu = cs.getNamedChildValue("valueSet", false);
     if (!Utilities.noString(vsu)) {
       if ("supplement".equals(content)) {
-        CodeSystem csB = context.fetchCodeSystem(supp);
+        csB = context.fetchCodeSystem(supp);
         if (csB != null) {
           if (csB.hasValueSet()) {
             warning(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), vsu.equals(vsu), I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT2, csB.getValueSet());            
@@ -99,10 +105,57 @@ public class CodeSystemValidator  extends BaseValidator {
 
     if (!stack.isContained()) {
       ok = checkShareableCodeSystem(errors, cs, stack) && ok;
+    } else {
+      // we approve of contained code systems in two circumstances:
+      //   * inside a questionnaire for a code system only used by that questionnaire
+      //   * inside a supplement, for creating properties in the supplement// otherwise, we put a hint on it that this is probably a bad idea 
+      boolean isInQ = valContext.getRootResource() != null && valContext.getRootResource().fhirType().equals("Questionnaire");
+      boolean isSuppProp = valContext.getRootResource() != null && valContext.getRootResource().fhirType().equals("CodeSystem"); // todo add more checks
+      hint(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), !isInQ && !isSuppProp, I18nConstants.CODESYSTEM_NOT_CONTAINED);      
     }
+    
+    Set<String> codes = new HashSet<>();
+    
+    List<Element> concepts = cs.getChildrenByName("concept");
+    int i = 0;
+    for (Element concept : concepts) {
+      checkConcept(errors, cs,  stack.push(concept, i, null, null), "true".equals(caseSensitive), hierarchyMeaning, csB, concept, codes);
+      i++;
+    }
+    
     return ok;
   }
 
+
+  private void checkConcept(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean caseSensitive, String hierarchyMeaning, CodeSystem csB, Element concept, Set<String> codes) {
+    String code = concept.getNamedChildValue("code");
+    String display = concept.getNamedChildValue("display");
+
+    if (csB != null && !Utilities.noString(display)) {
+      ConceptDefinitionComponent b = CodeSystemUtilities.findCode(csB.getConcept(), code);
+      if (b != null && !b.getDisplay().equalsIgnoreCase(display)) {
+        String lang = cs.getNamedChildValue("language");
+        if ((lang == null && !csB.hasLanguage()) || 
+            csB.getLanguage().equals(lang)) {
+          // nothing new language wise, and the display doesn't match
+          hint(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_SUPP_NO_DISPLAY, display, b.getDisplay(), lang == null? "undefined" : lang);        
+        }
+      }
+    }
+    
+    // todo: check that all the properties are defined. 
+    // check that all the defined properties have values 
+    // check the designations have values, and the use/language don't conflict 
+    
+    
+    List<Element> concepts = concept.getChildrenByName("concept");
+    int i = 0;
+    for (Element child : concepts) {
+      checkConcept(errors, cs,  stack.push(concept, i, null, null), caseSensitive, hierarchyMeaning, csB, child, codes);
+      i++;
+    }
+    
+  }
 
   private boolean checkShareableCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack) {
     if (parent.isForPublication()) { 
@@ -138,6 +191,9 @@ public class CodeSystemValidator  extends BaseValidator {
   }
   
   private void metaChecks(List<ValidationMessage> errors, Element cs, NodeStack stack, String url,  String content, String caseSensitive, String hierarchyMeaning, boolean isSupplement, int count, String supp) {
+    if (forPublication && (url.contains("hl7.org"))) {
+      hint(errors, "2024-03-07", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), url.contains("terminology.hl7.org") || url.contains("hl7.org/cda/stds/core"), I18nConstants.CODESYSTEM_THO_CHECK);
+    }
     if (isSupplement) {
       if (!"supplement".equals(content)) {
         NodeStack s = stack.push(cs.getNamedChild("content", false), -1, null, null);
