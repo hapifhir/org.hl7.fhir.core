@@ -851,7 +851,10 @@ public class BundleValidator extends BaseValidator {
         if (ref != null && !ref.startsWith("#") && !hasReference(ref, references))
           references.add(new StringWithSource(ref, child, true, isNLLink(start)));
       }
-      findReferences(child, references);
+      // don't walk into a sub-bundle 
+      if (!"Bundle".equals(child.fhirType())) {
+        findReferences(child, references);
+      }
     }
   }
 
