@@ -2,6 +2,7 @@ package org.hl7.fhir.validation.instance.type;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -11,6 +12,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -23,6 +25,7 @@ import org.hl7.fhir.validation.codesystem.GeneralCodeSystemChecker;
 import org.hl7.fhir.validation.codesystem.SnomedCTChecker;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
+import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
 public class ValueSetValidator extends BaseValidator {
 
@@ -57,13 +60,13 @@ public class ValueSetValidator extends BaseValidator {
     super(parent);
   }
   
-  public boolean validateValueSet(List<ValidationMessage> errors, Element vs, NodeStack stack) {
+  public boolean validateValueSet(ValidationContext valContext, List<ValidationMessage> errors, Element vs, NodeStack stack) {
     boolean ok = true;
     if (!VersionUtilities.isR2Ver(context.getVersion())) {
       List<Element> composes = vs.getChildrenByName("compose");
       int cc = 0;
       for (Element compose : composes) {
-        ok = validateValueSetCompose(errors, compose, stack.push(compose, composes.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url", false), "retired".equals(vs.getNamedChildValue("url", false)), vs) & ok;
+        ok = validateValueSetCompose(valContext, errors, compose, stack.push(compose, composes.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url", false), "retired".equals(vs.getNamedChildValue("url", false)), vs) & ok;
         cc++;
       }
     }
@@ -99,24 +102,24 @@ public class ValueSetValidator extends BaseValidator {
   }
 
 
-  private boolean validateValueSetCompose(List<ValidationMessage> errors, Element compose, NodeStack stack, String vsid, boolean retired, Element vsSrc) {
+  private boolean validateValueSetCompose(ValidationContext valContext, List<ValidationMessage> errors, Element compose, NodeStack stack, String vsid, boolean retired, Element vsSrc) {
     boolean ok = true;
     List<Element> includes = compose.getChildrenByName("include");
     int ci = 0;
     for (Element include : includes) {
-      ok = validateValueSetInclude(errors, include, stack.push(include, ci, null, null), vsid, retired, vsSrc) && ok;
+      ok = validateValueSetInclude(valContext, errors, include, stack.push(include, ci, null, null), vsid, retired, vsSrc) && ok;
       ci++;
     }    
     List<Element> excludes = compose.getChildrenByName("exclude");
     int ce = 0;
     for (Element exclude : excludes) {
-      ok = validateValueSetInclude(errors, exclude, stack.push(exclude, ce, null, null), vsid, retired, vsSrc) && ok;
+      ok = validateValueSetInclude(valContext, errors, exclude, stack.push(exclude, ce, null, null), vsid, retired, vsSrc) && ok;
       ce++;
     }    
     return ok;
   }
   
-  private boolean validateValueSetInclude(List<ValidationMessage> errors, Element include, NodeStack stack, String vsid, boolean retired,  Element vsSrc) {
+  private boolean validateValueSetInclude(ValidationContext valContext, List<ValidationMessage> errors, Element include, NodeStack stack, String vsid, boolean retired,  Element vsSrc) {
     boolean ok = true;
     String system = include.getChildValue("system");
     String version = include.getChildValue("version");
@@ -161,6 +164,14 @@ public class ValueSetValidator extends BaseValidator {
           ok = rule(errors, "2024-02-10", IssueType.INVALID, stack.getLiteralPath(), false, version == null ? I18nConstants.VALUESET_INCLUDE_CS_NOT_FOUND : I18nConstants.VALUESET_INCLUDE_CSVER_NOT_FOUND, system, version) && ok;   
         } else {
           ok = rule(errors, "2024-02-10", IssueType.INVALID, stack.getLiteralPath(), cs.size() == 1, version == null ? I18nConstants.VALUESET_INCLUDE_CS_MULTI_FOUND : I18nConstants.VALUESET_INCLUDE_CSVER_MULTI_FOUND, system, version) && ok;   
+        }
+      }
+      if (version == null) {
+        CodeSystem cs = context.fetchCodeSystem(system);
+        if (cs != null) {
+          Set<String> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), system);
+          warning(errors, NO_RULE_DATE, IssueType.INVALID, include.line(), include.col(), stack.getLiteralPath(), possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
+              system, cs.getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(possibleVersions)));
         }
       }
     }

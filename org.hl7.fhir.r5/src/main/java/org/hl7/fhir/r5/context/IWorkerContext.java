@@ -191,6 +191,15 @@ public interface IWorkerContext {
   public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_, FhirPublication fhirVersion);
   public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_);
 
+
+  /**
+   * Fetch all the resources for the given URL - all matching versions
+   * 
+   * @param url
+   * @return
+   */
+  public <T extends Resource> List<T> fetchResourcesByUrl(Class<T> class_, String url);
+  
   /**
    * Variation of fetchResource when you have a string type, and don't need the right class
    * 
