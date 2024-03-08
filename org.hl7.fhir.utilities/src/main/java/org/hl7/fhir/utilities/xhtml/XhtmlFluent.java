@@ -198,6 +198,14 @@ public abstract class XhtmlFluent {
     }
   }
 
+  public XhtmlNode imgT(String src, String alt) {
+    if (alt == null) {
+      return addTag("img").attribute("src", src).attribute("alt", ".");
+    } else {
+      return addTag("img").attribute("src", src).attribute("alt", alt).attribute("title", alt);
+    }
+  }
+
   public XhtmlNode img(String src, String alt, String title) {
     return addTag("img").attribute("src", src).attribute("alt", alt).attribute("title", title);    
   }

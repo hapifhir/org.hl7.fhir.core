@@ -361,8 +361,10 @@ public abstract class ResourceRenderer extends DataRenderer {
         } else {
           c = x.ah(r.getReference());
         }
+      } else if ("#".equals(r.getReference())) {
+        c = x.ah("#");
       } else {
-        c = x.ah(r.getReference());
+        c = x.ah("#hc"+r.getReference().substring(1));
       }
     } else {
       c = x.span(null, null);
@@ -610,7 +612,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
     String id = getPrimitiveValue(r, "id"); 
     if (doId) {
-      div.an(id);
+      div.an("hc"+id);
     }
 
     String lang = getPrimitiveValue(r, "language"); 
