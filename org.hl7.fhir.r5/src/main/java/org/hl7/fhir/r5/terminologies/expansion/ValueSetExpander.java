@@ -1222,12 +1222,22 @@ public class ValueSetExpander extends ValueSetProcessBase {
           }
         }
       }
-    } else if (isDefinedProperty(cs, fc.getProperty())) {
+    } else if (CodeSystemUtilities.isDefinedProperty(cs, fc.getProperty())) {
       for (ConceptDefinitionComponent def : cs.getConcept()) {
+        PropertyFilter pf = new PropertyFilter(allErrors, fc, CodeSystemUtilities.getPropertyDefinition(cs, fc.getProperty()));
         if (exclude) {
-          excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, new PropertyFilter(allErrors, fc, getPropertyDefinition(cs, fc.getProperty())), filters, exp);
+          excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, pf, filters, exp);
         } else {
-          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, new PropertyFilter(allErrors, fc, getPropertyDefinition(cs, fc.getProperty())), noInactive, exp.getProperty(), filters, exp);
+          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, pf, noInactive, exp.getProperty(), filters, exp);
+        }
+      }
+    } else if (isKnownProperty(fc.getProperty(), cs)) {
+      for (ConceptDefinitionComponent def : cs.getConcept()) {
+        KnownPropertyFilter pf = new KnownPropertyFilter(allErrors, fc, fc.getProperty());
+        if (exclude) {
+          excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, pf, filters, exp);
+        } else {
+          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, pf, noInactive, exp.getProperty(), filters, exp);
         }
       }
     } else if ("code".equals(fc.getProperty()) && fc.getOp() == FilterOperator.REGEX) {
@@ -1243,6 +1253,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
+  private boolean isKnownProperty(String property, CodeSystem cs) {
+    return Utilities.existsInList(property, "notSelectable");
+  }
+
   private List<ConceptDefinitionDesignationComponent> mergeDesignations(ConceptDefinitionComponent def,
       List<ConceptDefinitionDesignationComponent> list) {
     List<ConceptDefinitionDesignationComponent> res = new ArrayList<>();
@@ -1253,23 +1267,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return res;
   }
 
-  private PropertyComponent getPropertyDefinition(CodeSystem cs, String property) {
-    for (PropertyComponent cp : cs.getProperty()) {
-      if (cp.getCode().equals(property)) {
-        return cp;
-      }
-    }
-    return null;
-  }
-
-  private boolean isDefinedProperty(CodeSystem cs, String property) {
-    for (PropertyComponent cp : cs.getProperty()) {
-      if (cp.getCode().equals(property)) {
-        return true;
-      }
-    }
-    return false;
-  }
+ 
 
   private void addFragmentWarning(ValueSetExpansionComponent exp, CodeSystem cs) {
     String url = cs.getVersionedUrl();
