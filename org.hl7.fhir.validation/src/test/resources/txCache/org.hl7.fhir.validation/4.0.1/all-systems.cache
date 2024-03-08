@@ -20,7 +20,6 @@ v: {
   "code" : "application/octet-stream",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -41,7 +40,6 @@ v: {
   "code" : "application/octet-stream",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -62,7 +60,6 @@ v: {
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -90,7 +87,6 @@ v: {
   "code" : "application/pdf",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -111,7 +107,6 @@ v: {
   "code" : "application/pdf",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -133,7 +128,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -155,7 +149,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -183,7 +176,6 @@ v: {
   "code" : "image/*",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -204,7 +196,6 @@ v: {
   "code" : "image/*",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -226,7 +217,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -247,7 +237,6 @@ v: {
   "code" : "en-IN",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -275,7 +264,6 @@ v: {
   "code" : "image/jpg",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -296,7 +284,6 @@ v: {
   "code" : "image/jpg",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -317,7 +304,6 @@ v: {
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -338,7 +324,6 @@ v: {
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -367,7 +352,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -389,7 +373,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -418,7 +401,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -440,7 +422,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -469,7 +450,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -491,7 +471,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -513,7 +492,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -535,7 +513,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -559,7 +536,6 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20240201",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -581,7 +557,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -605,7 +580,6 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20240201",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -629,7 +603,6 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20240201",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -657,7 +630,6 @@ v: {
   "code" : "application/pdf",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -678,7 +650,6 @@ v: {
   "code" : "application/pdf",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -702,7 +673,6 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20240201",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -726,7 +696,6 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20240201",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -755,7 +724,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -777,7 +745,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -806,7 +773,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -828,7 +794,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -857,7 +822,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -879,7 +843,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -908,7 +871,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -930,7 +892,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -958,7 +919,6 @@ v: {
   "code" : "json",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -979,7 +939,6 @@ v: {
   "code" : "json",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1007,7 +966,6 @@ v: {
   "code" : "xml",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1028,7 +986,6 @@ v: {
   "code" : "xml",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1056,7 +1013,6 @@ v: {
   "code" : "application/fhir+json",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1077,7 +1033,6 @@ v: {
   "code" : "application/fhir+json",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1105,7 +1060,6 @@ v: {
   "code" : "en-US",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1126,7 +1080,6 @@ v: {
   "code" : "en-US",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1154,7 +1107,6 @@ v: {
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1175,7 +1127,6 @@ v: {
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1203,7 +1154,6 @@ v: {
   "code" : "text/plain",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1224,7 +1174,6 @@ v: {
   "code" : "text/plain",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1248,7 +1197,6 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20240201",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1271,7 +1219,6 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1299,7 +1246,6 @@ v: {
   "code" : "text/css",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1320,7 +1266,6 @@ v: {
   "code" : "text/css",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1341,7 +1286,6 @@ v: {
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1366,7 +1310,6 @@ v: {
   "error" : "The provided code 'http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode#urn:ihe:iti:xds:2017:mimeTypeSufficient ('MimeType sufficient')' was not found in the value set 'http://hl7.org/fhir/ValueSet/formatcodes|4.0.1'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1465,7 +1408,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.77",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1486,7 +1428,6 @@ v: {
   "code" : "en-US",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1528,7 +1469,6 @@ v: {
   "code" : "en-NZ",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1550,7 +1490,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1572,7 +1511,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1594,7 +1532,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1616,7 +1553,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1638,7 +1574,6 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1662,7 +1597,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#26643006' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1703,7 +1637,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#767525000' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1743,7 +1676,6 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1766,7 +1698,6 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1790,7 +1721,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#109081006' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1830,7 +1760,6 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1854,7 +1783,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#292954005' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1894,7 +1822,6 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1918,7 +1845,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#428673006' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1958,7 +1884,6 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -1982,7 +1907,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#7947003' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2023,7 +1947,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#81464008' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2064,7 +1987,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#48546005' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2104,7 +2026,6 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2128,7 +2049,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#158965000' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2169,7 +2089,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#96309000' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2210,7 +2129,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#714081009' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2251,7 +2169,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#25246002' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2292,7 +2209,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#96067005' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2332,7 +2248,6 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20230131",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2356,7 +2271,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#34206005' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2397,7 +2311,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#108537001' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2438,7 +2351,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#126212009' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2479,7 +2391,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#292360004' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2520,7 +2431,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#16217701000119102' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2561,7 +2471,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#287903004' was not found in the value set 'http://terminology.hl7.org/ValueSet/snomed-intl-ips|20211027'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -2606,7 +2515,6 @@ v: {
   "code" : "application/xml",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2627,7 +2535,6 @@ v: {
   "code" : "application/xml",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2655,7 +2562,6 @@ v: {
   "code" : "text/xml",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2676,7 +2582,6 @@ v: {
   "code" : "text/xml",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2814,7 +2719,6 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2842,7 +2746,6 @@ v: {
   "code" : "text/cql.identifier",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2863,7 +2766,6 @@ v: {
   "code" : "text/cql.identifier",
   "system" : "urn:ietf:bcp:13",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2944,7 +2846,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -2969,7 +2870,6 @@ v: {
   "error" : "The provided code 'urn:iso:std:iso:11073:10101#150456 ('MDC_PULS_OXIM_SAT_O2')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -3025,7 +2925,6 @@ v: {
   "error" : "The provided code 'http://snomed.info/sct#276885007' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -3064,7 +2963,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3085,7 +2983,6 @@ v: {
   "code" : "en-AU",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3106,7 +3003,6 @@ v: {
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3127,7 +3023,6 @@ v: {
   "code" : "en-US",
   "system" : "urn:ietf:bcp:47",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3150,7 +3045,6 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3172,7 +3066,6 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.0.1",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -3201,7 +3094,6 @@ v: {
   "error" : "The provided code '#[%payloadFormat%]' was not found in the value set 'urn:uuid:59e7a4c4-15f2-452a-b860-d065d134c740'; The System URI could not be determined for the code '[%payloadFormat%]' in the ValueSet 'urn:uuid:59e7a4c4-15f2-452a-b860-d065d134c740'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -3238,6 +3130,27 @@ v: {
     "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
   }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en-AU"
+}, "url": "http://hl7.org/fhir/ValueSet/languages", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "English (Region=Australia)",
+  "code" : "en-AU",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
 }
 
 }
