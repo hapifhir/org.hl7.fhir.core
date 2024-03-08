@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.context;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
@@ -16,6 +17,8 @@ import net.sourceforge.plantuml.tim.stdlib.GetVariableValue;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -83,6 +86,11 @@ public class BaseWorkerContextTests {
       @Override
       public String getSpecUrl() {
         return null;
+      }
+
+      @Override
+      public <T extends Resource> List<T> fetchResourcesByUrl(Class<T> class_, String url) {
+        return new ArrayList<>();
       }
 
     };
