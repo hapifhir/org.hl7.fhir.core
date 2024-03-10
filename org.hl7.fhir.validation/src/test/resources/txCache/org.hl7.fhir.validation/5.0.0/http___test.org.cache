@@ -14,14 +14,14 @@ v: {
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://test.org' could not be found, so the code cannot be validated; The provided code 'http://test.org#x' was not found in the value set 'http://hl7.org/fhir/ValueSet/security-labels|5.0.0'",
   "class" : "UNKNOWN",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "http://test.org",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",
@@ -36,7 +36,7 @@ v: {
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -53,7 +53,7 @@ v: {
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",
@@ -86,14 +86,14 @@ v: {
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://test.org' could not be found, so the code cannot be validated; The provided code 'http://test.org#y' was not found in the value set 'http://hl7.org/fhir/ValueSet/security-labels|5.0.0'",
   "class" : "UNKNOWN",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "http://test.org",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",
@@ -108,7 +108,7 @@ v: {
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -125,7 +125,7 @@ v: {
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "code-invalid",

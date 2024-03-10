@@ -1,26 +1,89 @@
 package org.hl7.fhir.validation.instance.type;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.instance.type.CodeSystemValidator.KnownProperty;
+import org.hl7.fhir.validation.instance.type.CodeSystemValidator.PropertyDef;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
+import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
 public class CodeSystemValidator  extends BaseValidator {
+
+  public enum KnownProperty {
+    Status, Inactive, EffectiveDate, DeprecationDate, RetirementDate, NotSelectable, Parent, Child, PartOf, Synonym, Comment, ItemWeight;
+
+    String getType() {
+      switch (this) {
+      case Child: return "code";
+      case Comment: return "string";
+      case DeprecationDate: return "dateTime";
+      case EffectiveDate: return "dateTime";
+      case Inactive: return "boolean";
+      case ItemWeight: return "decimal";
+      case NotSelectable: return "boolean";
+      case Parent: return "code";
+      case PartOf: return "code";
+      case RetirementDate: return "dateTime";
+      case Status: return "code";
+      case Synonym: return "code";
+      default: return null;      
+      }
+    }
+
+    String getCode() {
+      return Utilities.uncapitalize(this.toString());
+    }
+
+    String getUri() {
+      return "http://hl7.org/fhir/concept-properties#"+ getCode();
+    }
+
+  }
+
+  public class PropertyDef {
+    private String uri;
+    private String code;
+    private String type;
+    protected PropertyDef(String uri, String code, String type) {
+      super();
+      this.uri = uri;
+      this.code = code;
+      this.type = type;
+    }
+    public String getUri() {
+      return uri;
+    }
+    public String getCode() {
+      return code;
+    }
+    public String getType() {
+      return type;
+    }
+
+  }
 
   public CodeSystemValidator(BaseValidator parent) {
     super(parent);
   }
 
-  public boolean validateCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack, ValidationOptions options) {
+  public boolean validateCodeSystem(ValidationContext valContext, List<ValidationMessage> errors, Element cs, NodeStack stack, ValidationOptions options) {
     boolean ok = true;
     String url = cs.getNamedChildValue("url", false);
     String content = cs.getNamedChildValue("content", false);
@@ -28,12 +91,26 @@ public class CodeSystemValidator  extends BaseValidator {
     String hierarchyMeaning = cs.getNamedChildValue("hierarchyMeaning", false);
     String supp = cs.getNamedChildValue("supplements", false);
     int count = countConcepts(cs); 
+    CodeSystem csB = null;
     
     metaChecks(errors, cs, stack, url, content, caseSensitive, hierarchyMeaning, !Utilities.noString(supp), count, supp);
 
     String vsu = cs.getNamedChildValue("valueSet", false);
     if (!Utilities.noString(vsu)) {
-      hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), "complete".equals(content), I18nConstants.CODESYSTEM_CS_NO_VS_NOTCOMPLETE);
+      if ("supplement".equals(content)) {
+        csB = context.fetchCodeSystem(supp);
+        if (csB != null) {
+          if (csB.hasValueSet()) {
+            warning(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), vsu.equals(vsu), I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT2, csB.getValueSet());            
+          } else {
+            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT1);
+          }
+        } else {
+          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), "complete".equals(content), I18nConstants.CODESYSTEM_CS_NO_VS_NOTCOMPLETE);
+        }        
+      } else { 
+        hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), "complete".equals(content), I18nConstants.CODESYSTEM_CS_NO_VS_NOTCOMPLETE);
+      }
       ValueSet vs;
       try {
         vs = context.fetchResourceWithException(ValueSet.class, vsu);
@@ -61,31 +138,292 @@ public class CodeSystemValidator  extends BaseValidator {
       }
     } // todo... try getting the value set the other way...
 
-    if (supp != null) {
-      if (context.supportsSystem(supp, options.getFhirVersion())) {
-        List<Element> concepts = cs.getChildrenByName("concept");
-        int ce = 0;
-        for (Element concept : concepts) {
-          NodeStack nstack = stack.push(concept, ce, null, null);
-          if (ce == 0) {
-            rule(errors, "2023-08-15", IssueType.INVALID, nstack,  !"not-present".equals(content), I18nConstants.CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED);            
+    if ("supplement".equals(content) || supp != null) {      
+      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), !Utilities.noString(supp), I18nConstants.CODESYSTEM_CS_SUPP_NO_SUPP)) {
+        if (context.supportsSystem(supp, options.getFhirVersion())) {
+          List<Element> concepts = cs.getChildrenByName("concept");
+          int ce = 0;
+          for (Element concept : concepts) {
+            NodeStack nstack = stack.push(concept, ce, null, null);
+            if (ce == 0) {
+              rule(errors, "2023-08-15", IssueType.INVALID, nstack,  !"not-present".equals(content), I18nConstants.CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED);            
+            }
+            ok = validateSupplementConcept(errors, concept, nstack, supp, options) && ok;
+            ce++;
+          }    
+        } else {
+          if (cs.hasChildren("concept")) {
+            warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_CANT_CHECK, supp);
           }
-          ok = validateSupplementConcept(errors, concept, nstack, supp, options) && ok;
-          ce++;
-        }    
-      } else {
-        if (cs.hasChildren("concept")) {
-          warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_CANT_CHECK, supp);
         }
+      } else {
+        ok = false;
       }
     }
 
     if (!stack.isContained()) {
       ok = checkShareableCodeSystem(errors, cs, stack) && ok;
+    } else {
+      // we approve of contained code systems in two circumstances:
+      //   * inside a questionnaire for a code system only used by that questionnaire
+      //   * inside a supplement, for creating properties in the supplement// otherwise, we put a hint on it that this is probably a bad idea 
+      boolean isInQ = valContext.getRootResource() != null && valContext.getRootResource().fhirType().equals("Questionnaire");
+      boolean isSuppProp = valContext.getRootResource() != null && valContext.getRootResource().fhirType().equals("CodeSystem"); // todo add more checks
+      hint(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), !isInQ && !isSuppProp, I18nConstants.CODESYSTEM_NOT_CONTAINED);      
+    }
+    
+    Map<String, PropertyDef> properties = new HashMap<>();
+    List<Element> propertyElements = cs.getChildrenByName("property");
+    int i = 0;
+    for (Element propertyElement : propertyElements) {
+      ok = checkPropertyDefinition(errors, cs,  stack.push(propertyElement, i, null, null), "true".equals(caseSensitive), hierarchyMeaning, csB, propertyElement, properties) && ok;
+      i++;
+    }
+
+    Set<String> codes = new HashSet<>();
+    
+    List<Element> concepts = cs.getChildrenByName("concept");
+    i = 0;
+    for (Element concept : concepts) {
+      ok = checkConcept(errors, cs,  stack.push(concept, i, null, null), "true".equals(caseSensitive), hierarchyMeaning, csB, concept, codes, properties) && ok;
+      i++;
+    }    
+    i = 0;
+    for (Element concept : concepts) {
+      ok = checkConceptProps(errors, cs,  stack.push(concept, i, null, null), "true".equals(caseSensitive), hierarchyMeaning, csB, concept, codes, properties) && ok;
+      i++;
+    }
+    
+    return ok;
+  }
+
+
+  private boolean  checkPropertyDefinition(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean equals, String hierarchyMeaning, CodeSystem csB, Element property, Map<String, PropertyDef> properties) {
+    boolean ok = true;
+    String uri = property.getNamedChildValue("uri");
+    String code = property.getNamedChildValue("code");
+    String type = property.getNamedChildValue("type");
+    PropertyDef pd = new PropertyDef(uri, code, type);
+    KnownProperty ukp = null;
+    KnownProperty ckp = null;
+    
+    if (uri != null) {
+      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), !properties.containsKey(uri), I18nConstants.CODESYSTEM_PROPERTY_DUPLICATE_URI, uri)) {         
+        properties.put(uri, pd);
+      } else {
+        ok = false;
+      }
+      if (uri.contains("hl7.org/fhir")) {
+        switch (uri) {
+        case "http://hl7.org/fhir/concept-properties#status" :
+          ukp = KnownProperty.Status;
+          break;
+        case "http://hl7.org/fhir/concept-properties#inactive" :
+          ukp = KnownProperty.Inactive;
+          break;
+        case "http://hl7.org/fhir/concept-properties#effectiveDate" :
+          ukp = KnownProperty.EffectiveDate;
+          break;
+        case "http://hl7.org/fhir/concept-properties#deprecationDate" :
+          ukp = KnownProperty.DeprecationDate;
+          break;
+        case "http://hl7.org/fhir/concept-properties#retirementDate" :
+          ukp = KnownProperty.RetirementDate;
+          break;
+        case "http://hl7.org/fhir/concept-properties#notSelectable" :
+          ukp = KnownProperty.NotSelectable;
+          break;
+        case "http://hl7.org/fhir/concept-properties#parent" :
+          ukp = KnownProperty.Parent;
+          break;
+        case "http://hl7.org/fhir/concept-properties#child" :
+          ukp = KnownProperty.Child;
+          break;
+        case "http://hl7.org/fhir/concept-properties#partOf" :
+          ukp = KnownProperty.PartOf;
+          break;
+        case "http://hl7.org/fhir/concept-properties#synonym" :
+          ukp = KnownProperty.Synonym;
+          break;
+        case "http://hl7.org/fhir/concept-properties#comment" :
+          ukp = KnownProperty.Comment;
+          break;
+        case "http://hl7.org/fhir/concept-properties#itemWeight" :
+          ukp = KnownProperty.ItemWeight;
+          break;
+        default:
+          ok = false;
+          rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_BAD_HL7_URI, uri);
+        }
+      }
+    }    
+    if (code != null) {
+      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), !properties.containsKey(code), I18nConstants.CODESYSTEM_PROPERTY_DUPLICATE_CODE, code)) {         
+        properties.put(code, pd);
+      } else {
+        ok = false;
+      }
+      switch (code) {
+      case "status" :
+        ckp = KnownProperty.Status;
+        break;
+      case "inactive" :
+        ckp = KnownProperty.Inactive;
+        break;
+      case "effectiveDate" :
+        ckp = KnownProperty.EffectiveDate;
+        break;
+      case "deprecationDate" :
+        ckp = KnownProperty.DeprecationDate;
+        break;
+      case "retirementDate" :
+        ckp = KnownProperty.RetirementDate;
+        break;
+      case "notSelectable" :
+        ckp = KnownProperty.NotSelectable;
+        break;
+      case "parent" :
+        ckp = KnownProperty.Parent;
+        break;
+      case "child" :
+        ckp = KnownProperty.Child;
+        break;
+      case "partOf" :
+        ckp = KnownProperty.PartOf;
+        break;
+      case "synonym" :
+        ckp = KnownProperty.Synonym;
+        break;
+      case "comment" :
+        ckp = KnownProperty.Comment;
+        break;
+      case "itemWeight" :
+        ckp = KnownProperty.ItemWeight;
+        break;
+      default:
+        // no rules around codes... 
+      }
+    }
+    if (ukp != null) {
+      ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), ckp == null || ckp == ukp, I18nConstants.CODESYSTEM_PROPERTY_URI_CODE_MISMATCH, uri, ukp.getCode(), code) && ok;
+      if (type != null) {
+        ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), type.equals(ukp.getType()), I18nConstants.CODESYSTEM_PROPERTY_URI_TYPE_MISMATCH, uri, ukp.getType(),type) && ok;
+      }
+    }
+    if (uri == null) {
+      if (ckp == null) {
+        hint(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_UNKNOWN_CODE, code);
+      } else {
+        warning(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_KNOWN_CODE_SUGGESTIVE, code, ckp.getUri());
+        if (type != null) {
+          warning(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), type.equals(ckp.getType()), I18nConstants.CODESYSTEM_PROPERTY_CODE_TYPE_MISMATCH, code, ckp.getType(), type);
+        }
+      }
     }
     return ok;
   }
 
+  private boolean checkConcept(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean caseSensitive, String hierarchyMeaning, CodeSystem csB, Element concept, Set<String> codes, Map<String, PropertyDef> properties) {
+    boolean ok = true;
+    String code = concept.getNamedChildValue("code");
+    String display = concept.getNamedChildValue("display");
+
+    if (csB != null && !Utilities.noString(display)) {
+      ConceptDefinitionComponent b = CodeSystemUtilities.findCode(csB.getConcept(), code);
+      if (b != null && !b.getDisplay().equalsIgnoreCase(display)) {
+        String lang = cs.getNamedChildValue("language");
+        if ((lang == null && !csB.hasLanguage()) || 
+            csB.getLanguage().equals(lang)) {
+          // nothing new language wise, and the display doesn't match
+          hint(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_SUPP_NO_DISPLAY, display, b.getDisplay(), lang == null? "undefined" : lang);        
+        }
+      }
+    }
+    
+    List<Element> designations = concept.getChildrenByName("designation");
+    int i = 0;
+    for (Element designation : designations) {
+      ok = checkDesignation(errors, cs, stack.push(designation, i, null, null), concept, designation) && ok;
+      i++;
+    }
+    
+    List<Element> concepts = concept.getChildrenByName("concept");
+    i = 0;
+    for (Element child : concepts) {
+      ok = checkConcept(errors, cs,  stack.push(concept, i, null, null), caseSensitive, hierarchyMeaning, csB, child, codes, properties) && ok;
+      i++;
+    }
+    return ok;
+  }
+  
+  private boolean checkConceptProps(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean caseSensitive, String hierarchyMeaning, CodeSystem csB, Element concept, Set<String> codes, Map<String, PropertyDef> properties) {
+    boolean ok = true;
+
+    List<Element> propertyElements = concept.getChildrenByName("property");
+    int i = 0;
+    for (Element propertyElement : propertyElements) {
+      ok = checkPropertyValue(errors, cs, stack.push(propertyElement, i, null, null), propertyElement, properties, codes) && ok;
+      i++;
+    }
+
+    List<Element> concepts = concept.getChildrenByName("concept");
+    i = 0;
+    for (Element child : concepts) {
+      ok = checkConceptProps(errors, cs,  stack.push(concept, i, null, null), caseSensitive, hierarchyMeaning, csB, child, codes, properties) && ok;
+      i++;
+    }
+    return ok;
+  }
+
+  private boolean checkDesignation(List<ValidationMessage> errors, Element cs, NodeStack stack, Element concept, Element designation) {
+    boolean ok = true;
+    
+    String rlang = cs.getNamedChildValue("language");
+    String display = concept.getNamedChildValue("display");
+    String lang = designation.getNamedChildValue("language");
+    List<Element> uses = new ArrayList<Element>();
+    designation.getNamedChildren("additionalUse", uses);
+    Element use = designation.getNamedChild("use");
+    if (use != null) {
+      uses.add(0, use);
+    }
+    String value = designation.getNamedChildValue("value");
+    
+    if (uses.isEmpty()) {
+      // if we have no uses, we're kind of implying that it's the base display, so it should be the same
+      if (rlang == null && lang == null) {
+        ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), display == null || display.equals(value), I18nConstants.CODESYSTEM_DESIGNATION_DISP_CLASH_NO_LANG, value, display) && ok;
+      } else if (rlang != null && ((lang == null) || rlang.equals(lang))) {
+        ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), display == null || display.equals(value), I18nConstants.CODESYSTEM_DESIGNATION_DISP_CLASH_LANG, value, display, rlang) && ok;        
+      }
+    } else {
+      // .... do we care?
+    }
+    
+    return ok;
+  }
+
+  private boolean checkPropertyValue(List<ValidationMessage> errors, Element cs, NodeStack stack, Element property, Map<String, PropertyDef> properties, Set<String> codes) {
+    boolean ok = true;
+
+    String code = property.getNamedChildValue("code");
+    Element value = property.getNamedChild("value");
+    if (code != null) {
+      PropertyDef defn = properties.get(code);
+      if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), defn != null, I18nConstants.CODESYSTEM_PROPERTY_UNDEFINED, code) &&
+          rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value != null, I18nConstants.CODESYSTEM_PROPERTY_NO_VALUE, code) &&
+          rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), value.fhirType().equals(defn.type), I18nConstants.CODESYSTEM_PROPERTY_WRONG_TYPE, code, value.fhirType(), defn.type)) {
+            // nothing?
+      } else {
+        ok = false;
+      }
+      if ("synonym".equals(code)) {
+        String vcode = value.isPrimitive() ? value.primitiveValue() : null;
+        warning(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), codes.contains(vcode), I18nConstants.CODESYSTEM_PROPERTY_SYNONYM_CHECK, vcode);
+      }
+    }
+    return ok;
+  }
 
   private boolean checkShareableCodeSystem(List<ValidationMessage> errors, Element cs, NodeStack stack) {
     if (parent.isForPublication()) { 
@@ -121,6 +459,9 @@ public class CodeSystemValidator  extends BaseValidator {
   }
   
   private void metaChecks(List<ValidationMessage> errors, Element cs, NodeStack stack, String url,  String content, String caseSensitive, String hierarchyMeaning, boolean isSupplement, int count, String supp) {
+    if (forPublication && (url.contains("hl7.org"))) {
+      hint(errors, "2024-03-07", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), url.contains("terminology.hl7.org") || url.contains("hl7.org/cda/stds/core"), I18nConstants.CODESYSTEM_THO_CHECK);
+    }
     if (isSupplement) {
       if (!"supplement".equals(content)) {
         NodeStack s = stack.push(cs.getNamedChild("content", false), -1, null, null);

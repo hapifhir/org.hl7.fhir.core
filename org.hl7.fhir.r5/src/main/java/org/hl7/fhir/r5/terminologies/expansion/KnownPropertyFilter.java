@@ -10,15 +10,15 @@ import org.hl7.fhir.r5.model.CodeSystem.PropertyType;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 
-public class PropertyFilter extends ConceptFilter {
+public class KnownPropertyFilter extends ConceptFilter {
 
   private ConceptSetFilterComponent filter;
-  private PropertyComponent property;
+  private String code;
 
-  public PropertyFilter(List<String> allErrors, ConceptSetFilterComponent fc, PropertyComponent propertyDefinition) {
+  public KnownPropertyFilter(List<String> allErrors, ConceptSetFilterComponent fc, String code) {
     super (allErrors);
     this.filter = fc;
-    this.property = propertyDefinition;
+    this.code = code;
   }
 
   @Override
@@ -47,7 +47,7 @@ public class PropertyFilter extends ConceptFilter {
 
   private ConceptPropertyComponent getPropertyForConcept(ConceptDefinitionComponent def) {
     for (ConceptPropertyComponent pc : def.getProperty()) {
-      if (pc.hasCode() && pc.getCode().equals(property.getCode())) {
+      if (pc.hasCode() && pc.getCode().equals(code)) {
         return pc;
       }
     }

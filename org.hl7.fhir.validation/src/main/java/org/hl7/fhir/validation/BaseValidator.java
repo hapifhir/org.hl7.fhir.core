@@ -67,6 +67,8 @@ import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.IValidationContextResourceLoader;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -177,7 +179,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
   protected String sessionId = Utilities.makeUuidLC();
   protected List<UsageContext> usageContexts = new ArrayList<UsageContext>();
   protected ValidationOptions baseOptions = new ValidationOptions(FhirPublication.R5);
-
+  protected IValidatorResourceFetcher fetcher;
 
   public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager, boolean debug) {
     super();
@@ -210,6 +212,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
     this.urlRegex = parent.urlRegex;
     this.usageContexts.addAll(parent.usageContexts);
     this.baseOptions = parent.baseOptions;
+    this.fetcher = parent.fetcher;
   }
   
   private boolean doingLevel(IssueSeverity error) {
@@ -1262,13 +1265,15 @@ public class BaseValidator implements IValidationContextResourceLoader {
         String[] refBaseParts = ref.substring(0, ref.indexOf("/_history/")).split("/");
         resourceType = refBaseParts[0];
         id = refBaseParts[1];
+        targetUrl = base + resourceType+"/"+ id;
       } else if (base.startsWith("urn")) {
         resourceType = ref.split("/")[0];
         id = ref.split("/")[1];
-      } else
+        targetUrl = base + id;
+      } else {
         id = ref;
-
-      targetUrl = base + id;
+        targetUrl = base + id;
+      }
     }
 
     List<Element> entries = new ArrayList<Element>();
@@ -1621,4 +1626,6 @@ public class BaseValidator implements IValidationContextResourceLoader {
   private boolean isContext(Coding use, Coding value, UsageContext usage) {
     return usage.getValue() instanceof Coding && context.subsumes(baseOptions, usage.getCode(), use) && context.subsumes(baseOptions, (Coding) usage.getValue(), value);
   }
+  
+
 }

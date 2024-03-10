@@ -110,6 +110,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       p.b().tx("Generated Narrative: "+r.fhirType()+(context.isContained() ? " #"+r.getId() : ""));
       if (!Utilities.noString(r.getId())) {
         p.an(r.getId());
+        p.an("hc"+r.getId());
       }
       idDone = true;      
     }
@@ -119,6 +120,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     }
     if (!Utilities.noString(r.getId()) && !idDone) {
       x.para().an(r.getId());
+      x.para().an("hc"+r.getId());
     }
     try {
       StructureDefinition sd = r.getDefinition();
@@ -479,7 +481,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         Reference r = (Reference) e;
         if (r.getReference() != null && r.getReference().contains("#")) {
           if (containedIds.contains(r.getReference().substring(1))) {
-            x.ah(r.getReference()).tx("See "+r.getReference());
+            x.ah("#hc"+r.getReference().substring(1)).tx("See "+r.getReference());
           } else {          
             // in this case, we render the resource in line
             ResourceWrapper rw = null;
@@ -493,7 +495,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             } else {
               String ref = context.getResolver() != null ?context.getResolver().urlForContained(context, res.fhirType(), res.getId(), rw.fhirType(), rw.getId()) : null;
               if (ref == null) {
-                x.an(rw.getId());
+                x.an("hc"+rw.getId());
                 RenderingContext ctxtc = context.copy();
                 ctxtc.setAddGeneratedNarrativeHeader(false);
                 ctxtc.setContained(true);

@@ -14,9 +14,11 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.fhir.ucum.UcumEssenceService;
@@ -1194,7 +1196,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
 
   @Override
-  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, String url) throws URISyntaxException {
+  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, Object appContext, String url) throws URISyntaxException {
     Resource res = context.fetchResource(Resource.class, url);
     if (res != null) {
       if (res instanceof CanonicalResource) {
@@ -1203,7 +1205,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         return null;
       }
     }
-    return fetcher != null ? fetcher.fetchCanonicalResource(validator, url) : null;
+    return fetcher != null ? fetcher.fetchCanonicalResource(validator, appContext, url) : null;
   }
 
   @Override
@@ -1232,6 +1234,21 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public EnumSet<ElementValidationAction> policyForElement(IResourceValidator validator, Object appContext,
       StructureDefinition structure, ElementDefinition element, String path) {
     return EnumSet.allOf(ElementValidationAction.class);
+  }
+
+  @Override
+  public Set<String> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
+    Set<String> res = new HashSet<>();
+    for (Resource r : context.fetchResourcesByUrl(Resource.class, url)) {
+      if (r instanceof CanonicalResource) {
+        CanonicalResource cr = (CanonicalResource) r;
+        res.add(cr.hasVersion() ? cr.getVersion() : "{{unversioned}}");
+      }
+    }
+    if (fetcher != null) {
+        res.addAll(fetcher.fetchCanonicalResourceVersions(validator, appContext, url));
+    }
+    return res;
   }
 
 }

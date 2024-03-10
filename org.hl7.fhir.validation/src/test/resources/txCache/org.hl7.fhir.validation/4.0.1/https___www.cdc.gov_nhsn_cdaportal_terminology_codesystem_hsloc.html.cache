@@ -15,7 +15,7 @@ v: {
   "code" : "1258-3",
   "system" : "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html",
   "version" : "2022",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
