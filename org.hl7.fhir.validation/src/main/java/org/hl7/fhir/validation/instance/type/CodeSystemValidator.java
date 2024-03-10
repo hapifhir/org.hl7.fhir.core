@@ -187,6 +187,11 @@ public class CodeSystemValidator  extends BaseValidator {
     for (Element concept : concepts) {
       ok = checkConcept(errors, cs,  stack.push(concept, i, null, null), "true".equals(caseSensitive), hierarchyMeaning, csB, concept, codes, properties) && ok;
       i++;
+    }    
+    i = 0;
+    for (Element concept : concepts) {
+      ok = checkConceptProps(errors, cs,  stack.push(concept, i, null, null), "true".equals(caseSensitive), hierarchyMeaning, csB, concept, codes, properties) && ok;
+      i++;
     }
     
     return ok;
@@ -250,7 +255,6 @@ public class CodeSystemValidator  extends BaseValidator {
           ok = false;
           rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_BAD_HL7_URI, uri);
         }
-        warning(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), ukp != KnownProperty.Synonym, I18nConstants.CODESYSTEM_PROPERTY_SYNONYM_DEPRECATED);
       }
     }    
     if (code != null) {
@@ -336,19 +340,8 @@ public class CodeSystemValidator  extends BaseValidator {
       }
     }
     
-    // todo: check that all the properties are defined. 
-    // check that all the defined properties have values 
-    // check the designations have values, and the use/language don't conflict
-
-    List<Element> propertyElements = concept.getChildrenByName("property");
-    int i = 0;
-    for (Element propertyElement : propertyElements) {
-      ok = checkPropertyValue(errors, cs, stack.push(propertyElement, i, null, null), propertyElement, properties) && ok;
-      i++;
-    }
-
     List<Element> designations = concept.getChildrenByName("designation");
-    i = 0;
+    int i = 0;
     for (Element designation : designations) {
       ok = checkDesignation(errors, cs, stack.push(designation, i, null, null), concept, designation) && ok;
       i++;
@@ -358,6 +351,25 @@ public class CodeSystemValidator  extends BaseValidator {
     i = 0;
     for (Element child : concepts) {
       ok = checkConcept(errors, cs,  stack.push(concept, i, null, null), caseSensitive, hierarchyMeaning, csB, child, codes, properties) && ok;
+      i++;
+    }
+    return ok;
+  }
+  
+  private boolean checkConceptProps(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean caseSensitive, String hierarchyMeaning, CodeSystem csB, Element concept, Set<String> codes, Map<String, PropertyDef> properties) {
+    boolean ok = true;
+
+    List<Element> propertyElements = concept.getChildrenByName("property");
+    int i = 0;
+    for (Element propertyElement : propertyElements) {
+      ok = checkPropertyValue(errors, cs, stack.push(propertyElement, i, null, null), propertyElement, properties, codes) && ok;
+      i++;
+    }
+
+    List<Element> concepts = concept.getChildrenByName("concept");
+    i = 0;
+    for (Element child : concepts) {
+      ok = checkConceptProps(errors, cs,  stack.push(concept, i, null, null), caseSensitive, hierarchyMeaning, csB, child, codes, properties) && ok;
       i++;
     }
     return ok;
@@ -391,7 +403,7 @@ public class CodeSystemValidator  extends BaseValidator {
     return ok;
   }
 
-  private boolean checkPropertyValue(List<ValidationMessage> errors, Element cs, NodeStack stack, Element property, Map<String, PropertyDef> properties) {
+  private boolean checkPropertyValue(List<ValidationMessage> errors, Element cs, NodeStack stack, Element property, Map<String, PropertyDef> properties, Set<String> codes) {
     boolean ok = true;
 
     String code = property.getNamedChildValue("code");
@@ -404,6 +416,10 @@ public class CodeSystemValidator  extends BaseValidator {
             // nothing?
       } else {
         ok = false;
+      }
+      if ("synonym".equals(code)) {
+        String vcode = value.isPrimitive() ? value.primitiveValue() : null;
+        warning(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), codes.contains(vcode), I18nConstants.CODESYSTEM_PROPERTY_SYNONYM_CHECK, vcode);
       }
     }
     return ok;

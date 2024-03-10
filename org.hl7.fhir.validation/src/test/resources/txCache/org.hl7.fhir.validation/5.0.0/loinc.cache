@@ -704,7 +704,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.74",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -728,7 +727,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.74",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -751,7 +749,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.74",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -775,7 +772,6 @@ v: {
   "error" : "The provided code 'http://loinc.org#3141-9' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult--0|5.0.0'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -816,7 +812,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.74",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -841,7 +836,6 @@ v: {
   "error" : "The provided code 'http://loinc.org#3141-9 ('Body weight Measured')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-vitalsignresult|5.0.0'",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -882,7 +876,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.74",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -906,7 +899,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.74",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -930,7 +922,6 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.74",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -955,7 +946,6 @@ v: {
   "error" : "Wrong whitespace in Display Name 'Active motion ' for http://loinc.org#LA6715-2. Valid display is 'Active motion' (en-US) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -997,7 +987,6 @@ v: {
   "error" : "Wrong whitespace in Display Name 'Good, strong cry; normal rate and effort of breathing    ' for http://loinc.org#LA6727-7. Valid display is 'Good, strong cry; normal rate and effort of breathing' (en-US) (for the language(s) '--')",
   "class" : "UNKNOWN",
   "server" : "http://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1016,6 +1005,46 @@ v: {
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LP43571-6"
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "code" : "LP43571-6",
+  "severity" : "error",
+  "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.77'",
+  "class" : "UNKNOWN",
+  "server" : "http://tx-dev.fhir.org/r4",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.77'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
   }]
 }
 

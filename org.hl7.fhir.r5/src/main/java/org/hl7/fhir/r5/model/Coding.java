@@ -562,9 +562,28 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
         base = base + "#"+getCode();
         if (hasDisplay())
           base = base+": '"+getDisplay()+"'";
-        return base;
-        
+        return base;        
       } 
+      
+      public static Coding fromLiteral(String value) {
+        String sv = value.contains("#") ? value.substring(0, value.indexOf("#")) : value; 
+        String cp = value.contains("#") ? value.substring(value.indexOf("#")+1) : null;
+        
+        String system = sv.contains("|") ? sv.substring(0, sv.indexOf("|")) : sv;
+        String version = sv.contains("|") ? sv.substring(sv.indexOf("|")+1) : null;
+        
+        String code = cp != null && cp.contains("'") ? cp.substring(0, cp.indexOf("'")) : cp;
+        String display = cp != null && cp.contains("'") ? cp.substring(cp.indexOf("'")+1) : null;
+        if (display != null) {
+          display = display.trim();
+          display = display.substring(0, display.length() -1);
+        }
+        if ((system == null || !Utilities.isAbsoluteUrl(system)) && code == null) {
+          return null;
+        } else {
+          return new Coding(system, version, code, display);
+        }
+      }
 
       public boolean matches(Coding other) {
         return other.hasCode() && this.hasCode() && other.hasSystem() && this.hasSystem() && this.getCode().equals(other.getCode()) && this.getSystem().equals(other.getSystem()) ;
