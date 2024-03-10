@@ -1241,7 +1241,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     Set<String> res = new HashSet<>();
     for (Resource r : context.fetchResourcesByUrl(Resource.class, url)) {
       if (r instanceof CanonicalResource) {
-        res.add(((CanonicalResource) r).getVersion());
+        CanonicalResource cr = (CanonicalResource) r;
+        res.add(cr.hasVersion() ? cr.getVersion() : "{{unversioned}}");
       }
     }
     if (fetcher != null) {

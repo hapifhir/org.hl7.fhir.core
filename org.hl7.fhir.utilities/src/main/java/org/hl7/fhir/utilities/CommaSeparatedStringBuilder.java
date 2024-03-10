@@ -1,8 +1,11 @@
 package org.hl7.fhir.utilities;
 
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -168,6 +171,14 @@ public class CommaSeparatedStringBuilder {
       if (s != null) {
         b.append(leftWrap+s+rightWrap);
       }
+    }
+    return b.toString();
+  }
+
+  public static String join(String sep, EnumSet<? extends Enum> set) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(sep);
+    for (Enum e : set) {
+      b.append(e.toString());
     }
     return b.toString();
   }

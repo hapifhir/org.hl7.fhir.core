@@ -5724,6 +5724,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String pub = element.getNamedChildValue("publisher", false);
     Base wgT = element.getExtensionValue(ToolingExtensions.EXT_WORKGROUP);
     String wg = wgT == null ? null : wgT.primitiveValue();
+    String url = element.getNamedChildValue("url");
 
     if (contained && wg == null) {
       boolean ok = true;
@@ -5750,7 +5751,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
 
-
     List<String> urls = new ArrayList<>();
     for (Element c : element.getChildren("contact")) {      
       for (Element t : c.getChildren("telecom")) {
@@ -5760,7 +5760,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
 
-    if (rule(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), wg != null, I18nConstants.VALIDATION_HL7_WG_NEEDED, ToolingExtensions.EXT_WORKGROUP)) {
+    if (rule(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), wg != null && !url.contains("http://hl7.org/fhir/sid"), I18nConstants.VALIDATION_HL7_WG_NEEDED, ToolingExtensions.EXT_WORKGROUP)) {
       HL7WorkGroup wgd = HL7WorkGroups.find(wg);      
       if (rule(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), wgd != null, I18nConstants.VALIDATION_HL7_WG_UNKNOWN, wg)) {
         String rpub = "HL7 International / "+wgd.getName();

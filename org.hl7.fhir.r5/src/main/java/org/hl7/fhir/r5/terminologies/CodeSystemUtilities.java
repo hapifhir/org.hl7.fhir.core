@@ -1056,6 +1056,8 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return null;
   }
 
-  
+  public static boolean isExemptFromMultipleVersionChecking(String url) {
+    return Utilities.existsInList(url, "http://snomed.info/sct", "http://loinc.org");
+  }
 }
 
