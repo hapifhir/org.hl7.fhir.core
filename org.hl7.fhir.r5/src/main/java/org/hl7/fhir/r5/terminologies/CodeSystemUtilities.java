@@ -200,8 +200,12 @@ public class CodeSystemUtilities extends TerminologyUtilities {
 
 
   public static boolean isNotSelectable(CodeSystem cs, ConceptDefinitionComponent def) {
+    String pd = getPropertyByUrl(cs, "http://hl7.org/fhir/concept-properties#notSelectable");
+    if (pd == null) {
+      pd = "notSelectable";
+    }
     for (ConceptPropertyComponent p : def.getProperty()) {
-      if ("notSelectable".equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
+      if (pd.equals(p.getCode()) && p.hasValue() && p.getValue() instanceof BooleanType) 
         return ((BooleanType) p.getValue()).getValue();
     }
     return false;
@@ -910,6 +914,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   public static boolean hasPropertyDef(CodeSystem cs, String property) {
+    
     for (PropertyComponent pd : cs.getProperty()) {
       if (pd.hasCode() && pd.getCode().equals(property)) {
         return true;
@@ -924,6 +929,10 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
   
   public static DataType getProperty(CodeSystem cs, ConceptDefinitionComponent def, String property) {
+    PropertyComponent defn = getPropertyDefinition(cs, property);
+    if (defn != null) {
+      property = defn.getCode();
+    }
     ConceptPropertyComponent cp = getProperty(def, property);
     return cp == null ? null : cp.getValue();
   }
@@ -985,6 +994,70 @@ public class CodeSystemUtilities extends TerminologyUtilities {
         addCodes(res, cd.getConcept());
       }
     }    
+  }
+  
+  /**
+   * property in this case is the name of a property that appears in a ValueSet filter 
+   * 
+   * @param cs
+   * @param property
+   * @return
+   */
+  public static PropertyComponent getPropertyDefinition(CodeSystem cs, String property) {
+    String uri = getStandardPropertyUri(property);
+    if (uri != null) {
+      for (PropertyComponent cp : cs.getProperty()) {
+        if (uri.equals(cp.getUri())) {
+          return cp;
+        }
+      }
+    }
+    for (PropertyComponent cp : cs.getProperty()) {
+      if (cp.getCode().equals(property)) {
+        return cp;
+      }
+    }
+    return null;
+  }
+
+  public static boolean isDefinedProperty(CodeSystem cs, String property) {
+    String uri = getStandardPropertyUri(property);
+    if (uri != null) {
+      for (PropertyComponent cp : cs.getProperty()) {
+        if (uri.equals(cp.getUri())) {
+          return true;
+        }
+      }
+    }
+    for (PropertyComponent cp : cs.getProperty()) {
+      if (cp.getCode().equals(property) && (uri == null || !cp.hasUri())) { // if uri is right, will return from above
+        return true;
+      }
+    }
+    return false;
+  }
+  
+
+  private static String getStandardPropertyUri(String property) {
+    switch (property) {
+    case "status" : return "http://hl7.org/fhir/concept-properties#status";
+    case "inactive" : return "http://hl7.org/fhir/concept-properties#inactive";
+    case "effectiveDate" : return "http://hl7.org/fhir/concept-properties#effectiveDate";
+    case "deprecationDate" : return "http://hl7.org/fhir/concept-properties#deprecationDate";
+    case "retirementDate" : return "http://hl7.org/fhir/concept-properties#retirementDate";
+    case "notSelectable" : return "http://hl7.org/fhir/concept-properties#notSelectable";
+    case "parent" : return "http://hl7.org/fhir/concept-properties#parent";
+    case "child" : return "http://hl7.org/fhir/concept-properties#child";
+    case "partOf" : return "http://hl7.org/fhir/concept-properties#partOf";
+    case "synonym" : return "http://hl7.org/fhir/concept-properties#synonym";
+    case "comment" : return "http://hl7.org/fhir/concept-properties#comment";
+    case "itemWeight" : return "http://hl7.org/fhir/concept-properties#itemWeight";        
+    }
+    return null;
+  }
+
+  public static boolean isExemptFromMultipleVersionChecking(String url) {
+    return Utilities.existsInList(url, "http://snomed.info/sct", "http://loinc.org");
   }
 }
 

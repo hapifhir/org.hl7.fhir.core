@@ -16,14 +16,14 @@ v: {
   "severity" : "error",
   "error" : "Wrong Display Name 'Foreign Facility's United States Agent' for http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C73330. Valid display is 'UNITED STATES AGENT' (for the language(s) '--')",
   "class" : "UNKNOWN",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "invalid",
@@ -56,7 +56,7 @@ v: {
   "display" : "MANUFACTURE",
   "code" : "C43360",
   "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -79,7 +79,7 @@ v: {
   "display" : "Manufactures human prescription drug products",
   "code" : "C106643",
   "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

@@ -14,14 +14,14 @@ v: {
   "severity" : "warning",
   "error" : "A definition for CodeSystem 'http://www.ncbi.nlm.nih.gov/clinvar' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "http://www.ncbi.nlm.nih.gov/clinvar",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "warning",
     "code" : "not-found",
@@ -54,14 +54,14 @@ v: {
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://www.ncbi.nlm.nih.gov/clinvar' could not be found, so the code cannot be validated; Unable to check whether the code is in the value set 'http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0' because the code system http://www.ncbi.nlm.nih.gov/clinvar| was not found",
   "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "http://www.ncbi.nlm.nih.gov/clinvar",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -78,7 +78,7 @@ v: {
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "warning",
     "code" : "not-found",

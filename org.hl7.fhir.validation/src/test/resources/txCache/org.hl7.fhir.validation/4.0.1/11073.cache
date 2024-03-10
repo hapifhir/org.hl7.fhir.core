@@ -15,14 +15,14 @@ v: {
   "code" : "150456",
   "system" : "urn:iso:std:iso:11073:10101",
   "version" : "2023-04-26",
-  "server" : "http://local.fhir.org/r4",
+  "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "http://local.fhir.org/r4"
+      "valueUrl" : "http://tx-dev.fhir.org/r4"
     }],
     "severity" : "information",
     "code" : "business-rule",

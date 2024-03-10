@@ -1365,12 +1365,18 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return codeInConceptFilter(cs, f, code);
     else if ("code".equals(f.getProperty()) && f.getOp() == FilterOperator.REGEX)
       return codeInRegexFilter(cs, f, code);
-    else if (CodeSystemUtilities.hasPropertyDef(cs, f.getProperty())) {
+    else if (CodeSystemUtilities.isDefinedProperty(cs, f.getProperty())) {
       return codeInPropertyFilter(cs, f, code);
+    } else if (isKnownProperty(f.getProperty())) {
+      return codeInKnownPropertyFilter(cs, f, code);
     } else {
       System.out.println("todo: handle filters with property = "+f.getProperty()+" "+f.getOp().toCode()); 
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__FILTER_WITH_PROPERTY__, cs.getUrl(), f.getProperty(), f.getOp().toCode()));
     }
+  }
+
+  private boolean isKnownProperty(String code) {
+    return Utilities.existsInList(code, "notSelectable");
   }
 
   private boolean codeInPropertyFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) {
@@ -1391,6 +1397,29 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return d != null && d.primitiveValue() != null && d.primitiveValue().matches(f.getValue());
     default:
       System.out.println("todo: handle property filters with op = "+f.getOp()); 
+      throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
+    }
+  }
+  
+  private boolean codeInKnownPropertyFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) {
+
+    switch (f.getOp()) {
+    case EQUAL:
+      if (f.getValue() == null) {
+        return false;
+      }
+      DataType d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
+      return d != null && f.getValue().equals(d.primitiveValue());
+    case EXISTS: 
+      return CodeSystemUtilities.getProperty(cs, code, f.getProperty()) != null;
+    case REGEX:
+      if (f.getValue() == null) {
+        return false;
+      }
+      d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
+      return d != null && d.primitiveValue() != null && d.primitiveValue().matches(f.getValue());
+    default:
+      System.out.println("todo: handle known property filters with op = "+f.getOp()); 
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
     }
   }

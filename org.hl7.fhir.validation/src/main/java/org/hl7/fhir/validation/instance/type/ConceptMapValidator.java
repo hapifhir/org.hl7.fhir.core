@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -17,6 +18,7 @@ import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -24,6 +26,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
+import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
 
 public class ConceptMapValidator  extends BaseValidator {
@@ -109,7 +112,7 @@ public class ConceptMapValidator  extends BaseValidator {
     super(parent);
   }
 
-  public boolean validateConceptMap(List<ValidationMessage> errors, Element cm, NodeStack stack, ValidationOptions options) {
+  public boolean validateConceptMap(ValidationContext valContext, List<ValidationMessage> errors, Element cm, NodeStack stack, ValidationOptions options) {
     boolean ok = true;
     Map<String, PropertyDefinition> props = new HashMap<>();
     Map<String, String> attribs = new HashMap<>();
@@ -147,7 +150,7 @@ public class ConceptMapValidator  extends BaseValidator {
     List<Element> groups = cm.getChildrenByName("group");
     int ci = 0;
     for (Element group : groups) {
-      ok = validateGroup(errors, group, stack.push(group, ci, null, null), props, attribs, options, sourceScope, targetScope) && ok;
+      ok = validateGroup(valContext, errors, group, stack.push(group, ci, null, null), props, attribs, options, sourceScope, targetScope) && ok;
       ci++;
     }    
 
@@ -213,7 +216,7 @@ public class ConceptMapValidator  extends BaseValidator {
     return null;
   }
 
-  private boolean validateGroup(List<ValidationMessage> errors, Element grp, NodeStack stack, Map<String, PropertyDefinition> props, Map<String, String> attribs, ValidationOptions options, VSReference sourceScope, VSReference targetScope) {
+  private boolean validateGroup(ValidationContext valContext, List<ValidationMessage> errors, Element grp, NodeStack stack, Map<String, PropertyDefinition> props, Map<String, String> attribs, ValidationOptions options, VSReference sourceScope, VSReference targetScope) {
     boolean ok = true;
     GroupContext ctxt = new GroupContext();
     ctxt.sourceScope = sourceScope;
@@ -229,6 +232,11 @@ public class ConceptMapValidator  extends BaseValidator {
       } else {
         warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), sourceScope != null, I18nConstants.CONCEPTMAP_GROUP_SOURCE_UNKNOWN, e.getValue());
       }
+      if (ctxt.source.version == null && ctxt.source.cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(ctxt.source.url)) {
+          Set<String> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), ctxt.source.url);
+          warning(errors, NO_RULE_DATE, IssueType.INVALID, grp.line(), grp.col(), stack.getLiteralPath(), possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
+              ctxt.source.url,  ctxt.source.cs.getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(possibleVersions)));
+      }
     }
     e = grp.getNamedChild("target", false);
     if (warning(errors, "2023-03-05", IssueType.REQUIRED, grp.line(), grp.col(), stack.getLiteralPath(), e != null, I18nConstants.CONCEPTMAP_GROUP_TARGET_MISSING)) {
@@ -240,6 +248,11 @@ public class ConceptMapValidator  extends BaseValidator {
       } else {
         warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), targetScope != null, I18nConstants.CONCEPTMAP_GROUP_TARGET_UNKNOWN, e.getValue());                              
         
+      }
+      if (ctxt.target.version == null && ctxt.target.cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(ctxt.target.url)) {
+        Set<String> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), ctxt.target.url);
+        warning(errors, NO_RULE_DATE, IssueType.INVALID, grp.line(), grp.col(), stack.getLiteralPath(), possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
+            ctxt.target.url,  ctxt.target.cs.getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(possibleVersions)));
       }
     }
     List<Element> elements = grp.getChildrenByName("element");

@@ -584,7 +584,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean noBindingMsgSuppressed;
   private Map<String, Element> fetchCache = new HashMap<>();
   private HashMap<Element, ResourceValidationTracker> resourceTracker = new HashMap<>();
-  private IValidatorResourceFetcher fetcher;
   private IValidationPolicyAdvisor policyAdvisor;
   long time = 0;
   long start = 0;
@@ -673,14 +672,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return this;
   }
 
-  public IValidatorResourceFetcher getFetcher() {
-    return this.fetcher;
-  }
-
-  public IResourceValidator setFetcher(IValidatorResourceFetcher value) {
-    this.fetcher = value;
-    return this;
-  }
 
   @Override
   public IValidationPolicyAdvisor getPolicyAdvisor() {
@@ -3118,7 +3109,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 r = loadContainedResource(errors, path, valContext.getRootResource(), url.substring(1), Resource.class);
               }
               if (r == null) {
-               r = fetcher.fetchCanonicalResource(this, url);
+               r = fetcher.fetchCanonicalResource(this, valContext.getAppContext(), url);
               }
               if (r == null) {
                 r = this.context.fetchResource(Resource.class, url);
@@ -3128,6 +3119,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               } else if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, isCorrectCanonicalType(r, context), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE, url, r.fhirType(), listExpectedCanonicalTypes(context))) {
                 if (rp == ReferenceValidationPolicy.CHECK_VALID) {
                   // todo....
+                }
+                // we resolved one, but if there's no version, check if the reference is potentially ambiguous
+                if (!url.contains("|") && r instanceof CanonicalResource) {
+                  if (!Utilities.existsInList(context.getBase().getPath(), "ImplementationGuide.dependsOn.uri", "ConceptMap.group.source", "ConceptMap.group.target")) {
+                    // ImplementationGuide.dependsOn.version is mandatory, and ConceptMap is checked in the ConceptMap validator
+                    Set<String> possibleVersions = fetcher.fetchCanonicalResourceVersions(this, valContext.getAppContext(), url);
+                    warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
+                        url, ((CanonicalResource) r).getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(possibleVersions)));
+                  }
                 }
               } else {
                 ok = false;
@@ -3341,11 +3341,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (!Utilities.noString(href) && href.startsWith("#") && !href.equals("#")) {
         String ref = href.substring(1);
         valContext.getInternalRefs().add(ref);
-        int count = countTargetMatches(resource, ref, true);
+        Set<String> refs = new HashSet<>();
+        int count = countTargetMatches(resource, ref, true, "$", refs);
         if (count == 0) {
           rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_XHTML_RESOLVE, href, xpath, node.allText());
         } else if (count > 1) {
-          warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_XHTML_MULTIPLE_MATCHES, href, xpath, node.allText());
+          warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_XHTML_MULTIPLE_MATCHES, href, xpath, node.allText(), CommaSeparatedStringBuilder.join(", ", refs));
         }
       } else {
         // we can't validate at this point. Come back and revisit this some time in the future
@@ -3360,24 +3361,25 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
   
 
-  protected int countTargetMatches(Element element, String fragment, boolean checkBundle) {
+  protected int countTargetMatches(Element element, String fragment, boolean checkBundle, String path,Set<String> refs) {
     int count = 0;
     if (fragment.equals(element.getIdBase())) {
       count++;
+      refs.add(path+"/id");
     }
     if (element.getXhtml() != null) {
-      count = count + countTargetMatches(element.getXhtml(), fragment);
+      count = count + countTargetMatches(element.getXhtml(), fragment, path, refs);
     }
     if (element.hasChildren()) {
       for (Element child : element.getChildren()) {
-        count = count + countTargetMatches(child, fragment, false);
+        count = count + countTargetMatches(child, fragment, false, path+"/"+child.getName(), refs);
       }
     }
     if (count == 0 && checkBundle) {
       Element e = element.getParentForValidator();
       while (e != null) {
         if (e.fhirType().equals("Bundle")) {
-          return countTargetMatches(e, fragment, false);
+          return countTargetMatches(e, fragment, false, path+"/..", refs);
         }
         e = e.getParentForValidator();
       }
@@ -3385,17 +3387,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return count;
   }
 
-  private int countTargetMatches(XhtmlNode node, String fragment) {
+  private int countTargetMatches(XhtmlNode node, String fragment, String path,Set<String> refs) {
     int count = 0;
     if (fragment.equals(node.getAttribute("id"))) {
       count++;
+      refs.add(path+"/@id");
     }
     if ("a".equals(node.getName()) && fragment.equals(node.getAttribute("name"))) {
       count++;
+      refs.add(path+"/@name");
     }
     if (node.hasChildren()) {
       for (XhtmlNode child : node.getChildNodes()) {
-        count = count + countTargetMatches(child, fragment);
+        count = count + countTargetMatches(child, fragment, path+"/"+child.getName(), refs);
       }
     }
     return count;
@@ -5461,7 +5465,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               } else if (!fetcher.fetchesCanonicalResource(this, profile.primitiveValue())) {
                 warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY, profile.primitiveValue());                
               } else {
-                sd = lookupProfileReference(errors, element, stack, i, profile, sd);
+                sd = lookupProfileReference(valContext, errors, element, stack, i, profile, sd);
               }
             }
             if (sd != null) {
@@ -5528,7 +5532,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
-  private StructureDefinition lookupProfileReference(List<ValidationMessage> errors, Element element, NodeStack stack,
+  private StructureDefinition lookupProfileReference(ValidationContext valContext, List<ValidationMessage> errors, Element element, NodeStack stack,
       int i, Element profile, StructureDefinition sd) {
     String url = profile.primitiveValue();
     CanonicalResourceLookupResult cr = crLookups.get(url);
@@ -5540,7 +5544,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     } else {
       try {
-        sd = (StructureDefinition) fetcher.fetchCanonicalResource(this, url);
+        sd = (StructureDefinition) fetcher.fetchCanonicalResource(this, valContext.getAppContext(), url);
         crLookups.put(url, new CanonicalResourceLookupResult(sd));
       } catch (Exception e) {
         if (STACK_TRACE) { e.printStackTrace(); }
@@ -5687,9 +5691,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else if (element.getType().equals("CapabilityStatement")) {
         return validateCapabilityStatement(errors, element, stack) && ok;
       } else if (element.getType().equals("CodeSystem")) {
-        return new CodeSystemValidator(this).validateCodeSystem(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang())) && ok;
+        return new CodeSystemValidator(this).validateCodeSystem(valContext, errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang())) && ok;
       } else if (element.getType().equals("ConceptMap")) {
-        return new ConceptMapValidator(this).validateConceptMap(errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang())) && ok;
+        return new ConceptMapValidator(this).validateConceptMap(valContext, errors, element, stack, baseOptions.withLanguage(stack.getWorkingLang())) && ok;
       } else if (element.getType().equals("SearchParameter")) {
         return new SearchParameterValidator(this, fpe).validateSearchParameter(errors, element, stack) && ok;
       } else if (element.getType().equals("StructureDefinition")) {
@@ -5697,7 +5701,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else if (element.getType().equals("StructureMap")) {
         return new StructureMapValidator(this, fpe, profileUtilities).validateStructureMap(errors, element, stack) && ok;
       } else if (element.getType().equals("ValueSet")) {
-        return new ValueSetValidator(this).validateValueSet(errors, element, stack) && ok;
+        return new ValueSetValidator(this).validateValueSet(valContext, errors, element, stack) && ok;
       } else if ("http://hl7.org/fhir/uv/sql-on-fhir/StructureDefinition/ViewDefinition".equals(element.getProperty().getStructure().getUrl())) {
         if (element.getNativeObject() != null && element.getNativeObject() instanceof JsonObject) {
           JsonObject json = (JsonObject) element.getNativeObject();
@@ -5720,6 +5724,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String pub = element.getNamedChildValue("publisher", false);
     Base wgT = element.getExtensionValue(ToolingExtensions.EXT_WORKGROUP);
     String wg = wgT == null ? null : wgT.primitiveValue();
+    String url = element.getNamedChildValue("url");
 
     if (contained && wg == null) {
       boolean ok = true;
@@ -5746,7 +5751,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
 
-
     List<String> urls = new ArrayList<>();
     for (Element c : element.getChildren("contact")) {      
       for (Element t : c.getChildren("telecom")) {
@@ -5756,7 +5760,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
 
-    if (rule(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), wg != null, I18nConstants.VALIDATION_HL7_WG_NEEDED, ToolingExtensions.EXT_WORKGROUP)) {
+    if (rule(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), wg != null && !url.contains("http://hl7.org/fhir/sid"), I18nConstants.VALIDATION_HL7_WG_NEEDED, ToolingExtensions.EXT_WORKGROUP)) {
       HL7WorkGroup wgd = HL7WorkGroups.find(wg);      
       if (rule(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), wgd != null, I18nConstants.VALIDATION_HL7_WG_UNKNOWN, wg)) {
         String rpub = "HL7 International / "+wgd.getName();
@@ -7726,4 +7730,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return this;
   }
 
+  public IValidatorResourceFetcher getFetcher() {
+    return this.fetcher;
+  }
+
+  public IResourceValidator setFetcher(IValidatorResourceFetcher value) {
+    this.fetcher = value;
+    return this;
+  }
 }

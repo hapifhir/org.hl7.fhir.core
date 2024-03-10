@@ -10,6 +10,6 @@
 }}####
 e: {
   "from-server" : true,
-  "error" : "Error from http://local.fhir.org/r4: The code System \"urn:ietf:bcp:13\" has a grammar, and cannot be enumerated directly"
+  "error" : "Error from http://tx-dev.fhir.org/r4: The code System \"urn:ietf:bcp:13\" has a grammar, and cannot be enumerated directly"
 }
 -------------------------------------------------------------------------------------
