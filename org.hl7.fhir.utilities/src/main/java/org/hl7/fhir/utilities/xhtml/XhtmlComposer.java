@@ -39,7 +39,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
-import org.hl7.fhir.utilities.DebugUtilities;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
 import org.w3c.dom.Element;
