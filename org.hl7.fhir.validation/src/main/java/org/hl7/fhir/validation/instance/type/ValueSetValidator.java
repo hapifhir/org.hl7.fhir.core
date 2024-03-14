@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemFilterComponent;
@@ -58,42 +60,47 @@ public class ValueSetValidator extends BaseValidator {
     }
 
   }
+  
+  public enum CodeValidationRule {
+    Warning, Error, None
+
+  }
 
   public class PropertyValidationRules {
-    boolean repeating;
-    PropertyFilterType type;
-    EnumSet<PropertyOperation> ops;
-    protected PropertyValidationRules(boolean repeating, PropertyFilterType type, PropertyOperation... ops) {
+    private PropertyFilterType type;
+    private CodeValidationRule codeValidation; 
+    private EnumSet<PropertyOperation> ops;
+    
+    protected PropertyValidationRules(PropertyFilterType type, CodeValidationRule codeValidation, PropertyOperation... ops) {
       super();
-      this.repeating = repeating;
       this.type = type;
+      this.codeValidation = codeValidation;
       this.ops = EnumSet.noneOf(PropertyOperation.class);
       for (PropertyOperation op : ops) {
         this.ops.add(op);
       }
     }
-    public PropertyValidationRules(boolean repeating, PropertyFilterType type, EnumSet<PropertyOperation> ops) {
+    public PropertyValidationRules(PropertyFilterType type, CodeValidationRule codeValidation, EnumSet<PropertyOperation> ops) {
       super();
-      this.repeating = repeating;
       this.type = type;
+      this.codeValidation = codeValidation;
       this.ops = ops;
     }
 
-    public boolean isRepeating() {
-      return repeating;
-    }
     public PropertyFilterType getType() {
       return type;
     }
     public EnumSet<PropertyOperation> getOps() {
       return ops;
     }
-
+    public CodeValidationRule getCodeValidation() {
+      return codeValidation;
+    }
 
   }
 
   public enum PropertyFilterType {
-    Boolean, Integer, Decimal, Code, DateTime, ValidCode, Coding
+    Boolean, Integer, Decimal, Code, DateTime, Coding
   }
 
   private static final int TOO_MANY_CODES_TO_VALIDATE = 1000;
@@ -422,13 +429,22 @@ public class ValueSetValidator extends BaseValidator {
           }
 
           if ("exists".equals(op)) {
-            ok = checkFilterValue(errors, stack, system, version, ok, property, value, PropertyFilterType.Boolean) && ok;
-          } else if (rules.isRepeating()) {
+            ok = checkFilterValue(errors, stack, system, version, ok, property, op, value, PropertyFilterType.Boolean, null) && ok;
+          } else if ("regex".equals(op)) {
+            String err = null;
+            try {
+              Pattern.compile(value);
+            } catch (PatternSyntaxException e) {
+              err = e.getMessage();
+            }            
+            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, err == null, I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_REGEX, property, value, err) && ok;
+            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, !"concept".equals(property), I18nConstants.VALUESET_BAD_PROPERTY_NO_REGEX, property) && ok;
+          } else if (Utilities.existsInList(op, "in", "not-in")) {
             for (String v : value.split("\\,")) {
-              ok = checkFilterValue(errors, stack, system, version, ok, property, v, rules.getType()) && ok;
+              ok = checkFilterValue(errors, stack, system, version, ok, property, op, v, rules.getType(), rules.getCodeValidation()) && ok;
             }
           } else {
-            ok = checkFilterValue(errors, stack, system, version, ok, property, value, rules.getType()) && ok;
+            ok = checkFilterValue(errors, stack, system, version, ok, property, op, value, rules.getType(), rules.getCodeValidation()) && ok;
           }
         }
       }
@@ -454,8 +470,11 @@ public class ValueSetValidator extends BaseValidator {
     return false;
   }
 
-  private boolean checkFilterValue(List<ValidationMessage> errors, NodeStack stack, String system, String version,boolean ok, String property, String value, PropertyFilterType type) {
+  private boolean checkFilterValue(List<ValidationMessage> errors, NodeStack stack, String system, String version,boolean ok, String property, String op, String value, PropertyFilterType type, CodeValidationRule cr) {
     if (type != null) {
+      if (!Utilities.existsInList(op, "in", "not-in")) {
+        hint(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), !value.contains(","), I18nConstants.VALUESET_BAD_FILTER_VALUE_HAS_COMMA, type.toString());
+      }
       switch (type) {
       case Boolean:
         ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, 
@@ -466,6 +485,14 @@ public class ValueSetValidator extends BaseValidator {
         ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, 
             value.trim().equals(value), 
             I18nConstants.VALUESET_BAD_FILTER_VALUE_CODE, property, value) && ok;
+        if (cr == CodeValidationRule.Error || cr == CodeValidationRule.Warning) {
+          ValidationResult vr = context.validateCode(baseOptions, system, version, value, null);
+          if (cr == CodeValidationRule.Error) {
+            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), vr.isOk(), I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage()) && ok;
+          } else {
+            warning(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), vr.isOk(), I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage());
+          }
+        }
         break;
       case DateTime:
         ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(),
@@ -482,18 +509,12 @@ public class ValueSetValidator extends BaseValidator {
             Utilities.isInteger(value), 
             I18nConstants.VALUESET_BAD_FILTER_VALUE_INTEGER, property, value) && ok;
         break;
-      case ValidCode :
-        ValidationResult vr = context.validateCode(baseOptions, system, version, value, null);
-        ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(),
-            vr.isOk(), 
-            I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage()) && ok;
-        break;
       case Coding :
         Coding code = Coding.fromLiteral(value);
         if (code == null) {
           ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, false, I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED, property, value) && ok;
         } else {
-          vr = context.validateCode(baseOptions, code, null);
+          ValidationResult vr = context.validateCode(baseOptions, code, null);
           ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, vr.isOk(), I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED_INVALID, property, value, vr.getMessage()) && ok;
         }
         break;
@@ -521,12 +542,16 @@ public class ValueSetValidator extends BaseValidator {
         if (property.equals(p.getCode())) {
           if (p.getType() != null) {
             switch (p.getType()) {
-            case BOOLEAN: return new PropertyValidationRules(false, PropertyFilterType.Boolean, ops);
-            case CODE: return new PropertyValidationRules(false, PropertyFilterType.ValidCode, ops);
-            case CODING: return new PropertyValidationRules(false, PropertyFilterType.Coding, ops);
-            case DATETIME: return new PropertyValidationRules(false, PropertyFilterType.DateTime, ops);
-            case DECIMAL: return new PropertyValidationRules(false, PropertyFilterType.Decimal, ops);
-            case INTEGER: return new PropertyValidationRules(false, PropertyFilterType.Integer, ops);
+            case BOOLEAN: return new PropertyValidationRules(PropertyFilterType.Boolean, null, ops);
+            case CODE: 
+              // the definitions say " a code that identifies a concept defined in the code system" -> ValidCode.
+              // but many people have ignored that and defined a property as 'code' because it's from a list of values that are otherwise undefined
+              boolean external = !forPublication || cs.getWebPath() == null || Utilities.isAbsoluteUrl(cs.getWebPath());
+              return new PropertyValidationRules(PropertyFilterType.Code, external ? CodeValidationRule.Warning : CodeValidationRule.Error, ops); // valid code... the definitions say that, but people were missing that in the pastm 
+            case CODING: return new PropertyValidationRules(PropertyFilterType.Coding, null, ops);
+            case DATETIME: return new PropertyValidationRules(PropertyFilterType.DateTime, null, ops);
+            case DECIMAL: return new PropertyValidationRules(PropertyFilterType.Decimal, null, ops);
+            case INTEGER: return new PropertyValidationRules(PropertyFilterType.Integer, null, ops);
             case STRING: return null;
             }
           }
@@ -535,51 +560,51 @@ public class ValueSetValidator extends BaseValidator {
     }
 
     switch (property) {
-    case "concept" : return new PropertyValidationRules(false, PropertyFilterType.ValidCode, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf, PropertyOperation.DescendentLeaf, PropertyOperation.IsNotA, PropertyOperation.NotIn));
-    case "code" : return new PropertyValidationRules(false, PropertyFilterType.ValidCode, addToOps(ops, PropertyOperation.Equals, PropertyOperation.RegEx));
-    case "status" : return new PropertyValidationRules(false, PropertyFilterType.Code, ops);
-    case "inactive" : return new PropertyValidationRules(false, PropertyFilterType.Boolean, ops);
-    case "effectiveDate" : return new PropertyValidationRules(false, PropertyFilterType.DateTime, ops);
-    case "deprecationDate" : return new PropertyValidationRules(false, PropertyFilterType.DateTime, ops);
-    case "retirementDate" : return new PropertyValidationRules(false, PropertyFilterType.DateTime, ops);
-    case "notSelectable" : return new PropertyValidationRules(false, PropertyFilterType.Boolean, ops);
-    case "parent" : return new PropertyValidationRules(false, PropertyFilterType.ValidCode, ops);
-    case "child" : return new PropertyValidationRules(false, PropertyFilterType.ValidCode, ops);
-    case "partOf" : return new PropertyValidationRules(false, PropertyFilterType.ValidCode, ops);
-    case "synonym" : return new PropertyValidationRules(false, PropertyFilterType.Code, ops);
+    case "concept" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In, PropertyOperation.IsA, PropertyOperation.DescendentOf, PropertyOperation.DescendentLeaf, PropertyOperation.IsNotA, PropertyOperation.NotIn));
+    case "code" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.Equals, PropertyOperation.RegEx));
+    case "status" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, ops);
+    case "inactive" : return new PropertyValidationRules(PropertyFilterType.Boolean,null,  ops);
+    case "effectiveDate" : return new PropertyValidationRules(PropertyFilterType.DateTime, null, ops);
+    case "deprecationDate" : return new PropertyValidationRules(PropertyFilterType.DateTime, null, ops);
+    case "retirementDate" : return new PropertyValidationRules(PropertyFilterType.DateTime, null, ops);
+    case "notSelectable" : return new PropertyValidationRules(PropertyFilterType.Boolean, null, ops);
+    case "parent" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, ops);
+    case "child" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, ops);
+    case "partOf" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, ops);
+    case "synonym" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, ops); // ? none?
     case "comment" : return null;
-    case "itemWeight" : return new PropertyValidationRules(false, PropertyFilterType.Decimal, ops);
+    case "itemWeight" : return new PropertyValidationRules(PropertyFilterType.Decimal, null, ops);
     }
     switch (system) {
     case "http://loinc.org" : 
-      if (Utilities.existsInList(property, "copyright", "STATUS", "CLASS", "CONSUMER_NAME", "ORDER_OBS", "DOCUMENT_SECTION")) { 
-        return new PropertyValidationRules(false, PropertyFilterType.Code);
+      if (Utilities.existsInList(property, "copyright", "STATUS", "CLASS", "CONSUMER_NAME", "ORDER_OBS", "DOCUMENT_SECTION", "SCALE_TYP")) { 
+        return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None);
       } else if ("CLASSTYPE".equals(property)) {
-        return new PropertyValidationRules(false, PropertyFilterType.Integer, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
+        return new PropertyValidationRules(PropertyFilterType.Integer, null, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
       } else { 
-        return new PropertyValidationRules(false, PropertyFilterType.ValidCode, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
+        return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
       }
     case "http://snomed.info/sct": 
       switch (property) {
       case "constraint": return null; // for now 
-      case "expressions": return new PropertyValidationRules(false, PropertyFilterType.Boolean, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
+      case "expressions": return new PropertyValidationRules(PropertyFilterType.Boolean, null, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
       default:
-        return new PropertyValidationRules(false, PropertyFilterType.ValidCode, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
+        return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
       }
-    case "http://www.nlm.nih.gov/research/umls/rxnorm" : return new PropertyValidationRules(false, PropertyFilterType.Code, ops);
-    case "http://unitsofmeasure.org" : return new PropertyValidationRules(false, PropertyFilterType.Code, ops); 
+    case "http://www.nlm.nih.gov/research/umls/rxnorm" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, ops);
+    case "http://unitsofmeasure.org" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, ops); 
     case "http://www.ama-assn.org/go/cpt" : 
       switch (property) {
-      case "modifier": return new PropertyValidationRules(false, PropertyFilterType.Boolean, ops);
-      case "kind" : return new PropertyValidationRules(true, PropertyFilterType.Code, ops); // for now
-      case "modified": return new PropertyValidationRules(false, PropertyFilterType.Boolean, ops);
+      case "modifier": return new PropertyValidationRules(PropertyFilterType.Boolean, null, ops);
+      case "kind" : return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, ops); // for now
+      case "modified": return new PropertyValidationRules(PropertyFilterType.Boolean, null, ops);
       case "code" : return null;
-      case "telemedicine": return new PropertyValidationRules(false, PropertyFilterType.Boolean, ops);
-      case "orthopox" : return new PropertyValidationRules(false, PropertyFilterType.Boolean, ops);
+      case "telemedicine": return new PropertyValidationRules(PropertyFilterType.Boolean, null, ops);
+      case "orthopox" : return new PropertyValidationRules(PropertyFilterType.Boolean,null,  ops);
       }
     }
     if (ops != null) {
-      return new PropertyValidationRules(false, null, ops);
+      return new PropertyValidationRules(null, null, ops);
     } else {
       return null;
     }

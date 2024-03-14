@@ -216,6 +216,7 @@ public class RenderingContext {
   private Map<KnownLinkType, String> links = new HashMap<>();
   private Map<String, String> namedLinks = new HashMap<>();
   private boolean addName = false;
+  private Map<String, String> typeMap = new HashMap<>(); // type aliases that can be resolved in Markdown type links (mainly for cross-version usage)
   
   /**
    * 
@@ -281,6 +282,7 @@ public class RenderingContext {
     res.changeVersion = changeVersion;
 
     res.terminologyServiceOptions = terminologyServiceOptions.copy();
+    res.typeMap.putAll(typeMap);
     return res;
   }
   
@@ -737,6 +739,10 @@ public class RenderingContext {
   public RenderingContext setAddName(boolean addName) {
     this.addName = addName;
     return this;
+  }
+
+  public Map<String, String> getTypeMap() {
+    return typeMap;
   }
 
   
