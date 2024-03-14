@@ -1395,6 +1395,36 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
       d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
       return d != null && d.primitiveValue() != null && d.primitiveValue().matches(f.getValue());
+    case IN:
+      if (f.getValue() == null) {
+        return false;
+      }
+      String[] values = f.getValue().split("\\,");
+      d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
+      if (d != null) {
+        String v = d.primitiveValue();
+        for (String value : values) {
+          if (v != null && v.equals(value.trim())) {
+            return true;
+          }
+        }
+      }
+      return false;
+    case NOTIN:
+      if (f.getValue() == null) {
+        return true;
+      }
+      values = f.getValue().split("\\,");
+      d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
+      if (d != null) {
+        String v = d.primitiveValue();
+        for (String value : values) {
+          if (v != null && v.equals(value.trim())) {
+            return false;
+          }
+        }
+      }
+      return true;
     default:
       System.out.println("todo: handle property filters with op = "+f.getOp()); 
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
