@@ -932,6 +932,15 @@ public class Utilities {
         return true;
     return false;
   }
+  
+  public static boolean existsInListTrimmed(String value, String... array) {
+    if (value == null)
+      return false;
+    for (String s : array)
+      if (value.equals(s.trim()))
+        return true;
+    return false;
+  }
 
   public static boolean existsInList(int value, int... array) {
     for (int i : array)

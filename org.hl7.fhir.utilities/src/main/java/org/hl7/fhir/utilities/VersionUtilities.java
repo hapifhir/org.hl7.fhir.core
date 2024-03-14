@@ -300,8 +300,8 @@ public class VersionUtilities {
     } else if (Utilities.charCount(version, '.') == 2) {
       String[] p = version.split("\\.");
       return p[0]+"."+p[1];
-    } else if (Utilities.existsInList(version, "R2", "R2B", "R3", "R4", "R4B", "R5", "R6")) {
-      switch (version) {
+    } else if (Utilities.existsInList(version.toUpperCase(), "R2", "R2B", "R3", "R4", "R4B", "R5", "R6")) {
+      switch (version.toUpperCase()) {
       case "R2": return "1.0";
       case "R2B": return "1.4";
       case "R3": return "3.0";

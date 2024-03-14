@@ -52,6 +52,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
@@ -263,7 +264,10 @@ public class NPMPackageGenerator {
     packageManifest.add("fhirVersion", fv);
     packageManifest.add("date", dt);
     packageManifest.add("name", ig.getPackageId());
-
+    if (ig.hasJurisdiction() && ig.getJurisdiction().size() == 1 && ig.getJurisdictionFirstRep().getCoding().size() == 1) {
+      Coding c = ig.getJurisdictionFirstRep().getCodingFirstRep();
+      packageManifest.add("jurisdiction", c.getSystem()+"#"+c.getCode());
+    }
   }
 
 

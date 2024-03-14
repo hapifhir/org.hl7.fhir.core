@@ -8628,6 +8628,17 @@ public class ConceptMap extends MetadataResource {
     return g;
     
   }
+
+  public List<ConceptMapGroupComponent> getGroups(String su) {
+    List<ConceptMapGroupComponent> res = new ArrayList<>();
+
+    for (ConceptMapGroupComponent g : getGroup()) {
+      if (su.equals(g.getSource())) {
+        res.add(g);
+      }      
+    }
+    return res;
+  }
   
 // end addition
 
