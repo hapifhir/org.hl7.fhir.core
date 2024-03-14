@@ -159,10 +159,15 @@ public class DataRenderer extends Renderer implements CodeResolver {
           parts[0] = parts[0].substring(0, parts[0].indexOf("."));
         }
         StructureDefinition p = getContext().getWorker().fetchResource(StructureDefinition.class, parts[0]);
-        if (p == null)
+        if (p == null) {
           p = getContext().getWorker().fetchTypeDefinition(parts[0]);
-        if (p == null)
+        }
+        if (context.getTypeMap().containsKey(parts[0])) {
+          p = getContext().getWorker().fetchTypeDefinition(context.getTypeMap().get(parts[0]));          
+        }
+        if (p == null) {
           p = getContext().getWorker().fetchResource(StructureDefinition.class, link);
+        }
         if (p != null) {
           if ("Extension".equals(p.getType())) {
             path = null;
@@ -175,9 +180,10 @@ public class DataRenderer extends Renderer implements CodeResolver {
           if (url == null) {
             url = p.getUserString("filename");
           }
-        } else
+        } else {
           throw new DefinitionException("Unable to resolve markdown link "+link);
-  
+        }
+        
         text = left+"["+link+"]("+url+(path == null ? "" : "#"+path)+")"+right;
       }
   
@@ -1201,19 +1207,25 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
   protected String displayIdentifier(Identifier ii) {
     String s = Utilities.noString(ii.getValue()) ? "?ngen-9?" : ii.getValue();
-    NamingSystem ns = context.getContext().getNSUrlMap().get(ii.getSystem());
-    if (ns != null) {
-      s = ns.present()+"#"+s;
-    }
-    if (ii.hasType()) {
-      if (ii.getType().hasText())
-        s = ii.getType().getText()+":\u00A0"+s;
-      else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay())
-        s = ii.getType().getCoding().get(0).getDisplay()+": "+s;
-      else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
-        s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getVersion(), ii.getType().getCoding().get(0).getCode())+": "+s;
-    } else if (ii.hasSystem()) {
-      s = ii.getSystem()+"#"+s;
+    if ("urn:ietf:rfc:3986".equals(ii.getSystem()) && s.startsWith("urn:oid:")) {
+      s = "OID:"+s.substring(8);
+    } else if ("urn:ietf:rfc:3986".equals(ii.getSystem()) && s.startsWith("urn:uuid:")) {
+      s = "UUID:"+s.substring(9);
+    } else { 
+      NamingSystem ns = context.getContext().getNSUrlMap().get(ii.getSystem());
+      if (ns != null) {
+        s = ns.present()+"#"+s;
+      }
+      if (ii.hasType()) {
+        if (ii.getType().hasText())
+          s = ii.getType().getText()+":\u00A0"+s;
+        else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay())
+          s = ii.getType().getCoding().get(0).getDisplay()+": "+s;
+        else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
+          s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getVersion(), ii.getType().getCoding().get(0).getCode())+": "+s;
+      } else if (ii.hasSystem()) {
+        s = ii.getSystem()+"#"+s;
+      }
     }
 
     if (ii.hasUse() || ii.hasPeriod()) {
