@@ -388,7 +388,8 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
 
   public List<String> getConcreteResources() {
     if (concreteResourceNames == null) {
-      concreteResourceNames.addAll(Utilities.sorted(concreteResourceNameSet));
+      concreteResourceNames =  new ArrayList<>();
+      concreteResourceNames.addAll(Utilities.sorted(getConcreteResourceSet()));
     }
     return concreteResourceNames;
   }
