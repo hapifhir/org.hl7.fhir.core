@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.terminologies;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.terminologies.ConceptMapUtilities.ConceptMapElementSorter;
 import org.hl7.fhir.r5.terminologies.ConceptMapUtilities.ElementMappingPair;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Meta;
 import org.hl7.fhir.r5.model.UriType;
@@ -220,9 +222,9 @@ public class ConceptMapUtilities {
     res.setUrl(url);
 
     for (ConceptMap cm : sequence) {
-      if (res.hasTargetScope() && src.hasTargetScope()) {
-        if (!cm.getSourceScope().equals(cm.getTargetScope())) {
-          throw new Error("Mismatch between seqeuntial concept maps: ");
+      if (res.hasTargetScope() && cm.hasTargetScope()) {
+        if (!cm.getSourceScope().primitiveValue().equals(res.getTargetScope().primitiveValue())) {
+          throw new Error("Mismatch between sequential concept maps: target was "+res.getTargetScope()+" and source is "+cm.getSourceScope());
         } else {
           res.setTargetScope(cm.getTargetScope());
         }
@@ -611,6 +613,73 @@ public class ConceptMapUtilities {
 
   private static boolean matchesCoding(ConceptMapGroupComponent grp, Coding code) {    
     return code.getSystem().equals(grp.getSource()) || (code.getSystem()+"|"+code.getVersion()).equals(grp.getSource());
+  }
+
+  public static List<String> translateCode(String name, String defaultValue, ConceptMap... cmList) {
+    List<String> res = translateCode(name, cmList);
+    if (res.isEmpty()) {
+      res.add(defaultValue);
+    }
+    return res;
+  }
+  public static List<String> translateCode(String name, ConceptMap... cmList) {
+    List<String> res = new ArrayList<>();
+    res.add(name);
+    for (ConceptMap cm : cmList) {
+      res = translateCodes(res, cm);
+    }
+    return res;
+  }
+
+  private static List<String> translateCodes(List<String> codes, ConceptMap cm) {
+    List<String> res = new ArrayList<>();
+    for (ConceptMapGroupComponent g : cm.getGroup()) {
+      for (SourceElementComponent e : g.getElement()) {
+        if (Utilities.existsInList(e.getCode(), codes)) {
+          for (TargetElementComponent t : e.getTarget()) {
+            if (t.getRelationship() == ConceptMapRelationship.EQUIVALENT || t.getRelationship() == ConceptMapRelationship.RELATEDTO || 
+                t.getRelationship() == ConceptMapRelationship.SOURCEISBROADERTHANTARGET ||t.getRelationship() == ConceptMapRelationship.SOURCEISNARROWERTHANTARGET) {
+              res.add(t.getCode());
+            }
+          }
+        }
+      }
+    }
+    return res;
+  }
+
+  public static List<Coding> translateCoding(Coding code, ConceptMap... cmList) {
+    List<Coding> res = new ArrayList<>();
+    for (ConceptMap cm : cmList) {
+      res = translateCodings(res, cm);
+    }
+    return res;
+  }
+
+  private static List<Coding> translateCodings(List<Coding> codes, ConceptMap cm) {
+    List<Coding> res = new ArrayList<>();
+    for (ConceptMapGroupComponent g : cm.getGroup()) {
+      for (SourceElementComponent e : g.getElement()) {
+        if (hasCode(g.getSource(), e.getCode(), codes)) {
+          for (TargetElementComponent t : e.getTarget()) {
+            if (t.getRelationship() == ConceptMapRelationship.EQUIVALENT || t.getRelationship() == ConceptMapRelationship.RELATEDTO || 
+                t.getRelationship() == ConceptMapRelationship.SOURCEISBROADERTHANTARGET ||t.getRelationship() == ConceptMapRelationship.SOURCEISNARROWERTHANTARGET) {
+              res.add(new Coding().setSystem(g.getTarget()).setCode((t.getCode())));
+            }
+          }
+        }
+      }
+    }
+    return res;
+  }
+
+  private static boolean hasCode(String system, String code, List<Coding> codes) {
+    for (Coding c : codes) {
+      if (system.equals(c.getSystem()) && code.equals(c.getCode())) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }
