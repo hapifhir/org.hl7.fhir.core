@@ -3253,7 +3253,7 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     }
     case SubsetOf : {
-      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, focus); 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, focus.toUnordered()); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
     }
     case SupersetOf : {
