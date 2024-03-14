@@ -680,8 +680,6 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (debug) {
         e.printStackTrace();
       }
-      // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
-      // that might fail too, but it might not, later.
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e instanceof EFhirClientException || e instanceof TerminologyServiceException);
     }
   }
