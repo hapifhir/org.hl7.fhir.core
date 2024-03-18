@@ -234,6 +234,15 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       concept.addProperty().setCode(code).setValue(value);    
   }
   
+  public static void setProperty(CodeSystem cs, ConceptDefinitionComponent concept, String url, String code, DataType value) throws FHIRFormatError {
+    defineProperty(cs, code, propertyTypeForValue(value), url);
+    ConceptPropertyComponent p = getProperty(concept,  code);
+    if (p != null)
+      p.setValue(value);
+    else
+      concept.addProperty().setCode(code).setValue(value);    
+  }
+  
 
   private static PropertyType propertyTypeForValue(DataType value) {
     if (value instanceof BooleanType) {
@@ -262,6 +271,9 @@ public class CodeSystemUtilities extends TerminologyUtilities {
 
   private static String defineProperty(CodeSystem cs, String code, PropertyType pt) {
     String url = "http://hl7.org/fhir/concept-properties#"+code;
+    return defineProperty(cs, code, pt, url);
+  }
+  private static String defineProperty(CodeSystem cs, String code, PropertyType pt, String url) {
     for (PropertyComponent p : cs.getProperty()) {
       if (p.hasCode() && p.getCode().equals(code)) {
         if (!p.getUri().equals(url)) {

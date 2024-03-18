@@ -3344,7 +3344,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         Set<String> refs = new HashSet<>();
         int count = countTargetMatches(resource, ref, true, "$", refs);
         if (count == 0) {
-          rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_XHTML_RESOLVE, href, xpath, node.allText());
+          rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_XHTML_RESOLVE, href, xpath, Utilities.stripEoln(node.allText()));
         } else if (count > 1) {
           warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_XHTML_MULTIPLE_MATCHES, href, xpath, node.allText(), CommaSeparatedStringBuilder.join(", ", refs));
         }
@@ -5760,7 +5760,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
 
-    if (rule(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), wg != null && !url.contains("http://hl7.org/fhir/sid"), I18nConstants.VALIDATION_HL7_WG_NEEDED, ToolingExtensions.EXT_WORKGROUP)) {
+    if (rule(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), wg != null || url.contains("http://hl7.org/fhir/sid"), I18nConstants.VALIDATION_HL7_WG_NEEDED, ToolingExtensions.EXT_WORKGROUP)) {
       HL7WorkGroup wgd = HL7WorkGroups.find(wg);      
       if (rule(errors, "2023-09-15", IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), wgd != null, I18nConstants.VALIDATION_HL7_WG_UNKNOWN, wg)) {
         String rpub = "HL7 International / "+wgd.getName();
