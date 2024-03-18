@@ -2235,4 +2235,11 @@ public class Utilities {
     return true;
   }
 
+  public static String stripEoln(String text) {
+    if (text == null) {
+      return "";
+    }
+    return text.replace("\r\n",  " ").replace("\n",  " ").replace("\r",  " ");
+  }
+
 }

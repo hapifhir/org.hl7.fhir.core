@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -57,16 +58,30 @@ public class CodeSystemValidator  extends BaseValidator {
 
   }
 
+  public enum CodeValidationRule {
+    NO_VALIDATION, INTERNAL_CODE, VS_ERROR, VS_WARNING
+  }
+  
   public class PropertyDef {
     private String uri;
     private String code;
     private String type;
+    
+    private CodeValidationRule rule;
+    private String valueset;
+    
     protected PropertyDef(String uri, String code, String type) {
       super();
       this.uri = uri;
       this.code = code;
       this.type = type;
     }
+    
+    public void setCodeValidationRules(CodeValidationRule rule, String valueset) {
+      this.rule = rule;
+      this.valueset = valueset;
+    }
+
     public String getUri() {
       return uri;
     }
@@ -76,8 +91,13 @@ public class CodeSystemValidator  extends BaseValidator {
     public String getType() {
       return type;
     }
+    public String getValueset() {
+      return valueset;
+    }
 
   }
+
+  private static final String VS_PROP_STATUS = null;
 
   public CodeSystemValidator(BaseValidator parent) {
     super(parent);
@@ -252,8 +272,7 @@ public class CodeSystemValidator  extends BaseValidator {
           ukp = KnownProperty.ItemWeight;
           break;
         default:
-          ok = false;
-          rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_BAD_HL7_URI, uri);
+          ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), isBaseSpec(cs.getNamedChildValue("url")), I18nConstants.CODESYSTEM_PROPERTY_BAD_HL7_URI, uri);
         }
       }
     }    
@@ -309,7 +328,31 @@ public class CodeSystemValidator  extends BaseValidator {
       if (type != null) {
         ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), type.equals(ukp.getType()), I18nConstants.CODESYSTEM_PROPERTY_URI_TYPE_MISMATCH, uri, ukp.getType(),type) && ok;
       }
+      switch (ukp) {
+      case Child:
+      case Parent:
+      case PartOf:
+      case Synonym:
+        pd.setCodeValidationRules(CodeValidationRule.INTERNAL_CODE, null);
+        break;
+      case Status:
+        pd.setCodeValidationRules(CodeValidationRule.VS_WARNING, VS_PROP_STATUS);
+        break;
+      default:
+        break;
+      }
+    } else if ("code".equals(pd.getType())) { 
+      if (property.hasExtension("http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet")) {
+        pd.setCodeValidationRules(CodeValidationRule.VS_ERROR, property.getExtensionValue("http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet").primitiveValue());
+      } else if (VersionUtilities.isR6Plus(context.getVersion())) {
+        hint(errors, "2024-03-18", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), ukp != null && type.equals(ukp.getType()), I18nConstants.CODESYSTEM_PROPERTY_CODE_WARNING);
+      } else {
+        
+      }
+    } else if ("Coding".equals(pd.getType()) && property.hasExtension("http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet")) {
+      pd.setCodeValidationRules(CodeValidationRule.VS_ERROR, property.getExtensionValue("http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.property.valueSet").primitiveValue());
     }
+  
     if (uri == null) {
       if (ckp == null) {
         hint(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_UNKNOWN_CODE, code);
@@ -321,6 +364,10 @@ public class CodeSystemValidator  extends BaseValidator {
       }
     }
     return ok;
+  }
+
+  private boolean isBaseSpec(String url) {
+    return url.startsWith("http://hl7.org/fhir/") && !url.substring(20).contains("/");
   }
 
   private boolean checkConcept(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean caseSensitive, String hierarchyMeaning, CodeSystem csB, Element concept, Set<String> codes, Map<String, PropertyDef> properties) {
