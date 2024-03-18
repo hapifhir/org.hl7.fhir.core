@@ -109,6 +109,11 @@ public class ElementWrappers {
       return element.fhirType();
     }
 
+    @Override
+    public ResourceWrapper getResource() throws UnsupportedEncodingException, IOException, FHIRException {
+      return new ElementWrappers.ResourceWrapperMetaElement(getContext(), element);
+    }
+
   }
 
   public static class ResourceWrapperMetaElement extends WrapperBaseImpl implements ResourceWrapper {
