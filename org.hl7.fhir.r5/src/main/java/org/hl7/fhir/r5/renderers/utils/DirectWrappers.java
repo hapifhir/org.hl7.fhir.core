@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.DomainResource;
@@ -162,6 +163,11 @@ public class DirectWrappers {
     @Override
     public String fhirType() {
       return wrapped.fhirType();
+    }
+
+    @Override
+    public ResourceWrapper getResource() throws UnsupportedEncodingException, IOException, FHIRException {
+      return new DirectWrappers.ResourceWrapperDirect(getContext(),  (Resource) wrapped);
     }
 
   }

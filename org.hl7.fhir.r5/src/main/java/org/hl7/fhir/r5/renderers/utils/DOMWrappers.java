@@ -102,6 +102,19 @@ public class DOMWrappers {
       return type;
     }
 
+    @Override
+    public ResourceWrapper getResource() throws UnsupportedEncodingException, IOException, FHIRException {
+      Element r = XMLUtil.getFirstChild(element);
+      StructureDefinition sd = getContext().getContext().fetchTypeDefinition(r.getLocalName());
+      if (sd == null) {
+        throw new FHIRException("Unable to find definition for type "+type+" @ "+definition.getPath());
+      }
+      if (sd.getKind() != StructureDefinitionKind.RESOURCE) {
+        throw new FHIRException("Definition for type "+type+" is not for a resource @ "+definition.getPath());
+      }
+      return new ResourceWrapperElement(context, r, sd);
+    }
+
   }
 
   public static class PropertyWrapperElement extends RendererWrapperImpl implements PropertyWrapper {
