@@ -48,6 +48,8 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.special.TxServiceTestHelper;
+import org.hl7.fhir.validation.special.TxServiceTestHelper.TestSetup;
 import org.hl7.fhir.validation.special.TxTesterScrubbers;
 import org.hl7.fhir.validation.special.TxTesterSorters;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
@@ -61,60 +63,31 @@ import org.junit.runners.Parameterized.Parameters;
 import com.google.common.base.Charsets;
 import com.google.gson.JsonSyntaxException;
 
+import org.hl7.fhir.r5.context.IWorkerContext;
+
+import static org.junit.Assert.assertNull;
 
 
 @RunWith(Parameterized.class)
 public class TerminologyServiceTests {
 
-  public static class JsonObjectPair {
-    public JsonObjectPair(JsonObject suite, JsonObject test) {
-      this.suite = suite;
-      this.test = test;
-    }
-    private JsonObject suite;
-    private JsonObject test;
-  }
+
+private static TxServiceTestHelper.TestData testData;
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
-
-    String contents = TestingUtilities.loadTestResource("tx", "test-cases.json");
-    String externalSource = TestingUtilities.loadTestResource("tx", "messages-tx.fhir.org.json");
-    externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(externalSource);
-
-    Map<String, JsonObjectPair> examples = new HashMap<String, JsonObjectPair>();
-    manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
-    for (org.hl7.fhir.utilities.json.model.JsonObject suite : manifest.getJsonObjects("suites")) {
-      if (!"tx.fhir.org".equals(suite.asString("mode"))) {
-        String sn = suite.asString("name");
-        for (org.hl7.fhir.utilities.json.model.JsonObject test : suite.getJsonObjects("tests")) {
-          String tn = test.asString("name");
-          examples.put(sn+"."+tn, new JsonObjectPair(suite, test));
-        }
-      }
-    }
-
-    List<String> names = new ArrayList<String>(examples.size());
-    names.addAll(examples.keySet());
-    Collections.sort(names);
-
-    List<Object[]> objects = new ArrayList<Object[]>(examples.size());
-    for (String id : names) {
-      objects.add(new Object[]{id, examples.get(id)});
-    }
-    return objects;
+    testData = new TxServiceTestHelper.TestData();
+    return testData.getTestData();
   }
 
-  private static org.hl7.fhir.utilities.json.model.JsonObject manifest;
-  private static org.hl7.fhir.utilities.json.model.JsonObject externals;
-  private JsonObjectPair setup;
-  private String version;
-  private String name;
+  private final TestSetup setup;
+  private final String version;
+  private final String name;
 
 
   private static ValidationEngine baseEngine;
 
-  public TerminologyServiceTests(String name, JsonObjectPair setup) {
+  public TerminologyServiceTests(String name, TestSetup setup) {
     this.name = name;
     this.setup = setup;
     version = "5.0.0";
@@ -127,33 +100,35 @@ public class TerminologyServiceTests {
       baseEngine = TestUtilities.getValidationEngineNoTxServer("hl7.fhir.r5.core#5.0.0", FhirPublication.R5, "5.0.0");
     }
     ValidationEngine engine = new ValidationEngine(this.baseEngine);
-    for (String s : setup.suite.forceArray("setup").asStrings()) {
+    for (String s : setup.getSuite().forceArray("setup").asStrings()) {
       // System.out.println(s);
       Resource res = loadResource(s);
       engine.seeResource(res);
     }
-    Resource req = loadResource(setup.test.asString("request"));
-    String fn = setup.test.has("response:tx.fhir.org") ? setup.test.asString("response:tx.fhir.org") : setup.test.asString("response");
+    Resource req = loadResource(setup.getTest().asString("request"));
+    String fn = setup.getTest().has("response:tx.fhir.org") ? setup.getTest().asString("response:tx.fhir.org") : setup.getTest().asString("response");
     String resp = TestingUtilities.loadTestResource("tx", fn);
     String fp = Utilities.path("[tmp]", "tx", fn);
-    JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
+    JsonObject ext = testData.getExternals() == null ? null : testData.getExternals().getJsonObject(fn);
     File fo = new File(fp);
     if (fo.exists()) {
       fo.delete();
     }
-    if (setup.test.has("profile")) {
-      engine.getContext().setExpansionParameters((org.hl7.fhir.r5.model.Parameters) loadResource(setup.test.asString("profile")));
+    if (setup.getTest().has("profile")) {
+      engine.getContext().setExpansionParameters((org.hl7.fhir.r5.model.Parameters) loadResource(setup.getTest().asString("profile")));
     } else {
       engine.getContext().setExpansionParameters((org.hl7.fhir.r5.model.Parameters) loadResource("parameters-default.json"));
     }
-    if (setup.test.asString("operation").equals("expand")) {
-      expand(engine, req, resp, setup.test.asString("Content-Language"), fp, ext);
-    } else if (setup.test.asString("operation").equals("validate-code")) {
-      validate(engine, setup.test.asString("name"), req, resp, setup.test.asString("Content-Language"), fp, ext, false);      
-    } else if (setup.test.asString("operation").equals("cs-validate-code")) {
-      validate(engine, setup.test.asString("name"), req, resp, setup.test.asString("Content-Language"), fp, ext, true);      
+    if (setup.getTest().asString("operation").equals("expand")) {
+      expand(engine, req, resp, setup.getTest().asString("Content-Language"), fp, ext);
+    } else if (setup.getTest().asString("operation").equals("validate-code")) {
+      String diff = TxServiceTestHelper.getDiffForValidation(engine.getContext(), setup.getTest().asString("name"), req, resp, setup.getTest().asString("Content-Language"), fp, ext, false);
+      assertNull(diff, diff);
+    } else if (setup.getTest().asString("operation").equals("cs-validate-code")) {
+      String diff = TxServiceTestHelper.getDiffForValidation(engine.getContext(), setup.getTest().asString("name"), req, resp, setup.getTest().asString("Content-Language"), fp, ext, true);
+      assertNull(diff, diff);
     } else {
-      Assertions.fail("Unknown Operation "+setup.test.asString("operation"));
+      Assertions.fail("Unknown Operation "+ setup.getTest().asString("operation"));
     }
   }
 
@@ -243,167 +218,7 @@ public class TerminologyServiceTests {
     }
   }
 
-  private void validate(ValidationEngine engine, String name, Resource req, String resp, String lang, String fp, JsonObject ext, boolean isCS) throws JsonSyntaxException, FileNotFoundException, IOException {
-    org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) req;
-    ValueSet vs = null;
-    String vsurl = null;
-    if (!isCS) {
-      if (p.hasParameter("valueSetVersion")) {
-        vsurl = p.getParameterValue("url").primitiveValue()+"|"+p.getParameterValue("valueSetVersion").primitiveValue();
-        vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), p.getParameterValue("valueSetVersion").primitiveValue());      
-      } else {
-        vsurl = p.getParameterValue("url").primitiveValue();
-        vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
-      }
-    }
-    ValidationResult vm = null;
-    String code = null;
-    String system = null;
-    String version = null;
-    String display = null;
-    CodeableConcept cc = null;
-    org.hl7.fhir.r5.model.Parameters res = null;
-    OperationOutcome oo = null;
-    
-    if (vs == null && vsurl != null) {
-      String msg = engine.getContext().formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, vsurl);
-      oo = new OperationOutcome();
-      CodeableConcept cct = oo.addIssue().setSeverity(IssueSeverity.ERROR).setCode(IssueType.NOTFOUND).getDetails();
-      cct.addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
-      cct.setText(msg);      
-    } else {
-      ValidationOptions options = new ValidationOptions(FhirPublication.R5);
-      if (p.hasParameter("displayLanguage")) {
-        options = options.withLanguage(p.getParameterString("displayLanguage"));
-      } else if (lang != null ) {
-        options = options.withLanguage(lang);
-      }
-      if (p.hasParameter("valueset-membership-only") && "true".equals(p.getParameterString("valueset-membership-only"))) {
-        options = options.withCheckValueSetOnly();
-      }
-      if (p.hasParameter("lenient-display-validation") && "true".equals(p.getParameterString("lenient-display-validation"))) {
-        options = options.setDisplayWarningMode(true);
-      }
-      if (p.hasParameter("activeOnly") && "true".equals(p.getParameterString("activeOnly"))) {
-        options = options.setActiveOnly(true);
-      }
-      engine.getContext().getExpansionParameters().clearParameters("includeAlternateCodes");
-      for (ParametersParameterComponent pp : p.getParameter()) {
-        if ("includeAlternateCodes".equals(pp.getName())) {
-          engine.getContext().getExpansionParameters().addParameter(pp.copy());
-        }
-      }
-      if (p.hasParameter("code")) {
-        code = p.getParameterString("code");
-        system = p.getParameterString(isCS ? "url" : "system");
-        version = p.getParameterString(isCS ? "version" : "systemVersion"); 
-        display = p.getParameterString("display"); 
-        vm = engine.getContext().validateCode(options.withGuessSystem(), 
-            p.getParameterString(isCS ? "url" : "system"), p.getParameterString(isCS ? "version" : "systemVersion"), 
-            p.getParameterString("code"), p.getParameterString("display"), vs);
-      } else if (p.hasParameter("coding")) {
-        Coding coding = (Coding) p.getParameterValue("coding");
-        code = coding.getCode();
-        system = coding.getSystem();
-        version = coding.getVersion();
-        display = coding.getDisplay();
-        vm = engine.getContext().validateCode(options, coding, vs);
-      } else if (p.hasParameter("codeableConcept")) {
-        cc = (CodeableConcept) p.getParameterValue("codeableConcept");
-        vm = engine.getContext().validateCode(options, cc, vs);
-      } else {
-        throw new Error("validate not done yet for this steup");
-      }
-    }
-    if (oo == null && vm != null && vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.FATAL) {
-      oo = new OperationOutcome();
-      oo.getIssue().addAll(vm.getIssues());
-    } 
-    if (oo != null) {
-      TxTesterSorters.sortOperationOutcome(oo);
-      TxTesterScrubbers.scrubOO(oo, false);
-      
-      String pj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
-      String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, ext);
-      if (diff != null) {
-        Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-        TextFile.stringToFile(pj, fp); 
-        System.out.println("Test "+name+"failed: "+diff);
-      }
-      Assertions.assertTrue(diff == null, diff);
-    } else {
-      if (res == null) {
-        res = new org.hl7.fhir.r5.model.Parameters();
-        if (vm.getSystem() != null) {
-          res.addParameter("system", new UriType(vm.getSystem()));
-        } else if (system != null) {
-          res.addParameter("system", new UriType(system));
-        }
-        if (vm.getCode() != null) {
-          if (code != null && !code.equals(vm.getCode())) {
-            res.addParameter("code", new CodeType(code));
-            res.addParameter("normalized-code", new CodeType(vm.getCode()));
-          } else {
-            res.addParameter("code", new CodeType(vm.getCode()));
-          }
-        } else if (code != null) {
-          res.addParameter("code", new CodeType(code));
-        }
-        if (vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR) {
-          res.addParameter("result", false);
-        } else {
-          res.addParameter("result", true);
-        }
-        if (vm.getMessage() != null) {
-          res.addParameter("message", vm.getMessage());
-        }
-        if (vm.getVersion() != null) {
-          res.addParameter("version", vm.getVersion());
-        } else if (version != null) {
-          res.addParameter("version", new StringType(version));
-        }
-        if (vm.getDisplay() != null) {
-          res.addParameter("display", vm.getDisplay());
-        } else if (display != null) {
-          res.addParameter("display", new StringType(display));
-        }
-        //      if (vm.getCodeableConcept() != null) {
-        //        res.addParameter("codeableConcept", vm.getCodeableConcept());
-        //      } else
-        if (cc != null) {
-          res.addParameter("codeableConcept", cc);
-        } 
-        if (vm.isInactive()) {
-          res.addParameter("inactive", true);
-        }
-        if (vm.getStatus() != null) {
-          res.addParameter("status", vm.getStatus());
-        }
-        if (vm.getUnknownSystems() != null) {
-          for (String s : vm.getUnknownSystems()) {
-            res.addParameter(vm.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED ? "x-caused-by-unknown-system" :  "x-unknown-system", new CanonicalType(s));
-          }
-        }
-        if (vm.getIssues().size() > 0) {
-          oo = new OperationOutcome();
-          oo.getIssue().addAll(vm.getIssues());
-          res.addParameter().setName("issues").setResource(oo);
-        }
-      }
 
-      TxTesterSorters.sortParameters(res);
-      TxTesterScrubbers.scrubParams(res);
-
-      String pj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(res);
-      String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, ext);
-      if (diff != null) {
-        Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-        TextFile.stringToFile(pj, fp); 
-        System.out.println("Test "+name+"failed: "+diff);
-      }
-      Assertions.assertTrue(diff == null, diff);
-    }
-  }
 
   public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
     String contents = TestingUtilities.loadTestResource("tx", filename);
