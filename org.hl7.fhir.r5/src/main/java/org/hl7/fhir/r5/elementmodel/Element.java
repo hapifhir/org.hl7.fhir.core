@@ -1513,7 +1513,7 @@ public class Element extends Base implements NamedItem {
     ext.addElement("valueCode").setValue(lang);
    
     ext = t.addElement("extension");
-    ext.addElement("url").setValue("value");
+    ext.addElement("url").setValue("content");
     ext.addElement("valueString").setValue(translation);
   }
 

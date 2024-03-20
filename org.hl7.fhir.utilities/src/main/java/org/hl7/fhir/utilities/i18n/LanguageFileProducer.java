@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.hl7.fhir.utilities.Utilities;
 import org.xml.sax.SAXException;
 
 
@@ -143,20 +144,40 @@ public abstract class LanguageFileProducer {
     public abstract void finish() throws IOException;
   }
   
-  private String folder;
+  private String rootFolder;
+  private String folderName;
+  private boolean useLangFolder;
   
-  public LanguageFileProducer(String folder) {
+  public LanguageFileProducer(String rootFolder, String folderName, boolean useLangFolder) {
     super();
-    this.folder = folder;
+    this.rootFolder = rootFolder;
+    this.folderName = folderName;
+    this.useLangFolder = useLangFolder;
   }
   
   public LanguageFileProducer() {
     super();
   }
   
-  public String getFolder() {
-    return folder;
+
+  public String getRootFolder() {
+    return rootFolder;
   }
+
+  public String getFolderName() {
+    return folderName;
+  }
+
+  public boolean isUseLangFolder() {
+    return useLangFolder;
+  }
+  
+
+  protected String getTargetFileName(String targetLang, String filename) throws IOException {
+    return Utilities.path(getRootFolder(), isUseLangFolder() ? targetLang : ".", getFolderName(), filename);
+  }
+
+  
 
   public abstract LanguageProducerSession startSession(String id, String baseLang) throws IOException;
   public abstract void finish();

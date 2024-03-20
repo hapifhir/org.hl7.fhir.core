@@ -15,8 +15,8 @@ public class PoGetTextProducer extends LanguageFileProducer {
   private int filecount;
   private boolean incLangInFilename;
 
-  public PoGetTextProducer(String folder) {
-    super(folder);
+  public PoGetTextProducer(String rootFolder, String folderName, boolean useLangFolder) {
+    super(rootFolder, folderName, useLangFolder);
   }
 
   public PoGetTextProducer() {
@@ -142,7 +142,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
   }
 
   private String getFileName(String id, String baseLang, String targetLang) throws IOException {
-    return Utilities.path(getFolder(), id+(incLangInFilename ? "-"+baseLang+"-"+targetLang+".po" : ""));
+    return Utilities.path(getRootFolder(), getFolderName(), id+(incLangInFilename ? "-"+baseLang+"-"+targetLang+".po" : ""));
   }
 
   public boolean isIncLangInFilename() {
@@ -171,7 +171,7 @@ public class PoGetTextProducer extends LanguageFileProducer {
       ln(po, "msgstr \""+(tu.getTgtText() == null ? "" : stripEoln(tu.getTgtText()))+"\"");
       ln(po, "");
     }
-    TextFile.stringToFile(po.toString(), Utilities.path(getFolder(), filename));
+    TextFile.stringToFile(po.toString(), getTargetFileName(targetLang, filename));
   }
 
   private String stripEoln(String s) {
