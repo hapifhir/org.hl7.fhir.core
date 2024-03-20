@@ -1,15 +1,19 @@
 package org.hl7.fhir.utilities.i18n.subtag;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LanguageSubtagRegistryTest {
+public class LanguageSubtagRegistryLoaderTest {
 
   @Test
-  public void initializationTest() throws IOException {
+  public void defaultLoaderTest() throws IOException {
     /*
     languages.size(): 8259
     extLangs.size(): 253
@@ -21,7 +25,7 @@ public class LanguageSubtagRegistryTest {
     LanguageSubtagRegistry registry = new LanguageSubtagRegistry();
     LanguageSubtagRegistryLoader loader = new LanguageSubtagRegistryLoader(registry);
     loader.loadFromDefaultResource();
-    
+
     /*  Test entries of every subtag type (language, script, variant, extLang, region)
         These should cover both simple, and more complex entries with a larger number
         of fields.
@@ -185,5 +189,54 @@ public class LanguageSubtagRegistryTest {
     assertEquals(1, hn.getDescriptions().size());
     assertEquals("Honduras", hn.getDescriptions().get(0));
     assertEquals("2005-10-16", hn.getAdded());
+  }
+
+  @Test
+  public void testNoLanguagesLoading() throws IOException {
+    LanguageSubtagRegistry registry = new LanguageSubtagRegistry();
+    LanguageSubtagRegistryLoader loader = new LanguageSubtagRegistryLoader(registry).withLoadLanguages(false);
+
+    loader.loadFromDefaultResource();
+
+    assertTrue(registry.getLanguageKeys().isEmpty());
+    assertFalse(registry.getExtLangKeys().isEmpty());
+    assertFalse(registry.getRegionKeys().isEmpty());
+    assertFalse(registry.getVariantKeys().isEmpty());
+    assertFalse(registry.getScriptKeys().isEmpty());
+  }
+
+  @Test
+  public void testNoExtLangsLoading() throws IOException {
+    LanguageSubtagRegistry registry = new LanguageSubtagRegistry();
+    LanguageSubtagRegistryLoader loader = new LanguageSubtagRegistryLoader(new LanguageSubtagRegistry()).withLoadExtLangs(false);
+
+
+  }
+
+  private static Stream<Arguments> provideParamsForPartialLoad() {
+    return Stream.of(
+      Arguments.of(new LanguageSubtagRegistryLoader(new LanguageSubtagRegistry()).withLoadLanguages(false), true, false, false, false, false),
+      Arguments.of(new LanguageSubtagRegistryLoader(new LanguageSubtagRegistry()).withLoadExtLangs(false), false, true, false, false, false),
+      Arguments.of(new LanguageSubtagRegistryLoader(new LanguageSubtagRegistry()).withLoadRegions(false), false, false, true, false, false),
+      Arguments.of(new LanguageSubtagRegistryLoader(new LanguageSubtagRegistry()).withLoadVariants(false), false, false, false, true, false),
+      Arguments.of(new LanguageSubtagRegistryLoader(new LanguageSubtagRegistry()).withLoadScripts(false), false, false, false, false, true)
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("provideParamsForPartialLoad")
+  public void testPartialLoad(LanguageSubtagRegistryLoader loader,
+                                  boolean languagesEmpty,
+                                  boolean extLangsEmpty,
+                                  boolean regionsEmpty,
+                                  boolean variantsEmpty,
+                                  boolean scriptsEmpty) throws IOException {
+    loader.loadFromDefaultResource();
+
+    assertEquals(languagesEmpty, loader.getRegistry().getLanguageKeys().isEmpty());
+    assertEquals(extLangsEmpty, loader.getRegistry().getExtLangKeys().isEmpty());
+    assertEquals(regionsEmpty, loader.getRegistry().getRegionKeys().isEmpty());
+    assertEquals(variantsEmpty, loader.getRegistry().getVariantKeys().isEmpty());
+    assertEquals(scriptsEmpty, loader.getRegistry().getScriptKeys().isEmpty());
   }
 }
