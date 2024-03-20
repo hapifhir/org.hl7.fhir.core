@@ -24,57 +24,6 @@ import java.util.*;
 public class TxServiceTestHelper {
 
 
-  public static class TestSetup {
-    public TestSetup(JsonObject suite, JsonObject test) {
-      this.suite = suite;
-      this.test = test;
-    }
-    @Getter
-    private JsonObject suite;
-    @Getter
-    private JsonObject test;
-
-  }
-
-  public static class TestData {
-
-    @Getter
-    private final JsonObject manifest;
-
-    @Getter
-    private final JsonObject externals;
-
-    @Getter
-    private final List<Object[]> testData;
-
-    public TestData() throws IOException {
-      String contents = TestingUtilities.loadTestResource("tx", "test-cases.json");
-      String externalSource = TestingUtilities.loadTestResource("tx", "messages-tx.fhir.org.json");
-      externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(externalSource);
-
-      Map<String, TestSetup> examples = new HashMap<String, TestSetup>();
-      manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
-      for (org.hl7.fhir.utilities.json.model.JsonObject suite : manifest.getJsonObjects("suites")) {
-        if (!"tx.fhir.org".equals(suite.asString("mode"))) {
-          String sn = suite.asString("name");
-          for (org.hl7.fhir.utilities.json.model.JsonObject test : suite.getJsonObjects("tests")) {
-            String tn = test.asString("name");
-            examples.put(sn+"."+tn, new TestSetup(suite, test));
-          }
-        }
-      }
-
-      List<String> names = new ArrayList<String>(examples.size());
-      names.addAll(examples.keySet());
-      Collections.sort(names);
-
-      testData = new ArrayList<Object[]>(examples.size());
-      for (String id : names) {
-        testData.add(new Object[]{id, examples.get(id)});
-      }
-    }
-  }
-
   public static String getDiffForValidation(IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String lang, String fp, JsonObject externals, boolean isCodeSystem) throws JsonSyntaxException, FileNotFoundException, IOException {
     org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) requestParameters;
     ValueSet vs = null;
