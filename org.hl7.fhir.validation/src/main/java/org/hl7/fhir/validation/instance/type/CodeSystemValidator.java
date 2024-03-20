@@ -439,9 +439,9 @@ public class CodeSystemValidator  extends BaseValidator {
     if (uses.isEmpty()) {
       // if we have no uses, we're kind of implying that it's the base display, so it should be the same
       if (rlang == null && lang == null) {
-        ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), display == null || display.equals(value), I18nConstants.CODESYSTEM_DESIGNATION_DISP_CLASH_NO_LANG, value, display) && ok;
+        warning(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), display == null || display.equals(value), I18nConstants.CODESYSTEM_DESIGNATION_DISP_CLASH_NO_LANG, value, display);
       } else if (rlang != null && ((lang == null) || rlang.equals(lang))) {
-        ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), display == null || display.equals(value), I18nConstants.CODESYSTEM_DESIGNATION_DISP_CLASH_LANG, value, display, rlang) && ok;        
+        warning(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), display == null || display.equals(value), I18nConstants.CODESYSTEM_DESIGNATION_DISP_CLASH_LANG, value, display, rlang);        
       }
     } else {
       // .... do we care?
