@@ -24,6 +24,10 @@ import org.hl7.fhir.utilities.i18n.LanguageFileProducer;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerLanguageSession;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 /**
  * in here:
@@ -77,7 +81,6 @@ public class LanguageUtils {
       }
     }
   }
-  
 
   private String contextForElement(Element element) {
     throw new Error("Not done yet");
@@ -110,7 +113,7 @@ public class LanguageUtils {
   }
 
   private boolean isTranslatable(Element element) {    
-    return element.getProperty().isTranslatable() && !Utilities.existsInList(pathForElement(element), "CanonicalResource.version");
+    return element.getProperty().isTranslatable();
   }
 
   private String pathForElement(Element element) {
@@ -132,11 +135,24 @@ public class LanguageUtils {
     return bp; 
   }
   
-  public int importFromTranslations(Element resource, Set<TranslationUnit> translations) {
-    return importFromTranslations(null, resource, translations);
+  
+  public int importFromTranslations(Element resource, List<TranslationUnit> translations) {
+    return importFromTranslations(null, resource, translations, new HashSet<>());
   }
   
-  private int importFromTranslations(Element parent, Element element, Set<TranslationUnit> translations) {
+  public int importFromTranslations(Element resource, List<TranslationUnit> translations, List<ValidationMessage> messages) {
+    Set<TranslationUnit> usedUnits = new HashSet<>();
+    int r = importFromTranslations(null, resource, translations, usedUnits);
+    for (TranslationUnit t : translations) {
+      if (!usedUnits.contains(t)) {
+        messages.add(new ValidationMessage(Source.Publisher, IssueType.INFORMATIONAL, t.getId(), "Unused '"+t.getLanguage()+"' translation '"+t.getSrcText()+"' -> '"+t.getTgtText()+"'", IssueSeverity.INFORMATION));
+      }
+    }
+    return r;
+  }
+  
+
+  private int importFromTranslations(Element parent, Element element, List<TranslationUnit> translations, Set<TranslationUnit> usedUnits) {
     int t = 0;
     if (element.isPrimitive() && isTranslatable(element)) {
       String base = element.primitiveValue();
@@ -146,13 +162,14 @@ public class LanguageUtils {
           t++;
           if (!handleAsSpecial(parent, element, translation)) {
             element.setTranslation(translation.getLanguage(), translation.getTgtText());
+            usedUnits.add(translation);
           }
         }
       }
     }
     for (Element c: element.getChildren()) {
       if (!c.getName().equals("designation")) {
-        t = t + importFromTranslations(element, c, translations);
+        t = t + importFromTranslations(element, c, translations, usedUnits);
       }
     }
     return t;
@@ -193,7 +210,7 @@ public class LanguageUtils {
     return true;
   }
 
-  private Set<TranslationUnit> findTranslations(String path, String src, Set<TranslationUnit> translations) {
+  private Set<TranslationUnit> findTranslations(String path, String src, List<TranslationUnit> translations) {
     Set<TranslationUnit> res = new HashSet<>();
     for (TranslationUnit translation : translations) {
       if (path.equals(translation.getId()) && src.equals(translation.getSrcText())) {
@@ -294,7 +311,7 @@ public class LanguageUtils {
   }
 
   public static boolean handlesAsElement(Element element) {
-    return false; // for now...
+    return true; // for now...
   }
 
   public static List<TranslationUnit> generateTranslations(Resource res, String lang) {
@@ -334,4 +351,52 @@ public class LanguageUtils {
       return cd.getDefinition();
     }
   }
+
+
+  public static List<TranslationUnit> generateTranslations(Element e, String lang) {
+    List<TranslationUnit> list = new ArrayList<>();
+    generateTranslations(e, lang, list);
+    return list;
+  }
+
+  private static void generateTranslations(Element e, String lang, List<TranslationUnit> list) {
+    if (e.getProperty().isTranslatable()) {
+      String id = e.getProperty().getDefinition().getPath();
+      String context = e.getProperty().getDefinition().getDefinition();
+      String src = e.primitiveValue();
+      String tgt = getTranslation(e, lang);
+      list.add(new TranslationUnit(lang, id, context, src, tgt));
+    }
+    if (e.hasChildren()) {
+      for (Element c : e.getChildren()) {
+        generateTranslations(c, lang, list);
+      }
+    }
+    
+  }
+
+  private static String getTranslation(Element e, String lang) {
+    if (!e.hasChildren()) {
+      return null;
+    }
+    for (Element ext : e.getChildren()) {
+      if ("Extension".equals(ext.fhirType()) && "http://hl7.org/fhir/StructureDefinition/translation".equals(ext.getNamedChildValue("url"))) {
+        String l = null;
+        String v = null;
+        for (Element subExt : ext.getChildren()) {
+          if ("Extension".equals(subExt.fhirType()) && "lang".equals(subExt.getNamedChildValue("url"))) {
+            lang = subExt.getNamedChildValue("value");
+          }
+          if ("Extension".equals(subExt.fhirType()) && "lang".equals(subExt.getNamedChildValue("content"))) {
+            v = subExt.getNamedChildValue("value");
+          }
+        }
+        if (lang.equals(l)) {
+          return v;
+        }
+      }
+    }
+    return null;
+  }
+  
 }

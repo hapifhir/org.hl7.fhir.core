@@ -167,11 +167,20 @@ public class PoGetTextProducer extends LanguageFileProducer {
       if (tu.getContext1() != null) {
         ln(po, "#. "+tu.getContext1());
       }
-      ln(po, "msgid \""+tu.getSrcText()+"\"");
-      ln(po, "msgstr \""+(tu.getTgtText() == null ? "" : tu.getTgtText())+"\"");
+      ln(po, "msgid \""+stripEoln(tu.getSrcText())+"\"");
+      ln(po, "msgstr \""+(tu.getTgtText() == null ? "" : stripEoln(tu.getTgtText()))+"\"");
       ln(po, "");
     }
     TextFile.stringToFile(po.toString(), Utilities.path(getFolder(), filename));
+  }
+
+  private String stripEoln(String s) {
+    s = s.replace("\r\n\r\n", " ").replace("\n\n", " ").replace("\r\r", " ");
+    s = s.replace("\r\n", " ").replace("\n", " ").replace("\r", " ");
+//    // yes, the double escaping is intentional here - it appears necessary
+//    s = s.replace("\\r\\n\\r\\n", " ").replace("\\n\\n", " ").replace("\\r\\r", " ");
+//    s = s.replace("\\r\\n", " ").replace("\\n", " ").replace("\\r", " ");
+    return s;
   }
 
   
