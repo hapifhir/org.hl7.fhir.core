@@ -75,11 +75,11 @@ public class TxServiceTestHelper {
     }
   }
 
-  public static String getDiffForValidation(IWorkerContext context, String name, Resource req, String resp, String lang, String fp, JsonObject ext, boolean isCS) throws JsonSyntaxException, FileNotFoundException, IOException {
-    org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) req;
+  public static String getDiffForValidation(IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String lang, String fp, JsonObject externals, boolean isCodeSystem) throws JsonSyntaxException, FileNotFoundException, IOException {
+    org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) requestParameters;
     ValueSet vs = null;
     String vsurl = null;
-    if (!isCS) {
+    if (!isCodeSystem) {
       if (p.hasParameter("valueSetVersion")) {
         vsurl = p.getParameterValue("url").primitiveValue()+"|"+p.getParameterValue("valueSetVersion").primitiveValue();
         vs = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), p.getParameterValue("valueSetVersion").primitiveValue());
@@ -88,21 +88,21 @@ public class TxServiceTestHelper {
         vs = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
       }
     }
-    ValidationResult vm = null;
+    ValidationResult validationResult = null;
     String code = null;
     String system = null;
     String version = null;
     String display = null;
     CodeableConcept cc = null;
     org.hl7.fhir.r5.model.Parameters res = null;
-    OperationOutcome oo = null;
+    OperationOutcome operationOutcome = null;
 
     if (vs == null && vsurl != null) {
       String msg = context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, vsurl);
-      oo = new OperationOutcome();
-      CodeableConcept cct = oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.NOTFOUND).getDetails();
-      cct.addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
-      cct.setText(msg);
+      operationOutcome = new OperationOutcome();
+      CodeableConcept codeableConcept = operationOutcome.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.NOTFOUND).getDetails();
+      codeableConcept.addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
+      codeableConcept.setText(msg);
     } else {
       ValidationOptions options = new ValidationOptions(FhirPublication.R5);
       if (p.hasParameter("displayLanguage")) {
@@ -127,11 +127,11 @@ public class TxServiceTestHelper {
       }
       if (p.hasParameter("code")) {
         code = p.getParameterString("code");
-        system = p.getParameterString(isCS ? "url" : "system");
-        version = p.getParameterString(isCS ? "version" : "systemVersion");
+        system = p.getParameterString(isCodeSystem ? "url" : "system");
+        version = p.getParameterString(isCodeSystem ? "version" : "systemVersion");
         display = p.getParameterString("display");
-        vm = context.validateCode(options.withGuessSystem(),
-          p.getParameterString(isCS ? "url" : "system"), p.getParameterString(isCS ? "version" : "systemVersion"),
+        validationResult = context.validateCode(options.withGuessSystem(),
+          p.getParameterString(isCodeSystem ? "url" : "system"), p.getParameterString(isCodeSystem ? "version" : "systemVersion"),
           p.getParameterString("code"), p.getParameterString("display"), vs);
       } else if (p.hasParameter("coding")) {
         Coding coding = (Coding) p.getParameterValue("coding");
@@ -139,63 +139,63 @@ public class TxServiceTestHelper {
         system = coding.getSystem();
         version = coding.getVersion();
         display = coding.getDisplay();
-        vm = context.validateCode(options, coding, vs);
+        validationResult = context.validateCode(options, coding, vs);
       } else if (p.hasParameter("codeableConcept")) {
         cc = (CodeableConcept) p.getParameterValue("codeableConcept");
-        vm = context.validateCode(options, cc, vs);
+        validationResult = context.validateCode(options, cc, vs);
       } else {
         throw new Error("validate not done yet for this steup");
       }
     }
-    if (oo == null && vm != null && vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.FATAL) {
-      oo = new OperationOutcome();
-      oo.getIssue().addAll(vm.getIssues());
+    if (operationOutcome == null && validationResult != null && validationResult.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.FATAL) {
+      operationOutcome = new OperationOutcome();
+      operationOutcome.getIssue().addAll(validationResult.getIssues());
     }
-    if (oo != null) {
-      TxTesterSorters.sortOperationOutcome(oo);
-      TxTesterScrubbers.scrubOO(oo, false);
+    if (operationOutcome != null) {
+      TxTesterSorters.sortOperationOutcome(operationOutcome);
+      TxTesterScrubbers.scrubOO(operationOutcome, false);
 
-      String pj = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(oo);
-      String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, ext);
+      String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(operationOutcome);
+      String diff = CompareUtilities.checkJsonSrcIsSame(expectedResponse, actualResponse, externals);
       if (diff != null) {
         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-        TextFile.stringToFile(pj, fp);
+        TextFile.stringToFile(actualResponse, fp);
         System.out.println("Test "+name+"failed: "+diff);
       }
       return diff;
     } else {
       if (res == null) {
         res = new org.hl7.fhir.r5.model.Parameters();
-        if (vm.getSystem() != null) {
-          res.addParameter("system", new UriType(vm.getSystem()));
+        if (validationResult.getSystem() != null) {
+          res.addParameter("system", new UriType(validationResult.getSystem()));
         } else if (system != null) {
           res.addParameter("system", new UriType(system));
         }
-        if (vm.getCode() != null) {
-          if (code != null && !code.equals(vm.getCode())) {
+        if (validationResult.getCode() != null) {
+          if (code != null && !code.equals(validationResult.getCode())) {
             res.addParameter("code", new CodeType(code));
-            res.addParameter("normalized-code", new CodeType(vm.getCode()));
+            res.addParameter("normalized-code", new CodeType(validationResult.getCode()));
           } else {
-            res.addParameter("code", new CodeType(vm.getCode()));
+            res.addParameter("code", new CodeType(validationResult.getCode()));
           }
         } else if (code != null) {
           res.addParameter("code", new CodeType(code));
         }
-        if (vm.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR) {
+        if (validationResult.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR) {
           res.addParameter("result", false);
         } else {
           res.addParameter("result", true);
         }
-        if (vm.getMessage() != null) {
-          res.addParameter("message", vm.getMessage());
+        if (validationResult.getMessage() != null) {
+          res.addParameter("message", validationResult.getMessage());
         }
-        if (vm.getVersion() != null) {
-          res.addParameter("version", vm.getVersion());
+        if (validationResult.getVersion() != null) {
+          res.addParameter("version", validationResult.getVersion());
         } else if (version != null) {
           res.addParameter("version", new StringType(version));
         }
-        if (vm.getDisplay() != null) {
-          res.addParameter("display", vm.getDisplay());
+        if (validationResult.getDisplay() != null) {
+          res.addParameter("display", validationResult.getDisplay());
         } else if (display != null) {
           res.addParameter("display", new StringType(display));
         }
@@ -205,32 +205,32 @@ public class TxServiceTestHelper {
         if (cc != null) {
           res.addParameter("codeableConcept", cc);
         }
-        if (vm.isInactive()) {
+        if (validationResult.isInactive()) {
           res.addParameter("inactive", true);
         }
-        if (vm.getStatus() != null) {
-          res.addParameter("status", vm.getStatus());
+        if (validationResult.getStatus() != null) {
+          res.addParameter("status", validationResult.getStatus());
         }
-        if (vm.getUnknownSystems() != null) {
-          for (String s : vm.getUnknownSystems()) {
-            res.addParameter(vm.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED ? "x-caused-by-unknown-system" :  "x-unknown-system", new CanonicalType(s));
+        if (validationResult.getUnknownSystems() != null) {
+          for (String s : validationResult.getUnknownSystems()) {
+            res.addParameter(validationResult.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED ? "x-caused-by-unknown-system" :  "x-unknown-system", new CanonicalType(s));
           }
         }
-        if (vm.getIssues().size() > 0) {
-          oo = new OperationOutcome();
-          oo.getIssue().addAll(vm.getIssues());
-          res.addParameter().setName("issues").setResource(oo);
+        if (validationResult.getIssues().size() > 0) {
+          operationOutcome = new OperationOutcome();
+          operationOutcome.getIssue().addAll(validationResult.getIssues());
+          res.addParameter().setName("issues").setResource(operationOutcome);
         }
       }
 
       TxTesterSorters.sortParameters(res);
       TxTesterScrubbers.scrubParams(res);
 
-      String pj = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(res);
-      String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, ext);
+      String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(res);
+      String diff = CompareUtilities.checkJsonSrcIsSame(expectedResponse, actualResponse, externals);
       if (diff != null) {
         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
-        TextFile.stringToFile(pj, fp);
+        TextFile.stringToFile(actualResponse, fp);
         System.out.println("Test "+name+"failed: "+diff);
       }
       return diff;
