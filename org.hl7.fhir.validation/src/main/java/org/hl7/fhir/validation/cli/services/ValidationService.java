@@ -619,9 +619,9 @@ public class ValidationService {
   private void transformLangExtract(CliContext cliContext, ValidationEngine validator) throws IOException { 
     String dst = cliContext.getOutput();
     Utilities.createDirectory(dst);
-    PoGetTextProducer po = new PoGetTextProducer(Utilities.path(dst));
-    XLIFFProducer xliff = new XLIFFProducer(Utilities.path(dst));
-    JsonLangFileProducer jl = new JsonLangFileProducer(Utilities.path(dst));
+    PoGetTextProducer po = new PoGetTextProducer(dst, ".", false);
+    XLIFFProducer xliff = new XLIFFProducer(dst, ".", false);
+    JsonLangFileProducer jl = new JsonLangFileProducer(dst, ".", false);
     
     List<SourceFile> refs = new ArrayList<>();
     ValidatorUtils.parseSources(cliContext.getSources(), refs, validator.getContext());    

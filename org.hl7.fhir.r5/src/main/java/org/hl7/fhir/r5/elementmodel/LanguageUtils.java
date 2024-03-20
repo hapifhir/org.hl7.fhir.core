@@ -385,9 +385,9 @@ public class LanguageUtils {
         String v = null;
         for (Element subExt : ext.getChildren()) {
           if ("Extension".equals(subExt.fhirType()) && "lang".equals(subExt.getNamedChildValue("url"))) {
-            lang = subExt.getNamedChildValue("value");
+            l = subExt.getNamedChildValue("value");
           }
-          if ("Extension".equals(subExt.fhirType()) && "lang".equals(subExt.getNamedChildValue("content"))) {
+          if ("Extension".equals(subExt.fhirType()) && "content".equals(subExt.getNamedChildValue("url"))) {
             v = subExt.getNamedChildValue("value");
           }
         }
