@@ -18,13 +18,19 @@ public class TxTestData {
   @Getter
   private final List<Object[]> testData;
 
-  public TxTestData() throws IOException {
+  private TxTestData(List<Object[]> testData, JsonObject manifest, JsonObject externals) throws IOException {
+    this.testData = testData;
+    this.manifest = manifest;
+    this.externals = externals;
+  }
+
+  public static TxTestData loadTestDataFromDefaultClassPath() throws IOException {
     String contents = TestingUtilities.loadTestResource("tx", "test-cases.json");
     String externalSource = TestingUtilities.loadTestResource("tx", "messages-tx.fhir.org.json");
-    externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(externalSource);
+    JsonObject externals = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(externalSource);
 
     Map<String, TxTestSetup> examples = new HashMap<String, TxTestSetup>();
-    manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
+    JsonObject manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
     for (JsonObject suite : manifest.getJsonObjects("suites")) {
       if (!"tx.fhir.org".equals(suite.asString("mode"))) {
         String sn = suite.asString("name");
@@ -39,9 +45,11 @@ public class TxTestData {
     names.addAll(examples.keySet());
     Collections.sort(names);
 
-    testData = new ArrayList<Object[]>(examples.size());
+    List<Object[]> testData = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
       testData.add(new Object[]{id, examples.get(id)});
     }
+
+    return new TxTestData(testData, manifest, externals);
   }
 }

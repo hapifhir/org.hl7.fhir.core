@@ -17,6 +17,7 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
@@ -176,13 +177,28 @@ public class TxServiceTestHelper {
       TxTesterScrubbers.scrubParams(res);
 
       String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(res);
+
+
+
       String diff = CompareUtilities.checkJsonSrcIsSame(expectedResponse, actualResponse, externals);
       if (diff != null) {
+        dumparoo("/Users/david.otasek/IN/2024-02-05-hapi-core-bump-6-2.16/core-test", name, expectedResponse, actualResponse);
         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
         TextFile.stringToFile(actualResponse, fp);
         System.out.println("Test "+name+"failed: "+diff);
       }
       return diff;
     }
+  }
+
+  public static void dumparoo(String rootDirectory, String testName, String expected, String actual) throws IOException {
+    String fullDirectory = rootDirectory + "/" + testName;
+    File directory = new File(fullDirectory);
+    if (!directory.exists()) {
+      directory.mkdirs();
+    }
+TextFile.stringToFile(expected, fullDirectory + "/expected.json");
+    TextFile.stringToFile(actual, fullDirectory + "/actual.json");
+
   }
 }

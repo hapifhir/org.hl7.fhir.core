@@ -59,7 +59,7 @@ private static TxTestData testData;
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
-    testData = new TxTestData();
+    testData = TxTestData.loadTestDataFromDefaultClassPath();
     return testData.getTestData();
   }
 
