@@ -103,7 +103,7 @@ public class LanguageSubtagRegistryLoader {
   }
   private void load(InputStream inputStream) throws IOException {
 
-    Scanner scanner = new Scanner(inputStream);
+    Scanner scanner = new Scanner(inputStream, "UTF-8");
 
     Record record = null;
     String currentField = null;
