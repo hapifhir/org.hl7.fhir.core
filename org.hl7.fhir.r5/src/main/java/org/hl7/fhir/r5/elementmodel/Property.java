@@ -641,14 +641,32 @@ public class Property {
 
   public boolean isTranslatable() {
     boolean ok = ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_TRANSLATABLE);
-    if (!ok && !Utilities.existsInList(definition.getBase().getPath(), "Reference.reference", "Coding.version", "Identifier.value", "SampledData.offsets", "SampledData.data", "ContactPoint.value")) {
+    if (!ok && !definition.getPath().endsWith(".id") && !Utilities.existsInList(definition.getBase().getPath(), "Resource.id", "Reference.reference", "Coding.version", "Identifier.value", "SampledData.offsets", "SampledData.data", "ContactPoint.value")) {
       String t = getType();
       ok = Utilities.existsInList(t, "string", "markdown");
     }
+    if (Utilities.existsInList(pathForElement(getStructure().getType(), getDefinition().getBase().getPath()), "CanonicalResource.version")) {
+      return false;
+    }
     return ok;
+  }  
+
+
+  private String pathForElement(String type, String path) {
+    // special case support for metadata elements prior to R5:
+    if (utils.getCanonicalResourceNames().contains(type)) {
+      String fp = path.replace(type+".", "CanonicalResource.");
+      if (Utilities.existsInList(fp,
+         "CanonicalResource.url", "CanonicalResource.identifier", "CanonicalResource.version", "CanonicalResource.name", 
+         "CanonicalResource.title", "CanonicalResource.status", "CanonicalResource.experimental", "CanonicalResource.date",
+         "CanonicalResource.publisher", "CanonicalResource.contact", "CanonicalResource.description", "CanonicalResource.useContext", 
+         "CanonicalResource.jurisdiction"))  {
+        return fp;
+      }
+    }
+    return path; 
   }
-
-
+  
   public String getXmlTypeName() {
     TypeRefComponent tr = type;
     if (tr == null) {
@@ -675,6 +693,16 @@ public class Property {
 
   private boolean isRef(TypeRefComponent tr) {
     return Utilities.existsInList(tr.getWorkingCode(), "Reference", "url", "uri", "canonical");
+  }
+
+
+  public boolean canBeType(String type) {
+    for (TypeRefComponent tr : getDefinition().getType()) {
+      if (type.equals(tr.getWorkingCode())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   
