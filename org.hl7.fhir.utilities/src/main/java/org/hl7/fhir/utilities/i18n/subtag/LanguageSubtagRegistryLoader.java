@@ -1,11 +1,32 @@
 package org.hl7.fhir.utilities.i18n.subtag;
 
+import lombok.Getter;
+import lombok.With;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 
 public class LanguageSubtagRegistryLoader {
+
+  @Getter
+  private final LanguageSubtagRegistry registry;
+
+  @With
+  private final boolean loadLanguages;
+
+  @With
+  private final boolean loadScripts;
+
+  @With
+  private final boolean loadExtLangs;
+
+  @With
+  private final boolean loadRegions;
+
+  @With
+  private final boolean loadVariants;
 
   public static boolean isMultiField(String field){
     return DESCRIPTION.equals(field)
@@ -58,12 +79,19 @@ public class LanguageSubtagRegistryLoader {
 
   public static final String GRANDFATHERED = "grandfathered";
 
-  private final LanguageSubtagRegistry registry;
 
   public LanguageSubtagRegistryLoader(LanguageSubtagRegistry registry) {
-    this.registry = registry;
+   this(registry, true, true, true, true, true);
   }
 
+  private LanguageSubtagRegistryLoader(LanguageSubtagRegistry registry, boolean loadLanguages, boolean loadScripts, boolean loadExtLangs, boolean loadRegions, boolean loadVariants) {
+    this.registry = registry;
+    this.loadLanguages = loadLanguages;
+    this.loadScripts = loadScripts;
+    this.loadExtLangs = loadExtLangs;
+    this.loadRegions = loadRegions;
+    this.loadVariants = loadVariants;
+  }
   public void loadFromDefaultResource() throws IOException {
     loadFromResource("lang.dat.txt");
   }
@@ -140,15 +168,15 @@ public class LanguageSubtagRegistryLoader {
 
   protected void addSubtag(Subtag subtag) {
     assert subtag.getSubtag() != null;
-    if (subtag instanceof LanguageSubtag)
+    if (subtag instanceof LanguageSubtag && loadLanguages)
       registry.addLanguage(subtag.getSubtag(), (LanguageSubtag) subtag);
-    else if (subtag instanceof  ExtLangSubtag)
+    else if (subtag instanceof  ExtLangSubtag && loadExtLangs )
      registry.addExtLang(subtag.getSubtag(), (ExtLangSubtag) subtag);
-    else if (subtag instanceof ScriptSubtag)
+    else if (subtag instanceof ScriptSubtag && loadScripts)
       registry.addScript(subtag.getSubtag(), (ScriptSubtag) subtag);
-    else if (subtag instanceof RegionSubtag)
+    else if (subtag instanceof RegionSubtag && loadRegions)
       registry.addRegion(subtag.getSubtag(), (RegionSubtag) subtag);
-    else if (subtag instanceof VariantSubtag)
+    else if (subtag instanceof VariantSubtag && loadVariants)
       registry.addVariant(subtag.getSubtag(), (VariantSubtag) subtag);
   }
   protected Subtag processVariantRecord(Record record) {
