@@ -1342,6 +1342,23 @@ public class Element extends Base implements NamedItem {
         children.add(ne);
         return ne;
       }
+      // polymorphic support
+      if (p.getName().endsWith("[x]")) {
+        String base = p.getName().substring(0, p.getName().length()-3);
+        
+        if (name.startsWith(base)) {
+          String type = name.substring(base.length());
+          if (p.getContextUtils().isPrimitiveType(Utilities.uncapitalize(type))) {
+            type = Utilities.uncapitalize(type);
+          }
+          if (p.canBeType(type)) {
+            Element ne = new Element(name, p).setFormat(format);
+            ne.setType(type);
+            children.add(ne);
+            return ne;
+          }
+        }
+      }
     }
 
     throw new Error("Unrecognised property '"+name+"' on "+this.name); 
@@ -1496,7 +1513,7 @@ public class Element extends Base implements NamedItem {
     ext.addElement("valueCode").setValue(lang);
    
     ext = t.addElement("extension");
-    ext.addElement("url").setValue("value");
+    ext.addElement("url").setValue("content");
     ext.addElement("valueString").setValue(translation);
   }
 
