@@ -19,7 +19,9 @@ public class LanguageSubtagRegistryTest {
      */
 
     LanguageSubtagRegistry registry = new LanguageSubtagRegistry();
-
+    LanguageSubtagRegistryLoader loader = new LanguageSubtagRegistryLoader(registry);
+    loader.loadFromDefaultResource();
+    
     /*  Test entries of every subtag type (language, script, variant, extLang, region)
         These should cover both simple, and more complex entries with a larger number
         of fields.
