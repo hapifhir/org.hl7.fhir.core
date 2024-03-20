@@ -619,9 +619,9 @@ public class ValidationService {
   private void transformLangExtract(CliContext cliContext, ValidationEngine validator) throws IOException { 
     String dst = cliContext.getOutput();
     Utilities.createDirectory(dst);
-    PoGetTextProducer po = new PoGetTextProducer(Utilities.path(dst));
-    XLIFFProducer xliff = new XLIFFProducer(Utilities.path(dst));
-    JsonLangFileProducer jl = new JsonLangFileProducer(Utilities.path(dst));
+    PoGetTextProducer po = new PoGetTextProducer(dst, ".", false);
+    XLIFFProducer xliff = new XLIFFProducer(dst, ".", false);
+    JsonLangFileProducer jl = new JsonLangFileProducer(dst, ".", false);
     
     List<SourceFile> refs = new ArrayList<>();
     ValidatorUtils.parseSources(cliContext.getSources(), refs, validator.getContext());    
@@ -652,7 +652,7 @@ public class ValidationService {
     String dst = cliContext.getOutput();
     Utilities.createDirectory(dst);
     
-    Set<TranslationUnit> translations = new HashSet<>();
+    List<TranslationUnit> translations = new ArrayList<>();
     for (String input : cliContext.getInputs()) {
       loadTranslationSource(translations, input);
     }
@@ -671,7 +671,7 @@ public class ValidationService {
     System.out.println("Done - imported "+t+" translations into "+refs.size()+ " in "+dst);
   }
   
-  private void loadTranslationSource(Set<TranslationUnit> translations, String input) {
+  private void loadTranslationSource(List<TranslationUnit> translations, String input) {
     File f = new File(input);
     if (f.exists()) {
       if (f.isDirectory()) {
