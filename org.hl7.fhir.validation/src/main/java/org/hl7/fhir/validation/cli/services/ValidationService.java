@@ -652,7 +652,7 @@ public class ValidationService {
     String dst = cliContext.getOutput();
     Utilities.createDirectory(dst);
     
-    Set<TranslationUnit> translations = new HashSet<>();
+    List<TranslationUnit> translations = new ArrayList<>();
     for (String input : cliContext.getInputs()) {
       loadTranslationSource(translations, input);
     }
@@ -671,7 +671,7 @@ public class ValidationService {
     System.out.println("Done - imported "+t+" translations into "+refs.size()+ " in "+dst);
   }
   
-  private void loadTranslationSource(Set<TranslationUnit> translations, String input) {
+  private void loadTranslationSource(List<TranslationUnit> translations, String input) {
     File f = new File(input);
     if (f.exists()) {
       if (f.isDirectory()) {

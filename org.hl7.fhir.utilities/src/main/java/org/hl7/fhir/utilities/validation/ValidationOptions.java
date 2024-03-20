@@ -22,6 +22,7 @@ public class ValidationOptions {
   private boolean useValueSetDisplays;
   private boolean englishOk = true;
   private boolean activeOnly = false;
+  private boolean exampleOK = false;
   private FhirPublication fhirVersion;
 
   public ValidationOptions(FhirPublication fhirVersion) {
@@ -270,6 +271,19 @@ public class ValidationOptions {
     return this;
   }
 
+  public boolean isExampleOK() {
+    return exampleOK;
+  }
+
+  public ValidationOptions setExampleOK(boolean exampleOK) {
+    this.exampleOK = exampleOK;
+    return this;
+  }
+  
+  public ValidationOptions withExampleOK() {
+    return setExampleOK(true);
+  }
+
   public ValidationOptions copy() {
     ValidationOptions n = new ValidationOptions(fhirVersion);
     n.langs = langs == null ? null : langs.copy();
@@ -282,13 +296,14 @@ public class ValidationOptions {
     n.membershipOnly = membershipOnly;
     n.useValueSetDisplays = useValueSetDisplays;   
     n.displayWarningMode = displayWarningMode;
+    n.exampleOK = exampleOK;
     return n;
   }
   
 
   public String toJson() {
     return "\"langs\":\""+( langs == null ? "" : langs.toString())+"\", \"useServer\":\""+Boolean.toString(useServer)+"\", \"useClient\":\""+Boolean.toString(useClient)+"\", "+
-       "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"activeOnly\":\""+Boolean.toString(activeOnly)+"\", \"membershipOnly\":\""+Boolean.toString(membershipOnly)+"\", \"displayWarningMode\":\""+Boolean.toString(displayWarningMode)+"\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\"";
+       "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"activeOnly\":\""+Boolean.toString(activeOnly)+(exampleOK ? "\", \"exampleOK\":\""+Boolean.toString(exampleOK) : "")+"\", \"membershipOnly\":\""+Boolean.toString(membershipOnly)+"\", \"displayWarningMode\":\""+Boolean.toString(displayWarningMode)+"\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\"";
   }
 
   public String langSummary() {

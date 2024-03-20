@@ -295,15 +295,15 @@ public class ValueSetValidator extends BaseValidator {
             System.out.println("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
           }
           try {
-            context.validateCodeBatch(ValidationOptions.defaults(), batch, null);
+            context.validateCodeBatch(ValidationOptions.defaults().withExampleOK(), batch, null);
             if (parent.isDebug()) {
               System.out.println("  :   .. "+(System.currentTimeMillis()-t)+"ms");
             }
             for (VSCodingValidationRequest cv : batch) {
               if (version == null) {
-                warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode());
+                warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode(), cv.getResult().getMessage());
               } else {
-                warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode());
+                warningOrHint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode(), cv.getResult().getMessage());
               }
             }
           } catch (Exception e) {
@@ -333,7 +333,7 @@ public class ValueSetValidator extends BaseValidator {
     slv.checkConcept(code, display);
 
     if (version == null) {
-      ValidationResult vv = context.validateCode(ValidationOptions.defaults(), new Coding(system, code, null), null);
+      ValidationResult vv = context.validateCode(ValidationOptions.defaults().withExampleOK(), new Coding(system, code, null), null);
       if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
         if (isExampleUrl(system)) {
           if (isAllowExamples()) {
@@ -347,19 +347,19 @@ public class ValueSetValidator extends BaseValidator {
         return false;
       } else {
         boolean ok = vv.isOk();
-        warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, code);
+        warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, code, vv.getMessage());
         if (vv.getMessage() != null) {
           hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, false, vv.getMessage());
         }
       }
     } else {
-      ValidationResult vv = context.validateCode(ValidationOptions.defaults(), new Coding(system, code, null).setVersion(version), null);
+      ValidationResult vv = context.validateCode(ValidationOptions.defaults().withExampleOK(), new Coding(system, code, null).setVersion(version), null);
       if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
         warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stackInc.getLiteralPath(), false, I18nConstants.VALUESET_UNC_SYSTEM_WARNING_VER, system+"#"+version, vv.getMessage());            
         return false;        
       } else {
         boolean ok = vv.isOk();
-        warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, code);
+        warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, ok, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, code, vv.getMessage());
         if (vv.getMessage() != null) {
           hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack, false, vv.getMessage());
         }
