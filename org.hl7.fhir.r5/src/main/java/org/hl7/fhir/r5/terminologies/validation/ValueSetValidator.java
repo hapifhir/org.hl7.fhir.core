@@ -590,13 +590,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
             break;
           }
           warningMessage = warningMessage + ", so the code has not been validated";
-          if (!inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) { // we're going to give it a go if it's a fragment
+          if (!options.isExampleOK() && !inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) { // we're going to give it a go if it's a fragment
             throw new VSCheckerException(warningMessage, null, true);
           }
         }
 
         if (cs != null /*&& (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)*/) {
-          if (!(cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
+          if (!(cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT ||
+              (options.isExampleOK() && cs.getContent() == CodeSystemContentMode.EXAMPLE))) {
             if (inInclude) {
               ConceptReferenceComponent cc = findInInclude(code);
               if (cc != null) {
@@ -608,7 +609,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
               }
             }
             // we can't validate that here. 
-            throw new FHIRException("Unable to evaluate based on empty code system");
+            throw new FHIRException("Unable to evaluate based on code system with status = "+cs.getContent().toCode());
           }
           res = validateCode(path, code, cs, null, info);
           res.setIssues(issues);
