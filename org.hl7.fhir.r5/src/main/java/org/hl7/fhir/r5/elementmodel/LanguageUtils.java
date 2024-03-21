@@ -9,12 +9,19 @@ import java.util.Set;
 import org.checkerframework.checker.units.qual.cd;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
+import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.DataType;
+import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -142,7 +149,12 @@ public class LanguageUtils {
   
   public int importFromTranslations(Element resource, List<TranslationUnit> translations, List<ValidationMessage> messages) {
     Set<TranslationUnit> usedUnits = new HashSet<>();
-    int r = importFromTranslations(null, resource, translations, usedUnits);
+    int r = 0;
+    if (resource.fhirType().equals("StructureDefinition")) {
+      r = importFromTranslationsForSD(null, resource, translations, usedUnits);
+    } else {
+     r = importFromTranslations(null, resource, translations, usedUnits);
+    }
     for (TranslationUnit t : translations) {
       if (!usedUnits.contains(t)) {
         messages.add(new ValidationMessage(Source.Publisher, IssueType.INFORMATIONAL, t.getId(), "Unused '"+t.getLanguage()+"' translation '"+t.getSrcText()+"' -> '"+t.getTgtText()+"'", IssueSeverity.INFORMATION));
@@ -151,6 +163,62 @@ public class LanguageUtils {
     return r;
   }
   
+
+  /*
+   * */
+  private int importFromTranslationsForSD(Object object, Element resource, List<TranslationUnit> translations, Set<TranslationUnit> usedUnits) {
+    int r = 0;
+    r = r + checkForTranslations(translations, usedUnits, resource, "name", "name");
+    r = r + checkForTranslations(translations, usedUnits, resource, "title", "title");
+    r = r + checkForTranslations(translations, usedUnits, resource, "publisher", "publisher");
+    for (Element cd : resource.getChildrenByName("contact")) {
+      r = r + checkForTranslations(translations, usedUnits, cd, "contact.name", "name");
+    }
+    r = r + checkForTranslations(translations, usedUnits, resource, "purpose", "purpose");
+    r = r + checkForTranslations(translations, usedUnits, resource, "copyright", "copyright");
+    Element diff = resource.getNamedChild("differential");
+    if (diff != null) {
+      for (Element ed : diff.getChildrenByName("element")) {
+        String id = ed.getNamedChildValue("id");
+        r = r + checkForTranslations(translations, usedUnits, ed, id+"/label", "label");
+        r = r + checkForTranslations(translations, usedUnits, ed, id+"/short", "short");
+        r = r + checkForTranslations(translations, usedUnits, ed, id+"/definition", "definition");
+        r = r + checkForTranslations(translations, usedUnits, ed, id+"/comment", "comment");
+        r = r + checkForTranslations(translations, usedUnits, ed, id+"/requirements", "requirements");
+        r = r + checkForTranslations(translations, usedUnits, ed, id+"/meaningWhenMissing", "meaningWhenMissing");
+        r = r + checkForTranslations(translations, usedUnits, ed, id+"/orderMeaning", "orderMeaning");
+        //      for (ElementDefinitionConstraintComponent con : ed.getConstraint()) {
+        //        addToList(list, lang, con, ed.getId()+"/constraint", "human", con.getHumanElement());
+        //      }
+        //      if (ed.hasBinding()) {
+        //        addToList(list, lang, ed.getBinding(), ed.getId()+"/b/desc", "description", ed.getBinding().getDescriptionElement());
+        //        for (ElementDefinitionBindingAdditionalComponent ab : ed.getBinding().getAdditional()) {
+        //          addToList(list, lang, ab, ed.getId()+"/ab/doco", "documentation", ab.getDocumentationElement());
+        //          addToList(list, lang, ab, ed.getId()+"/ab/short", "shortDoco", ab.getShortDocoElement());
+        //        }
+        //      }
+      }
+    }
+    return r;
+  }
+
+  private int checkForTranslations(List<TranslationUnit> translations, Set<TranslationUnit> usedUnits, Element context, String tname, String pname) {
+    int r = 0;
+    Element child = context.getNamedChild(pname);
+    if (child != null) {
+      String v = child.primitiveValue();
+      if (v != null) {
+        for (TranslationUnit tu : translations) {
+          if (tname.equals(tu.getId()) && v.equals(tu.getSrcText())) {
+            usedUnits.add(tu);
+            child.setTranslation(tu.getLanguage(), tu.getTgtText());
+            r++;
+          }
+        }
+      }
+    }
+    return r;
+  }
 
   private int importFromTranslations(Element parent, Element element, List<TranslationUnit> translations, Set<TranslationUnit> usedUnits) {
     int t = 0;
@@ -307,7 +375,7 @@ public class LanguageUtils {
   }
 
   public static boolean handlesAsResource(Resource resource) {
-    return (resource instanceof CodeSystem && resource.hasUserData(SUPPLEMENT_NAME));
+    return (resource instanceof CodeSystem && resource.hasUserData(SUPPLEMENT_NAME)) || (resource instanceof StructureDefinition);
   }
 
   public static boolean handlesAsElement(Element element) {
@@ -316,11 +384,53 @@ public class LanguageUtils {
 
   public static List<TranslationUnit> generateTranslations(Resource res, String lang) {
     List<TranslationUnit> list = new ArrayList<>();
-    CodeSystem cs = (CodeSystem) res;
-    for (ConceptDefinitionComponent cd : cs.getConcept()) {
-      generateTranslations(list, cd, lang);
+    if (res instanceof StructureDefinition) {
+      StructureDefinition sd = (StructureDefinition) res;
+      generateTranslations(list, sd, lang);
+    } else {
+      CodeSystem cs = (CodeSystem) res;
+      for (ConceptDefinitionComponent cd : cs.getConcept()) {
+        generateTranslations(list, cd, lang);
+      }
     }
     return list;
+  }
+
+  private static void generateTranslations(List<TranslationUnit> list, StructureDefinition sd, String lang) {
+    addToList(list, lang, sd, "name", "name", sd.getNameElement());
+    addToList(list, lang, sd, "title", "title", sd.getTitleElement());
+    addToList(list, lang, sd, "publisher", "publisher", sd.getPublisherElement());
+    for (ContactDetail cd : sd.getContact()) {
+      addToList(list, lang, cd, "contact.name", "name", cd.getNameElement());
+    }
+    addToList(list, lang, sd, "purpose", "purpose", sd.getPurposeElement());
+    addToList(list, lang, sd, "copyright", "copyright", sd.getCopyrightElement());
+    for (ElementDefinition ed : sd.getDifferential().getElement()) {
+      addToList(list, lang, ed, ed.getId()+"/label", "label", ed.getLabelElement());
+      addToList(list, lang, ed, ed.getId()+"/short", "short", ed.getShortElement());
+      addToList(list, lang, ed, ed.getId()+"/definition", "definition", ed.getDefinitionElement());
+      addToList(list, lang, ed, ed.getId()+"/comment", "comment", ed.getCommentElement());
+      addToList(list, lang, ed, ed.getId()+"/requirements", "requirements", ed.getRequirementsElement());
+      addToList(list, lang, ed, ed.getId()+"/meaningWhenMissing", "meaningWhenMissing", ed.getMeaningWhenMissingElement());
+      addToList(list, lang, ed, ed.getId()+"/orderMeaning", "orderMeaning", ed.getOrderMeaningElement());
+      for (ElementDefinitionConstraintComponent con : ed.getConstraint()) {
+        addToList(list, lang, con, ed.getId()+"/constraint", "human", con.getHumanElement());
+      }
+      if (ed.hasBinding()) {
+        addToList(list, lang, ed.getBinding(), ed.getId()+"/b/desc", "description", ed.getBinding().getDescriptionElement());
+        for (ElementDefinitionBindingAdditionalComponent ab : ed.getBinding().getAdditional()) {
+          addToList(list, lang, ab, ed.getId()+"/ab/doco", "documentation", ab.getDocumentationElement());
+          addToList(list, lang, ab, ed.getId()+"/ab/short", "shortDoco", ab.getShortDocoElement());
+        }
+      }
+    }
+  }
+
+  private static void addToList(List<TranslationUnit> list, String lang, Base ctxt, String name, String propName, DataType value) {
+    if (value != null && value.hasPrimitiveValue()) {
+      list.add(new TranslationUnit(lang, name, ctxt.getNamedProperty(propName).getDefinition(), value.primitiveValue(), value.getTranslation(lang)));
+    }
+    
   }
 
   private static void generateTranslations(List<TranslationUnit> list, ConceptDefinitionComponent cd, String lang) {
@@ -351,7 +461,6 @@ public class LanguageUtils {
       return cd.getDefinition();
     }
   }
-
 
   public static List<TranslationUnit> generateTranslations(Element e, String lang) {
     List<TranslationUnit> list = new ArrayList<>();

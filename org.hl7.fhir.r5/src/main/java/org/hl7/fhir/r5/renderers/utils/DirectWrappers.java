@@ -110,7 +110,7 @@ public class DirectWrappers {
 
     @Override
     public ResourceWrapper getAsResource() {
-      throw new Error("Not implemented yet");
+      return new ResourceWrapperDirect(context, (Resource) wrapped.getValues().get(0));
     }
 
     @Override
