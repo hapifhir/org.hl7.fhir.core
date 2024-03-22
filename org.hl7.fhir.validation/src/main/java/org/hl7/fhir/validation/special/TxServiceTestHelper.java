@@ -27,15 +27,15 @@ public class TxServiceTestHelper {
 
   public static String getDiffForValidation(IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String lang, String fp, JsonObject externals, boolean isCodeSystem) throws JsonSyntaxException, FileNotFoundException, IOException {
     org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) requestParameters;
-    ValueSet vs = null;
-    String vsurl = null;
+    ValueSet valueSet = null;
+    String valueSetUrl = null;
     if (!isCodeSystem) {
       if (p.hasParameter("valueSetVersion")) {
-        vsurl = p.getParameterValue("url").primitiveValue()+"|"+p.getParameterValue("valueSetVersion").primitiveValue();
-        vs = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), p.getParameterValue("valueSetVersion").primitiveValue());
+        valueSetUrl = p.getParameterValue("url").primitiveValue()+"|"+p.getParameterValue("valueSetVersion").primitiveValue();
+        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), p.getParameterValue("valueSetVersion").primitiveValue());
       } else {
-        vsurl = p.getParameterValue("url").primitiveValue();
-        vs = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
+        valueSetUrl = p.getParameterValue("url").primitiveValue();
+        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
       }
     }
     ValidationResult validationResult = null;
@@ -43,16 +43,16 @@ public class TxServiceTestHelper {
     String system = null;
     String version = null;
     String display = null;
-    CodeableConcept cc = null;
-    org.hl7.fhir.r5.model.Parameters res = null;
+    CodeableConcept codeableConcept = null;
+    org.hl7.fhir.r5.model.Parameters parameters = null;
     OperationOutcome operationOutcome = null;
 
-    if (vs == null && vsurl != null) {
-      String msg = context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, vsurl);
+    if (valueSet == null && valueSetUrl != null) {
+      String msg = context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, valueSetUrl);
       operationOutcome = new OperationOutcome();
-      CodeableConcept codeableConcept = operationOutcome.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.NOTFOUND).getDetails();
-      codeableConcept.addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
-      codeableConcept.setText(msg);
+      CodeableConcept codeableConceptWhenNullValueSet = operationOutcome.addIssue().setSeverity(OperationOutcome.IssueSeverity.ERROR).setCode(OperationOutcome.IssueType.NOTFOUND).getDetails();
+      codeableConceptWhenNullValueSet.addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
+      codeableConceptWhenNullValueSet.setText(msg);
     } else {
       ValidationOptions options = new ValidationOptions(FhirPublication.R5);
       if (p.hasParameter("displayLanguage")) {
@@ -82,17 +82,17 @@ public class TxServiceTestHelper {
         display = p.getParameterString("display");
         validationResult = context.validateCode(options.withGuessSystem(),
           p.getParameterString(isCodeSystem ? "url" : "system"), p.getParameterString(isCodeSystem ? "version" : "systemVersion"),
-          p.getParameterString("code"), p.getParameterString("display"), vs);
+          p.getParameterString("code"), p.getParameterString("display"), valueSet);
       } else if (p.hasParameter("coding")) {
         Coding coding = (Coding) p.getParameterValue("coding");
         code = coding.getCode();
         system = coding.getSystem();
         version = coding.getVersion();
         display = coding.getDisplay();
-        validationResult = context.validateCode(options, coding, vs);
+        validationResult = context.validateCode(options, coding, valueSet);
       } else if (p.hasParameter("codeableConcept")) {
-        cc = (CodeableConcept) p.getParameterValue("codeableConcept");
-        validationResult = context.validateCode(options, cc, vs);
+        codeableConcept = (CodeableConcept) p.getParameterValue("codeableConcept");
+        validationResult = context.validateCode(options, codeableConcept, valueSet);
       } else {
         throw new Error("validate not done yet for this steup");
       }
@@ -106,6 +106,9 @@ public class TxServiceTestHelper {
       TxTesterScrubbers.scrubOO(operationOutcome, false);
 
       String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(operationOutcome);
+
+      dumparoo("/Users/david.otasek/IN/2024-02-05-hapi-core-bump-6-2.16/core-test", name, expectedResponse, actualResponse);
+
       String diff = CompareUtilities.checkJsonSrcIsSame(expectedResponse, actualResponse, externals);
       if (diff != null) {
         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
@@ -114,76 +117,75 @@ public class TxServiceTestHelper {
       }
       return diff;
     } else {
-      if (res == null) {
-        res = new org.hl7.fhir.r5.model.Parameters();
+      if (parameters == null) {
+        parameters = new org.hl7.fhir.r5.model.Parameters();
         if (validationResult.getSystem() != null) {
-          res.addParameter("system", new UriType(validationResult.getSystem()));
+          parameters.addParameter("system", new UriType(validationResult.getSystem()));
         } else if (system != null) {
-          res.addParameter("system", new UriType(system));
+          parameters.addParameter("system", new UriType(system));
         }
         if (validationResult.getCode() != null) {
           if (code != null && !code.equals(validationResult.getCode())) {
-            res.addParameter("code", new CodeType(code));
-            res.addParameter("normalized-code", new CodeType(validationResult.getCode()));
+            parameters.addParameter("code", new CodeType(code));
+            parameters.addParameter("normalized-code", new CodeType(validationResult.getCode()));
           } else {
-            res.addParameter("code", new CodeType(validationResult.getCode()));
+            parameters.addParameter("code", new CodeType(validationResult.getCode()));
           }
         } else if (code != null) {
-          res.addParameter("code", new CodeType(code));
+          parameters.addParameter("code", new CodeType(code));
         }
         if (validationResult.getSeverity() == org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity.ERROR) {
-          res.addParameter("result", false);
+          parameters.addParameter("result", false);
         } else {
-          res.addParameter("result", true);
+          parameters.addParameter("result", true);
         }
         if (validationResult.getMessage() != null) {
-          res.addParameter("message", validationResult.getMessage());
+          parameters.addParameter("message", validationResult.getMessage());
         }
         if (validationResult.getVersion() != null) {
-          res.addParameter("version", validationResult.getVersion());
+          parameters.addParameter("version", validationResult.getVersion());
         } else if (version != null) {
-          res.addParameter("version", new StringType(version));
+          parameters.addParameter("version", new StringType(version));
         }
         if (validationResult.getDisplay() != null) {
-          res.addParameter("display", validationResult.getDisplay());
+          parameters.addParameter("display", validationResult.getDisplay());
         } else if (display != null) {
-          res.addParameter("display", new StringType(display));
+          parameters.addParameter("display", new StringType(display));
         }
         //      if (vm.getCodeableConcept() != null) {
         //        res.addParameter("codeableConcept", vm.getCodeableConcept());
         //      } else
-        if (cc != null) {
-          res.addParameter("codeableConcept", cc);
+        if (codeableConcept != null) {
+          parameters.addParameter("codeableConcept", codeableConcept);
         }
         if (validationResult.isInactive()) {
-          res.addParameter("inactive", true);
+          parameters.addParameter("inactive", true);
         }
         if (validationResult.getStatus() != null) {
-          res.addParameter("status", validationResult.getStatus());
+          parameters.addParameter("status", validationResult.getStatus());
         }
         if (validationResult.getUnknownSystems() != null) {
           for (String s : validationResult.getUnknownSystems()) {
-            res.addParameter(validationResult.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED ? "x-caused-by-unknown-system" :  "x-unknown-system", new CanonicalType(s));
+            parameters.addParameter(validationResult.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED ? "x-caused-by-unknown-system" :  "x-unknown-system", new CanonicalType(s));
           }
         }
         if (validationResult.getIssues().size() > 0) {
           operationOutcome = new OperationOutcome();
           operationOutcome.getIssue().addAll(validationResult.getIssues());
-          res.addParameter().setName("issues").setResource(operationOutcome);
+          parameters.addParameter().setName("issues").setResource(operationOutcome);
         }
       }
 
-      TxTesterSorters.sortParameters(res);
-      TxTesterScrubbers.scrubParams(res);
+      TxTesterSorters.sortParameters(parameters);
+      TxTesterScrubbers.scrubParams(parameters);
 
-      String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(res);
+      String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(parameters);
 
-
+      dumparoo("/Users/david.otasek/IN/2024-02-05-hapi-core-bump-6-2.16/core-test", name, expectedResponse, actualResponse);
 
       String diff = CompareUtilities.checkJsonSrcIsSame(expectedResponse, actualResponse, externals);
       if (diff != null) {
-        dumparoo("/Users/david.otasek/IN/2024-02-05-hapi-core-bump-6-2.16/core-test", name, expectedResponse, actualResponse);
-        Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
+         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
         TextFile.stringToFile(actualResponse, fp);
         System.out.println("Test "+name+"failed: "+diff);
       }
@@ -192,13 +194,19 @@ public class TxServiceTestHelper {
   }
 
   public static void dumparoo(String rootDirectory, String testName, String expected, String actual) throws IOException {
-    String fullDirectory = rootDirectory + "/" + testName;
-    File directory = new File(fullDirectory);
-    if (!directory.exists()) {
-      directory.mkdirs();
+    String fullExpected = rootDirectory + "/expected/";
+    String fullActual = rootDirectory + "/actual/";
+    File expectedDirectory = new File(fullExpected);
+    if (!expectedDirectory.exists()) {
+      expectedDirectory.mkdirs();
     }
-TextFile.stringToFile(expected, fullDirectory + "/expected.json");
-    TextFile.stringToFile(actual, fullDirectory + "/actual.json");
+
+    File actualDirectory = new File(fullActual);
+    if (!actualDirectory.exists()) {
+      actualDirectory.mkdirs();
+    }
+    TextFile.stringToFile(expected, fullExpected + testName + ".json");
+    TextFile.stringToFile(actual, fullActual + testName + ".json");
 
   }
 }
