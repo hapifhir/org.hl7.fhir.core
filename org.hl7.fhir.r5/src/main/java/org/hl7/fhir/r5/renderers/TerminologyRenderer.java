@@ -211,21 +211,21 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     if (hasHierarchy) {
       tr.td().b().tx("Lvl");
     }
-    tr.td().attribute("style", "white-space:nowrap").b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Code", getContext().getLang()));
+    tr.td().attribute("style", "white-space:nowrap").b().tx(formatMessage(RenderingContext.RENDER_TX_CODE));
     if (hasDisplay) {
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Display", getContext().getLang()));
+      tr.td().b().tx(formatMessage(RenderingContext.RENDER_TX_DISPLAY));
     }
     if (definitions) {
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Definition", getContext().getLang()));
+      tr.td().b().tx(formatMessage(RenderingContext.RENDER_TX_DEFINITION));
     }
     if (deprecated) {
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Deprecated", getContext().getLang()));
+      tr.td().b().tx(formatMessage(RenderingContext.RENDER_TX_DEPRECATED));
     }
     if (comments) {
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Comments", getContext().getLang()));
+      tr.td().b().tx(formatMessage(RenderingContext.RENDER_TX_COMMENTS));
     }
     if (version) {
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Version", getContext().getLang()));
+      tr.td().b().tx(formatMessage(RenderingContext.RENDER_TX_VERSION));
     }
     if (properties != null) {
       for (PropertyComponent pc : properties) {
@@ -236,7 +236,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
             display = pc.getCode();
           }
         }
-        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", display, getContext().getLang()));      
+        tr.td().b().tx(display);      
       }
     }
     if (doDesignations) {

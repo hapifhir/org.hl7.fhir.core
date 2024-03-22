@@ -139,7 +139,6 @@ import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
-import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nBase;
@@ -275,7 +274,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private int expandCodesLimit = 1000;
   protected ILoggingService logger = new SystemOutLoggingService();
   protected Parameters expParameters;
-  private TranslationServices translator = new NullTranslator();
   private Map<String, PackageInformation> packages = new HashMap<>();
 
   @Getter
@@ -310,7 +308,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected void copy(BaseWorkerContext other) {
     synchronized (other.lock) { // tricky, because you need to lock this as well, but it's really not in use yet 
       allResourcesById.putAll(other.allResourcesById);
-      translator = other.translator;
       codeSystems.copy(other.codeSystems);
       valueSets.copy(other.valueSets);
       maps.copy(other.maps);
@@ -2640,55 +2637,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  public TranslationServices translator() {
-    return translator;
-  }
-
-  public void setTranslator(TranslationServices translator) {
-    this.translator = translator;
-  }
-  
-  public class NullTranslator implements TranslationServices {
-
-    @Override
-    public String translate(String context, String value, String targetLang) {
-      return value;
-    }
-
-    @Override
-    public String translate(String context, String value) {
-      return value;
-    }
-
-    @Override
-    public String toStr(float value) {
-      return null;
-    }
-
-    @Override
-    public String toStr(Date value) {
-      return null;
-    }
-
-    @Override
-    public String translateAndFormat(String contest, String lang, String value, Object... args) {
-      return String.format(value, args);
-    }
-
-    @Override
-    public Map<String, String> translations(String value) {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    @Override
-    public Set<String> listTranslations(String category) {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-  }
-  
   public void reportStatus(JsonObject json) {
     synchronized (lock) {
       json.addProperty("codeystem-count", codeSystems.size());

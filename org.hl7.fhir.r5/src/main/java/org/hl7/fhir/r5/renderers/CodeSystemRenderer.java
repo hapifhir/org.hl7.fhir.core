@@ -82,13 +82,13 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   
   private void generateFilters(XhtmlNode x, CodeSystem cs) {
     if (cs.hasFilter()) {
-      x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Filters", getContext().getLang()));
+      x.para().b().tx(formatMessage(RenderingContext.RENDER_CODESYSTEM_FILTERS));
       XhtmlNode tbl = x.table("grid");
       XhtmlNode tr = tbl.tr();
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Code", getContext().getLang()));
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Description", getContext().getLang()));
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "operator", getContext().getLang()));
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Value", getContext().getLang()));
+      tr.td().b().tx(formatMessage(RenderingContext.RENDER_CODESYSTEM_FILTER_CODE));
+      tr.td().b().tx(formatMessage(RenderingContext.RENDER_CODESYSTEM_FILTER_DESC));
+      tr.td().b().tx(formatMessage(RenderingContext.RENDER_CODESYSTEM_FILTER_OP));
+      tr.td().b().tx(formatMessage(RenderingContext.RENDER_CODESYSTEM_FILTER_VALUE));
       for (CodeSystemFilterComponent f : cs.getFilter()) {
         tr = tbl.tr();
         renderStatus(f, tr.td()).tx(f.getCode());
@@ -112,20 +112,20 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         hasDescription = hasDescription || p.hasDescription();
       }
       
-      x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Properties", getContext().getLang()));
-      x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "This code system  defines the following properties for its concepts", getContext().getLang()));
+      x.para().b().tx(formatMessage(RenderingContext.RENDER_CODESYSTEM_PROPS));
+      x.para().b().tx(formatMessage(RenderingContext.RENDER_CODESYSTEM_PROPS_DESC));
       XhtmlNode tbl = x.table("grid");
       XhtmlNode tr = tbl.tr();
       if (hasRendered) {
-        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Name", getContext().getLang()));        
+        tr.td().b().tx(formatMessage(RenderingContext.RENDER_CODESYSTEM_PROP_NAME));        
       }
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Code", getContext().getLang()));
+      tr.td().b().tx(formatMessage(RenderingContext.RENDER_CODESYSTEM_PROP_CODE));
       if (hasURI) {
-        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "URI", getContext().getLang()));
+        tr.td().b().tx(formatMessage(RenderingContext.RENDER_CODESYSTEM_PROP_URI));
       }
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Type", getContext().getLang()));
+      tr.td().b().tx(formatMessage(RenderingContext.RENDER_CODESYSTEM_PROP_TYPE));
       if (hasDescription) {
-        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Description", getContext().getLang()));
+        tr.td().b().tx(formatMessage(RenderingContext.RENDER_CODESYSTEM_PROP_DESC));
       }
       for (PropertyComponent p : cs.getProperty()) {
         tr = tbl.tr();
@@ -149,10 +149,10 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private String sentenceForContent(CodeSystemContentMode mode, CodeSystem cs) {
     switch (mode) {
-    case COMPLETE: return context.getContext().formatMessage(I18nConstants.RND_CS_CONTENT_COMPLETE);
-    case EXAMPLE: return context.getContext().formatMessage(I18nConstants.RND_CS_CONTENT_EXAMPLE);
-    case FRAGMENT: return context.getContext().formatMessage(I18nConstants.RND_CS_CONTENT_FRAGMENT);
-    case NOTPRESENT: return context.getContext().formatMessage(I18nConstants.RND_CS_CONTENT_NOTPRESENT);
+    case COMPLETE: return formatMessage(I18nConstants.RND_CS_CONTENT_COMPLETE);
+    case EXAMPLE: return formatMessage(I18nConstants.RND_CS_CONTENT_EXAMPLE);
+    case FRAGMENT: return formatMessage(I18nConstants.RND_CS_CONTENT_FRAGMENT);
+    case NOTPRESENT: return formatMessage(I18nConstants.RND_CS_CONTENT_NOTPRESENT);
     case SUPPLEMENT:
       boolean properties = CodeSystemUtilities.hasProperties(cs);
       boolean designations = CodeSystemUtilities.hasDesignations(cs); 
@@ -166,7 +166,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       } else {
         features = "features"; // ?
       }
-      return context.getContext().formatMessage(I18nConstants.RND_CS_CONTENT_SUPPLEMENT, features);
+      return formatMessage(I18nConstants.RND_CS_CONTENT_SUPPLEMENT, features);
     default:
       throw new FHIRException("Unknown CodeSystemContentMode mode");
     }
@@ -174,7 +174,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   
   private boolean generateCodeSystemContent(XhtmlNode x, CodeSystem cs, boolean hasExtensions, List<UsedConceptMap> maps, boolean props) throws FHIRFormatError, DefinitionException, IOException {
     if (props) {
-      x.para().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Concepts", getContext().getLang()));
+      x.para().b().tx(formatMessage(RenderingContext.RENDER_CODESYSTEM_CONCEPTS));
     }
     XhtmlNode p = x.para();
     renderStatus(cs.getUrlElement(), p.param("cs")).code().tx(cs.getUrl());
@@ -463,7 +463,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       td = tr.td();
       Boolean b = CodeSystemUtilities.isDeprecated(cs, c, false);
       if (b !=  null && b) {
-        smartAddText(td, getContext().getWorker().translator().translate("xhtml-gen-cs", "Deprecated", getContext().getLang()));
+        smartAddText(td, formatMessage(RenderingContext.RENDER_CODESYSTEM_DEPRECATED));
         hasExtensions = true;
         if (ToolingExtensions.hasExtension(c, ToolingExtensions.EXT_REPLACED_BY)) {
           Coding cc = (Coding) ToolingExtensions.getExtension(c, ToolingExtensions.EXT_REPLACED_BY).getValue();

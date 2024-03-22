@@ -70,7 +70,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (doOpts) {
       x.b().tx("Structure");
     }
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("qtree="+q.getId(), context.getRules() == GenerationRules.IG_PUBLISHER);    
     model.setAlternating(true);
     if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) {
@@ -460,7 +460,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
   }
 
   private boolean renderLogic(XhtmlNode x, Questionnaire q) throws FHIRException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("qtree="+q.getId(), true);    
     model.setAlternating(true);
     if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) {

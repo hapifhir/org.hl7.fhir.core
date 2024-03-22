@@ -33,6 +33,7 @@ import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.r4b.utils.DefinitionNavigator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -1027,8 +1028,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
 
   public XhtmlNode renderStructure(ProfileComparison comp, String id, String prefix, String corePath)
       throws FHIRException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(Utilities.path("[tmp]", "compare"), false, true);
-    gen.setTranslator(session.getContextRight().translator());
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), Utilities.path("[tmp]", "compare"), false, true);
     TableModel model = gen.initComparisonTable(corePath, id);
     genElementComp(null /* oome back to this later */, gen, model.getRows(), comp.combined, corePath, prefix, null,
         true);

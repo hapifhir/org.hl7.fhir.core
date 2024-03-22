@@ -1,13 +1,15 @@
 package org.hl7.fhir.r5.renderers;
 
+import java.util.Date;
+
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r5.utils.TranslatingUtilities;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
@@ -33,7 +35,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * @author graha
  *
  */
-public class Renderer extends TranslatingUtilities {
+public class Renderer  {
 
   protected RenderingContext context;
   
@@ -46,36 +48,8 @@ public class Renderer extends TranslatingUtilities {
   }
 
 
-  protected static final String RENDER_BUNDLE_HEADER_ROOT = "RENDER_BUNDLE_HEADER_ROOT";
-  protected static final String RENDER_BUNDLE_HEADER_ENTRY = "RENDER_BUNDLE_HEADER_ENTRY";
-  protected static final String RENDER_BUNDLE_HEADER_ENTRY_URL = "RENDER_BUNDLE_HEADER_ENTRY_URL";
-  protected static final String RENDER_BUNDLE_RESOURCE = "RENDER_BUNDLE_RESOURCE";
-  protected static final String RENDER_BUNDLE_SEARCH = "RENDER_BUNDLE_SEARCH";
-  protected static final String RENDER_BUNDLE_SEARCH_MODE = "RENDER_BUNDLE_SEARCH_MODE"; 
-  protected static final String RENDER_BUNDLE_SEARCH_SCORE = "RENDER_BUNDLE_SEARCH_SCORE";
-  protected static final String RENDER_BUNDLE_RESPONSE = "RENDER_BUNDLE_RESPONSE";
-  protected static final String RENDER_BUNDLE_LOCATION = "RENDER_BUNDLE_LOCATION";
-  protected static final String RENDER_BUNDLE_ETAG = "RENDER_BUNDLE_ETAG";
-  protected static final String RENDER_BUNDLE_LAST_MOD = "RENDER_BUNDLE_LAST_MOD";
-  protected static final String RENDER_BUNDLE_REQUEST = "RENDER_BUNDLE_REQUEST";
-  protected static final String RENDER_BUNDLE_IF_NON_MATCH = "RENDER_BUNDLE_IF_NON_MATCH";
-  protected static final String RENDER_BUNDLE_IF_MOD = "RENDER_BUNDLE_IF_MOD";
-  protected static final String RENDER_BUNDLE_IF_MATCH = "RENDER_BUNDLE_IF_MATCH";
-  protected static final String RENDER_BUNDLE_IF_NONE = "RENDER_BUNDLE_IF_NONE";
-  protected static final String RENDER_BUNDLE_DOCUMENT_CONTENT = "RENDER_BUNDLE_DOCUMENT_CONTENT";
-  protected static final String RENDER_BUNDLE_HEADER_DOC_ENTRY_URD = "RENDER_BUNDLE_HEADER_DOC_ENTRY_URD";
-  protected static final String RENDER_BUNDLE_HEADER_DOC_ENTRY_U = "RENDER_BUNDLE_HEADER_DOC_ENTRY_U";
-  protected static final String RENDER_BUNDLE_HEADER_DOC_ENTRY_RD = "RENDER_BUNDLE_HEADER_DOC_ENTRY_RD";
-
-  /** the plan here is to make this have it's own implementation of messages, rather than using the 
-   * validator messages, for better alignment with publisher I18n strategy
-   * 
-   * @param theMessage
-   * @param theMessageArguments
-   * @return
-   */
   protected String formatMessage(String theMessage, Object... theMessageArguments) {
-    return context.getWorker().formatMessage(theMessage, theMessageArguments);
+    return context.formatMessage(theMessage, theMessageArguments);
   }
 
   public void genStandardsStatus(XhtmlNode td, StandardsStatus ss) {
@@ -227,4 +201,20 @@ public class Renderer extends TranslatingUtilities {
     }
   }
 
+
+  public String egt(@SuppressWarnings("rawtypes") Enumeration<? extends Enum> value) {
+    if (value == null || !value.hasPrimitiveValue()) {
+      return null;
+    } else {
+      return (value == null || !value.hasPrimitiveValue()) ? null : value.asStringValue();
+    }
+  }
+
+  public String toStr(int value) {
+    return Integer.toString(value);
+  }
+  
+  public String toStr(Date value) {
+    return value.toString();
+  }
 }
