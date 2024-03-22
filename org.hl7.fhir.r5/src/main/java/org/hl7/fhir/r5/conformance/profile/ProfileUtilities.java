@@ -99,7 +99,6 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.TranslatingUtilities;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.formats.CSVWriter;
@@ -136,7 +135,7 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  * @author Grahame
  *
  */
-public class ProfileUtilities extends TranslatingUtilities {
+public class ProfileUtilities {
 
   private static boolean suppressIgnorableExceptions;
 

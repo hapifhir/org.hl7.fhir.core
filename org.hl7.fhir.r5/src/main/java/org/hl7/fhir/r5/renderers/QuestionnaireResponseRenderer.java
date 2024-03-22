@@ -62,7 +62,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   }
   
   public boolean renderTree(XhtmlNode x, ResourceWrapper qr) throws UnsupportedEncodingException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("qtree="+qr.getId(), false);    
     model.setAlternating(true);
     if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) {
@@ -89,7 +89,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   }
 
   public boolean renderTree(XhtmlNode x, QuestionnaireResponse q) throws UnsupportedEncodingException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("qtree="+q.getId(), true);    
     model.setAlternating(true);
     if (context.getRules() == GenerationRules.VALID_RESOURCE || context.isInlineGraphics()) {
