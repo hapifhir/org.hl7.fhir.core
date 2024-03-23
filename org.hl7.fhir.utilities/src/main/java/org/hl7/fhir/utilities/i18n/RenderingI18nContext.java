@@ -66,6 +66,7 @@ public class RenderingI18nContext extends I18nBase {
 
   public static final String SD_LEGEND = "SD_LEGEND";
   public static final String SD_DOCO = "SD_DOCO";
+  public static final String SD_SLICING_INFO = "SD_SLICING_INFO";
 
   public static final String RENDER_RESOURCE_COPYRIGHT = "RENDER_RESOURCE_COPYRIGHT";
   
@@ -79,8 +80,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String RENDER_CODESYSTEM_PROPS_DESC = "RENDER_CODESYSTEM_PROPS_DESC";
   public static final String RENDER_CODESYSTEM_PROP_NAME = "RENDER_CODESYSTEM_PROP_NAME";
   public static final String RENDER_CODESYSTEM_PROP_CODE = "RENDER_CODESYSTEM_PROP_CODE";
-  public static final String RENDER_CODESYSTEM_PROP_URI = "RENDER_CODESYSTEM_PROP_CODE";
-  public static final String RENDER_CODESYSTEM_PROP_TYPE = "RENDER_CODESYSTEM_PROP_CODE";
+  public static final String RENDER_CODESYSTEM_PROP_URI = "RENDER_CODESYSTEM_PROP_URI";
+  public static final String RENDER_CODESYSTEM_PROP_TYPE = "RENDER_CODESYSTEM_PROP_TYPE";
   public static final String RENDER_CODESYSTEM_PROP_DESC = "RENDER_CODESYSTEM_PROP_DESC";
   public static final String RENDER_CODESYSTEM_CONCEPTS = "RENDER_CODESYSTEM_CONCEPTS";
   public static final String RENDER_CODESYSTEM_DEPRECATED = "RENDER_CODESYSTEM_DEPRECATED";
