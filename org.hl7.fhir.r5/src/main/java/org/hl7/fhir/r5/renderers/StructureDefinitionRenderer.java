@@ -2739,7 +2739,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   private String describeSlice(ElementDefinitionSlicingComponent slicing) {
-    return formatMessage("%s, %s by %s", slicing.getOrdered() ? (/*!#*/"Ordered") : (/*!#*/"Unordered"), describe(slicing.getRules()), commas(slicing.getDiscriminator()));
+    return formatMessage(RenderingContext.SD_SLICING_INFO, slicing.getOrdered() ? (/*!#*/"Ordered") : (/*!#*/"Unordered"), describe(slicing.getRules()), commas(slicing.getDiscriminator()));
   }
 
 
