@@ -43,14 +43,14 @@ public class RequirementsRenderer extends ResourceRenderer {
       if (req.getActor().size() == 1) {
         ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, req.getActor().get(0).getValue(), req);
         XhtmlNode p = x.para();
-        p.tx("These requirements apply to the actor ");
+        p.tx(/*!#*/"These requirements apply to the actor ");
         if (acd == null) {
           p.code(req.getActor().get(0).getValue());
         } else {
           p.ah(acd.getWebPath()).tx(acd.present());
         }
       } else {
-        x.para().tx("These requirements apply to the following actors:");
+        x.para().tx(/*!#*/"These requirements apply to the following actors:");
         XhtmlNode ul = x.ul();
         for (CanonicalType a : req.getActor()) {
           ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, a.getValue(), req);
@@ -66,14 +66,14 @@ public class RequirementsRenderer extends ResourceRenderer {
       if (req.getDerivedFrom().size() == 1) {
         Requirements reqd = context.getWorker().fetchResource(Requirements.class, req.getDerivedFrom().get(0).getValue(), req);
         XhtmlNode p = x.para();
-        p.tx("These requirements derive from ");
+        p.tx(/*!#*/"These requirements derive from ");
         if (reqd == null) {
           p.code(req.getDerivedFrom().get(0).getValue());
         } else {
           p.ah(reqd.getWebPath()).tx(reqd.present());
         }
       } else {
-        x.para().tx("These requirements are derived from the following requirements:");
+        x.para().tx(/*!#*/"These requirements are derived from the following requirements:");
         XhtmlNode ul = x.ul();
         for (CanonicalType a : req.getDerivedFrom()) {
           Requirements reqd = context.getWorker().fetchResource(Requirements.class, a.getValue(), req);
@@ -87,7 +87,7 @@ public class RequirementsRenderer extends ResourceRenderer {
     }
     if (req.hasReference()) {
       XhtmlNode p = x.para();
-      p.tx("References: ");
+      p.tx(/*!#*/"References: ");
       int i = 0;
       for (UrlType c : req.getReference()) {
         i++;
@@ -121,11 +121,11 @@ public class RequirementsRenderer extends ResourceRenderer {
       td = tr.td();
       addMarkdown(td, stmt.getRequirement());
       if (stmt.hasDerivedFrom() || stmt.hasSatisfiedBy() || stmt.hasReference() || stmt.hasSource()) {
-        td.para().tx("Links:");
+        td.para().tx(/*!#*/"Links:");
         XhtmlNode ul = td.ul();
         if (stmt.hasDerivedFrom()) {
           XhtmlNode li = ul.li();
-          li.tx("Derived From: ");
+          li.tx(/*!#*/"Derived From: ");
           String url = stmt.getDerivedFrom();
           String key = url.contains("#") ? url.substring(url.indexOf("#")+1) : "";
           if (url.contains("#")) { url = url.substring(0, url.indexOf("#")); };
@@ -143,7 +143,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         }
         if (stmt.hasSatisfiedBy()) {
           XhtmlNode li = ul.li();
-          li.tx("Satisfied By: ");
+          li.tx(/*!#*/"Satisfied By: ");
           first = true;
           for (UrlType c : stmt.getSatisfiedBy()) {
             if (first) first = false; else li.tx(", ");
@@ -162,7 +162,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         }
         if (stmt.hasReference()) {
           XhtmlNode li = ul.li();
-          li.tx("References: ");
+          li.tx(/*!#*/"References: ");
           int i = 0;
           for (UrlType c : stmt.getReference()) {
             i++;
@@ -176,7 +176,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         }
         if (stmt.hasSource()) {
           XhtmlNode li = ul.li();
-          li.tx("Source: ");
+          li.tx(/*!#*/"Source: ");
           first = true;
           for (Reference c : stmt.getSource()) {
             if (first) first = false; else li.tx(", ");

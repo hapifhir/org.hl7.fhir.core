@@ -353,21 +353,21 @@ public class ObligationsRenderer {
 
     XhtmlNode tr = new XhtmlNode(NodeType.Element, "tr");
     children.add(tr);
-    tr.td().style("font-size: 11px").b().tx("Obligations");
+    tr.td().style("font-size: 11px").b().tx(/*!#*/"Obligations");
     if (actor) {
-      tr.td().style("font-size: 11px").tx("Actor");
+      tr.td().style("font-size: 11px").tx(/*!#*/"Actor");
     }
     if (elementId) {
-      tr.td().style("font-size: 11px").tx("Elements");
+      tr.td().style("font-size: 11px").tx(/*!#*/"Elements");
     }
     if (usage) {
-      tr.td().style("font-size: 11px").tx("Usage");
+      tr.td().style("font-size: 11px").tx(/*!#*/"Usage");
     }
     if (doco) {
-      tr.td().style("font-size: 11px").tx("Documentation");
+      tr.td().style("font-size: 11px").tx(/*!#*/"Documentation");
     }
     if (filter) {
-      tr.td().style("font-size: 11px").tx("Filter");
+      tr.td().style("font-size: 11px").tx(/*!#*/"Filter");
     }
     for (ObligationDetail ob : obligations) {
       tr =  new XhtmlNode(NodeType.Element, "tr");

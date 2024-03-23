@@ -1043,4 +1043,51 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
   
 
+  
+  public int compareTo(XhtmlNode other) {
+    return compare(this, other);
+  }
+
+  private static int compare(XhtmlNode base, XhtmlNode other) {
+    if (base == null || other == null) {
+      return 0;
+    } else if (base.getNodeType() != other.getNodeType()) {
+      return base.getNodeType().ordinal() - other.getNodeType().ordinal();
+    } else switch (base.getNodeType()) {
+    case Comment: return base.getContent().compareTo(other.getContent());
+    case DocType: return 0;
+    case Element:
+      int r = base.getName().compareTo(other.getName());
+      if (r != 0) {
+        return r;
+      }
+    case Document:
+      if (base.getAttributes().size() != other.getAttributes().size()) {
+        return base.getAttributes().size() - other.getAttributes().size();
+      } else {
+        for (String n : base.getAttributes().keySet()) {
+          String vb = base.getAttributes().get(n);
+          String vo = other.getAttributes().get(n);
+          r = vo == null ? -1 : vb.compareTo(vo);
+          if (r != 0) {
+            return r;
+          }
+        }
+      }
+      if (base.getChildNodes().size() != other.getChildNodes().size()) {
+        return base.getChildNodes().size() - other.getChildNodes().size();
+      } else {
+        for (int i = 0; i < base.getChildNodes().size(); i++) {
+          r = compare(base, other);
+          if (r != 0) {
+            return r;
+          }
+        }
+       }
+      return 0;
+    case Instruction: return 0;
+    case Text: return base.getContent().compareTo(other.getContent());
+    default: return 0;
+    } 
+  }
 }

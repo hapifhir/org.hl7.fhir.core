@@ -24,9 +24,10 @@ import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
-public class RenderingContext {
+public class RenderingContext extends RenderingI18nContext {
 
   // provides liquid templates, if they are available for the content
   public interface ILiquidTemplateProvider {
@@ -538,9 +539,8 @@ public class RenderingContext {
     }
   }
 
-  public RenderingContext setLocale(Locale locale) {
+  public void setLocale(Locale locale) {
     this.locale = locale;
-    return this;
   }
 
 
