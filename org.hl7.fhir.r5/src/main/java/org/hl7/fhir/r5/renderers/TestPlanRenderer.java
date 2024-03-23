@@ -45,7 +45,7 @@ public class TestPlanRenderer extends ResourceRenderer {
 		XhtmlNode p = null;
 		if (!tp.getContact().isEmpty()) {
 			p = x.para();
-      p.b().tx("Contact:");
+      p.b().tx(/*!#*/"Contact:");
 			p.tx(" (");
 			boolean firsti = true;
 			for (ContactDetail ci : tp.getContact()) {
@@ -69,7 +69,7 @@ public class TestPlanRenderer extends ResourceRenderer {
 
 		if (tp.hasCategory()) {
 			p = x.para();
-			p.b().tx("Category: ");
+			p.b().tx(/*!#*/"Category: ");
       boolean first = true;
 			for (CodeableConcept cc : tp.getCategory()) {
         if (first)
@@ -83,10 +83,10 @@ public class TestPlanRenderer extends ResourceRenderer {
 		if (tp.hasScope()) {
 			if (tp.getScope().size() == 1) {
 				p = x.para();
-				p.b().tx("Test Plan Scope: ");
+				p.b().tx(/*!#*/"Test Plan Scope: ");
 				renderReference(tp, p, tp.getScopeFirstRep());
 			} else {
-				x.para().b().tx("Test Plan Scopes:");
+				x.para().b().tx(/*!#*/"Test Plan Scopes:");
 				XhtmlNode ul = x.ul();
 				for (Reference ref : tp.getScope()) {
 					renderReference(tp, ul.li(), ref);
@@ -97,7 +97,7 @@ public class TestPlanRenderer extends ResourceRenderer {
 		if (tp.hasDependency()) {
 			if (tp.getDependency().size() == 1) {
 				p = x.para();
-				p.b().tx("Test Plan Dependency: ");
+				p.b().tx(/*!#*/"Test Plan Dependency: ");
 				XhtmlNode t = x.table("grid");
 				XhtmlNode tr = t.tr();
 			    if (!Utilities.noString(tp.getDependencyFirstRep().getDescription())) {
@@ -106,7 +106,7 @@ public class TestPlanRenderer extends ResourceRenderer {
 			    tr = t.tr();
 				renderReference(tp, tr.td(), tp.getDependencyFirstRep().getPredecessor());
 			} else {
-				x.para().b().tx("Test Plan Dependencies:");
+				x.para().b().tx(/*!#*/"Test Plan Dependencies:");
 				XhtmlNode ul = x.ul();
 				XhtmlNode li = null;
 				for (TestPlanDependencyComponent d : tp.getDependency()) {
@@ -115,7 +115,7 @@ public class TestPlanRenderer extends ResourceRenderer {
 				        addMarkdown(li, d.getDescription());
 				    }
 				    else {
-				    	li.addText("Dependency -  no description");
+				    	li.addText(/*!#*/"Dependency -  no description");
 				    }
 				    if (d.hasPredecessor()) {
 						XhtmlNode liul = li.ul();
@@ -132,15 +132,15 @@ public class TestPlanRenderer extends ResourceRenderer {
 
 		if (tp.hasTestCase()) {
 		  for (TestPlanTestCaseComponent tc : tp.getTestCase()) {
-		    x.h2().addText("Test Case" + (tc.hasSequence() ? " - Sequence" + tc.getSequence() : ""));
+		    x.h2().addText(/*!#*/"Test Case" + (tc.hasSequence() ? " - Sequence" + tc.getSequence() : ""));
 
 		    if (tc.hasScope()) {
 		      if (tc.getScope().size() == 1) {
 		        p = x.para();
-		        p.b().tx("Test Case Scope: ");
+		        p.b().tx(/*!#*/"Test Case Scope: ");
 		        renderReference(tp, p, tc.getScopeFirstRep());
 		      } else {
-		        x.para().b().tx("Test Case Scopes:");
+		        x.para().b().tx(/*!#*/"Test Case Scopes:");
 		        XhtmlNode ul = x.ul();
 		        for (Reference ref : tc.getScope()) {
 		          renderReference(tp, ul.li(), ref);
@@ -150,7 +150,7 @@ public class TestPlanRenderer extends ResourceRenderer {
 
 		    if (tc.hasDependency()) {
 		      if (tc.getDependency().size() == 1) {
-		        x.h3().addText("Test Case Dependency");
+		        x.h3().addText(/*!#*/"Test Case Dependency");
 		        XhtmlNode t = x.table("grid");
 		        XhtmlNode tr = t.tr();
 	          if (!Utilities.noString(tc.getDependencyFirstRep().getDescription())) {
@@ -159,7 +159,7 @@ public class TestPlanRenderer extends ResourceRenderer {
 	          tr = t.tr();
 	          renderReference(tp, tr.td(), tc.getDependencyFirstRep().getPredecessor());
 		      } else {
-            x.h3().addText("Test Case Dependencies");
+            x.h3().addText(/*!#*/"Test Case Dependencies");
 		        XhtmlNode ul = x.ul();
 		        XhtmlNode li = null;
 		        for (TestCaseDependencyComponent d : tc.getDependency()) {
@@ -168,7 +168,7 @@ public class TestPlanRenderer extends ResourceRenderer {
 		                addMarkdown(li, d.getDescription());
 		            }
 		            else {
-		              li.addText("Dependency -  no description");
+		              li.addText(/*!#*/"Dependency -  no description");
 		            }
 		            if (d.hasPredecessor()) {
 		            XhtmlNode liul = li.ul();
@@ -181,14 +181,14 @@ public class TestPlanRenderer extends ResourceRenderer {
 
 		    if (tc.hasTestRun()) {
 		      if (tc.getTestRun().size() == 1) {
-		        x.h3().addText("Test Run");
+		        x.h3().addText(/*!#*/"Test Run");
 		        renderTestRun(x, tp, tc.getTestRunFirstRep());
 		      }
 		      else {
 		        int count = 0;
 		        for (TestPlanTestCaseTestRunComponent trun : tc.getTestRun()) {
 		          count++;
-		          x.h3().addText("Test Run " + count);
+		          x.h3().addText(/*!#*/"Test Run " + count);
 	            renderTestRun(x, tp, trun);
 		        }
 		      }
@@ -196,14 +196,14 @@ public class TestPlanRenderer extends ResourceRenderer {
 
         if (tc.hasTestData()) {
           if (tc.getTestData().size() == 1) {
-            x.h3().addText("Test Data");
+            x.h3().addText(/*!#*/"Test Data");
             renderTestData(x, tp, tc.getTestDataFirstRep());
           }
           else {
             int count = 0;
             for (TestPlanTestCaseTestDataComponent tdata : tc.getTestData()) {
               count++;
-              x.h3().addText("Test Data " + count);
+              x.h3().addText(/*!#*/"Test Data " + count);
               renderTestData(x, tp, tdata);
             }
           }
@@ -211,14 +211,14 @@ public class TestPlanRenderer extends ResourceRenderer {
 
 	      if (tc.hasAssertion()) {
 	        if (tc.getAssertion().size() == 1) {
-	          x.h3().addText("Assertion");
+	          x.h3().addText(/*!#*/"Assertion");
 	          renderAssertion(x, tp, tc.getAssertionFirstRep());
 	        }
 	        else {
 	          int count = 0;
 	          for (TestPlanTestCaseAssertionComponent as : tc.getAssertion()) {
 	            count++;
-	            x.h3().addText("Assertion " + count);
+	            x.h3().addText(/*!#*/"Assertion " + count);
 	            renderAssertion(x, tp, as);
 	          }
 	        }
@@ -237,8 +237,8 @@ public class TestPlanRenderer extends ResourceRenderer {
     if (trun.hasScript()) {
       XhtmlNode t = x.table("grid");
       XhtmlNode tr = t.tr();
-      tr.td().b().addText("Language");
-      tr.td().b().addText("Source[x]");
+      tr.td().b().addText(/*!#*/"Language");
+      tr.td().b().addText(/*!#*/"Source[x]");
       tr = t.tr();
       if (trun.getScript().hasLanguage()) {
         renderCodeableConcept(tr.td(), trun.getScript().getLanguage(), false);
@@ -261,9 +261,9 @@ public class TestPlanRenderer extends ResourceRenderer {
   private void renderTestData(XhtmlNode x, TestPlan tp, TestPlanTestCaseTestDataComponent tdata) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     XhtmlNode t = x.table("grid");
     XhtmlNode tr = t.tr();
-    tr.td().b().addText("Type");
-    tr.td().b().addText("Content");
-    tr.td().b().addText("Source[x]");
+    tr.td().b().addText(/*!#*/"Type");
+    tr.td().b().addText(/*!#*/"Content");
+    tr.td().b().addText(/*!#*/"Source[x]");
     tr = t.tr();
     if (tdata.hasType()) {
       renderCoding(tr.td(), tdata.getType());
@@ -291,9 +291,9 @@ public class TestPlanRenderer extends ResourceRenderer {
   private void renderAssertion(XhtmlNode x, TestPlan tp, TestPlanTestCaseAssertionComponent as) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     XhtmlNode t = x.table("grid");
     XhtmlNode tr = t.tr();
-    tr.td().b().addText("Type");
-    tr.td().b().addText("Content");
-    tr.td().b().addText("Result");
+    tr.td().b().addText(/*!#*/"Type");
+    tr.td().b().addText(/*!#*/"Content");
+    tr.td().b().addText(/*!#*/"Result");
     tr = t.tr();
     if (as.hasType()) {
       XhtmlNode td = tr.td();

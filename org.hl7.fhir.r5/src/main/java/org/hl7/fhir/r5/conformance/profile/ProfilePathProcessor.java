@@ -171,6 +171,7 @@ public class ProfilePathProcessor {
       ElementDefinition currentBase = cursors.base.getElement().get(cursors.baseCursor);
       String currentBasePath = profileUtilities.fixedPathSource(getContextPathSource(), currentBase.getPath(), getRedirector());
       debugProcessPathsIteration(cursors, currentBasePath);
+      checkDiffAssignedAndCursor(cursors);
       List<ElementDefinition> diffMatches = profileUtilities.getDiffMatches(getDifferential(), currentBasePath, cursors.diffCursor, getDiffLimit(), getProfileName()); // get a list of matching elements in scope
 
       // in the simple case, source is not sliced.
@@ -193,6 +194,25 @@ public class ProfilePathProcessor {
         throw new Error(profileUtilities.getContext().formatMessage(I18nConstants.NULL_MIN));
     }
     return res;
+  }
+
+  private void checkDiffAssignedAndCursor(ProfilePathProcessorState cursors) {
+//    int i = 0;
+//    List<ElementDefinition> list = getDifferential().getElement();
+//    for (ElementDefinition ed : list) {
+//      boolean assigned = ed.hasUserData("derived.pointer");
+//      if (i < cursors.diffCursor) {
+//        if (!assigned) {
+//          throw new Error("what?");
+//        }
+//      } else if (i > cursors.diffCursor) {
+//        if (assigned) {
+//          throw new Error("what!?");
+//        }
+//      }
+//      i++;
+//    }
+    
   }
 
   private void debugProcessPathsIteration(ProfilePathProcessorState cursors, String currentBasePath) {

@@ -29,6 +29,7 @@ import org.hl7.fhir.r4b.renderers.utils.RenderingContext;
 import org.hl7.fhir.r4b.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
@@ -74,7 +75,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (doOpts) {
       x.b().tx("Structure");
     }
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(),
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), context.getDestDir(), context.isInlineGraphics(),
         true);
     TableModel model = gen.new TableModel("qtree=" + q.getId(), !forResource);
     model.setAlternating(true);
@@ -511,7 +512,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
   }
 
   private boolean renderLogic(XhtmlNode x, Questionnaire q) throws FHIRException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(),
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), context.getDestDir(), context.isInlineGraphics(),
         true);
     TableModel model = gen.new TableModel("qtree=" + q.getId(), true);
     model.setAlternating(true);

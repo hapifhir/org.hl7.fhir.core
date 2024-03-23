@@ -28,7 +28,7 @@ public class ImplementationGuideRenderer extends ResourceRenderer {
 
   public boolean render(XhtmlNode x, ImplementationGuide ig) throws FHIRFormatError, DefinitionException, IOException {
     x.h2().addText(ig.getName());
-    x.para().tx("The official URL for this implementation guide is: ");
+    x.para().tx(/*!#*/"The official URL for this implementation guide is: ");
     x.pre().tx(ig.getUrl());
     addMarkdown(x, ig.getDescription());
     return true;

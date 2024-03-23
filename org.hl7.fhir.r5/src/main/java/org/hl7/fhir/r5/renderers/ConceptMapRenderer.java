@@ -294,23 +294,23 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     }
 
     XhtmlNode p = x.para();
-    p.tx("Mapping from ");
+    p.tx(/*!#*/"Mapping from ");
     if (cm.hasSourceScope())
       AddVsRef(cm.getSourceScope().primitiveValue(), p, cm);
     else
-      p.tx("(not specified)");
-    p.tx(" to ");
+      p.tx(/*!#*/"(not specified)");
+    p.tx(" "+/*!#*/"to ");
     if (cm.hasTargetScope())
       AddVsRef(cm.getTargetScope().primitiveValue(), p, cm);
     else 
-      p.tx("(not specified)");
+      p.tx(/*!#*/"(not specified)");
 
     p = x.para();
     if (cm.getExperimental())
-      p.addText(Utilities.capitalize(cm.getStatus().toString())+" (not intended for production usage). ");
+      p.addText(Utilities.capitalize(cm.getStatus().toString())+" "+/*!#*/"(not intended for production usage). ");
     else
       p.addText(Utilities.capitalize(cm.getStatus().toString())+". ");
-    p.tx("Published on "+(cm.hasDate() ? display(cm.getDateElement()) : "?ngen-10?")+" by "+cm.getPublisher());
+    p.tx(/*!#*/"Published on "+(cm.hasDate() ? display(cm.getDateElement()) : "?ngen-10?")+" by "+cm.getPublisher());
     if (!cm.getContact().isEmpty()) {
       p.tx(" (");
       boolean firsti = true;
@@ -380,18 +380,18 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         x.hr();
       }
       XhtmlNode pp = x.para();
-      pp.b().tx("Group "+gc);
-      pp.tx("Mapping from ");
+      pp.b().tx(/*!#*/"Group "+gc);
+      pp.tx(/*!#*/"Mapping from ");
       if (grp.hasSource()) {
         renderCanonical(cm, pp, grp.getSource());
       } else {
-        pp.code("unspecified code system");
+        pp.code(/*!#*/"unspecified code system");
       }
       pp.tx(" to ");
       if (grp.hasTarget()) {
         renderCanonical(cm, pp, grp.getTarget());
       } else {
-        pp.code("unspecified code system");
+        pp.code(/*!#*/"unspecified code system");
       }
       
       String display;
@@ -399,11 +399,11 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         // simple
         XhtmlNode tbl = x.table( "grid");
         XhtmlNode tr = tbl.tr();
-        tr.td().b().tx("Source Code");
-        tr.td().b().tx("Relationship");
-        tr.td().b().tx("Target Code");
+        tr.td().b().tx(/*!#*/"Source Code");
+        tr.td().b().tx(/*!#*/"Relationship");
+        tr.td().b().tx(/*!#*/"Target Code");
         if (comment)
-          tr.td().b().tx("Comment");
+          tr.td().b().tx(/*!#*/"Comment");
         for (SourceElementComponent ccl : grp.getElement()) {
           tr = tbl.tr();
           XhtmlNode td = tr.td();
@@ -450,21 +450,21 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         XhtmlNode tbl = x.table( "grid");
         XhtmlNode tr = tbl.tr();
         XhtmlNode td;
-        tr.td().colspan(Integer.toString(1+sources.size())).b().tx("Source Concept Details");
+        tr.td().colspan(Integer.toString(1+sources.size())).b().tx(/*!#*/"Source Concept Details");
         if (hasRelationships) {
-          tr.td().b().tx("Relationship");
+          tr.td().b().tx(/*!#*/"Relationship");
         }
-        tr.td().colspan(Integer.toString(1+targets.size())).b().tx("Target Concept Details");
+        tr.td().colspan(Integer.toString(1+targets.size())).b().tx(/*!#*/"Target Concept Details");
         if (comment) {
-          tr.td().b().tx("Comment");
+          tr.td().b().tx(/*!#*/"Comment");
         }
-        tr.td().colspan(Integer.toString(1+targets.size())).b().tx("Properties");
+        tr.td().colspan(Integer.toString(1+targets.size())).b().tx(/*!#*/"Properties");
         tr = tbl.tr();
         if (sources.get("code").size() == 1) {
           String url = sources.get("code").iterator().next();
           renderCSDetailsLink(tr, url, true);           
         } else
-          tr.td().b().tx("Code");
+          tr.td().b().tx(/*!#*/"Code");
         for (String s : sources.keySet()) {
           if (s != null && !s.equals("code")) {
             if (sources.get(s).size() == 1) {
@@ -481,7 +481,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           String url = targets.get("code").iterator().next();
           renderCSDetailsLink(tr, url, true);           
         } else
-          tr.td().b().tx("Code");
+          tr.td().b().tx(/*!#*/"Code");
         for (String s : targets.keySet()) {
           if (s != null && !s.equals("code")) {
             if (targets.get(s).size() == 1) {
@@ -678,8 +678,8 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     if (span2) {
       td.colspan("2");
     }
-    td.b().tx("Codes");
-    td.tx(" from ");
+    td.b().tx(/*!#*/"Codes");
+    td.tx(" "+/*!#*/"from ");
     if (cs == null)
       td.tx(url);
     else
