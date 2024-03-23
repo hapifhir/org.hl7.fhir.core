@@ -61,7 +61,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
   private static final String COLOR_SYNTAX = "navy";
   private static final boolean RENDER_MULTIPLE_TARGETS_ONELINE = true;
   private static final String COLOR_SPECIAL = "#b36b00";
-  private static final String DEFAULT_COMMENT = "This element was not defined prior to R5";
+  private static final String DEFAULT_COMMENT = /*!#*/"This element was not defined prior to R5";
   
   private String clauseComment = DEFAULT_COMMENT;
 

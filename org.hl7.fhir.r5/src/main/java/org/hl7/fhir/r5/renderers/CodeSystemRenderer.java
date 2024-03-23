@@ -158,17 +158,17 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       boolean designations = CodeSystemUtilities.hasDesignations(cs); 
       String features;
       if (properties && designations) {
-        features = "displays and properties";
+        features = /*!#*/"displays and properties";
       } else if (properties) {
-        features = "properties";
+        features = /*!#*/"properties";
       } else if (designations) {
-        features = "displays";
+        features = /*!#*/"displays";
       } else {
-        features = "features"; // ?
+        features = /*!#*/"features"; // ?
       }
       return formatMessage(I18nConstants.RND_CS_CONTENT_SUPPLEMENT, features);
     default:
-      throw new FHIRException("Unknown CodeSystemContentMode mode");
+      throw new FHIRException(/*!#*/"Unknown CodeSystemContentMode mode");
     }
   }
   
@@ -234,10 +234,10 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     if (langs.size() >= 2) {
       Collections.sort(langs);
-      x.para().b().tx("Additional Language Displays");
+      x.para().b().tx(/*!#*/"Additional Language Displays");
       t = x.table("codes");
       XhtmlNode tr = t.tr();
-      tr.td().b().tx("Code");
+      tr.td().b().tx(/*!#*/"Code");
       for (String lang : langs)
         tr.td().b().addText(describeLang(lang));
       for (ConceptDefinitionComponent c : cs.getConcept()) {
@@ -250,11 +250,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   private void makeHierarchyParam(XhtmlNode x, CodeSystem cs, Enumeration<CodeSystemHierarchyMeaning> hm) {
     if (hm.hasValue()) {
       String s = hm.getValue().getDisplay();
-      renderStatus(hm, x).tx(" in a "+s+" heirarchy");
+      renderStatus(hm, x).tx(" "+/*!#*/"in a "+s+" heirarchy");
     } else if (VersionComparisonAnnotation.hasDeleted(cs, "hierarchyMeaning")) {
       makeHierarchyParam(x, null, (Enumeration<CodeSystemHierarchyMeaning>) VersionComparisonAnnotation.getDeleted(cs, "hierarchyMeaning").get(0));
     } else if (CodeSystemUtilities.hasHierarchy(cs)) {
-      x.tx(" in an undefined heirarchy");
+      x.tx(" "+/*!#*/"in an undefined heirarchy");
     } else {
       x.tx("");
     }
@@ -285,7 +285,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private void addCopyColumn(XhtmlNode tr) {
     if (context.isCopyButton()) {
-      tr.td().b().tx("Copy");
+      tr.td().b().tx(/*!#*/"Copy");
     }
     
   }
@@ -467,7 +467,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         hasExtensions = true;
         if (ToolingExtensions.hasExtension(c, ToolingExtensions.EXT_REPLACED_BY)) {
           Coding cc = (Coding) ToolingExtensions.getExtension(c, ToolingExtensions.EXT_REPLACED_BY).getValue();
-          td.tx(" (replaced by ");
+          td.tx(" "+/*!#*/"(replaced by ");
           String url = getCodingReference(cc, system);
           if (url != null) {
             td.ah(url).addText(cc.getCode());
@@ -606,9 +606,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     if (context.isCopyButton()) {
       td = tr.td();
-      clipboard(td, "icon_clipboard_x.png", "XML", "<system value=\""+Utilities.escapeXml(cs.getUrl())+"\">\n"+(cs.getVersionNeeded() ? "<version value=\""+Utilities.escapeXml(cs.getVersion())+"\">\n" : "")+"<code value=\""+Utilities.escapeXml(c.getCode())+"\">\n<display value=\""+Utilities.escapeXml(c.getDisplay())+"\">\n");
+      clipboard(td, "icon_clipboard_x.png", /*!#*/"XML", "<system value=\""+Utilities.escapeXml(cs.getUrl())+"\">\n"+(cs.getVersionNeeded() ? "<version value=\""+Utilities.escapeXml(cs.getVersion())+"\">\n" : "")+"<code value=\""+Utilities.escapeXml(c.getCode())+"\">\n<display value=\""+Utilities.escapeXml(c.getDisplay())+"\">\n");
       td.nbsp();
-      clipboard(td, "icon_clipboard_j.png", "JSON", "\"system\" : \""+Utilities.escapeXml(cs.getUrl())+"\",\n"+(cs.getVersionNeeded() ? "\"version\" : \""+Utilities.escapeXml(cs.getVersion())+"\",\n" : "")+"\"code\" : \""+Utilities.escapeXml(c.getCode())+"\",\n\"display\" : \""+Utilities.escapeXml(c.getDisplay())+"\"\n");
+      clipboard(td, "icon_clipboard_j.png", /*!#*/"JSON", "\"system\" : \""+Utilities.escapeXml(cs.getUrl())+"\",\n"+(cs.getVersionNeeded() ? "\"version\" : \""+Utilities.escapeXml(cs.getVersion())+"\",\n" : "")+"\"code\" : \""+Utilities.escapeXml(c.getCode())+"\",\n\"display\" : \""+Utilities.escapeXml(c.getDisplay())+"\"\n");
     }
     return hasExtensions;
   }
