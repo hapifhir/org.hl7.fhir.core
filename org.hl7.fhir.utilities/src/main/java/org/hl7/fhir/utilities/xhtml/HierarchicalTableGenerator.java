@@ -94,22 +94,22 @@ public class HierarchicalTableGenerator {
     XML, XHTML
   }
 
-  public static final String TEXT_ICON_REFERENCE = "Reference to another Resource";
-  public static final String TEXT_ICON_PRIMITIVE = "Primitive Data Type";
-  public static final String TEXT_ICON_KEY = "JSON Key Value";
-  public static final String TEXT_ICON_DATATYPE = "Data Type";
-  public static final String TEXT_ICON_RESOURCE = "Resource";
-  public static final String TEXT_ICON_ELEMENT = "Element";
-  public static final String TEXT_ICON_OBJECT_BOX = "Object";
-  public static final String TEXT_ICON_REUSE = "Reference to another Element";
-  public static final String TEXT_ICON_EXTENSION = "Extension";
-  public static final String TEXT_ICON_CHOICE = "Choice of Types";
-  public static final String TEXT_ICON_SLICE = "Slice Definition";
-  public static final String TEXT_ICON_SLICE_ITEM = "Slice Item";
-  public static final String TEXT_ICON_FIXED = "Fixed Value";
-  public static final String TEXT_ICON_EXTENSION_SIMPLE = "Simple Extension";
-  public static final String TEXT_ICON_PROFILE = "Profile";
-  public static final String TEXT_ICON_EXTENSION_COMPLEX = "Complex Extension";
+  /*!#*/public static final String TEXT_ICON_REFERENCE = "Reference to another Resource";
+  /*!#*/public static final String TEXT_ICON_PRIMITIVE = "Primitive Data Type";
+  /*!#*/public static final String TEXT_ICON_KEY = "JSON Key Value";
+  /*!#*/public static final String TEXT_ICON_DATATYPE = "Data Type";
+  /*!#*/public static final String TEXT_ICON_RESOURCE = "Resource";
+  /*!#*/public static final String TEXT_ICON_ELEMENT = "Element";
+  /*!#*/public static final String TEXT_ICON_OBJECT_BOX = "Object";
+  /*!#*/public static final String TEXT_ICON_REUSE = "Reference to another Element";
+  /*!#*/public static final String TEXT_ICON_EXTENSION = "Extension";
+  /*!#*/public static final String TEXT_ICON_CHOICE = "Choice of Types";
+  /*!#*/public static final String TEXT_ICON_SLICE = "Slice Definition";
+  /*!#*/public static final String TEXT_ICON_SLICE_ITEM = "Slice Item";
+  /*!#*/public static final String TEXT_ICON_FIXED = "Fixed Value";
+  /*!#*/public static final String TEXT_ICON_EXTENSION_SIMPLE = "Simple Extension";
+  /*!#*/public static final String TEXT_ICON_PROFILE = "Profile";
+  /*!#*/public static final String TEXT_ICON_EXTENSION_COMPLEX = "Complex Extension";
 
   public static final int NEW_REGULAR = 0;
   public static final int CONTINUE_REGULAR = 1;

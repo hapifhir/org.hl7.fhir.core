@@ -209,7 +209,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   protected XhtmlNode addTableHeaderRowStandard(XhtmlNode t, boolean hasHierarchy, boolean hasDisplay, boolean definitions, boolean comments, boolean version, boolean deprecated, List<PropertyComponent> properties, List<String> langs, Map<String, String> designations, boolean doDesignations) {
     XhtmlNode tr = t.tr();
     if (hasHierarchy) {
-      tr.td().b().tx("Lvl");
+      tr.td().b().tx(/*!#*/"Lvl");
     }
     tr.td().attribute("style", "white-space:nowrap").b().tx(formatMessage(RenderingContext.RENDER_TX_CODE));
     if (hasDisplay) {
@@ -307,7 +307,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
         a.addText(value);
       } else if (value.equals("http://snomed.info/sct") || value.equals("http://snomed.info/id")) {
         XhtmlNode a = li.ah(value);
-        a.tx("SNOMED-CT");
+        a.tx(/*!#*/"SNOMED-CT");
       }
       else {
         if (value.startsWith("http://hl7.org") && !Utilities.existsInList(value, "http://hl7.org/fhir/sid/icd-10-us")) {
@@ -329,7 +329,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
 
 
   protected void clipboard(XhtmlNode x, String img, String title, String source) {
-    XhtmlNode span = x.span("cursor: pointer", "Copy "+title+" Format to clipboard");
+    XhtmlNode span = x.span("cursor: pointer", /*!#*/"Copy "+title+" Format to clipboard");
     span.attribute("onClick", "navigator.clipboard.writeText('"+Utilities.escapeJson(source)+"');");
     span.img(img, "btn").setAttribute("width", "24px").setAttribute("height", "16px");
   }
