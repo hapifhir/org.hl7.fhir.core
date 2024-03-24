@@ -99,7 +99,7 @@ public class StructureMapUtilities {
   public static final String MAP_WHERE_EXPRESSION = "map.where.expression";
   public static final String MAP_SEARCH_EXPRESSION = "map.search.expression";
   public static final String MAP_EXPRESSION = "map.transform.expression";
-  private static final boolean RENDER_MULTIPLE_TARGETS_ONELINE = true;
+  private static final boolean MULTIPLE_TARGETS_ONELINE = true;
   public static final String AUTO_VAR_NAME = "vvv";
   public static final String DEF_GROUP_NAME = "DefaultMappingGroupAnonymousAlias";
   
@@ -364,7 +364,7 @@ public class StructureMapUtilities {
           first = false;
         else
           b.append(", ");
-        if (RENDER_MULTIPLE_TARGETS_ONELINE)
+        if (MULTIPLE_TARGETS_ONELINE)
           b.append(' ');
         else {
           b.append("\r\n");

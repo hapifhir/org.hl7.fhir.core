@@ -211,21 +211,21 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     if (hasHierarchy) {
       tr.td().b().tx(/*!#*/"Lvl");
     }
-    tr.td().attribute("style", "white-space:nowrap").b().tx(formatMessage(RenderingContext.RENDER_TX_CODE));
+    tr.td().attribute("style", "white-space:nowrap").b().tx(formatMessage(RenderingContext.TX_CODE));
     if (hasDisplay) {
-      tr.td().b().tx(formatMessage(RenderingContext.RENDER_TX_DISPLAY));
+      tr.td().b().tx(formatMessage(RenderingContext.TX_DISPLAY));
     }
     if (definitions) {
-      tr.td().b().tx(formatMessage(RenderingContext.RENDER_TX_DEFINITION));
+      tr.td().b().tx(formatMessage(RenderingContext.TX_DEFINITION));
     }
     if (deprecated) {
-      tr.td().b().tx(formatMessage(RenderingContext.RENDER_TX_DEPRECATED));
+      tr.td().b().tx(formatMessage(RenderingContext.TX_DEPRECATED));
     }
     if (comments) {
-      tr.td().b().tx(formatMessage(RenderingContext.RENDER_TX_COMMENTS));
+      tr.td().b().tx(formatMessage(RenderingContext.TX_COMMENTS));
     }
     if (version) {
-      tr.td().b().tx(formatMessage(RenderingContext.RENDER_TX_VERSION));
+      tr.td().b().tx(formatMessage(RenderingContext.TX_VERSION));
     }
     if (properties != null) {
       for (PropertyComponent pc : properties) {

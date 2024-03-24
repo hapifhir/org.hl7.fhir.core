@@ -59,7 +59,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
   private static final String COLOR_CONST = "blue";
   private static final String COLOR_VARIABLE = "maroon";
   private static final String COLOR_SYNTAX = "navy";
-  private static final boolean RENDER_MULTIPLE_TARGETS_ONELINE = true;
+  private static final boolean MULTIPLE_TARGETS_ONELINE = true;
   private static final String COLOR_SPECIAL = "#b36b00";
   private static final String DEFAULT_COMMENT = /*!#*/"This element was not defined prior to R5";
   
@@ -382,7 +382,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
           first = false;
         else
           x.color(COLOR_SYNTAX).tx(", ");
-        if (RENDER_MULTIPLE_TARGETS_ONELINE)
+        if (MULTIPLE_TARGETS_ONELINE)
           x.tx(" ");
         else {
           x.tx("\r\n");
