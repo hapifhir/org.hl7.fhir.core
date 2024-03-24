@@ -212,8 +212,8 @@ public class ListRenderer extends ResourceRenderer {
   }
 
   private void shortForRef(XhtmlNode x, Reference ref) throws UnsupportedEncodingException, IOException {
-    ResourceWithReference r = context.getResolver().resolve(context, ref.getReference());
-    if (r == null) {
+    ResourceWithReference r = context.getResolver() == null ? null : context.getResolver().resolve(context, ref.getReference());
+    if (r == null) { 
       x.tx(display(ref));
     } else {
       RendererFactory.factory(r.getResource().getName(), context).renderReference(r.getResource(), x, ref);
