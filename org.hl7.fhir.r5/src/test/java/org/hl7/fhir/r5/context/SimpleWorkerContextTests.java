@@ -123,6 +123,16 @@ public class SimpleWorkerContextTests {
     }
   }
 
+  public class CodingMatcher implements ArgumentMatcher<Coding> {
+    final private Coding left;
+
+    CodingMatcher(Coding left) { this.left = left; }
+
+    public boolean matches(Coding right) {
+      return left.equalsShallow(right);
+    }
+  }
+
   public class ParametersMatcher implements ArgumentMatcher<Parameters> {
     final private Parameters left;
 
@@ -187,7 +197,7 @@ public class SimpleWorkerContextTests {
 
     assertEquals(expectedValidationResult, actualValidationResult);
 
-    Mockito.verify(valueSetCheckerSimple).validateCode("Coding", coding);
+    Mockito.verify(valueSetCheckerSimple).validateCode(eq("Coding"), argThat(new CodingMatcher(coding)));
     Mockito.verify(terminologyCache).getValidation(cacheToken);
     Mockito.verify(terminologyCache).cacheValidation(cacheToken, expectedValidationResult,false);
   }
@@ -325,7 +335,7 @@ public class SimpleWorkerContextTests {
 
     ValueSetExpansionOutcome actualExpansionResult = context.expandVS(inc, true, false);
 
-    // assertEquals(expectedValueSet, actualExpansionResult.getValueset());
+     assertEquals(expectedValueSet, actualExpansionResult.getValueset());
 
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
     Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult,true);
@@ -412,7 +422,7 @@ public class SimpleWorkerContextTests {
 
     ValueSetExpansionOutcome actualExpansionResult = context.expandVS(vs, true,  true, true, pIn, false);
 
-  //  assertEquals(expectedValueSet, actualExpansionResult.getValueset());
+    assertEquals(expectedValueSet, actualExpansionResult.getValueset());
 
     Mockito.verify(terminologyCache).getExpansion(cacheToken);
     Mockito.verify(terminologyCache).cacheExpansion(cacheToken, actualExpansionResult, true);
@@ -421,40 +431,37 @@ public class SimpleWorkerContextTests {
 
   @Test
   public void testInitializationWithCache() {
-//    String address = "/...";
-//    
-//    Mockito.doReturn(true).when(terminologyCache).hasTerminologyCapabilities(address);
-////    Mockito.doReturn(true).when(terminologyCache).hasCapabilityStatement();
-//
-//    Mockito.doReturn(terminologyCapabilities).when(terminologyCache).getTerminologyCapabilities(address);
-////    Mockito.doReturn(capabilitiesStatement).when(terminologyCache).getCapabilityStatement();
-//
-//    context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient);
-//
-//    Mockito.verify(terminologyCache).getTerminologyCapabilities(address);
-//    Mockito.verify(terminologyClient).getCapabilitiesStatementQuick();
-//    
-//    Mockito.verify(terminologyCache, times(0)).getCapabilityStatement(address);
-//    Mockito.verify(terminologyClient, times(0)).getTerminologyCapabilities();
+   String address = "dummyUrl";
+
+   Mockito.doReturn(true).when(terminologyCache).hasTerminologyCapabilities(address);
+
+    Mockito.doReturn(terminologyCapabilities).when(terminologyCache).getTerminologyCapabilities(address);
+
+    context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient);
+
+    Mockito.verify(terminologyCache).getTerminologyCapabilities(address);
+    Mockito.verify(terminologyClient).getCapabilitiesStatementQuick();
+
+    Mockito.verify(terminologyCache, times(0)).getCapabilityStatement(address);
+    Mockito.verify(terminologyClient, times(0)).getTerminologyCapabilities();
   }
 
   @Test
   public void testInitializationWithClient() {
-//    String address = "/...";
-//
-//    Mockito.doReturn(false).when(terminologyCache).hasTerminologyCapabilities(address);
-////    Mockito.doReturn(false).when(terminologyCache).hasCapabilityStatement();
-//
-//    Mockito.doReturn(terminologyCapabilities).when(terminologyClient).getTerminologyCapabilities();
-//    Mockito.doReturn(capabilitiesStatement).when(terminologyClient).getCapabilitiesStatementQuick();
-//
-//    context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient);
-//
-//    Mockito.verify(terminologyCache, times(0)).getTerminologyCapabilities(address);
-//    Mockito.verify(terminologyCache, times(0)).getCapabilityStatement(address);
-//
-//    Mockito.verify(terminologyClient).getTerminologyCapabilities();
-//    Mockito.verify(terminologyClient).getCapabilitiesStatementQuick();
+    String address = "dummyUrl";
+
+    Mockito.doReturn(false).when(terminologyCache).hasTerminologyCapabilities(address);
+
+    Mockito.doReturn(terminologyCapabilities).when(terminologyClient).getTerminologyCapabilities();
+    Mockito.doReturn(capabilitiesStatement).when(terminologyClient).getCapabilitiesStatementQuick();
+
+   context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient);
+
+    Mockito.verify(terminologyCache, times(0)).getTerminologyCapabilities(address);
+    Mockito.verify(terminologyCache, times(0)).getCapabilityStatement(address);
+
+    Mockito.verify(terminologyClient).getTerminologyCapabilities();
+    Mockito.verify(terminologyClient).getCapabilitiesStatementQuick();
 
   }
 

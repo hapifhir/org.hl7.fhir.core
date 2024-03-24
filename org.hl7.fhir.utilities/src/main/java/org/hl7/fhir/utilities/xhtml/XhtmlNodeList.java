@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.hl7.fhir.utilities.Utilities;
+
 public class XhtmlNodeList extends XhtmlFluent implements List<XhtmlNode>, java.io.Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -31,15 +33,13 @@ public class XhtmlNodeList extends XhtmlFluent implements List<XhtmlNode>, java.
   }
   
 
-  public XhtmlNode addTag(String name)
-  {
-    
-//    if (inPara && name.equals("p")) {
-//      throw new FHIRException("nested Para");
-//    }
-//    if (inLink && name.equals("a")) {
-//      throw new FHIRException("Nested Link");
-//    }
+  private XhtmlNode makeTag(String name) {
+//  if (inPara && name.equals("p")) {
+//  throw new FHIRException("nested Para");
+//}
+//if (inLink && name.equals("a")) {
+//  throw new FHIRException("Nested Link");
+//}
     XhtmlNode node = new XhtmlNode(NodeType.Element);
     node.setName(name);
     if (isInPara() || name.equals("p")) {
@@ -48,10 +48,24 @@ public class XhtmlNodeList extends XhtmlFluent implements List<XhtmlNode>, java.
     if (isInLink() || name.equals("a")) {
       node.getChildNodes().setInLink(true);
     }
+    if (Utilities.existsInList(name, "b", "big", "i", "small", "tt", "abbr", "acronym", "cite", "code", "dfn", "em", "kbd", "strong", "samp", "var", "a", "bdo", "br", "img", "map", "object", "q", "script", "span", "sub", "sup", " button", "input", "label", "select", "textarea")) {
+      node.notPretty();
+    }        
+    return node;
+  }
+  
+  public XhtmlNode addTag(String name) {
+    XhtmlNode node = makeTag(name);
     add(node);
     return node;
   }
-
+  
+  public XhtmlNode addTag(int index, String name) {
+    XhtmlNode node = makeTag(name);
+    add(index, node);
+    return node;
+  }
+  
   public XhtmlNode addText(String content) {
     if (content != null) {
       XhtmlNode node = new XhtmlNode(NodeType.Text);
@@ -183,4 +197,9 @@ public class XhtmlNodeList extends XhtmlFluent implements List<XhtmlNode>, java.
   protected void addChildren(XhtmlNodeList childNodes) {
     this.addAll(childNodes);    
   }
+  
+  protected int indexOfNode(XhtmlNode node) {
+    return indexOf(node);
+  }
+  
 }

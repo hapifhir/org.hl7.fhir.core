@@ -72,7 +72,6 @@ import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TimeTracker;
-import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -191,6 +190,15 @@ public interface IWorkerContext {
   public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_, FhirPublication fhirVersion);
   public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_);
 
+
+  /**
+   * Fetch all the resources for the given URL - all matching versions
+   * 
+   * @param url
+   * @return
+   */
+  public <T extends Resource> List<T> fetchResourcesByUrl(Class<T> class_, String url);
+  
   /**
    * Variation of fetchResource when you have a string type, and don't need the right class
    * 
@@ -379,6 +387,8 @@ public interface IWorkerContext {
 
   /**
    * Access to the contexts internationalised error messages
+   * 
+   * For rendering internationalization, see RenderingContext
    *  
    * @param theMessage
    * @param theMessageArguments
@@ -497,7 +507,6 @@ public interface IWorkerContext {
 
   // todo: figure these out
   public Map<String, NamingSystem> getNSUrlMap();
-  public TranslationServices translator();
 
   public void setLogger(@Nonnull ILoggingService logger);
   public ILoggingService getLogger();
@@ -639,5 +648,12 @@ public interface IWorkerContext {
   public <T extends Resource> T findTxResource(Class<T> class_, String canonical, Resource sourceOfReference);
   public <T extends Resource> T findTxResource(Class<T> class_, String canonical);
   public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version);
+
+  /**
+   * ask the terminology system whether parent subsumes child. 
+   * 
+   * @return true if it does, false if it doesn't, and null if it's not know whether it does
+   */
+  public Boolean subsumes(ValidationOptions options, Coding parent, Coding child);
 
 }

@@ -668,29 +668,21 @@ public class IgLoader implements IValidationEngineLoader {
     InputStream stream = null;
     if (explore) {
       stream = fetchFromUrlSpecific(Utilities.pathURL(src, "package.tgz"), true);
-      if (stream != null)
-        return loadPackage(stream, Utilities.pathURL(src, "package.tgz"), false);
-      // todo: these options are deprecated - remove once all IGs have been rebuilt post R4 technical correction
-      stream = fetchFromUrlSpecific(Utilities.pathURL(src, "igpack.zip"), true);
-      if (stream != null)
-        return readZip(stream);
-      stream = fetchFromUrlSpecific(Utilities.pathURL(src, "validator.pack"), true);
-      if (stream != null)
-        return readZip(stream);
-      stream = fetchFromUrlSpecific(Utilities.pathURL(src, "validator.pack"), true);
-      //// -----
+      if (stream != null) {
+        try {
+          return loadPackage(stream, Utilities.pathURL(src, "package.tgz"), false);
+        } catch (Exception e) {
+          // nothing
+        }
+      }    
     }
 
     // ok, having tried all that... now we'll just try to access it directly
     byte[] cnt;
     List<String> errors = new ArrayList<>();
-    if (stream != null) {
-      cnt = TextFile.streamToBytes(stream);
-    } else {
-      cnt = fetchFromUrlSpecific(src, "application/json", true, errors);
-      if (cnt == null) {
-        cnt = fetchFromUrlSpecific(src, "application/xml", true, errors);
-      }
+    cnt = fetchFromUrlSpecific(src, "application/json", true, errors);
+    if (cnt == null) {
+      cnt = fetchFromUrlSpecific(src, "application/xml", true, errors);
     }
     if (cnt == null) {
       throw new FHIRException("Unable to fetch content from " + src + " (" + errors.toString() + ")");
@@ -740,7 +732,8 @@ public class IgLoader implements IValidationEngineLoader {
     return b.toString();
   }
 
-  private Manager.FhirFormat checkFormat(byte[] cnt, String filename) {
+  private Manager.FhirFormat checkFormat(byte[] cnt, String filename) throws IOException {
+    String text = TextFile.bytesToString(cnt);
     System.out.println("   ..Detect format for " + filename);
     try {
       org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(cnt);

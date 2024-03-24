@@ -14,7 +14,7 @@ v: {
   "display" : "Body weight",
   "code" : "27113001",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20240201",
   "server" : "http://tx-dev.fhir.org/r2",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -37,7 +37,7 @@ v: {
   "display" : "Body weight",
   "code" : "27113001",
   "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20230901",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20240201",
   "server" : "http://tx-dev.fhir.org/r2",
   "unknown-systems" : "",
   "issues" : {

@@ -255,7 +255,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
 
-    if (expParams.getParameterBool("includeDesignations")) {
+    if (expParams.getParameterBool("includeDesignations") && designations != null) {
       
       for (ConceptDefinitionDesignationComponent t : designations) {
         if (t != pref && (t.hasLanguage() || t.hasUse()) && t.getValue() != null && passesDesignationFilter(t)) {
@@ -680,8 +680,6 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (debug) {
         e.printStackTrace();
       }
-      // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
-      // that might fail too, but it might not, later.
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e instanceof EFhirClientException || e instanceof TerminologyServiceException);
     }
   }
@@ -882,6 +880,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (vso.getError() != null) {
       addErrors(vso.getAllErrors());
       throw fail("Unable to expand imported value set "+vs.getUrl()+": " + vso.getError());
+    } else if (vso.getValueset() == null) {
+      throw fail("Unable to expand imported value set "+vs.getUrl()+" but no error");      
     }
     if (vs.hasVersion() || REPORT_VERSION_ANYWAY) {
       UriType u = new UriType(vs.getUrl() + (vs.hasVersion() ? "|"+vs.getVersion() : ""));
@@ -1220,12 +1220,22 @@ public class ValueSetExpander extends ValueSetProcessBase {
           }
         }
       }
-    } else if (isDefinedProperty(cs, fc.getProperty())) {
+    } else if (CodeSystemUtilities.isDefinedProperty(cs, fc.getProperty())) {
       for (ConceptDefinitionComponent def : cs.getConcept()) {
+        PropertyFilter pf = new PropertyFilter(allErrors, fc, CodeSystemUtilities.getPropertyDefinition(cs, fc.getProperty()));
         if (exclude) {
-          excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, new PropertyFilter(allErrors, fc, getPropertyDefinition(cs, fc.getProperty())), filters, exp);
+          excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, pf, filters, exp);
         } else {
-          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, new PropertyFilter(allErrors, fc, getPropertyDefinition(cs, fc.getProperty())), noInactive, exp.getProperty(), filters, exp);
+          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, pf, noInactive, exp.getProperty(), filters, exp);
+        }
+      }
+    } else if (isKnownProperty(fc.getProperty(), cs)) {
+      for (ConceptDefinitionComponent def : cs.getConcept()) {
+        KnownPropertyFilter pf = new KnownPropertyFilter(allErrors, fc, fc.getProperty());
+        if (exclude) {
+          excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, pf, filters, exp);
+        } else {
+          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, pf, noInactive, exp.getProperty(), filters, exp);
         }
       }
     } else if ("code".equals(fc.getProperty()) && fc.getOp() == FilterOperator.REGEX) {
@@ -1241,6 +1251,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
+  private boolean isKnownProperty(String property, CodeSystem cs) {
+    return Utilities.existsInList(property, "notSelectable");
+  }
+
   private List<ConceptDefinitionDesignationComponent> mergeDesignations(ConceptDefinitionComponent def,
       List<ConceptDefinitionDesignationComponent> list) {
     List<ConceptDefinitionDesignationComponent> res = new ArrayList<>();
@@ -1251,23 +1265,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return res;
   }
 
-  private PropertyComponent getPropertyDefinition(CodeSystem cs, String property) {
-    for (PropertyComponent cp : cs.getProperty()) {
-      if (cp.getCode().equals(property)) {
-        return cp;
-      }
-    }
-    return null;
-  }
-
-  private boolean isDefinedProperty(CodeSystem cs, String property) {
-    for (PropertyComponent cp : cs.getProperty()) {
-      if (cp.getCode().equals(property)) {
-        return true;
-      }
-    }
-    return false;
-  }
+ 
 
   private void addFragmentWarning(ValueSetExpansionComponent exp, CodeSystem cs) {
     String url = cs.getVersionedUrl();

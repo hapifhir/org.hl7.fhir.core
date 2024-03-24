@@ -66,14 +66,14 @@ class Convertor_Factory_40_50Test  {
     StructureMapUtilities smu5 = new StructureMapUtilities(context, mock(org.hl7.fhir.r5.utils.structuremap.ITransformerServices.class));
     org.hl7.fhir.r5.model.StructureMap mapR5 = smu5.parse(CONTENT, "map");
 
-    assertEquals("tgt", mapR5.getGroup().get(0).getRule().get(0).getTarget().get(0).getParameter().get(0).getValueIdType().getValue());
+    assertEquals("tgt", mapR5.getGroup().get(0).getRule().get(0).getTarget().get(0).getContext());
     assertEquals("item.answer.valueString", mapR5.getGroup().get(1).getRule().get(0).getTarget().get(0).getParameter().get(0).getValueStringType().getValue());
     assertEquals("item", mapR5.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(0).getValueIdType().getValueAsString());
     assertEquals("patient", mapR5.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(1).getValueIdType().getValueAsString());
 
 
     org.hl7.fhir.r4.model.StructureMap mapR4 = (org.hl7.fhir.r4.model.StructureMap) VersionConvertorFactory_40_50.convertResource(mapR5);
-    assertEquals("tgt", mapR4.getGroup().get(0).getRule().get(0).getTarget().get(0).getParameter().get(0).getValueIdType().getValue());
+    assertEquals("tgt", mapR4.getGroup().get(0).getRule().get(0).getTarget().get(0).getContext());
     assertEquals("item.answer.valueString", mapR4.getGroup().get(1).getRule().get(0).getTarget().get(0).getParameter().get(0).getValueStringType().getValue());
     assertEquals("item", mapR4.getGroup().get(0).getRule().get(0).getDependent().get(0).getVariable().get(0).getValueAsString());
     assertEquals("patient", mapR4.getGroup().get(0).getRule().get(0).getDependent().get(0).getVariable().get(1).getValueAsString());
@@ -87,7 +87,7 @@ class Convertor_Factory_40_50Test  {
 
 
     StructureMap mapR5Back = (StructureMap) VersionConvertorFactory_40_50.convertResource(mapR4);
-    assertEquals("tgt", mapR5Back.getGroup().get(0).getRule().get(0).getTarget().get(0).getParameter().get(0).getValueIdType().getValue());
+    assertEquals("tgt", mapR5Back.getGroup().get(0).getRule().get(0).getTarget().get(0).getContext());
     assertEquals("item.answer.valueString", mapR5Back.getGroup().get(1).getRule().get(0).getTarget().get(0).getParameter().get(0).getValueStringType().getValue());
     assertEquals("item", mapR5Back.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(0).getValueIdType().getValueAsString());
     assertEquals("patient", mapR5Back.getGroup().get(0).getRule().get(0).getDependent().get(0).getParameter().get(1).getValueIdType().getValueAsString());

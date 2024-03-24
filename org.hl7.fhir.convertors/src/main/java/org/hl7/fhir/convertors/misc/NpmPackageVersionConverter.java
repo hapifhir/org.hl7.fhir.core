@@ -300,7 +300,6 @@ public class NpmPackageVersionConverter {
       }
       throw new Error("Unknown version " + currentVersion + " -> " + version);
     } catch (Exception ex) {
-      ex.printStackTrace();
       errors.add("Error converting " + n + ": " + ex.getMessage());
       return null;
     }
@@ -335,6 +334,7 @@ public class NpmPackageVersionConverter {
       ig.setPackageId(packageId);
     }
   }
+
 
   private void convertResourceR5(Resource res) {
     if (res instanceof ImplementationGuide) {

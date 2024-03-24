@@ -55,7 +55,7 @@ v: {
   "display" : "General Practice Physician",
   "code" : "208D00000X",
   "system" : "http://nucc.org/provider-taxonomy",
-  "version" : "22.0",
+  "version" : "22.1",
   "server" : "http://tx-dev.fhir.org/r4",
   "unknown-systems" : "",
   "issues" : {

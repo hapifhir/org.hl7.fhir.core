@@ -4605,6 +4605,11 @@ public boolean hasTarget() {
 
   }
 
+  @Override
+  public String toString() {
+    return key + ":" + expression + (severity == null ? "("+severity.asStringValue()+")" : "");
+  }
+
   }
 
     @Block()
@@ -13091,6 +13096,10 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
       this.valueAlternatives = new ArrayList<CanonicalType>();
     this.valueAlternatives.add(t);
     return t;
+  }
+
+  public boolean repeats() {
+    return !Utilities.existsInList(getMax(), "0", "1");
   }
 
 // end addition

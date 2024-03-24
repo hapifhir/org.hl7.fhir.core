@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.test;
+package org.hl7.fhir.validation.tests;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;

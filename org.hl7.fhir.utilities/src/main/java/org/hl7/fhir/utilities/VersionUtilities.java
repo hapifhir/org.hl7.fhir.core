@@ -284,8 +284,15 @@ public class VersionUtilities {
   }
 
   public static String getMajMin(String version) {
-    if (version == null)
+    if (version == null) {
       return null;
+    }
+    if (version.startsWith("http://hl7.org/fhir/")) {
+      version = version.substring(20);
+      if (version.contains("/")) {
+        version = version.substring(0, version.indexOf("/"));
+      }
+    }
     
     if (Utilities.charCount(version, '.') == 1) {
       String[] p = version.split("\\.");
@@ -293,8 +300,8 @@ public class VersionUtilities {
     } else if (Utilities.charCount(version, '.') == 2) {
       String[] p = version.split("\\.");
       return p[0]+"."+p[1];
-    } else if (Utilities.existsInList(version, "R2", "R2B", "R3", "R4", "R4B", "R5", "R6")) {
-      switch (version) {
+    } else if (Utilities.existsInList(version.toUpperCase(), "R2", "R2B", "R3", "R4", "R4B", "R5", "R6")) {
+      switch (version.toUpperCase()) {
       case "R2": return "1.0";
       case "R2B": return "1.4";
       case "R3": return "3.0";
@@ -696,7 +703,11 @@ public class VersionUtilities {
   }
 
   public static String getNameForVersion(String v) {
-    switch (getMajMin(v)) {
+    String mm = getMajMin(v);
+    if (mm == null) {
+      throw new Error("Unable to determine version for '"+v+"'");
+    }
+    switch (mm) {
     case "1.0" : return "R2";
     case "1.4" : return "R2B";
     case "3.0" : return "R3";
@@ -727,6 +738,16 @@ public class VersionUtilities {
     } else {
       return ver1.compareTo(ver2);
     }
+  }
+
+  public static boolean includedInRange(String startVer, String stopVer, String ver) {
+    if (ver.equals(startVer)) {
+      return true;
+    }
+    if (ver.equals(stopVer)) {
+      return true;
+    }
+    return startVer.compareTo(ver) < 0 && stopVer.compareTo(ver) > 0;
   }
 
 

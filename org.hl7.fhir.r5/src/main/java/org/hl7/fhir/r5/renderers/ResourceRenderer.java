@@ -92,6 +92,12 @@ public abstract class ResourceRenderer extends DataRenderer {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     boolean hasExtensions;
     hasExtensions = render(x, r);
+    String an = r.fhirType()+"_"+r.getId();
+    if (context.isAddName()) {
+      if (!hasAnchorName(x, an)) {
+        injectAnchorName(x, an);
+      }
+    }
     inject(r, x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
   }
 
@@ -99,10 +105,51 @@ public abstract class ResourceRenderer extends DataRenderer {
     assert r.getContext() == context;
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
     boolean hasExtensions = render(x, r);
+
+    String an = r.fhirType()+"_"+r.getId();
+    if (context.isAddName()) {
+      if (!hasAnchorName(x, an)) {
+        injectAnchorName(x, an);
+      }
+    }
     if (r.hasNarrative()) {
       r.injectNarrative(x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
     }
     return x;
+  }
+
+  public XhtmlNode checkNarrative(ResourceWrapper r) throws IOException, FHIRException, EOperationOutcome { 
+    assert r.getContext() == context;
+    XhtmlNode x = r.getNarrative();
+    String an = r.fhirType()+"_"+r.getId();
+    if (context.isAddName()) {
+      if (!hasAnchorName(x, an)) {
+        injectAnchorName(x, an);
+      }
+    }
+    return x;
+  }
+
+  private void injectAnchorName(XhtmlNode x, String an) {
+    XhtmlNode ip = x;
+    while (ip.hasChildren() && "div".equals(ip.getChildNodes().get(0).getName())) {
+      ip = ip.getChildNodes().get(0);
+    }
+    ip.addTag(0, "a").setAttribute("name", an).tx(" ");    
+  }
+
+  protected boolean hasAnchorName(XhtmlNode x, String an) {
+    if ("a".equals(x.getName()) && an.equals(x.getAttribute("name"))) {
+      return true;
+    }
+    if (x.hasChildren()) {
+      for (XhtmlNode c : x.getChildNodes()) {
+        if (hasAnchorName(c, an)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   public abstract boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome;
@@ -163,11 +210,11 @@ public abstract class ResourceRenderer extends DataRenderer {
       CanonicalResource cr = (CanonicalResource) target;
       if (url.contains("|")) {
         if (target.hasWebPath()) {
-          x.ah(target.getWebPath()).tx(cr.present()+" (version "+cr.getVersion()+")");
+          x.ah(target.getWebPath()).tx(cr.present()+/*!#*/" (version "+cr.getVersion()+")");
         } else {
           url = url.substring(0, url.indexOf("|"));
           x.code().tx(url);
-          x.tx(": "+cr.present()+" (version "+cr.getVersion()+")");          
+          x.tx(": "+cr.present()+/*!#*/" (version "+cr.getVersion()+")");          
         }
       } else {
         if (target.hasWebPath()) {
@@ -235,14 +282,14 @@ public abstract class ResourceRenderer extends DataRenderer {
         if (tr != null && tr.getReference() != null) {
           link = tr.getReference();
         } else if (r.getReference().contains("?")) {
-          text.append("Conditional Reference: ");
+          text.append(/*!#*/"Conditional Reference: ");
         } else {
           link = r.getReference();
         }
       } 
     }
     if (tr != null && tr.getReference() != null && tr.getReference().startsWith("#")) {
-      text.append("See above (");
+      text.append(/*!#*/"See above (");
     }
     // what to display: if text is provided, then that. if the reference was resolved, then show the name, or the generated narrative
     String display = r.hasDisplayElement() ? r.getDisplay() : null;
@@ -286,7 +333,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else if (name != null) {
         text.append(name);
       } else {
-        text.append(". Description: (todo)");
+        text.append(/*!#*/". Description: (todo)");
       }
     }
     if (tr != null && tr.getReference() != null && tr.getReference().startsWith("#")) {
@@ -309,19 +356,21 @@ public abstract class ResourceRenderer extends DataRenderer {
         if (tr != null && tr.getReference() != null) {
           c = x.ah(tr.getReference());
         } else if (r.getReference().contains("?")) {
-          x.tx("Conditional Reference: ");
+          x.tx(/*!#*/"Conditional Reference: ");
           c = x.code("");
         } else {
           c = x.ah(r.getReference());
         }
+      } else if ("#".equals(r.getReference())) {
+        c = x.ah("#");
       } else {
-        c = x.ah(r.getReference());
+        c = x.ah("#hc"+r.getReference().substring(1));
       }
     } else {
       c = x.span(null, null);
     }
     if (tr != null && tr.getReference() != null && tr.getReference().startsWith("#")) {
-      c.tx("See above (");
+      c.tx(/*!#*/"See above (");
     }
     // what to display: if text is provided, then that. if the reference was resolved, then show the name, or the generated narrative
     String display = r.hasDisplayElement() ? r.getDisplay() : null;
@@ -365,7 +414,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else if (name != null) {
         c.addText(name);
       } else {
-        c.tx(". Generated Summary: ");
+        c.tx(/*!#*/". Generated Summary: ");
         if (tr != null) {
           new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), true, r.getReference().startsWith("#"), true);
         }
@@ -397,7 +446,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (r.has("display")) {
       c.addText(r.get("display").primitiveValue());
       if (tr != null && tr.getResource() != null) {
-        c.tx(". Generated Summary: ");
+        c.tx(/*!#*/". Generated Summary: ");
         new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), true, v.startsWith("#"), false);
       }
     } else if (tr != null && tr.getResource() != null) {
@@ -438,7 +487,11 @@ public abstract class ResourceRenderer extends DataRenderer {
         String bundleUrl = null;
         Element br = bundleElement.getNamedChild("resource", false);
         if (br.getChildValue("id") != null) {
-          bundleUrl = "#" + br.fhirType() + "_" + br.getChildValue("id");
+          if ("Bundle".equals(br.fhirType())) {
+            bundleUrl = "#";
+          } else {
+            bundleUrl = "#" + br.fhirType() + "_" + br.getChildValue("id");
+          }
         } else {
           bundleUrl = "#" +fullUrlToAnchor(bundleElement.getChildValue("fullUrl"));          
         }
@@ -472,12 +525,12 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   protected void generateCopyright(XhtmlNode x, CanonicalResource cs) {
     XhtmlNode p = x.para();
-    p.b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Copyright Statement:", context.getLang()));
+    p.b().tx(getContext().formatMessage(RenderingContext.RENDER_RESOURCE_COPYRIGHT));
     smartAddText(p, " " + cs.getCopyright());
   }
 
   public String displayReference(Resource res, Reference r) throws UnsupportedEncodingException, IOException {
-    return "todo"; 
+    return /*!#*/"todo"; 
    }
    
 
@@ -522,10 +575,10 @@ public abstract class ResourceRenderer extends DataRenderer {
 
    protected String describeStatus(PublicationStatus status, boolean experimental) {
      switch (status) {
-     case ACTIVE: return experimental ? "Experimental" : "Active"; 
-     case DRAFT: return "draft";
-     case RETIRED: return "retired";
-     default: return "Unknown";
+     case ACTIVE: return experimental ? /*!#*/"Experimental" : /*!#*/"Active"; 
+     case DRAFT: return /*!#*/"draft";
+     case RETIRED: return /*!#*/"retired";
+     default: return /*!#*/"Unknown";
      }
    }
 
@@ -559,7 +612,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
     String id = getPrimitiveValue(r, "id"); 
     if (doId) {
-      div.an(id);
+      div.an("hc"+id);
     }
 
     String lang = getPrimitiveValue(r, "language"); 
@@ -571,35 +624,35 @@ public abstract class ResourceRenderer extends DataRenderer {
     
     if (id != null || lang != null || versionId != null || lastUpdated != null) {
       XhtmlNode p = plateStyle(div.para());
-      p.tx("Resource ");
+      p.tx(/*!#*/"Resource ");
       p.tx(r.fhirType());
       p.tx(" ");
       if (id != null) {
         p.tx("\""+id+"\" ");
       }
       if (versionId != null) {
-        p.tx("Version \""+versionId+"\" ");
+        p.tx(/*!#*/"Version \""+versionId+"\" ");
       }
       if (lastUpdated != null) {
-        p.tx("Updated \"");
+        p.tx(/*!#*/"Updated \"");
         renderDateTime(p, lastUpdated);
         p.tx("\" ");
       }
       if (lang != null) {
-        p.tx(" (Language \""+lang+"\") ");
+        p.tx(/*!#*/" (Language \""+lang+"\") ");
       }
     }
     if (ir != null) {
-      plateStyle(div.para()).b().tx("Special rules apply: "+ir+"!");     
+      plateStyle(div.para()).b().tx(/*!#*/"Special rules apply: "+ir+"!");     
     }
     if (source != null) {
-      plateStyle(div.para()).tx("Information Source: "+source+"!");           
+      plateStyle(div.para()).tx(/*!#*/"Information Source: "+source+"!");           
     }
     if (meta != null) {
       PropertyWrapper pl = meta.getChildByName("profile");
       if (pl.hasValues()) {
         XhtmlNode p = plateStyle(div.para());
-        p.tx(Utilities.pluralize("Profile", pl.getValues().size())+": ");
+        p.tx(Utilities.pluralize(/*!#*/"Profile", pl.getValues().size())+": ");
         boolean first = true;
         for (BaseWrapper bw : pl.getValues()) {
           if (first) first = false; else p.tx(", ");
@@ -609,7 +662,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       PropertyWrapper tl = meta.getChildByName("tag");
       if (tl.hasValues()) {
         XhtmlNode p = plateStyle(div.para());
-        p.tx(Utilities.pluralize("Tag", tl.getValues().size())+": ");
+        p.tx(Utilities.pluralize(/*!#*/"Tag", tl.getValues().size())+": ");
         boolean first = true;
         for (BaseWrapper bw : tl.getValues()) {
           if (first) first = false; else p.tx(", ");
@@ -623,7 +676,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       PropertyWrapper sl = meta.getChildByName("security");
       if (sl.hasValues()) {
         XhtmlNode p = plateStyle(div.para());
-        p.tx(Utilities.pluralize("Security Label", tl.getValues().size())+": ");
+        p.tx(Utilities.pluralize(/*!#*/"Security Label", tl.getValues().size())+": ");
         boolean first = true;
         for (BaseWrapper bw : sl.getValues()) {
           if (first) first = false; else p.tx(", ");
@@ -655,7 +708,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       render(dr);
     } catch (Exception e) {
       XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-      x.para().tx("Error rendering: "+e.getMessage());
+      x.para().tx(/*!#*/"Error rendering: "+e.getMessage());
       dr.setText(null);
       inject(dr, x, NarrativeStatus.GENERATED);   
     }
