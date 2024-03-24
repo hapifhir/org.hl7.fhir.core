@@ -68,7 +68,7 @@ public class BundleRenderer extends ResourceRenderer {
       // nothing
     } else {
       XhtmlNode root = new XhtmlNode(NodeType.Element, "div");
-      root.para().addText(formatMessage(RenderingContext.RENDER_BUNDLE_HEADER_ROOT, b.getId(), b.get("type").primitiveValue()));
+      root.para().addText(formatMessage(RenderingContext.BUNDLE_HEADER_ROOT, b.getId(), b.get("type").primitiveValue()));
       int i = 0;
       for (BaseWrapper be : entries) {
         i++;
@@ -85,9 +85,9 @@ public class BundleRenderer extends ResourceRenderer {
         }
         root.hr();
         if (be.has("fullUrl")) {
-          root.para().addText(formatMessage(RenderingContext.RENDER_BUNDLE_HEADER_ENTRY_URL, Integer.toString(i), be.get("fullUrl").primitiveValue()));
+          root.para().addText(formatMessage(RenderingContext.BUNDLE_HEADER_ENTRY_URL, Integer.toString(i), be.get("fullUrl").primitiveValue()));
         } else {
-          root.para().addText(formatMessage(RenderingContext.RENDER_BUNDLE_HEADER_ENTRY, Integer.toString(i)));
+          root.para().addText(formatMessage(RenderingContext.BUNDLE_HEADER_ENTRY, Integer.toString(i)));
         }
 //        if (be.hasRequest())
 //          renderRequest(root, be.getRequest());
@@ -96,7 +96,7 @@ public class BundleRenderer extends ResourceRenderer {
 //        if (be.hasResponse())
 //          renderResponse(root, be.getResponse());
         if (be.has("resource")) {
-          root.para().addText(formatMessage(RenderingContext.RENDER_BUNDLE_RESOURCE, be.get("resource").fhirType()));
+          root.para().addText(formatMessage(RenderingContext.BUNDLE_RESOURCE, be.get("resource").fhirType()));
           ResourceWrapper rw = be.getChildByName("resource").getAsResource();
           XhtmlNode xn = rw.getNarrative();
           if (xn == null || xn.isEmpty()) {
@@ -286,9 +286,9 @@ public class BundleRenderer extends ResourceRenderer {
         start = 1;
         docMode = true;
         x.hr();
-        x.h2().addText(formatMessage(RenderingContext.RENDER_BUNDLE_DOCUMENT_CONTENT, b.getId(), b.getType().toCode()));
+        x.h2().addText(formatMessage(RenderingContext.BUNDLE_DOCUMENT_CONTENT, b.getId(), b.getType().toCode()));
       } else {
-        x.para().addText(formatMessage(RenderingContext.RENDER_BUNDLE_HEADER_ROOT, b.getId(), b.getType().toCode()));
+        x.para().addText(formatMessage(RenderingContext.BUNDLE_HEADER_ROOT, b.getId(), b.getType().toCode()));
       }
       int i = 0;
       for (BundleEntryComponent be : b.getEntry()) {
@@ -307,17 +307,17 @@ public class BundleRenderer extends ResourceRenderer {
           x.hr();
           if (docMode) {
             if (be.hasFullUrl() && be.hasResource()) {
-              x.para().addText(formatMessage(RenderingContext.RENDER_BUNDLE_HEADER_DOC_ENTRY_URD, Integer.toString(i), be.getFullUrl(), be.getResource().fhirType(), be.getResource().getIdBase()));
+              x.para().addText(formatMessage(RenderingContext.BUNDLE_HEADER_DOC_ENTRY_URD, Integer.toString(i), be.getFullUrl(), be.getResource().fhirType(), be.getResource().getIdBase()));
             } else if (be.hasFullUrl()) {
-              x.para().addText(formatMessage(RenderingContext.RENDER_BUNDLE_HEADER_DOC_ENTRY_U, Integer.toString(i), be.getFullUrl()));
+              x.para().addText(formatMessage(RenderingContext.BUNDLE_HEADER_DOC_ENTRY_U, Integer.toString(i), be.getFullUrl()));
             } else if (be.hasResource()) {
-              x.para().addText(formatMessage(RenderingContext.RENDER_BUNDLE_HEADER_DOC_ENTRY_RD, Integer.toString(i), be.getResource().fhirType(), be.getResource().getIdBase()));              
+              x.para().addText(formatMessage(RenderingContext.BUNDLE_HEADER_DOC_ENTRY_RD, Integer.toString(i), be.getResource().fhirType(), be.getResource().getIdBase()));              
             }
           } else {
             if (be.hasFullUrl()) {
-              x.para().addText(formatMessage(RenderingContext.RENDER_BUNDLE_HEADER_ENTRY_URL, Integer.toString(i), be.getFullUrl()));
+              x.para().addText(formatMessage(RenderingContext.BUNDLE_HEADER_ENTRY_URL, Integer.toString(i), be.getFullUrl()));
             } else {
-              x.para().addText(formatMessage(RenderingContext.RENDER_BUNDLE_HEADER_ENTRY, Integer.toString(i)));
+              x.para().addText(formatMessage(RenderingContext.BUNDLE_HEADER_ENTRY, Integer.toString(i)));
             }
             if (be.hasRequest())
               renderRequest(x, be.getRequest());
@@ -328,7 +328,7 @@ public class BundleRenderer extends ResourceRenderer {
           }
           if (be.hasResource()) {
             if (!docMode) {
-              x.para().addText(formatMessage(RenderingContext.RENDER_BUNDLE_RESOURCE, be.getResource().fhirType()));
+              x.para().addText(formatMessage(RenderingContext.BUNDLE_RESOURCE, be.getResource().fhirType()));
             }
             if (be.hasResource()) {
               XhtmlNode xn = null;
@@ -401,42 +401,42 @@ public class BundleRenderer extends ResourceRenderer {
 
   private void renderSearch(XhtmlNode root, BundleEntrySearchComponent search) {
     StringBuilder b = new StringBuilder();
-    b.append(formatMessage(RenderingContext.RENDER_BUNDLE_SEARCH));
+    b.append(formatMessage(RenderingContext.BUNDLE_SEARCH));
     if (search.hasMode())
-      b.append(formatMessage(RenderingContext.RENDER_BUNDLE_SEARCH_MODE, search.getMode().toCode()));
+      b.append(formatMessage(RenderingContext.BUNDLE_SEARCH_MODE, search.getMode().toCode()));
     if (search.hasScore()) {
       if (search.hasMode())
         b.append(",");
-      b.append(formatMessage(RenderingContext.RENDER_BUNDLE_SEARCH_SCORE, search.getScore()));
+      b.append(formatMessage(RenderingContext.BUNDLE_SEARCH_SCORE, search.getScore()));
     }
     root.para().addText(b.toString());    
   }
 
   private void renderResponse(XhtmlNode root, BundleEntryResponseComponent response) {
-    root.para().addText(formatMessage(RenderingContext.RENDER_BUNDLE_RESPONSE));
+    root.para().addText(formatMessage(RenderingContext.BUNDLE_RESPONSE));
     StringBuilder b = new StringBuilder();
     b.append(response.getStatus()+"\r\n");
     if (response.hasLocation())
-      b.append(formatMessage(RenderingContext.RENDER_BUNDLE_LOCATION, response.getLocation())+"\r\n");
+      b.append(formatMessage(RenderingContext.BUNDLE_LOCATION, response.getLocation())+"\r\n");
     if (response.hasEtag())
-      b.append(formatMessage(RenderingContext.RENDER_BUNDLE_ETAG, response.getEtag())+"\r\n");
+      b.append(formatMessage(RenderingContext.BUNDLE_ETAG, response.getEtag())+"\r\n");
     if (response.hasLastModified())
-      b.append(formatMessage(RenderingContext.RENDER_BUNDLE_LAST_MOD, response.getEtag())+"\r\n");
+      b.append(formatMessage(RenderingContext.BUNDLE_LAST_MOD, response.getEtag())+"\r\n");
     root.pre().addText(b.toString());    
   }
 
   private void renderRequest(XhtmlNode root, BundleEntryRequestComponent request) {
-    root.para().addText(formatMessage(RenderingContext.RENDER_BUNDLE_REQUEST));
+    root.para().addText(formatMessage(RenderingContext.BUNDLE_REQUEST));
     StringBuilder b = new StringBuilder();
     b.append(request.getMethod()+" "+request.getUrl()+"\r\n");
     if (request.hasIfNoneMatch())
-      b.append(formatMessage(RenderingContext.RENDER_BUNDLE_IF_NON_MATCH, request.getIfNoneMatch())+"\r\n");
+      b.append(formatMessage(RenderingContext.BUNDLE_IF_NON_MATCH, request.getIfNoneMatch())+"\r\n");
     if (request.hasIfModifiedSince())
-      b.append(formatMessage(RenderingContext.RENDER_BUNDLE_IF_MOD, request.getIfModifiedSince())+"\r\n");
+      b.append(formatMessage(RenderingContext.BUNDLE_IF_MOD, request.getIfModifiedSince())+"\r\n");
     if (request.hasIfMatch())
-      b.append(formatMessage(RenderingContext.RENDER_BUNDLE_IF_MATCH, request.getIfMatch())+"\r\n");
+      b.append(formatMessage(RenderingContext.BUNDLE_IF_MATCH, request.getIfMatch())+"\r\n");
     if (request.hasIfNoneExist())
-      b.append(formatMessage(RenderingContext.RENDER_BUNDLE_IF_NONE, request.getIfNoneExist())+"\r\n");
+      b.append(formatMessage(RenderingContext.BUNDLE_IF_NONE, request.getIfNoneExist())+"\r\n");
     root.pre().addText(b.toString());    
   }
 

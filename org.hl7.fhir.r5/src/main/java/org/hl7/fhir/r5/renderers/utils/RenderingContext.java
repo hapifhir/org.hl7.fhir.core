@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.renderers.utils;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,7 +19,10 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
@@ -166,7 +170,7 @@ public class RenderingContext extends RenderingI18nContext {
       return this == XML_ALL || this == XML;
     }
   }
-  
+
   private IWorkerContext worker;
   private MarkDownProcessor markdown;
   private ResourceRendererMode mode;
@@ -743,6 +747,19 @@ public class RenderingContext extends RenderingI18nContext {
 
   public Map<String, String> getTypeMap() {
     return typeMap;
+  }
+
+  public String getTranslated(PrimitiveType<?> t) {
+    String v = ToolingExtensions.getLanguageTranslation(t, lang);
+    if (v != null) {
+      return v;
+    }
+    return t.asStringValue();
+  }
+
+  public String toStr(int v) {
+    NumberFormat nf = NumberFormat.getInstance(locale);
+    return nf.format(v);
   }
 
   

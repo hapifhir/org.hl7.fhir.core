@@ -793,7 +793,7 @@ public class ToolingExtensions {
       if (e.getUrl().equals(EXT_TRANSLATION)) {
         Extension e1 = ExtensionHelper.getExtension(e, "lang");
 
-        if (e1 != null && e1.getValue() instanceof CodeType && ((CodeType) e.getValue()).getValue().equals(lang)) {
+        if (e1 != null && e1.getValue() != null && e1.getValue() instanceof CodeType && ((CodeType) e1.getValue()).getValue().equals(lang)) {
           e1 = ExtensionHelper.getExtension(e, "content");
           return ((StringType) e.getValue()).getValue();
         }

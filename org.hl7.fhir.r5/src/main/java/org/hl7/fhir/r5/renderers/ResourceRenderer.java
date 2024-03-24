@@ -525,7 +525,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   protected void generateCopyright(XhtmlNode x, CanonicalResource cs) {
     XhtmlNode p = x.para();
-    p.b().tx(getContext().formatMessage(RenderingContext.RENDER_RESOURCE_COPYRIGHT));
+    p.b().tx(getContext().formatMessage(RenderingContext.RESOURCE_COPYRIGHT));
     smartAddText(p, " " + cs.getCopyright());
   }
 
