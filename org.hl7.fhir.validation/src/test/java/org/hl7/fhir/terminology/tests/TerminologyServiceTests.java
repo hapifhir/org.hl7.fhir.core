@@ -147,17 +147,17 @@ public class TerminologyServiceTests {
       engine.getContext().setExpansionParameters((org.hl7.fhir.r5.model.Parameters) loadResource("parameters-default.json"));
     }
     if (setup.test.asString("operation").equals("expand")) {
-      expand(engine, req, resp, setup.test.asString("Content-Language"), fp, ext);
+      expand(setup.test.str("name"), engine, req, resp, setup.test.asString("Content-Language"), fp, ext);
     } else if (setup.test.asString("operation").equals("validate-code")) {
-      validate(engine, setup.test.asString("name"), req, resp, setup.test.asString("Content-Language"), fp, ext, false);      
+      validate(setup.test.str("name"), engine, setup.test.asString("name"), req, resp, setup.test.asString("Content-Language"), fp, ext, false);      
     } else if (setup.test.asString("operation").equals("cs-validate-code")) {
-      validate(engine, setup.test.asString("name"), req, resp, setup.test.asString("Content-Language"), fp, ext, true);      
+      validate(setup.test.str("name"), engine, setup.test.asString("name"), req, resp, setup.test.asString("Content-Language"), fp, ext, true);      
     } else {
       Assertions.fail("Unknown Operation "+setup.test.asString("operation"));
     }
   }
 
-  private void expand(ValidationEngine engine, Resource req, String resp, String lang, String fp, JsonObject ext) throws IOException {
+  private void expand(String id, ValidationEngine engine, Resource req, String resp, String lang, String fp, JsonObject ext) throws IOException {
     org.hl7.fhir.r5.model.Parameters p = ( org.hl7.fhir.r5.model.Parameters) req;
     ValueSet vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
     boolean hierarchical = p.hasParameter("excludeNested") ? p.getParameterBool("excludeNested") == false : true;
@@ -176,7 +176,7 @@ public class TerminologyServiceTests {
         TxTesterSorters.sortValueSet(vse.getValueset());
         TxTesterScrubbers.scrubVS(vse.getValueset(), false);
         String vsj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
-        String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj, ext);
+        String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, vsj, ext);
         if (diff != null) {
           Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
           TextFile.stringToFile(vsj, fp);        
@@ -225,7 +225,7 @@ public class TerminologyServiceTests {
       TxTesterScrubbers.scrubOO(oo, false);
 
       String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
-      String diff = CompareUtilities.checkJsonSrcIsSame(resp, ooj, ext);
+      String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, ooj, ext);
       if (diff != null) {
         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
         TextFile.stringToFile(ooj, fp);        
@@ -243,7 +243,7 @@ public class TerminologyServiceTests {
     }
   }
 
-  private void validate(ValidationEngine engine, String name, Resource req, String resp, String lang, String fp, JsonObject ext, boolean isCS) throws JsonSyntaxException, FileNotFoundException, IOException {
+  private void validate(String id, ValidationEngine engine, String name, Resource req, String resp, String lang, String fp, JsonObject ext, boolean isCS) throws JsonSyntaxException, FileNotFoundException, IOException {
     org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) req;
     ValueSet vs = null;
     String vsurl = null;
@@ -324,7 +324,7 @@ public class TerminologyServiceTests {
       TxTesterScrubbers.scrubOO(oo, false);
       
       String pj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
-      String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, ext);
+      String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, pj, ext);
       if (diff != null) {
         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
         TextFile.stringToFile(pj, fp); 
@@ -395,7 +395,7 @@ public class TerminologyServiceTests {
       TxTesterScrubbers.scrubParams(res);
 
       String pj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(res);
-      String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, ext);
+      String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, pj, ext);
       if (diff != null) {
         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
         TextFile.stringToFile(pj, fp); 

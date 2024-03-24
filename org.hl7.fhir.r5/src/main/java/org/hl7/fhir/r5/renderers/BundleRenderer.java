@@ -40,6 +40,12 @@ public class BundleRenderer extends ResourceRenderer {
     super(context);
   }
 
+
+  public BundleRenderer setMultiLangMode(boolean multiLangMode) {
+    this.multiLangMode = multiLangMode;
+    return this;
+  }
+  
   @Override
   public boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     XhtmlNode n = render((Bundle) r);

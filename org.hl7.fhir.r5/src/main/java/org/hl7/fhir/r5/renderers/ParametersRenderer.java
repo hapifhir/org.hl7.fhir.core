@@ -28,6 +28,12 @@ public class ParametersRenderer extends ResourceRenderer {
   public ParametersRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
+  
+
+  public ParametersRenderer setMultiLangMode(boolean multiLangMode) {
+    this.multiLangMode = multiLangMode;
+    return this;
+  }
 
   @Override
   public boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {

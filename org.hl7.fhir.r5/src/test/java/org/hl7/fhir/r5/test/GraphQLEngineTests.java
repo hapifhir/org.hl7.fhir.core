@@ -67,10 +67,10 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
 
     Resource parsedResource =  stream != null ? new XmlParser().parse(stream) : null;
 
-    testResource(parsedResource, output, source, operation);
+    testResource(name, parsedResource, output, source, operation);
   }
 
-  private void testResource(Resource resource, String output, String source, String operation) throws IOException, EGraphEngine, EGraphQLException {
+  private void testResource(String id, Resource resource, String output, String source, String operation) throws IOException, EGraphEngine, EGraphQLException {
     GraphQLEngine gql = new GraphQLEngine(TestingUtilities.getSharedWorkerContext());
     gql.setServices(this);
     if (resource != null)
@@ -97,7 +97,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       IOUtils.copy(CompareUtilities.loadTestResourceStream("r5", "graphql", source), new FileOutputStream(CompareUtilities.tempFile("graphql", source)));
       IOUtils.copy(CompareUtilities.loadTestResourceStream("r5", "graphql", output), new FileOutputStream(CompareUtilities.tempFile("graphql", output)));
       TextFile.stringToFile(str.toString(), CompareUtilities.tempFile("graphql", output+".out"));
-      msg = CompareUtilities.checkJsonIsSame(CompareUtilities.tempFile("graphql", output), CompareUtilities.tempFile("graphql", output+".out"));
+      msg = CompareUtilities.checkJsonIsSame(id, CompareUtilities.tempFile("graphql", output), CompareUtilities.tempFile("graphql", output+".out"));
       Assertions.assertTrue(Utilities.noString(msg), msg);
     }
     else
@@ -106,7 +106,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
   }
 
   @Test
-  public void testReferenceReverseHistory() throws Exception {
+  public void testReferenceReverseHistory(String id) throws Exception {
     String context = "Patient/example/$graphql";
     String source = "reference-reverse.gql";
     String output="reference-reverse-history.json";
@@ -119,7 +119,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     //Rather than duplicate the entire resource we modify the ID with a _history path
     parsedResource.setId("example/_history/1");
 
-    testResource(parsedResource, output, source, null);
+    testResource(id, parsedResource, output, source, null);
   }
 
   @Override
