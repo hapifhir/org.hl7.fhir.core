@@ -53,6 +53,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   protected ResourceContext rcontext;
   protected XVerExtensionManager xverManager;
+  protected boolean multiLangMode;
   
   
   public ResourceRenderer(RenderingContext context) {
@@ -70,6 +71,16 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   public ResourceRenderer setRcontext(ResourceContext rcontext) {
     this.rcontext = rcontext;
+    return this;
+  }
+
+  
+  public boolean isMultiLangMode() {
+    return multiLangMode;
+  }
+
+  public ResourceRenderer setMultiLangMode(boolean multiLangMode) {
+    this.multiLangMode = multiLangMode;
     return this;
   }
 
@@ -113,7 +124,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       }
     }
     if (r.hasNarrative()) {
-      r.injectNarrative(x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
+      r.injectNarrative(this, x, hasExtensions ? NarrativeStatus.EXTENSIONS :  NarrativeStatus.GENERATED);
     }
     return x;
   }
@@ -170,23 +181,32 @@ public abstract class ResourceRenderer extends DataRenderer {
   public abstract String display(Resource r) throws UnsupportedEncodingException, IOException;
   public abstract String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException;
   
-  public static void inject(DomainResource r, XhtmlNode x, NarrativeStatus status) {
-    if (!x.hasAttribute("xmlns"))
-      x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-    if (r.hasLanguage()) {
-      // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
-      x.setAttribute("lang", r.getLanguage());
-      x.setAttribute("xml:lang", r.getLanguage());
-    }
+  public void inject(DomainResource r, XhtmlNode x, NarrativeStatus status) {
     r.getText().setUserData("renderer.generated", true);
-    if (!r.hasText() || !r.getText().hasDiv() || r.getText().getDiv().getChildNodes().isEmpty()) {
+    if (!r.hasText() || !r.getText().hasDiv()) {
       r.setText(new Narrative());
-      r.getText().setDiv(x);
-      r.getText().setStatus(status);
+      r.getText().setStatus(status);      
+    }
+    if (multiLangMode) {
+      if (!r.getText().hasDiv()) { 
+        XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
+        div.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+        r.getText().setDiv(div);
+      } else {
+        r.getText().getDiv().getChildNodes().removeIf(c -> !"div".equals(c.getName()) || !c.hasAttribute("xml:lang"));
+      }
+      x.setAttribute("lang", context.getLang());
+      x.setAttribute("xml:lang", context.getLang());
+      r.getText().getDiv().getChildNodes().add(x);
     } else {
-      XhtmlNode n = r.getText().getDiv();
-      n.clear();
-      n.getChildNodes().addAll(x.getChildNodes());
+      if (!x.hasAttribute("xmlns"))
+        x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+      if (r.hasLanguage()) {
+        // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
+        x.setAttribute("lang", r.getLanguage());
+        x.setAttribute("xml:lang", r.getLanguage());
+      }
+      r.getText().setDiv(x);
     }
   }
 

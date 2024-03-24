@@ -280,8 +280,8 @@ public class DirectWrappers {
     }
 
     @Override
-    public void injectNarrative(XhtmlNode x, NarrativeStatus status) {
-      ResourceRenderer.inject((DomainResource) wrapped, x, status);
+    public void injectNarrative(ResourceRenderer renderer, XhtmlNode x, NarrativeStatus status) {
+      renderer.inject((DomainResource) wrapped, x, status);
       
     }
 

@@ -20,7 +20,7 @@ public abstract class I18nBase {
 
   public static final String PLURAL_SUFFIX = "PLURAL";
   public static final String KEY_DELIMITER = "_";
-  private Locale locale;
+  protected Locale locale;
   private ResourceBundle messages;
   private PluralRules pluralRules;
   private boolean warnAboutMissingMessages = true;

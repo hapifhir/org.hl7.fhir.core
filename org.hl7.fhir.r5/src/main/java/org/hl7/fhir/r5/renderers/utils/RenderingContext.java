@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.PrimitiveType;
@@ -207,7 +208,6 @@ public class RenderingContext extends RenderingI18nContext {
   private boolean showComments = false;
 
   private FhirPublication targetVersion;
-  private Locale locale;
   private ZoneId timeZoneId;
   private DateTimeFormatter dateTimeFormat;
   private DateTimeFormatter dateFormat;
@@ -279,7 +279,6 @@ public class RenderingContext extends RenderingI18nContext {
     res.dateYearFormat = dateYearFormat;
     res.dateYearMonthFormat = dateYearMonthFormat;
     res.targetVersion = targetVersion;
-    res.locale = locale;
     res.showComments = showComments;
     res.copyButton = copyButton;
     res.pkp = pkp;
@@ -501,6 +500,7 @@ public class RenderingContext extends RenderingI18nContext {
 
   public RenderingContext setLang(String lang) {
     this.lang = lang;
+    setLocale(new Locale(lang));
     return this;
   }
 
@@ -530,23 +530,6 @@ public class RenderingContext extends RenderingI18nContext {
   public boolean isTechnicalMode() {
     return mode == ResourceRendererMode.TECHNICAL;
   }
-
-  public boolean hasLocale() {
-    return locale != null;
-  }
-  
-  public Locale getLocale() {
-    if (locale == null) {
-      return Locale.getDefault();
-    } else { 
-      return locale;
-    }
-  }
-
-  public void setLocale(Locale locale) {
-    this.locale = locale;
-  }
-
 
   /**
    * if the timezone is null, the rendering will default to the source timezone
@@ -760,6 +743,10 @@ public class RenderingContext extends RenderingI18nContext {
   public String toStr(int v) {
     NumberFormat nf = NumberFormat.getInstance(locale);
     return nf.format(v);
+  }
+
+  public String toStr(DateTimeType dt) {
+    return dt.toHumanDisplay();
   }
 
   

@@ -19,12 +19,14 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.renderers.ResourceRenderer;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.PropertyWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.RendererWrapperImpl;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.WrapperBaseImpl;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -212,21 +214,14 @@ public class ElementWrappers {
     }
 
     @Override
-    public void injectNarrative(XhtmlNode x, NarrativeStatus status) throws IOException {
-      if (!x.hasAttribute("xmlns"))
-        x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-      String l = wrapped.getChildValue("language");
-      if (!Utilities.noString(l)) {
-        // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
-        x.setAttribute("lang", l);
-        x.setAttribute("xml:lang", l);
-      }
+    public void injectNarrative(ResourceRenderer renderer, XhtmlNode x, NarrativeStatus status) throws IOException {
       org.hl7.fhir.r5.elementmodel.Element txt = wrapped.getNamedChild("text");
       if (txt == null) {
         txt = new org.hl7.fhir.r5.elementmodel.Element("text", wrapped.getProperty().getChild(null, "text"));
         int i = 0;
-        while (i < wrapped.getChildren().size() && (wrapped.getChildren().get(i).getName().equals("id") || wrapped.getChildren().get(i).getName().equals("meta") || wrapped.getChildren().get(i).getName().equals("implicitRules") || wrapped.getChildren().get(i).getName().equals("language")))
+        while (i < wrapped.getChildren().size() && (wrapped.getChildren().get(i).getName().equals("id") || wrapped.getChildren().get(i).getName().equals("meta") || wrapped.getChildren().get(i).getName().equals("implicitRules") || wrapped.getChildren().get(i).getName().equals("language"))) {
           i++;
+        }
         if (i >= wrapped.getChildren().size())
           wrapped.getChildren().add(txt);
         else
@@ -243,8 +238,32 @@ public class ElementWrappers {
         div = new org.hl7.fhir.r5.elementmodel.Element("div", txt.getProperty().getChild(null, "div"));
         txt.getChildren().add(div);
       } 
-      div.setValue(new XhtmlComposer(XhtmlComposer.XML, context.isPretty()).compose(x));
-      div.setXhtml(x);
+      // now process the xhtml
+      if (renderer.isMultiLangMode()) {
+        XhtmlNode xd = div.getXhtml();
+        if (xd == null) { 
+          xd = new XhtmlNode(NodeType.Element, "div");
+          xd.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+          div.setXhtml(xd);
+        } else {
+          xd.getChildNodes().removeIf(c -> !"div".equals(c.getName()) || !c.hasAttribute("xml:lang"));
+        }
+        x.setAttribute("lang", context.getLang());
+        x.setAttribute("xml:lang", context.getLang());
+        xd.getChildNodes().add(x);
+      } else {
+        if (!x.hasAttribute("xmlns")) {
+          x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+        }
+        String l = wrapped.getChildValue("language");
+        if (!Utilities.noString(l)) {
+          // use both - see https://www.w3.org/TR/i18n-html-tech-lang/#langvalues
+          x.setAttribute("lang", l);
+          x.setAttribute("xml:lang", l);
+        }
+        div.setXhtml(x);
+      }
+      div.setValue(new XhtmlComposer(XhtmlComposer.XML, context.isPretty()).compose(div.getXhtml()));
     }
 
     @Override
