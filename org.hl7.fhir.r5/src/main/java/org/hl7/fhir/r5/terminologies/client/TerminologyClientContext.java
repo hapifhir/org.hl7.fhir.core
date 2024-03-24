@@ -75,6 +75,12 @@ public class TerminologyClientContext {
     return client;
   }
 
+  public void seeUse(Set<String> systems, TerminologyClientContextUseType useType) {
+    for (String s : systems) {
+      seeUse(s, useType);
+    }
+  }
+  
   public void seeUse(String s, TerminologyClientContextUseType useType) {
     TerminologyClientContextUseCount uc = useCounts.get(s);
     if (uc == null) {
@@ -185,4 +191,11 @@ public class TerminologyClientContext {
     }
     return false;
   }
+
+  @Override
+  public String toString() {
+    return client.getAddress();
+  }
+  
+  
 }

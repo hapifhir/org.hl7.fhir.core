@@ -136,6 +136,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
+  public Parameters subsumes(Parameters pin) {
+    return client.operateType(CodeSystem.class, "subsumes", pin);
+  }
+
+  @Override
   public Parameters validateVS(Parameters pin) {
     return client.operateType(ValueSet.class, "validate-code", pin);
   }
@@ -255,5 +260,6 @@ public class TerminologyClientR5 implements ITerminologyClient {
   public Bundle search(String type, String criteria) {
     return client.search(type, criteria);
   }
+
 
 }

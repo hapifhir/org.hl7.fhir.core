@@ -39,7 +39,7 @@ public class XLIFFProducer extends LanguageFileProducer {
       ln("    </body>");
       ln("  </file>");
       ln("</xliff>");
-      TextFile.stringToFile(xml.toString(), Utilities.path(getFolder(), id+".xliff"));
+      TextFile.stringToFile(xml.toString(), Utilities.path(getRootFolder(), getFolderName(), id+".xliff"));
       filecount++;
     }
 
@@ -80,8 +80,8 @@ public class XLIFFProducer extends LanguageFileProducer {
 
   private int filecount;
 
-  public XLIFFProducer(String folder) {
-    super(folder);
+  public XLIFFProducer(String rootFolder, String folderName, boolean useLangFolder) {
+    super(rootFolder, folderName, useLangFolder);
   }
 
   public XLIFFProducer() {
@@ -163,7 +163,7 @@ public class XLIFFProducer extends LanguageFileProducer {
       ln(xml, "    </body>");
       ln(xml, "  </file>");
       ln(xml, "</xliff>");
-    TextFile.stringToFile(xml.toString(), Utilities.path(getFolder(), filename));
+    TextFile.stringToFile(xml.toString(), getTargetFileName(targetLang, filename));
   }
 
   

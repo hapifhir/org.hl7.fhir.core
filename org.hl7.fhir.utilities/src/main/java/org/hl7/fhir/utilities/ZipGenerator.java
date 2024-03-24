@@ -94,52 +94,59 @@ public class ZipGenerator {
 	}
 
 	public void addFolder(String actualDir, String statedDir, boolean omitIfExists) throws IOException  {
-		File fd = new CSFile(actualDir);
-		String files[] = fd.list();
-		for (String f : files) {
-			if (new CSFile(Utilities.path(actualDir, f)).isDirectory())
-				addFolder(Utilities.path(actualDir, f), Utilities.pathURL(statedDir, f), omitIfExists);
-			else
-				addFileName(Utilities.pathURL(statedDir, f), Utilities.path(actualDir, f), omitIfExists);
-		}
+	  File fd = new CSFile(actualDir);
+	  String files[] = fd.list();
+	  for (String f : files) {
+	    if (!".DS_Store".equals(f)) {
+	      if (new CSFile(Utilities.path(actualDir, f)).isDirectory())
+	        addFolder(Utilities.path(actualDir, f), Utilities.pathURL(statedDir, f), omitIfExists);
+	      else
+	        addFileName(Utilities.pathURL(statedDir, f), Utilities.path(actualDir, f), omitIfExists);
+	    }
+	  }
 	}
 
   public void addFolder(String actualDir, String statedDir, boolean omitIfExists, String noExt) throws IOException  {
     File fd = new CSFile(actualDir);
     String files[] = fd.list();
     for (String f : files) {
-      if (new CSFile(Utilities.path(actualDir, f)).isDirectory())
-        addFolder(Utilities.path(actualDir, f), Utilities.pathURL(statedDir, f), omitIfExists, noExt);
-      else if (noExt == null || !f.endsWith(noExt))
-        addFileName(Utilities.pathURL(statedDir, f), Utilities.path(actualDir, f), omitIfExists);
+      if (!".DS_Store".equals(f)) {
+        if (new CSFile(Utilities.path(actualDir, f)).isDirectory())
+          addFolder(Utilities.path(actualDir, f), Utilities.pathURL(statedDir, f), omitIfExists, noExt);
+        else if (noExt == null || !f.endsWith(noExt))
+          addFileName(Utilities.pathURL(statedDir, f), Utilities.path(actualDir, f), omitIfExists);
+      }
     }
   }
 
-	public void addFiles(String actualDir, String statedDir, String ext, String noExt) throws FileNotFoundException, IOException {
-		byte data[] = new byte[BUFFER];
-		statedDir = statedDir.replace("\\", "/");
-		File f = new CSFile(actualDir);
+  public void addFiles(String actualDir, String statedDir, String ext, String noExt) throws FileNotFoundException, IOException {
+    byte data[] = new byte[BUFFER];
+    statedDir = statedDir.replace("\\", "/");
+    File f = new CSFile(actualDir);
 
-		String files[] = f.list();
-		if (files == null) {
+    String files[] = f.list();
+    if (files == null) {
       System.out.println("no files found in "+f.getName());
-		} else {
-		  for (int i = 0; i < files.length; i++) {
-		    if ( new CSFile(actualDir + files[i]).isFile() && ((ext == null || files[i].endsWith(ext)) && (noExt == null || !files[i].endsWith(noExt)))) {
-		      FileInputStream fi = new FileInputStream(actualDir + files[i]);
-		      BufferedInputStream origin = new BufferedInputStream(fi, BUFFER);
-		      ZipEntry entry = new ZipEntry(statedDir + files[i]);
-		      names.add(statedDir + files[i]);
-		      out.putNextEntry(entry);
-		      int count;
-		      while ((count = origin.read(data, 0, BUFFER)) != -1) {
-		        out.write(data, 0, count);
-		      }
-		      origin.close();
-		    }
-		  }
-		}
-	}
+    } else {
+      for (int i = 0; i < files.length; i++) {
+        if (!".DS_Store".equals(files[i])) {
+          String fn = Utilities.path(actualDir, files[i]);
+          if ( new CSFile(fn).isFile() && ((ext == null || files[i].endsWith(ext)) && (noExt == null || !files[i].endsWith(noExt)))) {
+            FileInputStream fi = new FileInputStream(fn);
+            BufferedInputStream origin = new BufferedInputStream(fi, BUFFER);
+            ZipEntry entry = new ZipEntry(statedDir + files[i]);
+            names.add(statedDir + files[i]);
+            out.putNextEntry(entry);
+            int count;
+            while ((count = origin.read(data, 0, BUFFER)) != -1) {
+              out.write(data, 0, count);
+            }
+            origin.close();
+          }
+        }
+      }
+    }
+  }
 
   public void addFilesFiltered(String actualDir, String statedDir, String ext, String[] noExt) throws FileNotFoundException, IOException {
     byte data[] = new byte[BUFFER];
@@ -148,28 +155,30 @@ public class ZipGenerator {
 
     String files[] = f.list();
     for (int i = 0; i < files.length; i++) {
-      if ( new CSFile(actualDir + files[i]).isFile() && ((ext == null || files[i].endsWith(ext)))) {
-        boolean ok = true;
-        for (String n : noExt) {
-          ok = ok && !files[i].endsWith(n);
-        }
-        if (ok) {
-          FileInputStream fi = new FileInputStream(actualDir + files[i]);
-          BufferedInputStream origin = new BufferedInputStream(fi, BUFFER);
-          ZipEntry entry = new ZipEntry(statedDir + files[i]);
-          names.add(statedDir + files[i]);
-          out.putNextEntry(entry);
-          int count;
-          while ((count = origin.read(data, 0, BUFFER)) != -1) {
-            out.write(data, 0, count);
+      if (!".DS_Store".equals(files[i])) {
+        if ( new CSFile(actualDir + files[i]).isFile() && ((ext == null || files[i].endsWith(ext)))) {
+          boolean ok = true;
+          for (String n : noExt) {
+            ok = ok && !files[i].endsWith(n);
           }
-          origin.close();
+          if (ok) {
+            FileInputStream fi = new FileInputStream(actualDir + files[i]);
+            BufferedInputStream origin = new BufferedInputStream(fi, BUFFER);
+            ZipEntry entry = new ZipEntry(statedDir + files[i]);
+            names.add(statedDir + files[i]);
+            out.putNextEntry(entry);
+            int count;
+            while ((count = origin.read(data, 0, BUFFER)) != -1) {
+              out.write(data, 0, count);
+            }
+            origin.close();
+          }
         }
       }
     }
   }
 
-	public void addFileSource(String path, String cnt, boolean omitIfExists) throws IOException  {
+  public void addFileSource(String path, String cnt, boolean omitIfExists) throws IOException  {
 		File tmp = Utilities.createTempFile("tmp", ".tmp");
 		TextFile.stringToFile(cnt, tmp.getAbsolutePath());
 		addFileName(path, tmp.getAbsolutePath(), omitIfExists);

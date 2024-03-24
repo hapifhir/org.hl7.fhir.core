@@ -79,4 +79,9 @@ public class MarkdownType extends StringType implements Comparable<MarkdownType>
 		return "markdown";		
 	}
 
+  @Override
+  public boolean isTranslatable() {
+    return true;
+  }
+
 }

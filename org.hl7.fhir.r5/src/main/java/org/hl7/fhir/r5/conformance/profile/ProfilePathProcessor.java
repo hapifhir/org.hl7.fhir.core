@@ -16,6 +16,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
@@ -170,6 +171,7 @@ public class ProfilePathProcessor {
       ElementDefinition currentBase = cursors.base.getElement().get(cursors.baseCursor);
       String currentBasePath = profileUtilities.fixedPathSource(getContextPathSource(), currentBase.getPath(), getRedirector());
       debugProcessPathsIteration(cursors, currentBasePath);
+      checkDiffAssignedAndCursor(cursors);
       List<ElementDefinition> diffMatches = profileUtilities.getDiffMatches(getDifferential(), currentBasePath, cursors.diffCursor, getDiffLimit(), getProfileName()); // get a list of matching elements in scope
 
       // in the simple case, source is not sliced.
@@ -192,6 +194,25 @@ public class ProfilePathProcessor {
         throw new Error(profileUtilities.getContext().formatMessage(I18nConstants.NULL_MIN));
     }
     return res;
+  }
+
+  private void checkDiffAssignedAndCursor(ProfilePathProcessorState cursors) {
+//    int i = 0;
+//    List<ElementDefinition> list = getDifferential().getElement();
+//    for (ElementDefinition ed : list) {
+//      boolean assigned = ed.hasUserData("derived.pointer");
+//      if (i < cursors.diffCursor) {
+//        if (!assigned) {
+//          throw new Error("what?");
+//        }
+//      } else if (i > cursors.diffCursor) {
+//        if (assigned) {
+//          throw new Error("what!?");
+//        }
+//      }
+//      i++;
+//    }
+    
   }
 
   private void debugProcessPathsIteration(ProfilePathProcessorState cursors, String currentBasePath) {
@@ -621,7 +642,12 @@ public class ProfilePathProcessor {
           if (firstTypeStructureDefinition.getSnapshot().getElement().isEmpty()) {
             throw new FHIRException(profileUtilities.getContext().formatMessage(I18nConstants.SNAPSHOT_IS_EMPTY, firstTypeStructureDefinition.getVersionedUrl(), "Source for first element"));
           } else {
-            src = firstTypeStructureDefinition.getSnapshot().getElement().get(0);
+            src = firstTypeStructureDefinition.getSnapshot().getElement().get(0).copy();
+            if (!src.getPath().contains(".") && firstTypeStructureDefinition.getKind() == StructureDefinitionKind.RESOURCE) {
+              // we can't migrate the constraints in this case, because the sense of %resource changes when the root resource
+              // is treated as an element. The validator will enforce the constraint
+              src.getConstraint().clear(); // 
+            }
           }
         }
         template = src.copy().setPath(currentBase.getPath());
@@ -1063,7 +1089,7 @@ public class ProfilePathProcessor {
       }
 //            throw new Error("Not done yet");
 //          } else if (currentBase.getType().get(0).getCode().equals("BackboneElement") && diffMatches.size() > 0 && diffMatches.get(0).hasSliceName()) {
-    } else if (currentBase.getType().get(0).getCode().equals("BackboneElement")) {
+    } else if (!currentBase.getType().isEmpty() && currentBase.getType().get(0).getCode().equals("BackboneElement")) {
       // We need to copy children of the backbone element before we start messing around with slices
       int newBaseLimit = profileUtilities.findEndOfElement(cursors.base, cursors.baseCursor);
       for (int i = cursors.baseCursor + 1; i <= newBaseLimit; i++) {

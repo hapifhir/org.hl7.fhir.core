@@ -78,9 +78,11 @@ public class ValueSetRenderer extends TerminologyRenderer {
     super(context, rcontext);
   }
 
-  private static final String ABSTRACT_CODE_HINT = "This code is not selectable ('Abstract')";
+  private static final String ABSTRACT_CODE_HINT = /*!#*/"This code is not selectable ('Abstract')";
 
   private static final int MAX_DESIGNATIONS_IN_LINE = 5;
+
+  private static final int MAX_BATCH_VALIDATION_SIZE = 1000;
 
   private List<ConceptMapRenderInstructions> renderingMaps = new ArrayList<ConceptMapRenderInstructions>();
 
@@ -183,7 +185,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
     if (header) {
       XhtmlNode h = x.addTag(getHeader());
-      h.tx("Value Set Contents");
+      h.tx(/*!#*/"Value Set Contents");
       if (IsNotFixedExpansion(vs))
         addMarkdown(x, vs.getDescription());
       if (vs.hasCopyright())
@@ -205,9 +207,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
 //      }
       String msg = null;
       if (vs.getExpansion().getContains().isEmpty()) {
-        msg = "This value set cannot be expanded because of the way it is defined - it has an infinite number of members."; // not sure that's true?
+        msg = /*!#*/"This value set cannot be expanded because of the way it is defined - it has an infinite number of members."; // not sure that's true?
       } else {
-        msg = "This value set cannot be fully expanded, but a selection ("+countMembership(vs)+" codes) of the whole set of codes is shown here.";
+        msg = /*!#*/"This value set cannot be fully expanded, but a selection ("+countMembership(vs)+" codes) of the whole set of codes is shown here.";
       }
       x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(msg);
     } else {
@@ -215,17 +217,17 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (vs.getExpansion().hasTotal()) {
         if (count != vs.getExpansion().getTotal()) {
           x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px")
-            .addText("This value set has "+(hasFragment ? "at least " : "")+vs.getExpansion().getTotal()+" codes in it. In order to keep the publication size manageable, only a selection ("+count+" codes) of the whole set of codes is shown.");
+            .addText(/*!#*/"This value set has "+(hasFragment ? "at least " : "")+vs.getExpansion().getTotal()+" codes in it. In order to keep the publication size manageable, only a selection ("+count+" codes) of the whole set of codes is shown.");
         } else {
-          x.para().tx("This value set contains "+(hasFragment ? "at least " : "")+vs.getExpansion().getTotal()+" concepts.");          
+          x.para().tx(/*!#*/"This value set contains "+(hasFragment ? "at least " : "")+vs.getExpansion().getTotal()+" concepts.");          
         }
       } else if (count == 1000) {
         // it's possible that there's exactly 1000 codes, in which case wht we're about to do is wrong
         // work in progress to tighten up the terminology system to always return a total...
-        String msg = "This value set has >1000 codes in it. In order to keep the publication size manageable, only a selection (1000 codes) of the whole set of codes is shown";    
+        String msg = /*!#*/"This value set has >1000 codes in it. In order to keep the publication size manageable, only a selection (1000 codes) of the whole set of codes is shown";    
         x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(msg);        
       } else {
-        x.para().tx("This value set expansion contains "+count+" concepts.");
+        x.para().tx(/*!#*/"This value set expansion contains "+count+" concepts.");
       }
     }
     
@@ -243,21 +245,21 @@ public class ValueSetRenderer extends TerminologyRenderer {
     XhtmlNode t = x.table( "codes");
     XhtmlNode tr = t.tr();
     if (doLevel)
-      tr.td().b().tx("Level");
-    tr.td().attribute("style", "white-space:nowrap").b().tx("Code");
-    tr.td().b().tx("System");
+      tr.td().b().tx(/*!#*/"Level");
+    tr.td().attribute("style", "white-space:nowrap").b().tx(/*!#*/"Code");
+    tr.td().b().tx(/*!#*/"System");
     XhtmlNode tdDisp = tr.td();
-    tdDisp.b().tx("Display");
+    tdDisp.b().tx(/*!#*/"Display");
     boolean doDesignations = false;
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
       scanForDesignations(c, langs, designations);
     }
     scanForProperties(vs.getExpansion(), langs, properties);
     if (doInactive) {
-      tr.td().b().tx("Inactive");
+      tr.td().b().tx(/*!#*/"Inactive");
     }
     if (doDefinition) {
-      tr.td().b().tx("Definition");
+      tr.td().b().tx(/*!#*/"Definition");
       doDesignations = false;
       for (String n : Utilities.sorted(properties.keySet())) {
         tr.td().b().ah(properties.get(n)).addText(n);        
@@ -293,15 +295,15 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (!doDesignations && langs.size() + designations.size() > 0) {
       Collections.sort(langs);
       if (designations.size() == 0) {
-        x.para().b().tx("Additional Language Displays");
+        x.para().b().tx(/*!#*/"Additional Language Displays");
       } else if (langs.size() == 0) {
-        x.para().b().tx("Additional Designations");
+        x.para().b().tx(/*!#*/"Additional Designations");
       } else {
-        x.para().b().tx("Additional Designations and Language Displays");
+        x.para().b().tx(/*!#*/"Additional Designations and Language Displays");
       }
       t = x.table("codes");
       tr = t.tr();
-      tr.td().b().tx("Code");
+      tr.td().b().tx(/*!#*/"Code");
       for (String url : designations.keySet()) {
         tr.td().b().addText(designations.get(url));
       }
@@ -341,8 +343,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private boolean generateContentModeNotices(XhtmlNode x, ValueSetExpansionComponent expansion, Resource vs) {
-    generateContentModeNotice(x, expansion, "example", "Expansion based on example code system", vs); 
-    return generateContentModeNotice(x, expansion, "fragment", "Expansion based on code system fragment", vs); 
+    generateContentModeNotice(x, expansion, "example", /*!#*/"Expansion based on example code system", vs); 
+    return generateContentModeNotice(x, expansion, "fragment", /*!#*/"Expansion based on code system fragment", vs); 
   }
   
   private boolean generateContentModeNotice(XhtmlNode x, ValueSetExpansionComponent expansion, String mode, String text, Resource vs) {
@@ -485,14 +487,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
         if (versions.size() == 1 && versions.get(s).size() == 1) {
           for (String v : versions.get(s)) { // though there'll only be one
             XhtmlNode p = x.para().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
-            p.tx("Expansion based on ");
+            p.tx(/*!#*/"Expansion based on ");
             expRef(p, s, v, vs);
           }
         } else {
           for (String v : versions.get(s)) {
             if (first) {
               div = x.div().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
-              div.para().tx("Expansion based on: ");
+              div.para().tx(/*!#*/"Expansion based on: ");
               ul = div.ul();
               first = false;
             }
@@ -512,30 +514,30 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (parts.length >= 5) {
         String m = describeModule(parts[4]);
         if (parts.length == 7) {
-          x.tx("SNOMED CT "+m+" edition "+formatSCTDate(parts[6]));
+          x.tx(/*!#*/"SNOMED CT "+m+" edition "+formatSCTDate(parts[6]));
         } else {
-          x.tx("SNOMED CT "+m+" edition");
+          x.tx(/*!#*/"SNOMED CT "+m+" edition");
         }
       } else {
-        x.tx(describeSystem(u)+" version "+v);
+        x.tx(describeSystem(u)+" "+/*!#*/"version "+v);
       }
     } else if (u.equals("http://loinc.org")) {
       String vd = describeLoincVer(v);
       if (vd != null) {
-        x.tx("Loinc v"+v+" ("+vd+")");
+        x.tx(/*!#*/"Loinc v"+v+" ("+vd+")");
       } else {
-        x.tx("Loinc v"+v);        
+        x.tx(/*!#*/"Loinc v"+v);        
       }
     } else if (Utilities.noString(v)) {
       CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, source);
       if (cr != null) {
         if (cr.hasWebPath()) {
-          x.ah(cr.getWebPath()).tx(t+" "+cr.present()+" (no version) ("+cr.fhirType()+")");          
+          x.ah(cr.getWebPath()).tx(t+" "+cr.present()+" "+/*!#*/"(no version) ("+cr.fhirType()+")");          
         } else {
-          x.tx(t+" "+describeSystem(u)+" (no version) ("+cr.fhirType()+")");
+          x.tx(t+" "+describeSystem(u)+" "+/*!#*/"(no version) ("+cr.fhirType()+")");
         }
       } else {
-        x.tx(t+" "+describeSystem(u)+" (no version)");
+        x.tx(t+" "+describeSystem(u)+" "+/*!#*/"(no version)");
       }
     } else {
       CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u+"|"+v, source);
@@ -546,7 +548,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           x.tx(t+" "+describeSystem(u)+" v"+v+" ("+cr.fhirType()+")");
         }
       } else {
-        x.tx(t+" "+describeSystem(u)+" version "+v);
+        x.tx(t+" "+describeSystem(u)+" "+/*!#*/"version "+v);
       }
     }
   }
@@ -618,21 +620,21 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   private String describeModule(String module) {
     if ("900000000000207008".equals(module))
-      return "International";
+      return /*!#*/"International";
     if ("731000124108".equals(module))
-      return "United States";
+      return /*!#*/"United States";
     if ("32506021000036107".equals(module))
-      return "Australian";
+      return /*!#*/"Australian";
     if ("449081005".equals(module))
-      return "Spanish";
+      return /*!#*/"Spanish";
     if ("554471000005108".equals(module))
-      return "Danish";
+      return /*!#*/"Danish";
     if ("11000146104".equals(module))
-      return "Dutch";
+      return /*!#*/"Dutch";
     if ("45991000052106".equals(module))
-      return "Swedish";
+      return /*!#*/"Swedish";
     if ("999000041000000102".equals(module))
-      return "United Kingdon";
+      return /*!#*/"United Kingdon";
     return module;
   }
 
@@ -826,7 +828,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (doInactive) {
       td = tr.td();
       if (c.getInactive()) {
-        td.tx("inactive");
+        td.tx(/*!#*/"inactive");
       }
     }
     if (doDefinition) {
@@ -958,26 +960,26 @@ public class ValueSetRenderer extends TerminologyRenderer {
       hasExtensions = genInclude(x.ul(), vs.getCompose().getInclude().get(0), "Include", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
     } else {
       XhtmlNode p = x.para();
-      p.tx("This value set includes codes based on the following rules:");
+      p.tx(/*!#*/"This value set includes codes based on the following rules:");
       XhtmlNode ul = x.ul();
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-        hasExtensions = genInclude(ul, inc, "Include", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
+        hasExtensions = genInclude(ul, inc, /*!#*/"Include", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
         index++;
       }
       for (Base inc : VersionComparisonAnnotation.getDeleted(vs.getCompose(), "include")) {
-        genInclude(ul, (ConceptSetComponent) inc, "Include", langs, doDesignations, maps, designations, index, vs);
+        genInclude(ul, (ConceptSetComponent) inc, /*!#*/"Include", langs, doDesignations, maps, designations, index, vs);
         index++;
       }
       if (vs.getCompose().hasExclude() || VersionComparisonAnnotation.hasDeleted(vs.getCompose(), "exclude")) {
         p = x.para();
-        p.tx("This value set excludes codes based on the following rules:");
+        p.tx(/*!#*/"This value set excludes codes based on the following rules:");
         ul = x.ul();
         for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
-          hasExtensions = genInclude(ul, exc, "Exclude", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
+          hasExtensions = genInclude(ul, exc, /*!#*/"Exclude", langs, doDesignations, maps, designations, index, vs) || hasExtensions;
           index++;
         }
         for (Base inc : VersionComparisonAnnotation.getDeleted(vs.getCompose(), "exclude")) {
-          genInclude(ul, (ConceptSetComponent) inc, "Exclude", langs, doDesignations, maps, designations, index, vs);
+          genInclude(ul, (ConceptSetComponent) inc, /*!#*/"Exclude", langs, doDesignations, maps, designations, index, vs);
           index++;
         }
       }
@@ -988,15 +990,15 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (!doDesignations && langs.size() + designations.size() > 0) {
       Collections.sort(langs);
       if (designations.size() == 0) {
-        x.para().b().tx("Additional Language Displays");        
+        x.para().b().tx(/*!#*/"Additional Language Displays");        
       } else if (langs.size() == 0) {
-        x.para().b().tx("Additional Designations");       
+        x.para().b().tx(/*!#*/"Additional Designations");       
       } else {
-        x.para().b().tx("Additional Designations and Language Displays");
+        x.para().b().tx(/*!#*/"Additional Designations and Language Displays");
       }
       XhtmlNode t = x.table("codes");
       XhtmlNode tr = t.tr();
-      tr.td().b().tx("Code");
+      tr.td().b().tx(/*!#*/"Code");
       for (String url : designations.keySet()) {
         tr.td().b().addText(designations.get(url));
       }
@@ -1015,24 +1017,24 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private void renderExpansionRules(XhtmlNode x, ConceptSetComponent inc, int index, Map<String, ConceptDefinitionComponent> definitions) throws FHIRException, IOException {
-    String s = "This include specifies a heirarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined";
+    String s = /*!#*/"This include specifies a heirarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined";
     if (inc.hasExtension(ToolingExtensions.EXT_EXPAND_RULES)) {
       String rule = inc.getExtensionString(ToolingExtensions.EXT_EXPAND_RULES);
       if (rule != null) {
         switch (rule) {
-        case "all-codes": s = "This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"; 
-        case "ungrouped": s = "This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:";
-        case "groups-only": s = "This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:";
+        case "all-codes": s = /*!#*/"This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"; 
+        case "ungrouped": s = /*!#*/"This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:";
+        case "groups-only": s = /*!#*/"This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:";
         }
       }
     }
     x.br();
     x.tx(s);
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("exp.h="+index, context.getRules() == GenerationRules.IG_PUBLISHER);    
     model.setAlternating(true);
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("vs.exp.header", "Code"), translate("vs.exp.hint", "The code for the item"), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("vs.exp.header", "Display"), translate("vs.exp.hint", "The display for the item"), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), /*!#*/"Code", /*!#*/"The code for the item", null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), /*!#*/"Display", /*!#*/"The display for the item", null, 0));
 
     for (Extension ext : inc.getExtensionsByUrl(ToolingExtensions.EXT_EXPAND_GROUP)) {
       renderExpandGroup(gen, model, ext, inc, definitions);
@@ -1140,9 +1142,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     switch (url) {
     case "http://snomed.info/sct#900000000000003001":
-      return "Fully specified name";
+      return /*!#*/"Fully specified name";
     case "http://snomed.info/sct#900000000000013009":
-      return "Synonym";
+      return /*!#*/"Synonym";
     default:
       // As specified in http://www.hl7.org/fhir/valueset-definitions.html#ValueSet.compose.include.concept.designation.use and in http://www.hl7.org/fhir/codesystem-definitions.html#CodeSystem.concept.designation.use the terminology binding is extensible.
       return url;
@@ -1176,14 +1178,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (inc.hasSystem()) {
       CodeSystem e = getContext().getWorker().fetchCodeSystem(inc.getSystem());
       if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
-        li.addText(type+" all codes defined in ");
+        li.addText(type+" "+/*!#*/"all codes defined in ");
         addCsRef(inc, li, e);
       } else {
         if (inc.getConcept().size() > 0) {
-          li.addText(type+" these codes as defined in ");
+          li.addText(type+" "+/*!#*/"these codes as defined in ");
           addCsRef(inc, li, e);
           if (inc.hasVersion()) {
-            li.addText(" version ");
+            li.addText(" "+/*!#*/"version ");
             li.code(inc.getVersion());  
           }
 
@@ -1210,24 +1212,24 @@ public class ValueSetRenderer extends TerminologyRenderer {
           }
         }
         if (inc.getFilter().size() > 0) {
-          li.addText(type+" codes from ");
+          li.addText(type+" "+/*!#*/"codes from ");
           addCsRef(inc, li, e);
-          li.tx(" where ");
+          li.tx(" "+/*!#*/"where ");
           for (int i = 0; i < inc.getFilter().size(); i++) {
             ConceptSetFilterComponent f = inc.getFilter().get(i);
             if (i > 0) {
               if (i == inc.getFilter().size()-1) {
-                li.tx(" and ");
+                li.tx(" "+/*!#*/"and ");
               } else {
-                li.tx(", ");
+                li.tx(/*!#*/", ");
               }
             }
             XhtmlNode wli = renderStatus(f, li);
             if (f.getOp() == FilterOperator.EXISTS) {
               if (f.getValue().equals("true")) {
-                wli.tx(f.getProperty()+" exists");
+                wli.tx(f.getProperty()+" "+/*!#*/"exists");
               } else {
-                wli.tx(f.getProperty()+" doesn't exist");
+                wli.tx(f.getProperty()+" "+/*!#*/"doesn't exist");
               }
             } else {
               wli.tx(f.getProperty()+" "+describe(f.getOp())+" ");
@@ -1255,7 +1257,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         }
       }
       if (inc.hasValueSet()) {
-        li.tx(", where the codes are contained in ");
+        li.tx(/*!#*/", where the codes are contained in ");
         boolean first = true;
         for (UriType vs : inc.getValueSet()) {
           if (first)
@@ -1271,7 +1273,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         renderExpansionRules(li, inc, index, definitions);
       }
     } else {
-      li.tx("Import all the codes that are contained in ");
+      li.tx(/*!#*/"Import all the codes that are contained in ");
       if (inc.getValueSet().size() < 4) {
         boolean first = true;
         for (UriType vs : inc.getValueSet()) {
@@ -1322,7 +1324,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (hasComments) {
       td = tr.td();
       if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT)) {
-        smartAddText(td, "Note: "+ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT));
+        smartAddText(td, /*!#*/"Note: "+ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT));
       }
     }
     if (doDesignations) {
@@ -1403,7 +1405,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         ValueSetExpansionOutcome vso = getContext().getWorker().expandVS(vs, true, false);
         ValueSet valueset = vso.getValueset();
         if (valueset == null)
-          throw new TerminologyServiceException("Error Expanding ValueSet: "+vso.getError());
+          throw new TerminologyServiceException(/*!#*/"Error Expanding ValueSet: "+vso.getError());
         vse = valueset.getExpansion();        
 
       } catch (Exception e1) {
@@ -1431,12 +1433,23 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
     }
     if (!context.isNoSlowLookup() && !serverList.isEmpty()) {
-      getContext().getWorker().validateCodeBatch(getContext().getTerminologyServiceOptions(), serverList, null);
-      for (CodingValidationRequest vr : serverList) {
-        ConceptDefinitionComponent v = vr.getResult().asConceptDefinition();
-        if (v != null) {
-          results.put(vr.getCoding().getCode(), v);
+      try {
+        // todo: split this into 10k batches 
+        int i = 0;
+        while (serverList.size() > i) { 
+          int len = Integer.min(serverList.size(), MAX_BATCH_VALIDATION_SIZE);
+          List<CodingValidationRequest> list = serverList.subList(i, i+len);
+          i += len;
+          getContext().getWorker().validateCodeBatch(getContext().getTerminologyServiceOptions(), list, null);
+          for (CodingValidationRequest vr : list) {
+            ConceptDefinitionComponent v = vr.getResult().asConceptDefinition();
+            if (v != null) {
+              results.put(vr.getCoding().getCode(), v);
+            }
+          }
         }
+      } catch (Exception e1) {
+        return null;
       }
     }
     return results;
@@ -1489,18 +1502,18 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   private String describe(FilterOperator op) {
     if (op == null)
-      return " null ";
+      return " "+/*!#*/"null ";
     switch (op) {
-    case EQUAL: return " = ";
-    case ISA: return " is-a ";
-    case ISNOTA: return " is-not-a ";
-    case REGEX: return " matches (by regex) ";
-    case NULL: return " ?ngen-13? ";
-    case IN: return " in ";
-    case NOTIN: return " not in ";
-    case DESCENDENTOF: return " descends from ";
-    case EXISTS: return " exists ";
-    case GENERALIZES: return " generalizes ";
+    case EQUAL: return " "+/*!#*/"= ";
+    case ISA: return " "+/*!#*/"is-a ";
+    case ISNOTA: return " "+/*!#*/"is-not-a ";
+    case REGEX: return " "+/*!#*/"matches (by regex) ";
+    case NULL: return " "+/*!#*/"?ngen-13? ";
+    case IN: return " "+/*!#*/"in ";
+    case NOTIN: return " "+/*!#*/"not in ";
+    case DESCENDENTOF: return " "+/*!#*/"descends from ";
+    case EXISTS: return " "+/*!#*/"exists ";
+    case GENERALIZES: return " "+/*!#*/"generalizes ";
     }
     return null;
   }

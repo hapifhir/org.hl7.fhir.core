@@ -24,9 +24,10 @@ import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
-public class RenderingContext {
+public class RenderingContext extends RenderingI18nContext {
 
   // provides liquid templates, if they are available for the content
   public interface ILiquidTemplateProvider {
@@ -215,6 +216,9 @@ public class RenderingContext {
   
   private Map<KnownLinkType, String> links = new HashMap<>();
   private Map<String, String> namedLinks = new HashMap<>();
+  private boolean addName = false;
+  private Map<String, String> typeMap = new HashMap<>(); // type aliases that can be resolved in Markdown type links (mainly for cross-version usage)
+  
   /**
    * 
    * @param context - access to all related resources that might be needed
@@ -279,6 +283,7 @@ public class RenderingContext {
     res.changeVersion = changeVersion;
 
     res.terminologyServiceOptions = terminologyServiceOptions.copy();
+    res.typeMap.putAll(typeMap);
     return res;
   }
   
@@ -534,9 +539,8 @@ public class RenderingContext {
     }
   }
 
-  public RenderingContext setLocale(Locale locale) {
+  public void setLocale(Locale locale) {
     this.locale = locale;
-    return this;
   }
 
 
@@ -726,6 +730,19 @@ public class RenderingContext {
 
   public void setFixedFormat(FixedValueFormat fixedFormat) {
     this.fixedFormat = fixedFormat;
+  }
+
+  public boolean isAddName() {
+    return addName;
+  }
+
+  public RenderingContext setAddName(boolean addName) {
+    this.addName = addName;
+    return this;
+  }
+
+  public Map<String, String> getTypeMap() {
+    return typeMap;
   }
 
   

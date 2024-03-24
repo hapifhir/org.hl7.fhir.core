@@ -1777,10 +1777,24 @@ public class ConceptMap extends MetadataResource {
 
   }
 
+  public SourceElementComponent getOrAddElement(String code) {
+    for (SourceElementComponent e : getElement()) {
+      if (code.equals(e.getCode())) {
+        return e;  
+      }
+    }
+    return addElement().setCode(code);
+  }
+
   }
 
     @Block()
     public static class SourceElementComponent extends BackboneElement implements IBaseBackboneElement {
+        @Override
+      public String toString() {
+        return "SourceElementComponent [code=" + code + ", display=" + display + ", noMap=" + noMap + "]";
+      }
+
         /**
          * Identity (code or path) or the element/item being mapped.
          */
@@ -2260,10 +2274,30 @@ public class ConceptMap extends MetadataResource {
 
   }
 
+  public boolean hasTargetCode(String code) {
+    for (TargetElementComponent tgt : getTarget()) {
+      if (code.equals(tgt.getCode())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public TargetElementComponent addTarget(String code, ConceptMapRelationship relationship) {
+    TargetElementComponent tgt = addTarget();
+    tgt.setCode(code);
+    tgt.setRelationship(relationship);
+    return tgt;
+  }
   }
 
     @Block()
     public static class TargetElementComponent extends BackboneElement implements IBaseBackboneElement {
+        @Override
+      public String toString() {
+        return "TargetElementComponent [code=" + code + ", relationship=" + relationship + "]";
+      }
+
         /**
          * Identity (code or path) or the element/item that the map refers to.
          */
@@ -8572,7 +8606,42 @@ public class ConceptMap extends MetadataResource {
   private String tail(String uri) {
     return uri.contains("/") ? uri.substring(uri.lastIndexOf("/")+1) : uri;
   }
+
+  public ConceptMapGroupComponent getGroup(String su, String tu) {
+    for (ConceptMapGroupComponent g : getGroup()) {
+      if (su.equals(g.getSource()) && tu.equals(g.getTarget())) {
+        return g;
+      }      
+    }
+    return null;
+  }
+
+  public ConceptMapGroupComponent forceGroup(String su, String tu) {
+    for (ConceptMapGroupComponent g : getGroup()) {
+      if (su.equals(g.getSource()) && tu.equals(g.getTarget())) {
+        return g;
+      }      
+    }
+    ConceptMapGroupComponent g = addGroup();
+    g.setSource(su);
+    g.setTarget(tu);
+    return g;
+    
+  }
+
+  public List<ConceptMapGroupComponent> getGroups(String su) {
+    List<ConceptMapGroupComponent> res = new ArrayList<>();
+
+    for (ConceptMapGroupComponent g : getGroup()) {
+      if (su.equals(g.getSource())) {
+        res.add(g);
+      }      
+    }
+    return res;
+  }
+  
 // end addition
+
 
 }
 

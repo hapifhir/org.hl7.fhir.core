@@ -78,6 +78,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Identifier;
+import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.Measure;
@@ -101,9 +102,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent;
+
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -129,8 +128,8 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5.TerminologyClientR5Factory;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.utils.PackageHackerR5;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
@@ -138,10 +137,8 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
-import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nBase;
@@ -234,7 +231,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private Object lock = new Object(); // used as a lock for the data that follows
   protected String version; // although the internal resources are all R5, the version of FHIR they describe may not be 
 
-  protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(null, UUID.randomUUID().toString());
+  protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClientR5.TerminologyClientR5Factory(), UUID.randomUUID().toString());
   private boolean minimalMemory = false;
 
   private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
@@ -277,7 +274,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private int expandCodesLimit = 1000;
   protected ILoggingService logger = new SystemOutLoggingService();
   protected Parameters expParameters;
-  private TranslationServices translator = new NullTranslator();
   private Map<String, PackageInformation> packages = new HashMap<>();
 
   @Getter
@@ -312,7 +308,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected void copy(BaseWorkerContext other) {
     synchronized (other.lock) { // tricky, because you need to lock this as well, but it's really not in use yet 
       allResourcesById.putAll(other.allResourcesById);
-      translator = other.translator;
       codeSystems.copy(other.codeSystems);
       valueSets.copy(other.valueSets);
       maps.copy(other.maps);
@@ -851,7 +846,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return res;
     }
     Set<String> systems = findRelevantSystems(vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, true);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, true);
     if (tc == null) {
       return new ValueSetExpansionOutcome("No server available", TerminologyServiceErrorClass.INTERNAL_ERROR, true);      
     }
@@ -915,7 +910,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     
     Parameters p = pIn.copy();
-
+    p.setParameter("_limit",new IntegerType("10000"));
+    p.setParameter("_incomplete", new BooleanType("true"));
     if (vs.hasExpansion()) {
       return new ValueSetExpansionOutcome(vs.copy());
     }
@@ -978,7 +974,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     p.addParameter().setName("cache-id").setValue(new IdType(terminologyClientManager.getCacheId()));
     Set<String> systems = findRelevantSystems(vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, true);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, true);
     addDependentResources(tc, p, vs);
 
     
@@ -1108,7 +1104,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     
     if (batch.getEntry().size() > 0) {
-      TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, false);
+      TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
       Bundle resp = processBatch(tc, batch, systems);      
       for (int i = 0; i < batch.getEntry().size(); i++) {
         CodingValidationRequest t = (CodingValidationRequest) batch.getEntry().get(i).getUserData("source");
@@ -1213,7 +1209,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         systems.add(codingValidationRequest.getCoding().getSystem());
       }
     }
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, false);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
     
     if (batch.getEntry().size() > 0) {
       Bundle resp = processBatch(tc, batch, systems);      
@@ -1291,7 +1287,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         vsc.setUnknownSystems(unknownSystems);
         vsc.setThrowToServer(options.isUseServer() && terminologyClientManager.hasClient());
         if (!ValueSetUtilities.isServerSide(code.getSystem())) {
-          res = vsc.validateCode(path, code);
+          res = vsc.validateCode(path, code.copy());
           if (txCache != null && cachingAllowed) {
             txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
           }
@@ -1346,9 +1342,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     Set<String> systems = findRelevantSystems(code, vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, false);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
     
-    String csumm =cachingAllowed && txCache != null ? txCache.summary(code) : null;
+    String csumm = cachingAllowed && txCache != null ? txCache.summary(code) : null;
     if (cachingAllowed && txCache != null) {
       txLog("$validate "+csumm+(vs == null ? "" : " for "+ txCache.summary(vs))+" on "+tc.getAddress());
     } else {
@@ -1365,7 +1361,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     } 
     if (!res.isOk() && localError != null) {
       res.setDiagnostics("Local Error: "+localError.trim()+". Server Error: "+res.getMessage());
-    } else if (!res.isOk() && res.getUnknownSystems() != null && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
+    } else if (!res.isOk() && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && res.getUnknownSystems() != null && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
       // we had some problem evaluating locally, but the server doesn't know the code system, so we'll just go with the local error
       res = new ValidationResult(IssueSeverity.WARNING, localWarning, null);
       res.setDiagnostics("Local Warning: "+localWarning.trim()+". Server Error: "+res.getMessage());
@@ -1376,6 +1372,83 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     }
     return res;
+  }
+
+
+  /**
+   * ask the terminology system whether parent subsumes child. 
+   * 
+   * @return true if it does, false if it doesn't, and null if it's not know whether it does
+   */
+  public Boolean subsumes(ValidationOptions optionsArg, Coding parent, Coding child) {
+    ValidationOptions options = optionsArg != null ? optionsArg : ValidationOptions.defaults();
+
+    if (parent.hasSystem()) {
+      codeSystemsUsed.add(parent.getSystem());
+    } else {
+      return null;
+    }
+    if (child.hasSystem()) {
+      codeSystemsUsed.add(child.getSystem());
+    } else {
+      return null;
+    }
+
+    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateSubsumesToken(options, parent, child, expParameters) : null;
+    if (cachingAllowed && txCache != null) {
+      Boolean res = txCache.getSubsumes(cacheToken);
+      if (res != null) {
+        return res;
+      }
+    }
+    
+    if (options.isUseClient() && parent.getSystem().equals(child.getSystem())) {
+      CodeSystem cs = fetchCodeSystem(parent.getSystem());
+      if (cs != null) {
+        Boolean b = CodeSystemUtilities.subsumes(cs, parent.getCode(), child.getCode());
+        if (txCache != null && cachingAllowed) {
+          txCache.cacheSubsumes(cacheToken, b, true);
+        }
+        return b;
+      }
+    }
+
+    if (!terminologyClientManager.hasClient() || !options.isUseServer() || unsupportedCodeSystems.contains(parent.getSystem()) || unsupportedCodeSystems.contains(child.getSystem()) || noTerminologyServer) {
+      return null;      
+    }
+
+    Set<String> systems = new HashSet<>();
+    systems.add(parent.getSystem());
+    systems.add(child.getSystem());
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(null, systems, false);
+    
+    txLog("$subsumes "+parent.toString()+" > "+child.toString()+" on "+tc.getAddress());
+
+    try {
+      Parameters pIn =  new Parameters();
+      pIn.addParameter().setName("codingA").setValue(parent);
+      pIn.addParameter().setName("codingB").setValue(child);
+      if (txLog != null) {
+        txLog.clearLastId();
+      }
+      Parameters pOut = tc.getClient().subsumes(pIn);
+      return processSubsumesResult(pOut, tc.getClient().getAddress());
+    } catch (Exception e) {
+      // e.printStackTrace();
+    }
+    return null;
+  }
+
+
+  public Boolean processSubsumesResult(Parameters pOut, String server) {
+    for (ParametersParameterComponent p : pOut.getParameter()) {
+      if (p.hasValue()) {
+        if (p.getName().equals("outcome")) {
+          return Utilities.existsInList(p.getValue().primitiveValue(), "equivalent", "subsumes");
+        }
+      }
+    }
+    return null;
   }
 
   protected ValueSetExpander constructValueSetExpanderSimple(ValidationOptions options) {
@@ -1538,7 +1611,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return new ValidationResult(IssueSeverity.ERROR, "Error validating code: running without terminology services", TerminologyServiceErrorClass.NOSERVICE, null);
     }
     Set<String> systems = findRelevantSystems(code, vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(systems, false);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
 
     txLog("$validate "+txCache.summary(code)+" for "+ txCache.summary(vs)+" on "+tc.getAddress());
     try {
@@ -1779,6 +1852,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           status = ((PrimitiveType<?>) p.getValue()).asStringValue();
         } else if (p.getName().equals("x-caused-by-unknown-system")) {
           err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
+          unknownSystems.add(((PrimitiveType<?>) p.getValue()).asStringValue());      
+        } else if (p.getName().equals("x-unknown-system")) {
           unknownSystems.add(((PrimitiveType<?>) p.getValue()).asStringValue());      
         } else if (p.getName().equals("warning-withdrawn")) {
           String msg = ((PrimitiveType<?>) p.getValue()).asStringValue();
@@ -2562,55 +2637,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  public TranslationServices translator() {
-    return translator;
-  }
-
-  public void setTranslator(TranslationServices translator) {
-    this.translator = translator;
-  }
-  
-  public class NullTranslator implements TranslationServices {
-
-    @Override
-    public String translate(String context, String value, String targetLang) {
-      return value;
-    }
-
-    @Override
-    public String translate(String context, String value) {
-      return value;
-    }
-
-    @Override
-    public String toStr(float value) {
-      return null;
-    }
-
-    @Override
-    public String toStr(Date value) {
-      return null;
-    }
-
-    @Override
-    public String translateAndFormat(String contest, String lang, String value, Object... args) {
-      return String.format(value, args);
-    }
-
-    @Override
-    public Map<String, String> translations(String value) {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-    @Override
-    public Set<String> listTranslations(String category) {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
-  }
-  
   public void reportStatus(JsonObject json) {
     synchronized (lock) {
       json.addProperty("codeystem-count", codeSystems.size());
@@ -3220,5 +3246,96 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     return result;
   }
-  
+
+  @Override
+  public <T extends Resource> List<T> fetchResourcesByUrl(Class<T> class_, String uri) {
+    List<T> res = new ArrayList<>();
+    if (uri != null && !uri.startsWith("#")) {
+      if (class_ == StructureDefinition.class) {
+        uri = ProfileUtilities.sdNs(uri, null);
+      }
+      assert !uri.contains("|");
+      if (uri.contains("#")) {
+        uri = uri.substring(0, uri.indexOf("#"));
+      } 
+      synchronized (lock) {
+        if (class_ == Resource.class || class_ == null) {
+          for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
+            for (ResourceProxy r : rt.values()) {
+              if (uri.equals(r.getUrl())) {
+                res.add((T) r.getResource());
+              }
+            }            
+          }  
+        }
+        if (class_ == ImplementationGuide.class || class_ == Resource.class || class_ == null) {
+          for (ImplementationGuide cr : guides.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == CapabilityStatement.class || class_ == Resource.class || class_ == null) {
+          for (CapabilityStatement cr : capstmts.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == Measure.class || class_ == Resource.class || class_ == null) {
+          for (Measure cr : measures.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == Library.class || class_ == Resource.class || class_ == null) {
+          for (Library cr : libraries.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == StructureDefinition.class || class_ == Resource.class || class_ == null) {
+          for (StructureDefinition cr : structures.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == StructureMap.class || class_ == Resource.class || class_ == null) {
+          for (StructureMap cr : transforms.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == NamingSystem.class || class_ == Resource.class || class_ == null) {
+          for (NamingSystem cr : systems.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == ValueSet.class || class_ == Resource.class || class_ == null) {
+          for (ValueSet cr : valueSets.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == CodeSystem.class || class_ == Resource.class || class_ == null) {
+          for (CodeSystem cr : codeSystems.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == ConceptMap.class || class_ == Resource.class || class_ == null) {
+          for (ConceptMap cr : maps.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == ActorDefinition.class || class_ == Resource.class || class_ == null) {
+          for (ActorDefinition cr : actors.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == Requirements.class || class_ == Resource.class || class_ == null) {
+          for (Requirements cr : requirements.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == PlanDefinition.class || class_ == Resource.class || class_ == null) {
+          for (PlanDefinition cr : plans.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == OperationDefinition.class || class_ == Resource.class || class_ == null) {
+          for (OperationDefinition cr : operations.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == Questionnaire.class || class_ == Resource.class || class_ == null) {
+          for (Questionnaire cr : questionnaires.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        } else if (class_ == SearchParameter.class || class_ == Resource.class || class_ == null) {
+          for (SearchParameter cr : searchParameters.getForUrl(uri)) {
+            res.add((T) cr);
+          } 
+        }
+      }
+    }
+    return res;
+  }
+
 }

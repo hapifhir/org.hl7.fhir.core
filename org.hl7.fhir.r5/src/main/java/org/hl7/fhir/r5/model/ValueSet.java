@@ -1150,6 +1150,15 @@ public class ValueSet extends MetadataResource {
 
   }
 
+  public boolean hasConcept(String code) {
+    for (ConceptReferenceComponent c : getConcept()) {
+      if (code.equals(c.getCode())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   }
 
     @Block()

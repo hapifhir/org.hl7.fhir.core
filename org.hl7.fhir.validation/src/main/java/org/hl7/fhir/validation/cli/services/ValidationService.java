@@ -110,44 +110,73 @@ public class ValidationService {
           fileToValidate.getFileContent().getBytes(),
           fileToValidate.getFileName(),
           false);
-        fileToValidate.setFileType(format.getExtension());
+        if (format != null) {
+          fileToValidate.setFileType(format.getExtension());
+        }
       }
 
       List<ValidationMessage> messages = new ArrayList<>();
 
-      ValidatedFragments validatedFragments = validator.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
-        request.getCliContext().getProfiles(), messages);
-
-      if (validatedFragments.getValidatedFragments().size() == 1 && !validatedFragments.getValidatedFragments().get(0).isDerivedContent()) {
-        ValidatedFragment validatedFragment = validatedFragments.getValidatedFragments().get(0);
-        ValidationOutcome outcome = new ValidationOutcome();
-        FileInfo fileInfo = new FileInfo(
-          fileToValidate.getFileName(),
-          new String(validatedFragment.getContent()),
-          validatedFragment.getExtension());
-        outcome.setMessages(validatedFragment.getErrors());
-        outcome.setFileInfo(fileInfo);
-        response.addOutcome(outcome);
-      } else {
-        for (ValidatedFragment validatedFragment : validatedFragments.getValidatedFragments()) {
-          ValidationOutcome outcome = new ValidationOutcome();
-          FileInfo fileInfo = new FileInfo(
-            validatedFragment.getFilename(),
-            new String(validatedFragment.getContent()),
-            validatedFragment.getExtension());
-          outcome.setMessages(validatedFragment.getErrors());
-          outcome.setFileInfo(fileInfo);
+      if (fileToValidate.getFileType() == null) {
+          ValidationOutcome outcome = getValidationOutcomeForUnknownFileFormat(
+            new FileInfo(fileToValidate.getFileName(), fileToValidate.getFileContent(), null));
           response.addOutcome(outcome);
-        }
-      }
+      } else {
+        ValidatedFragments validatedFragments = validator.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
+          request.getCliContext().getProfiles(), messages);
 
-      if (request.getCliContext().isShowTimes()) {
-        response.getValidationTimes().put(fileToValidate.getFileName(), validatedFragments.getValidationTime());
+        List<ValidationOutcome> validationOutcomes = getValidationOutcomesFromValidatedFragments(fileToValidate, validatedFragments);
+        for (ValidationOutcome validationOutcome : validationOutcomes) {
+          response.addOutcome(validationOutcome);
+        }
+
+        if (request.getCliContext().isShowTimes()) {
+          response.getValidationTimes().put(fileToValidate.getFileName(), validatedFragments.getValidationTime());
+        }
       }
     }
 
     System.out.println("  Max Memory: "+Runtime.getRuntime().maxMemory());
     return response;
+  }
+
+  private List<ValidationOutcome> getValidationOutcomesFromValidatedFragments(FileInfo fileToValidate, ValidatedFragments validatedFragments) {
+    List<ValidationOutcome> outcomes = new LinkedList<>();
+    if (validatedFragments.getValidatedFragments().size() == 1 && !validatedFragments.getValidatedFragments().get(0).isDerivedContent()) {
+      ValidatedFragment validatedFragment = validatedFragments.getValidatedFragments().get(0);
+      ValidationOutcome outcome = new ValidationOutcome();
+      FileInfo fileInfo = new FileInfo(
+        fileToValidate.getFileName(),
+        new String(validatedFragment.getContent()),
+        validatedFragment.getExtension());
+      outcome.setMessages(validatedFragment.getErrors());
+      outcome.setFileInfo(fileInfo);
+      outcomes.add(outcome);
+    } else {
+      for (ValidatedFragment validatedFragment : validatedFragments.getValidatedFragments()) {
+        ValidationOutcome outcome = new ValidationOutcome();
+        FileInfo fileInfo = new FileInfo(
+          validatedFragment.getFilename(),
+          new String(validatedFragment.getContent()),
+          validatedFragment.getExtension());
+        outcome.setMessages(validatedFragment.getErrors());
+        outcome.setFileInfo(fileInfo);
+        outcomes.add(outcome);
+      }
+    }
+    return outcomes;
+  }
+
+  private ValidationOutcome getValidationOutcomeForUnknownFileFormat(FileInfo fileInfo) {
+    ValidationOutcome outcome = new ValidationOutcome();
+
+    List<ValidationMessage> errorList = new ArrayList<>() {{
+      add(new ValidationMessage().setType(ValidationMessage.IssueType.EXCEPTION).setLevel(ValidationMessage.IssueSeverity.FATAL).setMessage("Unable to infer format from file. Please check that your file is in a valid FHIR format."));
+
+    } };
+    outcome.setMessages(errorList);
+    outcome.setFileInfo(fileInfo);
+    return outcome;
   }
 
   public VersionSourceInformation scanForVersions(CliContext cliContext) throws Exception {
@@ -495,9 +524,11 @@ public class ValidationService {
     validationEngine.setForPublication(cliContext.isForPublication());
     validationEngine.setShowTimes(cliContext.isShowTimes());
     validationEngine.setAllowExampleUrls(cliContext.isAllowExampleUrls());
-    StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validationEngine.getPcm(), validationEngine.getContext(), validationEngine);
-    validationEngine.setFetcher(fetcher);
-    validationEngine.getContext().setLocator(fetcher);
+    if (!cliContext.isDisableDefaultResourceFetcher()) {
+      StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validationEngine.getPcm(), validationEngine.getContext(), validationEngine);
+      validationEngine.setFetcher(fetcher);
+      validationEngine.getContext().setLocator(fetcher);
+    }
     validationEngine.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
     validationEngine.setJurisdiction(CodeSystemUtilities.readCoding(cliContext.getJurisdiction()));
     TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
@@ -588,9 +619,9 @@ public class ValidationService {
   private void transformLangExtract(CliContext cliContext, ValidationEngine validator) throws IOException { 
     String dst = cliContext.getOutput();
     Utilities.createDirectory(dst);
-    PoGetTextProducer po = new PoGetTextProducer(Utilities.path(dst));
-    XLIFFProducer xliff = new XLIFFProducer(Utilities.path(dst));
-    JsonLangFileProducer jl = new JsonLangFileProducer(Utilities.path(dst));
+    PoGetTextProducer po = new PoGetTextProducer(dst, ".", false);
+    XLIFFProducer xliff = new XLIFFProducer(dst, ".", false);
+    JsonLangFileProducer jl = new JsonLangFileProducer(dst, ".", false);
     
     List<SourceFile> refs = new ArrayList<>();
     ValidatorUtils.parseSources(cliContext.getSources(), refs, validator.getContext());    
@@ -621,7 +652,7 @@ public class ValidationService {
     String dst = cliContext.getOutput();
     Utilities.createDirectory(dst);
     
-    Set<TranslationUnit> translations = new HashSet<>();
+    List<TranslationUnit> translations = new ArrayList<>();
     for (String input : cliContext.getInputs()) {
       loadTranslationSource(translations, input);
     }
@@ -640,7 +671,7 @@ public class ValidationService {
     System.out.println("Done - imported "+t+" translations into "+refs.size()+ " in "+dst);
   }
   
-  private void loadTranslationSource(Set<TranslationUnit> translations, String input) {
+  private void loadTranslationSource(List<TranslationUnit> translations, String input) {
     File f = new File(input);
     if (f.exists()) {
       if (f.isDirectory()) {

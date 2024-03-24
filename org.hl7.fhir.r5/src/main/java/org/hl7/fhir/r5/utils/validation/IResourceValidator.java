@@ -34,6 +34,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
@@ -104,6 +105,9 @@ public interface IResourceValidator {
   
   boolean isExample();
   IResourceValidator setExample(boolean example);
+  
+  // used to decide whether additional bindings, constraints etc apply
+  public List<UsageContext> getUsageContexts();
   
   public boolean isWarnOnDraftOrExperimental();
 

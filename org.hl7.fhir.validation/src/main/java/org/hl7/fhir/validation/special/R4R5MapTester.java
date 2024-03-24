@@ -449,13 +449,18 @@ public class R4R5MapTester implements IValidatorResourceFetcher {
   }
 
   @Override
-  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, String url) throws URISyntaxException {
+  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, Object appContext, String url) throws URISyntaxException {
     return null;
   }
 
   @Override
   public boolean fetchesCanonicalResource(IResourceValidator validator, String url) {
     return false;
+  }
+
+  @Override
+  public Set<String> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
+    return new HashSet<>();
   }
 
 }
