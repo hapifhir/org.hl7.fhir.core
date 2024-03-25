@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Extension;
@@ -745,7 +746,7 @@ public class RenderingContext extends RenderingI18nContext {
     return nf.format(v);
   }
 
-  public String toStr(DateTimeType dt) {
+  public String toStr(BaseDateTimeType dt) {
     return dt.toHumanDisplay();
   }
 
