@@ -40,7 +40,7 @@ public class ListRenderer extends ResourceRenderer {
     XhtmlNode tr = t.tr();
     XhtmlNode td = tr.td();
     if (list.has("date")) {
-      td.tx(/*!#*/"Date: "+context.toStr(list.get("date").dateTimeValue()));
+      td.tx(/*!#*/"Date: "+displayDateTime(list.get("date").dateTimeValue()));
     } 
     if (list.has("mode")) {
       td.tx(/*!#*/"Mode: "+list.get("mode").primitiveValue());
@@ -113,7 +113,7 @@ public class ListRenderer extends ResourceRenderer {
     XhtmlNode t = x.table("clstu");
     XhtmlNode tr = t.tr();
     if (list.hasDate()) {
-      tr.td().tx(/*!#*/"Date: "+context.toStr(list.getDateElement()));
+      tr.td().tx(/*!#*/"Date: "+displayDateTime(list.getDateElement()));
     }
     if (list.hasMode()) {
       tr.td().tx(/*!#*/"Mode: "+list.getMode().getDisplay());

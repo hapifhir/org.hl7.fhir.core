@@ -294,7 +294,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
  
     addSupportedFormats(uList, conf);
     
-    uList.li().addText(/*!#*/"Published on: " + context.toStr(conf.getDateElement()));
+    uList.li().addText(/*!#*/"Published on: " + displayDateTime(conf.getDateElement()));
     uList.li().addText(/*!#*/"Published by: " + conf.getPublisherElement().asStringValue());
 
 

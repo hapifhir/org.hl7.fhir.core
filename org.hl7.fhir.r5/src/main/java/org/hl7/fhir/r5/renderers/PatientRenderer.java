@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Identifier.IdentifierUse;
 import org.hl7.fhir.r5.model.Patient;
 import org.hl7.fhir.r5.model.Period;
+import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -209,7 +210,7 @@ public class PatientRenderer extends ResourceRenderer {
     String gender = null;
     pw = getProperty(pat, "gender");
     if (valued(pw)) {
-      gender = pw.value().getBase().primitiveValue();
+      gender = context.getTranslated((PrimitiveType<?>) pw.value().getBase());
     }
     DateType dt = null; 
     pw = getProperty(pat, "birthDate");

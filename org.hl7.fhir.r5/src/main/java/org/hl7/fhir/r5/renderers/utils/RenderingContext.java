@@ -737,9 +737,11 @@ public class RenderingContext extends RenderingI18nContext {
   }
 
   public String getTranslated(PrimitiveType<?> t) {
-    String v = ToolingExtensions.getLanguageTranslation(t, lang);
-    if (v != null) {
-      return v;
+    if (lang != null) {
+      String v = ToolingExtensions.getLanguageTranslation(t, lang);
+      if (v != null) {
+        return v;
+      }
     }
     return t.asStringValue();
   }
@@ -747,10 +749,6 @@ public class RenderingContext extends RenderingI18nContext {
   public String toStr(int v) {
     NumberFormat nf = NumberFormat.getInstance(locale);
     return nf.format(v);
-  }
-
-  public String toStr(BaseDateTimeType dt) {
-    return dt.toHumanDisplay();
   }
 
   
