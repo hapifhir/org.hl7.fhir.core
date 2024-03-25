@@ -106,7 +106,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
   }
 
   @Test
-  public void testReferenceReverseHistory(String id) throws Exception {
+  public void testReferenceReverseHistory() throws Exception {
     String context = "Patient/example/$graphql";
     String source = "reference-reverse.gql";
     String output="reference-reverse-history.json";
@@ -119,7 +119,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     //Rather than duplicate the entire resource we modify the ID with a _history path
     parsedResource.setId("example/_history/1");
 
-    testResource(id, parsedResource, output, source, null);
+    testResource("testReferenceReverseHistory", parsedResource, output, source, null);
   }
 
   @Override
