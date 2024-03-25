@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -501,7 +502,9 @@ public class RenderingContext extends RenderingI18nContext {
 
   public RenderingContext setLang(String lang) {
     this.lang = lang;
-    setLocale(new Locale(lang));
+    if (lang != null) {
+      setLocale(new Locale(lang));
+    }
     return this;
   }
 

@@ -248,8 +248,7 @@ public class ElementWrappers {
         } else {
           xd.getChildNodes().removeIf(c -> !"div".equals(c.getName()) || !c.hasAttribute("xml:lang"));
         }
-        x.setAttribute("lang", context.getLang());
-        x.setAttribute("xml:lang", context.getLang());
+        renderer.markLanguage(x);
         xd.getChildNodes().add(x);
       } else {
         if (!x.hasAttribute("xmlns")) {

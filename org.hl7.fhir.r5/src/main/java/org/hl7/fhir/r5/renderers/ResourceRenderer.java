@@ -195,8 +195,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else {
         r.getText().getDiv().getChildNodes().removeIf(c -> !"div".equals(c.getName()) || !c.hasAttribute("xml:lang"));
       }
-      x.setAttribute("lang", context.getLang());
-      x.setAttribute("xml:lang", context.getLang());
+      markLanguage(x);
       r.getText().getDiv().getChildNodes().add(x);
     } else {
       if (!x.hasAttribute("xmlns"))
@@ -828,5 +827,13 @@ public abstract class ResourceRenderer extends DataRenderer {
         }
       }      
     }
+  }
+
+  public void markLanguage(XhtmlNode x) {
+    x.setAttribute("lang", context.getLang());
+    x.setAttribute("xml:lang", context.getLang());
+    x.addTag(0, "hr");
+    x.addTag(0, "p").b().tx(context.getLocale().getDisplayName());
+    x.addTag(0, "hr");
   }
 }

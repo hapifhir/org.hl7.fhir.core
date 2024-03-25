@@ -185,7 +185,7 @@ public class PatientRenderer extends ResourceRenderer {
     String gender = null;
     pw = getProperty(pat, "gender");
     if (valued(pw)) {
-      pw.value().getBase().primitiveValue();
+      gender = pw.value().getBase().primitiveValue();
     }
     DateType dt = null; 
     pw = getProperty(pat, "birthDate");
