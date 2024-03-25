@@ -55,7 +55,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
     if (prv.hasRecorded()) {
       tr = t.tr();
       tr.td().tx(/*!#*/"Recorded");
-      tr.td().addText(prv.getRecordedElement().toHumanDisplay());
+      tr.td().addText(context.toStr(prv.getRecordedElement()));
     }
     if (prv.hasPolicy()) {
       tr = t.tr();
