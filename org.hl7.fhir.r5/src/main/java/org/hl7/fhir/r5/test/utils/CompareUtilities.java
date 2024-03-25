@@ -40,7 +40,9 @@ public class CompareUtilities extends BaseTestingUtilities {
   }
 
   private String presentExpected(String expected) {
-    if (expected.startsWith("$") && expected.endsWith("$")) {
+    if (expected == null) {
+      return "null";
+    } else if (expected.startsWith("$") && expected.endsWith("$")) {
       if (expected.startsWith("$choice:")) {
         return "Contains one of "+readChoices(expected.substring(8, expected.length()-1)).toString();
       } else if (expected.startsWith("$fragments:")) {
