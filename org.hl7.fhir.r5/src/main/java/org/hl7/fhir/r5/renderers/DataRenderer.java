@@ -330,7 +330,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (JurisdictionUtilities.isJurisdiction(system)) {
       return JurisdictionUtilities.displayJurisdiction(system+"#"+code);
     }
-    ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().withVersionFlexible(true), system, version, code, null);
+    ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().withLanguage(context.getLang()).withVersionFlexible(true), system, version, code, null);
 
     if (t != null && t.getDisplay() != null)
       return t.getDisplay();
@@ -1130,11 +1130,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
       return;
     }
 
-    String s = cc.getText();
+    String s = context.getTranslated(cc.getTextElement());
     if (Utilities.noString(s)) {
       for (Coding c : cc.getCoding()) {
         if (c.hasDisplayElement()) {
-          s = c.getDisplay();
+          s = context.getTranslated(c.getDisplayElement());
           break;
         }
       }
