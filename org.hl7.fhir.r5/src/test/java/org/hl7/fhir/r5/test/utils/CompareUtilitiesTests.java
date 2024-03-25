@@ -50,7 +50,7 @@ public class CompareUtilitiesTests implements ResourceLoaderTests {
 
   @ParameterizedTest
   @MethodSource("getCompareXMLParams")
-  public void testCompareXML(String id, String expectedFileName, String actualFileName, String expectedOutputFileName) throws Exception {
+  public void testCompareXML(String expectedFileName, String actualFileName, String expectedOutputFileName) throws Exception {
     final String expectedXMLPath = ROOT_XML_TEST_PATH.resolve(expectedFileName).toString();
     final String actualXMLPath = ROOT_XML_TEST_PATH.resolve(actualFileName).toString();
 
@@ -59,7 +59,7 @@ public class CompareUtilitiesTests implements ResourceLoaderTests {
     InputStream expectedXMLStream = classLoader.getResourceAsStream(expectedXMLPath);
     InputStream actualXMLStream = classLoader.getResourceAsStream(actualXMLPath);
 
-    final String actualOutput = CompareUtilities.checkXMLIsSame(id, expectedXMLStream, actualXMLStream);
+    final String actualOutput = CompareUtilities.checkXMLIsSame(expectedFileName, expectedXMLStream, actualXMLStream);
 
     if (expectedOutputFileName == null) {
       assertNull(actualOutput);
@@ -87,11 +87,11 @@ public class CompareUtilitiesTests implements ResourceLoaderTests {
 
  @ParameterizedTest
  @MethodSource("getCompareJSONParams")
- public void testCompareJSON(String id, String expectedFileName, String actualFileName, String expectedOutputFileName) throws IOException {
+ public void testCompareJSON(String expectedFileName, String actualFileName, String expectedOutputFileName) throws IOException {
    final String expectedJSONPath = ROOT_JSON_TEST_PATH.resolve(expectedFileName).toString();
    final String actualJSONPath = ROOT_JSON_TEST_PATH.resolve(actualFileName).toString();
 
-   final String actualOutput = CompareUtilities.checkJsonSrcIsSame(id, getResourceAsString(expectedJSONPath), getResourceAsString(actualJSONPath), false, null);
+   final String actualOutput = CompareUtilities.checkJsonSrcIsSame(expectedFileName, getResourceAsString(expectedJSONPath), getResourceAsString(actualJSONPath), false, null);
    if (expectedOutputFileName == null) {
      assertNull(actualOutput);
    } else {
