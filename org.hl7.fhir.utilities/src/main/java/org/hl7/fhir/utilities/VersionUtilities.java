@@ -690,8 +690,9 @@ public class VersionUtilities {
     }
     
     switch (getMajMin(v)) {
-    case "1.0" : return "http://hl7.org/fhir/DSTU1";
-    case "1.4" : return "http://hl7.org/fhir/DSTU2";
+    case "0.0" : return "http://hl7.org/fhir/DSTU1";
+    case "1.0" : return "http://hl7.org/fhir/DSTU2";
+    case "1.4" : return "http://hl7.org/fhir/2016May";
     case "3.0" : return "http://hl7.org/fhir/STU3";
     case "4.0" : return "http://hl7.org/fhir/R4";
     case "4.3" : return "http://hl7.org/fhir/R4B";
