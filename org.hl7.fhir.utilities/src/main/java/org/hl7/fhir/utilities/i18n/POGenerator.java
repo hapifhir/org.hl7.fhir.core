@@ -13,9 +13,9 @@ import org.hl7.fhir.utilities.Utilities;
 public class POGenerator {
 
   public static void main(String[] args) throws IOException {
-    if (true) {
-      throw new Error("This needs to be rewritten for using existing .po files");
-    }
+//    if (true) {
+//      throw new Error("This needs to be rewritten for using existing .po files");
+//    }
     new POGenerator().execute(args[0], args[1], args[2], args[3], args.length == 5 ? args[4] : null);
   }
 
