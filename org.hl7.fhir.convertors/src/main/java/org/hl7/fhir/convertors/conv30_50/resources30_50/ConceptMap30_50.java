@@ -124,7 +124,7 @@ public class ConceptMap30_50 {
     if (src.hasSource() || src.hasSourceVersion())
       tgt.setSourceElement(convertUriAndVersionToCanonical(src.getSourceElement(), src.getSourceVersionElement()));
     if (src.hasTarget() || src.hasTargetVersion())
-      tgt.setSourceElement(convertUriAndVersionToCanonical(src.getTargetElement(), src.getTargetVersionElement()));
+      tgt.setTargetElement(convertUriAndVersionToCanonical(src.getTargetElement(), src.getTargetVersionElement()));
 
     for (org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent t : src.getElement())
       tgt.addElement(convertSourceElementComponent(t, tgtMap));
