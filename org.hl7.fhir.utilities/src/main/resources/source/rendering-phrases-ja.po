@@ -1,0 +1,589 @@
+en -> ja
+
+#: BUNDLE_DOCUMENT_CONTENT
+msgid "Additional Document Content"
+msgid "追加のドキュメント内容"
+
+#: BUNDLE_ETAG
+msgid "ETag = {0}"
+msgid "ETag = {0}"
+
+#: BUNDLE_HEADER_DOC_ENTRY_RD
+msgid "{0}. {2}/{3}"
+msgid "{0}. {2}/{3}"
+
+#: BUNDLE_HEADER_DOC_ENTRY_U
+msgid "{0}. {1}"
+msgid "{0}. {1}"
+
+#: BUNDLE_HEADER_DOC_ENTRY_URD
+msgid "{0}. {1} ({2}/{3})"
+msgid "{0}. {1} ({2}/{3})"
+
+#: BUNDLE_HEADER_ENTRY
+msgid "Entry {0}"
+msgid "エントリ {0}"
+
+#: BUNDLE_HEADER_ENTRY_URL
+msgid "Entry {0} - fullUrl = {1}"
+msgid "エントリ {0} - fullUrl = {1}"
+
+#: BUNDLE_HEADER_ROOT
+msgid "Bundle {0} of type {1}"
+msgid "タイプ {1} のバンドル {0}"
+
+#: BUNDLE_IF_MATCH
+msgid "If-Match = {0}"
+msgid "If-Match = {0}"
+
+#: BUNDLE_IF_MOD
+msgid "If-Modified-Since = {0}"
+msgid "If-Modified-Since = {0}"
+
+#: BUNDLE_IF_NONE
+msgid "If-None-Exist = {0}"
+msgid "If-None-Exist = {0}"
+
+#: BUNDLE_IF_NON_MATCH
+msgid "If-None-Match = {0}"
+msgid "If-None-Match = {0}"
+
+#: BUNDLE_LAST_MOD
+msgid "LastModified = {0}"
+msgid "LastModified = {0}"
+
+#: BUNDLE_LOCATION
+msgid "Location = {0}"
+msgid "Location = {0}"
+
+#: BUNDLE_REQUEST
+msgid "Request:"
+msgid "Request:"
+
+#: BUNDLE_RESOURCE
+msgid "Resource {0}:"
+msgid "Resource {0}:"
+
+#: BUNDLE_RESPONSE
+msgid "Response:"
+msgid "Response:"
+
+#: BUNDLE_SEARCH
+msgid "Search:"
+msgid "Search:"
+
+#: BUNDLE_SEARCH_MODE
+msgid "Mode = {0}"
+msgid "Mode = {0}"
+
+#: BUNDLE_SEARCH_SCORE
+msgid "Score = {0}"
+msgid "Score = {0}"
+
+#: CODEPROP_CODE
+msgid "Code"
+msgid ""
+
+#: CODESYSTEM_CONCEPTS
+msgid "Concepts"
+msgid ""
+
+#: CODESYSTEM_CONTENT_COMPLETE This <param name
+msgid ""cased"/> code system <param name="cs"/> defines the following code<if test="code-count != 1">s</if><param name="h"/>:"
+msgid ""
+
+#: CODESYSTEM_CONTENT_EXAMPLE
+msgid "This <param name="cased"/> code system <param name="cs"/> provides some code<if test="code-count != 1">s</if><param name="h"/> <b>that are example only</b>:"
+msgid "この<param name="cased"/>コードシステム <param name="cs"/> はいくつかの例コード<if test="code-count != 1">たち</if><param name="h"/>を提供します:"
+
+#: CODESYSTEM_CONTENT_FRAGMENT
+msgid "This <param name="cased"/> code system <param name="cs"/> provides <b>a fragment</b> that includes following code<if test="code-count != 1">s</if><param name="h"/>:"
+msgid "この<param name="cased"/>コードシステム <param name="cs"/> は以下のコード<param name="h"/>を含むフラグメントを提供します:"
+
+#: CODESYSTEM_CONTENT_NOTPRESENT
+msgid "This <param name="cased"/> code system <param name="cs"/> defines codes<param name="h"/>, but no codes are represented here"
+msgid "このコードシステム <param name="cs"/> はコード<param name="h"/>を定義しますが、ここではコードは表現されていません"
+
+#: CODESYSTEM_CONTENT_SUPPLEMENT
+msgid "This code system <param name="cs"/> defines {0} on the following code<if test="code-count != 1">s</if>:"
+msgid "このコードシステム <param name="cs"/> は次のコードに {0} を定義します:"
+
+#: CODESYSTEM_DEPRECATED
+msgid "Deprecated"
+msgid ""
+
+#: CODESYSTEM_DESC
+msgid "Description"
+msgid ""
+
+#: CODESYSTEM_FILTERS
+msgid "Filters"
+msgid ""
+
+#: CODESYSTEM_FILTER_CODE
+msgid "Code"
+msgid ""
+
+#: CODESYSTEM_FILTER_OP
+msgid "Op"
+msgid ""
+
+#: CODESYSTEM_FILTER_VALUE
+msgid "Value"
+msgid ""
+
+#: CODESYSTEM_PROPS
+msgid "Properties"
+msgid ""
+
+#: CODESYSTEM_PROPS_DESC
+msgid "This code system defines the following properties for its concepts"
+msgid ""
+
+#: CODESYSTEM_PROP_CODE
+msgid "Code"
+msgid ""
+
+#: CODESYSTEM_PROP_DESC
+msgid "Description"
+msgid ""
+
+#: CODESYSTEM_PROP_NAME
+msgid "Name"
+msgid ""
+
+#: CODESYSTEM_PROP_TYPE
+msgid "Type"
+msgid ""
+
+#: CODESYSTEM_PROP_URI
+msgid "URI"
+msgid ""
+
+#: PAT_ACTIVE
+msgid "Active:"
+msgid ""
+
+#: PAT_ACTIVE_HINT
+msgid "Record is active"
+msgid ""
+
+#: PAT_ALT_NAME
+msgid "Alt. Name:"
+msgid ""
+
+#: PAT_ALT_NAME_HINT
+msgid "Alternate names (see the one above)"
+msgid ""
+
+#: PAT_CONTACT
+msgid "Contact Detail"
+msgid ""
+
+#: PAT_CONTACT_HINT
+msgid "Ways to contact the Patient"
+msgid ""
+
+#: PAT_CONTAINED_one
+msgid "Contained Resource"
+msgid ""
+
+#: PAT_CONTAINED_other
+msgid "Contained Resources"
+msgid ""
+
+#: PAT_DECEASED
+msgid "Deceased:"
+msgid ""
+
+#: PAT_DECEASED_HINT
+msgid "Known status of Patient"
+msgid ""
+
+#: PAT_DOB
+msgid "DoB: {0}"
+msgid ""
+
+#: PAT_GENDER
+msgid "Gender: {0}"
+msgid ""
+
+#: PAT_GP
+msgid "General Practitioner"
+msgid ""
+
+#: PAT_LANG_HINT_one
+msgid "Language spoken"
+msgid ""
+
+#: PAT_LANG_HINT_other
+msgid "Languages spoken"
+msgid ""
+
+#: PAT_LANG_PREFERRED
+msgid "(preferred)"
+msgid ""
+
+#: PAT_LANG_one
+msgid "Language:"
+msgid ""
+
+#: PAT_LANG_other
+msgid "Languages:"
+msgid ""
+
+#: PAT_LINKS
+msgid "Links:"
+msgid ""
+
+#: PAT_LINKS_HINT
+msgid "Patient Links"
+msgid ""
+
+#: PAT_LINK_REFER
+msgid "Please refer to"
+msgid ""
+
+#: PAT_LINK_REPL
+msgid "This record replaces"
+msgid ""
+
+#: PAT_LINK_REPLBY
+msgid "This record replaced by"
+msgid ""
+
+#: PAT_LINK_SEE
+msgid "Also see"
+msgid ""
+
+#: PAT_MARITAL
+msgid "Marital Status:"
+msgid ""
+
+#: PAT_MARITAL_HINT
+msgid "Known Marital status of Patient"
+msgid ""
+
+#: PAT_MO
+msgid "Managing Organization"
+msgid ""
+
+#: PAT_MUL_BIRTH
+msgid "Multiple Birth:"
+msgid ""
+
+#: PAT_MUL_BIRTH_HINT
+msgid "Known multipleBirth status of Patient"
+msgid ""
+
+#: PAT_NOK_CONTACT
+msgid "Contact:"
+msgid ""
+
+#: PAT_NOK_CONTACT_HINT
+msgid "Patient contact"
+msgid ""
+
+#: PAT_NOM_CONTACT
+msgid "Nominated Contact:"
+msgid ""
+
+#: PAT_NO_DOB
+msgid "DoB Unknown"
+msgid ""
+
+#: PAT_NO_GENDER
+msgid "(no stated gender)"
+msgid ""
+
+#: PAT_NO_NAME
+msgid "Anonymous Patient"
+msgid ""
+
+#: PAT_ORG
+msgid "Organization:"
+msgid ""
+
+#: PAT_OTHER_ID_HINT_one
+msgid "Other Id (see the one above)"
+msgid ""
+
+#: PAT_OTHER_ID_HINT_other
+msgid "Other Ids (see the one above)"
+msgid ""
+
+#: PAT_OTHER_ID_one
+msgid "Other Id:"
+msgid ""
+
+#: PAT_OTHER_ID_other
+msgid "Other Ids:"
+msgid ""
+
+#: PAT_PERIOD
+msgid "Valid Period:"
+msgid ""
+
+#: PAT_PHOTO
+msgid "Patient Photo"
+msgid ""
+
+#: PAT_RELN
+msgid "Relationships:"
+msgid ""
+
+#: RESOURCE_COPYRIGHT
+msgid "Copyright Statement:"
+msgid ""
+
+#: SD_COMP_HEAD_CARD_L
+msgid "L Card."
+msgid ""
+
+#: SD_COMP_HEAD_CARD_L_DESC
+msgid "Minimum and Maximum # of times the the element can appear in the instance - Left Structure"
+msgid ""
+
+#: SD_COMP_HEAD_CARD_R
+msgid "R Card."
+msgid ""
+
+#: SD_COMP_HEAD_CARD_R_DESC
+msgid "Minimum and Maximum # of times the the element can appear in the instance - Right Structure"
+msgid ""
+
+#: SD_COMP_HEAD_COMP
+msgid "Comments"
+msgid ""
+
+#: SD_COMP_HEAD_COMP_DESC
+msgid "Comments about the comparison"
+msgid ""
+
+#: SD_COMP_HEAD_DESC_L
+msgid "L Description & Constraints"
+msgid ""
+
+#: SD_COMP_HEAD_DESC_L_DESC
+msgid "Additional information about the element - Left Structure"
+msgid ""
+
+#: SD_COMP_HEAD_DESC_R
+msgid "R Description & Constraints"
+msgid ""
+
+#: SD_COMP_HEAD_DESC_R_DESC
+msgid "Additional information about the element - Right Structure"
+msgid ""
+
+#: SD_COMP_HEAD_FLAGS_L
+msgid "L Flags"
+msgid ""
+
+#: SD_COMP_HEAD_FLAGS_L_DESC
+msgid "Information about the use of the element - Left Structure"
+msgid ""
+
+#: SD_COMP_HEAD_FLAGS_R
+msgid "R Flags"
+msgid ""
+
+#: SD_COMP_HEAD_FLAGS_R_DESC
+msgid "Information about the use of the element - Right Structure"
+msgid ""
+
+#: SD_COMP_HEAD_NAME
+msgid "Name"
+msgid ""
+
+#: SD_COMP_HEAD_NAME_DESC
+msgid "The logical name of the element"
+msgid ""
+
+#: SD_COMP_HEAD_TYPE_L
+msgid "L Type"
+msgid ""
+
+#: SD_COMP_HEAD_TYPE_L_DESC
+msgid "Reference to the type of the element - Left Structure"
+msgid ""
+
+#: SD_COMP_HEAD_TYPE_R
+msgid "R Type"
+msgid ""
+
+#: SD_COMP_HEAD_TYPE_R_DESC
+msgid "Reference to the type of the element - Right Structure"
+msgid ""
+
+#: SD_DOCO
+msgid "Documentation for this format"
+msgid ""
+
+#: SD_GRID_HEAD_CARD
+msgid "Card."
+msgid ""
+
+#: SD_GRID_HEAD_CARD_DESC
+msgid "Minimum and Maximum # of times the the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
+msgid ""
+
+#: SD_GRID_HEAD_DESC
+msgid "Constraints and Usage"
+msgid ""
+
+#: SD_GRID_HEAD_DESC_DESC
+msgid "Fixed values, length limits, vocabulary bindings and other usage notes"
+msgid ""
+
+#: SD_GRID_HEAD_NAME
+msgid "Name"
+msgid ""
+
+#: SD_GRID_HEAD_NAME_DESC
+msgid "The name of the element (Slice name in brackets).  Mouse-over provides definition"
+msgid ""
+
+#: SD_GRID_HEAD_TYPE
+msgid "Type"
+msgid ""
+
+#: SD_GRID_HEAD_TYPE_DESC
+msgid "Reference to the type of the element"
+msgid ""
+
+#: SD_HEAD_CARD
+msgid "Card."
+msgid ""
+
+#: SD_HEAD_CARD_DESC
+msgid "Minimum and Maximum # of times the the element can appear in the instance"
+msgid ""
+
+#: SD_HEAD_DESC
+msgid "Description & Constraints"
+msgid ""
+
+#: SD_HEAD_DESC_DESC
+msgid "Additional information about the element"
+msgid ""
+
+#: SD_HEAD_FLAGS
+msgid "Flags"
+msgid ""
+
+#: SD_HEAD_FLAGS_DESC
+msgid "Information about the use of the element"
+msgid ""
+
+#: SD_HEAD_NAME
+msgid "Name"
+msgid ""
+
+#: SD_HEAD_NAME_DESC
+msgid "The logical name of the element"
+msgid ""
+
+#: SD_HEAD_SC
+msgid "The logical name of the elemHEAD_FLAGS = Flags"
+msgid ""
+
+#: SD_HEAD_TYPE
+msgid "Type"
+msgid ""
+
+#: SD_HEAD_TYPE_DESC
+msgid "Reference to the type of the element"
+msgid ""
+
+#: SD_LEGEND
+msgid "Legend for this format"
+msgid ""
+
+#: SD_SLICING_INFO
+msgid "{0}, {1} by {2}"
+msgid ""
+
+#: SD_SUMMARY
+msgid "Fixed Value: {0} {1}"
+msgid ""
+
+#: SD_SUMMARY_FIXED
+msgid "Fixed: {0} {1}"
+msgid ""
+
+#: SD_SUMMARY_INFO
+msgid "{0}, {1} by {2}"
+msgid ""
+
+#: SD_SUMMARY_MANDATORY
+msgid "Mandatory: {0} {1}"
+msgid ""
+
+#: SD_SUMMARY_MAPPINGS
+msgid "Mappings for {0} ({2}{1}{3})"
+msgid ""
+
+#: SD_SUMMARY_MISSING_EXTENSION
+msgid "Unable to summarise extension {0} (no extension found)"
+msgid ""
+
+#: SD_SUMMARY_MISSING_PROFILE
+msgid "Unable to summarise profile {0} (no profile found)"
+msgid ""
+
+#: SD_SUMMARY_MUST_SUPPORT
+msgid "Must-Support: {0} {1}"
+msgid ""
+
+#: SD_SUMMARY_NESTED_MANDATORY
+msgid "({0} nested mandatory {1})"
+msgid ""
+
+#: SD_SUMMARY_PROHIBITED
+msgid "Prohibited: {0} {1}"
+msgid ""
+
+#: SD_SUMMARY_PUBLICATION
+msgid "This profile was published on {0} as a {1} by {2}"
+msgid ""
+
+#: SD_SUMMARY_SLICES
+msgid "This structure defines the following {0}Slices{1}"
+msgid ""
+
+#: SD_SUMMARY_SLICE_NONE
+msgid "There is a slice with no discriminator at {0}"
+msgid ""
+
+#: SD_SUMMARY_SLICE_one
+msgid "The element {0} is sliced based on the value of {1}"
+msgid ""
+
+#: SD_SUMMARY_SLICE_other
+msgid "The element {0} is sliced based on the values of {1}"
+msgid ""
+
+#: TX_CODE
+msgid "Code"
+msgid ""
+
+#: TX_COMMENTS
+msgid "Comments"
+msgid ""
+
+#: TX_DEFINITION
+msgid "Definition"
+msgid ""
+
+#: TX_DEPRECATED
+msgid "Deprecated"
+msgid ""
+
+#: TX_DISPLAY
+msgid "Display"
+msgid ""
+
+#: TX_VERSION
+msgid "Version"
+msgid ""
