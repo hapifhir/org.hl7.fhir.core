@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateType;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.HumanName.NameUse;
@@ -88,7 +89,7 @@ public class PatientRenderer extends ResourceRenderer {
     for (HumanName t : pat.getName()) {
       n = chooseName(n, t);
     }
-    return display(n, pat.hasGender() ? pat.getGender().getDisplay() : null, pat.getBirthDateElement(), id);
+    return display(n, pat.hasGender() ? context.getTranslatedCode(pat.getGenderElement(), "http://hl7.org/fhir/administrative-gender") : null, pat.getBirthDateElement(), id);
   }
 
   private Identifier chooseId(Identifier oldId, Identifier newId) {
@@ -186,7 +187,7 @@ public class PatientRenderer extends ResourceRenderer {
     String gender = null;
     pw = getProperty(pat, "gender");
     if (valued(pw)) {
-      gender = pw.value().getBase().primitiveValue();
+      gender = context.getTranslatedCode(pw.value().getBase(), "http://hl7.org/fhir/administrative-gender");
     }
     DateType dt = null; 
     pw = getProperty(pat, "birthDate");
@@ -210,7 +211,7 @@ public class PatientRenderer extends ResourceRenderer {
     String gender = null;
     pw = getProperty(pat, "gender");
     if (valued(pw)) {
-      gender = context.getTranslated((PrimitiveType<?>) pw.value().getBase());
+      gender = context.getTranslatedCode(pw.value().getBase(), "http://hl7.org/fhir/administrative-gender");
     }
     DateType dt = null; 
     pw = getProperty(pat, "birthDate");
@@ -545,7 +546,7 @@ public class PatientRenderer extends ResourceRenderer {
     
     pw = getProperty(bw, "gender");
     if (pw.hasValues()) {
-      gender = pw.getValues().get(0).getBase().primitiveValue();
+      gender = context.getTranslatedCode(pw.getValues().get(0).getBase(), "http://hl7.org/fhir/administrative-gender");
     }
 
     pw = getProperty(bw, "organization");
