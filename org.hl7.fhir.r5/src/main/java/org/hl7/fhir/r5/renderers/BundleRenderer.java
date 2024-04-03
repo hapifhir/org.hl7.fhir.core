@@ -84,9 +84,11 @@ public class BundleRenderer extends ResourceRenderer {
         if (be.has("resource")) {
           if (be.getChildByName("resource").getValues().get(0).has("id")) {
             root.an(be.get("resource").fhirType() + "_" + be.getChildByName("resource").getValues().get(0).get("id").primitiveValue());
+            root.an("hc"+be.get("resource").fhirType() + "_" + be.getChildByName("resource").getValues().get(0).get("id").primitiveValue());
           } else {
             String id = makeIdFromBundleEntry(be.get("fullUrl").primitiveValue());
             root.an(be.get("resource").fhirType() + "_" + id);
+            root.an("hc"+be.get("resource").fhirType() + "_" + id);
           }
         }
         root.hr();
@@ -305,9 +307,11 @@ public class BundleRenderer extends ResourceRenderer {
           if (be.hasResource()) {
             if (be.getResource().hasId()) {
               x.an(be.getResource().getResourceType().name() + "_" + be.getResource().getId());
+              x.an("hc"+be.getResource().getResourceType().name() + "_" + be.getResource().getId());
             } else {
               String id = makeIdFromBundleEntry(be.getFullUrl());
               x.an(be.getResource().getResourceType().name() + "_" + id);
+              x.an("hc"+be.getResource().getResourceType().name() + "_" + id);
             }
           }
           x.hr();
