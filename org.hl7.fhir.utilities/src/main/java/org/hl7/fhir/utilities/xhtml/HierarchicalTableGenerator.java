@@ -86,6 +86,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 
 
@@ -945,7 +946,7 @@ public class HierarchicalTableGenerator {
       StringBuilder b = new StringBuilder();
       b.append("data:image/png;base64,");
       byte[] bytes;
-      File file = new File(Utilities.path(dest, filename));
+      File file = ManagedFileAccess.file(Utilities.path(dest, filename));
       if (!file.exists()) // because sometime this is called real early before the files exist. it will be built again later because of this
     	bytes = new byte[0]; 
       else
@@ -1036,15 +1037,15 @@ public class HierarchicalTableGenerator {
       b.append(Integer.toString(indent));
       b.append(".png");
       String file = Utilities.path(dest, b.toString());
-      if (!new File(file).exists()) {
-        File newFile = new File(file);
+      if (!ManagedFileAccess.file(file).exists()) {
+        File newFile = ManagedFileAccess.file(file);
         if (newFile.getParentFile() == null) {
           throw new Error("No source directory provided. ("+file+")");
         } else {
           newFile.getParentFile().mkdirs();
         }
         newFile.createNewFile();
-        FileOutputStream stream = new FileOutputStream(file);
+        FileOutputStream stream = ManagedFileAccess.outStream(file);
         try {
           genImage(indents, hasChildren, lineColor, stream);
           if (outputTracker!=null)

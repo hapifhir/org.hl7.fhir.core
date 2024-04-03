@@ -48,14 +48,17 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+
 public class ZipGenerator {
 
   private Set<String> names = new HashSet<String>();
 	FileOutputStream dest;
 	ZipOutputStream out;
 
-	public ZipGenerator(String filename) throws FileNotFoundException  {
-		dest = new FileOutputStream(filename);
+	public ZipGenerator(String filename) throws IOException  {
+		dest = ManagedFileAccess.outStream(filename);
 		out = new ZipOutputStream(new BufferedOutputStream(dest));
     out.setLevel(Deflater.BEST_COMPRESSION);
 	}
@@ -70,7 +73,7 @@ public class ZipGenerator {
 		byte[] buf = new byte[1024];
 
 		ZipInputStream zin = new ZipInputStream(
-				new FileInputStream(zipFilename));
+				ManagedFileAccess.inStream(zipFilename));
 
 		try {
 			ZipEntry entry = zin.getNextEntry();
@@ -94,11 +97,11 @@ public class ZipGenerator {
 	}
 
 	public void addFolder(String actualDir, String statedDir, boolean omitIfExists) throws IOException  {
-	  File fd = new CSFile(actualDir);
+	  File fd = ManagedFileAccess.csfile(actualDir);
 	  String files[] = fd.list();
 	  for (String f : files) {
 	    if (!".DS_Store".equals(f)) {
-	      if (new CSFile(Utilities.path(actualDir, f)).isDirectory())
+	      if (ManagedFileAccess.csfile(Utilities.path(actualDir, f)).isDirectory())
 	        addFolder(Utilities.path(actualDir, f), Utilities.pathURL(statedDir, f), omitIfExists);
 	      else
 	        addFileName(Utilities.pathURL(statedDir, f), Utilities.path(actualDir, f), omitIfExists);
@@ -107,11 +110,11 @@ public class ZipGenerator {
 	}
 
   public void addFolder(String actualDir, String statedDir, boolean omitIfExists, String noExt) throws IOException  {
-    File fd = new CSFile(actualDir);
+    File fd = ManagedFileAccess.csfile(actualDir);
     String files[] = fd.list();
     for (String f : files) {
       if (!".DS_Store".equals(f)) {
-        if (new CSFile(Utilities.path(actualDir, f)).isDirectory())
+        if (ManagedFileAccess.csfile(Utilities.path(actualDir, f)).isDirectory())
           addFolder(Utilities.path(actualDir, f), Utilities.pathURL(statedDir, f), omitIfExists, noExt);
         else if (noExt == null || !f.endsWith(noExt))
           addFileName(Utilities.pathURL(statedDir, f), Utilities.path(actualDir, f), omitIfExists);
@@ -122,7 +125,7 @@ public class ZipGenerator {
   public void addFiles(String actualDir, String statedDir, String ext, String noExt) throws FileNotFoundException, IOException {
     byte data[] = new byte[BUFFER];
     statedDir = statedDir.replace("\\", "/");
-    File f = new CSFile(actualDir);
+    File f = ManagedFileAccess.csfile(actualDir);
 
     String files[] = f.list();
     if (files == null) {
@@ -131,8 +134,8 @@ public class ZipGenerator {
       for (int i = 0; i < files.length; i++) {
         if (!".DS_Store".equals(files[i])) {
           String fn = Utilities.path(actualDir, files[i]);
-          if ( new CSFile(fn).isFile() && ((ext == null || files[i].endsWith(ext)) && (noExt == null || !files[i].endsWith(noExt)))) {
-            FileInputStream fi = new FileInputStream(fn);
+          if ( ManagedFileAccess.csfile(fn).isFile() && ((ext == null || files[i].endsWith(ext)) && (noExt == null || !files[i].endsWith(noExt)))) {
+            FileInputStream fi = ManagedFileAccess.inStream(fn);
             BufferedInputStream origin = new BufferedInputStream(fi, BUFFER);
             ZipEntry entry = new ZipEntry(statedDir + files[i]);
             names.add(statedDir + files[i]);
@@ -151,18 +154,18 @@ public class ZipGenerator {
   public void addFilesFiltered(String actualDir, String statedDir, String ext, String[] noExt) throws FileNotFoundException, IOException {
     byte data[] = new byte[BUFFER];
     statedDir = statedDir.replace("\\", "/");
-    File f = new CSFile(actualDir);
+    File f = ManagedFileAccess.csfile(actualDir);
 
     String files[] = f.list();
     for (int i = 0; i < files.length; i++) {
       if (!".DS_Store".equals(files[i])) {
-        if ( new CSFile(actualDir + files[i]).isFile() && ((ext == null || files[i].endsWith(ext)))) {
+        if ( ManagedFileAccess.csfile(actualDir + files[i]).isFile() && ((ext == null || files[i].endsWith(ext)))) {
           boolean ok = true;
           for (String n : noExt) {
             ok = ok && !files[i].endsWith(n);
           }
           if (ok) {
-            FileInputStream fi = new FileInputStream(actualDir + files[i]);
+            FileInputStream fi = ManagedFileAccess.inStream(actualDir + files[i]);
             BufferedInputStream origin = new BufferedInputStream(fi, BUFFER);
             ZipEntry entry = new ZipEntry(statedDir + files[i]);
             names.add(statedDir + files[i]);
@@ -188,7 +191,7 @@ public class ZipGenerator {
 	public void addFileName(String statedPath, String actualPath, boolean omitIfExists) throws IOException  {
 	  if (!omitIfExists || !names.contains(statedPath)) {
 	    byte data[] = new byte[BUFFER];
-	    FileInputStream fi = new FileInputStream(actualPath);
+	    FileInputStream fi = ManagedFileAccess.inStream(actualPath);
 	    BufferedInputStream origin = new BufferedInputStream(fi, BUFFER);
 	    ZipEntry entry = new ZipEntry(statedPath);
 	    names.add(statedPath);
@@ -221,7 +224,7 @@ public class ZipGenerator {
   //  byte data[] = new byte[BUFFER];
     CRC32 crc = new CRC32();
     
-  //  FileInputStream fi = new FileInputStream(actualPath);
+  //  FileInputStream fi = ManagedFileAccess.inStream(actualPath);
   //  BufferedInputStream origin = new BufferedInputStream(fi, BUFFER);
     out.setLevel(0);
     ZipEntry entry = new ZipEntry(statedPath);

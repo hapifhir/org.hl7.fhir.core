@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.ValidatorCli;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ public class TransformationTests {
   // C:\work\org.hl7.fhir.test\ccda-to-fhir-maps\testdocuments\IAT2-Discharge_Summary-DCI.xml -transform http://hl7.org/fhir/cda/mapping/ccdaDocumentToFhir -ig C:\work\org.hl7.fhir.test\ccda-to-fhir-maps\mappings -ig hl7.fhir.cda -output C:\work\org.hl7.fhir.test\ccda-to-fhir-maps\output\test.xml
   
   private void checkFile(String fn) throws Exception {
-    if (!(new File(fn).exists()))
+    if (!(ManagedFileAccess.file(fn).exists()))
       throw new Exception("Unable to find output file "+fn);
     
   }

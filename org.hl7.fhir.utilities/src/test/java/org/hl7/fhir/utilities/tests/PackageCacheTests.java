@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -27,7 +28,7 @@ public class PackageCacheTests {
     npm = cache.loadPackage(CommonPackages.ID_PUBPACK, CommonPackages.VER_PUBPACK);
     npm.loadAllFiles();
     Assertions.assertNotNull(npm);
-    File dir = new File(Utilities.path("[tmp]", "cache"));
+    File dir = ManagedFileAccess.file(Utilities.path("[tmp]", "cache"));
     if (dir.exists()) {
       Utilities.clearDirectory(dir.getAbsolutePath());
     } else {

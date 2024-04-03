@@ -990,7 +990,7 @@ public class StructureMapUtilities {
     if (newFmt) {
       if (lexer.isConstant()) {
         if (lexer.isStringConstant()) {
-          rule.setName(lexer.readConstant("ruleName"));
+          rule.setName(fixName(lexer.readConstant("ruleName")));
         } else {
           rule.setName(lexer.take());
         }
@@ -1007,6 +1007,10 @@ public class StructureMapUtilities {
         rule.setDocumentation(doco);
       }
     }
+  }
+
+  private String fixName(String c) {
+    return c.replace("-", "");
   }
 
   private boolean isSimpleSyntax(StructureMapGroupRuleComponent rule) {

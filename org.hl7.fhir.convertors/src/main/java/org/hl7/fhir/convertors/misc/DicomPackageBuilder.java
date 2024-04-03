@@ -23,6 +23,7 @@ import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.utils.NPMPackageGenerator;
 import org.hl7.fhir.r4.utils.NPMPackageGenerator.Category;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -73,8 +74,8 @@ public class DicomPackageBuilder {
     Set<String> ids = new HashSet<>();
     ids.add(vs.getId());
     
-    for (File f : new File(Utilities.path(source, "Resources", "valuesets", "fhir", "json")).listFiles()) {
-      vs = (ValueSet) JsonParser.loadFile(new FileInputStream(f));
+    for (File f : ManagedFileAccess.file(Utilities.path(source, "Resources", "valuesets", "fhir", "json")).listFiles()) {
+      vs = (ValueSet) JsonParser.loadFile(ManagedFileAccess.inStream(f));
       vs.setVersion(version);
       if (vs.getId().length() > 64) {
         vs.setId(vs.getId().substring(0, 64));
@@ -133,7 +134,7 @@ public class DicomPackageBuilder {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    Document doc = builder.parse(new FileInputStream(Utilities.path(source, "Resources", "Ontology", "DCM", "dcm.owl")));
+    Document doc = builder.parse(ManagedFileAccess.inStream(Utilities.path(source, "Resources", "Ontology", "DCM", "dcm.owl")));
     Element rdf = doc.getDocumentElement();
     Element d = XMLUtil.getFirstChild(rdf);
     version = processVersion(XMLUtil.getNamedChildText(d, "versionInfo"));

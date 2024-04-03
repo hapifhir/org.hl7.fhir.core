@@ -61,6 +61,7 @@ import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonNull;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -271,7 +272,7 @@ public class TerminologyCache {
     networkCount = 0;
 
     
-    File f = new File(folder);
+    File f = ManagedFileAccess.file(folder);
     if (!f.exists()) {
       Utilities.createDirectory(folder);
     }
@@ -283,7 +284,7 @@ public class TerminologyCache {
   }
 
   private void checkVersion() throws IOException {
-    File verFile = new File(Utilities.path(folder, "version.ctl"));
+    File verFile = ManagedFileAccess.file(Utilities.path(folder, "version.ctl"));
     if (verFile.exists()) {
       String ver = TextFile.fileToString(verFile);
       if (!ver.equals(FIXED_CACHE_VERSION)) {
@@ -618,7 +619,7 @@ public class TerminologyCache {
       return;
 
     try {
-      OutputStreamWriter sw = new OutputStreamWriter(new FileOutputStream(Utilities.path(folder, title + CACHE_FILE_EXTENSION)), "UTF-8");
+      OutputStreamWriter sw = new OutputStreamWriter(ManagedFileAccess.outStream(Utilities.path(folder, title + CACHE_FILE_EXTENSION)), "UTF-8");
 
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
@@ -635,7 +636,7 @@ public class TerminologyCache {
       return;
 
     try {
-      OutputStreamWriter sw = new OutputStreamWriter(new FileOutputStream(Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION)), "UTF-8");
+      OutputStreamWriter sw = new OutputStreamWriter(ManagedFileAccess.outStream(Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION)), "UTF-8");
       sw.write(ENTRY_MARKER+"\r\n");
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
@@ -842,7 +843,7 @@ public class TerminologyCache {
       }
     }
 
-    for (String fn : new File(folder).list()) {
+    for (String fn : ManagedFileAccess.file(folder).list()) {
       if (fn.endsWith(CACHE_FILE_EXTENSION) && !fn.equals("validation" + CACHE_FILE_EXTENSION)) {
         try {
           if (isCapabilityCache(fn)) {
@@ -856,7 +857,7 @@ public class TerminologyCache {
       }
     }
     try {
-      File f = new File(Utilities.path(folder, "vs-externals.json"));
+      File f = ManagedFileAccess.file(Utilities.path(folder, "vs-externals.json"));
       if (f.exists()) {
         org.hl7.fhir.utilities.json.model.JsonObject json = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(f);
         for (JsonProperty p : json.getProperties()) {
@@ -983,7 +984,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser().parse(new FileInputStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
       } catch (Exception e) {
         return null;
       }
@@ -1000,7 +1001,7 @@ public class TerminologyCache {
       } else {
         String uuid = Utilities.makeUuidLC();
         String fn = "vs-"+uuid+".json";
-        new JsonParser().compose(new FileOutputStream(Utilities.path(folder, fn)), svs.getVs());
+        new JsonParser().compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), svs.getVs());
         vsCache.put(canonical, new SourcedValueSetEntry(svs.getServer(), fn));
       }    
       org.hl7.fhir.utilities.json.model.JsonObject j = new org.hl7.fhir.utilities.json.model.JsonObject();
@@ -1017,7 +1018,7 @@ public class TerminologyCache {
           j.add(k, e);
         }
       }
-      org.hl7.fhir.utilities.json.parser.JsonParser.compose(j, new File(Utilities.path(folder, "vs-externals.json")), true);
+      org.hl7.fhir.utilities.json.parser.JsonParser.compose(j, ManagedFileAccess.file(Utilities.path(folder, "vs-externals.json")), true);
     } catch (Exception e) {
       e.printStackTrace();
     }

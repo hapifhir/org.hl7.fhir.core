@@ -3,10 +3,12 @@ package org.hl7.fhir.convertors.misc;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class OIDAssigner {
 
@@ -15,9 +17,9 @@ public class OIDAssigner {
     new OIDAssigner().execute(args[0], args[1], args[2]);
   }
 
-  private void execute(String oidSource, String folder, String version) {
+  private void execute(String oidSource, String folder, String version) throws IOException {
    IniFile oids = new IniFile(oidSource);
-   File f = new File(folder);
+   File f = ManagedFileAccess.file(folder);
    process(oids, f, version);
   }
 
@@ -47,7 +49,7 @@ public class OIDAssigner {
     org.hl7.fhir.dstu2.formats.IParser parser = fmt == FhirFormat.JSON ? new  org.hl7.fhir.dstu2.formats.JsonParser() : new org.hl7.fhir.dstu2.formats.XmlParser();
     try {
       boolean save = false;
-      org.hl7.fhir.dstu2.model.Resource r = parser.parse(new FileInputStream(f));
+      org.hl7.fhir.dstu2.model.Resource r = parser.parse(ManagedFileAccess.inStream(f));
       if (r instanceof org.hl7.fhir.dstu2.model.ValueSet) { 
         org.hl7.fhir.dstu2.model.ValueSet vs = (org.hl7.fhir.dstu2.model.ValueSet) r;
         boolean hasOid = isOid(vs.getIdentifier());
@@ -81,7 +83,7 @@ public class OIDAssigner {
         }
       }
       if (save) {
-        parser.setOutputStyle(org.hl7.fhir.dstu2.formats.IParser.OutputStyle.PRETTY).compose(new FileOutputStream(f), r);
+        parser.setOutputStyle(org.hl7.fhir.dstu2.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
       }
     } catch (Exception e) {
       System.out.println("Erro processing "+f.getAbsolutePath()+": "+e.getMessage());
@@ -93,7 +95,7 @@ public class OIDAssigner {
     org.hl7.fhir.dstu3.formats.IParser parser = fmt == FhirFormat.JSON ? new  org.hl7.fhir.dstu3.formats.JsonParser() : new org.hl7.fhir.dstu3.formats.XmlParser();
     try {
       boolean save = false;
-      org.hl7.fhir.dstu3.model.Resource r = parser.parse(new FileInputStream(f));
+      org.hl7.fhir.dstu3.model.Resource r = parser.parse(ManagedFileAccess.inStream(f));
       if (r instanceof org.hl7.fhir.dstu3.model.CodeSystem) { 
         org.hl7.fhir.dstu3.model.CodeSystem cs = (org.hl7.fhir.dstu3.model.CodeSystem) r;
         boolean hasOid = isOid(cs.getIdentifier());
@@ -141,7 +143,7 @@ public class OIDAssigner {
         }
       }
       if (save) {
-        parser.setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(new FileOutputStream(f), r);
+        parser.setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
       }
     } catch (Exception e) {
       System.out.println("Erro processing "+f.getAbsolutePath()+": "+e.getMessage());
@@ -153,7 +155,7 @@ public class OIDAssigner {
     org.hl7.fhir.r4.formats.IParser parser = fmt == FhirFormat.JSON ? new  org.hl7.fhir.r4.formats.JsonParser() : new org.hl7.fhir.r4.formats.XmlParser();
     try {
       boolean save = false;
-      org.hl7.fhir.r4.model.Resource r = parser.parse(new FileInputStream(f));
+      org.hl7.fhir.r4.model.Resource r = parser.parse(ManagedFileAccess.inStream(f));
       if (r instanceof org.hl7.fhir.r4.model.CodeSystem) { 
         org.hl7.fhir.r4.model.CodeSystem cs = (org.hl7.fhir.r4.model.CodeSystem) r;
         boolean hasOid = false;
@@ -206,7 +208,7 @@ public class OIDAssigner {
         }
       }
       if (save) {
-        parser.setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(new FileOutputStream(f), r);
+        parser.setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
       }
     } catch (Exception e) {
       System.out.println("Erro processing "+f.getAbsolutePath()+": "+e.getMessage());
@@ -217,7 +219,7 @@ public class OIDAssigner {
     org.hl7.fhir.r4b.formats.IParser parser = fmt == FhirFormat.JSON ? new  org.hl7.fhir.r4b.formats.JsonParser() : new org.hl7.fhir.r4b.formats.XmlParser();
     try {
       boolean save = false;
-      org.hl7.fhir.r4b.model.Resource r = parser.parse(new FileInputStream(f));
+      org.hl7.fhir.r4b.model.Resource r = parser.parse(ManagedFileAccess.inStream(f));
       if (r instanceof org.hl7.fhir.r4b.model.CanonicalResource) { 
         org.hl7.fhir.r4b.model.CanonicalResource cs = (org.hl7.fhir.r4b.model.CanonicalResource) r;
         boolean hasOid = false;
@@ -233,7 +235,7 @@ public class OIDAssigner {
         }
       }
       if (save) {
-        parser.setOutputStyle(org.hl7.fhir.r4b.formats.IParser.OutputStyle.PRETTY).compose(new FileOutputStream(f), r);
+        parser.setOutputStyle(org.hl7.fhir.r4b.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
       }
     } catch (Exception e) {
       System.out.println("Erro processing "+f.getAbsolutePath()+": "+e.getMessage());
@@ -245,7 +247,7 @@ public class OIDAssigner {
     org.hl7.fhir.r5.formats.IParser parser = fmt == FhirFormat.JSON ? new  org.hl7.fhir.r5.formats.JsonParser() : new org.hl7.fhir.r5.formats.XmlParser();
     try {
       boolean save = false;
-      org.hl7.fhir.r5.model.Resource r = parser.parse(new FileInputStream(f));
+      org.hl7.fhir.r5.model.Resource r = parser.parse(ManagedFileAccess.inStream(f));
       if (r instanceof org.hl7.fhir.r5.model.CanonicalResource) { 
         org.hl7.fhir.r5.model.CanonicalResource cs = (org.hl7.fhir.r5.model.CanonicalResource) r;
         boolean hasOid = false;
@@ -261,7 +263,7 @@ public class OIDAssigner {
         }
       }
       if (save) {
-        parser.setOutputStyle(org.hl7.fhir.r5.formats.IParser.OutputStyle.PRETTY).compose(new FileOutputStream(f), r);
+        parser.setOutputStyle(org.hl7.fhir.r5.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
       }
     } catch (Exception e) {
       System.out.println("Erro processing "+f.getAbsolutePath()+": "+e.getMessage());

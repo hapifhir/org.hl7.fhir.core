@@ -19,6 +19,7 @@ import org.hl7.fhir.dstu2.model.StructureDefinition;
 import org.hl7.fhir.dstu2.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.xml.sax.SAXException;
 
@@ -66,7 +67,7 @@ public class XVerPackegeFixer {
 
   public static void main(String[] args) throws FileNotFoundException, ParserConfigurationException, SAXException, IOException {
     modCount = 0;
-    for (File f : new File(args[0]).listFiles()) {
+    for (File f : ManagedFileAccess.file(args[0]).listFiles()) {
       if (f.getName().startsWith("xver-") && f.getName().contains("1.0")) {
         JsonObject j = JsonTrackingParser.parseJson(f);
         fixUp(j, f.getName());
@@ -164,7 +165,7 @@ public class XVerPackegeFixer {
     if (map5.containsKey(tn)) {
       sd = map5.get(tn);
     } else {
-      sd = (org.hl7.fhir.r5.model.StructureDefinition) new org.hl7.fhir.r5.formats.JsonParser().parse(new FileInputStream(Utilities.path(R5_FOLDER, "StructureDefinition-"+tn+".json")));
+      sd = (org.hl7.fhir.r5.model.StructureDefinition) new org.hl7.fhir.r5.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(R5_FOLDER, "StructureDefinition-"+tn+".json")));
       map5.put(tn, sd);
     }
     for (org.hl7.fhir.r5.model.ElementDefinition ed : sd.getSnapshot().getElement()) {
@@ -220,7 +221,7 @@ public class XVerPackegeFixer {
     if (map4.containsKey(tn)) {
       sd = map4.get(tn);
     } else {
-      sd = (org.hl7.fhir.r4.model.StructureDefinition) new org.hl7.fhir.r4.formats.JsonParser().parse(new FileInputStream(Utilities.path(R4_FOLDER, "StructureDefinition-"+tn+".json")));
+      sd = (org.hl7.fhir.r4.model.StructureDefinition) new org.hl7.fhir.r4.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(R4_FOLDER, "StructureDefinition-"+tn+".json")));
       map4.put(tn, sd);
     }
     for (org.hl7.fhir.r4.model.ElementDefinition ed : sd.getSnapshot().getElement()) {
@@ -277,7 +278,7 @@ public class XVerPackegeFixer {
     if (map3.containsKey(tn)) {
       sd = map3.get(tn);
     } else {
-      sd = (org.hl7.fhir.dstu3.model.StructureDefinition) new org.hl7.fhir.dstu3.formats.JsonParser().parse(new FileInputStream(Utilities.path(R3_FOLDER, "StructureDefinition-"+tn+".json")));
+      sd = (org.hl7.fhir.dstu3.model.StructureDefinition) new org.hl7.fhir.dstu3.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(R3_FOLDER, "StructureDefinition-"+tn+".json")));
       map3.put(tn, sd);
     }
     for (org.hl7.fhir.dstu3.model.ElementDefinition ed : sd.getSnapshot().getElement()) {
@@ -383,7 +384,7 @@ public class XVerPackegeFixer {
     if (map2.containsKey(tn)) {
       sd = map2.get(tn);
     } else {
-      sd = (org.hl7.fhir.dstu2.model.StructureDefinition) new org.hl7.fhir.dstu2.formats.JsonParser().parse(new FileInputStream(Utilities.path(R2_FOLDER, "StructureDefinition-"+tn+".json")));
+      sd = (org.hl7.fhir.dstu2.model.StructureDefinition) new org.hl7.fhir.dstu2.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(R2_FOLDER, "StructureDefinition-"+tn+".json")));
       map2.put(tn, sd);
     }
     return sd;
@@ -431,7 +432,7 @@ public class XVerPackegeFixer {
     if (map2b.containsKey(tn)) {
       sd = map2b.get(tn);
     } else {
-      sd = (org.hl7.fhir.dstu2016may.model.StructureDefinition) new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(new FileInputStream(Utilities.path(R2B_FOLDER, "StructureDefinition-"+tn+".json")));
+      sd = (org.hl7.fhir.dstu2016may.model.StructureDefinition) new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(R2B_FOLDER, "StructureDefinition-"+tn+".json")));
       map2b.put(tn, sd);
     }
     for (org.hl7.fhir.dstu2016may.model.ElementDefinition ed : sd.getSnapshot().getElement()) {

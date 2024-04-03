@@ -28,6 +28,7 @@ import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class TerminologyCacheManager {
 
@@ -60,7 +61,7 @@ public class TerminologyCacheManager {
   }
 
   public void initialize() throws IOException {
-    File f = new File(cacheFolder);
+    File f = ManagedFileAccess.file(cacheFolder);
     if (!f.exists()) {
       Utilities.createDirectory(cacheFolder);
     }

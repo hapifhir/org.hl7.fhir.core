@@ -31,6 +31,8 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.special.TxServiceTestHelper;
@@ -92,8 +94,8 @@ private static TxTestData testData;
     String fn = setup.getTest().has("response:tx.fhir.org") ? setup.getTest().asString("response:tx.fhir.org") : setup.getTest().asString("response");
     String resp = TestingUtilities.loadTestResource("tx", fn);
     String fp = Utilities.path("[tmp]", "tx", fn);
-    JsonObject ext = testData.getExternals() == null ? null : testData.getExternals().getJsonObject(fn);
-    File fo = new File(fp);
+    JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
+    File fo = ManagedFileAccess.file(fp);
     if (fo.exists()) {
       fo.delete();
     }

@@ -21,6 +21,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.BackboneType;
@@ -30,9 +31,11 @@ import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.DataRequirement;
@@ -47,6 +50,7 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.ExtensionHelper;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.HumanName.NameUse;
 import org.hl7.fhir.r5.model.IdType;
@@ -80,6 +84,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -595,6 +600,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
       return displayTiming((Timing) type);
     } else if (type instanceof SampledData) {
       return displaySampledData((SampledData) type);
+    } else if (type instanceof ContactDetail) {
+      return displayContactDetail((ContactDetail) type);
     } else if (type.isDateTime()) {
       return displayDateTime((BaseDateTimeType) type);
     } else if (type.isPrimitive()) {
@@ -743,6 +750,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
       renderSampledData(x, (SampledData) type);
     } else if (type instanceof Reference) {
       renderReference(x, (Reference) type);
+    } else if (type instanceof UsageContext) {
+      renderUsageContext(x, (UsageContext) type);
     } else if (type instanceof CodeableReference) {
       CodeableReference cr = (CodeableReference) type;
       if (cr.hasConcept()) {
@@ -1338,7 +1347,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       }
     }
     if (name.hasUse() && name.getUse() != NameUse.USUAL)
-      s.append("("+name.getUse().toCode()+")");
+      s.append("("+context.getTranslatedCode(name.getUseElement(), "http://hl7.org/fhir/name-use")+")");
     
     x.addText(s.toString());
   }
@@ -1391,6 +1400,14 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (contact.hasUse())
       s.append("("+contact.getUse().toString()+")");
     return s.toString();
+  }
+
+  public static String displayContactDetail(ContactDetail contact) {
+    CommaSeparatedStringBuilder s = new CommaSeparatedStringBuilder();
+    for (ContactPoint cp : contact.getTelecom()) {
+      s.append(displayContactPoint(cp));
+    }
+    return contact.getName()+(s.length() == 0 ? "" : " ("+s.toString()+")");
   }
 
   protected String getLocalizedBigDecimalValue(BigDecimal input, Currency c) {
