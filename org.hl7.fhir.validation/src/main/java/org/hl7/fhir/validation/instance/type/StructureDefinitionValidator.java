@@ -416,7 +416,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       addCharacteristics(characteristics, path);
     }
 
-    if (!snapshot && (element.hasChild("fixed") || element.hasChild("pattern"))) {
+    if (!snapshot && (element.hasChild("fixed") || element.hasChild("pattern")) && base != null) {
       ElementDefinition ed = getDefinitionFromBase(base, element.getNamedChildValue("id"), element.getNamedChildValue("path"));
       if (ed != null && (ed.hasFixed() || ed.hasPattern())) {
         if (ed.hasFixed()) {
