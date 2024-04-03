@@ -29,10 +29,10 @@ public class ProvenanceRenderer extends ResourceRenderer {
     if (!prv.getTarget().isEmpty()) {
       if (prv.getTarget().size() == 1) {
         XhtmlNode p = x.para();
-        p.tx("Provenance for ");
+        p.tx(/*!#*/"Provenance for ");
         renderReference(prv, p, prv.getTargetFirstRep());
       } else {
-        x.para().tx("Provenance for:");
+        x.para().tx(/*!#*/"Provenance for:");
         XhtmlNode ul = x.ul();
         for (Reference ref : prv.getTarget()) {
           renderReference(prv, ul.li(), ref);
@@ -40,12 +40,12 @@ public class ProvenanceRenderer extends ResourceRenderer {
       }
     }
     // summary table
-    x.para().tx("Summary");
+    x.para().tx(/*!#*/"Summary");
     XhtmlNode t = x.table("grid");
     XhtmlNode tr;
     if (prv.hasOccurred()) {
       tr = t.tr();
-      tr.td().tx("Occurrence");
+      tr.td().tx(/*!#*/"Occurrence");
       if (prv.hasOccurredPeriod()) {
         renderPeriod(tr.td(), prv.getOccurredPeriod());
       } else {
@@ -54,12 +54,12 @@ public class ProvenanceRenderer extends ResourceRenderer {
     }
     if (prv.hasRecorded()) {
       tr = t.tr();
-      tr.td().tx("Recorded");
-      tr.td().addText(prv.getRecordedElement().toHumanDisplay());
+      tr.td().tx(/*!#*/"Recorded");
+      tr.td().addText(displayDateTime(prv.getRecordedElement()));
     }
     if (prv.hasPolicy()) {
       tr = t.tr();
-      tr.td().tx("Policy");
+      tr.td().tx(/*!#*/"Policy");
       if (prv.getPolicy().size() == 1) {
         renderUri(tr.td(), prv.getPolicy().get(0));
       } else {
@@ -71,12 +71,12 @@ public class ProvenanceRenderer extends ResourceRenderer {
     }
     if (prv.hasLocation()) {
       tr = t.tr();
-      tr.td().tx("Location");
+      tr.td().tx(/*!#*/"Location");
       renderReference(prv, tr.td(), prv.getLocation());      
     }
     if (prv.hasActivity()) {
       tr = t.tr();
-      tr.td().tx("Activity");
+      tr.td().tx(/*!#*/"Activity");
       renderCodeableConcept(tr.td(), prv.getActivity(), false);
     }
 
@@ -88,18 +88,18 @@ public class ProvenanceRenderer extends ResourceRenderer {
       hasRole = hasRole || a.hasRole(); 
       hasOnBehalfOf = hasOnBehalfOf || a.hasOnBehalfOf(); 
     }    
-    x.para().b().tx("Agents");
+    x.para().b().tx(/*!#*/"Agents");
     t = x.table("grid");
     tr = t.tr();
     if (hasType) {
-      tr.td().b().tx("Type");
+      tr.td().b().tx(/*!#*/"Type");
     }
     if (hasRole) {
-      tr.td().b().tx("Role");
+      tr.td().b().tx(/*!#*/"Role");
     }
-    tr.td().b().tx("who");
+    tr.td().b().tx(/*!#*/"who");
     if (hasOnBehalfOf) {
-      tr.td().b().tx("On Behalf Of");
+      tr.td().b().tx(/*!#*/"On Behalf Of");
     }
     for (ProvenanceAgentComponent a : prv.getAgent()) {
       tr = t.tr();
@@ -147,12 +147,12 @@ public class ProvenanceRenderer extends ResourceRenderer {
   }
 
   public String display(Provenance prv) throws UnsupportedEncodingException, IOException {
-    return "Provenance for "+displayReference(prv, prv.getTargetFirstRep());
+    return /*!#*/"Provenance for "+displayReference(prv, prv.getTargetFirstRep());
   }
  
   @Override
   public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    return "Not done yet";
+    return /*!#*/"Not done yet";
   }
 
 }

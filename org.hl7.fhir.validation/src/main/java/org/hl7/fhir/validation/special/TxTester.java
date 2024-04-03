@@ -195,11 +195,11 @@ public class TxTester {
         String lang = test.asString("Content-Language");
         String msg = null;
         if (test.asString("operation").equals("expand")) {
-          msg = expand(tx, setup, req, resp, fp, lang, profile, ext);
+          msg = expand(test.str("name"), tx, setup, req, resp, fp, lang, profile, ext);
         } else if (test.asString("operation").equals("validate-code")) {
-          msg = validate(tx, setup, req, resp, fp, lang, profile, ext);      
+          msg = validate(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
         } else if (test.asString("operation").equals("cs-validate-code")) {
-          msg = validateCS(tx, setup, req, resp, fp, lang, profile, ext);      
+          msg = validateCS(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -248,7 +248,7 @@ public class TxTester {
     return new URI(server).getHost();
   }
 
-  private String expand(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+  private String expand(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -265,7 +265,7 @@ public class TxTester {
       TxTesterScrubbers.scrubOO(oo, tight);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(resp, vsj, false, ext);
+    String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, vsj, false, ext);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(vsj, fp);        
@@ -273,7 +273,7 @@ public class TxTester {
     return diff;
   }
 
-  private String validate(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+  private String validate(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -290,7 +290,7 @@ public class TxTester {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, false, ext);
+    String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, pj, false, ext);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(pj, fp);        
@@ -298,7 +298,7 @@ public class TxTester {
     return diff;
   }
   
-  private String validateCS(ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+  private String validateCS(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -315,7 +315,7 @@ public class TxTester {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = CompareUtilities.checkJsonSrcIsSame(resp, pj, false, ext);
+    String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, pj, false, ext);
     if (diff != null) {
       Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
       TextFile.stringToFile(pj, fp);        

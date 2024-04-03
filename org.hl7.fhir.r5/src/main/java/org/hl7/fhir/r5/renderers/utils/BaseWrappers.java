@@ -51,7 +51,7 @@ public class BaseWrappers {
     public Base getBase();
     public String getName();
     public void describe(XhtmlNode x) throws UnsupportedEncodingException, IOException;
-    public void injectNarrative(XhtmlNode x, NarrativeStatus status) throws IOException;
+    public void injectNarrative(ResourceRenderer renderer, XhtmlNode x, NarrativeStatus status) throws IOException;
     public BaseWrapper root();
     public PropertyWrapper getChildByName(String tail);
     public StructureDefinition getDefinition();

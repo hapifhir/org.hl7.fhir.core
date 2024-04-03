@@ -40,33 +40,33 @@ public class ListRenderer extends ResourceRenderer {
     XhtmlNode tr = t.tr();
     XhtmlNode td = tr.td();
     if (list.has("date")) {
-      td.tx("Date: "+list.get("date").dateTimeValue().toHumanDisplay());
-    }
+      td.tx(/*!#*/"Date: "+displayDateTime(list.get("date").dateTimeValue()));
+    } 
     if (list.has("mode")) {
-      td.tx("Mode: "+list.get("mode").primitiveValue());
+      td.tx(/*!#*/"Mode: "+list.get("mode").primitiveValue());
     }
     if (list.has("status")) {
-      td.tx("Status: "+list.get("status").primitiveValue());
+      td.tx(/*!#*/"Status: "+list.get("status").primitiveValue());
     }
     if (list.has("code")) {
-      td.tx("Code: "+displayBase(list.get("code")));
+      td.tx(/*!#*/"Code: "+displayBase(list.get("code")));
     }    
     tr = t.tr();
     td = tr.td();
     if (list.has("subject")) {
-      td.tx("Subject: ");
+      td.tx(/*!#*/"Subject: ");
       shortForRef(td, list.get("subject"));
     }
     if (list.has("encounter")) {
-      td.tx("Encounter: ");
+      td.tx(/*!#*/"Encounter: ");
       shortForRef(td, list.get("encounter"));
     }
     if (list.has("source")) {
-      td.tx("Source: ");
+      td.tx(/*!#*/"Source: ");
       shortForRef(td, list.get("encounter"));
     }
     if (list.has("orderedBy")) {
-      td.tx("Order: "+displayBase(list.get("orderedBy")));
+      td.tx(/*!#*/"Order: "+displayBase(list.get("orderedBy")));
     }
     //    for (Annotation a : list.getNote()) {
     //      renderAnnotation(a, x);
@@ -81,15 +81,15 @@ public class ListRenderer extends ResourceRenderer {
     }
     t = x.table("grid");
     tr = t.tr().style("backgound-color: #eeeeee");
-    tr.td().b().tx("Items");
+    tr.td().b().tx(/*!#*/"Items");
     if (date) {
-      tr.td().tx("Date");      
+      tr.td().tx(/*!#*/"Date");      
     }
     if (flag) {
-      tr.td().tx("Flag");      
+      tr.td().tx(/*!#*/"Flag");      
     }
     if (deleted) {
-      tr.td().tx("Deleted");      
+      tr.td().tx(/*!#*/"Deleted");      
     }
     for (BaseWrapper e : list.children("entry")) {
       tr = t.tr();
@@ -113,16 +113,16 @@ public class ListRenderer extends ResourceRenderer {
     XhtmlNode t = x.table("clstu");
     XhtmlNode tr = t.tr();
     if (list.hasDate()) {
-      tr.td().tx("Date: "+list.getDate().toLocaleString());
+      tr.td().tx(/*!#*/"Date: "+displayDateTime(list.getDateElement()));
     }
     if (list.hasMode()) {
-      tr.td().tx("Mode: "+list.getMode().getDisplay());
+      tr.td().tx(/*!#*/"Mode: "+list.getMode().getDisplay());
     }
     if (list.hasStatus()) {
-      tr.td().tx("Status: "+list.getStatus().getDisplay());
+      tr.td().tx(/*!#*/"Status: "+list.getStatus().getDisplay());
     }
     if (list.hasCode()) {
-      tr.td().tx("Code: "+display(list.getCode()));
+      tr.td().tx(/*!#*/"Code: "+display(list.getCode()));
     }    
     tr = t.tr();
     if (list.hasSubject()) {
@@ -130,7 +130,7 @@ public class ListRenderer extends ResourceRenderer {
         shortForRef(tr.td().txN("Subject: "), list.getSubjectFirstRep());
       } else {
         XhtmlNode td = tr.td();
-        td.txN("Subject: ");
+        td.txN(/*!#*/"Subject: ");
         int i = 0;
         for (Reference subj : list.getSubject()) {
           if (i == list.getSubject().size() - 1) {
@@ -143,13 +143,13 @@ public class ListRenderer extends ResourceRenderer {
       }
     }
     if (list.hasEncounter()) {
-      shortForRef(tr.td().txN("Encounter: "), list.getEncounter());
+      shortForRef(tr.td().txN(/*!#*/"Encounter: "), list.getEncounter());
     }
     if (list.hasSource()) {
-      shortForRef(tr.td().txN("Source: "), list.getEncounter());
+      shortForRef(tr.td().txN(/*!#*/"Source: "), list.getEncounter());
     }
     if (list.hasOrderedBy()) {
-      tr.td().tx("Order: "+display(list.getOrderedBy()));
+      tr.td().tx(/*!#*/"Order: "+display(list.getOrderedBy()));
     }
     for (Annotation a : list.getNote()) {
       renderAnnotation(x, a);
@@ -164,15 +164,15 @@ public class ListRenderer extends ResourceRenderer {
     }
     t = x.table("grid");
     tr = t.tr().style("backgound-color: #eeeeee");
-    tr.td().b().tx("Items");
+    tr.td().b().tx(/*!#*/"Items");
     if (date) {
-      tr.td().tx("Date");      
+      tr.td().tx(/*!#*/"Date");      
     }
     if (flag) {
-      tr.td().tx("Flag");      
+      tr.td().tx(/*!#*/"Flag");      
     }
     if (deleted) {
-      tr.td().tx("Deleted");      
+      tr.td().tx(/*!#*/"Deleted");      
     }
     for (ListResourceEntryComponent e : list.getEntry()) {
       tr = t.tr();
@@ -212,8 +212,8 @@ public class ListRenderer extends ResourceRenderer {
   }
 
   private void shortForRef(XhtmlNode x, Reference ref) throws UnsupportedEncodingException, IOException {
-    ResourceWithReference r = context.getResolver().resolve(context, ref.getReference());
-    if (r == null) {
+    ResourceWithReference r = context.getResolver() == null ? null : context.getResolver().resolve(context, ref.getReference());
+    if (r == null) { 
       x.tx(display(ref));
     } else {
       RendererFactory.factory(r.getResource().getName(), context).renderReference(r.getResource(), x, ref);

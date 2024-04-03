@@ -72,7 +72,6 @@ import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TimeTracker;
-import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -388,6 +387,8 @@ public interface IWorkerContext {
 
   /**
    * Access to the contexts internationalised error messages
+   * 
+   * For rendering internationalization, see RenderingContext
    *  
    * @param theMessage
    * @param theMessageArguments
@@ -506,7 +507,6 @@ public interface IWorkerContext {
 
   // todo: figure these out
   public Map<String, NamingSystem> getNSUrlMap();
-  public TranslationServices translator();
 
   public void setLogger(@Nonnull ILoggingService logger);
   public ILoggingService getLogger();

@@ -76,14 +76,13 @@ public class FmlParser extends ParserBase {
         if (lexer.hasComments()) {
           result.makeElement("description").markLocation(lexer.getCurrentLocation()).setValue(lexer.getAllComments());
         }
-      } else {
-        while (lexer.hasToken("///")) {
-          lexer.next();
-          String fid = lexer.takeDottedToken();
-          Element e = result.makeElement(fid).markLocation(lexer.getCurrentLocation());
-          lexer.token("=");
-          e.setValue(lexer.readConstant("meta value"));
-        }
+      }
+      while (lexer.hasToken("///")) {
+        lexer.next();
+        String fid = lexer.takeDottedToken();
+        Element e = result.makeElement(fid).markLocation(lexer.getCurrentLocation());
+        lexer.token("=");
+        e.setValue(lexer.readConstant("meta value"));
       }
       lexer.setMetadataFormat(false);
       if (!result.hasChild("status")) {

@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.renderers.utils;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -17,16 +18,23 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.BaseDateTimeType;
+import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
-public class RenderingContext {
+public class RenderingContext extends RenderingI18nContext {
 
   // provides liquid templates, if they are available for the content
   public interface ILiquidTemplateProvider {
@@ -165,7 +173,7 @@ public class RenderingContext {
       return this == XML_ALL || this == XML;
     }
   }
-  
+
   private IWorkerContext worker;
   private MarkDownProcessor markdown;
   private ResourceRendererMode mode;
@@ -202,7 +210,6 @@ public class RenderingContext {
   private boolean showComments = false;
 
   private FhirPublication targetVersion;
-  private Locale locale;
   private ZoneId timeZoneId;
   private DateTimeFormatter dateTimeFormat;
   private DateTimeFormatter dateFormat;
@@ -274,7 +281,6 @@ public class RenderingContext {
     res.dateYearFormat = dateYearFormat;
     res.dateYearMonthFormat = dateYearMonthFormat;
     res.targetVersion = targetVersion;
-    res.locale = locale;
     res.showComments = showComments;
     res.copyButton = copyButton;
     res.pkp = pkp;
@@ -496,6 +502,9 @@ public class RenderingContext {
 
   public RenderingContext setLang(String lang) {
     this.lang = lang;
+    if (lang != null) {
+      setLocale(new Locale(lang));
+    }
     return this;
   }
 
@@ -525,24 +534,6 @@ public class RenderingContext {
   public boolean isTechnicalMode() {
     return mode == ResourceRendererMode.TECHNICAL;
   }
-
-  public boolean hasLocale() {
-    return locale != null;
-  }
-  
-  public Locale getLocale() {
-    if (locale == null) {
-      return Locale.getDefault();
-    } else { 
-      return locale;
-    }
-  }
-
-  public RenderingContext setLocale(Locale locale) {
-    this.locale = locale;
-    return this;
-  }
-
 
   /**
    * if the timezone is null, the rendering will default to the source timezone
@@ -743,6 +734,21 @@ public class RenderingContext {
 
   public Map<String, String> getTypeMap() {
     return typeMap;
+  }
+
+  public String getTranslated(PrimitiveType<?> t) {
+    if (lang != null) {
+      String v = ToolingExtensions.getLanguageTranslation(t, lang);
+      if (v != null) {
+        return v;
+      }
+    }
+    return t.asStringValue();
+  }
+
+  public String toStr(int v) {
+    NumberFormat nf = NumberFormat.getInstance(locale);
+    return nf.format(v);
   }
 
   

@@ -85,31 +85,31 @@ import org.commonmark.renderer.html.HtmlRenderer;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.TranslatingUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 
 
-public class HierarchicalTableGenerator extends TranslatingUtilities {
+public class HierarchicalTableGenerator {
   public enum TableGenerationMode {
     XML, XHTML
   }
 
-  public static final String TEXT_ICON_REFERENCE = "Reference to another Resource";
-  public static final String TEXT_ICON_PRIMITIVE = "Primitive Data Type";
-  public static final String TEXT_ICON_KEY = "JSON Key Value";
-  public static final String TEXT_ICON_DATATYPE = "Data Type";
-  public static final String TEXT_ICON_RESOURCE = "Resource";
-  public static final String TEXT_ICON_ELEMENT = "Element";
-  public static final String TEXT_ICON_OBJECT_BOX = "Object";
-  public static final String TEXT_ICON_REUSE = "Reference to another Element";
-  public static final String TEXT_ICON_EXTENSION = "Extension";
-  public static final String TEXT_ICON_CHOICE = "Choice of Types";
-  public static final String TEXT_ICON_SLICE = "Slice Definition";
-  public static final String TEXT_ICON_SLICE_ITEM = "Slice Item";
-  public static final String TEXT_ICON_FIXED = "Fixed Value";
-  public static final String TEXT_ICON_EXTENSION_SIMPLE = "Simple Extension";
-  public static final String TEXT_ICON_PROFILE = "Profile";
-  public static final String TEXT_ICON_EXTENSION_COMPLEX = "Complex Extension";
+  /*!#*/public static final String TEXT_ICON_REFERENCE = "Reference to another Resource";
+  /*!#*/public static final String TEXT_ICON_PRIMITIVE = "Primitive Data Type";
+  /*!#*/public static final String TEXT_ICON_KEY = "JSON Key Value";
+  /*!#*/public static final String TEXT_ICON_DATATYPE = "Data Type";
+  /*!#*/public static final String TEXT_ICON_RESOURCE = "Resource";
+  /*!#*/public static final String TEXT_ICON_ELEMENT = "Element";
+  /*!#*/public static final String TEXT_ICON_OBJECT_BOX = "Object";
+  /*!#*/public static final String TEXT_ICON_REUSE = "Reference to another Element";
+  /*!#*/public static final String TEXT_ICON_EXTENSION = "Extension";
+  /*!#*/public static final String TEXT_ICON_CHOICE = "Choice of Types";
+  /*!#*/public static final String TEXT_ICON_SLICE = "Slice Definition";
+  /*!#*/public static final String TEXT_ICON_SLICE_ITEM = "Slice Item";
+  /*!#*/public static final String TEXT_ICON_FIXED = "Fixed Value";
+  /*!#*/public static final String TEXT_ICON_EXTENSION_SIMPLE = "Simple Extension";
+  /*!#*/public static final String TEXT_ICON_PROFILE = "Profile";
+  /*!#*/public static final String TEXT_ICON_EXTENSION_COMPLEX = "Complex Extension";
 
   public static final int NEW_REGULAR = 0;
   public static final int CONTINUE_REGULAR = 1;
@@ -626,13 +626,16 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
   private boolean inLineGraphics;  
   
   private TableGenerationMode mode;
+  private RenderingI18nContext i18n;
   
-  public HierarchicalTableGenerator() {
+  public HierarchicalTableGenerator(RenderingI18nContext i18n) {
     super();
+    this.i18n = i18n;
   }
 
-  public HierarchicalTableGenerator(String dest, boolean inlineGraphics) {
+  public HierarchicalTableGenerator(RenderingI18nContext i18n, String dest, boolean inlineGraphics) {
     super();
+    this.i18n = i18n;
     this.dest = dest;
     this.inLineGraphics = inlineGraphics;
     this.makeTargets = true;
@@ -646,8 +649,9 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     
   }
 
-  public HierarchicalTableGenerator(String dest, boolean inlineGraphics, boolean makeTargets) {
+  public HierarchicalTableGenerator(RenderingI18nContext i18n, String dest, boolean inlineGraphics, boolean makeTargets) {
     super();
+    this.i18n = i18n;
     this.dest = dest;
     this.inLineGraphics = inlineGraphics;
     this.makeTargets = makeTargets;
@@ -666,11 +670,11 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
     }
     model.setDocoRef(Utilities.pathURL("https://build.fhir.org/ig/FHIR/ig-guidance", "readingIgs.html#table-views"));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Flags"), translate("sd.hint", "Information about the use of the element"), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Card."), translate("sd.hint", "Minimum and Maximum # of times the the element can appear in the instance"), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Type"), translate("sd.hint", "Reference to the type of the element"), null, 100));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Description & Constraints"), translate("sd.hint", "Additional information about the element"), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_HEAD_NAME), i18n.formatMessage(RenderingI18nContext.SD_HEAD_NAME_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_HEAD_FLAGS), i18n.formatMessage(RenderingI18nContext.SD_HEAD_FLAGS_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_HEAD_CARD), i18n.formatMessage(RenderingI18nContext.SD_HEAD_CARD_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_HEAD_TYPE), i18n.formatMessage(RenderingI18nContext.SD_HEAD_TYPE_DESC), null, 100));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_HEAD_DESC), i18n.formatMessage(RenderingI18nContext.SD_HEAD_DESC_DESC), null, 0));
     if (isLogical) {
       model.getTitles().add(new Title(null, prefix+"structuredefinition.html#logical", "Implemented As", "How this logical data item is implemented in a concrete resource", null, 0));
     }
@@ -687,16 +691,16 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
     }
     model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table"));    
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Flags"), translate("sd.hint", "Information about the use of the element - Left Structure"), null, 0).setStyle("border-left: 1px grey solid"));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Card."), translate("sd.hint", "Minimum and Maximum # of times the the element can appear in the instance - Left Structure"), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Type"), translate("sd.hint", "Reference to the type of the element - Left Structure"), null, 100));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Description & Constraints"), translate("sd.hint", "Additional information about the element - Left Structure"), null, 0).setStyle("border-right: 1px grey solid"));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "R Flags"), translate("sd.hint", "Information about the use of the element - Left Structure"), null, 0).setStyle("border-left: 1px grey solid"));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "R Card."), translate("sd.hint", "Minimum and Maximum # of times the the element can appear in the instance - Left Structure"), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Type"), translate("sd.hint", "Reference to the type of the element - Left Structure"), null, 100));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Description & Constraints"), translate("sd.hint", "Additional information about the element - Left Structure"), null, 0).setStyle("border-right: 1px grey solid"));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Comments"), translate("sd.hint", "Comments about the comparison"), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_NAME), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_NAME_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_FLAGS_L), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_FLAGS_L_DESC), null, 0).setStyle("border-left: 1px grey solid"));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_CARD_L), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_CARD_L_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_TYPE_L), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_TYPE_L_DESC), null, 100));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_DESC_L), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_DESC_L_DESC), null, 0).setStyle("border-right: 1px grey solid"));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_FLAGS_R), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_FLAGS_R_DESC), null, 0).setStyle("border-left: 1px grey solid"));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_CARD_R), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_CARD_R_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_TYPE_R), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_TYPE_R_DESC), null, 100));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_DESC_R), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_DESC_R_DESC), null, 0).setStyle("border-right: 1px grey solid"));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_COMP), i18n.formatMessage(RenderingI18nContext.SD_COMP_HEAD_COMP_DESC), null, 0));
     return model;
   }
 
@@ -704,11 +708,11 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
 
   public TableModel initGridTable(String prefix, String id) {
     TableModel model = new TableModel(id, false);
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_NAME), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_NAME_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_CARD), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_CARD_DESC), null, 0));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_TYPE), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_TYPE_DESC), null, 100));
+    model.getTitles().add(new Title(null, model.getDocoRef(), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_DESC), i18n.formatMessage(RenderingI18nContext.SD_GRID_HEAD_DESC_DESC), null, 0));
     
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The name of the element (Slice name in brackets).  Mouse-over provides definition"), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Card."), translate("sd.hint", "Minimum and Maximum # of times the the element can appear in the instance. Super-scripts indicate additional constraints on appearance"), null, 0));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Type"), translate("sd.hint", "Reference to the type of the element"), null, 100));
-    model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Constraints and Usage"), translate("sd.hint", "Fixed values, length limits, vocabulary bindings and other usage notes"), null, 0));
     return model;
   }
 
@@ -750,10 +754,10 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       tc.setAttribute("class", "hierarchy");
       tc.setAttribute("colspan", Integer.toString(model.getTitles().size()));
       tc.addTag("br");
-      XhtmlNode a = tc.addTag("a").setAttribute("title", translate("sd.doco", "Legend for this format")).setAttribute("href", model.getDocoRef());
+      XhtmlNode a = tc.addTag("a").setAttribute("title", i18n.formatMessage(RenderingI18nContext.SD_LEGEND)).setAttribute("href", model.getDocoRef());
       if (model.getDocoImg() != null)
         a.addTag("img").setAttribute("alt", "doco").setAttribute("style", "background-color: inherit").setAttribute("src", model.getDocoImg());
-      a.addText(" "+translate("sd.doco", "Documentation for this format"));
+      a.addText(" "+i18n.formatMessage(RenderingI18nContext.SD_DOCO));
     }
     return table;
   }

@@ -123,6 +123,8 @@ public class ComparisonTests {
     if (content.has("use-test") && !content.asBoolean("use-test"))
       return;
 
+    String id = name;
+    
     if (context == null) {
       System.out.println("---- Load R5 ----------------------------------------------------------------");
       context = TestingUtilities.getSharedWorkerContext();
@@ -175,7 +177,7 @@ public class ComparisonTests {
       TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Concepts") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
       new CodeSystemRenderer(lrc).render(right);
-      checkOutput(content.getJsonObject("version").asString("filename"), right);
+      checkOutput(id, content.getJsonObject("version").asString("filename"), right);
     } else if (left instanceof ValueSet && right instanceof ValueSet) {
       ValueSetComparer cs = new ValueSetComparer(session);
       ValueSetComparison csc = cs.compare((ValueSet) left, (ValueSet) right);
@@ -189,7 +191,7 @@ public class ComparisonTests {
       TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Definition") + xml2 + BREAK + hd("Expansion") + xml3 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
       new ValueSetRenderer(lrc).render(right);
-      checkOutput(content.getJsonObject("version").asString("filename"), right);
+      checkOutput(id, content.getJsonObject("version").asString("filename"), right);
     } else if (left instanceof StructureDefinition && right instanceof StructureDefinition) {
       ProfileUtilities utils = new ProfileUtilities(context, null, null);
       genSnapshot(utils, (StructureDefinition) left);
@@ -209,11 +211,11 @@ public class ComparisonTests {
 
       lrc.setStructureMode(StructureDefinitionRendererMode.DATA_DICT);
       new StructureDefinitionRenderer(lrc).render(right);
-      checkOutput(content.getJsonObject("version").asString("filename-dd"), right);
+      checkOutput(id, content.getJsonObject("version").asString("filename-dd"), right);
       
       lrc.setStructureMode(StructureDefinitionRendererMode.SUMMARY);
       new StructureDefinitionRenderer(lrc).render(right);
-      checkOutput(content.getJsonObject("version").asString("filename-tree"), right);
+      checkOutput(id, content.getJsonObject("version").asString("filename-tree"), right);
     } else if (left instanceof CapabilityStatement && right instanceof CapabilityStatement) {
       CapabilityStatementComparer pc = new CapabilityStatementComparer(session);
       CapabilityStatementComparison csc = pc.compare((CapabilityStatement) left, (CapabilityStatement) right);
@@ -231,7 +233,7 @@ public class ComparisonTests {
     }
   }
 
-  private void checkOutput(String name, CanonicalResource right) throws Exception {
+  private void checkOutput(String id, String name, CanonicalResource right) throws Exception {
     String output = prefix+ new XhtmlComposer(false, true).compose(right.getText().getDiv()) + suffix;
     String an = Utilities.path("[tmp]", "comparison", name);
     TextFile.stringToFile(output, an);
@@ -239,7 +241,7 @@ public class ComparisonTests {
     String en = Utilities.path("[tmp]", "comparison", Utilities.changeFileExt(name, ".expected.html"));
     TextFile.stringToFile(expected, en);
     
-    String msg = CompareUtilities.checkXMLIsSame(en, an);
+    String msg = CompareUtilities.checkXMLIsSame(id, en, an);
     Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
     
   }

@@ -16899,6 +16899,26 @@ public class ImplementationGuide extends CanonicalResource {
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_RESOURCE = new ca.uhn.fhir.model.api.Include("ImplementationGuide:resource").toLocked();
 
+  public ImplementationGuideDefinitionPageComponent getPageByName(String name) {
+    if (!hasDefinition() || !getDefinition().hasPage()) {
+      return null;
+    }
+    return getPageByName(getDefinition().getPage(), name);
+  }
+
+  private ImplementationGuideDefinitionPageComponent getPageByName(ImplementationGuideDefinitionPageComponent page, String name) {
+    if (name.equals(page.getName())) {
+      return page;
+    }
+    for (ImplementationGuideDefinitionPageComponent t : page.getPage()) {
+      ImplementationGuideDefinitionPageComponent r = getPageByName(t, name);
+      if (r != null) {
+        return r;
+      }
+    }
+    return null;
+  }
+
 
 }
 

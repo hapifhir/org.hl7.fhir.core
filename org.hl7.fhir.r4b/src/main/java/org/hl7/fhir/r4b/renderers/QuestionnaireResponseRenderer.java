@@ -30,6 +30,7 @@ import org.hl7.fhir.r4b.renderers.utils.RenderingContext;
 import org.hl7.fhir.r4b.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
@@ -79,7 +80,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   }
 
   public boolean renderTree(XhtmlNode x, ResourceWrapper qr) throws UnsupportedEncodingException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(),
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), context.getDestDir(), context.isInlineGraphics(),
         true);
     TableModel model = gen.new TableModel("qtree=" + qr.getId(), false);
     model.setAlternating(true);
@@ -107,7 +108,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   }
 
   public boolean renderTree(XhtmlNode x, QuestionnaireResponse q) throws UnsupportedEncodingException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(),
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), context.getDestDir(), context.isInlineGraphics(),
         true);
     TableModel model = gen.new TableModel("qtree=" + q.getId(), true);
     model.setAlternating(true);
