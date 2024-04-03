@@ -32,6 +32,7 @@ import org.hl7.fhir.r5.fhirpath.ExpressionNode.Function;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Operation;
 import org.hl7.fhir.r5.fhirpath.FHIRLexer.FHIRLexerException;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.ExtensionDefinition;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.ClassTypeInfo;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FHIRConstant;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
@@ -63,6 +64,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.SourcedElementDefinition;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -116,6 +118,33 @@ import ca.uhn.fhir.util.ElementUtil;
  *
  */
 public class FHIRPathEngine {
+
+  public class ExtensionDefinition {
+
+    private boolean root;
+    private StructureDefinition sd;
+    private ElementDefinition ed;
+
+    public ExtensionDefinition(boolean root, StructureDefinition sd, ElementDefinition ed) {
+      super();
+      this.root = root;
+      this.sd = sd;
+      this.ed = ed;
+    }
+
+    public boolean isRoot() {
+      return root;
+    }
+
+    public StructureDefinition getSd() {
+      return sd;
+    }
+
+    public ElementDefinition getEd() {
+      return ed;
+    }
+
+  }
 
   public class IssueMessage {
 
@@ -3479,9 +3508,9 @@ public class FHIRPathEngine {
       ExpressionNode p = exp.getParameters().get(0);
       if (p.getKind() == Kind.Constant && p.getConstant() != null) {
         String url = exp.getParameters().get(0).getConstant().primitiveValue();
-        StructureDefinition sd = worker.fetchResource(StructureDefinition.class, url);
-        if (sd != null) {
-          return new TypeDetails(CollectionStatus.ORDERED, new ProfiledType(url));
+        ExtensionDefinition ed = findExtensionDefinition(focus, url);
+        if (ed != null) {
+          return new TypeDetails(CollectionStatus.ORDERED, new ProfiledType(ed.sd.getUrl()));
         } else {
           typeWarnings.add(new IssueMessage(worker.formatMessage(I18nConstants.FHIRPATH_UNKNOWN_EXTENSION, url), I18nConstants.FHIRPATH_UNKNOWN_EXTENSION));
         }
@@ -3641,6 +3670,26 @@ public class FHIRPathEngine {
       break;
     }
     throw new Error("not Implemented yet");
+  }
+
+  private ExtensionDefinition findExtensionDefinition(TypeDetails focus, String url) {
+    if (Utilities.isAbsoluteUrl(url)) {
+      StructureDefinition sd = worker.fetchResource(StructureDefinition.class, url);
+      if (sd == null) {
+        return null;
+      } else {
+        return new ExtensionDefinition(true, sd, sd.getSnapshot().getElementFirstRep());
+      }
+    }
+    StructureDefinition sd = worker.fetchResource(StructureDefinition.class, focus.getType());
+    if (sd != null) {
+      for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+        if (ed.hasFixed() && url.equals(ed.getFixed().primitiveValue())) {
+          return new ExtensionDefinition(false, sd, ed);
+        }
+      }
+    }
+    return null;
   }
 
   private String checkType(TypeDetails focus, ExpressionNode exp) {
