@@ -63,6 +63,7 @@ import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnCom
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonString;
@@ -391,7 +392,7 @@ public class NPMPackageGenerator {
     byte[] content = TextFile.stringToBytes(indexer.build());
     addFile(Category.RESOURCE, ".index.json", content); 
     content = TextFile.fileToBytes(indexdb);
-    new File(indexdb).delete();
+    ManagedFileAccess.file(indexdb).delete();
     addFile(Category.RESOURCE, ".index.db", content); 
   }
 
@@ -400,7 +401,7 @@ public class NPMPackageGenerator {
   }
 
   public void loadDir(String rootDir, String name) throws IOException {
-    loadFiles(rootDir, new File(Utilities.path(rootDir, name)));
+    loadFiles(rootDir, ManagedFileAccess.file(Utilities.path(rootDir, name)));
   }
 
   public void loadFiles(String root, File dir, String... noload) throws IOException {

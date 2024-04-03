@@ -45,6 +45,7 @@ import org.hl7.fhir.dstu3.formats.XmlParser;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.test.support.TestingUtilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class ResourceTest {
 
@@ -66,18 +67,18 @@ public class ResourceTest {
       p = new JsonParser();
     else
       p = new XmlParser(false);
-    Resource rf = p.parse(new FileInputStream(source));
+    Resource rf = p.parse(ManagedFileAccess.inStream(source));
 
-    FileOutputStream out = new FileOutputStream(source.getAbsoluteFile()+".out.json");
+    FileOutputStream out = ManagedFileAccess.outStream(source.getAbsoluteFile()+".out.json");
     JsonParser json1 = new JsonParser();
     json1.setOutputStyle(OutputStyle.PRETTY);
     json1.compose(out, rf);
     out.close();
 
     JsonParser json = new JsonParser();
-    rf = json.parse(new FileInputStream(source.getAbsoluteFile()+".out.json"));
+    rf = json.parse(ManagedFileAccess.inStream(source.getAbsoluteFile()+".out.json"));
     
-    out = new FileOutputStream(source.getAbsoluteFile()+".out.xml");
+    out = ManagedFileAccess.outStream(source.getAbsoluteFile()+".out.xml");
     XmlParser atom = new XmlParser(); 
     atom.setOutputStyle(OutputStyle.PRETTY);
     atom.compose(out, rf, true);
@@ -89,9 +90,9 @@ public class ResourceTest {
   public Element testEM() throws Exception {
     if (TestingUtilities.context == null)
       TestingUtilities.context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\definitions.xml.zip");
-  	Element resource = Manager.parse(TestingUtilities.context, new FileInputStream(source), isJson() ? FhirFormat.JSON : FhirFormat.XML);
-  	Manager.compose(TestingUtilities.context, resource, new FileOutputStream(source.getAbsoluteFile()+".out.json"), FhirFormat.JSON, OutputStyle.PRETTY, null);
-  	Manager.compose(TestingUtilities.context, resource, new FileOutputStream(source.getAbsoluteFile()+".out.json"), FhirFormat.XML, OutputStyle.PRETTY, null);
+  	Element resource = Manager.parse(TestingUtilities.context, ManagedFileAccess.inStream(source), isJson() ? FhirFormat.JSON : FhirFormat.XML);
+  	Manager.compose(TestingUtilities.context, resource, ManagedFileAccess.outStream(source.getAbsoluteFile()+".out.json"), FhirFormat.JSON, OutputStyle.PRETTY, null);
+  	Manager.compose(TestingUtilities.context, resource, ManagedFileAccess.outStream(source.getAbsoluteFile()+".out.json"), FhirFormat.XML, OutputStyle.PRETTY, null);
   	return resource;
   }
 

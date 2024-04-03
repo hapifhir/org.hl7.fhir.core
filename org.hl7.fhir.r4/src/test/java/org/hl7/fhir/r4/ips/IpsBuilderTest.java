@@ -11,6 +11,7 @@ import org.hl7.fhir.r4.model.Base64BinaryType;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -24,7 +25,7 @@ public class IpsBuilderTest {
   void testIpsGeneration() throws URISyntaxException, FileNotFoundException, IOException {
     FHIRToolingClient server = new FHIRToolingClient("https://hl7auconnectathon.salessbx.smiledigitalhealth.com/fhir-request", "FHIR-Validator");
     Bundle bnd = IPSBuilder.generateIPS(server, "wang-li");
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "ips-gen.json")), bnd);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "ips-gen.json")), bnd);
     
   }
 

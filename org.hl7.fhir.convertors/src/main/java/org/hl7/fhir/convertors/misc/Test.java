@@ -45,6 +45,7 @@ import org.hl7.fhir.dstu3.formats.JsonParser;
 import org.hl7.fhir.dstu3.formats.XmlParser;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class Test {
   public final static String DEF_TS_SERVER = "http://fhir-dev.healthintersections.com.au/open";
@@ -58,13 +59,13 @@ public class Test {
   public static void main(String[] args) {
     try {
       CCDAConverter c = new CCDAConverter(new UcumEssenceService(UCUM_PATH), SimpleWorkerContext.fromPack(Utilities.path(SRC_PATH, "validation.zip")));
-      Bundle a = c.convert(new FileInputStream(DEF_PATH + "ccda.xml"));
+      Bundle a = c.convert(ManagedFileAccess.inStream(DEF_PATH + "ccda.xml"));
       String fx = DEF_PATH + "output.xml";
       IParser x = new XmlParser().setOutputStyle(OutputStyle.PRETTY);
-      x.compose(new FileOutputStream(fx), a);
+      x.compose(ManagedFileAccess.outStream(fx), a);
       String fj = DEF_PATH + "output.json";
       IParser j = new JsonParser().setOutputStyle(OutputStyle.PRETTY);
-      j.compose(new FileOutputStream(fj), a);
+      j.compose(ManagedFileAccess.outStream(fj), a);
       System.out.println("done. save as " + fx + " and " + fj);
     } catch (Exception e) {
       e.printStackTrace();

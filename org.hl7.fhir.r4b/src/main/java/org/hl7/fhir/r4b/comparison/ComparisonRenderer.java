@@ -36,6 +36,7 @@ import org.hl7.fhir.r4b.utils.LiquidEngine;
 import org.hl7.fhir.r4b.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
 public class ComparisonRenderer implements IEvaluationContext {
@@ -83,7 +84,7 @@ public class ComparisonRenderer implements IEvaluationContext {
     String template = templates.get("Index");
     String cnt = processTemplate(template, "CodeSystem", vars);
     TextFile.stringToFile(cnt, file("index.html"));
-    return new File(file("index.html"));
+    return ManagedFileAccess.file(file("index.html"));
   }
 
   private void processList(List<String> list, StringBuilder b, String name) throws IOException {
@@ -169,9 +170,9 @@ public class ComparisonRenderer implements IEvaluationContext {
     String cnt = processTemplate(template, "CodeSystem", vars);
     TextFile.stringToFile(cnt, file(comp.getId() + ".html"));
     new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY)
-        .compose(new FileOutputStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
+        .compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
     new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(
-        new FileOutputStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
+        ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
   }
 
   private String file(String name) throws IOException {
@@ -195,9 +196,9 @@ public class ComparisonRenderer implements IEvaluationContext {
     String cnt = processTemplate(template, "ValueSet", vars);
     TextFile.stringToFile(cnt, file(comp.getId() + ".html"));
     new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY)
-        .compose(new FileOutputStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
+        .compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
     new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(
-        new FileOutputStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
+        ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
   }
 
   private void renderProfile(String id, ProfileComparison comp) throws IOException {
@@ -219,9 +220,9 @@ public class ComparisonRenderer implements IEvaluationContext {
     String cnt = processTemplate(template, "CodeSystem", vars);
     TextFile.stringToFile(cnt, file(comp.getId() + ".html"));
     new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY)
-        .compose(new FileOutputStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
+        .compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
     new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(
-        new FileOutputStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
+        ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
   }
 
   private String processTemplate(String template, String name, Map<String, Base> vars) {

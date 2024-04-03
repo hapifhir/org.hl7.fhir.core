@@ -51,6 +51,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -82,9 +83,9 @@ public class XLSXmlNormaliser {
   }
   
   public void go() throws FHIRException, TransformerException, ParserConfigurationException, SAXException, IOException {
-    File inp = new File(source);
+    File inp = ManagedFileAccess.file(source);
     long time = inp.lastModified();
-    xml = parseXml(new FileInputStream(inp));
+    xml = parseXml(ManagedFileAccess.inStream(inp));
     
     Element root = xml.getDocumentElement();
 
@@ -117,7 +118,7 @@ public class XLSXmlNormaliser {
     if (!hasComment)
       root.appendChild(xml.createComment("canonicalized"));
     try {
-      FileOutputStream fs = new FileOutputStream(dest);
+      FileOutputStream fs = ManagedFileAccess.outStream(dest);
       try {
         saveXml(fs);
       } finally {
@@ -127,7 +128,7 @@ public class XLSXmlNormaliser {
       s = s.replaceAll("\r\n","\n");
       s = replaceSignificantEoln(s);
       TextFile.stringToFile(s, dest);
-      new File(dest).setLastModified(time);
+      ManagedFileAccess.file(dest).setLastModified(time);
     } catch (Exception e) {
       System.out.println("The file "+dest+" is still open in Excel, and you will have to run the build after closing Excel before committing");
     }

@@ -32,6 +32,7 @@ import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -124,7 +125,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     private File getUserCacheFolder() throws IOException {
-      return new File(Utilities.path(System.getProperty("user.home"), ".fhir", "packages"));
+      return ManagedFileAccess.file(Utilities.path(System.getProperty("user.home"), ".fhir", "packages"));
     }
     private List<PackageServer> getPackageServersFromFHIRSettings() {
       List<PackageServer> packageServers = new ArrayList<>(getConfiguredServers());
@@ -152,7 +153,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
 
     public Builder withCacheFolder (String cacheFolderPath) throws IOException {
-      File cacheFolder = new File(cacheFolderPath);
+      File cacheFolder = ManagedFileAccess.file(cacheFolderPath);
       if (!cacheFolder.exists()) {
         throw new FHIRException("The folder '"+cacheFolder+"' could not be found");
       }
@@ -162,15 +163,15 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     public Builder withSystemCacheFolder() throws IOException {
       final File systemCacheFolder;
       if (Utilities.isWindows()) {
-       systemCacheFolder = new File(Utilities.path(System.getenv("ProgramData"), ".fhir", "packages"));
+       systemCacheFolder = ManagedFileAccess.file(Utilities.path(System.getenv("ProgramData"), ".fhir", "packages"));
       } else {
-        systemCacheFolder = new File(Utilities.path("/var", "lib", ".fhir", "packages"));
+        systemCacheFolder = ManagedFileAccess.file(Utilities.path("/var", "lib", ".fhir", "packages"));
       }
       return new Builder(systemCacheFolder, this.packageServers);
     }
 
     public Builder withTestingCacheFolder() throws IOException {
-      return new Builder(new File(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers);
+      return new Builder(ManagedFileAccess.file(Utilities.path("[tmp]", ".fhir", "packages")), this.packageServers);
     }
 
     public FilesystemPackageCacheManager build() throws IOException {
@@ -188,7 +189,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (!(cacheFolder.exists()))
       Utilities.createDirectory(cacheFolder.getAbsolutePath());
     String packagesIniPath = Utilities.path(cacheFolder, "packages.ini");
-    File packagesIniFile = new File(packagesIniPath);
+    File packagesIniFile = ManagedFileAccess.file(packagesIniPath);
     if (!(packagesIniFile.exists()))
       packagesIniFile.createNewFile();
     TextFile.stringToFile("[cache]\r\nversion=" + CACHE_VERSION + "\r\n\r\n[urls]\r\n\r\n[local]\r\n\r\n", packagesIniPath);
@@ -237,11 +238,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public void loadFromFolder(String packagesFolder) throws IOException {
     assert !minimalMemory;
     
-    File[] files = new File(packagesFolder).listFiles();
+    File[] files = ManagedFileAccess.file(packagesFolder).listFiles();
     if (files != null) {
       for (File f : files) {
         if (f.getName().endsWith(".tgz")) {
-          FileInputStream fs = new FileInputStream(f);
+          FileInputStream fs = ManagedFileAccess.inStream(f);
           try {
             temporaryPackages.add(NpmPackage.fromPackage(fs));
           } finally {
@@ -257,7 +258,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private NpmPackage loadPackageInfo(String path) throws IOException {
-    File f = new File(Utilities.path(path, "usage.ini"));
+    File f = ManagedFileAccess.file(Utilities.path(path, "usage.ini"));
     JsonObject j = f.exists() ? JsonParser.parseObject(f) : new JsonObject();
     j.set("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
     JsonParser.compose(j, f, true);
@@ -368,7 +369,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   public String getLatestVersionFromCache(String id) throws IOException {
     for (String f : Utilities.reverseSorted(cacheFolder.list())) {
-      File cf = new File(Utilities.path(cacheFolder, f));
+      File cf = ManagedFileAccess.file(Utilities.path(cacheFolder, f));
       if (cf.isDirectory()) {
         if (f.startsWith(id + "#")) {
           String ver = f.substring(f.indexOf("#")+1);
@@ -381,14 +382,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private NpmPackage loadPackageFromFile(String id, String folder) throws IOException {
-    File f = new File(Utilities.path(folder, id));
+    File f = ManagedFileAccess.file(Utilities.path(folder, id));
     if (!f.exists()) {
       throw new FHIRException("Package '" + id + "  not found in folder " + folder);
     }
     if (!f.isDirectory()) {
       throw new FHIRException("File for '" + id + "  found in folder " + folder + ", not a folder");
     }
-    File fp = new File(Utilities.path(folder, id, "package", "package.json"));
+    File fp = ManagedFileAccess.file(Utilities.path(folder, id, "package", "package.json"));
     if (!fp.exists()) {
       throw new FHIRException("Package '" + id + "  found in folder " + folder + ", but does not contain a package.json file in /package");
     }
@@ -416,7 +417,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public void removePackage(String id, String ver) throws IOException {
     new FilesystemPackageCacheLock(cacheFolder, id + "#" + ver).doWriteWithLock(() -> {
       String f = Utilities.path(cacheFolder, id + "#" + ver);
-      File ff = new File(f);
+      File ff = ManagedFileAccess.file(f);
       if (ff.exists()) {
         Utilities.clearDirectory(f);
         IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
@@ -456,7 +457,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     String foundPackage = null;
     String foundVersion = null;
     for (String f : Utilities.reverseSorted(cacheFolder.list())) {
-      File cf = new File(Utilities.path(cacheFolder, f));
+      File cf = ManagedFileAccess.file(Utilities.path(cacheFolder, f));
       if (cf.isDirectory()) {
         if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
           return loadPackageInfo(Utilities.path(cacheFolder, f));
@@ -510,7 +511,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       String packRoot = Utilities.path(cacheFolder, id + "#" + v);
       try {
         // ok, now we have a lock on it... check if something created it while we were waiting
-        if (!new File(packRoot).exists() || Utilities.existsInList(v, "current", "dev")) {
+        if (!ManagedFileAccess.file(packRoot).exists() || Utilities.existsInList(v, "current", "dev")) {
           Utilities.createDirectory(packRoot);
           try {
             Utilities.clearDirectory(packRoot);
@@ -528,7 +529,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
             log(" done.");
         } else {
           Utilities.clearDirectory(tempDir);
-          new File(tempDir).delete();
+          ManagedFileAccess.file(tempDir).delete();
         }
         if (!id.equals(npm.getNpm().asString("name")) || !v.equals(npm.getNpm().asString("version"))) {
           if (!id.equals(npm.getNpm().asString("name"))) {
@@ -550,7 +551,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
           log("Clean up package " + packRoot + " because installation failed: " + e.getMessage());
           e.printStackTrace();
           Utilities.clearDirectory(packRoot);
-          new File(packRoot).delete();
+          ManagedFileAccess.file(packRoot).delete();
         } catch (Exception ei) {
           // nothing
         }
@@ -731,7 +732,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public String findCanonicalInLocalCache(String canonicalUrl) {
     try {
       for (String pf : listPackages()) {
-        if (new File(Utilities.path(cacheFolder, pf, "package", "package.json")).exists()) {
+        if (ManagedFileAccess.file(Utilities.path(cacheFolder, pf, "package", "package.json")).exists()) {
           JsonObject npm = JsonParser.parseObjectFromFile(Utilities.path(cacheFolder, pf, "package", "package.json"));
           if (canonicalUrl.equals(npm.asString("canonical"))) {
             return npm.asString("name");

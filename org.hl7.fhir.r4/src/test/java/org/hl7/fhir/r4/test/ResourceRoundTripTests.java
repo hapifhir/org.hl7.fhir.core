@@ -20,6 +20,7 @@ import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.EOperationOutcome;
 import org.hl7.fhir.r4.utils.NarrativeGenerator;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -33,10 +34,10 @@ public class ResourceRoundTripTests {
   @Test
   @Disabled
   public void test() throws FileNotFoundException, IOException, FHIRException, EOperationOutcome, UcumException {
-    Resource res = new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("unicode.xml")));
+    Resource res = new XmlParser().parse(ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("unicode.xml")));
     new NarrativeGenerator("", "", TestingUtilities.context()).generate((DomainResource) res, null);
     new XmlParser().setOutputStyle(OutputStyle.PRETTY)
-        .compose(new FileOutputStream(TestingUtilities.resourceNameToFile("gen", "unicode.out.xml")), res);
+        .compose(ManagedFileAccess.outStream(TestingUtilities.resourceNameToFile("gen", "unicode.out.xml")), res);
   }
 
   @Test

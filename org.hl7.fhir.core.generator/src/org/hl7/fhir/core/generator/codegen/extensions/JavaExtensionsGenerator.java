@@ -58,9 +58,9 @@ public class JavaExtensionsGenerator {
       }
     }    
 
-    JavaExtensionsFactoryGenerator gen = new JavaExtensionsFactoryGenerator(new FileOutputStream(Utilities.path(path, "Extensions.java")), master, config, version, date, jid, elementInfo, genClassList);
+    JavaExtensionsFactoryGenerator gen = new JavaExtensionsFactoryGenerator(ManagedFileAccess.outStream(Utilities.path(path, "Extensions.java")), master, config, version, date, jid, elementInfo, genClassList);
     gen.start();
-    JavaConstantsGenerator cgen = new JavaConstantsGenerator(new FileOutputStream(Utilities.path(path, "ExtensionConstants.java")), master, config, version, date, jid);
+    JavaConstantsGenerator cgen = new JavaConstantsGenerator(ManagedFileAccess.outStream(Utilities.path(path, "ExtensionConstants.java")), master, config, version, date, jid);
     cgen.start();
     for (String url : urls) {
       StructureDefinition sd = extensions.get(url);

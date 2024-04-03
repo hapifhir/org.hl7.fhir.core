@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -33,12 +34,12 @@ public class PackageHacker {
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
-    File f = new File(name);
+    File f = ManagedFileAccess.file(name);
     if (!f.exists())
       throw new Error("Unable to find "+f.getAbsolutePath());
     
     NpmPackage pck = null;
-    FileInputStream fs = new FileInputStream(f);
+    FileInputStream fs = ManagedFileAccess.inStream(f);
     try {
       pck = NpmPackage.fromPackage(fs);
     } finally {
@@ -56,8 +57,8 @@ public class PackageHacker {
     System.out.print("save? y/n: ");
     int r = System.in.read();
     if (r == 'y') {
-      f.renameTo(new File(Utilities.changeFileExt(name, ".tgz.bak")));
-      FileOutputStream fso = new FileOutputStream(f);
+      f.renameTo(ManagedFileAccess.file(Utilities.changeFileExt(name, ".tgz.bak")));
+      FileOutputStream fso = ManagedFileAccess.outStream(f);
       try {
         pck.save(fso);
       } finally {
@@ -125,7 +126,7 @@ public class PackageHacker {
   }
 
   private void addContentFrom(String folder, Map<String, byte[]> content) throws FileNotFoundException, IOException {
-    for (File f : new File(folder).listFiles()) {
+    for (File f : ManagedFileAccess.file(folder).listFiles()) {
       if (f.getName().endsWith(".json") && !f.getName().endsWith(".canonical.json")) {
          String cnt = TextFile.fileToString(f);
          if (cnt.contains("\"resourceType\"")) {

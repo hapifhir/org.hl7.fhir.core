@@ -56,6 +56,7 @@ import org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDependsOnCom
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 
@@ -285,7 +286,7 @@ public class NPMPackageGenerator {
   }
 
   public void loadDir(String rootDir, String name) throws IOException {
-    loadFiles(rootDir, new File(Utilities.path(rootDir, name)));
+    loadFiles(rootDir, ManagedFileAccess.file(Utilities.path(rootDir, name)));
   }
 
   public void loadFiles(String root, File dir, String... noload) throws IOException {

@@ -220,7 +220,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
         if (!set.contains(sd)) {
           try {
             generateSnapshot(sd);
-            // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
+            // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
           } catch (Exception e) {
             if (!isSuppressDebugMessages()) {
               System.out.println("Unable to generate snapshot @2 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());

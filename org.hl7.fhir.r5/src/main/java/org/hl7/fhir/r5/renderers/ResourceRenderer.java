@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Narrative;
+import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
@@ -32,7 +33,9 @@ import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.DirectWrappers.ResourceWrapperDirect;
 import org.hl7.fhir.r5.renderers.utils.ElementWrappers.ResourceWrapperMetaElement;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
+import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceReferenceKind;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
@@ -368,12 +371,22 @@ public abstract class ResourceRenderer extends DataRenderer {
     }
     XhtmlNode c = null;
     ResourceWithReference tr = null;
+    boolean onPage = false;
     if (r.hasReferenceElement() && allowLinks) {
       tr = resolveReference(rw, r.getReference());
 
       if (!r.getReference().startsWith("#")) {
         if (tr != null && tr.getReference() != null) {
-          c = x.ah(tr.getReference());
+          if (tr.getReference().startsWith("#")) {
+            onPage = true;
+            if (context.getRules() == GenerationRules.IG_PUBLISHER || (tr != null && tr.getKind() != ResourceReferenceKind.BUNDLE)) {
+              c = x.ah("#hc"+r.getReference().substring(1));
+            } else {
+              c = x;
+            }
+          } else {
+            c = x.ah(tr.getReference());
+          }
         } else if (r.getReference().contains("?")) {
           x.tx(/*!#*/"Conditional Reference: ");
           c = x.code("");
@@ -382,14 +395,17 @@ public abstract class ResourceRenderer extends DataRenderer {
         }
       } else if ("#".equals(r.getReference())) {
         c = x.ah("#");
-      } else {
+      } else if (context.getRules() == GenerationRules.IG_PUBLISHER || (tr != null && tr.getKind() != ResourceReferenceKind.BUNDLE)) {
         c = x.ah("#hc"+r.getReference().substring(1));
+        onPage = true;
+      } else {
+        c = x;
       }
     } else {
       c = x.span(null, null);
     }
-    if (tr != null && tr.getReference() != null && tr.getReference().startsWith("#")) {
-      c.tx(/*!#*/"See above (");
+    if (onPage) {
+      c.tx(/*!#*/"See on this page: ");  
     }
     // what to display: if text is provided, then that. if the reference was resolved, then show the name, or the generated narrative
     String display = r.hasDisplayElement() ? r.getDisplay() : null;
@@ -439,9 +455,6 @@ public abstract class ResourceRenderer extends DataRenderer {
         }
       }
     }
-    if (tr != null && tr.getReference() != null && tr.getReference().startsWith("#")) {
-      c.tx(")");
-    }
   }
 
   public void renderReference(ResourceWrapper rw, XhtmlNode x, BaseWrapper r) throws UnsupportedEncodingException, IOException {
@@ -481,7 +494,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (url.startsWith("#") && res != null) {
       for (ResourceWrapper r : res.getContained()) {
         if (r.getId().equals(url.substring(1)))
-          return new ResourceWithReference(null, r);
+          return new ResourceWithReference(ResourceReferenceKind.CONTAINED, null, r);
       }
       return null;
     }
@@ -499,7 +512,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           id = makeIdFromBundleEntry(bundleResource.getFullUrl());
         }
         String bundleUrl = "#" + bundleResource.getResource().getResourceType().name() + "_" + id; 
-        return new ResourceWithReference(bundleUrl, new ResourceWrapperDirect(this.context, bundleResource.getResource()));
+        return new ResourceWithReference(ResourceReferenceKind.BUNDLE, bundleUrl, new ResourceWrapperDirect(this.context, bundleResource.getResource()));
       }
       org.hl7.fhir.r5.elementmodel.Element bundleElement = rcontext.resolveElement(url, version);
       if (bundleElement != null) {
@@ -514,13 +527,13 @@ public abstract class ResourceRenderer extends DataRenderer {
         } else {
           bundleUrl = "#" +fullUrlToAnchor(bundleElement.getChildValue("fullUrl"));          
         }
-        return new ResourceWithReference(bundleUrl, new ResourceWrapperMetaElement(this.context, br));
+        return new ResourceWithReference(ResourceReferenceKind.BUNDLE, bundleUrl, new ResourceWrapperMetaElement(this.context, br));
       }
     }
 
     Resource ae = getContext().getWorker().fetchResource(null, url, version);
     if (ae != null)
-      return new ResourceWithReference(url, new ResourceWrapperDirect(this.context, ae));
+      return new ResourceWithReference(ResourceReferenceKind.EXTERNAL, url, new ResourceWrapperDirect(this.context, ae));
     else if (context.getResolver() != null) {
       return context.getResolver().resolve(context, url);
     } else
@@ -836,4 +849,6 @@ public abstract class ResourceRenderer extends DataRenderer {
     x.addTag(0, "p").b().tx(context.getLocale().getDisplayName());
     x.addTag(0, "hr");
   }
+  
+
 }

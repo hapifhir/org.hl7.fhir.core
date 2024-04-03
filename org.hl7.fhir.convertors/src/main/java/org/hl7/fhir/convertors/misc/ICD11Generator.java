@@ -28,6 +28,7 @@ import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -49,7 +50,7 @@ public class ICD11Generator {
       processMMSEntity(cs, base, child.asString(), cs.addConcept(), dest);
       System.out.println();
     }
-    new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "icd-11-mms.xml")), cs);
+    new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "icd-11-mms.xml")), cs);
     makeFullVs(dest, cs);
 
     cs = makeEntityCodeSystem();
@@ -62,7 +63,7 @@ public class ICD11Generator {
       processEntity(cs, ids, base, tail(child.asString()), dest);
       System.out.println();
     }
-    new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "icd-11-foundation.xml")), cs);
+    new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "icd-11-foundation.xml")), cs);
     makeFullVs2(dest, cs);
     System.out.println("finished");
   }
@@ -153,7 +154,7 @@ public class ICD11Generator {
     vs.setStatus(cs.getStatus());
     ConceptSetComponent inc = vs.getCompose().addInclude();
     inc.setSystem(cs.getUrl());
-    new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "vs-all-MMS.xml")), vs);
+    new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "vs-all-MMS.xml")), vs);
   }
 
   private void makeFullVs2(String dest, CodeSystem cs) throws IOException {
@@ -172,7 +173,7 @@ public class ICD11Generator {
     vs.setStatus(cs.getStatus());
     ConceptSetComponent inc = vs.getCompose().addInclude();
     inc.setSystem(cs.getUrl());
-    new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "vs-all-foundation.xml")), vs);
+    new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "vs-all-foundation.xml")), vs);
   }
 
   private void processMMSEntity(CodeSystem cs, String base, String ref, org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent cc, String dest) throws IOException {
@@ -281,7 +282,7 @@ public class ICD11Generator {
     for (JsonElement e : o.getJsonArray("scaleEntity")) {
       inc.addFilter().setProperty("concept").setOp(FilterOperator.ISA).setValue(tail(e.asString()));
     }
-    new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "vs-" + id + ".xml")), vs);
+    new XmlParser(XmlVersion.V1_1).setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "vs-" + id + ".xml")), vs);
     return url;
   }
 

@@ -24,8 +24,9 @@ import org.hl7.fhir.dstu2.utils.SimpleWorkerContext;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
@@ -85,11 +86,11 @@ public class ProfileUtilitiesTests {
     for (ProfileComparison outcome : comp.getComparisons()) {
       if (outcome.getSubset() != null)
         new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(
-            new FileOutputStream(Utilities.path("[tmp]", "intersection-" + outcome.getId() + ".xml")),
+            ManagedFileAccess.outStream(Utilities.path("[tmp]", "intersection-" + outcome.getId() + ".xml")),
             outcome.getSubset());
       if (outcome.getSuperset() != null)
         new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(
-            new FileOutputStream(Utilities.path("[tmp]", "union-" + outcome.getId() + ".xml")), outcome.getSuperset());
+            ManagedFileAccess.outStream(Utilities.path("[tmp]", "union-" + outcome.getId() + ".xml")), outcome.getSuperset());
 
       System.out.println("\r\n" + outcome.getId() + ": Comparison of " + outcome.getLeft().getUrl() + " and "
           + outcome.getRight().getUrl());
@@ -115,9 +116,9 @@ public class ProfileUtilitiesTests {
     System.out.println("Compare " + fn1 + " to " + fn2);
     System.out.println("  .. load");
     StructureDefinition left = (StructureDefinition) new XmlParser()
-        .parse(new FileInputStream(Utilities.path(root, fn1)));
+        .parse(ManagedFileAccess.inStream(Utilities.path(root, fn1)));
     StructureDefinition right = (StructureDefinition) new XmlParser()
-        .parse(new FileInputStream(Utilities.path(root, fn2)));
+        .parse(ManagedFileAccess.inStream(Utilities.path(root, fn2)));
     System.out.println(" .. compare");
     comp.compareProfiles(left, right);
 
@@ -918,16 +919,16 @@ public class ProfileUtilitiesTests {
 //    focus.setDifferential(null);
     String f1 = Utilities.path("c:", "temp", "base.xml");
     String f2 = Utilities.path("c:", "temp", "derived.xml");
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f1), base);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f1), base);
     ;
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f2), focus);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f2), focus);
     ;
     String diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
     List<String> command = new ArrayList<String>();
     command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
     ProcessBuilder builder = new ProcessBuilder(command);
-    builder.directory(new CSFile(Utilities.path("[tmp]")));
+    builder.directory(ManagedFileAccess.csfile(Utilities.path("[tmp]")));
     builder.start();
 
   }

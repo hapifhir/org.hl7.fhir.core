@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+
 
 public abstract class ByteProvider {
 
@@ -23,8 +25,8 @@ public abstract class ByteProvider {
     return new ByteProviderFile(ff);
   }
 
-  public static ByteProvider forFile(String src) {
-    return new ByteProviderFile(new File(src));
+  public static ByteProvider forFile(String src) throws IOException {
+    return new ByteProviderFile(ManagedFileAccess.file(src));
   }
 
   private static class ByteProviderBytes extends ByteProvider {

@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -194,7 +195,7 @@ public class FhirSettings {
   }
 
   static FhirSettingsPOJO getFhirSettingsPOJO(String filePath) throws IOException {
-    final File file = new File(filePath);
+    final File file = ManagedFileAccess.file(filePath);
 
     if (!file.exists()) {
       return new FhirSettingsPOJO();
@@ -202,7 +203,7 @@ public class FhirSettings {
 
     final ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    final InputStream inputStream = new FileInputStream(file);
+    final InputStream inputStream = ManagedFileAccess.inStream(file);
     final FhirSettingsPOJO output = objectMapper.readValue(inputStream, FhirSettingsPOJO.class);
 
     return output;

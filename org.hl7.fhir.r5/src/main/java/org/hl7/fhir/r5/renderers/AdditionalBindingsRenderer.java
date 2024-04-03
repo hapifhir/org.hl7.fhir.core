@@ -353,7 +353,7 @@ public class AdditionalBindingsRenderer {
       if (r5) {
         td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-current" : corePath+"terminologies.html#strength", /*!#*/"New records are required to use this value set, but legacy records may use other codes").tx(/*!#*/"Current Binding");
       } else {
-        td.span(null, /*!#*/"New records are required to use this value set, but legacy records may use other codes").tx(/*!#*/"Required");
+        td.span(null, /*!#*/"New records are required to use this value set, but legacy records may use other codes").tx(/*!#*/"Current");
       }
       break;
     case "preferred" :

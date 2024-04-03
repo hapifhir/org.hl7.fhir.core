@@ -39,6 +39,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -80,7 +81,7 @@ public class NpmPackageVersionConverter {
   }
 
   public void execute() throws IOException {
-    Map<String, byte[]> content = loadContentMap(new FileInputStream(source));
+    Map<String, byte[]> content = loadContentMap(ManagedFileAccess.inStream(source));
 
     Map<String, byte[]> output = new HashMap<>();
     output.put("package/package.json", convertPackage(content.get("package/package.json")));
@@ -141,7 +142,7 @@ public class NpmPackageVersionConverter {
       tar.write(cnt);
       tar.closeArchiveEntry();
       cnt = TextFile.fileToBytes(e.getValue().getDbFilename());
-      new File(e.getValue().getDbFilename()).delete();
+      ManagedFileAccess.file(e.getValue().getDbFilename()).delete();
       entry = new TarArchiveEntry(e.getKey() + "/.index.db");
       entry.setSize(cnt.length);
       tar.putArchiveEntry(entry);

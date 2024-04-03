@@ -21,11 +21,12 @@ import org.hl7.fhir.r4.model.Provenance;
 import org.hl7.fhir.r4.model.Provenance.ProvenanceAgentComponent;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class UTGCaseSensitivePopulator {
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new UTGCaseSensitivePopulator().process(new File(args[0]));
+    new UTGCaseSensitivePopulator().process(ManagedFileAccess.file(args[0]));
 
   }
 
@@ -35,7 +36,7 @@ public class UTGCaseSensitivePopulator {
     bundle.setId("hxutg1-1-0-12");
     
     scanFolders(root, bundle);
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(root.getAbsolutePath(), "input", "sourceOfTruth", "history", "utgrel1hx-1-0-12.json")), bundle);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(root.getAbsolutePath(), "input", "sourceOfTruth", "history", "utgrel1hx-1-0-12.json")), bundle);
     System.out.println("Done");
   }
 
@@ -60,10 +61,10 @@ public class UTGCaseSensitivePopulator {
 
   private void processFile(File f, Bundle bundle, IParser parser, Date d, Date dt) {
     try {
-      Resource r = parser.parse(new FileInputStream(f));
+      Resource r = parser.parse(ManagedFileAccess.inStream(f));
       if (r instanceof CodeSystem) {
         if (processCodeSystem((CodeSystem) r, bundle, d, dt)) {
-          parser.setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f), r);
+          parser.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
         }
       }
     } catch (Exception e) {

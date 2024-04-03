@@ -110,6 +110,7 @@ import org.hl7.fhir.dstu3.utils.NarrativeGenerator;
 import org.hl7.fhir.dstu3.utils.ResourceUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.ZipGenerator;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -178,7 +179,7 @@ public class ArgonautConverter extends ConverterBase {
   }
 
   public void convert(String sourceFolder, Coding clss) throws Exception {
-    File source = new File(sourceFolder);
+    File source = ManagedFileAccess.file(sourceFolder);
     for (String f : source.list()) {
       convert(sourceFolder, f, clss);
     }
@@ -221,13 +222,13 @@ public class ArgonautConverter extends ConverterBase {
   }
 
   private void convert(String sourceFolder, String filename, Coding clss) throws IOException {
-    if (new File(Utilities.path(sourceFolder, filename)).length() == 0)
+    if (ManagedFileAccess.file(Utilities.path(sourceFolder, filename)).length() == 0)
       return;
 
     CDAUtilities cda;
     try {
       System.out.println("Process " + Utilities.path(sourceFolder, filename));
-      cda = new CDAUtilities(new FileInputStream(Utilities.path(sourceFolder, filename)));
+      cda = new CDAUtilities(ManagedFileAccess.inStream(Utilities.path(sourceFolder, filename)));
       zipJ = new ZipGenerator(Utilities.path(destFolder, "json/doc", Utilities.changeFileExt(filename, ".json.zip")));
       zipX = new ZipGenerator(Utilities.path(destFolder, "xml/doc", Utilities.changeFileExt(filename, ".xml.zip")));
       Element doc = cda.getElement();
@@ -1320,7 +1321,7 @@ public class ArgonautConverter extends ConverterBase {
     Binary binary = new Binary();
     binary.setId(context.getBaseId() + "-binary");
     binary.setContentType("application/hl7-v3+xml");
-    binary.setContent(IOUtils.toByteArray(new FileInputStream(Utilities.path(sourceFolder, filename))));
+    binary.setContent(IOUtils.toByteArray(ManagedFileAccess.inStream(Utilities.path(sourceFolder, filename))));
     saveResource(binary);
   }
 
