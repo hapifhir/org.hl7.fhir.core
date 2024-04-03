@@ -23,7 +23,7 @@ public class Configuration {
   public Configuration(String path) throws FileNotFoundException, IOException {
     license = TextFile.fileToString(Utilities.path(path, "license.txt"));
     ini = new IniFile(Utilities.path(path, "configuration.ini"));
-    for (File jfn : new File(path).listFiles()) {
+    for (File jfn : ManagedFileAccess.file(path).listFiles()) {
       if (jfn.getName().endsWith(".java")) {
         adornments.put(Utilities.changeFileExt(jfn.getName(), ""), TextFile.fileToString(jfn));
       }

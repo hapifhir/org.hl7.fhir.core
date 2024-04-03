@@ -7,9 +7,10 @@ import java.io.InputStream;
 import java.nio.file.Path;
 
 import org.apache.commons.io.IOUtils;
-import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class BaseTestingUtilities {
@@ -31,10 +32,10 @@ public class BaseTestingUtilities {
     if (dir == null && FhirSettings.hasFhirTestCasesPath()) {
       dir = FhirSettings.getFhirTestCasesPath();
     }
-    if (dir != null && new CSFile(dir).exists()) {
+    if (dir != null && ManagedFileAccess.csfile(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
       // ok, we'll resolve this locally
-      return TextFile.fileToString(new CSFile(n));
+      return TextFile.fileToString(ManagedFileAccess.csfile(n));
     } else {
       // resolve from the package
       String contents;
@@ -55,9 +56,9 @@ public class BaseTestingUtilities {
     if (dir == null && FhirSettings.hasFhirTestCasesPath()) {
       dir = FhirSettings.getFhirTestCasesPath();
     }
-    if (dir != null && new File(dir).exists()) {
+    if (dir != null && ManagedFileAccess.file(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
-      return new FileInputStream(n);
+      return ManagedFileAccess.inStream(n);
     } else {
       String classpath = ("/org/hl7/fhir/testcases/" + Utilities.pathURL(paths));
       InputStream s = BaseTestingUtilities.class.getResourceAsStream(classpath);
@@ -73,7 +74,7 @@ public class BaseTestingUtilities {
     if (dir == null && FhirSettings.hasFhirTestCasesPath()) {
       dir = FhirSettings.getFhirTestCasesPath();
     }
-    if (dir != null && new File(dir).exists()) {
+    if (dir != null && ManagedFileAccess.file(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
       return TextFile.fileToBytes(n);
     } else {
@@ -91,9 +92,9 @@ public class BaseTestingUtilities {
     if (dir == null && FhirSettings.hasFhirTestCasesPath()) {
       dir = FhirSettings.getFhirTestCasesPath();
     }
-    if (dir != null && new File(dir).exists()) {
+    if (dir != null && ManagedFileAccess.file(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
-      return new File(n).exists();
+      return ManagedFileAccess.file(n).exists();
     } else {
       String classpath = ("/org/hl7/fhir/testcases/" + Utilities.pathURL(paths));
       try {

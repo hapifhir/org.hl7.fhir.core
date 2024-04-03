@@ -14,6 +14,7 @@ import org.hl7.fhir.dstu3.test.support.TestingUtilities;
 import org.hl7.fhir.dstu3.utils.EOperationOutcome;
 import org.hl7.fhir.dstu3.utils.NarrativeGenerator;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -24,9 +25,9 @@ public class ResourceRoundTripTests {
   public void test() throws FileNotFoundException, IOException, FHIRException, EOperationOutcome {
     if (TestingUtilities.context == null)
       TestingUtilities.context = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\definitions.xml.zip");
-    Resource res = new XmlParser().parse(new FileInputStream("C:\\work\\org.hl7.fhir\\build\\tests\\resources\\unicode.xml"));
+    Resource res = new XmlParser().parse(ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir\\build\\tests\\resources\\unicode.xml"));
     new NarrativeGenerator("", "", TestingUtilities.context).generate((DomainResource) res);
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("C:\\work\\org.hl7.fhir\\build\\tests\\resources\\unicode.out.xml"), res);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream("C:\\work\\org.hl7.fhir\\build\\tests\\resources\\unicode.out.xml"), res);
   }
 
 }

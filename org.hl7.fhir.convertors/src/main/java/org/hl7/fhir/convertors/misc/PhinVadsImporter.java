@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class PhinVadsImporter extends OIDBasedValueSetImporter {
 
@@ -32,13 +33,13 @@ public class PhinVadsImporter extends OIDBasedValueSetImporter {
     self.process(args[0], args[1]);
   }
 
-  private void process(String source, String dest) {
-    for (File f : new File(source).listFiles()) {
+  private void process(String source, String dest) throws IOException {
+    for (File f : ManagedFileAccess.file(source).listFiles()) {
       try {
         System.out.println("Process " + f.getName());
         ValueSet vs = importValueSet(TextFile.fileToBytes(f));
         if (vs.getId() != null) {
-          new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "ValueSet-" + vs.getId() + ".json")), vs);
+          new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "ValueSet-" + vs.getId() + ".json")), vs);
         }
       } catch (Exception e) {
         e.printStackTrace();

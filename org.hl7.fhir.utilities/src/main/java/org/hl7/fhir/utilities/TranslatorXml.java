@@ -43,6 +43,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -71,7 +72,7 @@ public class TranslatorXml implements TranslationServices {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(false);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    Document xml = builder.parse(new File(filename)); 
+    Document xml = builder.parse(ManagedFileAccess.file(filename)); 
     Element e = XMLUtil.getFirstChild(xml.getDocumentElement());
     while (e != null) {
       load(e);

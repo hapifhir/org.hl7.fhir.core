@@ -13,6 +13,7 @@ import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
@@ -27,7 +28,7 @@ public class SPDXImporter {
   
   public void generate(String[] args) throws Exception {
     JsonObject json = JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/spdx/license-list-data/main/json/licenses.json");
-    CodeSystem cs = (CodeSystem) new org.hl7.fhir.r4.formats.JsonParser().parse(new FileInputStream(args[0]));
+    CodeSystem cs = (CodeSystem) new org.hl7.fhir.r4.formats.JsonParser().parse(ManagedFileAccess.inStream(args[0]));
     cs.getConcept().clear();
     cs.getProperty().clear();
     cs.addProperty().setCode("reference").setType(PropertyType.STRING);
@@ -58,7 +59,7 @@ public class SPDXImporter {
       }
     }
     CodeSystemUtilities.sortAllCodes(cs);
-    new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(args[1]), cs);
+    new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(args[1]), cs);
     b = new StringBuilder();
     generateEnum("SPDXLicense", cs);
     TextFile.stringToFile(b.toString(), Utilities.changeFileExt(args[1], ".java"));

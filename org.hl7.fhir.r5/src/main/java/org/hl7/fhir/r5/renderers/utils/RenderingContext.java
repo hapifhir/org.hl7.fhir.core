@@ -21,10 +21,12 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
@@ -736,6 +738,13 @@ public class RenderingContext extends RenderingI18nContext {
     return typeMap;
   }
 
+
+  public String toStr(int v) {
+    NumberFormat nf = NumberFormat.getInstance(locale);
+    return nf.format(v);
+  }
+
+
   public String getTranslated(PrimitiveType<?> t) {
     if (lang != null) {
       String v = ToolingExtensions.getLanguageTranslation(t, lang);
@@ -746,10 +755,96 @@ public class RenderingContext extends RenderingI18nContext {
     return t.asStringValue();
   }
 
-  public String toStr(int v) {
-    NumberFormat nf = NumberFormat.getInstance(locale);
-    return nf.format(v);
+  public String getTranslatedCode(Base b, String codeSystem) {
+
+    if (b instanceof org.hl7.fhir.r5.model.Element) {
+      org.hl7.fhir.r5.model.Element e = (org.hl7.fhir.r5.model.Element) b;
+      if (lang != null) {
+        String v = ToolingExtensions.getLanguageTranslation(e, lang);
+        if (v != null) {
+          return v;
+        }
+        // no? then see if the tx service can translate it for us 
+        try {
+          ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(lang).withVersionFlexible(true),
+              codeSystem, null, e.primitiveValue(), null);
+          if (t.isOk() && t.getDisplay() != null) {
+            return t.getDisplay();
+          }
+        } catch (Exception ex) {
+          // nothing
+        }
+      }
+      if (e instanceof Enumeration<?>) {
+        return ((Enumeration<?>) e).getDisplay();
+      } else {
+        return e.primitiveValue();
+      }
+    } else if (b instanceof Element) {
+      return getTranslatedCode((Element) b, codeSystem);
+    } else {
+      return "??";
+    }
   }
 
+  public String getTranslatedCode(Enumeration<?> e, String codeSystem) {
+    if (lang != null) {
+      String v = ToolingExtensions.getLanguageTranslation(e, lang);
+      if (v != null) {
+        return v;
+      }
+      // no? then see if the tx service can translate it for us 
+      try {
+        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(lang).withVersionFlexible(true),
+            codeSystem, null, e.getCode(), null);
+        if (t.isOk() && t.getDisplay() != null) {
+          return t.getDisplay();
+        }
+      } catch (Exception ex) {
+        // nothing
+      }
+    }
+    try {
+      ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withVersionFlexible(true),
+          codeSystem, null, e.getCode(), null);
+      if (t.isOk() && t.getDisplay() != null) {
+        return t.getDisplay();
+      }
+    } catch (Exception ex) {
+      // nothing
+    }
+    
+    return e.getCode();
+  }
+  
+  public String getTranslatedCode(Element e, String codeSystem) {
+    if (lang != null) {
+      // first we look through the translation extensions
+      for (Element ext : e.getChildrenByName("extension")) {
+        String url = ext.getNamedChildValue("url");
+        if (url.equals(ToolingExtensions.EXT_TRANSLATION)) {
+          Base e1 = ext.getExtensionValue("lang");
+
+          if (e1 != null && e1.primitiveValue() != null && e1.primitiveValue().equals(lang)) {
+            e1 = ext.getExtensionValue("content");
+            if (e1 != null && e1.isPrimitive()) {
+              return e1.primitiveValue();
+            }
+          }
+        }
+      }
+      // no? then see if the tx service can translate it for us 
+      try {
+        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(lang).withVersionFlexible(true),
+            codeSystem, null, e.primitiveValue(), null);
+        if (t.isOk() && t.getDisplay() != null) {
+          return t.getDisplay();
+        }
+      } catch (Exception ex) {
+        // nothing
+      }
+    }
+    return e.primitiveValue();
+  }
   
 }

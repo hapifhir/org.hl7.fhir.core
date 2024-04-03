@@ -46,6 +46,7 @@ import org.hl7.fhir.dstu3.formats.XmlParser;
 import org.hl7.fhir.dstu3.model.ElementDefinition;
 import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.dstu3.model.StructureDefinition;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Element;
 
@@ -91,11 +92,11 @@ public class ADLImporter {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    adlConfig = builder.parse(new FileInputStream(config)).getDocumentElement();
+    adlConfig = builder.parse(ManagedFileAccess.inStream(config)).getDocumentElement();
 
     // load ADL
     builder = factory.newDocumentBuilder();
-    adl = builder.parse(new FileInputStream(source)).getDocumentElement();
+    adl = builder.parse(ManagedFileAccess.inStream(source)).getDocumentElement();
 
     check("root", adl.getNamespaceURI(), "http://schemas.openehr.org/v1", "Wrong namespace for ADL XML");
     check("root", adl.getNodeName(), "archetype", "Wrong XML for ADL XML");
@@ -150,7 +151,7 @@ public class ADLImporter {
     genElements(sd, root.getName(), root);
 
     // save
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dest), sd);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dest), sd);
     System.out.println("done. saved as " + dest);
   }
 

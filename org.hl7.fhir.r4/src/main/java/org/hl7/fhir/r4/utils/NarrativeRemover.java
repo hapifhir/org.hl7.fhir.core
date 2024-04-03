@@ -32,15 +32,17 @@ package org.hl7.fhir.r4.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.model.DomainResource;
 import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class NarrativeRemover {
 
-  public static void main(String[] args) {
-    execute(new File(args[0]));
+  public static void main(String[] args) throws IOException {
+    execute(ManagedFileAccess.file(args[0]));
 
   }
 
@@ -51,11 +53,11 @@ public class NarrativeRemover {
       else {
         System.out.println(f.getAbsolutePath());
         try {
-          Resource r = new JsonParser().parse(new FileInputStream(f));
+          Resource r = new JsonParser().parse(ManagedFileAccess.inStream(f));
           if (r instanceof DomainResource) {
             DomainResource d = (DomainResource) r;
             d.setText(null);
-            new JsonParser().compose(new FileOutputStream(f), d);
+            new JsonParser().compose(ManagedFileAccess.outStream(f), d);
           }
         } catch (Exception e) {
           e.printStackTrace();

@@ -11,6 +11,7 @@ import org.hl7.fhir.dstu2.utils.NarrativeGenerator;
 import org.hl7.fhir.dstu2.utils.SimpleWorkerContext;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -40,9 +41,9 @@ public class NarrativeGeneratorTests {
 
   private void process(String path) throws IOException, EOperationOutcome, FHIRException {
     XmlParser p = new XmlParser();
-    DomainResource r = (DomainResource) p.parse(new FileInputStream(path));
+    DomainResource r = (DomainResource) p.parse(ManagedFileAccess.inStream(path));
     gen.generate(r);
-    FileOutputStream s = new FileOutputStream(Utilities.path("[tmp]", "gen.xml"));
+    FileOutputStream s = ManagedFileAccess.outStream(Utilities.path("[tmp]", "gen.xml"));
     new XmlParser().compose(s, r, true);
     s.close();
   }

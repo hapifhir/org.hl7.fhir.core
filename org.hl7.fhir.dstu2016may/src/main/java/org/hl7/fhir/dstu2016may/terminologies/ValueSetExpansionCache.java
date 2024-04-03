@@ -75,6 +75,7 @@ import org.hl7.fhir.dstu2016may.utils.IWorkerContext;
 import org.hl7.fhir.dstu2016may.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 
 public class ValueSetExpansionCache implements ValueSetExpanderFactory {
@@ -91,7 +92,7 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
         // well, we'll see if the designated server can expand it, and if it can, we'll
         // cache it locally
         vso = context.expandVS(source, false);
-        FileOutputStream s = new FileOutputStream(Utilities.path(cacheFolder, makeFile(source.getUrl())));
+        FileOutputStream s = ManagedFileAccess.outStream(Utilities.path(cacheFolder, makeFile(source.getUrl())));
         context.newXmlParser().setOutputStyle(OutputStyle.PRETTY).compose(s, vso.getValueset());
         s.close();
       }
@@ -125,10 +126,10 @@ public class ValueSetExpansionCache implements ValueSetExpanderFactory {
   }
 
   private void loadCache() throws FHIRFormatError, IOException {
-    File[] files = new File(cacheFolder).listFiles();
+    File[] files = ManagedFileAccess.file(cacheFolder).listFiles();
     for (File f : files) {
       if (f.getName().endsWith(".xml")) {
-        final FileInputStream is = new FileInputStream(f);
+        final FileInputStream is = ManagedFileAccess.inStream(f);
         try {
           Resource r = context.newXmlParser().setOutputStyle(OutputStyle.PRETTY).parse(is);
           if (r instanceof OperationOutcome) {

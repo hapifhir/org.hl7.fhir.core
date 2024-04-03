@@ -736,6 +736,10 @@ public class BaseValidator implements IValidationContextResourceLoader {
     if (issue.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER) != null) {
       vmsg.setServer(issue.getExtensionString(ToolingExtensions.EXT_ISSUE_SERVER).replace("local.fhir.org", "tx-dev.fhir.org"));
     }
+    if (issue.getExtensionString(ToolingExtensions.EXT_ISSUE_MSG_ID) != null) {
+      vmsg.setMessageId(issue.getExtensionString(ToolingExtensions.EXT_ISSUE_MSG_ID));
+    }
+    
     errors.add(vmsg);
     return vmsg;
   }

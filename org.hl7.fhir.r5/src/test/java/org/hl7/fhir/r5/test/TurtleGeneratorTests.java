@@ -23,7 +23,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
-
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.turtle.Turtle;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -105,7 +105,7 @@ public class TurtleGeneratorTests {
 
   private void parseGeneratedTurtle(String generatedTurtleFilePath) throws IOException {
     try (
-      InputStream turtleStream = new FileInputStream(generatedTurtleFilePath);
+      InputStream turtleStream = ManagedFileAccess.inStream(generatedTurtleFilePath);
     ) {
       var generatedTurtleString = new String(turtleStream.readAllBytes());
       Turtle ttl = new Turtle();
@@ -122,8 +122,8 @@ public class TurtleGeneratorTests {
     var xmlFilePath = inputXmlDirectory.resolve(resourceName + ".xml").toString();
     var turtleFilePath = outputTurtleDirectory.resolve(resourceName + ".ttl").toString();
     try (
-        InputStream inputXmlStream = new FileInputStream(xmlFilePath);
-        OutputStream outputTurtleStream = new FileOutputStream(turtleFilePath);
+        InputStream inputXmlStream = ManagedFileAccess.inStream(xmlFilePath);
+        OutputStream outputTurtleStream = ManagedFileAccess.outStream(turtleFilePath);
     ) {
       // print out file names using string interpolation
       System.out.println("Generating " + turtleFilePath);
@@ -154,7 +154,7 @@ public class TurtleGeneratorTests {
     Resource resource = workerContext.fetchResource(Resource.class, resourceUri);
     Element resourceElement = resourceParser.parse(resource);
     var turtleFilePath = outputTurtleDirectory.resolve(profileName + ".ttl").toString();
-    try (OutputStream outputStream = new FileOutputStream(turtleFilePath)) {
+    try (OutputStream outputStream = ManagedFileAccess.outStream(turtleFilePath)) {
       turtleParser.compose(resourceElement, outputStream, OutputStyle.PRETTY, null);
       return turtleFilePath;
     }
@@ -169,7 +169,7 @@ public class TurtleGeneratorTests {
     try (
       // Follows pattern in `TestingUtilities.java`
       InputStream inputXmlStream = TestingUtilities.loadTestResourceStream("r5", resourceName + ".xml");
-      OutputStream outputTurtleStream = new FileOutputStream(turtleFilePath);
+      OutputStream outputTurtleStream = ManagedFileAccess.outStream(turtleFilePath);
     ) {
       generateTurtleFromXmlStream(inputXmlStream, outputTurtleStream);
       return turtleFilePath;
@@ -186,7 +186,7 @@ public class TurtleGeneratorTests {
     String currentDirectory = System.getProperty("user.dir");
     // Add your directory path to "org.hl7.fhir.r5/src/test/resources/local.properties"
     String localPropertiesPath = FileSystems.getDefault().getPath(currentDirectory, "src", "test", "resources", "local.properties").toString();
-    try (FileInputStream input = new FileInputStream(localPropertiesPath)) {
+    try (FileInputStream input = ManagedFileAccess.inStream(localPropertiesPath)) {
         properties.load(input);
     } catch (IOException e) {
         // You should create this local.properties file if it doesn't exist. It should already be listed in .gitignore.

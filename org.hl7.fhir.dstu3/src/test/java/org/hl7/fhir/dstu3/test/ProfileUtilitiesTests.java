@@ -26,8 +26,9 @@ import org.hl7.fhir.dstu3.utils.EOperationOutcome;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
@@ -45,8 +46,8 @@ public class ProfileUtilitiesTests {
   public static void main(String[] args) throws EOperationOutcome, Exception {
     // new ProfileUtilitiesTests().execute(args);
     new ProfileUtilitiesTests("C:\\work\\org.hl7.fhir\\build\\publish").testSnapshotGeneration();
-    //    StructureDefinition p = (StructureDefinition) new XmlParser().parse(new FileInputStream("C:\\work\\org.hl7.fhir\\build\\publish\\lipid-report-cholesterol.profile.xml"));
-    //    new ProfileUtilities(context, messages, null).generateSchematrons(new FileOutputStream(Utilities.path("[tmp]", "test.sch"), p);
+    //    StructureDefinition p = (StructureDefinition) new XmlParser().parse(ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir\\build\\publish\\lipid-report-cholesterol.profile.xml"));
+    //    new ProfileUtilities(context, messages, null).generateSchematrons(ManagedFileAccess.outStream(Utilities.path("[tmp]", "test.sch"), p);
   }
   
   public void execute(String[] args) throws FileNotFoundException, IOException, FHIRException {
@@ -76,9 +77,9 @@ public class ProfileUtilitiesTests {
     System.out.println("processing output");
     for (ProfileComparison outcome : comp.getComparisons()) { 
       if (outcome.getSubset() != null)
-        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "intersection-"+outcome.getId()+".xml")), outcome.getSubset());
+        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "intersection-"+outcome.getId()+".xml")), outcome.getSubset());
       if (outcome.getSuperset() != null)
-        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "union-"+outcome.getId()+".xml")), outcome.getSuperset());
+        new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "union-"+outcome.getId()+".xml")), outcome.getSuperset());
     
       System.out.println("\r\n"+outcome.getId()+": Comparison of "+outcome.getLeft().getUrl()+" and "+outcome.getRight().getUrl());
       for (ValidationMessage vm : outcome.getMessages())
@@ -101,8 +102,8 @@ public class ProfileUtilitiesTests {
   private void compare(String fn1, String fn2) throws FHIRFormatError, FileNotFoundException, IOException, DefinitionException {
     System.out.println("Compare "+fn1+" to "+fn2);
     System.out.println("  .. load");
-    StructureDefinition left = (StructureDefinition) new XmlParser().parse(new FileInputStream(Utilities.path(root, fn1)));
-    StructureDefinition right = (StructureDefinition) new XmlParser().parse(new FileInputStream(Utilities.path(root, fn2)));
+    StructureDefinition left = (StructureDefinition) new XmlParser().parse(ManagedFileAccess.inStream(Utilities.path(root, fn1)));
+    StructureDefinition right = (StructureDefinition) new XmlParser().parse(ManagedFileAccess.inStream(Utilities.path(root, fn2)));
     System.out.println(" .. compare");
     comp.compareProfiles(left, right);
     
@@ -893,14 +894,14 @@ public class ProfileUtilitiesTests {
 //    focus.setDifferential(null);
     String f1 = Utilities.path("c:", "temp", "base.xml");
     String f2 = Utilities.path("c:", "temp", "derived.xml");
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f1), base);;
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f2), focus);;
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f1), base);;
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f2), focus);;
     String diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
     List<String> command = new ArrayList<String>();
     command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
     ProcessBuilder builder = new ProcessBuilder(command);
-    builder.directory(new CSFile(Utilities.path("[tmp]")));
+    builder.directory(ManagedFileAccess.csfile(Utilities.path("[tmp]")));
     builder.start();
 
   }

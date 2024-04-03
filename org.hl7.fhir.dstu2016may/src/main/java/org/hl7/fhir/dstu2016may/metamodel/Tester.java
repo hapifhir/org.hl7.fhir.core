@@ -40,6 +40,7 @@ import org.hl7.fhir.dstu2016may.utils.IWorkerContext;
 import org.hl7.fhir.dstu2016may.utils.SimpleWorkerContext;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -52,21 +53,21 @@ public class Tester {
         .fromPack(Utilities.path("C:\\work\\org.hl7.fhir\\build\\publish", "validation-min.xml.zip"));
     int t = 0;
     int ok = 0;
-    for (String f : new File("C:\\work\\org.hl7.fhir\\build\\publish").list()) {
+    for (String f : ManagedFileAccess.file("C:\\work\\org.hl7.fhir\\build\\publish").list()) {
       if (f.endsWith(".xml") && !f.endsWith(".canonical.xml") && !f.contains("profile") && !f.contains("questionnaire")
-          && new File("C:\\work\\org.hl7.fhir\\build\\publish\\" + Utilities.changeFileExt(f, ".ttl")).exists()) {
+          && ManagedFileAccess.file("C:\\work\\org.hl7.fhir\\build\\publish\\" + Utilities.changeFileExt(f, ".ttl")).exists()) {
 //				if (f.equals("account-questionnaire.xml")) {
         System.out.print("convert " + f);
-//				Manager.convert(context, new FileInputStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+f), FhirFormat.XML, 
-//						new FileOutputStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".mm.json")), FhirFormat.JSON, OutputStyle.PRETTY);
+//				Manager.convert(context, ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+f), FhirFormat.XML, 
+//						ManagedFileAccess.outStream("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".mm.json")), FhirFormat.JSON, OutputStyle.PRETTY);
 //				String src = normalise(TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".mm.json")));
 //				String tgt = normalise(TextFile.fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\"+Utilities.changeFileExt(f, ".json")));
-        Element e = Manager.parse(context, new FileInputStream("C:\\work\\org.hl7.fhir\\build\\publish\\" + f),
+        Element e = Manager.parse(context, ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir\\build\\publish\\" + f),
             FhirFormat.XML);
         Manager.compose(context, e,
-            new FileOutputStream("C:\\work\\org.hl7.fhir\\build\\publish\\" + Utilities.changeFileExt(f, ".mm.ttl")),
+            ManagedFileAccess.outStream("C:\\work\\org.hl7.fhir\\build\\publish\\" + Utilities.changeFileExt(f, ".mm.ttl")),
             FhirFormat.TURTLE, OutputStyle.PRETTY, null);
-        Manager.compose(context, e, new FileOutputStream(Utilities.path("[tmp]", "resource.xml")), FhirFormat.XML,
+        Manager.compose(context, e, ManagedFileAccess.outStream(Utilities.path("[tmp]", "resource.xml")), FhirFormat.XML,
             OutputStyle.PRETTY, null);
         String src = TextFile
             .fileToString("C:\\work\\org.hl7.fhir\\build\\publish\\" + Utilities.changeFileExt(f, ".mm.ttl"));

@@ -47,6 +47,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.JsonLangFileProducer;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerLanguageSession;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerSession;
@@ -223,11 +224,11 @@ public class ValidationService {
           if (cliContext.getOutput() == null) {
             dst = System.out;
           } else {
-            dst = new PrintStream(new FileOutputStream(cliContext.getOutput()));
+            dst = new PrintStream(ManagedFileAccess.outStream(cliContext.getOutput()));
           }
           renderer.setOutput(dst);
         } else {
-          File dir = new File(cliContext.getOutput());
+          File dir = ManagedFileAccess.file(cliContext.getOutput());
           if (!dir.isDirectory()) {
             throw new Error("The output location "+dir.getAbsolutePath()+" must be an existing directory for the output style "+renderer.getStyleCode());
           }
@@ -398,7 +399,7 @@ public class ValidationService {
       org.hl7.fhir.r5.elementmodel.Element r = validator.transform(cliContext.getSources().get(0), cliContext.getMap());
       System.out.println(" ...success");
       if (cliContext.getOutput() != null) {
-        FileOutputStream s = new FileOutputStream(cliContext.getOutput());
+        FileOutputStream s = ManagedFileAccess.outStream(cliContext.getOutput());
         if (cliContext.getOutput() != null && cliContext.getOutput().endsWith(".json"))
           new org.hl7.fhir.r5.elementmodel.JsonParser(validator.getContext()).compose(r, s, IParser.OutputStyle.PRETTY, null);
         else
@@ -586,13 +587,13 @@ public class ValidationService {
     CanonicalResource cr = validator.loadCanonicalResource(cliContext.getSources().get(0), cliContext.getSv());
     boolean ok = true;
     if (cr instanceof StructureDefinition) {
-      new StructureDefinitionSpreadsheetGenerator(validator.getContext(), false, false).renderStructureDefinition((StructureDefinition) cr, false).finish(new FileOutputStream(cliContext.getOutput()));
+      new StructureDefinitionSpreadsheetGenerator(validator.getContext(), false, false).renderStructureDefinition((StructureDefinition) cr, false).finish(ManagedFileAccess.outStream(cliContext.getOutput()));
     } else if (cr instanceof CodeSystem) {
-      new CodeSystemSpreadsheetGenerator(validator.getContext()).renderCodeSystem((CodeSystem) cr).finish(new FileOutputStream(cliContext.getOutput()));
+      new CodeSystemSpreadsheetGenerator(validator.getContext()).renderCodeSystem((CodeSystem) cr).finish(ManagedFileAccess.outStream(cliContext.getOutput()));
     } else if (cr instanceof ValueSet) {
-      new ValueSetSpreadsheetGenerator(validator.getContext()).renderValueSet((ValueSet) cr).finish(new FileOutputStream(cliContext.getOutput()));
+      new ValueSetSpreadsheetGenerator(validator.getContext()).renderValueSet((ValueSet) cr).finish(ManagedFileAccess.outStream(cliContext.getOutput()));
     } else if (cr instanceof ConceptMap) {
-      new ConceptMapSpreadsheetGenerator(validator.getContext()).renderConceptMap((ConceptMap) cr).finish(new FileOutputStream(cliContext.getOutput()));
+      new ConceptMapSpreadsheetGenerator(validator.getContext()).renderConceptMap((ConceptMap) cr).finish(ManagedFileAccess.outStream(cliContext.getOutput()));
     } else {
       ok = false;
       System.out.println(" ...Unable to generate spreadsheet for "+cliContext.getSources().get(0)+": no way to generate a spreadsheet for a "+cr.fhirType());
@@ -665,14 +666,14 @@ public class ValidationService {
       org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false, true);
       Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());      
       t = t + new LanguageUtils(validator.getContext()).importFromTranslations(e, translations);
-      Manager.compose(validator.getContext(), e, new FileOutputStream(Utilities.path(dst, new File(ref.getRef()).getName())), cnt.getCntType(),
+      Manager.compose(validator.getContext(), e, ManagedFileAccess.outStream(Utilities.path(dst, ManagedFileAccess.file(ref.getRef()).getName())), cnt.getCntType(),
           OutputStyle.PRETTY, null);
     }
     System.out.println("Done - imported "+t+" translations into "+refs.size()+ " in "+dst);
   }
   
-  private void loadTranslationSource(List<TranslationUnit> translations, String input) {
-    File f = new File(input);
+  private void loadTranslationSource(List<TranslationUnit> translations, String input) throws IOException {
+    File f = ManagedFileAccess.file(input);
     if (f.exists()) {
       if (f.isDirectory()) {
         for (File fd : f.listFiles()) {
@@ -681,22 +682,22 @@ public class ValidationService {
       } else {
         if (f.getName().endsWith(".po")) {
           try {
-            translations.addAll(new PoGetTextProducer().loadSource(new FileInputStream(f)));
+            translations.addAll(new PoGetTextProducer().loadSource(ManagedFileAccess.inStream(f)));
           } catch (Exception e) {
             System.out.println("Error reading PO File "+f.getAbsolutePath()+": "+e.getMessage());
           }
         } else if (f.getName().endsWith(".xliff")) {
           try {
-            translations.addAll(new XLIFFProducer().loadSource(new FileInputStream(f)));
+            translations.addAll(new XLIFFProducer().loadSource(ManagedFileAccess.inStream(f)));
           } catch (Exception e) {
             System.out.println("Error reading XLIFF File "+f.getAbsolutePath()+": "+e.getMessage());
           }          
         } else {
           try {
-            translations.addAll(new PoGetTextProducer().loadSource(new FileInputStream(f)));
+            translations.addAll(new PoGetTextProducer().loadSource(ManagedFileAccess.inStream(f)));
           } catch (Exception e) {
             try {
-              translations.addAll(new XLIFFProducer().loadSource(new FileInputStream(f)));
+              translations.addAll(new XLIFFProducer().loadSource(ManagedFileAccess.inStream(f)));
             } catch (Exception e2) {
               System.out.println("Error reading File "+f.getAbsolutePath()+" as XLIFF: "+e2.getMessage());
               System.out.println("Error reading File "+f.getAbsolutePath()+" as PO: "+e.getMessage());

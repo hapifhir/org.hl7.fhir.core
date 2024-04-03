@@ -11,6 +11,7 @@ import org.hl7.fhir.r4b.model.CapabilityStatement;
 import org.hl7.fhir.r4b.openapi.OpenApiGenerator;
 import org.hl7.fhir.r4b.openapi.Writer;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Test;
 
 public class OpenApiGeneratorTest {
@@ -31,7 +32,7 @@ public class OpenApiGeneratorTest {
 
   public void run(InputStream sfn, String dfn) throws IOException, FHIRFormatError, FileNotFoundException {
     CapabilityStatement cs = (CapabilityStatement) new JsonParser().parse(sfn);
-    Writer oa = new Writer(new FileOutputStream(dfn));
+    Writer oa = new Writer(ManagedFileAccess.outStream(dfn));
     OpenApiGenerator gen = new OpenApiGenerator(TestingUtilities.context(), cs, oa);
     gen.generate("test-lic", "http://spdx.org/licenses/test-lic.html");
     oa.commit();

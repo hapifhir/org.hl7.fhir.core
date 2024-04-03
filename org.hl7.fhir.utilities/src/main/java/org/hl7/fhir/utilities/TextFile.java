@@ -52,6 +52,9 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+
 /**
  * Set of static helper functions to read lines from files, create files from lists of lines,
  * read files into a single string and create files from a single string.
@@ -62,13 +65,13 @@ public class TextFile {
 
 	public static List<String> readAllLines(String path) throws IOException
 	{
-	  final File file = new CSFile(path);
+	  final File file = ManagedFileAccess.csfile(path);
     return Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
 	}
 	
 	public static void writeAllLines(String path, List<String> lines) throws IOException
 	{
-	  final File file = new CSFile(path);
+	  final File file = ManagedFileAccess.csfile(path);
     Files.write(file.toPath(), lines, StandardCharsets.UTF_8);
 	}
 	
@@ -81,7 +84,7 @@ public class TextFile {
   }
   
   public static void stringToFile(final String content, final String path) throws IOException  {
-    final File file = new CSFile(path);
+    final File file = ManagedFileAccess.csfile(path);
     stringToFile(content, file);
   }
 
@@ -100,7 +103,7 @@ public class TextFile {
   }
   
   public static void stringToFileWithBOM(final String content, final String path) throws IOException  {
-    final File file = new CSFile(path);
+    final File file = ManagedFileAccess.csfile(path);
     stringToFileWithBOM(content, file);
   }
   
@@ -112,7 +115,7 @@ public class TextFile {
   }
   
   public static String fileToString(final String src) throws FileNotFoundException, IOException  {
-    final CSFile f = new CSFile(src);
+    final CSFile f = ManagedFileAccess.csfile(src);
     if (!f.exists()) {
       throw new IOException("File "+src+" not found");
     }
@@ -140,13 +143,13 @@ public class TextFile {
   }
 
   public static void bytesToFile(final byte[] bytes, final String path) throws IOException {
-    try (final OutputStream sw = new FileOutputStream(new CSFile(path))) {
+    try (final OutputStream sw = ManagedFileAccess.outStream(ManagedFileAccess.csfile(path))) {
       sw.write(bytes);
     }
   }
   
   public static void bytesToFile(final byte[] bytes, final File f) throws IOException {
-    try (final OutputStream sw = new FileOutputStream(f)) {
+    try (final OutputStream sw = ManagedFileAccess.outStream(f)) {
       sw.write(bytes);
     }
   }
@@ -158,7 +161,7 @@ public class TextFile {
   }
 
   public static byte[] fileToBytes(final String srcFile) throws FileNotFoundException, IOException {
-    final File f = new CSFile(srcFile);
+    final File f = ManagedFileAccess.csfile(srcFile);
     return Files.readAllBytes(f.toPath());
   }
 

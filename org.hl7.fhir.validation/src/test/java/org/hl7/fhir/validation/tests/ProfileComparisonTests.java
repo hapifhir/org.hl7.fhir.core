@@ -33,7 +33,7 @@ public class ProfileComparisonTests {
 //        System.out.println("Generating output...");
 //        File htmlFile = null;
 //        try {
-//          htmlFile = new File(pc.generate());
+//          htmlFile = ManagedFileAccess.file(pc.generate());
 //        } catch (Exception e) {
 //          e.printStackTrace();
 //          throw e;

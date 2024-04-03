@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyType;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.utilities.CSVReader;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class ICFImporter {
 
@@ -28,7 +29,7 @@ public class ICFImporter {
   }
 
   private void doImport(String src, String dst) throws FHIRException, FileNotFoundException, IOException {
-    CSVReader csv = new CSVReader(new FileInputStream(src));
+    CSVReader csv = new CSVReader(ManagedFileAccess.inStream(src));
     csv.setDelimiter('\t');
     csv.readHeaders();
 
@@ -98,7 +99,7 @@ public class ICFImporter {
     
     }
     csv.close();
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dst), cs); 
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst), cs); 
   }
 //
 //  private String processLink(String cell) {

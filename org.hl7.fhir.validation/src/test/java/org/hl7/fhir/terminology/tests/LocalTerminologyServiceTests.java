@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.special.TxTester;
@@ -48,8 +49,8 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
   private static final String SERVER = FhirSettings.getTxFhirLocal();  
   // private static final String SERVER = "https://r4.ontoserver.csiro.au/fhir";
 
-  private static boolean localTxRunning() {
-    return new File("/Users/grahamegrieve/work/server/server").exists();
+  private static boolean localTxRunning() throws IOException {
+    return ManagedFileAccess.file("/Users/grahamegrieve/work/server/server").exists();
   }
 
 

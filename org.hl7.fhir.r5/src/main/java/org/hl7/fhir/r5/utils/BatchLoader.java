@@ -49,6 +49,7 @@ import org.hl7.fhir.r5.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.client.FHIRToolingClient;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class BatchLoader {
 
@@ -67,7 +68,7 @@ public class BatchLoader {
 	  		throw new FHIRException("Unimplemented file type "+file);
 	  	} else if (file.endsWith(".zip")) {
 	  		LoadZipFile(server, file, p, size, 0, -1);
-	  	} else if (new File(file).isDirectory()) {
+	  	} else if (ManagedFileAccess.file(file).isDirectory()) {
 	  	  LoadDirectory(server, file, p, size);
 	  	} else 
 	  		throw new FHIRException("Unknown file type "+file);
@@ -100,7 +101,7 @@ public class BatchLoader {
 	 	Bundle b = new Bundle();
 	 	b.setType(BundleType.COLLECTION);
 	 	b.setId(UUID.randomUUID().toString().toLowerCase());
-	 	ZipInputStream zip = new ZipInputStream(new FileInputStream(file));
+	 	ZipInputStream zip = new ZipInputStream(ManagedFileAccess.inStream(file));
 	 	ZipEntry entry;
     while((entry = zip.getNextEntry())!=null)
     {

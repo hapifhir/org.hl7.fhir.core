@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.utils.ResourceDependencyWalker;
 import org.hl7.fhir.r5.utils.ResourceDependencyWalker.IResourceDependencyNotifier;
 import org.hl7.fhir.r5.utils.ResourceMinifier;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -47,7 +48,7 @@ public class ResourceDependencyPackageBuilder {
     
     new ResourceDependencyWalker(ctxt, pckBuilder).walk(ctxt.fetchResource(CapabilityStatement.class, args[2]));
     
-    pckBuilder.npm.save(new FileOutputStream(args[4]));
+    pckBuilder.npm.save(ManagedFileAccess.outStream(args[4]));
   }
 
   private static NpmPackage makeNpm(String vid, String version) throws JsonException, IOException {

@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.cli.utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -10,6 +11,7 @@ import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.services.ValidatorWatchMode;
@@ -149,7 +151,7 @@ public class Params {
         cliContext.setSv(VersionUtilities.getCurrentPackageVersion(args[++i]));
       } else if (args[i].equals(FHIR_SETTINGS_PARAM)) {
         final String fhirSettingsFilePath = args[++i];
-        if (! new File(fhirSettingsFilePath).exists()) {
+        if (! ManagedFileAccess.file(fhirSettingsFilePath).exists()) {
           throw new Error("Cannot find fhir-settings file: " + fhirSettingsFilePath);
         }
         cliContext.setFhirSettingsFile(fhirSettingsFilePath);
@@ -506,11 +508,11 @@ public class Params {
     }
   }
 
-  public static String getTerminologyServerLog(String[] args) {
+  public static String getTerminologyServerLog(String[] args) throws IOException {
     String txLog = null;
     if (hasParam(args, "-txLog")) {
       txLog = getParam(args, "-txLog");
-      new File(txLog).delete();
+      ManagedFileAccess.file(txLog).delete();
     }
     return txLog;
   }

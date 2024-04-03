@@ -28,6 +28,7 @@ import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.instance.InstanceValidatorFactory;
@@ -124,7 +125,7 @@ public class StructureMappingTests {
     } else {
       TextFile.bytesToFile(s.toByteArray(), fileOutputRes);
       TextFile.bytesToFile(outputJson.getBytes(), fileOutputResOrig);
-      msg = CompareUtilities.checkXMLIsSame(name, new FileInputStream(fileOutputResOrig), new FileInputStream(fileOutputRes));
+      msg = CompareUtilities.checkXMLIsSame(name, ManagedFileAccess.inStream(fileOutputResOrig), ManagedFileAccess.inStream(fileOutputRes));
     }
     if (!Utilities.noString(msg)) {
       System.out.print(s.toString());

@@ -31,6 +31,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
@@ -351,7 +352,7 @@ public class TerminologyClientManager {
 
     if (cache != null && cache.getFolder() != null) {
       try {
-        cacheFile = new File(Utilities.path(cache.getFolder(), "system-map.json"));
+        cacheFile = ManagedFileAccess.file(Utilities.path(cache.getFolder(), "system-map.json"));
         if (cacheFile.exists()) {
           JsonObject json = JsonParser.parseObject(cacheFile);
           for (JsonObject pair : json.getJsonObjects("systems")) {

@@ -32,6 +32,7 @@ import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class CPTImporter {
 
@@ -89,12 +90,12 @@ public class CPTImporter {
     System.out.println(c);
     System.out.println(k);
     
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dst), cs); 
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst), cs); 
     produceDB(Utilities.changeFileExt(dst, ".db"), cs);
     
     cs.setContent(CodeSystemContentMode.FRAGMENT);
     cs.getConcept().removeIf(cc -> !Utilities.existsInList(cc.getCode(), "metadata-kinds", "metadata-designations", "99202", "99203", "0001A", "99252", "25", "P1", "1P", "F1", "95"));
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.changeFileExt(dst, "-fragment.json")), cs); 
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.changeFileExt(dst, "-fragment.json")), cs); 
     produceDB(Utilities.changeFileExt(dst, "-fragment.db"), cs);
   }
 
@@ -146,7 +147,7 @@ public class CPTImporter {
   }
 
 
-  private void produceDB(String path, CodeSystem cs) throws ClassNotFoundException, SQLException {
+  private void produceDB(String path, CodeSystem cs) throws ClassNotFoundException, SQLException, IOException {
     Connection con = connect(path);
 
     Statement stmt = con.createStatement();
@@ -185,10 +186,10 @@ public class CPTImporter {
   }
 
 
-  private Connection connect(String dest) throws SQLException, ClassNotFoundException {
+  private Connection connect(String dest) throws SQLException, ClassNotFoundException, IOException {
     //    Class.forName("com.mysql.jdbc.Driver");  
     //    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omop?useSSL=false","root",{pwd}); 
-    new File(dest).delete();
+    ManagedFileAccess.file(dest).delete();
     Connection con = DriverManager.getConnection("jdbc:sqlite:"+dest); 
     makeMetadataTable(con);
     makeConceptsTable(con);
@@ -267,7 +268,7 @@ public class CPTImporter {
   }
 
   private int processModifiers(CodeSystem cs, String path) throws FHIRException, FileNotFoundException, IOException {
-    CSVReader csv = new CSVReader(new FileInputStream(path));
+    CSVReader csv = new CSVReader(ManagedFileAccess.inStream(path));
     csv.readHeaders();
 
     int res = 0;
@@ -309,7 +310,7 @@ public class CPTImporter {
     FileInputStream inputStream = null;
     Scanner sc = null;
     try {
-        inputStream = new FileInputStream(path);
+        inputStream = ManagedFileAccess.inStream(path);
         sc = new Scanner(inputStream, "UTF-8");
         while (sc.hasNextLine()) {
           String line = sc.nextLine();

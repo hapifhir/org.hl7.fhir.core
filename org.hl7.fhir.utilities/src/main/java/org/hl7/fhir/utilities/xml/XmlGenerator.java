@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.w3c.dom.Comment;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -51,7 +52,7 @@ public class XmlGenerator {
 	
 	public void generate(Element element, File file, String defaultNamespace, String elementName) throws FHIRException, IOException  {
 		
-		OutputStream stream = new FileOutputStream(file);
+		OutputStream stream = ManagedFileAccess.outStream(file);
 		
 		
 		xml = new XMLWriter(stream, "UTF-8");
@@ -73,7 +74,7 @@ public class XmlGenerator {
   } 
   
 	public void generate(Element element, File file) throws IOException, FHIRException  {
-		OutputStream stream = new FileOutputStream(file);
+		OutputStream stream = ManagedFileAccess.outStream(file);
 		try {
 		  generate(element, stream);
     } finally {
