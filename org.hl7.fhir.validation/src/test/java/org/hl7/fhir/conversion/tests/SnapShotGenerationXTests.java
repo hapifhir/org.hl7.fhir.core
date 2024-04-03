@@ -40,6 +40,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -475,7 +476,7 @@ public class SnapShotGenerationXTests {
     pu.sortDifferential(base, test.getOutput(), test.getOutput().getUrl(), errors, false);
     if (!errors.isEmpty())
       throw new FHIRException(errors.get(0));
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output.xml")), test.getOutput());
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output.xml")), test.getOutput());
     Assertions.assertTrue(test.expected.equalsDeep(test.output), "Output does not match expected");
   }
 
@@ -545,10 +546,10 @@ public class SnapShotGenerationXTests {
     if (!fail) {
       test.output = output;
       UtilitiesXTests.context(version).cacheResource(output);
-      File dst = new File(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output.xml"));
+      File dst = ManagedFileAccess.file(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output.xml"));
       if (dst.exists())
         dst.delete();
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output.xml")), output);
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(UtilitiesXTests.tempFile("snapshot", test.getId() + "-output.xml")), output);
       StructureDefinition t1 = test.expected.copy();
       t1.setText(null);
       StructureDefinition t2 = test.output.copy();

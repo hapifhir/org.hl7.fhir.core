@@ -52,6 +52,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+
 
 /**
  * IniFile class provides methods for manipulating (Read/Write) windows ini files.
@@ -677,7 +680,7 @@ public final class IniFile
         try
         {
             if (this.iniSections.size() == 0) return false;
-            objFile = new CSFile(this.filepath);
+            objFile = ManagedFileAccess.csfile(this.filepath);
             if (objFile.exists()) objFile.delete();
             objWriter = new FileWriter(objFile);
             itrSec = this.iniSections.keySet().iterator();
@@ -1070,7 +1073,7 @@ public final class IniFile
 
         try
         {
-            objFile = new CSFile(pathName);
+            objFile = ManagedFileAccess.csfile(pathName);
             blnRet = (objFile.exists() && objFile.isFile());
         }
         catch (Exception e)

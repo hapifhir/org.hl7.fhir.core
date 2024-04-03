@@ -18,6 +18,7 @@ import org.hl7.fhir.r4.utils.LiquidEngine;
 import org.hl7.fhir.r4.utils.LiquidEngine.ILiquidEngineIcludeResolver;
 import org.hl7.fhir.r4.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -77,7 +78,7 @@ public class LiquidEngineTests implements ILiquidEngineIcludeResolver {
     String name = test.get("focus").getAsString();
     if (!resources.containsKey(name)) {
       String fn = TestingUtilities.resourceNameToFile(name.replace("/", "-") + ".xml");
-      resources.put(name, new XmlParser().parse(new FileInputStream(fn)));
+      resources.put(name, new XmlParser().parse(ManagedFileAccess.inStream(fn)));
     }
     return resources.get(test.get("focus").getAsString());
   }

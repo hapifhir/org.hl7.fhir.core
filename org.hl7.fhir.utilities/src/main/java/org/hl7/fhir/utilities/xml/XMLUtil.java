@@ -55,6 +55,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -459,7 +460,7 @@ public class XMLUtil {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(false);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    FileInputStream fs = new FileInputStream(filename);
+    FileInputStream fs = ManagedFileAccess.inStream(filename);
     try {
       return builder.parse(fs);
     } finally {
@@ -471,7 +472,7 @@ public class XMLUtil {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(ns);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    FileInputStream fs = new FileInputStream(filename);
+    FileInputStream fs = ManagedFileAccess.inStream(filename);
     try {
       return builder.parse(fs);
     } finally {
@@ -500,11 +501,11 @@ public class XMLUtil {
     return e == null ? null : e.getAttribute(aname);
   }
 
-  public static void writeDomToFile(Document doc, String filename) throws TransformerException {
+  public static void writeDomToFile(Document doc, String filename) throws TransformerException, IOException {
     TransformerFactory transformerFactory = TransformerFactory.newInstance();
     Transformer transformer = transformerFactory.newTransformer();
     DOMSource source = new DOMSource(doc);
-    StreamResult streamResult =  new StreamResult(new File(filename));
+    StreamResult streamResult =  new StreamResult(ManagedFileAccess.file(filename));
     transformer.transform(source, streamResult);    
   }
 

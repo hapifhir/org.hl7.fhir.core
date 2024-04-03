@@ -11,6 +11,8 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.junit.jupiter.api.Assertions;
 
@@ -93,7 +95,7 @@ class UtilitiesTest {
     } else if (os.contains(LINUX)) {
       return LINUX_TEMP_DIR;
     } else if (os.toUpperCase().contains(WINDOWS)) {
-      File tmp = new File(Utilities.C_TEMP_DIR);
+      File tmp = ManagedFileAccess.file(Utilities.C_TEMP_DIR);
       if(tmp.exists()) {
         return Utilities.C_TEMP_DIR + '\\';
       } else {
@@ -442,12 +444,12 @@ class UtilitiesTest {
   }
 
   private void checkFile(String path, String content) throws IOException {
-    Assertions.assertTrue(new CSFile(path).exists());
+    Assertions.assertTrue(ManagedFileAccess.csfile(path).exists());
     Assertions.assertEquals(content, TextFile.fileToString(path));
   }
 
   private void checkDir(String path) throws IOException {
-    Assertions.assertTrue(new CSFile(path).exists());
+    Assertions.assertTrue(ManagedFileAccess.csfile(path).exists());
   }
 
   private void makeFile(String path, String content) throws IOException {

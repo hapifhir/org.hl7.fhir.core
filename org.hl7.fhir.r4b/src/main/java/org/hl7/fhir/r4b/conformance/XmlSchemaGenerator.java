@@ -78,6 +78,7 @@ import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class XmlSchemaGenerator {
 
@@ -201,7 +202,7 @@ public class XmlSchemaGenerator {
     }
     close();
 
-    writer = new OutputStreamWriter(new FileOutputStream(Utilities.path(folder, tail(sd.getType() + ".xsd"))), "UTF-8");
+    writer = new OutputStreamWriter(ManagedFileAccess.outStream(Utilities.path(folder, tail(sd.getType() + ".xsd"))), "UTF-8");
     ln("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
     ln("<!-- ");
     ln(license);

@@ -32,6 +32,7 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.junit.jupiter.api.Test;
@@ -84,8 +85,8 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     return tmp;
   }
 
-  public void deleteTempCacheDirectory(Path path) {
-    File directory = new File(path.toUri());
+  public void deleteTempCacheDirectory(Path path) throws IOException {
+    File directory = ManagedFileAccess.file(path.toString());
     for (File file : directory.listFiles()) {
       file.delete();
     }

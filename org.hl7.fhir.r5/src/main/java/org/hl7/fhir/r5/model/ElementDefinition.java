@@ -2628,6 +2628,8 @@ public boolean hasTarget() {
         return "unsignedInt";
       if ("xsd:anyURI".equalsIgnoreCase(s))
         return "uri";
+      if ("xhtml:div".equalsIgnoreCase(s))
+        return "xhtml";
       
       throw new Error("Unknown xml type '"+s+"'");
     }

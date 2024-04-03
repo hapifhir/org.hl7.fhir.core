@@ -24,6 +24,7 @@ import org.hl7.fhir.r4b.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 import org.hl7.fhir.r4b.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -55,7 +56,7 @@ public class NarrativeGeneratorTests {
     XmlParser p = new XmlParser();
     DomainResource r = (DomainResource) p.parse(stream);
     RendererFactory.factory(r, rc).render(r);
-    FileOutputStream s = new FileOutputStream(TestingUtilities.tempFile("gen", "gen.xml"));
+    FileOutputStream s = ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "gen.xml"));
     new XmlParser().compose(s, r, true);
     s.close();
   }

@@ -48,6 +48,7 @@ import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.InstantType;
 import org.hl7.fhir.r4.model.Meta;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -159,12 +160,12 @@ public class LoincToDEConvertor {
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
 
-    xml = builder.parse(new FileInputStream(definitions));
+    xml = builder.parse(ManagedFileAccess.inStream(definitions));
   }
 
   private void saveBundle() throws FHIRFormatError, IOException, XmlPullParserException {
     XmlParser xml = new XmlParser();
-    FileOutputStream s = new FileOutputStream(dest);
+    FileOutputStream s = ManagedFileAccess.outStream(dest);
     xml.compose(s, bundle, true);
     s.close();
   }

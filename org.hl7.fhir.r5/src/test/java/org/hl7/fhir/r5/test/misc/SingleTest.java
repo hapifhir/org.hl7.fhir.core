@@ -30,6 +30,8 @@ package org.hl7.fhir.r5.test.misc;
 
 import java.io.File;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+
 
 public class SingleTest {
 
@@ -39,7 +41,7 @@ public class SingleTest {
   public static void main(String[] args) {
     try {
       ResourceTest r = new ResourceTest();
-      r.setSource(new File("src\\test\\resources\\patient-example.xml"));
+      r.setSource(ManagedFileAccess.file("src\\test\\resources\\patient-example.xml"));
       r.test();
       System.out.println("Completed OK");
     } catch (Exception e) {

@@ -813,7 +813,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         genElementObligations(gen, element, columns, row, corePath, profile);
         break;
       case SUMMARY:
-        genElementCells(gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName, nc, mustSupport, true, rc);
+        genElementCells(gen, element, profileBaseFileName, snapshot, corePath, imagePath, root, logicalModel, allInvariants, profile, typesRow, row, hasDef, ext, used, ref, sName, nc, mustSupport, true, rc, children.size() > 0);
         break;
       }
       if (element.hasSlicing()) {
@@ -1026,7 +1026,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
   public List<Cell> genElementCells(HierarchicalTableGenerator gen, ElementDefinition element, String profileBaseFileName, boolean snapshot, String corePath,
       String imagePath, boolean root, boolean logicalModel, boolean allInvariants, StructureDefinition profile, Row typesRow, Row row, boolean hasDef,
-      boolean ext, UnusedTracker used, String ref, String sName, Cell nameCell, boolean mustSupport, boolean allowSubRows, RenderingContext rc) throws IOException {
+      boolean ext, UnusedTracker used, String ref, String sName, Cell nameCell, boolean mustSupport, boolean allowSubRows, RenderingContext rc, boolean walksIntoThis) throws IOException {
     List<Cell> res = new ArrayList<>();
     Cell gc = gen.new Cell();
     row.getCells().add(gc);
@@ -1076,7 +1076,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             // left.getPieces().get(0).setReference((String) extDefn.getExtensionStructure().getTag("filename"));
             nameCell.getPieces().get(0).setHint((/*!#*/"Extension URL")+" = "+extDefn.getUrl());
             res.add(genCardinality(gen, element, row, hasDef, used, extDefn.getElement()));
-            ElementDefinition valueDefn = extDefn.getExtensionValueDefinition();
+            ElementDefinition valueDefn = walksIntoThis ? null : extDefn.getExtensionValueDefinition();
             if (valueDefn != null && !"0".equals(valueDefn.getMax()))
               res.add(genTypes(gen, row, valueDefn, profileBaseFileName, profile, corePath, imagePath, root, mustSupport));
             else // if it's complex, we just call it nothing

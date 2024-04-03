@@ -141,6 +141,7 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -2971,7 +2972,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         try {
           if (sd.getSnapshot().isEmpty()) { 
             new ContextUtilities(this).generateSnapshot(sd);
-            //          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
+            //          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
           }
         } catch (Exception e) {
           System.out.println("Unable to generate snapshot @1 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
@@ -3147,8 +3148,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private Connection connectToOidSource(String folder) {
     try {
-      File ff = new File(folder);
-      File of = new File(Utilities.path(ff.getAbsolutePath(), ".oid-map.db"));
+      File ff = ManagedFileAccess.file(folder);
+      File of = ManagedFileAccess.file(Utilities.path(ff.getAbsolutePath(), ".oid-map.db"));
       if (!of.exists()) {
         OidIndexBuilder oidBuilder = new OidIndexBuilder(ff, of);
         oidBuilder.build();
