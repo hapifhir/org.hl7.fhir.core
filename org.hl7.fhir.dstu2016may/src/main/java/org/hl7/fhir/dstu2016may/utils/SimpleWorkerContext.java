@@ -71,9 +71,10 @@ import org.hl7.fhir.dstu2016may.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.OIDUtils;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.CSFileInputStream;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
@@ -425,7 +426,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   public void loadFromFolder(String folder) throws FileNotFoundException, Exception {
-    for (String n : new File(folder).list()) {
+    for (String n : ManagedFileAccess.file(folder).list()) {
       if (n.endsWith(".json"))
         loadFromFile(Utilities.path(folder, n), new JsonParser());
       else if (n.endsWith(".xml"))
@@ -436,11 +437,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private void loadFromFile(String filename, IParser p) throws FileNotFoundException, Exception {
     Resource r;
     try {
-      r = p.parse(new FileInputStream(filename));
+      r = p.parse(ManagedFileAccess.inStream(filename));
       if (r.getResourceType() == ResourceType.Bundle) {
         for (BundleEntryComponent e : ((Bundle) r).getEntry()) {
           seeResource(null, e.getResource());
-        }
+        } 
       } else {
         seeResource(null, r);
       }

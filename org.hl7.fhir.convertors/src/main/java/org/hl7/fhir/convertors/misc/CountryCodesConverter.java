@@ -45,6 +45,7 @@ import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -123,10 +124,10 @@ public class CountryCodesConverter {
     cs1.setCount(cs1.getConcept().size());
     cs2.setCount(cs2.getConcept().size());
     throw new Error("Needs revisiting");
-//    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "4.0.1", "package", "CodeSstem-iso3166.json")), cs1);
-//    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "3.0.2", "package", "CodeSstem-iso3166.json")), cs1); // format hasn't changed
-//    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "4.0.1", "package", "CodeSstem-iso3166-2.json")), cs2);
-//    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "3.0.2", "package", "CodeSstem-iso3166-2.json")), cs2); // format hasn't changed
+//    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "4.0.1", "package", "CodeSstem-iso3166.json")), cs1);
+//    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "3.0.2", "package", "CodeSstem-iso3166.json")), cs1); // format hasn't changed
+//    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "4.0.1", "package", "CodeSstem-iso3166-2.json")), cs2);
+//    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "3.0.2", "package", "CodeSstem-iso3166-2.json")), cs2); // format hasn't changed
   }
 
   public void setMetadata(Document src, CodeSystem cs, String id, String url, String partName, String partTitle) {
@@ -360,7 +361,7 @@ public class CountryCodesConverter {
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
 
-    return builder.parse(new FileInputStream(source));
+    return builder.parse(ManagedFileAccess.inStream(source));
   }
 
 

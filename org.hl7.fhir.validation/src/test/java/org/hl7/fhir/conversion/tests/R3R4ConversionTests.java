@@ -46,6 +46,7 @@ import org.hl7.fhir.r4.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -68,14 +69,14 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
   private FilesystemPackageCacheManager pcm = null;
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {
-    if (!(new File(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "outcomes.json")).exists()))
+    if (!(ManagedFileAccess.file(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "outcomes.json")).exists()))
       throw new Error("You must set the default directory to the build directory when you execute these tests");
     r3r4Outcomes = (JsonObject) new com.google.gson.JsonParser().parse(
       TextFile.fileToString(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "outcomes.json")));
     rules = new IniFile(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "test-rules.ini"));
 
     String srcFile = Utilities.path(TestingUtilities.home(), "source", "release3", "examples.zip");
-    ZipInputStream stream = new ZipInputStream(new FileInputStream(srcFile));
+    ZipInputStream stream = new ZipInputStream(ManagedFileAccess.inStream(srcFile));
 
     filter = System.getProperty("resource");
     if (filter != null)
@@ -148,7 +149,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
       }
 
       String mapFile = Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "R3toR4", r3.fhirType() + ".map");
-      if (new File(mapFile).exists()) {
+      if (ManagedFileAccess.file(mapFile).exists()) {
         StructureMap sm = smu4.parse(TextFile.fileToString(mapFile), mapFile);
 
         tn = smu4.getTargetType(sm).getType();
@@ -359,7 +360,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
 
   private void loadLib(String dir) throws FileNotFoundException, IOException {
     StructureMapUtilities smu = new StructureMapUtilities(contextR4);
-    for (String s : new File(dir).list()) {
+    for (String s : ManagedFileAccess.file(dir).list()) {
       String map = TextFile.fileToString(Utilities.path(dir, s));
       try {
         StructureMap sm = smu.parse(map, s);

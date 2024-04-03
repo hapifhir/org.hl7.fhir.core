@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+
 public class TxCacheResourceExtractor {
   public static void extractTxCacheResources(String targetDirectory) throws IOException {
     Path targetPath = Paths.get(targetDirectory);
@@ -47,7 +49,7 @@ public class TxCacheResourceExtractor {
 
     makeFileParentDirsIfNotExist(fileTargetPath);
 
-    FileOutputStream fileOutputStream = new FileOutputStream(fileTargetPath.toFile());
+    FileOutputStream fileOutputStream = ManagedFileAccess.outStream(fileTargetPath.toFile());
     for (int c = zip.read(); c != -1; c = zip.read()) {
       fileOutputStream.write(c);
     }

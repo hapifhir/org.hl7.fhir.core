@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -65,9 +66,9 @@ public class GeneratedPEModelTest {
     Assertions.assertEquals(0, tp.getComplex().getExtensions().size());
     
     Observation tgt = tp.build(ctxt);
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "pe-instance-gen.xml")), tgt);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "pe-instance-gen.xml")), tgt);
     
-    String msg = CompareUtilities.checkXMLIsSame("PEGEN", TestingUtilities.loadTestResourceStream("r5", "profiles", "pe-instance.xml"), new FileInputStream(Utilities.path("[tmp]", "pe-instance-gen.xml")));
+    String msg = CompareUtilities.checkXMLIsSame("PEGEN", TestingUtilities.loadTestResourceStream("r5", "profiles", "pe-instance.xml"), ManagedFileAccess.inStream(Utilities.path("[tmp]", "pe-instance-gen.xml")));
     Assertions.assertNull(msg, msg);
   }
 

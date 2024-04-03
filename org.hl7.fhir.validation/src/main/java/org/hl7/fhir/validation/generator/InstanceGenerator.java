@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
@@ -25,7 +26,7 @@ public class InstanceGenerator {
     var gen = new InstanceGenerator(context);
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, args[0]);
     FhirFormat fmt = FhirFormat.valueOf(args[1].toUpperCase());
-    FileOutputStream f = new FileOutputStream(args[2]);
+    FileOutputStream f = ManagedFileAccess.outStream(args[2]);
     List<String> messages = gen.generateInstance(sd, fmt, f);
     if (messages.isEmpty()) {
       System.out.println("Generated OK");

@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class POGenerator {
 
@@ -23,7 +24,7 @@ public class POGenerator {
   }
 
   private void execute(String lang, int count, String dest, String source, String current, String altVersion) throws IOException {
-    File dst = new File(dest);
+    File dst = ManagedFileAccess.file(dest);
     if (dst.exists()) {
       dst.delete();
     }
@@ -116,7 +117,7 @@ public class POGenerator {
       return null;
     }
     Map<String, String> res = new HashMap<>();
-    File src = new File(source);
+    File src = ManagedFileAccess.file(source);
     List<String> lines = Files.readAllLines(src.toPath());
     for (String line : lines) {
       if (!line.startsWith("#") && line.contains("=")) {

@@ -19,6 +19,7 @@ import org.hl7.fhir.dstu3.model.DomainResource;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class R3TEchnicalCorrectionProcessor {
 
@@ -31,10 +32,10 @@ public class R3TEchnicalCorrectionProcessor {
     System.out.println("Loading resources from "+src);
     List<Resource> resources = new ArrayList<>();
     Map<String, Resource> definitions = new HashMap<>();
-    for (File f : new File(src).listFiles()) {
+    for (File f : ManagedFileAccess.file(src).listFiles()) {
       if (f.getName().endsWith(".xml") && !(f.getName().endsWith("warnings.xml") || f.getName().endsWith(".diff.xml"))) {
         try {
-          Resource r = new XmlParser().parse(new FileInputStream(f));
+          Resource r = new XmlParser().parse(ManagedFileAccess.inStream(f));
           if (f.getName().contains("canonical")) {
             resources.add(r);
           }
@@ -43,17 +44,17 @@ public class R3TEchnicalCorrectionProcessor {
             definitions.put(f.getName(), r);
           }
           r.setUserData("path", f.getName().substring(0, f.getName().indexOf(".")));
-//          FileUtils.copyFile(f, new File(f.getAbsolutePath()+"1"));
-//          FileUtils.copyFile(f, new File(f.getAbsolutePath()+"2"));
+//          FileUtils.copyFile(f, ManagedFileAccess.file(f.getAbsolutePath()+"1"));
+//          FileUtils.copyFile(f, ManagedFileAccess.file(f.getAbsolutePath()+"2"));
         } catch (Exception e) {
           System.out.println("Unable to load "+f.getName()+": "+e.getMessage());
         }
       }
       if (f.getName().endsWith(".json") && !(f.getName().endsWith("schema.json") || f.getName().endsWith(".diff.json"))) {
         try {
-//          new JsonParser().parse(new FileInputStream(f));
-//          FileUtils.copyFile(f, new File(f.getAbsolutePath()+"1"));
-//          FileUtils.copyFile(f, new File(f.getAbsolutePath()+"2"));
+//          new JsonParser().parse(ManagedFileAccess.inStream(f));
+//          FileUtils.copyFile(f, ManagedFileAccess.file(f.getAbsolutePath()+"1"));
+//          FileUtils.copyFile(f, ManagedFileAccess.file(f.getAbsolutePath()+"2"));
         } catch (Exception e) {
           System.out.println("Unable to load "+f.getName()+": "+e.getMessage());
         }
@@ -79,15 +80,15 @@ public class R3TEchnicalCorrectionProcessor {
 
   private void produceDefinitionsXml(Map<String, Resource> definitions, String dest) throws IOException {
     for (String n : definitions.keySet()) {
-      File f = new File(Utilities.path(dest, "definitions.xml", n));
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f), definitions.get(n));     
+      File f = ManagedFileAccess.file(Utilities.path(dest, "definitions.xml", n));
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), definitions.get(n));     
     }
   }
 
   private void produceDefinitionsJson(Map<String, Resource> definitions, String dest) throws IOException {
     for (String n : definitions.keySet()) {
-      File f = new File(Utilities.path(dest, "definitions.json", Utilities.changeFileExt(n, ".json")));
-      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f), definitions.get(n));     
+      File f = ManagedFileAccess.file(Utilities.path(dest, "definitions.json", Utilities.changeFileExt(n, ".json")));
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), definitions.get(n));     
     }
   }
 
@@ -97,8 +98,8 @@ public class R3TEchnicalCorrectionProcessor {
       if (!r.getId().equals(r.getUserString("path"))) {
         n = n+"("+r.getId()+")";
       }
-      File f = new File(Utilities.path(dest, "examples-json", n+".json"));
-      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f), r);
+      File f = ManagedFileAccess.file(Utilities.path(dest, "examples-json", n+".json"));
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
     }
     
   }
@@ -109,8 +110,8 @@ public class R3TEchnicalCorrectionProcessor {
       if (!r.getId().equals(r.getUserString("path"))) {
         n = n+"("+r.getId()+")";
       }
-      File f = new File(Utilities.path(dest, "examples", n+".xml"));
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f), r);
+      File f = ManagedFileAccess.file(Utilities.path(dest, "examples", n+".xml"));
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
     }
   }
 
@@ -119,9 +120,9 @@ public class R3TEchnicalCorrectionProcessor {
     String corePath = Utilities.path(root, "hl7.fhir.r3.core", "package");
     String examplesPath = Utilities.path(root, "hl7.fhir.r3.examples", "package");
     String elementsPath = Utilities.path(root, "hl7.fhir.r3.elements", "package");
-    int coreTotal = new File(corePath).list().length-1;
-    int examplesTotal = new File(examplesPath).list().length-1;
-    int elementsTotal = new File(elementsPath).list().length-1;
+    int coreTotal = ManagedFileAccess.file(corePath).list().length-1;
+    int examplesTotal = ManagedFileAccess.file(examplesPath).list().length-1;
+    int elementsTotal = ManagedFileAccess.file(elementsPath).list().length-1;
         
     int coreCount = 0;
     int examplesCount = 0;
@@ -131,17 +132,17 @@ public class R3TEchnicalCorrectionProcessor {
       FileOutputStream dst = null;
         if (n.startsWith("DataElement-")) {
           elementsCount++;
-          dst = new FileOutputStream(Utilities.path(elementsPath, n));
+          dst = ManagedFileAccess.outStream(Utilities.path(elementsPath, n));
           new JsonParser().setOutputStyle(OutputStyle.NORMAL).compose(dst, r);
         } else {
-          dst = new FileOutputStream(Utilities.path(examplesPath, n));
+          dst = ManagedFileAccess.outStream(Utilities.path(examplesPath, n));
           new JsonParser().setOutputStyle(OutputStyle.NORMAL).compose(dst, r);
           examplesCount++;
           if (isCoreResource(r.fhirType())) {
             coreCount++;
             DomainResource dr = (DomainResource) r;
             dr.setText(null);
-            new JsonParser().setOutputStyle(OutputStyle.NORMAL).compose(new FileOutputStream(Utilities.path(corePath, n)), r);
+            new JsonParser().setOutputStyle(OutputStyle.NORMAL).compose(ManagedFileAccess.outStream(Utilities.path(corePath, n)), r);
           }
         }
     }

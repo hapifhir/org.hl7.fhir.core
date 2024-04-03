@@ -44,6 +44,7 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -137,7 +138,7 @@ public class TerminologyServiceTests {
     String resp = TestingUtilities.loadTestResource("tx", fn);
     String fp = Utilities.path("[tmp]", "tx", fn);
     JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
-    File fo = new File(fp);
+    File fo = ManagedFileAccess.file(fp);
     if (fo.exists()) {
       fo.delete();
     }

@@ -1,10 +1,12 @@
 package org.hl7.fhir.validation.cli.tasks;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
@@ -55,11 +57,11 @@ public class CompareTask extends ValidationEngineTask {
     ComparisonService.doLeftRightComparison(args, Params.getParam(args, Params.DESTINATION), validator);
   }
 
-  private boolean destinationDirectoryValid(String dest) {
+  private boolean destinationDirectoryValid(String dest) throws IOException {
     if (dest == null) {
       System.out.println("no -dest parameter provided");
       return false;
-    } else if (!new File(dest).isDirectory()) {
+    } else if (!ManagedFileAccess.file(dest).isDirectory()) {
       System.out.println("Specified destination (-dest parameter) is not valid: \"" + dest + "\")");
       return false;
     } else {

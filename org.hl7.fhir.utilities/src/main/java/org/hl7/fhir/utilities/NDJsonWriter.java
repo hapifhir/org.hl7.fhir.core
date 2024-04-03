@@ -45,6 +45,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -72,11 +75,11 @@ public class NDJsonWriter {
   }
 
   public void addFilesFiltered(String actualDir, String ext, String[] noExt) throws IOException {
-    File f = new CSFile(actualDir);
+    File f = ManagedFileAccess.csfile(actualDir);
 
     String files[] = f.list();
     for (int i = 0; i < files.length; i++) {
-      if ( new CSFile(actualDir + files[i]).isFile() && ((ext == null || files[i].endsWith(ext)))) {
+      if ( ManagedFileAccess.csfile(actualDir + files[i]).isFile() && ((ext == null || files[i].endsWith(ext)))) {
         boolean ok = true;
         for (String n : noExt) {
           ok = ok && !files[i].endsWith(n);
@@ -125,7 +128,7 @@ public class NDJsonWriter {
         ResourceInfo ri = new ResourceInfo();
         outputs.put(rn, ri);
         ri.ids.add(id);
-        ri.stream = new FileOutputStream(Utilities.path(scratch, rn+".ndjson"));
+        ri.stream = ManagedFileAccess.outStream(Utilities.path(scratch, rn+".ndjson"));
         ri.writer = new OutputStreamWriter(ri.stream, "UTF-8");
         ri.writer.append(json);      
       }
@@ -140,7 +143,7 @@ public class NDJsonWriter {
       ri.writer.close();
       ri.stream.close();
       
-      zip.addStream(rn+".ndjson", new FileInputStream(Utilities.path(scratch, rn+".ndjson")), false);
+      zip.addStream(rn+".ndjson", ManagedFileAccess.inStream(Utilities.path(scratch, rn+".ndjson")), false);
     }
     zip.close();
   }

@@ -30,6 +30,7 @@ import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r4.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
@@ -47,7 +48,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
   }
 
   private void process(String source, String dest, String apiKey, boolean onlyNew) throws FHIRException, IOException, URISyntaxException {
-    CSVReader csv = new CSVReader(new FileInputStream(source));
+    CSVReader csv = new CSVReader(ManagedFileAccess.inStream(source));
     csv.readHeaders();
     Map<String, String> errs = new HashMap<>();
 
@@ -59,13 +60,13 @@ public class VSACImporter extends OIDBasedValueSetImporter {
 
     CapabilityStatement cs = fhirToolingClient.getCapabilitiesStatement();
     JsonParser json = new JsonParser();
-    json.setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "vsac-capability-statmenet.json")), cs);
+    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "vsac-capability-statmenet.json")), cs);
 
     System.out.println("Loading");
     List<String> oids = new ArrayList<>();
     while (csv.line()) {
       String oid = csv.cell("OID");
-      if (!onlyNew || !(new File(Utilities.path(dest, "ValueSet-" + oid + ".json")).exists())) {
+      if (!onlyNew || !(ManagedFileAccess.file(Utilities.path(dest, "ValueSet-" + oid + ".json")).exists())) {
         oids.add(oid);
       }
     }
@@ -99,7 +100,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     for (String oid : errs.keySet()) {
       oo.addIssue().setSeverity(IssueSeverity.ERROR).setCode(IssueType.EXCEPTION).setDiagnostics(errs.get(oid)).addLocation(oid);
     }
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "other", "OperationOutcome-vsac-errors.json")), oo);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "other", "OperationOutcome-vsac-errors.json")), oo);
     System.out.println("Done. " + i + " ValueSets in "+Utilities.describeDuration(System.currentTimeMillis() - tt));
   }
 
@@ -164,7 +165,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
       }
       vs.setName(makeValidName(vs.getName()));
       JurisdictionUtilities.setJurisdictionCountry(vs.getJurisdiction(), "US");
-      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
     
     return true;
   }

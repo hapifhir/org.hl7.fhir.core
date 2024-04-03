@@ -88,6 +88,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -801,7 +802,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public void convert(String source, String output) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false, true);
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
-    Manager.compose(context, e, new FileOutputStream(output), (output.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML), OutputStyle.PRETTY, null);
+    Manager.compose(context, e, ManagedFileAccess.outStream(output), (output.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML), OutputStyle.PRETTY, null);
   }
 
   public String evaluateFhirPath(String source, String expression) throws FHIRException, IOException {
@@ -915,7 +916,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       HTTPResult res = http.post(output, "application/fhir+xml", bs.toByteArray(), "application/fhir+xml");
       res.checkThrowException();
     } else {
-      FileOutputStream s = new FileOutputStream(output);
+      FileOutputStream s = ManagedFileAccess.outStream(output);
       handleOutputToStream(r, output, s, version);
     }
   }

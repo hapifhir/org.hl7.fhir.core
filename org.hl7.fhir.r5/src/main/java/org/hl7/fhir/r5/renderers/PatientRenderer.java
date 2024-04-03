@@ -37,6 +37,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class PatientRenderer extends ResourceRenderer {
@@ -777,7 +778,7 @@ public class PatientRenderer extends ResourceRenderer {
             td.img("data:"+att.getContentType()+";base64,"+att.getDataElement().asStringValue(), "patient photo");
           } else {
             String n = UUID.randomUUID().toString().toLowerCase()+ext;
-            TextFile.bytesToFile(att.getData(), new File(Utilities.path(context.getDestDir(), n)));
+            TextFile.bytesToFile(att.getData(), ManagedFileAccess.file(Utilities.path(context.getDestDir(), n)));
             context.registerFile(n);
             td.img(n, context.formatMessage(RenderingContext.PAT_PHOTO));            
           }
