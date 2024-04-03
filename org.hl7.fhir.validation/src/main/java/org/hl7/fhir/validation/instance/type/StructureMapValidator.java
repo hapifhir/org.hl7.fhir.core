@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.instance.type;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +31,7 @@ import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.structuremap.ResolvedGroup;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
+import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -38,6 +40,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
+import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
 public class StructureMapValidator extends BaseValidator {
 
@@ -198,6 +201,20 @@ public class StructureMapValidator extends BaseValidator {
       return summary();
     }
 
+    public String getVersion() {
+      return VersionUtilities.getNameForVersion(sd.getFhirVersion().toCode());
+    }
+
+    public String sdSummary() {
+      if (sd == null) {
+        return "null";
+      } else if (!sd.hasUrl()) {
+        return "??";
+      } else {
+        return sd.getVersionedUrl();        
+      }
+    }
+
   }
 
   public class VariableSet {
@@ -313,7 +330,7 @@ public class StructureMapValidator extends BaseValidator {
 
   }
 
-  public boolean validateStructureMap(List<ValidationMessage> errors, Element src, NodeStack stack)  {
+  public boolean validateStructureMap(ValidationContext valContext, List<ValidationMessage> errors, Element src, NodeStack stack)  {
     boolean ok = true;
     List<Element> imports = src.getChildrenByName("import");
     int cc = 0;
@@ -334,7 +351,7 @@ public class StructureMapValidator extends BaseValidator {
           if (hasInputTypes(group) || group.hasUserData("structuremap.parameters")) {
             group.setUserData("structuremap.validated", true);
             fired = true;
-            ok = validateGroup(errors, src, group, stack.push(group, cc, null, null), grpNames) && ok;
+            ok = validateGroup(valContext, errors, src, group, stack.push(group, cc, null, null), grpNames) && ok;
           }
         }
         cc++;
@@ -345,7 +362,7 @@ public class StructureMapValidator extends BaseValidator {
     for (Element group : groups) {
       if (!group.hasUserData("structuremap.validated")) {
         hint(errors, "2023-03-01", IssueType.INFORMATIONAL, group.line(), group.col(), stack.push(group, cc, null, null).getLiteralPath(), ok, I18nConstants.SM_ORPHAN_GROUP, group.getChildValue("name"));
-        ok = validateGroup(errors, src, group, stack.push(group, cc, null, null), grpNames) && ok;
+        ok = validateGroup(valContext, errors, src, group, stack.push(group, cc, null, null), grpNames) && ok;
       }
       cc++;
     }            
@@ -378,7 +395,7 @@ public class StructureMapValidator extends BaseValidator {
     return true;
   }
 
-  private boolean validateGroup(List<ValidationMessage> errors, Element src, Element group, NodeStack stack, List<String> grpNames) {
+  private boolean validateGroup(ValidationContext valContext, List<ValidationMessage> errors, Element src, Element group, NodeStack stack, List<String> grpNames) {
     String name = group.getChildValue("name");
     boolean ok = rule(errors, "2023-03-01", IssueType.INVALID, group.line(), group.col(), stack.getLiteralPath(), idIsValid(name), I18nConstants.SM_NAME_INVALID, name);
     if (!rule(errors, "2023-03-01", IssueType.INVALID, group.line(), group.col(), stack.getLiteralPath(), !grpNames.contains(name), I18nConstants.SM_GROUP_NAME_DUPLICATE, name)) {
@@ -403,7 +420,7 @@ public class StructureMapValidator extends BaseValidator {
     List<Element> structures = src.getChildrenByName("structure");
     int cc = 0;
     for (Element input : inputs) {
-      ok = validateInput(errors, src, group, input, stack.push(input, cc, null, null), structures, variables, pvars) && ok;
+      ok = validateInput(valContext, errors, src, group, input, stack.push(input, cc, null, null), structures, variables, pvars) && ok;
       cc++;
     }      
     
@@ -457,7 +474,7 @@ public class StructureMapValidator extends BaseValidator {
     return grp;
   }
 
-  private boolean validateInput(List<ValidationMessage> errors, Element src, Element group, Element input, NodeStack stack, List<Element> structures, VariableSet variables, VariableSet pvars) {
+  private boolean validateInput(ValidationContext valContext, List<ValidationMessage> errors, Element src, Element group, Element input, NodeStack stack, List<Element> structures, VariableSet variables, VariableSet pvars) {
     boolean ok = false;
     String gname = group.getChildValue("name"); 
     String name = input.getChildValue("name"); 
@@ -493,8 +510,15 @@ public class StructureMapValidator extends BaseValidator {
             smode = structure.getChildValue("mode");
             String url = structure.getChildValue("url");
             sd = context.fetchResource(StructureDefinition.class, url);
+            if (sd == null) {
+              try {
+                sd = (StructureDefinition) fetcher.fetchCanonicalResource((IResourceValidator) parent, valContext.getAppContext(), url);
+              } catch (Exception e) {
+                // nothing?
+              }
+            }
             if (sd == null) {              
-              rule(errors, "2023-03-01", IssueType.INVALID, input.line(), input.col(), stack.getLiteralPath(), sd != null, I18nConstants.SM_GROUP_INPUT_TYPE_UNKNOWN_STRUCTURE, type, url);
+              warning(errors, "2023-03-01", IssueType.INVALID, input.line(), input.col(), stack.getLiteralPath(), sd != null, I18nConstants.SM_GROUP_INPUT_TYPE_UNKNOWN_STRUCTURE, type, url);
             }
           } else if (type != null) {
             sd = context.fetchTypeDefinition(type);
@@ -895,7 +919,7 @@ public class StructureMapValidator extends BaseValidator {
     if (srcED != null) {
       if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, srcED.getBinding().hasValueSet() && srcED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_SOURCE)) {
         srcVS = context.findTxResource(ValueSet.class, srcED.getBinding().getValueSet());
-        if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, srcVS != null, I18nConstants.SM_TARGET_TRANSLATE_BINDING_VS_SOURCE)) {
+        if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, srcVS != null, I18nConstants.SM_TARGET_TRANSLATE_BINDING_VS_SOURCE, srcED.getBinding().getValueSet())) {
           ValueSetExpansionOutcome vse = context.expandVS(srcVS, true, false);
           if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vse.isOk(), I18nConstants.SM_TARGET_TRANSLATE_BINDING_VSE_SOURCE, vse.getError())) {
             CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
@@ -914,7 +938,7 @@ public class StructureMapValidator extends BaseValidator {
     if (srcED != null) {
       if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, tgtED.getBinding().hasValueSet() && tgtED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_TARGET)) {
         ValueSet vs = context.findTxResource(ValueSet.class, tgtED.getBinding().getValueSet());
-        if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vs != null, I18nConstants.SM_TARGET_TRANSLATE_BINDING_VS_TARGET)) {
+        if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vs != null, I18nConstants.SM_TARGET_TRANSLATE_BINDING_VS_TARGET, tgtED.getBinding().getValueSet())) {
           ValueSetExpansionOutcome vse = context.expandVS(vs, true, false);
           if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vse.isOk(), I18nConstants.SM_TARGET_TRANSLATE_BINDING_VSE_TARGET, vse.getError())) {
             List<String> systems = new ArrayList<>();
@@ -1066,6 +1090,9 @@ public class StructureMapValidator extends BaseValidator {
             } else {
               ElementDefinition t2 = sdt.getSnapshot().getElementByPath(path);
               if (t2 == null) {
+                t2 = sdt.getSnapshot().getElementById(path);
+              }
+              if (t2 == null) {
                 throw new Error("Unable to resolve "+path+" in "+url);
               } else {
                 result.add(new ElementDefinitionSource(sdt, t2));
@@ -1128,8 +1155,9 @@ public class StructureMapValidator extends BaseValidator {
         String tgtType = tgtVar.getWorkingType();
         if (rule(errors, "2023-03-01", IssueType.NOTFOUND, dependent.line(), dependent.col(), stack.getLiteralPath(), srcType != null, I18nConstants.SM_SOURCE_TYPE_NOT_FOUND) &&
             rule(errors, "2023-03-01", IssueType.NOTFOUND, dependent.line(), dependent.col(), stack.getLiteralPath(), tgtType != null, I18nConstants.SM_TARGET_TYPE_NOT_FOUND)) {
-          StructureMapGroupComponent grp = findDefaultGroup(src, srcType, tgtType);
-          ok = rule(errors, "2023-03-01", IssueType.NOTFOUND, dependent.line(), dependent.col(), stack.getLiteralPath(), grp != null, I18nConstants.SM_MATCHING_RULEGROUP_NOT_FOUND, srcType, tgtType) && ok;
+          StructureMapGroupComponent grp = findDefaultGroup(src, srcType, srcVar.sd.getUrl(), tgtType, tgtVar.sd.getUrl());
+          ok = rule(errors, "2023-03-01", IssueType.NOTFOUND, dependent.line(), dependent.col(), stack.getLiteralPath(), grp != null, I18nConstants.SM_MATCHING_RULEGROUP_NOT_FOUND, 
+                  srcType+" ("+srcVar.sdSummary()+")", tgtType+" ("+tgtVar.sdSummary()+")") && ok;
         } else {
           ok = false;
         }      
@@ -1213,7 +1241,7 @@ public class StructureMapValidator extends BaseValidator {
     return type;
   }
   
-  private StructureMapGroupComponent findDefaultGroup(Element src, String srcType, String tgtType) {    
+  private StructureMapGroupComponent findDefaultGroup(Element src, String srcType, String srcUrl, String tgtType, String tgtUrl) {    
     List<Element> groups = src.getChildrenByName("group");
     for (Element group : groups) {
       if (Utilities.existsInList(group.getChildValue("typeMode"), "types", "type-and-types")) {
@@ -1221,7 +1249,7 @@ public class StructureMapValidator extends BaseValidator {
         if (inputs.size() == 2 && "source".equals(inputs.get(0).getChildValue("mode")) && "source".equals(inputs.get(0).getChildValue("mode"))) {
           String srcT = resolveInputType(src, inputs.get(0));
           String tgtT = resolveInputType(src, inputs.get(1));
-          if (sameTypes(srcT, srcType) && sameTypes(tgtT, tgtType)) {
+          if (sameTypes(srcT, srcType) && sameTypes(tgtT, tgtType) || sameTypes(srcT, srcUrl) && sameTypes(tgtT, tgtUrl)) {
             return makeGroupComponent(group);
           }
         }
@@ -1233,7 +1261,7 @@ public class StructureMapValidator extends BaseValidator {
             grp.getInput().size() == 2 && grp.getInput().get(0).getMode() == StructureMapInputMode.SOURCE && grp.getInput().get(1).getMode() == StructureMapInputMode.TARGET) {
           String srcT = resolveInputType(map, grp.getInput().get(0));
           String tgtT = resolveInputType(map, grp.getInput().get(1));
-          if (sameTypes(srcT, srcType) && sameTypes(tgtT, tgtType)) {
+          if (sameTypes(srcT, srcType) && sameTypes(tgtT, tgtType) || sameTypes(srcT, srcUrl) && sameTypes(tgtT, tgtUrl)) {
             return grp;
           }
         }
