@@ -35,6 +35,7 @@ import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -186,7 +187,7 @@ public class TxTester {
         String fn = chooseParam(test, "response", modes);
         String resp = TextFile.bytesToString(loader.loadContent(fn));
         String fp = Utilities.path("[tmp]", serverId(), fn);
-        File fo = new File(fp);
+        File fo = ManagedFileAccess.file(fp);
         if (fo.exists()) {
           fo.delete();
         }
@@ -406,7 +407,7 @@ public class TxTester {
 
     @Override
     public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
-      return new org.hl7.fhir.r5.formats.JsonParser().parse(new FileInputStream(Utilities.path(folder, filename)));
+      return new org.hl7.fhir.r5.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, filename)));
     }
 
     @Override

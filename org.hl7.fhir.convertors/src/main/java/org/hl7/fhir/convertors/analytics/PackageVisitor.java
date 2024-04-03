@@ -18,6 +18,7 @@ import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -230,14 +231,14 @@ public class PackageVisitor {
         String[] p = url.split("\\/");
         String repo = "https://build.fhir.org/ig/"+p[0]+"/"+p[1];
         JsonObject manifest = JsonParser.parseObjectFromUrl(repo+"/package.manifest.json");
-        File co = new File(Utilities.path(cache, pid+"."+manifest.asString("date")+".tgz"));
+        File co = ManagedFileAccess.file(Utilities.path(cache, pid+"."+manifest.asString("date")+".tgz"));
         if (!co.exists()) {
           SimpleHTTPClient fetcher = new SimpleHTTPClient();
           HTTPResult res = fetcher.get(repo+"/package.tgz?nocache=" + System.currentTimeMillis());
           res.checkThrowException();
           TextFile.bytesToFile(res.getContent(), co);
         }
-        NpmPackage npm = NpmPackage.fromPackage(new FileInputStream(co));          
+        NpmPackage npm = NpmPackage.fromPackage(ManagedFileAccess.inStream(co));          
         String fv = npm.fhirVersion();
         long ms2 = System.currentTimeMillis();
 

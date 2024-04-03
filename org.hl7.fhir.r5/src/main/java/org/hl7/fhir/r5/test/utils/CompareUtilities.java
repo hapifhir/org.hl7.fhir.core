@@ -4,6 +4,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
@@ -81,7 +83,7 @@ public class CompareUtilities extends BaseTestingUtilities {
     String result = self.compareXml(id, expected, actual);
     if (result != null && SHOW_DIFF) {
       String diff = getDiffTool();
-      if (diff != null && new File(diff).exists() || Utilities.isToken(diff)) {
+      if (diff != null && ManagedFileAccess.file(diff).exists() || Utilities.isToken(diff)) {
         Runtime.getRuntime().exec(new String[]{diff, expected, actual});
       }
     }
@@ -198,7 +200,7 @@ public class CompareUtilities extends BaseTestingUtilities {
   }
 
   private Document loadXml(String fn) throws Exception {
-    return loadXml(new FileInputStream(fn));
+    return loadXml(ManagedFileAccess.inStream(fn));
   }
 
   private Document loadXml(InputStream fn) throws Exception {
@@ -248,7 +250,7 @@ public class CompareUtilities extends BaseTestingUtilities {
       command.add(actual);
 
       ProcessBuilder builder = new ProcessBuilder(command);
-      builder.directory(new CSFile(Utilities.path("[tmp]")));
+      builder.directory(ManagedFileAccess.csfile(Utilities.path("[tmp]")));
       builder.start();
 
     }
@@ -264,7 +266,7 @@ public class CompareUtilities extends BaseTestingUtilities {
       command.add("\"" + diff + "\" \"" + expected +  "\" \"" + actual + "\"");
 
       ProcessBuilder builder = new ProcessBuilder(command);
-      builder.directory(new CSFile(Utilities.path("[tmp]")));
+      builder.directory(ManagedFileAccess.csfile(Utilities.path("[tmp]")));
       builder.start();
 
     }
@@ -512,7 +514,7 @@ public class CompareUtilities extends BaseTestingUtilities {
       command.add(actual);
 
       ProcessBuilder builder = new ProcessBuilder(command);
-      builder.directory(new CSFile(Utilities.path("[tmp]")));
+      builder.directory(ManagedFileAccess.csfile(Utilities.path("[tmp]")));
       builder.start();
 
     }

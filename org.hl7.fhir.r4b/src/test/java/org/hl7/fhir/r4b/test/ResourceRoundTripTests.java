@@ -27,6 +27,7 @@ import org.hl7.fhir.r4b.renderers.utils.RenderingContext;
 import org.hl7.fhir.r4b.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 import org.hl7.fhir.r4b.utils.EOperationOutcome;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -40,9 +41,9 @@ public class ResourceRoundTripTests {
         ResourceRendererMode.END_USER);
     RendererFactory.factory(res, rc).render(res);
     IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"),
-        new FileOutputStream(TestingUtilities.tempFile("gen", "unicode.xml")));
+        ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "unicode.xml")));
     new XmlParser().setOutputStyle(OutputStyle.PRETTY)
-        .compose(new FileOutputStream(TestingUtilities.tempFile("gen", "unicode.out.xml")), res);
+        .compose(ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "unicode.out.xml")), res);
   }
 
   @Test

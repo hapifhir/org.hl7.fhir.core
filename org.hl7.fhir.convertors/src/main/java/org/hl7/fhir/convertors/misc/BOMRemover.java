@@ -9,11 +9,12 @@ import java.io.InputStreamReader;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class BOMRemover {
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new BOMRemover().execute(new File(args[0]));
+    new BOMRemover().execute(ManagedFileAccess.file(args[0]));
 
   }
 

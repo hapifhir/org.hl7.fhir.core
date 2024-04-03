@@ -49,6 +49,7 @@ import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class SearchParameterProcessor {
 
@@ -120,7 +121,7 @@ public class SearchParameterProcessor {
         e.addTarget().setCode(d).setRelationship(ConceptMapRelationship.RELATEDTO);
       }
     }
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(ROOT, "ConceptMap-" + map.getId() + ".json")), map);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(ROOT, "ConceptMap-" + map.getId() + ".json")), map);
   }
 
   private SourceElementComponent makeElement(String code, ConceptMapGroupComponent group) {
@@ -208,7 +209,7 @@ public class SearchParameterProcessor {
   }
 
   private void load4() throws FHIRFormatError, IOException {
-    org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.JsonParser().parse(new FileInputStream(Utilities.path("[tmp]", "sp4.json")));
+    org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path("[tmp]", "sp4.json")));
     for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       org.hl7.fhir.r4.model.SearchParameter sp = (org.hl7.fhir.r4.model.SearchParameter) be.getResource();
       for (org.hl7.fhir.r4.model.CodeType br : sp.getBase()) {
@@ -221,7 +222,7 @@ public class SearchParameterProcessor {
   }
 
   private void load3() throws FHIRFormatError, IOException {
-    org.hl7.fhir.dstu3.model.Bundle bundle = (org.hl7.fhir.dstu3.model.Bundle) new org.hl7.fhir.dstu3.formats.JsonParser().parse(new FileInputStream(Utilities.path("[tmp]", "sp3.json")));
+    org.hl7.fhir.dstu3.model.Bundle bundle = (org.hl7.fhir.dstu3.model.Bundle) new org.hl7.fhir.dstu3.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path("[tmp]", "sp3.json")));
     for (org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       org.hl7.fhir.dstu3.model.SearchParameter sp = (org.hl7.fhir.dstu3.model.SearchParameter) be.getResource();
       for (org.hl7.fhir.dstu3.model.CodeType br : sp.getBase()) {
@@ -234,7 +235,7 @@ public class SearchParameterProcessor {
   }
 
   private void load2() throws FHIRFormatError, IOException {
-    org.hl7.fhir.dstu2.model.Bundle bundle = (org.hl7.fhir.dstu2.model.Bundle) new org.hl7.fhir.dstu2.formats.JsonParser().parse(new FileInputStream(Utilities.path("[tmp]", "sp2.json")));
+    org.hl7.fhir.dstu2.model.Bundle bundle = (org.hl7.fhir.dstu2.model.Bundle) new org.hl7.fhir.dstu2.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path("[tmp]", "sp2.json")));
     for (org.hl7.fhir.dstu2.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       org.hl7.fhir.dstu2.model.SearchParameter sp = (org.hl7.fhir.dstu2.model.SearchParameter) be.getResource();
       String br = sp.getBase();
@@ -246,7 +247,7 @@ public class SearchParameterProcessor {
   }
 
   private void load2b() throws FHIRFormatError, IOException {
-    org.hl7.fhir.dstu2016may.model.Bundle bundle = (org.hl7.fhir.dstu2016may.model.Bundle) new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(new FileInputStream(Utilities.path("[tmp]", "sp2b.json")));
+    org.hl7.fhir.dstu2016may.model.Bundle bundle = (org.hl7.fhir.dstu2016may.model.Bundle) new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path("[tmp]", "sp2b.json")));
     for (org.hl7.fhir.dstu2016may.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       org.hl7.fhir.dstu2016may.model.SearchParameter sp = (org.hl7.fhir.dstu2016may.model.SearchParameter) be.getResource();
       String br = sp.getBase();
@@ -258,7 +259,7 @@ public class SearchParameterProcessor {
   }
 
   private void loadCsv() throws IOException, FHIRException {
-    CSVReader csv = new CSVReader(new FileInputStream("C:\\work\\org.hl7.fhir\\org.fhir.interversion\\work\\search-params.csv"));
+    CSVReader csv = new CSVReader(ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir\\org.fhir.interversion\\work\\search-params.csv"));
     csv.readHeaders();
     while (csv.line()) {
       String r4 = csv.cell("R4");

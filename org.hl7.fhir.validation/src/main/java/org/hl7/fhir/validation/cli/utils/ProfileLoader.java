@@ -8,6 +8,7 @@ import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class ProfileLoader {
   public static byte[] loadProfileSource(String src) throws FHIRException, IOException {
@@ -15,7 +16,7 @@ public class ProfileLoader {
       throw new FHIRException("Profile Source '" + src + "' could not be processed");
     } else if (Common.isNetworkPath(src)) {
       return loadProfileFromUrl(src);
-    } else if (new File(src).exists()) {
+    } else if (ManagedFileAccess.file(src).exists()) {
       return loadProfileFromFile(src);
     } else {
       throw new FHIRException("Definitions Source '" + src + "' could not be processed");
@@ -34,7 +35,7 @@ public class ProfileLoader {
   }
 
   private static byte[] loadProfileFromFile(String src) throws IOException {
-    File f = new File(src);
+    File f = ManagedFileAccess.file(src);
     if (f.isDirectory())
       throw new IOException("You must provide a file name, not a directory name");
     return TextFile.fileToBytes(src);

@@ -71,6 +71,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+
 public class MyURIResolver implements URIResolver {
 
   private String path;
@@ -94,7 +96,7 @@ public class MyURIResolver implements URIResolver {
         }
         return TransformerFactory.newInstance().getURIResolver().resolve(href, base);
       } else
-        return new StreamSource(new FileInputStream(href.contains(File.separator) ? href : Utilities.path(path, href)));
+        return new StreamSource(ManagedFileAccess.inStream(href.contains(File.separator) ? href : Utilities.path(path, href)));
     } catch (FileNotFoundException e) {
       throw new TransformerException(e);
     } catch (IOException e) {

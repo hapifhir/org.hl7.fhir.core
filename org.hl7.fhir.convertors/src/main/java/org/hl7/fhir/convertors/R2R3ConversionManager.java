@@ -67,6 +67,7 @@ import org.hl7.fhir.dstu3.utils.StructureMapUtilities;
 import org.hl7.fhir.dstu3.utils.StructureMapUtilities.ITransformerServices;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 /**
  * This class manages conversion from R2 to R3 and vice versa
@@ -113,8 +114,8 @@ public class R2R3ConversionManager implements ITransformerServices {
       self.setR3Definitions(getNamedParam(args, "-d3"));
       self.setMappingLibrary(getNamedParam(args, "-maps"));
       FhirFormat fmt = hasParam(args, "-fmt") ? getNamedParam(args, "-fmt").equalsIgnoreCase("json") ? FhirFormat.JSON : FhirFormat.XML : FhirFormat.XML;
-      InputStream src = new FileInputStream(getNamedParam(args, "-src"));
-      OutputStream dst = new FileOutputStream(getNamedParam(args, "-dest"));
+      InputStream src = ManagedFileAccess.inStream(getNamedParam(args, "-src"));
+      OutputStream dst = ManagedFileAccess.outStream(getNamedParam(args, "-dest"));
       self.convert(src, dst, hasParam(args, "-r2"), fmt);
     }
   }
@@ -164,9 +165,9 @@ public class R2R3ConversionManager implements ITransformerServices {
   }
 
   public void setR2Definitions(String source) throws IOException, FHIRException {
-    File f = new File(source);
+    File f = ManagedFileAccess.file(source);
     if (f.exists())
-      setR2Definitions(new FileInputStream(f));
+      setR2Definitions(ManagedFileAccess.inStream(f));
     else
       setR2Definitions(fetch(source));
   }
@@ -184,9 +185,9 @@ public class R2R3ConversionManager implements ITransformerServices {
   }
 
   public void setR3Definitions(String source) throws IOException, FHIRException {
-    File f = new File(source);
+    File f = ManagedFileAccess.file(source);
     if (f.exists())
-      setR3Definitions(new FileInputStream(f));
+      setR3Definitions(ManagedFileAccess.inStream(f));
     else
       setR3Definitions(fetch(source));
   }
@@ -201,9 +202,9 @@ public class R2R3ConversionManager implements ITransformerServices {
   }
 
   public void setMappingLibrary(String source) throws IOException, FHIRException {
-    File f = new File(source);
+    File f = ManagedFileAccess.file(source);
     if (f.exists())
-      setMappingLibrary(new FileInputStream(f));
+      setMappingLibrary(ManagedFileAccess.inStream(f));
     else
       setMappingLibrary(fetch(source));
   }

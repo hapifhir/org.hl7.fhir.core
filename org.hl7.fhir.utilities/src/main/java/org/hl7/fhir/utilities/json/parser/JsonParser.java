@@ -12,6 +12,7 @@ import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonBoolean;
@@ -172,7 +173,7 @@ public class JsonParser {
   }
   
   public static void compose(JsonElement element, File file) throws IOException {
-    FileOutputStream fo = new FileOutputStream(file);
+    FileOutputStream fo = ManagedFileAccess.outStream(file);
     compose(element, fo, false);
     fo.close();
   }
@@ -191,7 +192,7 @@ public class JsonParser {
   }
   public static void compose(JsonElement element, File file, boolean pretty) throws IOException {
     byte[] cnt = composeBytes(element, pretty);
-    FileOutputStream fo = new FileOutputStream(file);
+    FileOutputStream fo = ManagedFileAccess.outStream(file);
     fo.write(cnt);
     fo.close();
   }

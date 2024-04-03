@@ -43,6 +43,7 @@ import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4.model.MetadataResource;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class Unbundler {
 
@@ -52,7 +53,7 @@ public class Unbundler {
 
   private static void unbundle(String src) throws FHIRFormatError, FileNotFoundException, IOException {
     String folder = Utilities.getDirectoryForFile(src);
-    Bundle bnd = (Bundle) new JsonParser().parse(new FileInputStream(src));
+    Bundle bnd = (Bundle) new JsonParser().parse(ManagedFileAccess.inStream(src));
     for (BundleEntryComponent be : bnd.getEntry()) {
       Resource r = be.getResource();
       if (r != null) {
@@ -62,8 +63,8 @@ public class Unbundler {
         }
         if (!StringUtils.isBlank(r.getId())) {
           String tgt = Utilities.path(folder, r.fhirType() + "-" + r.getId() + ".json");
-          if (!new File(tgt).exists())
-            new JsonParser().compose(new FileOutputStream(tgt), r);
+          if (!ManagedFileAccess.file(tgt).exists())
+            new JsonParser().compose(ManagedFileAccess.outStream(tgt), r);
         }
       }
     }
