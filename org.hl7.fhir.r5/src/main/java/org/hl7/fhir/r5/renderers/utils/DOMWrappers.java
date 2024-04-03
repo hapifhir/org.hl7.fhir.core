@@ -336,7 +336,7 @@ public class DOMWrappers {
     }
 
     @Override
-    public void injectNarrative(XhtmlNode x, NarrativeStatus status) {
+    public void injectNarrative(ResourceRenderer renderer, XhtmlNode x, NarrativeStatus status) {
       if (!x.hasAttribute("xmlns"))
         x.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
       Element le = XMLUtil.getNamedChild(wrapped, "language");

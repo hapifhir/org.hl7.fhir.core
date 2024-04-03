@@ -263,7 +263,7 @@ public class NarrativeGenerationTests {
     String actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".actual.html");
     TextFile.stringToFile(expected, expectedFileName);
     TextFile.stringToFile(actual, actualFileName);
-    String msg = CompareUtilities.checkXMLIsSame(expectedFileName, actualFileName);
+    String msg = CompareUtilities.checkXMLIsSame(id, expectedFileName, actualFileName);
     Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
     
     if (test.isMeta()) {
@@ -274,7 +274,7 @@ public class NarrativeGenerationTests {
       actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
       actualFileName = CompareUtilities.tempFile("narrative", test.getId() + "-meta.actual.html");
       TextFile.stringToFile(actual, actualFileName);
-      msg = CompareUtilities.checkXMLIsSame(expectedFileName, actualFileName);
+      msg = CompareUtilities.checkXMLIsSame(id, expectedFileName, actualFileName);
       Assertions.assertTrue(msg == null, "Meta output does not match expected: "+msg);
     }
   }

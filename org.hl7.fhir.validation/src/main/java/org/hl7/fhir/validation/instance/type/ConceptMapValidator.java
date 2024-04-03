@@ -226,7 +226,10 @@ public class ConceptMapValidator  extends BaseValidator {
     if (warning(errors, "2023-03-05", IssueType.REQUIRED, grp.line(), grp.col(), stack.getLiteralPath(), e != null, I18nConstants.CONCEPTMAP_GROUP_SOURCE_MISSING)) {
       ctxt.source = readCSReference(e, grp.getNamedChild("sourceVersion", false), ctxt.getSourceVS());
       if (ctxt.source.cs != null) {
-        if (!warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), isOkCodeSystem(ctxt.source.cs), I18nConstants.CONCEPTMAP_GROUP_SOURCE_INCOMPLETE, e.getValue(), ctxt.source.cs.getContent().toCode())) {
+        if (isServerSideOnly(ctxt.source.cs)) {
+          hint(errors, "2024-03-25", IssueType.BUSINESSRULE, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), false, I18nConstants.CONCEPTMAP_GROUP_SOURCE_SERVER_SIDE, e.getValue());
+          ctxt.source.cs = null;
+        } else if (!warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), isOkCodeSystem(ctxt.source.cs), I18nConstants.CONCEPTMAP_GROUP_SOURCE_INCOMPLETE, e.getValue(), ctxt.source.cs.getContent().toCode())) {
           ctxt.source.cs = null;
         }
       } else {
@@ -242,7 +245,10 @@ public class ConceptMapValidator  extends BaseValidator {
     if (warning(errors, "2023-03-05", IssueType.REQUIRED, grp.line(), grp.col(), stack.getLiteralPath(), e != null, I18nConstants.CONCEPTMAP_GROUP_TARGET_MISSING)) {
       ctxt.target = readCSReference(e, grp.getNamedChild("targetVersion", false), ctxt.getTargetVS());
       if (ctxt.target.cs != null) {                              
-        if (!warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), isOkCodeSystem(ctxt.target.cs), I18nConstants.CONCEPTMAP_GROUP_TARGET_INCOMPLETE, e.getValue(), ctxt.target.cs.getContent().toCode())) {
+        if (isServerSideOnly(ctxt.target.cs)) {
+          hint(errors, "2024-03-25", IssueType.BUSINESSRULE, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), false, I18nConstants.CONCEPTMAP_GROUP_TARGET_SERVER_SIDE, e.getValue());
+          ctxt.target.cs = null;
+        } else if (!warning(errors, "2023-03-05", IssueType.NOTFOUND, grp.line(), grp.col(), stack.push(e, -1, null, null).getLiteralPath(), isOkCodeSystem(ctxt.target.cs), I18nConstants.CONCEPTMAP_GROUP_TARGET_INCOMPLETE, e.getValue(), ctxt.target.cs.getContent().toCode())) {
           ctxt.target.cs = null;
         }
       } else {
@@ -262,6 +268,10 @@ public class ConceptMapValidator  extends BaseValidator {
       ci++;
     }    
     return ok;
+  }
+
+  private boolean isServerSideOnly(CodeSystem cs) {
+    return Utilities.existsInList(cs.getUrl(), "http://snomed.info/sct", "http://loinc.org");
   }
 
   private CSReference readCSReference(Element ref, Element version, ValueSet vs) {

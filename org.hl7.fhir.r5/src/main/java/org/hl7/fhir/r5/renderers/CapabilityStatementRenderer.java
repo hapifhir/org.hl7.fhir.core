@@ -289,18 +289,18 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
     x.h(2,"title").addText(conf.getTitle());
     XhtmlNode uList = x.ul();
-    uList.li().addText("Implementation Guide Version: " + igVersion);
-    uList.li().addText("FHIR Version: " + currentVersion.toCode());
+    uList.li().addText(/*!#*/"Implementation Guide Version: " + igVersion);
+    uList.li().addText(/*!#*/"FHIR Version: " + currentVersion.toCode());
  
     addSupportedFormats(uList, conf);
     
-    uList.li().addText("Published on: " + conf.getDate());
-    uList.li().addText("Published by: " + conf.getPublisherElement().asStringValue());
+    uList.li().addText(/*!#*/"Published on: " + displayDateTime(conf.getDateElement()));
+    uList.li().addText(/*!#*/"Published by: " + conf.getPublisherElement().asStringValue());
 
 
     XhtmlNode block = x.addTag("blockquote").attribute("class","impl-note");
-    block.addTag("p").addTag("strong").addText("Note to Implementers: FHIR Capabilities");
-    block.addTag("p").addText("Any FHIR capability may be 'allowed' by the system unless explicitly marked as \"SHALL NOT\". A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case.");
+    block.addTag("p").addTag("strong").addText(/*!#*/"Note to Implementers: FHIR Capabilities");
+    block.addTag("p").addText(/*!#*/"Any FHIR capability may be 'allowed' by the system unless explicitly marked as \"SHALL NOT\". A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case.");
 
 
     addSupportedIGs(x, conf);
@@ -308,11 +308,11 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     int restNum = conf.getRest().size();
     int nextLevel = 3;
     if (restNum > 0) {
-      x.h(2,"rest").addText("FHIR RESTful Capabilities");
+      x.h(2,"rest").addText(/*!#*/"FHIR RESTful Capabilities");
       int count=1;
       for (CapabilityStatementRestComponent rest : conf.getRest()) {
         if (restNum > 1) {
-          x.h(3,"rest"+Integer.toString(count)).addText("REST Configuration " + Integer.toString(count));
+          x.h(3,"rest"+Integer.toString(count)).addText(/*!#*/"REST Configuration " + Integer.toString(count));
           nextLevel = 4;
         }
         addRestConfigPanel(x, rest, nextLevel, count);
@@ -330,8 +330,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
           hasUpdates = hasUpdates || hasOp(r, TypeRestfulInteraction.HISTORYINSTANCE);
         }
         if (rest.getResource().size() >0) {
-          x.h(nextLevel,"resourcesCap" + Integer.toString(count)).addText("Capabilities by Resource/Profile");
-          x.h(nextLevel+1,"resourcesSummary" + Integer.toString(count)).addText("Summary");
+          x.h(nextLevel,"resourcesCap" + Integer.toString(count)).addText(/*!#*/"Capabilities by Resource/Profile");
+          x.h(nextLevel+1,"resourcesSummary" + Integer.toString(count)).addText(/*!#*/"Summary");
           addSummaryIntro(x);
           addSummaryTable(x, rest, hasVRead, hasPatch, hasDelete, hasHistory, hasUpdates, count);
           x.addTag("hr");
@@ -442,7 +442,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       }
       XhtmlNode ul = null;
       if (igShalls.size() > 0) {
-        x.h(3,"shallIGs").addText("SHALL Support the Following Implementation Guides");
+        x.h(3,"shallIGs").addText(/*!#*/"SHALL Support the Following Implementation Guides");
         ul = x.ul();
         for (String url : igShalls) {
           addResourceLink(ul.li(), url, url);
@@ -450,7 +450,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         }
       }
       if (igShoulds.size() > 0) {
-        x.h(3,"shouldIGs").addText("SHOULD Support the Following Implementation Guides");
+        x.h(3,"shouldIGs").addText(/*!#*/"SHOULD Support the Following Implementation Guides");
         ul = x.ul();
         for (String url : igShoulds) {
           addResourceLink(ul.li(), url, url);
@@ -458,7 +458,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         }
       }
       if (igMays.size() > 0) {
-        x.h(3,"shouldIGs").addText("SHOULD Support the Following Implementation Guides");
+        x.h(3,"shouldIGs").addText(/*!#*/"SHOULD Support the Following Implementation Guides");
         ul = x.ul();
         for (String url : igMays) {
           addResourceLink(ul.li(), url, url);
@@ -471,7 +471,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
   private void addSupportedFormats(XhtmlNode uList, CapabilityStatement conf) {
     XhtmlNode lItem = uList.li();
-    lItem.addText("Supported Formats: ");
+    lItem.addText(/*!#*/"Supported Formats: ");
     Boolean first = true;
     String capExpectation = null;
     for (CodeType c : conf.getFormat()) {
@@ -481,13 +481,13 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       capExpectation = getExtValueCode(c.getExtensionByUrl(EXPECTATION));
       if (!Utilities.noString(capExpectation)) {
         lItem.addTag("strong").addText(capExpectation);
-        lItem.addText(" support ");
+        lItem.addText(" "+/*!#*/"support ");
       }
       lItem.code().addText(c.getCode());
       first = false;
     }
     lItem = uList.li();
-    lItem.addText("Supported Patch Formats: ");
+    lItem.addText(/*!#*/"Supported Patch Formats: ");
     first=true;
     for (CodeType c : conf.getPatchFormat()) {
       if (!first) {
@@ -496,7 +496,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       capExpectation = getExtValueCode(c.getExtensionByUrl(EXPECTATION));
       if (!Utilities.noString(capExpectation)) {
         lItem.addTag("strong").addText(capExpectation);
-        lItem.addText(" support ");
+        lItem.addText(/*!#*/" support ");
       }
       lItem.code().addText(c.getCode());
       first = false;
@@ -533,16 +533,16 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         addMarkdown(body.blockquote(),mdText);
       }
     }  
-    body.div().attribute("class","lead").addTag("em").addText("Summary of System-wide Interactions");
+    body.div().attribute("class","lead").addTag("em").addText(/*!#*/"Summary of System-wide Interactions");
     addSystemInteractions(body, rest.getInteraction());
         
   }
 
   private String getCorsText(boolean on) {
     if (on) {
-      return "Enable CORS: yes";
+      return /*!#*/"Enable CORS: yes";
     }
-    return "Enable CORS: no";
+    return /*!#*/"Enable CORS: no";
   }
 
   private List<String> getSecServices(List<CodeableConcept> services)
@@ -613,20 +613,20 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     for (Map<String,String> interactionMap : interactions) {
       item = uList.li();
       if (Utilities.noString(verb)) {
-        item.addText("Supports the ");
+        item.addText(/*!#*/"Supports the ");
       }
       else {
         item.addTag("strong").addText(verb);
-        item.addText(" support the ");
+        item.addText(/*!#*/" support the ");
       }
       interaction = interactionMap.keySet().toArray()[0].toString();
       item.code(interaction);
       documentation = interactionMap.get(interaction);
       if (Utilities.noString(documentation)) {
-        item.addText(" interaction.");
+        item.addText(/*!#*/" interaction.");
       }
       else {
-        item.addText(" interaction described as follows:");
+        item.addText(/*!#*/" interaction described as follows:");
         try {
           addMarkdown(item, documentation);
         } catch (FHIRFormatError e) {
@@ -647,11 +647,11 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     if (interactions.size() == 0) return;
     XhtmlNode item = uList.li();
     if (Utilities.noString(verb)) {
-      item.addText("Supports ");
+      item.addText(/*!#*/"Supports ");
     }
     else {
       item.addTag("strong").addText(verb);
-      item.addText(" support ");
+      item.addText(/*!#*/" support ");
     }
     addSeparatedListOfCodes(item, interactions, ",");
     item.addText(".");
@@ -660,11 +660,11 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   private void addSummaryIntro(XhtmlNode x) {
     XhtmlNode uList = null;
     XhtmlNode lItem = null;
-    x.para().addText("The summary table lists the resources that are part of this configuration, and for each resource it lists:");
+    x.para().addText(/*!#*/"The summary table lists the resources that are part of this configuration, and for each resource it lists:");
     uList=x.ul();
-    uList.li().addText("The relevant profiles (if any)");
+    uList.li().addText(/*!#*/"The relevant profiles (if any)");
     lItem = uList.li();
-    lItem.addText("The interactions supported by each resource (");
+    lItem.addText(/*!#*/"The interactions supported by each resource (");
     lItem.b().addTag("span").attribute("class","bg-info").addText("R");
     lItem.addText("ead, ");
     lItem.b().addTag("span").attribute("class","bg-info").addText("S");
@@ -686,40 +686,40 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     lItem.b().addTag("span").attribute("class","bg-info").addText("H");
     lItem.addText("istory on ");
     lItem.b().addTag("span").attribute("class","bg-info").addText("T");
-    lItem.addText("ype are only present if at least one of the resources has support for them.");
-    uList.li().addTag("span").addText("The required, recommended, and some optional search parameters (if any). ");
+    lItem.addText(/*!#*/"ype are only present if at least one of the resources has support for them.");
+    uList.li().addTag("span").addText(/*!#*/"The required, recommended, and some optional search parameters (if any). ");
     lItem = uList.li();
-    lItem.addText("The linked resources enabled for ");
+    lItem.addText(/*!#*/"The linked resources enabled for ");
     lItem.code().addText("_include");
     lItem = uList.li();
-    lItem.addText("The other resources enabled for ");
+    lItem.addText(/*!#*/"The other resources enabled for ");
     lItem.code().addText("_revinclude");
-    uList.li().addText("The operations on the resource (if any)");
+    uList.li().addText(/*!#*/"The operations on the resource (if any)");
   }
 
   private void addSummaryTable(XhtmlNode x, CapabilityStatement.CapabilityStatementRestComponent rest, boolean hasVRead, boolean hasPatch, boolean hasDelete, boolean hasHistory, boolean hasUpdates, int count) throws IOException {
     XhtmlNode t = x.div().attribute("class","table-responsive").table("table table-condensed table-hover");
     XhtmlNode tr = t.addTag("thead").tr();
-    tr.th().b().tx("Resource Type");
-    tr.th().b().tx("Profile");
-    tr.th().attribute("class", "text-center").b().attribute("title", "GET a resource (read interaction)").tx("R");
+    tr.th().b().tx(/*!#*/"Resource Type");
+    tr.th().b().tx(/*!#*/"Profile");
+    tr.th().attribute("class", "text-center").b().attribute("title", /*!#*/"GET a resource (read interaction)").tx("R");
     if (hasVRead)
-      tr.th().attribute("class", "text-center").b().attribute("title", "GET past versions of resources (vread interaction)").tx("V-R");
-    tr.th().attribute("class", "text-center").b().attribute("title", "GET all set of resources of the type (search interaction)").tx("S");
-    tr.th().attribute("class", "text-center").b().attribute("title", "PUT a new resource version (update interaction)").tx("U");
+      tr.th().attribute("class", "text-center").b().attribute("title", /*!#*/"GET past versions of resources (vread interaction)").tx("V-R");
+    tr.th().attribute("class", "text-center").b().attribute("title", /*!#*/"GET all set of resources of the type (search interaction)").tx("S");
+    tr.th().attribute("class", "text-center").b().attribute("title", /*!#*/"PUT a new resource version (update interaction)").tx("U");
     if (hasPatch)
-      tr.th().attribute("class", "text-center").b().attribute("title", "PATCH a new resource version (patch interaction)").tx("P");
-    tr.th().attribute("class", "text-center").b().attribute("title", "POST a new resource (create interaction)").tx("C");
+      tr.th().attribute("class", "text-center").b().attribute("title", /*!#*/"PATCH a new resource version (patch interaction)").tx("P");
+    tr.th().attribute("class", "text-center").b().attribute("title", /*!#*/"POST a new resource (create interaction)").tx("C");
     if (hasDelete)
-      tr.th().attribute("class", "text-center").b().attribute("title", "DELETE a resource (delete interaction)").tx("D");
+      tr.th().attribute("class", "text-center").b().attribute("title", /*!#*/"DELETE a resource (delete interaction)").tx("D");
     if (hasUpdates)
-      tr.th().attribute("class", "text-center").b().attribute("title", "GET changes to a resource (history interaction on instance)").tx("H-I");
+      tr.th().attribute("class", "text-center").b().attribute("title", /*!#*/"GET changes to a resource (history interaction on instance)").tx("H-I");
     if (hasHistory)
-      tr.th().attribute("class", "text-center").b().attribute("title", "GET changes for all resources of the type (history interaction on type)").tx("H-T");
-    tr.th().b().attribute("title", "Required and recommended search parameters").tx("Searches");
+      tr.th().attribute("class", "text-center").b().attribute("title", /*!#*/"GET changes for all resources of the type (history interaction on type)").tx("H-T");
+    tr.th().b().attribute("title", /*!#*/"Required and recommended search parameters").tx(/*!#*/"Searches");
     tr.th().code().b().tx("_include");
     tr.th().code().b().tx("_revinclude");
-    tr.th().b().tx("Operations");
+    tr.th().b().tx(/*!#*/"Operations");
 
     XhtmlNode tbody = t.addTag("tbody");
     XhtmlNode profCell = null;
@@ -744,12 +744,12 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         //profCell.ah(r.getProfile()).addText(r.getProfile());
         if (hasSupProf) {
           profCell.br();
-          profCell.addTag("em").addText("Additional supported profiles:");
+          profCell.addTag("em").addText(/*!#*/"Additional supported profiles:");
           renderSupportedProfiles(profCell, r);
         }
       }
       else {    //Case of only supported profiles
-        profCell.addText("Supported profiles:");
+        profCell.addText(/*!#*/"Supported profiles:");
         renderSupportedProfiles(profCell, r);
       }
       //Show capabilities
@@ -809,17 +809,17 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     }
     if (r.hasExtension(ToolingExtensions.EXT_PROFILE_MAPPING)) {
       profCell.br();
-      profCell.b().tx("Profile Mapping");
+      profCell.b().tx(/*!#*/"Profile Mapping");
       XhtmlNode tbl = profCell.table("grid");
       boolean doco = false;
       for (Extension ext : r.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_MAPPING)) {
         doco = doco || ext.hasExtension("documentation");
       }
       XhtmlNode tr = tbl.tr();
-      tr.th().tx("Criteria");
-      tr.th().tx("Profile");
+      tr.th().tx(/*!#*/"Criteria");
+      tr.th().tx(/*!#*/"Profile");
       if (doco) {
-        tr.th().tx("Criteria");
+        tr.th().tx(/*!#*/"Criteria");
       }
       for (Extension ext : r.getExtensionsByUrl(ToolingExtensions.EXT_PROFILE_MAPPING)) {
         tr = tbl.tr();
@@ -936,7 +936,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     }
     else {
       panelHead = panel.div().attribute("class", "panel-heading").h(nextLevel,r.getType() + countString).attribute("class", "panel-title");
-      panelHead.span("float: right;","").addText("Resource Conformance: " + getResourceExpectation(r));
+      panelHead.span("float: right;","").addText(/*!#*/"Resource Conformance: " + getResourceExpectation(r));
       panelHead.addText(r.getType());
       body = panel.div().attribute("class", "panel-body").div().attribute("class", "container");
     }
@@ -950,17 +950,17 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     String refPolicyWidth = "col-lg-3";
     if (!Utilities.noString(text)) {
       cell = row.div().attribute("class", "col-lg-6");
-      addLead(cell,"Base System Profile");
+      addLead(cell,/*!#*/"Base System Profile");
       cell.br();
       addResourceLink(cell, text, text);
       cell=row.div().attribute("class", "col-lg-3");
-      addLead(cell, "Profile Conformance");
+      addLead(cell, /*!#*/"Profile Conformance");
       cell.br();
       cell.b().addText(getProfileExpectation(r.getProfileElement()));
     }
     else {   //No profile, use FHIR Core Resource
       cell = row.div().attribute("class", "col-lg-4");
-      addLead(cell,"Core FHIR Resource");
+      addLead(cell,/*!#*/"Core FHIR Resource");
       cell.br();
       cell.ah(currentFhirBase + r.getType().toLowerCase() + ".html").addText(r.getType());
       pullInteraction = true;
@@ -968,7 +968,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     }
     
     cell = row.div().attribute("class", refPolicyWidth);
-    addLead(cell,"Reference Policy");
+    addLead(cell,/*!#*/"Reference Policy");
     cell.br();
     addSeparatedListOfCodes(cell, getReferencePolicyStrings(r.getReferencePolicy()) , ",");
     if (pullInteraction) {
@@ -979,7 +979,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     if (supportedProfiles.size() > 0) {
       row = body.div().attribute("class", "row");
       cell = row.div().attribute("class", "col-6");
-      addLead(cell,"Supported Profiles");
+      addLead(cell,/*!#*/"Supported Profiles");
       XhtmlNode para = cell.para();
       boolean first = true;
       for (CanonicalType c : supportedProfiles) {
@@ -1004,7 +1004,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     if (!Utilities.noString(mdText)) {
       row = body.div().attribute("class", "row");
       cell = row.div().attribute("class", "col-12");
-      addLead(cell,"Documentation");
+      addLead(cell,/*!#*/"Documentation");
       addMarkdown(cell.blockquote(), mdText);
     }
 
@@ -1028,12 +1028,12 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     XhtmlNode tr;
     row = body.div().attribute("class", "row");
     cell = row.div().attribute("class", "col-12");
-    addLead(cell,"Extended Operations");
+    addLead(cell,/*!#*/"Extended Operations");
     table = cell.table("table table-condensed table-hover");
     tr = table.addTag("thead").tr();
-    tr.th().addText("Conformance");
-    tr.th().addText("Operation");
-    tr.th().addText("Documentation");
+    tr.th().addText(/*!#*/"Conformance");
+    tr.th().addText(/*!#*/"Operation");
+    tr.th().addText(/*!#*/"Documentation");
     tbody = table.addTag("tbody");
     addOps(tbody, map, "supported");
     addOps(tbody, map, "SHALL");
@@ -1089,7 +1089,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       }
     }
     XhtmlNode cell = row.div().attribute("class", widthString);
-    addLead(cell, "Interaction summary");
+    addLead(cell, /*!#*/"Interaction summary");
     cell.br();
     XhtmlNode ul = cell.ul();
     addInteractionSummaryList(ul, "SHALL", shalls);
@@ -1154,13 +1154,13 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     XhtmlNode tr;
     row = body.div().attribute("class", "row");
     cell = row.div().attribute("class", "col-lg-7");
-    addLead(cell,"Search Parameters");
+    addLead(cell,/*!#*/"Search Parameters");
     table = cell.table("table table-condensed table-hover");
     tr = table.addTag("thead").tr();
-    tr.th().addText("Conformance");
-    tr.th().addText("Parameter");
-    tr.th().addText("Type");
-    tr.th().addText("Documentation");
+    tr.th().addText(/*!#*/"Conformance");
+    tr.th().addText(/*!#*/"Parameter");
+    tr.th().addText(/*!#*/"Type");
+    tr.th().addText(/*!#*/"Documentation");
     tbody = table.addTag("tbody");
     Map<String,List<SingleParam>> map = sParams.getIndbyExp();
     addIndRows(tbody, map, "supported");
@@ -1170,12 +1170,12 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     addIndRows(tbody, map, "SHOULD-NOT");
     cell = row.div().attribute("class", "col-lg-5");
     if (!isCombinedEmpty(comboMap)) {
-      addLead(cell,"Combined Search Parameters");
+      addLead(cell,/*!#*/"Combined Search Parameters");
       table = cell.table("table table-condensed table-hover");
       tr = table.addTag("thead").tr();
-      tr.th().addText("Conformance");
-      tr.th().addText("Parameters");
-      tr.th().addText("Types");
+      tr.th().addText(/*!#*/"Conformance");
+      tr.th().addText(/*!#*/"Parameters");
+      tr.th().addText(/*!#*/"Types");
       tbody = table.addTag("tbody");
       addComboRows(tbody, comboMap, "supported");
       addComboRows(tbody, comboMap, "SHALL");

@@ -39,7 +39,7 @@ public class ResourceToElementTest {
     Element e = p.parse(res);
     new org.hl7.fhir.r5.elementmodel.XmlParser(ctxt).compose(e, new FileOutputStream(src), OutputStyle.PRETTY, null);
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dst), res);
-    String msg = CompareUtilities.checkXMLIsSame(src, dst);
+    String msg = CompareUtilities.checkXMLIsSame(filename, src, dst);
     Assertions.assertNull(msg);
   }
 

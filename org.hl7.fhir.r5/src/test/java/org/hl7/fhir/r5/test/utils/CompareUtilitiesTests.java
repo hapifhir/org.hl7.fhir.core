@@ -59,7 +59,7 @@ public class CompareUtilitiesTests implements ResourceLoaderTests {
     InputStream expectedXMLStream = classLoader.getResourceAsStream(expectedXMLPath);
     InputStream actualXMLStream = classLoader.getResourceAsStream(actualXMLPath);
 
-    final String actualOutput = CompareUtilities.checkXMLIsSame(expectedXMLStream, actualXMLStream);
+    final String actualOutput = CompareUtilities.checkXMLIsSame(expectedFileName, expectedXMLStream, actualXMLStream);
 
     if (expectedOutputFileName == null) {
       assertNull(actualOutput);
@@ -91,7 +91,7 @@ public class CompareUtilitiesTests implements ResourceLoaderTests {
    final String expectedJSONPath = ROOT_JSON_TEST_PATH.resolve(expectedFileName).toString();
    final String actualJSONPath = ROOT_JSON_TEST_PATH.resolve(actualFileName).toString();
 
-   final String actualOutput = CompareUtilities.checkJsonSrcIsSame(getResourceAsString(expectedJSONPath), getResourceAsString(actualJSONPath), false, null);
+   final String actualOutput = CompareUtilities.checkJsonSrcIsSame(expectedFileName, getResourceAsString(expectedJSONPath), getResourceAsString(actualJSONPath), false, null);
    if (expectedOutputFileName == null) {
      assertNull(actualOutput);
    } else {

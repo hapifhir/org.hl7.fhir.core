@@ -25,7 +25,7 @@ import java.util.*;
 public class TxServiceTestHelper {
 
 
-  public static String getDiffForValidation(IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String lang, String fp, JsonObject externals, boolean isCodeSystem) throws JsonSyntaxException, FileNotFoundException, IOException {
+  public static String getDiffForValidation(String id, IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String lang, String fp, JsonObject externals, boolean isCodeSystem) throws JsonSyntaxException, FileNotFoundException, IOException {
     org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) requestParameters;
     ValueSet valueSet = null;
     String valueSetUrl = null;
@@ -109,7 +109,7 @@ public class TxServiceTestHelper {
 
       dumparoo("/Users/david.otasek/IN/2024-02-05-hapi-core-bump-6-2.16/core-test", name, expectedResponse, actualResponse);
 
-      String diff = CompareUtilities.checkJsonSrcIsSame(expectedResponse, actualResponse, externals);
+      String diff = CompareUtilities.checkJsonSrcIsSame(id, expectedResponse, actualResponse, externals);
       if (diff != null) {
         Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
         TextFile.stringToFile(actualResponse, fp);
@@ -183,7 +183,7 @@ public class TxServiceTestHelper {
 
       dumparoo("/Users/david.otasek/IN/2024-02-05-hapi-core-bump-6-2.16/core-test", name, expectedResponse, actualResponse);
 
-      String diff = CompareUtilities.checkJsonSrcIsSame(expectedResponse, actualResponse, externals);
+      String diff = CompareUtilities.checkJsonSrcIsSame(id, expectedResponse, actualResponse, externals);
       if (diff != null) {
          Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
         TextFile.stringToFile(actualResponse, fp);

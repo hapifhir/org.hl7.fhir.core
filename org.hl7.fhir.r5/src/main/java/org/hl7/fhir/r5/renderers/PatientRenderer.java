@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Identifier.IdentifierUse;
 import org.hl7.fhir.r5.model.Patient;
 import org.hl7.fhir.r5.model.Period;
+import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -185,7 +186,7 @@ public class PatientRenderer extends ResourceRenderer {
     String gender = null;
     pw = getProperty(pat, "gender");
     if (valued(pw)) {
-      pw.value().getBase().primitiveValue();
+      gender = pw.value().getBase().primitiveValue();
     }
     DateType dt = null; 
     pw = getProperty(pat, "birthDate");
@@ -209,7 +210,7 @@ public class PatientRenderer extends ResourceRenderer {
     String gender = null;
     pw = getProperty(pat, "gender");
     if (valued(pw)) {
-      gender = pw.value().getBase().primitiveValue();
+      gender = context.getTranslated((PrimitiveType<?>) pw.value().getBase());
     }
     DateType dt = null; 
     pw = getProperty(pat, "birthDate");
@@ -222,18 +223,22 @@ public class PatientRenderer extends ResourceRenderer {
 
   private String display(HumanName name, String gender, DateType dob, Identifier id) {
     StringBuilder b = new StringBuilder();
-    b.append(display(name));
+    if (name == null) {
+      b.append(display(name));
+    } else {
+      b.append(context.formatMessage(RenderingContext.PAT_NO_NAME));      
+    }
     b.append(" ");
     if (dob == null) {
-      b.append("(no stated gender)");
+      b.append(context.formatMessage(RenderingContext.PAT_NO_GENDER));
     } else {
       b.append(gender);
     }
     b.append(", ");
     if (dob == null) {
-      b.append("DoB Unknown");
+      b.append(context.formatMessage(RenderingContext.PAT_NO_DOB));
     } else {
-      b.append("DoB: "+display(dob));      
+      b.append(context.formatMessage(RenderingContext.PAT_DOB, display(dob)));      
     }
     if (id != null) {
       b.append(" ( ");      
@@ -245,22 +250,21 @@ public class PatientRenderer extends ResourceRenderer {
   
   public void describe(XhtmlNode x, HumanName name, String gender, DateType dob, Identifier id) throws UnsupportedEncodingException, IOException {
     if (name == null) {
-      x.b().tx("Anonymous Patient"); // todo: is this appropriate?  
+      x.b().tx(context.formatMessage(RenderingContext.PAT_NO_NAME)); // todo: is this appropriate?  
     } else {
       render(x.b(), name);
     }
     x.tx(" ");
     if (gender == null) {
-      x.tx("(no stated gender)");
+      x.tx(context.formatMessage(RenderingContext.PAT_NO_GENDER));
     } else {
       x.tx(gender);
     }
     x.tx(", ");
     if (dob == null) {
-      x.tx("DoB Unknown");
+      x.tx(context.formatMessage(RenderingContext.PAT_NO_DOB));
     } else {
-      x.tx("DoB: ");
-      render(x, dob);
+      x.tx(context.formatMessage(RenderingContext.PAT_DOB, display(dob)));
     }
     if (id != null) {
       x.tx(" ( ");      
@@ -298,7 +302,7 @@ public class PatientRenderer extends ResourceRenderer {
     }
     if (r.has("contained") && context.isTechnicalMode()) {
       x.hr();
-      x.para().b().tx("Contained Resources");
+      x.para().b().tx(context.formatMessagePlural(r.getContained().size(), RenderingContext.PAT_CONTAINED));
       addContained(x, r.getContained());
     }
     return false;
@@ -390,20 +394,18 @@ public class PatientRenderer extends ResourceRenderer {
     if (id != null) {
       ids.remove(id);
     };
-    if (ids.size() == 1) {
+    if (ids.size() > 0) {
       XhtmlNode tr = tbl.tr();
-      nameCell(tr, "Other Id:", "Other Ids (see the one above)");
+      nameCell(tr, context.formatMessagePlural(ids.size(), RenderingContext.PAT_OTHER_ID),context.formatMessagePlural(ids.size(), RenderingContext.PAT_OTHER_ID_HINT));
       XhtmlNode td = tr.td();
       td.colspan("3");
-      render(r, td, ids.get(0));
-    } else if (ids.size() > 1) {
-      XhtmlNode tr = tbl.tr();
-      nameCell(tr, "Other Ids:", "Other Ids (see the one above)");
-      XhtmlNode td = tr.td();
-      td.colspan("3");
-      XhtmlNode ul = td.ul();
-      for (Identifier i : ids) {
-        render(r, ul.li(), i);
+      if (ids.size() == 1) {
+        render(r, td, ids.get(0));
+      } else { 
+        XhtmlNode ul = td.ul();
+        for (Identifier i : ids) {
+          render(r, ul.li(), i);
+        }
       }
     }
   }
@@ -423,44 +425,41 @@ public class PatientRenderer extends ResourceRenderer {
         }
       }
     }
-    if (langs.size() == 1) {
+    if (langs.size() > 0) {
       XhtmlNode tr = tbl.tr();
-      nameCell(tr, "Language:", "Languages spoken");
+      nameCell(tr, context.formatMessagePlural(langs.size(), RenderingContext.PAT_LANG), context.formatMessagePlural(langs.size(), RenderingContext.PAT_LANG_HINT));
       XhtmlNode td = tr.td();
       td.colspan("3");
-      render(r, td, langs.get(0));
-      if (prefLang != null) {
-        td.tx(" (preferred)");
-      }
-    } else if (langs.size() > 1) {
-      XhtmlNode tr = tbl.tr();
-      nameCell(tr, "Languages:", "Languages spoken");
-      XhtmlNode td = tr.td();
-      td.colspan("3");
-      XhtmlNode ul = td.ul();
-      for (CodeableConcept i : langs) {
-        XhtmlNode li = ul.li();
-        render(r, li, i);
-        if (i == prefLang) {
-          li.tx(" (preferred)");
+      if (langs.size() == 1) {
+        render(r, td, langs.get(0));
+        if (prefLang != null) {
+          td.tx(" "+context.formatMessage(RenderingContext.PAT_LANG_PREFERRED));
+        }
+      } else if (langs.size() > 1) {
+        XhtmlNode ul = td.ul();
+        for (CodeableConcept i : langs) {
+          XhtmlNode li = ul.li();
+          render(r, li, i);
+          if (i == prefLang) {
+            li.tx(" "+context.formatMessage(RenderingContext.PAT_LANG_PREFERRED));;
+          }
         }
       }
     }
   }
-
 
   private void addLinks(XhtmlNode tbl, ResourceWrapper r) throws UnsupportedEncodingException, FHIRException, IOException {
     List<NamedReferance> refs = new ArrayList<>();
     PropertyWrapper pw = getProperty(r, "generalPractitioner");
     if (pw != null) {
       for (BaseWrapper t : pw.getValues()) {
-        refs.add(new NamedReferance("General Practitioner", (Reference) t.getBase(), t));
+        refs.add(new NamedReferance(context.formatMessage(RenderingContext.PAT_GP), (Reference) t.getBase(), t));
       }
     }
     pw = getProperty(r, "managingOrganization");
     if (pw != null) {
       for (BaseWrapper t : pw.getValues()) {
-        refs.add(new NamedReferance("Managing Organization", (Reference) t.getBase(), t));
+        refs.add(new NamedReferance(context.formatMessage(RenderingContext.PAT_MO), (Reference) t.getBase(), t));
       }
     }
     pw = getProperty(r, "link");
@@ -484,7 +483,7 @@ public class PatientRenderer extends ResourceRenderer {
     
     if (refs.size() > 0) {      
       XhtmlNode tr = tbl.tr();
-      nameCell(tr, "Links:", "Patient Links");
+      nameCell(tr, context.formatMessage(RenderingContext.PAT_LINKS), context.formatMessage(RenderingContext.PAT_LINKS_HINT));
       XhtmlNode td = tr.td();
       td.colspan("3");
       XhtmlNode ul = td.ul();
@@ -499,10 +498,10 @@ public class PatientRenderer extends ResourceRenderer {
 
   private String describeLinkedRecord(String type) {
     switch (type) {
-    case "replaced-by" : return "This record replaced by";
-    case "replaces": return "This record replaces";
-    case "refer": return "Please refer to";
-    case "seealso": return "Also see";
+    case "replaced-by" : return context.formatMessage(RenderingContext.PAT_LINK_REPLBY);
+    case "replaces": return context.formatMessage(RenderingContext.PAT_LINK_REPL);
+    case "refer": return context.formatMessage(RenderingContext.PAT_LINK_REFER);
+    case "seealso": return context.formatMessage(RenderingContext.PAT_LINK_SEE);
     }
     return "Unknown";
   }
@@ -564,9 +563,9 @@ public class PatientRenderer extends ResourceRenderer {
     }
     XhtmlNode tr = tbl.tr();
     if (rels.size() == 1) {
-      nameCell(tr, (rels.get(0).getCodingFirstRep().hasDisplay() ? rels.get(0).getCodingFirstRep().getDisplay() : display(rels.get(0)))+":", "Nominated Contact: "+display(rels.get(0)));
+      nameCell(tr, (rels.get(0).getCodingFirstRep().hasDisplay() ? rels.get(0).getCodingFirstRep().getDisplay() : display(rels.get(0)))+":",  context.formatMessage(RenderingContext.PAT_NOM_CONTACT)+" "+display(rels.get(0)));
     } else {
-      nameCell(tr, "Contact", "Patient contact");
+      nameCell(tr, context.formatMessage(RenderingContext.PAT_NOK_CONTACT), context.formatMessage(RenderingContext.PAT_NOK_CONTACT_HINT));
     }
     XhtmlNode td = tr.td();
     td.colspan("3");
@@ -576,15 +575,15 @@ public class PatientRenderer extends ResourceRenderer {
       li = ul.li();
       render(r, li, name);
       if (gender != null) {
-        li.tx(" ("+gender+")");
+        li.tx(" "+"("+gender+")");
       }
     } else if (gender != null) {
       li = ul.li();
-      li.tx("Gender: "+gender);      
+      li.tx(context.formatMessage(RenderingContext.PAT_GENDER, gender));      
     }
     if (rels.size() > 1) {
       li = ul.li();
-      li.tx("Relationships: ");
+      li.tx(context.formatMessage(RenderingContext.PAT_RELN));
       boolean first = true;
       for (CodeableConcept rel : rels) {
         if (first) first = false; else li.tx(", ");
@@ -599,12 +598,12 @@ public class PatientRenderer extends ResourceRenderer {
     }
     if (organization != null) {
       li = ul.li();
-      li.tx("Organization: ");
+      li.tx(context.formatMessage(RenderingContext.PAT_ORG));
       render(r, li, organization);
     }
     if (period != null) {
       li = ul.li();
-      li.tx("Valid Period: ");
+      li.tx(context.formatMessage(RenderingContext.PAT_PERIOD));
       render(r, li, period);
     }
   }
@@ -624,18 +623,16 @@ public class PatientRenderer extends ResourceRenderer {
     };
     if (names.size() == 1) {
       XhtmlNode tr = tbl.tr();
-      nameCell(tr, "Alt. Name:", "Alternate names (see the one above)");
+      nameCell(tr, context.formatMessage(RenderingContext.PAT_ALT_NAME), context.formatMessage(RenderingContext.PAT_ALT_NAME_HINT));
       XhtmlNode td = tr.td();
       td.colspan("3");
-      render(r, td, names.get(0));
-    } else if (names.size() > 1) {
-      XhtmlNode tr = tbl.tr();
-      nameCell(tr, "Alt Names:", "Alternate names (see the one above)");
-      XhtmlNode td = tr.td();
-      td.colspan("3");
-      XhtmlNode ul = td.ul();
-      for (HumanName n : names) {
-        render(r, ul.li(), n);
+      if (names.size() == 1) {
+        render(r, td, names.get(0));
+      } else {
+        XhtmlNode ul = td.ul();
+        for (HumanName n : names) {
+          render(r, ul.li(), n);
+        }
       }
     }
   }
@@ -651,27 +648,25 @@ public class PatientRenderer extends ResourceRenderer {
     for (BaseWrapper t : pw.getValues()) {
       adds.add((Address) t.getBase());
     }
-    if (tels.size() + adds.size() == 1) {
+    if (tels.size() + adds.size() > 0) {
       XhtmlNode tr = tbl.tr();
-      nameCell(tr, "Contact Detail:", "Ways to contact the Patient");
+      nameCell(tr, context.formatMessage(RenderingContext.PAT_CONTACT), context.formatMessage(RenderingContext.PAT_CONTACT_HINT));
       XhtmlNode td = tr.td();
       td.colspan("3");
-      if (adds.isEmpty()) {
-        render(r, td, tels.get(0));
+      if (tels.size() + adds.size() == 1) {
+        if (adds.isEmpty()) {
+          render(r, td, tels.get(0));
+        } else {
+          render(r, td, adds.get(0));
+        }
       } else {
-        render(r, td, adds.get(0));
-      }
-    } else if (tels.size() + adds.size() > 1) {
-      XhtmlNode tr = tbl.tr();
-      nameCell(tr, "Contact Details:", "Ways to contact the Patient");
-      XhtmlNode td = tr.td();
-      td.colspan("3");
-      XhtmlNode ul = td.ul();
-      for (ContactPoint n : tels) {
-        render(r, ul.li(), n);
-      }
-      for (Address n : adds) {
-        render(r, ul.li(), n);
+        XhtmlNode ul = td.ul();
+        for (ContactPoint n : tels) {
+          render(r, ul.li(), n);
+        }
+        for (Address n : adds) {
+          render(r, ul.li(), n);
+        }
       }
     }
   }
@@ -698,7 +693,7 @@ public class PatientRenderer extends ResourceRenderer {
         PropertyWrapper a = r.getChildByName("active");
         if (a.hasValues()) {
           pos++;
-          nameCell(tr, "Active:", "Record is active");
+          nameCell(tr, context.formatMessage(RenderingContext.PAT_ACTIVE), context.formatMessage(RenderingContext.PAT_ACTIVE_HINT));
           XhtmlNode td = tr.td();
           if (pos == count) {
             td.colspan("3");
@@ -710,7 +705,7 @@ public class PatientRenderer extends ResourceRenderer {
         PropertyWrapper a = r.getChildByName("deceased[x]");
         if (a.hasValues()) {
           pos++;
-          nameCell(tr, "Deceased:", "Known status of Patient");
+          nameCell(tr, context.formatMessage(RenderingContext.PAT_DECEASED), context.formatMessage(RenderingContext.PAT_DECEASED_HINT));
           XhtmlNode td = tr.td();
           if (pos == count) {
             td.colspan("3");
@@ -725,7 +720,7 @@ public class PatientRenderer extends ResourceRenderer {
           if (pos == 3) {
             tr = tbl.tr();          
           }
-          nameCell(tr, "Marital Status:", "Known Marital status of Patient");
+          nameCell(tr, context.formatMessage(RenderingContext.PAT_MARITAL), context.formatMessage(RenderingContext.PAT_MARITAL_HINT));
           XhtmlNode td = tr.td();
           if (pos == count) {
             td.colspan("3");
@@ -740,7 +735,7 @@ public class PatientRenderer extends ResourceRenderer {
           if (pos == 3) {
             tr = tbl.tr();          
           }
-          nameCell(tr, "Multiple Birth:", "Known multipleBirth status of Patient");
+          nameCell(tr, context.formatMessage(RenderingContext.PAT_MUL_BIRTH), context.formatMessage(RenderingContext.PAT_MUL_BIRTH_HINT));
           XhtmlNode td = tr.td();
           if (pos == count) {
             td.colspan("3");
@@ -783,7 +778,7 @@ public class PatientRenderer extends ResourceRenderer {
             String n = UUID.randomUUID().toString().toLowerCase()+ext;
             TextFile.bytesToFile(att.getData(), new File(Utilities.path(context.getDestDir(), n)));
             context.registerFile(n);
-            td.img(n, "patient photo");            
+            td.img(n, context.formatMessage(RenderingContext.PAT_PHOTO));            
           }
           return;
         } 
