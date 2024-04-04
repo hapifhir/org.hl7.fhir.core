@@ -94,7 +94,7 @@ private static TxTestData testData;
     String fn = setup.getTest().has("response:tx.fhir.org") ? setup.getTest().asString("response:tx.fhir.org") : setup.getTest().asString("response");
     String resp = TestingUtilities.loadTestResource("tx", fn);
     String fp = Utilities.path("[tmp]", "tx", fn);
-    JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
+    JsonObject ext = testData.getExternals() == null ? null : testData.getExternals().getJsonObject(fn);
     File fo = ManagedFileAccess.file(fp);
     if (fo.exists()) {
       fo.delete();
