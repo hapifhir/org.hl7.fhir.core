@@ -380,7 +380,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           if (tr.getReference().startsWith("#")) {
             onPage = true;
             if (context.getRules() == GenerationRules.IG_PUBLISHER || (tr != null && tr.getKind() != ResourceReferenceKind.BUNDLE)) {
-              c = x.ah("#hc"+r.getReference().substring(1));
+              c = x.ah("#hc"+tr.getReference().substring(1));
             } else {
               c = x;
             }
