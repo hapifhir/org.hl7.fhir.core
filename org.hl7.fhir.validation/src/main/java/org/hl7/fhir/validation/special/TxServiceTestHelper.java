@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.special;
 
 import com.google.gson.JsonSyntaxException;
-import lombok.Getter;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser;
@@ -9,7 +8,6 @@ import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -20,7 +18,6 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
 
 public class TxServiceTestHelper {
 
@@ -107,7 +104,9 @@ public class TxServiceTestHelper {
 
       String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(operationOutcome);
 
-      dumparoo("/Users/david.otasek/IN/2024-02-05-hapi-core-bump-6-2.16/core-test", name, expectedResponse, actualResponse);
+
+
+      writeDiffToFileSystem( name, expectedResponse, actualResponse);
 
       String diff = CompareUtilities.checkJsonSrcIsSame(id, expectedResponse, actualResponse, externals);
       if (diff != null) {
@@ -181,7 +180,7 @@ public class TxServiceTestHelper {
 
       String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(parameters);
 
-      dumparoo("/Users/david.otasek/IN/2024-02-05-hapi-core-bump-6-2.16/core-test", name, expectedResponse, actualResponse);
+      writeDiffToFileSystem(name, expectedResponse, actualResponse);
 
       String diff = CompareUtilities.checkJsonSrcIsSame(id, expectedResponse, actualResponse, externals);
       if (diff != null) {
@@ -193,7 +192,11 @@ public class TxServiceTestHelper {
     }
   }
 
-  public static void dumparoo(String rootDirectory, String testName, String expected, String actual) throws IOException {
+  public static void writeDiffToFileSystem(String testName, String expected, String actual) throws IOException {
+    String rootDirectory = System.getenv("TX_SERVICE_TEST_DIFF_TARGET");
+    if (rootDirectory == null || rootDirectory.isEmpty()) {
+      return;
+    }
     String fullExpected = rootDirectory + "/expected/";
     String fullActual = rootDirectory + "/actual/";
     File expectedDirectory = new File(fullExpected);
