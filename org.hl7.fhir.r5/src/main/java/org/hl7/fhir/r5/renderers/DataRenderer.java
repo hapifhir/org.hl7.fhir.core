@@ -346,7 +346,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (JurisdictionUtilities.isJurisdiction(system)) {
       return JurisdictionUtilities.displayJurisdiction(system+"#"+code);
     }
-    ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().withLanguage(context.getLang()).withVersionFlexible(true), system, version, code, null);
+    ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().withLanguage(context.getLocale().toString()).withVersionFlexible(true), system, version, code, null);
 
     if (t != null && t.getDisplay() != null)
       return t.getDisplay();
