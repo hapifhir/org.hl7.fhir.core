@@ -24,8 +24,11 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.renderers.CodeSystemRenderer.Translateable;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.MultiLanguagePolicy;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
@@ -37,6 +40,27 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class CodeSystemRenderer extends TerminologyRenderer {
+
+  public class Translateable {
+
+    private String lang;
+    private StringType value;
+
+    public Translateable(String lang, StringType value) {
+      this.lang = lang;
+      this.value = value;
+    }
+
+    public String getLang() {
+      return lang;
+    }
+
+    public StringType getValue() {
+      return value;
+    }
+
+  }
+
 
   private Boolean doMarkdown = null;
 
@@ -426,34 +450,47 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     if (hasDefinitions) {
       td = tr.td();
       if (c != null &&c.hasDefinitionElement()) {
-        if (getContext().getLang() == null) {
-          if (hasMarkdownInDefinitions(cs)) {
-            addMarkdown(renderStatusDiv(c.getDefinitionElement(), td), c.getDefinition());
-          } else {
-            renderStatus(c.getDefinitionElement(), td).addText(c.getDefinition());
+        // translations of the definition might come from either the translation extension, or from the designations
+        StringType defn = context.getTranslatedElement(c.getDefinitionElement());
+        boolean sl = false;
+        for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) { 
+          if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "definition") && cd.hasLanguage() && !c.getDefinition().equalsIgnoreCase(cd.getValue())) { 
+            sl = true;
           }
-        } else if (getContext().getLang().equals("*")) {
-          boolean sl = false;
-          for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) 
-            if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "definition") && cd.hasLanguage() && !c.getDefinition().equalsIgnoreCase(cd.getValue())) 
-              sl = true;
-          td.addText((sl ? cs.getLanguage("en")+": " : ""));
-          if (hasMarkdownInDefinitions(cs))
-            addMarkdown(renderStatusDiv(c.getDefinitionElement(), td), c.getDefinition());
-          else
-            renderStatus(c.getDefinitionElement(), td).addText(c.getDefinition());
-          for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
+        }
+
+        if (getContext().getMultiLanguagePolicy() == MultiLanguagePolicy.NONE && (sl || ToolingExtensions.hasLanguageTranslations(defn))) {
+          if (hasMarkdownInDefinitions(cs)) {
+            addMarkdown(renderStatusDiv(defn, td), defn.asStringValue());
+          } else {
+            renderStatus(defn, td).addText(defn.asStringValue());
+          }
+        } else {
+          List<Translateable> list = new ArrayList<>();
+          list.add(new Translateable(cs.getLanguage(), defn));
+          for (Extension ext : defn.getExtensionsByUrl(ToolingExtensions.EXT_TRANSLATION)) {
+            list.add(new Translateable(ext.getExtensionString("lang"), ext.getExtensionByUrl("content").getValueStringType()));
+          }
+          for (ConceptDefinitionDesignationComponent cd : c.getDesignation())  {
             if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "definition") && cd.hasLanguage() && !c.getDefinition().equalsIgnoreCase(cd.getValue())) {
-              td.br();
-              td.addText(cd.getLanguage()+": "+cd.getValue());
+              list.add(new Translateable(cd.getLanguage(), cd.getValueElement()));
             }
           }
-        } else if (getContext().getLang().equals(cs.getLanguage()) || (getContext().getLang().equals("en") && !cs.hasLanguage())) {
-          renderStatus(c.getDefinitionElement(), td).addText(c.getDefinition());
-        } else {
-          for (ConceptDefinitionDesignationComponent cd : c.getDesignation()) {
-            if (cd.getUse().is("http://terminology.hl7.org/CodeSystem/designation-usage", "definition") && cd.hasLanguage() && cd.getLanguage().equals(getContext().getLang())) {
-              td.addText(cd.getValue());
+          boolean first = true;
+          for (Translateable ti : list) {
+            if (first) {
+              first = false;
+            } else {
+              td.br();
+            }
+
+            if (ti.lang != null) {
+              td.addText(ti.lang + ": ");
+            }
+            if (hasMarkdownInDefinitions(cs)) {
+              addMarkdown(renderStatusDiv(ti.getValue(), td), ti.getValue().asStringValue());
+            } else {
+              renderStatus(ti.getValue(), td).addText(ti.getValue().asStringValue());
             }
           }
         }
