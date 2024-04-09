@@ -1422,14 +1422,16 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (x.getName().equals("blockquote")) {
       x = x.para();
     }
-    Currency c = Currency.getInstance(money.getCurrency());
+    Currency c = money.hasCurrency() ? Currency.getInstance(money.getCurrency()) : null;
     if (c != null) {
       XhtmlNode s = x.span(null, c.getDisplayName());
       s.tx(c.getSymbol(context.getLocale()));
       s.tx(getLocalizedBigDecimalValue(money.getValue(), c));
       x.tx(" ("+c.getCurrencyCode()+")");
     } else {
-      x.tx(money.getCurrency());
+      if (money.getCurrency() != null) {
+        x.tx(money.getCurrency());
+      }
       x.tx(money.getValue().toPlainString());
     }
   }

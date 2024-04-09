@@ -902,5 +902,15 @@ public class RenderingContext extends RenderingI18nContext {
     }
     return e.primitiveValue();
   }
+
+  public RenderingContext withLocale(Locale locale) {
+    setLocale(locale);
+    return this;
+  }
+
+  public RenderingContext withLocaleCode(String locale) {
+    setLocale(new Locale(locale));
+    return this;
+  }
   
 }
