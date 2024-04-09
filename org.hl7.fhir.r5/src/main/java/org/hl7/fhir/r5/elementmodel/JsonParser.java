@@ -165,6 +165,10 @@ public class JsonParser extends ParserBase {
   }
 
   public Element parse(List<ValidationMessage> errors, JsonObject object) throws FHIRException {
+    return parse(errors, object, null);
+  }
+  
+  public Element parse(List<ValidationMessage> errors, JsonObject object, String statedPath) throws FHIRException {
     if (object == null) {
       System.out.println("What?");
     }
@@ -187,16 +191,16 @@ public class JsonParser extends ParserBase {
          return null;
         }
       }
-      path = name;
+      path = statedPath == null ? name : statedPath;
     } else {
       name = sd.getType();
-      path = sd.getTypeTail();
+      path = statedPath == null ? sd.getTypeTail() : statedPath;
     }
     baseElement = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.getProfileUtilities(), this.getContextUtilities())).setFormat(FhirFormat.JSON);
     checkObject(errors, object, baseElement, path);
     baseElement.markLocation(line(object), col(object));
     baseElement.setType(name);
-    baseElement.setPath(baseElement.fhirTypeRoot());
+    baseElement.setPath(statedPath == null ? baseElement.fhirTypeRoot() : statedPath);
     parseChildren(errors, path, object, baseElement, true, null);
     baseElement.numberChildren();
     return baseElement;
