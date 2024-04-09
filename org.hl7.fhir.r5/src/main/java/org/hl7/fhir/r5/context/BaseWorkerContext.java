@@ -803,7 +803,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
 
-
+  public boolean isServerSideSystem(String url) {
+    boolean check = supportsSystem(url);
+    return check && supportedCodeSystems.contains(url);
+  }
 
 
   protected void txLog(String msg) {

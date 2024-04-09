@@ -656,4 +656,6 @@ public interface IWorkerContext {
    */
   public Boolean subsumes(ValidationOptions options, Coding parent, Coding child);
 
+  public boolean isServerSideSystem(String url);
+
 }
