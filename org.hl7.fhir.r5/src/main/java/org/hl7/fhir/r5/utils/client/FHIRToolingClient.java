@@ -488,6 +488,25 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return (Parameters) result.getPayload();
   }
 
+  public Parameters lookupCode(Parameters p) {
+    recordUse();
+    org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
+    try {
+      result = client.issuePostRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup"),
+          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())),
+        withVer(getPreferredResourceFormat(), "4.0"),
+        generateHeaders(),
+        "CodeSystem/$lookup",
+        timeoutNormal);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+    }
+    return (Parameters) result.getPayload();
+  }
+
   public String getAddress() {
     return base;
   }

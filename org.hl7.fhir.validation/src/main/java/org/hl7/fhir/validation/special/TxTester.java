@@ -201,6 +201,8 @@ public class TxTester {
           msg = validate(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
         } else if (test.asString("operation").equals("cs-validate-code")) {
           msg = validateCS(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
+        } else if (test.asString("operation").equals("lookup")) {
+          msg = lookup(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -249,6 +251,30 @@ public class TxTester {
     return new URI(server).getHost();
   }
 
+  private String lookup(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+    for (Resource r : setup) {
+      p.addParameter().setName("tx-resource").setResource(r);
+    }
+    tx.setContentLanguage(lang);
+    p.getParameter().addAll(profile.getParameter());
+    String pj;
+    try {
+      Parameters po = tx.lookupCode(p);
+      TxTesterScrubbers.scrubParams(po);
+      TxTesterSorters.sortParameters(po);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+    } catch (EFhirClientException e) {
+      OperationOutcome oo = e.getServerError(); 
+      TxTesterScrubbers.scrubOO(oo, tight);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+    }
+    String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, pj, false, ext);
+    if (diff != null) {
+      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
+      TextFile.stringToFile(pj, fp);        
+    }
+    return diff;
+  }
   private String expand(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
