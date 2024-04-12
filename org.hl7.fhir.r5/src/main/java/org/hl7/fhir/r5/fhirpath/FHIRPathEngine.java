@@ -1513,8 +1513,9 @@ public class FHIRPathEngine {
     return false;
   }
 
-  private List<Base> execute(ExecutionContext context, List<Base> focus, ExpressionNode exp, boolean atEntry) throws FHIRException {
+  private List<Base> execute(ExecutionContext inContext, List<Base> focus, ExpressionNode exp, boolean atEntry) throws FHIRException {
     //    System.out.println("Evaluate {'"+exp.toString()+"'} on "+focus.toString());
+    ExecutionContext context = contextForParameter(inContext);
     List<Base> work = new ArrayList<Base>();
     switch (exp.getKind()) {
     case Unary:
@@ -1558,6 +1559,7 @@ public class FHIRPathEngine {
       ExpressionNode next = exp.getOpNext();
       ExpressionNode last = exp;
       while (next != null) {
+        context = contextForParameter(inContext);
         List<Base> work2 = preOperate(work, last.getOperation(), exp);
         if (work2 != null) {
           work = work2;
@@ -1621,8 +1623,8 @@ public class FHIRPathEngine {
     return new TypeDetails(CollectionStatus.SINGLETON, exp.getName());
   }
 
-  private TypeDetails executeType(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, Set<ElementDefinition> elementDependencies, boolean atEntry, boolean canBeNone, ExpressionNode container) throws PathEngineException, DefinitionException {
-    
+  private TypeDetails executeType(ExecutionTypeContext inContext, TypeDetails focus, ExpressionNode exp, Set<ElementDefinition> elementDependencies, boolean atEntry, boolean canBeNone, ExpressionNode container) throws PathEngineException, DefinitionException {
+    ExecutionTypeContext context = contextForParameter(inContext);
     TypeDetails result = new TypeDetails(null);
     switch (exp.getKind()) {
     case Name:
@@ -1672,6 +1674,7 @@ public class FHIRPathEngine {
       ExpressionNode next = exp.getOpNext();
       ExpressionNode last = exp;
       while (next != null) {
+        context = contextForParameter(inContext);
         TypeDetails work;
         if (last.getOperation() == Operation.Is || last.getOperation() == Operation.As) {
           work = executeTypeName(context, focus, next, atEntry);
