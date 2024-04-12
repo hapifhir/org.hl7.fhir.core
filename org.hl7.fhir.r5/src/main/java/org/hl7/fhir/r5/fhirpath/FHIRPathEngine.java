@@ -3559,6 +3559,25 @@ public class FHIRPathEngine {
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return focus; 
     }
+    case DefineVariable : {
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.UNORDERED, TypeDetails.FP_String)); 
+      // set the type of the variable
+      // Actually evaluate the value of the first parameter (to get the name of the variable if possible)
+      // and if have that, set it into the context
+      ExpressionNode p = exp.getParameters().get(0);
+      if (p.getKind() == Kind.Constant && p.getConstant() != null) {
+        String varName = exp.getParameters().get(0).getConstant().primitiveValue();
+        if (varName != null) {
+          if (paramTypes.size() > 1)
+            context.setDefinedVariable(varName, paramTypes.get(1));
+          else
+            context.setDefinedVariable(varName, focus);
+        }
+      } else {
+        // this variable is not a constant, so we can't analyze what name it could have
+      }
+      return focus; 
+    }
     case Check : {
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return focus; 
