@@ -1056,9 +1056,18 @@ public class FHIRPathEngine {
       return definedVariables == null ? makeNull() : definedVariables.get(name);
     }
     public void setDefinedVariable(String name, List<Base> value) {
+      if (isSystemVariable(name))
+        throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_REDEFINE_VARIABLE, name), I18nConstants.FHIRPATH_REDEFINE_VARIABLE);
+
       if (definedVariables == null) {
         definedVariables = new HashMap<String, List<Base>>();
+      } else {
+        if (definedVariables.containsKey(name)) {
+          // Can't do this, so throw an error
+          throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_REDEFINE_VARIABLE, name), I18nConstants.FHIRPATH_REDEFINE_VARIABLE);
+        }
       }
+
       definedVariables.put(name, value);
     }
   }
@@ -1093,6 +1102,9 @@ public class FHIRPathEngine {
       return definedVariables == null ? null : definedVariables.get(name);
     }
     public void setDefinedVariable(String name, TypeDetails value) {
+      if (isSystemVariable(name))
+        throw new PathEngineException("Redefine of variable "+name, I18nConstants.FHIRPATH_REDEFINE_VARIABLE);
+
       if (definedVariables == null) {
         definedVariables = new HashMap<String, TypeDetails>();
       } else {
@@ -1771,6 +1783,21 @@ public class FHIRPathEngine {
     }
   }
 
+  static boolean isSystemVariable(String name){
+    if (name.equals("sct"))
+      return true;
+    if (name.equals("loinc"))
+      return true;
+    if (name.equals("ucum"))
+      return true;
+    if (name.equals("resource"))
+      return true;
+    if (name.equals("rootResource"))
+      return true;
+    if (name.equals("context"))
+      return true;
+    return false;
+  }
 
   private List<Base> resolveConstant(ExecutionContext context, String s, boolean beforeContext, ExpressionNode expr, boolean explicitConstant) throws PathEngineException {
     if (s.equals("%sct")) {
