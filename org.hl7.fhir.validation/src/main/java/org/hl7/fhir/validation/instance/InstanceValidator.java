@@ -5062,7 +5062,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
         return typeTail(type);
       } else if (type.startsWith("http://hl7.org/cda/stds/core/StructureDefinition/")) {
-        return "CDA."+typeTail(type); 
+        String tt = typeTail(type);
+        if (tt.contains("-")) {
+          tt = '`'+tt.replace("-", "_")+'`';
+        }
+        return "CDA."+tt; 
       } else {
         return typeTail(type); // todo?
       }
