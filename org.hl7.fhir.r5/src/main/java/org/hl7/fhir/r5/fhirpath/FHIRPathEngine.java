@@ -515,10 +515,14 @@ public class FHIRPathEngine {
       if (sd == null) {
         throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT, context);
       }
-      ElementDefinitionMatch ed = getElementDefinition(sd, context, true, expr);
-      if (ed == null) {
+      List<ElementDefinitionMatch> edl = getElementDefinition(sd, context, true, expr);
+      if (edl.size() == 0) {
         throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT_ELEMENT, context);
       }
+      if (edl.size() > 1) {
+        throw new Error("Not handled here yet");
+      }
+      ElementDefinitionMatch ed = edl.get(0);
       if (ed.fixedType != null) { 
         types = new TypeDetails(CollectionStatus.SINGLETON, ed.fixedType);
       } else if (ed.getDefinition().getType().isEmpty() || isAbstractType(ed.getDefinition().getType())) { 
@@ -577,10 +581,14 @@ public class FHIRPathEngine {
         }
         String tn = checkTypeName ? sd.getSnapshot().getElementFirstRep().getPath() : t;          
 
-        ElementDefinitionMatch ed = getElementDefinition(sd, tn, true, expr);
-        if (ed == null) {
+        List<ElementDefinitionMatch> edl = getElementDefinition(sd, tn, true, expr);
+        if (edl.size() == 0) {
           throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT_ELEMENT, t);
         }
+        if (edl.size() > 1) {
+          throw new Error("not handled here either");
+        }
+        ElementDefinitionMatch ed = edl.get(0);
         if (ed.fixedType != null) { 
           types.addType(ed.fixedType);
         } else if (ed.getDefinition().getType().isEmpty() || isAbstractType(ed.getDefinition().getType())) { 
@@ -660,10 +668,14 @@ public class FHIRPathEngine {
     if (!context.contains(".")) {
       types = new TypeDetails(CollectionStatus.SINGLETON, sd.getUrl());
     } else {
-      ElementDefinitionMatch ed = getElementDefinition(sd, context, true, expr);
-      if (ed == null) {
+      List<ElementDefinitionMatch> edl = getElementDefinition(sd, context, true, expr);
+      if (edl.size() == 0) {
         throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT_ELEMENT, context);
       }
+      if (edl.size() > 1) {
+        throw new Error("Unhandled case?");
+      }
+      ElementDefinitionMatch ed = edl.get(0);
       if (ed.fixedType != null) { 
         types = new TypeDetails(CollectionStatus.SINGLETON, ed.fixedType);
       } else if (ed.getDefinition().getType().isEmpty() || isAbstractType(ed.getDefinition().getType())) { 
@@ -6073,8 +6085,10 @@ public class FHIRPathEngine {
       }
       List<StructureDefinition> sdl = new ArrayList<StructureDefinition>();
       ElementDefinitionMatch m = null;
-      if (type.contains("#"))
-        m = getElementDefinition(sd, type.substring(type.indexOf("#")+1), false, expr);
+      if (type.contains("#")) {
+        List<ElementDefinitionMatch> list = getElementDefinition(sd, type.substring(type.indexOf("#")+1), false, expr);
+        m = list.size() == 1 ? list.get(0) : null;
+      }
       if (m != null && hasDataType(m.definition)) {
         if (m.fixedType != null)  {
           StructureDefinition dt = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(m.fixedType, null), sd);
@@ -6179,8 +6193,8 @@ public class FHIRPathEngine {
         } else {
           path = sdi.getSnapshot().getElement().get(0).getPath()+tail+"."+name;
 
-          ElementDefinitionMatch ed = getElementDefinition(sdi, path, isAllowPolymorphicNames(), expr);
-          if (ed != null) {
+          List<ElementDefinitionMatch> edl = getElementDefinition(sdi, path, isAllowPolymorphicNames(), expr);
+          for (ElementDefinitionMatch ed : edl) {
             if (ed.getDefinition().isChoice()) {
               result.setChoice(true);
             }
@@ -6277,8 +6291,7 @@ public class FHIRPathEngine {
   }
 
 
-  public ElementDefinitionMatch getElementDefinition(StructureDefinition sd, String path, boolean allowTypedName, ExpressionNode expr) throws PathEngineException {
-
+  public List<ElementDefinitionMatch> getElementDefinition(StructureDefinition sd, String path, boolean allowTypedName, ExpressionNode expr) throws PathEngineException {
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ed.getPath().equals(path)) {
         if (ed.hasContentReference()) {
@@ -6288,26 +6301,36 @@ public class FHIRPathEngine {
           } else {
             res.sourceDefinition = ed;
           }
-          return res;
+          return ml(res);
         } else {
-          return new ElementDefinitionMatch(ed, null);
+          return ml(new ElementDefinitionMatch(ed, null));
         }
       }
       if (ed.getPath().endsWith("[x]") && path.startsWith(ed.getPath().substring(0, ed.getPath().length()-3)) && path.length() == ed.getPath().length()-3) {
-        return new ElementDefinitionMatch(ed, null);
+        return ml(new ElementDefinitionMatch(ed, null));
       }
       if (allowTypedName && ed.getPath().endsWith("[x]") && path.startsWith(ed.getPath().substring(0, ed.getPath().length()-3)) && path.length() > ed.getPath().length()-3) {
         String s = Utilities.uncapitalize(path.substring(ed.getPath().length()-3));
         if (primitiveTypes.contains(s)) {
-          return new ElementDefinitionMatch(ed, s);
+          return ml(new ElementDefinitionMatch(ed, s));
         } else {
-          return new ElementDefinitionMatch(ed, path.substring(ed.getPath().length()-3));
+          return ml(new ElementDefinitionMatch(ed, path.substring(ed.getPath().length()-3)));
         }
       }
       if (ed.getPath().contains(".") && path.startsWith(ed.getPath()+".") && (ed.getType().size() > 0) && !isAbstractType(ed.getType())) { 
         // now we walk into the type.
-        if (ed.getType().size() > 1) { // if there's more than one type, the test above would fail this
-          throw new Error("Internal typing issue....");
+        if (ed.getType().size() > 1) { // if there's more than one type, the test above would fail this, but we can get here with CDA
+          List<ElementDefinitionMatch> list = new ArrayList<>();
+          // for each type, does it have the next node in the path? 
+          for (TypeRefComponent tr : ed.getType()) {
+            StructureDefinition nsd = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tr.getCode(), null), sd);
+            if (nsd == null) { 
+              throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ed.getType().get(0).getCode(), "getElementDefinition");
+            }
+            List<ElementDefinitionMatch> edl = getElementDefinition(nsd, nsd.getId()+path.substring(ed.getPath().length()), allowTypedName, expr);
+            list.addAll(edl);
+          }
+          return list;
         }
         StructureDefinition nsd = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getType().get(0).getCode(), null), sd);
         if (nsd == null) { 
@@ -6317,16 +6340,26 @@ public class FHIRPathEngine {
       }
       if (ed.hasContentReference() && path.startsWith(ed.getPath()+".")) {
         ElementDefinitionMatch m = getElementDefinitionById(sd, ed.getContentReference());
-        ElementDefinitionMatch res = getElementDefinition(sd, m.definition.getPath()+path.substring(ed.getPath().length()), allowTypedName, expr);
-        if (res == null) {
+        List<ElementDefinitionMatch> res = getElementDefinition(sd, m.definition.getPath()+path.substring(ed.getPath().length()), allowTypedName, expr);
+        if (res.size() == 0) {
           throw new Error("Unable to find "+ed.getContentReference());
         } else {
-          res.sourceDefinition = ed;
+          for (ElementDefinitionMatch item : res) {
+            item.sourceDefinition = ed;
+          }
         }
         return res;
       }
     }
-    return null;
+    return ml(null);
+  }
+
+  private List<ElementDefinitionMatch> ml(ElementDefinitionMatch item) {
+    List<ElementDefinitionMatch> list = new ArrayList<>();
+    if (item != null) {
+      list.add(item);
+    }
+    return list;
   }
 
   private boolean isAbstractType(List<TypeRefComponent> list) {
