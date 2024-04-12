@@ -20,6 +20,8 @@ import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.hl7.fhir.convertors.conv40_50.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -433,7 +435,12 @@ public class TxTester {
 
     @Override
     public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
-      return new org.hl7.fhir.r5.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, filename)));
+      Resource res = new org.hl7.fhir.r5.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, filename)));
+      org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_40_50.convertResource(res);
+      String p = Utilities.path(folder, "r4", filename);
+      Utilities.createDirectory(p);
+      new org.hl7.fhir.r4.formats.JsonParser().compose(ManagedFileAccess.outStream(p), r4);
+      return res;
     }
 
     @Override
