@@ -4743,6 +4743,8 @@ public class FHIRPathEngine {
 
   private ExecutionContext contextForParameter(ExecutionContext context) {
     ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, context.aliases, context.thisItem);
+    newContext.total = context.total;
+    newContext.index = context.index;
     // append all of the defined variables from the context into the new context
     if (context.definedVariables != null) {
       for (String s : context.definedVariables.keySet()) {
