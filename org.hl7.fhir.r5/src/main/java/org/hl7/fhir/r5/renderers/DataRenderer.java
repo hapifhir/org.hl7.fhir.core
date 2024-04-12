@@ -811,34 +811,44 @@ public class DataRenderer extends Renderer implements CodeResolver {
         } else {
           x.ah(r.getWebPath()).addText(uri.getValue());          
         }
-      } else if (Utilities.isAbsoluteUrlLinkable(uri.getValue()) && !(uri instanceof IdType)) {
-        x.ah(uri.getValue()).addText(uri.getValue());
       } else {
-        x.addText(uri.getValue());
+        String url = context.getResolver() != null ? context.getResolver().resolveUri(context, uri.getValue()) : null;
+        if (url != null) {          
+          x.ah(url).addText(uri.getValue());
+        } else if (Utilities.isAbsoluteUrlLinkable(uri.getValue()) && !(uri instanceof IdType)) {
+          x.ah(uri.getValue()).addText(uri.getValue());
+        } else {
+          x.addText(uri.getValue());
+        }
       }
     }
   }
   
-  protected void renderUri(XhtmlNode x, UriType uri, String path, String id, Resource src) {
+  protected void renderUri(XhtmlNode x, UriType uriD, String path, String id, Resource src) {
+    String uri = uriD.getValue();
     if (isCanonical(path)) {
-      x.code().tx(uri.getValue());
+      x.code().tx(uri);
     } else {
-      String url = uri.getValue();
-      if (url == null) {
-        x.b().tx(uri.getValue());
-      } else if (uri.getValue().startsWith("mailto:")) {
-        x.ah(uri.getValue()).addText(uri.getValue().substring(7));
+      if (uri == null) {
+        x.b().tx(uri);
+      } else if (uri.startsWith("mailto:")) {
+        x.ah(uri).addText(uri.substring(7));
       } else {
-        Resource target = context.getContext().fetchResource(Resource.class, uri.getValue(), src);
+        Resource target = context.getContext().fetchResource(Resource.class, uri, src);
         if (target != null && target.hasWebPath()) {
-          String title = target instanceof CanonicalResource ? crPresent((CanonicalResource) target) : uri.getValue();
+          String title = target instanceof CanonicalResource ? crPresent((CanonicalResource) target) : uri;
           x.ah(target.getWebPath()).addText(title);
-        } else if (uri.getValue().contains("|")) {
-          x.ah(uri.getValue().substring(0, uri.getValue().indexOf("|"))).addText(uri.getValue());
-        } else if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("ftp:")) {
-          x.ah(uri.getValue()).addText(uri.getValue());        
         } else {
-          x.code().addText(uri.getValue());        
+          String url = context.getResolver() != null ? context.getResolver().resolveUri(context, uri) : null;
+          if (url != null) {          
+            x.ah(url).addText(uri);
+          } else if (uri.contains("|")) {
+            x.ah(uri.substring(0, uri.indexOf("|"))).addText(uri);
+          } else if (uri.startsWith("http:") || uri.startsWith("https:") || uri.startsWith("ftp:")) {
+            x.ah(uri).addText(uri);        
+          } else {
+            x.code().addText(uri);        
+          }
         }
       }
     }
