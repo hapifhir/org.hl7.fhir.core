@@ -257,4 +257,9 @@ public class TerminologyClientR3 implements ITerminologyClient {
     return (Parameters) VersionConvertorFactory_30_50.convertResource(p2);
   }
 
+  @Override
+  public Parameters translate(Parameters params) throws FHIRException {
+    return (Parameters) VersionConvertorFactory_30_50.convertResource(client.transform((org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(params)));
+  }
+
 }

@@ -268,5 +268,10 @@ public class TerminologyClientR5 implements ITerminologyClient {
     return client.search(type, criteria);
   }
 
+  @Override
+  public Parameters translate(Parameters params) throws FHIRException {
+    return client.translate(params);
+  }
+
 
 }

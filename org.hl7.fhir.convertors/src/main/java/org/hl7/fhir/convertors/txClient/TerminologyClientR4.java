@@ -274,5 +274,10 @@ public class TerminologyClientR4 implements ITerminologyClient {
     org.hl7.fhir.r4.model.Bundle result = client.search(type, criteria);
     return result == null ? null : (Bundle) VersionConvertorFactory_40_50.convertResource(result);
   }
+
+  @Override
+  public Parameters translate(Parameters params) throws FHIRException {  
+    return (Parameters) VersionConvertorFactory_40_50.convertResource(client.translate((org.hl7.fhir.r4.model.Parameters) VersionConvertorFactory_40_50.convertResource(params)));
+  }
   
 }

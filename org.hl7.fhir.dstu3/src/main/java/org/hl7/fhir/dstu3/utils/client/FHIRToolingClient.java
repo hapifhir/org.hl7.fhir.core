@@ -451,6 +451,25 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return (Parameters) result.getPayload();
   }
 
+  public Parameters transform(Parameters p) {
+    recordUse();
+    org.hl7.fhir.dstu3.utils.client.network.ResourceRequest<Resource> result = null;
+    try {
+      result = client.issuePostRequest(resourceAddress.resolveOperationUri(ConceptMap.class, "transform"),
+          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())),
+        withVer(getPreferredResourceFormat(), "3.0"),
+        generateHeaders(),
+        "ConceptMap/$transform",
+        timeoutNormal);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+    }
+    return (Parameters) result.getPayload();
+  }
+
   public ValueSet expandValueset(ValueSet source, Parameters expParams) {
     recordUse();
     Parameters p = expParams == null ? new Parameters() : expParams.copy();
