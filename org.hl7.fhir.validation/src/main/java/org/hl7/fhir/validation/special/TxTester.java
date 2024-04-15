@@ -205,6 +205,8 @@ public class TxTester {
           msg = validateCS(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
         } else if (test.asString("operation").equals("lookup")) {
           msg = lookup(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
+        } else if (test.asString("operation").equals("translate")) {
+          msg = translate(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -277,6 +279,32 @@ public class TxTester {
     }
     return diff;
   }
+
+  private String translate(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
+    for (Resource r : setup) {
+      p.addParameter().setName("tx-resource").setResource(r);
+    }
+    tx.setContentLanguage(lang);
+    p.getParameter().addAll(profile.getParameter());
+    String pj;
+    try {
+      Parameters po = tx.translate(p);
+      TxTesterScrubbers.scrubParams(po);
+      TxTesterSorters.sortParameters(po);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+    } catch (EFhirClientException e) {
+      OperationOutcome oo = e.getServerError(); 
+      TxTesterScrubbers.scrubOO(oo, tight);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+    }
+    String diff = CompareUtilities.checkJsonSrcIsSame(id, resp, pj, false, ext);
+    if (diff != null) {
+      Utilities.createDirectory(Utilities.getDirectoryForFile(fp));
+      TextFile.stringToFile(pj, fp);        
+    }
+    return diff;
+  }
+
   private String expand(String id, ITerminologyClient tx, List<Resource> setup, Parameters p, String resp, String fp, String lang, Parameters profile, JsonObject ext) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
@@ -438,7 +466,7 @@ public class TxTester {
       Resource res = new org.hl7.fhir.r5.formats.JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, filename)));
       org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_40_50.convertResource(res);
       String p = Utilities.path(folder, "r4", filename);
-      Utilities.createDirectory(p);
+      Utilities.createDirectory(Utilities.getDirectoryForFile(p));
       new org.hl7.fhir.r4.formats.JsonParser().compose(ManagedFileAccess.outStream(p), r4);
       return res;
     }

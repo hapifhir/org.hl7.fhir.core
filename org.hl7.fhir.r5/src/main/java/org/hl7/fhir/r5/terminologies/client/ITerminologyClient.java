@@ -63,6 +63,7 @@ public interface ITerminologyClient {
   CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException;
   Parameters lookupCode(Map<String, String> params) throws FHIRException;
   Parameters lookupCode(Parameters params) throws FHIRException;
+  Parameters translate(Parameters params) throws FHIRException;
   Bundle validateBatch(Bundle batch);
   CanonicalResource read(String type, String id);
   ClientHeaders getClientHeaders();
