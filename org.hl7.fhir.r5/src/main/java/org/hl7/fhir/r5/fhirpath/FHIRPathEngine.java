@@ -1540,7 +1540,7 @@ public class FHIRPathEngine {
       }
       break;
     case Function:
-      List<Base> work2 = evaluateFunction(context, focus, exp);
+      List<Base> work2 = evaluateFunction("aliasAs".equals(exp.getName()) ? inContext : context, focus, exp);
       work.addAll(work2);
       break;
     case Constant:
