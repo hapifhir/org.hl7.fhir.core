@@ -14,9 +14,15 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Date
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.MarkDown30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
+import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Canonical43_50;
 import org.hl7.fhir.dstu3.model.ImplementationGuide;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Enumeration;
+
+static final String EXT_IG_DEFINITION_RESOURCE_PROFILE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.definition.resource.profile";
 
 public class ImplementationGuide30_50 {
 
@@ -204,10 +210,16 @@ public class ImplementationGuide30_50 {
     if (src.hasProfile()) {
       tgt.setExampleFor(Reference30_50.convertCanonicalToReference(src.getProfile().get(0)));
       tgt.setExample(true);
+      if (src.getProfile().size() > 1) {
+        for (CanonicalType p: src.getProfile().subList(1, src.getProfile().size()-1)) {
+          tgt.addExtension(EXT_IG_DEFINITION_RESOURCE_PROFILE, Canonical30_50.convertCanonical(p));
+        }
+      }
     } else if (src.hasIsExample())
       tgt.setExample(src.getIsExample());
     else
       tgt.setExample(false);
+
     if (src.hasName())
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
     if (src.hasDescription())
@@ -222,6 +234,9 @@ public class ImplementationGuide30_50 {
       return null;
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyBackboneElement(src,tgt);
+    for (Extension ext: src.getExtensionsByUrl(EXT_IG_DEFINITION_RESOURCE_PROFILE)) {
+      tgt.getProfile().add(Canonical30_50.convertCanonical((org.hl7.fhir.r3.model.CanonicalType)ext.getValue()));
+    }
     if (src.hasExampleFor()) {
       tgt.getProfile().add(Reference30_50.convertReferenceToCanonical(src.getExampleFor()));
     } else if (src.hasExample())

@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv43_50.resources43_50;
 import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.context.ConversionContext43_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.general43_50.CodeableConcept43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.ContactDetail43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.metadata43_50.UsageContext43_50;
@@ -17,6 +18,8 @@ import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Uri43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.primitive43_50.Url43_50;
 import org.hl7.fhir.convertors.conv43_50.datatypes43_50.special43_50.Reference43_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.utilities.Utilities;
 
 /*
@@ -51,6 +54,7 @@ import org.hl7.fhir.utilities.Utilities;
 public class ImplementationGuide43_50 {
 
   static final String EXT_IG_DEFINITION_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/ig-parameter";
+  static final String EXT_IG_DEFINITION_RESOURCE_PROFILE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.definition.resource.profile";
 
   public static org.hl7.fhir.r5.model.ImplementationGuide convertImplementationGuide(org.hl7.fhir.r4b.model.ImplementationGuide src) throws FHIRException {
     if (src == null)
@@ -312,8 +316,13 @@ public class ImplementationGuide43_50 {
       tgt.setDescriptionElement(String43_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasExampleBooleanType())
       tgt.setIsExampleElement(Boolean43_50.convertBoolean(src.getExampleBooleanType()));
-    if (src.hasExampleCanonicalType())
+    if (src.hasExampleCanonicalType()) {
+      tgt.setIsExample(true);
       tgt.getProfile().add(Canonical43_50.convertCanonical(src.getExampleCanonicalType()));
+    }
+    for (Extension ext: src.getExtensionsByUrl(EXT_IG_DEFINITION_RESOURCE_PROFILE)) {
+      tgt.getProfile().add(Canonical43_50.convertCanonical((org.hl7.fhir.r43.model.CanonicalType)ext.getValue()));
+    }
     if (src.hasGroupingId())
       tgt.setGroupingIdElement(Id43_50.convertId(src.getGroupingIdElement()));
     return tgt;
@@ -337,6 +346,11 @@ public class ImplementationGuide43_50 {
       tgt.setExample(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getIsExampleElement()));
     if (src.hasProfile())
       tgt.setExample(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(src.getProfile().get(0)));
+    if (src.getProfile().size() > 1) {
+      for (CanonicalType p: src.getProfile().subList(1, src.getProfile().size()-1)) {
+        tgt.addExtension(EXT_IG_DEFINITION_RESOURCE_PROFILE, Canonical43_50.convertCanonical(p));
+      }
+    }
     if (src.hasGroupingId())
       tgt.setGroupingIdElement(Id43_50.convertId(src.getGroupingIdElement()));
     return tgt;
