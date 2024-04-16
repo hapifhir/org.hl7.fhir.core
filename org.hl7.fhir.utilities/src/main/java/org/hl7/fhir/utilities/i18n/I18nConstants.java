@@ -1102,6 +1102,7 @@ public class I18nConstants {
   public static final String SD_ELEMENT_FIXED_WRONG_TYPE = "SD_ELEMENT_FIXED_WRONG_TYPE";
   public static final String SD_ELEMENT_REASON_DERIVED = "SD_ELEMENT_REASON_DERIVED";
   public static final String SD_ELEMENT_PATTERN_WRONG_TYPE = "SD_ELEMENT_PATTERN_WRONG_TYPE";
+  public static final String FHIRPATH_REDEFINE_VARIABLE = "FHIRPATH_REDEFINE_VARIABLE";
 }
 
 

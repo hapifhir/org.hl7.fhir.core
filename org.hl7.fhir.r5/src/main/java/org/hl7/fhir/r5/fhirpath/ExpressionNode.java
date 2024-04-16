@@ -51,7 +51,7 @@ public class ExpressionNode {
     
     Empty, Not, Exists, SubsetOf, SupersetOf, IsDistinct, Distinct, Count, Where, Select, All, Repeat, Aggregate, Item /*implicit from name[]*/, As, Is, Single,
     First, Last, Tail, Skip, Take, Union, Combine, Intersect, Exclude, Iif, Upper, Lower, ToChars, IndexOf, Substring, StartsWith, EndsWith, Matches, MatchesFull, ReplaceMatches, Contains, Replace, Length,  
-    Children, Descendants, MemberOf, Trace, Check, Today, Now, Resolve, Extension, AllFalse, AnyFalse, AllTrue, AnyTrue,
+    Children, Descendants, MemberOf, Trace, DefineVariable, Check, Today, Now, Resolve, Extension, AllFalse, AnyFalse, AllTrue, AnyTrue,
     HasValue, OfType, Type, ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToDate, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo,
     Round, Sqrt, Abs, Ceiling, Exp, Floor, Ln, Log, Power, Truncate,
     
@@ -106,6 +106,7 @@ public class ExpressionNode {
       if (name.equals("descendants")) return Function.Descendants;
       if (name.equals("memberOf")) return Function.MemberOf;
       if (name.equals("trace")) return Function.Trace;
+      if (name.equals("defineVariable")) return Function.DefineVariable;
       if (name.equals("check")) return Function.Check;
       if (name.equals("today")) return Function.Today;
       if (name.equals("now")) return Function.Now;
@@ -211,6 +212,7 @@ public class ExpressionNode {
       case Descendants : return "descendants";
       case MemberOf : return "memberOf";
       case Trace : return "trace";
+      case DefineVariable : return "defineVariable";
       case Check : return "check";
       case Today : return "today";
       case Now : return "now";
