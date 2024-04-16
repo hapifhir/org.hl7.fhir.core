@@ -98,8 +98,12 @@ public class TxTester {
       ITerminologyClient tx = connectToServer();
       boolean ok = checkClient(tx);
       for (JsonObject suite : tests.getJsonObjects("suites")) {
-        if (!suite.has("mode") || modes.contains(suite.asString("mode"))) {
-          ok = runSuite(suite, tx, modes, filter, json.forceArray("suites")) && ok;
+        if ((!suite.has("mode") || modes.contains(suite.asString("mode")))) {
+          if (suite.asBoolean("disabled")) {
+            ok = true;
+          } else {
+            ok = runSuite(suite, tx, modes, filter, json.forceArray("suites")) && ok;
+          }
         }
       }
       TextFile.stringToFile(JsonParser.compose(json, true), Utilities.path(output, "test-results.json"));
@@ -169,7 +173,11 @@ public class TxTester {
     List<Resource> setup = loadSetupResources(suite);
     boolean ok = true;
     for (JsonObject test : suite.getJsonObjects("tests")) {
-      ok = runTest(test, tx, setup, modes, filter, outputS.forceArray("tests")) && ok;      
+      if (test.asBoolean("disabled")) {
+        ok = true;
+      } else {
+        ok = runTest(test, tx, setup, modes, filter, outputS.forceArray("tests")) && ok;
+      }
     }
     return ok;
   }

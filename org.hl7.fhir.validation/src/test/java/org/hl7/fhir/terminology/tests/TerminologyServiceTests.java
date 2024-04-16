@@ -133,6 +133,9 @@ public class TerminologyServiceTests {
       Resource res = loadResource(s);
       engine.seeResource(res);
     }
+    if (setup.suite.asBoolean("disabled") || setup.test.asBoolean("disabled")) {
+      return;
+    }
     Resource req = loadResource(setup.test.asString("request"));
     String fn = setup.test.has("response:tx.fhir.org") ? setup.test.asString("response:tx.fhir.org") : setup.test.asString("response");
     String resp = TestingUtilities.loadTestResource("tx", fn);
