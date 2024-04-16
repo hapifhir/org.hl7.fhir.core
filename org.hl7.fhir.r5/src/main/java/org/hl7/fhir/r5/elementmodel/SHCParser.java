@@ -167,7 +167,7 @@ public class SHCParser extends ParserBase {
         return res;
       }
       // ok. all checks passed, we can now validate the bundle
-      bnd.setElement(jsonParser.parse(bnd.getErrors(), cs.getJsonObject("fhirBundle")));
+      bnd.setElement(jsonParser.parse(bnd.getErrors(), cs.getJsonObject("fhirBundle"), path));
       bnd.setElementPath(path);
     }  
     return res;

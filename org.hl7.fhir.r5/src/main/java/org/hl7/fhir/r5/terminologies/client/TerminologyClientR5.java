@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.terminologies.client;
 
 import java.net.URISyntaxException;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Map;
 
 /*
@@ -40,6 +41,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -173,6 +175,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
+  public Parameters lookupCode(Parameters params) {
+    return client.lookupCode(params);
+  }
+
+  @Override
   public ITerminologyClient setRetryCount(int retryCount) throws FHIRException {
     client.setRetryCount(retryCount);
     return this;
@@ -259,6 +266,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   @Override
   public Bundle search(String type, String criteria) {
     return client.search(type, criteria);
+  }
+
+  @Override
+  public Parameters translate(Parameters params) throws FHIRException {
+    return client.translate(params);
   }
 
 

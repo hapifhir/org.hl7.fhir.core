@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -182,6 +183,11 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
 
   @Override
+  public Parameters lookupCode(Parameters params) throws FHIRException {
+    return (Parameters) VersionConvertorFactory_40_50.convertResource(client.lookupCode((org.hl7.fhir.r4.model.Parameters) VersionConvertorFactory_40_50.convertResource(params)));
+  }
+
+  @Override
   public int getRetryCount() throws FHIRException {
     return client.getRetryCount();
   }
@@ -267,6 +273,11 @@ public class TerminologyClientR4 implements ITerminologyClient {
   public Bundle search(String type, String criteria) {    
     org.hl7.fhir.r4.model.Bundle result = client.search(type, criteria);
     return result == null ? null : (Bundle) VersionConvertorFactory_40_50.convertResource(result);
+  }
+
+  @Override
+  public Parameters translate(Parameters params) throws FHIRException {  
+    return (Parameters) VersionConvertorFactory_40_50.convertResource(client.translate((org.hl7.fhir.r4.model.Parameters) VersionConvertorFactory_40_50.convertResource(params)));
   }
   
 }

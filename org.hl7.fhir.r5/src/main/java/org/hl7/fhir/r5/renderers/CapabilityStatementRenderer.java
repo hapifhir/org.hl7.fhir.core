@@ -303,6 +303,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     block.addTag("p").addText(/*!#*/"Any FHIR capability may be 'allowed' by the system unless explicitly marked as \"SHALL NOT\". A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case.");
 
 
+    addSupportedCSs(x, conf);
     addSupportedIGs(x, conf);
 
     int restNum = conf.getRest().size();
@@ -415,6 +416,37 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     return null;
   }
 
+  private void addSupportedCSs(XhtmlNode x, CapabilityStatement cap) {
+    if (cap.hasInstantiates()) {
+      XhtmlNode p = x.para();
+      p.tx(cap.getInstantiates().size() > 1 ? "This CapabilityStatement instantiates these CapabilityStatements" : "This CapabilityStatement instantiates the CapabilityStatement");
+      boolean first = true;
+      for (CanonicalType ct : cap.getInstantiates()) {
+        CapabilityStatement cs = context.getContext().fetchResource(CapabilityStatement.class, ct.getValue(), cap);
+        if (first) {first = false;} else {p.tx(", ");};
+        if (cs == null) {
+          p.code().tx(ct.getValue());
+        } else {
+          p.ah(cs.getWebPath()).tx(cs.present());
+        }
+      }
+    }
+    if (cap.hasImports()) {
+      XhtmlNode p = x.para();
+      p.tx(cap.getImports().size() > 1 ? "This CapabilityStatement imports these CapabilityStatements" : "This CapabilityStatement imports the CapabilityStatement");
+      boolean first = true;
+      for (CanonicalType ct : cap.getImports()) {
+        CapabilityStatement cs = context.getContext().fetchResource(CapabilityStatement.class, ct.getValue(), cap);
+        if (first) {first = false;} else {p.tx(", ");};
+        if (cs == null) {
+          p.code().tx(ct.getValue());
+        } else {
+          p.ah(cs.getWebPath()).tx(cs.present());
+        }
+      }      
+    }
+  }
+  
   private void addSupportedIGs(XhtmlNode x, CapabilityStatement cap) {
     String capExpectation=null;
     if (cap.hasImplementationGuide()) {

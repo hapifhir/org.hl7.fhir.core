@@ -100,7 +100,7 @@ public class TerminologyCacheManager {
     try (ZipInputStream zipIn = new ZipInputStream(is)) {
       for (ZipEntry ze; (ze = zipIn.getNextEntry()) != null;) {
         Path path = Path.of(Utilities.path(targetDir, ze.getName())).normalize();
-        String pathString = path.toFile().getAbsolutePath();
+        String pathString = ManagedFileAccess.fromPath(path).getAbsolutePath();
         if (!path.startsWith(Path.of(targetDir).normalize())) {
           // see: https://snyk.io/research/zip-slip-vulnerability
           throw new RuntimeException("Entry with an illegal path: " + ze.getName());

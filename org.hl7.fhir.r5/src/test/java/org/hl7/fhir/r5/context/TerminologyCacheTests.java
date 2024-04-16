@@ -81,7 +81,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
   public Path createTempCacheDirectory() throws IOException {
     Path tmp = Files.createTempDirectory("integrationTestCache");
-    tmp.toFile().deleteOnExit();
+    ManagedFileAccess.fromPath(tmp).deleteOnExit();
     return tmp;
   }
 
