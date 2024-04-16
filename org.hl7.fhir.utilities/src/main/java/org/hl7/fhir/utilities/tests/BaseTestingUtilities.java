@@ -120,9 +120,9 @@ public class BaseTestingUtilities {
     public static void setFhirTestCasesDirectory(String s) {
     }
 
-  public static void createParentDirIfNotExists(Path target) {
+  public static void createParentDirIfNotExists(Path target) throws IOException {
     Path parent = target.getParent();
-    if (!parent.toFile().exists()) {
+    if (!ManagedFileAccess.fromPath(parent).exists()) {
       parent.toFile().mkdirs();
     }
   }
