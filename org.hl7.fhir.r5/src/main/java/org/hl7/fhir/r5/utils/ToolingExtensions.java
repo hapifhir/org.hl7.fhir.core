@@ -271,6 +271,7 @@ public class ToolingExtensions {
   public static final String EXT_WEB_SOURCE = "http://hl7.org/fhir/tools/StructureDefinition/web-source";
   public static final String EXT_APPLICABLE_VERSION = "http://hl7.org/fhir/StructureDefinition/version-specific-use";
   public static final String EXT_APPLICABLE_VERSION_VALUE = "http://hl7.org/fhir/StructureDefinition/version-specific-value";
+  public static final String EXT_IG_URL = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-resource-uri";
   
   // specific extension helpers
 
@@ -776,6 +777,15 @@ public class ToolingExtensions {
   //      throw new Error("Attempt to assign multiple OIDs to value set "+vs.getName()+" ("+vs.getUrl()+"). Has "+readStringExtension(vs, EXT_OID)+", trying to add "+oid);
   //  }
 
+  public static boolean hasLanguageTranslations(Element element) {
+    for (Extension e : element.getExtension()) {
+      if (e.getUrl().equals(EXT_TRANSLATION)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public static boolean hasLanguageTranslation(Element element, String lang) {
     for (Extension e : element.getExtension()) {
       if (e.getUrl().equals(EXT_TRANSLATION)) {
@@ -796,6 +806,20 @@ public class ToolingExtensions {
         if (e1 != null && e1.getValue() != null && e1.getValue() instanceof CodeType && ((CodeType) e1.getValue()).getValue().equals(lang)) {
           e1 = ExtensionHelper.getExtension(e, "content");
           return ((StringType) e1.getValue()).getValue();
+        }
+      }
+    }
+    return null;
+  }
+
+  public static StringType getLanguageTranslationElement(Element element, String lang) {
+    for (Extension e : element.getExtension()) {
+      if (e.getUrl().equals(EXT_TRANSLATION)) {
+        Extension e1 = ExtensionHelper.getExtension(e, "lang");
+
+        if (e1 != null && e1.getValue() != null && e1.getValue() instanceof CodeType && ((CodeType) e1.getValue()).getValue().equals(lang)) {
+          e1 = ExtensionHelper.getExtension(e, "content");
+          return ((StringType) e1.getValue());
         }
       }
     }

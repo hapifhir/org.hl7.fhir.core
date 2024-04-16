@@ -37,6 +37,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -198,6 +199,22 @@ public class ManagedFileAccess {
       return new CSFile(pathname);
     case MANAGED:
       return accessor.csfile(pathname);
+    case PROHIBITED:
+      throw new IOException("Access to files is not allowed by local security policy");
+    default:
+      throw new IOException("Internal Error");
+    }
+  }
+
+  public static File fromPath(Path path) throws IOException {
+    switch (accessPolicy) {
+    case DIRECT:
+      if (!inAllowedPaths(path.toString())) {
+        throw new IOException("The pathname '"+path.toString()+"' cannot be accessed by policy");
+      }
+      return path.toFile();
+    case MANAGED:
+      return accessor.file(path.toString());
     case PROHIBITED:
       throw new IOException("Access to files is not allowed by local security policy");
     default:

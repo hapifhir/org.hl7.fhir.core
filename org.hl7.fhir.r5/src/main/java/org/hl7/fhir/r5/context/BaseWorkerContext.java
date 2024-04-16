@@ -803,7 +803,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
 
-
+  public boolean isServerSideSystem(String url) {
+    boolean check = supportsSystem(url);
+    return check && supportedCodeSystems.contains(url);
+  }
 
 
   protected void txLog(String msg) {
@@ -1780,7 +1783,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     CodeSystem cs = fetchResource(CodeSystem.class, inc.getSystem(), src);
     if (cs != null && !hasCanonicalResource(pin, "tx-resource", cs.getVUrl()) && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
       cache = checkAddToParams(tc, pin, cs) || cache;
-      // todo: supplements
+      for (CodeSystem supp : fetchResourcesByType(CodeSystem.class)) {
+        if (supp.getContent() == CodeSystemContentMode.SUPPLEMENT && supp.getSupplements().equals(cs.getUrl())) {
+          cache = checkAddToParams(tc, pin, supp) || cache;
+        }
+      }
     }
     return cache;
   }

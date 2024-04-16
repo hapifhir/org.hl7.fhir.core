@@ -42,6 +42,7 @@ import javax.annotation.Nullable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,7 +51,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
-	static final long NANOS_PER_MILLIS = 1000000L;
+  static final long NANOS_PER_MILLIS = 1000000L;
 
 	static final long NANOS_PER_SECOND = 1000000000L;
   private static final Map<String, TimeZone> timezoneCache = new ConcurrentHashMap<>();
@@ -816,9 +817,14 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	 * {@link #toHumanDisplayLocalTimezone()} instead.
 	 * </p>
 	 */
-	public String toHumanDisplay() {
-	  return DateTimeUtil.toHumanDisplay(getTimeZone(), getPrecision(), getValue(), getValueAsString());
-	}
+  public String toHumanDisplay() {
+    return DateTimeUtil.toHumanDisplay(getTimeZone(), getPrecision(), getValue(), getValueAsString());
+  }
+
+  public String toHumanDisplay(Locale locale) {
+    return DateTimeUtil.toHumanDisplay(locale, getTimeZone(), getPrecision(), getValue());
+  }
+
 
 	/**
 	 * Returns a human readable version of this date/time using the system local format, converted to the local timezone

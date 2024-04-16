@@ -18,6 +18,14 @@ public class Resolver {
     
     // returns null if contained resource is inlined 
     String urlForContained(RenderingContext context, String containingType, String containingId, String containedType, String containedId);
+
+    /**
+     * returns the correct literal URL for the specified logical uri
+     * @param context
+     * @param value
+     * @return
+     */
+    String resolveUri(RenderingContext context, String uri);
   }
 
   public static class ResourceContext {

@@ -992,7 +992,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     setParents(element);
 
     long t = System.nanoTime();
-    NodeStack stack = new NodeStack(context, path, element, validationLanguage);
+    NodeStack stack = new NodeStack(context, null, element, validationLanguage);
     if (profiles == null || profiles.isEmpty()) {
       validateResource(new ValidationContext(appContext, element), errors, element, element, null, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.BaseDefinition), false, false);
     } else {
@@ -4695,18 +4695,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       // work back through the parent list - if any of them are bundles, try to resolve
       // the resource in the bundle
+      
+      // 2024-04-05 - must work through the element parents not the stack parents, as the stack is not necessarily reflective of the full parent list
+      Element focus = stack.getElement();
       String fullUrl = null; // we're going to try to work this out as we go up
-      while (stack != null && stack.getElement() != null) {
-        if (stack.getElement().getSpecial() == SpecialElement.BUNDLE_ENTRY && fullUrl == null && stack.getParent() != null && stack.getParent().getElement().getName().equals(ENTRY)) {
-          String type = stack.getParent().getParent().getElement().getChildValue(TYPE);
-          fullUrl = stack.getParent().getElement().getChildValue(FULL_URL); // we don't try to resolve contained references across this boundary
+      while (focus != null) {
+        // track the stack while we can
+        if (focus.getSpecial() == SpecialElement.BUNDLE_ENTRY && fullUrl == null && focus != null && focus.getParentForValidator().getName().equals(ENTRY)) {
+          String type = focus.getParentForValidator().getChildValue(TYPE);
+          fullUrl = focus.getParentForValidator().getChildValue(FULL_URL); // we don't try to resolve contained references across this boundary
           if (fullUrl == null)
-            bh.see(rule(errors, NO_RULE_DATE, IssueType.REQUIRED, stack.getParent().getElement().line(), stack.getParent().getElement().col(), stack.getParent().getLiteralPath(),
+            bh.see(rule(errors, NO_RULE_DATE, IssueType.REQUIRED, focus.getParentForValidator().line(), focus.getParentForValidator().col(), focus.getParentForValidator().getPath(),
               Utilities.existsInList(type, "batch-response", "transaction-response") || fullUrl != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFULLURL));
         }
-        if (BUNDLE.equals(stack.getElement().getType())) {
-          String type = stack.getElement().getChildValue(TYPE);
-          IndexedElement res = getFromBundle(stack.getElement(), ref, fullUrl, errors, path, type, "transaction".equals(type), bh);
+        if (BUNDLE.equals(focus.getType())) {
+          String type = focus.getChildValue(TYPE);
+          IndexedElement res = getFromBundle(focus, ref, fullUrl, errors, path, type, "transaction".equals(type), bh);
           if (res == null) {
             return null;
           } else {
@@ -4714,15 +4718,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rr.setResource(res.getMatch());
             rr.setFocus(res.getMatch());
             rr.setExternal(false);
-            rr.setStack(stack.push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
-              res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
-              res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
+            rr.setStack(new NodeStack(context, null, res.getMatch(), validationLanguage));
+            rr.setVia(stack);
+//                
+//                !stack.push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
+//              res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
+//              res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
             rr.getStack().pathComment(rr.getResource().fhirType()+"/"+rr.getResource().getIdBase());
             return rr;
           }
         }
-        if (stack.getElement().getSpecial() == SpecialElement.PARAMETER && stack.getParent() != null) {
-          NodeStack tgt = findInParams(stack.getParent().getParent(), ref);
+        if (focus.getSpecial() == SpecialElement.PARAMETER && focus.getParentForValidator() != null) {
+          NodeStack tgt = findInParams(focus.getParentForValidator().getParentForValidator(), ref, stack);
           if (tgt != null) {
             ResolvedReference rr = new ResolvedReference();
             rr.setResource(tgt.getElement());
@@ -4733,7 +4740,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             return rr;            
           }
         }
-        stack = stack.getParent();
+        focus = focus.getParentForValidator();
       }
       // we can get here if we got called via FHIRPath conformsTo which breaks the stack continuity.
       if (groupingResource != null && BUNDLE.equals(groupingResource.fhirType())) { // it could also be a Parameters resource - that case isn't handled yet
@@ -4759,10 +4766,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return null;
   }
 
-  private NodeStack findInParams(NodeStack params, String ref) {
+  private NodeStack findInParams(Element params, String ref, NodeStack stack) {
     int i = 0;
-    for (Element child : params.getElement().getChildren("parameter")) {
-      NodeStack p = params.push(child, i, child.getProperty().getDefinition(), child.getProperty().getDefinition());
+    for (Element child : params.getChildren("parameter")) {
+      NodeStack p = stack.push(child, i, child.getProperty().getDefinition(), child.getProperty().getDefinition());
       if (child.hasChild("resource", false)) {
         Element res = child.getNamedChild("resource", false);
         if ((res.fhirType()+"/"+res.getIdBase()).equals(ref)) {
@@ -5055,7 +5062,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
         return typeTail(type);
       } else if (type.startsWith("http://hl7.org/cda/stds/core/StructureDefinition/")) {
-        return "CDA."+typeTail(type); 
+        String tt = typeTail(type);
+        if (tt.contains("-")) {
+          tt = '`'+tt.replace("-", "_")+'`';
+        }
+        return "CDA."+tt; 
       } else {
         return typeTail(type); // todo?
       }

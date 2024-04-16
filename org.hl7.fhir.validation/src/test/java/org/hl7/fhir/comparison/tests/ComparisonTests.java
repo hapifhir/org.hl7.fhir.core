@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import java.util.stream.Stream;
@@ -158,7 +159,7 @@ public class ComparisonTests {
     if (content.has("version")) {
       session.setAnnotate(true);
     }
-    RenderingContext lrc = new RenderingContext(context, new MarkDownProcessor(Dialect.COMMON_MARK), null, "http://hl7.org/fhir", "", "en", ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER);
+    RenderingContext lrc = new RenderingContext(context, new MarkDownProcessor(Dialect.COMMON_MARK), null, "http://hl7.org/fhir", "", new Locale("en"), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER);
     lrc.setDestDir(Utilities.path("[tmp]", "comparison"));
     lrc.setPkp(new TestProfileKnowledgeProvider(context));
     if (content.has("version")) {

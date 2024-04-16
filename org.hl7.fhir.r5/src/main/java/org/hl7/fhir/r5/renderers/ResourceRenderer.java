@@ -843,8 +843,8 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   public void markLanguage(XhtmlNode x) {
-    x.setAttribute("lang", context.getLang());
-    x.setAttribute("xml:lang", context.getLang());
+    x.setAttribute("lang", context.getLocale().toString());
+    x.setAttribute("xml:lang", context.getLocale().toString());
     x.addTag(0, "hr");
     x.addTag(0, "p").b().tx(context.getLocale().getDisplayName());
     x.addTag(0, "hr");

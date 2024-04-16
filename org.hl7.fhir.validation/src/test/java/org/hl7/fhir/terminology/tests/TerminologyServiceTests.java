@@ -89,6 +89,9 @@ private static TxTestData testData;
       Resource res = loadResource(s);
       engine.seeResource(res);
     }
+    if (setup.getSuite().asBoolean("disabled") || setup.getTest().asBoolean("disabled")) {
+      return;
+    }
     Resource req = loadResource(setup.getTest().asString("request"));
     String fn = setup.getTest().has("response:tx.fhir.org") ? setup.getTest().asString("response:tx.fhir.org") : setup.getTest().asString("response");
     String resp = TestingUtilities.loadTestResource("tx", fn);
