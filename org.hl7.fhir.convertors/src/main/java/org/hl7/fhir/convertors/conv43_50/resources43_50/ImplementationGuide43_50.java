@@ -320,8 +320,8 @@ public class ImplementationGuide43_50 {
       tgt.setIsExample(true);
       tgt.getProfile().add(Canonical43_50.convertCanonical(src.getExampleCanonicalType()));
     }
-    for (Extension ext: src.getExtensionsByUrl(EXT_IG_DEFINITION_RESOURCE_PROFILE)) {
-      tgt.getProfile().add(Canonical43_50.convertCanonical((org.hl7.fhir.r43.model.CanonicalType)ext.getValue()));
+    for (org.hl7.fhir.r4b.model.Extension ext: src.getExtensionsByUrl(EXT_IG_DEFINITION_RESOURCE_PROFILE)) {
+      tgt.getProfile().add(Canonical43_50.convertCanonical((org.hl7.fhir.r4b.model.CanonicalType)ext.getValue()));
     }
     if (src.hasGroupingId())
       tgt.setGroupingIdElement(Id43_50.convertId(src.getGroupingIdElement()));
