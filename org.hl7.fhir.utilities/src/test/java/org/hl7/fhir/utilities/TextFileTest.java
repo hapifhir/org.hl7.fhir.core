@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities;
 
- import org.junit.jupiter.api.*;
+ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.junit.jupiter.api.*;
 
  import java.io.File;
  import java.io.IOException;
@@ -121,7 +122,7 @@ package org.hl7.fhir.utilities;
    }
 
    private static File createTempFile() throws IOException {
-     final var file = Files.createTempFile("test_fhir_utilities_", ".txt").toFile();
+     final var file = ManagedFileAccess.fromPath(Files.createTempFile("test_fhir_utilities_", ".txt"));
      file.deleteOnExit();
      createdFiles.add(file);
      return file;

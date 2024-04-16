@@ -123,7 +123,7 @@ public class BaseTestingUtilities {
   public static void createParentDirIfNotExists(Path target) throws IOException {
     Path parent = target.getParent();
     if (!ManagedFileAccess.fromPath(parent).exists()) {
-      parent.toFile().mkdirs();
+      ManagedFileAccess.fromPath(parent).mkdirs();
     }
   }
 }
