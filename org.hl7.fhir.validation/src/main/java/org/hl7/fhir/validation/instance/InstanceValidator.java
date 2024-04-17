@@ -285,6 +285,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   
   private class ValidatorHostServices implements IEvaluationContext {
 
+    private final IWorkerContext srcContext;
+
+    public ValidatorHostServices(IWorkerContext context) {
+      this.srcContext = context;
+    }
+
     @Override
     public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, boolean beforeContext, boolean explicitConstant) throws PathEngineException {
       ValidationContext c = (ValidationContext) appContext;
@@ -466,6 +472,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         element = element.getParentForValidator();  
       }
+      // See whether the referred resource is part of the context, which includes the resources in directories targetted
+      // for validation.
+      if ( this.srcContext !=null && url.contains("/") ){
+        res = this.srcContext.fetchResourceById(url.substring(0, url.indexOf("/")), url);
+        if (res != null) {
+          return res;
+        }
+      }
 
       if (externalHostServices != null) {
         return setParentsBase(externalHostServices.resolveReference(engine, c.getAppContext(), url, refContext));
@@ -620,7 +634,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.profileUtilities = new ProfileUtilities(theContext, null, null);
     cu = new ContextUtilities(theContext);
     fpe = new FHIRPathEngine(context);
-    validatorServices = new ValidatorHostServices();
+    validatorServices = new ValidatorHostServices( context );
     fpe.setHostServices(validatorServices);
     if (theContext.getVersion().startsWith("3.0") || theContext.getVersion().startsWith("1.0"))
       fpe.setLegacyMode(true);
