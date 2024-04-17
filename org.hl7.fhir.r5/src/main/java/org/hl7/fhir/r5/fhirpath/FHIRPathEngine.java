@@ -3202,12 +3202,14 @@ public class FHIRPathEngine {
     } else if (s.startsWith("%`ext-")) {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     } else if (hostServices == null) {
+      String varName = s.substring(1);
+      if (context.hasDefinedVariable(varName))
+        return context.getDefinedVariable(varName);
       throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, s);
     } else {
       String varName = s.substring(1);
-      if (context.hasDefinedVariable(varName)) {
+      if (context.hasDefinedVariable(varName))
         return context.getDefinedVariable(varName);
-      }
       TypeDetails v = hostServices.resolveConstantType(this, context.appInfo, s, explicitConstant);
       if (v == null) {
         throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, s); 
