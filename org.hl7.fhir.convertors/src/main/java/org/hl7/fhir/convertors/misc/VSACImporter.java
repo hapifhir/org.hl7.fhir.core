@@ -92,6 +92,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
           t = System.currentTimeMillis();
         }
       } catch (Exception e) {
+        e.printStackTrace();
         System.out.println("Unable to fetch OID " + oid + ": " + e.getMessage());
         errs.put(oid, e.getMessage());
       }
@@ -126,7 +127,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
       try {
         Parameters p = new Parameters();
         p.addParameter("url", new UriType(vs.getUrl()));
-        ValueSet vse = fhirToolingClient.expandValueset(vs, p);
+        ValueSet vse = fhirToolingClient.expandValueset(null, p);
         vs.setExpansion(vse.getExpansion());
       } catch (Exception e) {
         errs.put(oid, "Expansion: " +e.getMessage());
@@ -139,7 +140,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
         p.addParameter("url", new UriType(vs.getUrl()));
         t = System.currentTimeMillis();
         try {
-          ValueSet vse = fhirToolingClient.expandValueset(vs, p);    
+          ValueSet vse = fhirToolingClient.expandValueset(null, p);    
           vs.getExpansion().getContains().addAll(vse.getExpansion().getContains());
           vs.getExpansion().setParameter(vse.getExpansion().getParameter());
         } catch (Exception e2) {
@@ -163,6 +164,9 @@ public class VSACImporter extends OIDBasedValueSetImporter {
       } else {
         vs.setTitle(vs.getName());
       }
+      if (vs.getUrl().startsWith("https://")) {
+        System.out.println("URL is https: "+vs.getUrl());
+      }
       vs.setName(makeValidName(vs.getName()));
       JurisdictionUtilities.setJurisdictionCountry(vs.getJurisdiction(), "US");
       new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
@@ -171,8 +175,8 @@ public class VSACImporter extends OIDBasedValueSetImporter {
   }
 
   private boolean isIncomplete(ValueSetExpansionComponent expansion) {
-    IntegerType c = expansion.getParameter("count").getValueIntegerType();
-    IntegerType offset = expansion.getParameter("offset").getValueIntegerType();
+    IntegerType c = expansion.getParameter("count") != null ? expansion.getParameter("count").getValueIntegerType() : new IntegerType(0);
+    IntegerType offset = expansion.getParameter("offset") != null ? expansion.getParameter("offset").getValueIntegerType() : new IntegerType(0);
     return c.getValue() + offset.getValue() < expansion.getTotal();
   }
 
