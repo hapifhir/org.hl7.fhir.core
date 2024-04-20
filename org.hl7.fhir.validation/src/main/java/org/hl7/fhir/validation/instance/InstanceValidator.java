@@ -70,6 +70,8 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.IWorkerContext.OIDDefinition;
+import org.hl7.fhir.r5.context.IWorkerContext.OIDSummary;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.elementmodel.JsonParser;
@@ -1777,17 +1779,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       
       String oid = element.getNamedChildValue("codeSystem", false);
       if (oid != null) {
-        Set<String> urls = context.urlsForOid(true, oid);
-        if (urls.size() != 1) {
-          c.setSystem("urn:oid:"+oid);
-          ok = false;
-          if (urls.size() == 0) {
-            warning(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_UNKNOWN_OID, oid);
-          } else {
-            rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_OID_MULTIPLE_MATCHES, oid, CommaSeparatedStringBuilder.join(",", urls));
-          }
+        c.setSystem("urn:oid:"+oid);
+        OIDSummary urls = context.urlsForOid(oid, "CodeSystem");
+        if (urls.urlCount() == 1) {
+          c.setSystem(urls.getUrl());
+        } else if (urls.urlCount() == 0) {
+          warning(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_UNKNOWN_OID, oid);
         } else {
-          c.setSystem(urls.iterator().next());
+          String prefUrl = urls.chooseBestUrl();
+          if (prefUrl == null) {
+            rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_OID_MULTIPLE_MATCHES, oid, urls.describe());
+            ok = false;
+          } else {
+            c.setSystem(prefUrl);
+            warning(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_OID_MULTIPLE_MATCHES_CHOSEN, oid, prefUrl, urls.describe());
+          }
         }
       } else {
         warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE); 
@@ -6588,18 +6594,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String code = element.getNamedChildValue(isPQ ? "unit" : "code", false);
     String oid = isPQ ? "2.16.840.1.113883.6.8" : element.getNamedChildValue("codeSystem", false);
     if (oid != null) {
-      Set<String> urls = context.urlsForOid(true, oid);
-      if (urls.size() != 1) {
-        system = "urn:oid:"+oid;
-        ok = false;
-
-        if (urls.size() == 0) {
-          warning(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_UNKNOWN_OID, oid);
-        } else {
-          rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_OID_MULTIPLE_MATCHES, oid, CommaSeparatedStringBuilder.join(",", urls));
-        }
+      OIDSummary urls = context.urlsForOid(oid, "CodeSystem");
+      system = "urn:oid:"+oid;
+      if (urls.urlCount() == 1) {
+        system = urls.getUrl();
+      } else if (urls.urlCount() == 0) {
+        warning(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_UNKNOWN_OID, oid);        
       } else {
-        system = urls.iterator().next();
+        String prefUrl = urls.chooseBestUrl();
+        if (prefUrl == null) {
+          rule(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_OID_MULTIPLE_MATCHES, oid, urls.describe());
+          ok = false;
+        } else {
+          system = prefUrl;
+          warning(errors, "2023-10-11", IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_OID_MULTIPLE_MATCHES_CHOSEN, oid, prefUrl, urls.describe());
+        }
       }
     } else {
       warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, code == null, I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE);      
@@ -7208,19 +7217,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // todo: validate everything in this bundle.
     }
     if (rok) {
-      if (idstatus == IdStatus.REQUIRED && (element.getNamedChild(ID, false) == null)) {
-        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MISSING) && ok;
-      } else if (idstatus == IdStatus.PROHIBITED && (element.getNamedChild(ID, false) != null)) {
-        ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_PROHIBITED) && ok;
-      }
-      if (element.getNamedChild(ID, false) != null) {
-        Element eid = element.getNamedChild(ID, false);
-        if (eid.getProperty() != null && eid.getProperty().getDefinition() != null && eid.getProperty().getDefinition().getBase().getPath().equals("Resource.id")) {
-          NodeStack ns = stack.push(eid, -1, eid.getProperty().getDefinition(), null);
-          if (eid.primitiveValue() != null && eid.primitiveValue().length() > 64) {
-            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MALFORMED_LENGTH, eid.primitiveValue().length()) && ok;
-          } else {
-            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), FormatUtilities.isValidId(eid.primitiveValue()), I18nConstants.RESOURCE_RES_ID_MALFORMED_CHARS, eid.primitiveValue()) && ok;
+      // todo: not clear what we should do with regard to logical models - should they have ids? Should we check anything?
+      if (element.getProperty().getStructure().getKind() != StructureDefinitionKind.LOGICAL) {
+        if (idstatus == IdStatus.REQUIRED && (element.getNamedChild(ID, false) == null)) {
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MISSING) && ok;
+        } else if (idstatus == IdStatus.PROHIBITED && (element.getNamedChild(ID, false) != null)) {
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_PROHIBITED) && ok;
+        }
+        if (element.getNamedChild(ID, false) != null) {
+          Element eid = element.getNamedChild(ID, false);
+          if (eid.getProperty() != null && eid.getProperty().getDefinition() != null && eid.getProperty().getDefinition().getBase().getPath().equals("Resource.id")) {
+            NodeStack ns = stack.push(eid, -1, eid.getProperty().getDefinition(), null);
+            if (eid.primitiveValue() != null && eid.primitiveValue().length() > 64) {
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MALFORMED_LENGTH, eid.primitiveValue().length()) && ok;
+            } else {
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), FormatUtilities.isValidId(eid.primitiveValue()), I18nConstants.RESOURCE_RES_ID_MALFORMED_CHARS, eid.primitiveValue()) && ok;
+            }
           }
         }
       }
@@ -7499,7 +7511,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     
     // first case: the type value set is wrong for primitive special types
     for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-      if (iss.hasDetails() && iss.getDetails().getText().startsWith("Unable to resolve system - value set expansion has no matches for code 'http://hl7.org/fhirpath/System")) {
+      if (iss.hasDetails() && iss.getDetails().hasText() && iss.getDetails().getText().startsWith("Unable to resolve system - value set expansion has no matches for code 'http://hl7.org/fhirpath/System")) {
         return new ValidationResult("http://hl7.org/fhirpath/System", null, null, null);
       }
     }
