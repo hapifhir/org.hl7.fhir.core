@@ -1017,14 +1017,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private void renderExpansionRules(XhtmlNode x, ConceptSetComponent inc, int index, Map<String, ConceptDefinitionComponent> definitions) throws FHIRException, IOException {
-    String s = /*!#*/"This include specifies a heirarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined";
+    String s = /*!#*/"This include specifies a hierarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined";
     if (inc.hasExtension(ToolingExtensions.EXT_EXPAND_RULES)) {
       String rule = inc.getExtensionString(ToolingExtensions.EXT_EXPAND_RULES);
       if (rule != null) {
         switch (rule) {
-        case "all-codes": s = /*!#*/"This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"; 
-        case "ungrouped": s = /*!#*/"This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:";
-        case "groups-only": s = /*!#*/"This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:";
+        case "all-codes": s = /*!#*/"This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"; 
+        case "ungrouped": s = /*!#*/"This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:";
+        case "groups-only": s = /*!#*/"This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:";
         }
       }
     }
