@@ -212,9 +212,9 @@ public class TxTester {
         } else if (test.asString("operation").equals("cs-validate-code")) {
           msg = validateCS(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
         } else if (test.asString("operation").equals("lookup")) {
-          msg = null; // lookup(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
+          msg = lookup(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
         } else if (test.asString("operation").equals("translate")) {
-          msg = null; // translate(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
+          msg = translate(test.str("name"),tx, setup, req, resp, fp, lang, profile, ext);      
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
