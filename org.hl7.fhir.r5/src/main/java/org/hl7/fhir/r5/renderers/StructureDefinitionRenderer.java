@@ -1732,12 +1732,18 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (sd == null) {
           p = gen.new Piece(null, iu, null).addStyle("font-weight:bold");
           c.addPiece(p);                      
-        } else if (sd.hasWebPath()) {
-          p = gen.new Piece(sd.getWebPath(), sd.present(), null).addStyle("font-weight:bold");
-          c.addPiece(p);                      
         } else {
-          p = gen.new Piece(iu, sd.present(), null).addStyle("font-weight:bold");
-          c.addPiece(p);                      
+          String v = "";
+          if (iu.contains("|") || hasMultipleVersions(context.getContext().fetchResourcesByUrl(StructureDefinition.class, iu))) {
+            v = " ("+sd.getVersion()+")";
+          }
+          if (sd.hasWebPath()) {
+            p = gen.new Piece(sd.getWebPath(), sd.present()+v, null).addStyle("font-weight:bold");
+            c.addPiece(p);                      
+          } else {
+            p = gen.new Piece(iu, sd.present()+v, null).addStyle("font-weight:bold");
+            c.addPiece(p);                      
+          }
         }
         if (bold) p.addStyle("font-weight:bold");
       }
@@ -1782,10 +1788,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (root) { // we'll use base instead of types then
         StructureDefinition bsd = profile == null ? null : context.getWorker().fetchResource(StructureDefinition.class, profile.getBaseDefinition(), profile);
         if (bsd != null) {
+          String v = "";
+          if (profile != null && (profile.getBaseDefinition().contains("|") || hasMultipleVersions(context.getWorker().fetchResourcesByUrl(StructureDefinition.class, profile.getBaseDefinition())))) {
+            v = v +"("+bsd.getVersion()+")";
+          }
           if (bsd.hasWebPath()) {
-            c.getPieces().add(gen.new Piece(Utilities.isAbsoluteUrl(bsd.getWebPath()) ? bsd.getWebPath() : imagePath +bsd.getWebPath(), bsd.getName(), null));
+            c.getPieces().add(gen.new Piece(Utilities.isAbsoluteUrl(bsd.getWebPath()) ? bsd.getWebPath() : imagePath +bsd.getWebPath(), bsd.getName()+v, null));
           } else {
-            c.getPieces().add(gen.new Piece(null, bsd.getName(), null));
+            c.getPieces().add(gen.new Piece(null, bsd.getName()+v, null));
           }
         }
         return c;
@@ -1819,9 +1829,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         tl = t;
         if (t.hasTarget()) {
           if (t.hasProfile()) {
-            StructureDefinition tsd = context.getContext().fetchResource(StructureDefinition.class, t.getProfile().get(0).asStringValue());
+            String ref = t.getProfile().get(0).asStringValue();
+            StructureDefinition tsd = context.getContext().fetchResource(StructureDefinition.class, ref);
             if (tsd != null) {
-              c.getPieces().add(gen.new Piece(tsd.getWebPath(), tsd.getName(), tsd.present()));
+              // if there's multiple possible matches in scope, we will be explicit about the version
+              if (ref.contains("|") || hasMultipleVersions(context.getContext().fetchResourcesByUrl(StructureDefinition.class, ref))) {
+                c.getPieces().add(gen.new Piece(tsd.getWebPath(), tsd.getName()+"("+tsd.getVersion()+")", tsd.present()));                                
+              } else {
+                c.getPieces().add(gen.new Piece(tsd.getWebPath(), tsd.getName(), tsd.present()));
+              }
             } else {
               c.getPieces().add(gen.new Piece(corePath+"references.html", t.getWorkingCode(), null));
             }
@@ -1919,6 +1935,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
 
+  private boolean hasMultipleVersions(List<? extends CanonicalResource> list) {
+    Set<String> vl = new HashSet<>();
+    for (CanonicalResource cr : list) {
+      vl.add(cr.getVersion());
+    }
+    return vl.size() > 1;
+  }
+
   private String pfx(String prefix, String url) {
     return Utilities.isAbsoluteUrl(url) ? url : prefix + url;
   }
@@ -1936,7 +1960,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } else if (Utilities.isAbsoluteUrl(u)) {
       StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, u, src);
       if (sd != null && context.getPkp() != null) {
-        String disp = sd.hasTitle() ? sd.getTitle() : sd.getName();
+        String v = "";
+        if (u.contains("|") || hasMultipleVersions(context.getWorker().fetchResourcesByUrl(StructureDefinition.class, u))) {
+          v = "("+sd.getVersion()+")";
+        }
+        String disp = sd.present()+v;
         String ref = context.getPkp().getLinkForProfile(null, sd.getUrl());
         if (ref != null && ref.contains("|"))
           ref = ref.substring(0,  ref.indexOf("|"));
