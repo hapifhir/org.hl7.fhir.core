@@ -607,7 +607,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   // see http://hl7.org/fhir/R4/codesystem.html#hierachy
-  // returns additional parents not in the heirarchy
+  // returns additional parents not in the hierarchy
   public static List<String> getOtherChildren(CodeSystem cs, ConceptDefinitionComponent c) {
     List<String> res = new ArrayList<String>();
     for (ConceptPropertyComponent p : c.getProperty()) {
