@@ -1478,5 +1478,9 @@ public class NpmPackage {
     this.warned = warned;
   }
 
+  public String vid() {
+    return id()+"#"+version();
+  }
+
   
 }
