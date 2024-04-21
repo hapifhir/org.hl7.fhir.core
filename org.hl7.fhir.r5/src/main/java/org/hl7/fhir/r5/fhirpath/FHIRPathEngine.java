@@ -770,7 +770,7 @@ public class FHIRPathEngine {
       list.add(base);
     }
     log = new StringBuilder();
-    return execute(new ExecutionContext(null, base != null && base.isResource() ? base : null, base != null && base.isResource() ? base : null, base, null, base), list, ExpressionNode, true);
+    return execute(new ExecutionContext(null, base != null && base.isResource() ? base : null, base != null && base.isResource() ? base : null, base, base), list, ExpressionNode, true);
   }
 
   /**
@@ -789,7 +789,7 @@ public class FHIRPathEngine {
       list.add(base);
     }
     log = new StringBuilder();
-    return execute(new ExecutionContext(null, base.isResource() ? base : null, base.isResource() ? base : null, base, null, base), list, exp, true);
+    return execute(new ExecutionContext(null, base.isResource() ? base : null, base.isResource() ? base : null, base, base), list, exp, true);
   }
 
   /**
@@ -807,7 +807,7 @@ public class FHIRPathEngine {
       list.add(base);
     }
     log = new StringBuilder();
-    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, null, base), list, ExpressionNode, true);
+    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list, ExpressionNode, true);
   }
 
   /**
@@ -825,7 +825,7 @@ public class FHIRPathEngine {
       list.add(base);
     }
     log = new StringBuilder();
-    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, null, base), list, expressionNode, true);
+    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list, expressionNode, true);
   }
 
   /**
@@ -844,7 +844,7 @@ public class FHIRPathEngine {
       list.add(base);
     }
     log = new StringBuilder();
-    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, null, base), list, exp, true);
+    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list, exp, true);
   }
 
   /**
@@ -1009,16 +1009,14 @@ public class FHIRPathEngine {
     private Base context;
     private Base thisItem;
     private List<Base> total;
-    private Map<String, Base> aliases;
     private int index;
     private Map<String, List<Base>> definedVariables;
 
-    public ExecutionContext(Object appInfo, Base resource, Base rootResource, Base context, Map<String, Base> aliases, Base thisItem) {
+    public ExecutionContext(Object appInfo, Base resource, Base rootResource, Base context, Base thisItem) {
       this.appInfo = appInfo;
       this.context = context;
       this.focusResource = resource; 
       this.rootResource = rootResource; 
-      this.aliases = aliases;
       this.thisItem = thisItem;
       this.index = 0;
     }
@@ -1042,20 +1040,6 @@ public class FHIRPathEngine {
       return new IntegerType(index);
     }
 
-    public void addAlias(String name, List<Base> focus) throws FHIRException {
-      if (aliases == null) {
-        aliases = new HashMap<String, Base>();
-      } else {
-        aliases = new HashMap<String, Base>(aliases); // clone it, since it's going to change
-      }
-      if (focus.size() > 1) {
-        throw makeException(null, I18nConstants.FHIRPATH_ALIAS_COLLECTION);
-      }
-      aliases.put(name, focus.size() == 0 ? null : focus.get(0));      
-    }
-    public Base getAlias(String name) {
-      return aliases == null ? null : aliases.get(name);
-    }
     public ExecutionContext setIndex(int i) {
       index = i;
       return this;
@@ -1064,9 +1048,11 @@ public class FHIRPathEngine {
     public boolean hasDefinedVariable(String name) {
       return definedVariables != null && definedVariables.containsKey(name);
     }
+
     public List<Base> getDefinedVariable(String name) {
       return definedVariables == null ? makeNull() : definedVariables.get(name);
     }
+
     public void setDefinedVariable(String name, List<Base> value) {
       if (isSystemVariable(name))
         throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_REDEFINE_VARIABLE, name), I18nConstants.FHIRPATH_REDEFINE_VARIABLE);
@@ -1110,9 +1096,11 @@ public class FHIRPathEngine {
     public boolean hasDefinedVariable(String name) {
       return definedVariables != null && definedVariables.containsKey(name);
     }
+
     public TypeDetails getDefinedVariable(String name) {
       return definedVariables == null ? null : definedVariables.get(name);
     }
+
     public void setDefinedVariable(String name, TypeDetails value) {
       if (isSystemVariable(name))
         throw new PathEngineException("Redefine of variable "+name, I18nConstants.FHIRPATH_REDEFINE_VARIABLE);
@@ -1478,8 +1466,6 @@ public class FHIRPathEngine {
     case AllTrue: return checkParamCount(lexer, location, exp, 0);
     case AnyTrue: return checkParamCount(lexer, location, exp, 0);
     case HasValue: return checkParamCount(lexer, location, exp, 0);
-    case Alias: return checkParamCount(lexer, location, exp, 1);
-    case AliasAs: return checkParamCount(lexer, location, exp, 1);
     case Encode: return checkParamCount(lexer, location, exp, 1);
     case Decode: return checkParamCount(lexer, location, exp, 1);
     case Escape: return checkParamCount(lexer, location, exp, 1);
@@ -1552,7 +1538,7 @@ public class FHIRPathEngine {
       }
       break;
     case Function:
-      List<Base> work2 = evaluateFunction("aliasAs".equals(exp.getName()) ? inContext : context, focus, exp);
+      List<Base> work2 = evaluateFunction(context, focus, exp);
       work.addAll(work2);
       break;
     case Constant:
@@ -3216,12 +3202,14 @@ public class FHIRPathEngine {
     } else if (s.startsWith("%`ext-")) {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     } else if (hostServices == null) {
+      String varName = s.substring(1);
+      if (context.hasDefinedVariable(varName))
+        return context.getDefinedVariable(varName);
       throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, s);
     } else {
       String varName = s.substring(1);
-      if (context.hasDefinedVariable(varName)) {
+      if (context.hasDefinedVariable(varName))
         return context.getDefinedVariable(varName);
-      }
       TypeDetails v = hostServices.resolveConstantType(this, context.appInfo, s, explicitConstant);
       if (v == null) {
         throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, s); 
@@ -3635,12 +3623,6 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Comparable : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case Alias : 
-      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
-      return anything(CollectionStatus.SINGLETON); 
-    case AliasAs : 
-      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
-      return focus;      
     case Encode:
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
@@ -3988,7 +3970,6 @@ public class FHIRPathEngine {
     case AnyTrue: return funcAnyTrue(context, focus, exp);
     case AllTrue: return funcAllTrue(context, focus, exp);
     case HasValue : return funcHasValue(context, focus, exp);
-    case AliasAs : return funcAliasAs(context, focus, exp);
     case Encode : return funcEncode(context, focus, exp);
     case Decode : return funcDecode(context, focus, exp);
     case Escape : return funcEscape(context, focus, exp);
@@ -3996,7 +3977,6 @@ public class FHIRPathEngine {
     case Trim : return funcTrim(context, focus, exp);
     case Split : return funcSplit(context, focus, exp);
     case Join : return funcJoin(context, focus, exp); 
-    case Alias : return funcAlias(context, focus, exp);
     case HtmlChecks1 : return funcHtmlChecks1(context, focus, exp);
     case HtmlChecks2 : return funcHtmlChecks2(context, focus, exp);
     case Comparable : return funcComparable(context, focus, exp);
@@ -4567,24 +4547,6 @@ public class FHIRPathEngine {
     return result;  
   }
 
-  private List<Base> funcAliasAs(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
-    String name = nl.get(0).primitiveValue();
-    context.addAlias(name, focus);
-    return focus;
-  }
-
-  private List<Base> funcAlias(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
-    String name = nl.get(0).primitiveValue();
-    List<Base> res = new ArrayList<Base>();
-    Base b = context.getAlias(name);
-    if (b != null) {
-      res.add(b);
-    }
-    return res;    
-  }
-
   private List<Base> funcHtmlChecks1(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     // todo: actually check the HTML
     if (focus.size() != 1) {
@@ -4743,7 +4705,7 @@ public class FHIRPathEngine {
 
 
   private ExecutionContext changeThis(ExecutionContext context, Base newThis) {
-    ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, context.aliases, newThis);
+    ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, newThis);
     // append all of the defined variables from the context into the new context
     if (context.definedVariables != null) {
       for (String s : context.definedVariables.keySet()) {
@@ -4754,7 +4716,7 @@ public class FHIRPathEngine {
   }
 
   private ExecutionContext contextForParameter(ExecutionContext context) {
-    ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, context.aliases, context.thisItem);
+    ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, context.thisItem);
     newContext.total = context.total;
     newContext.index = context.index;
     // append all of the defined variables from the context into the new context
