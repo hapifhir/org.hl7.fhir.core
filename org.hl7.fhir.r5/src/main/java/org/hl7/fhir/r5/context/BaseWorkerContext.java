@@ -76,6 +76,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.IntegerType;
@@ -141,6 +142,7 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -156,9 +158,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   class OIDSource {
     private String folder;
     private Connection db;
-    protected OIDSource(String folder) {
+    private String pid;
+    protected OIDSource(String folder, String pid) {
       super();
       this.folder = folder;
+      this.pid = pid;
     }
     
   }
@@ -260,7 +264,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   
   private UcumService ucumService;
   protected Map<String, byte[]> binaries = new HashMap<String, byte[]>();
-  protected Map<String, Set<String>> oidCacheManual = new HashMap<>();
+  protected Map<String, Set<OIDDefinition>> oidCacheManual = new HashMap<>();
   protected List<OIDSource> oidSources = new ArrayList<>();
 
   protected Map<String, Map<String, ValidationResult>> validationCache = new HashMap<String, Map<String,ValidationResult>>();
@@ -494,7 +498,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             if (!oidCacheManual.containsKey(s)) {
               oidCacheManual.put(s, new HashSet<>());
             }
-            oidCacheManual.get(s).add(url);
+            oidCacheManual.get(s).add(new OIDDefinition(r.fhirType(), s, url, ((CanonicalResource) r).getVersion(), null));
           }
         }
       }
@@ -802,7 +806,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
 
-
+  public boolean isServerSideSystem(String url) {
+    boolean check = supportsSystem(url);
+    return check && supportedCodeSystems.contains(url);
+  }
 
 
   protected void txLog(String msg) {
@@ -1774,12 +1781,25 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (vs != null && !hasCanonicalResource(pin, "tx-resource", vs.getVUrl())) {
         cache = checkAddToParams(tc, pin, vs) || cache;
         addDependentResources(tc, pin, vs);
+        for (Extension ext : vs.getExtensionsByUrl(ToolingExtensions.EXT_VS_CS_SUPPL_NEEDED)) {
+          if (ext.hasValueCanonicalType()) {
+            String url = ext.getValueCanonicalType().asStringValue();
+            CodeSystem supp = fetchResource(CodeSystem.class, url);
+            if (supp != null) {
+              cache = checkAddToParams(tc, pin, supp) || cache;            
+            }
+          }
+        }
       }
     }
     CodeSystem cs = fetchResource(CodeSystem.class, inc.getSystem(), src);
     if (cs != null && !hasCanonicalResource(pin, "tx-resource", cs.getVUrl()) && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
       cache = checkAddToParams(tc, pin, cs) || cache;
-      // todo: supplements
+    }
+    for (CodeSystem supp : fetchResourcesByType(CodeSystem.class)) {
+      if (supp.getContent() == CodeSystemContentMode.SUPPLEMENT && supp.getSupplements().equals(inc.getSystem())) {
+        cache = checkAddToParams(tc, pin, supp) || cache;
+      }
     }
     return cache;
   }
@@ -2514,7 +2534,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       String[] parts = uri.split("\\/");
       if (!Utilities.noString(type) && parts.length == 1) {
         if (allResourcesById.containsKey(type)) {
-          return allResourcesById.get(type).get(parts[0]).getResource();
+          ResourceProxy res = allResourcesById.get(type).get(parts[0]);
+          return res == null ? null : res.getResource();
         } else {
           return null;
         }
@@ -2971,7 +2992,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         try {
           if (sd.getSnapshot().isEmpty()) { 
             new ContextUtilities(this).generateSnapshot(sd);
-            //          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
+            //          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
           }
         } catch (Exception e) {
           System.out.println("Unable to generate snapshot @1 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
@@ -3093,62 +3114,66 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  public Set<String> urlsForOid(boolean codeSystem, String oid) {
-    Set<String> set = urlsForOid(codeSystem, oid, true);
-    if (set.size() > 1) {
-      set =  urlsForOid(codeSystem, oid, false);
+  public OIDSummary urlsForOid(String oid, String resourceType) {
+    OIDSummary set = urlsForOid(oid, resourceType, true);
+    if (set.getDefinitions().size() > 1) {
+      set = urlsForOid(oid, resourceType, false);
     }
     return set;
   }
   
-  public Set<String> urlsForOid(boolean codeSystem, String oid, boolean retired) {
-    if (oid == null) {
-      return null;
-    }
-    Set<String> urls = new HashSet<>();
-    if (oidCacheManual.containsKey(oid)) {
-      urls.addAll(oidCacheManual.get(oid));
-    }
-    for (OIDSource os : oidSources) {
-      if (os.db == null) {
-        os.db = connectToOidSource(os.folder);
+  public OIDSummary urlsForOid(String oid, String resourceType, boolean retired) {
+    Set<OIDDefinition> urls = new HashSet<>();
+    if (oid != null) {
+      if (oidCacheManual.containsKey(oid)) {
+        urls.addAll(oidCacheManual.get(oid));
       }
-      if (os.db != null) {
-        try {
-          PreparedStatement psql = os.db.prepareStatement("Select URL, Status from OIDMap where OID = ?");
-          psql.setString(1, oid);
-          ResultSet rs = psql.executeQuery();
-          while (rs.next()) {
-            if (retired || !"retired".equals(rs.getString(2))) {
-              urls.add(rs.getString(1));
-            }
-          }
-        } catch (Exception e) {
-          // nothing, there would alreagy have been an error
-//          e.printStackTrace();
+      for (OIDSource os : oidSources) {
+        if (os.db == null) {
+          os.db = connectToOidSource(os.folder);
         }
+        if (os.db != null) {
+          try {
+            PreparedStatement psql = resourceType == null ?
+                os.db.prepareStatement("Select TYPE, URL, VERSION, Status from OIDMap where OID = ?") :
+                os.db.prepareStatement("Select TYPE, URL, VERSION, Status from OIDMap where TYPE = '"+resourceType+"' and OID = ?");
+            psql.setString(1, oid);
+            ResultSet rs = psql.executeQuery();
+            while (rs.next()) {
+              if (retired || !"retired".equals(rs.getString(4))) {
+                String rt = rs.getString(1);
+                String url = rs.getString(2);
+                String version = rs.getString(3);
+                urls.add(new OIDDefinition(rt, oid, url, version, os.pid));
+              }
+            }
+          } catch (Exception e) {
+            // nothing, there would alreagy have been an error
+  //          e.printStackTrace();
+          }
+        }
+      }      
+  
+      switch (oid) {
+      case "2.16.840.1.113883.6.1" :
+        urls.add(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.1", "http://loinc.org", null, null));
+        break;
+      case "2.16.840.1.113883.6.8" :
+        urls.add(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.8", "http://unitsofmeasure.org", null, null));
+        break;
+      case "2.16.840.1.113883.6.96" :
+        urls.add(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.96", "http://snomed.info/sct", null, null));
+        break;
+      default:
       }
-    }      
-
-    switch (oid) {
-    case "2.16.840.1.113883.6.1" :
-      urls.add("http://loinc.org");
-      break;
-    case "2.16.840.1.113883.6.8" :
-      urls.add("http://unitsofmeasure.org");
-      break;
-    case "2.16.840.1.113883.6.96" :
-      urls.add("http://snomed.info/sct");
-      break;
-    default:
     }
-    return urls;
+    return new OIDSummary(urls);
   }
 
   private Connection connectToOidSource(String folder) {
     try {
-      File ff = new File(folder);
-      File of = new File(Utilities.path(ff.getAbsolutePath(), ".oid-map.db"));
+      File ff = ManagedFileAccess.file(folder);
+      File of = ManagedFileAccess.file(Utilities.path(ff.getAbsolutePath(), ".oid-map-2.db"));
       if (!of.exists()) {
         OidIndexBuilder oidBuilder = new OidIndexBuilder(ff, of);
         oidBuilder.build();

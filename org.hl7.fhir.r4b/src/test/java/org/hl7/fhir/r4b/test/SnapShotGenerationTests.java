@@ -43,6 +43,7 @@ import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.r4b.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -533,9 +534,9 @@ public class SnapShotGenerationTests {
     if (!errors.isEmpty())
       throw new FHIRException(errors.get(0));
     IOUtils.copy(TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", test.getId() + "-expected.xml"),
-        new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")));
+        ManagedFileAccess.outStream(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml")));
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(
-        new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml")), test.getOutput());
+        ManagedFileAccess.outStream(TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml")), test.getOutput());
     Assertions.assertTrue(test.expected.equalsDeep(test.output), "Output does not match expected");
   }
 
@@ -620,14 +621,14 @@ public class SnapShotGenerationTests {
     if (!fail) {
       test.output = output;
       TestingUtilities.context().cacheResource(output);
-      File dst = new File(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml"));
+      File dst = ManagedFileAccess.file(TestingUtilities.tempFile("snapshot", test.getId() + "-expected.xml"));
       if (dst.exists())
         dst.delete();
       IOUtils.copy(
           TestingUtilities.loadTestResourceStream("r4b", "snapshot-generation", test.getId() + "-expected.xml"),
-          new FileOutputStream(dst));
+          ManagedFileAccess.outStream(dst));
       new XmlParser().setOutputStyle(OutputStyle.PRETTY)
-          .compose(new FileOutputStream(TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml")), output);
+          .compose(ManagedFileAccess.outStream(TestingUtilities.tempFile("snapshot", test.getId() + "-actual.xml")), output);
       StructureDefinition t1 = test.expected.copy();
       t1.setText(null);
       StructureDefinition t2 = test.output.copy();

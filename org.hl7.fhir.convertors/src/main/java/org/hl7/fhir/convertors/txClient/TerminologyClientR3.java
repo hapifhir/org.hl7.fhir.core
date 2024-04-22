@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.txClient;
 
 import java.net.URISyntaxException;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Map;
 
 /*
@@ -36,6 +37,7 @@ import java.util.Map;
 
 import org.hl7.fhir.convertors.conv30_50.resources30_50.TerminologyCapabilities30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -45,6 +47,7 @@ import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -156,6 +159,11 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
+  public Parameters lookupCode(Parameters params) throws FHIRException {
+    return (Parameters) VersionConvertorFactory_30_50.convertResource(client.lookupCode((org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(params)));
+  }
+
+  @Override
   public int getRetryCount() throws FHIRException {
     return client.getRetryCount();
   }
@@ -247,6 +255,11 @@ public class TerminologyClientR3 implements ITerminologyClient {
     org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(pin);
     p2 = client.operateType(org.hl7.fhir.dstu3.model.CodeSystem.class, "subsumes", p2);
     return (Parameters) VersionConvertorFactory_30_50.convertResource(p2);
+  }
+
+  @Override
+  public Parameters translate(Parameters params) throws FHIRException {
+    return (Parameters) VersionConvertorFactory_30_50.convertResource(client.transform((org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(params)));
   }
 
 }

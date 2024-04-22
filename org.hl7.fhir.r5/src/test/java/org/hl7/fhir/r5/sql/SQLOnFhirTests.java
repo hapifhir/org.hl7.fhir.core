@@ -21,6 +21,7 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.sql.Provider;
 import org.hl7.fhir.r5.utils.sql.Runner;
 import org.hl7.fhir.r5.utils.sql.StorageJson;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -87,7 +88,7 @@ public class SQLOnFhirTests {
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {
     List<Arguments> objects = new ArrayList<>();
-    File dir = new File("/Users/grahamegrieve/work/sql-on-fhir-v2/tests/content");
+    File dir = ManagedFileAccess.file("/Users/grahamegrieve/work/sql-on-fhir-v2/tests/content");
     for (File f : dir.listFiles()) {
       if (f.getName().endsWith(".json")) {
         JsonObject json = JsonParser.parseObject(f);

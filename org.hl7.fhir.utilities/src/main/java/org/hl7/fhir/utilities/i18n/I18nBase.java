@@ -26,7 +26,7 @@ public abstract class I18nBase {
     if (Objects.nonNull(locale)) {
       return locale;
     } else {
-      return Locale.US;
+      return Locale.getDefault();
     }
   }
 

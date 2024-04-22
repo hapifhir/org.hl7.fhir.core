@@ -57,10 +57,11 @@ import org.hl7.fhir.r4b.formats.RdfParserBase;
 import org.hl7.fhir.r4b.formats.XmlParser;
 import org.hl7.fhir.r4b.model.Constants;
 import org.hl7.fhir.r4b.model.Resource;
-import org.hl7.fhir.utilities.CSFile;
-import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.filesystem.CSFileInputStream;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -105,7 +106,7 @@ public class ToolsHelper {
   private void executeExamples(String[] args) throws IOException {
     try {
       @SuppressWarnings("unchecked")
-      List<String> lines = FileUtils.readLines(new File(args[1]), "UTF-8");
+      List<String> lines = FileUtils.readLines(ManagedFileAccess.file(args[1]), "UTF-8");
       String srcDir = lines.get(0);
       lines.remove(0);
       processExamples(srcDir, lines);
@@ -170,10 +171,10 @@ public class ToolsHelper {
 
   public void executeFragments(String[] args) throws IOException {
     try {
-      File source = new CSFile(args[1]);
+      File source = ManagedFileAccess.csfile(args[1]);
       if (!source.exists())
         throw new FHIRException("Source File \"" + source.getAbsolutePath() + "\" not found");
-      XmlPullParser xpp = loadXml(new FileInputStream(source));
+      XmlPullParser xpp = loadXml(ManagedFileAccess.inStream(source));
       nextNoWhitespace(xpp);
       if (!xpp.getName().equals("tests"))
         throw new FHIRFormatError("Unable to parse file - starts with " + xpp.getName());
@@ -219,8 +220,8 @@ public class ToolsHelper {
 
   public void executeRoundTrip(String[] args) throws IOException, FHIRException {
     FileInputStream in;
-    File source = new CSFile(args[1]);
-    File dest = new CSFile(args[2]);
+    File source = ManagedFileAccess.csfile(args[1]);
+    File dest = ManagedFileAccess.csfile(args[2]);
     if (args.length >= 4) {
       Utilities.copyFile(args[1], args[3]);
     }
@@ -238,18 +239,18 @@ public class ToolsHelper {
     json.close();
     TextFile.stringToFile(new String(json.toByteArray()), Utilities.changeFileExt(dest.getAbsolutePath(), ".json"));
     rf = pj.parse(new ByteArrayInputStream(json.toByteArray()));
-    FileOutputStream s = new FileOutputStream(dest);
+    FileOutputStream s = ManagedFileAccess.outStream(dest);
     new XmlParser().compose(s, rf, true);
     s.close();
   }
 
   public String executeJson(String[] args) throws IOException, FHIRException {
     FileInputStream in;
-    File source = new CSFile(args[1]);
-    File dest = new CSFile(args[2]);
-    File destc = new CSFile(Utilities.changeFileExt(args[2], ".canonical.json"));
-    File destt = new CSFile(args[2] + ".tmp");
-    File destr = new CSFile(Utilities.changeFileExt(args[2], ".ttl"));
+    File source = ManagedFileAccess.csfile(args[1]);
+    File dest = ManagedFileAccess.csfile(args[2]);
+    File destc = ManagedFileAccess.csfile(Utilities.changeFileExt(args[2], ".canonical.json"));
+    File destt = ManagedFileAccess.csfile(args[2] + ".tmp");
+    File destr = ManagedFileAccess.csfile(Utilities.changeFileExt(args[2], ".ttl"));
 
     if (!source.exists())
       throw new FHIRException("Source File \"" + source.getAbsolutePath() + "\" not found");
@@ -258,21 +259,21 @@ public class ToolsHelper {
     Resource rf = p.parse(in);
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
-    FileOutputStream s = new FileOutputStream(dest);
+    FileOutputStream s = ManagedFileAccess.outStream(dest);
     json.compose(s, rf);
     s.close();
     json.setOutputStyle(OutputStyle.CANONICAL);
-    s = new FileOutputStream(destc);
+    s = ManagedFileAccess.outStream(destc);
     json.compose(s, rf);
     s.close();
     json.setSuppressXhtml("Snipped for Brevity");
     json.setOutputStyle(OutputStyle.PRETTY);
-    s = new FileOutputStream(destt);
+    s = ManagedFileAccess.outStream(destt);
     json.compose(s, rf);
     s.close();
 
     RdfParserBase rdf = new RdfParser();
-    s = new FileOutputStream(destr);
+    s = ManagedFileAccess.outStream(destr);
     rdf.compose(s, rf);
     s.close();
 
@@ -281,8 +282,8 @@ public class ToolsHelper {
 
   public void executeCanonicalXml(String[] args) throws FHIRException, IOException {
     FileInputStream in;
-    File source = new CSFile(args[1]);
-    File dest = new CSFile(args[2]);
+    File source = ManagedFileAccess.csfile(args[1]);
+    File dest = ManagedFileAccess.csfile(args[2]);
 
     if (!source.exists())
       throw new FHIRException("Source File \"" + source.getAbsolutePath() + "\" not found");
@@ -291,7 +292,7 @@ public class ToolsHelper {
     Resource rf = p.parse(in);
     XmlParser cxml = new XmlParser();
     cxml.setOutputStyle(OutputStyle.NORMAL);
-    cxml.compose(new FileOutputStream(dest), rf);
+    cxml.compose(ManagedFileAccess.outStream(dest), rf);
   }
 
   private void executeVersion(String[] args) throws IOException {
@@ -304,7 +305,7 @@ public class ToolsHelper {
         String filename = rootDir + n + ".xml";
         // 1. produce canonical XML
         CSFileInputStream source = new CSFileInputStream(filename);
-        FileOutputStream dest = new FileOutputStream(Utilities.changeFileExt(filename, ".canonical.xml"));
+        FileOutputStream dest = ManagedFileAccess.outStream(Utilities.changeFileExt(filename, ".canonical.xml"));
         XmlParser p = new XmlParser();
         Resource r = p.parse(source);
         XmlParser cxml = new XmlParser();
@@ -313,18 +314,18 @@ public class ToolsHelper {
 
         // 2. produce JSON
         source = new CSFileInputStream(filename);
-        dest = new FileOutputStream(Utilities.changeFileExt(filename, ".json"));
+        dest = ManagedFileAccess.outStream(Utilities.changeFileExt(filename, ".json"));
         r = p.parse(source);
         JsonParser json = new JsonParser();
         json.setOutputStyle(OutputStyle.PRETTY);
         json.compose(dest, r);
         json = new JsonParser();
         json.setOutputStyle(OutputStyle.CANONICAL);
-        dest = new FileOutputStream(Utilities.changeFileExt(filename, ".canonical.json"));
+        dest = ManagedFileAccess.outStream(Utilities.changeFileExt(filename, ".canonical.json"));
         json.compose(dest, r);
 
         // 2. produce JSON
-        dest = new FileOutputStream(Utilities.changeFileExt(filename, ".ttl"));
+        dest = ManagedFileAccess.outStream(Utilities.changeFileExt(filename, ".ttl"));
         RdfParserBase rdf = new RdfParser();
         rdf.compose(dest, r);
       } catch (Exception e) {
@@ -345,23 +346,23 @@ public class ToolsHelper {
         String tmp = tmpDir + n.replace(File.separator, "-") + ".tmp";
         String dest = tmpDir + n.replace(File.separator, "-") + ".java.xml";
 
-        FileInputStream in = new FileInputStream(source);
+        FileInputStream in = ManagedFileAccess.inStream(source);
         XmlParser xp = new XmlParser();
         Resource r = xp.parse(in);
         System.err.print(".");
         JsonParser jp = new JsonParser();
-        FileOutputStream out = new FileOutputStream(tmp);
+        FileOutputStream out = ManagedFileAccess.outStream(tmp);
         jp.setOutputStyle(OutputStyle.PRETTY);
         jp.compose(out, r);
         out.close();
         r = null;
         System.err.print(".");
 
-        in = new FileInputStream(tmp);
+        in = ManagedFileAccess.inStream(tmp);
         System.err.print(",");
         r = jp.parse(in);
         System.err.print(".");
-        out = new FileOutputStream(dest);
+        out = ManagedFileAccess.outStream(dest);
         new XmlParser().compose(out, r, true);
         System.err.println("!");
         out.close();
@@ -377,7 +378,7 @@ public class ToolsHelper {
   private void executeTest(String[] args) throws Throwable {
     try {
       @SuppressWarnings("unchecked")
-      List<String> lines = FileUtils.readLines(new File(args[1]), "UTF-8");
+      List<String> lines = FileUtils.readLines(ManagedFileAccess.file(args[1]), "UTF-8");
       String srcDir = lines.get(0);
       lines.remove(0);
       String dstDir = lines.get(0).trim();

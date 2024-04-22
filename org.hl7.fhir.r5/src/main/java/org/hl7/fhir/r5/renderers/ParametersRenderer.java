@@ -84,6 +84,7 @@ public class ParametersRenderer extends ResourceRenderer {
         XhtmlNode para = td.para();
         para.tx(rw.fhirType()+"/"+rw.getId());
         para.an(rw.fhirType()+"_"+rw.getId()).tx(" ");
+        para.an("hc"+rw.fhirType()+"_"+rw.getId()).tx(" ");
         XhtmlNode x = rw.getNarrative();
         if (x != null) {
           td.addChildren(x);
@@ -123,6 +124,7 @@ public class ParametersRenderer extends ResourceRenderer {
         XhtmlNode para = td.para();
         para.tx(r.fhirType()+"/"+r.getId());
         para.an(r.fhirType()+"_"+r.getId()).tx(" ");
+        para.an("hc"+r.fhirType()+"_"+r.getId()).tx(" ");
         ResourceRenderer rr = RendererFactory.factory(r, context);
         rr.render(td, r);
       } else if (p.hasPart()) {

@@ -14,6 +14,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -44,7 +45,7 @@ public class NpmPackageIndexBuilder {
     dbFilename = filename;
     if (filename != null) {
       try {
-        new File(filename).delete();
+        ManagedFileAccess.file(filename).delete();
         conn = DriverManager.getConnection("jdbc:sqlite:"+filename); 
         Statement stmt = conn.createStatement();
         stmt.execute("CREATE TABLE ResourceList (\r\n"+
@@ -169,7 +170,7 @@ public class NpmPackageIndexBuilder {
       throw new FHIRException("Not a proper package? (can't find package.json)");
     }
     start(Utilities.path(folder, ".index.db"));
-    File dir = new File(folder);
+    File dir = ManagedFileAccess.file(folder);
     for (File f : dir.listFiles()) {
       seeFile(f.getName(), TextFile.fileToBytes(f));
     }
@@ -177,12 +178,12 @@ public class NpmPackageIndexBuilder {
   }
 
   private boolean existsFolder(String... args) throws IOException {
-    File f = new File(Utilities.path(args));
+    File f = ManagedFileAccess.file(Utilities.path(args));
     return f.exists() && f.isDirectory();
   }
 
   private boolean existsFile(String... args) throws IOException {
-    File f = new File(Utilities.path(args));
+    File f = ManagedFileAccess.file(Utilities.path(args));
     return f.exists() && !f.isDirectory();
   }
 

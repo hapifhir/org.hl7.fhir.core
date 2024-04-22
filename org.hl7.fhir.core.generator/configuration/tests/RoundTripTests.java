@@ -33,7 +33,7 @@ public class RoundTripTests {
 
   @Parameters(name = "{index}: file {0}")
   public static Iterable<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
-    File dir = new File(EXAMPLES_DIR);
+    File dir = ManagedFileAccess.file(EXAMPLES_DIR);
 
     String[] list = dir.list();
     List<Object[]> objects = new ArrayList<Object[]>(list.length);
@@ -77,7 +77,7 @@ public class RoundTripTests {
   }
 
   private void save(byte[] src, String path) throws IOException {
-    File f = new File(path);
+    File f = ManagedFileAccess.file(path);
     if (f.exists()) {
       f.delete();
     }

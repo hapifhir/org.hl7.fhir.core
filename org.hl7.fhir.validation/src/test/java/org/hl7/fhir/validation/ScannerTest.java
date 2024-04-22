@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -39,7 +40,7 @@ public class ScannerTest implements ResourceLoaderTests {
   @BeforeAll
   public void beforeAll() throws IOException {
     tempDir = Files.createTempDirectory("scanner-zip");
-    tempDir.resolve("child").toFile().mkdir();
+    ManagedFileAccess.fromPath(tempDir.resolve("child")).mkdir();
     zipNormalPath = tempDir.resolve(ZIP_NORMAL_ZIP);
     zipSlipPath = tempDir.resolve(ZIP_SLIP_ZIP);
     zipSlip2Path = tempDir.resolve(ZIP_SLIP_2_ZIP);
@@ -56,7 +57,7 @@ public class ScannerTest implements ResourceLoaderTests {
   @Test
   public void testNormalZip() throws IOException {
     Scanner scanner = new Scanner(null,null,null,null);
-    scanner.unzip(zipNormalPath.toFile().getAbsolutePath(), tempDir.toFile().getAbsolutePath());
+    scanner.unzip(ManagedFileAccess.fromPath(zipNormalPath).getAbsolutePath(), ManagedFileAccess.fromPath(tempDir).getAbsolutePath());
 
     Path expectedFilePath = tempDir.resolve("zip-normal").resolve("depth1").resolve("test.txt");
     String actualContent = Files.readString(expectedFilePath);
@@ -78,7 +79,7 @@ public class ScannerTest implements ResourceLoaderTests {
   public void testUnzipZipSlip(Path path, String expectedMessage) {
     RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
       Scanner scanner = new Scanner(null,null,null,null);
-      scanner.unzip(path.toFile().getAbsolutePath(), tempDir.toFile().getAbsolutePath());
+      scanner.unzip(ManagedFileAccess.fromPath(path).getAbsolutePath(), ManagedFileAccess.fromPath(tempDir).getAbsolutePath());
     });
     assertNotNull(thrown);
     assertEquals(expectedMessage, thrown.getMessage());

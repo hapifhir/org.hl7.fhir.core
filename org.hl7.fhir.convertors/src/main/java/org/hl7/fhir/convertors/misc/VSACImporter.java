@@ -30,6 +30,7 @@ import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r4.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
@@ -47,7 +48,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
   }
 
   private void process(String source, String dest, String apiKey, boolean onlyNew) throws FHIRException, IOException, URISyntaxException {
-    CSVReader csv = new CSVReader(new FileInputStream(source));
+    CSVReader csv = new CSVReader(ManagedFileAccess.inStream(source));
     csv.readHeaders();
     Map<String, String> errs = new HashMap<>();
 
@@ -59,13 +60,13 @@ public class VSACImporter extends OIDBasedValueSetImporter {
 
     CapabilityStatement cs = fhirToolingClient.getCapabilitiesStatement();
     JsonParser json = new JsonParser();
-    json.setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "vsac-capability-statmenet.json")), cs);
+    json.setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "vsac-capability-statmenet.json")), cs);
 
     System.out.println("Loading");
     List<String> oids = new ArrayList<>();
     while (csv.line()) {
       String oid = csv.cell("OID");
-      if (!onlyNew || !(new File(Utilities.path(dest, "ValueSet-" + oid + ".json")).exists())) {
+      if (!onlyNew || !(ManagedFileAccess.file(Utilities.path(dest, "ValueSet-" + oid + ".json")).exists())) {
         oids.add(oid);
       }
     }
@@ -91,6 +92,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
           t = System.currentTimeMillis();
         }
       } catch (Exception e) {
+        e.printStackTrace();
         System.out.println("Unable to fetch OID " + oid + ": " + e.getMessage());
         errs.put(oid, e.getMessage());
       }
@@ -99,7 +101,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     for (String oid : errs.keySet()) {
       oo.addIssue().setSeverity(IssueSeverity.ERROR).setCode(IssueType.EXCEPTION).setDiagnostics(errs.get(oid)).addLocation(oid);
     }
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "other", "OperationOutcome-vsac-errors.json")), oo);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "other", "OperationOutcome-vsac-errors.json")), oo);
     System.out.println("Done. " + i + " ValueSets in "+Utilities.describeDuration(System.currentTimeMillis() - tt));
   }
 
@@ -125,7 +127,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
       try {
         Parameters p = new Parameters();
         p.addParameter("url", new UriType(vs.getUrl()));
-        ValueSet vse = fhirToolingClient.expandValueset(vs, p);
+        ValueSet vse = fhirToolingClient.expandValueset(null, p);
         vs.setExpansion(vse.getExpansion());
       } catch (Exception e) {
         errs.put(oid, "Expansion: " +e.getMessage());
@@ -138,7 +140,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
         p.addParameter("url", new UriType(vs.getUrl()));
         t = System.currentTimeMillis();
         try {
-          ValueSet vse = fhirToolingClient.expandValueset(vs, p);    
+          ValueSet vse = fhirToolingClient.expandValueset(null, p);    
           vs.getExpansion().getContains().addAll(vse.getExpansion().getContains());
           vs.getExpansion().setParameter(vse.getExpansion().getParameter());
         } catch (Exception e2) {
@@ -162,16 +164,19 @@ public class VSACImporter extends OIDBasedValueSetImporter {
       } else {
         vs.setTitle(vs.getName());
       }
+      if (vs.getUrl().startsWith("https://")) {
+        System.out.println("URL is https: "+vs.getUrl());
+      }
       vs.setName(makeValidName(vs.getName()));
       JurisdictionUtilities.setJurisdictionCountry(vs.getJurisdiction(), "US");
-      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
     
     return true;
   }
 
   private boolean isIncomplete(ValueSetExpansionComponent expansion) {
-    IntegerType c = expansion.getParameter("count").getValueIntegerType();
-    IntegerType offset = expansion.getParameter("offset").getValueIntegerType();
+    IntegerType c = expansion.getParameter("count") != null ? expansion.getParameter("count").getValueIntegerType() : new IntegerType(0);
+    IntegerType offset = expansion.getParameter("offset") != null ? expansion.getParameter("offset").getValueIntegerType() : new IntegerType(0);
     return c.getValue() + offset.getValue() < expansion.getTotal();
   }
 

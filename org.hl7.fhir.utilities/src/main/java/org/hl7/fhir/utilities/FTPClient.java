@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPReply;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -258,7 +259,7 @@ public class FTPClient {
 
   private void attemptUpload(String source, String resolvedPath) throws IOException {
     final long startTime = System.nanoTime();
-    FileInputStream localStream = new FileInputStream(source);
+    FileInputStream localStream = ManagedFileAccess.inStream(source);
     try {
       clientImpl.storeFile(resolvedPath, localStream);
     } finally {

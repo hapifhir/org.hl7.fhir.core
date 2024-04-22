@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.GraphQLEngine;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.graphql.*;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
@@ -94,8 +95,8 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       StringBuilder str = new StringBuilder();
       gql.getOutput().setWriteWrapper(false);
       gql.getOutput().write(str, 0);
-      IOUtils.copy(CompareUtilities.loadTestResourceStream("r5", "graphql", source), new FileOutputStream(CompareUtilities.tempFile("graphql", source)));
-      IOUtils.copy(CompareUtilities.loadTestResourceStream("r5", "graphql", output), new FileOutputStream(CompareUtilities.tempFile("graphql", output)));
+      IOUtils.copy(CompareUtilities.loadTestResourceStream("r5", "graphql", source), ManagedFileAccess.outStream(CompareUtilities.tempFile("graphql", source)));
+      IOUtils.copy(CompareUtilities.loadTestResourceStream("r5", "graphql", output), ManagedFileAccess.outStream(CompareUtilities.tempFile("graphql", output)));
       TextFile.stringToFile(str.toString(), CompareUtilities.tempFile("graphql", output+".out"));
       msg = CompareUtilities.checkJsonIsSame(id, CompareUtilities.tempFile("graphql", output), CompareUtilities.tempFile("graphql", output+".out"));
       Assertions.assertTrue(Utilities.noString(msg), msg);

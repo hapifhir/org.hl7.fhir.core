@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+
 public class AsteriskFilter implements FilenameFilter {
 
   public static final String EXPRESSION_REGEX = "(.+(?>\\\\|/))*(.*)";
@@ -31,7 +33,7 @@ public class AsteriskFilter implements FilenameFilter {
   }
 
   protected void isDirValid() throws IOException {
-    File f = new File(dir);
+    File f = ManagedFileAccess.file(dir);
     if (!f.exists()) {
       throw new IOException("Directory " + dir + " does not exist");
     }

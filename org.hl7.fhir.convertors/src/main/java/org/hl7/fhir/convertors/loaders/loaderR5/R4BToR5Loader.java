@@ -37,12 +37,14 @@ import java.util.UUID;
 
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_43_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.formats.JsonParser;
-import org.hl7.fhir.r4.formats.XmlParser;
-import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.r4b.formats.JsonParser;
+import org.hl7.fhir.r4b.formats.XmlParser;
+import org.hl7.fhir.r4b.model.Resource;
 import org.hl7.fhir.r5.conformance.StructureDefinitionHacker;
 import org.hl7.fhir.r5.context.IContextResourceLoader;
 import org.hl7.fhir.r5.model.Bundle;
@@ -57,7 +59,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 
 public class R4BToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {
 
-  private final BaseAdvisor_40_50 advisor = new BaseAdvisor_40_50();
+  private final BaseAdvisor_43_50 advisor = new BaseAdvisor_43_50();
   private String version;
 
   public R4BToR5Loader(List<String> types, ILoaderKnowledgeProviderR5 lkp, String version) { // might be 4B
@@ -72,7 +74,7 @@ public class R4BToR5Loader extends BaseLoaderR5 implements IContextResourceLoade
       r4 = new JsonParser().parse(stream);
     else
       r4 = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_40_50.convertResource(r4, advisor);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_43_50.convertResource(r4, advisor);
 
     Bundle b;
     if (r5 instanceof Bundle)
@@ -116,7 +118,7 @@ public class R4BToR5Loader extends BaseLoaderR5 implements IContextResourceLoade
       r4 = new JsonParser().parse(stream);
     else
       r4 = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_40_50.convertResource(r4);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_43_50.convertResource(r4);
     setPath(r5);
 
     if (!advisor.getCslist().isEmpty()) {

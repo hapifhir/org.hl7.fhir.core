@@ -552,7 +552,7 @@ public class CodeSystemValidator  extends BaseValidator {
           hint(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, s.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_NONHL7_MISSING_ELEMENT, "caseSensitive");          
         } 
       }      
-      if (Utilities.noString(hierarchyMeaning) && hasHeirarchy(cs)) {
+      if (Utilities.noString(hierarchyMeaning) && hasHierarchy(cs)) {
         NodeStack s = stack;
         Element c = cs.getNamedChild("hierarchyMeaning", false);
         if (c != null) {
@@ -604,7 +604,7 @@ public class CodeSystemValidator  extends BaseValidator {
   }
 
 
-  private boolean hasHeirarchy(Element cs) {
+  private boolean hasHierarchy(Element cs) {
     for (Element c : cs.getChildren("concept")) {
       if (c.hasChildren("concept")) {
         return true;

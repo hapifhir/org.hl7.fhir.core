@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.txClient;
 
 import java.net.URISyntaxException;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Map;
 
 /*
@@ -36,6 +37,7 @@ import java.util.Map;
 
 import org.hl7.fhir.convertors.conv10_50.resources10_50.TerminologyCapabilities10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.dstu2.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -45,6 +47,7 @@ import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -166,6 +169,11 @@ public class TerminologyClientR2 implements ITerminologyClient {
   }
 
   @Override
+  public Parameters lookupCode(Parameters params) throws FHIRException {
+    return (Parameters) VersionConvertorFactory_10_50.convertResource(client.lookupCode((org.hl7.fhir.dstu2.model.Parameters) VersionConvertorFactory_10_50.convertResource(params)));
+  }
+
+  @Override
   public int getRetryCount() throws FHIRException {
     return client.getRetryCount();
   }
@@ -244,6 +252,11 @@ public class TerminologyClientR2 implements ITerminologyClient {
   public Bundle search(String type, String criteria) {   
     org.hl7.fhir.dstu2.model.Bundle result = client.search(type, criteria);
     return result == null ? null : (Bundle) VersionConvertorFactory_10_50.convertResource(result);
+  }
+
+  @Override
+  public Parameters translate(Parameters params) throws FHIRException {
+    return (Parameters) VersionConvertorFactory_10_50.convertResource(client.translate((org.hl7.fhir.dstu2.model.Parameters) VersionConvertorFactory_10_50.convertResource(params)));
   }
 
 }

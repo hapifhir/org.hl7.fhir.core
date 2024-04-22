@@ -640,31 +640,30 @@ public class StructureMapUtilities {
       result.setName(lexer.readConstant("name"));
       result.setDescription(lexer.getAllComments());
       result.setStatus(PublicationStatus.DRAFT);
-    } else {
-      while (lexer.hasToken("///")) {
-        lexer.next();
-        String fid = lexer.takeDottedToken();
-        lexer.token("=");
-        switch (fid) {
-        case "url" :
-          result.setUrl(lexer.readConstant("url"));
-          break;
-        case "name" :
-          result.setName(lexer.readConstant("name"));
-          break;
-        case "title" : 
-          result.setTitle(lexer.readConstant("title"));
-          break;
-        case "description" : 
-          result.setTitle(lexer.readConstant("description"));
-          break;
-        case "status" : 
-          result.setStatus(PublicationStatus.fromCode(lexer.readConstant("status")));
-          break;
-        default:
-          lexer.readConstant("nothing");
-          // nothing
-        }
+    } 
+    while (lexer.hasToken("///")) {
+      lexer.next();
+      String fid = lexer.takeDottedToken();
+      lexer.token("=");
+      switch (fid) {
+      case "url" :
+        result.setUrl(lexer.readConstant("url"));
+        break;
+      case "name" :
+        result.setName(lexer.readConstant("name"));
+        break;
+      case "title" : 
+        result.setTitle(lexer.readConstant("title"));
+        break;
+      case "description" : 
+        result.setTitle(lexer.readConstant("description"));
+        break;
+      case "status" : 
+        result.setStatus(PublicationStatus.fromCode(lexer.readConstant("status")));
+        break;
+      default:
+        lexer.readConstant("nothing");
+        // nothing
       }
     }
     if (!result.hasId() && result.hasName()) {
@@ -991,7 +990,7 @@ public class StructureMapUtilities {
     if (newFmt) {
       if (lexer.isConstant()) {
         if (lexer.isStringConstant()) {
-          rule.setName(lexer.readConstant("ruleName"));
+          rule.setName(fixName(lexer.readConstant("ruleName")));
         } else {
           rule.setName(lexer.take());
         }
@@ -1008,6 +1007,10 @@ public class StructureMapUtilities {
         rule.setDocumentation(doco);
       }
     }
+  }
+
+  private String fixName(String c) {
+    return c.replace("-", "");
   }
 
   private boolean isSimpleSyntax(StructureMapGroupRuleComponent rule) {

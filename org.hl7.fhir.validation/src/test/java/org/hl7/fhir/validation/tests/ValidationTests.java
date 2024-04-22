@@ -75,6 +75,7 @@ import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonUtilities;
@@ -486,7 +487,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (!sd.hasSnapshot()) {
       StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
       pu.generateSnapshot(base, sd, sd.getUrl(), null, sd.getTitle());
-// (debugging)      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", sd.getId()+".xml")), sd);
+// (debugging)      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", sd.getId()+".xml")), sd);
     }
     for (Resource r : sd.getContained()) {
       if (r instanceof StructureDefinition) {
@@ -603,7 +604,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           java.add("outcome", oj);
         }
 
-        File newManifestFile = new File(Utilities.path("[tmp]", "validator", "manifest.new.json"));
+        File newManifestFile = ManagedFileAccess.file(Utilities.path("[tmp]", "validator", "manifest.new.json"));
         if (!newManifestFile.getParentFile().exists()) {
           newManifestFile.getParentFile().mkdir();
         }

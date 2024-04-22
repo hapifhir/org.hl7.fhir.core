@@ -21,6 +21,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.BackboneType;
@@ -30,9 +31,11 @@ import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.DataRequirement;
@@ -47,6 +50,7 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.ExtensionHelper;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.HumanName.NameUse;
 import org.hl7.fhir.r5.model.IdType;
@@ -80,6 +84,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -341,7 +346,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (JurisdictionUtilities.isJurisdiction(system)) {
       return JurisdictionUtilities.displayJurisdiction(system+"#"+code);
     }
-    ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().withLanguage(context.getLang()).withVersionFlexible(true), system, version, code, null);
+    ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().withLanguage(context.getLocale().toString()).withVersionFlexible(true), system, version, code, null);
 
     if (t != null && t.getDisplay() != null)
       return t.getDisplay();
@@ -595,6 +600,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
       return displayTiming((Timing) type);
     } else if (type instanceof SampledData) {
       return displaySampledData((SampledData) type);
+    } else if (type instanceof ContactDetail) {
+      return displayContactDetail((ContactDetail) type);
     } else if (type.isDateTime()) {
       return displayDateTime((BaseDateTimeType) type);
     } else if (type.isPrimitive()) {
@@ -743,6 +750,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
       renderSampledData(x, (SampledData) type);
     } else if (type instanceof Reference) {
       renderReference(x, (Reference) type);
+    } else if (type instanceof UsageContext) {
+      renderUsageContext(x, (UsageContext) type);
     } else if (type instanceof CodeableReference) {
       CodeableReference cr = (CodeableReference) type;
       if (cr.hasConcept()) {
@@ -802,34 +811,44 @@ public class DataRenderer extends Renderer implements CodeResolver {
         } else {
           x.ah(r.getWebPath()).addText(uri.getValue());          
         }
-      } else if (Utilities.isAbsoluteUrlLinkable(uri.getValue()) && !(uri instanceof IdType)) {
-        x.ah(uri.getValue()).addText(uri.getValue());
       } else {
-        x.addText(uri.getValue());
+        String url = context.getResolver() != null ? context.getResolver().resolveUri(context, uri.getValue()) : null;
+        if (url != null) {          
+          x.ah(url).addText(uri.getValue());
+        } else if (Utilities.isAbsoluteUrlLinkable(uri.getValue()) && !(uri instanceof IdType)) {
+          x.ah(uri.getValue()).addText(uri.getValue());
+        } else {
+          x.addText(uri.getValue());
+        }
       }
     }
   }
   
-  protected void renderUri(XhtmlNode x, UriType uri, String path, String id, Resource src) {
+  protected void renderUri(XhtmlNode x, UriType uriD, String path, String id, Resource src) {
+    String uri = uriD.getValue();
     if (isCanonical(path)) {
-      x.code().tx(uri.getValue());
+      x.code().tx(uri);
     } else {
-      String url = uri.getValue();
-      if (url == null) {
-        x.b().tx(uri.getValue());
-      } else if (uri.getValue().startsWith("mailto:")) {
-        x.ah(uri.getValue()).addText(uri.getValue().substring(7));
+      if (uri == null) {
+        x.b().tx(uri);
+      } else if (uri.startsWith("mailto:")) {
+        x.ah(uri).addText(uri.substring(7));
       } else {
-        Resource target = context.getContext().fetchResource(Resource.class, uri.getValue(), src);
+        Resource target = context.getContext().fetchResource(Resource.class, uri, src);
         if (target != null && target.hasWebPath()) {
-          String title = target instanceof CanonicalResource ? crPresent((CanonicalResource) target) : uri.getValue();
+          String title = target instanceof CanonicalResource ? crPresent((CanonicalResource) target) : uri;
           x.ah(target.getWebPath()).addText(title);
-        } else if (uri.getValue().contains("|")) {
-          x.ah(uri.getValue().substring(0, uri.getValue().indexOf("|"))).addText(uri.getValue());
-        } else if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("ftp:")) {
-          x.ah(uri.getValue()).addText(uri.getValue());        
         } else {
-          x.code().addText(uri.getValue());        
+          String url = context.getResolver() != null ? context.getResolver().resolveUri(context, uri) : null;
+          if (url != null) {          
+            x.ah(url).addText(uri);
+          } else if (uri.contains("|")) {
+            x.ah(uri.substring(0, uri.indexOf("|"))).addText(uri);
+          } else if (uri.startsWith("http:") || uri.startsWith("https:") || uri.startsWith("ftp:")) {
+            x.ah(uri).addText(uri);        
+          } else {
+            x.code().addText(uri);        
+          }
         }
       }
     }
@@ -1338,7 +1357,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       }
     }
     if (name.hasUse() && name.getUse() != NameUse.USUAL)
-      s.append("("+name.getUse().toCode()+")");
+      s.append("("+context.getTranslatedCode(name.getUseElement(), "http://hl7.org/fhir/name-use")+")");
     
     x.addText(s.toString());
   }
@@ -1393,6 +1412,14 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return s.toString();
   }
 
+  public static String displayContactDetail(ContactDetail contact) {
+    CommaSeparatedStringBuilder s = new CommaSeparatedStringBuilder();
+    for (ContactPoint cp : contact.getTelecom()) {
+      s.append(displayContactPoint(cp));
+    }
+    return contact.getName()+(s.length() == 0 ? "" : " ("+s.toString()+")");
+  }
+
   protected String getLocalizedBigDecimalValue(BigDecimal input, Currency c) {
     NumberFormat numberFormat = NumberFormat.getNumberInstance(context.getLocale());
     numberFormat.setGroupingUsed(true);
@@ -1405,14 +1432,16 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (x.getName().equals("blockquote")) {
       x = x.para();
     }
-    Currency c = Currency.getInstance(money.getCurrency());
+    Currency c = money.hasCurrency() ? Currency.getInstance(money.getCurrency()) : null;
     if (c != null) {
       XhtmlNode s = x.span(null, c.getDisplayName());
       s.tx(c.getSymbol(context.getLocale()));
       s.tx(getLocalizedBigDecimalValue(money.getValue(), c));
       x.tx(" ("+c.getCurrencyCode()+")");
     } else {
-      x.tx(money.getCurrency());
+      if (money.getCurrency() != null) {
+        x.tx(money.getCurrency());
+      }
       x.tx(money.getValue().toPlainString());
     }
   }

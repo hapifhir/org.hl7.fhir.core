@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateType;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.HumanName.NameUse;
@@ -36,6 +37,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class PatientRenderer extends ResourceRenderer {
@@ -88,7 +90,7 @@ public class PatientRenderer extends ResourceRenderer {
     for (HumanName t : pat.getName()) {
       n = chooseName(n, t);
     }
-    return display(n, pat.hasGender() ? pat.getGender().getDisplay() : null, pat.getBirthDateElement(), id);
+    return display(n, pat.hasGender() ? context.getTranslatedCode(pat.getGenderElement(), "http://hl7.org/fhir/administrative-gender") : null, pat.getBirthDateElement(), id);
   }
 
   private Identifier chooseId(Identifier oldId, Identifier newId) {
@@ -186,7 +188,7 @@ public class PatientRenderer extends ResourceRenderer {
     String gender = null;
     pw = getProperty(pat, "gender");
     if (valued(pw)) {
-      gender = pw.value().getBase().primitiveValue();
+      gender = context.getTranslatedCode(pw.value().getBase(), "http://hl7.org/fhir/administrative-gender");
     }
     DateType dt = null; 
     pw = getProperty(pat, "birthDate");
@@ -210,7 +212,7 @@ public class PatientRenderer extends ResourceRenderer {
     String gender = null;
     pw = getProperty(pat, "gender");
     if (valued(pw)) {
-      gender = context.getTranslated((PrimitiveType<?>) pw.value().getBase());
+      gender = context.getTranslatedCode(pw.value().getBase(), "http://hl7.org/fhir/administrative-gender");
     }
     DateType dt = null; 
     pw = getProperty(pat, "birthDate");
@@ -336,7 +338,7 @@ public class PatientRenderer extends ResourceRenderer {
         }
         if (!anyComplex) {
           XhtmlNode tr = tbl.tr();
-          nameCell(tr, sd.getTitle()+":", sd.getDescription(), sd.getWebPath());
+          nameCell(tr, getContext().getTranslated(sd.getTitleElement()), sd.getDescription(), sd.getWebPath());
           XhtmlNode td = tr.td();
           td.colspan("3");
           if (list.size() == 1) {
@@ -545,7 +547,7 @@ public class PatientRenderer extends ResourceRenderer {
     
     pw = getProperty(bw, "gender");
     if (pw.hasValues()) {
-      gender = pw.getValues().get(0).getBase().primitiveValue();
+      gender = context.getTranslatedCode(pw.getValues().get(0).getBase(), "http://hl7.org/fhir/administrative-gender");
     }
 
     pw = getProperty(bw, "organization");
@@ -776,7 +778,7 @@ public class PatientRenderer extends ResourceRenderer {
             td.img("data:"+att.getContentType()+";base64,"+att.getDataElement().asStringValue(), "patient photo");
           } else {
             String n = UUID.randomUUID().toString().toLowerCase()+ext;
-            TextFile.bytesToFile(att.getData(), new File(Utilities.path(context.getDestDir(), n)));
+            TextFile.bytesToFile(att.getData(), ManagedFileAccess.file(Utilities.path(context.getDestDir(), n)));
             context.registerFile(n);
             td.img(n, context.formatMessage(RenderingContext.PAT_PHOTO));            
           }

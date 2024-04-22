@@ -24,6 +24,7 @@ import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.renderers.ConceptMapRenderer.CollateralDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -34,15 +35,34 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ConceptMapRenderer extends TerminologyRenderer {
 
+  public static class CollateralDefinition {
+    private Resource resource;
+    private String label;
+    public CollateralDefinition(Resource resource, String label) {
+      super();
+      this.resource = resource;
+      this.label = label;
+    }
+    public Resource getResource() {
+      return resource;
+    }
+    public String getLabel() {
+      return label;
+    }
+  }
+
   public enum RenderMultiRowSortPolicy {
     UNSORTED, FIRST_COL, LAST_COL
-
   }
 
   public interface IMultiMapRendererAdvisor {
-    public List<Coding> getMembers(String uri);
-    public boolean describeMap(ConceptMap map, XhtmlNode x);
-    public String getLink(String system, String code);
+    public RenderMultiRowSortPolicy sortPolicy(Object rmmContext);
+    public List<Coding> getMembers(Object rmmContext, String uri);
+    public boolean describeMap(Object rmmContext, ConceptMap map, XhtmlNode x);
+    public boolean hasCollateral(Object rmmContext);
+    public List<CollateralDefinition> getCollateral(Object rmmContext, String uri); // URI identifies which column the collateral is for
+    public String getLink(Object rmmContext, String system, String code);
+    public boolean makeMapLinks();
   }
   
   public static class MultipleMappingRowSorter implements Comparator<MultipleMappingRow> {
@@ -381,7 +401,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       }
       XhtmlNode pp = x.para();
       pp.b().tx(/*!#*/"Group "+gc);
-      pp.tx(/*!#*/"Mapping from ");
+      pp.tx(" "+/*!#*/"Mapping from ");
       if (grp.hasSource()) {
         renderCanonical(cm, pp, grp.getSource());
       } else {
@@ -434,7 +454,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               tr.td().addText(ccm.getComment());
           }
           addUnmapped(tbl, grp);
-        }
+        }      
       } else {
         boolean hasRelationships = false;
         for (int si = 0; si < grp.getElement().size(); si++) {
@@ -724,34 +744,53 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     return null;
   }
 
-  public static XhtmlNode renderMultipleMaps(String start, String startLink, List<ConceptMap> maps, IMultiMapRendererAdvisor advisor, RenderMultiRowSortPolicy sort) {
+  public static XhtmlNode renderMultipleMaps(String start, List<ConceptMap> maps, IMultiMapRendererAdvisor advisor, Object rmmContext) {
     // 1+1 column for each provided map
     List<MultipleMappingRow> rowSets = new ArrayList<>();
     for (int i = 0; i < maps.size(); i++) {
-      populateRows(rowSets, maps.get(i), i, advisor);
+      populateRows(rowSets, maps.get(i), i, advisor, rmmContext);
     }
     collateRows(rowSets);
-    if (sort != RenderMultiRowSortPolicy.UNSORTED) {
-      Collections.sort(rowSets, new MultipleMappingRowSorter(sort == RenderMultiRowSortPolicy.FIRST_COL));
+    if (advisor.sortPolicy(rmmContext) != RenderMultiRowSortPolicy.UNSORTED) {
+      Collections.sort(rowSets, new MultipleMappingRowSorter(advisor.sortPolicy(rmmContext) == RenderMultiRowSortPolicy.FIRST_COL));
     }
     XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
     XhtmlNode tbl = div.table("none").style("text-align: left; border-spacing: 0; padding: 5px");
     XhtmlNode tr = tbl.tr();
-    styleCell(tr.td(), false, true, 5).b().ahOrNot(startLink).tx(start);
+    styleCell(tr.td(), false, true, 5).b().tx(start);
     for (ConceptMap map : maps) {
       XhtmlNode td = styleCell(tr.td(), false, true, 5).colspan(2);
-      if (!advisor.describeMap(map, td)) {
-        if (map.hasWebPath()) {
+      if (!advisor.describeMap(rmmContext, map, td)) {
+        if (map.hasWebPath() && advisor.makeMapLinks()) {
           td.b().ah(map.getWebPath(), map.getVersionedUrl()).tx(map.present());
         } else {
           td.b().tx(map.present());
         }
       }
     }
+    if (advisor.hasCollateral(rmmContext)) {
+      tr = tbl.tr();
+      renderLinks(styleCell(tr.td(), false, true, 5), advisor.getCollateral(rmmContext, null));
+      for (ConceptMap map : maps) {
+        renderLinks(styleCell(tr.td(), false, true, 5).colspan(2), advisor.getCollateral(rmmContext, map.getUrl()));      
+      }
+    }
     for (MultipleMappingRow row : rowSets) {
-      renderMultiRow(tbl, row, maps, advisor);
+      renderMultiRow(tbl, row, maps, advisor, rmmContext);
     }
     return div;
+  }
+
+  private static void renderLinks(XhtmlNode td, List<CollateralDefinition> collateral) {
+    if (collateral.size() > 0) {
+      td.tx(/*!#*/"Links:");
+      td.tx(" ");
+      boolean first = true;
+      for (CollateralDefinition c : collateral) {
+        if (first) first = false; else td.tx(", ");
+        td.ah(c.getResource().getWebPath()).tx(c.getLabel());
+      }
+    }
   }
 
   private static void collateRows(List<MultipleMappingRow> rowSets) {
@@ -769,7 +808,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     rowSets.removeAll(toDelete);    
   }
 
-  private static void renderMultiRow(XhtmlNode tbl, MultipleMappingRow rows, List<ConceptMap> maps, IMultiMapRendererAdvisor advisor) {
+  private static void renderMultiRow(XhtmlNode tbl, MultipleMappingRow rows, List<ConceptMap> maps, IMultiMapRendererAdvisor advisor, Object rmmContext) {
     int rowCounter = 0;
     for (MultipleMappingRowItem row : rows.rowSets) {
       XhtmlNode tr = tbl.tr();
@@ -791,7 +830,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             if (cell.code == null) {
               styleCell(tr.td(), rowCounter == 0, true, 5).rowspan(c).style("background-color: #eeeeee");
             } else {
-              String link = advisor.getLink(cell.system, cell.code);
+              String link = advisor.getLink(rmmContext, cell.system, cell.code);
               XhtmlNode x = null;
               if (link != null) {
                 x = styleCell(tr.td(), rowCounter == 0, true, 5).attributeNN("title", cell.display).rowspan(c).ah(link);
@@ -839,7 +878,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             if (cell.code == null) {
               styleCell(tr.td(), rowCounter == 0, true, 5).rowspan(c).style("background-color: #eeeeee");
             } else {
-              String link = advisor.getLink(cell.system, cell.code);
+              String link = advisor.getLink(rmmContext, cell.system, cell.code);
               XhtmlNode x = null;
               if (link != null) {
                 x = styleCell(tr.td(), rowCounter == 0, true, 5).attributeNN("title", cell.display).rowspan(c).ah(link);
@@ -872,10 +911,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     return td;
   }
 
-  private static void populateRows(List<MultipleMappingRow> rowSets, ConceptMap map, int i, IMultiMapRendererAdvisor advisor) {
+  private static void populateRows(List<MultipleMappingRow> rowSets, ConceptMap map, int i, IMultiMapRendererAdvisor advisor, Object rmmContext) {
     // if we can resolve the value set, we create entries for it
     if (map.hasSourceScope()) {
-      List<Coding> codings = advisor.getMembers(map.getSourceScope().primitiveValue());
+      List<Coding> codings = advisor.getMembers(rmmContext, map.getSourceScope().primitiveValue());
       if (codings != null) {
         for (Coding c : codings) {
           MultipleMappingRow row = i == 0 ? null : findExistingRowBySource(rowSets, c.getSystem(), c.getCode(), i);
@@ -935,7 +974,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       }
     }
     if (map.hasTargetScope()) {
-      List<Coding> codings = advisor.getMembers(map.getTargetScope().primitiveValue());
+      List<Coding> codings = advisor.getMembers(rmmContext, map.getTargetScope().primitiveValue());
       if (codings != null) {
         for (Coding c : codings) {
           MultipleMappingRow row = findExistingRowByTarget(rowSets, c.getSystem(), c.getCode(), i);

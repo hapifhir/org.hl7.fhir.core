@@ -35,6 +35,7 @@ import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
@@ -62,7 +63,7 @@ public class Scanner {
   public void validateScan(String output, List<String> sources) throws Exception {
     if (Utilities.noString(output))
       throw new Exception("Output parameter required when scanning");
-    if (!(new File(output).isDirectory()))
+    if (!(ManagedFileAccess.file(output).isDirectory()))
       throw new Exception("Output '" + output + "' must be a directory when scanning");
     System.out.println("  .. scan " + sources + " against loaded IGs");
     Set<String> urls = new HashSet<>();
@@ -334,17 +335,17 @@ public class Scanner {
   }
 
   protected void unzip(String zipFilePath, String destDirectory) throws IOException {
-    File destDir = new File(destDirectory);
+    File destDir = ManagedFileAccess.file(destDirectory);
     if (!destDir.exists()) {
       destDir.mkdir();
     }
-    ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
+    ZipInputStream zipIn = new ZipInputStream(ManagedFileAccess.inStream(zipFilePath));
     ZipEntry entry = zipIn.getNextEntry();
     // iterates over entries in the zip file
     while (entry != null) {
       String filePath = destDirectory + File.separator + entry.getName();
 
-      final File zipEntryFile = new File(destDirectory, entry.getName());
+      final File zipEntryFile = ManagedFileAccess.file(destDirectory, entry.getName());
       if (!zipEntryFile.toPath().normalize().startsWith(destDirectory)) {
         throw new RuntimeException("Entry with an illegal path: " + entry.getName());
       }
@@ -363,7 +364,7 @@ public class Scanner {
   }
 
   protected void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
-    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+    BufferedOutputStream bos = new BufferedOutputStream(ManagedFileAccess.outStream(filePath));
     byte[] bytesIn = new byte[BUFFER_SIZE];
     int read;
     while ((read = zipIn.read(bytesIn)) != -1) {

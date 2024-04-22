@@ -50,6 +50,7 @@ import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class BatchLoader {
 
@@ -67,7 +68,7 @@ public class BatchLoader {
         throw new FHIRException("Unimplemented file type " + file);
 //	  	} else if (file.endsWith(".zip")) {
 //	  		LoadZipFile(server, file, p, size, 0, -1);
-      } else if (new File(file).isDirectory()) {
+      } else if (ManagedFileAccess.file(file).isDirectory()) {
         LoadDirectory(server, file, size);
       } else
         throw new FHIRException("Unknown file type " + file);
@@ -80,7 +81,7 @@ public class BatchLoader {
     System.out.println("Done");
 
     IniFile ini = new IniFile(Utilities.path(folder, "batch-load-progress.ini"));
-    for (File f : new File(folder).listFiles()) {
+    for (File f : ManagedFileAccess.file(folder).listFiles()) {
       if (f.getName().endsWith(".json") || f.getName().endsWith(".xml")) {
         if (!ini.getBooleanProperty("finished", f.getName())) {
           sendFile(client, f, size, ini);
@@ -143,7 +144,7 @@ public class BatchLoader {
 //	 	Bundle b = new Bundle();
 //	 	b.setType(BundleType.COLLECTION);
 //	 	b.setId(UUID.randomUUID().toString().toLowerCase());
-//	 	ZipInputStream zip = new ZipInputStream(new FileInputStream(file));
+//	 	ZipInputStream zip = new ZipInputStream(ManagedFileAccess.inStream(file));
 //	 	ZipEntry entry;
 //    while((entry = zip.getNextEntry())!=null)
 //    {

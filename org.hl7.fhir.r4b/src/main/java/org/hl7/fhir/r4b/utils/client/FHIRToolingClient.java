@@ -237,7 +237,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
     try {
       result = client.issuePutRequest(
           resourceAddress.resolveGetUriFromResourceClassAndId(resource.getClass(), resource.getId()),
-          ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat())),
+          ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
           getPreferredResourceFormat(), generateHeaders(), "Update " + resource.fhirType() + "/" + resource.getId(),
           timeoutOperation);
       if (result.isUnsuccessfulRequest()) {
@@ -266,7 +266,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
     ResourceRequest<T> result = null;
     try {
       result = client.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
-          ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat())),
+          ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
           getPreferredResourceFormat(), generateHeaders(), "Update " + resource.fhirType() + "/" + id,
           timeoutOperation);
       if (result.isUnsuccessfulRequest()) {
@@ -304,7 +304,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
       ResourceRequest<T> result;
       URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
       if (complex) {
-        byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()));
+        byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()), true);
         result = client.issuePostRequest(url, body, getPreferredResourceFormat(), generateHeaders(),
             "POST " + resourceClass.getName() + "/$" + name, timeoutLong);
       } else {
@@ -333,7 +333,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
     Bundle transactionResult = null;
     try {
       transactionResult = client.postBatchRequest(resourceAddress.getBaseServiceUri(),
-          ByteUtils.resourceToByteArray(batch, false, isJson(getPreferredResourceFormat())),
+          ByteUtils.resourceToByteArray(batch, false, isJson(getPreferredResourceFormat()), false),
           getPreferredResourceFormat(), generateHeaders(), "transaction",
           timeoutOperation + (timeoutEntry * batch.getEntry().size()));
     } catch (Exception e) {
@@ -347,7 +347,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
     ResourceRequest<T> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveValidateUri(resourceClass, id),
-          ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat())),
+          ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
           getPreferredResourceFormat(), generateHeaders(),
           "POST " + resourceClass.getName() + (id != null ? "/" + id : "") + "/$validate", timeoutLong);
       if (result.isUnsuccessfulRequest()) {
@@ -405,7 +405,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
     org.hl7.fhir.r4b.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand"),
-          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(),
+          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true), getPreferredResourceFormat(),
           generateHeaders(), "ValueSet/$expand?url=" + source.getUrl(), timeoutExpand);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
@@ -442,7 +442,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
     try {
 
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand", params),
-          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(),
+          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true), getPreferredResourceFormat(),
           generateHeaders(), "ValueSet/$expand?url=" + source.getUrl(), timeoutExpand);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
@@ -465,7 +465,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
     try {
       result = client.issuePostRequest(
           resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
-          ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat())),
+          ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()), true),
           getPreferredResourceFormat(), generateHeaders(), "Closure?name=" + name, timeoutNormal);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
@@ -485,7 +485,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
     try {
       result = client.issuePostRequest(
           resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
-          ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat())),
+          ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()), true),
           getPreferredResourceFormat(), generateHeaders(), "UpdateClosure?name=" + name, timeoutOperation);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
