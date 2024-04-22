@@ -1,0 +1,56 @@
+# We only want to trigger a test build on PRs to the main branch.
+trigger: none
+
+pr:
+  - master
+
+variables:
+- name: i18n.coverage.file
+  value: i18n-coverage.csv
+- group: PGP_VAR_GROUP
+- group: SONATYPE_VAR_GROUP
+- group: GIT_VAR_GROUP
+
+jobs:
+  - job: generate_csv_png_and_commit
+    pool:
+      vmImage: "ubuntu-latest"
+    steps:
+      # For creating the snapshot release with maven, we need to build a fake settings.xml for it to read from.
+      # This is done for the master branch merges only.
+      - bash: |
+          git config --global user.email $(GIT_USER_EMAIL)
+          git config --global user.name $(GIT_USER_NAME)
+        displayName: 'Set up git'
+
+      # Install pip packages
+      - bash: |
+          pip3 install matplotlib
+          pip3 install numpy
+          pip3 install pandas
+        displayName: 'Set up python packages'
+
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'pom.xml'
+          options: '-pl org.hl7.fhir.utilities -DskipTests=true'
+          mavenOptions: '-Dmaven.resolver.transport=wagon'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          goals: 'install'
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'pom.xml'
+          options: '-pl org.hl7.fhir.utilities '
+          mavenOptions: '-Dtest=I18nCoverageTest#testPhraseCoverage'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          goals: 'surefire:test'
+
+      - task: PythonScript@0
+        inputs:
+          scriptSource: 'filePath'
+          scriptPath: .azure/i18n-coverage-table/generate-i18n-coverage-table.py
+          arguments: 
