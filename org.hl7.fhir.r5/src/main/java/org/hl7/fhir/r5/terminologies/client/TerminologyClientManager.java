@@ -509,7 +509,7 @@ public class TerminologyClientManager {
     if (IGNORE_TX_REGISTRY || getMasterClient() == null || !useEcosystem) {
       return null;
     }
-    String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&codeSystem="+Utilities.URLEncode(canonical));
+    String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&url="+Utilities.URLEncode(canonical));
     if (usage != null) {
       request = request + "&usage="+usage;
     }
