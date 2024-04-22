@@ -54,3 +54,7 @@ jobs:
           scriptSource: 'filePath'
           scriptPath: .azure/i18n-coverage-table/generate-i18n-coverage-table.py
           arguments: 
+
+      # Verify png file generation
+      - bash: |
+          ls -l ./i18n-coverage-table.png

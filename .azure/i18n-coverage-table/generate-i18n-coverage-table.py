@@ -27,7 +27,7 @@ ax.set_title('Loss by Disaster')
 fig = plt.gcf()
 
 
-plt.savefig('pyplot-table-original.png',
+plt.savefig('i18n-coverage-table.png',
             bbox_inches='tight',
             dpi=150
             )
