@@ -256,6 +256,10 @@ public class ValueSetValidator extends BaseValidator {
     CodeSystem cs = null;
     if (!Utilities.noString(system)) {
       cs = context.fetchCodeSystem(system, version);
+      if (cs == null) {
+        // can we get it from a terminology server? 
+        cs = context.findTxResource(CodeSystem.class, system, version);
+      }
       if (cs != null) { // if it's null, we can't analyse this
         switch (cs.getContent()) {
         case EXAMPLE:
