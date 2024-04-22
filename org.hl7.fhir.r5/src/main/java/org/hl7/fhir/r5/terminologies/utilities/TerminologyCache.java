@@ -83,6 +83,42 @@ import com.google.gson.JsonPrimitive;
  */
 public class TerminologyCache {
   
+  public static class SourcedCodeSystem {
+    private String server;
+    private CodeSystem cs;
+    
+    public SourcedCodeSystem(String server, CodeSystem cs) {
+      super();
+      this.server = server;
+      this.cs = cs;
+    }
+    public String getServer() {
+      return server;
+    }
+    public CodeSystem getCs() {
+      return cs;
+    } 
+  }
+
+
+  public static class SourcedCodeSystemEntry {
+    private String server;
+    private String filename;
+    
+    public SourcedCodeSystemEntry(String server, String filename) {
+      super();
+      this.server = server;
+      this.filename = filename;
+    }
+    public String getServer() {
+      return server;
+    }
+    public String getFilename() {
+      return filename;
+    }    
+  }
+
+  
   public static class SourcedValueSet {
     private String server;
     private ValueSet vs;
@@ -253,6 +289,7 @@ public class TerminologyCache {
   private Map<String, TerminologyCapabilities> terminologyCapabilitiesCache = new HashMap<>();
   private Map<String, NamedCache> caches = new HashMap<String, NamedCache>();
   private Map<String, SourcedValueSetEntry> vsCache = new HashMap<>();
+  private Map<String, SourcedCodeSystemEntry> csCache = new HashMap<>();
   private Map<String, String> serverMap = new HashMap<>();
   @Getter @Setter private static boolean noCaching;
 
@@ -320,12 +357,14 @@ public class TerminologyCache {
     // not useable after this is called
     caches.clear();
     vsCache.clear();
+    csCache.clear();
   }
   
   private void clear() throws IOException {
     Utilities.clearDirectory(folder);
     caches.clear();
     vsCache.clear();
+    csCache.clear();
   }
   
   public boolean hasCapabilityStatement(String address) {
@@ -872,6 +911,22 @@ public class TerminologyCache {
     } catch (Exception e) {
       System.out.println("Error loading vs external cache: "+e.getMessage());
     }
+    try {
+      File f = ManagedFileAccess.file(Utilities.path(folder, "cs-externals.json"));
+      if (f.exists()) {
+        org.hl7.fhir.utilities.json.model.JsonObject json = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(f);
+        for (JsonProperty p : json.getProperties()) {
+          if (p.getValue().isJsonNull()) {
+            csCache.put(p.getName(), null);
+          } else {
+            org.hl7.fhir.utilities.json.model.JsonObject j = p.getValue().asJsonObject();
+            csCache.put(p.getName(), new SourcedCodeSystemEntry(j.asString("server"), j.asString("filename")));        
+          }
+        }
+      }
+    } catch (Exception e) {
+      System.out.println("Error loading vs external cache: "+e.getMessage());
+    }
   }
 
   private String loadJS(JsonElement e) {
@@ -978,6 +1033,10 @@ public class TerminologyCache {
     return vsCache.containsKey(canonical);
   }
 
+  public boolean hasCodeSystem(String canonical) {
+    return csCache.containsKey(canonical);
+  }
+
   public SourcedValueSet getValueSet(String canonical) {
     SourcedValueSetEntry sp = vsCache.get(canonical);
     if (sp == null) {
@@ -985,6 +1044,19 @@ public class TerminologyCache {
     } else {
       try {
         return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+      } catch (Exception e) {
+        return null;
+      }
+    }
+  }
+
+  public SourcedCodeSystem getCodeSystem(String canonical) {
+    SourcedCodeSystemEntry sp = csCache.get(canonical);
+    if (sp == null) {
+      return null;
+    } else {
+      try {
+        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
       } catch (Exception e) {
         return null;
       }
@@ -1019,6 +1091,39 @@ public class TerminologyCache {
         }
       }
       org.hl7.fhir.utilities.json.parser.JsonParser.compose(j, ManagedFileAccess.file(Utilities.path(folder, "vs-externals.json")), true);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void cacheCodeSystem(String canonical, SourcedCodeSystem scs) {
+    if (canonical == null) {
+      return;
+    }
+    try {
+      if (scs == null) {
+        csCache.put(canonical, null);
+      } else {
+        String uuid = Utilities.makeUuidLC();
+        String fn = "cs-"+uuid+".json";
+        new JsonParser().compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
+        csCache.put(canonical, new SourcedCodeSystemEntry(scs.getServer(), fn));
+      }    
+      org.hl7.fhir.utilities.json.model.JsonObject j = new org.hl7.fhir.utilities.json.model.JsonObject();
+      for (String k : csCache.keySet()) {
+        SourcedCodeSystemEntry sve = csCache.get(k);
+        if (sve == null) {
+          j.add(k, new JsonNull());
+        } else {
+          org.hl7.fhir.utilities.json.model.JsonObject e = new org.hl7.fhir.utilities.json.model.JsonObject();
+          e.set("server", sve.getServer());
+          if (sve.getFilename() != null) {
+            e.set("filename", sve.getFilename());
+          }
+          j.add(k, e);
+        }
+      }
+      org.hl7.fhir.utilities.json.parser.JsonParser.compose(j, ManagedFileAccess.file(Utilities.path(folder, "cs-externals.json")), true);
     } catch (Exception e) {
       e.printStackTrace();
     }
