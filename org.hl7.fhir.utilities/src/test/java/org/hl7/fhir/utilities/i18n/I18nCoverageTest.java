@@ -3,7 +3,10 @@ package org.hl7.fhir.utilities.i18n;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -22,7 +25,7 @@ public class I18nCoverageTest {
   );
 
   @Test
-  public void testPhraseCoverage() throws IllegalAccessException, IOException {
+  public void testPhraseCoverage() throws IOException {
 
     Properties englishMessages = new Properties();
     englishMessages.load(I18nTestClass.class.getClassLoader().getResourceAsStream("Messages.properties"));
@@ -92,19 +95,30 @@ public class I18nCoverageTest {
      }
     }
 
-    System.out.println("Summary");
-    System.out.println("-------");
-    System.out.println("Single Phrases (Original Total=" + englishKeys.size() + ")");
-    System.out.println("Locale\tComplete #\tComplete %");
+
+    PrintStream out = getCSVOutputStream();
+
+    printPhraseCoverageCSV(out, foundKeys, foundPluralKeys, englishKeys, englishPluralKeys);
+  }
+
+  private static PrintStream getCSVOutputStream() throws FileNotFoundException {
+    String outputFile = System.getenv("I18N_COVERAGE_FILE");
+
+    return outputFile == null
+      ? System.out
+      : new PrintStream(new File(outputFile));
+  }
+
+  private static void printPhraseCoverageCSV(PrintStream out, HashMap<Locale, Integer> foundKeys, HashMap<Locale, Integer> foundPluralKeys, Set<String> englishKeys, Set<String> englishPluralKeys) {
+    out.println("Locale,Complete #,Complete %");
     for (Locale locale : foundKeys.keySet()) {
-      int count = foundKeys.get(locale);
-      System.out.println(locale + "\t" + count + "\t" + getPercent( count, englishKeys.size()));
-    }
-    System.out.println("Plural Phrases (Original Total=" + englishPluralKeys.size() + ")");
-    System.out.println("Locale\tComplete #\tComplete %");
-    for (Locale locale : foundPluralKeys.keySet()) {
-      int count = foundPluralKeys.get(locale);
-      System.out.println(locale + "\t" + count + "\t" + getPercent( count, englishPluralKeys.size()));
+      int singleCount = foundKeys.get(locale);
+      int pluralCount = foundPluralKeys.get(locale);
+
+      int count = singleCount + pluralCount;
+      int total = englishKeys.size() + englishPluralKeys.size();
+
+      out.println(locale + "," + count + "," + getPercent( count, total));
     }
   }
 
