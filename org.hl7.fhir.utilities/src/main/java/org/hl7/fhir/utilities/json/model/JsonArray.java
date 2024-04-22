@@ -145,5 +145,14 @@ public class JsonArray extends JsonElement implements Iterable<JsonElement> {
     items.remove(e);
     
   }
+
+  public boolean has(String key) {
+    for (JsonElement e : items) {
+      if (e.isJsonString() && key.equals(e.asString())) {
+        return true;
+      }
+    }
+    return false;
+  }
   
 }

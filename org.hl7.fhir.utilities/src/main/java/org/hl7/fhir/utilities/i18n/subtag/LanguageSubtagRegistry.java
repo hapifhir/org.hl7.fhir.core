@@ -88,8 +88,29 @@ public class LanguageSubtagRegistry {
   public boolean containsVariant(String key) {
     return variants.containsKey(key);
   }
+  
   public VariantSubtag getVariant(String key) {
     return variants.get(key);
+  }
+
+  public boolean hasLanguage(String subTag) {
+    return languages.containsKey(subTag);
+  }
+
+  public boolean hasExtLanguage(String subTag) {
+    return extLangs.containsKey(subTag);
+  }
+
+  public boolean hasScript(String subTag) {
+    return scripts.containsKey(subTag);
+  }
+
+  public boolean hasRegion(String subTag) {
+    return regions.containsKey(subTag);
+  }
+
+  public boolean hasVariant(String subTag) {
+    return variants.containsKey(subTag);
   }
 }
 

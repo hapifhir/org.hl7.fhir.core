@@ -275,11 +275,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   private void makeHierarchyParam(XhtmlNode x, CodeSystem cs, Enumeration<CodeSystemHierarchyMeaning> hm) {
     if (hm.hasValue()) {
       String s = hm.getValue().getDisplay();
-      renderStatus(hm, x).tx(" "+/*!#*/"in a "+s+" heirarchy");
+      renderStatus(hm, x).tx(" "+/*!#*/"in a "+s+" hierarchy");
     } else if (VersionComparisonAnnotation.hasDeleted(cs, "hierarchyMeaning")) {
       makeHierarchyParam(x, null, (Enumeration<CodeSystemHierarchyMeaning>) VersionComparisonAnnotation.getDeleted(cs, "hierarchyMeaning").get(0));
     } else if (CodeSystemUtilities.hasHierarchy(cs)) {
-      x.tx(" "+/*!#*/"in an undefined heirarchy");
+      x.tx(" "+/*!#*/"in an undefined hierarchy");
     } else {
       x.tx("");
     }
@@ -682,7 +682,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         }
       }
       for (ConceptDefinitionDesignationComponent cd : c.getDesignation())  {
-        if (cd.hasLanguage() && !langs.contains(cd.getLanguage()) && !c.getDefinition().equalsIgnoreCase(cd.getValue())) {
+        if (cd.hasLanguage() && (langs == null || !langs.contains(cd.getLanguage())) && (c.getDefinition() == null || !c.getDefinition().equalsIgnoreCase(cd.getValue()))) {
           list.add(new Translateable(cd.getLanguage(), cd.getValueElement()));
         }
       }

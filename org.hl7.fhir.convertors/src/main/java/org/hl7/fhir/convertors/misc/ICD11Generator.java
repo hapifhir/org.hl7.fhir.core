@@ -380,7 +380,7 @@ public class ICD11Generator {
     cs.setPublisher("WHO");
     cs.setCopyright("Consult WHO For terms of use");
     cs.setCaseSensitive(true);
-    cs.setHierarchyMeaning(CodeSystemHierarchyMeaning.ISA); // though we aren't going to have a heirarchy
+    cs.setHierarchyMeaning(CodeSystemHierarchyMeaning.ISA); // though we aren't going to have a hierarchy
 //    cs.setCompositional(true);
 //    cs.setVersionNeeded(true);
     cs.setValueSet("http://id.who.int/icd11/ValueSet/all-foundation");

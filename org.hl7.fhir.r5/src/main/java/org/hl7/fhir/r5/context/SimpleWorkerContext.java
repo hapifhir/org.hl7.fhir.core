@@ -509,7 +509,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     
     String of = pi.getFolders().get("package").getFolderPath();
     if (of != null) {
-      oidSources.add(new OIDSource(of));
+      oidSources.add(new OIDSource(of, pi.vid()));
     }
     
     if ((types == null || types.size() == 0) &&  loader != null) {

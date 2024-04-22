@@ -291,7 +291,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resource.getClass(), resource.getId()),
-        ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat())),
+        ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
         withVer(getPreferredResourceFormat(), "4.0"),
         generateHeaders(),
         "Update " + resource.fhirType() + "/" + resource.getId(),
@@ -319,7 +319,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     ResourceRequest<T> result = null;
     try {
       result = client.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
-        ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat())),
+        ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
         withVer(getPreferredResourceFormat(), "4.0"),
         generateHeaders(),
         "Update " + resource.fhirType() + "/" + id,
@@ -356,7 +356,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       ResourceRequest<T> result;
       URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
       if (complex) {
-        byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()));
+        byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()), true);
         result = client.issuePostRequest(url, body, withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(),
             "POST " + resourceClass.getName() + "/$" + name, timeoutLong);
       } else {
@@ -382,7 +382,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     recordUse();
     Bundle transactionResult = null;
     try {
-      transactionResult = client.postBatchRequest(resourceAddress.getBaseServiceUri(), ByteUtils.resourceToByteArray(batch, false, isJson(getPreferredResourceFormat())), withVer(getPreferredResourceFormat(), "4.0"),
+      transactionResult = client.postBatchRequest(resourceAddress.getBaseServiceUri(), ByteUtils.resourceToByteArray(batch, false, isJson(getPreferredResourceFormat()), false), withVer(getPreferredResourceFormat(), "4.0"),
           generateHeaders(),
           "transaction", timeoutOperation + (timeoutEntry * batch.getEntry().size()));
     } catch (Exception e) {
@@ -397,7 +397,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     ResourceRequest<T> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveValidateUri(resourceClass, id),
-        ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat())),
+        ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat()), false),
         withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(),
         "POST " + resourceClass.getName() + (id != null ? "/" + id : "") + "/$validate", timeoutLong);
       if (result.isUnsuccessfulRequest()) {
@@ -456,7 +456,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand"),
-          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())),
+          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
           withVer(getPreferredResourceFormat(), "4.0"),
           generateHeaders(),
           "ValueSet/$expand?url=" + source.getUrl(),
@@ -493,7 +493,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(CodeSystem.class, "lookup"),
-          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())),
+          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
         withVer(getPreferredResourceFormat(), "4.0"),
         generateHeaders(),
         "CodeSystem/$lookup",
@@ -512,7 +512,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ConceptMap.class, "translate"),
-          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())),
+          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
         withVer(getPreferredResourceFormat(), "4.0"),
         generateHeaders(),
         "ConceptMap/$translate",
@@ -537,7 +537,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
-        ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat())),
+        ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()), true),
         withVer(getPreferredResourceFormat(), "4.0"),
         generateHeaders(),
         "Closure?name=" + name,
@@ -559,7 +559,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
-        ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat())),
+        ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()), true),
         withVer(getPreferredResourceFormat(), "4.0"),
         generateHeaders(),
         "UpdateClosure?name=" + name,

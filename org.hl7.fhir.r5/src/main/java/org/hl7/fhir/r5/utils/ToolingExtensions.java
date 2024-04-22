@@ -218,7 +218,7 @@ public class ToolingExtensions {
   public static final String EXT_Q_DISPLAY_CAT = "http://hl7.org/fhir/StructureDefinition/questionnaire-displayCategory";
   public static final String EXT_REND_MD = "http://hl7.org/fhir/StructureDefinition/rendering-markdown";
   public static final String EXT_CAP_STMT_EXPECT = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation";
-  public static final String EXT_ED_HEIRARCHY = "http://hl7.org/fhir/StructureDefinition/elementdefinition-heirarchy";
+  public static final String EXT_ED_HIERARCHY = "http://hl7.org/fhir/StructureDefinition/elementdefinition-hierarchy";
   public static final String EXT_SD_IMPOSE_PROFILE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-imposeProfile";
   public static final String EXT_SD_COMPLIES_WITH_PROFILE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-compliesWithProfile";
   public static final String EXT_DEF_TYPE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype";
@@ -272,6 +272,7 @@ public class ToolingExtensions {
   public static final String EXT_APPLICABLE_VERSION = "http://hl7.org/fhir/StructureDefinition/version-specific-use";
   public static final String EXT_APPLICABLE_VERSION_VALUE = "http://hl7.org/fhir/StructureDefinition/version-specific-value";
   public static final String EXT_IG_URL = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-resource-uri";
+  public static final String EXT_VS_CS_SUPPL_NEEDED = "http://hl7.org/fhir/StructureDefinition/valueset-supplement";
   
   // specific extension helpers
 
