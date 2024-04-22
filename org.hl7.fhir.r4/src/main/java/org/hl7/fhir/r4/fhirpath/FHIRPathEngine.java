@@ -139,6 +139,7 @@ public class FHIRPathEngine {
     /**
      * A constant reference - e.g. a reference to a name that must be resolved in
      * context. The % will be removed from the constant name before this is invoked.
+     * Variables created with defineVariable will not be processed by resolveConstant (or resolveConstantType)
      * 
      * This will also be called if the host invokes the FluentPath engine with a
      * context of null
@@ -604,7 +605,7 @@ public class FHIRPathEngine {
     }
     log = new StringBuilder();
     return execute(new ExecutionContext(null, base != null && base.isResource() ? base : null,
-        base != null && base.isResource() ? base : null, base, null, base), list, ExpressionNode, true);
+        base != null && base.isResource() ? base : null, base, base), list, ExpressionNode, true);
   }
 
   /**
@@ -623,7 +624,7 @@ public class FHIRPathEngine {
     }
     log = new StringBuilder();
     return execute(
-        new ExecutionContext(null, base.isResource() ? base : null, base.isResource() ? base : null, base, null, base),
+        new ExecutionContext(null, base.isResource() ? base : null, base.isResource() ? base : null, base, base),
         list, exp, true);
   }
 
@@ -642,7 +643,7 @@ public class FHIRPathEngine {
       list.add(base);
     }
     log = new StringBuilder();
-    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, null, base), list,
+    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list,
         ExpressionNode, true);
   }
 
@@ -661,7 +662,7 @@ public class FHIRPathEngine {
       list.add(base);
     }
     log = new StringBuilder();
-    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, null, base), list,
+    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list,
         expressionNode, true);
   }
 
@@ -681,7 +682,7 @@ public class FHIRPathEngine {
       list.add(base);
     }
     log = new StringBuilder();
-    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, null, base), list, exp, true);
+    return execute(new ExecutionContext(appContext, focusResource, rootResource, base, base), list, exp, true);
   }
 
   /**
@@ -848,16 +849,14 @@ public class FHIRPathEngine {
     private Base context;
     private Base thisItem;
     private List<Base> total;
-    private Map<String, Base> aliases;
     private int index;
+    private Map<String, List<Base>> definedVariables;
 
-    public ExecutionContext(Object appInfo, Base resource, Base rootResource, Base context, Map<String, Base> aliases,
-        Base thisItem) {
+    public ExecutionContext(Object appInfo, Base resource, Base rootResource, Base context, Base thisItem) {
       this.appInfo = appInfo;
       this.context = context;
       this.focusResource = resource;
       this.rootResource = rootResource;
-      this.aliases = aliases;
       this.thisItem = thisItem;
       this.index = 0;
     }
@@ -886,25 +885,33 @@ public class FHIRPathEngine {
       return new IntegerType(index);
     }
 
-    public void addAlias(String name, List<Base> focus) throws FHIRException {
-      if (aliases == null) {
-        aliases = new HashMap<String, Base>();
-      } else {
-        aliases = new HashMap<String, Base>(aliases); // clone it, since it's going to change
-      }
-      if (focus.size() > 1) {
-        throw makeException(null, I18nConstants.FHIRPATH_ALIAS_COLLECTION);
-      }
-      aliases.put(name, focus.size() == 0 ? null : focus.get(0));
-    }
-
-    public Base getAlias(String name) {
-      return aliases == null ? null : aliases.get(name);
-    }
-
     public ExecutionContext setIndex(int i) {
       index = i;
       return this;
+    }
+
+    public boolean hasDefinedVariable(String name) {
+      return definedVariables != null && definedVariables.containsKey(name);
+    }
+
+    public List<Base> getDefinedVariable(String name) {
+      return definedVariables == null ? makeNull() : definedVariables.get(name);
+    }
+
+    public void setDefinedVariable(String name, List<Base> value) {
+      if (isSystemVariable(name))
+        throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_REDEFINE_VARIABLE, name), I18nConstants.FHIRPATH_REDEFINE_VARIABLE);
+
+      if (definedVariables == null) {
+        definedVariables = new HashMap<String, List<Base>>();
+      } else {
+        if (definedVariables.containsKey(name)) {
+          // Can't do this, so throw an error
+          throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_REDEFINE_VARIABLE, name), I18nConstants.FHIRPATH_REDEFINE_VARIABLE);
+        }
+      }
+
+      definedVariables.put(name, value);
     }
   }
 
@@ -914,6 +921,7 @@ public class FHIRPathEngine {
     private TypeDetails context;
     private TypeDetails thisItem;
     private TypeDetails total;
+    private Map<String, TypeDetails> definedVariables;
 
     public ExecutionTypeContext(Object appInfo, String resource, TypeDetails context, TypeDetails thisItem) {
       super();
@@ -932,6 +940,29 @@ public class FHIRPathEngine {
       return thisItem;
     }
 
+    public boolean hasDefinedVariable(String name) {
+      return definedVariables != null && definedVariables.containsKey(name);
+    }
+
+    public TypeDetails getDefinedVariable(String name) {
+      return definedVariables == null ? null : definedVariables.get(name);
+    }
+    
+    public void setDefinedVariable(String name, TypeDetails value) {
+      if (isSystemVariable(name))
+        throw new PathEngineException("Redefine of variable "+name, I18nConstants.FHIRPATH_REDEFINE_VARIABLE);
+
+      if (definedVariables == null) {
+        definedVariables = new HashMap<String, TypeDetails>();
+      } else {
+        if (definedVariables.containsKey(name)) {
+          // Can't do this, so throw an error
+          throw new PathEngineException("Redefine of variable "+name, I18nConstants.FHIRPATH_REDEFINE_VARIABLE);
+        }
+      }
+
+      definedVariables.put(name, value);
+    }
   }
 
   private ExpressionNode parseExpression(FHIRLexer lexer, boolean proximal) throws FHIRLexerException {
@@ -1333,6 +1364,8 @@ public class FHIRPathEngine {
       return checkParamCount(lexer, location, exp, 1);
     case Trace:
       return checkParamCount(lexer, location, exp, 1, 2);
+    case DefineVariable:
+      return checkParamCount(lexer, location, exp, 1, 2);
     case Check:
       return checkParamCount(lexer, location, exp, 2);
     case Today:
@@ -1353,10 +1386,6 @@ public class FHIRPathEngine {
       return checkParamCount(lexer, location, exp, 0);
     case HasValue:
       return checkParamCount(lexer, location, exp, 0);
-    case Alias:
-      return checkParamCount(lexer, location, exp, 1);
-    case AliasAs:
-      return checkParamCount(lexer, location, exp, 1);
     case Encode:
       return checkParamCount(lexer, location, exp, 1);
     case Decode:
@@ -1442,9 +1471,10 @@ public class FHIRPathEngine {
     return false;
   }
 
-  private List<Base> execute(ExecutionContext context, List<Base> focus, ExpressionNode exp, boolean atEntry)
+  private List<Base> execute(ExecutionContext inContext, List<Base> focus, ExpressionNode exp, boolean atEntry)
       throws FHIRException {
     // System.out.println("Evaluate {'"+exp.toString()+"'} on "+focus.toString());
+    ExecutionContext context = contextForParameter(inContext);
     List<Base> work = new ArrayList<Base>();
     switch (exp.getKind()) {
     case Unary:
@@ -1488,6 +1518,7 @@ public class FHIRPathEngine {
       ExpressionNode next = exp.getOpNext();
       ExpressionNode last = exp;
       while (next != null) {
+        context = contextForParameter(inContext);
         List<Base> work2 = preOperate(work, last.getOperation(), exp);
         if (work2 != null) {
           work = work2;
@@ -1551,9 +1582,10 @@ public class FHIRPathEngine {
     return new TypeDetails(CollectionStatus.SINGLETON, exp.getName());
   }
 
-  private TypeDetails executeType(ExecutionTypeContext context, TypeDetails focus, ExpressionNode exp, boolean atEntry)
+  private TypeDetails executeType(ExecutionTypeContext inContext, TypeDetails focus, ExpressionNode exp, boolean atEntry)
       throws PathEngineException, DefinitionException {
-    TypeDetails result = new TypeDetails(null);
+        ExecutionTypeContext context = contextForParameter(inContext);
+        TypeDetails result = new TypeDetails(null);
     switch (exp.getKind()) {
     case Name:
       if (atEntry && exp.getName().equals("$this")) {
@@ -1597,6 +1629,7 @@ public class FHIRPathEngine {
       ExpressionNode next = exp.getOpNext();
       ExpressionNode last = exp;
       while (next != null) {
+        context = contextForParameter(inContext);
         TypeDetails work;
         if (last.getOperation() == Operation.Is || last.getOperation() == Operation.As) {
           work = executeTypeName(context, focus, next, atEntry);
@@ -1621,6 +1654,10 @@ public class FHIRPathEngine {
     }
     FHIRConstant c = (FHIRConstant) constant;
     if (c.getValue().startsWith("%")) {
+      String varName = c.getValue().substring(1);
+      if (context.hasDefinedVariable(varName)) {
+        return context.getDefinedVariable(varName);
+      }
       return resolveConstant(context, c.getValue(), beforeContext, expr, explicitConstant);
     } else if (c.getValue().startsWith("@")) {
       return new ArrayList<Base>(Arrays.asList(processDateConstant(context.appInfo, c.getValue().substring(1), expr)));
@@ -1689,6 +1726,22 @@ public class FHIRPathEngine {
     } else {
       return new DateType(date).noExtensions();
     }
+  }
+
+  static boolean isSystemVariable(String name){
+    if (name.equals("sct"))
+      return true;
+    if (name.equals("loinc"))
+      return true;
+    if (name.equals("ucum"))
+      return true;
+    if (name.equals("resource"))
+      return true;
+    if (name.equals("rootResource"))
+      return true;
+    if (name.equals("context"))
+      return true;
+    return false;
   }
 
   private List<Base> resolveConstant(ExecutionContext context, String s, boolean beforeContext, ExpressionNode expr, boolean explicitConstant)
@@ -3134,8 +3187,14 @@ public class FHIRPathEngine {
     } else if (s.startsWith("%`ext-")) {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     } else if (hostServices == null) {
+      String varName = s.substring(1);
+      if (context.hasDefinedVariable(varName))
+        return context.getDefinedVariable(varName);
       throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, s);
     } else {
+      String varName = s.substring(1);
+      if (context.hasDefinedVariable(varName))
+        return context.getDefinedVariable(varName);
       return hostServices.resolveConstantType(this, context.appInfo, s, explicitConstant);
     }
   }
@@ -3432,6 +3491,25 @@ public class FHIRPathEngine {
           new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
       return focus;
     }
+    case DefineVariable : {
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.UNORDERED, TypeDetails.FP_String)); 
+      // set the type of the variable
+      // Actually evaluate the value of the first parameter (to get the name of the variable if possible)
+      // and if have that, set it into the context
+      ExpressionNode p = exp.getParameters().get(0);
+      if (p.getKind() == Kind.Constant && p.getConstant() != null) {
+        String varName = exp.getParameters().get(0).getConstant().primitiveValue();
+        if (varName != null) {
+          if (paramTypes.size() > 1)
+            context.setDefinedVariable(varName, paramTypes.get(1));
+          else
+            context.setDefinedVariable(varName, focus);
+        }
+      } else {
+        // this variable is not a constant, so we can't analyze what name it could have
+      }
+      return focus; 
+    }
     case Check: {
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes,
           new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
@@ -3466,14 +3544,6 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Comparable:
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
-    case Alias:
-      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes,
-          new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
-      return anything(CollectionStatus.SINGLETON);
-    case AliasAs:
-      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes,
-          new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
-      return focus;
     case Encode:
       checkParamTypes(exp, exp.getFunction().toCode(), paramTypes,
           new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
@@ -3623,7 +3693,7 @@ public class FHIRPathEngine {
           || exp.getFunction() == Function.All || exp.getFunction() == Function.Select
           || exp.getFunction() == Function.Repeat || exp.getFunction() == Function.Aggregate;
     case 1:
-      return exp.getFunction() == Function.Trace;
+      return exp.getFunction() == Function.Trace || exp.getFunction() == Function.DefineVariable;
     default:
       return false;
     }
@@ -3831,6 +3901,8 @@ public class FHIRPathEngine {
       return funcMemberOf(context, focus, exp);
     case Trace:
       return funcTrace(context, focus, exp);
+    case DefineVariable:
+      return funcDefineVariable(context, focus, exp);
     case Check:
       return funcCheck(context, focus, exp);
     case Today:
@@ -3851,8 +3923,6 @@ public class FHIRPathEngine {
       return funcAllTrue(context, focus, exp);
     case HasValue:
       return funcHasValue(context, focus, exp);
-    case AliasAs:
-      return funcAliasAs(context, focus, exp);
     case Encode:
       return funcEncode(context, focus, exp);
     case Decode:
@@ -3867,8 +3937,6 @@ public class FHIRPathEngine {
       return funcSplit(context, focus, exp);
     case Join:
       return funcJoin(context, focus, exp);
-    case Alias:
-      return funcAlias(context, focus, exp);
     case HtmlChecks1:
       return funcHtmlChecks1(context, focus, exp);
     case HtmlChecks2:
@@ -4417,24 +4485,6 @@ public class FHIRPathEngine {
     return result;
   }
 
-  private List<Base> funcAliasAs(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
-    String name = nl.get(0).primitiveValue();
-    context.addAlias(name, focus);
-    return focus;
-  }
-
-  private List<Base> funcAlias(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
-    String name = nl.get(0).primitiveValue();
-    List<Base> res = new ArrayList<Base>();
-    Base b = context.getAlias(name);
-    if (b != null) {
-      res.add(b);
-    }
-    return res;
-  }
-
   private List<Base> funcHtmlChecks1(ExecutionContext context, List<Base> focus, ExpressionNode exp)
       throws FHIRException {
     // todo: actually check the HTML
@@ -4585,12 +4635,50 @@ public class FHIRPathEngine {
   }
 
   private ExecutionContext changeThis(ExecutionContext context, Base newThis) {
-    return new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context,
-        context.aliases, newThis);
+    ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context,
+        newThis);
+    // append all of the defined variables from the context into the new context
+    if (context.definedVariables != null) {
+      for (String s : context.definedVariables.keySet()) {
+        newContext.setDefinedVariable(s, context.definedVariables.get(s));
+      }
+    }
+    return newContext;
+  }
+
+  private ExecutionContext contextForParameter(ExecutionContext context) {
+    ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, context.thisItem);
+    newContext.total = context.total;
+    newContext.index = context.index;
+    // append all of the defined variables from the context into the new context
+    if (context.definedVariables != null) {
+      for (String s : context.definedVariables.keySet()) {
+        newContext.setDefinedVariable(s, context.definedVariables.get(s));
+      }
+    }
+    return newContext;
   }
 
   private ExecutionTypeContext changeThis(ExecutionTypeContext context, TypeDetails newThis) {
-    return new ExecutionTypeContext(context.appInfo, context.resource, context.context, newThis);
+    ExecutionTypeContext newContext = new ExecutionTypeContext(context.appInfo, context.resource, context.context, newThis);
+    // append all of the defined variables from the context into the new context
+    if (context.definedVariables != null) {
+      for (String s : context.definedVariables.keySet()) {
+        newContext.setDefinedVariable(s, context.definedVariables.get(s));
+      }
+    }
+    return newContext;
+  }
+
+  private ExecutionTypeContext contextForParameter(ExecutionTypeContext context) {
+    ExecutionTypeContext newContext = new ExecutionTypeContext(context.appInfo, context.resource, context.context, context.thisItem);
+    // append all of the defined variables from the context into the new context
+    if (context.definedVariables != null) {
+      for (String s : context.definedVariables.keySet()) {
+        newContext.setDefinedVariable(s, context.definedVariables.get(s));
+      }
+    }
+    return newContext;
   }
 
   private List<Base> funcNow(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
@@ -5414,6 +5502,20 @@ public class FHIRPathEngine {
     } else {
       log(name, focus);
     }
+    return focus;
+  }
+
+  private List<Base> funcDefineVariable(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+    List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
+    String name = nl.get(0).primitiveValue();
+    List<Base> value;
+    if (exp.getParameters().size() == 2) {
+      value = execute(context, focus, exp.getParameters().get(1), true);
+    } else { 
+      value = focus;
+    }
+    // stash the variable into the context
+    context.setDefinedVariable(name, value);
     return focus;
   }
 

@@ -1,0 +1,95 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://hl7.org/fhir/v2/0078",
+  "code" : "<",
+  "display" : "Off scale low"
+}, "valueSet" :null, "langs":"fi", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Off scale low",
+  "code" : "<",
+  "system" : "http://hl7.org/fhir/v2/0078",
+  "version" : "2.8.2",
+  "server" : "http://tx-dev.fhir.org/r3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://hl7.org/fhir/v2/0078",
+  "code" : "<"
+}, "url": "http://hl7.org/fhir/ValueSet/observation-interpretation--0", "version": "3.0.2", "langs":"fi", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Off scale low",
+  "code" : "<",
+  "system" : "http://hl7.org/fhir/v2/0078",
+  "version" : "2.8.2",
+  "server" : "http://tx-dev.fhir.org/r3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://hl7.org/fhir/v2/0078",
+  "code" : "<",
+  "display" : "Off scale low"
+}, "url": "http://hl7.org/fhir/ValueSet/observation-interpretation", "version": "3.0.2", "langs":"fi", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Off scale low",
+  "code" : "<",
+  "system" : "http://hl7.org/fhir/v2/0078",
+  "version" : "2.8.2",
+  "server" : "http://tx-dev.fhir.org/r3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://hl7.org/fhir/v2/0078",
+  "code" : "LU"
+}, "valueSet" :null, "langs":"fi", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  }]
+}}####
+v: {
+  "display" : "Very low",
+  "code" : "LU",
+  "system" : "http://hl7.org/fhir/v2/0078",
+  "version" : "2.8.2",
+  "server" : "http://tx-dev.fhir.org/r3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

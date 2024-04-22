@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -45,6 +46,7 @@ import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.context.IWorkerContext.OIDDefinition;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.ParserType;
@@ -70,6 +72,7 @@ import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
@@ -102,6 +105,93 @@ import javax.annotation.Nonnull;
 
 public interface IWorkerContext {
 
+  public class OIDDefinition {
+    private String type;
+    private String oid;
+    private String url;
+    private String version;
+    private String packageSrc;
+    protected OIDDefinition(String type, String oid, String url, String version, String packageSrc) {
+      super();
+      this.type = type;
+      this.oid = oid;
+      this.url = url;
+      this.version = version;
+      this.packageSrc = packageSrc;
+    }
+    public String getType() {
+      return type;
+    }
+    public String getOid() {
+      return oid;
+    }
+    public String getUrl() {
+      return url;
+    }
+    public String getVersion() {
+      return version;
+    }
+    public String getPackageSrc() {
+      return packageSrc;
+    }
+    public String summary() {
+      return url+(version == null ? "" : "|"+version)+(packageSrc != null ? "("+packageSrc+")" : "");
+    }
+    
+    
+  }
+
+  public class OIDSummary {
+    private Set<OIDDefinition> definitions;
+    private Set<String> urls = new HashSet<>();
+
+    protected OIDSummary(Set<OIDDefinition> definitions) {
+      super();
+      this.definitions = definitions;
+      for (OIDDefinition d : definitions) {
+        urls.add(d.getUrl());
+      }
+    }
+
+    public Set<OIDDefinition> getDefinitions() {
+      return definitions;
+    }
+
+    public String describe() {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      for (OIDDefinition d : definitions) {
+        b.append(d.summary());
+      }
+      return b.toString();
+    }
+
+    public String chooseBestUrl() {
+      for (OIDDefinition d : definitions) {
+        if (d.getPackageSrc() == null) {
+          return d.getUrl();
+        }
+      }
+      for (OIDDefinition d : definitions) {
+        if (d.getUrl().startsWith("http://hl7.org/fhir/")) {
+          return d.getUrl();
+        }
+      }
+      for (OIDDefinition d : definitions) {
+        if (!d.getUrl().contains("vsac")) {
+          return d.getUrl();
+        }
+      }
+      return null;
+    }
+
+    public int urlCount() {
+      return urls.size();
+    }
+
+    public String getUrl() {
+      return urls.iterator().next();
+    }
+  }
   /**
    * Get the version of the base definitions loaded in context
    * This *does not* have to be 5.0 (R5) - the context can load other versions
@@ -634,7 +724,13 @@ public interface IWorkerContext {
   public boolean isForPublication();
   public void setForPublication(boolean value);
 
-  public Set<String> urlsForOid(boolean codeSystem, String oid);
+  /**
+   * 
+   * @param oid
+   * @param resourceType - null to search on all resource types
+   * @return
+   */
+  public OIDSummary urlsForOid(String oid, String resourceType);
 
   /**
    * this first does a fetch resource, and if nothing is found, looks in the 
@@ -655,5 +751,7 @@ public interface IWorkerContext {
    * @return true if it does, false if it doesn't, and null if it's not know whether it does
    */
   public Boolean subsumes(ValidationOptions options, Coding parent, Coding child);
+
+  public boolean isServerSideSystem(String url);
 
 }

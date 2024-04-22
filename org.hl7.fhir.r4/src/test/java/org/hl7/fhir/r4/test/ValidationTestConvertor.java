@@ -13,6 +13,7 @@ import org.hl7.fhir.r4.elementmodel.Manager;
 import org.hl7.fhir.r4.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class ValidationTestConvertor {
 
@@ -25,14 +26,14 @@ public class ValidationTestConvertor {
   public static void main(String[] args) throws FileNotFoundException, IOException, FHIRException {
     SimpleWorkerContext context = SimpleWorkerContext
         .fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\validation-min.xml.zip");
-    for (File f : new File("C:\\work\\org.hl7.fhir\\build\\tests\\validation-examples").listFiles()) {
+    for (File f : ManagedFileAccess.file("C:\\work\\org.hl7.fhir\\build\\tests\\validation-examples").listFiles()) {
       if (f.getAbsolutePath().endsWith(".xml")) {
-        File t = new File(Utilities.changeFileExt(f.getAbsolutePath(), ".ttl"));
+        File t = ManagedFileAccess.file(Utilities.changeFileExt(f.getAbsolutePath(), ".ttl"));
         if (!t.exists()) {
           try {
             System.out.print("Process " + f.getAbsolutePath());
-            Element e = Manager.parse(context, new FileInputStream(f), FhirFormat.XML);
-            Manager.compose(context, e, new FileOutputStream(t), FhirFormat.TURTLE, OutputStyle.PRETTY, null);
+            Element e = Manager.parse(context, ManagedFileAccess.inStream(f), FhirFormat.XML);
+            Manager.compose(context, e, ManagedFileAccess.outStream(t), FhirFormat.TURTLE, OutputStyle.PRETTY, null);
             System.out.println("   .... success");
           } catch (Exception e) {
             System.out.println("   .... fail: " + e.getMessage());
@@ -40,13 +41,13 @@ public class ValidationTestConvertor {
         }
       }
       if (f.getAbsolutePath().endsWith(".json")) {
-        if (!new File(Utilities.changeFileExt(f.getAbsolutePath(), ".ttl")).exists()) {
-          File t = new File(Utilities.changeFileExt(f.getAbsolutePath(), ".ttl"));
+        if (!ManagedFileAccess.file(Utilities.changeFileExt(f.getAbsolutePath(), ".ttl")).exists()) {
+          File t = ManagedFileAccess.file(Utilities.changeFileExt(f.getAbsolutePath(), ".ttl"));
           if (!t.exists()) {
             try {
               System.out.print("Process " + f.getAbsolutePath());
-              Element e = Manager.parse(context, new FileInputStream(f), FhirFormat.JSON);
-              Manager.compose(context, e, new FileOutputStream(t), FhirFormat.TURTLE, OutputStyle.PRETTY, null);
+              Element e = Manager.parse(context, ManagedFileAccess.inStream(f), FhirFormat.JSON);
+              Manager.compose(context, e, ManagedFileAccess.outStream(t), FhirFormat.TURTLE, OutputStyle.PRETTY, null);
               System.out.println("   .... success");
             } catch (Exception e) {
               System.out.println("   .... fail: " + e.getMessage());

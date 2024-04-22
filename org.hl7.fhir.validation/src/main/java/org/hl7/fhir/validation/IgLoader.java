@@ -37,6 +37,7 @@ import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.turtle.Turtle;
@@ -104,11 +105,11 @@ public class IgLoader implements IValidationEngineLoader {
       srcPackage = src;
     }
 
-    NpmPackage npm = srcPackage.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !new File(srcPackage).exists() ? getPackageCacheManager().loadPackage(srcPackage, null) : null;
-    if (npm == null && new File(srcPackage).exists()) {
+    NpmPackage npm = srcPackage.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !ManagedFileAccess.file(srcPackage).exists() ? getPackageCacheManager().loadPackage(srcPackage, null) : null;
+    if (npm == null && ManagedFileAccess.file(srcPackage).exists()) {
       // try treating the file as an npm
       try {
-        npm = NpmPackage.fromPackage(new FileInputStream(srcPackage));
+        npm = NpmPackage.fromPackage(ManagedFileAccess.inStream(srcPackage));
       } catch (Exception e) {
         // nothing - any errors will be properly handled later in the process
       }
@@ -242,26 +243,26 @@ public class IgLoader implements IValidationEngineLoader {
         return fetchFromUrl(src + (v == null ? "" : "|" + v), explore);
     }
 
-    File f = new File(Utilities.path(src));
+    File f = ManagedFileAccess.file(Utilities.path(src));
     if (f.exists()) {
-      if (f.isDirectory() && new File(Utilities.path(src, "package.tgz")).exists()) {
-        FileInputStream stream = new FileInputStream(Utilities.path(src, "package.tgz"));
+      if (f.isDirectory() && ManagedFileAccess.file(Utilities.path(src, "package.tgz")).exists()) {
+        FileInputStream stream = ManagedFileAccess.inStream(Utilities.path(src, "package.tgz"));
         try {
           return loadPackage(stream, Utilities.path(src, "package.tgz"), false);
         } finally {
           stream.close();
         }
       }
-      if (f.isDirectory() && new File(Utilities.path(src, "igpack.zip")).exists()) {
-        FileInputStream stream = new FileInputStream(Utilities.path(src, "igpack.zip"));
+      if (f.isDirectory() && ManagedFileAccess.file(Utilities.path(src, "igpack.zip")).exists()) {
+        FileInputStream stream = ManagedFileAccess.inStream(Utilities.path(src, "igpack.zip"));
         try {
           return readZip(stream);
         } finally {
           stream.close();
         }
       }
-      if (f.isDirectory() && new File(Utilities.path(src, "validator.pack")).exists()) {
-        FileInputStream stream = new FileInputStream(Utilities.path(src, "validator.pack"));
+      if (f.isDirectory() && ManagedFileAccess.file(Utilities.path(src, "validator.pack")).exists()) {
+        FileInputStream stream = ManagedFileAccess.inStream(Utilities.path(src, "validator.pack"));
         try {
           return readZip(stream);
         } finally {
@@ -271,7 +272,7 @@ public class IgLoader implements IValidationEngineLoader {
       if (f.isDirectory()) {
         return scanDirectory(f, recursive);
       }
-      FileInputStream stream = new FileInputStream(src);
+      FileInputStream stream = ManagedFileAccess.inStream(src);
       try {
         if (src.endsWith(".tgz")) {
           Map<String, ByteProvider> res = loadPackage(stream, src, false);
@@ -446,26 +447,26 @@ public class IgLoader implements IValidationEngineLoader {
       }
     }
 
-    File f = new File(Utilities.path(src));
+    File f = ManagedFileAccess.file(Utilities.path(src));
     if (f.exists()) {
-      if (f.isDirectory() && new File(Utilities.path(src, "package.tgz")).exists()) {
-        versions.see(loadPackageForVersion(new FileInputStream(Utilities.path(src, "package.tgz"))), "Package " + src);
+      if (f.isDirectory() && ManagedFileAccess.file(Utilities.path(src, "package.tgz")).exists()) {
+        versions.see(loadPackageForVersion(ManagedFileAccess.inStream(Utilities.path(src, "package.tgz"))), "Package " + src);
         return null;
       }
-      if (f.isDirectory() && new File(Utilities.path(src, "igpack.zip")).exists())
-        return readZip(new FileInputStream(Utilities.path(src, "igpack.zip")));
-      if (f.isDirectory() && new File(Utilities.path(src, "validator.pack")).exists())
-        return readZip(new FileInputStream(Utilities.path(src, "validator.pack")));
+      if (f.isDirectory() && ManagedFileAccess.file(Utilities.path(src, "igpack.zip")).exists())
+        return readZip(ManagedFileAccess.inStream(Utilities.path(src, "igpack.zip")));
+      if (f.isDirectory() && ManagedFileAccess.file(Utilities.path(src, "validator.pack")).exists())
+        return readZip(ManagedFileAccess.inStream(Utilities.path(src, "validator.pack")));
       if (f.isDirectory())
         return scanDirectory(f, recursive);
       if (src.endsWith(".tgz")) {
-        versions.see(loadPackageForVersion(new FileInputStream(src)), "Package " + src);
+        versions.see(loadPackageForVersion(ManagedFileAccess.inStream(src)), "Package " + src);
         return null;
       }
       if (src.endsWith(".pack"))
-        return readZip(new FileInputStream(src));
+        return readZip(ManagedFileAccess.inStream(src));
       if (src.endsWith("igpack.zip"))
-        return readZip(new FileInputStream(src));
+        return readZip(ManagedFileAccess.inStream(src));
       Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), TextFile.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, ByteProvider> res = new HashMap<String, ByteProvider>();

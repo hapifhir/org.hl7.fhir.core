@@ -28,6 +28,7 @@ import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class TerminologyCacheManager {
 
@@ -60,7 +61,7 @@ public class TerminologyCacheManager {
   }
 
   public void initialize() throws IOException {
-    File f = new File(cacheFolder);
+    File f = ManagedFileAccess.file(cacheFolder);
     if (!f.exists()) {
       Utilities.createDirectory(cacheFolder);
     }
@@ -99,7 +100,7 @@ public class TerminologyCacheManager {
     try (ZipInputStream zipIn = new ZipInputStream(is)) {
       for (ZipEntry ze; (ze = zipIn.getNextEntry()) != null;) {
         Path path = Path.of(Utilities.path(targetDir, ze.getName())).normalize();
-        String pathString = path.toFile().getAbsolutePath();
+        String pathString = ManagedFileAccess.fromPath(path).getAbsolutePath();
         if (!path.startsWith(Path.of(targetDir).normalize())) {
           // see: https://snyk.io/research/zip-slip-vulnerability
           throw new RuntimeException("Entry with an illegal path: " + ze.getName());

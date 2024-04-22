@@ -7,6 +7,7 @@ import org.hl7.fhir.dstu2.utils.FHIRPathEngine;
 import org.hl7.fhir.dstu2.utils.SimpleWorkerContext;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -55,7 +56,7 @@ public class FluentPathTests {
         fp.check(null, null, null, node);
       else {
         res = new XmlParser()
-            .parse(new FileInputStream(Utilities.path("C:\\work\\org.hl7.fhir.dstu2\\build\\publish", input)));
+            .parse(ManagedFileAccess.inStream(Utilities.path("C:\\work\\org.hl7.fhir.dstu2\\build\\publish", input)));
         fp.check(res, res.getResourceType().toString(), res.getResourceType().toString(), node);
       }
       outcome = fp.evaluate(res, node);

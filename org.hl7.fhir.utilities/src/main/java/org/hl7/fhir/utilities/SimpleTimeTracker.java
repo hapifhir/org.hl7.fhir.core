@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+
 public class SimpleTimeTracker {
 
   private long start;
@@ -37,8 +39,8 @@ public class SimpleTimeTracker {
   private void init() {
     if (bw == null) {
       try {
-        File fout = new File("/Users/grahamegrieve/temp/time.txt");
-        FileOutputStream fos = new FileOutputStream(fout);
+        File fout = ManagedFileAccess.file("/Users/grahamegrieve/temp/time.txt");
+        FileOutputStream fos = ManagedFileAccess.outStream(fout);
         bw = new BufferedWriter(new OutputStreamWriter(fos));
       } catch (Exception e) {
         e.printStackTrace();

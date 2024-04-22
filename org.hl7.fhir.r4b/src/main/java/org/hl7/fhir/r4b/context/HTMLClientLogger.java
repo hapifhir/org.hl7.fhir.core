@@ -31,12 +31,14 @@ package org.hl7.fhir.r4b.context;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger {
 
@@ -45,10 +47,10 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
   private boolean req = false;
   private PrintStream file;
 
-  public HTMLClientLogger(String log) {
+  public HTMLClientLogger(String log) throws IOException {
     if (log != null) {
       try {
-        file = new PrintStream(new FileOutputStream(log));
+        file = new PrintStream(ManagedFileAccess.outStream(log));
       } catch (FileNotFoundException e) {
       }
     }

@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
@@ -507,5 +508,22 @@ public class LanguageUtils {
     }
     return null;
   }
-  
+ 
+  public static boolean switchLanguage(Element e, String lang) {
+    if (e.getProperty().isTranslatable()) {
+      String cnt = getTranslation(e, lang);
+      e.removeExtension(ToolingExtensions.EXT_TRANSLATION);
+      if (cnt != null) {
+        e.setValue(cnt);
+      }
+    }
+    if (e.hasChildren()) {
+      for (Element c : e.getChildren()) {
+        if (!switchLanguage(c, lang)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 }

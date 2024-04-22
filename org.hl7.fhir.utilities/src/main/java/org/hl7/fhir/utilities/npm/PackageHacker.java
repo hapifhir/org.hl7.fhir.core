@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -27,18 +28,65 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 public class PackageHacker {
 
   private static boolean useSecureReferences = false;
-  
+
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/us/vitals/2020Sep/package.tgz");
+    new PackageHacker().massEdit(new File("/Users/grahamegrieve/web/hl7.org/fhir"));
+    //    new PackageHacker().edit("/Users/grahamegrieve/web/hl7.org/fhir/us/vitals/2020Sep/package.tgz");
+  }
+
+  private void massEdit(File dir) throws IOException {
+    System.out.println("process "+dir.getAbsolutePath());
+    for (File f : dir.listFiles()) {
+      if (f.isDirectory()) {
+        massEdit(f);
+      } else if (f.getName().equals("package.tgz")) {
+        try {
+          FileInputStream fs = ManagedFileAccess.inStream(f);
+          NpmPackage pck = NpmPackage.fromPackage(fs);
+          if ("fhir.core".equals(pck.getNpm().str("type"))) {
+            System.out.println("!!change "+f.getAbsolutePath());
+            pck.getNpm().remove("type");
+            pck.getNpm().set("type", "Core");
+            FileOutputStream fso = ManagedFileAccess.outStream(f);
+            try {
+              pck.save(fso);
+            } finally {
+              fso.close();
+            }
+          }
+        } catch (Exception e) {
+          System.out.println("!!Error: "+e.getMessage());
+        }
+      } else if (f.getName().startsWith("hl7.fhir.r") && f.getName().endsWith(".examples.tgz")) {
+        try {
+          FileInputStream fs = ManagedFileAccess.inStream(f);
+          NpmPackage pck = NpmPackage.fromPackage(fs);
+          if ("fhir.examples".equals(pck.getNpm().str("type"))) {
+            System.out.println("!!change "+f.getAbsolutePath());
+            pck.getNpm().remove("type");
+            pck.getNpm().set("type", "Examples");
+            FileOutputStream fso = ManagedFileAccess.outStream(f);
+            try {
+              pck.save(fso);
+            } finally {
+              fso.close();
+            }
+          }
+        } catch (Exception e) {
+          System.out.println("!!Error: "+e.getMessage());
+        }
+
+      }
+    }
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
-    File f = new File(name);
+    File f = ManagedFileAccess.file(name);
     if (!f.exists())
       throw new Error("Unable to find "+f.getAbsolutePath());
-    
+
     NpmPackage pck = null;
-    FileInputStream fs = new FileInputStream(f);
+    FileInputStream fs = ManagedFileAccess.inStream(f);
     try {
       pck = NpmPackage.fromPackage(fs);
     } finally {
@@ -46,7 +94,7 @@ public class PackageHacker {
     }
     System.out.println("Altering Package "+f.getAbsolutePath());
     System.out.println(nice(pck.getNpm()));
-    
+
     change(pck.getNpm());
 
     System.out.println("Revised Package");
@@ -56,8 +104,8 @@ public class PackageHacker {
     System.out.print("save? y/n: ");
     int r = System.in.read();
     if (r == 'y') {
-      f.renameTo(new File(Utilities.changeFileExt(name, ".tgz.bak")));
-      FileOutputStream fso = new FileOutputStream(f);
+      f.renameTo(ManagedFileAccess.file(Utilities.changeFileExt(name, ".tgz.bak")));
+      FileOutputStream fso = ManagedFileAccess.outStream(f);
       try {
         pck.save(fso);
       } finally {
@@ -67,13 +115,13 @@ public class PackageHacker {
   }
 
   private void fixExampleContent(Map<String, byte[]> content) {
-//    byte[] cnt = content.get("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssistExample.json");
-//    content.put("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssist.json", cnt);
-//    content.remove("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssistExample.json");
+    //    byte[] cnt = content.get("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssistExample.json");
+    //    content.put("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssist.json", cnt);
+    //    content.remove("ServiceRequest-SDOHCC-ServiceRequestCompletedFoodPantryApplicationAssistExample.json");
   }
 
   private void fixContent(Map<String, byte[]> content) {
-//    fixVersionInContent(content);
+    //    fixVersionInContent(content);
 
   }
 
@@ -82,7 +130,7 @@ public class PackageHacker {
   }
 
   private void change(JsonObject npm) throws FileNotFoundException, IOException {
-//    fixVersions(npm, ver);
+    //    fixVersions(npm, ver);
     npm.remove("notForPublication");
     npm.set("name", "hl7.fhir.us.vitals");
   }
@@ -97,7 +145,7 @@ public class PackageHacker {
         }
       }
     }
-    
+
   }
 
   private void fixVersions(JsonObject npm) {
@@ -125,12 +173,12 @@ public class PackageHacker {
   }
 
   private void addContentFrom(String folder, Map<String, byte[]> content) throws FileNotFoundException, IOException {
-    for (File f : new File(folder).listFiles()) {
+    for (File f : ManagedFileAccess.file(folder).listFiles()) {
       if (f.getName().endsWith(".json") && !f.getName().endsWith(".canonical.json")) {
-         String cnt = TextFile.fileToString(f);
-         if (cnt.contains("\"resourceType\"")) {
-           content.put("package/"+f.getName(), TextFile.fileToBytes(f));
-         }
+        String cnt = TextFile.fileToString(f);
+        if (cnt.contains("\"resourceType\"")) {
+          content.put("package/"+f.getName(), TextFile.fileToBytes(f));
+        }
       }
     }
   }

@@ -15,6 +15,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -479,7 +480,7 @@ public class CorePackageVersionConvertor {
     // build a new package
     System.out.println("Convert "+packageSource+" to "+versionTarget);
     
-    NpmPackage src = NpmPackage.fromPackage(new FileInputStream(packageSource));
+    NpmPackage src = NpmPackage.fromPackage(ManagedFileAccess.inStream(packageSource));
     IContentConvertor conv = contentConvertorFactory(src.fhirVersion(), versionTarget);
     
     NpmPackage dst = NpmPackage.empty();
@@ -510,7 +511,7 @@ public class CorePackageVersionConvertor {
         }
       }
     }
-    dst.save(new FileOutputStream(Utilities.changeFileExt(packageSource, ".as."+VersionUtilities.getNameForVersion(versionTarget).toLowerCase()+".tgz")));
+    dst.save(ManagedFileAccess.outStream(Utilities.changeFileExt(packageSource, ".as."+VersionUtilities.getNameForVersion(versionTarget).toLowerCase()+".tgz")));
   }
 
   private IContentConvertor contentConvertorFactory(String fhirVersion, String versionTarget) throws Exception {

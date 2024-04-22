@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.testexecutor;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -7,6 +8,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class TxCacheResourceExtractor {
   public static void extractTxCacheResources(String targetDirectory) throws IOException {
@@ -47,7 +50,7 @@ public class TxCacheResourceExtractor {
 
     makeFileParentDirsIfNotExist(fileTargetPath);
 
-    FileOutputStream fileOutputStream = new FileOutputStream(fileTargetPath.toFile());
+    FileOutputStream fileOutputStream = ManagedFileAccess.outStream(ManagedFileAccess.fromPath(fileTargetPath));
     for (int c = zip.read(); c != -1; c = zip.read()) {
       fileOutputStream.write(c);
     }
@@ -55,10 +58,11 @@ public class TxCacheResourceExtractor {
     fileOutputStream.close();
   }
 
-  private static void makeFileParentDirsIfNotExist(Path filePath) {
+  private static void makeFileParentDirsIfNotExist(Path filePath) throws IOException {
     Path parent = filePath.getParent();
-    if (!parent.toFile().exists()) {
-      parent.toFile().mkdirs();
+    File f = ManagedFileAccess.fromPath(parent);
+    if (!f.exists()) {
+      f.mkdirs();
     }
   }
 }

@@ -13,9 +13,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.dstu2.utils.IWorkerContext;
-import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -41,7 +42,7 @@ public class TestingUtilities {
       command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
       ProcessBuilder builder = new ProcessBuilder(command);
-      builder.directory(new CSFile(Utilities.path("[tmp]")));
+      builder.directory(ManagedFileAccess.csfile(Utilities.path("[tmp]")));
       builder.start();
 
     }
@@ -154,7 +155,7 @@ public class TestingUtilities {
 
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    return builder.parse(new FileInputStream(fn));
+    return builder.parse(ManagedFileAccess.inStream(fn));
   }
 
   public static String checkJsonIsSame(String f1, String f2)
@@ -166,7 +167,7 @@ public class TestingUtilities {
       command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
       ProcessBuilder builder = new ProcessBuilder(command);
-      builder.directory(new CSFile(Utilities.path("[tmp]")));
+      builder.directory(ManagedFileAccess.csfile(Utilities.path("[tmp]")));
       builder.start();
 
     }

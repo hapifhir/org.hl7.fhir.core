@@ -58,10 +58,11 @@ import org.hl7.fhir.r5.context.IContextResourceLoader;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -118,7 +119,7 @@ public class UtilitiesXTests {
   static public String fixedpath;
   static public String contentpath;
 
-  public static String home() {
+  public static String home() throws IOException {
     if (fixedpath != null)
      return fixedpath;
     String s = System.getenv("FHIR_HOME");
@@ -127,7 +128,7 @@ public class UtilitiesXTests {
     s = "C:\\work\\org.hl7.fhir\\build";
     // TODO - what should we do here?
 	  s = "/Users/jamesagnew/git/fhir";
-    if (new File(s).exists())
+    if (ManagedFileAccess.file(s).exists())
       return s;
     throw new Error("FHIR Home directory not configured");
   }
@@ -137,20 +138,20 @@ public class UtilitiesXTests {
     if (contentpath != null)
      return contentpath;
     String s = "R:\\fhir\\publish";
-    if (new File(s).exists())
+    if (ManagedFileAccess.file(s).exists())
       return s;
     return Utilities.path(home(), "publish");
   }
   
   // diretory that contains all the US implementation guides
-  public static String us() {
+  public static String us() throws IOException {
     if (fixedpath != null)
      return fixedpath;
     String s = System.getenv("FHIR_HOME");
     if (!Utilities.noString(s))
       return s;
     s = "C:\\work\\org.hl7.fhir.us";
-    if (new File(s).exists())
+    if (ManagedFileAccess.file(s).exists())
       return s;
     throw new Error("FHIR US directory not configured");
   }
@@ -168,7 +169,7 @@ public class UtilitiesXTests {
 	    command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
 	    ProcessBuilder builder = new ProcessBuilder(command);
-	    builder.directory(new CSFile(Utilities.path("tmp]")));
+	    builder.directory(ManagedFileAccess.csfile(Utilities.path("tmp]")));
 	    builder.start();
 			
 		}
@@ -272,7 +273,7 @@ public class UtilitiesXTests {
 	}
 
   private static Document loadXml(String fn) throws Exception {
-    return loadXml(new FileInputStream(fn));
+    return loadXml(ManagedFileAccess.inStream(fn));
   }
 
   private static Document loadXml(InputStream fn) throws Exception {
@@ -320,7 +321,7 @@ public class UtilitiesXTests {
       command.add(f2);
 
       ProcessBuilder builder = new ProcessBuilder(command);
-      builder.directory(new CSFile(Utilities.path("[tmp]")));
+      builder.directory(ManagedFileAccess.csfile(Utilities.path("[tmp]")));
       builder.start();
       
     }
@@ -334,7 +335,7 @@ public class UtilitiesXTests {
 	    command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
 	    ProcessBuilder builder = new ProcessBuilder(command);
-	    builder.directory(new CSFile(Utilities.path("tmp]")));
+	    builder.directory(ManagedFileAccess.csfile(Utilities.path("tmp]")));
 	    builder.start();
 			
 		}
@@ -422,7 +423,7 @@ public class UtilitiesXTests {
 	}
 
   public static String temp() throws IOException {
-    if (new File(Utilities.path("tmp]")).exists())
+    if (ManagedFileAccess.file(Utilities.path("tmp]")).exists())
       return Utilities.path("tmp]");
     return System.getProperty("java.io.tmpdir");
   }
@@ -458,7 +459,7 @@ public class UtilitiesXTests {
       command.add(f2);
 
       ProcessBuilder builder = new ProcessBuilder(command);
-      builder.directory(new CSFile(Utilities.path("[tmp]")));
+      builder.directory(ManagedFileAccess.csfile(Utilities.path("[tmp]")));
       builder.start();
       
     }
@@ -477,9 +478,9 @@ public class UtilitiesXTests {
   }
 
   public static boolean findTestResource(String... paths) throws IOException { 
-    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
+    if (ManagedFileAccess.file("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
       String n = Utilities.path(getUserDirFhirTestCases(), Utilities.path(paths));
-      return new File(n).exists();
+      return ManagedFileAccess.file(n).exists();
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
       try {
@@ -497,10 +498,10 @@ public class UtilitiesXTests {
   }
 
   public static String loadTestResource(String... paths) throws IOException {
-    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
+    if (ManagedFileAccess.file("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
       String n = Utilities.path(getUserDirFhirTestCases(), Utilities.path(paths));
       // ok, we'll resolve this locally
-      return TextFile.fileToString(new File(n));
+      return TextFile.fileToString(ManagedFileAccess.file(n));
     } else {
       // resolve from the package 
       String contents;
@@ -521,9 +522,9 @@ public class UtilitiesXTests {
   }
 
   public static InputStream loadTestResourceStream(String... paths) throws IOException {
-    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
+    if (ManagedFileAccess.file("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
       String n = Utilities.path(getUserDirFhirTestCases(), Utilities.path(paths));
-      return new FileInputStream(n);
+      return ManagedFileAccess.inStream(n);
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
       InputStream s = UtilitiesXTests.class.getResourceAsStream(classpath);
@@ -535,7 +536,7 @@ public class UtilitiesXTests {
   }
 
   public static byte[] loadTestResourceBytes(String... paths) throws IOException {
-    if (new File("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
+    if (ManagedFileAccess.file("../../fhir-test-cases").exists() && isTryToLoadFromFileSystem()) {
       String n = Utilities.path(System.getProperty("user.dir"), "..", "..", "fhir-test-cases", Utilities.path(paths));
       return TextFile.fileToBytes(n);
     } else {
@@ -555,12 +556,12 @@ public class UtilitiesXTests {
   }
   
   public static String tempFolder(String name) throws IOException {
-    File tmp = new File(Utilities.path("tmp]"));
+    File tmp = ManagedFileAccess.file(Utilities.path("tmp]"));
     if (tmp.exists() && tmp.isDirectory()) {
       String path = Utilities.path("[tmp]", name);
       Utilities.createDirectory(path);
       return path;
-    } else if (new File("/tmp").exists()) {
+    } else if (ManagedFileAccess.file("/tmp").exists()) {
       String path = Utilities.path("/tmp", name);
       Utilities.createDirectory(path);
       return path;
