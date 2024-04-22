@@ -2534,7 +2534,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       String[] parts = uri.split("\\/");
       if (!Utilities.noString(type) && parts.length == 1) {
         if (allResourcesById.containsKey(type)) {
-          return allResourcesById.get(type).get(parts[0]).getResource();
+          ResourceProxy res = allResourcesById.get(type).get(parts[0]);
+          return res == null ? null : res.getResource();
         } else {
           return null;
         }
