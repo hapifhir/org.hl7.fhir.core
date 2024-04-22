@@ -338,7 +338,7 @@ public class PatientRenderer extends ResourceRenderer {
         }
         if (!anyComplex) {
           XhtmlNode tr = tbl.tr();
-          nameCell(tr, sd.getTitle()+":", sd.getDescription(), sd.getWebPath());
+          nameCell(tr, getContext().getTranslated(sd.getTitleElement()), sd.getDescription(), sd.getWebPath());
           XhtmlNode td = tr.td();
           td.colspan("3");
           if (list.size() == 1) {

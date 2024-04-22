@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class ByteUtils {
 
-  public static <T extends Resource> byte[] resourceToByteArray(T resource, boolean pretty, boolean isJson) {
+  public static <T extends Resource> byte[] resourceToByteArray(T resource, boolean pretty, boolean isJson, boolean noXhtml) {
     ByteArrayOutputStream baos = null;
     byte[] byteArray = null;
     try {
@@ -27,6 +27,9 @@ public class ByteUtils {
         parser = new XmlParser();
       }
       parser.setOutputStyle(pretty ? IParser.OutputStyle.PRETTY : IParser.OutputStyle.NORMAL);
+      if (noXhtml) {
+        parser.setSuppressXhtml("Narrative removed");
+      }      
       parser.compose(baos, resource);
       baos.close();
       byteArray = baos.toByteArray();
