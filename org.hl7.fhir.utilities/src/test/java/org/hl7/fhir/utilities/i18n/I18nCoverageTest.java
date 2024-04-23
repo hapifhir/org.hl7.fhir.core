@@ -3,21 +3,18 @@ package org.hl7.fhir.utilities.i18n;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 
 import org.junit.jupiter.api.Test;
 
 public class I18nCoverageTest {
-
-
 
   final Set<Locale> locales = Set.of(
     Locale.ENGLISH,
@@ -28,7 +25,128 @@ public class I18nCoverageTest {
   );
 
   @Test
-  public void testCoverage() throws IllegalAccessException {
+  public void testPhraseCoverage() throws IOException {
+
+    Properties englishMessages = new Properties();
+    englishMessages.load(I18nTestClass.class.getClassLoader().getResourceAsStream("Messages.properties"));
+    I18nTestClass englishTestClass = getI18nTestClass(Locale.ENGLISH);
+    Set<String> englishPluralSuffixes = englishTestClass.getPluralSuffixes();
+
+    Set<String> englishPluralKeys = new HashSet<>();
+    Set<String> englishKeys = new HashSet<>();
+    for (Object objectKey : englishMessages.keySet()) {
+      String key = (String) objectKey;
+      if (isPluralKey(key, englishPluralSuffixes)) {
+        final String pluralKeyRoot = getPluralKeyRoot(key, englishPluralSuffixes);
+        englishPluralKeys.add(pluralKeyRoot);
+      } else {
+        englishKeys.add(key);
+      }
+    }
+
+    HashMap<Locale, Integer> foundKeys = new HashMap<>();
+    HashMap<Locale, Integer> foundPluralKeys = new HashMap<>();
+
+    for (Locale locale : locales) {
+     if (!locale.equals(Locale.ENGLISH)) {
+        Properties translatedMessages = new Properties();
+       translatedMessages.load(I18nTestClass.class.getClassLoader().getResourceAsStream("Messages_" + locale.toString() + ".properties"));
+       I18nTestClass translatedTestClass = getI18nTestClass(Locale.ENGLISH);
+       Set<String> translatedPluralSuffixes = translatedTestClass.getPluralSuffixes();
+
+       Set<String> translatedPluralKeys = new HashSet<>();
+       Set<String> translatedKeys = new HashSet<>();
+
+       for (Object objectKey : translatedMessages.keySet()) {
+         String key = (String) objectKey;
+         Object value = translatedMessages.get(objectKey);
+         if (
+           value instanceof  String &&
+           !((String) value).trim().isEmpty()) {
+           if (isPluralKey(key, translatedPluralSuffixes)) {
+             final String pluralKeyRoot = getPluralKeyRoot(key, englishPluralSuffixes);
+             translatedPluralKeys.add(pluralKeyRoot);
+           } else {
+             translatedKeys.add(key);
+           }
+         }
+       }
+
+       Set<String> intersectionKeys = new HashSet<>(englishKeys);
+       intersectionKeys.retainAll(translatedKeys);
+       Set<String> intersectionPluralKeys = new HashSet<>(englishPluralKeys);
+       intersectionPluralKeys.retainAll(translatedPluralKeys);
+
+       Set<String> missingKeys = new HashSet<>(englishKeys);
+       Set<String> missingPluralKeys = new HashSet<>(englishPluralKeys);
+
+       missingKeys.removeAll(translatedKeys);
+       missingPluralKeys.removeAll(translatedPluralKeys);
+
+       foundKeys.put(locale, intersectionKeys.size());
+       foundPluralKeys.put(locale, intersectionPluralKeys.size());
+
+       for (String missingKey : missingKeys) {
+         System.err.println("Missing key for locale " + locale + ": " + missingKey);
+       }
+       for (String missingPluralKey : missingPluralKeys) {
+         System.err.println("Missing plural key for locale " + locale + ": " + missingPluralKey);
+       }
+     }
+    }
+
+
+    PrintStream out = getCSVOutputStream();
+
+    printPhraseCoverageCSV(out, foundKeys, foundPluralKeys, englishKeys, englishPluralKeys);
+  }
+
+  private static PrintStream getCSVOutputStream() throws FileNotFoundException {
+    String outputFile = System.getenv("I18N_COVERAGE_FILE");
+
+    return outputFile == null
+      ? System.out
+      : new PrintStream(new File(outputFile));
+  }
+
+  private static void printPhraseCoverageCSV(PrintStream out, HashMap<Locale, Integer> foundKeys, HashMap<Locale, Integer> foundPluralKeys, Set<String> englishKeys, Set<String> englishPluralKeys) {
+    out.println("Locale,Complete #,Complete %");
+    for (Locale locale : foundKeys.keySet()) {
+      int singleCount = foundKeys.get(locale);
+      int pluralCount = foundPluralKeys.get(locale);
+
+      int count = singleCount + pluralCount;
+      int total = englishKeys.size() + englishPluralKeys.size();
+
+      out.println(locale + "," + count + "," + getPercent( count, total));
+    }
+  }
+
+  private static String getPercent(int numerator, int denominator) {
+    return (int) (((double)numerator / denominator) * 100) + "%";
+  }
+
+  private String getPluralKeyRoot(String key, Set<String> pluralKeys) {
+    for (String pluralKey : pluralKeys) {
+      final String suffix = I18nBase.KEY_DELIMITER + pluralKey;
+      if (key.endsWith(suffix)) {
+        return key.substring(0, key.lastIndexOf(suffix));
+      }
+    }
+   throw new IllegalArgumentException(key + " does not terminate with a plural suffix. Available: " + pluralKeys);
+  }
+
+  private boolean isPluralKey(String key, Set<String> pluralKeys) {
+    for (String pluralKey : pluralKeys) {
+      if (key.endsWith(I18nBase.KEY_DELIMITER + pluralKey)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Test
+  public void testConstantsCoverage() throws IllegalAccessException {
 
     Field[] fields = I18nConstants.class.getDeclaredFields();
     Map<Locale, I18nBase> testClassMap = new HashMap<>();
@@ -48,7 +166,6 @@ public class I18nCoverageTest {
 
         for (Locale locale : locales) {
           I18nBase base = testClassMap.get(locale);
-
 
           isSingularPhrase.put(locale, base.messageKeyExistsForLocale(message));
           isPluralPhrase.put(locale, existsAsPluralPhrase(base, message));
