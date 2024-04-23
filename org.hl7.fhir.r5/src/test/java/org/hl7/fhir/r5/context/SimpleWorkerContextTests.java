@@ -97,7 +97,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(DUMMY_URL).when(terminologyClient).getAddress();
     context.initTxCache(terminologyCache);
     context.expParameters = expParameters;
-    context.terminologyClientManager.setMasterClient(terminologyClient);
+    context.terminologyClientManager.setMasterClient(terminologyClient, false);
     context.txLog = txLog;
   }
 
@@ -437,7 +437,7 @@ public class SimpleWorkerContextTests {
 
     Mockito.doReturn(terminologyCapabilities).when(terminologyCache).getTerminologyCapabilities(address);
 
-    context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient);
+    context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient, false);
 
     Mockito.verify(terminologyCache).getTerminologyCapabilities(address);
     Mockito.verify(terminologyClient).getCapabilitiesStatementQuick();
@@ -455,7 +455,7 @@ public class SimpleWorkerContextTests {
     Mockito.doReturn(terminologyCapabilities).when(terminologyClient).getTerminologyCapabilities();
     Mockito.doReturn(capabilitiesStatement).when(terminologyClient).getCapabilitiesStatementQuick();
 
-   context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient);
+   context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient, false);
 
     Mockito.verify(terminologyCache, times(0)).getTerminologyCapabilities(address);
     Mockito.verify(terminologyCache, times(0)).getCapabilityStatement(address);
