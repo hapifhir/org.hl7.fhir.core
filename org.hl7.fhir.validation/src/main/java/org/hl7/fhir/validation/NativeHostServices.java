@@ -161,7 +161,7 @@ public class NativeHostServices {
    * @throws Exception
    */
   public void connectToTxSvc(String txServer, String log) throws Exception {
-    validator.connectToTSServer(txServer, log, FhirPublication.R5);
+    validator.connectToTSServer(txServer, log, FhirPublication.R5, false);
   }
 
   /**
@@ -171,7 +171,7 @@ public class NativeHostServices {
    * @throws Exception
    */
   public void connectToTxSvc(String txServer, String log, String txCache) throws Exception {
-    validator.connectToTSServer(txServer, log, txCache, FhirPublication.R5);
+    validator.connectToTSServer(txServer, log, txCache, FhirPublication.R5, false);
   }
 
   /**

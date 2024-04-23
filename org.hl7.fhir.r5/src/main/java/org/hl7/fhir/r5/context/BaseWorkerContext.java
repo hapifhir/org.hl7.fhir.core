@@ -125,6 +125,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.Termi
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.CacheToken;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedCodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
@@ -3233,6 +3234,28 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else {
         cacheResource(svs.getVs());
         return (T) svs.getVs();
+      }
+    } else if (class_ == CodeSystem.class) {
+      SourcedCodeSystem scs = null;
+      if (txCache.hasCodeSystem(canonical)) {
+        scs = txCache.getCodeSystem(canonical);
+      } else {
+        scs = terminologyClientManager.findCodeSystemOnServer(canonical);
+        txCache.cacheCodeSystem(canonical, scs);
+      }
+      if (scs != null) {
+        String web = ToolingExtensions.readStringExtension(scs.getCs(), ToolingExtensions.EXT_WEB_SOURCE);
+        if (web == null) {
+          web = Utilities.pathURL(scs.getServer(), "ValueSet", scs.getCs().getIdBase());
+        }
+        scs.getCs().setWebPath(web);
+        scs.getCs().setUserData("External.Link", scs.getServer()); // so we can render it differently
+      }      
+      if (scs == null) {
+        return null;
+      } else {
+        cacheResource(scs.getCs());
+        return (T) scs.getCs();
       }
     } else {
       throw new Error("Not supported");
