@@ -340,8 +340,10 @@ public class Params {
       } else if (args[i].equals(TERMINOLOGY)) {
         if (i + 1 == args.length)
           throw new Error("Specified -tx without indicating terminology server");
-        else
+        else {
           cliContext.setTxServer("n/a".equals(args[++i]) ? null : args[i]);
+          cliContext.setNoEcosystem(true);
+        }
       } else if (args[i].equals(TERMINOLOGY_LOG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -txLog without indicating file");
