@@ -22,7 +22,7 @@ public class TestUtilities {
       .withVersion(vString)
       .withUserAgent(TestConstants.USER_AGENT)
       .withTerminologyCachePath(getTerminologyCacheDirectory(vString))
-      .withTxServer(txServer, txLog, version)
+      .withTxServer(txServer, txLog, version, false)
       .fromSource(src);
 
     TerminologyCache.setCacheErrors(true);
@@ -59,7 +59,7 @@ public class TestUtilities {
         .withVersion(vString)
         .withUserAgent(TestConstants.USER_AGENT)
         .withTerminologyCachePath(getTerminologyCacheDirectory(vString))
-        .withTxServer(txServer, TestConstants.TX_CACHE_LOG, version)
+        .withTxServer(txServer, TestConstants.TX_CACHE_LOG, version, false)
         .fromSource(src);
       TerminologyCache.setCacheErrors(true);
     }

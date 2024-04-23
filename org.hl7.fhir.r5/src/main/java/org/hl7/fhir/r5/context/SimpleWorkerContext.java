@@ -332,12 +332,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       loadBytes(name, stream);
   }
 
-  public void connectToTSServer(ITerminologyClientFactory factory, ITerminologyClient client) {
+  public void connectToTSServer(ITerminologyClientFactory factory, ITerminologyClient client, boolean useEcosystem) {
     terminologyClientManager.setFactory(factory);
     if (txLog == null) {
       txLog = client.getLogger();
     }
-    TerminologyClientContext tcc = terminologyClientManager.setMasterClient(client);
+    TerminologyClientContext tcc = terminologyClientManager.setMasterClient(client, useEcosystem);
     txLog("Connect to "+client.getAddress());
     try {
       tcc.initialize();  
@@ -357,7 +357,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }      
   }
   
-  public void connectToTSServer(ITerminologyClientFactory factory, String address, String software, String log) {
+  public void connectToTSServer(ITerminologyClientFactory factory, String address, String software, String log, boolean useEcosystem) {
     try {
       terminologyClientManager.setFactory(factory);
       if (log != null && (log.endsWith(".htm") || log.endsWith(".html"))) {
@@ -369,7 +369,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       // txFactory.makeClient("Tx-Server", txServer, "fhir/publisher", null)
 //      terminologyClientManager.setLogger(txLog);
 //      terminologyClientManager.setUserAgent(userAgent);
-      connectToTSServer(factory, client);
+      connectToTSServer(factory, client, useEcosystem);
       
     } catch (Exception e) {
       e.printStackTrace();
