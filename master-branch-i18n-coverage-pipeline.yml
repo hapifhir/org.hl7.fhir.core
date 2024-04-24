@@ -11,7 +11,7 @@ variables:
   # I18N_COVERAGE_FILE, which tells the test to write the output to a file
   # instead.
 - name: i18n.coverage.file
-  value: i18n-coverage.csv
+  value: ../i18n-coverage.csv
 - group: PGP_VAR_GROUP
 - group: SONATYPE_VAR_GROUP
 - group: GIT_VAR_GROUP
