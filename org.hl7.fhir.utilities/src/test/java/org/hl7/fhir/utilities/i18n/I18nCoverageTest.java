@@ -16,6 +16,13 @@ import org.junit.jupiter.api.Test;
 
 public class I18nCoverageTest {
 
+  private static class I18nCoverage {
+    final Set<String> englishKeys = new HashSet<>();
+    final Set<String> englishPluralKeys = new HashSet<>();
+    final HashMap<Locale, Integer> foundKeys = new HashMap<>();
+    final HashMap<Locale, Integer> foundPluralKeys = new HashMap<>();
+  }
+
   final Set<Locale> locales = Set.of(
     Locale.ENGLISH,
     Locale.GERMAN,
@@ -24,81 +31,85 @@ public class I18nCoverageTest {
     Locale.forLanguageTag("ja")
   );
 
+  final Locale sourceLocale = Locale.ENGLISH;
+
   @Test
   public void testPhraseCoverage() throws IOException {
 
+    I18nCoverage messages = getI18nCoverage("Messages");
+    I18nCoverage renderingPhrases = getI18nCoverage("rendering-phrases");
+
+    PrintStream out = getCSVOutputStream();
+    printPhraseCoverageCSV(out, List.of(messages, renderingPhrases));
+  }
+
+  private I18nCoverage getI18nCoverage(String messageFilePrefix) throws IOException {
+    I18nCoverage i18nCoverage = new I18nCoverage();
+
     Properties englishMessages = new Properties();
-    englishMessages.load(I18nTestClass.class.getClassLoader().getResourceAsStream("Messages.properties"));
+    englishMessages.load(I18nTestClass.class.getClassLoader().getResourceAsStream(messageFilePrefix + ".properties"));
+
     I18nTestClass englishTestClass = getI18nTestClass(Locale.ENGLISH);
     Set<String> englishPluralSuffixes = englishTestClass.getPluralSuffixes();
 
-    Set<String> englishPluralKeys = new HashSet<>();
-    Set<String> englishKeys = new HashSet<>();
     for (Object objectKey : englishMessages.keySet()) {
       String key = (String) objectKey;
       if (isPluralKey(key, englishPluralSuffixes)) {
         final String pluralKeyRoot = getPluralKeyRoot(key, englishPluralSuffixes);
-        englishPluralKeys.add(pluralKeyRoot);
+        i18nCoverage.englishPluralKeys.add(pluralKeyRoot);
       } else {
-        englishKeys.add(key);
+        i18nCoverage.englishKeys.add(key);
       }
     }
 
-    HashMap<Locale, Integer> foundKeys = new HashMap<>();
-    HashMap<Locale, Integer> foundPluralKeys = new HashMap<>();
-
     for (Locale locale : locales) {
-     if (!locale.equals(Locale.ENGLISH)) {
+      if (!locale.equals(sourceLocale)) {
         Properties translatedMessages = new Properties();
-       translatedMessages.load(I18nTestClass.class.getClassLoader().getResourceAsStream("Messages_" + locale.toString() + ".properties"));
-       I18nTestClass translatedTestClass = getI18nTestClass(Locale.ENGLISH);
-       Set<String> translatedPluralSuffixes = translatedTestClass.getPluralSuffixes();
+        translatedMessages.load(I18nTestClass.class.getClassLoader().getResourceAsStream(messageFilePrefix + "_" + locale.toString() + ".properties"));
+        I18nTestClass translatedTestClass = getI18nTestClass(sourceLocale);
+        Set<String> translatedPluralSuffixes = translatedTestClass.getPluralSuffixes();
 
-       Set<String> translatedPluralKeys = new HashSet<>();
-       Set<String> translatedKeys = new HashSet<>();
+        Set<String> translatedPluralKeys = new HashSet<>();
+        Set<String> translatedKeys = new HashSet<>();
 
-       for (Object objectKey : translatedMessages.keySet()) {
-         String key = (String) objectKey;
-         Object value = translatedMessages.get(objectKey);
-         if (
-           value instanceof  String &&
-           !((String) value).trim().isEmpty()) {
-           if (isPluralKey(key, translatedPluralSuffixes)) {
-             final String pluralKeyRoot = getPluralKeyRoot(key, englishPluralSuffixes);
-             translatedPluralKeys.add(pluralKeyRoot);
-           } else {
-             translatedKeys.add(key);
-           }
-         }
-       }
+        for (Object objectKey : translatedMessages.keySet()) {
+          String key = (String) objectKey;
+          Object value = translatedMessages.get(objectKey);
+          if (
+            value instanceof String &&
+              !((String) value).trim().isEmpty()) {
+            if (isPluralKey(key, translatedPluralSuffixes)) {
+              final String pluralKeyRoot = getPluralKeyRoot(key, englishPluralSuffixes);
+              translatedPluralKeys.add(pluralKeyRoot);
+            } else {
+              translatedKeys.add(key);
+            }
+          }
+        }
 
-       Set<String> intersectionKeys = new HashSet<>(englishKeys);
-       intersectionKeys.retainAll(translatedKeys);
-       Set<String> intersectionPluralKeys = new HashSet<>(englishPluralKeys);
-       intersectionPluralKeys.retainAll(translatedPluralKeys);
+        Set<String> intersectionKeys = new HashSet<>(i18nCoverage.englishKeys);
+        intersectionKeys.retainAll(translatedKeys);
+        Set<String> intersectionPluralKeys = new HashSet<>(i18nCoverage.englishPluralKeys);
+        intersectionPluralKeys.retainAll(translatedPluralKeys);
 
-       Set<String> missingKeys = new HashSet<>(englishKeys);
-       Set<String> missingPluralKeys = new HashSet<>(englishPluralKeys);
+        Set<String> missingKeys = new HashSet<>(i18nCoverage.englishKeys);
+        Set<String> missingPluralKeys = new HashSet<>(i18nCoverage.englishPluralKeys);
 
-       missingKeys.removeAll(translatedKeys);
-       missingPluralKeys.removeAll(translatedPluralKeys);
+        missingKeys.removeAll(translatedKeys);
+        missingPluralKeys.removeAll(translatedPluralKeys);
 
-       foundKeys.put(locale, intersectionKeys.size());
-       foundPluralKeys.put(locale, intersectionPluralKeys.size());
+        i18nCoverage.foundKeys.put(locale, intersectionKeys.size());
+        i18nCoverage.foundPluralKeys.put(locale, intersectionPluralKeys.size());
 
-       for (String missingKey : missingKeys) {
-         System.err.println("Missing key for locale " + locale + ": " + missingKey);
-       }
-       for (String missingPluralKey : missingPluralKeys) {
-         System.err.println("Missing plural key for locale " + locale + ": " + missingPluralKey);
-       }
-     }
+        for (String missingKey : missingKeys) {
+          System.err.println("Missing key for locale " + locale + ": " + missingKey);
+        }
+        for (String missingPluralKey : missingPluralKeys) {
+          System.err.println("Missing plural key for locale " + locale + ": " + missingPluralKey);
+        }
+      }
     }
-
-
-    PrintStream out = getCSVOutputStream();
-
-    printPhraseCoverageCSV(out, foundKeys, foundPluralKeys, englishKeys, englishPluralKeys);
+    return i18nCoverage;
   }
 
   private static PrintStream getCSVOutputStream() throws FileNotFoundException {
@@ -109,21 +120,29 @@ public class I18nCoverageTest {
       : new PrintStream(new File(outputFile));
   }
 
-  private static void printPhraseCoverageCSV(PrintStream out, HashMap<Locale, Integer> foundKeys, HashMap<Locale, Integer> foundPluralKeys, Set<String> englishKeys, Set<String> englishPluralKeys) {
-    out.println("Locale,Complete #,Complete %");
-    for (Locale locale : foundKeys.keySet()) {
-      int singleCount = foundKeys.get(locale);
-      int pluralCount = foundPluralKeys.get(locale);
+  private void printPhraseCoverageCSV(PrintStream out, List<I18nCoverage> i18nCoverageList) {
+    out.println("Locale,Coverage #,Coverage %");
 
-      int count = singleCount + pluralCount;
-      int total = englishKeys.size() + englishPluralKeys.size();
+    List<Locale> sortedLocales = new ArrayList<>(locales);
+    sortedLocales.sort(Comparator.comparing(Locale::toString));
 
-      out.println(locale + "," + count + "," + getPercent( count, total));
+    for (Locale locale : sortedLocales) {
+      if (!locale.equals(sourceLocale)) {
+        int count = 0;
+        int total = 0;
+        for (I18nCoverage i18nCoverage : i18nCoverageList) {
+          int singleCount = i18nCoverage.foundKeys.get(locale);
+          int pluralCount = i18nCoverage.foundPluralKeys.get(locale);
+          count += singleCount + pluralCount;
+          total += i18nCoverage.englishKeys.size() + i18nCoverage.englishPluralKeys.size();
+        }
+        out.println(locale + "," + count + "," + getPercent(count, total));
+      }
     }
   }
 
   private static String getPercent(int numerator, int denominator) {
-    return (int) (((double)numerator / denominator) * 100) + "%";
+    return (int) (((double) numerator / denominator) * 100) + "%";
   }
 
   private String getPluralKeyRoot(String key, Set<String> pluralKeys) {
@@ -133,7 +152,7 @@ public class I18nCoverageTest {
         return key.substring(0, key.lastIndexOf(suffix));
       }
     }
-   throw new IllegalArgumentException(key + " does not terminate with a plural suffix. Available: " + pluralKeys);
+    throw new IllegalArgumentException(key + " does not terminate with a plural suffix. Available: " + pluralKeys);
   }
 
   private boolean isPluralKey(String key, Set<String> pluralKeys) {
@@ -158,10 +177,10 @@ public class I18nCoverageTest {
     Set<String> messages = new HashSet<>();
 
     for (Field field : fields) {
-      String message = (String)field.get(new String());
+      String message = (String) field.get(new String());
       messages.add(message);
       if (field.getType() == String.class) {
-       Map<Locale, Boolean> isSingularPhrase = new HashMap<>();
+        Map<Locale, Boolean> isSingularPhrase = new HashMap<>();
         Map<Locale, Boolean> isPluralPhrase = new HashMap<>();
 
         for (Locale locale : locales) {
@@ -182,7 +201,7 @@ public class I18nCoverageTest {
         boolean mapsToConstant = messages.contains(message);
         boolean mapsToPluralPhrase = mapsToPluralPhrase(messages, message, testClassMap.get(locale));
         if (!(mapsToConstant || mapsToPluralPhrase)) {
-          System.err.println("Message " + message + " in " + locale.getLanguage() + " properties resource does not have a matching entry in " + I18nConstants.class.getName() );
+          System.err.println("Message " + message + " in " + locale.getLanguage() + " properties resource does not have a matching entry in " + I18nConstants.class.getName());
         }
       }
     }
@@ -198,14 +217,14 @@ public class I18nCoverageTest {
   }
 
   private void assertPhraseTypeAgreement(Field field,
-    Map<Locale, Boolean> isSingularPhrase,
-    Map<Locale, Boolean> isPluralPhrase) {
+                                         Map<Locale, Boolean> isSingularPhrase,
+                                         Map<Locale, Boolean> isPluralPhrase) {
     boolean existsAsSingular = isSingularPhrase.values().stream().anyMatch(value -> value == true);
     boolean existsAsPlural = isPluralPhrase.values().stream().anyMatch(value -> value == true);
     assertTrue(
       //The phrase might not exist
       (existsAsPlural == false && existsAsSingular == false)
-      // But if it does exist, it must consistently be of singular or plural
+        // But if it does exist, it must consistently be of singular or plural
         || existsAsPlural ^ existsAsSingular,
       "Constant " + field.getName() + " has inconsistent plural properties in I18n property definitions: " + pluralPropertySummary(isSingularPhrase, isPluralPhrase));
   }
@@ -220,7 +239,8 @@ public class I18nCoverageTest {
     if (!existsInSomeLanguage) {
       System.err.println("Constant " + field.getName() + " does not exist in any I18n property definition");
       return;
-    };
+    }
+    ;
     if (existsAsSingular) {
       logMissingPhrases(field, isSingularPhrase, "singular");
     }
@@ -237,14 +257,15 @@ public class I18nCoverageTest {
     }
   }
 
-  private String pluralPropertySummary( Map<Locale, Boolean> isSingularPhrase,
-                                        Map<Locale, Boolean> isPluralPhrase) {
+  private String pluralPropertySummary(Map<Locale, Boolean> isSingularPhrase,
+                                       Map<Locale, Boolean> isPluralPhrase) {
     StringBuilder stringBuilder = new StringBuilder();
     for (Locale locale : locales) {
       stringBuilder.append("locale: " + locale.getDisplayName() + " singular:" + isSingularPhrase.get(locale) + " plural: " + isPluralPhrase.get(locale) + ";");
     }
     return stringBuilder.toString();
   }
+
   @Nonnull
   private static I18nTestClass getI18nTestClass(Locale locale) {
     I18nTestClass testClass = new I18nTestClass();
