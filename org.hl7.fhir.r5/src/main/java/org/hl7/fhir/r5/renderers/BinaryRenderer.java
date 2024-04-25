@@ -83,7 +83,7 @@ public class BinaryRenderer {
     } else if (isText(ct)) {
       text(x, cnt);      
     } else {
-      error(x, "The Content Type '"+ct+"' is not rendered in this context");
+      error(x, /*!#*/"The Content Type '"+ct+"' is not rendered in this context");
     }
   }
 

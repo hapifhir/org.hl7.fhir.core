@@ -55,7 +55,7 @@ public class Renderer  {
   public void genStandardsStatus(XhtmlNode td, StandardsStatus ss) {
     if (ss != null) {
       td.tx(" ");
-      XhtmlNode a = td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "versions.html#std-process"), /*!#*/"Standards Status = "+ss.toDisplay());
+      XhtmlNode a = td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "versions.html#std-process"), (context.formatMessage(RenderingContext.REND_STANDARDS, ss.toDisplay())+" "));
       a.style("padding-left: 3px; padding-right: 3px; border: 1px grey solid; font-weight: bold; color: black; background-color: "+ss.getColor());
       a.tx(ss.getAbbrev());
     }
@@ -72,21 +72,21 @@ public class Renderer  {
     switch (vca.getType()) {
     case Added:
       XhtmlNode spanOuter = x.span("border: solid 1px #dddddd; margin: 2px; padding: 2px", null);
-      XhtmlNode spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", /*!#*/"This content has been added since "+context.getChangeVersion());
+      XhtmlNode spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatMessage(RenderingContext.REND_SINCE, context.getChangeVersion())+" "));
       spanInner.img("icon-change-add.png", "icon");
-      spanInner.tx(" "+/*!#*/"Added:");
+      spanInner.tx(" "+context.formatMessage(RenderingContext.REND_ADDED));
       return spanOuter;
     case Changed:
       spanOuter = x.span("border: solid 1px #dddddd; margin: 2px; padding: 2px", null);
-      spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", /*!#*/"This content has been changed since "+context.getChangeVersion()+(vca.getOriginal() != null ? " (was '"+vca.getOriginal()+"')" : ""));
+      spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatMessage(RenderingContext.REND_SINCE, context.getChangeVersion()+(vca.getOriginal() != null ? " (was '"+vca.getOriginal()+"')" : "")))+" ");
       spanInner.img("icon-change-edit.png", "icon");
-      spanInner.tx(" "+/*!#*/"Changed:");
+      spanInner.tx(" "+context.formatMessage(RenderingContext.REND_CHANGED));
       return spanOuter;
     case Deleted:
       spanOuter = x.span("border: solid 1px #dddddd; margin: 2px; padding: 2px", null);
-      spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", /*!#*/"This content has been removed since "+context.getChangeVersion());
+      spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatMessage(RenderingContext.REND_SINCE, context.getChangeVersion())+" "));
       spanInner.img("icon-change-remove.png", "icon");
-      spanInner.tx(" "+/*!#*/"Removed:");
+      spanInner.tx(" "+context.formatMessage(RenderingContext.REND_REMOVED));
       return spanOuter.strikethrough();
     default:
       return x;
@@ -104,21 +104,21 @@ public class Renderer  {
     switch (vca.getType()) {
     case Added:
       XhtmlNode divOuter = x.div("border: solid 1px #dddddd; margin: 2px; padding: 2px");
-      XhtmlNode spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", /*!#*/"This content has been added since "+context.getChangeVersion());
+      XhtmlNode spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatMessage(RenderingContext.REND_SINCE, context.getChangeVersion())+" "));
       spanInner.img("icon-change-add.png", "icon");
-      spanInner.tx(" "+/*!#*/"Added:");
+      spanInner.tx(" "+context.formatMessage(RenderingContext.REND_ADDED));
       return divOuter;
     case Changed:
       divOuter = x.div("border: solid 1px #dddddd; margin: 2px; padding: 2px");
-      spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", /*!#*/"This content has been changed since "+context.getChangeVersion()+(vca.getOriginal() != null ? " (was '"+(vca.getOriginal())+"')" : ""));
+      spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatMessage(RenderingContext.REND_SINCE, context.getChangeVersion())+(vca.getOriginal() != null ? " (was '"+(vca.getOriginal())+"')" : ""))+" ");
       spanInner.img("icon-change-edit.png", "icon");
-      spanInner.tx(" "+/*!#*/"Changed:");
+      spanInner.tx(" "+context.formatMessage(RenderingContext.REND_CHANGED));
       return divOuter;
     case Deleted:
       divOuter = x.div("border: solid 1px #dddddd; margin: 2px; padding: 2px");
-      spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", /*!#*/"This content has been removed since "+context.getChangeVersion());
+      spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatMessage(RenderingContext.REND_SINCE, context.getChangeVersion())+" "));
       spanInner.img("icon-change-remove.png", "icon");
-      spanInner.tx(" "+/*!#*/"Removed:");
+      spanInner.tx(" "+context.formatMessage(RenderingContext.REND_REMOVED));
       return divOuter.strikethrough();
     default:
       return x;
@@ -140,7 +140,7 @@ public class Renderer  {
         tr.style("border: solid 1px #dddddd; margin: 2px; padding: 2px");
       }
       XhtmlNode td = tr.td();
-      XhtmlNode span = td.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px",/*!#*/"This row of content has been added since "+context.getChangeVersion());
+      XhtmlNode span = td.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatMessage(RenderingContext.REND_ROW_SINCE, context.getChangeVersion())+" "));
       span.img("icon-change-add.png", "icon");
       span.tx(" "+/*!#*/"Added:");
       XhtmlNode x = new XhtmlNode(NodeType.Element, "holder");
