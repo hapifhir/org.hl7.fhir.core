@@ -272,7 +272,7 @@ public class CodeSystemValidator  extends BaseValidator {
           ukp = KnownProperty.ItemWeight;
           break;
         default:
-          ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), isBaseSpec(cs.getNamedChildValue("url")), I18nConstants.CODESYSTEM_PROPERTY_BAD_HL7_URI, uri);
+          ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, cs.line(), cs.col(), stack.getLiteralPath(), isBaseSpec(cs.getNamedChildValue("url")) || isSelfRef(cs.getNamedChildValue("url"), uri), I18nConstants.CODESYSTEM_PROPERTY_BAD_HL7_URI, uri);
         }
       }
     }    
@@ -368,6 +368,10 @@ public class CodeSystemValidator  extends BaseValidator {
 
   private boolean isBaseSpec(String url) {
     return url.startsWith("http://hl7.org/fhir/") && !url.substring(20).contains("/");
+  }
+
+  private boolean isSelfRef(String url, String uri) {
+    return (url != null) && uri.startsWith(url);
   }
 
   private boolean checkConcept(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean caseSensitive, String hierarchyMeaning, CodeSystem csB, Element concept, Set<String> codes, Map<String, PropertyDef> properties) {
