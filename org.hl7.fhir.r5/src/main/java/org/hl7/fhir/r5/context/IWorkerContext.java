@@ -2,7 +2,10 @@ package org.hl7.fhir.r5.context;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -47,6 +50,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.IWorkerContext.OIDDefinition;
+import org.hl7.fhir.r5.context.IWorkerContext.OIDDefinitionComparer;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.ParserType;
@@ -105,6 +109,18 @@ import javax.annotation.Nonnull;
 
 public interface IWorkerContext {
 
+  public class OIDDefinitionComparer implements Comparator<OIDDefinition> {
+
+    @Override
+    public int compare(OIDDefinition o1, OIDDefinition o2) {
+      if (o1.getUrl().equals(o2.getUrl())) {
+        return -o1.getVersion().compareTo(o2.getVersion());        
+      } else {
+        return o1.getUrl().compareTo(o2.getUrl());
+      }
+    }
+  }
+
   public class OIDDefinition {
     private String type;
     private String oid;
@@ -116,7 +132,7 @@ public interface IWorkerContext {
       this.type = type;
       this.oid = oid;
       this.url = url;
-      this.version = version;
+      this.version = version == null ? "" : version;
       this.packageSrc = packageSrc;
     }
     public String getType() {
@@ -137,26 +153,42 @@ public interface IWorkerContext {
     public String summary() {
       return url+(version == null ? "" : "|"+version)+(packageSrc != null ? "("+packageSrc+")" : "");
     }
-    
+    public boolean matches(OIDDefinition t) {
+      return url.equals(t.url) && version.equals(t.version);
+    }
     
   }
 
   public class OIDSummary {
-    private Set<OIDDefinition> definitions;
-    private Set<String> urls = new HashSet<>();
+    private List<OIDDefinition> definitions = new ArrayList<>();
+    private List<String> urls = new ArrayList<>();
 
-    protected OIDSummary(Set<OIDDefinition> definitions) {
-      super();
-      this.definitions = definitions;
-      for (OIDDefinition d : definitions) {
+    public void addOID(OIDDefinition d) {
+      for (OIDDefinition t : definitions) {
+        if (d.matches(t)) {
+          return;
+        }
+      }
+      definitions.add(d);
+      if (!urls.contains(d.getUrl())) {
         urls.add(d.getUrl());
       }
     }
-
-    public Set<OIDDefinition> getDefinitions() {
+    
+    public void addOIDs(Collection<OIDDefinition> collection) {
+      for (OIDDefinition t : collection) {
+        addOID(t);
+      }
+    }
+    
+    public List<OIDDefinition> getDefinitions() {
       return definitions;
     }
 
+    public void sort() {
+      Collections.sort(definitions, new OIDDefinitionComparer());
+      Collections.sort(urls);
+    }
     public String describe() {
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
       for (OIDDefinition d : definitions) {
