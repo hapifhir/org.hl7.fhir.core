@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.i18n;
 
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -98,6 +99,11 @@ public abstract class I18nBase {
       .map(entry -> baseKey + KEY_DELIMITER + entry).collect(Collectors.toSet());
   }
 
+
+  protected Set<String> getPluralSuffixes() {
+    return Collections.unmodifiableSet(pluralRules.getKeywords());
+  }
+  
   protected String getRootKeyFromPlural(@Nonnull String pluralKey) {
     checkPluralRulesAreLoaded();
     for (String keyword : pluralRules

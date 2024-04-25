@@ -183,17 +183,17 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       boolean designations = CodeSystemUtilities.hasDesignations(cs); 
       String features;
       if (properties && designations) {
-        features = /*!#*/"displays and properties";
+        features = (context.formatMessage(RenderingContext.CODE_SYS_DISP_PROP));
       } else if (properties) {
-        features = /*!#*/"properties";
+        features = (context.formatMessage(RenderingContext.CODE_SYS_PROP));
       } else if (designations) {
-        features = /*!#*/"displays";
+        features = (context.formatMessage(RenderingContext.CODE_SYS_DISP));
       } else {
-        features = /*!#*/"features"; // ?
+        features = (context.formatMessage(RenderingContext.CODE_SYS_FEAT)); // ?
       }
       return formatMessage(RenderingContext.CODESYSTEM_CONTENT_SUPPLEMENT, features);
     default:
-      throw new FHIRException(/*!#*/"Unknown CodeSystemContentMode mode");
+      throw new FHIRException(context.formatMessage(RenderingContext.CODE_SYS_UNKN_MODE));
     }
   }
   
@@ -259,10 +259,10 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     if (langs.size() >= 2) {
       Collections.sort(langs);
-      x.para().b().tx(/*!#*/"Additional Language Displays");
+      x.para().b().tx(context.formatMessage(RenderingContext.CODE_SYS_ADD_LANG));
       t = x.table("codes");
       XhtmlNode tr = t.tr();
-      tr.td().b().tx(/*!#*/"Code");
+      tr.td().b().tx(context.formatMessage(RenderingContext.CODE_SYS_CODE));
       for (String lang : langs)
         tr.td().b().addText(describeLang(lang));
       for (ConceptDefinitionComponent c : cs.getConcept()) {
@@ -275,11 +275,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   private void makeHierarchyParam(XhtmlNode x, CodeSystem cs, Enumeration<CodeSystemHierarchyMeaning> hm) {
     if (hm.hasValue()) {
       String s = hm.getValue().getDisplay();
-      renderStatus(hm, x).tx(" "+/*!#*/"in a "+s+" hierarchy");
+      renderStatus(hm, x).tx(" "+context.formatMessage(RenderingContext.CODE_SYS_IN_A_HIERARCHY, s));
     } else if (VersionComparisonAnnotation.hasDeleted(cs, "hierarchyMeaning")) {
       makeHierarchyParam(x, null, (Enumeration<CodeSystemHierarchyMeaning>) VersionComparisonAnnotation.getDeleted(cs, "hierarchyMeaning").get(0));
     } else if (CodeSystemUtilities.hasHierarchy(cs)) {
-      x.tx(" "+/*!#*/"in an undefined hierarchy");
+      x.tx(" "+ (context.formatMessage(RenderingContext.CODE_SYS_UNDEF_HIER)));
     } else {
       x.tx("");
     }
@@ -310,7 +310,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private void addCopyColumn(XhtmlNode tr) {
     if (context.isCopyButton()) {
-      tr.td().b().tx(/*!#*/"Copy");
+      tr.td().b().tx(context.formatMessage(RenderingContext.CODE_SYS_COPY));
     }
     
   }

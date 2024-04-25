@@ -125,7 +125,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     try {
       StructureDefinition sd = r.getDefinition();
       if (sd == null) {
-        throw new FHIRException(/*!#*/"Cannot find definition for "+r.fhirType());
+        throw new FHIRException(context.formatMessage(RenderingContext.PROF_DRIV_FEXCP, r.fhirType())+" ");
       } else {
         ElementDefinition ed = sd.getSnapshot().getElement().get(0);
         containedIds.clear();
@@ -135,7 +135,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } catch (Exception e) {
       System.out.println(/*!#*/"Error Generating Narrative for "+r.fhirType()+"/"+r.getId()+": "+e.getMessage());
       e.printStackTrace();
-      x.para().b().style("color: maroon").tx(/*!#*/"Exception generating Narrative: "+e.getMessage());
+      x.para().b().style("color: maroon").tx(context.formatMessage(RenderingContext.PROF_DRIV_EXCP, e.getMessage())+" ");
     }
     return hasExtensions;
   }
