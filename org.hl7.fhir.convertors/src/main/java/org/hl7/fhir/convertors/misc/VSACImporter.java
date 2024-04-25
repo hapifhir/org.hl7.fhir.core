@@ -114,64 +114,86 @@ public class VSACImporter extends OIDBasedValueSetImporter {
   private boolean processOid(String dest, boolean onlyNew, Map<String, String> errs, FHIRToolingClient fhirToolingClient, String oid)
       throws IOException, InterruptedException, FileNotFoundException {
     
+    while (true) {
+      boolean ok = true;
       long t = System.currentTimeMillis();
       ValueSet vs = null;
       try {
         vs = fhirToolingClient.read(ValueSet.class, oid);
       } catch (Exception e) {
-        errs.put(oid, "Read: " +e.getMessage());
-        System.out.println("Read "+oid+" failed @ "+Utilities.describeDuration(System.currentTimeMillis()-t)+"ms: "+e.getMessage());
-        return false;
+        if (e.getMessage().contains("timed out")) {
+          ok = false;
+        } else {
+          errs.put(oid, "Read: " +e.getMessage());
+          System.out.println("Read "+oid+" failed @ "+Utilities.describeDuration(System.currentTimeMillis()-t)+"ms: "+e.getMessage());
+          return false;
+        }
       }
-      t = System.currentTimeMillis();
-      try {
-        Parameters p = new Parameters();
-        p.addParameter("url", new UriType(vs.getUrl()));
-        ValueSet vse = fhirToolingClient.expandValueset(null, p);
-        vs.setExpansion(vse.getExpansion());
-      } catch (Exception e) {
-        errs.put(oid, "Expansion: " +e.getMessage());
-        System.out.println("Expand "+oid+" failed @ "+Utilities.describeDuration(System.currentTimeMillis()-t)+"ms: "+e.getMessage());
-      }
-      while (isIncomplete(vs.getExpansion())) {
-        Parameters p = new Parameters();
-        int offset = vs.getExpansion().getParameter("offset").getValueIntegerType().getValue() + vs.getExpansion().getParameter("count").getValueIntegerType().getValue();
-        p.addParameter("offset", offset);
-        p.addParameter("url", new UriType(vs.getUrl()));
+      if (ok) {
         t = System.currentTimeMillis();
         try {
-          ValueSet vse = fhirToolingClient.expandValueset(null, p);    
-          vs.getExpansion().getContains().addAll(vse.getExpansion().getContains());
-          vs.getExpansion().setParameter(vse.getExpansion().getParameter());
-        } catch (Exception e2) {
-          errs.put(oid, "Expansion: " +e2.getMessage()+" @ "+offset);
-          System.out.println("Expand "+oid+" @ "+offset+" failed @ "+Utilities.describeDuration(System.currentTimeMillis()-t)+"ms: "+e2.getMessage());
-        } 
-      }
-      vs.getExpansion().setOffsetElement(null);
-      vs.getExpansion().getParameter().clear();
-
-
-      if (vs.hasTitle()) {
-        if (vs.getTitle().equals(vs.getDescription())) {
-          vs.setTitle(vs.getName());              
-        } else {
-          //              System.out.println(oid);
-          //              System.out.println("  name: "+vs.getName());
-          //              System.out.println("  title: "+vs.getTitle());
-          //              System.out.println("  desc: "+vs.getDescription());
+          Parameters p = new Parameters();
+          p.addParameter("url", new UriType(vs.getUrl()));
+          ValueSet vse = fhirToolingClient.expandValueset(null, p);
+          vs.setExpansion(vse.getExpansion());
+        } catch (Exception e) {
+          if (e.getMessage().contains("timed out")) {
+            ok = false;
+          } else {
+            errs.put(oid, "Expansion: " +e.getMessage());
+            System.out.println("Expand "+oid+" failed @ "+Utilities.describeDuration(System.currentTimeMillis()-t)+"ms: "+e.getMessage());
+            return false;
+          }
         }
-      } else {
-        vs.setTitle(vs.getName());
       }
-      if (vs.getUrl().startsWith("https://")) {
-        System.out.println("URL is https: "+vs.getUrl());
+      if (ok) {
+        while (isIncomplete(vs.getExpansion())) {
+          Parameters p = new Parameters();
+          int offset = vs.getExpansion().getParameter("offset").getValueIntegerType().getValue() + vs.getExpansion().getParameter("count").getValueIntegerType().getValue();
+          p.addParameter("offset", offset);
+          p.addParameter("url", new UriType(vs.getUrl()));
+          t = System.currentTimeMillis();
+          try {
+            ValueSet vse = fhirToolingClient.expandValueset(null, p);    
+            vs.getExpansion().getContains().addAll(vse.getExpansion().getContains());
+            vs.getExpansion().setParameter(vse.getExpansion().getParameter());
+          } catch (Exception e2) {
+            if (e2.getMessage().contains("timed out")) {
+              ok = false;
+              break;
+            } else {
+              errs.put(oid, "Expansion: " +e2.getMessage()+" @ "+offset);
+              System.out.println("Expand "+oid+" @ "+offset+" failed @ "+Utilities.describeDuration(System.currentTimeMillis()-t)+"ms: "+e2.getMessage());
+              return false;
+            }
+          } 
+        }
       }
-      vs.setName(makeValidName(vs.getName()));
-      JurisdictionUtilities.setJurisdictionCountry(vs.getJurisdiction(), "US");
-      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
-    
-    return true;
+      if (ok) {
+        vs.getExpansion().setOffsetElement(null);
+        vs.getExpansion().getParameter().clear();
+
+        if (vs.hasTitle()) {
+          if (vs.getTitle().equals(vs.getDescription())) {
+            vs.setTitle(vs.getName());              
+          } else {
+            //              System.out.println(oid);
+            //              System.out.println("  name: "+vs.getName());
+            //              System.out.println("  title: "+vs.getTitle());
+            //              System.out.println("  desc: "+vs.getDescription());
+          }
+        } else {
+          vs.setTitle(vs.getName());
+        }
+        if (vs.getUrl().startsWith("https://")) {
+          System.out.println("URL is https: "+vs.getUrl());
+        }
+        vs.setName(makeValidName(vs.getName()));
+        JurisdictionUtilities.setJurisdictionCountry(vs.getJurisdiction(), "US");
+        new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(dest, "ValueSet-" + oid + ".json")), vs);
+        return true;
+      }
+    }
   }
 
   private boolean isIncomplete(ValueSetExpansionComponent expansion) {
