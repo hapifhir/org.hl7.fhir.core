@@ -725,6 +725,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
     if (!onlyInformationIsMapping(all, element)) {
       Row row = gen.new Row();
+      row.setId(element.getPath());
       row.setAnchor(element.getPath());
       row.setColor(context.getProfileUtilities().getRowColor(element, isConstraintMode));
       if (element.hasSlicing())
@@ -820,6 +821,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (standardExtensionSlicing(element)) {
           used.used = true; // doesn't matter whether we have a type, we're used if we're setting up slicing ... element.hasType() && element.getType().get(0).hasProfile();
           showMissing = false; //?
+          slicingRow = row;
         } else {
           row.setIcon("icon_slice.png", HierarchicalTableGenerator.TEXT_ICON_SLICE);
           slicingRow = row;
@@ -843,6 +845,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (slicingRow != originalRow && !children.isEmpty()) {
           // we've entered a slice; we're going to create a holder row for the slice children
           Row hrow = gen.new Row();
+          hrow.setId(element.getPath());
           hrow.setAnchor(element.getPath());
           hrow.setColor(context.getProfileUtilities().getRowColor(element, isConstraintMode));
           hrow.setLineColor(1);
@@ -868,6 +871,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (typesRow != null && !children.isEmpty()) {
           // we've entered a typing slice; we're going to create a holder row for the all types children
           Row hrow = gen.new Row();
+          hrow.setId(element.getPath());
           hrow.setAnchor(element.getPath());
           hrow.setColor(context.getProfileUtilities().getRowColor(element, isConstraintMode));
           hrow.setLineColor(1);
@@ -890,18 +894,47 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           row = hrow;
         }
 
-        Row currRow = row;
+        Row slicer = null;
         List<ElementChoiceGroup> groups = readChoices(element, children);
         boolean isExtension = Utilities.existsInList(tail(element.getPath()), "extension", "modifierExtension");
         if (!element.prohibited()) {
           for (ElementDefinition child : children) {
-            if (!child.hasSliceName()) {
-              currRow = row; 
+            Row parent = null;
+            if (child.hasSliceName()) {
+              // ok, we're a slice
+              if (slicer == null || !slicer.getId().equals(child.getPath())) {
+                parent = gen.new Row();
+                parent.setId(child.getPath());
+                parent.setAnchor(child.getPath());
+                parent.setColor(context.getProfileUtilities().getRowColor(child, isConstraintMode));
+                parent.setLineColor(1);
+                parent.setIcon("icon_slice.png", HierarchicalTableGenerator.TEXT_ICON_SLICE);
+                parent.getCells().add(gen.new Cell(null, null, "Slices for "+ child.getName(), "", null));
+                switch (context.getStructureMode()) {
+                case BINDINGS:
+                case OBLIGATIONS:
+                  for (Column col : columns) {
+                    parent.getCells().add(gen.new Cell());              
+                  }
+                  break;
+                case SUMMARY:
+                  parent.getCells().add(gen.new Cell());
+                  parent.getCells().add(gen.new Cell());
+                  parent.getCells().add(gen.new Cell());
+                  parent.getCells().add(gen.new Cell(null, null, context.formatMessage(RenderingContext.STRUC_DEF_CONT_RULE), "", null));
+                  break;            
+                }
+                row.getSubRows().add(parent);
+                slicer = parent;
+              } else {
+                parent = slicer;
+              }
+            } else {
+              parent = chooseChildRowByGroup(gen, row, groups, child, element, isConstraintMode);
             }
-            Row childRow = chooseChildRowByGroup(gen, currRow, groups, child, element, isConstraintMode);
 
             if (logicalModel || !child.getPath().endsWith(".id") || (child.getPath().endsWith(".id") && (profile != null) && (profile.getDerivation() == TypeDerivationRule.CONSTRAINT))) {  
-              currRow = genElement(defPath, gen, childRow.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, currRow, mustSupport, rc, anchorPrefix, srcSD, columns);
+              slicer = genElement(defPath, gen, parent.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, slicer, mustSupport, rc, anchorPrefix, srcSD, columns);
             }
           }
         }
@@ -915,6 +948,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
     }
     return slicingRow;
+  }
+
+  private boolean isTypeSlice(ElementDefinition child) {
+    ElementDefinition derived = (ElementDefinition) child.getUserData("derived.pointer");
+    return derived != null && derived.getBase().getPath().endsWith("[x]");
   }
 
   private boolean isExtension(ElementDefinition element) {
@@ -1195,6 +1233,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return prow;
     }
     Row row = gen.new Row();
+    row.setId(parent.getPath()+"-"+grp.getName());
     row.setAnchor(parent.getPath()+"-"+grp.getName());
     row.setColor(context.getProfileUtilities().getRowColor(parent, isConstraintMode));
     row.setLineColor(1);
@@ -2042,6 +2081,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
     if (!onlyInformationIsMapping(all, element)) {
       Row row = gen.new Row();
+      row.setId(s);
       row.setAnchor(element.getPath());
       row.setColor(context.getProfileUtilities().getRowColor(element, isConstraintMode));
       if (element.hasSlicing())
@@ -2202,6 +2242,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (t.getValues().size() == 0 || (t.getValues().size() == 1 && t.getValues().get(0).isEmpty())) {
           if (!skipnoValue) {
             Row row = gen.new Row();
+            row.setId(ed.getPath());
             erow.getSubRows().add(row);
             Cell c = gen.new Cell();
             row.getCells().add(c);
@@ -2246,6 +2287,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         } else {
           for (Base b : t.getValues()) {
             Row row = gen.new Row();
+            row.setId(ed.getPath());
             erow.getSubRows().add(row);
             row.setIcon("icon_fixed.gif", context.formatMessage(RenderingContext.STRUC_DEF_FIXED) /*HierarchicalTableGenerator.TEXT_ICON_FIXED*/);
 
@@ -2633,6 +2675,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (!mustSupportMode || allTypesMustSupport(element) || isMustSupport(tr)) {
         boolean used = false;
         Row choicerow = gen.new Row();
+        choicerow.setId(element.getPath());
         String t = tr.getWorkingCode();
         if (isReference(t)) {
           used = true;
@@ -2933,6 +2976,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
   private void genSpanEntry(HierarchicalTableGenerator gen, List<Row> rows, SpanEntry span) throws IOException {
     Row row = gen.new Row();
+    row.setId("??");
     rows.add(row);
     row.setAnchor(span.getId());
     //row.setColor(..?);
@@ -3071,6 +3115,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       vdeep = vdeep || eld.getPath().contains("Extension.extension.extension.");
     }
     Row r = gen.new Row();
+    r.setId("Extension");
     model.getRows().add(r);
     String en;
     if (!full)
@@ -3111,6 +3156,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         ElementDefinition ued = getUrlFor(ed, c);
         if (ved != null && ued != null) {
           Row r1 = gen.new Row();
+          r1.setId(ued.getPath());
           r.getSubRows().add(r1);
           r1.getCells().add(gen.new Cell(null, defFile == null ? "" : defFile+"-definitions.html#"+ed.getId()+"."+c.getId(), ((UriType) ued.getFixed()).getValue(), null, null));
           r1.getCells().add(gen.new Cell());
