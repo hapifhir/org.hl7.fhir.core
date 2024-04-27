@@ -633,7 +633,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
       ConceptSetFilterComponent fc = exc.getFilter().get(0);
       WorkingContext wc1 = dwc;
-      processFilter(exc, exp, expParams, null, cs, false, fc, wc1, filters, false);
+      processFilter(exc, exp, expParams, null, cs, false, fc, wc1, filters, true);
     }
   }
 
