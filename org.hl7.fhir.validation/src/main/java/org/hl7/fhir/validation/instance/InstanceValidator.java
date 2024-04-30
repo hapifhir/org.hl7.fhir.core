@@ -1469,12 +1469,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } 
     }
     if (!noTerminologyChecks && theElementCntext != null && !checked) { // no binding check, so we just check the CodeableConcept generally
-      CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
-      if (cc.hasCoding()) {
-        long t = System.nanoTime();
-        ValidationResult vr = checkCodeOnServer(stack, null, cc);
-        bh.see(processTxIssues(errors, vr, element, path, org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, false, null));
-        timeTracker.tx(t, "vc "+cc.toString());
+      try {
+        CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
+        if (cc.hasCoding()) {
+          long t = System.nanoTime();
+          ValidationResult vr = checkCodeOnServer(stack, null, cc);
+          bh.see(processTxIssues(errors, vr, element, path, org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, false, null));
+          timeTracker.tx(t, "vc " + cc.toString());
+        }
+      } catch (Exception e) {
+        if (STACK_TRACE) e.printStackTrace();
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getMessage());
       }
     }
     return checkDisp;
@@ -1502,8 +1507,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = true;
     if (vr != null) {
       for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-        if (!iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-in-vs") && 
-            !iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "this-code-not-in-vs")
+        if (!iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-in-vs")
+            && !iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "this-code-not-in-vs")
             && !(ignoreCantInfer || iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "cannot-infer"))) {
           OperationOutcomeIssueComponent i = iss.copy();
           if (notFoundLevel != null && i.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found")) { 
