@@ -1,0 +1,37 @@
+{
+  "resourceType" : "Condition",
+  "id" : "eumfh-39-07-1",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative: Condition</b><a name=\"eumfh-39-07-1\"> </a><a name=\"hceumfh-39-07-1\"> </a></p><div style=\"display: inline-block; background-color: #d9e0e7; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\">Resource Condition &quot;eumfh-39-07-1&quot; </p></div><p><b>clinicalStatus</b>: Active <span style=\"background: LightGoldenRodYellow; margin: 4px; border: 1px solid khaki\"> (<a href=\"http://terminology.hl7.org/5.3.0/CodeSystem-condition-clinical.html\">Condition Clinical Status Codes</a>#active)</span></p><p><b>category</b>: Problem <span style=\"background: LightGoldenRodYellow; margin: 4px; border: 1px solid khaki\"> (<a href=\"https://loinc.org/\">LOINC</a>#75326-9)</span></p><p><b>code</b>: Acute myocardial infarction of anterior wall <span style=\"background: LightGoldenRodYellow; margin: 4px; border: 1px solid khaki\"> (<a href=\"https://browser.ihtsdotools.org/\">SNOMED CT</a>#54329005; <a href=\"http://terminology.hl7.org/5.3.0/CodeSystem-ICD11MMS.html\">International Classification of Diseases, 11th Revision Mortality and Morbidity Statistics (MMS)</a>#BA41.Z&amp;XA7RE3 &quot;Acute myocardial infarction, unspecified [Anterior wall of heart]&quot;)</span></p><p><b>subject</b>: <a href=\"Patient-eumfh-39-07.html\">Patient/eumfh-39-07: Alexander Heig (inject 39-07)</a> &quot; HEIG&quot;</p><p><b>onset</b>: 2014</p><p><b>asserter</b>: <a href=\"Practitioner-eumfh-39-07.html\">Practitioner/eumfh-39-07: Dr. Mark Antonio</a> &quot; ANTONIO&quot;</p></div>"
+  },
+  "clinicalStatus" : {
+    "coding" : [{
+      "system" : "http://terminology.hl7.org/CodeSystem/condition-clinical",
+      "code" : "active"
+    }]
+  },
+  "category" : [{
+    "coding" : [{
+      "system" :  "http://terminology.hl7.org/CodeSystem/condition-category",
+      "code" :    "problem-list-item",
+      "display" : "Problem List Item"
+    }]
+  }],
+  "code" : {
+    "coding" : [{
+      "system" : "http://snomed.info/sct",
+      "code" : "54329005",
+      "display" : "Acute myocardial infarction of anterior wall"
+    }]
+  },
+  "subject" : {
+    "reference" : "Patient/eumfh-39-07",
+    "display" : "Alexander Heig (inject 39-07)"
+  },
+  "onsetDateTime" : "2014",
+  "asserter" : {
+    "reference" : "Practitioner/eumfh-39-07",
+    "display" : "Dr. Mark Antonio"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "resourceType" : "Practitioner",
+  "id" : "eumfh-39-07",
+  "text" : {
+    "status" : "generated",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative: Practitioner</b><a name=\"eumfh-39-07\"> </a><a name=\"hceumfh-39-07\"> </a></p><div style=\"display: inline-block; background-color: #d9e0e7; padding: 6px; margin: 4px; border: 1px solid #8da1b4; border-radius: 5px; line-height: 60%\"><p style=\"margin-bottom: 0px\">Resource Practitioner &quot;eumfh-39-07&quot; </p></div><p><b>name</b>: Mark Antonio </p></div>"
+  },
+  "name" : [{
+    "family" : "Antonio",
+    "given" : ["Mark"],
+    "prefix" : ["Dr."]
+  }]
+}
