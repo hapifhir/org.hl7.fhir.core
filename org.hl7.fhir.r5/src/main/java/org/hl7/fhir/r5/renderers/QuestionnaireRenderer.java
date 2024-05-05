@@ -144,7 +144,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           if (link == null) {
             li.tx(c.getSystem()+"#"+c.getCode());
           } else {
-            li.ah(link).tx(describeSystem(c.getSystem()));
+            li.ah(link).tx(displaySystem(c.getSystem()));
             li.tx(": "+c.getCode());              
           }
           if (c.hasDisplay()) {
