@@ -1,12 +1,17 @@
-# We only want to trigger a test build on PRs to the main branch.
-trigger: none
+# This pipeline runs the internationalization coverage test and then uses a
+# python script to generate a table from the results for viewing in the
+# README.md file
+pr: none
 
-pr:
+trigger:
   - master
 
 variables:
+  # Normally this test outputs to console. This variable appears as env param
+  # I18N_COVERAGE_FILE, which tells the test to write the output to a file
+  # instead.
 - name: i18n.coverage.file
-  value: i18n-coverage.csv
+  value: ../i18n-coverage.csv
 - group: PGP_VAR_GROUP
 - group: SONATYPE_VAR_GROUP
 - group: GIT_VAR_GROUP
@@ -39,6 +44,8 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           goals: 'install'
+        displayName: 'Build utilities module'
+
       - task: Maven@3
         inputs:
           mavenPomFile: 'pom.xml'
@@ -48,9 +55,27 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           goals: 'surefire:test'
+        displayName: 'Run i18n coverage test to generate csv'
 
       - task: PythonScript@0
         inputs:
           scriptSource: 'filePath'
           scriptPath: .azure/i18n-coverage-table/generate-i18n-coverage-table.py
           arguments: 
+        displayName: 'Make png table from coverage test csv'
+
+      # Verify png file generation
+      - bash: |
+          ls -l ./i18n-coverage-table.png
+
+      - bash: |
+          git fetch
+          git checkout master
+          git status
+          git add ./i18n-coverage.csv
+          git add ./i18n-coverage-table.png
+          git commit . -m "Updating i18n-coverage csv and png table ***NO_CI***"
+          
+          git push https://$(GIT_PAT)@github.com/hapifhir/org.hl7.fhir.core.git
+
+        displayName: 'Push updated csv and plot to git.'
