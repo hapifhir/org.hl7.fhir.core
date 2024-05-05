@@ -2936,7 +2936,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
   private String summarizeCoding(Coding value) {
     String uri = value.getSystem();
-    String system = TerminologyRenderer.describeSystem(uri);
+    String system = displaySystem(uri);
     if (Utilities.isURL(system)) {
       if (system.equals("http://cap.org/protocols"))
         system = context.formatMessage(RenderingContext.STRUC_DEF_CAP);

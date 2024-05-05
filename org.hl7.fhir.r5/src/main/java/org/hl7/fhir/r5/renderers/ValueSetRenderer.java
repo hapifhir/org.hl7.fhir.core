@@ -519,7 +519,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           x.tx(/*!#*/"SNOMED CT "+m+" edition");
         }
       } else {
-        x.tx(describeSystem(u)+" "+/*!#*/"version "+v);
+        x.tx(displaySystem(u)+" "+/*!#*/"version "+v);
       }
     } else if (u.equals("http://loinc.org")) {
       String vd = describeLoincVer(v);
@@ -534,10 +534,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
         if (cr.hasWebPath()) {
           x.ah(cr.getWebPath()).tx(t+" "+cr.present()+" "+/*!#*/"(no version) ("+cr.fhirType()+")");          
         } else {
-          x.tx(t+" "+describeSystem(u)+" "+/*!#*/"(no version) ("+cr.fhirType()+")");
+          x.tx(t+" "+displaySystem(u)+" "+/*!#*/"(no version) ("+cr.fhirType()+")");
         }
       } else {
-        x.tx(t+" "+describeSystem(u)+" "+/*!#*/"(no version)");
+        x.tx(t+" "+displaySystem(u)+" "+/*!#*/"(no version)");
       }
     } else {
       CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u+"|"+v, source);
@@ -545,10 +545,10 @@ public class ValueSetRenderer extends TerminologyRenderer {
         if (cr.hasWebPath()) {
           x.ah(cr.getWebPath()).tx(t+" "+cr.present()+" v"+v+" ("+cr.fhirType()+")");          
         } else {
-          x.tx(t+" "+describeSystem(u)+" v"+v+" ("+cr.fhirType()+")");
+          x.tx(t+" "+displaySystem(u)+" v"+v+" ("+cr.fhirType()+")");
         }
       } else {
-        x.tx(t+" "+describeSystem(u)+" "+/*!#*/"version "+v);
+        x.tx(t+" "+displaySystem(u)+" "+/*!#*/"version "+v);
       }
     }
   }

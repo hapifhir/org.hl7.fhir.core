@@ -9,6 +9,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.Attachment;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.DataRequirement;
@@ -345,7 +346,14 @@ public class LibraryRenderer extends ResourceRenderer {
         p.tx(att.getTitle());
         p.tx(": ");
       }
-      p.code().ah(att.getUrl()).tx(att.getUrl());
+      Resource res = context.getContext().fetchResource(Resource.class, att.getUrl());
+      if (res == null || !res.hasWebPath()) {
+        p.code().ah(att.getUrl()).tx(att.getUrl());        
+      } else if (res instanceof CanonicalResource) {
+        p.code().ah(res.getWebPath()).tx(((CanonicalResource) res).present());        
+      } else {
+        p.code().ah(res.getWebPath()).tx(att.getUrl());        
+      }
       p.tx(" (");
       p.code().tx(att.getContentType());
       p.tx(lang(att));

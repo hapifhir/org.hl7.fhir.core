@@ -269,24 +269,24 @@ public class DataRenderer extends Renderer implements CodeResolver {
     }
   }
   
-  public static String describeSystem(String system) {
-    if (system == null)
-    	return /*!#*/ "[not stated]";
-    if (system.equals("http://loinc.org"))
-      return /*!#*/ "LOINC";
-    if (system.startsWith("http://snomed.info"))
-      return /*!#*/ "SNOWMED CT";
-    if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm"))
-      return /*!#*/ "RxNorm";
-    if (system.equals("http://hl7.org/fhir/sid/icd-9"))
-      return /*!#*/ "ICD-9";
-    if (system.equals("http://dicom.nema.org/resources/ontology/DCM"))
-      return /*!#*/ "DICOM";
-    if (system.equals("http://unitsofmeasure.org"))
-      return /*!#*/ "UCUM";
-  
-    return system;
-  }
+//  public static String describeSystem(String system) {
+//    if (system == null)
+//    	return /*!#*/ "[not stated]";
+//    if (system.equals("http://loinc.org"))
+//      return /*!#*/ "LOINC";
+//    if (system.startsWith("http://snomed.info"))
+//      return /*!#*/ "SNOMED CT";
+//    if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm"))
+//      return /*!#*/ "RxNorm";
+//    if (system.equals("http://hl7.org/fhir/sid/icd-9"))
+//      return /*!#*/ "ICD-9";
+//    if (system.equals("http://dicom.nema.org/resources/ontology/DCM"))
+//      return /*!#*/ "DICOM";
+//    if (system.equals("http://unitsofmeasure.org"))
+//      return /*!#*/ "UCUM";
+//  
+//    return system;
+//  }
 
   public String displaySystem(String system) {
     if (system == null)
@@ -1054,7 +1054,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     
     CodeSystem cs = context.getWorker().fetchCodeSystem(c.getSystem());
     systemLink = cs != null ? cs.getWebPath() : null;
-    systemName = cs != null ? crPresent(cs) : describeSystem(c.getSystem());
+    systemName = cs != null ? crPresent(cs) : displaySystem(c.getSystem());
     link = getLinkForCode(c.getSystem(), c.getVersion(), c.getCode());
 
     hint = systemName+": "+display+(c.hasVersion() ? " "+/*!#*/"(version = "+c.getVersion()+")" : "");
@@ -1077,7 +1077,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
     CodeSystem cs = context.getWorker().fetchCodeSystem(c.getSystem());
 
-    String sn = cs != null ? crPresent(cs) : describeSystem(c.getSystem());
+    String sn = cs != null ? crPresent(cs) : displaySystem(c.getSystem());
     String link = getLinkForCode(c.getSystem(), c.getVersion(), c.getCode());
     if (link != null) {
       x.ah(link).tx(sn);
@@ -1107,7 +1107,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       s = c.getCode();
 
     if (showCodeDetails) {
-      x.addText(s+" "+/*!#*/"(Details: "+TerminologyRenderer.describeSystem(c.getSystem())+" code "+c.getCode()+" = '"+lookupCode(c.getSystem(), c.getVersion(), c.getCode())+"', stated as '"+c.getDisplay()+"')");
+      x.addText(s+" "+/*!#*/"(Details: "+displaySystem(c.getSystem())+" code "+c.getCode()+" = '"+lookupCode(c.getSystem(), c.getVersion(), c.getCode())+"', stated as '"+c.getDisplay()+"')");
     } else
       x.span(null, "{"+c.getSystem()+" "+c.getCode()+"}").addText(s);
   }
@@ -1596,7 +1596,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         x.tx("(unit "+q.getCode()+" from "+q.getSystem()+")");
     }
     if (showCodeDetails && q.hasCode()) {
-      x.span("background: LightGoldenRodYellow", null).tx(" "+/*!#*/"(Details: "+TerminologyRenderer.describeSystem(q.getSystem())+" code "+q.getCode()+" = '"+lookupCode(q.getSystem(), null, q.getCode())+"')");
+      x.span("background: LightGoldenRodYellow", null).tx(" "+/*!#*/"(Details: "+displaySystem(q.getSystem())+" code "+q.getCode()+" = '"+lookupCode(q.getSystem(), null, q.getCode())+"')");
     }
   }
 
