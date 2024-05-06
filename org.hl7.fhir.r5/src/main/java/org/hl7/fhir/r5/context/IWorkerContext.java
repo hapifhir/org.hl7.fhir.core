@@ -109,6 +109,18 @@ import javax.annotation.Nonnull;
 
 public interface IWorkerContext {
 
+  /**
+   @deprecated This interface only exists to provide backward compatibility for the following two projects:
+   <a href="https://github.com/cqframework/clinical-reasoning">clinical-reasoning</a>
+   <a href="https://github.com/cqframework/clinical_quality_language/">clinical_quality-language</a>
+
+   Due to a circular dependency, they cannot be updated without a release of HAPI, which requires backwards
+   compatibility with core version 6.1.2.2
+   **/
+  @Deprecated(forRemoval = true)
+  public interface ILoggingService extends org.hl7.fhir.r5.context.ILoggingService{
+
+  }
   public class OIDDefinitionComparer implements Comparator<OIDDefinition> {
 
     @Override
@@ -630,8 +642,8 @@ public interface IWorkerContext {
   // todo: figure these out
   public Map<String, NamingSystem> getNSUrlMap();
 
-  public void setLogger(@Nonnull ILoggingService logger);
-  public ILoggingService getLogger();
+  public void setLogger(@Nonnull org.hl7.fhir.r5.context.ILoggingService logger);
+  public org.hl7.fhir.r5.context.ILoggingService getLogger();
 
   public boolean isNoTerminologyServer();
   public Set<String> getCodeSystemsUsed();

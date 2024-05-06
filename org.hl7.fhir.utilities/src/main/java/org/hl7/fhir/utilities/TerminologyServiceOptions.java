@@ -39,6 +39,8 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  */
 public class TerminologyServiceOptions extends ValidationOptions {
 
+  public TerminologyServiceOptions() { this(FhirPublication.R5); }
+
   public TerminologyServiceOptions(FhirPublication fhirVersion) {
     super(fhirVersion);
   }
