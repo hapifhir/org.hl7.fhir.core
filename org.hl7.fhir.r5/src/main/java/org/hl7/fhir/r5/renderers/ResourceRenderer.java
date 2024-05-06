@@ -304,14 +304,14 @@ public abstract class ResourceRenderer extends DataRenderer {
         if (tr != null && tr.getReference() != null) {
           link = tr.getReference();
         } else if (r.getReference().contains("?")) {
-          text.append(/*!#*/"Conditional Reference: ");
+          text.append(context.formatMessage(RenderingContext.RES_REND_COND_REF)+" ");
         } else {
           link = r.getReference();
         }
       } 
     }
     if (tr != null && tr.getReference() != null && tr.getReference().startsWith("#")) {
-      text.append(/*!#*/"See above (");
+      text.append(context.formatMessage(RenderingContext.RES_REND_SEE_ON_THIS_PAGE)+" ");
     }
     // what to display: if text is provided, then that. if the reference was resolved, then show the name, or the generated narrative
     String display = r.hasDisplayElement() ? r.getDisplay() : null;
@@ -355,7 +355,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else if (name != null) {
         text.append(name);
       } else {
-        text.append(/*!#*/". Description: (todo)");
+        text.append(context.formatMessage(RenderingContext.RES_REND_DESC));
       }
     }
     if (tr != null && tr.getReference() != null && tr.getReference().startsWith("#")) {
@@ -388,7 +388,7 @@ public abstract class ResourceRenderer extends DataRenderer {
             c = x.ah(tr.getReference());
           }
         } else if (r.getReference().contains("?")) {
-          x.tx(/*!#*/"Conditional Reference: ");
+          x.tx(context.formatMessage(RenderingContext.RES_REND_COND_REF)+" ");
           c = x.code("");
         } else {
           c = x.ah(r.getReference());
@@ -405,7 +405,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       c = x.span(null, null);
     }
     if (onPage) {
-      c.tx(/*!#*/"See on this page: ");  
+      c.tx(context.formatMessage(RenderingContext.RES_REND_SEE_ON_THIS_PAGE)+" ");
     }
     // what to display: if text is provided, then that. if the reference was resolved, then show the name, or the generated narrative
     String display = r.hasDisplayElement() ? r.getDisplay() : null;
@@ -449,7 +449,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else if (name != null) {
         c.addText(name);
       } else {
-        c.tx(/*!#*/". Generated Summary: ");
+        c.tx(context.formatMessage(RenderingContext.RES_REND_GEN_SUM)+" ");
         if (tr != null) {
           new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), true, r.getReference().startsWith("#"), true);
         }
@@ -478,7 +478,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (r.has("display")) {
       c.addText(r.get("display").primitiveValue());
       if (tr != null && tr.getResource() != null) {
-        c.tx(/*!#*/". Generated Summary: ");
+        c.tx(context.formatMessage(RenderingContext.RES_REND_GEN_SUM)+" ");
         new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), true, v.startsWith("#"), false);
       }
     } else if (tr != null && tr.getResource() != null) {
@@ -562,7 +562,7 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   public String displayReference(Resource res, Reference r) throws UnsupportedEncodingException, IOException {
-    return /*!#*/"todo"; 
+    return (context.formatMessage(RenderingContext.RES_REND_TODO)); 
    }
    
 
@@ -607,10 +607,10 @@ public abstract class ResourceRenderer extends DataRenderer {
 
    protected String describeStatus(PublicationStatus status, boolean experimental) {
      switch (status) {
-     case ACTIVE: return experimental ? /*!#*/"Experimental" : /*!#*/"Active"; 
-     case DRAFT: return /*!#*/"draft";
-     case RETIRED: return /*!#*/"retired";
-     default: return /*!#*/"Unknown";
+     case ACTIVE: return experimental ? (context.formatMessage(RenderingContext.RES_REND_EXP)) : (context.formatMessage(RenderingContext.RES_REND_ACT)); 
+     case DRAFT: return (context.formatMessage(RenderingContext.RES_REND_DRAFT));
+     case RETIRED: return (context.formatMessage(RenderingContext.RES_REND_RET));
+     default: return (context.formatMessage(RenderingContext.RES_REND_UNKNOWN));
      }
    }
 
@@ -656,7 +656,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     
     if (id != null || lang != null || versionId != null || lastUpdated != null) {
       XhtmlNode p = plateStyle(div.para());
-      p.tx(/*!#*/"Resource ");
+      p.tx(context.formatMessage(RenderingContext.RES_REND_RESOURCE));
       p.tx(r.fhirType());
       p.tx(" ");
       if (id != null) {
@@ -740,7 +740,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       render(dr);
     } catch (Exception e) {
       XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-      x.para().tx(/*!#*/"Error rendering: "+e.getMessage());
+      x.para().tx(context.formatMessage(RenderingContext.RES_REND_ERROR, e.getMessage())+" ");
       dr.setText(null);
       inject(dr, x, NarrativeStatus.GENERATED);   
     }

@@ -186,7 +186,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
             url = p.getUserString("filename");
           }
         } else {
-          throw new DefinitionException(/*!#*/"Unable to resolve markdown link "+link);
+          throw new DefinitionException(context.formatMessage(RenderingContext.DATA_REND_MKDWN_LNK, link) + " ");
         }
         
         text = left+"["+link+"]("+url+(path == null ? "" : "#"+path)+")"+right;
@@ -269,40 +269,40 @@ public class DataRenderer extends Renderer implements CodeResolver {
     }
   }
   
-  public static String describeSystem(String system) {
-    if (system == null)
-      return /*!#*/"[not stated]";
-    if (system.equals("http://loinc.org"))
-      return /*!#*/"LOINC";
-    if (system.startsWith("http://snomed.info"))
-      return /*!#*/"SNOMED CT";
-    if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm"))
-      return /*!#*/"RxNorm";
-    if (system.equals("http://hl7.org/fhir/sid/icd-9"))
-      return /*!#*/"ICD-9";
-    if (system.equals("http://dicom.nema.org/resources/ontology/DCM"))
-      return /*!#*/"DICOM";
-    if (system.equals("http://unitsofmeasure.org"))
-      return /*!#*/"UCUM";
-  
-    return system;
-  }
+//  public static String describeSystem(String system) {
+//    if (system == null)
+//    	return /*!#*/ "[not stated]";
+//    if (system.equals("http://loinc.org"))
+//      return /*!#*/ "LOINC";
+//    if (system.startsWith("http://snomed.info"))
+//      return /*!#*/ "SNOMED CT";
+//    if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm"))
+//      return /*!#*/ "RxNorm";
+//    if (system.equals("http://hl7.org/fhir/sid/icd-9"))
+//      return /*!#*/ "ICD-9";
+//    if (system.equals("http://dicom.nema.org/resources/ontology/DCM"))
+//      return /*!#*/ "DICOM";
+//    if (system.equals("http://unitsofmeasure.org"))
+//      return /*!#*/ "UCUM";
+//  
+//    return system;
+//  }
 
   public String displaySystem(String system) {
     if (system == null)
-      return /*!#*/"[not stated]";
+    	return (context.formatMessage(RenderingContext.DATA_REND_NOT_STAT));
     if (system.equals("http://loinc.org"))
-      return /*!#*/"LOINC";
+    	return (context.formatMessage(RenderingContext.DATA_REND_LOINC));
     if (system.startsWith("http://snomed.info"))
-      return /*!#*/"SNOMED CT";
+    	 return (context.formatMessage(RenderingContext.DATA_REND_SNOWMED));
     if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm"))
-      return /*!#*/"RxNorm";
+    	return (context.formatMessage(RenderingContext.DATA_REND_RXNORM));
     if (system.equals("http://hl7.org/fhir/sid/icd-9"))
-      return /*!#*/"ICD-9";
+    	return (context.formatMessage(RenderingContext.DATA_REND_ICD));
     if (system.equals("http://dicom.nema.org/resources/ontology/DCM"))
-      return /*!#*/"DICOM";
+    	return (context.formatMessage(RenderingContext.DATA_REND_DICOM));
     if (system.equals("http://unitsofmeasure.org"))
-      return /*!#*/"UCUM";
+    	return (context.formatMessage(RenderingContext.DATA_REND_UCUM));
 
     CodeSystem cs = context.getContext().fetchCodeSystem(system);
     if (cs != null) {
@@ -326,7 +326,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (system.contains("/")) {
       return system.substring(system.lastIndexOf("/")+1);
     } else {
-      return /*!#*/"unknown";
+      return (context.formatMessage(RenderingContext.DATA_REND_UNKNWN));
     }
   }
 
@@ -488,7 +488,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       } else {
         // somehow have to do better than this 
         XhtmlNode li = ul.li();
-        li.b().tx(/*!#*/"WARNING: Unrenderable Modifier Extension!");
+        li.b().tx(context.formatMessage(RenderingContext.DATA_REND_UNRD_EX));
       }
     }
     for (Extension ext : element.getExtension()) {
@@ -538,7 +538,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         render(div, ext.getValue());
       } else {
         // somehow have to do better than this 
-        div.b().tx(/*!#*/"WARNING: Unrenderable Modifier Extension!");
+        div.b().tx(context.formatMessage(RenderingContext.DATA_REND_UNRD_EX));
       }
     }
     for (Extension ext : element.getExtension()) {
@@ -569,7 +569,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (b instanceof DataType) {
       return display((DataType) b);
     } else {
-      return /*!#*/"No display for "+b.fhirType();      
+      return (context.formatMessage(RenderingContext.DATA_REND_NO_DISP, b.fhirType()) + " ");      
     }
   }
   
@@ -607,7 +607,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } else if (type.isPrimitive()) {
       return context.getTranslated((PrimitiveType<?>) type);
     } else {
-      return /*!#*/"No display for "+type.fhirType();
+      return (context.formatMessage(RenderingContext.DATA_REND_NO_DISP, type.fhirType()) + " ");
     }
   }
 
@@ -689,7 +689,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   }
 
   public String display(BaseWrapper type) {
-    return /*!#*/"to do";   
+    return (context.formatMessage(RenderingContext.DATA_REND_TO_DO));   
   }
 
   public void render(XhtmlNode x, BaseWrapper type) throws FHIRFormatError, DefinitionException, IOException  {
@@ -697,7 +697,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     try {
       base = type.getBase();
     } catch (FHIRException | IOException e) {
-      x.tx(/*!#*/"Error: " + e.getMessage()); // this shouldn't happen - it's an error in the library itself
+      x.tx(context.formatMessage(RenderingContext.DATA_REND_ERROR, e.getMessage()) + " "); // this shouldn't happen - it's an error in the library itself
       return;
     }
     if (base instanceof DataType) {
@@ -711,7 +711,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (b instanceof DataType) {
       render(x, (DataType) b);
     } else {
-      x.tx(/*!#*/"No display for "+b.fhirType());      
+      x.tx(context.formatMessage(RenderingContext.DATA_REND_NO_DISP, b.fhirType()) + " ");      
     }
   }
   
@@ -767,7 +767,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } else if (type.isPrimitive()) {
       x.tx(context.getTranslated((PrimitiveType<?>) type));
     } else {
-      x.tx(/*!#*/"No display for "+type.fhirType());      
+      x.tx(context.formatMessage(RenderingContext.DATA_REND_NO_DISP, type.fhirType()) + " ");      
     }
   }
 
@@ -869,7 +869,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     }
 
     if (a.hasAuthor()) {
-      b.append(/*!#*/"By ");
+      b.append(context.formatMessage(RenderingContext.DATA_REND_BY) + " ");
       if (a.hasAuthorReference()) {
         b.append(a.getAuthorReference().getReference());
       } else if (a.hasAuthorStringType()) {
@@ -1054,7 +1054,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     
     CodeSystem cs = context.getWorker().fetchCodeSystem(c.getSystem());
     systemLink = cs != null ? cs.getWebPath() : null;
-    systemName = cs != null ? crPresent(cs) : describeSystem(c.getSystem());
+    systemName = cs != null ? crPresent(cs) : displaySystem(c.getSystem());
     link = getLinkForCode(c.getSystem(), c.getVersion(), c.getCode());
 
     hint = systemName+": "+display+(c.hasVersion() ? " "+/*!#*/"(version = "+c.getVersion()+")" : "");
@@ -1077,7 +1077,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
     CodeSystem cs = context.getWorker().fetchCodeSystem(c.getSystem());
 
-    String sn = cs != null ? crPresent(cs) : describeSystem(c.getSystem());
+    String sn = cs != null ? crPresent(cs) : displaySystem(c.getSystem());
     String link = getLinkForCode(c.getSystem(), c.getVersion(), c.getCode());
     if (link != null) {
       x.ah(link).tx(sn);
@@ -1107,7 +1107,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       s = c.getCode();
 
     if (showCodeDetails) {
-      x.addText(s+" "+/*!#*/"(Details: "+TerminologyRenderer.describeSystem(c.getSystem())+" code "+c.getCode()+" = '"+lookupCode(c.getSystem(), c.getVersion(), c.getCode())+"', stated as '"+c.getDisplay()+"')");
+      x.addText(s+" "+/*!#*/"(Details: "+displaySystem(c.getSystem())+" code "+c.getCode()+" = '"+lookupCode(c.getSystem(), c.getVersion(), c.getCode())+"', stated as '"+c.getDisplay()+"')");
     } else
       x.span(null, "{"+c.getSystem()+" "+c.getCode()+"}").addText(s);
   }
@@ -1305,7 +1305,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       x.nbsp();
       x.tx("(");
       if (ii.hasUse()) {
-        x.tx(/*!#*/"use:");
+        x.tx(context.formatMessage(RenderingContext.DATA_REND_USE));
         x.nbsp();
         x.tx(ii.getUse().toCode());
       }
@@ -1314,7 +1314,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         x.nbsp();
       }
       if (ii.hasPeriod()) {
-        x.tx(/*!#*/"period:");
+        x.tx(context.formatMessage(RenderingContext.DATA_REND_PERIOD));
         x.nbsp();
         x.tx(displayPeriod(ii.getPeriod()));
       }
@@ -1463,7 +1463,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       }
       c.code().tx(expr.getExpression());
     } else if (expr.hasReference()) {
-      p.ah(expr.getReference()).tx(/*!#*/"source");
+      p.ah(expr.getReference()).tx(context.formatMessage(RenderingContext.DATA_REND_SOURCE));
     }
     if (expr.hasName() || expr.hasDescription()) {
       p.tx("(");
@@ -1524,9 +1524,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
   protected void displayContactPoint(XhtmlNode p, ContactPoint c) {
     if (c != null) {
       if (c.getSystem() == ContactPointSystem.PHONE) {
-        p.tx(/*!#*/"Phone: "+c.getValue());
+        p.tx(context.formatMessage(RenderingContext.DATA_REND_PHONE, c.getValue()) + " ");
       } else if (c.getSystem() == ContactPointSystem.FAX) {
-        p.tx(/*!#*/"Fax: "+c.getValue());
+        p.tx(context.formatMessage(RenderingContext.DATA_REND_FAX, c.getValue()) + " ");
       } else if (c.getSystem() == ContactPointSystem.EMAIL) {
         p.tx(c.getValue());
       } else if (c.getSystem() == ContactPointSystem.URL) {
@@ -1541,9 +1541,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
   protected void addTelecom(XhtmlNode p, ContactPoint c) {
     if (c.getSystem() == ContactPointSystem.PHONE) {
-      p.tx(/*!#*/"Phone: "+c.getValue());
+      p.tx(context.formatMessage(RenderingContext.DATA_REND_PHONE, c.getValue()) + " ");
     } else if (c.getSystem() == ContactPointSystem.FAX) {
-      p.tx(/*!#*/"Fax: "+c.getValue());
+      p.tx(context.formatMessage(RenderingContext.DATA_REND_FAX, c.getValue()) + " ");
     } else if (c.getSystem() == ContactPointSystem.EMAIL) {
       p.ah("mailto:"+c.getValue()).addText(c.getValue());
     } else if (c.getSystem() == ContactPointSystem.URL) {
@@ -1596,7 +1596,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         x.tx("(unit "+q.getCode()+" from "+q.getSystem()+")");
     }
     if (showCodeDetails && q.hasCode()) {
-      x.span("background: LightGoldenRodYellow", null).tx(" "+/*!#*/"(Details: "+TerminologyRenderer.describeSystem(q.getSystem())+" code "+q.getCode()+" = '"+lookupCode(q.getSystem(), null, q.getCode())+"')");
+      x.span("background: LightGoldenRodYellow", null).tx(" "+/*!#*/"(Details: "+displaySystem(q.getSystem())+" code "+q.getCode()+" = '"+lookupCode(q.getSystem(), null, q.getCode())+"')");
     }
   }
 
@@ -1658,31 +1658,31 @@ public class DataRenderer extends Renderer implements CodeResolver {
   
   public void renderTriggerDefinition(XhtmlNode x, TriggerDefinition td) throws FHIRFormatError, DefinitionException, IOException {
     if (x.isPara()) {
-      x.b().tx(/*!#*/"Type");
+      x.b().tx(context.formatMessage(RenderingContext.DATA_REND_TYPE));
       x.tx(": ");
       x.tx(td.getType().getDisplay());
 
       if (td.hasName()) {    
         x.tx(", ");
-        x.b().tx(/*!#*/"Name");
+        x.b().tx(context.formatMessage(RenderingContext.DATA_REND_NAME));
         x.tx(": ");
         x.tx(context.getTranslated(td.getNameElement()));
       }
       if (td.hasCode()) {    
         x.tx(", ");
-        x.b().tx(/*!#*/"Code");
+        x.b().tx(context.formatMessage(RenderingContext.DATA_REND_CODE));
         x.tx(": ");
         renderCodeableConcept(x, td.getCode());
       }
       if (td.hasTiming()) {    
         x.tx(", ");
-        x.b().tx(/*!#*/"Timing");
+        x.b().tx(context.formatMessage(RenderingContext.DATA_REND_TIMING));
         x.tx(": ");
         render(x, td.getTiming());
       }
       if (td.hasCondition()) {    
         x.tx(", ");
-        x.b().tx(/*!#*/"Condition");
+        x.b().tx(context.formatMessage(RenderingContext.DATA_REND_COND));
         x.tx(": ");
         renderExpression(x, td.getCondition());
       }    
@@ -1690,27 +1690,27 @@ public class DataRenderer extends Renderer implements CodeResolver {
       XhtmlNode tbl = x.table("grid");
 
       XhtmlNode tr = tbl.tr();  
-      tr.td().b().tx(/*!#*/"Type");
+      tr.td().b().tx(context.formatMessage(RenderingContext.DATA_REND_TYPE));
       tr.td().tx(td.getType().getDisplay());
 
       if (td.hasName()) {    
         tr = tbl.tr();  
-        tr.td().b().tx(/*!#*/"Name");
+        tr.td().b().tx(context.formatMessage(RenderingContext.DATA_REND_NAME));
         tr.td().tx(context.getTranslated(td.getNameElement()));
       }
       if (td.hasCode()) {    
         tr = tbl.tr();  
-        tr.td().b().tx(/*!#*/"Code");
+        tr.td().b().tx(context.formatMessage(RenderingContext.DATA_REND_CODE));
         renderCodeableConcept(tr.td(), td.getCode());
       }
       if (td.hasTiming()) {    
         tr = tbl.tr();  
-        tr.td().b().tx(/*!#*/"Timing");
+        tr.td().b().tx(context.formatMessage(RenderingContext.DATA_REND_TIMING));
         render(tr.td(), td.getTiming());
       }
       if (td.hasCondition()) {    
         tr = tbl.tr();  
-        tr.td().b().tx(/*!#*/"Condition");
+        tr.td().b().tx(context.formatMessage(RenderingContext.DATA_REND_COND));
         renderExpression(tr.td(), td.getCondition());
       }    
     }
@@ -1720,7 +1720,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     XhtmlNode tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();    
     XhtmlNode td = tr.td().colspan("2");
-    td.b().tx(/*!#*/"Type");
+    td.b().tx(context.formatMessage(RenderingContext.DATA_REND_TYPE));
     td.tx(": ");
     StructureDefinition sd = context.getWorker().fetchTypeDefinition(dr.getType().toCode());
     if (sd != null && sd.hasWebPath()) {
@@ -1745,7 +1745,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (dr.hasSubject()) {
       tr = tbl.tr();    
       td = tr.td().colspan("2");
-      td.b().tx(/*!#*/"Subject");
+      td.b().tx(context.formatMessage(RenderingContext.DATA_REND_SUB));
       if (dr.hasSubjectReference()) {
         renderReference(td,  dr.getSubjectReference());
       } else {
@@ -1754,24 +1754,24 @@ public class DataRenderer extends Renderer implements CodeResolver {
     }
     if (dr.hasCodeFilter() || dr.hasDateFilter()) {
       tr = tbl.tr().backgroundColor("#efefef");    
-      tr.td().tx(/*!#*/"Filter");
-      tr.td().tx(/*!#*/"Value");
+      tr.td().tx(context.formatMessage(RenderingContext.DATA_REND_FILT));
+      tr.td().tx(context.formatMessage(RenderingContext.DATA_REND_VALUE));
     }
     for (DataRequirementCodeFilterComponent cf : dr.getCodeFilter()) {
       tr = tbl.tr();    
       if (cf.hasPath()) {
         tr.td().tx(cf.getPath());
       } else {
-        tr.td().tx(/*!#*/"Search on " +cf.getSearchParam());
+        tr.td().tx(context.formatMessage(RenderingContext.DATA_REND_SEARCH, cf.getSearchParam()) + " ");
       }
       if (cf.hasValueSet()) {
         td = tr.td();
-        td.tx(/*!#*/"In ValueSet ");
+        td.tx(context.formatMessage(RenderingContext.DATA_REND_VALUESET) + " ");
         render(td, cf.getValueSetElement());
       } else {
         boolean first = true;
         td = tr.td();
-        td.tx(/*!#*/"One of these codes: ");
+        td.tx(context.formatMessage(RenderingContext.DATA_REND_THESE_CODES) + " ");
         for (Coding c : cf.getCode()) {
           if (first) first = false; else td.tx(", ");
           render(td, c);
@@ -1783,7 +1783,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       if (cf.hasPath()) {
         tr.td().tx(cf.getPath());
       } else {
-        tr.td().tx(/*!#*/"Search on " +cf.getSearchParam());
+        tr.td().tx(context.formatMessage(RenderingContext.DATA_REND_SEARCH, cf.getSearchParam()) + " ");
       }
       render(tr.td(), cf.getValue());
     }
@@ -1791,7 +1791,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       tr = tbl.tr();    
       td = tr.td().colspan("2");
       if (dr.hasLimit()) {
-        td.b().tx(/*!#*/"Limit");
+        td.b().tx(context.formatMessage(RenderingContext.DATA_REND_LIMIT));
         td.tx(": ");
         td.tx(dr.getLimit());
         if (dr.hasSort()) {
@@ -1799,7 +1799,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         }
       }
       if (dr.hasSort()) {
-        td.b().tx(/*!#*/"Sort");
+        td.b().tx(context.formatMessage(RenderingContext.DATA_REND_SORT));
         td.tx(": ");
         boolean first = true;
         for (DataRequirementSortComponent p : dr.getSort()) {
@@ -1815,7 +1815,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   private String displayTiming(Timing s) throws FHIRException {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     if (s.hasCode())
-      b.append(/*!#*/"Code: "+displayCodeableConcept(s.getCode()));
+      b.append(context.formatMessage(RenderingContext.DATA_REND_GETCODE, displayCodeableConcept(s.getCode())) + " ");
 
     if (s.getEvent().size() > 0) {
       CommaSeparatedStringBuilder c = new CommaSeparatedStringBuilder();
@@ -1826,17 +1826,17 @@ public class DataRenderer extends Renderer implements CodeResolver {
           c.append("??");
         }        
       }
-      b.append(/*!#*/"Events: "+ c.toString());
+      b.append(context.formatMessage(RenderingContext.DATA_REND_EVENTS, c.toString()) + " ");
     }
 
     if (s.hasRepeat()) {
       TimingRepeatComponent rep = s.getRepeat();
       if (rep.hasBoundsPeriod() && rep.getBoundsPeriod().hasStart())
-        b.append(/*!#*/"Starting "+displayDateTime(rep.getBoundsPeriod().getStartElement()));
+        b.append(context.formatMessage(RenderingContext.DATA_REND_STARTING, displayDateTime(rep.getBoundsPeriod().getStartElement())) + " ");
       if (rep.hasCount())
-        b.append(/*!#*/"Count "+Integer.toString(rep.getCount())+" times");
+        b.append(context.formatMessage(RenderingContext.DATA_REND_COUNT, Integer.toString(rep.getCount())) + " " + " times");
       if (rep.hasDuration())
-        b.append(/*!#*/"Duration "+rep.getDuration().toPlainString()+displayTimeUnits(rep.getPeriodUnit()));
+        b.append(context.formatMessage(RenderingContext.DATA_REND_DURATION, rep.getDuration().toPlainString()+displayTimeUnits(rep.getPeriodUnit())) + " ");
 
       if (rep.hasWhen()) {
         String st = "";
@@ -1849,7 +1849,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       } else {
         String st = "";
         if (!rep.hasFrequency() || (!rep.hasFrequencyMax() && rep.getFrequency() == 1) )
-          st = /*!#*/"Once";
+          st = context.formatMessage(RenderingContext.DATA_REND_ONCE);
         else {
           st = Integer.toString(rep.getFrequency());
           if (rep.hasFrequencyMax())
@@ -1864,7 +1864,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         b.append(st);
       }
       if (rep.hasBoundsPeriod() && rep.getBoundsPeriod().hasEnd())
-        b.append(/*!#*/"Until "+displayDateTime(rep.getBoundsPeriod().getEndElement()));
+        b.append(context.formatMessage(RenderingContext.DATA_REND_UNTIL, displayDateTime(rep.getBoundsPeriod().getEndElement())) + " ");
     }
     return b.toString();
   }
@@ -1880,20 +1880,20 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
   private String displayEventCode(EventTiming when) {
     switch (when) {
-    case C: return /*!#*/"at meals";
-    case CD: return /*!#*/"at lunch";
-    case CM: return /*!#*/"at breakfast";
-    case CV: return /*!#*/"at dinner";
-    case AC: return /*!#*/"before meals";
-    case ACD: return /*!#*/"before lunch";
-    case ACM: return /*!#*/"before breakfast";
-    case ACV: return /*!#*/"before dinner";
-    case HS: return /*!#*/"before sleeping";
-    case PC: return /*!#*/"after meals";
-    case PCD: return /*!#*/"after lunch";
-    case PCM: return /*!#*/"after breakfast";
-    case PCV: return /*!#*/"after dinner";
-    case WAKE: return /*!#*/"after waking";
+    case C: return (context.formatMessage(RenderingContext.DATA_REND_MEALS));
+    case CD: return (context.formatMessage(RenderingContext.DATA_REND_ATLUNCH));
+    case CM: return (context.formatMessage(RenderingContext.DATA_REND_ATBKFST));
+    case CV: return (context.formatMessage(RenderingContext.DATA_REND_ATDINR));
+    case AC: return (context.formatMessage(RenderingContext.DATA_REND_BFMEALS));
+    case ACD: return (context.formatMessage(RenderingContext.DATA_REND_BFLUNCH));
+    case ACM: return (context.formatMessage(RenderingContext.DATA_REND_BFBKFST));
+    case ACV: return (context.formatMessage(RenderingContext.DATA_REND_BFDINR));
+    case HS: return (context.formatMessage(RenderingContext.DATA_REND_BFSLEEP));
+    case PC: return (context.formatMessage(RenderingContext.DATA_REND_AFTRMEALS));
+    case PCD: return (context.formatMessage(RenderingContext.DATA_REND_AFTRLUNCH));
+    case PCM: return (context.formatMessage(RenderingContext.DATA_REND_AFTRBKFST));
+    case PCV: return (context.formatMessage(RenderingContext.DATA_REND_AFTRDINR));
+    case WAKE: return (context.formatMessage(RenderingContext.DATA_REND_AFTRWKNG));
     default: return "?ngen-6?";
     }
   }
@@ -1921,29 +1921,29 @@ public class DataRenderer extends Renderer implements CodeResolver {
   private String displaySampledData(SampledData s) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     if (s.hasOrigin())
-      b.append(/*!#*/"Origin: "+displayQuantity(s.getOrigin()));
+      b.append(context.formatMessage(RenderingContext.DATA_REND_ORIGIN, displayQuantity(s.getOrigin())) + " ");
 
     if (s.hasInterval()) {
-      b.append(/*!#*/"Interval: "+s.getInterval().toString());
+      b.append(context.formatMessage(RenderingContext.DATA_REND_INT, s.getInterval().toString()) + " ");
 
       if (s.hasIntervalUnit())
         b.append(s.getIntervalUnit().toString());
     }
 
     if (s.hasFactor())
-      b.append(/*!#*/"Factor: "+s.getFactor().toString());
+      b.append(context.formatMessage(RenderingContext.DATA_REND_FACT, s.getFactor().toString()) + " ");
 
     if (s.hasLowerLimit())
-      b.append(/*!#*/"Lower: "+s.getLowerLimit().toString());
+      b.append(context.formatMessage(RenderingContext.DATA_REND_LOWER, s.getLowerLimit().toString()) + " ");
 
     if (s.hasUpperLimit())
-      b.append(/*!#*/"Upper: "+s.getUpperLimit().toString());
+      b.append(context.formatMessage(RenderingContext.DATA_REND_UP, s.getUpperLimit().toString()) + " ");
 
     if (s.hasDimensions())
-      b.append(/*!#*/"Dimensions: "+s.getDimensions());
+      b.append(context.formatMessage(RenderingContext.DATA_REND_DIM, s.getDimensions()) + " ");
 
     if (s.hasData())
-      b.append(/*!#*/"Data: "+s.getData());
+      b.append(context.formatMessage(RenderingContext.DATA_REND_DATA, s.getData()) + " ");
 
     return b.toString();
   }

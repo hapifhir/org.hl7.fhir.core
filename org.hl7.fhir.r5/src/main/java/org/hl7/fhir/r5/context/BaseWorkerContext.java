@@ -3124,10 +3124,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
   
   public OIDSummary urlsForOid(String oid, String resourceType, boolean retired) {
-    Set<OIDDefinition> urls = new HashSet<>();
+    OIDSummary summary = new OIDSummary();
     if (oid != null) {
       if (oidCacheManual.containsKey(oid)) {
-        urls.addAll(oidCacheManual.get(oid));
+        summary.addOIDs(oidCacheManual.get(oid));
       }
       for (OIDSource os : oidSources) {
         if (os.db == null) {
@@ -3145,7 +3145,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
                 String rt = rs.getString(1);
                 String url = rs.getString(2);
                 String version = rs.getString(3);
-                urls.add(new OIDDefinition(rt, oid, url, version, os.pid));
+                summary.addOID(new OIDDefinition(rt, oid, url, version, os.pid));
               }
             }
           } catch (Exception e) {
@@ -3157,18 +3157,19 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   
       switch (oid) {
       case "2.16.840.1.113883.6.1" :
-        urls.add(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.1", "http://loinc.org", null, null));
+        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.1", "http://loinc.org", null, null));
         break;
       case "2.16.840.1.113883.6.8" :
-        urls.add(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.8", "http://unitsofmeasure.org", null, null));
+        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.8", "http://unitsofmeasure.org", null, null));
         break;
       case "2.16.840.1.113883.6.96" :
-        urls.add(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.96", "http://snomed.info/sct", null, null));
+        summary.addOID(new OIDDefinition("CodeSystem", "2.16.840.1.113883.6.96", "http://snomed.info/sct", null, null));
         break;
       default:
       }
     }
-    return new OIDSummary(urls);
+    summary.sort();
+    return summary;
   }
 
   private Connection connectToOidSource(String folder) {

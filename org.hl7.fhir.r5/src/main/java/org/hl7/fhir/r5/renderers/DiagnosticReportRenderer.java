@@ -62,7 +62,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     XhtmlNode tr;
     if (dr.has("subject")) {
        tr = tbl.tr();
-       tr.td().tx(/*!#*/"Subject");
+       tr.td().tx(context.formatMessage(RenderingContext.DIAG_REP_REND_SUB));
        populateSubjectSummary(tr.td(), getProperty(dr, "subject").value());
     }
     
@@ -71,13 +71,13 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     
     if (dr.has("effective[x]")) {
       tr = tbl.tr();
-      tr.td().tx(/*!#*/"When For");
+      tr.td().tx(context.formatMessage(RenderingContext.DIAG_REP_REND_WHEN));
       eff = (DataType) getProperty(dr, "effective[x]").value().getBase();
       render(tr.td(), eff);
     }
     if (dr.has("issued")) {
       tr = tbl.tr();
-      tr.td().tx(/*!#*/"Reported");
+      tr.td().tx(context.formatMessage(RenderingContext.DIAG_REP_REND_REP));
       eff = (DataType) getProperty(dr, "issued").value().getBase();
       render(tr.td(), getProperty(dr, "issued").value());
     }
@@ -85,7 +85,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     pw = getProperty(dr, "perfomer");
     if (valued(pw)) {
       tr = tbl.tr();
-      tr.td().tx(Utilities.pluralize(/*!#*/"Performer", pw.getValues().size()));
+      tr.td().tx(Utilities.pluralize(/*!#*/ "Performer", pw.getValues().size()));
       XhtmlNode tdr = tr.td();
       for (BaseWrapper v : pw.getValues()) {
         tdr.tx(" ");
@@ -115,7 +115,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     }
 
     
-    x.para().b().tx(/*!#*/"Report Details");
+    x.para().b().tx(context.formatMessage(RenderingContext.DIAG_REP_REND_REPDET));
 
     pw = getProperty(dr, "result");
     if (valued(pw)) {
@@ -138,7 +138,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     }
     if (valued(pw)) {
       XhtmlNode p = x.para();
-      p.b().tx(/*!#*/"Coded Conclusions :");
+      p.b().tx(context.formatMessage(RenderingContext.DIAG_REP_REND_CODECON));
       XhtmlNode ul = x.ul();
       for (BaseWrapper v : pw.getValues()) {
         render(ul.li(), v);
@@ -174,11 +174,11 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
   private void populateSubjectSummary(XhtmlNode container, BaseWrapper subject) throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome {
     ResourceWrapper r = fetchResource(subject);
     if (r == null)
-      container.tx(/*!#*/"Unable to get Patient Details");
+      container.tx(context.formatMessage(RenderingContext.DIAG_REP_REND_UNABLE));
     else if (r.getName().equals("Patient"))
       generatePatientSummary(container, r);
     else
-      container.tx(/*!#*/"Not done yet");
+      container.tx(context.formatMessage(RenderingContext.DIAG_REP_REND_NOTDONE));
   }
 
   private void generatePatientSummary(XhtmlNode c, ResourceWrapper r) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
@@ -218,22 +218,22 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     if (issued) cs++;
     if (effectiveTime) cs++;
     XhtmlNode tr = tbl.tr();
-    tr.td().b().tx(/*!#*/"Code");
-    tr.td().b().tx(/*!#*/"Value");
+    tr.td().b().tx(context.formatMessage(RenderingContext.DIAG_REP_REND_CODE));
+    tr.td().b().tx(context.formatMessage(RenderingContext.DIAG_REP_REND_VALUE));
     if (refRange) {
-      tr.td().b().tx(/*!#*/"Reference Range");
+      tr.td().b().tx(context.formatMessage(RenderingContext.DIAG_REP_REND_REFRAN));
     }
     if (flags) {
-      tr.td().b().tx(/*!#*/"Flags");
+      tr.td().b().tx(context.formatMessage(RenderingContext.DIAG_REP_REND_FLAG));
     }
     if (note) {
-      tr.td().b().tx(/*!#*/"Note");
+      tr.td().b().tx(context.formatMessage(RenderingContext.DIAG_REP_REND_NOTE));
     }
     if (effectiveTime) {
-      tr.td().b().tx(/*!#*/"When For");
+      tr.td().b().tx(context.formatMessage(RenderingContext.DIAG_REP_REND_WHEN));
     }
     if (issued) {
-      tr.td().b().tx(/*!#*/"Reported");
+      tr.td().b().tx(context.formatMessage(RenderingContext.DIAG_REP_REND_REP));
     }
     for (ObservationNode o : observations) {
       addObservationToTable(tbl, o, 0, Integer.toString(cs), refRange, flags, note, effectiveTime, issued, eff, iss);
@@ -340,13 +340,13 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     XhtmlNode tr = tbl.tr();
     if (o.obs != null && o.obs.getReference()  == null) {
       XhtmlNode td = tr.td().colspan(cs);
-      td.i().tx(/*!#*/"This Observation could not be resolved");
+      td.i().tx(context.formatMessage(RenderingContext.DIAG_REP_REND_NOTRES));
     } else {
       if (o.obs != null && o.obs.getResource() != null) {
         addObservationToTable(tr, o.obs.getResource(), i, o.obs.getReference(), refRange, flags, note, effectiveTime, issued, eff, iss);
       } else {
         XhtmlNode td = tr.td().colspan(cs);
-        td.i().tx(/*!#*/"Observation");
+        td.i().tx(context.formatMessage(RenderingContext.DIAG_REP_REND_OBS));
       }
       if (o.contained != null) {
         for (ObservationNode c : o.contained) {
@@ -380,7 +380,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       pw = getProperty(obs, "dataAbsentReason");
       if (valued(pw)) {
         XhtmlNode span = td.span("color: maroon", "Error");
-        span.tx(/*!#*/"Error: ");
+        span.tx(context.formatMessage(RenderingContext.DIAG_REP_REND_ERR) + " ");
         render(span.b(), pw.value());
       }
     }
@@ -421,7 +421,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
           PropertyWrapper pwrA = getProperty(v, "age"); 
           if (valued(pwr) || valued(pwrA)) {
             boolean firstA = true;
-            td.tx(" "+/*!#*/"for ");
+            td.tx(" "+ (context.formatMessage(RenderingContext.DIAG_REP_REND_FOR)) + " ");
             if (valued(pwr)) {
               for (BaseWrapper va : pwr.getValues()) {
                 if (firstA) firstA = false; else td.tx(", ");
@@ -430,7 +430,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
             }
             if (valued(pwrA)) {
               if (firstA) firstA = false; else td.tx(", ");
-              td.tx(/*!#*/"Age ");
+              td.tx(context.formatMessage(RenderingContext.DIAG_REP_REND_AGE) + " ");
               render(td, pwrA.value());
             }
           }
