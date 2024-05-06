@@ -126,3 +126,74 @@ jobs:
           options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --settings $(Agent.TempDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToGitHub'
           mavenOptions: '-Xmx768m  -Dmaven.resolver.transport=wagon'
           publishJUnitResults: false
+
+  - job: generate_i8n_csv_png_and_commit
+    dependsOn: setup
+      #- ${{ each module in parameters.modulesToTest.modules }}:
+      #    - ubuntu_java_11_${{ module }}
+    variables:
+      # Normally this test outputs to console. This variable appears as env param
+      # I18N_COVERAGE_FILE, which tells the test to write the output to a file
+      # instead.
+      - name: i18n.coverage.file
+        value: ../i18n-coverage.csv
+    pool:
+      vmImage: "ubuntu-latest"
+    steps:
+      # For creating the snapshot release with maven, we need to build a fake settings.xml for it to read from.
+      # This is done for the master branch merges only.
+      - task: Cache@2
+        displayName: Cache maven artifacts
+        inputs:
+          key: maven | $(Build.BuildId) | artifacts
+          path: $(MAVEN_CACHE_FOLDER)
+      - template: cache-target-tasks-template.yml
+        parameters:
+          modules:
+            ${{ parameters.modulesToCache.modules }}
+
+      - bash: |
+          git config --global user.email $(GIT_USER_EMAIL)
+          git config --global user.name $(GIT_USER_NAME)
+        displayName: 'Set up git'
+
+      # Install pip packages
+      - bash: |
+          pip3 install matplotlib
+          pip3 install numpy
+          pip3 install pandas
+        displayName: 'Set up python packages'
+
+      - task: Maven@3
+        inputs:
+          mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
+          options: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) -pl org.hl7.fhir.utilities '
+          mavenOptions: '-Dtest=I18nCoverageTest#testPhraseCoverage'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          goals: 'surefire:test'
+        displayName: 'Run i18n coverage test to generate csv'
+
+      - task: PythonScript@0
+        inputs:
+          scriptSource: 'filePath'
+          scriptPath: .azure/i18n-coverage-table/generate-i18n-coverage-table.py
+          arguments:
+        displayName: 'Make png table from coverage test csv'
+
+      # Verify png file generation
+      - bash: |
+          ls -l ./i18n-coverage-table.png
+
+      - bash: |
+          git fetch
+          git checkout master
+          git status
+          git add ./i18n-coverage.csv
+          git add ./i18n-coverage-table.png
+          git commit . -m "Updating i18n-coverage csv and png table ***NO_CI***"
+
+          git push https://$(GIT_PAT)@github.com/hapifhir/org.hl7.fhir.core.git
+
+        displayName: 'Push updated csv and plot to git.'
