@@ -204,6 +204,15 @@ compile group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-structures-r4', version: '(l
 compile group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-structures-r5', version: '(latest version)'
 ```
 
+## Internationalization
+
+This project implements internationalization for its user tools and utilities for several locales using a combination of [GNU PO](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) and [Java Properties](https://docs.oracle.com/javase/tutorial/i18n/resbundle/propfile.html) files.
+
+Translation from the core library's original English locale to other supported locales is an ongoing process. The current level of coverage is calculated by the number of translated phrases, and can be viewed in the following figure:
+<p align="center">
+  <img alt="Table of Internationalization Coverage" src="/i18n-coverage-table.png" width="300">
+</p>
+
 ## CI/CD
 
 All integration and delivery done on Azure pipelines. Azure project can be viewed [here][Link-AzureProject].
