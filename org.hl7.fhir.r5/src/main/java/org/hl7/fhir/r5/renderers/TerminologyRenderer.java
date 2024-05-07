@@ -28,6 +28,7 @@ import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.CanonicalPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -320,6 +321,11 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     }
   }
 
+  protected String getDisplayForConcept(String canonical, String value) {
+    var split = CanonicalPair.of(canonical);
+    return getDisplayForConcept(split.getUrl(), split.getVersion(), value);
+  }
+  
   protected String getDisplayForConcept(String system, String version, String value) {
     if (value == null || system == null)
       return null;
