@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.instance.InstanceValidator;
@@ -139,7 +140,7 @@ public class ResourceValidationTests {
     List<String> errorMessages = new ArrayList<>();
     for(ValidationMessage message : errors) {
       // we will skip the message that WG citation is needed
-      if("VALIDATION_HL7_WG_NEEDED".equals(message.getMessageId())) {
+      if(I18nConstants.VALIDATION_HL7_WG_NEEDED.equals(message.getMessageId())) {
         continue;
       }
       if(message.getLevel().isError()) {
