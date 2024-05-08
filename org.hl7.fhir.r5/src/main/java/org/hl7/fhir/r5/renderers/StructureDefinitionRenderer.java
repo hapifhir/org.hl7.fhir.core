@@ -1369,7 +1369,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           String ref2 = null;
           String fixedUrl = null;
           if (ed != null) {
-            String p = ed.getWebPath();           
+            ref = ed.getWebPath();           
             fixedUrl = getFixedUrl(ed);
             if (fixedUrl != null) {// if its null, we guess that it's not a profiled extension?
               if (fixedUrl.equals(url))
@@ -3649,7 +3649,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_DEFINITION), null, strikethrough, compareMarkdown(sd.getName(), d.getDefinitionElement(), (compare==null) || slicedExtension ? null : compare.getDefinitionElement(), mode));
     tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_SHORT), null, strikethrough, compareString(d.hasShort() ? d.getShort() : null, d.getShortElement(), null, "short", d, compare!= null && compare.hasShortElement() ? compare.getShort() : null, null, mode, false, false));
     tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_COMMENTS), null, strikethrough, compareMarkdown(sd.getName(), d.getCommentElement(), (compare==null) || slicedExtension ? null : compare.getCommentElement(), mode));
-    tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_NOTE), null, strikethrough, businessIdWarning(sd.getName(), tail(d.getPath())));
+    tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_NOTE_C), null, strikethrough, businessIdWarning(sd.getName(), tail(d.getPath())));
     tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_CONTROL), "conformance-rules.html#conformance", strikethrough, describeCardinality(d, compare, mode)); 
     tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_BINDING), "terminologies.html", strikethrough, describeBinding(sd, d, d.getPath(), compare, mode));
     if (d.hasContentReference()) {
@@ -3664,7 +3664,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       tableRow(tbl, Utilities.pluralize(/*!#*/"Type Specifier", d.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC).size()), "datatypes.html", strikethrough, formatTypeSpecifiers(d));          
     }
     if (d.getPath().endsWith("[x]") && !d.prohibited()) {
-      tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_NOTE), null, strikethrough).ahWithText("See ", spec("formats.html#choice"), null, /*!#*/"Choice of Data Types", " for further information about how to use [x]");
+      tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_NOTE_X), null, strikethrough).ahWithText("See ", spec("formats.html#choice"), null, /*!#*/"Choice of Data Types", " for further information about how to use [x]");
     }
     tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_MODIFIER), "conformance-rules.html#ismodifier", strikethrough, presentModifier(d, mode, compare));
     if (d.getMustHaveValue()) {
