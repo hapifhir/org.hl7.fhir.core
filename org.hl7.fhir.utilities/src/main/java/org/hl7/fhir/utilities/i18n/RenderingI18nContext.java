@@ -487,7 +487,10 @@ public class RenderingI18nContext extends I18nBase {
   public static final String QUEST_TRUE = "QUEST_TRUE";
   public static final String QUEST_ARE_TRUE = "QUEST_ARE_TRUE";
   public static final String REND_STANDARDS = "REND_STANDARDS";
-  public static final String REND_SINCE = "REND_SINCE";
+  public static final String REND_SINCE_ADDED = "REND_SINCE_ADDED";
+  public static final String REND_SINCE_CHANGED = "REND_SINCE_CHANGED";
+  public static final String REND_SINCE_CHANGED_WAS = "REND_SINCE_CHANGED_WAS";
+  public static final String REND_SINCE_DELETED = "REND_SINCE_DELETED";
   public static final String REND_ADDED = "REND_ADDED";
   public static final String REND_CHANGED = "REND_CHANGED";
   public static final String REND_REMOVED = "REND_REMOVED";
@@ -752,7 +755,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String STRUC_DEF_DEFINITION = "STRUC_DEF_DEFINITION";
   public static final String STRUC_DEF_SHORT = "STRUC_DEF_SHORT";
   public static final String STRUC_DEF_COMMENTS = "STRUC_DEF_COMMENTS";
-  public static final String STRUC_DEF_NOTE = "STRUC_DEF_NOTE";
+  public static final String STRUC_DEF_NOTE_X = "STRUC_DEF_NOTE_X";
+  public static final String STRUC_DEF_NOTE_C = "STRUC_DEF_NOTE_C";
   public static final String STRUC_DEF_CONTROL = "STRUC_DEF_CONTROL";
   public static final String STRUC_DEF_TYPE = "STRUC_DEF_TYPE";
   public static final String STRUC_DEF_DEFAULT_TYPE = "STRUC_DEF_DEFAULT_TYPE";
