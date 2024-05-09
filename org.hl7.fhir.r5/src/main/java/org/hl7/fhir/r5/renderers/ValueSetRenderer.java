@@ -207,7 +207,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 //      }
       String msg = null;
       if (vs.getExpansion().getContains().isEmpty()) {
-        msg = context.formatMessage(RenderingContext.VALUE_SET_INF); // not sure that's true?
+        msg = context.formatMessage(RenderingContext.VALUE_SET_TOO_COSTLY);
       } else {
         msg = /*!#*/"This value set cannot be fully expanded, but a selection ("+countMembership(vs)+" codes) of the whole set of codes is shown here.";
       }
@@ -487,7 +487,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         if (versions.size() == 1 && versions.get(s).size() == 1) {
           for (String v : versions.get(s)) { // though there'll only be one
             XhtmlNode p = x.para().style("border: black 1px dotted; background-color: #EEEEEE; padding: 8px; margin-bottom: 8px");
-            p.tx(context.formatMessage(RenderingContext.VALUE_SET_EXPANSION));
+            p.tx(context.formatMessage(RenderingContext.VALUE_SET_EXPANSION)+" ");
             expRef(p, s, v, vs);
           }
         } else {

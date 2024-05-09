@@ -2237,112 +2237,114 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     StructureDefinition sd = context.getWorker().fetchTypeDefinition(value.fhirType());
 
     for (org.hl7.fhir.r5.model.Property t : value.children()) {
-      if (t.getValues().size() > 0 || snapshot) {
-        ElementDefinition ed = findElementDefinition(sd, t.getName());
-        if (t.getValues().size() == 0 || (t.getValues().size() == 1 && t.getValues().get(0).isEmpty())) {
-          if (!skipnoValue) {
-            Row row = gen.new Row();
-            row.setId(ed.getPath());
-            erow.getSubRows().add(row);
-            Cell c = gen.new Cell();
-            row.getCells().add(c);
-            c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : corePath+(VersionUtilities.isR5Plus(context.getWorker().getVersion()) ? "types-definitions.html#"+ed.getBase().getPath() : "element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
-            c = gen.new Cell();
-            row.getCells().add(c);
-            c.addPiece(gen.new Piece(null, null, null));
-            c = gen.new Cell();
-            row.getCells().add(c);
-            if (!pattern) {
-              c.addPiece(gen.new Piece(null, "0..0", null));
-              row.setIcon("icon_fixed.gif", context.formatMessage(RenderingContext.STRUC_DEF_FIXED_VALUE) /*HierarchicalTableGenerator.TEXT_ICON_FIXED*/);
-            } else if (context.getContext().isPrimitiveType(t.getTypeCode())) {
-              row.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
-              c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null));
-            } else if (isReference(t.getTypeCode())) { 
-              row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
-              c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null));
-            } else { 
-              row.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
-              c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null));
-            }
-            c = gen.new Cell();
-            row.getCells().add(c);
-            if (t.getTypeCode().contains("(")) {
-              String tc = t.getTypeCode();
-              String tn = tc.substring(0, tc.indexOf("("));
-              c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, tn), tn, null));
-              c.addPiece(gen.new Piece(null, "(", null));
-              String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
-              for (String s : p) {
-                c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, s), s, null));
-              }
-              c.addPiece(gen.new Piece(null, ")", null));            
-            } else {
-              c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, t.getTypeCode()), t.getTypeCode(), null));
-            }
-            c = gen.new Cell();
-            c.addPiece(gen.new Piece(null, ed.getShort(), null));
-            row.getCells().add(c);
-          }
-        } else {
-          for (Base b : t.getValues()) {
-            Row row = gen.new Row();
-            row.setId(ed.getPath());
-            erow.getSubRows().add(row);
-            row.setIcon("icon_fixed.gif", context.formatMessage(RenderingContext.STRUC_DEF_FIXED) /*HierarchicalTableGenerator.TEXT_ICON_FIXED*/);
-
-            Cell c = gen.new Cell();
-            row.getCells().add(c);
-            c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : (VersionUtilities.isR5Ver(context.getWorker().getVersion()) ? corePath+"types-definitions.html#"+ed.getBase().getPath() : corePath+"element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
-
-            c = gen.new Cell();
-            row.getCells().add(c);
-            c.addPiece(gen.new Piece(null, null, null));
-
-            c = gen.new Cell();
-            row.getCells().add(c);
-            if (pattern)
-              c.addPiece(gen.new Piece(null, "1.."+(t.getMaxCardinality() == 2147483647 ? "*" : Integer.toString(t.getMaxCardinality())), null));
-            else
-              c.addPiece(gen.new Piece(null, "1..1", null));
-
-            c = gen.new Cell();
-            row.getCells().add(c);
-            if (b.fhirType().contains("(")) {
-              String tc = b.fhirType();
-              String tn = tc.substring(0, tc.indexOf("("));
-              c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, tn), tn, null));
-              c.addPiece(gen.new Piece(null, "(", null));
-              String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
-              for (String s : p) {
-                c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, s), s, null));
-              }
-              c.addPiece(gen.new Piece(null, ")", null));            
-            } else {
-              c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, b.fhirType()), b.fhirType(), null));
-            }
-
-            if (b.isPrimitive()) {
+      ElementDefinition ed = findElementDefinitionOrNull(sd, t.getName());
+      if (ed != null) { // might be null because of added properties across versions
+        if (t.getValues().size() > 0 || snapshot) {
+          if (t.getValues().size() == 0 || (t.getValues().size() == 1 && t.getValues().get(0).isEmpty())) {
+            if (!skipnoValue) {
+              Row row = gen.new Row();
+              row.setId(ed.getPath());
+              erow.getSubRows().add(row);
+              Cell c = gen.new Cell();
+              row.getCells().add(c);
+              c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : corePath+(VersionUtilities.isR5Plus(context.getWorker().getVersion()) ? "types-definitions.html#"+ed.getBase().getPath() : "element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
               c = gen.new Cell();
               row.getCells().add(c);
-              c.addPiece(gen.new Piece(null, ed.getShort(), null));
-              c.addPiece(gen.new Piece("br"));
-              c.getPieces().add(gen.new Piece(null, context.formatMessage(RenderingContext.STRUC_DEF_FIXED_VALUE)+" ", null).addStyle("font-weight: bold"));
-              String s = b.primitiveValue();
-              // ok. let's see if we can find a relevant link for this
-              String link = null;
-              if (Utilities.isAbsoluteUrl(s)) {
-                link = context.getPkp().getLinkForUrl(corePath, s);
-              }
-              c.getPieces().add(gen.new Piece(link, s, null).addStyle("color: darkgreen"));
-            } else {
+              c.addPiece(gen.new Piece(null, null, null));
               c = gen.new Cell();
               row.getCells().add(c);
+              if (!pattern) {
+                c.addPiece(gen.new Piece(null, "0..0", null));
+                row.setIcon("icon_fixed.gif", context.formatMessage(RenderingContext.STRUC_DEF_FIXED_VALUE) /*HierarchicalTableGenerator.TEXT_ICON_FIXED*/);
+              } else if (context.getContext().isPrimitiveType(t.getTypeCode())) {
+                row.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
+                c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null));
+              } else if (isReference(t.getTypeCode())) { 
+                row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
+                c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null));
+              } else { 
+                row.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
+                c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null));
+              }
+              c = gen.new Cell();
+              row.getCells().add(c);
+              if (t.getTypeCode().contains("(")) {
+                String tc = t.getTypeCode();
+                String tn = tc.substring(0, tc.indexOf("("));
+                c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, tn), tn, null));
+                c.addPiece(gen.new Piece(null, "(", null));
+                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
+                for (String s : p) {
+                  c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, s), s, null));
+                }
+                c.addPiece(gen.new Piece(null, ")", null));            
+              } else {
+                c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, t.getTypeCode()), t.getTypeCode(), null));
+              }
+              c = gen.new Cell();
               c.addPiece(gen.new Piece(null, ed.getShort(), null));
-              c.addPiece(gen.new Piece("br"));
-              c.getPieces().add(gen.new Piece(null, context.formatMessage(RenderingContext.STRUC_DEF_FIXED_VALUE)+" ", null).addStyle("font-weight: bold"));
-              c.getPieces().add(gen.new Piece(null, context.formatMessage(RenderingContext.STRUC_DEF_COMPLEXBRACK), null).addStyle("color: darkgreen"));
-              genFixedValue(gen, row, (DataType) b, snapshot, pattern, corePath, skipnoValue);
+              row.getCells().add(c);
+            }
+          } else {
+            for (Base b : t.getValues()) {
+              Row row = gen.new Row();
+              row.setId(ed.getPath());
+              erow.getSubRows().add(row);
+              row.setIcon("icon_fixed.gif", context.formatMessage(RenderingContext.STRUC_DEF_FIXED) /*HierarchicalTableGenerator.TEXT_ICON_FIXED*/);
+
+              Cell c = gen.new Cell();
+              row.getCells().add(c);
+              c.addPiece(gen.new Piece((ed.getBase().getPath().equals(ed.getPath()) ? ref+ed.getPath() : (VersionUtilities.isR5Ver(context.getWorker().getVersion()) ? corePath+"types-definitions.html#"+ed.getBase().getPath() : corePath+"element-definitions.html#"+ed.getBase().getPath())), t.getName(), null));
+
+              c = gen.new Cell();
+              row.getCells().add(c);
+              c.addPiece(gen.new Piece(null, null, null));
+
+              c = gen.new Cell();
+              row.getCells().add(c);
+              if (pattern)
+                c.addPiece(gen.new Piece(null, "1.."+(t.getMaxCardinality() == 2147483647 ? "*" : Integer.toString(t.getMaxCardinality())), null));
+              else
+                c.addPiece(gen.new Piece(null, "1..1", null));
+
+              c = gen.new Cell();
+              row.getCells().add(c);
+              if (b.fhirType().contains("(")) {
+                String tc = b.fhirType();
+                String tn = tc.substring(0, tc.indexOf("("));
+                c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, tn), tn, null));
+                c.addPiece(gen.new Piece(null, "(", null));
+                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
+                for (String s : p) {
+                  c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, s), s, null));
+                }
+                c.addPiece(gen.new Piece(null, ")", null));            
+              } else {
+                c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, b.fhirType()), b.fhirType(), null));
+              }
+
+              if (b.isPrimitive()) {
+                c = gen.new Cell();
+                row.getCells().add(c);
+                c.addPiece(gen.new Piece(null, ed.getShort(), null));
+                c.addPiece(gen.new Piece("br"));
+                c.getPieces().add(gen.new Piece(null, context.formatMessage(RenderingContext.STRUC_DEF_FIXED_VALUE)+" ", null).addStyle("font-weight: bold"));
+                String s = b.primitiveValue();
+                // ok. let's see if we can find a relevant link for this
+                String link = null;
+                if (Utilities.isAbsoluteUrl(s)) {
+                  link = context.getPkp().getLinkForUrl(corePath, s);
+                }
+                c.getPieces().add(gen.new Piece(link, s, null).addStyle("color: darkgreen"));
+              } else {
+                c = gen.new Cell();
+                row.getCells().add(c);
+                c.addPiece(gen.new Piece(null, ed.getShort(), null));
+                c.addPiece(gen.new Piece("br"));
+                c.getPieces().add(gen.new Piece(null, context.formatMessage(RenderingContext.STRUC_DEF_FIXED_VALUE)+" ", null).addStyle("font-weight: bold"));
+                c.getPieces().add(gen.new Piece(null, context.formatMessage(RenderingContext.STRUC_DEF_COMPLEXBRACK), null).addStyle("color: darkgreen"));
+                genFixedValue(gen, row, (DataType) b, snapshot, pattern, corePath, skipnoValue);
+              }
             }
           }
         }
@@ -2358,6 +2360,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         return ed;
     }
     throw new FHIRException(context.getWorker().formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT_, path));
+  }
+
+
+  private ElementDefinition findElementDefinitionOrNull(StructureDefinition sd, String name) {
+    String path = sd.getTypeName()+"."+name;
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      if (ed.getPath().equals(path))
+        return ed;
+    }
+    return null;
   }
 
 
