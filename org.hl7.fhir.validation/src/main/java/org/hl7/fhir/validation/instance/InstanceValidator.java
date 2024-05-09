@@ -4649,57 +4649,47 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private ResolvedReference localResolve(String ref, NodeStack stack, List<ValidationMessage> errors, String path, Element rootResource, Element groupingResource, Element source, BooleanHolder bh) {
     if (ref.startsWith("#")) {
-      // work back through the parent list.
+      // work back through the parent list, tracking the stack as we go 
       // really, there should only be one level for this (contained resources cannot contain
       // contained resources), but we'll leave that to some other code to worry about
       boolean wasContained = false;
+      Element focus = stack.getElement();
       NodeStack nstack = stack;
-      while (nstack != null && nstack.getElement() != null) {
-        if (nstack.getElement().getProperty().isResource()) {
+      while (focus != null) {
+        if (focus.getProperty().isResource()) {
           // ok, we'll try to find the contained reference
-          if (ref.equals("#") && nstack.getElement().getSpecial() != SpecialElement.CONTAINED && wasContained) {
+          if (ref.equals("#") && focus.getSpecial() != SpecialElement.CONTAINED && wasContained) {
             ResolvedReference rr = new ResolvedReference();
-            rr.setResource(nstack.getElement());
-            rr.setFocus(nstack.getElement());
+            rr.setResource(focus);
+            rr.setFocus(focus);
             rr.setExternal(false);
             rr.setStack(nstack);
 //            rr.getStack().qualifyPath(".ofType("+nstack.getElement().fhirType()+")");
 //            System.out.println("-->"+nstack.getLiteralPath());
             return rr;            
           }
-          if (nstack.getElement().getSpecial() == SpecialElement.CONTAINED) {
+          if (focus.getSpecial() == SpecialElement.CONTAINED) {
             wasContained = true;
           }
-          IndexedElement res = getContainedById(nstack.getElement(), ref.substring(1));
+          IndexedElement res = getContainedById(focus, ref.substring(1));
           if (res != null) {
             ResolvedReference rr = new ResolvedReference();
-            rr.setResource(nstack.getElement());
+            rr.setResource(focus);
             rr.setFocus(res.getMatch());
             rr.setExternal(false);
             rr.setStack(nstack.push(res.getMatch(), res.getIndex(), res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
-            rr.getStack().pathComment(nstack.getElement().fhirType()+"/"+stack.getElement().getIdBase());
+            rr.getStack().pathComment(res.getMatch().fhirType()+"/"+res.getMatch().getIdBase());
             return rr;
           }
         }
-        if (nstack.getElement().getSpecial() == SpecialElement.BUNDLE_ENTRY || nstack.getElement().getSpecial() == SpecialElement.PARAMETER) {
+        if (focus.getSpecial() == SpecialElement.BUNDLE_ENTRY || focus.getSpecial() == SpecialElement.PARAMETER) {
           return null; // we don't try to resolve contained references across this boundary
         }
+        focus = focus.getParentForValidator();
         nstack = nstack.getParent();
-      }
-      // try again, and work up the element parent list 
-      if (ref.equals("#")) {
-        Element e = stack.getElement();
-        while (e != null) {
-          if (e.getProperty().isResource() && (e.getSpecial() != SpecialElement.CONTAINED)) {
-            ResolvedReference rr = new ResolvedReference();
-            rr.setResource(e);
-            rr.setFocus(e);
-            rr.setExternal(false);
-            rr.setStack(stack.push(e, -1, e.getProperty().getDefinition(), e.getProperty().getDefinition()));
-            rr.getStack().pathComment(e.fhirType()+"/"+e.getIdBase());
-            return rr;            
-          }
-          e = e.getParentForValidator();
+        if (focus != null && nstack == null) {
+          // we have run off the bottom of the stack, need to fake something
+          nstack = new NodeStack(context, focus, focus.fhirType(), validationLanguage);
         }
       }
       return null;

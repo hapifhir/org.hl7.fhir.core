@@ -1483,9 +1483,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   protected Parameters constructParameters(ValidationOptions options, Coding coding) {
     Parameters pIn = new Parameters();
-    pIn.addParameter().setName("coding").setValue(coding);
     if (options.isGuessSystem()) {
       pIn.addParameter().setName("inferSystem").setValue(new BooleanType(true));
+      pIn.addParameter().setName("code").setValue(coding.getCodeElement());
+    } else {
+      pIn.addParameter().setName("coding").setValue(coding);
     }
     setTerminologyOptions(options, pIn);
     return pIn;
@@ -1500,9 +1502,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   protected Parameters constructParameters(ValidationOptions options, CodingValidationRequest codingValidationRequest, ValueSet valueSet) {
     Parameters pIn = new Parameters();
-    pIn.addParameter().setName("coding").setValue(codingValidationRequest.getCoding());
     if (options.isGuessSystem()) {
       pIn.addParameter().setName("inferSystem").setValue(new BooleanType(true));
+      pIn.addParameter().setName("code").setValue(codingValidationRequest.getCoding().getCodeElement());
+    } else {      
+      pIn.addParameter().setName("coding").setValue(codingValidationRequest.getCoding());
     }
     if (valueSet != null) {
       pIn.addParameter().setName("valueSet").setResource(valueSet);
@@ -1514,9 +1518,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   protected Parameters constructParameters(ValidationOptions options, CodingValidationRequest codingValidationRequest, String vsUrl) {
     Parameters pIn = new Parameters();
-    pIn.addParameter().setName("coding").setValue(codingValidationRequest.getCoding());
     if (options.isGuessSystem()) {
       pIn.addParameter().setName("inferSystem").setValue(new BooleanType(true));
+      pIn.addParameter().setName("code").setValue(codingValidationRequest.getCoding().getCodeElement());
+    } else {
+      pIn.addParameter().setName("coding").setValue(codingValidationRequest.getCoding());
     }
     if (vsUrl != null) {
       pIn.addParameter().setName("url").setValue(new CanonicalType(vsUrl));
