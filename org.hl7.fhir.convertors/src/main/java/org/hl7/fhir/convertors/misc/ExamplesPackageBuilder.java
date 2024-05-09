@@ -10,6 +10,7 @@ import java.util.Set;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
@@ -22,9 +23,9 @@ public class ExamplesPackageBuilder {
 
   private void process(String source) throws FHIRFormatError, FileNotFoundException, IOException {
     Set<String> set = new HashSet<>();
-    for (File f : new File(source).listFiles()) {
+    for (File f : ManagedFileAccess.file(source).listFiles()) {
       if (f.getName().endsWith(".json")) {
-        JsonObject obj = JsonParser.parseObject(new FileInputStream(f));
+        JsonObject obj = JsonParser.parseObject(ManagedFileAccess.inStream(f));
         if (obj.has("resourceType") && obj.has("id")) {
           String type = obj.asString("resourceType");
           String id = obj.asString("id");

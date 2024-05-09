@@ -42,6 +42,7 @@ import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.ZipGenerator;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -132,7 +133,7 @@ public class SpecDifferenceEvaluator {
   }
 
   private static void loadSD4(Map<String, StructureDefinition> map, String fn) throws FHIRException, IOException {
-    org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.XmlParser().parse(new FileInputStream(fn));
+    org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.XmlParser().parse(ManagedFileAccess.inStream(fn));
     for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       if (be.getResource() instanceof org.hl7.fhir.r4.model.StructureDefinition) {
         org.hl7.fhir.r4.model.StructureDefinition sd = (org.hl7.fhir.r4.model.StructureDefinition) be.getResource();
@@ -143,7 +144,7 @@ public class SpecDifferenceEvaluator {
   }
 
   private static void loadSD(Map<String, StructureDefinition> map, String fn) throws FHIRFormatError, IOException {
-    Bundle bundle = (Bundle) new XmlParser().parse(new FileInputStream(fn));
+    Bundle bundle = (Bundle) new XmlParser().parse(ManagedFileAccess.inStream(fn));
     for (BundleEntryComponent be : bundle.getEntry()) {
       if (be.getResource() instanceof StructureDefinition) {
         StructureDefinition sd = (StructureDefinition) be.getResource();
@@ -153,7 +154,7 @@ public class SpecDifferenceEvaluator {
   }
 
   private static void loadVS4(Map<String, ValueSet> map, String fn) throws FHIRException, IOException {
-    org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.XmlParser().parse(new FileInputStream(fn));
+    org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.XmlParser().parse(ManagedFileAccess.inStream(fn));
     for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       if (be.getResource() instanceof org.hl7.fhir.r4.model.ValueSet) {
         org.hl7.fhir.r4.model.ValueSet sd = (org.hl7.fhir.r4.model.ValueSet) be.getResource();
@@ -163,7 +164,7 @@ public class SpecDifferenceEvaluator {
   }
 
   private static void loadVS(Map<String, ValueSet> map, String fn) throws FHIRFormatError, IOException {
-    Bundle bundle = (Bundle) new XmlParser().parse(new FileInputStream(fn));
+    Bundle bundle = (Bundle) new XmlParser().parse(ManagedFileAccess.inStream(fn));
     for (BundleEntryComponent be : bundle.getEntry()) {
       if (be.getResource() instanceof ValueSet) {
         ValueSet sd = (ValueSet) be.getResource();

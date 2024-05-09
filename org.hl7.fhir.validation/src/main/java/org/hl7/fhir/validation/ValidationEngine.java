@@ -14,9 +14,11 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.fhir.ucum.UcumEssenceService;
@@ -86,6 +88,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -322,6 +325,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     private final String txServer;
     private final String txLog;
     private final FhirPublication txVersion;
+    private final boolean useEcosystem;
 
     @With
     private final TimeTracker timeTracker;
@@ -345,10 +349,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       txVersion = null;
       timeTracker = null;
       canRunWithoutTerminologyServer = false;
+      useEcosystem = true;
       loggingService = new SystemOutLoggingService();
     }
 
-    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, boolean THO) {
+    public ValidationEngineBuilder(String terminologyCachePath, String userAgent, String version, String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem, TimeTracker timeTracker, boolean canRunWithoutTerminologyServer, ILoggingService loggingService, boolean THO) {
       this.terminologyCachePath = terminologyCachePath;
       this.userAgent = userAgent;
       this.version = version;
@@ -358,15 +363,16 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       this.timeTracker = timeTracker;
       this.canRunWithoutTerminologyServer = canRunWithoutTerminologyServer;
       this.loggingService = loggingService;
+      this.useEcosystem = true;
       this.THO = THO;
     }
 
-    public ValidationEngineBuilder withTxServer(String txServer, String txLog, FhirPublication txVersion) {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, timeTracker, canRunWithoutTerminologyServer, loggingService, THO);
+    public ValidationEngineBuilder withTxServer(String txServer, String txLog, FhirPublication txVersion, boolean useEcosystem) {
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, txServer, txLog, txVersion, useEcosystem, timeTracker, canRunWithoutTerminologyServer, loggingService, THO);
     }
 
     public ValidationEngineBuilder withNoTerminologyServer() {
-      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, null, null, txVersion, timeTracker, true, loggingService, THO);
+      return new ValidationEngineBuilder(terminologyCachePath, userAgent, version, null, null, txVersion, useEcosystem, timeTracker, true, loggingService, THO);
     }
     
     public ValidationEngine fromNothing() throws IOException {
@@ -390,7 +396,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       engine.getContext().setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
       engine.getContext().setPackageTracker(engine);    
       if (txServer != null) {
-        engine.setTerminologyServer(txServer, txLog, txVersion);
+        engine.setTerminologyServer(txServer, txLog, txVersion, useEcosystem);
       }
       engine.setVersion(version);
       engine.setIgLoader(new IgLoader(engine.getPcm(), engine.getContext(), engine.getVersion(), engine.isDebug()));
@@ -511,11 +517,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return ep;
   }
 
-  public String connectToTSServer(String url, String log, FhirPublication version) throws URISyntaxException, IOException, FHIRException {
-    return connectToTSServer(url, log, null, version);
+  public String connectToTSServer(String url, String log, FhirPublication version, boolean useEcosystem) throws URISyntaxException, IOException, FHIRException {
+    return connectToTSServer(url, log, null, version, useEcosystem);
   }
 
-  public String connectToTSServer(String url, String log, String txCachePath, FhirPublication version) throws URISyntaxException, IOException, FHIRException {
+  public String connectToTSServer(String url, String log, String txCachePath, FhirPublication version, boolean useEcosystem) throws URISyntaxException, IOException, FHIRException {
     context.setTlogging(false);
     if (url == null) {
       context.setCanRunWithoutTerminology(true);
@@ -524,7 +530,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     } else {
       try {
         TerminologyClientFactory factory = new TerminologyClientFactory(version);
-        context.connectToTSServer(factory, url, context.getUserAgent(), log);
+        context.connectToTSServer(factory, url, context.getUserAgent(), log, useEcosystem);
         return "Connected to Terminology Server at "+url;
       } catch (Exception e) {
         if (context.isCanRunWithoutTerminology()) {
@@ -799,7 +805,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public void convert(String source, String output) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false, true);
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
-    Manager.compose(context, e, new FileOutputStream(output), (output.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML), OutputStyle.PRETTY, null);
+    Manager.compose(context, e, ManagedFileAccess.outStream(output), (output.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML), OutputStyle.PRETTY, null);
   }
 
   public String evaluateFhirPath(String source, String expression) throws FHIRException, IOException {
@@ -913,7 +919,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       HTTPResult res = http.post(output, "application/fhir+xml", bs.toByteArray(), "application/fhir+xml");
       res.checkThrowException();
     } else {
-      FileOutputStream s = new FileOutputStream(output);
+      FileOutputStream s = ManagedFileAccess.outStream(output);
       handleOutputToStream(r, output, s, version);
     }
   }
@@ -1041,8 +1047,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     throw new FHIRException("Source/Target version not supported: " + version + " -> " + targetVer);
   }
 
-  public String setTerminologyServer(String src, String log, FhirPublication version) throws FHIRException, URISyntaxException, IOException {
-    return connectToTSServer(src, log, version);
+  public String setTerminologyServer(String src, String log, FhirPublication version, boolean useEcosystem) throws FHIRException, URISyntaxException, IOException {
+    return connectToTSServer(src, log, version, useEcosystem);
   }
 
   public ValidationEngine setMapLog(String mapLog) throws FileNotFoundException {
@@ -1194,7 +1200,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
 
   @Override
-  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, String url) throws URISyntaxException {
+  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, Object appContext, String url) throws URISyntaxException {
     Resource res = context.fetchResource(Resource.class, url);
     if (res != null) {
       if (res instanceof CanonicalResource) {
@@ -1203,7 +1209,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         return null;
       }
     }
-    return fetcher != null ? fetcher.fetchCanonicalResource(validator, url) : null;
+    return fetcher != null ? fetcher.fetchCanonicalResource(validator, appContext, url) : null;
   }
 
   @Override
@@ -1232,6 +1238,21 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public EnumSet<ElementValidationAction> policyForElement(IResourceValidator validator, Object appContext,
       StructureDefinition structure, ElementDefinition element, String path) {
     return EnumSet.allOf(ElementValidationAction.class);
+  }
+
+  @Override
+  public Set<String> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
+    Set<String> res = new HashSet<>();
+    for (Resource r : context.fetchResourcesByUrl(Resource.class, url)) {
+      if (r instanceof CanonicalResource) {
+        CanonicalResource cr = (CanonicalResource) r;
+        res.add(cr.hasVersion() ? cr.getVersion() : "{{unversioned}}");
+      }
+    }
+    if (fetcher != null) {
+        res.addAll(fetcher.fetchCanonicalResourceVersions(validator, appContext, url));
+    }
+    return res;
   }
 
 }

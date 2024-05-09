@@ -30,33 +30,33 @@ public class NamingSystemRenderer extends ResourceRenderer {
   }
 
   public boolean render(XhtmlNode x, NamingSystem ns) throws FHIRFormatError, DefinitionException, IOException {
-    x.h3().tx("Summary");
+    x.h3().tx(context.formatMessage(RenderingContext.NAME_SYS_SUM));
     XhtmlNode tbl = x.table("grid"); 
-    row(tbl, "Defining URL", ns.getUrl());
+    row(tbl, (context.formatMessage(RenderingContext.NAME_SYS_URL)), ns.getUrl());
     if (ns.hasVersion()) {
-      row(tbl, "Version", ns.getVersion());
+      row(tbl, (context.formatMessage(RenderingContext.NAME_SYS_VER)), ns.getVersion());
     }
     if (ns.hasName()) {
-      row(tbl, "Name", gt(ns.getNameElement()));
+      row(tbl, (context.formatMessage(RenderingContext.NAME_SYS_NAME)), gt(ns.getNameElement()));
     }
     if (ns.hasTitle()) {
-      row(tbl, "Title", gt(ns.getTitleElement()));
+      row(tbl, (context.formatMessage(RenderingContext.NAME_SYS_TITLE)), gt(ns.getTitleElement()));
     }
-    row(tbl, "Status", ns.getStatus().toCode());
+    row(tbl, (context.formatMessage(RenderingContext.NAME_SYS_STAT)), ns.getStatus().toCode());
     if (ns.hasDescription()) {
-      addMarkdown(row(tbl, "Definition"), ns.getDescription());
+      addMarkdown(row(tbl, (context.formatMessage(RenderingContext.NAME_SYS_DEF))), ns.getDescription());
     }
     if (ns.hasPublisher()) {
-      row(tbl, "Publisher", gt(ns.getPublisherElement()));
+      row(tbl, (context.formatMessage(RenderingContext.NAME_SYS_PUB)), gt(ns.getPublisherElement()));
     }
     if (ns.hasExtension(ToolingExtensions.EXT_WORKGROUP)) {
       renderCommitteeLink(row(tbl, "Committee"), ns);
     }
     if (CodeSystemUtilities.hasOID(ns)) {
-      row(tbl, "OID", CodeSystemUtilities.getOID(ns)).tx("("+translate("ns.summary", "for OID based terminology systems")+")");
+      row(tbl, (context.formatMessage(RenderingContext.NAME_SYS_OID)), CodeSystemUtilities.getOID(ns)).tx("("+(context.formatMessage(RenderingContext.NAME_SYS_FOROID))+")");
     }
     if (ns.hasCopyright()) {
-      addMarkdown(row(tbl, "Copyright"), ns.getCopyright());
+      addMarkdown(row(tbl, (context.formatMessage(RenderingContext.NAME_SYS_COPY))), ns.getCopyright());
     }
     boolean hasPreferred = false;
     boolean hasPeriod = false;
@@ -66,19 +66,19 @@ public class NamingSystemRenderer extends ResourceRenderer {
       hasPeriod = hasPeriod || id.hasPeriod();
       hasComment = hasComment || id.hasComment();
     }
-    x.h3().tx("Identifiers");
+    x.h3().tx(context.formatMessage(RenderingContext.NAME_SYS_IDEN));
     tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();
-    tr.td().b().tx(translate("ns.summary", "Type"));
-    tr.td().b().tx(translate("ns.summary", "Value"));
+    tr.td().b().tx((context.formatMessage(RenderingContext.NAME_SYS_TYPE)));
+    tr.td().b().tx((context.formatMessage(RenderingContext.NAME_SYS_VALUE)));
     if (hasPreferred) {
-      tr.td().b().tx(translate("ns.summary", "Preferred"));
+      tr.td().b().tx((context.formatMessage(RenderingContext.NAME_SYS_PREF)));
     }
     if (hasPeriod) {
-      tr.td().b().tx(translate("ns.summary", "Period"));
+      tr.td().b().tx((context.formatMessage(RenderingContext.NAME_SYS_PER)));
     }
     if (hasComment) {
-      tr.td().b().tx(translate("ns.summary", "Comment"));
+      tr.td().b().tx((context.formatMessage(RenderingContext.NAME_SYS_COM)));
     }
     for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
       tr = tbl.tr();
@@ -100,7 +100,7 @@ public class NamingSystemRenderer extends ResourceRenderer {
   private XhtmlNode row(XhtmlNode tbl, String name) {
     XhtmlNode tr = tbl.tr();
     XhtmlNode td = tr.td();
-    td.tx(translate("ns.summary", name));
+    td.tx((name));
     return tr.td();
   }
   private XhtmlNode row(XhtmlNode tbl, String name, String value) {

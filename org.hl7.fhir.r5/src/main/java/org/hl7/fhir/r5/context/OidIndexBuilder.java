@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,11 +34,13 @@ public class OidIndexBuilder {
       Statement stmt = db.createStatement();
       stmt.execute("CREATE TABLE OIDMap (\r\n"+
           "OID            nvarchar NOT NULL,\r\n"+
+          "TYPE           nvarchar NOT NULL,\r\n"+
           "URL            nvarchar NOT NULL,\r\n"+
+          "VERSION        nvarchar NOT NULL,\r\n"+
           "Status         nvarchar NOT NULL,\r\n"+
           "PRIMARY KEY (OID, URL))\r\n");
 
-      PreparedStatement psql = db.prepareStatement("Insert into OIDMap (OID, URL, Status) values (?, ?, ?)");;
+      PreparedStatement psql = db.prepareStatement("Insert into OIDMap (OID, TYPE, URL, VERSION, Status) values (?, ?, ?, ?, ?)");
       for (File f : folder.listFiles()) {
         if (!f.getName().startsWith(".") && f.getName().endsWith(".json")) {
           try {
@@ -61,6 +64,7 @@ public class OidIndexBuilder {
       Set<String> oids = new HashSet<String>();
       String url = null;
       String status = json.asString("status");
+      String version = json.asString("version");
       if ("NamingSystem".equals(rt)) {        
         for (JsonObject id : json.getJsonObjects("uniqueId")) {
           String t = id.asString("type");
@@ -73,7 +77,7 @@ public class OidIndexBuilder {
         }
         if (url != null) {
           for (String s : oids) {
-            addOid(psql, matches, s, url, status);
+            addOid(psql, matches, s, rt, url, version, status);
           }
         }
       } else {            
@@ -97,7 +101,7 @@ public class OidIndexBuilder {
           }
           if (!oids.isEmpty()) {
             for (String s : oids) {
-              addOid(psql, matches, s, url, status);
+              addOid(psql, matches, s, rt, url, version, status);
             }
           }
         }
@@ -105,13 +109,19 @@ public class OidIndexBuilder {
     }
   }
 
-  private void addOid(PreparedStatement psql, Set<String> matches, String oid, String url, String status) throws SQLException {
+  private void addOid(PreparedStatement psql, Set<String> matches, String oid, String type, String url, String version, String status) throws SQLException {
     String key = oid+"@"+url;
     if (!matches.contains(key)) {
       matches.add(key);
       psql.setString(1, oid);
-      psql.setString(2, url);
-      psql.setString(3, status);
+      psql.setString(2, type);
+      psql.setString(3, url);
+      if (version == null) {
+        psql.setNull(4, Types.NVARCHAR);
+      } else {
+        psql.setString(4, version);  
+      }
+      psql.setString(5, status);
       psql.execute();
     }
 

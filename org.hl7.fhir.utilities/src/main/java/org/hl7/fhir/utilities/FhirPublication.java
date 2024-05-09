@@ -39,7 +39,7 @@ public enum FhirPublication {
     case DSTU1: return "0.01";
     case DSTU2: return "1.0.2";
     case DSTU2016May: return "1.4.0";
-    case STU3: return "3.0.1";
+    case STU3: return "3.0.2";
     case R4: return "4.0.1";
     case R4B: return "4.3.0";
     case R5: return "5.0.0";

@@ -218,7 +218,7 @@ public class ToolingExtensions {
   public static final String EXT_Q_DISPLAY_CAT = "http://hl7.org/fhir/StructureDefinition/questionnaire-displayCategory";
   public static final String EXT_REND_MD = "http://hl7.org/fhir/StructureDefinition/rendering-markdown";
   public static final String EXT_CAP_STMT_EXPECT = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation";
-  public static final String EXT_ED_HEIRARCHY = "http://hl7.org/fhir/StructureDefinition/elementdefinition-heirarchy";
+  public static final String EXT_ED_HIERARCHY = "http://hl7.org/fhir/StructureDefinition/elementdefinition-hierarchy";
   public static final String EXT_SD_IMPOSE_PROFILE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-imposeProfile";
   public static final String EXT_SD_COMPLIES_WITH_PROFILE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-compliesWithProfile";
   public static final String EXT_DEF_TYPE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-defaulttype";
@@ -269,6 +269,10 @@ public class ToolingExtensions {
   public static final String EXT_ISSUE_SLICE_INFO = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-slicetext";
   public static final String EXT_ISSUE_SERVER = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server";
   public static final String EXT_WEB_SOURCE = "http://hl7.org/fhir/tools/StructureDefinition/web-source";
+  public static final String EXT_APPLICABLE_VERSION = "http://hl7.org/fhir/StructureDefinition/version-specific-use";
+  public static final String EXT_APPLICABLE_VERSION_VALUE = "http://hl7.org/fhir/StructureDefinition/version-specific-value";
+  public static final String EXT_IG_URL = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-resource-uri";
+  public static final String EXT_VS_CS_SUPPL_NEEDED = "http://hl7.org/fhir/StructureDefinition/valueset-supplement";
   
   // specific extension helpers
 
@@ -774,6 +778,15 @@ public class ToolingExtensions {
   //      throw new Error("Attempt to assign multiple OIDs to value set "+vs.getName()+" ("+vs.getUrl()+"). Has "+readStringExtension(vs, EXT_OID)+", trying to add "+oid);
   //  }
 
+  public static boolean hasLanguageTranslations(Element element) {
+    for (Extension e : element.getExtension()) {
+      if (e.getUrl().equals(EXT_TRANSLATION)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public static boolean hasLanguageTranslation(Element element, String lang) {
     for (Extension e : element.getExtension()) {
       if (e.getUrl().equals(EXT_TRANSLATION)) {
@@ -791,9 +804,23 @@ public class ToolingExtensions {
       if (e.getUrl().equals(EXT_TRANSLATION)) {
         Extension e1 = ExtensionHelper.getExtension(e, "lang");
 
-        if (e1 != null && e1.getValue() instanceof CodeType && ((CodeType) e.getValue()).getValue().equals(lang)) {
+        if (e1 != null && e1.getValue() != null && e1.getValue() instanceof CodeType && ((CodeType) e1.getValue()).getValue().equals(lang)) {
           e1 = ExtensionHelper.getExtension(e, "content");
-          return ((StringType) e.getValue()).getValue();
+          return ((StringType) e1.getValue()).getValue();
+        }
+      }
+    }
+    return null;
+  }
+
+  public static StringType getLanguageTranslationElement(Element element, String lang) {
+    for (Extension e : element.getExtension()) {
+      if (e.getUrl().equals(EXT_TRANSLATION)) {
+        Extension e1 = ExtensionHelper.getExtension(e, "lang");
+
+        if (e1 != null && e1.getValue() != null && e1.getValue() instanceof CodeType && ((CodeType) e1.getValue()).getValue().equals(lang)) {
+          e1 = ExtensionHelper.getExtension(e, "content");
+          return ((StringType) e1.getValue());
         }
       }
     }

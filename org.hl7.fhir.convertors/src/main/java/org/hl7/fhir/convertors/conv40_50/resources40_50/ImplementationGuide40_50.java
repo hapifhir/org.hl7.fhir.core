@@ -318,8 +318,10 @@ public class ImplementationGuide40_50 {
       tgt.setDescriptionElement(String40_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasExampleBooleanType())
       tgt.setIsExampleElement(Boolean40_50.convertBoolean(src.getExampleBooleanType()));
-    if (src.hasExampleCanonicalType())
+    if (src.hasExampleCanonicalType()) {
+      tgt.setIsExample(true);
       tgt.getProfile().add(Canonical40_50.convertCanonical(src.getExampleCanonicalType()));
+    }
     if (src.hasGroupingId())
       tgt.setGroupingIdElement(Id40_50.convertId(src.getGroupingIdElement()));
     return tgt;

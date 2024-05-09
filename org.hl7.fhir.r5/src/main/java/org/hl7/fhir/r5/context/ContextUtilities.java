@@ -47,6 +47,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   private List<StructureDefinition> allStructuresList = new ArrayList<StructureDefinition>();
   private List<String> canonicalResourceNames;
   private List<String> concreteResourceNames;
+  private Set<String> concreteResourceNameSet;
   
   public ContextUtilities(IWorkerContext context) {
     super();
@@ -219,7 +220,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
         if (!set.contains(sd)) {
           try {
             generateSnapshot(sd);
-            // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
+            // new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
           } catch (Exception e) {
             if (!isSuppressDebugMessages()) {
               System.out.println("Unable to generate snapshot @2 for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
@@ -317,6 +318,9 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
 
   @Override
   public boolean isResource(String t) {
+    if (getConcreteResourceSet().contains(t)) {
+      return true;
+    }
     StructureDefinition sd;
     try {
       sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+t);
@@ -370,16 +374,22 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return null;
   }
 
-  public List<String>  getConcreteResources() {
-    if (concreteResourceNames == null) {
-      concreteResourceNames =  new ArrayList<>();
-      Set<String> names = new HashSet<>();
-      for (StructureDefinition sd : allStructures()) {
-        if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract()) {
-          names.add(sd.getType());
+  public Set<String> getConcreteResourceSet() {
+    if (concreteResourceNameSet == null) {
+      concreteResourceNameSet =  new HashSet<>();
+      for (StructureDefinition sd : getStructures()) {
+        if (sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract() && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+          concreteResourceNameSet.add(sd.getType());
         }
       }
-      concreteResourceNames.addAll(Utilities.sorted(names));
+    }
+    return concreteResourceNameSet;
+  }
+
+  public List<String> getConcreteResources() {
+    if (concreteResourceNames == null) {
+      concreteResourceNames =  new ArrayList<>();
+      concreteResourceNames.addAll(Utilities.sorted(getConcreteResourceSet()));
     }
     return concreteResourceNames;
   }

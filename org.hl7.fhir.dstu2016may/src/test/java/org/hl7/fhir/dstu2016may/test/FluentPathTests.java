@@ -25,6 +25,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -46,35 +47,35 @@ public class FluentPathTests {
   private Patient patient() throws FHIRFormatError, FileNotFoundException, IOException {
     if (patient == null)
       patient = (Patient) new JsonParser()
-          .parse(new FileInputStream("C:/work/org.hl7.fhir.2016May/build/publish/patient-example.json"));
+          .parse(ManagedFileAccess.inStream("C:/work/org.hl7.fhir.2016May/build/publish/patient-example.json"));
     return patient;
   }
 
   private Appointment appointment() throws FHIRFormatError, FileNotFoundException, IOException {
     if (appointment == null)
       appointment = (Appointment) new JsonParser()
-          .parse(new FileInputStream("C:/work/org.hl7.fhir.2016May/build/publish/appointment-example-request.json"));
+          .parse(ManagedFileAccess.inStream("C:/work/org.hl7.fhir.2016May/build/publish/appointment-example-request.json"));
     return appointment;
   }
 
   private Questionnaire questionnaire() throws FHIRFormatError, FileNotFoundException, IOException {
     if (questionnaire == null)
       questionnaire = (Questionnaire) new JsonParser()
-          .parse(new FileInputStream("C:/work/org.hl7.fhir.2016May/build/publish/questionnaire-example.json"));
+          .parse(ManagedFileAccess.inStream("C:/work/org.hl7.fhir.2016May/build/publish/questionnaire-example.json"));
     return questionnaire;
   }
 
   private ValueSet valueset() throws FHIRFormatError, FileNotFoundException, IOException {
     if (valueset == null)
       valueset = (ValueSet) new JsonParser()
-          .parse(new FileInputStream("C:/work/org.hl7.fhir.2016May/build/publish/valueset-example-expansion.json"));
+          .parse(ManagedFileAccess.inStream("C:/work/org.hl7.fhir.2016May/build/publish/valueset-example-expansion.json"));
     return valueset;
   }
 
   private Observation observation() throws FHIRFormatError, FileNotFoundException, IOException {
     if (observation == null)
       observation = (Observation) new JsonParser()
-          .parse(new FileInputStream("C:/work/org.hl7.fhir.2016May/build/publish/observation-example.json"));
+          .parse(ManagedFileAccess.inStream("C:/work/org.hl7.fhir.2016May/build/publish/observation-example.json"));
     return observation;
   }
 
@@ -929,7 +930,7 @@ public class FluentPathTests {
   @Test
   public void testQuestionnaire() throws FileNotFoundException, IOException, FHIRException {
     Questionnaire q = (Questionnaire) new JsonParser()
-        .parse(new FileInputStream("C:/work/org.hl7.fhir.2016May/build/publish/questionnaire-example-gcs.json"));
+        .parse(ManagedFileAccess.inStream("C:/work/org.hl7.fhir.2016May/build/publish/questionnaire-example-gcs.json"));
     for (QuestionnaireItemComponent qi : q.getItem()) {
       testQItem(qi);
     }
@@ -943,7 +944,7 @@ public class FluentPathTests {
   @Test
   public void testExtensionDefinitions() throws FileNotFoundException, IOException, FHIRException {
     Bundle b = (Bundle) new JsonParser()
-        .parse(new FileInputStream("C:/work/org.hl7.fhir.2016May/build/publish/extension-definitions.json"));
+        .parse(ManagedFileAccess.inStream("C:/work/org.hl7.fhir.2016May/build/publish/extension-definitions.json"));
     for (BundleEntryComponent be : b.getEntry()) {
       testStructureDefinition((StructureDefinition) be.getResource());
     }

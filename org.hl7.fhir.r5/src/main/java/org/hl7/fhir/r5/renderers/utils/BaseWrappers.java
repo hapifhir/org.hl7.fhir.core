@@ -51,7 +51,7 @@ public class BaseWrappers {
     public Base getBase();
     public String getName();
     public void describe(XhtmlNode x) throws UnsupportedEncodingException, IOException;
-    public void injectNarrative(XhtmlNode x, NarrativeStatus status) throws IOException;
+    public void injectNarrative(ResourceRenderer renderer, XhtmlNode x, NarrativeStatus status) throws IOException;
     public BaseWrapper root();
     public PropertyWrapper getChildByName(String tail);
     public StructureDefinition getDefinition();
@@ -62,6 +62,7 @@ public class BaseWrappers {
 
   public interface BaseWrapper extends WrapperBase {
     public Base getBase() throws UnsupportedEncodingException, IOException, FHIRException;
+    public ResourceWrapper getResource() throws UnsupportedEncodingException, IOException, FHIRException; // for contained, etc
     public PropertyWrapper getChildByName(String tail);
     public String fhirType();
   }

@@ -22,6 +22,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -37,9 +38,9 @@ public class ResourceToElementTest {
     ResourceParser p = new ResourceParser(ctxt);
     Resource res = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", filename));
     Element e = p.parse(res);
-    new org.hl7.fhir.r5.elementmodel.XmlParser(ctxt).compose(e, new FileOutputStream(src), OutputStyle.PRETTY, null);
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dst), res);
-    String msg = CompareUtilities.checkXMLIsSame(src, dst);
+    new org.hl7.fhir.r5.elementmodel.XmlParser(ctxt).compose(e, ManagedFileAccess.outStream(src), OutputStyle.PRETTY, null);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst), res);
+    String msg = CompareUtilities.checkXMLIsSame(filename, src, dst);
     Assertions.assertNull(msg);
   }
 

@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -26,12 +27,12 @@ public class CorePackageTools {
   private void buildPackage(String path, String output) throws IOException {
     NpmPackage npm = NpmPackage.fromFolder(path);
     npm.loadAllFiles();
-    npm.save(new FileOutputStream(output));
+    npm.save(ManagedFileAccess.outStream(output));
 
   }
 
   private void buildXml(String json, String xml, String version) throws FHIRFormatError, IOException {
-    for (File f : new File(Utilities.path(json, "package")).listFiles()) {
+    for (File f : ManagedFileAccess.file(Utilities.path(json, "package")).listFiles()) {
       if (f.getName().endsWith(".json")) {
         JsonObject j = JsonParser.parseObject(f);
         if (j.has("resourceType")) {
@@ -39,8 +40,8 @@ public class CorePackageTools {
             String n = f.getName();
             System.out.println(n);
             String xn = Utilities.changeFileExt(n, ".xml");
-            org.hl7.fhir.dstu2016may.model.Resource r = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(new FileInputStream(f));
-            new org.hl7.fhir.dstu2016may.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu2016may.formats.IParser.OutputStyle.NORMAL).compose(new FileOutputStream(Utilities.path(xml, "package", xn)), r);
+            org.hl7.fhir.dstu2016may.model.Resource r = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(ManagedFileAccess.inStream(f));
+            new org.hl7.fhir.dstu2016may.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu2016may.formats.IParser.OutputStyle.NORMAL).compose(ManagedFileAccess.outStream(Utilities.path(xml, "package", xn)), r);
           }
         }
       }

@@ -37,11 +37,26 @@ public class NodeStack {
     this.context = context;
     ids = new HashMap<>();
     this.element = element;
-    literalPath = (initialPath == null ? "" : initialPath+".") + element.getPath();
+    literalPath = (initialPath == null ? "" : initialPath+".") + buildPathForElement(element, true);
     workingLang = validationLanguage;
     if (!element.getName().equals(element.fhirType())) {
       logicalPaths = new HashSet<>();
       logicalPaths.add(element.fhirType());
+    }
+  }
+
+  private String buildPathForElement(Element e, boolean first) {
+    if (e.getParentForValidator() != null) {
+      String node = e.getName().contains("/") ? e.getName().substring(e.getName().lastIndexOf("/")+1) : e.getName();
+      if (e.hasIndex() && e.getProperty().isList() && e.getSpecial() == null) {
+        node = node+"["+Integer.toString(e.getIndex())+"]";
+      }
+      if (!first && e.isResource()) {
+        node = node +"/*"+e.fhirType()+"/"+e.getIdBase()+"*/";
+      }
+      return buildPathForElement(e.getParentForValidator(), false)+"."+node;
+    } else {
+      return e.getPath();
     }
   }
 

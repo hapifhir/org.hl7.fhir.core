@@ -483,7 +483,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 ////    write("  }\r\n"); 
 ////
 ////    // now, generate the implementation
-////    JavaPatternImplGenerator jrg = new JavaPatternImplGenerator(new FileOutputStream(javaPatternDir+jn+namenn+"Impl.java"), definitions, adornments, enumInfo);
+////    JavaPatternImplGenerator jrg = new JavaPatternImplGenerator(ManagedFileAccess.outStream(javaPatternDir+jn+namenn+"Impl.java"), definitions, adornments, enumInfo);
 ////    jrg.generate(resourceDefn.getRoot(), jn, JavaGenClass.Resource, null, genDate, version, false, null, null, namenn, root);
 ////    jrg.close();
 ////

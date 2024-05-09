@@ -180,6 +180,9 @@ public class FHIRPathTests {
       fail = TestResultType.EXECUTION;      
     };
     fp.setAllowPolymorphicNames("lenient/polymorphics".equals(test.getAttribute("mode")));
+    boolean skipStaticCheck = false;
+    if ("true".equals(test.getAttribute("skipStaticCheck")))
+      skipStaticCheck = true;
     Base res = null;
 
     List<Base> outcome = new ArrayList<Base>();
@@ -210,17 +213,19 @@ public class FHIRPathTests {
         }        
       }
       
-      try {
-        if (Utilities.noString(input)) {
-          fp.check(null, null, node);
-        } else {
-          fp.check(res, res.fhirType(), res.fhirType(), node);
+      if (!skipStaticCheck) {
+        try {
+          if (Utilities.noString(input)) {
+            fp.check(null, null, node);
+          } else {
+            fp.check(res, res.fhirType(), res.fhirType(), node);
+          }
+          Assertions.assertTrue(fail != TestResultType.SEMANTICS, String.format("Expected exception didn't occur checking %s", expression));
+        } catch (Exception e) {
+          System.out.println("Checking Error: "+e.getMessage());
+          Assertions.assertTrue(fail == TestResultType.SEMANTICS, String.format("Unexpected exception checking %s: " + e.getMessage(), expression));
+          node = null;
         }
-        Assertions.assertTrue(fail != TestResultType.SEMANTICS, String.format("Expected exception didn't occur checking %s", expression));
-      } catch (Exception e) {
-        System.out.println("Checking Error: "+e.getMessage());
-        Assertions.assertTrue(fail == TestResultType.SEMANTICS, String.format("Unexpected exception checking %s: " + e.getMessage(), expression));
-        node = null;
       }
     }
     

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.PrintStream;
 
 import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.utils.Params;
 import org.hl7.fhir.validation.special.R4R5MapTester;
@@ -41,7 +42,7 @@ public class SpecialTask extends StandaloneTask{
       final String target = Params.getParam(args, Params.TARGET);
       final String source = Params.getParam(args, Params.SOURCE);
       final String filter = Params.getParam(args, Params.FILTER);
-      if (new File(target).exists()) {
+      if (ManagedFileAccess.file(target).exists()) {
         new R4R5MapTester().testMaps(target, source, filter);
       }
     } else {

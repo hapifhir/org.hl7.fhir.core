@@ -99,7 +99,6 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.TranslatingUtilities;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.formats.CSVWriter;
@@ -136,7 +135,7 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  * @author Grahame
  *
  */
-public class ProfileUtilities extends TranslatingUtilities {
+public class ProfileUtilities {
 
   private static boolean suppressIgnorableExceptions;
 
@@ -433,7 +432,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean wantFixDifferentialFirstElementType;
   private Set<String> masterSourceFileNames;
   private Set<String> localFileNames;
-  private Map<ElementDefinition, SourcedChildDefinitions> childMapCache = new HashMap<>();
+  private Map<String, SourcedChildDefinitions> childMapCache = new HashMap<>();
   private AllowUnknownProfile allowUnknownProfile = AllowUnknownProfile.ALL_TYPES;
   private MappingMergeModeOption mappingMergeMode = MappingMergeModeOption.APPEND;
   private boolean forPublication;
@@ -479,8 +478,9 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
   public SourcedChildDefinitions getChildMap(StructureDefinition profile, ElementDefinition element) throws DefinitionException {
-    if (childMapCache.containsKey(element)) {
-      return childMapCache.get(element);
+    String cacheKey = "cm."+profile.getVersionedUrl()+"#"+(element.hasId() ? element.getId() : element.getPath());
+    if (childMapCache.containsKey(cacheKey)) {
+      return childMapCache.get(cacheKey);
     }
     StructureDefinition src = profile;
     if (element.getContentReference() != null) {
@@ -524,7 +524,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           break;
       }
       SourcedChildDefinitions result  = new SourcedChildDefinitions(src, res);
-      childMapCache.put(element, result);
+      childMapCache.put(cacheKey, result);
       return result;
     }
   }

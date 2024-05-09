@@ -1,13 +1,16 @@
 package org.hl7.fhir.r5.renderers.utils;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -18,15 +21,55 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
+import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
-public class RenderingContext {
+/**
+ * Managing Language when rendering 
+ * 
+ * You can specify a language to use when rendering resources by setting the setLocale() on 
+ * the super class. The locale drives the following:
+ * - choice of java supplied rendering phrase, if translations are provided for the locale 
+ * - integer and date formats used (but see below for date formats)
+ * - automatic translation of coded values, if language supplements are available
+ * - choosing text representation considering the FHIR translation extension
+ *    
+ * By default, the locale is null, and the default locale for the underlying system is used. 
+ * If you set locale to a specific value, then that value will be used instead of the default locale.
+ *    
+ * By default, only a single language is rendered, based on the locale. Where resources contain
+ * multiple language content (designations in CodeSystem and ValueSet, or using the translation
+ * extension), you can control what languages are presented using the properties multiLanguagePolicy
+ * and languages
+ * - multiLanguagePolicy: NONE (default), DESIGNATIONS, ALL
+ * - languages: a list of allowed languages. Default is empty which means all languages in scope via multiLanguagePolicy
+ * 
+ * Managing Date/Time Formatting
+ * 
+ * This class has multiple parameters that influence date/time formatting when rendering resources 
+ * 
+ * - The default rendering is using the default java locale as above
+ * - If you setLocale() to something, then the defaults for the locale will be used 
+ * - Else you can set the values of dateTimeFormat, dateFormat, dateYearFormat and dateYearMonthFormat
+ * 
+ * If you set the value of locale, the values of dateTimeFormat, dateFormat, dateYearFormat and dateYearMonthFormat are 
+ * reset to the system defaults 
+ * 
+ * Timezones: by default, date/times are rendered in their source timezone 
+ * 
+ */
+public class RenderingContext extends RenderingI18nContext {
 
   // provides liquid templates, if they are available for the content
   public interface ILiquidTemplateProvider {
@@ -165,7 +208,13 @@ public class RenderingContext {
       return this == XML_ALL || this == XML;
     }
   }
-  
+
+  public enum MultiLanguagePolicy {
+    NONE, // ONLY render the language in the locale
+    DESIGNATIONS,  // in addition to the locale language, render designations from other languages (eg. as found in code systems and value sets
+    ALL // in addition to translations in designations, look for an render translations (WIP)
+  }
+
   private IWorkerContext worker;
   private MarkDownProcessor markdown;
   private ResourceRendererMode mode;
@@ -175,7 +224,15 @@ public class RenderingContext {
   private IEvaluationContext services;
   private ITypeParser parser;
 
-  private String lang;
+  // i18n related fields
+  private MultiLanguagePolicy multiLanguagePolicy = MultiLanguagePolicy.NONE;
+  private Set<String> allowedLanguages = new HashSet<>(); 
+  private ZoneId timeZoneId;
+  private DateTimeFormatter dateTimeFormat;
+  private DateTimeFormatter dateFormat;
+  private DateTimeFormatter dateYearFormat;
+  private DateTimeFormatter dateYearMonthFormat;
+  
   private String localPrefix; // relative link within local context
   private int headerLevelContext;
   private boolean canonicalUrlsAsLinks;
@@ -202,12 +259,6 @@ public class RenderingContext {
   private boolean showComments = false;
 
   private FhirPublication targetVersion;
-  private Locale locale;
-  private ZoneId timeZoneId;
-  private DateTimeFormatter dateTimeFormat;
-  private DateTimeFormatter dateFormat;
-  private DateTimeFormatter dateYearFormat;
-  private DateTimeFormatter dateYearMonthFormat;
   private boolean copyButton;
   private ProfileKnowledgeProvider pkp;
   private String changeVersion;
@@ -215,19 +266,22 @@ public class RenderingContext {
   
   private Map<KnownLinkType, String> links = new HashMap<>();
   private Map<String, String> namedLinks = new HashMap<>();
+  private boolean addName = false;
+  private Map<String, String> typeMap = new HashMap<>(); // type aliases that can be resolved in Markdown type links (mainly for cross-version usage)
+  
   /**
    * 
    * @param context - access to all related resources that might be needed
    * @param markdown - appropriate markdown processing engine 
    * @param terminologyServiceOptions - options to use when looking up codes
    * @param specLink - path to FHIR specification
-   * @param lang - langauage to render in
+   * @param locale - i18n for rendering
    */
-  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, String lang, ResourceRendererMode mode, GenerationRules rules) {
+  public RenderingContext(IWorkerContext worker, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, Locale locale, ResourceRendererMode mode, GenerationRules rules) {
     super();
     this.worker = worker;
     this.markdown = markdown;
-    this.lang = lang;
+    this.locale = locale;
     this.links.put(KnownLinkType.SPEC, specLink);
     this.localPrefix = localPrefix;
     this.mode = mode;
@@ -235,12 +289,10 @@ public class RenderingContext {
     if (terminologyServiceOptions != null) {
       this.terminologyServiceOptions = terminologyServiceOptions;
     }
- // default to US locale - discussion here: https://github.com/hapifhir/org.hl7.fhir.core/issues/666
-    this.locale = new Locale.Builder().setLanguageTag("en-US").build(); 
   }
   
   public RenderingContext copy() {
-    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC), localPrefix, lang, mode, rules);
+    RenderingContext res = new RenderingContext(worker, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC), localPrefix, locale, mode, rules);
 
     res.resolver = resolver;
     res.templateProvider = templateProvider;
@@ -271,7 +323,6 @@ public class RenderingContext {
     res.dateYearFormat = dateYearFormat;
     res.dateYearMonthFormat = dateYearMonthFormat;
     res.targetVersion = targetVersion;
-    res.locale = locale;
     res.showComments = showComments;
     res.copyButton = copyButton;
     res.pkp = pkp;
@@ -279,6 +330,9 @@ public class RenderingContext {
     res.changeVersion = changeVersion;
 
     res.terminologyServiceOptions = terminologyServiceOptions.copy();
+    res.typeMap.putAll(typeMap);
+    res.multiLanguagePolicy = multiLanguagePolicy;
+    res.allowedLanguages.addAll(allowedLanguages);
     return res;
   }
   
@@ -318,8 +372,16 @@ public class RenderingContext {
     return markdown;
   }
 
-  public String getLang() {
-    return lang;
+  public MultiLanguagePolicy getMultiLanguagePolicy() {
+    return multiLanguagePolicy;
+  }
+
+  public void setMultiLanguagePolicy(MultiLanguagePolicy multiLanguagePolicy) {
+    this.multiLanguagePolicy = multiLanguagePolicy;
+  }
+
+  public Set<String> getAllowedLanguages() {
+    return allowedLanguages;
   }
 
   public String getLocalPrefix() {
@@ -490,11 +552,6 @@ public class RenderingContext {
     return ref;
   }
 
-  public RenderingContext setLang(String lang) {
-    this.lang = lang;
-    return this;
-  }
-
   public RenderingContext setLocalPrefix(String localPrefix) {
     this.localPrefix = localPrefix;
     return this;
@@ -521,24 +578,6 @@ public class RenderingContext {
   public boolean isTechnicalMode() {
     return mode == ResourceRendererMode.TECHNICAL;
   }
-
-  public boolean hasLocale() {
-    return locale != null;
-  }
-  
-  public Locale getLocale() {
-    if (locale == null) {
-      return Locale.getDefault();
-    } else { 
-      return locale;
-    }
-  }
-
-  public RenderingContext setLocale(Locale locale) {
-    this.locale = locale;
-    return this;
-  }
-
 
   /**
    * if the timezone is null, the rendering will default to the source timezone
@@ -728,5 +767,150 @@ public class RenderingContext {
     this.fixedFormat = fixedFormat;
   }
 
+  public boolean isAddName() {
+    return addName;
+  }
+
+  public RenderingContext setAddName(boolean addName) {
+    this.addName = addName;
+    return this;
+  }
+
+  public Map<String, String> getTypeMap() {
+    return typeMap;
+  }
+
+
+  public String toStr(int v) {
+    NumberFormat nf = NumberFormat.getInstance(locale);
+    return nf.format(v);
+  }
+
+
+  public String getTranslated(PrimitiveType<?> t) {
+    if (locale != null) {
+      String v = ToolingExtensions.getLanguageTranslation(t, locale.toString());
+      if (v != null) {
+        return v;
+      }
+    }
+    return t.asStringValue();
+  }
+
+  public StringType getTranslatedElement(PrimitiveType<?> t) {
+    if (locale != null) {
+      StringType v = ToolingExtensions.getLanguageTranslationElement(t, locale.toString());
+      if (v != null) {
+        return v;
+      }
+    }
+    if (t instanceof StringType) {
+      return (StringType) t;
+    } else {
+      return new StringType(t.asStringValue());
+    }
+  }
+
+  public String getTranslatedCode(Base b, String codeSystem) {
+
+    if (b instanceof org.hl7.fhir.r5.model.Element) {
+      org.hl7.fhir.r5.model.Element e = (org.hl7.fhir.r5.model.Element) b;
+      if (locale != null) {
+        String v = ToolingExtensions.getLanguageTranslation(e, locale.toString());
+        if (v != null) {
+          return v;
+        }
+        // no? then see if the tx service can translate it for us 
+        try {
+          ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toString()).withVersionFlexible(true),
+              codeSystem, null, e.primitiveValue(), null);
+          if (t.isOk() && t.getDisplay() != null) {
+            return t.getDisplay();
+          }
+        } catch (Exception ex) {
+          // nothing
+        }
+      }
+      if (e instanceof Enumeration<?>) {
+        return ((Enumeration<?>) e).getDisplay();
+      } else {
+        return e.primitiveValue();
+      }
+    } else if (b instanceof Element) {
+      return getTranslatedCode((Element) b, codeSystem);
+    } else {
+      return "??";
+    }
+  }
+
+  public String getTranslatedCode(Enumeration<?> e, String codeSystem) {
+    if (locale != null) {
+      String v = ToolingExtensions.getLanguageTranslation(e, locale.toString());
+      if (v != null) {
+        return v;
+      }
+      // no? then see if the tx service can translate it for us 
+      try {
+        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toString()).withVersionFlexible(true),
+            codeSystem, null, e.getCode(), null);
+        if (t.isOk() && t.getDisplay() != null) {
+          return t.getDisplay();
+        }
+      } catch (Exception ex) {
+        // nothing
+      }
+    }
+    try {
+      ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withVersionFlexible(true),
+          codeSystem, null, e.getCode(), null);
+      if (t.isOk() && t.getDisplay() != null) {
+        return t.getDisplay();
+      }
+    } catch (Exception ex) {
+      // nothing
+    }
+    
+    return e.getCode();
+  }
+  
+  public String getTranslatedCode(Element e, String codeSystem) {
+    if (locale != null) {
+      // first we look through the translation extensions
+      for (Element ext : e.getChildrenByName("extension")) {
+        String url = ext.getNamedChildValue("url");
+        if (url.equals(ToolingExtensions.EXT_TRANSLATION)) {
+          Base e1 = ext.getExtensionValue("lang");
+
+          if (e1 != null && e1.primitiveValue() != null && e1.primitiveValue().equals(locale.toString())) {
+            e1 = ext.getExtensionValue("content");
+            if (e1 != null && e1.isPrimitive()) {
+              return e1.primitiveValue();
+            }
+          }
+        }
+      }
+      // no? then see if the tx service can translate it for us 
+      try {
+        ValidationResult t = getContext().validateCode(getTerminologyServiceOptions().withLanguage(locale.toString()).withVersionFlexible(true),
+            codeSystem, null, e.primitiveValue(), null);
+        if (t.isOk() && t.getDisplay() != null) {
+          return t.getDisplay();
+        }
+      } catch (Exception ex) {
+        // nothing
+      }
+    }
+    return e.primitiveValue();
+  }
+
+  public RenderingContext withLocale(Locale locale) {
+    setLocale(locale);
+    return this;
+  }
+
+  public RenderingContext withLocaleCode(String locale) {
+    setLocale(new Locale(locale));
+    return this;
+  }
   
 }

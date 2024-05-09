@@ -75,8 +75,9 @@ import org.hl7.fhir.r4.terminologies.TerminologyClient;
 import org.hl7.fhir.r4.utils.INarrativeGenerator;
 import org.hl7.fhir.r4.utils.NarrativeGenerator;
 import org.hl7.fhir.r4.utils.validation.IResourceValidator;
-import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.CSFileInputStream;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -235,7 +236,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       loadBytes(name, stream);
   }
 
-  public String connectToTSServer(TerminologyClient client, String log) throws URISyntaxException, FHIRException {
+  public String connectToTSServer(TerminologyClient client, String log) throws URISyntaxException, FHIRException, IOException {
     tlog("Connect to " + client.getAddress());
     txClient = client;
     txLog = new HTMLClientLogger(log);
@@ -503,8 +504,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   public void loadBinariesFromFolder(String folder) throws FileNotFoundException, Exception {
-    for (String n : new File(folder).list()) {
-      loadBytes(n, new FileInputStream(Utilities.path(folder, n)));
+    for (String n : ManagedFileAccess.file(folder).list()) {
+      loadBytes(n, ManagedFileAccess.inStream(Utilities.path(folder, n)));
     }
   }
 
@@ -515,7 +516,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   public void loadFromFolder(String folder) throws FileNotFoundException, Exception {
-    for (String n : new File(folder).list()) {
+    for (String n : ManagedFileAccess.file(folder).list()) {
       if (n.endsWith(".json"))
         loadFromFile(Utilities.path(folder, n), new JsonParser());
       else if (n.endsWith(".xml"))
@@ -526,7 +527,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private void loadFromFile(String filename, IParser p) throws FileNotFoundException, Exception {
     Resource r;
     try {
-      r = p.parse(new FileInputStream(filename));
+      r = p.parse(ManagedFileAccess.inStream(filename));
       if (r.getResourceType() == ResourceType.Bundle) {
         for (BundleEntryComponent e : ((Bundle) r).getEntry()) {
           cacheResource(e.getResource());

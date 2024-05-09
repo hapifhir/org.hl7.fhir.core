@@ -209,23 +209,23 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   protected XhtmlNode addTableHeaderRowStandard(XhtmlNode t, boolean hasHierarchy, boolean hasDisplay, boolean definitions, boolean comments, boolean version, boolean deprecated, List<PropertyComponent> properties, List<String> langs, Map<String, String> designations, boolean doDesignations) {
     XhtmlNode tr = t.tr();
     if (hasHierarchy) {
-      tr.td().b().tx("Lvl");
+      tr.td().b().tx(context.formatMessage(RenderingContext.TERMINOLOGY_LVL));
     }
-    tr.td().attribute("style", "white-space:nowrap").b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Code", getContext().getLang()));
+    tr.td().attribute("style", "white-space:nowrap").b().tx(formatMessage(RenderingContext.TX_CODE));
     if (hasDisplay) {
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Display", getContext().getLang()));
+      tr.td().b().tx(formatMessage(RenderingContext.TX_DISPLAY));
     }
     if (definitions) {
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Definition", getContext().getLang()));
+      tr.td().b().tx(formatMessage(RenderingContext.TX_DEFINITION));
     }
     if (deprecated) {
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Deprecated", getContext().getLang()));
+      tr.td().b().tx(formatMessage(RenderingContext.TX_DEPRECATED));
     }
     if (comments) {
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Comments", getContext().getLang()));
+      tr.td().b().tx(formatMessage(RenderingContext.TX_COMMENTS));
     }
     if (version) {
-      tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Version", getContext().getLang()));
+      tr.td().b().tx(formatMessage(RenderingContext.TX_VERSION));
     }
     if (properties != null) {
       for (PropertyComponent pc : properties) {
@@ -236,7 +236,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
             display = pc.getCode();
           }
         }
-        tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", display, getContext().getLang()));      
+        tr.td().b().tx(display);      
       }
     }
     if (doDesignations) {
@@ -307,7 +307,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
         a.addText(value);
       } else if (value.equals("http://snomed.info/sct") || value.equals("http://snomed.info/id")) {
         XhtmlNode a = li.ah(value);
-        a.tx("SNOMED-CT");
+        a.tx(context.formatMessage(RenderingContext.TERMINOLOGY_SNOMED));
       }
       else {
         if (value.startsWith("http://hl7.org") && !Utilities.existsInList(value, "http://hl7.org/fhir/sid/icd-10-us")) {
@@ -329,7 +329,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
 
 
   protected void clipboard(XhtmlNode x, String img, String title, String source) {
-    XhtmlNode span = x.span("cursor: pointer", "Copy "+title+" Format to clipboard");
+    XhtmlNode span = x.span("cursor: pointer", /*!#*/"Copy "+title+" Format to clipboard");
     span.attribute("onClick", "navigator.clipboard.writeText('"+Utilities.escapeJson(source)+"');");
     span.img(img, "btn").setAttribute("width", "24px").setAttribute("height", "16px");
   }

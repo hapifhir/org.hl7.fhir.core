@@ -1,13 +1,15 @@
 package org.hl7.fhir.r5.renderers;
 
+import java.util.Date;
+
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r5.utils.TranslatingUtilities;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
@@ -33,7 +35,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * @author graha
  *
  */
-public class Renderer extends TranslatingUtilities {
+public class Renderer  {
 
   protected RenderingContext context;
   
@@ -46,42 +48,14 @@ public class Renderer extends TranslatingUtilities {
   }
 
 
-  protected static final String RENDER_BUNDLE_HEADER_ROOT = "RENDER_BUNDLE_HEADER_ROOT";
-  protected static final String RENDER_BUNDLE_HEADER_ENTRY = "RENDER_BUNDLE_HEADER_ENTRY";
-  protected static final String RENDER_BUNDLE_HEADER_ENTRY_URL = "RENDER_BUNDLE_HEADER_ENTRY_URL";
-  protected static final String RENDER_BUNDLE_RESOURCE = "RENDER_BUNDLE_RESOURCE";
-  protected static final String RENDER_BUNDLE_SEARCH = "RENDER_BUNDLE_SEARCH";
-  protected static final String RENDER_BUNDLE_SEARCH_MODE = "RENDER_BUNDLE_SEARCH_MODE"; 
-  protected static final String RENDER_BUNDLE_SEARCH_SCORE = "RENDER_BUNDLE_SEARCH_SCORE";
-  protected static final String RENDER_BUNDLE_RESPONSE = "RENDER_BUNDLE_RESPONSE";
-  protected static final String RENDER_BUNDLE_LOCATION = "RENDER_BUNDLE_LOCATION";
-  protected static final String RENDER_BUNDLE_ETAG = "RENDER_BUNDLE_ETAG";
-  protected static final String RENDER_BUNDLE_LAST_MOD = "RENDER_BUNDLE_LAST_MOD";
-  protected static final String RENDER_BUNDLE_REQUEST = "RENDER_BUNDLE_REQUEST";
-  protected static final String RENDER_BUNDLE_IF_NON_MATCH = "RENDER_BUNDLE_IF_NON_MATCH";
-  protected static final String RENDER_BUNDLE_IF_MOD = "RENDER_BUNDLE_IF_MOD";
-  protected static final String RENDER_BUNDLE_IF_MATCH = "RENDER_BUNDLE_IF_MATCH";
-  protected static final String RENDER_BUNDLE_IF_NONE = "RENDER_BUNDLE_IF_NONE";
-  protected static final String RENDER_BUNDLE_DOCUMENT_CONTENT = "RENDER_BUNDLE_DOCUMENT_CONTENT";
-  protected static final String RENDER_BUNDLE_HEADER_DOC_ENTRY_URD = "RENDER_BUNDLE_HEADER_DOC_ENTRY_URD";
-  protected static final String RENDER_BUNDLE_HEADER_DOC_ENTRY_U = "RENDER_BUNDLE_HEADER_DOC_ENTRY_U";
-  protected static final String RENDER_BUNDLE_HEADER_DOC_ENTRY_RD = "RENDER_BUNDLE_HEADER_DOC_ENTRY_RD";
-
-  /** the plan here is to make this have it's own implementation of messages, rather than using the 
-   * validator messages, for better alignment with publisher I18n strategy
-   * 
-   * @param theMessage
-   * @param theMessageArguments
-   * @return
-   */
   protected String formatMessage(String theMessage, Object... theMessageArguments) {
-    return context.getWorker().formatMessage(theMessage, theMessageArguments);
+    return context.formatMessage(theMessage, theMessageArguments);
   }
 
   public void genStandardsStatus(XhtmlNode td, StandardsStatus ss) {
     if (ss != null) {
       td.tx(" ");
-      XhtmlNode a = td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "versions.html#std-process"), "Standards Status = "+ss.toDisplay());
+      XhtmlNode a = td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "versions.html#std-process"), (context.formatMessage(RenderingContext.REND_STANDARDS, ss.toDisplay())));
       a.style("padding-left: 3px; padding-right: 3px; border: 1px grey solid; font-weight: bold; color: black; background-color: "+ss.getColor());
       a.tx(ss.getAbbrev());
     }
@@ -98,21 +72,21 @@ public class Renderer extends TranslatingUtilities {
     switch (vca.getType()) {
     case Added:
       XhtmlNode spanOuter = x.span("border: solid 1px #dddddd; margin: 2px; padding: 2px", null);
-      XhtmlNode spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been added since "+context.getChangeVersion());
+      XhtmlNode spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatMessage(RenderingContext.REND_SINCE_ADDED, context.getChangeVersion())));
       spanInner.img("icon-change-add.png", "icon");
-      spanInner.tx(" Added:");
+      spanInner.tx(" "+context.formatMessage(RenderingContext.REND_ADDED));
       return spanOuter;
     case Changed:
       spanOuter = x.span("border: solid 1px #dddddd; margin: 2px; padding: 2px", null);
-      spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been changed since "+context.getChangeVersion()+(vca.getOriginal() != null ? " (was '"+vca.getOriginal()+"')" : ""));
+      spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", vca.getOriginal() == null ? context.formatMessage(RenderingContext.REND_SINCE_CHANGED, context.getChangeVersion()) : context.formatMessage(RenderingContext.REND_SINCE_CHANGED_WAS, context.getChangeVersion(), vca.getOriginal()));
       spanInner.img("icon-change-edit.png", "icon");
-      spanInner.tx(" Changed:");
+      spanInner.tx(" "+context.formatMessage(RenderingContext.REND_CHANGED));
       return spanOuter;
     case Deleted:
       spanOuter = x.span("border: solid 1px #dddddd; margin: 2px; padding: 2px", null);
-      spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been removed since "+context.getChangeVersion());
+      spanInner = spanOuter.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatMessage(RenderingContext.REND_SINCE_DELETED, context.getChangeVersion())));
       spanInner.img("icon-change-remove.png", "icon");
-      spanInner.tx(" Removed:");
+      spanInner.tx(" "+context.formatMessage(RenderingContext.REND_REMOVED));
       return spanOuter.strikethrough();
     default:
       return x;
@@ -130,21 +104,21 @@ public class Renderer extends TranslatingUtilities {
     switch (vca.getType()) {
     case Added:
       XhtmlNode divOuter = x.div("border: solid 1px #dddddd; margin: 2px; padding: 2px");
-      XhtmlNode spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been added since "+context.getChangeVersion());
+      XhtmlNode spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatMessage(RenderingContext.REND_SINCE_ADDED, context.getChangeVersion())));
       spanInner.img("icon-change-add.png", "icon");
-      spanInner.tx(" Added:");
+      spanInner.tx(" "+context.formatMessage(RenderingContext.REND_ADDED));
       return divOuter;
     case Changed:
       divOuter = x.div("border: solid 1px #dddddd; margin: 2px; padding: 2px");
-      spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been changed since "+context.getChangeVersion()+(vca.getOriginal() != null ? " (was '"+(vca.getOriginal())+"')" : ""));
+      spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", vca.getOriginal() == null ? context.formatMessage(RenderingContext.REND_SINCE_CHANGED, context.getChangeVersion()) : context.formatMessage(RenderingContext.REND_SINCE_CHANGED_WAS, context.getChangeVersion(),  vca.getOriginal()));
       spanInner.img("icon-change-edit.png", "icon");
-      spanInner.tx(" Changed:");
+      spanInner.tx(" "+context.formatMessage(RenderingContext.REND_CHANGED));
       return divOuter;
     case Deleted:
       divOuter = x.div("border: solid 1px #dddddd; margin: 2px; padding: 2px");
-      spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been removed since "+context.getChangeVersion());
+      spanInner = divOuter.para().style("margin: 0").span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatMessage(RenderingContext.REND_SINCE_DELETED, context.getChangeVersion())));
       spanInner.img("icon-change-remove.png", "icon");
-      spanInner.tx(" Removed:");
+      spanInner.tx(" "+context.formatMessage(RenderingContext.REND_REMOVED));
       return divOuter.strikethrough();
     default:
       return x;
@@ -166,27 +140,27 @@ public class Renderer extends TranslatingUtilities {
         tr.style("border: solid 1px #dddddd; margin: 2px; padding: 2px");
       }
       XhtmlNode td = tr.td();
-      XhtmlNode span = td.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This row of content has been added since "+context.getChangeVersion());
+      XhtmlNode span = td.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", (context.formatMessage(RenderingContext.REND_ROW_SINCE, context.getChangeVersion())));
       span.img("icon-change-add.png", "icon");
-      span.tx(" Added:");
+      span.tx(" "+/*!#*/"Added:");
       XhtmlNode x = new XhtmlNode(NodeType.Element, "holder");
-      x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This row of content has been added since "+context.getChangeVersion()).tx(" ");
+      x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", /*!#*/"This row of content has been added since "+context.getChangeVersion()).tx(" ");
       tr.styleCells(x);
       return td;
     case Changed:
       td = tr.td();
-      span = td.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This row of content has been changed since"+context.getChangeVersion()+(vca.getOriginal() != null ? " (was '"+vca.getOriginal()+"')" : ""));
+      span = td.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", /*!#*/"This row of content has been changed since"+context.getChangeVersion()+(vca.getOriginal() != null ? " (was '"+vca.getOriginal()+"')" : ""));
       span.img("icon-change-edit.png", "icon");
-      span.tx(" Changed:");
+      span.tx(" "+/*!#*/"Changed:");
       return td;
     case Deleted:
       tr.style("text-decoration: line-through");
       td = tr.td();
-      span = td.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been removed since  "+context.getChangeVersion());
+      span = td.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", /*!#*/"This content has been removed since  "+context.getChangeVersion());
       span.img("icon-change-remove.png", "icon");
-      span.tx(" Removed:");
+      span.tx(" "+/*!#*/"Removed:");
       x = new XhtmlNode(NodeType.Element, "holder");
-      x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px; text-decoration: none", "This row of content has been added since  "+context.getChangeVersion()).tx(" ");
+      x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px; text-decoration: none", /*!#*/"This row of content has been added since  "+context.getChangeVersion()).tx(" ");
       tr.styleCells(x);
       return td;
     default:
@@ -199,24 +173,24 @@ public class Renderer extends TranslatingUtilities {
       VersionComparisonAnnotation self = (VersionComparisonAnnotation) base.getUserData(VersionComparisonAnnotation.USER_DATA_NAME);
       switch (self.getType()) {
       case Added:
-        XhtmlNode spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been added since "+version);
+        XhtmlNode spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", /*!#*/"This content has been added since "+version);
         spanInner.img("icon-change-add.png", "icon");
-        spanInner.tx(" Added");
+        spanInner.tx(" "+/*!#*/"Added");
         return;
       case Changed:
         if (self.getComp().noChangeOtherThanMetadata(metadataFields)) {
           x.span("color: #eeeeee").tx("n/c");
           return;
         } else {
-          spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been changed since "+version+(self.getOriginal() != null ? " (was '"+(self.getOriginal())+"')" : ""));
+          spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", /*!#*/"This content has been changed since "+version+(self.getOriginal() != null ? " (was '"+(self.getOriginal())+"')" : ""));
           spanInner.img("icon-change-edit.png", "icon");
-          spanInner.tx(" Changed");
+          spanInner.tx(" "+/*!#*/"Changed");
         }
         return;
       case Deleted:
-        spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", "This content has been added since "+version);
+        spanInner = x.span("background-color: #fff2ff; border-left: solid 3px #ffa0ff; margin: 2px; padding: 2px", /*!#*/"This content has been added since "+version);
         spanInner.img("icon-change-remove.png", "icon");
-        spanInner.tx(" Removed");
+        spanInner.tx(" "+/*!#*/"Removed");
         return;
       default:
         x.span("color: #eeeeee").tx("n/c");
@@ -227,4 +201,20 @@ public class Renderer extends TranslatingUtilities {
     }
   }
 
+
+  public String egt(@SuppressWarnings("rawtypes") Enumeration<? extends Enum> value) {
+    if (value == null || !value.hasPrimitiveValue()) {
+      return null;
+    } else {
+      return (value == null || !value.hasPrimitiveValue()) ? null : value.asStringValue();
+    }
+  }
+
+  public String toStr(int value) {
+    return Integer.toString(value);
+  }
+  
+  public String toStr(Date value) {
+    return value.toString();
+  }
 }

@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyType;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
+import org.hl7.fhir.utilities.Utilities;
 
 public class PropertyFilter extends ConceptFilter {
 
@@ -31,25 +32,23 @@ public class PropertyFilter extends ConceptFilter {
       case EQUAL: return filter.getValue().equals(v);
       case EXISTS: throw fail("not supported yet: "+filter.getOp().toCode());
       case GENERALIZES: throw fail("not supported yet: "+filter.getOp().toCode());
-      case IN: throw fail("not supported yet: "+filter.getOp().toCode());
+      case IN: return Utilities.existsInListTrimmed(v, filter.getValue().split("\\,"));
       case ISA: throw fail("not supported yet: "+filter.getOp().toCode());
       case ISNOTA: throw fail("not supported yet: "+filter.getOp().toCode());
-      case NOTIN: throw fail("not supported yet: "+filter.getOp().toCode());
+      case NOTIN: return !Utilities.existsInListTrimmed(v, filter.getValue().split("\\,"));
       case NULL: throw fail("not supported yet: "+filter.getOp().toCode());
       case REGEX: throw fail("not supported yet: "+filter.getOp().toCode());
       default:
         throw fail("Shouldn't get here");        
       }            
-    } else if (property.getType() == PropertyType.BOOLEAN && filter.getOp() == FilterOperator.EQUAL) {
-      return "false".equals(filter.getValue()); 
     } else {
-      return false;
+      return filter.getOp() == FilterOperator.NOTIN;
     }
   }
 
   private ConceptPropertyComponent getPropertyForConcept(ConceptDefinitionComponent def) {
     for (ConceptPropertyComponent pc : def.getProperty()) {
-      if (pc.getCode().equals(property.getCode())) {
+      if (pc.hasCode() && pc.getCode().equals(property.getCode())) {
         return pc;
       }
     }

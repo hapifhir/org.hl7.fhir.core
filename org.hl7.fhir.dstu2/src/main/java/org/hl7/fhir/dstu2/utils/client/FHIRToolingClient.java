@@ -742,6 +742,46 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     return (Parameters) result.getPayload();
   }
 
+  public Parameters lookupCode(Parameters p) {
+    recordUse();
+    ResourceRequest<Resource> result = utils.issuePostRequest(
+        resourceAddress.resolveOperationUri(ValueSet.class, "lookup"), 
+        utils.getResourceAsByteArray(p, false, isJson(getPreferredResourceFormat())),
+        withVer(getPreferredResourceFormat(), "1.0"), 
+        timeoutNormal);
+    result.addErrorStatus(410);// gone
+    result.addErrorStatus(404);// unknown
+    result.addErrorStatus(405);
+    result.addErrorStatus(422);// Unprocessable Entity
+    result.addSuccessStatus(200);
+    result.addSuccessStatus(201);
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
+          (OperationOutcome) result.getPayload());
+    }
+    return (Parameters) result.getPayload();
+  }
+
+  public Parameters translate(Parameters p) {
+    recordUse();
+    ResourceRequest<Resource> result = utils.issuePostRequest(
+        resourceAddress.resolveOperationUri(ConceptMap.class, "translate"), 
+        utils.getResourceAsByteArray(p, false, isJson(getPreferredResourceFormat())),
+        withVer(getPreferredResourceFormat(), "1.0"), 
+        timeoutNormal);
+    result.addErrorStatus(410);// gone
+    result.addErrorStatus(404);// unknown
+    result.addErrorStatus(405);
+    result.addErrorStatus(422);// Unprocessable Entity
+    result.addSuccessStatus(200);
+    result.addSuccessStatus(201);
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(),
+          (OperationOutcome) result.getPayload());
+    }
+    return (Parameters) result.getPayload();
+  }
+
   public ValueSet expandValueset(ValueSet source, Parameters expParams) {
     recordUse();
     List<Header> headers = null;

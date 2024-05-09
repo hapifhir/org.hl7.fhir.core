@@ -33,13 +33,13 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
   public boolean render(XhtmlNode x, ActorDefinition acd) throws FHIRFormatError, DefinitionException, IOException {
     XhtmlNode tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();
-    tr.td().b().tx("Actor: "+acd.getName());
+    tr.td().b().tx(context.formatMessage(RenderingContext.ACTOR_DEF_ACT, acd.getName())  + " ");
     tr.td().tx(acd.getTitle());
-    tr.td().tx("Type: " + acd.getType().toCode());
+    tr.td().tx(context.formatMessage(RenderingContext.ACTOR_DEF_TYP, acd.getType().toCode()) + " ");
     XhtmlNode td = tbl.tr().td().colspan("3");
     addMarkdown(td, acd.getDocumentation());
     if (acd.hasReference()) {
-      tbl.tr().td().tx("References:");
+      tbl.tr().td().tx(context.formatMessage(RenderingContext.ACTOR_DEF_REF));
       td = tr.td().colspan("2");
       boolean first = true;
       for (UrlType t : acd.getReference()) {
@@ -48,7 +48,7 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
       }      
     }
     if (acd.hasCapabilities()) {
-      tbl.tr().td().tx("Capabilities:");
+      tbl.tr().td().tx(context.formatMessage(RenderingContext.ACTOR_DEF_CAP));
       td = tr.td().colspan("2");
       CapabilityStatement cs = context.getWorker().fetchResource(CapabilityStatement.class, acd.getCapabilities(), acd);
       if (cs != null) {
@@ -58,7 +58,7 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
       }      
     }
     if (acd.hasDerivedFrom()) {
-      tbl.tr().td().tx("Derived from:");
+      tbl.tr().td().tx(context.formatMessage(RenderingContext.ACTOR_DEF_DER));
       td = tr.td().colspan("2");
       boolean first = true;
       for (UrlType t : acd.getReference()) {

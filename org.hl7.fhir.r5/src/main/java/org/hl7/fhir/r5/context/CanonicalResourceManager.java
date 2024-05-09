@@ -537,6 +537,16 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
   }
   
+  public List<T> getForUrl(String url) {
+    List<T> res = new ArrayList<>();
+    List<CanonicalResourceManager<T>.CachedCanonicalResource<T>> list = listForUrl.get(url);
+    if (list != null) {
+      for (CanonicalResourceManager<T>.CachedCanonicalResource<T> t : list) {
+        res.add(t.getResource());
+      }
+    }
+    return res;
+  }
   
   /**
    * This is asking for a packaged version aware resolution

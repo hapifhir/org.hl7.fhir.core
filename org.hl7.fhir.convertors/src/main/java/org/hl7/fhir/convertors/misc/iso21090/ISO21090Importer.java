@@ -59,6 +59,7 @@ import org.hl7.fhir.dstu3.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.dstu3.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -125,7 +126,7 @@ public class ISO21090Importer {
       addParentProperties(sd.getSnapshot().getElement(), dt.getName(), dt.getParent(), false, true);
     produceProperties(sd.getSnapshot().getElement(), dt.getName(), dt.getProperties(), false, true);
     ed.getBase().setPath(ed.getPath()).setMin(ed.getMin()).setMax(ed.getMax());
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "iso21090\\StructureDefinition-" + dt.getName() + ".xml")), sd);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "iso21090\\StructureDefinition-" + dt.getName() + ".xml")), sd);
   }
 
   private void addParentProperties(List<ElementDefinition> elements, String name, String parent, boolean attrMode, boolean snapshot) throws FHIRFormatError {
@@ -176,7 +177,7 @@ public class ISO21090Importer {
     for (String code : evs.getCodes()) {
       inc.addConcept().setCode(code);
     }
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "iso21090\\ValueSet-" + evs.getName() + ".xml")), vs);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "iso21090\\ValueSet-" + evs.getName() + ".xml")), vs);
   }
 
   private void processDataTypes() {
@@ -319,7 +320,7 @@ public class ISO21090Importer {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(false);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    Document doc = builder.parse(new FileInputStream("C:\\work\\projects\\org.hl7.v3.dt\\iso\\iso-21090-datatypes.xsd"));
+    Document doc = builder.parse(ManagedFileAccess.inStream("C:\\work\\projects\\org.hl7.v3.dt\\iso\\iso-21090-datatypes.xsd"));
     schema = doc.getDocumentElement();
   }
 

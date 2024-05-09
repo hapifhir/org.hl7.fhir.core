@@ -99,15 +99,8 @@ public class StringType extends PrimitiveType<String> {
 		return "string";
 	}
 
-  public String getTranslation(String l) throws FHIRException {
-    for (Extension e : getExtension()) {
-      if (e.getUrl().equals(ToolingExtensions.EXT_TRANSLATION)) {
-        String lang = ToolingExtensions.readStringExtension(e, "lang");
-        if (lang.equals(l))
-          return e.getExtensionString("content");
-      }
-    }
-    return null;
+  @Override
+  public boolean isTranslatable() {
+    return true;
   }
-
 }

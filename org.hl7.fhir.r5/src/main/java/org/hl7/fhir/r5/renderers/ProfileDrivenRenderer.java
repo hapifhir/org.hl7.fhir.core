@@ -107,9 +107,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     boolean idDone = false;
     XhtmlNode p = x.para();
     if (context.isAddGeneratedNarrativeHeader()) {
-      p.b().tx("Generated Narrative: "+r.fhirType()+(context.isContained() ? " #"+r.getId() : ""));
+      p.b().tx(/*!#*/"Generated Narrative: "+r.fhirType()+(context.isContained() ? " #"+r.getId() : ""));
       if (!Utilities.noString(r.getId())) {
         p.an(r.getId());
+        p.an("hc"+r.getId());
       }
       idDone = true;      
     }
@@ -119,11 +120,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     }
     if (!Utilities.noString(r.getId()) && !idDone) {
       x.para().an(r.getId());
+      x.para().an("hc"+r.getId());
     }
     try {
       StructureDefinition sd = r.getDefinition();
       if (sd == null) {
-        throw new FHIRException("Cannot find definition for "+r.fhirType());
+        throw new FHIRException(context.formatMessage(RenderingContext.PROF_DRIV_FEXCP, r.fhirType())+" ");
       } else {
         ElementDefinition ed = sd.getSnapshot().getElement().get(0);
         containedIds.clear();
@@ -131,9 +133,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), context.isTechnicalMode(), 0);
       }
     } catch (Exception e) {
-      System.out.println("Error Generating Narrative for "+r.fhirType()+"/"+r.getId()+": "+e.getMessage());
+      System.out.println(/*!#*/"Error Generating Narrative for "+r.fhirType()+"/"+r.getId()+": "+e.getMessage());
       e.printStackTrace();
-      x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+      x.para().b().style("color: maroon").tx(context.formatMessage(RenderingContext.PROF_DRIV_EXCP, e.getMessage())+" ");
     }
     return hasExtensions;
   }
@@ -479,7 +481,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         Reference r = (Reference) e;
         if (r.getReference() != null && r.getReference().contains("#")) {
           if (containedIds.contains(r.getReference().substring(1))) {
-            x.ah(r.getReference()).tx("See "+r.getReference());
+            x.ah("#hc"+r.getReference().substring(1)).tx("See "+r.getReference());
           } else {          
             // in this case, we render the resource in line
             ResourceWrapper rw = null;
@@ -493,7 +495,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             } else {
               String ref = context.getResolver() != null ?context.getResolver().urlForContained(context, res.fhirType(), res.getId(), rw.fhirType(), rw.getId()) : null;
               if (ref == null) {
-                x.an(rw.getId());
+                x.an("hc"+rw.getId());
                 RenderingContext ctxtc = context.copy();
                 ctxtc.setAddGeneratedNarrativeHeader(false);
                 ctxtc.setContained(true);
@@ -831,19 +833,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if ("DomainResource.contained".equals(child.getBase().getPath())) {
       if (round2) {
         for (BaseWrapper v : p.getValues()) {
-          if (v.getBase() != null && !RendererFactory.hasSpecificRenderer(v.fhirType())) {
+          if (v.getResource() != null && !RendererFactory.hasSpecificRenderer(v.fhirType())) {
             x.hr();
             RenderingContext ctxt = context.copy();
             ctxt.setContained(true);
             ResourceRenderer rnd = RendererFactory.factory(v.fhirType(), ctxt);
-            ResourceWrapper rw = null;
-            if (v.getBase() instanceof org.hl7.fhir.r5.elementmodel.Element) {
-              rw = new ElementWrappers.ResourceWrapperMetaElement(ctxt, (org.hl7.fhir.r5.elementmodel.Element) v.getBase());
-            } else if (v.getBase() instanceof Resource){
-              rw = new DirectWrappers.ResourceWrapperDirect(ctxt,  (Resource) v.getBase());
-            } else {
-              throw new FHIRException("Not handled: base = "+v.getBase().getClass().getName()); 
-            }
+            ResourceWrapper rw = v.getResource();
             rnd.render(x.blockquote(), rw);
           }
         }

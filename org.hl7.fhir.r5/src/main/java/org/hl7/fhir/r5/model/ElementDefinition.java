@@ -2628,6 +2628,8 @@ public boolean hasTarget() {
         return "unsignedInt";
       if ("xsd:anyURI".equalsIgnoreCase(s))
         return "uri";
+      if ("xhtml:div".equalsIgnoreCase(s))
+        return "xhtml";
       
       throw new Error("Unknown xml type '"+s+"'");
     }
@@ -4603,6 +4605,11 @@ public boolean hasTarget() {
   public String fhirType() {
     return "ElementDefinition.constraint";
 
+  }
+
+  @Override
+  public String toString() {
+    return key + ":" + expression + (severity == null ? "("+severity.asStringValue()+")" : "");
   }
 
   }
@@ -13091,6 +13098,10 @@ If a pattern[x] is declared on a repeating element, the pattern applies to all r
       this.valueAlternatives = new ArrayList<CanonicalType>();
     this.valueAlternatives.add(t);
     return t;
+  }
+
+  public boolean repeats() {
+    return !Utilities.existsInList(getMax(), "0", "1");
   }
 
 // end addition

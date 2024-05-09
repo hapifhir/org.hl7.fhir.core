@@ -24,6 +24,7 @@ import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -58,7 +59,7 @@ public class CVXImporter {
   }
 
   private void doUpdate(String source, String dest) throws FHIRFormatError, FileNotFoundException, IOException, ParserConfigurationException, SAXException {
-    CodeSystem cvx = (CodeSystem) new JsonParser().parse(new FileInputStream(dest));
+    CodeSystem cvx = (CodeSystem) new JsonParser().parse(ManagedFileAccess.inStream(dest));
     
     String ldate = null;
     
@@ -94,7 +95,7 @@ public class CVXImporter {
     Collections.sort(cvx.getConcept(), new CVXSorter());
     cvx.setDateElement(new DateTimeType(ldate));
     cvx.setVersion(ldate.replace("-", ""));
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dest), cvx);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dest), cvx);
   }
 
   private ConceptDefinitionComponent findCVXCode(CodeSystem cvx, String code) {

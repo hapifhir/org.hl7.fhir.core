@@ -2,8 +2,12 @@ package org.hl7.fhir.r5.context;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -45,6 +49,8 @@ import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.context.IWorkerContext.OIDDefinition;
+import org.hl7.fhir.r5.context.IWorkerContext.OIDDefinitionComparer;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.ParserType;
@@ -70,9 +76,9 @@ import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.TimeTracker;
-import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -103,6 +109,133 @@ import javax.annotation.Nonnull;
 
 public interface IWorkerContext {
 
+  /**
+   @deprecated This interface only exists to provide backward compatibility for the following two projects:
+   <a href="https://github.com/cqframework/clinical-reasoning">clinical-reasoning</a>
+   <a href="https://github.com/cqframework/clinical_quality_language/">clinical_quality-language</a>
+
+   Due to a circular dependency, they cannot be updated without a release of HAPI, which requires backwards
+   compatibility with core version 6.1.2.2
+   **/
+  @Deprecated(forRemoval = true)
+  public interface ILoggingService extends org.hl7.fhir.r5.context.ILoggingService{
+
+  }
+  public class OIDDefinitionComparer implements Comparator<OIDDefinition> {
+
+    @Override
+    public int compare(OIDDefinition o1, OIDDefinition o2) {
+      if (o1.getUrl().equals(o2.getUrl())) {
+        return -o1.getVersion().compareTo(o2.getVersion());        
+      } else {
+        return o1.getUrl().compareTo(o2.getUrl());
+      }
+    }
+  }
+
+  public class OIDDefinition {
+    private String type;
+    private String oid;
+    private String url;
+    private String version;
+    private String packageSrc;
+    protected OIDDefinition(String type, String oid, String url, String version, String packageSrc) {
+      super();
+      this.type = type;
+      this.oid = oid;
+      this.url = url;
+      this.version = version == null ? "" : version;
+      this.packageSrc = packageSrc;
+    }
+    public String getType() {
+      return type;
+    }
+    public String getOid() {
+      return oid;
+    }
+    public String getUrl() {
+      return url;
+    }
+    public String getVersion() {
+      return version;
+    }
+    public String getPackageSrc() {
+      return packageSrc;
+    }
+    public String summary() {
+      return url+(version == null ? "" : "|"+version)+(packageSrc != null ? "("+packageSrc+")" : "");
+    }
+    public boolean matches(OIDDefinition t) {
+      return url.equals(t.url) && version.equals(t.version);
+    }
+    
+  }
+
+  public class OIDSummary {
+    private List<OIDDefinition> definitions = new ArrayList<>();
+    private List<String> urls = new ArrayList<>();
+
+    public void addOID(OIDDefinition d) {
+      for (OIDDefinition t : definitions) {
+        if (d.matches(t)) {
+          return;
+        }
+      }
+      definitions.add(d);
+      if (!urls.contains(d.getUrl())) {
+        urls.add(d.getUrl());
+      }
+    }
+    
+    public void addOIDs(Collection<OIDDefinition> collection) {
+      for (OIDDefinition t : collection) {
+        addOID(t);
+      }
+    }
+    
+    public List<OIDDefinition> getDefinitions() {
+      return definitions;
+    }
+
+    public void sort() {
+      Collections.sort(definitions, new OIDDefinitionComparer());
+      Collections.sort(urls);
+    }
+    public String describe() {
+      CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+      for (OIDDefinition d : definitions) {
+        b.append(d.summary());
+      }
+      return b.toString();
+    }
+
+    public String chooseBestUrl() {
+      for (OIDDefinition d : definitions) {
+        if (d.getPackageSrc() == null) {
+          return d.getUrl();
+        }
+      }
+      for (OIDDefinition d : definitions) {
+        if (d.getUrl().startsWith("http://hl7.org/fhir/")) {
+          return d.getUrl();
+        }
+      }
+      for (OIDDefinition d : definitions) {
+        if (!d.getUrl().contains("vsac")) {
+          return d.getUrl();
+        }
+      }
+      return null;
+    }
+
+    public int urlCount() {
+      return urls.size();
+    }
+
+    public String getUrl() {
+      return urls.iterator().next();
+    }
+  }
   /**
    * Get the version of the base definitions loaded in context
    * This *does not* have to be 5.0 (R5) - the context can load other versions
@@ -191,6 +324,15 @@ public interface IWorkerContext {
   public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_, FhirPublication fhirVersion);
   public <T extends Resource> List<T> fetchResourcesByType(Class<T> class_);
 
+
+  /**
+   * Fetch all the resources for the given URL - all matching versions
+   * 
+   * @param url
+   * @return
+   */
+  public <T extends Resource> List<T> fetchResourcesByUrl(Class<T> class_, String url);
+  
   /**
    * Variation of fetchResource when you have a string type, and don't need the right class
    * 
@@ -379,6 +521,8 @@ public interface IWorkerContext {
 
   /**
    * Access to the contexts internationalised error messages
+   * 
+   * For rendering internationalization, see RenderingContext
    *  
    * @param theMessage
    * @param theMessageArguments
@@ -497,10 +641,9 @@ public interface IWorkerContext {
 
   // todo: figure these out
   public Map<String, NamingSystem> getNSUrlMap();
-  public TranslationServices translator();
 
-  public void setLogger(@Nonnull ILoggingService logger);
-  public ILoggingService getLogger();
+  public void setLogger(@Nonnull org.hl7.fhir.r5.context.ILoggingService logger);
+  public org.hl7.fhir.r5.context.ILoggingService getLogger();
 
   public boolean isNoTerminologyServer();
   public Set<String> getCodeSystemsUsed();
@@ -625,7 +768,13 @@ public interface IWorkerContext {
   public boolean isForPublication();
   public void setForPublication(boolean value);
 
-  public Set<String> urlsForOid(boolean codeSystem, String oid);
+  /**
+   * 
+   * @param oid
+   * @param resourceType - null to search on all resource types
+   * @return
+   */
+  public OIDSummary urlsForOid(String oid, String resourceType);
 
   /**
    * this first does a fetch resource, and if nothing is found, looks in the 
@@ -639,5 +788,14 @@ public interface IWorkerContext {
   public <T extends Resource> T findTxResource(Class<T> class_, String canonical, Resource sourceOfReference);
   public <T extends Resource> T findTxResource(Class<T> class_, String canonical);
   public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version);
+
+  /**
+   * ask the terminology system whether parent subsumes child. 
+   * 
+   * @return true if it does, false if it doesn't, and null if it's not know whether it does
+   */
+  public Boolean subsumes(ValidationOptions options, Coding parent, Coding child);
+
+  public boolean isServerSideSystem(String url);
 
 }

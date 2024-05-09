@@ -60,7 +60,7 @@ public class ObservationValidator extends BaseValidator {
         ok = checkObservationAgainstProfile(valContext,errors, element, stack, "http://hl7.org/fhir/StructureDefinition/bodyweight", "Body weight", "LOINC", codes, pct, mode) && ok;
       } else if (hasLoincCode(code, codes, "39156-5", "39156-5", "59574-4", "89270-3")) {
         ok = checkObservationAgainstProfile(valContext,errors, element, stack, "http://hl7.org/fhir/StructureDefinition/bmi", "Body mass index", "LOINC", codes, pct, mode) && ok;
-      } else if (hasLoincCode(code, codes, "85354-9", "96607-7", "35094-2", "8459-0", "85354-9", "76534-7", "96607-7", "55284-4", "8480-6")) {
+      } else if (hasLoincCode(code, codes, "85354-9", "35094-2", "8459-0", "85354-9", "76534-7", "55284-4", "8480-6")) {
         ok = checkObservationAgainstProfile(valContext,errors, element, stack, "http://hl7.org/fhir/StructureDefinition/bp", "Blood pressure systolic and diastolic", "LOINC", codes, pct, mode) && ok;
       
       } else if (hasSctCode(code, codes, "46680005")) {
@@ -81,7 +81,7 @@ public class ObservationValidator extends BaseValidator {
         ok = checkObservationAgainstProfile(valContext,errors, element, stack, "http://hl7.org/fhir/StructureDefinition/bodyweight", "Body weight", "SNOMED CT", codes, pct, mode) && ok;
       } else if (hasSctCode(code, codes, "60621009")) {
         ok = checkObservationAgainstProfile(valContext,errors, element, stack, "http://hl7.org/fhir/StructureDefinition/bmi", "Body mass index", "SNOMED CT", codes, pct, mode) && ok;
-      } else if (hasSctCode(code, codes, "75367002", "251076008", "6797001", "163033001", "123820005", "163035008", "723232008", "386534000", "386536003", "271649006", "271649006", "271650006", "407556006", "407554009", "716579001", "399304008")) {
+      } else if (hasSctCode(code, codes, "75367002", "251076008", "163033001", "163035008", "386534000", "386536003", "271649006", "271649006", "271650006", "407556006", "407554009", "716579001", "399304008")) {
         ok = checkObservationAgainstProfile(valContext,errors, element, stack, "http://hl7.org/fhir/StructureDefinition/bp", "Blood pressure systolic and diastolic", "SNOMED CT", codes, pct, mode) && ok;
       }  
     }
@@ -94,7 +94,7 @@ public class ObservationValidator extends BaseValidator {
     if (sd == null) {
       return false;
     } else {
-      return ((InstanceValidator) parent).startInner(valContext, errors, element, element, sd, stack, false, pct, mode);
+      return ((InstanceValidator) parent).startInner(valContext, errors, element, element, sd, stack, false, pct, mode, false);
     }
   }
 

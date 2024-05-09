@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -20,10 +21,10 @@ public class UnicodeCharacterTests {
     xml.setOutputStyle(OutputStyle.PRETTY);
     Parameters p = (Parameters) xml.parse(TestingUtilities.loadTestResource("r5", "unicode-problem.xml"));
     Assertions.assertEquals("invalid: \u0013, not invalid: \r", p.getParameterFirstRep().getValue().primitiveValue());
-    FileOutputStream o = new FileOutputStream(Utilities.path("[tmp]", "unicode-problem.xml"));
+    FileOutputStream o = ManagedFileAccess.outStream(Utilities.path("[tmp]", "unicode-problem.xml"));
     xml.compose(o, p);
     o.close();
-    p = (Parameters) xml.parse(new FileInputStream(Utilities.path("[tmp]", "unicode-problem.xml")));
+    p = (Parameters) xml.parse(ManagedFileAccess.inStream(Utilities.path("[tmp]", "unicode-problem.xml")));
     Assertions.assertEquals("invalid: \u0013, not invalid: \r", p.getParameterFirstRep().getValue().primitiveValue());
   }
   
@@ -34,10 +35,10 @@ public class UnicodeCharacterTests {
     json.setOutputStyle(OutputStyle.PRETTY);
     Parameters p = (Parameters) json.parse(TestingUtilities.loadTestResource("r5", "unicode-problem.json"));
     Assertions.assertEquals("invalid: \u0013, not invalid: \r", p.getParameterFirstRep().getValue().primitiveValue());
-    FileOutputStream o = new FileOutputStream(Utilities.path("[tmp]", "unicode-problem.json"));
+    FileOutputStream o = ManagedFileAccess.outStream(Utilities.path("[tmp]", "unicode-problem.json"));
     json.compose(o, p);
     o.close();
-    p = (Parameters) json.parse(new FileInputStream(Utilities.path("[tmp]", "unicode-problem.json")));
+    p = (Parameters) json.parse(ManagedFileAccess.inStream(Utilities.path("[tmp]", "unicode-problem.json")));
     Assertions.assertEquals("invalid: \u0013, not invalid: \r", p.getParameterFirstRep().getValue().primitiveValue());
   }
   
