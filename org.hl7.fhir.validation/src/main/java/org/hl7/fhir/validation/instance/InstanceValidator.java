@@ -1456,9 +1456,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   timeTracker.tx(t, "vc "+cc.toString());
                 }
               }
-            } catch (Exception e) {
-              if (STACK_TRACE) e.printStackTrace();
-              warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getMessage());
+            } catch (CheckCodeOnServerException e) {
+              if (STACK_TRACE) e.getCause().printStackTrace();
+              warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getCause().getMessage());
             }
           }
         } else if (binding.hasValueSet()) {
@@ -1469,12 +1469,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } 
     }
     if (!noTerminologyChecks && theElementCntext != null && !checked) { // no binding check, so we just check the CodeableConcept generally
-      CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
-      if (cc.hasCoding()) {
-        long t = System.nanoTime();
-        ValidationResult vr = checkCodeOnServer(stack, null, cc);
-        bh.see(processTxIssues(errors, vr, element, path, org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, false, null));
-        timeTracker.tx(t, "vc "+cc.toString());
+      try {
+        CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
+        if (cc.hasCoding()) {
+          long t = System.nanoTime();
+          ValidationResult vr = checkCodeOnServer(stack, null, cc);
+          bh.see(processTxIssues(errors, vr, element, path, org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION, false, null));
+          timeTracker.tx(t, "vc " + cc.toString());
+        }
+      } catch (CheckCodeOnServerException e) {
+        if (STACK_TRACE) e.getCause().printStackTrace();
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getCause().getMessage());
       }
     }
     return checkDisp;
@@ -1502,8 +1507,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = true;
     if (vr != null) {
       for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-        if (!iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-in-vs") && 
-            !iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "this-code-not-in-vs")
+        if (!iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-in-vs")
+            && !iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "this-code-not-in-vs")
             && !(ignoreCantInfer || iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "cannot-infer"))) {
           OperationOutcomeIssueComponent i = iss.copy();
           if (notFoundLevel != null && i.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found")) { 
@@ -1653,9 +1658,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   timeTracker.tx(t, DataRenderer.display(context, cc));
                 }
               }
-            } catch (Exception e) {
-              if (STACK_TRACE) e.printStackTrace();
-              warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getMessage());
+            } catch (CheckCodeOnServerException e) {
+              if (STACK_TRACE) e.getCause().printStackTrace();
+              warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getCause().getMessage());
             }
             // special case: if the logical model has both CodeableConcept and Coding mappings, we'll also check the first coding.
             if (getMapping("http://hl7.org/fhir/terminology-pattern", logical, logical.getSnapshot().getElementFirstRep()).contains("Coding")) {
@@ -1861,9 +1866,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           else
             ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_8, describeReference(maxVSUrl, valueset), ccSummary(cc)) && ok;
         }
-      } catch (Exception e) {
-        if (STACK_TRACE) e.printStackTrace();
-        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT_MAX, e.getMessage());
+      } catch (CheckCodeOnServerException e) {
+        if (STACK_TRACE) e.getCause().printStackTrace();
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT_MAX, e.getCause().getMessage());
       }
     }
     return ok;
@@ -7474,6 +7479,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return checkForInactive(filterOutSpecials(stack.getLiteralPath(), vs, context.validateCode(options, value, vs)), new CodeType(value));
   }
 
+  static class CheckCodeOnServerException extends Exception {
+    public CheckCodeOnServerException(Exception e) {
+      super(e);
+    }
+  }
 
   // no delay on this one? 
   public ValidationResult checkCodeOnServer(NodeStack stack, String code, String system, String version, String display, boolean checkDisplay) {
@@ -7490,9 +7500,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), c, valueset)), c);
   }
   
-  public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc) {
+  public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc) throws CheckCodeOnServerException {
     codingObserver.seeCode(stack, cc);
-    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), cc, valueset)), cc);
+    try {
+      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(baseOptions.withLanguage(stack.getWorkingLang()), cc, valueset)), cc);
+    } catch (Exception e) {
+      throw new CheckCodeOnServerException(e);
+    }
   }
 
   private ValidationResult filterOutSpecials(String path, ValueSet vs, ValidationResult vr) {
