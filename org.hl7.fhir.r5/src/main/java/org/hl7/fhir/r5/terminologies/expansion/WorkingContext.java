@@ -99,5 +99,9 @@ class WorkingContext {
   public void setNoTotal(boolean noTotal) {
     this.noTotal = noTotal;
   }
+
+  public void resetTotal() {
+    total = 0;
+  }
   
 }
