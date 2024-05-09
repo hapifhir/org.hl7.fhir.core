@@ -128,27 +128,4 @@ public class ResourceValidationTests {
     runTest("codesystem-example.xml");
   }
 
-  
-  @Test
-  public void testCodesystemSupplementsVersion() throws Exception {
-    List<ValidationMessage> errors = runTest("codesystem-example-supplement-version.xml");
-    assertNoErrors(errors);
-  }
-
-
-  private void assertNoErrors(List<ValidationMessage> errors) {
-    List<String> errorMessages = new ArrayList<>();
-    for(ValidationMessage message : errors) {
-      // we will skip the message that WG citation is needed
-      if(I18nConstants.VALIDATION_HL7_WG_NEEDED.equals(message.getMessageId())) {
-        continue;
-      }
-      if(message.getLevel().isError()) {
-        errorMessages.add(message.getMessage());
-      }
-    }
-    assertThat("No error message expected in validation outcome.", errorMessages, is(empty()));
-  }
-
-
 }

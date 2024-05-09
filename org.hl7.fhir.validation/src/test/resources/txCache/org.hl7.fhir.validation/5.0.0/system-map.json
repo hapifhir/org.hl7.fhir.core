@@ -1,6 +1,11 @@
 {
   "systems" : [
     {
+      "system" : "5.0.0|http://hl7.org/fhir/composition-status",
+      "authoritative" : [],
+      "candidates" : []
+    },
+    {
       "system" : "http://acme.com/config/fhir/codesystems/internal",
       "authoritative" : [],
       "candidates" : []
