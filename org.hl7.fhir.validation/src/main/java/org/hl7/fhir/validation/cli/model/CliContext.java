@@ -247,12 +247,12 @@ public class CliContext {
     return this;
   }
 
-  @JsonProperty("txServer")
+  @JsonProperty("noEcosystem")
   public boolean getNoEcosystem() {
     return noEcosystem;
   }
 
-  @JsonProperty("txServer")
+  @JsonProperty("noEcosystem")
   public CliContext setNoEcosystem(boolean noEcosystem) {
     this.noEcosystem = noEcosystem;
     return this;
