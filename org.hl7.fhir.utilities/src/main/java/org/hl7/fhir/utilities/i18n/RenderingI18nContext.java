@@ -575,6 +575,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VALUE_SET_CONT = "VALUE_SET_CONT";
   public static final String VALUE_SET_INF = "VALUE_SET_INF";
   public static final String VALUE_SET_SEL = "VALUE_SET_SEL";
+  public static final String VALUE_SET_TOO_COSTLY = "VALUE_SET_TOO_COSTLY";
   public static final String VALUE_SET_LEVEL = "VALUE_SET_LEVEL";
   public static final String VALUE_SET_CODE = "VALUE_SET_CODE";
   public static final String VALUE_SET_SYSTEM = "VALUE_SET_SYSTEM";
