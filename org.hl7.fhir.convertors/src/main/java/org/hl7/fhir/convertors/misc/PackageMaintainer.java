@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
@@ -67,15 +68,15 @@ public class PackageMaintainer {
           System.out.println("Examples contains " + s + " but core doesn't");
       }
     }
-    strip(new File(Utilities.path(PATH, "hl7.fhir." + ver + ".core", "package")));
-    strip(new File(Utilities.path(PATH, "hl7.fhir." + ver + ".expansions", "package")));
+    strip(ManagedFileAccess.file(Utilities.path(PATH, "hl7.fhir." + ver + ".core", "package")));
+    strip(ManagedFileAccess.file(Utilities.path(PATH, "hl7.fhir." + ver + ".expansions", "package")));
     if (!ver.equals("r2b"))
-      strip(new File(Utilities.path(PATH, "hl7.fhir." + ver + ".elements", "package")));
+      strip(ManagedFileAccess.file(Utilities.path(PATH, "hl7.fhir." + ver + ".elements", "package")));
   }
 
 
-  private List<String> listResources(String dir) {
-    File folder = new File(dir);
+  private List<String> listResources(String dir) throws IOException {
+    File folder = ManagedFileAccess.file(dir);
     List<String> res = new ArrayList<>();
     for (String fn : folder.list()) {
       if (fn.endsWith(".json") && fn.contains("-")) {

@@ -47,7 +47,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       genStandardsStatus(h2, ss);
     }
     XhtmlNode p =  x.para();
-    p.tx("Parameter ");
+    p.tx(context.formatMessage(RenderingContext.SEARCH_PAR_PAR)+" ");
     p.code().tx(spd.getCode());
     p.tx(":");
     p.code().tx(spd.getType().toCode());
@@ -55,7 +55,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
 
     XhtmlNode tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();
-    tr.td().tx(Utilities.pluralize("Resource", spd.getBase().size()));
+    tr.td().tx(Utilities.pluralize(/*!#*/"Resource", spd.getBase().size()));
     XhtmlNode td = tr.td();
     for (Enumeration<VersionIndependentResourceTypesAll> t : spd.getBase()) {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.getCode());
@@ -68,23 +68,23 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       }
     }
     tr = tbl.tr();
-    tr.td().tx("Expression");
+    tr.td().tx(context.formatMessage(RenderingContext.SEARCH_PAR_EXP));
     if (spd.hasExpression()) {
       tr.td().code().tx(spd.getExpression());
     } else {
-      tr.td().tx("(none)");
+      tr.td().tx(context.formatMessage(RenderingContext.SEARCH_PAR_NONE));
     }
     if (spd.hasProcessingMode()) {
       tr = tbl.tr();
-      tr.td().tx("Processing Mode");
+      tr.td().tx(context.formatMessage(RenderingContext.SEARCH_PAR_PROC));
       tr.td().tx(spd.getProcessingMode().getDisplay());      
     }
     if (spd.hasTarget()) {
       tr = tbl.tr();
-      tr.td().tx(Utilities.pluralize("Target Resources", spd.getTarget().size()));
+      tr.td().tx(Utilities.pluralize(/*!#*/"Target Resources", spd.getTarget().size()));
       td = tr.td();
       if (isAllConcreteResources(spd.getTarget())) {
-        td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "resourcelist.html")).tx("All Resources");
+        td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "resourcelist.html")).tx(context.formatMessage(RenderingContext.SEARCH_PAR_RES));
       } else {
         for (Enumeration<VersionIndependentResourceTypesAll> t : spd.getTarget()) {
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.getCode());
@@ -99,28 +99,28 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       }
     }
     tr = tbl.tr();    
-    tr.td().tx("Multiples");
+    tr.td().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MULTIPLES));
     XhtmlNode ul = tr.td().ul();
     if (!spd.hasMultipleAnd()) {
-      ul.li().tx("multipleAnd: It's up to the server whether the parameter may repeat in order to specify multiple values that must all be true");
+      ul.li().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MULTIPLE_AND_SERVER));
     } else if (spd.getMultipleAnd()) {
-      ul.li().tx("multipleAnd: The parameter may repeat in order to specify multiple values that must all be true");
+      ul.li().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MULTIPLE_AND_REPEAT));
     } else {
-      ul.li().tx("multipleAnd: The parameter may only appear once");
+      ul.li().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MULTIPLE_AND_APPEAR));
     }
     if (!spd.hasMultipleOr()) {
-      ul.li().tx("multipleOr: It's up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true");
+      ul.li().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MULTIPLE_OR_SERVER));
     } else if (spd.getMultipleOr()) {
-      ul.li().tx("multipleOr: The parameter may have multiple values (separated by comma) where at least one must be true");
+      ul.li().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MULTIPLE_OR_MULTIPLE));
     } else {
-      ul.li().tx("multipleOr: The parameter may only have one value (no comma separators)");
+      ul.li().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MULTIPLE_OR_ONE));
     }
 
     if (spd.hasComparator()) {
       tr = tbl.tr();
-      tr.td().tx("Comparators");
+      tr.td().tx(context.formatMessage(RenderingContext.SEARCH_PAR_COMP));
       td = tr.td();
-      td.tx("Allowed: ");
+      td.tx(context.formatMessage(RenderingContext.SEARCH_PAR_ALLOWED)+" ");
       for (Enumeration<SearchComparator> t : spd.getComparator()) {
         td.sep(", ");
         td.tx(t.asStringValue());
@@ -128,9 +128,9 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     }
     if (spd.hasModifier()) {
       tr = tbl.tr();
-      tr.td().tx("Modifiers");
+      tr.td().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MOD));
       td = tr.td();
-      td.tx("Allowed: ");
+      td.tx(context.formatMessage(RenderingContext.SEARCH_PAR_ALLOWED)+" ");
       for (Enumeration<SearchModifierCode> t : spd.getModifier()) {
         td.sep(", ");
         td.tx(t.asStringValue());
@@ -138,9 +138,9 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     }
     if (spd.hasChain()) {
       tr = tbl.tr();
-      tr.td().tx("Chains");
+      tr.td().tx(context.formatMessage(RenderingContext.SEARCH_PAR_CHAIN));
       td = tr.td();
-      td.tx("Allowed: ");
+      td.tx(context.formatMessage(RenderingContext.SEARCH_PAR_ALLOWED)+" ");
       for (StringType t : spd.getChain()) {
         td.sep(", ");
         td.tx(t.asStringValue());
@@ -148,7 +148,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     }
     
     if (spd.hasComponent()) {
-      x.para().b().tx("Components");
+      x.para().b().tx(context.formatMessage(RenderingContext.SEARCH_PAR_COMP));
       tbl = x.table("grid");
       for (SearchParameterComponentComponent t : spd.getComponent()) {
         tr = tbl.tr();
@@ -167,7 +167,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
   private boolean isAllConcreteResources(List<Enumeration<VersionIndependentResourceTypesAll>> list) {
     for (String s : context.getWorker().getResourceNames()) {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(s);
-      if (!sd.getAbstract() && !Utilities.existsInList(sd.getType(), "Parameters")) {
+      if (!sd.getAbstract() && !Utilities.existsInList(sd.getType(), context.formatMessage(RenderingContext.SEARCH_PAR_PAR))) {
         boolean found = false;
         for (Enumeration<VersionIndependentResourceTypesAll> c : list) {
           found = found || sd.getName().equals(c.getCode());

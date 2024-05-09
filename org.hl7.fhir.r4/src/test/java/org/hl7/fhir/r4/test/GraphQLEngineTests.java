@@ -24,6 +24,7 @@ import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.GraphQLEngine;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.graphql.Argument;
 import org.hl7.fhir.utilities.graphql.EGraphEngine;
 import org.hl7.fhir.utilities.graphql.EGraphQLException;
@@ -73,7 +74,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
         filename = TestingUtilities.resourceNameToFile(parts[0].toLowerCase() + "-" + parts[1].toLowerCase() + ".xml");
     }
 
-    Resource parsedResource = !Utilities.noString(filename) ? new XmlParser().parse(new FileInputStream(filename))
+    Resource parsedResource = !Utilities.noString(filename) ? new XmlParser().parse(ManagedFileAccess.inStream(filename))
         : null;
 
     testResource(parsedResource, output, source);
@@ -90,7 +91,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     String filename = TestingUtilities
         .resourceNameToFile(parts[0].toLowerCase() + "-" + parts[1].toLowerCase() + ".xml");
 
-    Resource parsedResource = new XmlParser().parse(new FileInputStream(filename));
+    Resource parsedResource = new XmlParser().parse(ManagedFileAccess.inStream(filename));
     parsedResource.setId("example/_history/1");
 
     testResource(parsedResource, output, source);
@@ -135,8 +136,8 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
   public Resource lookup(Object appInfo, String type, String id) throws FHIRException {
     try {
       String filename = TestingUtilities.resourceNameToFile(type.toLowerCase() + '-' + id.toLowerCase() + ".xml");
-      if (new File(filename).exists())
-        return new XmlParser().parse(new FileInputStream(filename));
+      if (ManagedFileAccess.file(filename).exists())
+        return new XmlParser().parse(ManagedFileAccess.inStream(filename));
       else
         return null;
     } catch (Exception e) {
@@ -160,8 +161,8 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
         String[] parts = reference.getReferenceElement().getValue().split("/");
         String filename = TestingUtilities
             .resourceNameToFile(parts[0].toLowerCase() + '-' + parts[1].toLowerCase() + ".xml");
-        if (new File(filename).exists())
-          return new ReferenceResolution(null, new XmlParser().parse(new FileInputStream(filename)));
+        if (ManagedFileAccess.file(filename).exists())
+          return new ReferenceResolution(null, new XmlParser().parse(ManagedFileAccess.inStream(filename)));
       }
       return null;
     } catch (Exception e) {
@@ -176,12 +177,12 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
     try {
       if (type.equals("Condition") && searchParams.get(0).hasValue("Patient/example"))
         matches.add(
-            new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("condition-example.xml"))));
+            new XmlParser().parse(ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("condition-example.xml"))));
       else if (type.equals("Patient")) {
         matches.add(
-            new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("patient-example.xml"))));
+            new XmlParser().parse(ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("patient-example.xml"))));
         matches.add(
-            new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile("patient-example-xds.xml"))));
+            new XmlParser().parse(ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("patient-example-xds.xml"))));
       }
     } catch (Exception e) {
       throw new FHIRException(e);
@@ -203,11 +204,11 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       BundleEntryComponent be = bnd.addEntry();
       be.setFullUrl("http://hl7.org/fhir/Patient/example");
       be.setResource(new XmlParser()
-          .parse(new FileInputStream(Utilities.path(TestingUtilities.resourceNameToFile("patient-example.xml")))));
+          .parse(ManagedFileAccess.inStream(Utilities.path(TestingUtilities.resourceNameToFile("patient-example.xml")))));
       be = bnd.addEntry();
       be.setFullUrl("http://hl7.org/fhir/Patient/example");
       be.setResource(new XmlParser()
-          .parse(new FileInputStream(Utilities.path(TestingUtilities.resourceNameToFile("patient-example-xds.xml")))));
+          .parse(ManagedFileAccess.inStream(Utilities.path(TestingUtilities.resourceNameToFile("patient-example-xds.xml")))));
       be.getSearch().setScore(0.5);
       be.getSearch().setMode(SearchEntryMode.MATCH);
       bnd.setTotal(50);

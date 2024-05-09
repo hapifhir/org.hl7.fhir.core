@@ -416,6 +416,33 @@ public class StructureDefinitionValidator extends BaseValidator {
       addCharacteristics(characteristics, path);
     }
 
+    if (!snapshot && (element.hasChild("fixed") || element.hasChild("pattern")) && base != null) {
+      ElementDefinition ed = getDefinitionFromBase(base, element.getNamedChildValue("id"), element.getNamedChildValue("path"));
+      if (ed != null && (ed.hasFixed() || ed.hasPattern())) {
+        if (ed.hasFixed()) {
+          Element fixed = element.getNamedChild("fixed");
+          if (fixed != null) {
+            NodeStack fn = stack.push(fixed, 0, null, null);            
+            if (rule(errors, "2024-03-26", IssueType.INVALID, fn, fixed.fhirType().equals(ed.getFixed().fhirType()), I18nConstants.SD_ELEMENT_FIXED_WRONG_TYPE, fixed.fhirType(), ed.getFixed().fhirType())) {
+              ok = ((org.hl7.fhir.validation.instance.InstanceValidator) parent).checkFixedValue(errors, path, fixed, ed.getFixed(), base.getVersionedUrl(), "fixed", element, false, context.formatMessage(I18nConstants.SD_ELEMENT_REASON_DERIVED, base.getVersionedUrl())) && ok;
+
+            } else {
+              ok = false;
+            }
+          }
+        } else {
+          Element pattern = element.getNamedChild("pattern");
+          if (pattern != null) {
+            NodeStack fn = stack.push(pattern, 0, null, null);            
+            if (rule(errors, "2024-03-26", IssueType.INVALID, fn, pattern.fhirType().equals(ed.getFixed().fhirType()), I18nConstants.SD_ELEMENT_PATTERN_WRONG_TYPE, pattern.fhirType(), ed.getFixed().fhirType())) {
+              ok = ((org.hl7.fhir.validation.instance.InstanceValidator) parent).checkFixedValue(errors, path, pattern, ed.getFixed(), base.getVersionedUrl(), "pattern", element, true, context.formatMessage(I18nConstants.SD_ELEMENT_REASON_DERIVED, base.getVersionedUrl())) && ok;
+            } else {
+              ok = false;
+            }
+          }
+        }
+      }
+    }
     for (Element type : types) {
       if (hasMustSupportExtension(type)) {
         typeMustSupport = true;
@@ -532,6 +559,17 @@ public class StructureDefinitionValidator extends BaseValidator {
       cc++;
     }    
     return ok;
+  }
+
+  private ElementDefinition getDefinitionFromBase(StructureDefinition base, String id, String path) {
+    ElementDefinition ed = null;
+    if (id != null) {
+      ed = base.getSnapshot().getElementById(id);
+    }
+    if (path != null) {
+      ed = base.getSnapshot().getElementById(path);
+    }
+    return ed;
   }
 
   private boolean validateElementDefinitionInvariant(List<ValidationMessage> errors, Element invariant, NodeStack stack, Map<String, String> invariantMap, List<Element> elements, Element element, 

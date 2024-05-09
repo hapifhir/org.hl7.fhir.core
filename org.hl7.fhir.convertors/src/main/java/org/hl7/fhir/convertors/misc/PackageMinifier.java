@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.ResourceMinifier;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
@@ -33,7 +34,7 @@ public class PackageMinifier {
         }
       }
     }
-    tgt.save(new FileOutputStream(target));
+    tgt.save(ManagedFileAccess.outStream(target));
   }
   
 }

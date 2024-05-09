@@ -54,6 +54,7 @@ public interface ITerminologyClient {
   ValueSet expandValueset(ValueSet vs, Parameters p) throws FHIRException;
   Parameters validateCS(Parameters pin) throws FHIRException;
   Parameters validateVS(Parameters pin) throws FHIRException;
+  Parameters subsumes(Parameters pin) throws FHIRException;
   ITerminologyClient setTimeoutFactor(int i) throws FHIRException;
   ToolingClientLogger getLogger();
   ITerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
@@ -61,6 +62,8 @@ public interface ITerminologyClient {
   ITerminologyClient setRetryCount(int retryCount) throws FHIRException;
   CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException;
   Parameters lookupCode(Map<String, String> params) throws FHIRException;
+  Parameters lookupCode(Parameters params) throws FHIRException;
+  Parameters translate(Parameters params) throws FHIRException;
   Bundle validateBatch(Bundle batch);
   CanonicalResource read(String type, String id);
   ClientHeaders getClientHeaders();

@@ -76,14 +76,13 @@ public class FmlParser extends ParserBase {
         if (lexer.hasComments()) {
           result.makeElement("description").markLocation(lexer.getCurrentLocation()).setValue(lexer.getAllComments());
         }
-      } else {
-        while (lexer.hasToken("///")) {
-          lexer.next();
-          String fid = lexer.takeDottedToken();
-          Element e = result.makeElement(fid).markLocation(lexer.getCurrentLocation());
-          lexer.token("=");
-          e.setValue(lexer.readConstant("meta value"));
-        }
+      }
+      while (lexer.hasToken("///")) {
+        lexer.next();
+        String fid = lexer.takeDottedToken();
+        Element e = result.makeElement(fid).markLocation(lexer.getCurrentLocation());
+        lexer.token("=");
+        e.setValue(lexer.readConstant("meta value"));
       }
       lexer.setMetadataFormat(false);
       if (!result.hasChild("status")) {
@@ -134,7 +133,7 @@ public class FmlParser extends ParserBase {
     lexer.token("conceptmap");
     Element map = structureMap.makeElement("contained");
     StructureDefinition sd = context.fetchTypeDefinition("ConceptMap");
-    map.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd), SpecialElement.fromProperty(map.getElementProperty() != null ? map.getElementProperty() : map.getProperty()), map.getProperty());
+    map.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd, getProfileUtilities(), getContextUtilities()), SpecialElement.fromProperty(map.getElementProperty() != null ? map.getElementProperty() : map.getProperty()), map.getProperty());
     map.setType("ConceptMap");
     Element eid = map.makeElement("id").markLocation(lexer.getCurrentLocation());
     String id = lexer.readConstant("map id");
@@ -224,6 +223,8 @@ public class FmlParser extends ParserBase {
   private ConceptMapRelationship readRelationship(FHIRLexer lexer) throws FHIRLexerException {
     String token = lexer.take();
     if (token.equals("-"))
+      return ConceptMapRelationship.RELATEDTO;
+    if (token.equals("=")) // temporary
       return ConceptMapRelationship.RELATEDTO;
     if (token.equals("=="))
       return ConceptMapRelationship.EQUIVALENT;
@@ -400,7 +401,7 @@ public class FmlParser extends ParserBase {
     if (newFmt) {
       if (lexer.isConstant()) {
         if (lexer.isStringConstant()) {
-          rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("ruleName"));
+          rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(fixName(lexer.readConstant("ruleName")));
         } else {
           rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
         }
@@ -414,6 +415,10 @@ public class FmlParser extends ParserBase {
       }
       lexer.token(";");
     }
+  }
+
+  private String fixName(String c) {
+    return c.replace("-", "");
   }
 
   private void parseRuleReference(Element rule, FHIRLexer lexer) throws FHIRLexerException {

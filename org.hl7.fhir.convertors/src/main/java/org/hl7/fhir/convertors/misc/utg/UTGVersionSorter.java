@@ -29,6 +29,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
@@ -47,7 +48,7 @@ public class UTGVersionSorter {
   private void execute(String source) throws IOException {
     List<CanonicalResourceAnalysis> list = new ArrayList<>();
     System.out.println("Loading UTG");
-    loadFromSource(list, new File(source));
+    loadFromSource(list, ManagedFileAccess.file(source));
 
     Map<String, CanonicalResource> r2 = loadPackageR2("hl7.fhir.r2.core");
     Map<String, CanonicalResource> r3 = loadPackageR3("hl7.fhir.r3.core");
@@ -58,7 +59,7 @@ public class UTGVersionSorter {
       cr.analyse(r2, r3, r4);
     }
 
-    Bundle b = (Bundle) new JsonParser().parse(new FileInputStream("C:\\work\\org.hl7.fhir.igs\\UTG\\input\\sourceOfTruth\\history\\utgrel1hx-1-0-6.json"));
+    Bundle b = (Bundle) new JsonParser().parse(ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir.igs\\UTG\\input\\sourceOfTruth\\history\\utgrel1hx-1-0-6.json"));
 
     System.out.println("Summary");
     for (CanonicalResourceAnalysis cr : list) {
@@ -79,10 +80,10 @@ public class UTGVersionSorter {
       pa.getWho().setDisplay("Vocabulary WG");
       CanonicalResource res = cr.resource;
       res.setVersion(cr.recommendation);
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(cr.filename), res);
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(cr.filename), res);
     }
     System.out.println();
-    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("C:\\work\\org.hl7.fhir.igs\\UTG\\input\\sourceOfTruth\\history\\utgrel1hx-1-0-6.json"), b);
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream("C:\\work\\org.hl7.fhir.igs\\UTG\\input\\sourceOfTruth\\history\\utgrel1hx-1-0-6.json"), b);
     System.out.println("Done");
   }
 
@@ -134,7 +135,7 @@ public class UTGVersionSorter {
         loadFromSource(list, f);
       } else if (f.getName().endsWith(".xml")) {
         try {
-          Resource r = new XmlParser().parse(new FileInputStream(f));
+          Resource r = new XmlParser().parse(ManagedFileAccess.inStream(f));
           if (r instanceof CanonicalResource) {
             CanonicalResource cr = (CanonicalResource) r;
             cr.setWebPath(f.getAbsolutePath());

@@ -13,9 +13,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
@@ -73,6 +75,7 @@ import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonUtilities;
@@ -484,7 +487,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (!sd.hasSnapshot()) {
       StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
       pu.generateSnapshot(base, sd, sd.getUrl(), null, sd.getTitle());
-// (debugging)      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", sd.getId()+".xml")), sd);
+// (debugging)      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", sd.getId()+".xml")), sd);
     }
     for (Resource r : sd.getContained()) {
       if (r instanceof StructureDefinition) {
@@ -601,7 +604,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           java.add("outcome", oj);
         }
 
-        File newManifestFile = new File(Utilities.path("[tmp]", "validator", "manifest.new.json"));
+        File newManifestFile = ManagedFileAccess.file(Utilities.path("[tmp]", "validator", "manifest.new.json"));
         if (!newManifestFile.getParentFile().exists()) {
           newManifestFile.getParentFile().mkdir();
         }
@@ -832,7 +835,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, String url) {
+  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, Object appContext, String url) {
     return null;
   }
 
@@ -866,5 +869,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   public EnumSet<ElementValidationAction> policyForElement(IResourceValidator validator, Object appContext,
       StructureDefinition structure, ElementDefinition element, String path) {
     return EnumSet.allOf(ElementValidationAction.class);
+  }
+
+  @Override
+  public Set<String> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
+    return new HashSet<>();
   }
 }

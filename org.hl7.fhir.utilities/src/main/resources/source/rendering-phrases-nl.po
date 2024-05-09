@@ -1,0 +1,578 @@
+// en -> nl
+Plural-Forms: nplurals=2; plural=n != 1;
+
+#: BUNDLE_DOCUMENT_CONTENT
+msgid "Additional Document Content"
+msgstr "Additional Document Content"
+
+#: BUNDLE_ETAG
+msgid "ETag = {0}"
+msgstr "ETag = {0}"
+
+#: BUNDLE_HEADER_DOC_ENTRY_RD
+msgid "{0}. {2}/{3}"
+msgstr "{0}. {2}/{3}"
+
+#: BUNDLE_HEADER_DOC_ENTRY_U
+msgid "{0}. {1}"
+msgstr "{0}. {1}"
+
+#: BUNDLE_HEADER_DOC_ENTRY_URD
+msgid "{0}. {1} ({2}/{3})"
+msgstr "{0}. {1} ({2}/{3})"
+
+#: BUNDLE_HEADER_ENTRY
+msgid "Entry {0}"
+msgstr "Entry {0}"
+
+#: BUNDLE_HEADER_ENTRY_URL
+msgid "Entry {0} - fullUrl = {1}"
+msgstr "Entry {0} - Full URL = {1}"
+
+#: BUNDLE_HEADER_ROOT
+msgid "Bundle {0} of type {1}"
+msgstr "Bundle {0} van type {1}"
+
+#: BUNDLE_IF_MATCH
+msgid "If-Match = {0}"
+msgstr "If-Match = {0}"
+
+#: BUNDLE_IF_MOD
+msgid "If-Modified-Since = {0}"
+msgstr "If-Modified-Since = {0}"
+
+#: BUNDLE_IF_NONE
+msgid "If-None-Exist = {0}"
+msgstr "If-None-Exist = {0}"
+
+#: BUNDLE_IF_NON_MATCH
+msgid "If-None-Match = {0}"
+msgstr "If-None-Match = {0}"
+
+#: BUNDLE_LAST_MOD
+msgid "LastModified = {0}"
+msgstr "LastModified = {0}"
+
+#: BUNDLE_LOCATION
+msgid "Location = {0}"
+msgstr "Location = {0}"
+
+#: BUNDLE_REQUEST
+msgid "Request:"
+msgstr "Request:"
+
+#: BUNDLE_RESOURCE
+msgid "Resource {0}:"
+msgstr "Resource {0}:"
+
+#: BUNDLE_RESPONSE
+msgid "Response:"
+msgstr "Response:"
+
+#: BUNDLE_SEARCH
+msgid "Search:"
+msgstr "Zoeken:"
+
+#: BUNDLE_SEARCH_MODE
+msgid "Mode = {0}"
+msgstr "mode = {0}"
+
+#: BUNDLE_SEARCH_SCORE
+msgid "Score = {0}"
+msgstr "score = {0}"
+
+#: CODEPROP_CODE
+msgid "Code"
+msgstr ""
+
+#: CODESYSTEM_CONCEPTS
+msgid "Concepts"
+msgstr ""
+
+#: CODESYSTEM_CONTENT_COMPLETE This <param name
+msgid ""cased"/> code system <param name="cs"/> defines the following code<if test="code-count != 1">s</if><param name="h"/>:"
+msgstr ""
+
+#: CODESYSTEM_CONTENT_EXAMPLE
+msgid "This <param name="cased"/> code system <param name="cs"/> provides some code<if test="code-count != 1">s</if><param name="h"/> <b>that are example only</b>:"
+msgstr ""
+
+#: CODESYSTEM_CONTENT_FRAGMENT
+msgid "This <param name="cased"/> code system <param name="cs"/> provides <b>a fragment</b> that includes following code<if test="code-count != 1">s</if><param name="h"/>:"
+msgstr ""
+
+#: CODESYSTEM_CONTENT_NOTPRESENT
+msgid "This <param name="cased"/> code system <param name="cs"/> defines codes<param name="h"/>, but no codes are represented here"
+msgstr ""
+
+#: CODESYSTEM_CONTENT_SUPPLEMENT
+msgid "This code system <param name="cs"/> defines {0} on the following code<if test="code-count != 1">s</if>:"
+msgstr ""
+
+#: CODESYSTEM_DEPRECATED
+msgid "Deprecated"
+msgstr ""
+
+#: CODESYSTEM_DESC
+msgid "Description"
+msgstr ""
+
+#: CODESYSTEM_FILTERS
+msgid "Filters"
+msgstr ""
+
+#: CODESYSTEM_FILTER_CODE
+msgid "Code"
+msgstr ""
+
+#: CODESYSTEM_FILTER_OP
+msgid "Op"
+msgstr ""
+
+#: CODESYSTEM_FILTER_VALUE
+msgid "Value"
+msgstr ""
+
+#: CODESYSTEM_PROPS
+msgid "Properties"
+msgstr ""
+
+#: CODESYSTEM_PROPS_DESC
+msgid "This code system defines the following properties for its concepts"
+msgstr ""
+
+#: CODESYSTEM_PROP_CODE
+msgid "Code"
+msgstr ""
+
+#: CODESYSTEM_PROP_DESC
+msgid "Description"
+msgstr ""
+
+#: CODESYSTEM_PROP_NAME
+msgid "Name"
+msgstr ""
+
+#: CODESYSTEM_PROP_TYPE
+msgid "Type"
+msgstr ""
+
+#: CODESYSTEM_PROP_URI
+msgid "URI"
+msgstr ""
+
+#: PAT_ACTIVE
+msgid "Active:"
+msgstr ""
+
+#: PAT_ACTIVE_HINT
+msgid "Record is active"
+msgstr ""
+
+#: PAT_ALT_NAME
+msgid "Alt. Name:"
+msgstr ""
+
+#: PAT_ALT_NAME_HINT
+msgid "Alternate names (see the one above)"
+msgstr ""
+
+#: PAT_CONTACT
+msgid "Contact Detail"
+msgstr ""
+
+#: PAT_CONTACT_HINT
+msgid "Ways to contact the Patient"
+msgstr ""
+
+#: PAT_CONTAINED
+msgid "Contained Resource"
+msgid_plural "Contained Resources"
+msgstr[0] ""
+msgstr[1] ""
+
+#: PAT_DECEASED
+msgid "Deceased:"
+msgstr ""
+
+#: PAT_DECEASED_HINT
+msgid "Known status of Patient"
+msgstr ""
+
+#: PAT_DOB
+msgid "DoB: {0}"
+msgstr ""
+
+#: PAT_GENDER
+msgid "Gender: {0}"
+msgstr ""
+
+#: PAT_GP
+msgid "General Practitioner"
+msgstr ""
+
+#: PAT_LANG_HINT
+msgid "Language spoken"
+msgid_plural "Languages spoken"
+msgstr[0] ""
+msgstr[1] ""
+
+#: PAT_LANG_PREFERRED
+msgid "(preferred)"
+msgstr ""
+
+#: PAT_LANG
+msgid "Language:"
+msgid_plural "Languages:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: PAT_LINKS
+msgid "Links:"
+msgstr ""
+
+#: PAT_LINKS_HINT
+msgid "Patient Links"
+msgstr ""
+
+#: PAT_LINK_REFER
+msgid "Please refer to"
+msgstr ""
+
+#: PAT_LINK_REPL
+msgid "This record replaces"
+msgstr ""
+
+#: PAT_LINK_REPLBY
+msgid "This record replaced by"
+msgstr ""
+
+#: PAT_LINK_SEE
+msgid "Also see"
+msgstr ""
+
+#: PAT_MARITAL
+msgid "Marital Status:"
+msgstr ""
+
+#: PAT_MARITAL_HINT
+msgid "Known Marital status of Patient"
+msgstr ""
+
+#: PAT_MO
+msgid "Managing Organization"
+msgstr ""
+
+#: PAT_MUL_BIRTH
+msgid "Multiple Birth:"
+msgstr ""
+
+#: PAT_MUL_BIRTH_HINT
+msgid "Known multipleBirth status of Patient"
+msgstr ""
+
+#: PAT_NOK_CONTACT
+msgid "Contact:"
+msgstr ""
+
+#: PAT_NOK_CONTACT_HINT
+msgid "Patient contact"
+msgstr ""
+
+#: PAT_NOM_CONTACT
+msgid "Nominated Contact:"
+msgstr ""
+
+#: PAT_NO_DOB
+msgid "DoB Unknown"
+msgstr ""
+
+#: PAT_NO_GENDER
+msgid "(no stated gender)"
+msgstr ""
+
+#: PAT_NO_NAME
+msgid "Anonymous Patient"
+msgstr ""
+
+#: PAT_ORG
+msgid "Organization:"
+msgstr ""
+
+#: PAT_OTHER_ID_HINT
+msgid "Other Id (see the one above)"
+msgid_plural "Other Ids (see the one above)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: PAT_OTHER_ID
+msgid "Other Id:"
+msgid_plural "Other Ids:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: PAT_PERIOD
+msgid "Valid Period:"
+msgstr ""
+
+#: PAT_PHOTO
+msgid "Patient Photo"
+msgstr ""
+
+#: PAT_RELN
+msgid "Relationships:"
+msgstr ""
+
+#: RESOURCE_COPYRIGHT
+msgid "Copyright Statement:"
+msgstr ""
+
+#: SD_COMP_HEAD_CARD_L
+msgid "L Card."
+msgstr ""
+
+#: SD_COMP_HEAD_CARD_L_DESC
+msgid "Minimum and Maximum # of times the the element can appear in the instance - Left Structure"
+msgstr ""
+
+#: SD_COMP_HEAD_CARD_R
+msgid "R Card."
+msgstr ""
+
+#: SD_COMP_HEAD_CARD_R_DESC
+msgid "Minimum and Maximum # of times the the element can appear in the instance - Right Structure"
+msgstr ""
+
+#: SD_COMP_HEAD_COMP
+msgid "Comments"
+msgstr ""
+
+#: SD_COMP_HEAD_COMP_DESC
+msgid "Comments about the comparison"
+msgstr ""
+
+#: SD_COMP_HEAD_DESC_L
+msgid "L Description & Constraints"
+msgstr ""
+
+#: SD_COMP_HEAD_DESC_L_DESC
+msgid "Additional information about the element - Left Structure"
+msgstr ""
+
+#: SD_COMP_HEAD_DESC_R
+msgid "R Description & Constraints"
+msgstr ""
+
+#: SD_COMP_HEAD_DESC_R_DESC
+msgid "Additional information about the element - Right Structure"
+msgstr ""
+
+#: SD_COMP_HEAD_FLAGS_L
+msgid "L Flags"
+msgstr ""
+
+#: SD_COMP_HEAD_FLAGS_L_DESC
+msgid "Information about the use of the element - Left Structure"
+msgstr ""
+
+#: SD_COMP_HEAD_FLAGS_R
+msgid "R Flags"
+msgstr ""
+
+#: SD_COMP_HEAD_FLAGS_R_DESC
+msgid "Information about the use of the element - Right Structure"
+msgstr ""
+
+#: SD_COMP_HEAD_NAME
+msgid "Name"
+msgstr ""
+
+#: SD_COMP_HEAD_NAME_DESC
+msgid "The logical name of the element"
+msgstr ""
+
+#: SD_COMP_HEAD_TYPE_L
+msgid "L Type"
+msgstr ""
+
+#: SD_COMP_HEAD_TYPE_L_DESC
+msgid "Reference to the type of the element - Left Structure"
+msgstr ""
+
+#: SD_COMP_HEAD_TYPE_R
+msgid "R Type"
+msgstr ""
+
+#: SD_COMP_HEAD_TYPE_R_DESC
+msgid "Reference to the type of the element - Right Structure"
+msgstr ""
+
+#: SD_DOCO
+msgid "Documentation for this format"
+msgstr ""
+
+#: SD_GRID_HEAD_CARD
+msgid "Card."
+msgstr ""
+
+#: SD_GRID_HEAD_CARD_DESC
+msgid "Minimum and Maximum # of times the the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
+msgstr ""
+
+#: SD_GRID_HEAD_DESC
+msgid "Constraints and Usage"
+msgstr ""
+
+#: SD_GRID_HEAD_DESC_DESC
+msgid "Fixed values, length limits, vocabulary bindings and other usage notes"
+msgstr ""
+
+#: SD_GRID_HEAD_NAME
+msgid "Name"
+msgstr ""
+
+#: SD_GRID_HEAD_NAME_DESC
+msgid "The name of the element (Slice name in brackets).  Mouse-over provides definition"
+msgstr ""
+
+#: SD_GRID_HEAD_TYPE
+msgid "Type"
+msgstr ""
+
+#: SD_GRID_HEAD_TYPE_DESC
+msgid "Reference to the type of the element"
+msgstr ""
+
+#: SD_HEAD_CARD
+msgid "Card."
+msgstr ""
+
+#: SD_HEAD_CARD_DESC
+msgid "Minimum and Maximum # of times the the element can appear in the instance"
+msgstr ""
+
+#: SD_HEAD_DESC
+msgid "Description & Constraints"
+msgstr ""
+
+#: SD_HEAD_DESC_DESC
+msgid "Additional information about the element"
+msgstr ""
+
+#: SD_HEAD_FLAGS
+msgid "Flags"
+msgstr ""
+
+#: SD_HEAD_FLAGS_DESC
+msgid "Information about the use of the element"
+msgstr ""
+
+#: SD_HEAD_NAME
+msgid "Name"
+msgstr ""
+
+#: SD_HEAD_NAME_DESC
+msgid "The logical name of the element"
+msgstr ""
+
+#: SD_HEAD_SC
+msgid "The logical name of the elemHEAD_FLAGS = Flags"
+msgstr ""
+
+#: SD_HEAD_TYPE
+msgid "Type"
+msgstr ""
+
+#: SD_HEAD_TYPE_DESC
+msgid "Reference to the type of the element"
+msgstr ""
+
+#: SD_LEGEND
+msgid "Legend for this format"
+msgstr ""
+
+#: SD_SLICING_INFO
+msgid "{0}, {1} by {2}"
+msgstr ""
+
+#: SD_SUMMARY
+msgid "Fixed Value: {0} {1}"
+msgstr ""
+
+#: SD_SUMMARY_FIXED
+msgid "Fixed: {0} {1}"
+msgstr ""
+
+#: SD_SUMMARY_INFO
+msgid "{0}, {1} by {2}"
+msgstr ""
+
+#: SD_SUMMARY_MANDATORY
+msgid "Mandatory: {0} {1}"
+msgstr ""
+
+#: SD_SUMMARY_MAPPINGS
+msgid "Mappings for {0} ({2}{1}{3})"
+msgstr ""
+
+#: SD_SUMMARY_MISSING_EXTENSION
+msgid "Unable to summarise extension {0} (no extension found)"
+msgstr ""
+
+#: SD_SUMMARY_MISSING_PROFILE
+msgid "Unable to summarise profile {0} (no profile found)"
+msgstr ""
+
+#: SD_SUMMARY_MUST_SUPPORT
+msgid "Must-Support: {0} {1}"
+msgstr ""
+
+#: SD_SUMMARY_NESTED_MANDATORY
+msgid "({0} nested mandatory {1})"
+msgstr ""
+
+#: SD_SUMMARY_PROHIBITED
+msgid "Prohibited: {0} {1}"
+msgstr ""
+
+#: SD_SUMMARY_PUBLICATION
+msgid "This profile was published on {0} as a {1} by {2}"
+msgstr ""
+
+#: SD_SUMMARY_SLICES
+msgid "This structure defines the following {0}Slices{1}"
+msgstr ""
+
+#: SD_SUMMARY_SLICE_NONE
+msgid "There is a slice with no discriminator at {0}"
+msgstr ""
+
+#: SD_SUMMARY_SLICE
+msgid "The element {0} is sliced based on the value of {1}"
+msgid_plural "The element {0} is sliced based on the values of {1}"
+msgstr[0] ""
+msgstr[1] ""
+
+#: TX_CODE
+msgid "Code"
+msgstr ""
+
+#: TX_COMMENTS
+msgid "Comments"
+msgstr ""
+
+#: TX_DEFINITION
+msgid "Definition"
+msgstr ""
+
+#: TX_DEPRECATED
+msgid "Deprecated"
+msgstr ""
+
+#: TX_DISPLAY
+msgid "Display"
+msgstr ""
+
+#: TX_VERSION
+msgid "Version"
+msgstr ""

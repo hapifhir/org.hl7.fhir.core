@@ -17,32 +17,33 @@ import org.hl7.fhir.r4b.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r4b.model.CodeSystem.CodeSystemHierarchyMeaning;
 import org.hl7.fhir.r4b.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r4b.model.Resource;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class ResourceFixer {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     new ResourceFixer().vistAllResources(args[0]);
 
   }
 
   private Set<String> refs = new HashSet<>();
 
-  private void vistAllResources(String folder) {
+  private void vistAllResources(String folder) throws IOException {
 
-    for (File f : new File(folder).listFiles()) {
+    for (File f : ManagedFileAccess.file(folder).listFiles()) {
       if (f.isDirectory()) {
         vistAllResources(f.getAbsolutePath());
       } else if (f.getName().endsWith(".json")) {
         Resource r = null;
         try {
-          r = new JsonParser().parse(new FileInputStream(f));
+          r = new JsonParser().parse(ManagedFileAccess.inStream(f));
         } catch (Throwable e) {
           // nothing at all
         }
         if (r != null) {
           try {
             if (visitResource(r)) {
-              new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f), r);
+              new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
             }
           } catch (Exception e) {
             System.out.println("Error processing " + f.getAbsolutePath() + ": " + e.getMessage());
@@ -52,14 +53,14 @@ public class ResourceFixer {
       } else if (f.getName().endsWith(".xml")) {
         Resource r = null;
         try {
-          r = new XmlParser().parse(new FileInputStream(f));
+          r = new XmlParser().parse(ManagedFileAccess.inStream(f));
         } catch (Throwable e) {
           // nothing at all
         }
         if (r != null) {
           try {
             if (visitResource(r)) {
-              new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f), r);
+              new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(f), r);
             }
           } catch (Exception e) {
             System.out.println("Error processing " + f.getAbsolutePath() + ": " + e.getMessage());

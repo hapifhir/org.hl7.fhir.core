@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.apache.commons.io.IOUtils;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -90,15 +91,15 @@ public class FTPClientTest implements ResourceLoaderTests {
   public void setupFakeFtpServer() throws IOException {
     fakeFtpServer = new FakeFtpServer();
     fakeFtpServer.setServerControlPort(FAKE_FTP_PORT);
-    fakeFtpServer.addUserAccount(new UserAccount(DUMMY_USER, DUMMY_PASSWORD, fakeFtpDirectory.toFile().getAbsolutePath()));
+    fakeFtpServer.addUserAccount(new UserAccount(DUMMY_USER, DUMMY_PASSWORD, ManagedFileAccess.fromPath(fakeFtpDirectory).getAbsolutePath()));
 
     FileSystem fileSystem = useWindowsFileSystem()
       ? new WindowsFakeFileSystem()
       : new UnixFakeFileSystem();
-    fileSystem.add(new DirectoryEntry(fakeFtpDirectory.toFile().getAbsolutePath()));
-    fileSystem.add(new DirectoryEntry(relativePath1.toFile().getAbsolutePath()));
-    fileSystem.add(new DirectoryEntry(relativePath2.toFile().getAbsolutePath()));
-    fileSystem.add(new FileEntry(dummyFileToDeletePath.toFile().getAbsolutePath()));
+    fileSystem.add(new DirectoryEntry(ManagedFileAccess.fromPath(fakeFtpDirectory).getAbsolutePath()));
+    fileSystem.add(new DirectoryEntry(ManagedFileAccess.fromPath(relativePath1).getAbsolutePath()));
+    fileSystem.add(new DirectoryEntry(ManagedFileAccess.fromPath(relativePath2).getAbsolutePath()));
+    fileSystem.add(new FileEntry(ManagedFileAccess.fromPath(dummyFileToDeletePath).getAbsolutePath()));
     //fileSystem.add(new FileEntry("c:\\data\\run.exe"));
     fakeFtpServer.setFileSystem(fileSystem);
 
@@ -146,7 +147,7 @@ public class FTPClientTest implements ResourceLoaderTests {
 
     FTPClient client = connectToFTPClient();
 
-    String deleteFilePath = dummyFileToDeletePath.toFile().getAbsolutePath();
+    String deleteFilePath = ManagedFileAccess.fromPath(dummyFileToDeletePath).getAbsolutePath();
     assertTrue(fakeFtpServer.getFileSystem().exists(deleteFilePath));
 
     client.delete( RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_DELETE);
@@ -171,7 +172,7 @@ public class FTPClientTest implements ResourceLoaderTests {
 
     FTPClient client = connectToFTPClient();
 
-    String deleteFilePath = dummyFileToDeletePath.toFile().getAbsolutePath();
+    String deleteFilePath = ManagedFileAccess.fromPath(dummyFileToDeletePath).getAbsolutePath();
     assertTrue(fakeFtpServer.getFileSystem().exists(deleteFilePath));
 
     client.delete( RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_DELETE);
@@ -189,10 +190,10 @@ public class FTPClientTest implements ResourceLoaderTests {
 
     FTPClient client = connectToFTPClient();
 
-    String uploadFilePath = dummyUploadedFilePath.toFile().getAbsolutePath();
+    String uploadFilePath = ManagedFileAccess.fromPath(dummyUploadedFilePath).getAbsolutePath();
     assertFalse(fakeFtpServer.getFileSystem().exists(uploadFilePath));
 
-    client.upload(dummyFileToUploadPath.toFile().getAbsolutePath(), RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_UPLOAD);
+    client.upload(ManagedFileAccess.fromPath(dummyFileToUploadPath).getAbsolutePath(), RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_UPLOAD);
 
     assertUploadedFileCorrect(uploadFilePath, DUMMY_FILE_CONTENT);
 
@@ -205,15 +206,15 @@ public class FTPClientTest implements ResourceLoaderTests {
   public void testMultiUpload() throws IOException  {
     FTPClient client = connectToFTPClient();
 
-    String uploadFilePath = dummyUploadedFilePath.toFile().getAbsolutePath();
+    String uploadFilePath = ManagedFileAccess.fromPath(dummyUploadedFilePath).getAbsolutePath();
     assertFalse(fakeFtpServer.getFileSystem().exists(uploadFilePath));
 
-    String uploadFilePath2 = dummyUploadedFilePath2.toFile().getAbsolutePath();
+    String uploadFilePath2 = ManagedFileAccess.fromPath(dummyUploadedFilePath2).getAbsolutePath();
     assertFalse(fakeFtpServer.getFileSystem().exists(uploadFilePath));
 
-    client.upload(dummyFileToUploadPath.toFile().getAbsolutePath(), RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_UPLOAD);
+    client.upload(ManagedFileAccess.fromPath(dummyFileToUploadPath).getAbsolutePath(), RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_UPLOAD);
 
-    client.upload(dummyFileToUploadPath2.toFile().getAbsolutePath(), RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_UPLOAD_2);
+    client.upload(ManagedFileAccess.fromPath(dummyFileToUploadPath2).getAbsolutePath(), RELATIVE_PATH_2 + "/" + DUMMY_FILE_TO_UPLOAD_2);
 
     assertUploadedFileCorrect(uploadFilePath, DUMMY_FILE_CONTENT);
     assertUploadedFileCorrect(uploadFilePath2, DUMMY_FILE_CONTENT_2);
@@ -240,13 +241,13 @@ public class FTPClientTest implements ResourceLoaderTests {
     Path newPath1 = relativePath2.resolve("newPath1");
     Path newPath2 = newPath1.resolve("newPath2");
 
-    assertFalse(fakeFtpServer.getFileSystem().exists(newPath1.toFile().getAbsolutePath()));
-    assertFalse(fakeFtpServer.getFileSystem().exists(newPath2.toFile().getAbsolutePath()));
+    assertFalse(fakeFtpServer.getFileSystem().exists(ManagedFileAccess.fromPath(newPath1).getAbsolutePath()));
+    assertFalse(fakeFtpServer.getFileSystem().exists(ManagedFileAccess.fromPath(newPath2).getAbsolutePath()));
 
     client.createRemotePathIfNotExists(RELATIVE_PATH_2 + "/newPath1/newPath2/newFile.txt");
 
-    assertTrue(fakeFtpServer.getFileSystem().exists(newPath1.toFile().getAbsolutePath()));
-    assertTrue(fakeFtpServer.getFileSystem().exists(newPath2.toFile().getAbsolutePath()));
+    assertTrue(fakeFtpServer.getFileSystem().exists(ManagedFileAccess.fromPath(newPath1).getAbsolutePath()));
+    assertTrue(fakeFtpServer.getFileSystem().exists(ManagedFileAccess.fromPath(newPath2).getAbsolutePath()));
 
     assertTrue(client.getDeleteFileTimeNanos() == 0);
     assertTrue(client.getStoreFileTimeNanos() == 0);
@@ -268,17 +269,17 @@ public class FTPClientTest implements ResourceLoaderTests {
     FTPClient client = connectToFTPClient();
 
     Path uploadFilePath = newPath2.resolve(DUMMY_FILE_TO_UPLOAD);
-    assertFalse(fakeFtpServer.getFileSystem().exists(uploadFilePath.toFile().getAbsolutePath()));
+    assertFalse(fakeFtpServer.getFileSystem().exists(ManagedFileAccess.fromPath(uploadFilePath).getAbsolutePath()));
 
-    assertFalse(fakeFtpServer.getFileSystem().exists(newPath1.toFile().getAbsolutePath()));
-    assertFalse(fakeFtpServer.getFileSystem().exists(newPath2.toFile().getAbsolutePath()));
+    assertFalse(fakeFtpServer.getFileSystem().exists(ManagedFileAccess.fromPath(newPath1).getAbsolutePath()));
+    assertFalse(fakeFtpServer.getFileSystem().exists(ManagedFileAccess.fromPath(newPath2).getAbsolutePath()));
 
-    client.upload(dummyFileToUploadPath.toFile().getAbsolutePath(),RELATIVE_PATH_2 + "/newPath1/newPath2/" + DUMMY_FILE_TO_UPLOAD);
+    client.upload(ManagedFileAccess.fromPath(dummyFileToUploadPath).getAbsolutePath(),RELATIVE_PATH_2 + "/newPath1/newPath2/" + DUMMY_FILE_TO_UPLOAD);
 
-    assertTrue(fakeFtpServer.getFileSystem().exists(newPath1.toFile().getAbsolutePath()));
-    assertTrue(fakeFtpServer.getFileSystem().exists(newPath2.toFile().getAbsolutePath()));
+    assertTrue(fakeFtpServer.getFileSystem().exists(ManagedFileAccess.fromPath(newPath1).getAbsolutePath()));
+    assertTrue(fakeFtpServer.getFileSystem().exists(ManagedFileAccess.fromPath(newPath2).getAbsolutePath()));
 
-    assertUploadedFileCorrect(uploadFilePath.toFile().getAbsolutePath(), DUMMY_FILE_CONTENT);
+    assertUploadedFileCorrect(ManagedFileAccess.fromPath(uploadFilePath).getAbsolutePath(), DUMMY_FILE_CONTENT);
 
     assertTrue(client.getDeleteFileTimeNanos() == 0);
     assertTrue(client.getStoreFileTimeNanos() > 0);

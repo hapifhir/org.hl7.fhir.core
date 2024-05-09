@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import java.util.stream.Stream;
@@ -63,6 +64,7 @@ import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.*;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -123,6 +125,8 @@ public class ComparisonTests {
     if (content.has("use-test") && !content.asBoolean("use-test"))
       return;
 
+    String id = name;
+    
     if (context == null) {
       System.out.println("---- Load R5 ----------------------------------------------------------------");
       context = TestingUtilities.getSharedWorkerContext();
@@ -136,7 +140,7 @@ public class ComparisonTests {
       bc.setAllowLoadingDuplicates(dupl);
     }
 
-    if (!new File(Utilities.path("[tmp]", "comparison")).exists()) {
+    if (!ManagedFileAccess.file(Utilities.path("[tmp]", "comparison")).exists()) {
       System.out.println("---- Set up Output ----------------------------------------------------------");
       Utilities.createDirectory(Utilities.path("[tmp]", "comparison"));
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
@@ -155,7 +159,7 @@ public class ComparisonTests {
     if (content.has("version")) {
       session.setAnnotate(true);
     }
-    RenderingContext lrc = new RenderingContext(context, new MarkDownProcessor(Dialect.COMMON_MARK), null, "http://hl7.org/fhir", "", "en", ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER);
+    RenderingContext lrc = new RenderingContext(context, new MarkDownProcessor(Dialect.COMMON_MARK), null, "http://hl7.org/fhir", "", new Locale("en"), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER);
     lrc.setDestDir(Utilities.path("[tmp]", "comparison"));
     lrc.setPkp(new TestProfileKnowledgeProvider(context));
     if (content.has("version")) {
@@ -166,8 +170,8 @@ public class ComparisonTests {
       CodeSystemComparer cs = new CodeSystemComparer(session);
       CodeSystemComparison csc = cs.compare((CodeSystem) left, (CodeSystem) right);
       Assertions.assertTrue(csc.getUnion().getConcept().size() > csc.getIntersection().getConcept().size());
-      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
-      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
 
       String xmle = new XhtmlComposer(true).compose(cs.renderErrors(csc));
       String xml1 = new XhtmlComposer(true).compose(cs.renderMetadata(csc, "", ""));
@@ -175,12 +179,12 @@ public class ComparisonTests {
       TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Concepts") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
       new CodeSystemRenderer(lrc).render(right);
-      checkOutput(content.getJsonObject("version").asString("filename"), right);
+      checkOutput(id, content.getJsonObject("version").asString("filename"), right);
     } else if (left instanceof ValueSet && right instanceof ValueSet) {
       ValueSetComparer cs = new ValueSetComparer(session);
       ValueSetComparison csc = cs.compare((ValueSet) left, (ValueSet) right);
-      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
-      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
 
       String xmle = new XhtmlComposer(true).compose(cs.renderErrors(csc));
       String xml1 = new XhtmlComposer(true).compose(cs.renderMetadata(csc, "", ""));
@@ -189,15 +193,15 @@ public class ComparisonTests {
       TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Definition") + xml2 + BREAK + hd("Expansion") + xml3 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
       new ValueSetRenderer(lrc).render(right);
-      checkOutput(content.getJsonObject("version").asString("filename"), right);
+      checkOutput(id, content.getJsonObject("version").asString("filename"), right);
     } else if (left instanceof StructureDefinition && right instanceof StructureDefinition) {
       ProfileUtilities utils = new ProfileUtilities(context, null, null);
       genSnapshot(utils, (StructureDefinition) left);
       genSnapshot(utils, (StructureDefinition) right);
       StructureDefinitionComparer pc = new StructureDefinitionComparer(session, utils, utils);
       ProfileComparison csc = pc.compare((StructureDefinition) left, (StructureDefinition) right);
-      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
-      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
 
       String xmle = new XhtmlComposer(true).compose(pc.renderErrors(csc));
       String xml1 = new XhtmlComposer(true).compose(pc.renderMetadata(csc, "", ""));
@@ -209,16 +213,16 @@ public class ComparisonTests {
 
       lrc.setStructureMode(StructureDefinitionRendererMode.DATA_DICT);
       new StructureDefinitionRenderer(lrc).render(right);
-      checkOutput(content.getJsonObject("version").asString("filename-dd"), right);
+      checkOutput(id, content.getJsonObject("version").asString("filename-dd"), right);
       
       lrc.setStructureMode(StructureDefinitionRendererMode.SUMMARY);
       new StructureDefinitionRenderer(lrc).render(right);
-      checkOutput(content.getJsonObject("version").asString("filename-tree"), right);
+      checkOutput(id, content.getJsonObject("version").asString("filename-tree"), right);
     } else if (left instanceof CapabilityStatement && right instanceof CapabilityStatement) {
       CapabilityStatementComparer pc = new CapabilityStatementComparer(session);
       CapabilityStatementComparison csc = pc.compare((CapabilityStatement) left, (CapabilityStatement) right);
-      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
-      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
 
       String xmle = new XhtmlComposer(true).compose(pc.renderErrors(csc));
       String xml1 = new XhtmlComposer(true).compose(pc.renderMetadata(csc, "", ""));
@@ -231,7 +235,7 @@ public class ComparisonTests {
     }
   }
 
-  private void checkOutput(String name, CanonicalResource right) throws Exception {
+  private void checkOutput(String id, String name, CanonicalResource right) throws Exception {
     String output = prefix+ new XhtmlComposer(false, true).compose(right.getText().getDiv()) + suffix;
     String an = Utilities.path("[tmp]", "comparison", name);
     TextFile.stringToFile(output, an);
@@ -239,7 +243,7 @@ public class ComparisonTests {
     String en = Utilities.path("[tmp]", "comparison", Utilities.changeFileExt(name, ".expected.html"));
     TextFile.stringToFile(expected, en);
     
-    String msg = CompareUtilities.checkXMLIsSame(en, an);
+    String msg = CompareUtilities.checkXMLIsSame(id, en, an);
     Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
     
   }

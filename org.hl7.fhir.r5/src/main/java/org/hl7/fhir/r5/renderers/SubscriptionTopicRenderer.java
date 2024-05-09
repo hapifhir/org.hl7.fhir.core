@@ -49,39 +49,39 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
     }
     
     if (st.hasResourceTrigger()) {
-      TableData td = new TableData("Resource Triggers");
+      TableData td = new TableData(context.formatMessage(RenderingContext.SUB_TOPIC_RES_TRIG));
       for (SubscriptionTopicResourceTriggerComponent rt : st.getResourceTrigger()) {
         TableRowData tr = td.addRow();
         if (rt.hasResource()) {
-          tr.value("Resource", rt.getResourceElement());
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_RES), rt.getResourceElement());
         }
         for (Enumeration<InteractionTrigger> t : rt.getSupportedInteraction()) {          
-          tr.value("Interactions", t);
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_INT), t);
         }
         if (rt.hasQueryCriteria()) {
           StringBuilder md = new StringBuilder();          
           if (rt.getQueryCriteria().hasPrevious()) {
-            md.append("* previous = "+rt.getQueryCriteria().getPrevious()+"\r\n");
+            md.append(context.formatMessage(RenderingContext.SUB_TOPIC_PREV, rt.getQueryCriteria().getPrevious()+"\r\n")+" ");
           }
           if (rt.getQueryCriteria().hasResultForCreate()) {
-            md.append("* create result = "+rt.getQueryCriteria().getResultForCreate()+"\r\n");
+            md.append(context.formatMessage(RenderingContext.SUB_TOPIC_CREATE, rt.getQueryCriteria().getResultForCreate()+"\r\n")+" ");
           }
           if (rt.getQueryCriteria().hasCurrent()) {
-            md.append("* create result = "+rt.getQueryCriteria().getCurrent()+"\r\n");
+            md.append(context.formatMessage(RenderingContext.SUB_TOPIC_CREATE, rt.getQueryCriteria().getCurrent()+"\r\n")+" ");
           }
           if (rt.getQueryCriteria().hasPrevious()) {
-            md.append("* delete result = "+rt.getQueryCriteria().getResultForDelete()+"\r\n");
+            md.append(context.formatMessage(RenderingContext.SUB_TOPIC_DELETE, rt.getQueryCriteria().getResultForDelete()+"\r\n")+" ");
           }
           if (rt.getQueryCriteria().hasRequireBoth()) {
-            md.append("* require both = "+rt.getQueryCriteria().getRequireBoth()+"\r\n");
+            md.append(context.formatMessage(RenderingContext.SUB_TOPIC_REQ, rt.getQueryCriteria().getRequireBoth()+"\r\n")+" ");
           }
-          tr.value("Criteria", new MarkdownType(md.toString()));          
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_CRITERIA), new MarkdownType(md.toString()));          
         }
         if (rt.hasFhirPathCriteriaElement()) {
-          tr.value("FHIR Path", rt.getFhirPathCriteriaElement());
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_FHIR_PATH), rt.getFhirPathCriteriaElement());
         }
         if (rt.hasDescription()) {
-          tr.value("Description", rt.getDescriptionElement());
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_DESC), rt.getDescriptionElement());
         }
       }
       renderTable(td, x);
@@ -92,13 +92,13 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
       for (SubscriptionTopicEventTriggerComponent rt : st.getEventTrigger()) {
         TableRowData tr = td.addRow();
         if (rt.hasResource()) {
-          tr.value("Resource", rt.getResourceElement());
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_RES), rt.getResourceElement());
         }
         if (rt.hasEvent()) {
-          tr.value("Event", rt.getEvent());
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_EVENT), rt.getEvent());
         }
         if (rt.hasDescription()) {
-          tr.value("Description", rt.getDescriptionElement());
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_DESC), rt.getDescriptionElement());
         }
       }
       renderTable(td, x);
@@ -109,19 +109,19 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
       for (SubscriptionTopicCanFilterByComponent rt : st.getCanFilterBy()) {
         TableRowData tr = td.addRow();
         if (rt.hasResource()) {
-          tr.value("Resource", rt.getResourceElement());
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_RES), rt.getResourceElement());
         }
         if (rt.hasFilterParameter()) {
-          tr.value("Filter Parameter", rt.getFilterParameterElement());
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_FILT_PAR), rt.getFilterParameterElement());
         }
         if (rt.hasFilterDefinition()) {
-          tr.value("Filter Definition", rt.getFilterDefinitionElement());
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_FILT_DEF), rt.getFilterDefinitionElement());
         }
         for (Enumeration<SearchComparator> t : rt.getComparator()) {
-          tr.value("Comparators", t);
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_COMP), t);
         }
         for (Enumeration<SearchModifierCode> t : rt.getModifier()) {
-          tr.value("Modifiers", t);
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_MOD), t);
         }
       }
       renderTable(td, x);
@@ -132,13 +132,13 @@ public class SubscriptionTopicRenderer extends ResourceRenderer {
       for (SubscriptionTopicNotificationShapeComponent rt : st.getNotificationShape()) {
         TableRowData tr = td.addRow();
         if (rt.hasResource()) {
-          tr.value("Resource", rt.getResourceElement());
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_RES), rt.getResourceElement());
         }
         for (StringType t : rt.getInclude()) {
-          tr.value("Includes", t);
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_INCL), t);
         }
         for (StringType t : rt.getRevInclude()) {
-          tr.value("Reverse Includes", t);
+          tr.value(context.formatMessage(RenderingContext.SUB_TOPIC_REV_INCL), t);
         }
       }
       renderTable(td, x);

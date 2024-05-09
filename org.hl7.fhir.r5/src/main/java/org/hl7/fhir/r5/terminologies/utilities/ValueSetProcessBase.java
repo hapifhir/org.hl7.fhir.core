@@ -182,6 +182,7 @@ public class ValueSetProcessBase {
     // this is a testing hack - see TerminologyServiceTests
     iss.get(0).setUserData("status-msg-name", "warning-"+id);
     iss.get(0).setUserData("status-msg-value", new UriType(resource.getVersionedUrl()));
+    ToolingExtensions.setStringExtension(iss.get(0), ToolingExtensions.EXT_ISSUE_MSG_ID, msg);
     
     return iss;
   }

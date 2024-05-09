@@ -47,6 +47,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.JsonLangFileProducer;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerLanguageSession;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerSession;
@@ -238,11 +239,11 @@ public class ValidationService {
           if (cliContext.getOutput() == null) {
             dst = System.out;
           } else {
-            dst = new PrintStream(new FileOutputStream(cliContext.getOutput()));
+            dst = new PrintStream(ManagedFileAccess.outStream(cliContext.getOutput()));
           }
           renderer.setOutput(dst);
         } else {
-          File dir = new File(cliContext.getOutput());
+          File dir = ManagedFileAccess.file(cliContext.getOutput());
           if (!dir.isDirectory()) {
             throw new Error("The output location "+dir.getAbsolutePath()+" must be an existing directory for the output style "+renderer.getStyleCode());
           }
@@ -413,7 +414,7 @@ public class ValidationService {
       org.hl7.fhir.r5.elementmodel.Element r = validator.transform(cliContext.getSources().get(0), cliContext.getMap());
       System.out.println(" ...success");
       if (cliContext.getOutput() != null) {
-        FileOutputStream s = new FileOutputStream(cliContext.getOutput());
+        FileOutputStream s = ManagedFileAccess.outStream(cliContext.getOutput());
         if (cliContext.getOutput() != null && cliContext.getOutput().endsWith(".json"))
           new org.hl7.fhir.r5.elementmodel.JsonParser(validator.getContext()).compose(r, s, IParser.OutputStyle.PRETTY, null);
         else
@@ -527,6 +528,11 @@ public class ValidationService {
     System.out.println(" - " + validationEngine.getContext().countAllCaches() + " resources (" + timeTracker.milestone() + ")");
 
     loadIgsAndExtensions(validationEngine, cliContext, timeTracker);
+    if (validationEngine.getContext().getTxCache() == null) {
+      System.out.println("  No Terminology Cache");      
+    } else {
+      System.out.println("  Terminology Cache at "+validationEngine.getContext().getTxCache().getFolder());
+    }
     System.out.print("  Get set... ");
     validationEngine.setQuestionnaireMode(cliContext.getQuestionnaireMode());
     validationEngine.setLevel(cliContext.getLevel());
@@ -559,9 +565,11 @@ public class ValidationService {
     validationEngine.setForPublication(cliContext.isForPublication());
     validationEngine.setShowTimes(cliContext.isShowTimes());
     validationEngine.setAllowExampleUrls(cliContext.isAllowExampleUrls());
-    StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validationEngine.getPcm(), validationEngine.getContext(), validationEngine);
-    validationEngine.setFetcher(fetcher);
-    validationEngine.getContext().setLocator(fetcher);
+    if (!cliContext.isDisableDefaultResourceFetcher()) {
+      StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validationEngine.getPcm(), validationEngine.getContext(), validationEngine);
+      validationEngine.setFetcher(fetcher);
+      validationEngine.getContext().setLocator(fetcher);
+    }
     validationEngine.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
     validationEngine.setJurisdiction(CodeSystemUtilities.readCoding(cliContext.getJurisdiction()));
     TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
@@ -578,7 +586,7 @@ public class ValidationService {
       igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.fhir.uv.extensions", false);
     }
     System.out.print("  Terminology server " + cliContext.getTxServer());
-    String txver = validationEngine.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver);
+    String txver = validationEngine.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver, !cliContext.getNoEcosystem());
     System.out.println(" - Version " + txver + " (" + timeTracker.milestone() + ")");
     validationEngine.setDebug(cliContext.isDoDebug());
     validationEngine.getContext().setLogger(new SystemOutLoggingService(cliContext.isDoDebug()));
@@ -614,13 +622,13 @@ public class ValidationService {
     CanonicalResource cr = validator.loadCanonicalResource(cliContext.getSources().get(0), cliContext.getSv());
     boolean ok = true;
     if (cr instanceof StructureDefinition) {
-      new StructureDefinitionSpreadsheetGenerator(validator.getContext(), false, false).renderStructureDefinition((StructureDefinition) cr, false).finish(new FileOutputStream(cliContext.getOutput()));
+      new StructureDefinitionSpreadsheetGenerator(validator.getContext(), false, false).renderStructureDefinition((StructureDefinition) cr, false).finish(ManagedFileAccess.outStream(cliContext.getOutput()));
     } else if (cr instanceof CodeSystem) {
-      new CodeSystemSpreadsheetGenerator(validator.getContext()).renderCodeSystem((CodeSystem) cr).finish(new FileOutputStream(cliContext.getOutput()));
+      new CodeSystemSpreadsheetGenerator(validator.getContext()).renderCodeSystem((CodeSystem) cr).finish(ManagedFileAccess.outStream(cliContext.getOutput()));
     } else if (cr instanceof ValueSet) {
-      new ValueSetSpreadsheetGenerator(validator.getContext()).renderValueSet((ValueSet) cr).finish(new FileOutputStream(cliContext.getOutput()));
+      new ValueSetSpreadsheetGenerator(validator.getContext()).renderValueSet((ValueSet) cr).finish(ManagedFileAccess.outStream(cliContext.getOutput()));
     } else if (cr instanceof ConceptMap) {
-      new ConceptMapSpreadsheetGenerator(validator.getContext()).renderConceptMap((ConceptMap) cr).finish(new FileOutputStream(cliContext.getOutput()));
+      new ConceptMapSpreadsheetGenerator(validator.getContext()).renderConceptMap((ConceptMap) cr).finish(ManagedFileAccess.outStream(cliContext.getOutput()));
     } else {
       ok = false;
       System.out.println(" ...Unable to generate spreadsheet for "+cliContext.getSources().get(0)+": no way to generate a spreadsheet for a "+cr.fhirType());
@@ -647,9 +655,9 @@ public class ValidationService {
   private void transformLangExtract(CliContext cliContext, ValidationEngine validator) throws IOException { 
     String dst = cliContext.getOutput();
     Utilities.createDirectory(dst);
-    PoGetTextProducer po = new PoGetTextProducer(Utilities.path(dst));
-    XLIFFProducer xliff = new XLIFFProducer(Utilities.path(dst));
-    JsonLangFileProducer jl = new JsonLangFileProducer(Utilities.path(dst));
+    PoGetTextProducer po = new PoGetTextProducer(dst, ".", false);
+    XLIFFProducer xliff = new XLIFFProducer(dst, ".", false);
+    JsonLangFileProducer jl = new JsonLangFileProducer(dst, ".", false);
     
     List<SourceFile> refs = new ArrayList<>();
     ValidatorUtils.parseSources(cliContext.getSources(), refs, validator.getContext());    
@@ -680,7 +688,7 @@ public class ValidationService {
     String dst = cliContext.getOutput();
     Utilities.createDirectory(dst);
     
-    Set<TranslationUnit> translations = new HashSet<>();
+    List<TranslationUnit> translations = new ArrayList<>();
     for (String input : cliContext.getInputs()) {
       loadTranslationSource(translations, input);
     }
@@ -693,14 +701,14 @@ public class ValidationService {
       org.hl7.fhir.validation.Content cnt = validator.getIgLoader().loadContent(ref.getRef(), "translate", false, true);
       Element e = Manager.parseSingle(validator.getContext(), new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());      
       t = t + new LanguageUtils(validator.getContext()).importFromTranslations(e, translations);
-      Manager.compose(validator.getContext(), e, new FileOutputStream(Utilities.path(dst, new File(ref.getRef()).getName())), cnt.getCntType(),
+      Manager.compose(validator.getContext(), e, ManagedFileAccess.outStream(Utilities.path(dst, ManagedFileAccess.file(ref.getRef()).getName())), cnt.getCntType(),
           OutputStyle.PRETTY, null);
     }
     System.out.println("Done - imported "+t+" translations into "+refs.size()+ " in "+dst);
   }
   
-  private void loadTranslationSource(Set<TranslationUnit> translations, String input) {
-    File f = new File(input);
+  private void loadTranslationSource(List<TranslationUnit> translations, String input) throws IOException {
+    File f = ManagedFileAccess.file(input);
     if (f.exists()) {
       if (f.isDirectory()) {
         for (File fd : f.listFiles()) {
@@ -709,22 +717,22 @@ public class ValidationService {
       } else {
         if (f.getName().endsWith(".po")) {
           try {
-            translations.addAll(new PoGetTextProducer().loadSource(new FileInputStream(f)));
+            translations.addAll(new PoGetTextProducer().loadSource(ManagedFileAccess.inStream(f)));
           } catch (Exception e) {
             System.out.println("Error reading PO File "+f.getAbsolutePath()+": "+e.getMessage());
           }
         } else if (f.getName().endsWith(".xliff")) {
           try {
-            translations.addAll(new XLIFFProducer().loadSource(new FileInputStream(f)));
+            translations.addAll(new XLIFFProducer().loadSource(ManagedFileAccess.inStream(f)));
           } catch (Exception e) {
             System.out.println("Error reading XLIFF File "+f.getAbsolutePath()+": "+e.getMessage());
           }          
         } else {
           try {
-            translations.addAll(new PoGetTextProducer().loadSource(new FileInputStream(f)));
+            translations.addAll(new PoGetTextProducer().loadSource(ManagedFileAccess.inStream(f)));
           } catch (Exception e) {
             try {
-              translations.addAll(new XLIFFProducer().loadSource(new FileInputStream(f)));
+              translations.addAll(new XLIFFProducer().loadSource(ManagedFileAccess.inStream(f)));
             } catch (Exception e2) {
               System.out.println("Error reading File "+f.getAbsolutePath()+" as XLIFF: "+e2.getMessage());
               System.out.println("Error reading File "+f.getAbsolutePath()+" as PO: "+e.getMessage());

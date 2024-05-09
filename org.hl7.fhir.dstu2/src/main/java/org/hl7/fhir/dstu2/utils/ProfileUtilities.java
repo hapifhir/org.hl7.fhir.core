@@ -70,6 +70,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -1281,7 +1282,7 @@ public class ProfileUtilities {
   public XhtmlNode generateExtensionTable(String defFile, StructureDefinition ed, String imageFolder,
       boolean inlineGraphics, boolean full, String corePath, Set<String> outputTracker)
       throws IOException, FHIRException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), imageFolder, inlineGraphics);
     TableModel model = gen.initNormalTable(corePath, false, true, ed.getId(), false, TableGenerationMode.XML);
 
     boolean deep = false;
@@ -1566,7 +1567,7 @@ public class ProfileUtilities {
       boolean inlineGraphics, String profileBaseFileName, boolean snapshot, String corePath, Set<String> outputTracker)
       throws IOException, FHIRException {
     assert (diff != snapshot);// check it's ok to get rid of one of these
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(imageFolder, inlineGraphics);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), imageFolder, inlineGraphics);
     TableModel model = gen.initNormalTable(corePath, false, true, profile.getId() + (diff ? "d" : "s"), false,
         TableGenerationMode.XML);
     List<ElementDefinition> list = diff ? profile.getDifferential().getElement() : profile.getSnapshot().getElement();

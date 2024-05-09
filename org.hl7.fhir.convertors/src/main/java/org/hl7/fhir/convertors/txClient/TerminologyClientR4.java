@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -111,6 +112,25 @@ public class TerminologyClientR4 implements ITerminologyClient {
     }
   }
 
+
+  @Override
+  public Parameters subsumes(Parameters pin) throws FHIRException {
+    try {
+      org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) VersionConvertorFactory_40_50.convertResource(pin);
+      p2 = client.operateType(org.hl7.fhir.r4.model.CodeSystem.class, "subsumes", p2);
+      return (Parameters) VersionConvertorFactory_40_50.convertResource(p2);
+    } catch (EFhirClientException e) {
+      if (e.getServerErrors().size() == 1) {
+        OperationOutcome op =  (OperationOutcome) VersionConvertorFactory_40_50.convertResource(e.getServerErrors().get(0));
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), op, e);
+      } else {
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getMessage(), e);        
+      }
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
+  }
+
   @Override
   public Parameters validateVS(Parameters pin) throws FHIRException {
     try {
@@ -160,6 +180,11 @@ public class TerminologyClientR4 implements ITerminologyClient {
   @Override
   public Parameters lookupCode(Map<String, String> params) throws FHIRException {
     return (Parameters) VersionConvertorFactory_40_50.convertResource(client.lookupCode(params));
+  }
+
+  @Override
+  public Parameters lookupCode(Parameters params) throws FHIRException {
+    return (Parameters) VersionConvertorFactory_40_50.convertResource(client.lookupCode((org.hl7.fhir.r4.model.Parameters) VersionConvertorFactory_40_50.convertResource(params)));
   }
 
   @Override
@@ -250,5 +275,9 @@ public class TerminologyClientR4 implements ITerminologyClient {
     return result == null ? null : (Bundle) VersionConvertorFactory_40_50.convertResource(result);
   }
 
+  @Override
+  public Parameters translate(Parameters params) throws FHIRException {  
+    return (Parameters) VersionConvertorFactory_40_50.convertResource(client.translate((org.hl7.fhir.r4.model.Parameters) VersionConvertorFactory_40_50.convertResource(params)));
+  }
   
 }

@@ -107,7 +107,7 @@ public abstract class FormatUtilities {
   }
   
 	public static boolean isValidId(String tail) {
-	  return tail.matches(ID_REGEX);
+	  return tail == null ? false : tail.matches(ID_REGEX);
   }
 
   public static String makeId(String candidate) {

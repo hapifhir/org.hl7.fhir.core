@@ -38,6 +38,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
@@ -45,6 +46,7 @@ import org.w3c.dom.Element;
 
 public class XhtmlComposer {
 
+  protected static Set<String> BLOCK_NAMES =  Set.of("li", "ul", "ol", "tr", "td", "th", "div", "table");
   public static final String XHTML_NS = "http://www.w3.org/1999/xhtml";
   private boolean pretty;
   private boolean xml; 
@@ -68,13 +70,38 @@ public class XhtmlComposer {
   private Writer dst;
 
   public String compose(XhtmlDocument doc) throws IOException  {
+    if (!xml && !pretty) {
+      breakBlocksWithLines(doc);
+    }
     StringWriter sdst = new StringWriter();
     dst = sdst;
     composeDoc(doc);
     return sdst.toString();
   }
 
+  private void breakBlocksWithLines(XhtmlNode node) {
+    if (node.hasChildren()) {
+      breakBlocksWithLines(node.getChildNodes());
+    }
+  }
+
+  private void breakBlocksWithLines(List<XhtmlNode> list) {
+    for (int i = list.size() -1; i > 0; i--) {
+      XhtmlNode node = list.get(i);
+      if (node.getNodeType() == NodeType.Element && BLOCK_NAMES.contains(node.getName())) {
+        XhtmlNode prev = list.get(i-1);
+        if (prev.getNodeType() != NodeType.Text || prev.getContent() == null || !(prev.getContent().endsWith("\r") || prev.getValue().endsWith("\n"))) {
+          list.add(i, new XhtmlNode(NodeType.Text).setContent("\r\n"));
+        }        
+      }
+      breakBlocksWithLines(node);
+    }    
+  }
+
   public String compose(XhtmlNode node) throws IOException  {
+    if (!xml && !pretty) {
+      breakBlocksWithLines(node);
+    }
     StringWriter sdst = new StringWriter();
     dst = sdst;
     writeNode("", node, false);
@@ -82,6 +109,9 @@ public class XhtmlComposer {
   }
 
   public String compose(List<XhtmlNode> nodes) throws IOException  {
+    if (!xml && !pretty) {
+      breakBlocksWithLines(nodes);
+    }
     StringWriter sdst = new StringWriter();
     dst = sdst;
     for (XhtmlNode node : nodes) {      
@@ -99,6 +129,9 @@ public class XhtmlComposer {
   }
 
   private void composeDoc(XhtmlDocument doc) throws IOException  {
+    if (!xml) {
+      breakBlocksWithLines(doc);
+    }
     // headers....
     //    dst.append("<html>" + (pretty ? "\r\n" : ""));
     for (XhtmlNode c : doc.getChildNodes()) {
@@ -126,8 +159,6 @@ public class XhtmlComposer {
       throw new IOException("Unknown node type: "+node.getNodeType().toString());
     }
   }
-
-
 
   private boolean isValidUrlChar(char c) {
     return Character.isAlphabetic(c) || Character.isDigit(c) || Utilities.existsInList(c, ';', ',', '/', '?', ':', '@', '&', '=', '+', '$', '-', '_', '.', '!', '~', '*', '\'', '(', ')');
@@ -236,15 +267,18 @@ public class XhtmlComposer {
     if (!pretty || noPrettyOverride)
       indent = "";
 
-    // html self closing tags: http://xahlee.info/js/html5_non-closing_tag.html 
-    boolean concise = node.getChildNodes().size() == 0;
-    if (node.hasEmptyExpanded() && node.getEmptyExpanded()) {
-      concise = false;
+    boolean concise = false;
+    if (!node.hasChildren()) {
+      if (this.xml) {
+        concise = true;
+      } else if (!(node.hasEmptyExpanded() && node.getEmptyExpanded()) && 
+          Utilities.existsInList(node.getName(), "area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "menuitem", "meta", "param", "source", "track", "wbr")) {
+        // In HTML5, only these elements can self-close
+        // https://developer.mozilla.org/en-US/docs/Glossary/Void_element
+        concise = true;
+      }
     }
-    if (!xml && Utilities.existsInList(node.getName(), "area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "menuitem", "meta", "param", "source", "track", "wbr")) {
-      concise = true;
-    }
-
+    
     if (concise)
       dst.append(indent + "<" + node.getName() + attributes(node) + "/>" + (pretty && !noPrettyOverride ? "\r\n" : ""));
     else {

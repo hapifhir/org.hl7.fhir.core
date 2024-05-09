@@ -41,17 +41,17 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
       hasSource = hasSource || ExtensionHelper.hasExtension(i, ToolingExtensions.EXT_ISSUE_SOURCE);
     }
     if (success)
-      x.para().tx("All OK");
+      x.para().tx(context.formatMessage(RenderingContext.OP_OUT_OK));
     if (op.getIssue().size() > 0) {
       XhtmlNode tbl = x.table("grid"); // on the basis that we'll most likely be rendered using the standard fhir css, but it doesn't really matter
       XhtmlNode tr = tbl.tr();
-      tr.td().b().tx("Severity");
-      tr.td().b().tx("Location");
-      tr.td().b().tx("Code");
-      tr.td().b().tx("Details");
-      tr.td().b().tx("Diagnostics");
+      tr.td().b().tx(context.formatMessage(RenderingContext.OP_OUT_SEV));
+      tr.td().b().tx(context.formatMessage(RenderingContext.OP_OUT_LOC));
+      tr.td().b().tx(context.formatMessage(RenderingContext.OP_OUT_CODE));
+      tr.td().b().tx(context.formatMessage(RenderingContext.OP_OUT_DET));
+      tr.td().b().tx(context.formatMessage(RenderingContext.OP_OUT_DIAG));
       if (hasSource)
-        tr.td().b().tx("Source");
+        tr.td().b().tx(context.formatMessage(RenderingContext.OP_OUT_SRC));
       for (OperationOutcomeIssueComponent i : op.getIssue()) {
         tr = tbl.tr();
         tr.td().addText(i.getSeverity().toString());
@@ -82,12 +82,12 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
   }
 
   public String display(OperationOutcome oo) {
-    return "todo";
+    return (context.formatMessage(RenderingContext.OP_OUT_TODO));
   }
 
   @Override
   public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    return "Not done yet";
+    return (context.formatMessage(RenderingContext.OP_OUT_NOT));
   }
 
   @Override

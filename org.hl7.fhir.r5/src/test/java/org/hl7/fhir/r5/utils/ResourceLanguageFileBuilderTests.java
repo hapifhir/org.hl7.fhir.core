@@ -24,7 +24,7 @@ public class ResourceLanguageFileBuilderTests {
     ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "languages", "StructureDefinition-ed-translatable.json")));
     ctxt.cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "languages", "StructureDefinition-sd-translatable.json")));
     lang.setProfile(ctxt.fetchResource(StructureDefinition.class, "http://hl7.org/tests/fhir/StructureDefinition/sd-translatable"));
-    lang.prepare(new XLIFFProducer(Utilities.path("[tmp]", "language")), ctxt, "en", "fr");
+    lang.prepare(new XLIFFProducer("[tmp]", "language", false), ctxt, "en", "fr");
     lang.build(res);
   }
 

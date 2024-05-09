@@ -8,13 +8,14 @@ import java.util.List;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 public class JsonLangFileProducer extends LanguageFileProducer {
 
-  public JsonLangFileProducer(String folder) {
-    super(folder);
+  public JsonLangFileProducer(String rootFolder, String folderName, boolean useLangFolder) {
+    super(rootFolder, folderName, useLangFolder);
   }
 
   public JsonLangFileProducer() {
@@ -48,7 +49,7 @@ public class JsonLangFileProducer extends LanguageFileProducer {
 
     @Override
     public void finish() throws IOException {
-      FileOutputStream fs = new FileOutputStream(getFileName(id, baseLang));
+      FileOutputStream fs = ManagedFileAccess.outStream(getFileName(id, baseLang));
       try {
         JsonParser.compose(json, fs);
       } finally {
@@ -102,7 +103,7 @@ public class JsonLangFileProducer extends LanguageFileProducer {
   }
 
   private String getFileName(String id, String baseLang) throws IOException {
-    return Utilities.path(getFolder(), id+"-"+baseLang+".json");
+    return Utilities.path(getRootFolder(), getFolderName(), id+"-"+baseLang+".json");
   }
 
   @Override
@@ -132,7 +133,7 @@ public class JsonLangFileProducer extends LanguageFileProducer {
       entry.add("source", tu.getSrcText());
       entry.add("target", tu.getTgtText());
     }
-    TextFile.stringToFile(JsonParser.compose(json, true), Utilities.path(getFolder(), filename));
+    TextFile.stringToFile(JsonParser.compose(json, true), getTargetFileName(targetLang, filename));
   }
 
 }

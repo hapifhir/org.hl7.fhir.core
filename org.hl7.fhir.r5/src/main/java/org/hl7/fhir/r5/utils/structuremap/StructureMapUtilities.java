@@ -99,7 +99,7 @@ public class StructureMapUtilities {
   public static final String MAP_WHERE_EXPRESSION = "map.where.expression";
   public static final String MAP_SEARCH_EXPRESSION = "map.search.expression";
   public static final String MAP_EXPRESSION = "map.transform.expression";
-  private static final boolean RENDER_MULTIPLE_TARGETS_ONELINE = true;
+  private static final boolean MULTIPLE_TARGETS_ONELINE = true;
   public static final String AUTO_VAR_NAME = "vvv";
   public static final String DEF_GROUP_NAME = "DefaultMappingGroupAnonymousAlias";
   
@@ -143,11 +143,11 @@ public class StructureMapUtilities {
 
   public static String render(StructureMap map) {
     StringBuilder b = new StringBuilder();
-    b.append("map \"");
-    b.append(map.getUrl());
-    b.append("\" = \"");
-    b.append(Utilities.escapeJson(map.getName()));
-    b.append("\"\r\n\r\n");
+    b.append("/// url = \""+map.getUrl()+"\"\r\n");
+    b.append("/// name = \""+map.getName()+"\"\r\n");
+    b.append("/// title = \""+map.getTitle()+"\"\r\n");
+    b.append("/// status = \""+map.getStatus().toCode()+"\"\r\n");
+    b.append("\r\n");
     if (map.getDescription() != null) {
       renderMultilineDoco(b, map.getDescription(), 0);
       b.append("\r\n");
@@ -364,7 +364,7 @@ public class StructureMapUtilities {
           first = false;
         else
           b.append(", ");
-        if (RENDER_MULTIPLE_TARGETS_ONELINE)
+        if (MULTIPLE_TARGETS_ONELINE)
           b.append(' ');
         else {
           b.append("\r\n");
@@ -385,7 +385,7 @@ public class StructureMapUtilities {
       for (int i = 0; i < indent; i++)
         b.append(' ');
       b.append("}");
-    } else {
+    } else if (!canBeAbbreviated) {
       if (r.hasDependent()) {
         b.append(" then ");
         boolean first = true;
@@ -450,7 +450,7 @@ public class StructureMapUtilities {
     return
       (r.getSource().size() == 1 && r.getSourceFirstRep().hasElement() && r.getSourceFirstRep().hasVariable()) &&
         (r.getTarget().size() == 1 && r.getTargetFirstRep().hasVariable() && (r.getTargetFirstRep().getTransform() == null || r.getTargetFirstRep().getTransform() == StructureMapTransform.CREATE) && r.getTargetFirstRep().getParameter().size() == 0) &&
-        (r.getDependent().size() == 0) && (r.getRule().size() == 0);
+        (r.getDependent().size() == 0 || (r.getDependent().size() == 1 && StructureMapUtilities.DEF_GROUP_NAME.equals(r.getDependentFirstRep().getName()))) && (r.getRule().size() == 0);
   }
 
   public static String sourceToString(StructureMapGroupRuleSourceComponent r) {
@@ -640,28 +640,30 @@ public class StructureMapUtilities {
       result.setName(lexer.readConstant("name"));
       result.setDescription(lexer.getAllComments());
       result.setStatus(PublicationStatus.DRAFT);
-    } else {
-      while (lexer.hasToken("///")) {
-        lexer.next();
-        String fid = lexer.takeDottedToken();
-        lexer.token("=");
-        switch (fid) {
-        case "url" :
-          result.setUrl(lexer.readConstant("url"));
-          break;
-        case "name" :
-          result.setName(lexer.readConstant("name"));
-          break;
-        case "title" : 
-          result.setTitle(lexer.readConstant("title"));
-          break;
-        case "status" : 
-          result.setStatus(PublicationStatus.fromCode(lexer.readConstant("status")));
-          break;
-        default:
-          lexer.readConstant("nothing");
-          // nothing
-        }
+    } 
+    while (lexer.hasToken("///")) {
+      lexer.next();
+      String fid = lexer.takeDottedToken();
+      lexer.token("=");
+      switch (fid) {
+      case "url" :
+        result.setUrl(lexer.readConstant("url"));
+        break;
+      case "name" :
+        result.setName(lexer.readConstant("name"));
+        break;
+      case "title" : 
+        result.setTitle(lexer.readConstant("title"));
+        break;
+      case "description" : 
+        result.setTitle(lexer.readConstant("description"));
+        break;
+      case "status" : 
+        result.setStatus(PublicationStatus.fromCode(lexer.readConstant("status")));
+        break;
+      default:
+        lexer.readConstant("nothing");
+        // nothing
       }
     }
     if (!result.hasId() && result.hasName()) {
@@ -988,7 +990,7 @@ public class StructureMapUtilities {
     if (newFmt) {
       if (lexer.isConstant()) {
         if (lexer.isStringConstant()) {
-          rule.setName(lexer.readConstant("ruleName"));
+          rule.setName(fixName(lexer.readConstant("ruleName")));
         } else {
           rule.setName(lexer.take());
         }
@@ -1005,6 +1007,10 @@ public class StructureMapUtilities {
         rule.setDocumentation(doco);
       }
     }
+  }
+
+  private String fixName(String c) {
+    return c.replace("-", "");
   }
 
   private boolean isSimpleSyntax(StructureMapGroupRuleComponent rule) {
@@ -1101,7 +1107,7 @@ public class StructureMapUtilities {
       start = null;
       lexer.token(".");
       target.setElement(lexer.take());
-    }
+    } 
     String name;
     boolean isConstant = false;
     if (lexer.hasToken("=")) {
@@ -1138,15 +1144,19 @@ public class StructureMapUtilities {
       }
       lexer.token(")");
     } else if (name != null) {
-      target.setTransform(StructureMapTransform.COPY);
-      if (!isConstant) {
-        String id = name;
-        while (lexer.hasToken(".")) {
-          id = id + lexer.take() + lexer.take();
-        }
-        target.addParameter().setValue(new IdType(id));
-      } else
-        target.addParameter().setValue(readConstant(name, lexer));
+      if (target.getContext() != null) {
+        target.setTransform(StructureMapTransform.COPY);
+        if (!isConstant) {
+          String id = name;
+          while (lexer.hasToken(".")) {
+            id = id + lexer.take() + lexer.take();
+          }
+          target.addParameter().setValue(new IdType(id));
+        } else
+          target.addParameter().setValue(readConstant(name, lexer));
+      } else {
+        target.setContext(name);
+      }
     }
     if (lexer.hasToken("as")) {
       lexer.take();
@@ -1713,10 +1723,9 @@ public class StructureMapUtilities {
     Base dest = null;
     if (tgt.hasContext()) {
       dest = vars.get(VariableMode.OUTPUT, tgt.getContext());
-      if (dest == null)
-        throw new FHIRException("Rule \"" + rulePath + "\": target context not known: " + tgt.getContext());
-      if (!tgt.hasElement())
-        throw new FHIRException("Rule \"" + rulePath + "\": Not supported yet");
+      if (dest == null) {
+        throw new FHIRException("Rul \"" + rulePath + "\": target context not known: " + tgt.getContext());
+      }
     }
     Base v = null;
     if (tgt.hasTransform()) {
@@ -1735,8 +1744,10 @@ public class StructureMapUtilities {
           v = dest.makeProperty(tgt.getElement().hashCode(), tgt.getElement());
           sharedVars.add(VariableMode.SHARED, tgt.getListRuleId(), v);
         }
-      } else {
+      } else if (tgt.hasElement()) {
         v = dest.makeProperty(tgt.getElement().hashCode(), tgt.getElement());
+      } else {
+        v = dest;
       }
     }
     if (tgt.hasVariable() && v != null)
@@ -2385,7 +2396,7 @@ public class StructureMapUtilities {
     if (Utilities.noString(code))
       throw new FHIRException("Describe Transform, but the code is blank");
     Coding c = buildCoding(uri, code);
-    return TerminologyRenderer.describeSystem(c.getSystem()) + "#" + c.getCode() + (c.hasDisplay() ? "(" + c.getDisplay() + ")" : "");
+    return c.getSystem() + "#" + c.getCode() + (c.hasDisplay() ? "(" + c.getDisplay() + ")" : "");
   }
 
 

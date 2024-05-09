@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -11,7 +12,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 public class XMLPackageConvertor {
 
   public static void main(String[] args) throws IOException {
-    new XMLPackageConvertor().process(new File("C:\\web\\hl7.org\\fhir"));
+    new XMLPackageConvertor().process(ManagedFileAccess.file("C:\\web\\hl7.org\\fhir"));
   }
 
   private void process(File folder) throws IOException {
@@ -21,7 +22,7 @@ public class XMLPackageConvertor {
       } else {
         if (f.getName().endsWith(".tgz")) {
           System.out.println("Package " + f.getAbsolutePath());
-          NpmPackage p = NpmPackage.fromPackage(new FileInputStream(f));
+          NpmPackage p = NpmPackage.fromPackage(ManagedFileAccess.inStream(f));
           if (p.getNpm().has("dependencies")) {
             JsonObject dep = p.getNpm().getJsonObject("dependencies");
             if (dep.getProperties().isEmpty()) {

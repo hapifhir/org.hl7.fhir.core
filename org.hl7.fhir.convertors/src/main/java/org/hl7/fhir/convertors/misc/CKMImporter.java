@@ -44,6 +44,7 @@ import org.hl7.fhir.utilities.SimpleHTTPClient;
 import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -115,9 +116,9 @@ public class CKMImporter {
     String src = Utilities.path(Utilities.path("[tmp]"), id + ".xml");
     String dst = Utilities.path(dest, id + ".xml");
 
-    if (!new File(src).exists())
+    if (!ManagedFileAccess.file(src).exists())
       downloadArchetype(id);
-    if (cfg != null && new File(cfg).exists())
+    if (cfg != null && ManagedFileAccess.file(cfg).exists())
       ADLImporter.main(new String[]{"-source", src, "-dest", dst, "-config", config, "-info", cfg});
     else
       ADLImporter.main(new String[]{"-source", src, "-dest", dst, "-config", config});

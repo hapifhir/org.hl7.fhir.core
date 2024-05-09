@@ -1,8 +1,10 @@
 package org.hl7.fhir.validation.instance.utils;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -10,6 +12,8 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 public class ValidationContext {
+
+    public static final String INTERNAL_REFERENCES_NAME = "internal.references";
 
     private Object appContext;
 
@@ -27,6 +31,7 @@ public class ValidationContext {
     
     private boolean checkSpecials = true;
     private Map<String, List<ValidationMessage>> sliceRecords;
+    private Set<String> internalRefs;
     
     public ValidationContext(Object appContext) {
         this.appContext = appContext;
@@ -36,11 +41,21 @@ public class ValidationContext {
       this.appContext = appContext;
       this.resource = element;
       this.rootResource = element;
+      this.internalRefs = setupInternalRefs(element);
       check();
       
       // no groupingResource (Bundle or Parameters)
       dump("creating");
   }
+
+    private Set<String> setupInternalRefs(Element element) {
+      Set<String> res = (Set<String>) element.getUserData(INTERNAL_REFERENCES_NAME);
+      if (res == null) {
+        res = new HashSet<String>();
+        element.setUserData(INTERNAL_REFERENCES_NAME, res);       
+      }
+      return res;
+    }
 
     private void check() {
       if (!rootResource.hasParentForValidator()) {
@@ -52,6 +67,7 @@ public class ValidationContext {
       this.appContext = appContext;
       this.resource = element;
       this.rootResource = root;
+      this.internalRefs = setupInternalRefs(element);
       check();
       // no groupingResource (Bundle or Parameters)
       dump("creating");
@@ -62,6 +78,7 @@ public class ValidationContext {
       this.resource = element;
       this.rootResource = root;
       this.groupingResource = groupingResource;
+      this.internalRefs = setupInternalRefs(element);
       check();
       dump("creating");
   }
@@ -137,6 +154,7 @@ public class ValidationContext {
         res.profile = profile;
         res.groupingResource = groupingResource;
         res.version = version;
+        res.internalRefs = setupInternalRefs(element);
         res.dump("forContained");
         return res;
     }
@@ -148,6 +166,7 @@ public class ValidationContext {
         res.profile = profile;
         res.groupingResource = groupingResource;
         res.version = version;
+        res.internalRefs = setupInternalRefs(element);
         res.dump("forEntry");
         return res;
     }
@@ -159,6 +178,7 @@ public class ValidationContext {
         res.profile = profile;
         res.version = version;
         res.groupingResource = groupingResource;
+        res.internalRefs = internalRefs;
         res.sliceRecords = sliceRecords != null ? sliceRecords : new HashMap<String, List<ValidationMessage>>();
         res.dump("forProfile "+profile.getUrl());
         return res;
@@ -171,6 +191,7 @@ public class ValidationContext {
         res.profile = profile;
         res.groupingResource = groupingResource;
         res.checkSpecials = false;
+        res.internalRefs = setupInternalRefs(resource);
         res.dump("forLocalReference "+profile.getUrl());
         res.version = version;
         return res;
@@ -191,6 +212,7 @@ public class ValidationContext {
         res.groupingResource = null;
         res.checkSpecials = false;
         res.version = version;
+        res.internalRefs = setupInternalRefs(resource);
         res.dump("forRemoteReference "+profile.getUrl());
         return res;
     }
@@ -203,6 +225,7 @@ public class ValidationContext {
         res.profile = profile;
         res.checkSpecials = false;
         res.version = version;
+        res.internalRefs = internalRefs;
         res.sliceRecords = new HashMap<String, List<ValidationMessage>>();
         res.dump("forSlicing");
         return res;
@@ -215,6 +238,10 @@ public class ValidationContext {
     public ValidationContext setVersion(String version) {
       this.version = version;
       return this;
+    }
+
+    public Set<String> getInternalRefs() {
+      return internalRefs;
     }
 
 

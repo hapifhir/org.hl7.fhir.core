@@ -231,16 +231,16 @@ public class AdditionalBindingsRenderer {
 
     XhtmlNode tr = new XhtmlNode(NodeType.Element, "tr");
     children.add(tr);
-    tr.td().style("font-size: 11px").b().tx("Additional Bindings");
-    tr.td().style("font-size: 11px").tx("Purpose");
+    tr.td().style("font-size: 11px").b().tx(context.formatMessage(RenderingContext.ADD_BIND_ADD_BIND));
+    tr.td().style("font-size: 11px").tx(context.formatMessage(RenderingContext.ADD_BIND_PUR));
     if (usage) {
-      tr.td().style("font-size: 11px").tx("Usage");
+      tr.td().style("font-size: 11px").tx(context.formatMessage(RenderingContext.ADD_BIND_USE));
     }
     if (any) {
-      tr.td().style("font-size: 11px").tx("Any");
+      tr.td().style("font-size: 11px").tx(context.formatMessage(RenderingContext.ADD_BIND_ANY));
     }
     if (doco) {
-      tr.td().style("font-size: 11px").tx("Documentation");
+      tr.td().style("font-size: 11px").tx(context.formatMessage(RenderingContext.ADD_BIND_DOC));
     }
     for (AdditionalBindingDetail binding : bindings) {
       tr =  new XhtmlNode(NodeType.Element, "tr");
@@ -296,8 +296,8 @@ public class AdditionalBindingsRenderer {
         }
       }
       if (any) {
-        String newRepeat = binding.any ? "Any repeats" : "All repeats";
-        String oldRepeat = binding.compare!=null && binding.compare.any ? "Any repeats" : "All repeats";
+        String newRepeat = binding.any ? /*!#*/"Any repeats" : /*!#*/"All repeats";
+        String oldRepeat = binding.compare!=null && binding.compare.any ? /*!#*/"Any repeats" : /*!#*/"All repeats";
         compareString(tr.td().style("font-size: 11px"), newRepeat, oldRepeat);
       }
       if (doco) {
@@ -338,54 +338,54 @@ public class AdditionalBindingsRenderer {
     boolean r5 = context == null || context.getWorker() == null ? false : VersionUtilities.isR5Plus(context.getWorker().getVersion());
     switch (purpose) {
     case "maximum": 
-      td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-maximum" : corePath+"extension-elementdefinition-maxvalueset.html", "A required binding, for use when the binding strength is 'extensible' or 'preferred'").tx("Max Binding");
+      td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-maximum" : corePath+"extension-elementdefinition-maxvalueset.html", context.formatMessage(RenderingContext.ADD_BIND_EXT_PREF)).tx(context.formatMessage(RenderingContext.ADD_BIND_MAX));
       break;
     case "minimum": 
-      td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-minimum" : corePath+"extension-elementdefinition-minvalueset.html", "The minimum allowable value set - any conformant system SHALL support all these codes").tx("Min Binding");
+      td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-minimum" : corePath+"extension-elementdefinition-minvalueset.html", context.formatMessage(RenderingContext.ADD_BIND_MIN_ALLOW)).tx(context.formatMessage(RenderingContext.ADD_BIND_MIN));
       break;
     case "required" :
-      td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-required" : corePath+"terminologies.html#strength", "Validators will check this binding (strength = required)").tx("Required Binding");
+      td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-required" : corePath+"terminologies.html#strength", context.formatMessage(RenderingContext.ADD_BIND_VALID_REQ)).tx(context.formatMessage(RenderingContext.ADD_BIND_REQ_BIND));
       break;
     case "extensible" :
-      td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-extensible" : corePath+"terminologies.html#strength", "Validators will check this binding (strength = extensible)").tx("Extensible Binding");
+      td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-extensible" : corePath+"terminologies.html#strength", context.formatMessage(RenderingContext.ADD_BIND_VALID_EXT)).tx(context.formatMessage(RenderingContext.ADD_BIND_EX_BIND));
       break;
     case "current" :
       if (r5) {
-        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-current" : corePath+"terminologies.html#strength", "New records are required to use this value set, but legacy records may use other codes").tx("Current Binding");
+        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-current" : corePath+"terminologies.html#strength", context.formatMessage(RenderingContext.ADD_BIND_NEW_REC)).tx(context.formatMessage(RenderingContext.ADD_BIND_CURR_BIND));
       } else {
-        td.span(null, "New records are required to use this value set, but legacy records may use other codes").tx("Required");
+        td.span(null, context.formatMessage(RenderingContext.ADD_BIND_NEW_REC)).tx(context.formatMessage(RenderingContext.ADD_BIND_REQUIRED));
       }
       break;
     case "preferred" :
       if (r5) {
-        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-preferred" : corePath+"terminologies.html#strength", "This is the value set that is recommended (documentation should explain why)").tx("Preferred Binding");
+        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-preferred" : corePath+"terminologies.html#strength", context.formatMessage(RenderingContext.ADD_BIND_RECOM_VALUE_SET)).tx(context.formatMessage(RenderingContext.ADD_BIND_PREF_BIND));
       } else {
-        td.span(null, "This is the value set that is recommended (documentation should explain why)").tx("Recommended");
+        td.span(null, context.formatMessage(RenderingContext.ADD_BIND_RECOM_VALUE_SET)).tx(context.formatMessage(RenderingContext.ADD_BIND_RECOMMENDED));
       }
       break;
     case "ui" :
       if (r5) {
-        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-ui" : corePath+"terminologies.html#strength", "This value set is provided to user look up in a given context").tx("UI Binding");
+        td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-ui" : corePath+"terminologies.html#strength", context.formatMessage(RenderingContext.ADD_BIND_GIVEN_CONT)).tx(context.formatMessage(RenderingContext.ADD_BIND_UI_BIND));
       } else {
-        td.span(null, "This value set is provided to user look up in a given context").tx("UI");        
+        td.span(null, context.formatMessage(RenderingContext.ADD_BIND_GIVEN_CONT)).tx(context.formatMessage(RenderingContext.ADD_BIND_UI));        
       }
       break;
     case "starter" :
       if (r5) {
         td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-starter" : corePath+"terminologies.html#strength", "This value set is a good set of codes to start with when designing your system").tx("Starter Set");
       } else {
-        td.span(null, "This value set is a good set of codes to start with when designing your system").tx("Starter");        
+        td.span(null, context.formatMessage(RenderingContext.ADD_BIND_DESIG_SYS)).tx(context.formatMessage(RenderingContext.ADD_BIND_STARTER));        
       }
       break;
     case "component" :
       if (r5) {
         td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-component" : corePath+"terminologies.html#strength", "This value set is a component of the base value set").tx("Component");
       } else {
-        td.span(null, "This value set is a component of the base value set").tx("Component");        
+        td.span(null, context.formatMessage(RenderingContext.ADD_BIND_VALUE_COMP)).tx(context.formatMessage(RenderingContext.ADD_BIND_COMPONENT));        
       }
       break;
     default:  
-      td.span(null, "Unknown code for purpose").tx(purpose);
+      td.span(null, context.formatMessage(RenderingContext.ADD_BIND_UNKNOWN_PUR)).tx(purpose);
     }
   }
 
@@ -430,7 +430,7 @@ public class AdditionalBindingsRenderer {
       children.tx(" (");
       boolean ffirst = !b.getAny();
       if (b.getAny()) {
-        children.tx("any repeat");
+        children.tx(context.formatMessage(RenderingContext.ADD_BIND_ANY_REP));
       }
       for (UsageContext uc : b.getUsage()) {
         if (ffirst) ffirst = false; else children.tx(",");

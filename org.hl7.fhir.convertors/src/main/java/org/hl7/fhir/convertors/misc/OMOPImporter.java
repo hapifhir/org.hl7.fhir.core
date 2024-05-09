@@ -15,6 +15,7 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class OMOPImporter {
 
@@ -107,15 +108,15 @@ public class OMOPImporter {
   }
 
 
-  private void connect(String dest) throws SQLException, ClassNotFoundException {
+  private void connect(String dest) throws SQLException, ClassNotFoundException, IOException {
     //    Class.forName("com.mysql.jdbc.Driver");  
     //    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omop?useSSL=false","root",{pwd}); 
-    new File("/Users/grahamegrieve/temp/omop/omop.db").delete();
+    ManagedFileAccess.file("/Users/grahamegrieve/temp/omop/omop.db").delete();
     con = DriverManager.getConnection("jdbc:sqlite:"+dest); 
   }
   private void processRelationships(String folder, boolean process) throws FHIRException, FileNotFoundException, IOException, SQLException {
     Tracker t = new Tracker("Relationships", 700);
-    CSVReader csv = new CSVReader(new FileInputStream(Utilities.path(folder, "RELATIONSHIP.csv")));
+    CSVReader csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "RELATIONSHIP.csv")));
     csv.setDelimiter('\t');
     csv.readHeaders();
     csv.setDoingQuotes(false);
@@ -147,7 +148,7 @@ public class OMOPImporter {
       stmt.execute("Create Index `RelationshipsId` on Relationships  (`relationship_id`)");
       stmt.execute("Create Index`RelationshipsReverse` on Relationships (`reverse_relationship_id`)");
 
-      csv = new CSVReader(new FileInputStream(Utilities.path(folder, "RELATIONSHIP.csv")));
+      csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "RELATIONSHIP.csv")));
       csv.setDelimiter('\t');
       csv.readHeaders();
       csv.setDoingQuotes(false);
@@ -182,7 +183,7 @@ public class OMOPImporter {
 
   private void processVocabularies(String folder, boolean process) throws FHIRException, FileNotFoundException, IOException, SQLException {
     Tracker t = new Tracker("Vocabularies", 60);
-    CSVReader csv = new CSVReader(new FileInputStream(Utilities.path(folder, "VOCABULARY.csv")));
+    CSVReader csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "VOCABULARY.csv")));
     csv.setDelimiter('\t');
     csv.readHeaders();
     csv.setDoingQuotes(false);
@@ -217,7 +218,7 @@ public class OMOPImporter {
           "\r\n");
       stmt.execute("CREATE INDEX `VocabulariesId` on Vocabularies (`vocabulary_id`)");
 
-      csv = new CSVReader(new FileInputStream(Utilities.path(folder, "VOCABULARY.csv")));
+      csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "VOCABULARY.csv")));
       csv.setDelimiter('\t');
       csv.readHeaders();
       csv.setDoingQuotes(false);
@@ -244,7 +245,7 @@ public class OMOPImporter {
   private void processDomains(String folder, boolean process) throws FHIRException, FileNotFoundException, IOException, SQLException {
     Tracker t = new Tracker("Domains", 50);
 
-    CSVReader csv = new CSVReader(new FileInputStream(Utilities.path(folder, "DOMAIN.csv")));
+    CSVReader csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "DOMAIN.csv")));
     csv.setDelimiter('\t');
     csv.readHeaders();
     csv.setDoingQuotes(false);
@@ -275,7 +276,7 @@ public class OMOPImporter {
 
       stmt.execute("CREATE INDEX `DomainId` on Domains (`domain_id`)");
 
-      csv = new CSVReader(new FileInputStream(Utilities.path(folder, "DOMAIN.csv")));
+      csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "DOMAIN.csv")));
       csv.setDelimiter('\t');
       csv.readHeaders();
       csv.setDoingQuotes(false);
@@ -299,7 +300,7 @@ public class OMOPImporter {
   private void processConceptClasses(String folder, boolean process) throws FHIRException, FileNotFoundException, IOException, SQLException {
     Tracker t = new Tracker("ConceptClasses", 400);
 
-    CSVReader csv = new CSVReader(new FileInputStream(Utilities.path(folder, "CONCEPT_CLASS.csv")));
+    CSVReader csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "CONCEPT_CLASS.csv")));
     csv.setDelimiter('\t');
     csv.readHeaders();
     csv.setDoingQuotes(false);
@@ -325,7 +326,7 @@ public class OMOPImporter {
           "  PRIMARY KEY (`concept_class_concept_id`)\r\n"+
           ") \r\n"+
           "\r\n");
-      csv = new CSVReader(new FileInputStream(Utilities.path(folder, "CONCEPT_CLASS.csv")));
+      csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "CONCEPT_CLASS.csv")));
       csv.setDelimiter('\t');
       csv.readHeaders();
       csv.setDoingQuotes(false);
@@ -356,7 +357,7 @@ public class OMOPImporter {
       return;
     }
 
-    CSVReader csv = new CSVReader(new FileInputStream(Utilities.path(folder, "DRUG_STRENGTH.csv")));
+    CSVReader csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "DRUG_STRENGTH.csv")));
     csv.setDelimiter('\t');
     csv.readHeaders();
     csv.setDoingQuotes(false);
@@ -398,7 +399,7 @@ public class OMOPImporter {
         "  PRIMARY KEY (`drug_concept_id`,`ingredient_concept_id`)\r\n"+
         ") \r\n"+
         "\r\n");
-    csv = new CSVReader(new FileInputStream(Utilities.path(folder, "DRUG_STRENGTH.csv")));
+    csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "DRUG_STRENGTH.csv")));
     csv.setDelimiter('\t');
     csv.readHeaders();
     csv.setDoingQuotes(false);
@@ -446,7 +447,7 @@ public class OMOPImporter {
       return;
     }
 
-    CSVReader csv = new CSVReader(new FileInputStream(Utilities.path(folder, "CONCEPT.csv")));
+    CSVReader csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "CONCEPT.csv")));
     csv.setDelimiter('\t');
     csv.readHeaders();
     csv.setDoingQuotes(false);
@@ -485,7 +486,7 @@ public class OMOPImporter {
     stmt.execute("CREATE INDEX `ConceptVocabulary` on Concepts (`vocabulary_id`,`concept_code`)");
     stmt.execute("CREATE INDEX `ConceptClass` on Concepts (`concept_class_id`)");
 
-    csv = new CSVReader(new FileInputStream(Utilities.path(folder, "CONCEPT.csv")));
+    csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "CONCEPT.csv")));
     csv.setDelimiter('\t');
     csv.readHeaders();
     csv.setDoingQuotes(false);
@@ -523,7 +524,7 @@ public class OMOPImporter {
     }    
     t.scan();
 
-    CSVReader csv = new CSVReader(new FileInputStream(Utilities.path(folder, "CONCEPT_SYNONYM.csv")));
+    CSVReader csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "CONCEPT_SYNONYM.csv")));
     csv.setDelimiter('\t');
     csv.readHeaders();
     csv.setDoingQuotes(false);
@@ -545,7 +546,7 @@ public class OMOPImporter {
     stmt.execute("CREATE INDEX `SynonymId` on ConceptSynonyms (`concept_id`)");
     stmt.execute("CREATE INDEX `SynonymLang` on ConceptSynonyms (`language_concept_id`)");
 
-    csv = new CSVReader(new FileInputStream(Utilities.path(folder, "CONCEPT_SYNONYM.csv")));
+    csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "CONCEPT_SYNONYM.csv")));
     csv.setDelimiter('\t');
     csv.readHeaders();
     csv.setDoingQuotes(false);
@@ -575,7 +576,7 @@ public class OMOPImporter {
     }
 
     t.process();
-    CSVReader csv = new CSVReader(new FileInputStream(Utilities.path(folder, "CONCEPT_ANCESTOR.csv")));
+    CSVReader csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "CONCEPT_ANCESTOR.csv")));
     csv.setDelimiter('\t');
     csv.readHeaders();
     csv.setDoingQuotes(false);
@@ -614,7 +615,7 @@ public class OMOPImporter {
     }
 
     t.scan();
-    CSVReader csv = new CSVReader(new FileInputStream(Utilities.path(folder, "CONCEPT_RELATIONSHIP.csv")));
+    CSVReader csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "CONCEPT_RELATIONSHIP.csv")));
     csv.setDelimiter('\t');
     csv.readHeaders();
     csv.setDoingQuotes(false);
@@ -641,7 +642,7 @@ public class OMOPImporter {
 //  stmt.execute("CREATE INDEX `type1` on ConceptRelationships (`relationship_id`,`concept_id_1`,`concept_id_2`)");
 //  stmt.execute("CREATE INDEX `type2` on ConceptRelationships (`relationship_id`,`concept_id_2`,`concept_id_1`)");
 
-    csv = new CSVReader(new FileInputStream(Utilities.path(folder, "CONCEPT_RELATIONSHIP.csv")));
+    csv = new CSVReader(ManagedFileAccess.inStream(Utilities.path(folder, "CONCEPT_RELATIONSHIP.csv")));
     csv.setDelimiter('\t');
     csv.readHeaders();
     csv.setDoingQuotes(false);

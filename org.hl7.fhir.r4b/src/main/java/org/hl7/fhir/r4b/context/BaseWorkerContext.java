@@ -117,6 +117,7 @@ import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -1259,7 +1260,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   // --------------------------------------------------------------------------------------------------------------------------------------------------------
 
   public void initTS(String cachePath) throws Exception {
-    if (!new File(cachePath).exists()) {
+    if (!ManagedFileAccess.file(cachePath).exists()) {
       Utilities.createDirectory(cachePath);
     }
     txCache = new TerminologyCache(lock, cachePath);
@@ -2149,7 +2150,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       try {
         if (sd.getSnapshot().isEmpty()) {
           generateSnapshot(sd);
-//          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
+//          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
         }
       } catch (Exception e) {
 //        System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());

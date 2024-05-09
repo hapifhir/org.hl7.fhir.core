@@ -114,15 +114,19 @@ public class ExtensionHelper {
    * @return The extension, if on this element, else null. will check modifier extensions too
    */
   public static Extension getExtension(BackboneElement element, String name) {
-    if (name == null || element == null || !element.hasExtension())
+    if (name == null || element == null)
       return null;
-    for (Extension e : element.getModifierExtension()) {
-      if (name.equals(e.getUrl()))
-        return e;
+    if (element.hasModifierExtension()) {
+      for (Extension e : element.getModifierExtension()) {
+        if (name.equals(e.getUrl()))
+          return e;
+      }
     }
-    for (Extension e : element.getExtension()) {
-      if (name.equals(e.getUrl()))
-        return e;
+    if (element.hasExtension()) {
+      for (Extension e : element.getExtension()) {
+        if (name.equals(e.getUrl()))
+          return e;
+      }
     }
     return null;
   }

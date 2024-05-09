@@ -7,15 +7,25 @@ import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
+import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceReferenceKind;
 import org.w3c.dom.Element;
 
 public class Resolver {
+
 
   public interface IReferenceResolver {
     ResourceWithReference resolve(RenderingContext context, String url);
     
     // returns null if contained resource is inlined 
     String urlForContained(RenderingContext context, String containingType, String containingId, String containedType, String containedId);
+
+    /**
+     * returns the correct literal URL for the specified logical uri
+     * @param context
+     * @param value
+     * @return
+     */
+    String resolveUri(RenderingContext context, String uri);
   }
 
   public static class ResourceContext {
@@ -174,14 +184,27 @@ public class Resolver {
     }
   }
 
+
+  public enum ResourceReferenceKind {
+    CONTAINED, BUNDLE, EXTERNAL, UNKNOWN
+
+  }
+  
   public static class ResourceWithReference {
 
+    private ResourceReferenceKind kind;
     private String reference;
     private ResourceWrapper resource;
 
-    public ResourceWithReference(String reference, ResourceWrapper resource) {
+    public ResourceWithReference(ResourceReferenceKind kind, String reference, ResourceWrapper resource) {
+      super();
+      this.kind = kind;
       this.reference = reference;
       this.resource = resource;
+    }
+
+    public ResourceReferenceKind getKind() {
+      return kind;
     }
 
     public String getReference() {

@@ -479,4 +479,25 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return false;
   }
 
+
+  public static Set<String> codes(ValueSet vs, CodeSystem cs) {
+    Set<String> res = new HashSet<>();
+    for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+      if (inc.getSystem().equals(cs.getUrl())) {
+        addCodes(res, inc, cs.getConcept());
+      }
+    }
+    return res;
+  }
+
+  private static void addCodes(Set<String> res, ConceptSetComponent inc, List<ConceptDefinitionComponent> list) {
+    for (ConceptDefinitionComponent cd : list) {
+      if (cd.hasCode() && (!inc.hasConcept() || inc.hasConcept(cd.getCode()))) {
+        res.add(cd.getCode());
+      }
+      if (cd.hasConcept()) {
+        addCodes(res, inc, cd.getConcept());
+      }
+    }    
+  }
 }

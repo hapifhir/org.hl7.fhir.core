@@ -74,12 +74,13 @@ import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.R5Hacker;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.ByteProvider;
-import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.MagicResources;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.CSFileInputStream;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -111,7 +112,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     @Override
     public CanonicalResource loadResource() {
       try {
-        FileInputStream f = new FileInputStream(filename);
+        FileInputStream f = ManagedFileAccess.inStream(filename);
         try  {
           if (loader != null) {
             return setPi(R5Hacker.fixR5BrokenResource((CanonicalResource) loader.loadResource(f, true)));
@@ -213,7 +214,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     private final boolean allowLoadingDuplicates;
 
     @With
-    private final ILoggingService loggingService;
+    private final org.hl7.fhir.r5.context.ILoggingService loggingService;
 
     public SimpleWorkerContextBuilder() {
       cacheTerminologyClientErrors = false;
@@ -331,12 +332,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       loadBytes(name, stream);
   }
 
-  public void connectToTSServer(ITerminologyClientFactory factory, ITerminologyClient client) {
+  public void connectToTSServer(ITerminologyClientFactory factory, ITerminologyClient client, boolean useEcosystem) {
     terminologyClientManager.setFactory(factory);
     if (txLog == null) {
       txLog = client.getLogger();
     }
-    TerminologyClientContext tcc = terminologyClientManager.setMasterClient(client);
+    TerminologyClientContext tcc = terminologyClientManager.setMasterClient(client, useEcosystem);
     txLog("Connect to "+client.getAddress());
     try {
       tcc.initialize();  
@@ -356,7 +357,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }      
   }
   
-  public void connectToTSServer(ITerminologyClientFactory factory, String address, String software, String log) {
+  public void connectToTSServer(ITerminologyClientFactory factory, String address, String software, String log, boolean useEcosystem) {
     try {
       terminologyClientManager.setFactory(factory);
       if (log != null && (log.endsWith(".htm") || log.endsWith(".html"))) {
@@ -368,7 +369,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       // txFactory.makeClient("Tx-Server", txServer, "fhir/publisher", null)
 //      terminologyClientManager.setLogger(txLog);
 //      terminologyClientManager.setUserAgent(userAgent);
-      connectToTSServer(factory, client);
+      connectToTSServer(factory, client, useEcosystem);
       
     } catch (Exception e) {
       e.printStackTrace();
@@ -508,7 +509,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     
     String of = pi.getFolders().get("package").getFolderPath();
     if (of != null) {
-      oidSources.add(new OIDSource(of));
+      oidSources.add(new OIDSource(of, pi.vid()));
     }
     
     if ((types == null || types.size() == 0) &&  loader != null) {
@@ -536,7 +537,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         if (!pri.getFilename().contains("ig-r4") && (loader == null || loader.wantLoad(pi, pri))) {
           try {
             if (!pri.hasId()) {
-              loadDefinitionItem(pri.getFilename(), new FileInputStream(pri.getFilename()), loader, null, pii);
+              loadDefinitionItem(pri.getFilename(), ManagedFileAccess.inStream(pri.getFilename()), loader, null, pii);
             } else {
               registerResourceFromPackage(new PackageResourceLoader(pri, loader, pii), pii);
             }
@@ -637,8 +638,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
  
 
   public void loadBinariesFromFolder(String folder) throws IOException {
-    for (String n : new File(folder).list()) {
-      loadBytes(n, new FileInputStream(Utilities.path(folder, n)));
+    for (String n : ManagedFileAccess.file(folder).list()) {
+      loadBytes(n, ManagedFileAccess.inStream(Utilities.path(folder, n)));
     }
   }
   
@@ -649,7 +650,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
   
   public void loadFromFolder(String folder) throws IOException {
-    for (String n : new File(folder).list()) {
+    for (String n : ManagedFileAccess.file(folder).list()) {
       if (n.endsWith(".json")) 
         loadFromFile(Utilities.path(folder, n), new JsonParser());
       else if (n.endsWith(".xml")) 
@@ -660,7 +661,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private void loadFromFile(String filename, IParser p) {
   	Resource r; 
   	try {
-  		r = p.parse(new FileInputStream(filename));
+  		r = p.parse(ManagedFileAccess.inStream(filename));
       if (r.getResourceType() == ResourceType.Bundle) {
         for (BundleEntryComponent e : ((Bundle) r).getEntry()) {
           cacheResource(e.getResource());

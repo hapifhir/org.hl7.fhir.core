@@ -38,6 +38,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.formats.FormatUtilities;
@@ -60,21 +61,24 @@ public class Property {
 	private ElementDefinition definition;
 	private StructureDefinition structure;
   private ProfileUtilities profileUtilities;
+  private ContextUtilities utils;
   private TypeRefComponent type;
 
-  public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities) {
+  public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities, ContextUtilities utils) {
 		this.context = context;
 		this.definition = definition;
 		this.structure = structure;
+		this.utils = utils;
     this.profileUtilities = profileUtilities;
 	}
 
 
-  public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities, String type) {
+  public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities, ContextUtilities utils, String type) {
     this.context = context;
     this.definition = definition;
     this.structure = structure;
     this.profileUtilities = profileUtilities;
+    this.utils = utils;
     for (TypeRefComponent tr : definition.getType()) {
       if (tr.getWorkingCode().equals(type)) {
         this.type = tr;
@@ -83,7 +87,7 @@ public class Property {
   }
   
 	public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure) {
-    this(context, definition, structure, new ProfileUtilities(context, null, null));
+    this(context, definition, structure, new ProfileUtilities(context, null, null), new ContextUtilities(context));
 	}
 
 	public String getName() {
@@ -265,10 +269,10 @@ public class Property {
 	public boolean isResource() {
 	  if (type != null) {
 	    String tc = type.getCode();
-      return (("Resource".equals(tc) || "DomainResource".equals(tc)) ||  Utilities.existsInList(tc, context.getResourceNames()));
+      return (("Resource".equals(tc) || "DomainResource".equals(tc)) || utils.isResource(tc));
 	  } else if (definition.getType().size() > 0) {
       String tc = definition.getType().get(0).getCode();
-      return definition.getType().size() == 1 && (("Resource".equals(tc) || "DomainResource".equals(tc)) ||  Utilities.existsInList(tc, context.getResourceNames()));
+      return definition.getType().size() == 1 && (("Resource".equals(tc) || "DomainResource".equals(tc)) ||  utils.isResource(tc));
     }
 	  else {
 	    return !definition.getPath().contains(".") && (structure.getKind() == StructureDefinitionKind.RESOURCE);
@@ -425,7 +429,7 @@ public class Property {
     }
     List<Property> properties = new ArrayList<Property>();
     for (ElementDefinition child : children.getList()) {
-      properties.add(new Property(context, child, sd, this.profileUtilities));
+      properties.add(new Property(context, child, sd, this.profileUtilities, this.utils));
     }
     profileUtilities.getCachedPropertyList().put(cacheKey, properties);
     return properties;
@@ -485,7 +489,7 @@ public class Property {
     }
     List<Property> properties = new ArrayList<Property>();
     for (ElementDefinition child : children.getList()) {
-      properties.add(new Property(context, child, sd, this.profileUtilities));
+      properties.add(new Property(context, child, sd, this.profileUtilities, this.utils));
     }
     return properties;
   }
@@ -613,6 +617,9 @@ public class Property {
   public ProfileUtilities getUtils() {
     return profileUtilities;
   }
+  public ContextUtilities getContextUtils() {
+    return utils;
+  }
 
   public boolean isJsonPrimitiveChoice() {
     return ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE);
@@ -634,14 +641,32 @@ public class Property {
 
   public boolean isTranslatable() {
     boolean ok = ToolingExtensions.readBoolExtension(definition, ToolingExtensions.EXT_TRANSLATABLE);
-    if (!ok && !Utilities.existsInList(definition.getBase().getPath(), "Reference.reference", "Coding.version", "Identifier.value", "SampledData.offsets", "SampledData.data", "ContactPoint.value")) {
+    if (!ok && !definition.getPath().endsWith(".id") && !Utilities.existsInList(definition.getBase().getPath(), "Resource.id", "Reference.reference", "Coding.version", "Identifier.value", "SampledData.offsets", "SampledData.data", "ContactPoint.value")) {
       String t = getType();
       ok = Utilities.existsInList(t, "string", "markdown");
     }
+    if (Utilities.existsInList(pathForElement(getStructure().getType(), getDefinition().getBase().getPath()), "CanonicalResource.version")) {
+      return false;
+    }
     return ok;
+  }  
+
+
+  private String pathForElement(String type, String path) {
+    // special case support for metadata elements prior to R5:
+    if (utils.getCanonicalResourceNames().contains(type)) {
+      String fp = path.replace(type+".", "CanonicalResource.");
+      if (Utilities.existsInList(fp,
+         "CanonicalResource.url", "CanonicalResource.identifier", "CanonicalResource.version", "CanonicalResource.name", 
+         "CanonicalResource.title", "CanonicalResource.status", "CanonicalResource.experimental", "CanonicalResource.date",
+         "CanonicalResource.publisher", "CanonicalResource.contact", "CanonicalResource.description", "CanonicalResource.useContext", 
+         "CanonicalResource.jurisdiction"))  {
+        return fp;
+      }
+    }
+    return path; 
   }
-
-
+  
   public String getXmlTypeName() {
     TypeRefComponent tr = type;
     if (tr == null) {
@@ -668,6 +693,16 @@ public class Property {
 
   private boolean isRef(TypeRefComponent tr) {
     return Utilities.existsInList(tr.getWorkingCode(), "Reference", "url", "uri", "canonical");
+  }
+
+
+  public boolean canBeType(String type) {
+    for (TypeRefComponent tr : getDefinition().getType()) {
+      if (type.equals(tr.getWorkingCode())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   

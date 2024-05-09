@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager.InputStreamWithSrc;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager.IPackageProvider;
@@ -133,7 +134,7 @@ public class TestingUtilities extends BaseTestingUtilities {
   static public String fixedpath;
   static public String contentpath;
 
-  public static String home() {
+  public static String home() throws IOException {
     if (fixedpath != null)
       return fixedpath;
     String s = System.getenv("FHIR_HOME");
@@ -142,7 +143,7 @@ public class TestingUtilities extends BaseTestingUtilities {
     s = "C:\\work\\org.hl7.fhir\\build";
     // #TODO - what should we do with this?
     s = "/Users/jamesagnew/git/fhir";
-    if (new File(s).exists())
+    if (ManagedFileAccess.file(s).exists())
       return s;
     throw new Error("FHIR Home directory not configured");
   }
@@ -152,20 +153,20 @@ public class TestingUtilities extends BaseTestingUtilities {
     if (contentpath != null)
       return contentpath;
     String s = "R:\\fhir\\publish";
-    if (new File(s).exists())
+    if (ManagedFileAccess.file(s).exists())
       return s;
     return Utilities.path(home(), "publish");
   }
 
   // diretory that contains all the US implementation guides
-  public static String us() {
+  public static String us() throws IOException {
     if (fixedpath != null)
       return fixedpath;
     String s = System.getenv("FHIR_HOME");
     if (!Utilities.noString(s))
       return s;
     s = "C:\\work\\org.hl7.fhir.us";
-    if (new File(s).exists())
+    if (ManagedFileAccess.file(s).exists())
       return s;
     throw new Error("FHIR US directory not configured");
   }

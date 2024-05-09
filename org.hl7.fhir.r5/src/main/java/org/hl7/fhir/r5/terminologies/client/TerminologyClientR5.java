@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.terminologies.client;
 
 import java.net.URISyntaxException;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Map;
 
 /*
@@ -40,6 +41,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -136,6 +138,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
+  public Parameters subsumes(Parameters pin) {
+    return client.operateType(CodeSystem.class, "subsumes", pin);
+  }
+
+  @Override
   public Parameters validateVS(Parameters pin) {
     return client.operateType(ValueSet.class, "validate-code", pin);
   }
@@ -164,6 +171,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
 
   @Override
   public Parameters lookupCode(Map<String, String> params) {
+    return client.lookupCode(params);
+  }
+
+  @Override
+  public Parameters lookupCode(Parameters params) {
     return client.lookupCode(params);
   }
 
@@ -255,5 +267,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   public Bundle search(String type, String criteria) {
     return client.search(type, criteria);
   }
+
+  @Override
+  public Parameters translate(Parameters params) throws FHIRException {
+    return client.translate(params);
+  }
+
 
 }

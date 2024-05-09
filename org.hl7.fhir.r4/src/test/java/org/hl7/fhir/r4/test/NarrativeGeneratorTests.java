@@ -11,6 +11,7 @@ import org.hl7.fhir.r4.model.DomainResource;
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.EOperationOutcome;
 import org.hl7.fhir.r4.utils.NarrativeGenerator;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -37,9 +38,9 @@ public class NarrativeGeneratorTests {
   private void process(String path)
       throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
     XmlParser p = new XmlParser();
-    DomainResource r = (DomainResource) p.parse(new FileInputStream(path));
+    DomainResource r = (DomainResource) p.parse(ManagedFileAccess.inStream(path));
     gen.generate(r, null);
-    FileOutputStream s = new FileOutputStream(TestingUtilities.resourceNameToFile("gen", "gen.xml"));
+    FileOutputStream s = ManagedFileAccess.outStream(TestingUtilities.resourceNameToFile("gen", "gen.xml"));
     new XmlParser().compose(s, r, true);
     s.close();
 

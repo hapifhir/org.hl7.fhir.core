@@ -67,6 +67,8 @@ import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FileNotifier.FileNotifier2;
 import org.hl7.fhir.utilities.Utilities.CaseInsensitiveSorter;
+import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class Utilities {
@@ -312,12 +314,12 @@ public class Utilities {
   }
 
   public static void copyDirectory(String sourceFolder, String destFolder, FileNotifier notifier) throws IOException, FHIRException {
-    CSFile src = new CSFile(sourceFolder);
+    CSFile src = ManagedFileAccess.csfile(sourceFolder);
     if (!src.exists())
       throw new FHIRException("Folder " + sourceFolder + " not found");
-    File dst = new File(destFolder);
+    File dst = ManagedFileAccess.file(destFolder);
     if(!dst.getCanonicalFile().getName().equals(dst.getName())) {
-      File tmp = new File(destFolder+System.currentTimeMillis());
+      File tmp = ManagedFileAccess.file(destFolder+System.currentTimeMillis());
       if (!dst.renameTo(tmp)) {
         throw new IOException("fixing case from "+dst.getCanonicalFile().getName()+" to "+tmp.getName()+" failed");
       }
@@ -330,28 +332,28 @@ public class Utilities {
 
     String[] files = src.list();
     for (String f : files) {
-      if (new CSFile(sourceFolder + File.separator + f).isDirectory()) {
+      if (ManagedFileAccess.csfile(sourceFolder + File.separator + f).isDirectory()) {
         if (!f.startsWith(".")) { // ignore .git files...
           copyDirectory(sourceFolder + File.separator + f, destFolder + File.separator + f, notifier);
         }
       } else {
         if (notifier != null)
           notifier.copyFile(sourceFolder + File.separator + f, destFolder + File.separator + f);
-        copyFile(new CSFile(sourceFolder + File.separator + f), new /*CS*/File(destFolder + File.separator + f)); // case doesn't have to match on the target
+        copyFile(ManagedFileAccess.csfile(sourceFolder + File.separator + f), new /*CS*/File(destFolder + File.separator + f)); // case doesn't have to match on the target
       }
     }
   }
 
 
   public static void copyDirectory2(String sourceFolder, String destFolder, FileNotifier2 notifier) throws IOException, FHIRException {
-    CSFile src = new CSFile(sourceFolder);
+    CSFile src = ManagedFileAccess.csfile(sourceFolder);
     if (!src.exists())
       throw new FHIRException("Folder " + sourceFolder + " not found");
     createDirectory(destFolder);
 
     String[] files = src.list();
     for (String f : files) {
-      if (new CSFile(sourceFolder + File.separator + f).isDirectory()) {
+      if (ManagedFileAccess.csfile(sourceFolder + File.separator + f).isDirectory()) {
         if (!f.startsWith(".")) { // ignore .git files...
           boolean doCopy = notifier != null ? notifier.copyFolder(sourceFolder + File.separator + f, destFolder + File.separator + f) : true;
           if (doCopy) {
@@ -361,19 +363,19 @@ public class Utilities {
       } else {
         boolean doCopy = notifier != null ? notifier.copyFile(sourceFolder + File.separator + f, destFolder + File.separator + f) : true;
         if (doCopy) {
-          copyFile(new CSFile(sourceFolder + File.separator + f), new CSFile(destFolder + File.separator + f));
+          copyFile(ManagedFileAccess.csfile(sourceFolder + File.separator + f), ManagedFileAccess.csfile(destFolder + File.separator + f));
         }
       }
     }
   }
 
   public static void copyFile(String source, String dest) throws IOException {
-    copyFile(new File(source), new File(dest));
+    copyFile(ManagedFileAccess.file(source), ManagedFileAccess.file(dest));
   }
 
   public static void copyFile(File sourceFile, File destFile) throws IOException {
     if (!destFile.exists()) {
-      if (!new CSFile(destFile.getParent()).exists()) {
+      if (!ManagedFileAccess.csfile(destFile.getParent()).exists()) {
         createDirectory(destFile.getParent());
       }
       destFile.createNewFile();
@@ -387,8 +389,8 @@ public class Utilities {
     FileOutputStream destination = null;
 
     try {
-      source = new FileInputStream(sourceFile);
-      destination = new FileOutputStream(destFile);
+      source = ManagedFileAccess.inStream(sourceFile);
+      destination = ManagedFileAccess.outStream(destFile);
       destination.getChannel().transferFrom(source.getChannel(), 0, source.getChannel().size());
     } finally {
       if (source != null) {
@@ -402,7 +404,7 @@ public class Utilities {
 
   public static boolean checkFolder(String dir, List<String> errors)
       throws IOException {
-    if (!new CSFile(dir).exists()) {
+    if (!ManagedFileAccess.csfile(dir).exists()) {
       errors.add("Unable to find directory " + dir);
       return false;
     } else {
@@ -412,7 +414,7 @@ public class Utilities {
 
   public static boolean checkFile(String purpose, String dir, String file, List<String> errors)
       throws IOException {
-    if (!new CSFile(dir + file).exists()) {
+    if (!ManagedFileAccess.csfile(dir + file).exists()) {
       if (errors != null)
         errors.add("Unable to find " + purpose + " file " + file + " in " + dir);
       return false;
@@ -447,16 +449,16 @@ public class Utilities {
   }
 
   public static void clearDirectory(String folder, String... exemptions) throws IOException {
-    File dir = new File(folder);
+    File dir = ManagedFileAccess.file(folder);
     if (dir.exists()) {
       if (exemptions.length == 0)
         FileUtils.cleanDirectory(dir);
       else {
-        String[] files = new CSFile(folder).list();
+        String[] files = ManagedFileAccess.csfile(folder).list();
         if (files != null) {
           for (String f : files) {
             if (!existsInList(f, exemptions)) {
-              File fh = new CSFile(folder + File.separatorChar + f);
+              File fh = ManagedFileAccess.csfile(folder + File.separatorChar + f);
               if (fh.isDirectory())
                 clearDirectory(fh.getAbsolutePath());
               fh.delete();
@@ -468,8 +470,8 @@ public class Utilities {
   }
 
   public static File createDirectory(String path) throws IOException {
-    new CSFile(path).mkdirs();
-    return new File(path);
+    ManagedFileAccess.csfile(path).mkdirs();
+    return ManagedFileAccess.file(path);
   }
 
   public static String changeFileExt(String name, String ext) {
@@ -493,7 +495,7 @@ public class Utilities {
 
 
   public static void bytesToFile(byte[] content, String filename) throws IOException {
-    FileOutputStream out = new FileOutputStream(filename);
+    FileOutputStream out = ManagedFileAccess.outStream(filename);
     out.write(content);
     out.close();
 
@@ -512,10 +514,10 @@ public class Utilities {
   }
 
 
-  public static String fileTitle(String file) {
+  public static String fileTitle(String file) throws IOException {
     if (file == null)
       return null;
-    String s = new File(file).getName();
+    String s = ManagedFileAccess.file(file).getName();
     return s.indexOf(".") == -1 ? s : s.substring(0, s.indexOf("."));
   }
 
@@ -655,7 +657,7 @@ public class Utilities {
   }
 
   public static File pathFile(String... args) throws IOException {
-    return new File(PathBuilder.getPathBuilder().buildPath(args));
+    return ManagedFileAccess.file(PathBuilder.getPathBuilder().buildPath(args));
   }
 
   public static String path(File f, String... args) throws IOException {
@@ -681,7 +683,7 @@ public class Utilities {
    * @see PathBuilder#buildPath(String...)
    */
   @Deprecated
-  public static String uncheckedPath(String... args) {
+  public static String uncheckedPath(String... args) throws IOException {
     return PathBuilder.getPathBuilder()
         .withRequireNonRootFirstEntry(false)
         .withRequireNonNullNonEmptyFirstEntry(false)
@@ -744,8 +746,8 @@ public class Utilities {
   }
 
 
-  public static String getDirectoryForFile(String filepath) {
-    File f = new File(filepath);
+  public static String getDirectoryForFile(String filepath) throws IOException {
+    File f = ManagedFileAccess.file(filepath);
     return f.getParent();
   }
 
@@ -873,7 +875,7 @@ public class Utilities {
 
 
   public static void copyFileToDirectory(File source, File destDir) throws IOException {
-    copyFile(source, new File(path(destDir.getAbsolutePath(), source.getName())));
+    copyFile(source, ManagedFileAccess.file(path(destDir.getAbsolutePath(), source.getName())));
   }
 
 
@@ -932,6 +934,15 @@ public class Utilities {
         return true;
     return false;
   }
+  
+  public static boolean existsInListTrimmed(String value, String... array) {
+    if (value == null)
+      return false;
+    for (String s : array)
+      if (value.equals(s.trim()))
+        return true;
+    return false;
+  }
 
   public static boolean existsInList(int value, int... array) {
     for (int i : array)
@@ -963,14 +974,14 @@ public class Utilities {
   public static void deleteTempFiles() throws IOException {
     File file = createTempFile("test", "test");
     String folder = getDirectoryForFile(file.getAbsolutePath());
-    String[] list = new File(folder).list(new FilenameFilter() {
+    String[] list = ManagedFileAccess.file(folder).list(new FilenameFilter() {
       public boolean accept(File dir, String name) {
         return name.startsWith("ohfu-");
       }
     });
     if (list != null) {
       for (String n : list) {
-        new File(path(folder, n)).delete();
+        ManagedFileAccess.file(path(folder, n)).delete();
       }
     }
   }
@@ -1101,14 +1112,14 @@ public class Utilities {
   }
 
 
-  public static void deleteAllFiles(String folder, String type) {
-    File src = new File(folder);
+  public static void deleteAllFiles(String folder, String type) throws IOException {
+    File src = ManagedFileAccess.file(folder);
     String[] files = src.list();
     for (String f : files) {
-      if (new File(folder + File.separator + f).isDirectory()) {
+      if (ManagedFileAccess.file(folder + File.separator + f).isDirectory()) {
         deleteAllFiles(folder + File.separator + f, type);
       } else if (f.endsWith(type)) {
-        new File(folder + File.separator + f).delete();
+        ManagedFileAccess.file(folder + File.separator + f).delete();
       }
     }
 
@@ -1118,8 +1129,8 @@ public class Utilities {
     InputStream in1 = null;
     InputStream in2 = null;
     try {
-      in1 = new BufferedInputStream(new FileInputStream(f1));
-      in2 = new BufferedInputStream(new FileInputStream(f2));
+      in1 = new BufferedInputStream(ManagedFileAccess.inStream(f1));
+      in2 = new BufferedInputStream(ManagedFileAccess.inStream(f2));
 
       int expectedByte = in1.read();
       while (expectedByte != -1) {
@@ -1160,7 +1171,7 @@ public class Utilities {
 
 
   public static boolean compareIgnoreWhitespace(String fn1, String fn2) throws IOException {
-    return compareIgnoreWhitespace(new File(fn1), new File(fn2));
+    return compareIgnoreWhitespace(ManagedFileAccess.file(fn1), ManagedFileAccess.file(fn2));
   }
 
 
@@ -1283,8 +1294,8 @@ public class Utilities {
   }
 
 
-  public static int countFilesInDirectory(String dirName) {
-    File dir = new File(dirName);
+  public static int countFilesInDirectory(String dirName) throws IOException {
+    File dir = ManagedFileAccess.file(dirName);
     if (dir.exists() == false) {
       return 0;
     }
@@ -1315,7 +1326,7 @@ public class Utilities {
   }
 
   public static void visitFiles(String folder, String extension, FileVisitor visitor) throws FileNotFoundException, IOException {
-    visitFiles(new File(folder), extension, visitor);
+    visitFiles(ManagedFileAccess.file(folder), extension, visitor);
   }
 
   public static void visitFiles(File folder, String extension, FileVisitor visitor) throws FileNotFoundException, IOException {
@@ -1987,9 +1998,9 @@ public class Utilities {
     return res;
   }
 
-  public static List<String> listAllFiles(String path, List<String> ignoreList) {
+  public static List<String> listAllFiles(String path, List<String> ignoreList) throws IOException {
     List<String> res = new ArrayList<>();
-    addAllFiles(res, path, new File(path), ignoreList);
+    addAllFiles(res, path, ManagedFileAccess.file(path), ignoreList);
     return res;
   }
 
@@ -2158,8 +2169,8 @@ public class Utilities {
   }
 
   public static void renameDirectory(String source, String dest) throws FHIRException, IOException {
-    File src = new File(source);
-    File dst = new File(dest);
+    File src = ManagedFileAccess.file(source);
+    File dst = ManagedFileAccess.file(dest);
     if (!src.renameTo(dst)) {
       int i = 0;
       do {
@@ -2224,6 +2235,13 @@ public class Utilities {
       }
     }
     return true;
+  }
+
+  public static String stripEoln(String text) {
+    if (text == null) {
+      return "";
+    }
+    return text.replace("\r\n",  " ").replace("\n",  " ").replace("\r",  " ");
   }
 
 }

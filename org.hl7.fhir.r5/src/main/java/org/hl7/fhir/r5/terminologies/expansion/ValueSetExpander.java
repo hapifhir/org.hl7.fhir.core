@@ -320,7 +320,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
     String s = key(n);
     if (wc.getMap().containsKey(s) || wc.getExcludeKeys().contains(s)) {
-      wc.setCanBeHeirarchy(false);
+      wc.setCanBeHierarchy(false);
     } else {
       wc.getCodes().add(n);
       wc.getMap().put(s, n);
@@ -335,7 +335,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 //        throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getUrl(), ">" + Integer.toString(maxExpansionSize)));
 //      }
     }
-    if (wc.isCanBeHeirarchy() && parent != null) {
+    if (wc.isCanBeHierarchy() && parent != null) {
       parent.getContains().add(n);
     } else if (!wc.getRootMap().containsKey(s)) {
       wc.getRootMap().put(s, n);
@@ -633,7 +633,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
       ConceptSetFilterComponent fc = exc.getFilter().get(0);
       WorkingContext wc1 = dwc;
-      processFilter(exc, exp, expParams, null, cs, false, fc, wc1, filters, false);
+      processFilter(exc, exp, expParams, null, cs, false, fc, wc1, filters, true);
     }
   }
 
@@ -680,8 +680,6 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (debug) {
         e.printStackTrace();
       }
-      // well, we couldn't expand, so we'll return an interface to a checker that can check membership of the set
-      // that might fail too, but it might not, later.
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e instanceof EFhirClientException || e instanceof TerminologyServiceException);
     }
   }
@@ -767,7 +765,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       } else {
         throw failCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_COUNT, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize), MessageFormat.format("{0,number,#}", dwc.getTotal())));
       }
-    } else if (dwc.isCanBeHeirarchy() && ((dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size())) {
+    } else if (dwc.isCanBeHierarchy() && ((dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size())) {
       for (ValueSetExpansionContainsComponent c : dwc.getRoots()) {
         focus.getExpansion().getContains().add(c);
       }
@@ -775,7 +773,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       int i = 0;
       int cc = 0;
       for (ValueSetExpansionContainsComponent c : dwc.getCodes()) {
-        c.getContains().clear(); // make sure any heirarchy is wiped
+        c.getContains().clear(); // make sure any hierarchy is wiped
         if (dwc.getMap().containsKey(key(c)) && (includeAbstract || !c.getAbstract())) { // we may have added abstract codes earlier while we still thought it might be heirarchical, but later we gave up, so now ignore them
           if (dwc.getOffsetParam() == 0 || i >= dwc.getOffsetParam()) {
             focus.getExpansion().getContains().add(c);
@@ -836,15 +834,15 @@ public class ValueSetExpander extends ValueSetProcessBase {
     // Exclude comes first because we build up a map of things to exclude
     for (ConceptSetComponent inc : compose.getExclude())
       excludeCodes(dwc, inc, expParams, exp, valueSet);
-    dwc.setCanBeHeirarchy(!expParams.getParameterBool("excludeNested") && dwc.getExcludeKeys().isEmpty() && dwc.getExcludeSystems().isEmpty() && dwc.getOffsetParam() == 0);
+    dwc.setCanBeHierarchy(!expParams.getParameterBool("excludeNested") && dwc.getExcludeKeys().isEmpty() && dwc.getExcludeSystems().isEmpty() && dwc.getOffsetParam() == 0);
     includeAbstract = !expParams.getParameterBool("excludeNotForUI");
     boolean first = true;
     for (ConceptSetComponent inc : compose.getInclude()) {
       if (first == true)
         first = false;
       else
-        dwc.setCanBeHeirarchy(false);
-      includeCodes(inc, exp, expParams, dwc.isCanBeHeirarchy(), compose.hasInactive() ? !compose.getInactive() : checkNoInActiveFromParam(expParams), extensions, valueSet);
+        dwc.setCanBeHierarchy(false);
+      includeCodes(inc, exp, expParams, dwc.isCanBeHierarchy(), compose.hasInactive() ? !compose.getInactive() : checkNoInActiveFromParam(expParams), extensions, valueSet);
     }
   }
 
@@ -912,7 +910,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (isValueSetUnionImports(valueSet)) {
       copyExpansion(wc, evs.getContains());
     }
-    wc.setCanBeHeirarchy(false); // if we're importing a value set, we have to be combining, so we won't try for a heirarchy
+    wc.setCanBeHierarchy(false); // if we're importing a value set, we have to be combining, so we won't try for a hierarchy
     return vso.getValueset();
   }
   
@@ -1111,7 +1109,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
 
     if (!inc.getConcept().isEmpty()) {
-      dwc.setCanBeHeirarchy(false);
+      dwc.setCanBeHierarchy(false);
       for (ConceptReferenceComponent c : inc.getConcept()) {
         c.checkNoModifiers("Code in Value Set", "expanding");
         ConceptDefinitionComponent def = CodeSystemUtilities.findCodeOrAltCode(cs.getConcept(), c.getCode(), null);
@@ -1138,7 +1136,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     if (inc.getFilter().size() > 0) {
       if (inc.getFilter().size() > 1) {
-        dwc.setCanBeHeirarchy(false); // which will be the case if we get around to supporting this
+        dwc.setCanBeHierarchy(false); // which will be the case if we get around to supporting this
       }
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
         addFragmentWarning(exp, cs);
@@ -1205,7 +1203,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
     } else if ("display".equals(fc.getProperty()) && fc.getOp() == FilterOperator.EQUAL) {
       // gg; note: wtf is this: if the filter is display=v, look up the code 'v', and see if it's display is 'v'?
-      dwc.setCanBeHeirarchy(false);
+      dwc.setCanBeHierarchy(false);
       ConceptDefinitionComponent def = getConceptForCode(cs.getConcept(), fc.getValue());
       if (def != null) {
         if (isNotBlank(def.getDisplay()) && isNotBlank(fc.getValue())) {
@@ -1222,12 +1220,22 @@ public class ValueSetExpander extends ValueSetProcessBase {
           }
         }
       }
-    } else if (isDefinedProperty(cs, fc.getProperty())) {
+    } else if (CodeSystemUtilities.isDefinedProperty(cs, fc.getProperty())) {
       for (ConceptDefinitionComponent def : cs.getConcept()) {
+        PropertyFilter pf = new PropertyFilter(allErrors, fc, CodeSystemUtilities.getPropertyDefinition(cs, fc.getProperty()));
         if (exclude) {
-          excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, new PropertyFilter(allErrors, fc, getPropertyDefinition(cs, fc.getProperty())), filters, exp);
+          excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, pf, filters, exp);
         } else {
-          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, new PropertyFilter(allErrors, fc, getPropertyDefinition(cs, fc.getProperty())), noInactive, exp.getProperty(), filters, exp);
+          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, pf, noInactive, exp.getProperty(), filters, exp);
+        }
+      }
+    } else if (isKnownProperty(fc.getProperty(), cs)) {
+      for (ConceptDefinitionComponent def : cs.getConcept()) {
+        KnownPropertyFilter pf = new KnownPropertyFilter(allErrors, fc, fc.getProperty());
+        if (exclude) {
+          excludeCodeAndDescendents(wc, cs, inc.getSystem(), def, null, imports, null, pf, filters, exp);
+        } else {
+          addCodeAndDescendents(wc, cs, inc.getSystem(), def, null, expParams, imports, null, pf, noInactive, exp.getProperty(), filters, exp);
         }
       }
     } else if ("code".equals(fc.getProperty()) && fc.getOp() == FilterOperator.REGEX) {
@@ -1243,6 +1251,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
   }
 
+  private boolean isKnownProperty(String property, CodeSystem cs) {
+    return Utilities.existsInList(property, "notSelectable");
+  }
+
   private List<ConceptDefinitionDesignationComponent> mergeDesignations(ConceptDefinitionComponent def,
       List<ConceptDefinitionDesignationComponent> list) {
     List<ConceptDefinitionDesignationComponent> res = new ArrayList<>();
@@ -1253,23 +1265,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return res;
   }
 
-  private PropertyComponent getPropertyDefinition(CodeSystem cs, String property) {
-    for (PropertyComponent cp : cs.getProperty()) {
-      if (cp.getCode().equals(property)) {
-        return cp;
-      }
-    }
-    return null;
-  }
-
-  private boolean isDefinedProperty(CodeSystem cs, String property) {
-    for (PropertyComponent cp : cs.getProperty()) {
-      if (cp.getCode().equals(property)) {
-        return true;
-      }
-    }
-    return false;
-  }
+ 
 
   private void addFragmentWarning(ValueSetExpansionComponent exp, CodeSystem cs) {
     String url = cs.getVersionedUrl();

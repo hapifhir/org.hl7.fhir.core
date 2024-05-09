@@ -151,7 +151,7 @@ public class TurtleParser extends ParserBase {
     if (sd == null)
       return null;
 
-    Element result = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd)).setFormat(FhirFormat.TURTLE);
+    Element result = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd, getProfileUtilities(), getContextUtilities())).setFormat(FhirFormat.TURTLE);
     result.markLocation(cmp.getLine(), cmp.getCol());
     result.setType(name);
     parseChildren(errors, src, path, cmp, result, false);
@@ -279,7 +279,7 @@ public class TurtleParser extends ParserBase {
     
     Element n = new Element(tail(name), property).markLocation(object.getLine(), object.getCol()).setFormat(FhirFormat.TURTLE);
     element.getChildren().add(n);
-    n.updateProperty(new Property(this.context, sd.getSnapshot().getElement().get(0), sd), SpecialElement.fromProperty(n.getProperty()), property);
+    n.updateProperty(new Property(this.context, sd.getSnapshot().getElement().get(0), sd, getProfileUtilities(), getContextUtilities()), SpecialElement.fromProperty(n.getProperty()), property);
     n.setType(rt);
     parseChildren(errors, src, npath, obj, n, false);
   }
