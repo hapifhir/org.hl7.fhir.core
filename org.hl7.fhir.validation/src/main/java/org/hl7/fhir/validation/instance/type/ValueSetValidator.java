@@ -70,6 +70,7 @@ public class ValueSetValidator extends BaseValidator {
     private PropertyFilterType type;
     private CodeValidationRule codeValidation; 
     private EnumSet<PropertyOperation> ops;
+    private List<String> codeList = new ArrayList<>();
     
     protected PropertyValidationRules(PropertyFilterType type, CodeValidationRule codeValidation, PropertyOperation... ops) {
       super();
@@ -96,11 +97,20 @@ public class ValueSetValidator extends BaseValidator {
     public CodeValidationRule getCodeValidation() {
       return codeValidation;
     }
+    public List<String> getCodeList() {
+      return codeList;
+    }
+    public PropertyValidationRules setCodes(String... values) {
+      for (String v : values) {
+        codeList.add(v);
+      }
+      return this;
+    }
 
   }
 
   public enum PropertyFilterType {
-    Boolean, Integer, Decimal, Code, DateTime, Coding
+    Boolean, Integer, Decimal, Code, DateTime, Coding, CodeList, String, LoincRelationship
   }
 
   private static final int TOO_MANY_CODES_TO_VALIDATE = 1000;
@@ -433,7 +443,7 @@ public class ValueSetValidator extends BaseValidator {
           }
 
           if ("exists".equals(op)) {
-            ok = checkFilterValue(errors, stack, system, version, ok, property, op, value, PropertyFilterType.Boolean, null) && ok;
+            ok = checkFilterValue(errors, stack, system, version, ok, property, op, value, new PropertyValidationRules(PropertyFilterType.Boolean, null)) && ok;
           } else if ("regex".equals(op)) {
             String err = null;
             try {
@@ -445,10 +455,10 @@ public class ValueSetValidator extends BaseValidator {
             ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, !"concept".equals(property), I18nConstants.VALUESET_BAD_PROPERTY_NO_REGEX, property) && ok;
           } else if (Utilities.existsInList(op, "in", "not-in")) {
             for (String v : value.split("\\,")) {
-              ok = checkFilterValue(errors, stack, system, version, ok, property, op, v, rules.getType(), rules.getCodeValidation()) && ok;
+              ok = checkFilterValue(errors, stack, system, version, ok, property, op, v, rules) && ok;
             }
           } else {
-            ok = checkFilterValue(errors, stack, system, version, ok, property, op, value, rules.getType(), rules.getCodeValidation()) && ok;
+            ok = checkFilterValue(errors, stack, system, version, ok, property, op, value, rules) && ok;
           }
         }
       }
@@ -474,30 +484,36 @@ public class ValueSetValidator extends BaseValidator {
     return false;
   }
 
-  private boolean checkFilterValue(List<ValidationMessage> errors, NodeStack stack, String system, String version,boolean ok, String property, String op, String value, PropertyFilterType type, CodeValidationRule cr) {
-    if (type != null) {
+  private boolean checkFilterValue(List<ValidationMessage> errors, NodeStack stack, String system, String version,boolean ok, String property, String op, String value, PropertyValidationRules rules) {
+    if (rules.getType() != null) {
       if (!Utilities.existsInList(op, "in", "not-in")) {
-        hint(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), !value.contains(","), I18nConstants.VALUESET_BAD_FILTER_VALUE_HAS_COMMA, type.toString());
+        hint(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), !value.contains(","), I18nConstants.VALUESET_BAD_FILTER_VALUE_HAS_COMMA, rules.getType().toString());
       }
-      switch (type) {
+      switch (rules.getType()) {
       case Boolean:
         ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, 
             Utilities.existsInList(value, "true", "false"), 
             I18nConstants.VALUESET_BAD_FILTER_VALUE_BOOLEAN, property, value) && ok;
         break;
+      case String:
+        // nothing to check
+        break;
       case Code:
         ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, 
             value.trim().equals(value), 
             I18nConstants.VALUESET_BAD_FILTER_VALUE_CODE, property, value) && ok;
-        if (cr == CodeValidationRule.Error || cr == CodeValidationRule.Warning) {
+        if (rules.getCodeValidation() == CodeValidationRule.Error || rules.getCodeValidation() == CodeValidationRule.Warning) {
           ValidationResult vr = context.validateCode(baseOptions, system, version, value, null);
-          if (cr == CodeValidationRule.Error) {
+          if (rules.getCodeValidation() == CodeValidationRule.Error) {
             ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), vr.isOk(), I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage()) && ok;
           } else {
             warning(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), vr.isOk(), I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE, property, value, system, vr.getMessage());
           }
         }
         break;
+      case CodeList:
+        ok = rule(errors, "2024-05-12", IssueType.INVALID, stack.getLiteralPath(), rules.getCodeList().contains(value), I18nConstants.VALUESET_BAD_FILTER_VALUE_DATETIME, property, value) && ok;
+        break;        
       case DateTime:
         ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(),
             value.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"), 
@@ -522,6 +538,15 @@ public class ValueSetValidator extends BaseValidator {
           ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, vr.isOk(), I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED_INVALID, property, value, vr.getMessage()) && ok;
         }
         break;
+      case LoincRelationship:
+        // see https://chat.fhir.org/#narrow/stream/179202-terminology/topic/LOINC.20properties.20in.20filters
+        // for now, the value can be a LOINC code, or a string value
+        if (value.matches("(L[A|L|P])?(\\d)+\\-\\d")) {
+          ValidationResult vr = context.validateCode(baseOptions, system, version, value, null);
+          ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(), vr.isOk(), I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_CODE_LOINC, property, value, system, vr.getMessage()) && ok;
+        } else {
+          // nothing?
+        }
       default:
         break;        
       }
@@ -581,13 +606,7 @@ public class ValueSetValidator extends BaseValidator {
     }
     switch (system) {
     case "http://loinc.org" : 
-      if (Utilities.existsInList(property, "copyright", "STATUS", "CLASS", "CONSUMER_NAME", "ORDER_OBS", "DOCUMENT_SECTION", "SCALE_TYP")) { 
-        return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None);
-      } else if ("CLASSTYPE".equals(property)) {
-        return new PropertyValidationRules(PropertyFilterType.Integer, null, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
-      } else { 
-        return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.Error, addToOps(ops, PropertyOperation.Equals, PropertyOperation.In));
-      }
+      return getLOINCPropertyDetails(property, ops);
     case "http://snomed.info/sct": 
       switch (property) {
       case "constraint": return null; // for now 
@@ -613,6 +632,93 @@ public class ValueSetValidator extends BaseValidator {
       return null;
     }
 
+  }
+
+  private PropertyValidationRules getLOINCPropertyDetails(String property, EnumSet<PropertyOperation> ops) {
+    if (Utilities.existsInList(property, 
+      "parent",
+      "child",
+      "answers-for",
+      "TIME MODIFIER",
+      "TIME_ASPCT",
+      "SYSTEM",
+      "SUPER SYSTEM",
+      "SUFFIX",
+      "SCALE",
+      "SCALE_TYP",
+      "Rad.View.View Type",
+      "Rad.View.Aggregation",
+      "Rad.Timing",
+      "Rad.Subject",
+      "Rad.Reason for Exam",
+      "Rad.Pharmaceutical.Substance Given",
+      "Rad.Pharmaceutical.Route",
+      "Rad.Modality.Modality Type",
+      "Rad.Modality.Modality Subtype",
+      "Rad.Maneuver.Maneuver Type",
+      "Rad.Guidance for.Presence",
+      "Rad.Guidance for.Object",
+      "Rad.Guidance for.Approach",
+      "Rad.Guidance for.Action",
+      "Rad.Anatomic Location.Region Imaged",
+      "Rad.Anatomic Location.Laterality.Presence",
+      "Rad.Anatomic Location.Laterality",
+      "Rad.Anatomic Location.Imaging Focus",
+      "PROPERTY",
+      "METHOD",
+      "GENE",
+      "Document.TypeOfService",
+      "Document.SubjectMatterDomain",
+      "Document.Setting",
+      "Document.Role",
+      "Document.Kind",
+      "DIVISORS",
+      "COUNT",
+      "COMPONENT",
+      "CLASS",
+      "CHALLENGE",
+      "AnswerList",
+      "answer-list",
+      "Answer",
+      "ADJUSTMENT")) {
+      return new PropertyValidationRules(PropertyFilterType.LoincRelationship, CodeValidationRule.Error, addToOps(ops, PropertyOperation.Equals, PropertyOperation.RegEx, PropertyOperation.In, PropertyOperation.NotIn));      
+    }
+    
+    if (Utilities.existsInList(property,
+      "UNITSREQUIRED",
+      "PanelType",
+      "ORDER_OBS",
+      "EXAMPLE_UNITS",
+      "EXAMPLE_UCUM_UNITS",
+      "Copyright",
+      "CLASSTYPE",
+      "CLASS",
+      "AskAtOrderEntry")) { 
+      return new PropertyValidationRules(PropertyFilterType.String, CodeValidationRule.None, addToOps(ops, PropertyOperation.Equals, PropertyOperation.RegEx, PropertyOperation.In, PropertyOperation.NotIn));
+    }
+
+    if (Utilities.existsInList(property, 
+      "STATUS")) { 
+      return new PropertyValidationRules(PropertyFilterType.CodeList, CodeValidationRule.None, addToOps(ops, PropertyOperation.Equals, PropertyOperation.RegEx, PropertyOperation.In, PropertyOperation.NotIn))
+          .setCodes("ACTIVE", "DEPRECATED", "DISCOURAGED", "DocumentOntology", "EXAMPLE", "NORMATIVE", "NotStated", "PREFERRED", "Primary", "Radiology", "TRIAL");
+    }
+
+    if (Utilities.existsInList(property, 
+      "LIST",
+      "ancestor")) { 
+      return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, addToOps(ops, PropertyOperation.Equals, PropertyOperation.RegEx, PropertyOperation.In, PropertyOperation.NotIn));
+    }
+
+    if (Utilities.existsInList(property, 
+      "copyright")) {
+      return new PropertyValidationRules(PropertyFilterType.CodeList, CodeValidationRule.None, addToOps(ops, PropertyOperation.Equals, PropertyOperation.RegEx, PropertyOperation.In, PropertyOperation.NotIn)).setCodes("LOINC", "3rdParty");      
+    }
+
+    if (Utilities.existsInList(property, 
+      "concept")) {
+      return new PropertyValidationRules(PropertyFilterType.Code, CodeValidationRule.None, addToOps(ops, PropertyOperation.IsA));      
+    }
+    return null;
   }
 
 
@@ -648,7 +754,72 @@ public class ValueSetValidator extends BaseValidator {
 
   private String[] getSystemKnownNames(String system) {
     switch (system) {
-    case "http://loinc.org" : return new String[] {"parent", "ancestor", "copyright", "STATUS", "COMPONENT", "PROPERTY", "TIME_ASPCT", "SYSTEM", "SCALE_TYP", "METHOD_TYP", "CLASS", "CONSUMER_NAME", "CLASSTYPE", "ORDER_OBS", "DOCUMENT_SECTION"};
+    case "http://loinc.org" : return new String[] {
+     // = and regex
+
+        "parent",
+        "child",
+        "answers-for",
+        "TIME MODIFIER",
+        "TIME_ASPCT",
+        "SYSTEM",
+        "SUPER SYSTEM",
+        "SUFFIX",
+        "SCALE",
+        "SCALE_TYP",
+        "Rad.View.View Type",
+        "Rad.View.Aggregation",
+        "Rad.Timing",
+        "Rad.Subject",
+        "Rad.Reason for Exam",
+        "Rad.Pharmaceutical.Substance Given",
+        "Rad.Pharmaceutical.Route",
+        "Rad.Modality.Modality Type",
+        "Rad.Modality.Modality Subtype",
+        "Rad.Maneuver.Maneuver Type",
+        "Rad.Guidance for.Presence",
+        "Rad.Guidance for.Object",
+        "Rad.Guidance for.Approach",
+        "Rad.Guidance for.Action",
+        "Rad.Anatomic Location.Region Imaged",
+        "Rad.Anatomic Location.Laterality.Presence",
+        "Rad.Anatomic Location.Laterality",
+        "Rad.Anatomic Location.Imaging Focus",
+        "PROPERTY",
+        "METHOD",
+        "GENE",
+        "Document.TypeOfService",
+        "Document.SubjectMatterDomain",
+        "Document.Setting",
+        "Document.Role",
+        "Document.Kind",
+        "DIVISORS",
+        "COUNT",
+        "COMPONENT",
+        "CLASS",
+        "CHALLENGE",
+        "AnswerList",
+        "answer-list",
+        "Answer",
+        "ADJUSTMENT",
+        "UNITSREQUIRED",
+        "PanelType",
+        "ORDER_OBS",
+        "EXAMPLE_UNITS",
+        "EXAMPLE_UCUM_UNITS",
+        "Copyright",
+        "CLASSTYPE",
+        "CLASS",
+        "AskAtOrderEntry",
+        "ancestor",
+
+        // just equals
+        "STATUS",
+        "LIST",
+        "copyright",
+
+//                == is-a on:
+        "concept"};
 
     case "http://snomed.info/sct": return  new String[] { "constraint", "expressions", "410662002", "42752001", "47429007", "116676008", "116686009", "118168003", "118169006", "118170007", "118171006", "127489000", "131195008",
         "246075003", "246090004", "246093002", "246112005", "246454002", "246456000", "246501002", "246513007", "246514001", "255234002", "260507000",
