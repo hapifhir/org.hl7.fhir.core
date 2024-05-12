@@ -130,6 +130,9 @@ public class JsonLangFileProducer extends LanguageFileProducer {
       if (tu.getContext1() != null) { 
         entry.add("context", tu.getContext1());
       }
+      if (tu.getOriginal() != null) {
+        entry.add("original", tu.getOriginal());
+      }
       entry.add("source", tu.getSrcText());
       entry.add("target", tu.getTgtText());
     }
