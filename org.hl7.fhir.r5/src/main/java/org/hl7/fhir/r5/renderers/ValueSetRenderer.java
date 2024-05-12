@@ -1273,14 +1273,18 @@ public class ValueSetRenderer extends TerminologyRenderer {
         renderExpansionRules(li, inc, index, definitions);
       }
     } else {
-      li.tx(context.formatMessage(RenderingContext.VALUE_SET_IMPORT)+" ");
-      if (inc.getValueSet().size() < 4) {
-        boolean first = true;
+      li.tx(context.formatMessagePlural(inc.getValueSet().size(), RenderingContext.VALUE_SET_IMPORT)+" ");
+      if (inc.getValueSet().size() <= 2) {
+        int i = 0;  
         for (UriType vs : inc.getValueSet()) {
-          if (first)
-            first = false;
-          else
-            li.tx(", ");
+          if (i > 0) {
+            if ( i  < inc.getValueSet().size() - 1) {
+              li.tx(", ");
+            } else {
+              li.tx(" and ");              
+            }
+          }
+          i++;
           XhtmlNode wli = renderStatus(vs, li);
           AddVsRef(vs.asStringValue(), wli, vsRes);
         }
