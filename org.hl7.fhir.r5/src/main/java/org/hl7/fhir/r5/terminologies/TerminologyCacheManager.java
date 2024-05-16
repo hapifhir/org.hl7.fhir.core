@@ -22,13 +22,14 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import org.hl7.fhir.utilities.SimpleHTTPClient;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.http.SimpleHTTPClient;
 
 public class TerminologyCacheManager {
 
@@ -86,8 +87,7 @@ public class TerminologyCacheManager {
     try {
       System.out.println("Initialise terminology cache from "+source);
 
-      SimpleHTTPClient http = new SimpleHTTPClient();
-      HTTPResult res = http.get(source+"?nocache=" + System.currentTimeMillis());
+      HTTPResult res = ManagedWebAccess.get(source+"?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       unzip(new ByteArrayInputStream(res.getContent()), cacheFolder);
     } catch (Exception e) {

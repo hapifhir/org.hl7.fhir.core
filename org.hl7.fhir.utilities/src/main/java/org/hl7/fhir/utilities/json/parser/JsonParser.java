@@ -8,11 +8,12 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import org.hl7.fhir.utilities.SimpleHTTPClient;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.http.SimpleHTTPClient;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonBoolean;
@@ -671,10 +672,8 @@ public class JsonParser {
   }
 
   private static byte[] fetch(String source) throws IOException {
-    SimpleHTTPClient fetcher = new SimpleHTTPClient();
-    fetcher.addHeader("Accept", "application/json, application/fhir+json");
     String murl = source.contains("?") ? source+"&nocache=" + System.currentTimeMillis() : source+"?nocache=" + System.currentTimeMillis();
-    HTTPResult res = fetcher.get(murl);
+    HTTPResult res = ManagedWebAccess.get(murl, "application/json, application/fhir+json");
     res.checkThrowException();
     return res.getContent();
   }
