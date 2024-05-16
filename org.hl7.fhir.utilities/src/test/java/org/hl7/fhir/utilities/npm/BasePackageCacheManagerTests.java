@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.http.SimpleHTTPClient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

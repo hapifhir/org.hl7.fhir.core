@@ -4,11 +4,12 @@ import java.io.File;
 import java.io.IOException;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.http.SimpleHTTPClient;
 
 public class ProfileLoader {
   public static byte[] loadProfileSource(String src) throws FHIRException, IOException {
@@ -25,8 +26,7 @@ public class ProfileLoader {
 
   private static byte[] loadProfileFromUrl(String src) throws FHIRException {
     try {
-      SimpleHTTPClient http = new SimpleHTTPClient();
-      HTTPResult res = http.get(src + "?nocache=" + System.currentTimeMillis());
+      HTTPResult res = ManagedWebAccess.get(src + "?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       return res.getContent();
     } catch (Exception e) {

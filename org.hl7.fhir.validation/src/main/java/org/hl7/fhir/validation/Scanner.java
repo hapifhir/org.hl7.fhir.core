@@ -31,11 +31,12 @@ import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.http.SimpleHTTPClient;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
@@ -318,8 +319,7 @@ public class Scanner {
   }
 
   protected void download(String address, String filename) throws IOException {
-    SimpleHTTPClient http = new SimpleHTTPClient();
-    HTTPResult res = http.get(address);
+    HTTPResult res = ManagedWebAccess.get(address);
     res.checkThrowException();
     TextFile.bytesToFile(res.getContent(), filename);
   }

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.http.SimpleHTTPClient;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.settings.PackageServerPOJO;
 

@@ -82,13 +82,14 @@ import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.SIDUtilities;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.http.SimpleHTTPClient;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -915,8 +916,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     if (output.startsWith("http://")) {
       ByteArrayOutputStream bs = new ByteArrayOutputStream();
       handleOutputToStream(r, output, bs, version);
-      SimpleHTTPClient http = new SimpleHTTPClient();
-      HTTPResult res = http.post(output, "application/fhir+xml", bs.toByteArray(), "application/fhir+xml");
+      HTTPResult res = ManagedWebAccess.post(output, bs.toByteArray(), "application/fhir+xml", "application/fhir+xml");
       res.checkThrowException();
     } else {
       FileOutputStream s = ManagedFileAccess.outStream(output);
@@ -1073,8 +1073,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   @Override
   public byte[] fetchRaw(IResourceValidator validator, String source) throws IOException {
-    SimpleHTTPClient http = new SimpleHTTPClient();
-    HTTPResult res = http.get(source);
+    HTTPResult res = ManagedWebAccess.get(source);
     res.checkThrowException();
     return res.getContent();
   }
