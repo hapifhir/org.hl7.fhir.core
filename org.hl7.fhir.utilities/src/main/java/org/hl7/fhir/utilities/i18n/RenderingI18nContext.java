@@ -223,7 +223,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DATA_REND_MKDWN_LNK = "DATA_REND_MKDWN_LNK";
   public static final String DATA_REND_UNRD_EX = "DATA_REND_UNRD_EX";
   public static final String DATA_REND_LOINC = "DATA_REND_LOINC";
-  public static final String DATA_REND_SNOWMED = "DATA_REND_SNOWMED";
+  public static final String DATA_REND_SNOMED = "DATA_REND_SNOMED";
   public static final String DATA_REND_RXNORM = "DATA_REND_RXNORM";
   public static final String DATA_REND_ICD = "DATA_REND_ICD";
   public static final String DATA_REND_DICOM = "DATA_REND_DICOM";
