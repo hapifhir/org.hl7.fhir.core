@@ -22,13 +22,13 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import org.hl7.fhir.utilities.SimpleHTTPClient;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 
 public class TerminologyCacheManager {
 
@@ -87,8 +87,7 @@ public class TerminologyCacheManager {
     try {
       System.out.println("Initialise terminology cache from " + source);
 
-      SimpleHTTPClient http = new SimpleHTTPClient();
-      HTTPResult res = http.get(source + "?nocache=" + System.currentTimeMillis());
+      HTTPResult res = ManagedWebAccess.get(source + "?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       unzip(new ByteArrayInputStream(res.getContent()), cacheFolder);
     } catch (Exception e) {
@@ -156,11 +155,10 @@ public class TerminologyCacheManager {
     // post it to
     String url = "https://tx.fhir.org/post/tx-cache/" + ghOrg + "/" + ghRepo + "/" + ghBranch + ".zip";
     System.out.println("Sending tx-cache to " + url + " (" + Utilities.describeSize(bs.toByteArray().length) + ")");
-    SimpleHTTPClient http = new SimpleHTTPClient();
-    http.setAuthenticationMode(SimpleHTTPClient.AuthenticationMode.BASIC);
-    http.setUsername(token.substring(0, token.indexOf(':')));
-    http.setPassword(token.substring(token.indexOf(':') + 1));
-    HTTPResult res = http.put(url, "application/zip", bs.toByteArray(), null); // accept doesn't matter
+
+    HTTPResult res = ManagedWebAccess.builder()
+     .withBasicAuth(token.substring(0, token.indexOf(':')), token.substring(token.indexOf(':') + 1))
+     .withAccept("application/zip").put(url, bs.toByteArray(), null);
     if (res.getCode() >= 300) {
       System.out.println("sending cache failed: " + res.getCode());
     } else {
