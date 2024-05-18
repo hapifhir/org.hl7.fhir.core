@@ -29,6 +29,12 @@ to particular domains or sub-domains. See ManagedWebAccess for details.
 Note that for legacy reasons, network access can also be prohibited using 
 FhirSettings.setProhibitNetworkAccess(), but this is deprecated.
 
+Note that libraries that this library depends on may still access the network directly. Review
+of the use of these libraries is ongoing.
+
+Validator: The validator CLI accesses the web to download packages and make use of the
+terminology server, which defaults to https://tx.fhir.org.
+
 # Logging 
 
 todo
