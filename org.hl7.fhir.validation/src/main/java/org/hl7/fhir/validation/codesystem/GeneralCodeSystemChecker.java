@@ -8,8 +8,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 public class GeneralCodeSystemChecker extends CodeSystemChecker {
 
-  public GeneralCodeSystemChecker(IWorkerContext context, XVerExtensionManager xverManager, boolean debug,
-      List<ValidationMessage> errors) {
+  public GeneralCodeSystemChecker(IWorkerContext context, XVerExtensionManager xverManager, boolean debug, List<ValidationMessage> errors) {
     super(context, xverManager, debug, errors);
     // TODO Auto-generated constructor stub
   }
