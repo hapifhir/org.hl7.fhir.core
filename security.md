@@ -21,8 +21,13 @@ restricting path access to particular directories.
 # Network access
 
 The library will access the web to download needed collateral, or to access terminology resources or servers.
-All access is by http(s) using the Apache... library, and is controlled by the class XXXX where you can 
-turn all network access off.
+All access is by http(s) using base java http library, and is controlled by the class ManagedWebAccess. You can 
+set the static features of this class to completely cut the library off from the 
+web, or provide your own web accessor, or limit the web resources accessed
+to particular domains or sub-domains. See ManagedWebAccess for details.
+
+Note that for legacy reasons, network access can also be prohibited using 
+FhirSettings.setProhibitNetworkAccess(), but this is deprecated.
 
 # Logging 
 
