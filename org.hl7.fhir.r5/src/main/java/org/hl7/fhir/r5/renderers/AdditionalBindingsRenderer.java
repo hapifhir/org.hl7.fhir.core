@@ -360,7 +360,7 @@ public class AdditionalBindingsRenderer {
       if (r5) {
         td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-preferred" : corePath+"terminologies.html#strength", context.formatMessage(RenderingContext.ADD_BIND_RECOM_VALUE_SET)).tx(context.formatMessage(RenderingContext.ADD_BIND_PREF_BIND));
       } else {
-        td.span(null, context.formatMessage(RenderingContext.ADD_BIND_RECOM_VALUE_SET)).tx(context.formatMessage(RenderingContext.ADD_BIND_RECOMMENDED));
+        td.span(null, context.formatMessage(RenderingContext.ADD_BIND_RECOM_VALUE_SET)).tx(context.formatMessage(RenderingContext.ADD_BIND_PREFERRED));
       }
       break;
     case "ui" :
