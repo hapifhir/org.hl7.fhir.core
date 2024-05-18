@@ -70,9 +70,10 @@ public class ManagedWebAccessBuilder {
     if (userAgent != null) {
       client.addHeader("User-Agent", userAgent);
     }
-    if (username != null) {
+    if (username != null || token != null) {
       client.setUsername(username);
       client.setPassword(password);
+      client.setToken(token);
       client.setAuthenticationMode(authenticationMode);
     }
     return client;
