@@ -1105,6 +1105,8 @@ public class I18nConstants {
   public static final String SD_ELEMENT_REASON_DERIVED = "SD_ELEMENT_REASON_DERIVED";
   public static final String SD_ELEMENT_PATTERN_WRONG_TYPE = "SD_ELEMENT_PATTERN_WRONG_TYPE";
   public static final String FHIRPATH_REDEFINE_VARIABLE = "FHIRPATH_REDEFINE_VARIABLE";
+  public static final String BINDING_ADDITIONAL = "BINDING_ADDITIONAL";
+  public static final String BINDING_MAX = "BINDING_MAX";
 }
 
 
