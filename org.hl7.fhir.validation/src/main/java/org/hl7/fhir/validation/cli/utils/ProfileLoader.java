@@ -9,7 +9,6 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
-import org.hl7.fhir.utilities.http.SimpleHTTPClient;
 
 public class ProfileLoader {
   public static byte[] loadProfileSource(String src) throws FHIRException, IOException {

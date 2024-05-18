@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.http.SimpleHTTPClient;
+import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +26,7 @@ public class BasePackageCacheManagerTests {
     server.enqueueDummyPackage();
 
     PackageServer testServer = new PackageServer(packageServerUrl)
-      .withAuthenticationMode(SimpleHTTPClient.AuthenticationMode.BASIC)
+      .withAuthenticationMode(HTTPAuthenticationMode.BASIC)
       .withServerType(PackageServer.PackageServerType.NPM)
       .withUsername(MockPackageServer.DUMMY_USERNAME)
       .withPassword(MockPackageServer.DUMMY_PASSWORD);
@@ -57,11 +57,11 @@ public class BasePackageCacheManagerTests {
     String packageServerBUrl = serverB.getPackageServerUrl();
 
     PackageServer testServerA = new PackageServer(packageServerAUrl)
-      .withAuthenticationMode(SimpleHTTPClient.AuthenticationMode.BASIC)
+      .withAuthenticationMode(HTTPAuthenticationMode.BASIC)
       .withServerType(PackageServer.PackageServerType.NPM);
 
     PackageServer testServerB = new PackageServer(packageServerBUrl)
-      .withAuthenticationMode(SimpleHTTPClient.AuthenticationMode.BASIC)
+      .withAuthenticationMode(HTTPAuthenticationMode.BASIC)
       .withServerType(PackageServer.PackageServerType.NPM);
 
     basePackageCacheManager.addPackageServer(testServerA);

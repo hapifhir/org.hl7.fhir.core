@@ -5,7 +5,6 @@ import java.nio.charset.StandardCharsets;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.http.SimpleHTTPClient.HTTPResultException;
 
 public class HTTPResult {
   private int code;

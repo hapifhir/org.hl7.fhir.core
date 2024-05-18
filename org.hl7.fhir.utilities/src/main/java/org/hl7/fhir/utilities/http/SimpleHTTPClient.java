@@ -20,11 +20,6 @@ import lombok.Setter;
 
 public class SimpleHTTPClient {
 
-  public enum AuthenticationMode {
-    NONE,
-    BASIC,
-    TOKEN
-  }
 
 	public static class Header {
     private String name;
@@ -45,33 +40,10 @@ public class SimpleHTTPClient {
   private static final int MAX_REDIRECTS = 5;
   private static int counter = 1;
 
-  public static class HTTPResultException extends Exception{
-    public final int httpCode;
-
-    public final String message;
-
-    public final String url;
-    public final String logPath;
-
-    public HTTPResultException(int httpCode, String message, String url, String logPath) {
-      this.httpCode = httpCode;
-      this.message = message;
-      this.url = url;
-      this.logPath = logPath;
-    }
-
-    public String getMessage() {
-      return "Invalid HTTP response "+httpCode+" from "+url+" ("+message+") (" + (
-        logPath != null ? "Response in " + logPath : "No response content")
-      + ")";
-    }
-
-  }
-
   private List<Header> headers = new ArrayList<>();
 
   @Getter @Setter
-  private AuthenticationMode authenticationMode;
+  private HTTPAuthenticationMode authenticationMode;
 
   @Getter @Setter
   private String username;
@@ -148,9 +120,9 @@ public class SimpleHTTPClient {
 
   private void setAuthenticationHeader(HttpURLConnection c) {
     String authHeaderValue = null;
-    if (authenticationMode == AuthenticationMode.TOKEN) {
+    if (authenticationMode == HTTPAuthenticationMode.TOKEN) {
       authHeaderValue = "Bearer " + new String(token);
-    } else if (authenticationMode == AuthenticationMode.BASIC) {
+    } else if (authenticationMode == HTTPAuthenticationMode.BASIC) {
       String auth = username+":"+password;
       byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
       authHeaderValue = "Basic " + new String(encodedAuth);

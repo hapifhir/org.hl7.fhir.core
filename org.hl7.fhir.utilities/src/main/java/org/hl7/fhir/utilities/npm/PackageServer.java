@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
 import org.hl7.fhir.utilities.http.SimpleHTTPClient;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.settings.PackageServerPOJO;
@@ -22,14 +23,14 @@ public class PackageServer {
 
   public PackageServer(String url) {
     this.url = url;
-    authenticationMode = SimpleHTTPClient.AuthenticationMode.NONE;
+    authenticationMode = HTTPAuthenticationMode.NONE;
     serverType = PackageServerType.FHIR;
   }
 
   private String url;
 
   @Getter
-  private  SimpleHTTPClient.AuthenticationMode authenticationMode;
+  private  HTTPAuthenticationMode authenticationMode;
 
   @Getter
   private PackageServerType serverType;
@@ -76,9 +77,9 @@ public class PackageServer {
   }
 
   @Nullable
-  private static SimpleHTTPClient.AuthenticationMode getModeFromPOJO(PackageServerPOJO pojo) {
-    if (pojo.getAuthenticationType().equalsIgnoreCase("basic")) return  SimpleHTTPClient.AuthenticationMode.BASIC;
-    if (pojo.getAuthenticationType().equalsIgnoreCase("token")) return  SimpleHTTPClient.AuthenticationMode.TOKEN;
+  private static HTTPAuthenticationMode getModeFromPOJO(PackageServerPOJO pojo) {
+    if (pojo.getAuthenticationType().equalsIgnoreCase("basic")) return HTTPAuthenticationMode.BASIC;
+    if (pojo.getAuthenticationType().equalsIgnoreCase("token")) return HTTPAuthenticationMode.TOKEN;
     return null;
   }
 
@@ -103,7 +104,7 @@ public class PackageServer {
     return packageServer;
   }
 
-  public PackageServer withAuthenticationMode( SimpleHTTPClient.AuthenticationMode mode) {
+  public PackageServer withAuthenticationMode(HTTPAuthenticationMode mode) {
     PackageServer packageServer = this.copy();
     packageServer.authenticationMode = mode;
     return packageServer;

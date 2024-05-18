@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-import org.hl7.fhir.utilities.http.SimpleHTTPClient;
+import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ public class PackageServerTest {
     server.enqueueDummyPackage();
 
     PackageServer testServer = new PackageServer(packageServerUrl)
-      .withAuthenticationMode(SimpleHTTPClient.AuthenticationMode.BASIC)
+      .withAuthenticationMode(HTTPAuthenticationMode.BASIC)
       .withServerType(PackageServer.PackageServerType.NPM)
       .withUsername(MockPackageServer.DUMMY_USERNAME)
       .withPassword(MockPackageServer.DUMMY_PASSWORD);
@@ -74,7 +74,7 @@ public class PackageServerTest {
     server.enqueueDummyPackage();
 
     PackageServer testServer = new PackageServer(packageServerUrl)
-      .withAuthenticationMode(SimpleHTTPClient.AuthenticationMode.TOKEN)
+      .withAuthenticationMode(HTTPAuthenticationMode.TOKEN)
       .withServerType(PackageServer.PackageServerType.NPM)
       .withToken(MockPackageServer.DUMMY_TOKEN);
     PackageClient packageClient = new PackageClient(testServer);
