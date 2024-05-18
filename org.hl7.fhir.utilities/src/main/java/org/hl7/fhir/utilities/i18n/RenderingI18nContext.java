@@ -864,7 +864,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String ADD_BIND_VALID_EXT = "ADD_BIND_VALID_EXT";
   public static final String ADD_BIND_NEW_REC = "ADD_BIND_NEW_REC";
   public static final String ADD_BIND_RECOM_VALUE_SET = "ADD_BIND_RECOM_VALUE_SET";
-  public static final String ADD_BIND_RECOMMENDED = "ADD_BIND_RECOMMENDED";
+  public static final String ADD_BIND_PREFERRED = "ADD_BIND_PREFERRED";
   public static final String ADD_BIND_REQUIRED = "ADD_BIND_REQUIRED";
   public static final String ADD_BIND_GIVEN_CONT = "ADD_BIND_GIVEN_CONT";
   public static final String ADD_BIND_UI_BIND = "ADD_BIND_UI_BIND";
