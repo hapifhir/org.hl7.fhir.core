@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
+import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Coding30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
@@ -17,9 +18,17 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Unsi
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
 import org.hl7.fhir.convertors.conv30_50.resources30_50.Enumerations30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.dstu3.model.BooleanType;
+import org.hl7.fhir.dstu3.model.Extension;
+import org.hl7.fhir.dstu3.model.MarkdownType;
+import org.hl7.fhir.dstu3.model.StringType;
+import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.UsageContext;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
 import org.hl7.fhir.utilities.Utilities;
 
 public class ElementDefinition30_50 {
@@ -643,7 +652,8 @@ public class ElementDefinition30_50 {
   public static ElementDefinition.ElementDefinitionBindingComponent convertElementDefinitionBindingComponent(org.hl7.fhir.dstu3.model.ElementDefinition.ElementDefinitionBindingComponent src) throws FHIRException {
     if (src == null) return null;
     ElementDefinition.ElementDefinitionBindingComponent tgt = new ElementDefinition.ElementDefinitionBindingComponent();
-    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt, VersionConvertor_30_50.EXT_SRC_TYPE);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt, VersionConvertor_30_50.EXT_SRC_TYPE, 
+        "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.binding.additional");
     if (src.hasStrength()) tgt.setStrengthElement(Enumerations30_50.convertBindingStrength(src.getStrengthElement()));
     if (src.hasDescription()) tgt.setDescriptionElement(String30_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasValueSet()) {
@@ -656,6 +666,9 @@ public class ElementDefinition30_50 {
         tgt.getValueSetElement().addExtension(VersionConvertor_30_50.EXT_SRC_TYPE, new org.hl7.fhir.r5.model.UrlType("uri"));
       }
       tgt.setValueSet(VersionConvertorConstants.refToVS(tgt.getValueSet()));
+    }
+    for (org.hl7.fhir.dstu3.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.binding.additional")) {
+      tgt.addAdditional(convertAdditional(ext));
     }
     return tgt;
   }
@@ -680,9 +693,64 @@ public class ElementDefinition30_50 {
         else tgt.setValueSet(new org.hl7.fhir.dstu3.model.Reference(src.getValueSet()));
       }
     }
+    for (ElementDefinitionBindingAdditionalComponent ab : src.getAdditional()) {
+      tgt.addExtension(convertAdditional(ab));
+    }
     return tgt;
   }
 
+
+  private static ElementDefinitionBindingAdditionalComponent convertAdditional(Extension src) {
+    if (src == null) return null;
+    ElementDefinitionBindingAdditionalComponent tgt = new ElementDefinitionBindingAdditionalComponent();
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt, "valueSet", "purpose", "documentation", "shortDoco", "usage", "any");
+    if (src.hasExtension("purpose")) {
+      tgt.getPurposeElement().setValueAsString(src.getExtensionByUrl("purpose").getValue().primitiveValue());
+    }
+    if (src.hasExtension("valueSet")) {
+      tgt.setValueSetElement(Uri30_50.convertCanonical((UriType) src.getExtensionByUrl("valueSet").getValue()));
+    }
+    if (src.hasExtension("documentation")) {
+      tgt.setDocumentationElement(MarkDown30_50.convertMarkdown((MarkdownType) src.getExtensionByUrl("documentation").getValue()));
+    }
+    if (src.hasExtension("shortDoco")) {
+      tgt.setShortDocoElement(String30_50.convertString((StringType) src.getExtensionByUrl("shortDoco").getValue()));
+    }
+    for (Extension t : src.getExtensionsByUrl("usage")) {
+      tgt.addUsage(UsageContext30_50.convertUsageContext((org.hl7.fhir.dstu3.model.UsageContext) t.getValue()));
+    }
+    if (src.hasExtension("any")) {
+      tgt.setAnyElement(Boolean30_50.convertBoolean((BooleanType) src.getExtensionByUrl("any").getValue()));
+    }
+    return tgt;
+  }
+
+  private static Extension convertAdditional(ElementDefinitionBindingAdditionalComponent src) {
+    if (src == null) return null;
+    Extension tgt = new Extension();
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
+    if (src.hasPurpose()) {
+      tgt.addExtension(new Extension("purpose", new CodeType(src.getPurposeElement().primitiveValue())));
+    }
+    if (src.hasValueSet()) {
+      tgt.addExtension(new Extension("valueSet", Uri30_50.convertCanonical(src.getValueSetElement())));
+    }
+    if (src.hasDocumentation()) {
+      tgt.addExtension(new Extension("documentation", MarkDown30_50.convertMarkdown(src.getDocumentationElement())));
+    }
+    if (src.hasShortDoco()) {
+      tgt.addExtension(new Extension("shortDoco", String30_50.convertString(src.getShortDocoElement())));
+    }
+    for (UsageContext t : src.getUsage()) {
+      tgt.addExtension(new Extension("usage", UsageContext30_50.convertUsageContext(t)));
+    }
+    if (src.hasAny()) {
+      tgt.addExtension(new Extension("any", Boolean30_50.convertBoolean(src.getAnyElement())));
+    }
+    
+    return tgt;
+  }
+  
   public static ElementDefinition.ElementDefinitionMappingComponent convertElementDefinitionMappingComponent(org.hl7.fhir.dstu3.model.ElementDefinition.ElementDefinitionMappingComponent src) throws FHIRException {
     if (src == null) return null;
     ElementDefinition.ElementDefinitionMappingComponent tgt = new ElementDefinition.ElementDefinitionMappingComponent();
