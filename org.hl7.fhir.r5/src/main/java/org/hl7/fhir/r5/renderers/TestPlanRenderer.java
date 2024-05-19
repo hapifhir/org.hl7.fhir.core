@@ -132,7 +132,7 @@ public class TestPlanRenderer extends ResourceRenderer {
 
 		if (tp.hasTestCase()) {
 		  for (TestPlanTestCaseComponent tc : tp.getTestCase()) {
-		    x.h2().addText(/*!#*/"Test Case" + (tc.hasSequence() ? " - Sequence" + tc.getSequence() : ""));
+		    x.h2().addText(tc.hasSequence() ? formatMessage(RenderingContext.TEST_PLAN_CASE) : formatMessage(RenderingContext.TEST_PLAN_CASE_SEQ, tc.getSequence()));
 
 		    if (tc.hasScope()) {
 		      if (tc.getScope().size() == 1) {

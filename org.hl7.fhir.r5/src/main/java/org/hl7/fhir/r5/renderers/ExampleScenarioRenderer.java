@@ -119,7 +119,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       XhtmlNode n = new XhtmlDocument();
       renderCanonical(scen, n, step.getWorkflow());
       XhtmlNode ref = n.getChildNodes().get(0);
-      plantUml += noteOver(scen.getActor(), /*!#*/"Step " + trimPrefix(prefix) + " - See scenario\n" + creolLink(ref.getContent(), ref.getAttribute("href")));
+      plantUml += noteOver(scen.getActor(), context.formatMessage(RenderingContext.EXAMPLE_SCEN_STEP_SCEN, trimPrefix(prefix), creolLink((ref.getContent()), ref.getAttribute("href"))));
     } else if (step.hasProcess())
       plantUml += toPlantUml(step.getProcess(), prefix, scen, actorKeys);
     else {
@@ -478,7 +478,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
         }
       }
       if (theVersion==null)
-        throw new FHIRException(/*!#*/"Unable to find referenced version " + instanceRef.getVersionReference() + " within instance " + instanceRef.getInstanceReference());
+        throw new FHIRException("Unable to find referenced version " + instanceRef.getVersionReference() + " within instance " + instanceRef.getInstanceReference());
       instanceCell.ah("#i_" + instance.getKey() + "v_"+ theVersion.getKey() , theVersion.getDescription()).tx(theVersion.getTitle());
 
     } else
