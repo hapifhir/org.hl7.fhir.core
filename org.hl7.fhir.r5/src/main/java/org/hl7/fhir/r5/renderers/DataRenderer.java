@@ -294,7 +294,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (system.equals("http://loinc.org"))
     	return (context.formatMessage(RenderingContext.DATA_REND_LOINC));
     if (system.startsWith("http://snomed.info"))
-    	 return (context.formatMessage(RenderingContext.DATA_REND_SNOWMED));
+    	 return (context.formatMessage(RenderingContext.DATA_REND_SNOMED));
     if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm"))
     	return (context.formatMessage(RenderingContext.DATA_REND_RXNORM));
     if (system.equals("http://hl7.org/fhir/sid/icd-9"))
