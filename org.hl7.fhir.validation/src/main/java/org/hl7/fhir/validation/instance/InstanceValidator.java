@@ -114,9 +114,11 @@ import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.DateType;
 import org.hl7.fhir.r5.model.DecimalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.ElementDefinition.AdditionalBindingPurposeVS;
 import org.hl7.fhir.r5.model.ElementDefinition.AggregationMode;
 import org.hl7.fhir.r5.model.ElementDefinition.ConstraintSeverity;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
@@ -212,6 +214,7 @@ import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.cli.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.codesystem.CodingsObserver;
+import org.hl7.fhir.validation.instance.InstanceValidator.BindingContext;
 import org.hl7.fhir.validation.instance.type.BundleValidator;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
 import org.hl7.fhir.validation.instance.type.ConceptMapValidator;
@@ -255,6 +258,11 @@ import org.w3c.dom.Document;
 
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
   
+  public enum BindingContext {
+    BASE, MAXVS, ADDITIONAL
+
+  }
+
   private static final String EXECUTED_CONSTRAINT_LIST = "validator.executed.invariant.list";
   private static final String EXECUTION_ID = "validator.execution.id";
   private static final String HTML_FRAGMENT_REGEX = "[a-zA-Z]\\w*(((\\s+)(\\S)*)*)";
@@ -1346,129 +1354,40 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkCodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, NodeStack stack, BooleanHolder bh) {
     boolean checkDisp = true;
-    boolean checked = false;
+    BooleanHolder checked = new BooleanHolder(false);
     if (!noTerminologyChecks && theElementCntext != null && theElementCntext.hasBinding()) {
       ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
       if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING, path)) {
-        if (binding.hasValueSet()) {
-          ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl(), profile);
-          if (valueset == null) {
-            CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
-            if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
-              warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
-            } else {
-              bh.fail();
-            }
-          } else {
-            try {
-              CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
-              if (!cc.hasCoding()) {
-                if (binding.getStrength() == BindingStrength.REQUIRED)
-                  bh.see(rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESET, describeReference(binding.getValueSet(), valueset)));
-                else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
-                  if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-                    bh.see(rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESETMAX, describeReference(ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET)), valueset.getVersionedUrl()));
-                  else
-                    warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESET_EXT, describeReference(binding.getValueSet(), valueset));
-                }
-              } else {
-                long t = System.nanoTime();
-
-                // Check whether the codes are appropriate for the type of binding we have
-                boolean bindingsOk = true;
-                if (binding.getStrength() != BindingStrength.EXAMPLE) {
-                  if (binding.getStrength() == BindingStrength.REQUIRED) {
-                    removeTrackedMessagesForLocation(errors, element, path);
-                  }
-                  boolean atLeastOneSystemIsSupported = false;
-                  for (Coding nextCoding : cc.getCoding()) {
-                    String nextSystem = nextCoding.getSystem();
-                    if (isNotBlank(nextSystem) && context.supportsSystem(nextSystem, baseOptions.getFhirVersion())) {
-                      atLeastOneSystemIsSupported = true;
-                      break;
-                    }
-                  }
-
-                  if (!atLeastOneSystemIsSupported && binding.getStrength() == BindingStrength.EXAMPLE) {
-                    // ignore this since we can't validate but it doesn't matter..
-                  } else {
-                    checked = true;
-                    ValidationResult vr = checkCodeOnServer(stack, valueset, cc);
-                    bh.see(processTxIssues(errors, vr, element, path, notFoundSeverityForBinding(binding), false, binding.getValueSet()));
-                    if (!vr.isOk()) {
-                      bindingsOk = false;
-                      if (vr.getErrorClass() != null && vr.getErrorClass() == TerminologyServiceErrorClass.NOSERVICE) { 
-                        if (binding.getStrength() == BindingStrength.REQUIRED || (binding.getStrength() == BindingStrength.EXTENSIBLE && binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))) {
-                          txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOSVC_BOUND_REQ, describeReference(binding.getValueSet()));
-                        } else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
-                          txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOSVC_BOUND_EXT, describeReference(binding.getValueSet()));
-                        }
-                      } else if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
-                        if (binding.getStrength() == BindingStrength.REQUIRED)
-                          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_1_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
-                        else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
-                          if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-                            bh.see(checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), cc, stack));
-                          else if (!noExtensibleWarnings)
-                            txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_2_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
-                        } else if (binding.getStrength() == BindingStrength.PREFERRED) {
-                          if (baseOnly) {
-                            txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_3_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
-                          }
-                        }
-                      } else {
-                        if (binding.getStrength() == BindingStrength.REQUIRED) {
-                          bh.see(txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_1_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc)));
-                        } else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
-                          if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-                            bh.see(checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), cc, stack));
-                          if (!noExtensibleWarnings)
-                            txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_2_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc));
-                        } else if (binding.getStrength() == BindingStrength.PREFERRED) {
-                          if (baseOnly) {
-                            txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_3_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc));
-                          }
-                        }
-                      }
-                    } else if (vr.getMessage() != null) {
-                      if (vr.getTrimmedMessage() != null) {
-                        if (vr.getSeverity() == IssueSeverity.INFORMATION) {
-                          txHint(errors, "2023-07-03", vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
-                        } else {
-                          checkDisp = false;
-                          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getTrimmedMessage());
-                        }
-                      }
-                    } else {
-                      if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
-                        removeTrackedMessagesForLocation(errors, element, path);
-                      }
-                      checkDisp = false;
-                    }
-                  }
-                  // Then, for any codes that are in code systems we are able
-                  // to validate, we'll validate that the codes actually exist
-                  if (bindingsOk) {
-                    for (Coding nextCoding : cc.getCoding()) {
-                      bh.see(checkBindings(errors, path, element, stack, valueset, nextCoding));
-                    }
-                  }
-                  timeTracker.tx(t, "vc "+cc.toString());
-                }
-              }
-            } catch (CheckCodeOnServerException e) {
-              if (STACK_TRACE) e.getCause().printStackTrace();
-              warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getCause().getMessage());
+        try {
+          CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
+          if (binding.hasValueSet()) {
+            String vsRef = binding.getValueSet();
+            ValueSet valueset = resolveBindingReference(profile, vsRef, profile.getUrl(), profile);
+            BindingStrength strength = binding.getStrength();
+            Extension maxVS = binding.getExtensionByUrl(ToolingExtensions.EXT_MAX_VALUESET);
+            
+            checkDisp = validateBindingCodeableConcept(errors, path, element, profile, stack, bh, checkDisp, checked, cc, vsRef, valueset, strength, maxVS, true);
+//          } else if (binding.hasValueSet()) {
+//            hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
+          } else if (!noBindingMsgSuppressed) {
+            hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
+          }
+          for (ElementDefinitionBindingAdditionalComponent ab : binding.getAdditional()) {
+            if (isTestableBinding(ab) && isInScope(ab)) {
+              String vsRef = ab.getValueSet();
+              ValueSet valueset = resolveBindingReference(profile, vsRef, profile.getUrl(), profile);
+              BindingStrength strength = convertPurposeToStrength(ab.getPurpose());
+              
+              checkDisp = validateBindingCodeableConcept(errors, path, element, profile, stack, bh, checkDisp, checked, cc, vsRef, valueset, strength, null, false) && checkDisp;
             }
           }
-        } else if (binding.hasValueSet()) {
-          hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
-        } else if (!noBindingMsgSuppressed) {
-          hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
+        } catch (CheckCodeOnServerException e) {
+          if (STACK_TRACE) e.getCause().printStackTrace();
+          warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getCause().getMessage());
         }
       } 
     }
-    if (!noTerminologyChecks && theElementCntext != null && !checked) { // no binding check, so we just check the CodeableConcept generally
+    if (!noTerminologyChecks && theElementCntext != null && !checked.ok()) { // no binding check, so we just check the CodeableConcept generally
       try {
         CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
         if (cc.hasCoding()) {
@@ -1485,6 +1404,144 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return checkDisp;
   }
 
+  private boolean isInScope(ElementDefinitionBindingAdditionalComponent ab) {
+    for (UsageContext usage : ab.getUsage()) {
+      if (isInScope(usage)) {
+        return true;
+      }
+    }
+    return ab.getUsage().isEmpty();
+  }
+
+  private boolean isInScope(UsageContext usage) {
+    if (isKnownUsage(usage)) {
+      return true;
+    }
+    return false;
+  }
+
+  private BindingStrength convertPurposeToStrength(AdditionalBindingPurposeVS purpose) {
+    switch (purpose) {
+    case MAXIMUM: return BindingStrength.REQUIRED;
+    case PREFERRED: return BindingStrength.PREFERRED;
+    case REQUIRED: return BindingStrength.REQUIRED;
+    default: return null;    
+    }
+  }
+
+  private boolean isTestableBinding(ElementDefinitionBindingAdditionalComponent ab) {
+    return ab.hasValueSet() && convertPurposeToStrength(ab.getPurpose()) != null;
+  }
+
+  private boolean validateBindingCodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, NodeStack stack, BooleanHolder bh, boolean checkDisp, BooleanHolder checked,
+      CodeableConcept cc, String vsRef, ValueSet valueset, BindingStrength strength, Extension maxVS, boolean base) throws CheckCodeOnServerException {
+    if (valueset == null) {
+      CodeSystem cs = context.fetchCodeSystem(vsRef);
+      if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(vsRef))) {
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(vsRef));
+      } else {
+        bh.fail();
+      }
+    } else {
+      BindingContext bc = base ? BindingContext.BASE : BindingContext.ADDITIONAL;
+      if (!cc.hasCoding()) {
+        if (strength == BindingStrength.REQUIRED)
+          bh.see(rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESET, describeReference(vsRef, valueset, bc)));
+        else if (strength == BindingStrength.EXTENSIBLE) {
+          if (maxVS != null)
+            bh.see(rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESETMAX, describeReference(ToolingExtensions.readStringFromExtension(maxVS)), valueset.getVersionedUrl()));
+          else
+            warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESET_EXT, describeReference(vsRef, valueset, bc));
+        }
+      } else {
+        long t = System.nanoTime();
+
+        // Check whether the codes are appropriate for the type of binding we have
+        boolean bindingsOk = true;
+        if (strength != BindingStrength.EXAMPLE) {
+          if (strength == BindingStrength.REQUIRED) {
+            removeTrackedMessagesForLocation(errors, element, path);
+          }
+          boolean atLeastOneSystemIsSupported = false;
+          for (Coding nextCoding : cc.getCoding()) {
+            String nextSystem = nextCoding.getSystem();
+            if (isNotBlank(nextSystem) && context.supportsSystem(nextSystem, baseOptions.getFhirVersion())) {
+              atLeastOneSystemIsSupported = true;
+              break;
+            }
+          }
+
+          if (!atLeastOneSystemIsSupported && strength == BindingStrength.EXAMPLE) {
+            // ignore this since we can't validate but it doesn't matter..
+          } else {
+            checked.set(true);
+            ValidationResult vr = checkCodeOnServer(stack, valueset, cc);
+            bh.see(processTxIssues(errors, vr, element, path, notFoundSeverityForBinding(strength), false, vsRef));
+            if (!vr.isOk()) {
+              bindingsOk = false;
+              if (vr.getErrorClass() != null && vr.getErrorClass() == TerminologyServiceErrorClass.NOSERVICE) { 
+                if (strength == BindingStrength.REQUIRED || (strength == BindingStrength.EXTENSIBLE && maxVS != null)) {
+                  txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOSVC_BOUND_REQ, describeReference(vsRef));
+                } else if (strength == BindingStrength.EXTENSIBLE) {
+                  txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOSVC_BOUND_EXT, describeReference(vsRef));
+                }
+              } else if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
+                if (strength == BindingStrength.REQUIRED)
+                  txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_1_CC, describeReference(vsRef), vr.getErrorClass().toString());
+                else if (strength == BindingStrength.EXTENSIBLE) {
+                  if (maxVS != null)
+                    bh.see(checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringFromExtension(maxVS), cc, stack));
+                  else if (!noExtensibleWarnings)
+                    txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_2_CC, describeReference(vsRef), vr.getErrorClass().toString());
+                } else if (strength == BindingStrength.PREFERRED) {
+                  if (baseOnly) {
+                    txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_3_CC, describeReference(vsRef), vr.getErrorClass().toString());
+                  }
+                }
+              } else {
+                if (strength == BindingStrength.REQUIRED) {
+                  bh.see(txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_1_CC, describeReference(vsRef, valueset, bc), ccSummary(cc)));
+                } else if (strength == BindingStrength.EXTENSIBLE) {
+                  if (maxVS != null)
+                    bh.see(checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringFromExtension(maxVS), cc, stack));
+                  if (!noExtensibleWarnings)
+                    txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_2_CC, describeReference(vsRef, valueset, bc), ccSummary(cc));
+                } else if (strength == BindingStrength.PREFERRED) {
+                  if (baseOnly) {
+                    txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_3_CC, describeReference(vsRef, valueset, bc), ccSummary(cc));
+                  }
+                }
+              }
+            } else if (vr.getMessage() != null) {
+              if (vr.getTrimmedMessage() != null) {
+                if (vr.getSeverity() == IssueSeverity.INFORMATION) {
+                  txHint(errors, "2023-07-03", vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+                } else {
+                  checkDisp = false;
+                  txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getTrimmedMessage());
+                }
+              }
+            } else {
+              if (strength == BindingStrength.EXTENSIBLE) {
+                removeTrackedMessagesForLocation(errors, element, path);
+              }
+              checkDisp = false;
+            }
+          }
+          // Then, for any codes that are in code systems we are able
+          // to validate, we'll validate that the codes actually exist
+          if (bindingsOk) {
+            for (Coding nextCoding : cc.getCoding()) {
+              bh.see(checkBindings(errors, path, element, stack, valueset, nextCoding));
+            }
+          }
+          timeTracker.tx(t, "vc "+cc.toString());
+        }
+      }
+    }
+    return checkDisp;
+  }
+
   /**
    * The terminology server will report an error for an unknown code system or version, or a dependent valueset
    * 
@@ -1492,10 +1549,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * @param binding
    * @return
    */
-  private org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity notFoundSeverityForBinding(ElementDefinitionBindingComponent binding) {
-    if (binding.getStrength() == BindingStrength.REQUIRED) {
+  private org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity notFoundSeverityForBinding(BindingStrength strength) {
+    if (strength == BindingStrength.REQUIRED) {
       return org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR;
-    } else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
+    } else if (strength == BindingStrength.EXTENSIBLE) {
       return org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING;
     } else {
       return org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION;      
@@ -1550,131 +1607,45 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
 
   private boolean checkCDACodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, NodeStack stack, StructureDefinition logical) {
-    boolean ok = true;
+    BooleanHolder ok = new BooleanHolder(true);
     if (!noTerminologyChecks && theElementCntext != null && theElementCntext.hasBinding()) {
-      ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
-      if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING, path)) {
-        if (binding.hasValueSet()) {
-          ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl(), profile);
-          if (valueset == null) {
-            CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
-            if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
-              warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
-            } else {
-              ok = false;
-            }
-          } else {
-            try {
-              CodeableConcept cc = new CodeableConcept();
-              ok = convertCDACodeToCodeableConcept(errors, path, element, logical, cc) && ok;
-              if (!cc.hasCoding()) {
-                if (binding.getStrength() == BindingStrength.REQUIRED)
-                  ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, "No code provided, and a code is required from the value set " + describeReference(binding.getValueSet()) + " (" + valueset.getVersionedUrl()) && ok;
-                else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
-                  if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-                    ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESETMAX, describeReference(ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET)), valueset.getVersionedUrl()) && ok;
-                  else
-                    warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_VALUESET_EXT, describeReference(binding.getValueSet(), valueset));
-                }
-              } else {
-                long t = System.nanoTime();
+      try {
+        CodeableConcept cc = new CodeableConcept();
+        ok.see(convertCDACodeToCodeableConcept(errors, path, element, logical, cc));
+        ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
+        if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING, path)) {
+          if (binding.hasValueSet()) {
+            String vsRef = binding.getValueSet();
+            ValueSet valueset = resolveBindingReference(profile, vsRef, profile.getUrl(), profile);
+            BindingStrength strength = binding.getStrength();
+            Extension vsMax = binding.getExtensionByUrl(ToolingExtensions.EXT_MAX_VALUESET);
+            
+            validateBindingCodeableConcept(errors, path, element, profile, stack, ok, false, new BooleanHolder(), cc, vsRef, valueset, strength, vsMax, true);
 
-                // Check whether the codes are appropriate for the type of binding we have
-                boolean bindingsOk = true;
-                if (binding.getStrength() != BindingStrength.EXAMPLE) {
-                  if (binding.getStrength() == BindingStrength.REQUIRED) {
-                    removeTrackedMessagesForLocation(errors, element, path);
-                  }
-
-                  boolean atLeastOneSystemIsSupported = false;
-                  for (Coding nextCoding : cc.getCoding()) {
-                    String nextSystem = nextCoding.getSystem();
-                    if (isNotBlank(nextSystem) && context.supportsSystem(nextSystem, baseOptions.getFhirVersion())) {
-                      atLeastOneSystemIsSupported = true;
-                      break;
-                    }
-                  }
-
-                  if (!atLeastOneSystemIsSupported && binding.getStrength() == BindingStrength.EXAMPLE) {
-                    // ignore this since we can't validate but it doesn't matter..
-                  } else {
-                    ValidationResult vr = checkCodeOnServer(stack, valueset, cc); 
-                    ok = processTxIssues(errors, vr, element, path, notFoundSeverityForBinding(binding), false, binding.getValueSet()) && ok;
-                    if (!vr.isOk()) {
-                      bindingsOk = false;
-                      if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
-                        if (binding.getStrength() == BindingStrength.REQUIRED)
-                          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_1_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
-                        else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
-                          if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-                            ok = checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), cc, stack) && ok;
-                          else if (!noExtensibleWarnings)
-                            txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_2_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
-                        } else if (binding.getStrength() == BindingStrength.PREFERRED) {
-                          if (baseOnly) {
-                            txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_3_CC, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
-                          }
-                        }
-                      } else {
-                        if (binding.getStrength() == BindingStrength.REQUIRED)
-                          ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_1_CC, describeReference(binding.getValueSet()), valueset, ccSummary(cc)) && ok;
-                        else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
-                          if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-                            ok = checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), cc, stack) && ok;
-                          if (!noExtensibleWarnings)
-                            txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_2_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc));
-                        } else if (binding.getStrength() == BindingStrength.PREFERRED) {
-                          if (baseOnly) {
-                            txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_3_CC, describeReference(binding.getValueSet(), valueset), ccSummary(cc));
-                          }
-                        }
-                      }
-                    } else if (vr.getMessage() != null) {
-                      if (vr.getSeverity() == IssueSeverity.INFORMATION) {
-                        txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
-                      } else {
-                        txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
-                      }
-                    } else {
-                      ok = true;
-                    }
-                  }
-                  // Then, for any codes that are in code systems we are able
-                  // to validate, we'll validate that the codes actually exist
-                  if (bindingsOk) {
-                    for (Coding nextCoding : cc.getCoding()) {
-                      String nextCode = nextCoding.getCode();
-                      String nextSystem = nextCoding.getSystem();
-                      String nextVersion = nextCoding.getVersion();
-                      if (isNotBlank(nextCode) && isNotBlank(nextSystem) && context.supportsSystem(nextSystem, baseOptions.getFhirVersion())) {
-                        ValidationResult vr = checkCodeOnServer(stack, nextCode, nextSystem, nextVersion, null, false);
-                        ok = (processTxIssues(errors, vr, element, path, null, false, null)) && ok;
-                        if (!vr.isOk()) {
-                          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_NOTVALID, nextCode, nextSystem);
-                        }
-                      }
-                    }
-                  }
-                  timeTracker.tx(t, DataRenderer.display(context, cc));
-                }
-              }
-            } catch (CheckCodeOnServerException e) {
-              if (STACK_TRACE) e.getCause().printStackTrace();
-              warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getCause().getMessage());
-            }
             // special case: if the logical model has both CodeableConcept and Coding mappings, we'll also check the first coding.
             if (getMapping("http://hl7.org/fhir/terminology-pattern", logical, logical.getSnapshot().getElementFirstRep()).contains("Coding")) {
-              ok = checkTerminologyCoding(errors, path, element, profile, theElementCntext, true, true, stack, logical) && ok;
+              ok.see(checkTerminologyCoding(errors, path, element, profile, theElementCntext, true, true, stack, logical));
+            }
+//          } else if (binding.hasValueSet()) {
+//            hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
+          } else if (!noBindingMsgSuppressed) {
+            hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
+          }
+          for (ElementDefinitionBindingAdditionalComponent ab : binding.getAdditional()) {
+            if (isTestableBinding(ab) && isInScope(ab)) {
+              String vsRef = ab.getValueSet();
+              ValueSet valueset = resolveBindingReference(profile, vsRef, profile.getUrl(), profile);
+              BindingStrength strength = convertPurposeToStrength(ab.getPurpose());
+              validateBindingCodeableConcept(errors, path, element, profile, stack, ok, false, new BooleanHolder(), cc, vsRef, valueset, strength, null, false);
             }
           }
-        } else if (binding.hasValueSet()) {
-          hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
-        } else if (!noBindingMsgSuppressed) {
-          hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
         }
+      } catch (CheckCodeOnServerException e) {
+        if (STACK_TRACE) e.getCause().printStackTrace();
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getCause().getMessage());
       }
     }
-    return ok;
+    return ok.ok();
   }
 
   private boolean checkTerminologyCoding(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay, NodeStack stack, StructureDefinition logical) {
@@ -1694,70 +1665,24 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
             if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING2, path)) {
               if (binding.hasValueSet()) {
-                ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl(), profile);
-                if (valueset == null) {
-                  CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
-                  if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
-                    warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
-                  } else {
-                    ok = false;
-                  }
-                } else {
-                  try {
-                    long t = System.nanoTime();
-                    ValidationResult vr = null;
-                    if (binding.getStrength() != BindingStrength.EXAMPLE) {
-                      vr = checkCodeOnServer(stack, valueset, c);
-                    }
-                    if (binding.getStrength() == BindingStrength.REQUIRED) {
-                      removeTrackedMessagesForLocation(errors, element, path);
-                    }
-                    ok = processTxIssues(errors, vr, element, path, notFoundSeverityForBinding(binding), false, binding.getValueSet()) && ok;
-                    timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
-                    if (vr != null && !vr.isOk()) {
-                      if (vr.IsNoService())
-                        txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER, system+"#"+code);
-                      else if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
-                        if (binding.getStrength() == BindingStrength.REQUIRED)
-                          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(binding.getValueSet(), valueset), vr.getMessage(), system+"#"+code);
-                        else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
-                          if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-                            checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), c, stack);
-                          else if (!noExtensibleWarnings)
-                            txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_5, describeReference(binding.getValueSet(), valueset));
-                        } else if (binding.getStrength() == BindingStrength.PREFERRED) {
-                          if (baseOnly) {
-                            txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_6, describeReference(binding.getValueSet(), valueset));
-                          }
-                        }
-                      } else if (binding.getStrength() == BindingStrength.REQUIRED)
-                        ok= txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_4, describeReference(binding.getValueSet(), valueset), (vr.getMessage() != null ? " (error message = " + vr.getMessage() + ")" : ""), system+"#"+code) && ok;
-                      else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
-                        if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-                          ok = checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), c, stack) && ok;
-                        else
-                          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_5, describeReference(binding.getValueSet(), valueset), (vr.getMessage() != null ? " (error message = " + vr.getMessage() + ")" : ""), system+"#"+code);
-                      } else if (binding.getStrength() == BindingStrength.PREFERRED) {
-                        if (baseOnly) {
-                          txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_6, describeReference(binding.getValueSet(), valueset), (vr.getMessage() != null ? " (error message = " + vr.getMessage() + ")" : ""), system+"#"+code);
-                        }
-                      }
-                    } else if (vr != null && vr.getMessage() != null){
-                      if (vr.getSeverity() == IssueSeverity.INFORMATION) {
-                        txHint(errors, "2023-07-04", vr.getTxLink(), IssueType.INFORMATIONAL, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_HINT, code, vr.getMessage());
-                      } else {
-                        txWarning(errors, "2023-07-04", vr.getTxLink(), IssueType.INFORMATIONAL, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_WARNING, code, vr.getMessage());
-                      }
-                    }
-                  } catch (Exception e) {
-                    if (STACK_TRACE) e.printStackTrace();
-                    warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING1, e.getMessage());
-                  }
-                }
+                String vsRef = binding.getValueSet();
+                ValueSet valueset = resolveBindingReference(profile, vsRef, profile.getUrl(), profile);
+                BindingStrength strength = binding.getStrength();
+                Extension vsMax = binding.getExtensionByUrl(ToolingExtensions.EXT_MAX_VALUESET);
+                
+                ok = validateBindingTerminologyCoding(errors, path, element, profile, stack, ok, c, code, system, display, vsRef, valueset, strength, vsMax, true);
               } else if (binding.hasValueSet()) {
                 hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
               } else if (!inCodeableConcept && !noBindingMsgSuppressed) {
                 hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
+              }
+              for (ElementDefinitionBindingAdditionalComponent ab : binding.getAdditional()) {
+                if (isTestableBinding(ab) && isInScope(ab)) {
+                  String vsRef = ab.getValueSet();
+                  ValueSet valueset = resolveBindingReference(profile, vsRef, profile.getUrl(), profile);
+                  BindingStrength strength = convertPurposeToStrength(ab.getPurpose());
+                  ok = validateBindingTerminologyCoding(errors, path, element, profile, stack, ok, c, code, system, display, vsRef, valueset, strength, null, true) && ok;
+                }
               }
             }
           }
@@ -1768,6 +1693,72 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (STACK_TRACE) e.printStackTrace();
         rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING2, e.getMessage(), e.toString());
         ok = false;
+      }
+    }
+    return ok;
+  }
+
+  private boolean validateBindingTerminologyCoding(List<ValidationMessage> errors, String path, Element element,
+      StructureDefinition profile, NodeStack stack, boolean ok, Coding c, String code, String system, String display,
+      String vsRef, ValueSet valueset, BindingStrength strength, Extension vsMax, boolean base) {
+    if (valueset == null) {
+      CodeSystem cs = context.fetchCodeSystem(vsRef);
+      if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(vsRef))) {
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(vsRef));
+      } else {
+        ok = false;
+      }
+    } else {
+      BindingContext bc = base ? BindingContext.BASE : BindingContext.ADDITIONAL;
+      try {
+        long t = System.nanoTime();
+        ValidationResult vr = null;
+        if (strength != BindingStrength.EXAMPLE) {
+          vr = checkCodeOnServer(stack, valueset, c);
+        }
+        if (strength == BindingStrength.REQUIRED) {
+          removeTrackedMessagesForLocation(errors, element, path);
+        }
+        ok = processTxIssues(errors, vr, element, path, notFoundSeverityForBinding(strength), false, vsRef) && ok;
+        timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
+        if (vr != null && !vr.isOk()) {
+          if (vr.IsNoService())
+            txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER, system+"#"+code);
+          else if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
+            if (strength == BindingStrength.REQUIRED)
+              txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(vsRef, valueset, bc), vr.getMessage(), system+"#"+code);
+            else if (strength == BindingStrength.EXTENSIBLE) {
+              if (vsMax != null)
+                checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringFromExtension(vsMax), c, stack);
+              else if (!noExtensibleWarnings)
+                txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_5, describeReference(vsRef, valueset, bc));
+            } else if (strength == BindingStrength.PREFERRED) {
+              if (baseOnly) {
+                txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_6, describeReference(vsRef, valueset, bc));
+              }
+            }
+          } else if (strength == BindingStrength.REQUIRED)
+            ok= txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_4, describeReference(vsRef, valueset, bc), (vr.getMessage() != null ? " (error message = " + vr.getMessage() + ")" : ""), system+"#"+code) && ok;
+          else if (strength == BindingStrength.EXTENSIBLE) {
+            if (vsMax != null)
+              ok = checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringFromExtension(vsMax), c, stack) && ok;
+            else
+              txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_5, describeReference(vsRef, valueset, bc), (vr.getMessage() != null ? " (error message = " + vr.getMessage() + ")" : ""), system+"#"+code);
+          } else if (strength == BindingStrength.PREFERRED) {
+            if (baseOnly) {
+              txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_6, describeReference(vsRef, valueset, bc), (vr.getMessage() != null ? " (error message = " + vr.getMessage() + ")" : ""), system+"#"+code);
+            }
+          }
+        } else if (vr != null && vr.getMessage() != null){
+          if (vr.getSeverity() == IssueSeverity.INFORMATION) {
+            txHint(errors, "2023-07-04", vr.getTxLink(), IssueType.INFORMATIONAL, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_HINT, code, vr.getMessage());
+          } else {
+            txWarning(errors, "2023-07-04", vr.getTxLink(), IssueType.INFORMATIONAL, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_WARNING, code, vr.getMessage());
+          }
+        }
+      } catch (Exception e) {
+        if (STACK_TRACE) e.printStackTrace();
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING1, e.getMessage());
       }
     }
     return ok;
@@ -1862,9 +1853,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         timeTracker.tx(t, "vc "+cc.toString());
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
-            txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_7, describeReference(maxVSUrl, valueset), vr.getMessage());
+            txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_7, describeReference(maxVSUrl, valueset, BindingContext.MAXVS), vr.getMessage());
           else
-            ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_8, describeReference(maxVSUrl, valueset), ccSummary(cc)) && ok;
+            ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_8, describeReference(maxVSUrl, valueset, BindingContext.MAXVS), ccSummary(cc)) && ok;
         }
       } catch (CheckCodeOnServerException e) {
         if (STACK_TRACE) e.getCause().printStackTrace();
@@ -1902,9 +1893,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
-            txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl, valueset), vr.getMessage(), c.getSystem()+"#"+c.getCode());
+            txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl, valueset, BindingContext.MAXVS), vr.getMessage(), c.getSystem()+"#"+c.getCode());
           else
-            ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_10, describeReference(maxVSUrl, valueset), c.getSystem(), c.getCode()) && ok;
+            ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_10, describeReference(maxVSUrl, valueset, BindingContext.MAXVS), c.getSystem(), c.getCode()) && ok;
         }
       } catch (Exception e) {
         if (STACK_TRACE) e.printStackTrace();
@@ -1932,9 +1923,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         timeTracker.tx(t, "vc "+value);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
-            txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl, valueset), vr.getMessage(), value);
+            txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl, valueset, BindingContext.BASE), vr.getMessage(), value);
           else {
-            ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_11, describeReference(maxVSUrl, valueset), vr.getMessage()) && ok;
+            ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_11, describeReference(maxVSUrl, valueset, BindingContext.BASE), vr.getMessage()) && ok;
           }
         }
       } catch (Exception e) {
@@ -1980,83 +1971,41 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkCodedElement(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay, NodeStack stack,
       String theCode, String theSystem, String theVersion, String theDisplay) {
     boolean ok = true;
-    boolean checked = false;
+    BooleanHolder checked = new BooleanHolder(false);
 
     if (theSystem != null && theCode != null && !noTerminologyChecks) {
       try {
         if (theElementCntext != null && theElementCntext.hasBinding()) {
           ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
           if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING2, path)) {
-            if (binding.hasValueSet()) {
-              ValueSet valueset = resolveBindingReference(profile, binding.getValueSet(), profile.getUrl(), profile);
-              if (valueset == null) {
-                CodeSystem cs = context.fetchCodeSystem(binding.getValueSet());
-                if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(binding.getValueSet()))) {
-                  warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(binding.getValueSet()));
-                } else {
-                  ok = false;
-                }
-              } else {  
-                try {
-                  Coding c = ObjectConverter.readAsCoding(element);
-                  long t = System.nanoTime();
-                  ValidationResult vr = null;
-                  if (binding.getStrength() != BindingStrength.EXAMPLE) {
-                    checked = true;
-                    vr = checkCodeOnServer(stack, valueset, c);
-                  }
-                  ok = processTxIssues(errors, vr, element, path, notFoundSeverityForBinding(binding), binding.getStrength() == BindingStrength.EXTENSIBLE, binding.getValueSet()) && ok;
+            try {
+              Coding c = ObjectConverter.readAsCoding(element);
+              if (binding.hasValueSet()) {
+                String vsRef = binding.getValueSet();
+                ValueSet valueset = resolveBindingReference(profile, vsRef, profile.getUrl(), profile);
+                BindingStrength strength = binding.getStrength();
+                Extension vsMax = binding.getExtensionByUrl(ToolingExtensions.EXT_MAX_VALUESET);
+                
+                ok = validateBindingCodedElement(errors, path, element, profile, stack, theCode, theSystem, ok, checked, c, vsRef, valueset, strength, vsMax, true);
+//              } else if (binding.hasValueSet()) {
+//                hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
+                
+              } else if (!inCodeableConcept && !noBindingMsgSuppressed) {
+                hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
+              }
 
-                  timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
-                  if (binding.getStrength() == BindingStrength.REQUIRED) {
-                    removeTrackedMessagesForLocation(errors, element, path);
-                  }
-
-                  if (vr != null && !vr.isOk()) {
-                    if (vr.IsNoService())
-                      txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER, theSystem+"#"+theCode);
-                    else if (vr.getErrorClass() != null && !vr.getErrorClass().isInfrastructure()) {
-                      if (binding.getStrength() == BindingStrength.REQUIRED)
-                        ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(binding.getValueSet(), valueset), vr.getMessage(), theSystem+"#"+theCode) && ok;
-                      else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
-                        if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-                          checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), c, stack);
-                        else if (!noExtensibleWarnings)
-                          txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_5, describeReference(binding.getValueSet(), valueset), theSystem+"#"+theCode);
-                      } else if (binding.getStrength() == BindingStrength.PREFERRED) {
-                        if (baseOnly) {
-                          txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_6, describeReference(binding.getValueSet(), valueset), theSystem+"#"+theCode);
-                        }
-                      }
-                    } else if (binding.getStrength() == BindingStrength.REQUIRED)
-                      ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_12, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), theSystem+"#"+theCode) && ok;
-                    else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
-                      if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
-                        ok = checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), c, stack) && ok;
-                      else if (!noExtensibleWarnings) {
-                        txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_13, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), c.getSystem()+"#"+c.getCode());
-                      }
-                    } else if (binding.getStrength() == BindingStrength.PREFERRED) {
-                      if (baseOnly) {
-                        txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_14, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), theSystem+"#"+theCode);
-                      }
-                    }
-                  } else if (vr != null && vr.getMessage() != null) {
-                    if (vr.getSeverity() == IssueSeverity.INFORMATION) {
-                      txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
-                    } else {
-                      txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
-                    }
-                  }
-                } catch (Exception e) {
-                  if (STACK_TRACE) e.printStackTrace();
-                  warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING1, e.getMessage());
+              for (ElementDefinitionBindingAdditionalComponent ab : binding.getAdditional()) {
+                if (isTestableBinding(ab) && isInScope(ab)) {
+                  String vsRef = ab.getValueSet();
+                  ValueSet valueset = resolveBindingReference(profile, vsRef, profile.getUrl(), profile);
+                  BindingStrength strength = convertPurposeToStrength(ab.getPurpose());
+                  
+                  ok = validateBindingCodedElement(errors, path, element, profile, stack, theCode, theSystem, ok, checked, c, vsRef, valueset, strength, null, false) && ok;
                 }
               }
-            } else if (binding.hasValueSet()) {
-              hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_CANTCHECK);
-            } else if (!inCodeableConcept && !noBindingMsgSuppressed) {
-              hint(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE, path);
+            } catch (Exception e) {
+              if (STACK_TRACE) e.printStackTrace();
+              warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING1, e.getMessage());
             }
           }
         } 
@@ -2065,11 +2014,76 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING2, e.getMessage(), e.toString());
         ok = false;
       }
-      if (!checked) {
+      if (!checked.ok()) {
         ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, theSystem == null || isCodeSystemReferenceValid(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE) && ok;
         ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, theSystem) && ok;
         if (ok) {
           ok = checkCode(errors, element, path, theCode, theSystem, theVersion, theDisplay, checkDisplay, stack);
+        }
+      }
+    }
+    return ok;
+  }
+
+  private boolean validateBindingCodedElement(List<ValidationMessage> errors, String path, Element element,
+      StructureDefinition profile, NodeStack stack, String theCode, String theSystem, boolean ok, BooleanHolder checked,
+      Coding c, String vsRef, ValueSet valueset, BindingStrength strength, Extension vsMax, boolean base) {
+    if (valueset == null) {
+      CodeSystem cs = context.fetchCodeSystem(vsRef);
+      if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs == null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND_CS, describeReference(vsRef))) {
+        warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(vsRef));
+      } else {
+        ok = false;
+      }
+    } else {  
+      BindingContext bc = base ? BindingContext.BASE : BindingContext.ADDITIONAL;
+      long t = System.nanoTime();
+      ValidationResult vr = null;
+      if (strength != BindingStrength.EXAMPLE) {
+        checked.set(true);
+        vr = checkCodeOnServer(stack, valueset, c);
+      }
+      ok = processTxIssues(errors, vr, element, path, notFoundSeverityForBinding(strength), strength == BindingStrength.EXTENSIBLE, vsRef) && ok;
+
+      timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
+      if (strength == BindingStrength.REQUIRED) {
+        removeTrackedMessagesForLocation(errors, element, path);
+      }
+
+      if (vr != null && !vr.isOk()) {
+        if (vr.IsNoService())
+          txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER, theSystem+"#"+theCode);
+        else if (vr.getErrorClass() != null && !vr.getErrorClass().isInfrastructure()) {
+          if (strength == BindingStrength.REQUIRED)
+            ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(vsRef, valueset, bc), vr.getMessage(), theSystem+"#"+theCode) && ok;
+          else if (strength == BindingStrength.EXTENSIBLE) {
+            if (vsMax != null)
+              checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringFromExtension(vsMax), c, stack);
+            else if (!noExtensibleWarnings)
+              txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_5, describeReference(vsRef, valueset, bc), theSystem+"#"+theCode);
+          } else if (strength == BindingStrength.PREFERRED) {
+            if (baseOnly) {
+              txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_6, describeReference(vsRef, valueset, bc), theSystem+"#"+theCode);
+            }
+          }
+        } else if (strength == BindingStrength.REQUIRED)
+          ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_12, describeReference(vsRef, valueset, bc), getErrorMessage(vr.getMessage()), theSystem+"#"+theCode) && ok;
+        else if (strength == BindingStrength.EXTENSIBLE) {
+          if (vsMax != null)
+            ok = checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringFromExtension(vsMax), c, stack) && ok;
+          else if (!noExtensibleWarnings) {
+            txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_13, describeReference(vsRef, valueset, bc), getErrorMessage(vr.getMessage()), c.getSystem()+"#"+c.getCode());
+          }
+        } else if (strength == BindingStrength.PREFERRED) {
+          if (baseOnly) {
+            txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_14, describeReference(vsRef, valueset, bc), getErrorMessage(vr.getMessage()), theSystem+"#"+theCode);
+          }
+        }
+      } else if (vr != null && vr.getMessage() != null) {
+        if (vr.getSeverity() == IssueSeverity.INFORMATION) {
+          txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+        } else {
+          txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
         }
       }
     }
@@ -3579,7 +3593,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
             vr = checkCodeOnServer(stack, vs, value, options);
           }
-          ok = processTxIssues(errors, vr, element, path, notFoundSeverityForBinding(binding), binding.getStrength() != BindingStrength.REQUIRED, binding.getValueSet()) && ok;
+          ok = processTxIssues(errors, vr, element, path, notFoundSeverityForBinding(binding.getStrength()), binding.getStrength() != BindingStrength.REQUIRED, binding.getValueSet()) && ok;
 
           timeTracker.tx(t, "vc "+value+"");
           if (binding.getStrength() == BindingStrength.REQUIRED) {
@@ -3591,15 +3605,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             } else if (vr.getErrorClass() != null && vr.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
               txWarning(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
             } else if (binding.getStrength() == BindingStrength.REQUIRED) {
-              ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_16, value, describeReference(binding.getValueSet(), vs), getErrorMessage(vr.getMessage())) && ok;
+              ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_16, value, describeReference(binding.getValueSet(), vs, BindingContext.BASE), getErrorMessage(vr.getMessage())) && ok;
             } else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
               if (binding.hasExtension(ToolingExtensions.EXT_MAX_VALUESET))
                 ok = checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, ToolingExtensions.EXT_MAX_VALUESET), value, stack) && ok;
               else if (!noExtensibleWarnings && !isOkExtension(value, vs))
-                txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_17, value, describeReference(binding.getValueSet(), vs), getErrorMessage(vr.getMessage()));
+                txWarningForLaterRemoval(element, errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_17, value, describeReference(binding.getValueSet(), vs, BindingContext.BASE), getErrorMessage(vr.getMessage()));
             } else if (binding.getStrength() == BindingStrength.PREFERRED) {
               if (baseOnly) {
-                txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_18, value, describeReference(binding.getValueSet(), vs), getErrorMessage(vr.getMessage()));
+                txHint(errors, NO_RULE_DATE, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_18, value, describeReference(binding.getValueSet(), vs, BindingContext.BASE), getErrorMessage(vr.getMessage()));
               }
             }
           } else if (vr != null && vr.getMessage() != null){
@@ -4311,21 +4325,28 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return false;
   }
 
-  private String describeReference(String reference, CanonicalResource target) {
+  private String describeReference(String reference, CanonicalResource target, BindingContext ctxt) {
     if (reference == null && target == null)
       return "null";
+    String res = null;
     if (reference == null) {
-      return target.getVersionedUrl();
+      res = target.getVersionedUrl();
+    } else if (target == null) {
+      res = reference;
+    } else {
+      String uref = reference.contains("|") ? reference.substring(0, reference.lastIndexOf("|")) : reference;
+      String vref = reference.contains("|") ? reference.substring(reference.lastIndexOf("|")+1) : null;
+      if (uref.equals(target.getUrl()) && (vref == null || vref.equals(target.getVersion()))) {
+        res = "'"+target.present()+"' ("+target.getVersionedUrl()+")";
+      } else {
+        res =  reference + "(which actually refers to '"+target.present()+"' (" + target.getVersionedUrl() + "))";
+      }
     }
-    if (target == null) {
-      return reference;
+    switch (ctxt) {
+    case ADDITIONAL: return context.formatMessage(I18nConstants.BINDING_ADDITIONAL, res);
+    case MAXVS: return context.formatMessage(I18nConstants.BINDING_MAX, res);
+    default: return res;
     }
-    String uref = reference.contains("|") ? reference.substring(0, reference.lastIndexOf("|")) : reference;
-    String vref = reference.contains("|") ? reference.substring(reference.lastIndexOf("|")+1) : null;
-    if (uref.equals(target.getUrl()) && (vref == null || vref.equals(target.getVersion()))) {
-      return "'"+target.present()+"' ("+target.getVersionedUrl()+")";
-    }
-    return reference + "(which actually refers to '"+target.present()+"' (" + target.getVersionedUrl() + "))";
   }
 
   private String describeTypes(List<TypeRefComponent> types) {

@@ -167,6 +167,9 @@ public class PoGetTextProducer extends LanguageFileProducer {
       if (tu.getContext1() != null) {
         ln(po, "#. "+tu.getContext1());
       }
+      if (tu.getOriginal() != null) {
+        ln(po, "#| "+tu.getOriginal());
+      }
       ln(po, "msgid \""+stripEoln(tu.getSrcText())+"\"");
       ln(po, "msgstr \""+(tu.getTgtText() == null ? "" : stripEoln(tu.getTgtText()))+"\"");
       ln(po, "");

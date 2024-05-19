@@ -65,6 +65,7 @@ public abstract class LanguageFileProducer {
   
   public static class TranslationUnit extends TextUnit {
     private String language;
+    private String original; // for when the source text has been modified since being translated
 
     public TranslationUnit(String language, String id, String context, String srcText, String tgtText) {
       super(id, context, srcText, tgtText);
@@ -86,6 +87,16 @@ public abstract class LanguageFileProducer {
     public void setTgtText(String tgtText) {
       this.tgtText = tgtText;
     }
+
+    public String getOriginal() {
+      return original;
+    }
+
+    public TranslationUnit setOriginal(String original) {
+      this.original = original;
+      return this;
+    }
+    
   }
 
   public class Translations {

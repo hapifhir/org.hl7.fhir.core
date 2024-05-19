@@ -296,8 +296,8 @@ public class AdditionalBindingsRenderer {
         }
       }
       if (any) {
-        String newRepeat = binding.any ? /*!#*/"Any repeats" : /*!#*/"All repeats";
-        String oldRepeat = binding.compare!=null && binding.compare.any ? /*!#*/"Any repeats" : /*!#*/"All repeats";
+        String newRepeat = binding.any ? context.formatMessage(RenderingContext.ADD_BIND_ANY_REP) : context.formatMessage(RenderingContext.ADD_BIND_ALL_REP);
+        String oldRepeat = binding.compare!=null && binding.compare.any ? context.formatMessage(RenderingContext.ADD_BIND_ANY_REP) : context.formatMessage(RenderingContext.ADD_BIND_ALL_REP);
         compareString(tr.td().style("font-size: 11px"), newRepeat, oldRepeat);
       }
       if (doco) {
@@ -360,7 +360,7 @@ public class AdditionalBindingsRenderer {
       if (r5) {
         td.ah(r5 ? corePath+"valueset-additional-binding-purpose.html#additional-binding-purpose-preferred" : corePath+"terminologies.html#strength", context.formatMessage(RenderingContext.ADD_BIND_RECOM_VALUE_SET)).tx(context.formatMessage(RenderingContext.ADD_BIND_PREF_BIND));
       } else {
-        td.span(null, context.formatMessage(RenderingContext.ADD_BIND_RECOM_VALUE_SET)).tx(context.formatMessage(RenderingContext.ADD_BIND_RECOMMENDED));
+        td.span(null, context.formatMessage(RenderingContext.ADD_BIND_RECOM_VALUE_SET)).tx(context.formatMessage(RenderingContext.ADD_BIND_PREFERRED));
       }
       break;
     case "ui" :
