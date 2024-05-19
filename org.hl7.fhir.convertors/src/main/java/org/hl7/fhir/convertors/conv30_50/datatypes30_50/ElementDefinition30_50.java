@@ -730,7 +730,7 @@ public class ElementDefinition30_50 {
     Extension tgt = new Extension();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasPurpose()) {
-      tgt.addExtension(new Extension("purpose", new CodeType(src.getPurposeElement().primitiveValue())));
+      tgt.addExtension(new Extension("purpose", new org.hl7.fhir.dstu3.model.CodeType(src.getPurposeElement().primitiveValue())));
     }
     if (src.hasValueSet()) {
       tgt.addExtension(new Extension("valueSet", Uri30_50.convertCanonical(src.getValueSetElement())));

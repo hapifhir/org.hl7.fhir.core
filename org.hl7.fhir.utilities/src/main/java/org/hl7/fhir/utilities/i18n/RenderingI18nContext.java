@@ -1065,4 +1065,11 @@ public class RenderingI18nContext extends I18nBase {
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
   }
+  
+@Override
+  protected String typeOfString() {
+    return "phrase";
+  }
+
+  
 }
