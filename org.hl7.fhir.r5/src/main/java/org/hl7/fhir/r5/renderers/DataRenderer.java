@@ -219,20 +219,20 @@ public class DataRenderer extends Renderer implements CodeResolver {
  
   // -- 3. General Purpose Terminology Support -----------------------------------------
 
-  private static String month(String m) {
+  private static String snMonth(String m) {
     switch (m) {
-    case "1" : return /*!#*/"Jan";
-    case "2" : return /*!#*/"Feb";
-    case "3" : return /*!#*/"Mar";
-    case "4" : return/*!#*/ "Apr";
-    case "5" : return /*!#*/"May";
-    case "6" : return /*!#*/"Jun";
-    case "7" : return /*!#*/"Jul";
-    case "8" : return /*!#*/"Aug";
-    case "9" : return /*!#*/"Sep";
-    case "10" : return /*!#*/"Oct";
-    case "11" : return /*!#*/"Nov";
-    case "12" : return /*!#*/"Dec";
+    case "1" : return "Jan";
+    case "2" : return "Feb";
+    case "3" : return "Mar";
+    case "4" : return "Apr";
+    case "5" : return "May";
+    case "6" : return "Jun";
+    case "7" : return "Jul";
+    case "8" : return "Aug";
+    case "9" : return "Sep";
+    case "10" : return "Oct";
+    case "11" : return "Nov";
+    case "12" : return "Dec";
     default: return null;
     }
   }
@@ -247,21 +247,21 @@ public class DataRenderer extends Renderer implements CodeResolver {
         ed = p[p.length-3];
         String y = p[p.length-3].substring(4, 8);
         String m = p[p.length-3].substring(2, 4); 
-        dt = " rel. "+month(m)+" "+y;
+        dt = " rel. "+snMonth(m)+" "+y;
       } else {
         ed = p[p.length-1];
       }
       switch (ed) {
-      case "900000000000207008": return /*!#*/"Intl"+dt; 
-      case "731000124108": return /*!#*/"US"+dt; 
-      case "32506021000036107": return /*!#*/"AU"+dt; 
-      case "449081005": return /*!#*/"ES"+dt; 
-      case "554471000005108": return /*!#*/"DK"+dt; 
-      case "11000146104": return /*!#*/"NL"+dt; 
-      case "45991000052106": return /*!#*/"SE"+dt; 
-      case "999000041000000102": return /*!#*/"UK"+dt; 
-      case "20611000087101": return /*!#*/"CA"+dt; 
-      case "11000172109": return /*!#*/"BE"+dt; 
+      case "900000000000207008": return "Intl"+dt; 
+      case "731000124108": return "US"+dt; 
+      case "32506021000036107": return "AU"+dt; 
+      case "449081005": return "ES"+dt; 
+      case "554471000005108": return "DK"+dt; 
+      case "11000146104": return "NL"+dt; 
+      case "45991000052106": return "SE"+dt; 
+      case "999000041000000102": return "UK"+dt; 
+      case "20611000087101": return "CA"+dt; 
+      case "11000172109": return "BE"+dt; 
       default: return "??"+dt; 
       }      
     } else {
@@ -269,25 +269,6 @@ public class DataRenderer extends Renderer implements CodeResolver {
     }
   }
   
-//  public static String describeSystem(String system) {
-//    if (system == null)
-//    	return /*!#*/ "[not stated]";
-//    if (system.equals("http://loinc.org"))
-//      return /*!#*/ "LOINC";
-//    if (system.startsWith("http://snomed.info"))
-//      return /*!#*/ "SNOMED CT";
-//    if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm"))
-//      return /*!#*/ "RxNorm";
-//    if (system.equals("http://hl7.org/fhir/sid/icd-9"))
-//      return /*!#*/ "ICD-9";
-//    if (system.equals("http://dicom.nema.org/resources/ontology/DCM"))
-//      return /*!#*/ "DICOM";
-//    if (system.equals("http://unitsofmeasure.org"))
-//      return /*!#*/ "UCUM";
-//  
-//    return system;
-//  }
-
   public String displaySystem(String system) {
     if (system == null)
     	return (context.formatMessage(RenderingContext.DATA_REND_NOT_STAT));
@@ -357,7 +338,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   protected String describeLang(String lang) {
     // special cases:
     if ("fr-CA".equals(lang)) {
-      return /*!#*/"French (Canadian)"; // this one was omitted from the value set
+      return "French (Canadian)"; // this one was omitted from the value set
     }
     ValueSet v = getContext().getWorker().findTxResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/languages");
     if (v != null) {
@@ -703,7 +684,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (base instanceof DataType) {
       render(x, (DataType) base);
     } else {
-      x.tx(/*!#*/"to do: "+base.fhirType());
+      x.tx(context.formatMessage(RenderingContext.DATA_REND_TO_DO, base.fhirType()));
     }
   }
   
@@ -763,7 +744,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       addMarkdown(x, context.getTranslated((MarkdownType) type));
     } else if (type instanceof Base64BinaryType) {
       Base64BinaryType b64 = (Base64BinaryType) type;
-      x.tx(/*!#*/"(base64 data - "+(b64.getValue() == null ? "0" : b64.getValue().length)+" bytes)");
+      x.tx(context.formatMessage(RenderingContext.DATA_REND_BASE64, (b64.getValue() == null ? "0" : b64.getValue().length)));
     } else if (type.isPrimitive()) {
       x.tx(context.getTranslated((PrimitiveType<?>) type));
     } else {
@@ -1057,7 +1038,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     systemName = cs != null ? crPresent(cs) : displaySystem(c.getSystem());
     link = getLinkForCode(c.getSystem(), c.getVersion(), c.getCode());
 
-    hint = systemName+": "+display+(c.hasVersion() ? " "+/*!#*/"(version = "+c.getVersion()+")" : "");
+    hint = systemName+": "+display+(c.hasVersion() ? " "+ context.formatMessage(RenderingContext.DATA_REND_VERSION, c.getVersion(), ")") : "");
     return new CodeResolution(systemName, systemLink, link, display, hint);
   }
   
@@ -1092,7 +1073,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       x.tx(s);
     }
     if (c.hasVersion()) {
-      x.tx(" "+/*!#*/"(version = "+c.getVersion()+")");
+      x.tx(" "+context.formatMessage(RenderingContext.DATA_REND_VERSION, c.getVersion(), ")"));
     }
   }
   
@@ -1107,7 +1088,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       s = c.getCode();
 
     if (showCodeDetails) {
-      x.addText(s+" "+/*!#*/"(Details: "+displaySystem(c.getSystem())+" code "+c.getCode()+" = '"+lookupCode(c.getSystem(), c.getVersion(), c.getCode())+"', stated as '"+c.getDisplay()+"')");
+      x.addText(s+" "+context.formatMessage(RenderingContext.DATA_REND_DETAILS_STATED, displaySystem(c.getSystem()), c.getCode(), " = '", lookupCode(c.getSystem(), c.getVersion(), c.getCode()), c.getDisplay(), "')"));
     } else
       x.span(null, "{"+c.getSystem()+" "+c.getCode()+"}").addText(s);
   }
@@ -1227,7 +1208,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         }
       }
 
-      x.span(null, /*!#*/"Codes: "+b.toString()).addText(s);
+      x.span(null, context.formatMessage(RenderingContext.DATA_REND_CODES) +b.toString()).addText(s);
     }
   }
 
@@ -1291,7 +1272,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       } else {
         switch (ii.getSystem()) {
         case "urn:oid:2.51.1.3":
-          x.ah("https://www.gs1.org/standards/id-keys/gln", /*!#*/"Global Location Number").tx("GLN");
+          x.ah("https://www.gs1.org/standards/id-keys/gln", context.formatMessage(RenderingContext.DATA_REND_GLN)).tx("GLN");
           break;
         default:
           x.code(ii.getSystem());      
@@ -1557,8 +1538,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (system == null)
       return "";
     switch (system) {
-    case PHONE: return /*!#*/"ph: ";
-    case FAX: return /*!#*/"fax: ";
+    case PHONE: return "ph: ";
+    case FAX: return "fax: ";
     default:
       return "";
     }
@@ -1596,7 +1577,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         x.tx("(unit "+q.getCode()+" from "+q.getSystem()+")");
     }
     if (showCodeDetails && q.hasCode()) {
-      x.span("background: LightGoldenRodYellow", null).tx(" "+/*!#*/"(Details: "+displaySystem(q.getSystem())+" code "+q.getCode()+" = '"+lookupCode(q.getSystem(), null, q.getCode())+"')");
+      x.span("background: LightGoldenRodYellow", null).tx(" "+ (context.formatMessage(RenderingContext.DATA_REND_DETAILS, displaySystem(q.getSystem()))) +q.getCode()+" = '"+lookupCode(q.getSystem(), null, q.getCode())+"')");
     }
   }
 
@@ -1640,13 +1621,13 @@ public class DataRenderer extends Renderer implements CodeResolver {
   public String displayPeriod(Period p) {
     String s = !p.hasStart() ? "(?)" : displayDateTime(p.getStartElement());
     s = s + " --> ";
-    return s + (!p.hasEnd() ? /*!#*/"(ongoing)" : displayDateTime(p.getEndElement()));
+    return s + (!p.hasEnd() ? context.formatMessage(RenderingContext.DATA_REND_ONGOING) : displayDateTime(p.getEndElement()));
   }
 
   public void renderPeriod(XhtmlNode x, Period p) {
     x.addText(!p.hasStart() ? "??" : displayDateTime(p.getStartElement()));
     x.tx(" --> ");
-    x.addText(!p.hasEnd() ? /*!#*/"(ongoing)" : displayDateTime(p.getEndElement()));
+    x.addText(!p.hasEnd() ? context.formatMessage(RenderingContext.DATA_REND_ONGOING) : displayDateTime(p.getEndElement()));
   }
   
   public void renderUsageContext(XhtmlNode x, UsageContext u) throws FHIRFormatError, DefinitionException, IOException {
@@ -1856,7 +1837,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
             st = st + "-"+Integer.toString(rep.getFrequency());
         }
         if (rep.hasPeriod()) {
-          st = st + " "+/*!#*/"per "+rep.getPeriod().toPlainString();
+          st = st + " "+ (context.formatMessage(RenderingContext.DATA_REND_PER))+rep.getPeriod().toPlainString();
           if (rep.hasPeriodMax())
             st = st + "-"+rep.getPeriodMax().toPlainString();
           st = st + " "+displayTimeUnits(rep.getPeriodUnit());
@@ -1961,7 +1942,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     XhtmlNode xn;
     xn = new XhtmlNode(NodeType.Element, "div");
     XhtmlNode p = xn.para();
-    p.b().tx(/*!#*/"Exception "+function+": "+e.getMessage());
+    p.b().tx((context.formatMessage(RenderingContext.DATA_REND_EXCEPTION)) +function+": "+e.getMessage());
     p.addComment(getStackTrace(e));
     return xn;
   }

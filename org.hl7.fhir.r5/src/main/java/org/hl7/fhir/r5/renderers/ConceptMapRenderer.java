@@ -783,7 +783,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
   private static void renderLinks(XhtmlNode td, List<CollateralDefinition> collateral) {
     if (collateral.size() > 0) {
-      td.tx(/*!#*/"Links:");
+      td.tx( "Links:");
       td.tx(" ");
       boolean first = true;
       for (CollateralDefinition c : collateral) {

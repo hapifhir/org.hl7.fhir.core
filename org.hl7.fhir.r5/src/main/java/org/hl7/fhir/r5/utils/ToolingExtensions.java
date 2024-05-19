@@ -428,6 +428,14 @@ public class ToolingExtensions {
     }
     return null;
   }
+
+  public static String readStringFromExtension(Extension ext) {
+    if (ext.hasValue() && ext.getValue().isPrimitive()) {
+      return ext.getValue().primitiveValue();
+    }
+    return null;
+  }
+  
   public static String readStringExtension(Element c, String uri) {
     Extension ex = ExtensionHelper.getExtension(c, uri);
     if (ex == null)

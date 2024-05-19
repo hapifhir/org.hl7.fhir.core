@@ -85,7 +85,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     pw = getProperty(dr, "perfomer");
     if (valued(pw)) {
       tr = tbl.tr();
-      tr.td().tx(Utilities.pluralize(/*!#*/ "Performer", pw.getValues().size()));
+      tr.td().tx(Utilities.pluralize((context.formatMessage(RenderingContext.DIAG_REP_REND_PER)), pw.getValues().size()));
       XhtmlNode tdr = tr.td();
       for (BaseWrapper v : pw.getValues()) {
         tdr.tx(" ");
@@ -95,7 +95,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     pw = getProperty(dr, "identifier");
     if (valued(pw)) {
       tr = tbl.tr();
-      tr.td().tx(Utilities.pluralize(/*!#*/"Identifier", pw.getValues().size())+":");
+      tr.td().tx(Utilities.pluralize((context.formatMessage(RenderingContext.DIAG_REP_REND_IDENTIFIER)), pw.getValues().size())+":");
       XhtmlNode tdr = tr.td();
       for (BaseWrapper v : pw.getValues()) {
         tdr.tx(" ");
@@ -105,7 +105,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     pw = getProperty(dr, "request");
     if (valued(pw)) {
       tr = tbl.tr();
-      tr.td().tx(Utilities.pluralize(/*!#*/"Request", pw.getValues().size())+":");
+      tr.td().tx(Utilities.pluralize((context.formatMessage(RenderingContext.DIAG_REP_REND_REQUEST)), pw.getValues().size())+":");
       XhtmlNode tdr = tr.td();
       for (BaseWrapper v : pw.getValues()) {
         tdr.tx(" ");

@@ -61,9 +61,6 @@ public class StructureMapRenderer extends TerminologyRenderer {
   private static final String COLOR_SYNTAX = "navy";
   private static final boolean MULTIPLE_TARGETS_ONELINE = true;
   private static final String COLOR_SPECIAL = "#b36b00";
-  private static final String DEFAULT_COMMENT = /*!#*/"This element was not defined prior to R5";
-  
-  private String clauseComment = DEFAULT_COMMENT;
 
   public StructureMapRenderer(RenderingContext context) {
     super(context);
@@ -634,7 +631,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
     }
     if (isClause) {
       XhtmlNode s= x.color(COLOR_SPECIAL);
-      s.setAttribute("title", clauseComment );
+      s.setAttribute("title", formatMessage(RenderingContext.MAP_DEFAULT_COMMENT));
       s.tx("// ");
       s.tx(doco.replace("\r\n", " ").replace("\r", " ").replace("\n", " "));      
     } else {

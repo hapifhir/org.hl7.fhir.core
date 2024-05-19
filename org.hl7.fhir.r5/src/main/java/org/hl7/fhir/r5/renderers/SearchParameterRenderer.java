@@ -55,7 +55,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
 
     XhtmlNode tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();
-    tr.td().tx(Utilities.pluralize(/*!#*/"Resource", spd.getBase().size()));
+    tr.td().tx(Utilities.pluralize(context.formatMessage(RenderingContext.SEARCH_PAR_REND_RES), spd.getBase().size()));
     XhtmlNode td = tr.td();
     for (Enumeration<VersionIndependentResourceTypesAll> t : spd.getBase()) {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.getCode());
@@ -81,7 +81,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     }
     if (spd.hasTarget()) {
       tr = tbl.tr();
-      tr.td().tx(Utilities.pluralize(/*!#*/"Target Resources", spd.getTarget().size()));
+      tr.td().tx(Utilities.pluralize(context.formatMessage(RenderingContext.SEARCH_PAR_REND_TARGET), spd.getTarget().size()));
       td = tr.td();
       if (isAllConcreteResources(spd.getTarget())) {
         td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "resourcelist.html")).tx(context.formatMessage(RenderingContext.SEARCH_PAR_RES));
