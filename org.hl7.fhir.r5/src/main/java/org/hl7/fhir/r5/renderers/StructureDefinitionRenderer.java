@@ -86,6 +86,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
@@ -491,7 +492,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (!url.equals(source.getUrl())) {
         source = context.getWorker().fetchResource(StructureDefinition.class, url, source);
         if (source == null) {
-          throw new FHIRException(/*!#*/"Unable to resolve StructureDefinition "+url+" resolving content reference "+contentReference);
+          throw new FHIRException(context.formatMessage(RenderingContext.STRUC_DEF_REND_UNABLE_RES, url, contentReference));
         }
         elements = source.getSnapshot().getElement();
       }
@@ -504,7 +505,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         return new ElementInStructure(source, ed);
       }
     }
-    throw new Error(/*!#*/"getElementByName: can't find "+contentReference+" in "+elements.toString()+" from "+source.getUrl());
+    throw new Error(context.formatMessage(RenderingContext.STRUC_DEF_CANT_FIND, contentReference, elements.toString(), source.getUrl()));
     //    return null;
   }
 
@@ -708,7 +709,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     model.setDocoRef(Utilities.pathURL("https://build.fhir.org/ig/FHIR/ig-guidance", "readingIgs.html#table-views"));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatMessage(RenderingContext.STRUC_DEF_NAME)), (context.formatMessage(RenderingContext.STRUC_DEF_LOGIC_NAME)), null, 0));
     for (Column col : columns) {
-      model.getTitles().add(gen.new Title(null, model.getDocoRef(), (/*!#*/col.title), (/*!#*/col.hint), null, 0));      
+      model.getTitles().add(gen.new Title(null, model.getDocoRef(), (col.title), (col.hint), null, 0));      
     }
     return model;
   }
@@ -738,52 +739,52 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       boolean ext = false;
       if (tail(element.getPath()).equals("extension") && isExtension(element)) {
         if (element.hasType() && element.getType().get(0).hasProfile() && extensionIsComplex(element.getType().get(0).getProfile().get(0).getValue()))
-          row.setIcon("icon_extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
+          row.setIcon("icon_extension_complex.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_EXTENSION_COMPLEX));
         else
-          row.setIcon("icon_extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);
+          row.setIcon("icon_extension_simple.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_EXTENSION_SIMPLE));
         ext = true;
       } else if (tail(element.getPath()).equals("modifierExtension")) {
         if (element.hasType() && element.getType().get(0).hasProfile() && extensionIsComplex(element.getType().get(0).getProfile().get(0).getValue()))
-          row.setIcon("icon_modifier_extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
+          row.setIcon("icon_modifier_extension_complex.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_EXTENSION_COMPLEX));
         else
-          row.setIcon("icon_modifier_extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);
+          row.setIcon("icon_modifier_extension_simple.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_EXTENSION_SIMPLE));
       } else if (!hasDef || element.getType().size() == 0) {
         if (root && profile != null && context.getWorker().getResourceNames().contains(profile.getType())) {
-          row.setIcon("icon_resource.png", HierarchicalTableGenerator.TEXT_ICON_RESOURCE);
+          row.setIcon("icon_resource.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_RESOURCE));
         } else if (hasDef && element.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) {
-          row.setIcon("icon-object-box.png", HierarchicalTableGenerator.TEXT_ICON_OBJECT_BOX);
+          row.setIcon("icon-object-box.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_OBJECT_BOX));
           keyRows.add(element.getId()+"."+ToolingExtensions.readStringExtension(element, ToolingExtensions.EXT_JSON_PROP_KEY));
         } else {
-          row.setIcon("icon_element.gif", HierarchicalTableGenerator.TEXT_ICON_ELEMENT);
+          row.setIcon("icon_element.gif", context.formatMessage(RenderingI18nContext.TEXT_ICON_ELEMENT));
         }
       } else if (hasDef && element.getType().size() > 1) {
         if (allAreReference(element.getType())) {
-          row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
+          row.setIcon("icon_reference.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_REFERENCE));
         } else if (element.hasExtension(ToolingExtensions.EXT_JSON_PRIMITIVE_CHOICE)) {
-          row.setIcon("icon_choice.gif", HierarchicalTableGenerator.TEXT_ICON_CHOICE);
+          row.setIcon("icon_choice.gif", context.formatMessage(RenderingI18nContext.TEXT_ICON_CHOICE));
         } else {
-          row.setIcon("icon_choice.gif", HierarchicalTableGenerator.TEXT_ICON_CHOICE);
+          row.setIcon("icon_choice.gif", context.formatMessage(RenderingI18nContext.TEXT_ICON_CHOICE));
           typesRow = row;
         }
       } else if (hasDef && element.getType().get(0).getWorkingCode() != null && element.getType().get(0).getWorkingCode().startsWith("@")) {
-        row.setIcon("icon_reuse.png", HierarchicalTableGenerator.TEXT_ICON_REUSE);
+        row.setIcon("icon_reuse.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_REUSE));
       } else if (hasDef && context.getContext().isPrimitiveType(element.getType().get(0).getWorkingCode())) {
         if (keyRows.contains(element.getId())) {
-          row.setIcon("icon-key.png", HierarchicalTableGenerator.TEXT_ICON_KEY);
+          row.setIcon("icon-key.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_KEY));
         } else {
-          row.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
+          row.setIcon("icon_primitive.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_PRIMITIVE));
         }
       } else if (hasDef && element.getType().get(0).hasTarget()) {
-        row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
+        row.setIcon("icon_reference.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_REFERENCE));
       } else if (hasDef && context.getContext().isDataType(element.getType().get(0).getWorkingCode())) {
-        row.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
+        row.setIcon("icon_datatype.gif", context.formatMessage(RenderingI18nContext.TEXT_ICON_DATATYPE));
       } else if (hasDef && element.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) {
-        row.setIcon("icon-object-box.png", HierarchicalTableGenerator.TEXT_ICON_OBJECT_BOX);
+        row.setIcon("icon-object-box.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_OBJECT_BOX));
         keyRows.add(element.getId()+"."+ToolingExtensions.readStringExtension(element, ToolingExtensions.EXT_JSON_PROP_KEY));
       } else if (hasDef && Utilities.existsInList(element.getType().get(0).getWorkingCode(), "Base", "Element", "BackboneElement")) {
-        row.setIcon("icon_element.gif", HierarchicalTableGenerator.TEXT_ICON_ELEMENT);
+        row.setIcon("icon_element.gif", context.formatMessage(RenderingI18nContext.TEXT_ICON_ELEMENT));
       } else {
-        row.setIcon("icon_resource.png", HierarchicalTableGenerator.TEXT_ICON_RESOURCE);
+        row.setIcon("icon_resource.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_RESOURCE));
       }
       if (element.hasUserData("render.opaque")) {
         row.setOpacity("0.5");
@@ -823,7 +824,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           showMissing = false; //?
           slicingRow = row;
         } else {
-          row.setIcon("icon_slice.png", HierarchicalTableGenerator.TEXT_ICON_SLICE);
+          row.setIcon("icon_slice.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_SLICE));
           slicingRow = row;
           for (Cell cell : row.getCells())
             for (Piece p : cell.getPieces()) {
@@ -831,7 +832,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
         }
       } else if (element.hasSliceName()) {
-        row.setIcon("icon_slice_item.png", HierarchicalTableGenerator.TEXT_ICON_SLICE_ITEM);
+        row.setIcon("icon_slice_item.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_SLICE_ITEM));
       }
       if (used.used || showMissing)
         rows.add(row);
@@ -849,8 +850,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           hrow.setAnchor(element.getPath());
           hrow.setColor(context.getProfileUtilities().getRowColor(element, isConstraintMode));
           hrow.setLineColor(1);
-          hrow.setIcon("icon_element.gif", HierarchicalTableGenerator.TEXT_ICON_ELEMENT);
-          hrow.getCells().add(gen.new Cell(null, null, sName+/*!#*/":All Slices", "", null));
+          hrow.setIcon("icon_element.gif", context.formatMessage(RenderingI18nContext.TEXT_ICON_ELEMENT));
+          hrow.getCells().add(gen.new Cell(null, null, sName+ (context.formatMessage(RenderingContext.STRUC_DEF_ALL_SLICES)), "", null));
           switch (context.getStructureMode()) {
           case BINDINGS:
           case OBLIGATIONS:
@@ -875,7 +876,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           hrow.setAnchor(element.getPath());
           hrow.setColor(context.getProfileUtilities().getRowColor(element, isConstraintMode));
           hrow.setLineColor(1);
-          hrow.setIcon("icon_element.gif", HierarchicalTableGenerator.TEXT_ICON_ELEMENT);
+          hrow.setIcon("icon_element.gif", context.formatMessage(RenderingI18nContext.TEXT_ICON_ELEMENT));
           hrow.getCells().add(gen.new Cell(null, null, sName+ context.formatMessage(RenderingContext.STRUC_DEF_ALL_TYPES), "", null));
           switch (context.getStructureMode()) {
           case BINDINGS:
@@ -908,7 +909,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 parent.setAnchor(child.getPath());
                 parent.setColor(context.getProfileUtilities().getRowColor(child, isConstraintMode));
                 parent.setLineColor(1);
-                parent.setIcon("icon_slice.png", HierarchicalTableGenerator.TEXT_ICON_SLICE);
+                parent.setIcon("icon_slice.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_SLICE));
                 parent.getCells().add(gen.new Cell(null, null, "Slices for "+ child.getName(), "", null));
                 switch (context.getStructureMode()) {
                 case BINDINGS:
@@ -1089,13 +1090,13 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     if (element != null && (hasNonBaseConstraints(element.getConstraint()) || hasNonBaseConditions(element.getCondition()))) {
       Piece p = gc.addText(CONSTRAINT_CHAR);
-      p.setHint((/*!#*/"This element has or is affected by constraints ("+listConstraintsAndConditions(element)+")"));
+      p.setHint((context.formatMessage(RenderingContext.STRUC_DEF_ELE_AFFECTED, listConstraintsAndConditions(element), ")")));
       p.addStyle(CONSTRAINT_STYLE);
       p.setReference(Utilities.pathURL(VersionUtilities.getSpecUrl(context.getWorker().getVersion()), "conformance-rules.html#constraints"));
     }
     if (element != null && element.hasExtension(ToolingExtensions.EXT_STANDARDS_STATUS)) {
       StandardsStatus ss = StandardsStatus.fromCode(element.getExtensionString(ToolingExtensions.EXT_STANDARDS_STATUS));
-      gc.addStyledText(/*!#*/"Standards Status = "+ss.toDisplay(), ss.getAbbrev(), "black", ss.getColor(), context.getWorker().getSpecUrl()+"versions.html#std-process", true);
+      gc.addStyledText(context.formatMessage(RenderingContext.STRUC_DEF_STAND_STATUS) +ss.toDisplay(), ss.getAbbrev(), context.formatMessage(RenderingContext.STRUC_DEF_BLACK), ss.getColor(), context.getWorker().getSpecUrl()+"versions.html#std-process", true);
     }
 
     ExtensionContext extDefn = null;
@@ -1237,7 +1238,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     row.setAnchor(parent.getPath()+"-"+grp.getName());
     row.setColor(context.getProfileUtilities().getRowColor(parent, isConstraintMode));
     row.setLineColor(1);
-    row.setIcon("icon_choice.gif", HierarchicalTableGenerator.TEXT_ICON_CHOICE);
+    row.setIcon("icon_choice.gif", context.formatMessage(RenderingI18nContext.TEXT_ICON_CHOICE));
     row.getCells().add(gen.new Cell(null, null, context.formatMessage(RenderingContext.STRUC_DEF_CHOICE), "", null));
     row.getCells().add(gen.new Cell());
     row.getCells().add(gen.new Cell(null, null, (grp.isMandatory() ? "1" : "0")+"..1", "", null));
@@ -1316,7 +1317,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (root) {
         if (profile != null && profile.getAbstract()) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
-          c.addPiece(gen.new Piece(null, /*!#*/"This is an abstract "+(profile.getDerivation() == TypeDerivationRule.CONSTRAINT ? "profile" : "type")+". ", null));
+          c.addPiece(gen.new Piece(null, context.formatMessage(RenderingContext.STRUC_DEF_ABSTRACT) +(profile.getDerivation() == TypeDerivationRule.CONSTRAINT ? "profile" : "type")+". ", null));
 
           List<StructureDefinition> children = new ArrayList<>();
           for (StructureDefinition sd : context.getWorker().fetchResourcesByType(StructureDefinition.class)) {
@@ -1325,7 +1326,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
           }
           if (!children.isEmpty()) {
-            c.addPiece(gen.new Piece(null, /*!#*/"Child "+(profile.getDerivation() == TypeDerivationRule.CONSTRAINT ? "profiles" : "types")+": ", null));
+            c.addPiece(gen.new Piece(null, context.formatMessage(RenderingContext.STRUC_DEF_CHILD) +(profile.getDerivation() == TypeDerivationRule.CONSTRAINT ? "profiles" : "types")+": ", null));
             boolean first = true;
             for (StructureDefinition sd : children) {
               if (first) first = false; else c.addPiece(gen.new Piece(null, ", ", null));
@@ -1511,7 +1512,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (definition.hasExtension(ToolingExtensions.EXT_JSON_PROP_KEY)) {
           if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           String code = ToolingExtensions.readStringExtension(definition, ToolingExtensions.EXT_JSON_PROP_KEY);
-          c.getPieces().add(gen.new Piece(null, /*!#*/"JSON: Represented as a single JSON Object with named properties using the value of the "+code+" child as the key", null));     
+          c.getPieces().add(gen.new Piece(null, context.formatMessage(RenderingContext.STRUC_DEF_SINGLE_JSON_OBJECTS, code), null));     
         }      
         if (definition.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
           for (Extension e : definition.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC)) {
@@ -2117,7 +2118,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           used.used = element.hasType() && element.getType().get(0).hasProfile();
           showMissing = false;
         } else {
-          row.setIcon("icon_slice.png", HierarchicalTableGenerator.TEXT_ICON_SLICE);
+          row.setIcon("icon_slice.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_SLICE);
           row.getCells().get(2).getPieces().clear();
           for (Cell cell : row.getCells())
             for (Piece p : cell.getPieces()) {
@@ -2255,15 +2256,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               row.getCells().add(c);
               if (!pattern) {
                 c.addPiece(gen.new Piece(null, "0..0", null));
-                row.setIcon("icon_fixed.gif", context.formatMessage(RenderingContext.STRUC_DEF_FIXED_VALUE) /*HierarchicalTableGenerator.TEXT_ICON_FIXED*/);
+                row.setIcon("icon_fixed.gif", context.formatMessage(RenderingContext.STRUC_DEF_FIXED_VALUE) /*context.formatMessage(RenderingI18nContext.TEXT_ICON_FIXED*/);
               } else if (context.getContext().isPrimitiveType(t.getTypeCode())) {
-                row.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
+                row.setIcon("icon_primitive.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_PRIMITIVE));
                 c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null));
               } else if (isReference(t.getTypeCode())) { 
-                row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
+                row.setIcon("icon_reference.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_REFERENCE));
                 c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null));
               } else { 
-                row.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
+                row.setIcon("icon_datatype.gif", context.formatMessage(RenderingI18nContext.TEXT_ICON_DATATYPE));
                 c.addPiece(gen.new Piece(null, "0.."+(t.getMaxCardinality() == 2147483647 ? "*": Integer.toString(t.getMaxCardinality())), null));
               }
               c = gen.new Cell();
@@ -2290,7 +2291,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               Row row = gen.new Row();
               row.setId(ed.getPath());
               erow.getSubRows().add(row);
-              row.setIcon("icon_fixed.gif", context.formatMessage(RenderingContext.STRUC_DEF_FIXED) /*HierarchicalTableGenerator.TEXT_ICON_FIXED*/);
+              row.setIcon("icon_fixed.gif", context.formatMessage(RenderingContext.STRUC_DEF_FIXED) /*context.formatMessage(RenderingI18nContext.TEXT_ICON_FIXED*/);
 
               Cell c = gen.new Cell();
               row.getCells().add(c);
@@ -2430,12 +2431,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (definition.hasContentReference()) {
         ElementInStructure ed = getElementByName(profile.getSnapshot().getElement(), definition.getContentReference(), profile);
         if (ed == null)
-          c.getPieces().add(gen.new Piece(null, /*!#*/"Unknown reference to "+definition.getContentReference(), null));
+          c.getPieces().add(gen.new Piece(null, context.formatMessage(RenderingContext.STRUC_DEF_UNKNOWN_REF, definition.getContentReference()), null));
         else {
           if (ed.getSource() == profile) {
-            c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), /*!#*/"See "+ed.getElement().getPath(), null));
+            c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), context.formatMessage(RenderingContext.STRUC_DEF_SEE, ed.getElement().getPath()), null));
           } else {
-            c.getPieces().add(gen.new Piece(ed.getSource().getWebPath()+"#"+ed.getElement().getPath(), /*!#*/"See "+ed.getSource().getTypeName()+"."+ed.getElement().getPath(), null));
+            c.getPieces().add(gen.new Piece(ed.getSource().getWebPath()+"#"+ed.getElement().getPath(), context.formatMessage(RenderingContext.STRUC_DEF_SEE, ed.getSource().getTypeName()) +"."+ed.getElement().getPath(), null));
           }          
         }
       }
@@ -2509,7 +2510,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } else if (definition.hasExample()) {
             for (ElementDefinitionExampleComponent ex : definition.getExample()) {
               if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
-              c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, /*!#*/"Example'"+("".equals("General")? "": " "+ex.getLabel()+"'")+": ", "").addStyle("font-weight:bold")));
+              c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, context.formatMessage(RenderingContext.STRUC_DEF_EXAMPLE) +"'"+("".equals("General")? "": " "+ex.getLabel()+"'")+": ", "").addStyle("font-weight:bold")));
               c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, buildJson(ex.getValue()), null).addStyle("color: darkgreen")));
             }
           }
@@ -2694,7 +2695,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           choicerow.getCells().add(gen.new Cell(null, null, tail(element.getPath()).replace("[x]", Utilities.capitalize(t)), null, null));
           choicerow.getCells().add(gen.new Cell());
           choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
-          choicerow.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
+          choicerow.setIcon("icon_reference.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_REFERENCE));
           Cell c = gen.new Cell();
           choicerow.getCells().add(c);
           if (ADD_REFERENCE_TO_TABLE) {
@@ -2739,7 +2740,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             choicerow.getCells().add(gen.new Cell(null, null, tail(element.getPath()).replace("[x]",  Utilities.capitalize(t)), sd.getDescription(), null));
             choicerow.getCells().add(gen.new Cell());
             choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
-            choicerow.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
+            choicerow.setIcon("icon_primitive.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_PRIMITIVE));
             Cell c = gen.new Cell(null, corePath+"datatypes.html#"+t, sd.getTypeName(), null, null);
             choicerow.getCells().add(c);
             if (!mustSupportMode && isMustSupport(tr) && element.getMustSupport()) {
@@ -2751,7 +2752,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             choicerow.getCells().add(gen.new Cell(null, null, tail(element.getPath()).replace("[x]",  Utilities.capitalize(t)), sd.getDescription(), null));
             choicerow.getCells().add(gen.new Cell());
             choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
-            choicerow.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
+            choicerow.setIcon("icon_datatype.gif", context.formatMessage(RenderingI18nContext.TEXT_ICON_DATATYPE));
             Cell c = gen.new Cell(null, context.getPkp().getLinkFor(corePath, t), sd.getTypeName(), null, null);
             choicerow.getCells().add(c);
             if (!mustSupportMode && isMustSupport(tr) && element.getMustSupport()) {
@@ -2993,9 +2994,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     row.setAnchor(span.getId());
     //row.setColor(..?);
     if (span.isProfile()) {
-      row.setIcon("icon_profile.png", HierarchicalTableGenerator.TEXT_ICON_PROFILE);
+      row.setIcon("icon_profile.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_PROFILE));
     } else {
-      row.setIcon("icon_resource.png", HierarchicalTableGenerator.TEXT_ICON_RESOURCE);
+      row.setIcon("icon_resource.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_RESOURCE));
     }
 
     row.getCells().add(gen.new Cell(null, null, span.getName(), null, null));
@@ -3145,7 +3146,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (full || vdeep) {
       r.getCells().add(gen.new Cell("", "", "Extension", null, null));
 
-      r.setIcon(deep ? "icon_"+m+"extension_complex.png" : "icon_extension_simple.png", deep ? HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX : HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);
+      r.setIcon(deep ? "icon_"+m+"extension_complex.png" : "icon_extension_simple.png", deep ? context.formatMessage(RenderingI18nContext.TEXT_ICON_EXTENSION_COMPLEX) : context.formatMessage(RenderingI18nContext.TEXT_ICON_EXTENSION_SIMPLE));
       List<ElementDefinition> children = getChildren(ed.getSnapshot().getElement(), ed.getSnapshot().getElement().get(0));
       for (ElementDefinition child : children)
         if (!child.getPath().endsWith(".id")) {
@@ -3161,7 +3162,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
 
       r.getCells().add(gen.new Cell("", "", "Extension", null, null));
-      r.setIcon("icon_"+m+"extension_complex.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_COMPLEX);
+      r.setIcon("icon_"+m+"extension_complex.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_EXTENSION_COMPLEX));
 
       for (ElementDefinition c : children) {
         ved = getValueFor(ed, c);
@@ -3174,7 +3175,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           r1.getCells().add(gen.new Cell());
           r1.getCells().add(gen.new Cell(null, null, describeCardinality(c, null, new UnusedTracker()), null, null));
           genTypes(gen, r1, ved, defFile, ed, corePath, imagePath, false, false);
-          r1.setIcon("icon_"+m+"extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);      
+          r1.setIcon("icon_"+m+"extension_simple.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_EXTENSION_SIMPLE));      
           generateDescription(gen, r1, c, null, true, corePath, corePath, ed, corePath, imagePath, false, false, false, ved, false, false, false, rc);
         }
       }
@@ -3186,7 +3187,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
       genTypes(gen, r, ved, defFile, ed, corePath, imagePath, false, false);
 
-      r.setIcon("icon_"+m+"extension_simple.png", HierarchicalTableGenerator.TEXT_ICON_EXTENSION_SIMPLE);      
+      r.setIcon("icon_"+m+"extension_simple.png", context.formatMessage(RenderingI18nContext.TEXT_ICON_EXTENSION_SIMPLE));      
     }
     Cell c = gen.new Cell("", "", "URL = "+ed.getUrl(), null, null);
     Piece cc = gen.new Piece(null, ed.getName()+": ", null);
@@ -3665,7 +3666,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_CONTROL), "conformance-rules.html#conformance", strikethrough, describeCardinality(d, compare, mode)); 
     tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_BINDING), "terminologies.html", strikethrough, describeBinding(sd, d, d.getPath(), compare, mode));
     if (d.hasContentReference()) {
-      tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_TYPE), null, strikethrough, /*!#*/"See " + d.getContentReference().substring(1));
+      tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_TYPE), null, strikethrough, context.formatMessage(RenderingContext.STRUC_DEF_SEE) + d.getContentReference().substring(1));
     } else {
       tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_TYPE), "datatypes.html", strikethrough, describeTypes(d.getType(), false, d, compare, mode, value, compareValue, sd)); 
     }
@@ -3673,18 +3674,19 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_DEFAULT_TYPE), "datatypes.html", strikethrough, ToolingExtensions.readStringExtension(d, ToolingExtensions.EXT_DEF_TYPE));          
     }
     if (d.hasExtension(ToolingExtensions.EXT_TYPE_SPEC)) {
-      tableRow(tbl, Utilities.pluralize(/*!#*/"Type Specifier", d.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC).size()), "datatypes.html", strikethrough, formatTypeSpecifiers(d));          
+      tableRow(tbl, Utilities.pluralize(context.formatMessage(RenderingContext.STRUC_DEF_TYPE_SPEC), d.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_SPEC).size()), "datatypes.html", strikethrough, formatTypeSpecifiers(d));          
     }
     if (d.getPath().endsWith("[x]") && !d.prohibited()) {
-      tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_NOTE_X), null, strikethrough).ahWithText("See ", spec("formats.html#choice"), null, /*!#*/"Choice of Data Types", " for further information about how to use [x]");
+      tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_NOTE_X), null, strikethrough).ahWithText(context.formatMessage(RenderingContext.STRUC_DEF_SEE)
+    		  , spec("formats.html#choice"), null, context.formatMessage(RenderingContext.STRUC_DEF_CHOICE_DATA_TYPE), context.formatMessage(RenderingContext.STRUC_DEF_FURTHER_INFO));
     }
     tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_MODIFIER), "conformance-rules.html#ismodifier", strikethrough, presentModifier(d, mode, compare));
     if (d.getMustHaveValue()) {
-      tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_PRIMITIVE), "elementdefinition.html#primitives", strikethrough, /*!#*/"This primitive type must have a value (the value must be present, and cannot be replaced by an extension)");
+      tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_PRIMITIVE), "elementdefinition.html#primitives", strikethrough, context.formatMessage(RenderingContext.STRUC_DEF_PRIM_TYPE_VALUE));
     } else if (d.hasValueAlternatives()) {
-      tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_PRIMITIVE), "elementdefinition.html#primitives", strikethrough, renderCanonicalList(/*!#*/"This primitive type may be present, or absent if replaced by one of the following extensions: ", d.getValueAlternatives()));      
+      tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_PRIMITIVE), "elementdefinition.html#primitives", strikethrough, renderCanonicalList(context.formatMessage(RenderingContext.STRUC_DEF_PRIM_TYPE_PRESENT), d.getValueAlternatives()));      
     } else if (hasPrimitiveTypes(d)) {
-      tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_PRIMITIVE), "elementdefinition.html#primitives", strikethrough, /*!#*/"This primitive element may be present, or absent, or replaced by an extension");            
+      tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_PRIMITIVE), "elementdefinition.html#primitives", strikethrough, context.formatMessage(RenderingContext.STRUC_DEF_PRIM_ELE));            
     }
     if (ToolingExtensions.hasAllowedUnits(d)) {      
       tableRow(tbl, context.formatMessage(RenderingContext.STRUC_DEF_ALLOWED), "http://hl7.org/fhir/extensions/StructureDefinition-elementdefinition-allowedUnits.html", strikethrough, describeAllowedUnits(d));        

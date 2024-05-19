@@ -232,11 +232,11 @@ public abstract class ResourceRenderer extends DataRenderer {
       CanonicalResource cr = (CanonicalResource) target;
       if (url.contains("|")) {
         if (target.hasWebPath()) {
-          x.ah(target.getWebPath()).tx(cr.present()+/*!#*/" (version "+cr.getVersion()+")");
+          x.ah(target.getWebPath()).tx(cr.present()+ context.formatMessage(RenderingContext.RES_REND_VER) +cr.getVersion()+")");
         } else {
           url = url.substring(0, url.indexOf("|"));
           x.code().tx(url);
-          x.tx(": "+cr.present()+/*!#*/" (version "+cr.getVersion()+")");          
+          x.tx(": "+cr.present()+ context.formatMessage(RenderingContext.RES_REND_VER) +cr.getVersion()+")");          
         }
       } else {
         if (target.hasWebPath()) {
@@ -663,28 +663,28 @@ public abstract class ResourceRenderer extends DataRenderer {
         p.tx("\""+id+"\" ");
       }
       if (versionId != null) {
-        p.tx(/*!#*/"Version \""+versionId+"\" ");
+        p.tx(context.formatMessage(RenderingContext.RES_REND_VERSION) + "\""+versionId+"\" ");
       }
       if (lastUpdated != null) {
-        p.tx(/*!#*/"Updated \"");
+        p.tx(context.formatMessage(RenderingContext.RES_REND_UPDATED) + "\"");
         renderDateTime(p, lastUpdated);
         p.tx("\" ");
       }
       if (lang != null) {
-        p.tx(/*!#*/" (Language \""+lang+"\") ");
+        p.tx(" " + context.formatMessage(RenderingContext.RES_REND_LANGUAGE) + "\""+lang+"\") ");
       }
     }
     if (ir != null) {
-      plateStyle(div.para()).b().tx(/*!#*/"Special rules apply: "+ir+"!");     
+      plateStyle(div.para()).b().tx(context.formatMessage(RenderingContext.RES_REND_SPEC_RULES) + " "+ir+"!");     
     }
     if (source != null) {
-      plateStyle(div.para()).tx(/*!#*/"Information Source: "+source+"!");           
+      plateStyle(div.para()).tx(context.formatMessage(RenderingContext.RES_REND_INFO_SOURCE) + " "+source+"!");           
     }
     if (meta != null) {
       PropertyWrapper pl = meta.getChildByName("profile");
       if (pl.hasValues()) {
         XhtmlNode p = plateStyle(div.para());
-        p.tx(Utilities.pluralize(/*!#*/"Profile", pl.getValues().size())+": ");
+        p.tx(Utilities.pluralize(context.formatMessage(RenderingContext.RES_REND_PROFILE), pl.getValues().size())+": ");
         boolean first = true;
         for (BaseWrapper bw : pl.getValues()) {
           if (first) first = false; else p.tx(", ");
@@ -694,7 +694,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       PropertyWrapper tl = meta.getChildByName("tag");
       if (tl.hasValues()) {
         XhtmlNode p = plateStyle(div.para());
-        p.tx(Utilities.pluralize(/*!#*/"Tag", tl.getValues().size())+": ");
+        p.tx(Utilities.pluralize(context.formatMessage(RenderingContext.RES_REND_TAG), tl.getValues().size())+": ");
         boolean first = true;
         for (BaseWrapper bw : tl.getValues()) {
           if (first) first = false; else p.tx(", ");
@@ -708,7 +708,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       PropertyWrapper sl = meta.getChildByName("security");
       if (sl.hasValues()) {
         XhtmlNode p = plateStyle(div.para());
-        p.tx(Utilities.pluralize(/*!#*/"Security Label", tl.getValues().size())+": ");
+        p.tx(Utilities.pluralize(context.formatMessage(RenderingContext.RES_REND_SECURITY_LABEL), tl.getValues().size())+": ");
         boolean first = true;
         for (BaseWrapper bw : sl.getValues()) {
           if (first) first = false; else p.tx(", ");

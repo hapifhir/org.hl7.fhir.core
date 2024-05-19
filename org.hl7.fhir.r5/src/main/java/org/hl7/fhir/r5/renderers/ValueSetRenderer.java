@@ -60,6 +60,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.LoincLinker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
@@ -77,8 +78,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
   public ValueSetRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
-
-  private static final String ABSTRACT_CODE_HINT = /*!#*/"This code is not selectable ('Abstract')";
 
   private static final int MAX_DESIGNATIONS_IN_LINE = 5;
 
@@ -209,7 +208,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (vs.getExpansion().getContains().isEmpty()) {
         msg = context.formatMessage(RenderingContext.VALUE_SET_TOO_COSTLY);
       } else {
-        msg = /*!#*/"This value set cannot be fully expanded, but a selection ("+countMembership(vs)+" codes) of the whole set of codes is shown here.";
+        msg = context.formatMessage(RenderingContext.VALUE_SET_CODE_SELEC, countMembership(vs));
       }
       x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(msg);
     } else {
@@ -217,9 +216,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (vs.getExpansion().hasTotal()) {
         if (count != vs.getExpansion().getTotal()) {
           x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px")
-            .addText(/*!#*/"This value set has "+(hasFragment ? "at least " : "")+vs.getExpansion().getTotal()+" codes in it. In order to keep the publication size manageable, only a selection ("+count+" codes) of the whole set of codes is shown.");
+            .addText(context.formatMessage(RenderingContext.VALUE_SET_HAS)+(hasFragment ? context.formatMessage(RenderingContext.VALUE_SET_AT_LEAST) : "")+vs.getExpansion().getTotal()+" codes in it. In order to keep the publication size manageable, only a selection ("+count+" codes) of the whole set of codes is shown.");
         } else {
-          x.para().tx(/*!#*/"This value set contains "+(hasFragment ? "at least " : "")+vs.getExpansion().getTotal()+" concepts.");          
+          x.para().tx(context.formatMessage(RenderingContext.VALUE_SET_CONTAINS)+(hasFragment ? context.formatMessage(RenderingContext.VALUE_SET_AT_LEAST) : "")+vs.getExpansion().getTotal()+" concepts.");          
         }
       } else if (count == 1000) {
         // it's possible that there's exactly 1000 codes, in which case wht we're about to do is wrong
@@ -227,7 +226,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         String msg = context.formatMessage(RenderingContext.VALUE_SET_SEL);    
         x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(msg);        
       } else {
-        x.para().tx(/*!#*/"This value set expansion contains "+count+" concepts.");
+        x.para().tx(context.formatMessage(RenderingContext.VALUE_SET_NUMBER_CONCEPTS, count));
       }
     }
     
@@ -514,30 +513,30 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (parts.length >= 5) {
         String m = describeModule(parts[4]);
         if (parts.length == 7) {
-          x.tx(/*!#*/"SNOMED CT "+m+" edition "+formatSCTDate(parts[6]));
+          x.tx(context.formatMessage(RenderingContext.VALUE_SET_SNOMED_ADD, m, formatSCTDate(parts[6])));
         } else {
-          x.tx(/*!#*/"SNOMED CT "+m+" edition");
+          x.tx(context.formatMessage(RenderingContext.VALUE_SET_SNOMED, m));
         }
       } else {
-        x.tx(displaySystem(u)+" "+/*!#*/"version "+v);
+        x.tx(displaySystem(u)+" "+ context.formatMessage(RenderingContext.VALUE_SET_VERSION) + " " +v);
       }
     } else if (u.equals("http://loinc.org")) {
       String vd = describeLoincVer(v);
       if (vd != null) {
-        x.tx(/*!#*/"Loinc v"+v+" ("+vd+")");
+        x.tx(context.formatMessage(RenderingContext.VALUE_SET_LOINCV)+v+" ("+vd+")");
       } else {
-        x.tx(/*!#*/"Loinc v"+v);        
+        x.tx(context.formatMessage(RenderingContext.VALUE_SET_LOINCV)+v);        
       }
     } else if (Utilities.noString(v)) {
       CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, source);
       if (cr != null) {
         if (cr.hasWebPath()) {
-          x.ah(cr.getWebPath()).tx(t+" "+cr.present()+" "+/*!#*/"(no version) ("+cr.fhirType()+")");          
+          x.ah(cr.getWebPath()).tx(t+" "+cr.present()+" "+ context.formatMessage(RenderingContext.VALUE_SET_NO_VERSION)+cr.fhirType()+")");          
         } else {
-          x.tx(t+" "+displaySystem(u)+" "+/*!#*/"(no version) ("+cr.fhirType()+")");
+          x.tx(t+" "+displaySystem(u)+" "+context.formatMessage(RenderingContext.VALUE_SET_NO_VERSION)+cr.fhirType()+")");
         }
       } else {
-        x.tx(t+" "+displaySystem(u)+" "+/*!#*/"(no version)");
+        x.tx(t+" "+displaySystem(u)+" "+ context.formatMessage(RenderingContext.VALUE_SET_NO_VER));
       }
     } else {
       CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u+"|"+v, source);
@@ -548,7 +547,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           x.tx(t+" "+displaySystem(u)+" v"+v+" ("+cr.fhirType()+")");
         }
       } else {
-        x.tx(t+" "+displaySystem(u)+" "+/*!#*/"version "+v);
+        x.tx(t+" "+displaySystem(u)+" "+ context.formatMessage(RenderingContext.VALUE_SET_VERSION)+v);
       }
     }
   }
@@ -620,7 +619,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
 
   private String describeModule(String module) {
     if ("900000000000207008".equals(module))
-      return /*!#*/context.formatMessage(RenderingContext.VALUE_SET_INT);
+      return context.formatMessage(RenderingContext.VALUE_SET_INT);
     if ("731000124108".equals(module))
       return context.formatMessage(RenderingContext.VALUE_SET_US);
     if ("32506021000036107".equals(module))
@@ -897,7 +896,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     CodeSystem e = getContext().getWorker().fetchCodeSystem(system);
     if (e == null || (e.getContent() != org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode.COMPLETE && e.getContent() != org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode.FRAGMENT)) {
       if (isAbstract)
-        td.i().setAttribute("title", ABSTRACT_CODE_HINT).addText(code);
+        td.i().setAttribute("title", context.formatMessage(RenderingI18nContext.VS_ABSTRACT_CODE_HINT)).addText(code);
       else if ("http://snomed.info/sct".equals(system)) {
         td.ah(sctLink(code)).addText(code);
       } else if ("http://loinc.org".equals(system)) {
@@ -911,7 +910,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       else
         href = href + "#"+e.getId()+"-"+Utilities.nmtokenize(code);
       if (isAbstract)
-        td.ah(href).setAttribute("title", ABSTRACT_CODE_HINT).i().addText(code);
+        td.ah(href).setAttribute("title", context.formatMessage(RenderingI18nContext.VS_ABSTRACT_CODE_HINT)).i().addText(code);
       else
         td.ah(href).addText(code);
     }
@@ -1178,14 +1177,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (inc.hasSystem()) {
       CodeSystem e = getContext().getWorker().fetchCodeSystem(inc.getSystem());
       if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
-        li.addText(type+" "+/*!#*/"all codes defined in ");
+        li.addText(type+" "+ context.formatMessage(RenderingContext.VALUE_SET_ALL_CODES_DEF) + " ");
         addCsRef(inc, li, e);
       } else {
         if (inc.getConcept().size() > 0) {
-          li.addText(type+" "+/*!#*/"these codes as defined in ");
+          li.addText(type+" "+ context.formatMessage(RenderingContext.VALUE_SET_THESE_CODES_DEF) + " ");
           addCsRef(inc, li, e);
           if (inc.hasVersion()) {
-            li.addText(" "+/*!#*/"version ");
+            li.addText(" "+ context.formatMessage(RenderingContext.VALUE_SET_VERSION) + " ");
             li.code(inc.getVersion());  
           }
 
@@ -1212,14 +1211,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
           }
         }
         if (inc.getFilter().size() > 0) {
-          li.addText(type+" "+/*!#*/"codes from ");
+          li.addText(type+" "+ context.formatMessage(RenderingContext.VALUE_SET_CODES_FROM));
           addCsRef(inc, li, e);
-          li.tx(" "+/*!#*/"where ");
+          li.tx(" "+ context.formatMessage(RenderingContext.VALUE_SET_WHERE)+" ");
           for (int i = 0; i < inc.getFilter().size(); i++) {
             ConceptSetFilterComponent f = inc.getFilter().get(i);
             if (i > 0) {
               if (i == inc.getFilter().size()-1) {
-                li.tx(" "+/*!#*/"and ");
+                li.tx(" "+ context.formatMessage(RenderingContext.VALUE_SET_AND));
               } else {
                 li.tx(context.formatMessage(RenderingContext.VALUE_SET_COMMA)+" ");
               }
@@ -1227,9 +1226,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
             XhtmlNode wli = renderStatus(f, li);
             if (f.getOp() == FilterOperator.EXISTS) {
               if (f.getValue().equals("true")) {
-                wli.tx(f.getProperty()+" "+/*!#*/"exists");
+                wli.tx(f.getProperty()+" "+ context.formatMessage(RenderingContext.VALUE_SET_EXISTS));
               } else {
-                wli.tx(f.getProperty()+" "+/*!#*/"doesn't exist");
+                wli.tx(f.getProperty()+" "+ context.formatMessage(RenderingContext.VALUE_SET_DOESNT_EXIST));
               }
             } else {
               wli.tx(f.getProperty()+" "+describe(f.getOp())+" ");
