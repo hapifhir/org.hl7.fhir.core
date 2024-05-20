@@ -284,7 +284,7 @@ public class FhirRequestBuilder {
         reqid = response.header("X-Request-Id");        
       }
       if (reqid != null) {
-        s = s + " ["+reqid+"]";
+        s = s + " [x-request-id: "+reqid+"]";
       }
       System.out.println("Error from "+source+": " + s);
       throw new EFhirClientException("Error from "+source+": " + ResourceUtilities.getErrorDescription(error), error);
