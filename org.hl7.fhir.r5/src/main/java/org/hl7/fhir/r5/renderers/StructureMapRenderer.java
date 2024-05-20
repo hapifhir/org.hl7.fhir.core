@@ -631,7 +631,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
     }
     if (isClause) {
       XhtmlNode s= x.color(COLOR_SPECIAL);
-      s.setAttribute("title", formatMessage(RenderingContext.MAP_DEFAULT_COMMENT));
+      s.setAttribute("title", formatPhrase(RenderingContext.MAP_DEFAULT_COMMENT));
       s.tx("// ");
       s.tx(doco.replace("\r\n", " ").replace("\r", " ").replace("\n", " "));      
     } else {

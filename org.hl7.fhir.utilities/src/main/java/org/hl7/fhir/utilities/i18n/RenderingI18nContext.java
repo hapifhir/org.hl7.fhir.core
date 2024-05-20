@@ -1061,15 +1061,22 @@ public class RenderingI18nContext extends I18nBase {
   public static final String TERM_REND_COPY = "TERM_REND_COPY";
   public static final String TEST_PLAN_CASE = "TEST_PLAN_CASE";
   public static final String TEST_PLAN_CASE_SEQ = "TEST_PLAN_CASE_SEQ";
-  
+
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
   }
-  
-@Override
+
+  @Override
   protected String typeOfString() {
     return "phrase";
   }
 
-  
+
+  public String formatPhrase(String theMessage, Object... theMessageArguments) {
+    return formatMessage(theMessage, theMessageArguments);
+  }
+
+  public String formatPhrasePlural(Integer plural, String theMessage, Object... theMessageArguments) {
+    return formatMessagePlural(plural, theMessage, theMessageArguments);
+  }
 }
