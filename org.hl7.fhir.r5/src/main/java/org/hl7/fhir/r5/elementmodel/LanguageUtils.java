@@ -335,7 +335,7 @@ public class LanguageUtils {
     return dstLang == null || srcLang == null ? false : dstLang.startsWith(srcLang) || "*".equals(srcLang);
   }
 
-  public static void fillSupplement(CodeSystem csSrc, CodeSystem csDst, List<TranslationUnit> list) {
+  public void fillSupplement(CodeSystem csSrc, CodeSystem csDst, List<TranslationUnit> list) {
     csDst.setUserData(SUPPLEMENT_SOURCE_RESOURCE, csSrc);
     csDst.setUserData(SUPPLEMENT_SOURCE_TRANSLATIONS, list);
     for (TranslationUnit tu : list) {
@@ -388,11 +388,11 @@ public class LanguageUtils {
     }    
   }
 
-  private static Object tail(String url) {
+  private String tail(String url) {
     return url.contains("/") ? url.substring(url.lastIndexOf("/")+1) : url;
   }
 
-  private static void addOrphanTranslation(CodeSystem cs, TranslationUnit tu) {
+  private void addOrphanTranslation(CodeSystem cs, TranslationUnit tu) {
     List<TranslationUnit> list = (List<TranslationUnit>) cs.getUserData(ORPHAN_TRANSLATIONS_NAME);
     if (list == null) {
       list = new ArrayList<>();
@@ -401,7 +401,7 @@ public class LanguageUtils {
     list.add(tu);
   }
 
-  public static String nameForLang(String lang) {
+  public String nameForLang(String lang) {
     // todo: replace with structures from loading languages properly
     switch (lang) {
     case "en" : return "English";
@@ -412,7 +412,7 @@ public class LanguageUtils {
     return Utilities.capitalize(lang);
   }
 
-  public static String titleForLang(String lang) {
+  public String titleForLang(String lang) {
     // todo: replace with structures from loading languages properly
     switch (lang) {
     case "en" : return "English";
@@ -423,15 +423,15 @@ public class LanguageUtils {
     return Utilities.capitalize(lang);
   }
 
-  public static boolean handlesAsResource(Resource resource) {
+  public boolean handlesAsResource(Resource resource) {
     return (resource instanceof CodeSystem && resource.hasUserData(SUPPLEMENT_SOURCE_RESOURCE)) || (resource instanceof StructureDefinition);
   }
 
-  public static boolean handlesAsElement(Element element) {
+  public boolean handlesAsElement(Element element) {
     return true; // for now...
   }
 
-  public static List<TranslationUnit> generateTranslations(Resource res, String lang) {
+  public List<TranslationUnit> generateTranslations(Resource res, String lang) {
     List<TranslationUnit> list = new ArrayList<>();
     if (res instanceof StructureDefinition) {
       StructureDefinition sd = (StructureDefinition) res;
@@ -458,7 +458,7 @@ public class LanguageUtils {
     return list;
   }
 
-  private static void generateTranslations(List<TranslationUnit> list, StructureDefinition sd, String lang) {
+  private void generateTranslations(List<TranslationUnit> list, StructureDefinition sd, String lang) {
     addToList(list, lang, sd, "name", "name", sd.getNameElement());
     addToList(list, lang, sd, "title", "title", sd.getTitleElement());
     addToList(list, lang, sd, "publisher", "publisher", sd.getPublisherElement());
@@ -488,14 +488,14 @@ public class LanguageUtils {
     }
   }
 
-  private static void addToList(List<TranslationUnit> list, String lang, Base ctxt, String name, String propName, DataType value) {
+  private void addToList(List<TranslationUnit> list, String lang, Base ctxt, String name, String propName, DataType value) {
     if (value != null && value.hasPrimitiveValue()) {
       list.add(new TranslationUnit(lang, name, ctxt.getNamedProperty(propName).getDefinition(), value.primitiveValue(), value.getTranslation(lang)));
     }
     
   }
 
-  private static void generateTranslations(List<TranslationUnit> list, ConceptDefinitionComponent cd, String lang, List<TranslationUnit> inputs) {
+  private void generateTranslations(List<TranslationUnit> list, ConceptDefinitionComponent cd, String lang, List<TranslationUnit> inputs) {
     // we generate translation units for the display, the definition, and any designations and extensions that we find
     // the id of the designation is the use.code (there will be a use) and for the extension, the tail of the extension URL 
     // todo: do we need to worry about name clashes? why would we, and more importantly, how would we solve that?
@@ -512,7 +512,7 @@ public class LanguageUtils {
     }
   }
 
-  private static void addTranslationUnit(List<TranslationUnit> list, String id, String srcText, String lang, List<TranslationUnit> inputs) {
+  private void addTranslationUnit(List<TranslationUnit> list, String id, String srcText, String lang, List<TranslationUnit> inputs) {
     TranslationUnit existing = null;
     for (TranslationUnit t : inputs) {
       if (id.equals(t.getId())) {
@@ -530,7 +530,7 @@ public class LanguageUtils {
     }    
   }
   
-  private static String getDefinition(ConceptDefinitionComponent cd) {
+  private String getDefinition(ConceptDefinitionComponent cd) {
     ConceptPropertyComponent v = CodeSystemUtilities.getProperty(cd, "translation-context");
     if (v != null && v.hasValue()) {
       return v.getValue().primitiveValue();
@@ -539,15 +539,15 @@ public class LanguageUtils {
     }
   }
 
-  public static List<TranslationUnit> generateTranslations(Element e, String lang) {
+  public List<TranslationUnit> generateTranslations(Element e, String lang) {
     List<TranslationUnit> list = new ArrayList<>();
     generateTranslations(e, lang, list);
     return list;
   }
 
-  private static void generateTranslations(Element e, String lang, List<TranslationUnit> list) {
+  private void generateTranslations(Element e, String lang, List<TranslationUnit> list) {
     if (e.getProperty().isTranslatable()) {
-      String id = e.getProperty().getDefinition().getPath();
+      String id = pathForElement(e); // .getProperty().getDefinition().getPath();
       String context = e.getProperty().getDefinition().getDefinition();
       String src = e.primitiveValue();
       String tgt = getTranslation(e, lang);
@@ -561,7 +561,7 @@ public class LanguageUtils {
     
   }
 
-  private static String getTranslation(Element e, String lang) {
+  private String getTranslation(Element e, String lang) {
     if (!e.hasChildren()) {
       return null;
     }
@@ -585,7 +585,7 @@ public class LanguageUtils {
     return null;
   }
  
-  public static boolean switchLanguage(Element e, String lang) {
+  public boolean switchLanguage(Element e, String lang) {
     if (e.getProperty().isTranslatable()) {
       String cnt = getTranslation(e, lang);
       e.removeExtension(ToolingExtensions.EXT_TRANSLATION);
