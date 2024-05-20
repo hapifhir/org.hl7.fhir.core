@@ -21,6 +21,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditiona
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.MarkdownType;
+import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -128,13 +129,17 @@ public class LanguageUtils {
   }
 
   private String pathForElement(Element element) {
+    String bp = element.getBasePath();
+    return pathForElement(bp, element.getProperty().getStructure().getType());
+  }
+  
+  private String pathForElement(String path, String type) {
     // special case support for metadata elements prior to R5:
     if (crlist == null) {
       crlist = new ContextUtilities(context).getCanonicalResourceNames();
     }
-    String bp = element.getBasePath();
-    if (crlist.contains(element.getProperty().getStructure().getType())) {
-      String fp = bp.replace(element.getProperty().getStructure().getType()+".", "CanonicalResource.");
+    if (crlist.contains(type)) {
+      String fp = path.replace(type+".", "CanonicalResource.");
       if (Utilities.existsInList(fp,
          "CanonicalResource.url", "CanonicalResource.identifier", "CanonicalResource.version", "CanonicalResource.name", 
          "CanonicalResource.title", "CanonicalResource.status", "CanonicalResource.experimental", "CanonicalResource.date",
@@ -143,7 +148,7 @@ public class LanguageUtils {
         return fp;
       }
     }
-    return bp; 
+    return path; 
   }
   
   
@@ -158,6 +163,22 @@ public class LanguageUtils {
       r = importFromTranslationsForSD(null, resource, translations, usedUnits);
     } else {
      r = importFromTranslations(null, resource, translations, usedUnits);
+    }
+    for (TranslationUnit t : translations) {
+      if (!usedUnits.contains(t)) {
+        messages.add(new ValidationMessage(Source.Publisher, IssueType.INFORMATIONAL, t.getId(), "Unused '"+t.getLanguage()+"' translation '"+t.getSrcText()+"' -> '"+t.getTgtText()+"'", IssueSeverity.INFORMATION));
+      }
+    }
+    return r;
+  }
+  
+  public int importFromTranslations(Resource resource, List<TranslationUnit> translations, List<ValidationMessage> messages) {
+    Set<TranslationUnit> usedUnits = new HashSet<>();
+    int r = 0;
+    if (resource.fhirType().equals("StructureDefinition")) {
+      // todo... r = importFromTranslationsForSD(null, resource, translations, usedUnits);
+    } else {
+     r = importResourceFromTranslations(null, resource, translations, usedUnits, resource.fhirType());
     }
     for (TranslationUnit t : translations) {
       if (!usedUnits.contains(t)) {
@@ -224,6 +245,41 @@ public class LanguageUtils {
     return r;
   }
 
+  private int importResourceFromTranslations(Base parent, Base element, List<TranslationUnit> translations, Set<TranslationUnit> usedUnits, String path) {
+    int t = 0;
+    if (element.isPrimitive() && isTranslatable(element, path) && element instanceof org.hl7.fhir.r5.model.Element) {
+      org.hl7.fhir.r5.model.Element e = (org.hl7.fhir.r5.model.Element) element;
+      String base = element.primitiveValue();
+      if (base != null) {
+        String epath = pathForElement(path, element.fhirType());
+        Set<TranslationUnit> tlist = findTranslations(epath, base, translations);
+        for (TranslationUnit translation : tlist) {
+          t++;
+          if (!handleAsSpecial(parent, element, translation)) {
+            ToolingExtensions.setLanguageTranslation(e, translation.getLanguage(), translation.getTgtText());
+            usedUnits.add(translation);
+          }
+        }
+      }
+    }
+    for (Property c : element.children()) {
+      for (Base v : c.getValues()) {
+        if (!c.getName().equals("designation")) {
+          t = t + importResourceFromTranslations(element, v, translations, usedUnits, path+"."+c.getName());
+        }
+      }
+    }
+    return t;
+  }
+
+  private boolean handleAsSpecial(Base parent, Base element, TranslationUnit translation) {
+    return false;
+  }
+
+  private boolean isTranslatable(Base element, String path) {
+    return Utilities.existsInList(element.fhirType(), "string", "markdown");
+  }
+
   private int importFromTranslations(Element parent, Element element, List<TranslationUnit> translations, Set<TranslationUnit> usedUnits) {
     int t = 0;
     if (element.isPrimitive() && isTranslatable(element)) {
@@ -239,7 +295,7 @@ public class LanguageUtils {
         }
       }
     }
-    for (Element c: element.getChildren()) {
+    for (Element c : element.getChildren()) {
       if (!c.getName().equals("designation")) {
         t = t + importFromTranslations(element, c, translations, usedUnits);
       }
