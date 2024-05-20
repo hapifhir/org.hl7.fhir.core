@@ -845,6 +845,26 @@ public class ToolingExtensions {
     element.getExtension().add(extension);
   }
 
+  public static void setLanguageTranslation(Element element, String lang, String value) {
+    if (Utilities.noString(lang) || Utilities.noString(value))
+      return;
+
+    for (Extension extension : element.getExtension()) {
+      if (EXT_TRANSLATION.equals(extension.getUrl())) {
+        String l = extension.getExtensionString("lang");
+        if (lang.equals(l)) {
+          setStringExtension(extension, "content", value);
+          return;
+        }
+      }
+    }
+    
+    Extension extension = new Extension().setUrl(EXT_TRANSLATION);
+    extension.addExtension().setUrl("lang").setValue(new CodeType(lang));
+    extension.addExtension().setUrl("content").setValue(new StringType(value));
+    element.getExtension().add(extension);
+  }
+
   public static boolean hasAllowedUnits(ElementDefinition eld) {
     for (Extension e : eld.getExtension()) 
       if (e.getUrl().equals(EXT_ALLOWABLE_UNITS)) 

@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.utils.Params;
 
@@ -60,7 +61,7 @@ public class ComparisonService {
 
   public static void compareStructureDefinitions(String dest, ValidationEngine validator, String left, String right, StructureDefinition resLeft, StructureDefinition resRight) throws IOException, FHIRException, EOperationOutcome {
     System.out.println("Comparing StructureDefinitions " + left + " to " + right);
-    ComparisonSession session = new ComparisonSession(validator.getContext(), validator.getContext(), "Comparing Profiles", null, null);
+    ComparisonSession session = new ComparisonSession(new RenderingI18nContext(), validator.getContext(), validator.getContext(), "Comparing Profiles", null, null);
     session.compare(resLeft, resRight);
     
     System.out.println("Generating output to " + dest + "...");

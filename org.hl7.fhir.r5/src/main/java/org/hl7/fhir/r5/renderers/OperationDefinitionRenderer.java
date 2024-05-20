@@ -44,22 +44,22 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (context.isHeader()) {
       x.h2().addText(opd.getName());
       x.para().addText(Utilities.capitalize(opd.getKind().toString())+": "+opd.getName());    
-      x.para().tx(context.formatMessage(RenderingContext.OP_DEF_OFFIC)+" ");
+      x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_OFFIC)+" ");
       x.pre().tx(opd.getUrl());
       addMarkdown(x, opd.getDescription());}
 
     if (opd.getSystem())
-      x.para().tx(context.formatMessage(RenderingContext.OP_DEF_URLS, opd.getCode()));
+      x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URLS, opd.getCode()));
     for (Enumeration<VersionIndependentResourceTypesAll> c : opd.getResource()) {
       if (opd.getType())
-        x.para().tx(context.formatMessage(RenderingContext.OP_DEF_URL, c.getCode()+"/$"+opd.getCode()));
+        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/$"+opd.getCode()));
       if (opd.getInstance())
-        x.para().tx(context.formatMessage(RenderingContext.OP_DEF_URL, c.getCode()+"/[id]/$"+opd.getCode()));
+        x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_URL, c.getCode()+"/[id]/$"+opd.getCode()));
     }
 
     if (opd.hasInputProfile()) {
       XhtmlNode p = x.para();
-      p.tx(context.formatMessage(RenderingContext.OP_DEF_INPAR));
+      p.tx(context.formatPhrase(RenderingContext.OP_DEF_INPAR));
       StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getInputProfile(), opd);
       if (sd == null) {
         p.pre().tx(opd.getInputProfile());        
@@ -69,7 +69,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     }
     if (opd.hasOutputProfile()) {
       XhtmlNode p = x.para();
-      p.tx(context.formatMessage(RenderingContext.OP_DEF_OUTPAR));
+      p.tx(context.formatPhrase(RenderingContext.OP_DEF_OUTPAR));
       StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getOutputProfile(), opd);
       if (sd == null) {
         p.pre().tx(opd.getOutputProfile());        
@@ -77,16 +77,16 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
         p.ah(sd.getWebPath()).tx(sd.present());                 
       }      
     }
-    x.para().tx(context.formatMessage(RenderingContext.OP_DEF_PAR));
+    x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_PAR));
     XhtmlNode tbl = x.table( "grid");
     XhtmlNode tr = tbl.tr();
-    tr.td().b().tx(context.formatMessage(RenderingContext.OP_DEF_USE));
-    tr.td().b().tx(context.formatMessage(RenderingContext.OP_DEF_NAME));
-    tr.td().b().tx(context.formatMessage(RenderingContext.OP_DEF_SCO));
-    tr.td().b().tx(context.formatMessage(RenderingContext.OP_DEF_CARD));
-    tr.td().b().tx(context.formatMessage(RenderingContext.OP_DEF_TYPE));
-    tr.td().b().tx(context.formatMessage(RenderingContext.OP_DEF_BIND));
-    tr.td().b().tx(context.formatMessage(RenderingContext.OP_DEF_DOC));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_USE));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_NAME));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_SCO));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_CARD));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_TYPE));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_BIND));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_DOC));
     for (OperationDefinitionParameterComponent p : opd.getParameter()) {
       genOpParam(tbl, "", p, opd);
     }

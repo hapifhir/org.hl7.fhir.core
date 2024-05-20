@@ -40,33 +40,33 @@ public class ListRenderer extends ResourceRenderer {
     XhtmlNode tr = t.tr();
     XhtmlNode td = tr.td();
     if (list.has("date")) {
-      td.tx(context.formatMessage(RenderingContext.LIST_REND_DATE, displayDateTime(list.get("date").dateTimeValue()))+" ");
+      td.tx(context.formatPhrase(RenderingContext.LIST_REND_DATE, displayDateTime(list.get("date").dateTimeValue()))+" ");
     } 
     if (list.has("mode")) {
-      td.tx(context.formatMessage(RenderingContext.LIST_REND_MODE, list.get("mode").primitiveValue())+" ");
+      td.tx(context.formatPhrase(RenderingContext.LIST_REND_MODE, list.get("mode").primitiveValue())+" ");
     }
     if (list.has("status")) {
-      td.tx(context.formatMessage(RenderingContext.LIST_REND_STAT, list.get("status").primitiveValue())+" ");
+      td.tx(context.formatPhrase(RenderingContext.LIST_REND_STAT, list.get("status").primitiveValue())+" ");
     }
     if (list.has("code")) {
-      td.tx(context.formatMessage(RenderingContext.LIST_REND_CODE, displayBase(list.get("code")))+" ");
+      td.tx(context.formatPhrase(RenderingContext.LIST_REND_CODE, displayBase(list.get("code")))+" ");
     }    
     tr = t.tr();
     td = tr.td();
     if (list.has("subject")) {
-      td.tx(context.formatMessage(RenderingContext.LIST_REND_SUB)+" ");
+      td.tx(context.formatPhrase(RenderingContext.LIST_REND_SUB)+" ");
       shortForRef(td, list.get("subject"));
     }
     if (list.has("encounter")) {
-      td.tx(context.formatMessage(RenderingContext.LIST_REND_ENC)+" ");
+      td.tx(context.formatPhrase(RenderingContext.LIST_REND_ENC)+" ");
       shortForRef(td, list.get("encounter"));
     }
     if (list.has("source")) {
-      td.tx(context.formatMessage(RenderingContext.LIST_REND_SRC)+" ");
+      td.tx(context.formatPhrase(RenderingContext.LIST_REND_SRC)+" ");
       shortForRef(td, list.get("encounter"));
     }
     if (list.has("orderedBy")) {
-      td.tx(context.formatMessage(RenderingContext.LIST_REND_ORD, displayBase(list.get("orderedBy")))+" ");
+      td.tx(context.formatPhrase(RenderingContext.LIST_REND_ORD, displayBase(list.get("orderedBy")))+" ");
     }
     //    for (Annotation a : list.getNote()) {
     //      renderAnnotation(a, x);
@@ -81,15 +81,15 @@ public class ListRenderer extends ResourceRenderer {
     }
     t = x.table("grid");
     tr = t.tr().style("backgound-color: #eeeeee");
-    tr.td().b().tx(context.formatMessage(RenderingContext.LIST_REND_ITEM));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.LIST_REND_ITEM));
     if (date) {
-      tr.td().tx(context.formatMessage(RenderingContext.LIST_REND_DAT));      
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_DAT));      
     }
     if (flag) {
-      tr.td().tx(context.formatMessage(RenderingContext.LIST_REND_FLAG));      
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_FLAG));      
     }
     if (deleted) {
-      tr.td().tx(context.formatMessage(RenderingContext.LIST_REND_DEL));      
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_DEL));      
     }
     for (BaseWrapper e : list.children("entry")) {
       tr = t.tr();
@@ -113,16 +113,16 @@ public class ListRenderer extends ResourceRenderer {
     XhtmlNode t = x.table("clstu");
     XhtmlNode tr = t.tr();
     if (list.hasDate()) {
-      tr.td().tx(context.formatMessage(RenderingContext.LIST_REND_DATE, displayDateTime(list.getDateElement()))+" ");
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_DATE, displayDateTime(list.getDateElement()))+" ");
     }
     if (list.hasMode()) {
-      tr.td().tx(context.formatMessage(RenderingContext.LIST_REND_MODE, list.getMode().getDisplay())+" ");
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_MODE, list.getMode().getDisplay())+" ");
     }
     if (list.hasStatus()) {
-      tr.td().tx(context.formatMessage(RenderingContext.LIST_REND_STAT, list.getStatus().getDisplay())+" ");
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_STAT, list.getStatus().getDisplay())+" ");
     }
     if (list.hasCode()) {
-      tr.td().tx(context.formatMessage(RenderingContext.LIST_REND_CODE, display(list.getCode()))+" ");
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_CODE, display(list.getCode()))+" ");
     }    
     tr = t.tr();
     if (list.hasSubject()) {
@@ -130,7 +130,7 @@ public class ListRenderer extends ResourceRenderer {
         shortForRef(tr.td().txN("Subject: "), list.getSubjectFirstRep());
       } else {
         XhtmlNode td = tr.td();
-        td.txN(context.formatMessage(RenderingContext.LIST_REND_SUB)+" ");
+        td.txN(context.formatPhrase(RenderingContext.LIST_REND_SUB)+" ");
         int i = 0;
         for (Reference subj : list.getSubject()) {
           if (i == list.getSubject().size() - 1) {
@@ -143,13 +143,13 @@ public class ListRenderer extends ResourceRenderer {
       }
     }
     if (list.hasEncounter()) {
-      shortForRef(tr.td().txN(context.formatMessage(RenderingContext.LIST_REND_ENC)+" "), list.getEncounter());
+      shortForRef(tr.td().txN(context.formatPhrase(RenderingContext.LIST_REND_ENC)+" "), list.getEncounter());
     }
     if (list.hasSource()) {
-      shortForRef(tr.td().txN(context.formatMessage(RenderingContext.LIST_REND_SRC)+" "), list.getEncounter());
+      shortForRef(tr.td().txN(context.formatPhrase(RenderingContext.LIST_REND_SRC)+" "), list.getEncounter());
     }
     if (list.hasOrderedBy()) {
-      tr.td().tx(context.formatMessage(RenderingContext.LIST_REND_ORD, display(list.getOrderedBy()))+" ");
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_ORD, display(list.getOrderedBy()))+" ");
     }
     for (Annotation a : list.getNote()) {
       renderAnnotation(x, a);
@@ -164,15 +164,15 @@ public class ListRenderer extends ResourceRenderer {
     }
     t = x.table("grid");
     tr = t.tr().style("backgound-color: #eeeeee");
-    tr.td().b().tx(context.formatMessage(RenderingContext.LIST_REND_ITEM));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.LIST_REND_ITEM));
     if (date) {
-      tr.td().tx(context.formatMessage(RenderingContext.LIST_REND_DAT));      
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_DAT));      
     }
     if (flag) {
-      tr.td().tx(context.formatMessage(RenderingContext.LIST_REND_FLAG));      
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_FLAG));      
     }
     if (deleted) {
-      tr.td().tx(context.formatMessage(RenderingContext.LIST_REND_DEL));      
+      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_DEL));      
     }
     for (ListResourceEntryComponent e : list.getEntry()) {
       tr = t.tr();

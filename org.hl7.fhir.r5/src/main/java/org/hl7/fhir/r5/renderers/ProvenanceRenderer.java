@@ -29,10 +29,10 @@ public class ProvenanceRenderer extends ResourceRenderer {
     if (!prv.getTarget().isEmpty()) {
       if (prv.getTarget().size() == 1) {
         XhtmlNode p = x.para();
-        p.tx(context.formatMessage(RenderingContext.PROV_PROV)+" ");
+        p.tx(context.formatPhrase(RenderingContext.PROV_PROV)+" ");
         renderReference(prv, p, prv.getTargetFirstRep());
       } else {
-        x.para().tx(context.formatMessage(RenderingContext.PROV_PROVE)+" ");
+        x.para().tx(context.formatPhrase(RenderingContext.PROV_PROVE)+" ");
         XhtmlNode ul = x.ul();
         for (Reference ref : prv.getTarget()) {
           renderReference(prv, ul.li(), ref);
@@ -40,12 +40,12 @@ public class ProvenanceRenderer extends ResourceRenderer {
       }
     }
     // summary table
-    x.para().tx(context.formatMessage(RenderingContext.PROV_SUM));
+    x.para().tx(context.formatPhrase(RenderingContext.PROV_SUM));
     XhtmlNode t = x.table("grid");
     XhtmlNode tr;
     if (prv.hasOccurred()) {
       tr = t.tr();
-      tr.td().tx(context.formatMessage(RenderingContext.PROV_OCC));
+      tr.td().tx(context.formatPhrase(RenderingContext.PROV_OCC));
       if (prv.hasOccurredPeriod()) {
         renderPeriod(tr.td(), prv.getOccurredPeriod());
       } else {
@@ -54,12 +54,12 @@ public class ProvenanceRenderer extends ResourceRenderer {
     }
     if (prv.hasRecorded()) {
       tr = t.tr();
-      tr.td().tx(context.formatMessage(RenderingContext.PROV_REC));
+      tr.td().tx(context.formatPhrase(RenderingContext.PROV_REC));
       tr.td().addText(displayDateTime(prv.getRecordedElement()));
     }
     if (prv.hasPolicy()) {
       tr = t.tr();
-      tr.td().tx(context.formatMessage(RenderingContext.PROV_POL));
+      tr.td().tx(context.formatPhrase(RenderingContext.PROV_POL));
       if (prv.getPolicy().size() == 1) {
         renderUri(tr.td(), prv.getPolicy().get(0));
       } else {
@@ -71,12 +71,12 @@ public class ProvenanceRenderer extends ResourceRenderer {
     }
     if (prv.hasLocation()) {
       tr = t.tr();
-      tr.td().tx(context.formatMessage(RenderingContext.PROV_LOC));
+      tr.td().tx(context.formatPhrase(RenderingContext.PROV_LOC));
       renderReference(prv, tr.td(), prv.getLocation());      
     }
     if (prv.hasActivity()) {
       tr = t.tr();
-      tr.td().tx(context.formatMessage(RenderingContext.PROV_ACT));
+      tr.td().tx(context.formatPhrase(RenderingContext.PROV_ACT));
       renderCodeableConcept(tr.td(), prv.getActivity(), false);
     }
 
@@ -88,18 +88,18 @@ public class ProvenanceRenderer extends ResourceRenderer {
       hasRole = hasRole || a.hasRole(); 
       hasOnBehalfOf = hasOnBehalfOf || a.hasOnBehalfOf(); 
     }    
-    x.para().b().tx(context.formatMessage(RenderingContext.PROV_AGE));
+    x.para().b().tx(context.formatPhrase(RenderingContext.PROV_AGE));
     t = x.table("grid");
     tr = t.tr();
     if (hasType) {
-      tr.td().b().tx(context.formatMessage(RenderingContext.PROV_TYPE));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.PROV_TYPE));
     }
     if (hasRole) {
-      tr.td().b().tx(context.formatMessage(RenderingContext.PROV_ROLE));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.PROV_ROLE));
     }
-    tr.td().b().tx(context.formatMessage(RenderingContext.PROV_WHO));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.PROV_WHO));
     if (hasOnBehalfOf) {
-      tr.td().b().tx(context.formatMessage(RenderingContext.PROV_BEHALF));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.PROV_BEHALF));
     }
     for (ProvenanceAgentComponent a : prv.getAgent()) {
       tr = t.tr();
@@ -147,12 +147,12 @@ public class ProvenanceRenderer extends ResourceRenderer {
   }
 
   public String display(Provenance prv) throws UnsupportedEncodingException, IOException {
-    return (context.formatMessage(RenderingContext.PROV_FOR, displayReference(prv, prv.getTargetFirstRep()))+" ");
+    return (context.formatPhrase(RenderingContext.PROV_FOR, displayReference(prv, prv.getTargetFirstRep()))+" ");
   }
  
   @Override
   public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    return (context.formatMessage(RenderingContext.PROV_NOT));
+    return (context.formatPhrase(RenderingContext.PROV_NOT));
   }
 
 }

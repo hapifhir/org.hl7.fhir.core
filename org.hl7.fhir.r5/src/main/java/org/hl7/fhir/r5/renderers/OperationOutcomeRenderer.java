@@ -41,17 +41,17 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
       hasSource = hasSource || ExtensionHelper.hasExtension(i, ToolingExtensions.EXT_ISSUE_SOURCE);
     }
     if (success)
-      x.para().tx(context.formatMessage(RenderingContext.OP_OUT_OK));
+      x.para().tx(context.formatPhrase(RenderingContext.OP_OUT_OK));
     if (op.getIssue().size() > 0) {
       XhtmlNode tbl = x.table("grid"); // on the basis that we'll most likely be rendered using the standard fhir css, but it doesn't really matter
       XhtmlNode tr = tbl.tr();
-      tr.td().b().tx(context.formatMessage(RenderingContext.OP_OUT_SEV));
-      tr.td().b().tx(context.formatMessage(RenderingContext.OP_OUT_LOC));
-      tr.td().b().tx(context.formatMessage(RenderingContext.OP_OUT_CODE));
-      tr.td().b().tx(context.formatMessage(RenderingContext.OP_OUT_DET));
-      tr.td().b().tx(context.formatMessage(RenderingContext.OP_OUT_DIAG));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_SEV));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_LOC));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_CODE));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_DET));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_DIAG));
       if (hasSource)
-        tr.td().b().tx(context.formatMessage(RenderingContext.OP_OUT_SRC));
+        tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_SRC));
       for (OperationOutcomeIssueComponent i : op.getIssue()) {
         tr = tbl.tr();
         tr.td().addText(i.getSeverity().toString());
@@ -82,12 +82,12 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
   }
 
   public String display(OperationOutcome oo) {
-    return (context.formatMessage(RenderingContext.OP_OUT_TODO));
+    return (context.formatPhrase(RenderingContext.OP_OUT_TODO));
   }
 
   @Override
   public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
-    return (context.formatMessage(RenderingContext.OP_OUT_NOT));
+    return (context.formatPhrase(RenderingContext.OP_OUT_NOT));
   }
 
   @Override

@@ -65,6 +65,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.json.model.*;
 import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -155,7 +156,7 @@ public class ComparisonTests {
     prefix = loadResource("html-prefix.html");
     suffix = loadResource("html-suffix.html");
 
-    ComparisonSession session = new ComparisonSession(context, context, "Comparison Tests", null, null);
+    ComparisonSession session = new ComparisonSession(new RenderingI18nContext(), context, context, "Comparison Tests", null, null);
     if (content.has("version")) {
       session.setAnnotate(true);
     }
