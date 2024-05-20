@@ -47,7 +47,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       genStandardsStatus(h2, ss);
     }
     XhtmlNode p =  x.para();
-    p.tx(context.formatMessage(RenderingContext.SEARCH_PAR_PAR)+" ");
+    p.tx(context.formatPhrase(RenderingContext.SEARCH_PAR_PAR)+" ");
     p.code().tx(spd.getCode());
     p.tx(":");
     p.code().tx(spd.getType().toCode());
@@ -55,7 +55,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
 
     XhtmlNode tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();
-    tr.td().tx(Utilities.pluralize(context.formatMessage(RenderingContext.SEARCH_PAR_REND_RES), spd.getBase().size()));
+    tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.SEARCH_PAR_REND_RES), spd.getBase().size()));
     XhtmlNode td = tr.td();
     for (Enumeration<VersionIndependentResourceTypesAll> t : spd.getBase()) {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.getCode());
@@ -68,23 +68,23 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       }
     }
     tr = tbl.tr();
-    tr.td().tx(context.formatMessage(RenderingContext.SEARCH_PAR_EXP));
+    tr.td().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_EXP));
     if (spd.hasExpression()) {
       tr.td().code().tx(spd.getExpression());
     } else {
-      tr.td().tx(context.formatMessage(RenderingContext.SEARCH_PAR_NONE));
+      tr.td().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_NONE));
     }
     if (spd.hasProcessingMode()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatMessage(RenderingContext.SEARCH_PAR_PROC));
+      tr.td().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_PROC));
       tr.td().tx(spd.getProcessingMode().getDisplay());      
     }
     if (spd.hasTarget()) {
       tr = tbl.tr();
-      tr.td().tx(Utilities.pluralize(context.formatMessage(RenderingContext.SEARCH_PAR_REND_TARGET), spd.getTarget().size()));
+      tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.SEARCH_PAR_REND_TARGET), spd.getTarget().size()));
       td = tr.td();
       if (isAllConcreteResources(spd.getTarget())) {
-        td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "resourcelist.html")).tx(context.formatMessage(RenderingContext.SEARCH_PAR_RES));
+        td.ah(Utilities.pathURL(context.getLink(KnownLinkType.SPEC), "resourcelist.html")).tx(context.formatPhrase(RenderingContext.SEARCH_PAR_RES));
       } else {
         for (Enumeration<VersionIndependentResourceTypesAll> t : spd.getTarget()) {
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.getCode());
@@ -99,28 +99,28 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       }
     }
     tr = tbl.tr();    
-    tr.td().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MULTIPLES));
+    tr.td().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_MULTIPLES));
     XhtmlNode ul = tr.td().ul();
     if (!spd.hasMultipleAnd()) {
-      ul.li().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MULTIPLE_AND_SERVER));
+      ul.li().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_MULTIPLE_AND_SERVER));
     } else if (spd.getMultipleAnd()) {
-      ul.li().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MULTIPLE_AND_REPEAT));
+      ul.li().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_MULTIPLE_AND_REPEAT));
     } else {
-      ul.li().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MULTIPLE_AND_APPEAR));
+      ul.li().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_MULTIPLE_AND_APPEAR));
     }
     if (!spd.hasMultipleOr()) {
-      ul.li().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MULTIPLE_OR_SERVER));
+      ul.li().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_MULTIPLE_OR_SERVER));
     } else if (spd.getMultipleOr()) {
-      ul.li().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MULTIPLE_OR_MULTIPLE));
+      ul.li().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_MULTIPLE_OR_MULTIPLE));
     } else {
-      ul.li().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MULTIPLE_OR_ONE));
+      ul.li().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_MULTIPLE_OR_ONE));
     }
 
     if (spd.hasComparator()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatMessage(RenderingContext.SEARCH_PAR_COMP));
+      tr.td().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_COMP));
       td = tr.td();
-      td.tx(context.formatMessage(RenderingContext.SEARCH_PAR_ALLOWED)+" ");
+      td.tx(context.formatPhrase(RenderingContext.SEARCH_PAR_ALLOWED)+" ");
       for (Enumeration<SearchComparator> t : spd.getComparator()) {
         td.sep(", ");
         td.tx(t.asStringValue());
@@ -128,9 +128,9 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     }
     if (spd.hasModifier()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatMessage(RenderingContext.SEARCH_PAR_MOD));
+      tr.td().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_MOD));
       td = tr.td();
-      td.tx(context.formatMessage(RenderingContext.SEARCH_PAR_ALLOWED)+" ");
+      td.tx(context.formatPhrase(RenderingContext.SEARCH_PAR_ALLOWED)+" ");
       for (Enumeration<SearchModifierCode> t : spd.getModifier()) {
         td.sep(", ");
         td.tx(t.asStringValue());
@@ -138,9 +138,9 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     }
     if (spd.hasChain()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatMessage(RenderingContext.SEARCH_PAR_CHAIN));
+      tr.td().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_CHAIN));
       td = tr.td();
-      td.tx(context.formatMessage(RenderingContext.SEARCH_PAR_ALLOWED)+" ");
+      td.tx(context.formatPhrase(RenderingContext.SEARCH_PAR_ALLOWED)+" ");
       for (StringType t : spd.getChain()) {
         td.sep(", ");
         td.tx(t.asStringValue());
@@ -148,7 +148,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     }
     
     if (spd.hasComponent()) {
-      x.para().b().tx(context.formatMessage(RenderingContext.SEARCH_PAR_COMP));
+      x.para().b().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_COMP));
       tbl = x.table("grid");
       for (SearchParameterComponentComponent t : spd.getComponent()) {
         tr = tbl.tr();
@@ -167,7 +167,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
   private boolean isAllConcreteResources(List<Enumeration<VersionIndependentResourceTypesAll>> list) {
     for (String s : context.getWorker().getResourceNames()) {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(s);
-      if (!sd.getAbstract() && !Utilities.existsInList(sd.getType(), context.formatMessage(RenderingContext.SEARCH_PAR_PAR))) {
+      if (!sd.getAbstract() && !Utilities.existsInList(sd.getType(), context.formatPhrase(RenderingContext.SEARCH_PAR_PAR))) {
         boolean found = false;
         for (Enumeration<VersionIndependentResourceTypesAll> c : list) {
           found = found || sd.getName().equals(c.getCode());

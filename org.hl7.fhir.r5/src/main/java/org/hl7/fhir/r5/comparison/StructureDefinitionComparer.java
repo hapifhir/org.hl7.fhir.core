@@ -42,8 +42,6 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
-import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
@@ -1253,7 +1251,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
   }
 
   public XhtmlNode renderStructure(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(new RenderingI18nContext(), Utilities.path("[tmp]", "compare"), false, true);
+    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(session.getI18n(), Utilities.path("[tmp]", "compare"), false, true);
     TableModel model = gen.initComparisonTable(corePath, id);
     genElementComp(null /* come back to this later */, gen, model.getRows(), comp.combined, corePath, prefix, null, true);
     return gen.generate(model, prefix, 0, null);
@@ -1290,32 +1288,32 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       boolean ext = false;
       if (tail(path).equals("extension")) {
         if (elementIsComplex(combined))
-          row.setIcon("icon_extension_complex.png", utilsLeft.getContext().formatMessage(RenderingI18nContext.TEXT_ICON_EXTENSION_COMPLEX));
+          row.setIcon("icon_extension_complex.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_EXTENSION_COMPLEX));
         else
-          row.setIcon("icon_extension_simple.png", utilsLeft.getContext().formatMessage(RenderingI18nContext.TEXT_ICON_EXTENSION_SIMPLE));
+          row.setIcon("icon_extension_simple.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_EXTENSION_SIMPLE));
         ext = true;
       } else if (tail(path).equals("modifierExtension")) {
         if (elementIsComplex(combined))
-          row.setIcon("icon_modifier_extension_complex.png", utilsLeft.getContext().formatMessage(RenderingI18nContext.TEXT_ICON_EXTENSION_COMPLEX));
+          row.setIcon("icon_modifier_extension_complex.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_EXTENSION_COMPLEX));
         else
-          row.setIcon("icon_modifier_extension_simple.png", utilsLeft.getContext().formatMessage(RenderingI18nContext.TEXT_ICON_EXTENSION_SIMPLE));
+          row.setIcon("icon_modifier_extension_simple.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_EXTENSION_SIMPLE));
       } else if (hasChoice(combined)) {
         if (allAreReference(combined))
-          row.setIcon("icon_reference.png", utilsLeft.getContext().formatMessage(RenderingI18nContext.TEXT_ICON_REFERENCE));
+          row.setIcon("icon_reference.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_REFERENCE));
         else {
-          row.setIcon("icon_choice.gif", utilsLeft.getContext().formatMessage(RenderingI18nContext.TEXT_ICON_CHOICE));
+          row.setIcon("icon_choice.gif", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_CHOICE));
           typesRow = row;
         }
       } else if (combined.either().getDef().hasContentReference())
-        row.setIcon("icon_reuse.png", utilsLeft.getContext().formatMessage(RenderingI18nContext.TEXT_ICON_REUSE));
+        row.setIcon("icon_reuse.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_REUSE));
       else if (isPrimitive(combined))
-        row.setIcon("icon_primitive.png", utilsLeft.getContext().formatMessage(RenderingI18nContext.TEXT_ICON_PRIMITIVE));
+        row.setIcon("icon_primitive.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_PRIMITIVE));
       else if (hasTarget(combined))
-        row.setIcon("icon_reference.png", utilsLeft.getContext().formatMessage(RenderingI18nContext.TEXT_ICON_REFERENCE));
+        row.setIcon("icon_reference.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_REFERENCE));
       else if (isDataType(combined))
-        row.setIcon("icon_datatype.gif", utilsLeft.getContext().formatMessage(RenderingI18nContext.TEXT_ICON_DATATYPE));
+        row.setIcon("icon_datatype.gif", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_DATATYPE));
       else
-        row.setIcon("icon_resource.png", utilsLeft.getContext().formatMessage(RenderingI18nContext.TEXT_ICON_RESOURCE));
+        row.setIcon("icon_resource.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_RESOURCE));
       String ref = defPath == null ? null : defPath + combined.either().getDef().getId();
       String sName = tail(path);
       String sn = getSliceName(combined);
