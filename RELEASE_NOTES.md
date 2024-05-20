@@ -4,7 +4,7 @@
 * Fix wrong language code from java locale
 * Don't accidently hit other terminology servers for code systems handled natively by tx.fhir.org
 * Validate Additional Bindings (provisional - usage context is todo)
-* Improved system specific checking of value set filters - particularly LOINC and SNOMED CT
+* Improved system specific checking of value set filters - particularly LOINC and SNOMED CT, and update LOINC validation to the latest understanding of LOINC filters
 
 ## WHO I18n Project
 
