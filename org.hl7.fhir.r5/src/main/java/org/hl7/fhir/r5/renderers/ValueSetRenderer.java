@@ -216,9 +216,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (vs.getExpansion().hasTotal()) {
         if (count != vs.getExpansion().getTotal()) {
           x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px")
-            .addText(context.formatPhrase(RenderingContext.VALUE_SET_HAS)+(hasFragment ? context.formatPhrase(RenderingContext.VALUE_SET_AT_LEAST) : "")+vs.getExpansion().getTotal()+" codes in it. In order to keep the publication size manageable, only a selection ("+count+" codes) of the whole set of codes is shown.");
+            .addText(context.formatPhrase(hasFragment ? RenderingContext.VALUE_SET_HAS_AT_LEAST : RenderingContext.VALUE_SET_HAS, vs.getExpansion().getTotal()));
         } else {
-          x.para().tx(context.formatPhrase(RenderingContext.VALUE_SET_CONTAINS)+(hasFragment ? context.formatPhrase(RenderingContext.VALUE_SET_AT_LEAST) : "")+vs.getExpansion().getTotal()+" concepts.");          
+          x.para().tx(context.formatPhrase(hasFragment ? RenderingContext.VALUE_SET_CONTAINS_AT_LEAST : RenderingContext.VALUE_SET_CONTAINS, vs.getExpansion().getTotal()));          
         }
       } else if (count == 1000) {
         // it's possible that there's exactly 1000 codes, in which case wht we're about to do is wrong

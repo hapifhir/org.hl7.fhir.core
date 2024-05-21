@@ -144,8 +144,13 @@ public class LiquidRenderer extends ResourceRenderer implements ILiquidRendering
       } else {
         x.tx(base.toString());
       }
-      String res = new XhtmlComposer(true).compose(x).substring(5);
-      return res.substring(0, res.length()-6);
+      String res = new XhtmlComposer(true).compose(x);
+      res = res.substring(5);
+      if (res.length() < 6) {
+        return "";
+      } else {
+        return res.substring(0, res.length()-6);
+      }
     } catch (FHIRFormatError e) {
       throw new FHIRException(e);
     } catch (IOException e) {
