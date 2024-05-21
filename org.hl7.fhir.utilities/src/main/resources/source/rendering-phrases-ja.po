@@ -3978,7 +3978,11 @@ msgid "Value Set Contents"
 msgstr ""
 
 #: VALUE_SET_CONTAINS
-msgid "This value set contains"
+msgid "This value set contains {0} concepts"
+msgstr ""
+
+#: VALUE_SET_CONTAINS_AT_LEAST
+msgid "This value set contains at least {0} concepts"
 msgstr ""
 
 #: VALUE_SET_CONT_STRUC
@@ -4062,7 +4066,11 @@ msgid "generalizes"
 msgstr ""
 
 #: VALUE_SET_HAS
-msgid "This value set has"
+msgid "This value set has {0} codes in it. In order to keep the publication size manageable, only a selection ("+count+" codes) of the whole set of codes is shown."
+msgstr ""
+
+#: VALUE_SET_HAS_AT_LEAST
+msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ("+count+" codes) of the whole set of codes is shown."
 msgstr ""
 
 #: VALUE_SET_IMPORT
