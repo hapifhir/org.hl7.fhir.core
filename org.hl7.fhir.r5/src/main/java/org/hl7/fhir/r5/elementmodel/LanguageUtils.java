@@ -285,7 +285,8 @@ public class LanguageUtils {
     if (element.isPrimitive() && isTranslatable(element)) {
       String base = element.primitiveValue();
       if (base != null) {
-        Set<TranslationUnit> tlist = findTranslations(pathForElement(element), base, translations);
+        String path = pathForElement(element);
+        Set<TranslationUnit> tlist = findTranslations(path, base, translations);
         for (TranslationUnit translation : tlist) {
           t++;
           if (!handleAsSpecial(parent, element, translation)) {
