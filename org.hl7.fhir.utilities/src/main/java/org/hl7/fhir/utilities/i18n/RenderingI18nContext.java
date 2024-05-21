@@ -989,7 +989,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VALUE_SET_ALL_CODE = "VALUE_SET_ALL_CODE";
   public static final String VALUE_SET_ALL_CODES_DEF = "VALUE_SET_ALL_CODES_DEF";
   public static final String VALUE_SET_AND = "VALUE_SET_AND"; 
-  public static final String VALUE_SET_AT_LEAST = "VALUE_SET_AT_LEAST";
+  public static final String VALUE_SET_HAS_AT_LEAST = "VALUE_SET_HAS_AT_LEAST";
   public static final String VALUE_SET_AUS = "VALUE_SET_AUS";
   public static final String VALUE_SET_CODE = "VALUE_SET_CODE";
   public static final String VALUE_SET_CODES_FROM = "VALUE_SET_CODES_FROM"; 
@@ -998,6 +998,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VALUE_SET_COMMA = "VALUE_SET_COMMA";
   public static final String VALUE_SET_CONT = "VALUE_SET_CONT";
   public static final String VALUE_SET_CONTAINS = "VALUE_SET_CONTAINS";
+  public static final String VALUE_SET_CONTAINS_AT_LEAST = "VALUE_SET_CONTAINS_AT_LEAST";
   public static final String VALUE_SET_CONT_STRUC = "VALUE_SET_CONT_STRUC";
   public static final String VALUE_SET_DANISH = "VALUE_SET_DANISH";
   public static final String VALUE_SET_DEF = "VALUE_SET_DEF";
