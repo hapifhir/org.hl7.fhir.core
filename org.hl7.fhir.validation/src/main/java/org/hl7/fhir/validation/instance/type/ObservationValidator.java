@@ -48,7 +48,7 @@ public class ObservationValidator extends BaseValidator {
         ok = checkObservationAgainstProfile(valContext,errors, element, stack, "http://hl7.org/fhir/StructureDefinition/resprate", "Respiratory Rate", "LOINC", codes, pct, mode) && ok;
       } else if (hasLoincCode(code, codes, "60978-4", "73795-7", "73799-9", "76476-1", "76477-9", "8867-4", "8889-8", "8890-6", "8891-4", "8892-2", "8893-0", "40443-4", "55425-3", "68999-2", "11328-2", "69000-8", "69000-8", "60978-4", "60978-4", "8890-6", "8886-4", "68999-2", "68999-2")) {
         ok = checkObservationAgainstProfile(valContext,errors, element, stack, "http://hl7.org/fhir/StructureDefinition/heartrate", "Heart rate", "LOINC", codes, pct, mode) && ok;
-      } else if (hasLoincCode(code, codes, "2708-6", "19224-5", "20564-1", "2709-4", "2710-2", "2711-0", "2713-6", "51733-4", "59408-5", "59417-6", "89276-0", "97549-0")) {
+      } else if (hasLoincCode(code, codes, "2708-6", "19224-5", "20564-1", "2709-4", "2710-2", "2713-6", "51733-4", "59408-5", "59417-6", "89276-0", "97549-0")) {
         ok = checkObservationAgainstProfile(valContext,errors, element, stack, "http://hl7.org/fhir/StructureDefinition/oxygensat", "Oxygen saturation", "LOINC", codes, pct, mode) && ok;
       } else if (hasLoincCode(code, codes, "8310-5", "60834-9", "60835-6", "60836-4", "60838-0", "60955-2", "61009-7", "75539-7", "75987-8", "76010-8", "76011-6", "76278-1", "8309-7", "8310-5", "8328-7", "8329-5", "8330-3", "8331-1", "8332-9", "8333-7", "8334-5", "91371-5", "98657-0", "98663-8")) {
         ok = checkObservationAgainstProfile(valContext,errors, element, stack, "http://hl7.org/fhir/StructureDefinition/bodytemp", "Body temperature", "LOINC", codes, pct, mode) && ok;
