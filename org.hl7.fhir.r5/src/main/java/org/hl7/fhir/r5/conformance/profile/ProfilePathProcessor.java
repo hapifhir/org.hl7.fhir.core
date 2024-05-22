@@ -595,7 +595,8 @@ public class ProfilePathProcessor {
     } else if (diffMatches.get(0).hasType()
       && diffMatches.get(0).getType().size() == 1
       && diffMatches.get(0).getType().get(0).hasProfile()
-      && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())) {
+      && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())
+      && !(currentBase.getType().get(0).hasProfile() && currentBase.getType().get(0).getProfile().get(0).primitiveValue().equals(diffMatches.get(0).getType().get(0).getProfile().get(0).primitiveValue()))) {
       CanonicalType firstTypeProfile = diffMatches.get(0).getType().get(0).getProfile().get(0);
       StructureDefinition firstTypeStructureDefinition = profileUtilities.getContext().fetchResource(StructureDefinition.class, firstTypeProfile.getValue());
       if (firstTypeStructureDefinition == null && profileUtilities.getXver() != null && profileUtilities.getXver().matchingUrl(firstTypeProfile.getValue())) {

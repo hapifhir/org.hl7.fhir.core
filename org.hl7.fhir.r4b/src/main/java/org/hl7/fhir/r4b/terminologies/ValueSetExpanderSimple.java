@@ -183,7 +183,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
   private List<ValueSetExpansionContainsComponent> roots = new ArrayList<ValueSet.ValueSetExpansionContainsComponent>();
   private Map<String, ValueSetExpansionContainsComponent> map = new HashMap<String, ValueSet.ValueSetExpansionContainsComponent>();
   private IWorkerContext context;
-  private boolean canBeHeirarchy = true;
+  private boolean canBeHierarchy = true;
   private boolean includeAbstract = true;
   private Set<String> excludeKeys = new HashSet<String>();
   private Set<String> excludeSystems = new HashSet<String>();
@@ -238,13 +238,13 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
 
     String s = key(n);
     if (map.containsKey(s) || excludeKeys.contains(s)) {
-      canBeHeirarchy = false;
+      canBeHierarchy = false;
     } else {
       codes.add(n);
       map.put(s, n);
       total++;
     }
-    if (canBeHeirarchy && parent != null) {
+    if (canBeHierarchy && parent != null) {
       parent.getContains().add(n);
     } else {
       roots.add(n);
@@ -446,7 +446,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       handleCompose(source.getCompose(), focus.getExpansion(), expParams, source.getUrl(),
           focus.getExpansion().getExtension());
 
-    if (canBeHeirarchy) {
+    if (canBeHierarchy) {
       for (ValueSetExpansionContainsComponent c : roots) {
         focus.getExpansion().getContains().add(c);
       }
@@ -457,7 +457,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
                                                                                 // might be heirarchical, but later we
                                                                                 // gave up, so now ignore them
           focus.getExpansion().getContains().add(c);
-          c.getContains().clear(); // make sure any heirarchy is wiped
+          c.getContains().clear(); // make sure any hierarchy is wiped
         }
       }
     }
@@ -493,15 +493,15 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     // Exclude comes first because we build up a map of things to exclude
     for (ConceptSetComponent inc : compose.getExclude())
       excludeCodes(inc, exp.getParameter(), ctxt);
-    canBeHeirarchy = !expParams.getParameterBool("excludeNested") && excludeKeys.isEmpty() && excludeSystems.isEmpty();
+    canBeHierarchy = !expParams.getParameterBool("excludeNested") && excludeKeys.isEmpty() && excludeSystems.isEmpty();
     includeAbstract = !expParams.getParameterBool("excludeNotForUI");
     boolean first = true;
     for (ConceptSetComponent inc : compose.getInclude()) {
       if (first == true)
         first = false;
       else
-        canBeHeirarchy = false;
-      includeCodes(inc, exp, expParams, canBeHeirarchy, extensions);
+        canBeHierarchy = false;
+      includeCodes(inc, exp, expParams, canBeHierarchy, extensions);
     }
   }
 
@@ -540,8 +540,8 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
         exp.getParameter().add(p);
     }
     copyExpansion(vso.getValueset().getExpansion().getContains());
-    canBeHeirarchy = false; // if we're importing a value set, we have to be combining, so we won't try for
-                            // a heirarchy
+    canBeHierarchy = false; // if we're importing a value set, we have to be combining, so we won't try for
+                            // a hierarchy
     return vso.getValueset();
   }
 
@@ -681,7 +681,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
     }
 
     if (!inc.getConcept().isEmpty()) {
-      canBeHeirarchy = false;
+      canBeHierarchy = false;
       for (ConceptReferenceComponent c : inc.getConcept()) {
         c.checkNoModifiers("Code in Code System", "expanding");
         ConceptDefinitionComponent def = CodeSystemUtilities.findCode(cs.getConcept(), c.getCode());
@@ -705,7 +705,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       }
     }
     if (inc.getFilter().size() > 1) {
-      canBeHeirarchy = false; // which will bt the case if we get around to supporting this
+      canBeHierarchy = false; // which will bt the case if we get around to supporting this
       throw failTSE("Multiple filters not handled yet"); // need to and them, and this isn't done yet. But this
                                                          // shouldn't arise in non loinc and snomed value sets
     }
@@ -745,7 +745,7 @@ public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetEx
       } else if ("display".equals(fc.getProperty()) && fc.getOp() == FilterOperator.EQUAL) {
         // gg; note: wtf is this: if the filter is display=v, look up the code 'v', and
         // see if it's diplsay is 'v'?
-        canBeHeirarchy = false;
+        canBeHierarchy = false;
         ConceptDefinitionComponent def = getConceptForCode(cs.getConcept(), fc.getValue());
         if (def != null) {
           if (isNotBlank(def.getDisplay()) && isNotBlank(fc.getValue())) {

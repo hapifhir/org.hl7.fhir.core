@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.SimpleHTTPClient;
 import org.junit.jupiter.api.Test;
 
 public class SimpleHTTPClientTest {
@@ -13,7 +15,7 @@ public class SimpleHTTPClientTest {
     SimpleHTTPClient http = new SimpleHTTPClient();
     String url = "https://hl7.org/fhir/us/core/package-list.json?nocache=" + System.currentTimeMillis();
 
-    SimpleHTTPClient.HTTPResult res = http.get(url, "application/json");
+    HTTPResult res = http.get(url, "application/json");
 
 //    System.out.println(res.getCode());
 //    System.out.println(new String(res.getContent(), StandardCharsets.UTF_8));

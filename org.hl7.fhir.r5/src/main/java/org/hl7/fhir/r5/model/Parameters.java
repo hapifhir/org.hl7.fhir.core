@@ -1518,6 +1518,15 @@ public String toString() {
     return hasValue() && getValue() instanceof PrimitiveType<?>;
   }
 
+  public ParametersParameterComponent getPart(String name) {
+    for (ParametersParameterComponent t : getPart()) {
+      if (name.equals(t.getName())) {
+        return t;
+      }
+    }
+    return null;
+  }
+
 // end addition
 
   }

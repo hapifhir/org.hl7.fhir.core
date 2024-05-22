@@ -122,7 +122,7 @@ class ClientTest {
   @Test
   @DisplayName("PUT request, test payload received by server matches sent.")
   void test_put() throws IOException, URISyntaxException, InterruptedException {
-    byte[] payload = ByteUtils.resourceToByteArray(patient, true, false);
+    byte[] payload = ByteUtils.resourceToByteArray(patient, true, false, false);
     // Mock server response of 200, with the same resource payload returned that we included in the PUT request
     server.enqueue(
       new MockResponse()
@@ -140,7 +140,7 @@ class ClientTest {
   @Test
   @DisplayName("POST request, test payload received by server matches sent.")
   void test_post() throws IOException, URISyntaxException, InterruptedException {
-    byte[] payload = ByteUtils.resourceToByteArray(patient, true, false);
+    byte[] payload = ByteUtils.resourceToByteArray(patient, true, false, false);
     // Mock server response of 200, with the same resource payload returned that we included in the PUT request
     server.enqueue(
       new MockResponse()
@@ -158,7 +158,7 @@ class ClientTest {
   @Test
   @DisplayName("Testing the logger works.")
   void test_logger() throws IOException, URISyntaxException, InterruptedException {
-    byte[] payload = ByteUtils.resourceToByteArray(patient, true, false);
+    byte[] payload = ByteUtils.resourceToByteArray(patient, true, false, false);
     server.enqueue(
       new MockResponse()
         .setResponseCode(200)

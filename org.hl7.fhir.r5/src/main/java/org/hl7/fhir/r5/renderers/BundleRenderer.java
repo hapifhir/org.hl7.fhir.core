@@ -68,7 +68,7 @@ public class BundleRenderer extends ResourceRenderer {
     List<BaseWrapper> entries = b.children("entry");
     if ("document".equals(b.get("type").primitiveValue())) {
       if (entries.isEmpty() || (entries.get(0).has("resource") && !"Composition".equals(entries.get(0).get("resource").fhirType())))
-        throw new FHIRException(/*!#*/"Invalid document '"+b.getId()+"' - first entry is not a Composition ('"+entries.get(0).get("resource").fhirType()+"')");
+        throw new FHIRException(context.formatMessage(RenderingContext.BUND_REND_INVALID_DOC, b.getId(), entries.get(0).get("resource").fhirType()+"')"));
       return renderDocument(x, b, entries);
     } else if ("collection".equals(b.get("type").primitiveValue()) && allEntriesAreHistoryProvenance(entries)) {
       // nothing
@@ -114,7 +114,7 @@ public class BundleRenderer extends ResourceRenderer {
               xn = rr.render(rw);
             } catch (Exception e) {
               xn = new XhtmlNode();
-              xn.para().b().tx(/*!#*/"Exception generating narrative: "+e.getMessage());
+              xn.para().b().tx(context.formatMessage(RenderingContext.BUNDLE_REV_EXCP, e.getMessage()) + " ");
             }
           }
           root.blockquote().para().addChildren(xn);
@@ -288,7 +288,7 @@ public class BundleRenderer extends ResourceRenderer {
       XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
       if (b.getType() == BundleType.DOCUMENT) {
         if (!b.hasEntry() || !(b.getEntryFirstRep().hasResource() && b.getEntryFirstRep().getResource() instanceof Composition)) {
-          throw new FHIRException(/*!#*/"Invalid document - first entry is not a Composition");
+          throw new FHIRException(context.formatMessage(RenderingContext.BUNDLE_REV_INV_DOC));
         }
         renderDocument(x, b);
         start = 1;
@@ -352,7 +352,7 @@ public class BundleRenderer extends ResourceRenderer {
                   rr.setRcontext(new ResourceContext(rcontext, be.getResource()));
                   xn = rr.build(be.getResource());
                 } catch (Exception e) {
-                  xn = makeExceptionXhtml(e, /*!#*/"generating narrative");
+                  xn = makeExceptionXhtml(e, context.formatMessage(RenderingContext.BUND_REND_GEN_NARR));
                 }
               }
               x.blockquote().para().getChildNodes().addAll(checkInternalLinks(b, xn.getChildNodes()));

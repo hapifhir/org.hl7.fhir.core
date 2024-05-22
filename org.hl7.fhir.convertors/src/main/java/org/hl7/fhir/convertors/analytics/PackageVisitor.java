@@ -14,11 +14,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -233,8 +233,8 @@ public class PackageVisitor {
         JsonObject manifest = JsonParser.parseObjectFromUrl(repo+"/package.manifest.json");
         File co = ManagedFileAccess.file(Utilities.path(cache, pid+"."+manifest.asString("date")+".tgz"));
         if (!co.exists()) {
-          SimpleHTTPClient fetcher = new SimpleHTTPClient();
-          HTTPResult res = fetcher.get(repo+"/package.tgz?nocache=" + System.currentTimeMillis());
+
+          HTTPResult res = ManagedWebAccess.get(repo+"/package.tgz?nocache=" + System.currentTimeMillis());
           res.checkThrowException();
           TextFile.bytesToFile(res.getContent(), co);
         }
@@ -330,8 +330,8 @@ public class PackageVisitor {
   private void processFeed(Set<String> list, String str) throws IOException, ParserConfigurationException, SAXException {
     System.out.println("Feed "+str);
     try {
-      SimpleHTTPClient fetcher = new SimpleHTTPClient();
-      HTTPResult res = fetcher.get(str+"?nocache=" + System.currentTimeMillis());
+
+      HTTPResult res = ManagedWebAccess.get(str+"?nocache=" + System.currentTimeMillis());
       res.checkThrowException();
       Document xml = XMLUtil.parseToDom(res.getContent());
       for (Element channel : XMLUtil.getNamedChildren(xml.getDocumentElement(), "channel")) {

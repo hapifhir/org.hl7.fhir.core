@@ -114,6 +114,8 @@ private static TxTestData testData;
     } else if (setup.getTest().asString("operation").equals("cs-validate-code")) {
       String diff = TxServiceTestHelper.getDiffForValidation(setup.getTest().str("name"), engine.getContext(), setup.getTest().asString("name"), req, resp, setup.getTest().asString("Content-Language"), fp, ext, true);
       assertNull(diff, diff);
+    } else if (Utilities.existsInList(setup.getTest().asString("operation"), "lookup", "translate")) {
+      Assertions.assertTrue(true); // we don't test these for the internal server
     } else {
       Assertions.fail("Unknown Operation "+ setup.getTest().asString("operation"));
     }
