@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
@@ -26,6 +27,7 @@ import org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteraction;
 import org.hl7.fhir.r5.model.CapabilityStatement.TypeRestfulInteraction;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.Extension;
@@ -43,6 +45,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+
 public class CapabilityStatementRenderer extends ResourceRenderer {
   
   private static final String EXPECTATION = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation";
@@ -53,6 +56,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
   private String currentFhirBase = "";
   private String collapseClass = "panel-collapse in";
+
+  private boolean multExpectationsPresent = false;
   
   //Private classes for driving the rendering
 
@@ -344,6 +349,10 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         }
         count++;
       }
+    }
+
+    if (multExpectationsPresent) {
+      addWarningPanel(x,"⹋⹋ - this mark indicates that there are more than one expectation extensions present");
     }
 
     return true;
@@ -817,7 +826,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
   private List<String> getCombinedParams(List<String> paramNames, List<Extension> paramExtensions) {
     for (Extension e : paramExtensions) {
-      String capExpectation = e.getExtensionString(EXPECTATION);
+      String capExpectation = expectationForDisplay(e,EXPECTATION);
       if (!Utilities.noString(capExpectation)) {
         if (capExpectation.equals("SHALL") || capExpectation.equals("SHOULD") || capExpectation.equals("MAY")) {
           paramNames.add(printCombinedParams(e));
@@ -890,7 +899,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
 
   private List<String> getParams(List<String> paramNames, List<CapabilityStatementRestResourceSearchParamComponent> params) {
     for (CapabilityStatementRestResourceSearchParamComponent p : params) {
-      String capExpectation = p.getExtensionString(EXPECTATION);
+      String capExpectation = expectationForDisplay(p,EXPECTATION);
       if (!Utilities.noString(capExpectation)) {
         if (capExpectation.equals("SHALL") || capExpectation.equals("SHOULD") || capExpectation.equals("MAY")) {
           paramNames.add(p.getName());
@@ -938,7 +947,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   private List<String> getStringListFromOperations(List<CapabilityStatementRestResourceOperationComponent> list) {
     List<String> result = new ArrayList<String>();
     for (CapabilityStatementRestResourceOperationComponent op : list) {
-      String capExpectation = op.getExtensionString(EXPECTATION);
+      String capExpectation = expectationForDisplay(op,EXPECTATION);
       if (!Utilities.noString(capExpectation)) {
         if (capExpectation.equals("SHALL") || capExpectation.equals("SHOULD") || capExpectation.equals("MAY")) {
           result.add("$"+op.getName());
@@ -1082,7 +1091,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     ResourceOperations ops = new ResourceOperations();
     
     for ( CapabilityStatementRestResourceOperationComponent op : opList) {
-      capExpectation = op.getExtensionString(EXPECTATION);
+      capExpectation = expectationForDisplay(op,EXPECTATION);
       if (Utilities.noString(capExpectation)) {
         capExpectation = "supported";
       }
@@ -1102,7 +1111,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     List<String> supporteds = new ArrayList<String>();
 
     for (ResourceInteractionComponent op : r.getInteraction()) {
-      capExpectation = op.getExtensionString(EXPECTATION);
+      capExpectation = expectationForDisplay(op,EXPECTATION);
       if (!Utilities.noString(capExpectation)) {
         switch(capExpectation) {
           case "SHALL"      : shalls.add(op.getCode().toCode());
@@ -1135,7 +1144,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     String capExpectation;
     SingleParam param;
     for ( CapabilityStatementRestResourceSearchParamComponent sp : r.getSearchParam()) {
-      capExpectation = sp.getExtensionString(EXPECTATION);
+      capExpectation = expectationForDisplay(sp,EXPECTATION);
       if (Utilities.noString(capExpectation)) {
         capExpectation = "supported";
       }
@@ -1147,7 +1156,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     CombinedSearchParamSet combinedParams;
     String paramName;
     for (Extension e : r.getExtensionsByUrl(COMBINED)) {
-      capExpectation = e.getExtensionString(EXPECTATION);
+      capExpectation = expectationForDisplay(e,EXPECTATION);
       if (Utilities.noString(capExpectation)) {
         capExpectation = "supported";
       }
@@ -1387,14 +1396,14 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     return stringList;
   }
   private String getResourceExpectation(CapabilityStatementRestResourceComponent r) {
-    String capExpectation = r.getExtensionString(EXPECTATION);
+    String capExpectation = expectationForDisplay(r,EXPECTATION);
     if (!Utilities.noString(capExpectation)) return capExpectation;
     boolean shalls = false;
     boolean shoulds = false;
     boolean mays = false;
     boolean shouldnots = false;
     for (ResourceInteractionComponent ric : r.getInteraction()) {
-      capExpectation = ric.getExtensionString(EXPECTATION);
+      capExpectation = expectationForDisplay(ric,EXPECTATION);
       if (!Utilities.noString(capExpectation)) {
         switch(capExpectation) {
           case "SHALL" :  shalls = true;
@@ -1411,7 +1420,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     if (shalls) return "SHALL";
     //Check search parameters requirements
     for ( CapabilityStatementRestResourceSearchParamComponent sp : r.getSearchParam()) {
-      capExpectation = sp.getExtensionString(EXPECTATION);
+      capExpectation = expectationForDisplay(sp,EXPECTATION);
       if (!Utilities.noString(capExpectation)) {
         switch(capExpectation) {
           case "SHALL" :  shalls = true;
@@ -1433,7 +1442,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   }
 
   private String getProfileExpectation(CanonicalType r) {
-    String capExpectation = r.getExtensionString(EXPECTATION);
+    String capExpectation = expectationForDisplay(r,EXPECTATION);
     if (!Utilities.noString(capExpectation)) return capExpectation;
     return "SHALL";
   }
@@ -1494,4 +1503,27 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     }
   }
 
+  private String expectationForDisplay(Element e, String url) {
+    String result;
+    try {
+      result = e.getExtensionString(url);
+      return result;
+    }
+    catch (FHIRException fex) {
+      List<Extension> ext = e.getExtensionsByUrl(url); 
+      if (ext.isEmpty()) 
+        return null; 
+      if (!ext.get(0).hasValue())
+        return null;
+      multExpectationsPresent = true;
+      return ext.get(0).getValue().primitiveValue() + "-⹋⹋";
+    }
+
+  }
+
+  private void addWarningPanel(XhtmlNode node, String text) {
+    XhtmlNode panel = node.addTag("div").attribute("class","panel panel-danger").addTag("div").attribute("class","panel-body");
+    panel.addTag("span").attribute("class","label label-danger").addText("Error detected");
+    panel.addText(" " + text);
+  }
 }
