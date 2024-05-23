@@ -567,8 +567,8 @@ msgstr ""
 msgid "Concepts"
 msgstr ""
 
-#: CODESYSTEM_CONTENT_COMPLETE This <param name
-msgid ""cased"/> code system <param name="cs"/> defines the following code<if test="code-count != 1">s</if><param name="h"/>:"
+#: CODESYSTEM_CONTENT_COMPLETE 
+msgid "This <param name="cased"/> code system <param name="cs"/> defines the following code<if test="code-count != 1">s</if><param name="h"/>:"
 msgstr ""
 
 #: CODESYSTEM_CONTENT_EXAMPLE
