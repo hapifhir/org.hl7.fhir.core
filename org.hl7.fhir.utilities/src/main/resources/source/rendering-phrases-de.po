@@ -1,4252 +1,5302 @@
 
+# ADD_BIND_COMPONENT
 #: ACTOR_DEF_ACT
 msgid "Actor: {0}"
 msgstr ""
 
+# ADD_BIND_CURR_BIND
 #: ACTOR_DEF_CAP
 msgid "Capabilities:"
 msgstr ""
 
+# ADD_BIND_DESIG_SYS
 #: ACTOR_DEF_DER
 msgid "Derived from:"
 msgstr ""
 
+# ADD_BIND_DOC
 #: ACTOR_DEF_REF
-msgid "References:"
+msgid "References: (ACTOR_DEF_REF)"
 msgstr ""
 
+# ADD_BIND_EXT_PREF
 #: ACTOR_DEF_TYP
 msgid "Type: {0}"
 msgstr ""
 
+# ADD_BIND_EX_BIND
 #: ADD_BIND_ADD_BIND
 msgid "Additional Bindings"
 msgstr ""
 
+# ADD_BIND_GIVEN_CONT
 #: ADD_BIND_ALL_REP
 msgid "All repeats"
 msgstr ""
 
+# ADD_BIND_MAX
 #: ADD_BIND_ANY
 msgid "Any"
 msgstr ""
 
+# ADD_BIND_MIN
 #: ADD_BIND_ANY_REP
 msgid "any repeat"
 msgstr ""
 
+# ADD_BIND_MIN_ALLOW
 #: ADD_BIND_ANY_REPS
 msgid "Any repeats"
 msgstr ""
 
+# ADD_BIND_NEW_REC
 #: ADD_BIND_COMPONENT
-msgid "Component"
+msgid "Component (ADD_BIND_COMPONENT)"
 msgstr ""
 
+# ADD_BIND_PREFERRED
 #: ADD_BIND_CURR_BIND
 msgid "Current Binding"
 msgstr ""
 
+# ADD_BIND_PREF_BIND
 #: ADD_BIND_DESIG_SYS
-msgid "This value set is a good set of codes to start with when designing your system"
+msgid "This value set is a good set of codes to start with when designing your system (ADD_BIND_DESIG_SYS)"
 msgstr ""
 
+# ADD_BIND_PUR
 #: ADD_BIND_DOC
-msgid "Documentation"
+msgid "Documentation (ADD_BIND_DOC)"
 msgstr ""
 
+# ADD_BIND_RECOM_VALUE_SET
 #: ADD_BIND_EXT_PREF
 msgid "A required binding, for use when the binding strength is 'extensible' or 'preferred'"
 msgstr ""
 
+# ADD_BIND_REQUIRED
 #: ADD_BIND_EX_BIND
 msgid "Extensible Binding"
 msgstr ""
 
+# ADD_BIND_REQ_BIND
 #: ADD_BIND_GIVEN_CONT
 msgid "This value set is provided to user look up in a given context"
 msgstr ""
 
+# ADD_BIND_STARTER
 #: ADD_BIND_MAX
 msgid "Max Binding"
 msgstr ""
 
+# ADD_BIND_UI
 #: ADD_BIND_MIN
 msgid "Min Binding"
 msgstr ""
 
+# ADD_BIND_UI_BIND
 #: ADD_BIND_MIN_ALLOW
-msgid "The minimum allowable value set - any conformant system SHALL support all these codes"
+msgid "The minimum allowable value set - any conformant system SHALL support all these codes (ADD_BIND_MIN_ALLOW)"
 msgstr ""
 
+# ADD_BIND_UNKNOWN_PUR
 #: ADD_BIND_NEW_REC
 msgid "New records are required to use this value set, but legacy records may use other codes"
 msgstr ""
 
+# ADD_BIND_USE
 #: ADD_BIND_PREFERRED
-msgid "Preferred"
+msgid "Preferred (ADD_BIND_PREFERRED)"
 msgstr ""
 
+# ADD_BIND_VALID_EXT
 #: ADD_BIND_PREF_BIND
 msgid "Preferred Binding"
 msgstr ""
 
+# ADD_BIND_VALID_REQ
 #: ADD_BIND_PUR
-msgid "Purpose"
+msgid "Purpose (ADD_BIND_PUR)"
 msgstr ""
 
+# ADD_BIND_VALUE_COMP
 #: ADD_BIND_RECOM_VALUE_SET
 msgid "This is the value set that is recommended (documentation should explain why)"
 msgstr ""
 
+# BIND_REND_NO_CONTENT
 #: ADD_BIND_REQUIRED
-msgid "Required"
+msgid "Required (ADD_BIND_REQUIRED)"
 msgstr ""
 
+# BUNDLE_DOCUMENT_CONTENT
 #: ADD_BIND_REQ_BIND
 msgid "Required Binding"
 msgstr ""
 
+# BUNDLE_ETAG
 #: ADD_BIND_STARTER
-msgid "Starter"
+msgid "Starter (ADD_BIND_STARTER)"
 msgstr ""
 
+# BUNDLE_HEADER_DOC_ENTRY_RD
 #: ADD_BIND_UI
-msgid "UI"
+msgid "UI (ADD_BIND_UI)"
 msgstr ""
 
+# BUNDLE_HEADER_DOC_ENTRY_U
 #: ADD_BIND_UI_BIND
 msgid "UI Binding"
 msgstr ""
 
+# BUNDLE_HEADER_DOC_ENTRY_URD
 #: ADD_BIND_UNKNOWN_PUR
 msgid "Unknown code for purpose"
 msgstr ""
 
+# BUNDLE_HEADER_ENTRY
 #: ADD_BIND_USE
-msgid "Usage"
+msgid "Usage (ADD_BIND_USE)"
 msgstr ""
 
+# BUNDLE_HEADER_ENTRY_URL
 #: ADD_BIND_VALID_EXT
 msgid "Validators will check this binding (strength = extensible)"
 msgstr ""
 
+# BUNDLE_HEADER_ROOT
 #: ADD_BIND_VALID_REQ
 msgid "Validators will check this binding (strength = required)"
 msgstr ""
 
+# BUNDLE_IF_MATCH
 #: ADD_BIND_VALUE_COMP
 msgid "This value set is a component of the base value set"
 msgstr ""
 
+# BUNDLE_IF_MOD
 #: BIND_REND_NO_CONTENT
 msgid "No Content Type"
 msgstr ""
 
+# BUNDLE_IF_NONE
 #: BUNDLE_DOCUMENT_CONTENT
 msgid "Additional Document Content"
 msgstr "Zus\u00e4tzlicher Dokumenteninhalt"
 
+# BUNDLE_IF_NON_MATCH
 #: BUNDLE_ETAG
 msgid "ETag = {0}"
 msgstr "ETag = {0}"
 
+# BUNDLE_LAST_MOD
 #: BUNDLE_HEADER_DOC_ENTRY_RD
 msgid "{0}. {2}/{3}"
 msgstr "{0}. {2}/{3}"
 
+# BUNDLE_LOCATION
 #: BUNDLE_HEADER_DOC_ENTRY_U
 msgid "{0}. {1}"
 msgstr "{0}. {1}"
 
+# BUNDLE_REQUEST
 #: BUNDLE_HEADER_DOC_ENTRY_URD
 msgid "{0}. {1} ({2}/{3})"
 msgstr "{0}. {1} ({2}/{3})"
 
+# BUNDLE_RESOURCE
 #: BUNDLE_HEADER_ENTRY
 msgid "Entry {0}"
 msgstr ""
 
+# BUNDLE_RESPONSE
 #: BUNDLE_HEADER_ENTRY_URL
 msgid "Entry {0} - fullUrl = {1}"
 msgstr ""
 
+# BUNDLE_REV_EXCP
 #: BUNDLE_HEADER_ROOT
 msgid "Bundle {0} of type {1}"
 msgstr ""
 
+# BUNDLE_REV_INV_DOC
 #: BUNDLE_IF_MATCH
 msgid "If-Match = {0}"
 msgstr ""
 
+# BUNDLE_SEARCH
 #: BUNDLE_IF_MOD
 msgid "If-Modified-Since = {0}"
 msgstr ""
 
+# BUNDLE_SEARCH_MODE
 #: BUNDLE_IF_NONE
 msgid "If-None-Exist = {0}"
 msgstr "If-None= {0}"
 
+# BUNDLE_SEARCH_SCORE
 #: BUNDLE_IF_NON_MATCH
 msgid "If-None-Match = {0}"
 msgstr ""
 
+# BUND_REND_GEN_NARR
 #: BUNDLE_LAST_MOD
 msgid "LastModified = {0}"
 msgstr ""
 
+# BUND_REND_INVALID_DOC
 #: BUNDLE_LOCATION
 msgid "Location = {0}"
 msgstr "Locatio"
 
+# BUND_REND_RES
 #: BUNDLE_REQUEST
 msgid "Request:"
 msgstr ""
 
+# CANON_REND_COMMITTEE
 #: BUNDLE_RESOURCE
 msgid "Resource {0}:"
 msgstr "Resso}:"
 
+# CANON_REND_COPYRIGHT
 #: BUNDLE_RESPONSE
 msgid "Response:"
 msgstr ""
 
+# CANON_REND_DEFINITION
 #: BUNDLE_REV_EXCP
 msgid "Exception generating narrative: {0}"
 msgstr ""
 
+# CANON_REND_JSON
 #: BUNDLE_REV_INV_DOC
 msgid "Invalid document - first entry is not a Composition"
 msgstr ""
 
+# CANON_REND_MATURITY
 #: BUNDLE_SEARCH
 msgid "Search:"
 msgstr "Suche:"
 
+# CANON_REND_NAME
 #: BUNDLE_SEARCH_MODE
 msgid "Mode = {0}"
 msgstr ""
 
+# CANON_REND_PUBLISHER
 #: BUNDLE_SEARCH_SCORE
 msgid "Score = {0}"
 msgstr ""
 
+# CANON_REND_SOURCE_RES
 #: BUND_REND_GEN_NARR
 msgid "generating narrative"
 msgstr ""
 
+# CANON_REND_STATUS
 #: BUND_REND_INVALID_DOC
 msgid "Invalid document ''{0}'' - first entry is not a Composition ({0})"
 msgstr ""
 
+# CANON_REND_TITLE
 #: BUND_REND_RES
 msgid "resource"
 msgstr ""
 
+# CANON_REND_TURTLE
 #: CANON_REND_COMMITTEE
 msgid "Committee"
 msgstr ""
 
+# CANON_REND_URL
 #: CANON_REND_COPYRIGHT
-msgid "Copyright"
+msgid "Copyright (CANON_REND_COPYRIGHT)"
 msgstr ""
 
+# CANON_REND_VER
 #: CANON_REND_DEFINITION
-msgid "Definition"
+msgid "Definition (CANON_REND_DEFINITION)"
 msgstr ""
 
+# CANON_REND_XML
 #: CANON_REND_JSON
 msgid "JSON"
 msgstr ""
 
+# CAPABILITY_ADD_SUPP_PROF
 #: CANON_REND_MATURITY
-msgid "Maturity"
+msgid "Maturity (CANON_REND_MATURITY)"
 msgstr ""
 
+# CAPABILITY_BASE_SYS
 #: CANON_REND_NAME
-msgid "Name"
+msgid "Name (CANON_REND_NAME)"
 msgstr ""
 
+# CAPABILITY_COMB_SEARCH_PAR
 #: CANON_REND_PUBLISHER
-msgid "Publisher"
+msgid "Publisher (CANON_REND_PUBLISHER)"
 msgstr ""
 
+# CAPABILITY_CONF
 #: CANON_REND_SOURCE_RES
 msgid "Source Resource"
 msgstr ""
 
+# CAPABILITY_CORS_NO
 #: CANON_REND_STATUS
-msgid "Status"
+msgid "Status (CANON_REND_STATUS)"
 msgstr ""
 
+# CAPABILITY_CORS_YES
 #: CANON_REND_TITLE
-msgid "Title"
+msgid "Title (CANON_REND_TITLE)"
 msgstr ""
 
+# CAPABILITY_CREATE_INT
 #: CANON_REND_TURTLE
 msgid "Turtle"
 msgstr ""
 
+# CAPABILITY_CRIT
 #: CANON_REND_URL
-msgid "Defining URL"
+msgid "Defining URL (CANON_REND_URL)"
 msgstr ""
 
+# CAPABILITY_DELETE_INT
 #: CANON_REND_VER
-msgid "Version"
+msgid "Version (CANON_REND_VER)"
 msgstr ""
 
+# CAPABILITY_DOC
 #: CANON_REND_XML
-msgid "XML"
+msgid "XML (CANON_REND_XML)"
 msgstr ""
 
+# CAPABILITY_EXT_OP
 #: CAPABILITY_ADD_SUPP_PROF
 msgid "Additional supported profiles:"
 msgstr ""
 
+# CAPABILITY_FHIR
 #: CAPABILITY_BASE_SYS
 msgid "Base System Profile"
 msgstr ""
 
+# CAPABILITY_FHIR_VER
 #: CAPABILITY_COMB_SEARCH_PAR
 msgid "Combined Search Parameters"
 msgstr ""
 
+# CAPABILITY_HISTORY_INT
 #: CAPABILITY_CONF
-msgid "Conformance"
+msgid "Conformance (CAPABILITY_CONF)"
 msgstr ""
 
+# CAPABILITY_HISTORY_TYPE
 #: CAPABILITY_CORS_NO
 msgid "Enable CORS: no"
 msgstr ""
 
+# CAPABILITY_IMP_VER
 #: CAPABILITY_CORS_YES
 msgid "Enable CORS: yes"
 msgstr ""
 
+# CAPABILITY_INT
 #: CAPABILITY_CREATE_INT
 msgid "POST a new resource (create interaction)"
 msgstr ""
 
+# CAPABILITY_INTER_SUPP
 #: CAPABILITY_CRIT
-msgid "Criteria"
+msgid "Criteria (CAPABILITY_CRIT)"
 msgstr ""
 
+# CAPABILITY_INT_DESC
 #: CAPABILITY_DELETE_INT
 msgid "DELETE a resource (delete interaction)"
 msgstr ""
 
+# CAPABILITY_INT_SUMM
 #: CAPABILITY_DOC
-msgid "Documentation"
+msgid "Documentation (CAPABILITY_DOC)"
 msgstr ""
 
+# CAPABILITY_NOTE_CAP
 #: CAPABILITY_EXT_OP
 msgid "Extended Operations"
 msgstr ""
 
+# CAPABILITY_OP
 #: CAPABILITY_FHIR
 msgid "Core FHIR Resource"
 msgstr ""
 
+# CAPABILITY_OPER
 #: CAPABILITY_FHIR_VER
 msgid "FHIR Version: {0}"
 msgstr ""
 
+# CAPABILITY_OTH_RES_ENB
 #: CAPABILITY_HISTORY_INT
 msgid "GET changes to a resource (history interaction on instance)"
 msgstr ""
 
+# CAPABILITY_PAR
 #: CAPABILITY_HISTORY_TYPE
 msgid "GET changes for all resources of the type (history interaction on type)"
 msgstr ""
 
+# CAPABILITY_PARS
 #: CAPABILITY_IMP_VER
 msgid "Implementation Guide Version: {0}"
 msgstr ""
 
+# CAPABILITY_PATCH_INT
 #: CAPABILITY_INT
 msgid "interaction."
 msgstr ""
 
+# CAPABILITY_PROF
 #: CAPABILITY_INTER_SUPP
 msgid "The interactions supported by each resource ("
 msgstr ""
 
+# CAPABILITY_PROF_CONF
 #: CAPABILITY_INT_DESC
 msgid "interaction described as follows:"
 msgstr ""
 
+# CAPABILITY_PROF_MAP
 #: CAPABILITY_INT_SUMM
 msgid "Interaction summary"
 msgstr ""
 
+# CAPABILITY_PUB_BY
 #: CAPABILITY_NOTE_CAP
 msgid "Note to Implementers: FHIR Capabilities"
 msgstr ""
 
+# CAPABILITY_PUB_ON
 #: CAPABILITY_OP
 msgid "Operations"
 msgstr ""
 
+# CAPABILITY_READ_INT
 #: CAPABILITY_OPER
 msgid "Operation"
 msgstr ""
 
+# CAPABILITY_REF_PROF
 #: CAPABILITY_OTH_RES_ENB
 msgid "The other resources enabled for"
 msgstr ""
 
+# CAPABILITY_REQ_RECOM
 #: CAPABILITY_PAR
-msgid "Parameter"
+msgid "Parameter (CAPABILITY_PAR)"
 msgstr ""
 
+# CAPABILITY_REST_CAPS
 #: CAPABILITY_PARS
-msgid "Parameters"
+msgid "Parameters (CAPABILITY_PARS)"
 msgstr ""
 
+# CAPABILITY_REST_CONFIG
 #: CAPABILITY_PATCH_INT
 msgid "PATCH a new resource version (patch interaction)"
 msgstr ""
 
+# CAPABILITY_RES_CONF
 #: CAPABILITY_PROF
-msgid "Profile"
+msgid "Profile (CAPABILITY_PROF)"
 msgstr ""
 
+# CAPABILITY_RES_ENB
 #: CAPABILITY_PROF_CONF
 msgid "Profile Conformance"
 msgstr ""
 
+# CAPABILITY_RES_OPER
 #: CAPABILITY_PROF_MAP
 msgid "Profile Mapping"
 msgstr ""
 
+# CAPABILITY_RES_PRO
 #: CAPABILITY_PUB_BY
 msgid "Published by: {0}"
 msgstr ""
 
+# CAPABILITY_RES_TYP
 #: CAPABILITY_PUB_ON
 msgid "Published on: {0}"
 msgstr ""
 
+# CAPABILITY_REV_PROF
 #: CAPABILITY_READ_INT
 msgid "GET a resource (read interaction)"
 msgstr ""
 
+# CAPABILITY_SEARCHES
 #: CAPABILITY_REF_PROF
 msgid "Reference Policy"
 msgstr ""
 
+# CAPABILITY_SEARCH_INT
 #: CAPABILITY_REQ_RECOM
 msgid "Required and recommended search parameters"
 msgstr ""
 
+# CAPABILITY_SEARCH_PAR
 #: CAPABILITY_REST_CAPS
 msgid "FHIR RESTful Capabilities"
 msgstr ""
 
+# CAPABILITY_SEARCH_PARS
 #: CAPABILITY_REST_CONFIG
 msgid "REST Configuration: {0}"
 msgstr ""
 
+# CAPABILITY_SHOULD_SUPP
 #: CAPABILITY_RES_CONF
 msgid "Resource Conformance: {0}"
 msgstr ""
 
+# CAPABILITY_SUMM
 #: CAPABILITY_RES_ENB
 msgid "The linked resources enabled for"
 msgstr ""
 
+# CAPABILITY_SUMM_RES
 #: CAPABILITY_RES_OPER
 msgid "The operations on the resource (if any)"
 msgstr ""
 
+# CAPABILITY_SUMM_SYS_INT
 #: CAPABILITY_RES_PRO
 msgid "Capabilities by Resource/Profile"
 msgstr ""
 
+# CAPABILITY_SUPP
 #: CAPABILITY_RES_TYP
 msgid "Resource Type"
 msgstr ""
 
+# CAPABILITY_SUPPS
 #: CAPABILITY_REV_PROF
 msgid "The relevant profiles (if any)"
 msgstr ""
 
+# CAPABILITY_SUPP_FORM
 #: CAPABILITY_SEARCHES
 msgid "Searches"
 msgstr ""
 
+# CAPABILITY_SUPP_PATCH_FORM
 #: CAPABILITY_SEARCH_INT
 msgid "GET all set of resources of the type (search interaction)"
 msgstr ""
 
+# CAPABILITY_SUPP_PROF
 #: CAPABILITY_SEARCH_PAR
 msgid "The required, recommended, and some optional search parameters (if any)."
 msgstr ""
 
+# CAPABILITY_SUPP_PROFS
 #: CAPABILITY_SEARCH_PARS
 msgid "Search Parameters"
 msgstr ""
 
+# CAPABILITY_SUPP_THE
 #: CAPABILITY_SHOULD_SUPP
 msgid "SHOULD Support the Following Implementation Guides"
 msgstr ""
 
+# CAPABILITY_TYP
 #: CAPABILITY_SUMM
-msgid "Summary"
+msgid "Summary (CAPABILITY_SUMM)"
 msgstr ""
 
+# CAPABILITY_TYPS
 #: CAPABILITY_SUMM_RES
 msgid "The summary table lists the resources that are part of this configuration, and for each resource it lists:"
 msgstr ""
 
+# CAPABILITY_TYP_PRES
 #: CAPABILITY_SUMM_SYS_INT
 msgid "Summary of System-wide Interactions"
 msgstr ""
 
+# CAPABILITY_UPDATE_INT
 #: CAPABILITY_SUPP
 msgid "support"
 msgstr ""
 
+# CAPABILITY_VREAD_INT
 #: CAPABILITY_SUPPS
 msgid "Supports"
 msgstr ""
 
+# CAPABILTY_ALLOW_CAP
 #: CAPABILITY_SUPP_FORM
 msgid "Supported Formats:"
 msgstr ""
 
+# CAPABILTY_SHALL_SUPP
 #: CAPABILITY_SUPP_PATCH_FORM
 msgid "Supported Patch Formats:"
 msgstr ""
 
+# CODEPROP_CODE
 #: CAPABILITY_SUPP_PROF
-msgid "Supported Profiles"
+msgid "Supported Profile"
 msgstr ""
 
+# CODESYSTEM_CONCEPTS
 #: CAPABILITY_SUPP_PROFS
 msgid "Supported Profiles"
 msgstr ""
 
+# CODESYSTEM_CONTENT_COMPLETE
 #: CAPABILITY_SUPP_THE
 msgid "Supports the"
 msgstr ""
 
+# CODESYSTEM_CONTENT_EXAMPLE
 #: CAPABILITY_TYP
-msgid "Type"
+msgid "Type (CAPABILITY_TYP)"
 msgstr ""
 
+# CODESYSTEM_CONTENT_FRAGMENT
 #: CAPABILITY_TYPS
 msgid "Types"
 msgstr ""
 
+# CODESYSTEM_CONTENT_NOTPRESENT
 #: CAPABILITY_TYP_PRES
 msgid "ype are only present if at least one of the resources has support for them."
 msgstr ""
 
+# CODESYSTEM_CONTENT_SUPPLEMENT
 #: CAPABILITY_UPDATE_INT
 msgid "PUT a new resource version (update interaction)"
 msgstr ""
 
+# CODESYSTEM_DEPRECATED
 #: CAPABILITY_VREAD_INT
 msgid "GET past versions of resources (vread interaction)"
 msgstr ""
 
+# CODESYSTEM_DESC
 #: CAPABILTY_ALLOW_CAP
 msgid "Any FHIR capability may be 'allowed' by the system unless explicitly marked as \"SHALL NOT\". A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
 msgstr ""
 
+# CODESYSTEM_FILTERS
 #: CAPABILTY_SHALL_SUPP
 msgid "SHALL Support the Following Implementation Guides"
 msgstr ""
 
+# CODESYSTEM_FILTER_CODE
 #: CODEPROP_CODE
-msgid "Code"
+msgid "Code (CODEPROP_CODE)"
 msgstr ""
 
+# CODESYSTEM_FILTER_OP
 #: CODESYSTEM_CONCEPTS
 msgid "Concepts"
 msgstr ""
 
-#: CODESYSTEM_CONTENT_COMPLETE 
+# CODESYSTEM_FILTER_VALUE
+#: CODESYSTEM_CONTENT_COMPLETE
 msgid "This <param name="cased"/> code system <param name="cs"/> defines the following code<if test="code-count != 1">s</if><param name="h"/>:"
 msgstr ""
 
+# CODESYSTEM_PROPS
 #: CODESYSTEM_CONTENT_EXAMPLE
 msgid "This <param name="cased"/> code system <param name="cs"/> provides some code<if test="code-count != 1">s</if><param name="h"/> <b>that are example only</b>:"
 msgstr ""
 
+# CODESYSTEM_PROPS_DESC
 #: CODESYSTEM_CONTENT_FRAGMENT
 msgid "This <param name="cased"/> code system <param name="cs"/> provides <b>a fragment</b> that includes following code<if test="code-count != 1">s</if><param name="h"/>:"
 msgstr ""
 
+# CODESYSTEM_PROP_CODE
 #: CODESYSTEM_CONTENT_NOTPRESENT
 msgid "This <param name="cased"/> code system <param name="cs"/> defines codes<param name="h"/>, but no codes are represented here"
 msgstr ""
 
+# CODESYSTEM_PROP_DESC
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 msgid "This code system <param name="cs"/> defines {0} on the following code<if test="code-count != 1">s</if>:"
 msgstr ""
 
+# CODESYSTEM_PROP_NAME
 #: CODESYSTEM_DEPRECATED
-msgid "Deprecated"
+msgid "Deprecated (CODESYSTEM_DEPRECATED)"
 msgstr ""
 
+# CODESYSTEM_PROP_TYPE
 #: CODESYSTEM_DESC
-msgid "Description"
+msgid "Description (CODESYSTEM_DESC)"
 msgstr ""
 
+# CODESYSTEM_PROP_URI
 #: CODESYSTEM_FILTERS
 msgid "Filters"
 msgstr ""
 
+# CODE_SYS_ADD_LANG
 #: CODESYSTEM_FILTER_CODE
-msgid "Code"
+msgid "Code (CODESYSTEM_FILTER_CODE)"
 msgstr ""
 
+# CODE_SYS_CODE
 #: CODESYSTEM_FILTER_OP
 msgid "Op"
 msgstr ""
 
+# CODE_SYS_CODE_NOT_HERE
 #: CODESYSTEM_FILTER_VALUE
-msgid "Value"
+msgid "Value (CODESYSTEM_FILTER_VALUE)"
 msgstr ""
 
+# CODE_SYS_COMPLETE
 #: CODESYSTEM_PROPS
-msgid "Properties"
+msgid "Properties (CODESYSTEM_PROPS)"
 msgstr ""
 
+# CODE_SYS_CONTENT
 #: CODESYSTEM_PROPS_DESC
 msgid "This code system defines the following properties for its concepts"
 msgstr ""
 
+# CODE_SYS_COPY
 #: CODESYSTEM_PROP_CODE
-msgid "Code"
+msgid "Code (CODESYSTEM_PROP_CODE)"
 msgstr ""
 
+# CODE_SYS_DISP
 #: CODESYSTEM_PROP_DESC
-msgid "Description"
+msgid "Description (CODESYSTEM_PROP_DESC)"
 msgstr ""
 
+# CODE_SYS_DISP_PROP
 #: CODESYSTEM_PROP_NAME
-msgid "Name"
+msgid "Name (CODESYSTEM_PROP_NAME)"
 msgstr ""
 
+# CODE_SYS_EXAMPLE
 #: CODESYSTEM_PROP_TYPE
-msgid "Type"
+msgid "Type (CODESYSTEM_PROP_TYPE)"
 msgstr ""
 
+# CODE_SYS_FEAT
 #: CODESYSTEM_PROP_URI
-msgid "URI"
+msgid "URI (CODESYSTEM_PROP_URI)"
 msgstr ""
 
+# CODE_SYS_FOR_OID
 #: CODE_SYS_ADD_LANG
-msgid "Additional Language Displays"
+msgid "Additional Language Displays (CODE_SYS_ADD_LANG)"
 msgstr ""
 
+# CODE_SYS_FRAGMENT
 #: CODE_SYS_CODE
-msgid "Code"
+msgid "Code (CODE_SYS_CODE)"
 msgstr ""
 
+# CODE_SYS_IN_A_HIERARCHY
 #: CODE_SYS_CODE_NOT_HERE
 msgid "This CodeSystem is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
 msgstr ""
 
+# CODE_SYS_NOTPRESENT
 #: CODE_SYS_COMPLETE
 msgid "All the concepts defined by the code system are included in the code system resource"
 msgstr ""
 
+# CODE_SYS_OID
 #: CODE_SYS_CONTENT
-msgid "Content"
+msgid "Content (CODE_SYS_CONTENT)"
 msgstr ""
 
+# CODE_SYS_PROP
 #: CODE_SYS_COPY
 msgid "Copy"
 msgstr ""
 
+# CODE_SYS_REPLACED_BY
 #: CODE_SYS_DISP
 msgid "displays"
 msgstr ""
 
+# CODE_SYS_SUPPLEMENT
 #: CODE_SYS_DISP_PROP
 msgid "displays and properties"
 msgstr ""
 
+# CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_EXAMPLE
 msgid "A few representative concepts are included in the code system resource"
 msgstr ""
 
+# CODE_SYS_UNDEF_HIER
 #: CODE_SYS_FEAT
 msgid "features"
 msgstr ""
 
+# CODE_SYS_UNKN_MODE
 #: CODE_SYS_FOR_OID
-msgid "for OID based terminology systems"
+msgid "for OID based terminology systems (CODE_SYS_FOR_OID)"
 msgstr ""
 
+# CODE_SYS_VALUE_SET
 #: CODE_SYS_FRAGMENT
 msgid "A subset of the code system concepts are included in the code system resource"
 msgstr ""
 
+# CONC_MAP_CMNT
 #: CODE_SYS_IN_A_HIERARCHY
 msgid "in a {0} hierarchy"
 msgstr ""
 
+# CONC_MAP_CODE
 #: CODE_SYS_NOTPRESENT
 msgid "None of the concepts defined by the code system are included in the code system resource"
 msgstr ""
 
+# CONC_MAP_CODES
 #: CODE_SYS_OID
-msgid "OID"
+msgid "OID (CODE_SYS_OID)"
 msgstr ""
 
+# CONC_MAP_CODE_SYS_UNSPEC
 #: CODE_SYS_PROP
 msgid "properties"
 msgstr ""
 
+# CONC_MAP_FRM
 #: CODE_SYS_REPLACED_BY
 msgid "(replaced by"
 msgstr ""
 
+# CONC_MAP_FROM
 #: CODE_SYS_SUPPLEMENT
 msgid "This code system resource is a supplement to"
 msgstr ""
 
+# CONC_MAP_GRP
 #: CODE_SYS_THE_VALUE_SET
 msgid "is the value set for all codes in this code system"
 msgstr ""
 
+# CONC_MAP_NOT_SPEC
 #: CODE_SYS_UNDEF_HIER
-msgid "in an undefined heirarchy"
+msgid "in an undefined hierarchy"
 msgstr ""
 
+# CONC_MAP_NO_PROD_USE
 #: CODE_SYS_UNKN_MODE
 msgid "Unknown CodeSystemContentMode mode"
 msgstr ""
 
+# CONC_MAP_PROP
 #: CODE_SYS_VALUE_SET
-msgid "Value Set"
+msgid "Value Set (CODE_SYS_VALUE_SET)"
 msgstr ""
 
+# CONC_MAP_PUB_ON
 #: CONC_MAP_CMNT
-msgid "Comment"
+msgid "Comment (CONC_MAP_CMNT)"
 msgstr ""
 
+# CONC_MAP_REL
 #: CONC_MAP_CODE
-msgid "Code"
+msgid "Code (CONC_MAP_CODE)"
 msgstr ""
 
+# CONC_MAP_SOURCE
 #: CONC_MAP_CODES
 msgid "Codes"
 msgstr ""
 
+# CONC_MAP_SRC_DET
 #: CONC_MAP_CODE_SYS_UNSPEC
 msgid "unspecified code system"
 msgstr ""
 
+# CONC_MAP_TO
 #: CONC_MAP_FRM
 msgid "from"
 msgstr ""
 
+# CONC_MAP_TRGT
 #: CONC_MAP_FROM
 msgid "Mapping from"
 msgstr ""
 
+# CONC_MAP_TRGT_DET
 #: CONC_MAP_GRP
 msgid "Group {0}"
 msgstr ""
 
+# DATA_REND_AFTRBKFST
 #: CONC_MAP_NOT_SPEC
 msgid "(not specified)"
 msgstr ""
 
+# DATA_REND_AFTRDINR
 #: CONC_MAP_NO_PROD_USE
 msgid "(not intended for production usage)."
 msgstr ""
 
+# DATA_REND_AFTRLUNCH
 #: CONC_MAP_PROP
-msgid "Properties"
+msgid "Properties (CONC_MAP_PROP)"
 msgstr ""
 
+# DATA_REND_AFTRMEALS
 #: CONC_MAP_PUB_ON
 msgid "Published on {0}"
 msgstr ""
 
+# DATA_REND_AFTRWKNG
 #: CONC_MAP_REL
 msgid "Relationship"
 msgstr ""
 
+# DATA_REND_ATBKFST
 #: CONC_MAP_SOURCE
 msgid "Source Code"
 msgstr ""
 
+# DATA_REND_ATDINR
 #: CONC_MAP_SRC_DET
 msgid "Source Concept Details"
 msgstr ""
 
+# DATA_REND_ATLUNCH
 #: CONC_MAP_TO
 msgid "to"
 msgstr ""
 
+# DATA_REND_BASE64
 #: CONC_MAP_TRGT
 msgid "Target Code"
 msgstr ""
 
+# DATA_REND_BFBKFST
 #: CONC_MAP_TRGT_DET
 msgid "Target Concept Details"
 msgstr ""
 
+# DATA_REND_BFDINR
 #: DATA_REND_AFTRBKFST
 msgid "after breakfast"
 msgstr ""
 
+# DATA_REND_BFLUNCH
 #: DATA_REND_AFTRDINR
 msgid "after dinner"
 msgstr ""
 
+# DATA_REND_BFMEALS
 #: DATA_REND_AFTRLUNCH
 msgid "after lunch"
 msgstr ""
 
+# DATA_REND_BFSLEEP
 #: DATA_REND_AFTRMEALS
 msgid "after meals"
 msgstr ""
 
+# DATA_REND_BY
 #: DATA_REND_AFTRWKNG
 msgid "after waking"
 msgstr ""
 
+# DATA_REND_CODE
 #: DATA_REND_ATBKFST
 msgid "at breakfast"
 msgstr ""
 
+# DATA_REND_CODES
 #: DATA_REND_ATDINR
 msgid "at dinner"
 msgstr ""
 
+# DATA_REND_COND
 #: DATA_REND_ATLUNCH
 msgid "at lunch"
 msgstr ""
 
+# DATA_REND_COUNT
 #: DATA_REND_BASE64
 msgid "(base64 data - {0}  bytes)"
 msgstr ""
 
+# DATA_REND_DATA
 #: DATA_REND_BFBKFST
 msgid "before breakfast"
 msgstr ""
 
+# DATA_REND_DETAILS
 #: DATA_REND_BFDINR
 msgid "before dinner"
 msgstr ""
 
+# DATA_REND_DETAILS_STATED
 #: DATA_REND_BFLUNCH
 msgid "before lunch"
 msgstr ""
 
+# DATA_REND_DICOM
 #: DATA_REND_BFMEALS
 msgid "before meals"
 msgstr ""
 
+# DATA_REND_DIM
 #: DATA_REND_BFSLEEP
 msgid "before sleeping"
 msgstr ""
 
+# DATA_REND_DURATION
 #: DATA_REND_BY
 msgid "By"
 msgstr ""
 
+# DATA_REND_ERROR
 #: DATA_REND_CODE
-msgid "Code"
+msgid "Code (DATA_REND_CODE)"
 msgstr ""
 
+# DATA_REND_EVENTS
 #: DATA_REND_CODES
 msgid "Codes:"
 msgstr ""
 
+# DATA_REND_EXCEPTION
 #: DATA_REND_COND
 msgid "Condition"
 msgstr ""
 
+# DATA_REND_FACT
 #: DATA_REND_COUNT
 msgid "Count {0}"
 msgstr ""
 
+# DATA_REND_FAX
 #: DATA_REND_DATA
 msgid "Data: {0}"
 msgstr ""
 
+# DATA_REND_FILT
 #: DATA_REND_DETAILS
 msgid "(Details: {0}  code"
 msgstr ""
 
+# DATA_REND_GETCODE
 #: DATA_REND_DETAILS_STATED
 msgid "(Details: {0} code {1} {2} {3} ', stated as ' {4} {5}"
 msgstr ""
 
+# DATA_REND_GLN
 #: DATA_REND_DICOM
 msgid "DICOM"
 msgstr ""
 
+# DATA_REND_ICD
 #: DATA_REND_DIM
 msgid "Dimensions: {0}"
 msgstr ""
 
+# DATA_REND_INT
 #: DATA_REND_DURATION
 msgid "Duration {0}"
 msgstr ""
 
+# DATA_REND_LIMIT
 #: DATA_REND_ERROR
 msgid "Error: {0}"
 msgstr ""
 
+# DATA_REND_LOINC
 #: DATA_REND_EVENTS
 msgid "Events: {0}"
 msgstr ""
 
+# DATA_REND_LOWER
 #: DATA_REND_EXCEPTION
 msgid "Exception"
 msgstr ""
 
+# DATA_REND_MEALS
 #: DATA_REND_FACT
 msgid "Factor: {0}"
 msgstr ""
 
+# DATA_REND_MKDWN_LNK
 #: DATA_REND_FAX
 msgid "Fax: {0}"
 msgstr ""
 
+# DATA_REND_NAME
 #: DATA_REND_FILT
-msgid "Filter"
+msgid "Filter (DATA_REND_FILT)"
 msgstr ""
 
+# DATA_REND_NOT_STAT
 #: DATA_REND_GETCODE
-msgid "Code: {0}"
+msgid "Code: {0} (DATA_REND_GETCODE)"
 msgstr ""
 
+# DATA_REND_NO_DISP
 #: DATA_REND_GLN
 msgid "Global Location Number"
 msgstr ""
 
+# DATA_REND_ONCE
 #: DATA_REND_ICD
 msgid "ICD-9"
 msgstr ""
 
+# DATA_REND_ONGOING
 #: DATA_REND_INT
 msgid "Interval: {0}"
 msgstr ""
 
+# DATA_REND_ORIGIN
 #: DATA_REND_LIMIT
 msgid "Limit"
 msgstr ""
 
+# DATA_REND_PER
 #: DATA_REND_LOINC
 msgid "LOINC"
 msgstr ""
 
+# DATA_REND_PERIOD
 #: DATA_REND_LOWER
 msgid "Lower: {0}"
 msgstr ""
 
+# DATA_REND_PHONE
 #: DATA_REND_MEALS
 msgid "at meals"
 msgstr ""
 
+# DATA_REND_RXNORM
 #: DATA_REND_MKDWN_LNK
 msgid "Unable to resolve markdown link"
 msgstr ""
 
+# DATA_REND_SEARCH
 #: DATA_REND_NAME
-msgid "Name"
+msgid "Name (DATA_REND_NAME)"
 msgstr ""
 
+# DATA_REND_SNOMED
 #: DATA_REND_NOT_STAT
 msgid "[not stated]"
 msgstr ""
 
+# DATA_REND_SORT
 #: DATA_REND_NO_DISP
 msgid "No display for {0}"
 msgstr ""
 
+# DATA_REND_SOURCE
 #: DATA_REND_ONCE
 msgid "Once"
 msgstr ""
 
+# DATA_REND_STARTING
 #: DATA_REND_ONGOING
 msgid "(ongoing)"
 msgstr ""
 
+# DATA_REND_SUB
 #: DATA_REND_ORIGIN
 msgid "Origin: {0}"
 msgstr ""
 
+# DATA_REND_THESE_CODES
 #: DATA_REND_PER
 msgid "per"
 msgstr ""
 
+# DATA_REND_TIMING
 #: DATA_REND_PERIOD
 msgid "period:"
 msgstr ""
 
+# DATA_REND_TO_DO
 #: DATA_REND_PHONE
 msgid "Phone: {0}"
 msgstr ""
 
+# DATA_REND_TYPE
 #: DATA_REND_RXNORM
 msgid "RxNorm"
 msgstr ""
 
+# DATA_REND_UCUM
 #: DATA_REND_SEARCH
 msgid "Search on: {0}"
 msgstr ""
 
+# DATA_REND_UNKNWN
 #: DATA_REND_SNOMED
 msgid "SNOMED CT"
 msgstr ""
 
+# DATA_REND_UNRD_EX
 #: DATA_REND_SORT
 msgid "Sort"
 msgstr ""
 
+# DATA_REND_UNTIL
 #: DATA_REND_SOURCE
 msgid "source"
 msgstr ""
 
+# DATA_REND_UP
 #: DATA_REND_STARTING
 msgid "Starting {0}"
 msgstr ""
 
+# DATA_REND_USE
 #: DATA_REND_SUB
-msgid "Subject"
+msgid "Subject (DATA_REND_SUB)"
 msgstr ""
 
+# DATA_REND_VALUE
 #: DATA_REND_THESE_CODES
 msgid "One of these codes:"
 msgstr ""
 
+# DATA_REND_VALUESET
 #: DATA_REND_TIMING
 msgid "Timing"
 msgstr ""
 
+# DATA_REND_VERSION
 #: DATA_REND_TO_DO
 msgid "to do: {0}"
 msgstr ""
 
+# DIAG_REP_REND_AGE
 #: DATA_REND_TYPE
-msgid "Type"
+msgid "Type (DATA_REND_TYPE)"
 msgstr ""
 
+# DIAG_REP_REND_CODE
 #: DATA_REND_UCUM
-msgid "UCUM"
+msgid "UCUM (DATA_REND_UCUM)"
 msgstr ""
 
+# DIAG_REP_REND_CODECON
 #: DATA_REND_UNKNWN
 msgid "unknown"
 msgstr ""
 
+# DIAG_REP_REND_ERR
 #: DATA_REND_UNRD_EX
 msgid "WARNING: Unrenderable Modifier Extension!"
 msgstr ""
 
+# DIAG_REP_REND_FLAG
 #: DATA_REND_UNTIL
 msgid "Until {0}"
 msgstr ""
 
+# DIAG_REP_REND_FOR
 #: DATA_REND_UP
 msgid "Upper: {0}"
 msgstr ""
 
+# DIAG_REP_REND_IDEN
 #: DATA_REND_USE
 msgid "use:"
 msgstr ""
 
+# DIAG_REP_REND_IDENTIFIER
 #: DATA_REND_VALUE
-msgid "Value"
+msgid "Value (DATA_REND_VALUE)"
 msgstr ""
 
+# DIAG_REP_REND_NOTDONE
 #: DATA_REND_VALUESET
 msgid "In ValueSet"
 msgstr ""
 
+# DIAG_REP_REND_NOTE
 #: DATA_REND_VERSION
 msgid "(version = {0} {1}"
 msgstr ""
 
+# DIAG_REP_REND_NOTRES
 #: DIAG_REP_REND_AGE
 msgid "Age"
 msgstr ""
 
+# DIAG_REP_REND_OBS
 #: DIAG_REP_REND_CODE
-msgid "Code"
+msgid "Code (DIAG_REP_REND_CODE)"
 msgstr ""
 
+# DIAG_REP_REND_PER
 #: DIAG_REP_REND_CODECON
 msgid "Coded Conclusions :"
 msgstr ""
 
+# DIAG_REP_REND_REFRAN
 #: DIAG_REP_REND_ERR
 msgid "Error:"
 msgstr ""
 
+# DIAG_REP_REND_REP
 #: DIAG_REP_REND_FLAG
-msgid "Flags"
+msgid "Flags (DIAG_REP_REND_FLAG)"
 msgstr ""
 
+# DIAG_REP_REND_REPDET
 #: DIAG_REP_REND_FOR
 msgid "for"
 msgstr ""
 
+# DIAG_REP_REND_REQ
 #: DIAG_REP_REND_IDEN
 msgid "Identifier: {0}"
 msgstr ""
 
+# DIAG_REP_REND_REQUEST
 #: DIAG_REP_REND_IDENTIFIER
 msgid "Identifier"
 msgstr ""
 
+# DIAG_REP_REND_SUB
 #: DIAG_REP_REND_NOTDONE
-msgid "Not done yet"
+msgid "Not done yet (DIAG_REP_REND_NOTDONE)"
 msgstr ""
 
+# DIAG_REP_REND_UNABLE
 #: DIAG_REP_REND_NOTE
-msgid "Note"
+msgid "Note (DIAG_REP_REND_NOTE)"
 msgstr ""
 
+# DIAG_REP_REND_VALUE
 #: DIAG_REP_REND_NOTRES
 msgid "This Observation could not be resolved"
 msgstr ""
 
+# DIAG_REP_REND_WHEN
 #: DIAG_REP_REND_OBS
 msgid "Observation"
 msgstr ""
 
+# EXAMPLE_SCEN_STEP_SCEN
 #: DIAG_REP_REND_PER
 msgid "Performer"
 msgstr ""
 
+# EXAMPLE_SCEN_UNABLE_TO_FIND
 #: DIAG_REP_REND_REFRAN
 msgid "Reference Range"
 msgstr ""
 
+# EX_SCEN_ALT
 #: DIAG_REP_REND_REP
 msgid "Reported"
 msgstr ""
 
+# EX_SCEN_BEL
 #: DIAG_REP_REND_REPDET
 msgid "Report Details"
 msgstr ""
 
+# EX_SCEN_CONT
 #: DIAG_REP_REND_REQ
 msgid "Request: {0}"
 msgstr ""
 
+# EX_SCEN_CONTA
 #: DIAG_REP_REND_REQUEST
-msgid "Request"
+msgid "Request (DIAG_REP_REND_REQUEST)"
 msgstr ""
 
+# EX_SCEN_DESC
 #: DIAG_REP_REND_SUB
-msgid "Subject"
+msgid "Subject (DIAG_REP_REND_SUB)"
 msgstr ""
 
+# EX_SCEN_ERR_REN
 #: DIAG_REP_REND_UNABLE
 msgid "Unable to get Patient Details"
 msgstr ""
 
+# EX_SCEN_FVER
 #: DIAG_REP_REND_VALUE
-msgid "Value"
+msgid "Value (DIAG_REP_REND_VALUE)"
 msgstr ""
 
+# EX_SCEN_IN
 #: DIAG_REP_REND_WHEN
 msgid "When For"
 msgstr ""
 
+# EX_SCEN_NAME
 #: EXAMPLE_SCEN_STEP_SCEN
 msgid "Step {0}  - See scenario\n {1}"
 msgstr ""
 
+# EX_SCEN_OTH
 #: EXAMPLE_SCEN_UNABLE_TO_FIND
 msgid "Unable to find referenced version {0} within instance {1}"
 msgstr ""
 
+# EX_SCEN_POSTCON
 #: EX_SCEN_ALT
 msgid "Alternative {0}"
 msgstr ""
 
+# EX_SCEN_PRECON
 #: EX_SCEN_BEL
 msgid "below"
 msgstr ""
 
+# EX_SCEN_PROC
 #: EX_SCEN_CONT
-msgid "Content"
+msgid "Content (EX_SCEN_CONT)"
 msgstr ""
 
+# EX_SCEN_REC
 #: EX_SCEN_CONTA
 msgid "Contains:"
 msgstr ""
 
+# EX_SCEN_REQ
 #: EX_SCEN_DESC
-msgid "Description"
+msgid "Description (EX_SCEN_DESC)"
 msgstr ""
 
+# EX_SCEN_RES
 #: EX_SCEN_ERR_REN
 msgid "Error rendering ExampleScenario {0}"
 msgstr ""
 
+# EX_SCEN_SEE
 #: EX_SCEN_FVER
 msgid "FHIR version"
 msgstr ""
 
+# EX_SCEN_STEP
 #: EX_SCEN_IN
 msgid "Initiator"
 msgstr ""
 
+# EX_SCEN_TIME
 #: EX_SCEN_NAME
-msgid "Name"
+msgid "Name (EX_SCEN_NAME)"
 msgstr ""
 
+# EX_SCEN_TYPE
 #: EX_SCEN_OTH
 msgid "See other scenario"
 msgstr ""
 
+# EX_SCEN_UN
 #: EX_SCEN_POSTCON
 msgid "Post-conditions:"
 msgstr ""
 
+# EX_SCEN_UN_ACT
 #: EX_SCEN_PRECON
 msgid "Pre-conditions:"
 msgstr ""
 
+# EX_SCEN_UN_INST
 #: EX_SCEN_PROC
 msgid "Process: {0}"
 msgstr ""
 
+# EX_SCEN_VER
 #: EX_SCEN_REC
 msgid "Receiver"
 msgstr ""
 
+# IMP_GUIDE_URL
 #: EX_SCEN_REQ
-msgid "Request"
+msgid "Request (EX_SCEN_REQ)"
 msgstr ""
 
+# LIB_REND_ART
 #: EX_SCEN_RES
 msgid "Response"
 msgstr ""
 
+# LIB_REND_AUT
 #: EX_SCEN_SEE
 msgid "See subprocess"
 msgstr ""
 
+# LIB_REND_CONT
 #: EX_SCEN_STEP
 msgid "Step"
 msgstr ""
 
+# LIB_REND_ED
 #: EX_SCEN_TIME
 msgid "... time passes ...\n"
 msgstr ""
 
+# LIB_REND_END
 #: EX_SCEN_TYPE
-msgid "Type"
+msgid "Type (EX_SCEN_TYPE)"
 msgstr ""
 
+# LIB_REND_NOCONT
 #: EX_SCEN_UN
 msgid "Unknown ExampleScenario Renderer Mode {0}"
 msgstr ""
 
+# LIB_REND_PAR
 #: EX_SCEN_UN_ACT
 msgid "Unable to find referenced actor {0}"
 msgstr ""
 
+# LIB_REND_PARA
 #: EX_SCEN_UN_INST
 msgid "Unable to find referenced instance {0}"
 msgstr ""
 
+# LIB_REND_REQ
 #: EX_SCEN_VER
-msgid "version"
+msgid "version (EX_SCEN_VER)"
 msgstr ""
 
+# LIB_REND_REV
 #: IMP_GUIDE_URL
 msgid "The official URL for this implementation guide is:"
 msgstr ""
 
+# LIB_REND_SHOW
 #: LIB_REND_ART
 msgid "Related Artifacts"
 msgstr ""
 
+# LIB_REND_SIZE
 #: LIB_REND_AUT
 msgid "Author"
 msgstr ""
 
+# LIST_REND_CODE
 #: LIB_REND_CONT
 msgid "Contents"
 msgstr ""
 
+# LIST_REND_DAT
 #: LIB_REND_ED
 msgid "Editor"
 msgstr ""
 
+# LIST_REND_DATE
 #: LIB_REND_END
 msgid "Endorser"
 msgstr ""
 
+# LIST_REND_DEL
 #: LIB_REND_NOCONT
 msgid "No Content"
 msgstr ""
 
+# LIST_REND_ENC
 #: LIB_REND_PAR
 msgid "Participants"
 msgstr ""
 
+# LIST_REND_FLAG
 #: LIB_REND_PARA
-msgid "Parameters"
+msgid "Parameters (LIB_REND_PARA)"
 msgstr ""
 
+# LIST_REND_ITEM
 #: LIB_REND_REQ
 msgid "Data Requirements"
 msgstr ""
 
+# LIST_REND_MODE
 #: LIB_REND_REV
 msgid "Reviewer"
 msgstr ""
 
+# LIST_REND_ORD
 #: LIB_REND_SHOW
 msgid "Content not shown - ("
 msgstr ""
 
+# LIST_REND_SRC
 #: LIB_REND_SIZE
 msgid ", size = {0}"
 msgstr ""
 
+# LIST_REND_STAT
 #: LIST_REND_CODE
-msgid "Code: {0}"
+msgid "Code: {0} (LIST_REND_CODE)"
 msgstr ""
 
+# LIST_REND_SUB
 #: LIST_REND_DAT
 msgid "Date"
 msgstr ""
 
+# MAP_DEFAULT_COMMENT
 #: LIST_REND_DATE
 msgid "Date: {0}"
 msgstr ""
 
+# NAME_SYS_COM
 #: LIST_REND_DEL
 msgid "Deleted"
 msgstr ""
 
+# NAME_SYS_COPY
 #: LIST_REND_ENC
 msgid "Encounter:"
 msgstr ""
 
+# NAME_SYS_DEF
 #: LIST_REND_FLAG
 msgid "Flag"
 msgstr ""
 
+# NAME_SYS_FOROID
 #: LIST_REND_ITEM
 msgid "Items"
 msgstr ""
 
+# NAME_SYS_IDEN
 #: LIST_REND_MODE
 msgid "Mode: {0}"
 msgstr ""
 
+# NAME_SYS_NAME
 #: LIST_REND_ORD
 msgid "Order: {0}"
 msgstr ""
 
+# NAME_SYS_OID
 #: LIST_REND_SRC
-msgid "Source:"
+msgid "Source: (LIST_REND_SRC)"
 msgstr ""
 
+# NAME_SYS_PER
 #: LIST_REND_STAT
 msgid "Status: {0}"
 msgstr ""
 
+# NAME_SYS_PREF
 #: LIST_REND_SUB
 msgid "Subject:"
 msgstr ""
 
+# NAME_SYS_PUB
 #: MAP_DEFAULT_COMMENT
 msgid "This element was not defined prior to R5"
 msgstr ""
 
+# NAME_SYS_STAT
 #: NAME_SYS_COM
-msgid "Comment"
+msgid "Comment (NAME_SYS_COM)"
 msgstr ""
 
+# NAME_SYS_SUM
 #: NAME_SYS_COPY
-msgid "Copyright"
+msgid "Copyright (NAME_SYS_COPY)"
 msgstr ""
 
+# NAME_SYS_TITLE
 #: NAME_SYS_DEF
-msgid "Definition"
+msgid "Definition (NAME_SYS_DEF)"
 msgstr ""
 
+# NAME_SYS_TYPE
 #: NAME_SYS_FOROID
-msgid "for OID based terminology systems"
+msgid "for OID based terminology systems (NAME_SYS_FOROID)"
 msgstr ""
 
+# NAME_SYS_URL
 #: NAME_SYS_IDEN
 msgid "Identifiers"
 msgstr ""
 
+# NAME_SYS_VALUE
 #: NAME_SYS_NAME
-msgid "Name"
+msgid "Name (NAME_SYS_NAME)"
 msgstr ""
 
+# NAME_SYS_VER
 #: NAME_SYS_OID
-msgid "OID"
+msgid "OID (NAME_SYS_OID)"
 msgstr ""
 
+# OBLIG_ACT
 #: NAME_SYS_PER
 msgid "Period"
 msgstr ""
 
+# OBLIG_DOC
 #: NAME_SYS_PREF
-msgid "Preferred"
+msgid "Preferred (NAME_SYS_PREF)"
 msgstr ""
 
+# OBLIG_ELE
 #: NAME_SYS_PUB
-msgid "Publisher"
+msgid "Publisher (NAME_SYS_PUB)"
 msgstr ""
 
+# OBLIG_FILT
 #: NAME_SYS_STAT
-msgid "Status"
+msgid "Status (NAME_SYS_STAT)"
 msgstr ""
 
+# OBLIG_OBLIG
 #: NAME_SYS_SUM
-msgid "Summary"
+msgid "Summary (NAME_SYS_SUM)"
 msgstr ""
 
+# OBLIG_USE
 #: NAME_SYS_TITLE
-msgid "Title"
+msgid "Title (NAME_SYS_TITLE)"
 msgstr ""
 
+# OP_DEF_BIND
 #: NAME_SYS_TYPE
-msgid "Type"
+msgid "Type (NAME_SYS_TYPE)"
 msgstr ""
 
+# OP_DEF_CARD
 #: NAME_SYS_URL
-msgid "Defining URL"
+msgid "Defining URL (NAME_SYS_URL)"
 msgstr ""
 
+# OP_DEF_DOC
 #: NAME_SYS_VALUE
-msgid "Value"
+msgid "Value (NAME_SYS_VALUE)"
 msgstr ""
 
+# OP_DEF_INPAR
 #: NAME_SYS_VER
-msgid "Version"
+msgid "Version (NAME_SYS_VER)"
 msgstr ""
 
+# OP_DEF_NAME
 #: OBLIG_ACT
 msgid "Actor"
 msgstr ""
 
+# OP_DEF_OFFIC
 #: OBLIG_DOC
-msgid "Documentation"
+msgid "Documentation (OBLIG_DOC)"
 msgstr ""
 
+# OP_DEF_OUTPAR
 #: OBLIG_ELE
 msgid "Elements"
 msgstr ""
 
+# OP_DEF_PAR
 #: OBLIG_FILT
-msgid "Filter"
+msgid "Filter (OBLIG_FILT)"
 msgstr ""
 
+# OP_DEF_SCO
 #: OBLIG_OBLIG
-msgid "Obligations"
+msgid "Obligations (OBLIG_OBLIG)"
 msgstr ""
 
+# OP_DEF_TYPE
 #: OBLIG_USE
-msgid "Usage"
+msgid "Usage (OBLIG_USE)"
 msgstr ""
 
+# OP_DEF_URL
 #: OP_DEF_BIND
-msgid "Binding"
+msgid "Binding (OP_DEF_BIND)"
 msgstr ""
 
+# OP_DEF_URLS
 #: OP_DEF_CARD
-msgid "Cardinality"
+msgid "Cardinality (OP_DEF_CARD)"
 msgstr ""
 
+# OP_DEF_USE
 #: OP_DEF_DOC
-msgid "Documentation"
+msgid "Documentation (OP_DEF_DOC)"
 msgstr ""
 
+# OP_OUT_CODE
 #: OP_DEF_INPAR
 msgid "Input parameters Profile:"
 msgstr ""
 
+# OP_OUT_DET
 #: OP_DEF_NAME
-msgid "Name"
+msgid "Name (OP_DEF_NAME)"
 msgstr ""
 
+# OP_OUT_DIAG
 #: OP_DEF_OFFIC
 msgid "The official URL for this operation definition is:"
 msgstr ""
 
+# OP_OUT_LOC
 #: OP_DEF_OUTPAR
 msgid "Output parameters Profile:"
 msgstr ""
 
+# OP_OUT_NOT
 #: OP_DEF_PAR
-msgid "Parameters"
+msgid "Parameters (OP_DEF_PAR)"
 msgstr ""
 
+# OP_OUT_OK
 #: OP_DEF_SCO
 msgid "Scope"
 msgstr ""
 
+# OP_OUT_SEV
 #: OP_DEF_TYPE
-msgid "Type"
+msgid "Type (OP_DEF_TYPE)"
 msgstr ""
 
+# OP_OUT_SRC
 #: OP_DEF_URL
 msgid "URL: [base]/{0}"
 msgstr ""
 
+# OP_OUT_TODO
 #: OP_DEF_URLS
 msgid "URL: [base]/${0}"
 msgstr ""
 
+# PAR_REND_PAR
 #: OP_DEF_USE
 msgid "Use"
 msgstr ""
 
+# PAT_ACTIVE
 #: OP_OUT_CODE
-msgid "Code"
+msgid "Code (OP_OUT_CODE)"
 msgstr ""
 
+# PAT_ACTIVE_HINT
 #: OP_OUT_DET
-msgid "Details"
+msgid "Details (OP_OUT_DET)"
 msgstr ""
 
+# PAT_ALT_NAME
 #: OP_OUT_DIAG
 msgid "Diagnostics"
 msgstr ""
 
+# PAT_ALT_NAME_HINT
 #: OP_OUT_LOC
-msgid "Location"
+msgid "Location (OP_OUT_LOC)"
 msgstr ""
 
+# PAT_CONTACT
 #: OP_OUT_NOT
-msgid "Not done yet"
+msgid "Not done yet (OP_OUT_NOT)"
 msgstr ""
 
+# PAT_CONTACT_HINT
 #: OP_OUT_OK
 msgid "All OK"
 msgstr ""
 
+# PAT_CONTAINED
 #: OP_OUT_SEV
 msgid "Severity"
 msgstr ""
 
+# PAT_DECEASED
 #: OP_OUT_SRC
 msgid "Source"
 msgstr ""
 
+# PAT_DECEASED_HINT
 #: OP_OUT_TODO
-msgid "todo"
+msgid "todo (OP_OUT_TODO)"
 msgstr ""
 
+# PAT_DOB
 #: PAR_REND_PAR
-msgid "Parameters"
+msgid "Parameters (PAR_REND_PAR)"
 msgstr ""
 
+# PAT_GENDER
 #: PAT_ACTIVE
 msgid "Active:"
 msgstr ""
 
+# PAT_GP
 #: PAT_ACTIVE_HINT
 msgid "Record is active"
 msgstr ""
 
+# PAT_LANG
 #: PAT_ALT_NAME
 msgid "Alt. Name:"
 msgstr ""
 
+# PAT_LANG_HINT
 #: PAT_ALT_NAME_HINT
 msgid "Alternate names (see the one above)"
 msgstr ""
 
+# PAT_LANG_PREFERRED
 #: PAT_CONTACT
 msgid "Contact Detail"
 msgstr ""
 
+# PAT_LINKS
 #: PAT_CONTACT_HINT
 msgid "Ways to contact the Patient"
 msgstr ""
 
+# PAT_LINKS_HINT
 #: PAT_CONTAINED
 msgid "Contained Resources"
 msgid_plural "Contained Resources"
 msgstr[0] ""
 msgstr[1] ""
 
+# PAT_LINK_REFER
 #: PAT_DECEASED
 msgid "Deceased:"
 msgstr ""
 
+# PAT_LINK_REPL
 #: PAT_DECEASED_HINT
 msgid "Known status of Patient"
 msgstr ""
 
+# PAT_LINK_REPLBY
 #: PAT_DOB
 msgid "DoB: {0}"
 msgstr ""
 
+# PAT_LINK_SEE
 #: PAT_GENDER
 msgid "Gender: {0}"
 msgstr ""
 
+# PAT_MARITAL
 #: PAT_GP
 msgid "General Practitioner"
 msgstr ""
 
+# PAT_MARITAL_HINT
 #: PAT_LANG
 msgid "Languages:"
 msgid_plural "Languages:"
 msgstr[0] ""
 msgstr[1] ""
 
+# PAT_MO
 #: PAT_LANG_HINT
 msgid "Languages spoken"
 msgid_plural "Languages spoken"
 msgstr[0] ""
 msgstr[1] ""
 
+# PAT_MUL_BIRTH
 #: PAT_LANG_PREFERRED
 msgid "(preferred)"
 msgstr ""
 
+# PAT_MUL_BIRTH_HINT
 #: PAT_LINKS
-msgid "Links:"
+msgid "Links: (PAT_LINKS)"
 msgstr ""
 
+# PAT_NOK_CONTACT
 #: PAT_LINKS_HINT
 msgid "Patient Links"
 msgstr ""
 
+# PAT_NOK_CONTACT_HINT
 #: PAT_LINK_REFER
 msgid "Please refer to"
 msgstr ""
 
+# PAT_NOM_CONTACT
 #: PAT_LINK_REPL
 msgid "This record replaces"
 msgstr ""
 
+# PAT_NO_DOB
 #: PAT_LINK_REPLBY
 msgid "This record replaced by"
 msgstr ""
 
+# PAT_NO_GENDER
 #: PAT_LINK_SEE
 msgid "Also see"
 msgstr ""
 
+# PAT_NO_NAME
 #: PAT_MARITAL
 msgid "Marital Status:"
 msgstr ""
 
+# PAT_ORG
 #: PAT_MARITAL_HINT
 msgid "Known Marital status of Patient"
 msgstr ""
 
+# PAT_OTHER_ID
 #: PAT_MO
 msgid "Managing Organization"
 msgstr ""
 
+# PAT_OTHER_ID_HINT
 #: PAT_MUL_BIRTH
 msgid "Multiple Birth:"
 msgstr ""
 
+# PAT_PERIOD
 #: PAT_MUL_BIRTH_HINT
 msgid "Known multipleBirth status of Patient"
 msgstr ""
 
+# PAT_PHOTO
 #: PAT_NOK_CONTACT
-msgid "Contact:"
+msgid "Contact: (PAT_NOK_CONTACT)"
 msgstr ""
 
+# PAT_RELN
 #: PAT_NOK_CONTACT_HINT
 msgid "Patient contact"
 msgstr ""
 
+# PROF_DRIV_ERR_GEN_NARR
 #: PAT_NOM_CONTACT
 msgid "Nominated Contact:"
 msgstr ""
 
+# PROF_DRIV_EXCP
 #: PAT_NO_DOB
 msgid "DoB Unknown"
 msgstr ""
 
+# PROF_DRIV_FEXCP
 #: PAT_NO_GENDER
 msgid "(no stated gender)"
 msgstr ""
 
+# PROF_DRIV_GEN_NARR
 #: PAT_NO_NAME
 msgid "Anonymous Patient"
 msgstr ""
 
+# PROV_ACT
 #: PAT_ORG
 msgid "Organization:"
 msgstr ""
 
+# PROV_AGE
 #: PAT_OTHER_ID
 msgid "Other Ids:"
 msgid_plural "Other Ids:"
 msgstr[0] ""
 msgstr[1] ""
 
+# PROV_BEHALF
 #: PAT_OTHER_ID_HINT
 msgid "Other Ids (see the one above)"
 msgid_plural "Other Ids (see the one above)"
 msgstr[0] ""
 msgstr[1] ""
 
+# PROV_FOR
 #: PAT_PERIOD
 msgid "Valid Period:"
 msgstr ""
 
+# PROV_LOC
 #: PAT_PHOTO
 msgid "Patient Photo"
 msgstr ""
 
+# PROV_NOT
 #: PAT_RELN
 msgid "Relationships:"
 msgstr ""
 
+# PROV_OCC
 #: PROF_DRIV_ERR_GEN_NARR
 msgid "Error Generating Narrative for"
 msgstr ""
 
+# PROV_POL
 #: PROF_DRIV_EXCP
 msgid "Exception Generating Narrative: {0}"
 msgstr ""
 
+# PROV_PROV
 #: PROF_DRIV_FEXCP
 msgid "Cannot find definition for {0}"
 msgstr ""
 
+# PROV_PROVE
 #: PROF_DRIV_GEN_NARR
 msgid "Generated Narrative: {0} {1}"
 msgstr ""
 
+# PROV_REC
 #: PROV_ACT
 msgid "Activity"
 msgstr ""
 
+# PROV_ROLE
 #: PROV_AGE
 msgid "Agents"
 msgstr ""
 
+# PROV_SUM
 #: PROV_BEHALF
 msgid "On Behalf Of"
 msgstr ""
 
+# PROV_TYPE
 #: PROV_FOR
 msgid "Provenance for {0}"
 msgstr ""
 
+# PROV_WHO
 #: PROV_LOC
-msgid "Location"
+msgid "Location (PROV_LOC)"
 msgstr ""
 
+# QUEST_ADD_INFO
 #: PROV_NOT
-msgid "Not done yet"
+msgid "Not done yet (PROV_NOT)"
 msgstr ""
 
+# QUEST_ALLOWED
 #: PROV_OCC
 msgid "Occurrence"
 msgstr ""
 
+# QUEST_ANSW
 #: PROV_POL
 msgid "Policy"
 msgstr ""
 
+# QUEST_ANSWER
 #: PROV_PROV
 msgid "Provenance for"
 msgstr ""
 
+# QUEST_ANSWERS
 #: PROV_PROVE
 msgid "Provenance for:"
 msgstr ""
 
+# QUEST_APP
 #: PROV_REC
 msgid "Recorded"
 msgstr ""
 
+# QUEST_ARE_TRUE
 #: PROV_ROLE
 msgid "Role"
 msgstr ""
 
+# QUEST_ATTRIBUTES
 #: PROV_SUM
-msgid "Summary"
+msgid "Summary (PROV_SUM)"
 msgstr ""
 
+# QUEST_CALC
 #: PROV_TYPE
-msgid "Type"
+msgid "Type (PROV_TYPE)"
 msgstr ""
 
+# QUEST_CAND
 #: PROV_WHO
 msgid "who"
 msgstr ""
 
+# QUEST_CARD
 #: QUEST_ADD_INFO
 msgid "Additional information about the item"
 msgstr ""
 
+# QUEST_CAT
 #: QUEST_ALLOWED
 msgid "Allowed Answers"
 msgstr ""
 
+# QUEST_CODE
 #: QUEST_ANSW
 msgid "Answer options for {0}"
 msgstr ""
 
+# QUEST_CONT
 #: QUEST_ANSWER
 msgid "Answer"
 msgstr ""
 
+# QUEST_COPYRIGHT
 #: QUEST_ANSWERS
 msgid "Answers"
 msgstr ""
 
+# QUEST_DEF
 #: QUEST_APP
 msgid "Approval Date"
 msgstr ""
 
+# QUEST_DEFINITION
 #: QUEST_ARE_TRUE
 msgid "?? are true:"
 msgstr ""
 
+# QUEST_DERIVED
 #: QUEST_ATTRIBUTES
 msgid "Other attributes of the item"
 msgstr ""
 
+# QUEST_DESC
 #: QUEST_CALC
 msgid "Calculated Value"
 msgstr ""
 
+# QUEST_DESCRIPTION
 #: QUEST_CAND
 msgid "Candidates"
 msgstr ""
 
+# QUEST_DISPLAY
 #: QUEST_CARD
-msgid "Cardinality"
+msgid "Cardinality (QUEST_CARD)"
 msgstr ""
 
+# QUEST_DISPLAY_CAT
 #: QUEST_CAT
 msgid "Category: {0}"
 msgstr ""
 
+# QUEST_EFF_PERIOD
 #: QUEST_CODE
-msgid "Code"
+msgid "Code (QUEST_CODE)"
 msgstr ""
 
+# QUEST_EN
 #: QUEST_CONT
 msgid "Context"
 msgstr ""
 
+# QUEST_ENABLE
 #: QUEST_COPYRIGHT
-msgid "Copyright"
+msgid "Copyright (QUEST_COPYRIGHT)"
 msgstr ""
 
+# QUEST_EXP
 #: QUEST_DEF
-msgid "Definition:"
+msgid "Definition: (QUEST_DEF)"
 msgstr ""
 
+# QUEST_EXPER
 #: QUEST_DEFINITION
-msgid "Definition"
+msgid "Definition (QUEST_DEFINITION)"
 msgstr ""
 
+# QUEST_FLAG
 #: QUEST_DERIVED
 msgid "Derived From"
 msgstr ""
 
+# QUEST_GROUP
 #: QUEST_DESC
-msgid "Description & Constraints"
+msgid "Description & Constraints (QUEST_DESC)"
 msgstr ""
 
+# QUEST_HIDDEN
 #: QUEST_DESCRIPTION
-msgid "Description"
+msgid "Description (QUEST_DESCRIPTION)"
 msgstr ""
 
+# QUEST_HIDDEN_ITEM
 #: QUEST_DISPLAY
 msgid "Is optional to display"
 msgstr ""
 
+# QUEST_ID
 #: QUEST_DISPLAY_CAT
 msgid "Display Category"
 msgstr ""
 
+# QUEST_INITIAL
 #: QUEST_EFF_PERIOD
 msgid "Effective Period"
 msgstr ""
 
+# QUEST_INITIALLY
 #: QUEST_EN
 msgid "Enable When"
 msgstr ""
 
+# QUEST_INITIAL_ANSWER
 #: QUEST_ENABLE
 msgid "Enable When:"
 msgstr ""
 
+# QUEST_INT
 #: QUEST_EXP
 msgid "Expressions:"
 msgstr ""
 
+# QUEST_ITEM
 #: QUEST_EXPER
-msgid "Experimental"
+msgid "Experimental (QUEST_EXPER)"
 msgstr ""
 
+# QUEST_ITEM_CONT
 #: QUEST_FLAG
-msgid "Flags"
+msgid "Flags (QUEST_FLAG)"
 msgstr ""
 
+# QUEST_LINK
 #: QUEST_GROUP
 msgid "Group"
 msgstr ""
 
+# QUEST_LINKED
 #: QUEST_HIDDEN
 msgid "Is a hidden item"
 msgstr ""
 
+# QUEST_LINKID
 #: QUEST_HIDDEN_ITEM
 msgid "Hidden Item"
 msgstr ""
 
+# QUEST_MAND
 #: QUEST_ID
 msgid "Link Id"
 msgstr ""
 
+# QUEST_MAX
 #: QUEST_INITIAL
 msgid "Initial Value:"
 msgstr ""
 
+# QUEST_MAX_LENGTH
 #: QUEST_INITIALLY
 msgid "(initially selected)"
 msgstr ""
 
+# QUEST_NAME
 #: QUEST_INITIAL_ANSWER
 msgid "Initial Answer"
 msgstr ""
 
+# QUEST_NLM
 #: QUEST_INT
 msgid "Initial Values"
 msgstr ""
 
+# QUEST_NONE_SPEC
 #: QUEST_ITEM
 msgid "Item"
 msgstr ""
 
+# QUEST_NOT_DONE
 #: QUEST_ITEM_CONT
 msgid "Item Context"
 msgstr ""
 
+# QUEST_OBSERVATION
 #: QUEST_LINK
 msgid "The linkID for the item"
 msgstr ""
 
+# QUEST_OPT
 #: QUEST_LINKED
 msgid "Is linked to an observation"
 msgstr ""
 
+# QUEST_OPTIONS
 #: QUEST_LINKID
 msgid "LinkID"
 msgstr ""
 
+# QUEST_ORIENTATION
 #: QUEST_MAND
 msgid "Mandatory"
 msgstr ""
 
+# QUEST_PREFIX
 #: QUEST_MAX
-msgid "Max Length:"
+msgid "Max Length: (QUEST_MAX)"
 msgstr ""
 
+# QUEST_PUB
 #: QUEST_MAX_LENGTH
 msgid "Max Length"
 msgstr ""
 
+# QUEST_PURPOSE
 #: QUEST_NAME
-msgid "Name"
+msgid "Name (QUEST_NAME)"
 msgstr ""
 
+# QUEST_QUEST
 #: QUEST_NLM
 msgid "NLM Forms Library"
 msgstr ""
 
+# QUEST_QUESTION
 #: QUEST_NONE_SPEC
 msgid "None specified"
 msgstr ""
 
+# QUEST_QUESTIONNAIRE
 #: QUEST_NOT_DONE
-msgid "Not done yet"
+msgid "Not done yet (QUEST_NOT_DONE)"
 msgstr ""
 
+# QUEST_READONLY
 #: QUEST_OBSERVATION
 msgid "Observation Link Period"
 msgstr ""
 
+# QUEST_READ_ONLY
 #: QUEST_OPT
 msgid "Options Sets"
 msgstr ""
 
+# QUEST_REP
 #: QUEST_OPTIONS
 msgid "Options:"
 msgstr ""
 
+# QUEST_REQ
 #: QUEST_ORIENTATION
 msgid "Orientation: {0}"
 msgstr ""
 
+# QUEST_RESP
 #: QUEST_PREFIX
 msgid "Prefix"
 msgstr ""
 
+# QUEST_RESP_ROOT
 #: QUEST_PUB
 msgid "Publication Date"
 msgstr ""
 
+# QUEST_REV_DATE
 #: QUEST_PURPOSE
-msgid "Purpose"
+msgid "Purpose (QUEST_PURPOSE)"
 msgstr ""
 
+# QUEST_ROOT
 #: QUEST_QUEST
 msgid "Questionnaire"
 msgstr ""
 
+# QUEST_STATUS
 #: QUEST_QUESTION
 msgid "Questionnaire:"
 msgstr ""
 
+# QUEST_STRUCT
 #: QUEST_QUESTIONNAIRE
 msgid "Questionnaire {0}"
 msgstr ""
 
+# QUEST_SUB
 #: QUEST_READONLY
 msgid "Is Read Only"
 msgstr ""
 
+# QUEST_SUBJECT
 #: QUEST_READ_ONLY
 msgid "Read Only"
 msgstr ""
 
+# QUEST_SUB_TYPE
 #: QUEST_REP
 msgid "Repeats"
 msgstr ""
 
+# QUEST_TEXT
 #: QUEST_REQ
-msgid "Required"
+msgid "Required (QUEST_REQ)"
 msgstr ""
 
+# QUEST_TEXTFOR
 #: QUEST_RESP
 msgid "QuestionnaireResponse"
 msgstr ""
 
+# QUEST_TIMES
 #: QUEST_RESP_ROOT
 msgid "QuestionnaireResponseRoot"
 msgstr ""
 
+# QUEST_TITLE
 #: QUEST_REV_DATE
 msgid "Last Review Date"
 msgstr ""
 
+# QUEST_TODO
 #: QUEST_ROOT
 msgid "QuestionnaireRoot"
 msgstr ""
 
+# QUEST_TRUE
 #: QUEST_STATUS
-msgid "Status"
+msgid "Status (QUEST_STATUS)"
 msgstr ""
 
+# QUEST_TRY
 #: QUEST_STRUCT
 msgid "Structure"
 msgstr ""
 
+# QUEST_TRY_QUEST
 #: QUEST_SUB
-msgid "Subject"
+msgid "Subject (QUEST_SUB)"
 msgstr ""
 
+# QUEST_TYPE
 #: QUEST_SUBJECT
 msgid "Can change the subject of the questionnaire"
 msgstr ""
 
+# QUEST_TYPE_ITEM
 #: QUEST_SUB_TYPE
 msgid "Subject Type"
 msgstr ""
 
+# QUEST_UNKNOWN_MODE
 #: QUEST_TEXT
 msgid "Text"
 msgstr ""
 
+# QUEST_URL
 #: QUEST_TEXTFOR
 msgid "Text for the item"
 msgstr ""
 
+# QUEST_VALUE
 #: QUEST_TIMES
 msgid "Minimum and Maximum # of times the item can appear in the instance"
 msgstr ""
 
+# QUEST_VALUE_SET
 #: QUEST_TITLE
-msgid "Title"
+msgid "Title (QUEST_TITLE)"
 msgstr ""
 
+# QUEST_VERSION
 #: QUEST_TODO
-msgid "todo"
+msgid "todo (QUEST_TODO)"
 msgstr ""
 
+# REND_ADDED
 #: QUEST_TRUE
 msgid "are true:"
 msgstr ""
 
+# REND_CHANGED
 #: QUEST_TRY
 msgid "Try this questionnaire out:"
 msgstr ""
 
+# REND_REMOVED
 #: QUEST_TRY_QUEST
 msgid "Try this QuestionnaireResponse out:"
 msgstr ""
 
+# REND_ROW_CHANGED_SINCE
 #: QUEST_TYPE
-msgid "Type"
+msgid "Type (QUEST_TYPE)"
 msgstr ""
 
+# REND_ROW_CHANGED_SINCE_WAS
 #: QUEST_TYPE_ITEM
 msgid "The type of the item"
 msgstr ""
 
+# REND_ROW_REMOVED_SINCE
 #: QUEST_UNKNOWN_MODE
 msgid "Unknown QuestionnaireResponse Renderer Mode"
 msgstr ""
 
+# REND_ROW_SINCE
 #: QUEST_URL
-msgid "URL"
+msgid "URL (QUEST_URL)"
 msgstr ""
 
+# REND_SINCE_ADDED
 #: QUEST_VALUE
 msgid "Value Set:"
 msgstr ""
 
+# REND_SINCE_CHANGED
 #: QUEST_VALUE_SET
-msgid "Value Set"
+msgid "Value Set (QUEST_VALUE_SET)"
 msgstr ""
 
+# REND_SINCE_CHANGED_WAS
 #: QUEST_VERSION
-msgid "Version"
+msgid "Version (QUEST_VERSION)"
 msgstr ""
 
+# REND_SINCE_DELETED
 #: REND_ADDED
 msgid "Added:"
 msgstr ""
 
+# REND_STANDARDS
 #: REND_CHANGED
 msgid "Changed:"
 msgstr ""
 
+# REQ_ACTOR
 #: REND_REMOVED
 msgid "Removed:"
 msgstr ""
 
+# REQ_DERIVE
 #: REND_ROW_CHANGED_SINCE
 msgid "This row of content has been changed since {0}"
 msgstr ""
 
+# REQ_DERIVED
 #: REND_ROW_CHANGED_SINCE_WAS
 msgid "This row of content has been changed since {0} (was ''{1}'')"
 msgstr ""
 
+# REQ_FOLLOWING_ACTOR
 #: REND_ROW_REMOVED_SINCE
-msgid "This content has been removed since {0}"
+msgid "This content has been removed since {0} (REND_ROW_REMOVED_SINCE)"
 msgstr ""
 
+# REQ_FOLLOWING_REQ
 #: REND_ROW_SINCE
 msgid "This row of content has been added since {0}"
 msgstr ""
 
+# REQ_LINKS
 #: REND_SINCE_ADDED
 msgid "This content has been added since {0}"
 msgstr ""
 
+# REQ_REFERENCES
 #: REND_SINCE_CHANGED
 msgid "This content has been changed since {0}"
 msgstr ""
 
+# REQ_SATISFIED
 #: REND_SINCE_CHANGED_WAS
 msgid "This content has been changed since {0} (was ''{1}'')"
 msgstr ""
 
+# REQ_SOURCES
 #: REND_SINCE_DELETED
-msgid "This content has been removed since {0}"
+msgid "This content has been removed since {0} (REND_SINCE_DELETED)"
 msgstr ""
 
+# RESOURCE_COPYRIGHT
 #: REND_STANDARDS
 msgid "Standards Status = {0}"
 msgstr ""
 
+# RES_REND_ACT
 #: REQ_ACTOR
 msgid "These requirements apply to the actor"
 msgstr ""
 
+# RES_REND_COND_REF
 #: REQ_DERIVE
 msgid "These requirements derive from"
 msgstr ""
 
+# RES_REND_DESC
 #: REQ_DERIVED
 msgid "Derived From:"
 msgstr ""
 
+# RES_REND_DRAFT
 #: REQ_FOLLOWING_ACTOR
 msgid "These requirements apply to the following actors:"
 msgstr ""
 
+# RES_REND_ERROR
 #: REQ_FOLLOWING_REQ
 msgid "These requirements are derived from the following requirements:"
 msgstr ""
 
+# RES_REND_EXP
 #: REQ_LINKS
-msgid "Links:"
+msgid "Links: (REQ_LINKS)"
 msgstr ""
 
+# RES_REND_GEN_SUM
 #: REQ_REFERENCES
-msgid "References:"
+msgid "References: (REQ_REFERENCES)"
 msgstr ""
 
+# RES_REND_INFO_SOURCE
 #: REQ_SATISFIED
 msgid "Satisfied By:"
 msgstr ""
 
+# RES_REND_LANGUAGE
 #: REQ_SOURCES
-msgid "Source:"
+msgid "Source: (REQ_SOURCES)"
 msgstr ""
 
+# RES_REND_PROF
 #: RESOURCE_COPYRIGHT
 msgid "Copyright Statement:"
 msgstr ""
 
+# RES_REND_PROFILE
 #: RES_REND_ACT
 msgid "Active"
 msgstr ""
 
+# RES_REND_RESOURCE
 #: RES_REND_COND_REF
 msgid "Conditional Reference:"
 msgstr ""
 
+# RES_REND_RET
 #: RES_REND_DESC
 msgid ". Description: (todo)"
 msgstr ""
 
+# RES_REND_SECURITY
 #: RES_REND_DRAFT
 msgid "draft"
 msgstr ""
 
+# RES_REND_SECURITY_LABEL
 #: RES_REND_ERROR
 msgid "Error rendering: {0}"
 msgstr ""
 
+# RES_REND_SEE_ON_THIS_PAGE
 #: RES_REND_EXP
-msgid "Experimental"
+msgid "Experimental (RES_REND_EXP)"
 msgstr ""
 
+# RES_REND_SPEC_RULES
 #: RES_REND_GEN_SUM
 msgid ". Generated Summary:"
 msgstr ""
 
+# RES_REND_TAG
 #: RES_REND_INFO_SOURCE
 msgid "Information Source:"
 msgstr ""
 
+# RES_REND_TODO
 #: RES_REND_LANGUAGE
 msgid "(Language"
 msgstr ""
 
+# RES_REND_UNKNOWN
 #: RES_REND_PROF
-msgid "Profile"
+msgid "Profile (RES_REND_PROF)"
 msgstr ""
 
+# RES_REND_UPDATED
 #: RES_REND_PROFILE
-msgid "Profile"
+msgid "Profile (RES_REND_PROFILE)"
 msgstr ""
 
+# RES_REND_VER
 #: RES_REND_RESOURCE
-msgid "Resource"
+msgid "Resource (RES_REND_RESOURCE)"
 msgstr ""
 
+# RES_REND_VERSION
 #: RES_REND_RET
 msgid "retired"
 msgstr ""
 
+# SD_COMP_HEAD_CARD_L
 #: RES_REND_SECURITY
-msgid "Security Label"
+msgid "Security Label (RES_REND_SECURITY)"
 msgstr ""
 
+# SD_COMP_HEAD_CARD_L_DESC
 #: RES_REND_SECURITY_LABEL
-msgid "Security Label"
+msgid "Security Label (RES_REND_SECURITY_LABEL)"
 msgstr ""
 
+# SD_COMP_HEAD_CARD_R
 #: RES_REND_SEE_ON_THIS_PAGE
 msgid "See on this page:"
 msgstr ""
 
+# SD_COMP_HEAD_CARD_R_DESC
 #: RES_REND_SPEC_RULES
 msgid "Special rules apply:"
 msgstr ""
 
+# SD_COMP_HEAD_COMP
 #: RES_REND_TAG
 msgid "Tag"
 msgstr ""
 
+# SD_COMP_HEAD_COMP_DESC
 #: RES_REND_TODO
-msgid "todo"
+msgid "todo (RES_REND_TODO)"
 msgstr ""
 
+# SD_COMP_HEAD_DESC_L
 #: RES_REND_UNKNOWN
 msgid "Unknown"
 msgstr ""
 
+# SD_COMP_HEAD_DESC_L_DESC
 #: RES_REND_UPDATED
 msgid "Updated"
 msgstr ""
 
+# SD_COMP_HEAD_DESC_R
 #: RES_REND_VER
 msgid "(version"
 msgstr ""
 
+# SD_COMP_HEAD_DESC_R_DESC
 #: RES_REND_VERSION
-msgid "Version"
+msgid "Version (RES_REND_VERSION)"
 msgstr ""
 
+# SD_COMP_HEAD_FLAGS_L
 #: SD_COMP_HEAD_CARD_L
 msgid "L Card."
 msgstr ""
 
+# SD_COMP_HEAD_FLAGS_L_DESC
 #: SD_COMP_HEAD_CARD_L_DESC
-msgid "Minimum and Maximum # of times the the element can appear in the instance - Left Structure"
+msgid "Minimum and Maximum # of times the element can appear in the instance - Left Structure"
 msgstr ""
 
+# SD_COMP_HEAD_FLAGS_R
 #: SD_COMP_HEAD_CARD_R
 msgid "R Card."
 msgstr ""
 
+# SD_COMP_HEAD_FLAGS_R_DESC
 #: SD_COMP_HEAD_CARD_R_DESC
-msgid "Minimum and Maximum # of times the the element can appear in the instance - Right Structure"
+msgid "Minimum and Maximum # of times the element can appear in the instance - Right Structure"
 msgstr ""
 
+# SD_COMP_HEAD_NAME
 #: SD_COMP_HEAD_COMP
-msgid "Comments"
+msgid "Comments (SD_COMP_HEAD_COMP)"
 msgstr ""
 
+# SD_COMP_HEAD_NAME_DESC
 #: SD_COMP_HEAD_COMP_DESC
 msgid "Comments about the comparison"
 msgstr ""
 
+# SD_COMP_HEAD_TYPE_L
 #: SD_COMP_HEAD_DESC_L
 msgid "L Description & Constraints"
 msgstr ""
 
+# SD_COMP_HEAD_TYPE_L_DESC
 #: SD_COMP_HEAD_DESC_L_DESC
 msgid "Additional information about the element - Left Structure"
 msgstr ""
 
+# SD_COMP_HEAD_TYPE_R
 #: SD_COMP_HEAD_DESC_R
 msgid "R Description & Constraints"
 msgstr ""
 
+# SD_COMP_HEAD_TYPE_R_DESC
 #: SD_COMP_HEAD_DESC_R_DESC
 msgid "Additional information about the element - Right Structure"
 msgstr ""
 
+# SD_DOCO
 #: SD_COMP_HEAD_FLAGS_L
 msgid "L Flags"
 msgstr ""
 
+# SD_GRID_HEAD_CARD
 #: SD_COMP_HEAD_FLAGS_L_DESC
 msgid "Information about the use of the element - Left Structure"
 msgstr ""
 
+# SD_GRID_HEAD_CARD_DESC
 #: SD_COMP_HEAD_FLAGS_R
 msgid "R Flags"
 msgstr ""
 
+# SD_GRID_HEAD_DESC
 #: SD_COMP_HEAD_FLAGS_R_DESC
 msgid "Information about the use of the element - Right Structure"
 msgstr ""
 
+# SD_GRID_HEAD_DESC_DESC
 #: SD_COMP_HEAD_NAME
-msgid "Name"
+msgid "Name (SD_COMP_HEAD_NAME)"
 msgstr ""
 
+# SD_GRID_HEAD_NAME
 #: SD_COMP_HEAD_NAME_DESC
-msgid "The logical name of the element"
+msgid "The logical name of the element (SD_COMP_HEAD_NAME_DESC)"
 msgstr ""
 
+# SD_GRID_HEAD_NAME_DESC
 #: SD_COMP_HEAD_TYPE_L
 msgid "L Type"
 msgstr ""
 
+# SD_GRID_HEAD_TYPE
 #: SD_COMP_HEAD_TYPE_L_DESC
 msgid "Reference to the type of the element - Left Structure"
 msgstr ""
 
+# SD_GRID_HEAD_TYPE_DESC
 #: SD_COMP_HEAD_TYPE_R
 msgid "R Type"
 msgstr ""
 
+# SD_HEAD_CARD
 #: SD_COMP_HEAD_TYPE_R_DESC
 msgid "Reference to the type of the element - Right Structure"
 msgstr ""
 
+# SD_HEAD_CARD_DESC
 #: SD_DOCO
 msgid "Documentation for this format"
 msgstr ""
 
+# SD_HEAD_DESC
 #: SD_GRID_HEAD_CARD
-msgid "Card."
+msgid "Card. (SD_GRID_HEAD_CARD)"
 msgstr ""
 
+# SD_HEAD_DESC_DESC
 #: SD_GRID_HEAD_CARD_DESC
-msgid "Minimum and Maximum # of times the the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
+msgid "Minimum and Maximum # of times the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
 msgstr ""
 
+# SD_HEAD_FLAGS
 #: SD_GRID_HEAD_DESC
 msgid "Constraints and Usage"
 msgstr ""
 
+# SD_HEAD_FLAGS_DESC
 #: SD_GRID_HEAD_DESC_DESC
 msgid "Fixed values, length limits, vocabulary bindings and other usage notes"
 msgstr ""
 
+# SD_HEAD_NAME
 #: SD_GRID_HEAD_NAME
-msgid "Name"
+msgid "Name (SD_GRID_HEAD_NAME)"
 msgstr ""
 
+# SD_HEAD_NAME_DESC
 #: SD_GRID_HEAD_NAME_DESC
 msgid "The name of the element (Slice name in brackets).  Mouse-over provides definition"
 msgstr ""
 
+# SD_HEAD_SC
 #: SD_GRID_HEAD_TYPE
-msgid "Type"
+msgid "Type (SD_GRID_HEAD_TYPE)"
 msgstr ""
 
+# SD_HEAD_TYPE
 #: SD_GRID_HEAD_TYPE_DESC
-msgid "Reference to the type of the element"
+msgid "Reference to the type of the element (SD_GRID_HEAD_TYPE_DESC)"
 msgstr ""
 
+# SD_HEAD_TYPE_DESC
 #: SD_HEAD_CARD
-msgid "Card."
+msgid "Card. (SD_HEAD_CARD)"
 msgstr ""
 
+# SD_LEGEND
 #: SD_HEAD_CARD_DESC
-msgid "Minimum and Maximum # of times the the element can appear in the instance"
+msgid "Minimum and Maximum # of times the element can appear in the instance (SD_HEAD_CARD_DESC)"
 msgstr ""
 
+# SD_SLICING_INFO
 #: SD_HEAD_DESC
-msgid "Description & Constraints"
+msgid "Description & Constraints (SD_HEAD_DESC)"
 msgstr ""
 
+# SD_SUMMARY
 #: SD_HEAD_DESC_DESC
 msgid "Additional information about the element"
 msgstr ""
 
+# SD_SUMMARY_FIXED
 #: SD_HEAD_FLAGS
-msgid "Flags"
+msgid "Flags (SD_HEAD_FLAGS)"
 msgstr ""
 
+# SD_SUMMARY_INFO
 #: SD_HEAD_FLAGS_DESC
 msgid "Information about the use of the element"
 msgstr ""
 
+# SD_SUMMARY_MANDATORY
 #: SD_HEAD_NAME
-msgid "Name"
+msgid "Name (SD_HEAD_NAME)"
 msgstr ""
 
+# SD_SUMMARY_MAPPINGS
 #: SD_HEAD_NAME_DESC
-msgid "The logical name of the element"
+msgid "The logical name of the element (SD_HEAD_NAME_DESC)"
 msgstr ""
 
+# SD_SUMMARY_MISSING_EXTENSION
 #: SD_HEAD_SC
 msgid "The logical name of the elemHEAD_FLAGS = Flags"
 msgstr ""
 
+# SD_SUMMARY_MISSING_PROFILE
 #: SD_HEAD_TYPE
-msgid "Type"
+msgid "Type (SD_HEAD_TYPE)"
 msgstr ""
 
+# SD_SUMMARY_MUST_SUPPORT
 #: SD_HEAD_TYPE_DESC
-msgid "Reference to the type of the element"
+msgid "Reference to the type of the element (SD_HEAD_TYPE_DESC)"
 msgstr ""
 
+# SD_SUMMARY_NESTED_MANDATORY
 #: SD_LEGEND
 msgid "Legend for this format"
 msgstr ""
 
+# SD_SUMMARY_PROHIBITED
 #: SD_SLICING_INFO
-msgid "{0}, {1} by {2}"
+msgid "{0}, {1} by {2} (SD_SLICING_INFO)"
 msgstr ""
 
+# SD_SUMMARY_PUBLICATION
 #: SD_SUMMARY
 msgid "Fixed Value: {0} {1}"
 msgstr ""
 
+# SD_SUMMARY_SLICE
 #: SD_SUMMARY_FIXED
 msgid "Fixed: {0} {1}"
 msgstr ""
 
+# SD_SUMMARY_SLICES
 #: SD_SUMMARY_INFO
-msgid "{0}, {1} by {2}"
+msgid "{0}, {1} by {2} (SD_SUMMARY_INFO)"
 msgstr ""
 
+# SD_SUMMARY_SLICE_NONE
 #: SD_SUMMARY_MANDATORY
 msgid "Mandatory: {0} {1}"
 msgstr ""
 
+# SEARCH_PAR_ALLOWED
 #: SD_SUMMARY_MAPPINGS
 msgid "Mappings for {0} ({2}{1}{3})"
 msgstr ""
 
+# SEARCH_PAR_CHAIN
 #: SD_SUMMARY_MISSING_EXTENSION
 msgid "Unable to summarise extension {0} (no extension found)"
 msgstr ""
 
+# SEARCH_PAR_COMP
 #: SD_SUMMARY_MISSING_PROFILE
 msgid "Unable to summarise profile {0} (no profile found)"
 msgstr ""
 
+# SEARCH_PAR_EXP
 #: SD_SUMMARY_MUST_SUPPORT
 msgid "Must-Support: {0} {1}"
 msgstr ""
 
+# SEARCH_PAR_MOD
 #: SD_SUMMARY_NESTED_MANDATORY
 msgid "({0} nested mandatory {1})"
 msgstr ""
 
+# SEARCH_PAR_MULTIPLES
 #: SD_SUMMARY_PROHIBITED
 msgid "Prohibited: {0} {1}"
 msgstr ""
 
+# SEARCH_PAR_MULTIPLE_AND_APPEAR
 #: SD_SUMMARY_PUBLICATION
 msgid "This profile was published on {0} as a {1} by {2}"
 msgstr ""
 
+# SEARCH_PAR_MULTIPLE_AND_REPEAT
 #: SD_SUMMARY_SLICE
 msgid "The element {0} is sliced based on the values of {1}"
 msgid_plural "The element {0} is sliced based on the values of {1}"
 msgstr[0] ""
 msgstr[1] ""
 
+# SEARCH_PAR_MULTIPLE_AND_SERVER
 #: SD_SUMMARY_SLICES
 msgid "This structure defines the following {0}Slices{1}"
 msgstr ""
 
+# SEARCH_PAR_MULTIPLE_OR_MULTIPLE
 #: SD_SUMMARY_SLICE_NONE
 msgid "There is a slice with no discriminator at {0}"
 msgstr ""
 
+# SEARCH_PAR_MULTIPLE_OR_ONE
 #: SEARCH_PAR_ALLOWED
 msgid "Allowed:"
 msgstr ""
 
+# SEARCH_PAR_MULTIPLE_OR_SERVER
 #: SEARCH_PAR_CHAIN
 msgid "Chains"
 msgstr ""
 
+# SEARCH_PAR_NONE
 #: SEARCH_PAR_COMP
-msgid "Comparators"
+msgid "Comparators (SEARCH_PAR_COMP)"
 msgstr ""
 
+# SEARCH_PAR_PAR
 #: SEARCH_PAR_EXP
 msgid "Expression"
 msgstr ""
 
+# SEARCH_PAR_PROC
 #: SEARCH_PAR_MOD
-msgid "Modifiers"
+msgid "Modifiers (SEARCH_PAR_MOD)"
 msgstr ""
 
+# SEARCH_PAR_REND_RES
 #: SEARCH_PAR_MULTIPLES
 msgid "Multiples"
 msgstr ""
 
+# SEARCH_PAR_REND_TARGET
 #: SEARCH_PAR_MULTIPLE_AND_APPEAR
 msgid "multipleAnd: The parameter may only appear once"
 msgstr ""
 
+# SEARCH_PAR_RES
 #: SEARCH_PAR_MULTIPLE_AND_REPEAT
 msgid "multipleAnd: The parameter may repeat in order to specify multiple values that must all be true"
 msgstr ""
 
+# STRUC_DEF_ABSTRACT
 #: SEARCH_PAR_MULTIPLE_AND_SERVER
 msgid "multipleAnd: It's up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
 msgstr ""
 
+# STRUC_DEF_ACT
 #: SEARCH_PAR_MULTIPLE_OR_MULTIPLE
 msgid "multipleOr: The parameter may have multiple values (separated by comma) where at least one must be true"
 msgstr ""
 
+# STRUC_DEF_AFFECT_CONSTRAINTS
 #: SEARCH_PAR_MULTIPLE_OR_ONE
 msgid "multipleOr: The parameter may only have one value (no comma separators)"
 msgstr ""
 
+# STRUC_DEF_ALLOWED
 #: SEARCH_PAR_MULTIPLE_OR_SERVER
 msgid "multipleOr: It's up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
 msgstr ""
 
+# STRUC_DEF_ALL_ACTORS
 #: SEARCH_PAR_NONE
 msgid "(none)"
 msgstr ""
 
+# STRUC_DEF_ALL_MAP_KEY
 #: SEARCH_PAR_PAR
-msgid "Parameter"
+msgid "Parameter (SEARCH_PAR_PAR)"
 msgstr ""
 
+# STRUC_DEF_ALL_SLICES
 #: SEARCH_PAR_PROC
 msgid "Processing Mode"
 msgstr ""
 
+# STRUC_DEF_ALL_TYPES
 #: SEARCH_PAR_REND_RES
-msgid "Resource"
+msgid "Resource (SEARCH_PAR_REND_RES)"
 msgstr ""
 
+# STRUC_DEF_ALT_NAME
 #: SEARCH_PAR_REND_TARGET
 msgid "Target Resources"
 msgstr ""
 
+# STRUC_DEF_AND
 #: SEARCH_PAR_RES
 msgid "All Resources"
 msgstr ""
 
+# STRUC_DEF_APPROP_CON
 #: STRUC_DEF_ABSTRACT
 msgid "This is an abstract"
 msgstr ""
 
+# STRUC_DEF_AS_SHOWN
 #: STRUC_DEF_ACT
 msgid "Obligations that apply to the actor {0}"
 msgstr ""
 
+# STRUC_DEF_BECAUSE
 #: STRUC_DEF_AFFECT_CONSTRAINTS
 msgid ""This element has or is affected by constraints ("
 msgstr ""
 
+# STRUC_DEF_BINDING
 #: STRUC_DEF_ALLOWED
 msgid "Allowed Units"
 msgstr ""
 
+# STRUC_DEF_BINDINGS
 #: STRUC_DEF_ALL_ACTORS
 msgid "All Actors"
 msgstr ""
 
+# STRUC_DEF_BINDING_STYLE
 #: STRUC_DEF_ALL_MAP_KEY
 msgid "All Mappings are Empty"
 msgstr ""
 
+# STRUC_DEF_BIND_STYLE
 #: STRUC_DEF_ALL_SLICES
 msgid ":All Slices"
 msgstr ""
 
+# STRUC_DEF_BLACK
 #: STRUC_DEF_ALL_TYPES
 msgid "All Types"
 msgstr ""
 
+# STRUC_DEF_BUSINESS_ID
 #: STRUC_DEF_ALT_NAME
 msgid "Alternate Names"
 msgstr ""
 
+# STRUC_DEF_BUSINESS_VERID
 #: STRUC_DEF_AND
-msgid "and"
+msgid "and (STRUC_DEF_AND)"
 msgstr ""
 
+# STRUC_DEF_CAND
 #: STRUC_DEF_APPROP_CON
 msgid "Concepts must come from this value set if appropriate concept is in this value set"
 msgstr ""
 
+# STRUC_DEF_CAND_SUB
 #: STRUC_DEF_AS_SHOWN
 msgid "As shown"
 msgstr ""
 
+# STRUC_DEF_CANNOT_TARGET
 #: STRUC_DEF_BECAUSE
 msgid "because"
 msgstr ""
 
+# STRUC_DEF_CANT_FIND
 #: STRUC_DEF_BINDING
-msgid "Binding"
+msgid "Binding (STRUC_DEF_BINDING)"
 msgstr ""
 
+# STRUC_DEF_CAN_TARGET
 #: STRUC_DEF_BINDINGS
 msgid "Binding:"
 msgstr ""
 
+# STRUC_DEF_CAP
 #: STRUC_DEF_BINDING_STYLE
 msgid "binding style"
 msgstr ""
 
+# STRUC_DEF_CARD
 #: STRUC_DEF_BIND_STYLE
 msgid "Binding Style"
 msgstr ""
 
+# STRUC_DEF_CDA
 #: STRUC_DEF_BLACK
 msgid "black"
 msgstr ""
 
+# STRUC_DEF_CHILD
 #: STRUC_DEF_BUSINESS_ID
 msgid "This is a business identifier, not a resource identifier (see"
 msgstr ""
 
+# STRUC_DEF_CHOICE
 #: STRUC_DEF_BUSINESS_VERID
 msgid "This is a business version Id, not a resource version Id (see"
 msgstr ""
 
+# STRUC_DEF_CHOICE_DATA_TYPE
 #: STRUC_DEF_CAND
 msgid "Candidate"
 msgstr ""
 
+# STRUC_DEF_CHOICE_GRP
 #: STRUC_DEF_CAND_SUB
 msgid "This value set is a candidate to substitute for the overall conformance value set in some situations; usually these are defined in the documentation"
 msgstr ""
 
+# STRUC_DEF_CHOICE_OF
 #: STRUC_DEF_CANNOT_TARGET
 msgid "Instances of this logical model cannot be the target of a Reference"
 msgstr ""
 
+# STRUC_DEF_CLOSED
 #: STRUC_DEF_CANT_FIND
 msgid "getElementByName: can't find {0} in {1} from {2}"
 msgstr ""
 
+# STRUC_DEF_COMMENT
 #: STRUC_DEF_CAN_TARGET
-msgid "Instances of this logical model can be the target of a Reference"
+msgid "Instances of this logical model can be the target of a Reference (STRUC_DEF_CAN_TARGET)"
 msgstr ""
 
+# STRUC_DEF_COMMENTS
 #: STRUC_DEF_CAP
 msgid "CAP Code"
 msgstr ""
 
+# STRUC_DEF_COMP
 #: STRUC_DEF_CARD
-msgid "Card."
+msgid "Card. (STRUC_DEF_CARD)"
 msgstr ""
 
+# STRUC_DEF_COMPLEX
 #: STRUC_DEF_CDA
 msgid "This property is represented as CDA Text in the XML."
 msgstr ""
 
+# STRUC_DEF_COMPLEXBRACK
 #: STRUC_DEF_CHILD
 msgid "Child"
 msgstr ""
 
+# STRUC_DEF_COMP_DOC
 #: STRUC_DEF_CHOICE
 msgid "(Choice of one)"
 msgstr ""
 
+# STRUC_DEF_COMP_EX
 #: STRUC_DEF_CHOICE_DATA_TYPE
 msgid "Choice of Data Types"
 msgstr ""
 
+# STRUC_DEF_COMP_PROF
 #: STRUC_DEF_CHOICE_GRP
 msgid "Choice Group"
 msgstr ""
 
+# STRUC_DEF_CONC_SET
 #: STRUC_DEF_CHOICE_OF
 msgid "Choice of:"
 msgstr ""
 
+# STRUC_DEF_CONFORMANCE
 #: STRUC_DEF_CLOSED
 msgid "Closed"
 msgstr ""
 
+# STRUC_DEF_CONSTRAINING
 #: STRUC_DEF_COMMENT
 msgid "Comments:"
 msgstr ""
 
+# STRUC_DEF_CONSTRAINTS
 #: STRUC_DEF_COMMENTS
-msgid "Comments"
+msgid "Comments (STRUC_DEF_COMMENTS)"
 msgstr ""
 
+# STRUC_DEF_CONTENT
 #: STRUC_DEF_COMP
-msgid "Component"
+msgid "Component (STRUC_DEF_COMP)"
 msgstr ""
 
+# STRUC_DEF_CONTROL
 #: STRUC_DEF_COMPLEX
 msgid "Complex"
 msgstr ""
 
+# STRUC_DEF_CONT_RULE
 #: STRUC_DEF_COMPLEXBRACK
 msgid "(complex)"
 msgstr ""
 
+# STRUC_DEF_CONT_TYPE
 #: STRUC_DEF_COMP_DOC
 msgid "This value set is a component of the base value set. Usually this is called out so that documentation can be written about a portion of the value set"
 msgstr ""
 
+# STRUC_DEF_COPY_URL
 #: STRUC_DEF_COMP_EX
 msgid "(Complex Extension)"
 msgstr ""
 
+# STRUC_DEF_CURR
 #: STRUC_DEF_COMP_PROF
 msgid "Complies with Profile"
 msgstr ""
 
+# STRUC_DEF_CURR_RULE
 #: STRUC_DEF_CONC_SET
 msgid "Concepts must come from this value set"
 msgstr ""
 
+# STRUC_DEF_DATE
 #: STRUC_DEF_CONFORMANCE
-msgid "Conformance"
+msgid "Conformance (STRUC_DEF_CONFORMANCE)"
 msgstr ""
 
+# STRUC_DEF_DATE_FORM
 #: STRUC_DEF_CONSTRAINING
 msgid "Slice Constraining"
 msgstr ""
 
+# STRUC_DEF_DEF
 #: STRUC_DEF_CONSTRAINTS
 msgid "Constraints"
 msgstr ""
 
+# STRUC_DEF_DEFAULT_TYPE
 #: STRUC_DEF_CONTENT
-msgid "Content"
+msgid "Content (STRUC_DEF_CONTENT)"
 msgstr ""
 
+# STRUC_DEF_DEFAULT_VALUE
 #: STRUC_DEF_CONTROL
 msgid "Control"
 msgstr ""
 
+# STRUC_DEF_DEFINITION
 #: STRUC_DEF_CONT_RULE
 msgid "Content/Rules for all slices"
 msgstr ""
 
+# STRUC_DEF_DEF_CODES
 #: STRUC_DEF_CONT_TYPE
 msgid "Content/Rules for all Types"
 msgstr ""
 
+# STRUC_DEF_DERIVED_PROFILE
 #: STRUC_DEF_COPY_URL
 msgid "Click to Copy URL"
 msgstr ""
 
+# STRUC_DEF_DESC
 #: STRUC_DEF_CURR
 msgid "Current"
 msgstr ""
 
+# STRUC_DEF_DESCRIM
 #: STRUC_DEF_CURR_RULE
 msgid "New records are required to use this value set, but legacy records may use other codes. The definition of 'new record' is difficult, since systems often create new records based on pre-existing data. Usually 'current' bindings are mandated by an external authority that makes clear rules around this"
 msgstr ""
 
+# STRUC_DEF_DESC_PROF
 #: STRUC_DEF_DATE
 msgid "Date Format: {0}"
 msgstr ""
 
+# STRUC_DEF_DETAILS
 #: STRUC_DEF_DATE_FORM
 msgid "Date Format"
 msgstr ""
 
+# STRUC_DEF_DISCUSSION
 #: STRUC_DEF_DEF
-msgid "Definition:"
+msgid "Definition: (STRUC_DEF_DEF)"
 msgstr ""
 
+# STRUC_DEF_ELE
 #: STRUC_DEF_DEFAULT_TYPE
 msgid "Default Type"
 msgstr ""
 
+# STRUC_DEF_ELEMENT
 #: STRUC_DEF_DEFAULT_VALUE
 msgid "Default Value"
 msgstr ""
 
+# STRUC_DEF_ELEMENTS
 #: STRUC_DEF_DEFINITION
-msgid "Definition"
+msgid "Definition (STRUC_DEF_DEFINITION)"
 msgstr ""
 
+# STRUC_DEF_ELE_AFFECTED
 #: STRUC_DEF_DEF_CODES
 msgid "Definitional Codes"
 msgstr ""
 
+# STRUC_DEF_ELE_INCLUDED
 #: STRUC_DEF_DERIVED_PROFILE
 msgid "In this IG, the following structures are derived from this profile:"
 msgstr ""
 
+# STRUC_DEF_ELE_MUST_SUPP
 #: STRUC_DEF_DESC
-msgid "Description"
+msgid "Description (STRUC_DEF_DESC)"
 msgstr ""
 
+# STRUC_DEF_ELE_READ
 #: STRUC_DEF_DESCRIM
 msgid ", and can be differentiated using the following discriminators:"
 msgstr ""
 
+# STRUC_DEF_ERROR
 #: STRUC_DEF_DESC_PROF
 msgid "Description of the profile"
 msgstr ""
 
+# STRUC_DEF_ERR_DESC
 #: STRUC_DEF_DETAILS
-msgid "Details"
+msgid "Details (STRUC_DEF_DETAILS)"
 msgstr ""
 
+# STRUC_DEF_EX
 #: STRUC_DEF_DISCUSSION
 msgid "discussion"
 msgstr ""
 
+# STRUC_DEF_EXAM
 #: STRUC_DEF_ELE
 msgid "This primitive element must have a value"
 msgstr ""
 
+# STRUC_DEF_EXAMPLE
 #: STRUC_DEF_ELEMENT
 msgid "element"
 msgstr ""
 
+# STRUC_DEF_EXT
 #: STRUC_DEF_ELEMENTS
 msgid "Elements defined in Ancestors:"
 msgstr ""
 
+# STRUC_DEF_EXTENSIBLE
 #: STRUC_DEF_ELE_AFFECTED
 msgid "This element has or is affected by constraints ( {0} {1}"
 msgstr ""
 
+# STRUC_DEF_EXTENSIONS
 #: STRUC_DEF_ELE_INCLUDED
-msgid "This element is included in summaries"
+msgid "This element is included in summaries (STRUC_DEF_ELE_INCLUDED)"
 msgstr ""
 
+# STRUC_DEF_EXT_JSON
 #: STRUC_DEF_ELE_MUST_SUPP
-msgid "This element must be supported"
+msgid "This element must be supported (STRUC_DEF_ELE_MUST_SUPP)"
 msgstr ""
 
+# STRUC_DEF_EXT_STYLE
 #: STRUC_DEF_ELE_READ
 msgid "When this element is read"
 msgstr ""
 
+# STRUC_DEF_EX_CODE
 #: STRUC_DEF_ERROR
 msgid "Unknown structure mode"
 msgstr ""
 
+# STRUC_DEF_EX_DESC
 #: STRUC_DEF_ERR_DESC
 msgid "Error describing concept- not done yet (no codings, no text)"
 msgstr ""
 
+# STRUC_DEF_EX_TYPE
 #: STRUC_DEF_EX
-msgid "Example"
+msgid "Example (STRUC_DEF_EX)"
 msgstr ""
 
+# STRUC_DEF_EX_URL
 #: STRUC_DEF_EXAM
 msgid "example"
 msgstr ""
 
+# STRUC_DEF_FHIR
 #: STRUC_DEF_EXAMPLE
-msgid "Example"
+msgid "Example (STRUC_DEF_EXAMPLE)"
 msgstr ""
 
+# STRUC_DEF_FHIR_EXCEP
 #: STRUC_DEF_EXT
 msgid "Extensible"
 msgstr ""
 
+# STRUC_DEF_FII
 #: STRUC_DEF_EXTENSIBLE
 msgid "extensible"
 msgstr ""
 
+# STRUC_DEF_FIXED
 #: STRUC_DEF_EXTENSIONS
 msgid "Extensions"
 msgstr ""
 
+# STRUC_DEF_FIXED_VALUE
 #: STRUC_DEF_EXT_JSON
-msgid "This element can be extended by named JSON elements"
+msgid "This element can be extended by named JSON elements (STRUC_DEF_EXT_JSON)"
 msgstr ""
 
+# STRUC_DEF_FOR_CODE
 #: STRUC_DEF_EXT_STYLE
 msgid "Extension Style"
 msgstr ""
 
+# STRUC_DEF_FURTHER_INFO
 #: STRUC_DEF_EX_CODE
 msgid "For example codes, see"
 msgstr ""
 
+# STRUC_DEF_GRADE
 #: STRUC_DEF_EX_DESC
 msgid "Instances are not expected or even encouraged to draw from the specified value set. The value set merely provides examples of the types of concepts intended to be included."
 msgstr ""
 
+# STRUC_DEF_ID
 #: STRUC_DEF_EX_TYPE
 msgid "(Extension Type:"
 msgstr ""
 
+# STRUC_DEF_ID_EXPECT
 #: STRUC_DEF_EX_URL
 msgid "Extension URL = {0}"
 msgstr ""
 
+# STRUC_DEF_ID_IS
 #: STRUC_DEF_FHIR
 msgid "Base FHIR {0}"
 msgstr ""
 
+# STRUC_DEF_ID_MAY
 #: STRUC_DEF_FHIR_EXCEP
 msgid "Unable to retrieve StructureDefinition with URL {0}"
 msgstr ""
 
+# STRUC_DEF_ID_NOT_ALLOW
 #: STRUC_DEF_FII
 msgid "Formal Invariant Identifier"
 msgstr ""
 
+# STRUC_DEF_ID_REQ
 #: STRUC_DEF_FIXED
-msgid "Fixed Value"
+msgid "Fixed Value (STRUC_DEF_FIXED)"
 msgstr ""
 
+# STRUC_DEF_IF
 #: STRUC_DEF_FIXED_VALUE
 msgid "Fixed Value:"
 msgstr ""
 
+# STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_FOR_CODE
 msgid "For codes, see"
 msgstr ""
 
+# STRUC_DEF_INFERRED_JSON
 #: STRUC_DEF_FURTHER_INFO
 msgid "for further information about how to use [x]"
 msgstr ""
 
+# STRUC_DEF_INVAR
 #: STRUC_DEF_GRADE
 msgid "Grade"
 msgstr ""
 
+# STRUC_DEF_INVARIANT
 #: STRUC_DEF_ID
 msgid "Id"
 msgstr ""
 
+# STRUC_DEF_JSON_ARRAY
 #: STRUC_DEF_ID_EXPECT
 msgid "ID Expectation"
 msgstr ""
 
+# STRUC_DEF_JSON_CAN_NAME
 #: STRUC_DEF_ID_IS
 msgid "Id may or not be present (this is the default for elements but not resources)"
 msgstr ""
 
+# STRUC_DEF_JSON_CHILD
 #: STRUC_DEF_ID_MAY
-msgid "Id is required to be present (this is the default for resources but not elements)"
+msgid "Id is required to be present (this is the default for resources but not elements) (STRUC_DEF_ID_MAY)"
 msgstr ""
 
+# STRUC_DEF_JSON_ELE
 #: STRUC_DEF_ID_NOT_ALLOW
 msgid "An id is not allowed in this context"
 msgstr ""
 
+# STRUC_DEF_JSON_EXT
 #: STRUC_DEF_ID_REQ
-msgid "Id is required to be present (this is the default for resources but not elements)"
+msgid "Id is required to be present (this is the default for resources but not elements) (STRUC_DEF_ID_REQ)"
 msgstr ""
 
+# STRUC_DEF_JSON_FORM
 #: STRUC_DEF_IF
 msgid "If"
 msgstr ""
 
+# STRUC_DEF_JSON_IF
 #: STRUC_DEF_IMPOSE_PROFILE
 msgid "Impose Profile"
 msgstr ""
 
+# STRUC_DEF_JSON_INFERRED
 #: STRUC_DEF_INFERRED_JSON
 msgid "The type of this element is inferred from the JSON type in the instance"
 msgstr ""
 
+# STRUC_DEF_JSON_IS
 #: STRUC_DEF_INVAR
 msgid "Invariants"
 msgstr ""
 
+# STRUC_DEF_JSON_MAY
 #: STRUC_DEF_INVARIANT
 msgid "This element is affected by the following invariants:"
 msgstr ""
 
+# STRUC_DEF_JSON_MAY_PRESENT
 #: STRUC_DEF_JSON_ARRAY
 msgid "JSON: This element may be present as a JSON Array even when there are no items in the instance"
 msgstr ""
 
+# STRUC_DEF_JSON_NAME
 #: STRUC_DEF_JSON_CAN_NAME
 msgid "This type can appear in JSON with the property name"
 msgstr ""
 
+# STRUC_DEF_JSON_NOT_PRESENT
 #: STRUC_DEF_JSON_CHILD
 msgid "child"
 msgstr ""
 
+# STRUC_DEF_JSON_NULL
 #: STRUC_DEF_JSON_ELE
-msgid "This element can be extended by named JSON elements"
+msgid "This element can be extended by named JSON elements (STRUC_DEF_JSON_ELE)"
 msgstr ""
 
+# STRUC_DEF_JSON_PRESENT
 #: STRUC_DEF_JSON_EXT
 msgid "(in elements using named extensions)"
 msgstr ""
 
+# STRUC_DEF_JSON_PROPERTY_NAME
 #: STRUC_DEF_JSON_FORM
 msgid "JSON Format"
 msgstr ""
 
+# STRUC_DEF_JSON_SINGLE
 #: STRUC_DEF_JSON_IF
 msgid "JSON: If"
 msgstr ""
 
+# STRUC_DEF_JSON_TYPE
 #: STRUC_DEF_JSON_INFERRED
 msgid "JSON: The type of this element is inferred from the JSON type in the instance"
 msgstr ""
 
+# STRUC_DEF_LABEL
 #: STRUC_DEF_JSON_IS
 msgid "This element is present as a JSON Array even when there are no items in the instance"
 msgstr ""
 
+# STRUC_DEF_LEAST_FOLLOW
 #: STRUC_DEF_JSON_MAY
 msgid "This element may be present as a JSON Array even when there are no items in the instance"
 msgstr ""
 
+# STRUC_DEF_LOGIC
 #: STRUC_DEF_JSON_MAY_PRESENT
 msgid "The JSON Array for this property may be present even when there are no items in the instance (e.g. may be present as an empty array)"
 msgstr ""
 
+# STRUC_DEF_LOGICAL
 #: STRUC_DEF_JSON_NAME
 msgid "JSON Property Name"
 msgstr ""
 
+# STRUC_DEF_LOGICAL_CONT
 #: STRUC_DEF_JSON_NOT_PRESENT
 msgid "The JSON Array for this property is not present when there are no items in the instance (e.g. never as an empty array)"
 msgstr ""
 
+# STRUC_DEF_LOGIC_NAME
 #: STRUC_DEF_JSON_NULL
 msgid "JSON: This object can be represented as null in the JSON structure (which counts as 'present' for cardinality purposes)"
 msgstr ""
 
+# STRUC_DEF_LOINC
 #: STRUC_DEF_JSON_PRESENT
 msgid "The JSON Array for this property is present even when there are no items in the instance (e.g. as an empty array)"
 msgstr ""
 
+# STRUC_DEF_LOINC_CODE
 #: STRUC_DEF_JSON_PROPERTY_NAME
 msgid "This property appears in JSON with the property name"
 msgstr ""
 
+# STRUC_DEF_MATURITY
 #: STRUC_DEF_JSON_SINGLE
 msgid "This repeating object is represented as a single JSON object with named properties. The name of the property (key) is the value of the"
 msgstr ""
 
+# STRUC_DEF_MAX
 #: STRUC_DEF_JSON_TYPE
 msgid "JSON Property Name for Type"
 msgstr ""
 
+# STRUC_DEF_MAX_LENGTH
 #: STRUC_DEF_LABEL
 msgid "Label"
 msgstr ""
 
+# STRUC_DEF_MAX_MIN
 #: STRUC_DEF_LEAST_FOLLOW
 msgid "At least the following"
 msgstr ""
 
+# STRUC_DEF_MAX_VALUE
 #: STRUC_DEF_LOGIC
-msgid "Logical Container"
+msgid "Logical Container (STRUC_DEF_LOGIC)"
 msgstr ""
 
+# STRUC_DEF_MEAN_MISS
 #: STRUC_DEF_LOGICAL
 msgid "Logical Model"
 msgstr ""
 
+# STRUC_DEF_MIN
 #: STRUC_DEF_LOGICAL_CONT
-msgid "Logical Container"
+msgid "Logical Container (STRUC_DEF_LOGICAL_CONT)"
 msgstr ""
 
+# STRUC_DEF_MIN_ALLOW
 #: STRUC_DEF_LOGIC_NAME
-msgid "The logical name of the element"
+msgid "The logical name of the element (STRUC_DEF_LOGIC_NAME)"
 msgstr ""
 
+# STRUC_DEF_MIN_VALUE
 #: STRUC_DEF_LOINC
 msgid "LOINC Code"
 msgstr ""
 
+# STRUC_DEF_MISSING_LINK
 #: STRUC_DEF_LOINC_CODE
 msgid "LOINC code"
 msgstr ""
 
+# STRUC_DEF_MOD
 #: STRUC_DEF_MATURITY
-msgid "Maturity"
+msgid "Maturity (STRUC_DEF_MATURITY)"
 msgstr ""
 
+# STRUC_DEF_MODIF
 #: STRUC_DEF_MAX
 msgid "Maximum"
 msgstr ""
 
+# STRUC_DEF_MODIFIER
 #: STRUC_DEF_MAX_LENGTH
-msgid "Max Length:"
+msgid "Max Length: (STRUC_DEF_MAX_LENGTH)"
 msgstr ""
 
+# STRUC_DEF_MOD_ELEMENT
 #: STRUC_DEF_MAX_MIN
-msgid "Minimum and Maximum # of times the element can appear in the instance"
+msgid "Minimum and Maximum # of times the element can appear in the instance (STRUC_DEF_MAX_MIN)"
 msgstr ""
 
+# STRUC_DEF_MUST_SUPPORT
 #: STRUC_DEF_MAX_VALUE
 msgid "Max Value"
 msgstr ""
 
+# STRUC_DEF_MUST_SUPPORT_TYPES
 #: STRUC_DEF_MEAN_MISS
 msgid "Meaning if Missing"
 msgstr ""
 
+# STRUC_DEF_NAME
 #: STRUC_DEF_MIN
 msgid "Minimum"
 msgstr ""
 
+# STRUC_DEF_NAMESPACE
 #: STRUC_DEF_MIN_ALLOW
-msgid "The minimum allowable value set - any conformant system SHALL support all these codes"
+msgid "The minimum allowable value set - any conformant system SHALL support all these codes (STRUC_DEF_MIN_ALLOW)"
 msgstr ""
 
+# STRUC_DEF_NOTE_C
 #: STRUC_DEF_MIN_VALUE
 msgid "Min Value"
 msgstr ""
 
+# STRUC_DEF_NOTE_X
 #: STRUC_DEF_MISSING_LINK
 msgid "missing link"
 msgstr ""
 
+# STRUC_DEF_NOT_MARK
 #: STRUC_DEF_MOD
-msgid "This element is a modifier element"
+msgid "This element is a modifier element (STRUC_DEF_MOD)"
 msgstr ""
 
+# STRUC_DEF_NOT_MARKED
 #: STRUC_DEF_MODIF
 msgid "Modifier"
 msgstr ""
 
+# STRUC_DEF_NO_DESCRIM
 #: STRUC_DEF_MODIFIER
 msgid "Is Modifier"
 msgstr ""
 
+# STRUC_DEF_NO_MAPPINGS
 #: STRUC_DEF_MOD_ELEMENT
-msgid "This element is a modifier element"
+msgid "This element is a modifier element (STRUC_DEF_MOD_ELEMENT)"
 msgstr ""
 
+# STRUC_DEF_NO_MUST_SUPPORT
 #: STRUC_DEF_MUST_SUPPORT
 msgid "Must Support"
 msgstr ""
 
+# STRUC_DEF_NO_SUMMARY
 #: STRUC_DEF_MUST_SUPPORT_TYPES
 msgid "Must Support Types"
 msgstr ""
 
+# STRUC_DEF_NULL_JSON
 #: STRUC_DEF_NAME
-msgid "Name"
+msgid "Name (STRUC_DEF_NAME)"
 msgstr ""
 
+# STRUC_DEF_OBLIG
 #: STRUC_DEF_NAMESPACE
 msgid "In the XML format, this property has the namespace"
 msgstr ""
 
+# STRUC_DEF_OBLIGATIONS
 #: STRUC_DEF_NOTE_C
-msgid "Note"
+msgid "Note (STRUC_DEF_NOTE_C)"
 msgstr ""
 
+# STRUC_DEF_OBLIG_ADD
 #: STRUC_DEF_NOTE_X
 msgid "[x] Note"
 msgstr ""
 
+# STRUC_DEF_OBLIG_ALL
 #: STRUC_DEF_NOT_MARK
-msgid "Instances of this logical model are not marked to be the target of a Reference"
+msgid "Instances of this logical model are not marked to be the target of a Reference (STRUC_DEF_NOT_MARK)"
 msgstr ""
 
+# STRUC_DEF_OBLIG_FROM
 #: STRUC_DEF_NOT_MARKED
-msgid "Instances of this logical model are not marked to be the target of a Reference"
+msgid "Instances of this logical model are not marked to be the target of a Reference (STRUC_DEF_NOT_MARKED)"
 msgstr ""
 
+# STRUC_DEF_OBLIG_SUPP
 #: STRUC_DEF_NO_DESCRIM
 msgid ", and defines no disciminators to differentiate the slices"
 msgstr ""
 
+# STRUC_DEF_ONE_OF
 #: STRUC_DEF_NO_MAPPINGS
 msgid "No Mappings"
 msgstr ""
 
+# STRUC_DEF_OPEN
 #: STRUC_DEF_NO_MUST_SUPPORT
 msgid "No must-support rules about the choice of types/profiles"
 msgstr ""
 
+# STRUC_DEF_OPEN_END
 #: STRUC_DEF_NO_SUMMARY
 msgid "No Summary, as this profile has no differential"
 msgstr ""
 
+# STRUC_DEF_ORDERED
 #: STRUC_DEF_NULL_JSON
 msgid "This object can be represented as null in the JSON structure (which counts as 'present' for cardinality purposes)"
 msgstr ""
 
+# STRUC_DEF_PATH
 #: STRUC_DEF_OBLIG
 msgid "This element has obligations"
 msgstr ""
 
+# STRUC_DEF_PATHS
 #: STRUC_DEF_OBLIGATIONS
-msgid "Obligations"
+msgid "Obligations (STRUC_DEF_OBLIGATIONS)"
 msgstr ""
 
+# STRUC_DEF_PATT_VALUE
 #: STRUC_DEF_OBLIG_ADD
 msgid "This is an obligation profile that only contains obligations and additional bindings"
 msgstr ""
 
+# STRUC_DEF_PREF
 #: STRUC_DEF_OBLIG_ALL
 msgid "Obligations that apply to all actors"
 msgstr ""
 
+# STRUC_DEF_PREFERRED
 #: STRUC_DEF_OBLIG_FROM
 msgid "This profile picks up obligations and additional bindings from"
 msgstr ""
 
+# STRUC_DEF_PREFIXED
 #: STRUC_DEF_OBLIG_SUPP
 msgid "This element has obligations and must be supported"
 msgstr ""
 
+# STRUC_DEF_PREFIX_VALID
 #: STRUC_DEF_ONE_OF
 msgid "One of:"
 msgstr ""
 
+# STRUC_DEF_PREF_CONT
 #: STRUC_DEF_OPEN
 msgid "Open"
 msgstr ""
 
+# STRUC_DEF_PRIMITIVE
 #: STRUC_DEF_OPEN_END
 msgid "Open At End"
 msgstr ""
 
+# STRUC_DEF_PRIM_ELE
 #: STRUC_DEF_ORDERED
 msgid "Ordered"
 msgstr ""
 
+# STRUC_DEF_PRIM_TYPE_PRESENT
 #: STRUC_DEF_PATH
 msgid "Path"
 msgstr ""
 
+# STRUC_DEF_PRIM_TYPE_VALUE
 #: STRUC_DEF_PATHS
 msgid "Path(s)"
 msgstr ""
 
+# STRUC_DEF_PROFILED
 #: STRUC_DEF_PATT_VALUE
 msgid "Pattern Value"
 msgstr ""
 
+# STRUC_DEF_PROFILE_BUILDS
 #: STRUC_DEF_PREF
-msgid "Preferred"
+msgid "Preferred (STRUC_DEF_PREF)"
 msgstr ""
 
+# STRUC_DEF_PROF_COMP
 #: STRUC_DEF_PREFERRED
 msgid "preferred"
 msgstr ""
 
+# STRUC_DEF_PROF_REQ
 #: STRUC_DEF_PREFIXED
-msgid "is prefixed to the value before validation"
+msgid "is prefixed to the value before validation (STRUC_DEF_PREFIXED)"
 msgstr ""
 
+# STRUC_DEF_PROF_RES
 #: STRUC_DEF_PREFIX_VALID
-msgid "is prefixed to the value before validation"
+msgid "is prefixed to the value before validation (STRUC_DEF_PREFIX_VALID)"
 msgstr ""
 
+# STRUC_DEF_PROF_SUPP
 #: STRUC_DEF_PREF_CONT
 msgid "This is the value set that is preferred in a given context (documentation should explain why)"
 msgstr ""
 
+# STRUC_DEF_PROPERTY
 #: STRUC_DEF_PRIMITIVE
 msgid "Primitive Value"
 msgstr ""
 
+# STRUC_DEF_REF
 #: STRUC_DEF_PRIM_ELE
 msgid "This primitive element may be present, or absent, or replaced by an extension"
 msgstr ""
 
+# STRUC_DEF_REFERS_EXT
 #: STRUC_DEF_PRIM_TYPE_PRESENT
 msgid "This primitive type may be present, or absent if replaced by one of the following extensions:"
 msgstr ""
 
+# STRUC_DEF_REFER_PROFILE
 #: STRUC_DEF_PRIM_TYPE_VALUE
 msgid "This primitive type must have a value (the value must be present, and cannot be replaced by an extension)"
 msgstr ""
 
+# STRUC_DEF_REND_UNABLE_RES
 #: STRUC_DEF_PROFILED
 msgid "profiled by"
 msgstr ""
 
+# STRUC_DEF_REPEAT
 #: STRUC_DEF_PROFILE_BUILDS
 msgid "This profile builds on"
 msgstr ""
 
+# STRUC_DEF_REPEAT_ELE
 #: STRUC_DEF_PROF_COMP
-msgid "This profiles compiles with the profile"
+msgid "This profile compiles with the profile"
 msgstr ""
 
+# STRUC_DEF_REP_CHOICE
 #: STRUC_DEF_PROF_REQ
 msgid "This profile also requires that the instance also conform this additional profile:"
 msgstr ""
 
+# STRUC_DEF_REQ
 #: STRUC_DEF_PROF_RES
 msgid "A profiled resource"
 msgstr ""
 
+# STRUC_DEF_REQUIRED
 #: STRUC_DEF_PROF_SUPP
 msgid "This profile must be supported"
 msgstr ""
 
+# STRUC_DEF_REQUIRED_PATT
 #: STRUC_DEF_PROPERTY
 msgid "Property"
 msgstr ""
 
+# STRUC_DEF_REQUIREMENTS
 #: STRUC_DEF_REF
-msgid "Instances of this logical model can be the target of a Reference"
+msgid "Instances of this logical model can be the target of a Reference (STRUC_DEF_REF)"
 msgstr ""
 
+# STRUC_DEF_REQ_BIND
 #: STRUC_DEF_REFERS_EXT
 msgid "This structure refers to these extensions"
 msgstr ""
 
+# STRUC_DEF_REQ_PATT
 #: STRUC_DEF_REFER_PROFILE
 msgid "In this IG, the following structures refer to this profile:"
 msgstr ""
 
+# STRUC_DEF_ROOT
 #: STRUC_DEF_REND_UNABLE_RES
 msgid "Unable to resolve StructureDefinition {0} resolving content reference {1}"
 msgstr ""
 
+# STRUC_DEF_SEE
 #: STRUC_DEF_REPEAT
-msgid "This is a repeating choice group that does not appear directly in the instance"
+msgid "This is a repeating choice group that does not appear directly in the instance (STRUC_DEF_REPEAT)"
 msgstr ""
 
+# STRUC_DEF_SET_ARE
 #: STRUC_DEF_REPEAT_ELE
 msgid "This repeating element order: {0}"
 msgstr ""
 
+# STRUC_DEF_SET_SLICES
 #: STRUC_DEF_REP_CHOICE
-msgid "This is a repeating choice group that does not appear directly in the instance"
+msgid "This is a repeating choice group that does not appear directly in the instance (STRUC_DEF_REP_CHOICE)"
 msgstr ""
 
+# STRUC_DEF_SHALL_CODE
 #: STRUC_DEF_REQ
-msgid "Required"
+msgid "Required (STRUC_DEF_REQ)"
 msgstr ""
 
+# STRUC_DEF_SHORT
 #: STRUC_DEF_REQUIRED
 msgid "required"
 msgstr ""
 
+# STRUC_DEF_SHOULD_CODE
 #: STRUC_DEF_REQUIRED_PATT
 msgid "Required Pattern:"
 msgstr ""
 
+# STRUC_DEF_SINGLE_JSON_OBJECTS
 #: STRUC_DEF_REQUIREMENTS
 msgid "Requirements"
 msgstr ""
 
+# STRUC_DEF_SLIC
 #: STRUC_DEF_REQ_BIND
 msgid "A required binding for additional codes, for us when the binding strength is 'extensible' or 'preferred'"
 msgstr ""
 
+# STRUC_DEF_SLICE
 #: STRUC_DEF_REQ_PATT
 msgid "Required Pattern"
 msgstr ""
 
+# STRUC_DEF_SLICES
 #: STRUC_DEF_ROOT
 msgid "The root class that contains instances of this class"
 msgstr ""
 
+# STRUC_DEF_SLICE_FOR
 #: STRUC_DEF_SEE
 msgid "See"
 msgstr ""
 
+# STRUC_DEF_SLICE_NAME
 #: STRUC_DEF_SET_ARE
 msgid ". The slices are"
 msgstr ""
 
+# STRUC_DEF_SLICE_PAR
 #: STRUC_DEF_SET_SLICES
 msgid "This element introduces a set of slices on"
 msgstr ""
 
+# STRUC_DEF_SNOMED
 #: STRUC_DEF_SHALL_CODE
 msgid "The codes SHALL be taken from"
 msgstr ""
 
+# STRUC_DEF_SNOMED_CT
 #: STRUC_DEF_SHORT
 msgid "Short"
 msgstr ""
 
+# STRUC_DEF_STAND_STAT
 #: STRUC_DEF_SHOULD_CODE
 msgid "The codes SHOULD be taken from"
 msgstr ""
 
+# STRUC_DEF_STAND_STATUS
 #: STRUC_DEF_SINGLE_JSON_OBJECTS
 msgid "JSON: Represented as a single JSON Object with named properties using the value of the {0} child as the key"
 msgstr ""
 
+# STRUC_DEF_START
 #: STRUC_DEF_SLIC
 msgid "Slices"
 msgstr ""
 
+# STRUC_DEF_START_DEF
 #: STRUC_DEF_SLICE
 msgid "Slice"
 msgstr ""
 
+# STRUC_DEF_STRING_FORM
 #: STRUC_DEF_SLICES
 msgid "Slice:"
 msgstr ""
 
+# STRUC_DEF_STRUCTURES
 #: STRUC_DEF_SLICE_FOR
 msgid "Slices for {0}"
 msgstr ""
 
+# STRUC_DEF_SUIT_SHALL_CODE
 #: STRUC_DEF_SLICE_NAME
 msgid "Slice Name"
 msgstr ""
 
+# STRUC_DEF_SUMM
 #: STRUC_DEF_SLICE_PAR
 msgid "Slice {0}"
 msgstr ""
 
+# STRUC_DEF_SUMMARY
 #: STRUC_DEF_SNOMED
 msgid "SNOMED-CT Code"
 msgstr ""
 
-#: STRUC_DEF_SNOMED_CODE
-msgid "SNOMED CT code"
-msgstr ""
-
+# STRUC_DEF_SUPP
 #: STRUC_DEF_SNOMED_CT
-msgid "SNOMED CT"
+msgid "SNOMED-CT (STRUC_DEF_SNOMED_CT)"
 msgstr ""
 
+# STRUC_DEF_TARG_SUPP
 #: STRUC_DEF_STAND_STAT
 msgid "Standard Status"
 msgstr ""
 
+# STRUC_DEF_TEMPLATEID
 #: STRUC_DEF_STAND_STATUS
 msgid "Standards Status ="
 msgstr ""
 
+# STRUC_DEF_TERM_BIND
 #: STRUC_DEF_START
-msgid "Starter"
+msgid "Starter (STRUC_DEF_START)"
 msgstr ""
 
+# STRUC_DEF_TERM_BINDS
 #: STRUC_DEF_START_DEF
-msgid "This value set is a good set of codes to start with when designing your system"
+msgid "This value set is a good set of codes to start with when designing your system (STRUC_DEF_START_DEF)"
 msgstr ""
 
+# STRUC_DEF_THEN_TYPE
 #: STRUC_DEF_STRING_FORM
 msgid "String Format"
 msgstr ""
 
+# STRUC_DEF_THIS_REFERS
 #: STRUC_DEF_STRUCTURES
 msgid "Structures"
 msgstr ""
 
+# STRUC_DEF_TODO
 #: STRUC_DEF_SUIT_SHALL_CODE
 msgid "Unless not suitable, these codes SHALL be taken from"
 msgstr ""
 
+# STRUC_DEF_TYPE
 #: STRUC_DEF_SUMM
-msgid "This element is included in summaries"
+msgid "This element is included in summaries (STRUC_DEF_SUMM)"
 msgstr ""
 
+# STRUC_DEF_TYPE_BOUND
 #: STRUC_DEF_SUMMARY
-msgid "Summary"
+msgid "Summary (STRUC_DEF_SUMMARY)"
 msgstr ""
 
+# STRUC_DEF_TYPE_SET
 #: STRUC_DEF_SUPP
-msgid "This element must be supported"
+msgid "This element must be supported (STRUC_DEF_SUPP)"
 msgstr ""
 
+# STRUC_DEF_TYPE_SPEC
 #: STRUC_DEF_TARG_SUPP
 msgid "This target must be supported"
 msgstr ""
 
+# STRUC_DEF_TYPE_SUPP
 #: STRUC_DEF_TEMPLATEID
 msgid "Instance of this type are validated by templateId"
 msgstr ""
 
+# STRUC_DEF_UCUM
 #: STRUC_DEF_TERM_BIND
 msgid "Terminology Bindings (Differential)"
 msgstr ""
 
+# STRUC_DEF_UI
 #: STRUC_DEF_TERM_BINDS
 msgid "Terminology Bindings"
 msgstr ""
 
+# STRUC_DEF_UI_CONT
 #: STRUC_DEF_THEN_TYPE
 msgid "then the type is"
 msgstr ""
 
+# STRUC_DEF_UNADORNED
 #: STRUC_DEF_THIS_REFERS
 msgid "This structure refers to these other structures"
 msgstr ""
 
+# STRUC_DEF_UNDEF_ACT
 #: STRUC_DEF_TODO
-msgid "todo"
+msgid "todo (STRUC_DEF_TODO)"
 msgstr ""
 
+# STRUC_DEF_UNKNOWN_APPROACH
 #: STRUC_DEF_TYPE
-msgid "Type"
+msgid "Type (STRUC_DEF_TYPE)"
 msgstr ""
 
+# STRUC_DEF_UNKNOWN_REF
 #: STRUC_DEF_TYPE_BOUND
 msgid "This type can be bound to a value set using the {0}"
 msgstr ""
 
+# STRUC_DEF_UNORDERED
 #: STRUC_DEF_TYPE_SET
 msgid "This type can be bound to a value set using the ""
 msgstr ""
 
+# STRUC_DEF_UNSPECIFIED
 #: STRUC_DEF_TYPE_SPEC
 msgid "Type Specifier"
 msgstr ""
 
+# STRUC_DEF_URI
 #: STRUC_DEF_TYPE_SUPP
 msgid "This type must be supported"
 msgstr ""
 
+# STRUC_DEF_URL
 #: STRUC_DEF_UCUM
-msgid "UCUM"
+msgid "UCUM (STRUC_DEF_UCUM)"
 msgstr ""
 
+# STRUC_DEF_URLS
 #: STRUC_DEF_UI
-msgid "UI"
+msgid "UI (STRUC_DEF_UI)"
 msgstr ""
 
+# STRUC_DEF_VALID
 #: STRUC_DEF_UI_CONT
 msgid "This value set is provided for user look up in a given context. Typically, these valuesets only include a subset of codes relevant for input in a context"
 msgstr ""
 
+# STRUC_DEF_VALID_UNKNOWN
 #: STRUC_DEF_UNADORNED
 msgid "In the XML format, this property is represented as unadorned text."
 msgstr ""
 
+# STRUC_DEF_VALUE
 #: STRUC_DEF_UNDEF_ACT
 msgid "Obligations that apply to the undefined actor {0}"
 msgstr ""
 
+# STRUC_DEF_VALUESET
 #: STRUC_DEF_UNKNOWN_APPROACH
-msgid "Instances of this type are validated using an unknown approach: {0}"
+msgid "Instances of this type are validated using an unknown approach: {0} (STRUC_DEF_UNKNOWN_APPROACH)"
 msgstr ""
 
+# STRUC_DEF_VALUESET_CODE
 #: STRUC_DEF_UNKNOWN_REF
 msgid "Unknown reference to {0}"
 msgstr ""
 
+# STRUC_DEF_VALUE_ALT
 #: STRUC_DEF_UNORDERED
 msgid "Unordered"
 msgstr ""
 
+# STRUC_DEF_VALUE_REQ
 #: STRUC_DEF_UNSPECIFIED
 msgid "Unspecified"
 msgstr ""
 
+# STRUC_DEF_WHAT
 #: STRUC_DEF_URI
-msgid "URI"
+msgid "URI (STRUC_DEF_URI)"
 msgstr ""
 
+# STRUC_DEF_XHTML
 #: STRUC_DEF_URL
-msgid "URL"
+msgid "URL (STRUC_DEF_URL)"
 msgstr ""
 
+# STRUC_DEF_XML
 #: STRUC_DEF_URLS
 msgid "URL:"
 msgstr ""
 
+# STRUC_DEF_XML_ACTUAL
 #: STRUC_DEF_VALID
 msgid "Validation"
 msgstr ""
 
+# STRUC_DEF_XML_ATTRIBUTE
 #: STRUC_DEF_VALID_UNKNOWN
-msgid "Instances of this type are validated using an unknown approach: {0}"
+msgid "Instances of this type are validated using an unknown approach: {0} (STRUC_DEF_VALID_UNKNOWN)"
 msgstr ""
 
+# STRUC_DEF_XML_ELE
 #: STRUC_DEF_VALUE
-msgid "Value Set"
+msgid "Value Set (STRUC_DEF_VALUE)"
 msgstr ""
 
+# STRUC_DEF_XML_FORM
 #: STRUC_DEF_VALUESET
 msgid "ValueSet"
 msgstr ""
 
+# STRUC_DEF_XML_NAME
 #: STRUC_DEF_VALUESET_CODE
 msgid "ValueSet / Code"
 msgstr ""
 
+# STRUC_DEF_XSI
 #: STRUC_DEF_VALUE_ALT
 msgid "Value Alternatives"
 msgstr ""
 
+# SUB_TOPIC_COMP
 #: STRUC_DEF_VALUE_REQ
 msgid "Value Required"
 msgstr ""
 
+# SUB_TOPIC_CREATE
 #: STRUC_DEF_WHAT
 msgid "What goes here"
 msgstr ""
 
+# SUB_TOPIC_CRITERIA
 #: STRUC_DEF_XHTML
 msgid "This property is represented as XHTML Text in the XML."
 msgstr ""
 
+# SUB_TOPIC_DELETE
 #: STRUC_DEF_XML
-msgid "XML"
+msgid "XML (STRUC_DEF_XML)"
 msgstr ""
 
+# SUB_TOPIC_DESC
 #: STRUC_DEF_XML_ACTUAL
 msgid "In the XML format, this property has the actual name"
 msgstr ""
 
+# SUB_TOPIC_EVENT
 #: STRUC_DEF_XML_ATTRIBUTE
 msgid "In the XML format, this property is represented as an attribute."
 msgstr ""
 
+# SUB_TOPIC_FHIR_PATH
 #: STRUC_DEF_XML_ELE
 msgid "XML Element Name"
 msgstr ""
 
+# SUB_TOPIC_FILT_DEF
 #: STRUC_DEF_XML_FORM
 msgid "XML Format"
 msgstr ""
 
+# SUB_TOPIC_FILT_PAR
 #: STRUC_DEF_XML_NAME
 msgid "XML Namespace"
 msgstr ""
 
+# SUB_TOPIC_INCL
 #: STRUC_DEF_XSI
 msgid "The type of this property is determined using the ""
 msgstr ""
 
+# SUB_TOPIC_INT
 #: SUB_TOPIC_COMP
-msgid "Comparators"
+msgid "Comparators (SUB_TOPIC_COMP)"
 msgstr ""
 
+# SUB_TOPIC_MOD
 #: SUB_TOPIC_CREATE
 msgid "* create result = {0}"
 msgstr ""
 
+# SUB_TOPIC_PREV
 #: SUB_TOPIC_CRITERIA
-msgid "Criteria"
+msgid "Criteria (SUB_TOPIC_CRITERIA)"
 msgstr ""
 
+# SUB_TOPIC_REQ
 #: SUB_TOPIC_DELETE
 msgid "* delete result = {0}"
 msgstr ""
 
+# SUB_TOPIC_RES
 #: SUB_TOPIC_DESC
-msgid "Description"
+msgid "Description (SUB_TOPIC_DESC)"
 msgstr ""
 
+# SUB_TOPIC_RES_TRIG
 #: SUB_TOPIC_EVENT
 msgid "Event"
 msgstr ""
 
+# SUB_TOPIC_REV_INCL
 #: SUB_TOPIC_FHIR_PATH
 msgid "FHIR Path"
 msgstr ""
 
+# TERMINOLOGY_LVL
 #: SUB_TOPIC_FILT_DEF
 msgid "Filter Definition"
 msgstr ""
 
+# TERMINOLOGY_SNOMED
 #: SUB_TOPIC_FILT_PAR
 msgid "Filter Parameter"
 msgstr ""
 
+# TERM_REND_COPY
 #: SUB_TOPIC_INCL
 msgid "Includes"
 msgstr ""
 
+# TEST_PLAN_ASS
 #: SUB_TOPIC_INT
 msgid "Interactions"
 msgstr ""
 
+# TEST_PLAN_ASSERTION
 #: SUB_TOPIC_MOD
-msgid "Modifiers"
+msgid "Modifiers (SUB_TOPIC_MOD)"
 msgstr ""
 
+# TEST_PLAN_CASE
 #: SUB_TOPIC_PREV
 msgid "* previous = {0}"
 msgstr ""
 
+# TEST_PLAN_CASE_SEQ
 #: SUB_TOPIC_REQ
 msgid "* require both = {0}"
 msgstr ""
 
+# TEST_PLAN_CATEGORY
 #: SUB_TOPIC_RES
-msgid "Resource"
+msgid "Resource (SUB_TOPIC_RES)"
 msgstr ""
 
+# TEST_PLAN_CONT
 #: SUB_TOPIC_RES_TRIG
 msgid "Resource Triggers"
 msgstr ""
 
+# TEST_PLAN_CONTENT
 #: SUB_TOPIC_REV_INCL
 msgid "Reverse Includes"
 msgstr ""
 
+# TEST_PLAN_DATA
 #: TERMINOLOGY_LVL
 msgid "Lvl"
 msgstr ""
 
+# TEST_PLAN_DEP
 #: TERMINOLOGY_SNOMED
-msgid "SNOMED-CT"
+msgid "SNOMED-CT (TERMINOLOGY_SNOMED)"
 msgstr ""
 
+# TEST_PLAN_DEPEN
 #: TERM_REND_COPY
 msgid "Copy {0} Format to clipboard"
 msgstr ""
 
+# TEST_PLAN_DESC
 #: TEST_PLAN_ASS
 msgid "Assertion"
 msgstr ""
 
+# TEST_PLAN_LANG
 #: TEST_PLAN_ASSERTION
 msgid "Assertion {0}"
 msgstr ""
 
+# TEST_PLAN_RESULT
 #: TEST_PLAN_CASE
 msgid "Test Case"
 msgstr ""
 
+# TEST_PLAN_RUN
 #: TEST_PLAN_CASE_SEQ
 msgid "Test Case - Sequence {0}"
 msgstr ""
 
+# TEST_PLAN_SCOPE
 #: TEST_PLAN_CATEGORY
 msgid "Category:"
 msgstr ""
 
+# TEST_PLAN_SCOPES
 #: TEST_PLAN_CONT
-msgid "Contact:"
+msgid "Contact: (TEST_PLAN_CONT)"
 msgstr ""
 
+# TEST_PLAN_SOURCE
 #: TEST_PLAN_CONTENT
-msgid "Content"
+msgid "Content (TEST_PLAN_CONTENT)"
 msgstr ""
 
+# TEST_PLAN_TEST_DATA
 #: TEST_PLAN_DATA
 msgid "Test Data"
 msgstr ""
 
+# TEST_PLAN_TEST_RUN
 #: TEST_PLAN_DEP
 msgid "Test Plant Dependency:"
 msgstr ""
 
+# TEST_PLAN_TYPE
 #: TEST_PLAN_DEPEN
 msgid "Test Plant Dependencies:"
 msgstr ""
 
+# TEXT_ICON_CHOICE
 #: TEST_PLAN_DESC
 msgid "Dependency - no description"
 msgstr ""
 
+# TEXT_ICON_DATATYPE
 #: TEST_PLAN_LANG
 msgid "Language"
 msgstr ""
 
+# TEXT_ICON_ELEMENT
 #: TEST_PLAN_RESULT
 msgid "Result"
 msgstr ""
 
+# TEXT_ICON_EXTENSION
 #: TEST_PLAN_RUN
 msgid "Test Run"
 msgstr ""
 
+# TEXT_ICON_EXTENSION_COMPLEX
 #: TEST_PLAN_SCOPE
 msgid "Test Plant Scope:"
 msgstr ""
 
+# TEXT_ICON_EXTENSION_SIMPLE
 #: TEST_PLAN_SCOPES
 msgid "Test Plant Scopes:"
 msgstr ""
 
+# TEXT_ICON_FIXED
 #: TEST_PLAN_SOURCE
 msgid "Source[x]"
 msgstr ""
 
+# TEXT_ICON_KEY
 #: TEST_PLAN_TEST_DATA
 msgid "Test Data {0}"
 msgstr ""
 
+# TEXT_ICON_OBJECT_BOX
 #: TEST_PLAN_TEST_RUN
 msgid "Test Run {0}"
 msgstr ""
 
+# TEXT_ICON_PRIMITIVE
 #: TEST_PLAN_TYPE
-msgid "Type"
+msgid "Type (TEST_PLAN_TYPE)"
 msgstr ""
 
+# TEXT_ICON_PROFILE
 #: TEXT_ICON_CHOICE
 msgid "Choice of Types"
 msgstr ""
 
+# TEXT_ICON_REFERENCE
 #: TEXT_ICON_DATATYPE
 msgid "Data Type"
 msgstr ""
 
+# TEXT_ICON_RESOURCE
 #: TEXT_ICON_ELEMENT
 msgid "Element"
 msgstr ""
 
+# TEXT_ICON_REUSE
 #: TEXT_ICON_EXTENSION
 msgid "Extension"
 msgstr ""
 
+# TEXT_ICON_SLICE
 #: TEXT_ICON_EXTENSION_COMPLEX
 msgid "Complex Extension"
 msgstr ""
 
+# TEXT_ICON_SLICE_ITEM
 #: TEXT_ICON_EXTENSION_SIMPLE
 msgid "Simple Extension"
 msgstr ""
 
+# TX_CODE
 #: TEXT_ICON_FIXED
-msgid "Fixed Value"
+msgid "Fixed Value (TEXT_ICON_FIXED)"
 msgstr ""
 
+# TX_COMMENTS
 #: TEXT_ICON_KEY
 msgid "JSON Key Value"
 msgstr ""
 
+# TX_DEFINITION
 #: TEXT_ICON_OBJECT_BOX
 msgid "Object"
 msgstr ""
 
+# TX_DEPRECATED
 #: TEXT_ICON_PRIMITIVE
 msgid "Primitive Data Type"
 msgstr ""
 
+# TX_DISPLAY
 #: TEXT_ICON_PROFILE
-msgid "Profile"
+msgid "Profile (TEXT_ICON_PROFILE)"
 msgstr ""
 
+# TX_VERSION
 #: TEXT_ICON_REFERENCE
 msgid "Reference to another Resource"
 msgstr ""
 
+# VALUE_SET_ADD_DESIG
 #: TEXT_ICON_RESOURCE
-msgid "Resource"
+msgid "Resource (TEXT_ICON_RESOURCE)"
 msgstr ""
 
+# VALUE_SET_ADD_LANG
 #: TEXT_ICON_REUSE
 msgid "Reference to another Element"
 msgstr ""
 
+# VALUE_SET_ALL_CODE
 #: TEXT_ICON_SLICE
 msgid "Slice Definition"
 msgstr ""
 
+# VALUE_SET_ALL_CODES_DEF
 #: TEXT_ICON_SLICE_ITEM
 msgid "Slice Item"
 msgstr ""
 
+# VALUE_SET_AND
 #: TX_CODE
-msgid "Code"
+msgid "Code (TX_CODE)"
 msgstr ""
 
+# VALUE_SET_AUS
 #: TX_COMMENTS
-msgid "Comments"
+msgid "Comments (TX_COMMENTS)"
 msgstr ""
 
+# VALUE_SET_CODE
 #: TX_DEFINITION
-msgid "Definition"
+msgid "Definition (TX_DEFINITION)"
 msgstr ""
 
+# VALUE_SET_CODES_FROM
 #: TX_DEPRECATED
-msgid "Deprecated"
+msgid "Deprecated (TX_DEPRECATED)"
 msgstr ""
 
+# VALUE_SET_CODE_ITEM
 #: TX_DISPLAY
-msgid "Display"
+msgid "Display (TX_DISPLAY)"
 msgstr ""
 
+# VALUE_SET_CODE_SELEC
 #: TX_VERSION
-msgid "Version"
+msgid "Version (TX_VERSION)"
 msgstr ""
 
+# VALUE_SET_COMMA
 #: VALUE_SET_ADD_DESIG
 msgid "Additional Designations and Language Displays"
 msgstr ""
 
+# VALUE_SET_CONT
 #: VALUE_SET_ADD_LANG
-msgid "Additional Language Displays"
+msgid "Additional Language Displays (VALUE_SET_ADD_LANG)"
 msgstr ""
 
+# VALUE_SET_CONTAINS
 #: VALUE_SET_ALL_CODE
-msgid "This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"
 msgstr ""
 
+# VALUE_SET_CONTAINS_AT_LEAST
 #: VALUE_SET_ALL_CODES_DEF
 msgid "all codes defined in"
 msgstr ""
 
+# VALUE_SET_CONT_STRUC
 #: VALUE_SET_AND
-msgid "and"
+msgid "and (VALUE_SET_AND)"
 msgstr ""
 
-#: VALUE_SET_AT_LEAST
-msgid "at least"
-msgstr ""
-
+# VALUE_SET_DANISH
 #: VALUE_SET_AUS
 msgid "Australian"
 msgstr ""
 
+# VALUE_SET_DEF
 #: VALUE_SET_CODE
-msgid "Code"
+msgid "Code (VALUE_SET_CODE)"
 msgstr ""
 
+# VALUE_SET_DESCENDENTOF
 #: VALUE_SET_CODES_FROM
 msgid "codes from"
 msgstr ""
 
+# VALUE_SET_DESIG
 #: VALUE_SET_CODE_ITEM
 msgid "The code for the item"
 msgstr ""
 
+# VALUE_SET_DISPLAY
 #: VALUE_SET_CODE_SELEC
 msgid "This value set cannot be fully expanded, but a selection ( {0} codes) of the whole set of codes is shown here."
 msgstr ""
 
+# VALUE_SET_DISPLAY_ITEM
 #: VALUE_SET_COMMA
 msgid ","
 msgstr ""
 
+# VALUE_SET_DOESNT_EXIST
 #: VALUE_SET_CONT
 msgid "Value Set Contents"
 msgstr ""
 
+# VALUE_SET_DUTCH
 #: VALUE_SET_CONTAINS
 msgid "This value set contains {0} concepts"
 msgstr ""
 
+# VALUE_SET_EQUAL
 #: VALUE_SET_CONTAINS_AT_LEAST
 msgid "This value set contains at least {0} concepts"
 msgstr ""
 
+# VALUE_SET_ERROR
 #: VALUE_SET_CONT_STRUC
-msgid "This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:"
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:"
 msgstr ""
 
+# VALUE_SET_EXC
 #: VALUE_SET_DANISH
 msgid "Danish"
 msgstr ""
 
+# VALUE_SET_EXCL
 #: VALUE_SET_DEF
-msgid "Definition"
+msgid "Definition (VALUE_SET_DEF)"
 msgstr ""
 
+# VALUE_SET_EXCLUDED_FROM
 #: VALUE_SET_DESCENDENTOF
 msgid "descends from"
 msgstr ""
 
+# VALUE_SET_EXISTS
 #: VALUE_SET_DESIG
 msgid "Additional Designations"
 msgstr ""
 
+# VALUE_SET_EXP
 #: VALUE_SET_DISPLAY
-msgid "Display"
+msgid "Display (VALUE_SET_DISPLAY)"
 msgstr ""
 
+# VALUE_SET_EXPANSION
 #: VALUE_SET_DISPLAY_ITEM
 msgid "The display for the item"
 msgstr ""
 
+# VALUE_SET_EXPANSIONS
 #: VALUE_SET_DOESNT_EXIST
 msgid "doesn't exist"
 msgstr ""
 
+# VALUE_SET_EXP_FRAG
 #: VALUE_SET_DUTCH
 msgid "Dutch"
 msgstr ""
 
+# VALUE_SET_GENERALIZES
 #: VALUE_SET_EQUAL
 msgid "="
 msgstr ""
 
+# VALUE_SET_HAS
 #: VALUE_SET_ERROR
 msgid "Error Expanding ValueSet: {0}"
 msgstr ""
 
+# VALUE_SET_HAS_AT_LEAST
 #: VALUE_SET_EXC
 msgid "exclude"
 msgstr ""
 
+# VALUE_SET_IMPORT
 #: VALUE_SET_EXCL
 msgid "Exclude"
 msgstr ""
 
+# VALUE_SET_IN
 #: VALUE_SET_EXCLUDED_FROM
 msgid "Excluded from"
 msgstr ""
 
+# VALUE_SET_INACT
 #: VALUE_SET_EXISTS
 msgid "exists"
 msgstr ""
 
+# VALUE_SET_INACTIVE
 #: VALUE_SET_EXP
 msgid "Expansion based on example code system"
 msgstr ""
 
+# VALUE_SET_INC
 #: VALUE_SET_EXPANSION
 msgid "Expansion based on"
 msgstr ""
 
+# VALUE_SET_INCLUDED_INTO
 #: VALUE_SET_EXPANSIONS
 msgid "Expansion based on:"
 msgstr ""
 
+# VALUE_SET_INF
 #: VALUE_SET_EXP_FRAG
 msgid "Expansion based on code system fragment"
 msgstr ""
 
+# VALUE_SET_INT
 #: VALUE_SET_GENERALIZES
 msgid "generalizes"
 msgstr ""
 
+# VALUE_SET_ISA
 #: VALUE_SET_HAS
 msgid "This value set has {0} codes in it. In order to keep the publication size manageable, only a selection ("+count+" codes) of the whole set of codes is shown."
 msgstr ""
 
+# VALUE_SET_ISNOTA
 #: VALUE_SET_HAS_AT_LEAST
 msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ("+count+" codes) of the whole set of codes is shown."
 msgstr ""
 
+# VALUE_SET_LEVEL
 #: VALUE_SET_IMPORT
 msgid "Import all the codes that are contained in the intersection of"
 msgstr ""
 
+# VALUE_SET_LOINCV
 #: VALUE_SET_IN
 msgid "in"
 msgstr ""
 
+# VALUE_SET_NOTE
 #: VALUE_SET_INACT
 msgid "inactive"
 msgstr ""
 
+# VALUE_SET_NOTIN
 #: VALUE_SET_INACTIVE
 msgid "Inactive"
 msgstr ""
 
+# VALUE_SET_NOT_DEF
 #: VALUE_SET_INC
 msgid "Include"
 msgstr ""
 
+# VALUE_SET_NOT_FOUND
 #: VALUE_SET_INCLUDED_INTO
 msgid "Included into"
 msgstr ""
 
+# VALUE_SET_NO_VER
 #: VALUE_SET_INF
 msgid "This value set cannot be expanded because of the way it is defined - it has an infinite number of members."
 msgstr ""
 
+# VALUE_SET_NO_VERSION
 #: VALUE_SET_INT
 msgid "International"
 msgstr ""
 
+# VALUE_SET_NULL
 #: VALUE_SET_ISA
 msgid "is-a"
 msgstr ""
 
+# VALUE_SET_NULLS
 #: VALUE_SET_ISNOTA
 msgid "is-not-a"
 msgstr ""
 
+# VALUE_SET_NUMBER_CONCEPTS
 #: VALUE_SET_LEVEL
 msgid "Level"
 msgstr ""
 
+# VALUE_SET_OID
 #: VALUE_SET_LOINCV
 msgid "Loinc v"
 msgstr ""
 
+# VALUE_SET_OID_TERM_SYS
 #: VALUE_SET_NOTE
 msgid "Note: {0}"
 msgstr ""
 
+# VALUE_SET_REGEX
 #: VALUE_SET_NOTIN
 msgid "not in"
 msgstr ""
 
+# VALUE_SET_RULES_EXC
 #: VALUE_SET_NOT_DEF
-msgid "This include specifies a heirarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined"
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined"
 msgstr ""
 
+# VALUE_SET_RULES_INC
 #: VALUE_SET_NOT_FOUND
-msgid "This include specifies a heirarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:"
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:"
 msgstr ""
 
+# VALUE_SET_SEL
 #: VALUE_SET_NO_VER
 msgid "(no version)"
 msgstr ""
 
+# VALUE_SET_SNOMED
 #: VALUE_SET_NO_VERSION
 msgid "(no version) ("
 msgstr ""
 
+# VALUE_SET_SNOMED_ADD
 #: VALUE_SET_NULL
 msgid "null"
 msgstr ""
 
+# VALUE_SET_SPAN
 #: VALUE_SET_NULLS
 msgid "?ngen-13?"
 msgstr ""
 
+# VALUE_SET_SPEC_NAME
 #: VALUE_SET_NUMBER_CONCEPTS
 msgid "This value set expansion contains {0} concepts."
 msgstr ""
 
+# VALUE_SET_SWEDISH
 #: VALUE_SET_OID
-msgid "OID"
+msgid "OID (VALUE_SET_OID)"
 msgstr ""
 
+# VALUE_SET_SYNONYM
 #: VALUE_SET_OID_TERM_SYS
-msgid "for OID based terminology systems"
+msgid "for OID based terminology systems (VALUE_SET_OID_TERM_SYS)"
 msgstr ""
 
+# VALUE_SET_SYSTEM
 #: VALUE_SET_REGEX
 msgid "matches (by regex)"
 msgstr ""
 
+# VALUE_SET_THESE_CODES_DEF
 #: VALUE_SET_RULES_EXC
 msgid "This value set excludes codes based on the following rules:"
 msgstr ""
 
+# VALUE_SET_TOO_COSTLY
 #: VALUE_SET_RULES_INC
 msgid "This value set includes codes based on the following rules:"
 msgstr ""
 
+# VALUE_SET_UK
 #: VALUE_SET_SEL
 msgid "This value set has >1000 codes in it. In order to keep the publication size manageable, only a selection (1000 codes) of the whole set of codes is shown"
 msgstr ""
 
+# VALUE_SET_US
 #: VALUE_SET_SNOMED
 msgid "SNOMED CT {0} edition"
 msgstr ""
 
+# VALUE_SET_USED_ELSEWHERE
 #: VALUE_SET_SNOMED_ADD
 msgid "SNOMED CT {0} edition {1}"
 msgstr ""
 
+# VALUE_SET_VERSION
 #: VALUE_SET_SPAN
 msgid "Spanish"
 msgstr ""
 
+# VALUE_SET_WHERE
 #: VALUE_SET_SPEC_NAME
 msgid "Fully specified name"
 msgstr ""
 
+# VALUE_SET_WHERE_CODES
 #: VALUE_SET_SWEDISH
 msgid "Swedish"
 msgstr ""
 
+# VS_ABSTRACT_CODE_HINT
 #: VALUE_SET_SYNONYM
 msgid "Synonym"
 msgstr ""
 
+# null
 #: VALUE_SET_SYSTEM
 msgid "System"
 msgstr ""
 
+# null
 #: VALUE_SET_THESE_CODES_DEF
 msgid "these codes as defined in"
 msgstr ""
 
+# null
 #: VALUE_SET_TOO_COSTLY
 msgid "This value set cannot be expanded because the terminology server(s) deemed it too costly to do so"
 msgstr ""
 
+# null
 #: VALUE_SET_UK
 msgid "United Kingdom"
 msgstr ""
 
+# null
 #: VALUE_SET_US
 msgid "United States"
 msgstr ""
 
+# null
 #: VALUE_SET_USED_ELSEWHERE
 msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
 msgstr ""
 
+# null
 #: VALUE_SET_VERSION
-msgid "version"
+msgid "version (VALUE_SET_VERSION)"
 msgstr ""
 
+# null
 #: VALUE_SET_WHERE
 msgid "where"
 msgstr ""
 
+# null
 #: VALUE_SET_WHERE_CODES
 msgid ", where the codes are contained in"
 msgstr ""
 
+# null
 #: VS_ABSTRACT_CODE_HINT
 msgid "This code is not selectable ('Abstract')"
 msgstr ""
