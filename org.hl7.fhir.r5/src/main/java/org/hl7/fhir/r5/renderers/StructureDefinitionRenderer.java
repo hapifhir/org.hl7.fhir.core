@@ -2981,7 +2981,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table")); // todo: change to graph definition
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.STRUC_DEF_PROPERTY), context.formatPhrase(RenderingContext.STRUC_DEF_PROF_RES), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.STRUC_DEF_CARD), context.formatPhrase(RenderingContext.STRUC_DEF_MAX_MIN), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_CARD), context.formatPhrase(RenderingContext.STRUC_DEF_MAX_MIN), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.STRUC_DEF_CONTENT), context.formatPhrase(RenderingContext.STRUC_DEF_WHAT), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.STRUC_DEF_DESC), context.formatPhrase(RenderingContext.STRUC_DEF_DESC_PROF), null, 0));
     return model;
@@ -4739,7 +4739,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
   private String summarise(Coding coding) throws FHIRException {
     if ("http://snomed.info/sct".equals(coding.getSystem()))
-      return "" + (context.formatPhrase(RenderingContext.STRUC_DEF_SNOMED_CODE)) + " " + coding.getCode() + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")");
+      return "" + (context.formatPhrase(RenderingContext.STRUC_DEF_SNOMED)) + " " + coding.getCode() + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")");
     if ("http://loinc.org".equals(coding.getSystem()))
       return "" + (context.formatPhrase(RenderingContext.STRUC_DEF_LOINC_CODE)) + " " + coding.getCode() + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")");
     if ("http://unitsofmeasure.org/".equals(coding.getSystem()))

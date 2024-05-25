@@ -47,7 +47,7 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
       XhtmlNode tr = tbl.tr();
       tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_SEV));
       tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_LOC));
-      tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_CODE));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_DET));
       tr.td().b().tx(context.formatPhrase(RenderingContext.OP_OUT_DIAG));
       if (hasSource)

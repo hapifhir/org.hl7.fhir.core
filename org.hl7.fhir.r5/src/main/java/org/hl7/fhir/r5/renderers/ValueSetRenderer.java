@@ -208,7 +208,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (vs.getExpansion().getContains().isEmpty()) {
         msg = context.formatPhrase(RenderingContext.VALUE_SET_TOO_COSTLY);
       } else {
-        msg = context.formatPhrase(RenderingContext.VALUE_SET_CODE_SELEC, countMembership(vs));
+        msg = context.formatPhrase(RenderingContext.GENERAL_CODE_SELEC, countMembership(vs));
       }
       x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px").addText(msg);
     } else {
@@ -216,9 +216,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if (vs.getExpansion().hasTotal()) {
         if (count != vs.getExpansion().getTotal()) {
           x.para().style("border: maroon 1px solid; background-color: #FFCCCC; font-weight: bold; padding: 8px")
-            .addText(context.formatPhrase(hasFragment ? RenderingContext.VALUE_SET_HAS_AT_LEAST : RenderingContext.VALUE_SET_HAS, vs.getExpansion().getTotal()));
+            .addText(context.formatPhrase(hasFragment ? RenderingContext.VALUE_SET_HAS_AT_LEAST : RenderingContext.VALUE_SET_HAS, vs.getExpansion().getTotal(), count));
         } else {
-          x.para().tx(context.formatPhrase(hasFragment ? RenderingContext.VALUE_SET_CONTAINS_AT_LEAST : RenderingContext.VALUE_SET_CONTAINS, vs.getExpansion().getTotal()));          
+          x.para().tx(context.formatPhrase(hasFragment ? RenderingContext.VALUE_SET_CONTAINS_AT_LEAST : RenderingContext.VALUE_SET_CONTAINS, vs.getExpansion().getTotal(), count));          
         }
       } else if (count == 1000) {
         // it's possible that there's exactly 1000 codes, in which case wht we're about to do is wrong
@@ -245,7 +245,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     XhtmlNode tr = t.tr();
     if (doLevel)
       tr.td().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_LEVEL));
-    tr.td().attribute("style", "white-space:nowrap").b().tx(context.formatPhrase(RenderingContext.VALUE_SET_CODE));
+    tr.td().attribute("style", "white-space:nowrap").b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
     tr.td().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_SYSTEM));
     XhtmlNode tdDisp = tr.td();
     tdDisp.b().tx(context.formatPhrase(RenderingContext.VALUE_SET_DISPLAY));
@@ -294,7 +294,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (!doDesignations && langs.size() + designations.size() > 0) {
       Collections.sort(langs);
       if (designations.size() == 0) {
-        x.para().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_ADD_LANG));
+        x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_ADD_LANG));
       } else if (langs.size() == 0) {
         x.para().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_DESIG));
       } else {
@@ -302,7 +302,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
       t = x.table("codes");
       tr = t.tr();
-      tr.td().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_CODE));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       for (String url : designations.keySet()) {
         tr.td().b().addText(designations.get(url));
       }
@@ -989,7 +989,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (!doDesignations && langs.size() + designations.size() > 0) {
       Collections.sort(langs);
       if (designations.size() == 0) {
-        x.para().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_ADD_LANG));        
+        x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_ADD_LANG));        
       } else if (langs.size() == 0) {
         x.para().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_DESIG));       
       } else {
@@ -997,7 +997,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
       XhtmlNode t = x.table("codes");
       XhtmlNode tr = t.tr();
-      tr.td().b().tx(context.formatPhrase(RenderingContext.VALUE_SET_CODE));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       for (String url : designations.keySet()) {
         tr.td().b().addText(designations.get(url));
       }
@@ -1032,7 +1032,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("exp.h="+index, context.getRules() == GenerationRules.IG_PUBLISHER);    
     model.setAlternating(true);
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.VALUE_SET_CODE), context.formatPhrase(RenderingContext.VALUE_SET_CODE_ITEM), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_CODE), context.formatPhrase(RenderingContext.GENERAL_CODE_ITEM), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.VALUE_SET_DISPLAY), context.formatPhrase(RenderingContext.VALUE_SET_DISPLAY_ITEM), null, 0));
 
     for (Extension ext : inc.getExtensionsByUrl(ToolingExtensions.EXT_EXPAND_GROUP)) {
@@ -1211,7 +1211,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           }
         }
         if (inc.getFilter().size() > 0) {
-          li.addText(type+" "+ context.formatPhrase(RenderingContext.VALUE_SET_CODES_FROM));
+          li.addText(type+" "+ context.formatPhrase(RenderingContext.GENERAL_CODES_FROM));
           addCsRef(inc, li, e);
           li.tx(" "+ context.formatPhrase(RenderingContext.VALUE_SET_WHERE)+" ");
           for (int i = 0; i < inc.getFilter().size(); i++) {

@@ -1208,7 +1208,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         }
       }
 
-      x.span(null, context.formatPhrase(RenderingContext.DATA_REND_CODES) +b.toString()).addText(s);
+      x.span(null, context.formatPhrase(RenderingContext.GENERAL_CODES) +b.toString()).addText(s);
     }
   }
 
@@ -1251,7 +1251,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
     return s;
   }
   
-  protected void renderIdentifier(XhtmlNode x, Identifier ii) {    
+  protected void renderIdentifier(XhtmlNode x, Identifier ii) {
+    boolean pfx = true;
     if (ii.hasType()) {
       if (ii.getType().hasText()) {
         x.tx(context.getTranslated(ii.getType().getTextElement()));
@@ -1259,8 +1260,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
         x.tx(context.getTranslated(ii.getType().getCoding().get(0).getDisplayElement()));
       } else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode()) {
         x.tx(lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getVersion(), ii.getType().getCoding().get(0).getCode()));
+      } else {
+        pfx = false;
       }
-      x.tx("/");
     } else if (ii.hasSystem()) {
       NamingSystem ns = context.getContext().getNSUrlMap().get(ii.getSystem());
       if (ns != null) {
@@ -1278,9 +1280,13 @@ public class DataRenderer extends Renderer implements CodeResolver {
           x.code(ii.getSystem());      
         }
       }
-      x.tx("/");
     }
-    x.tx(Utilities.noString(ii.getValue()) ? "?ngen-9?" : ii.getValue());
+    if (!Utilities.noString(ii.getValue())) {
+      if (pfx) {
+        x.tx("/");
+      }
+      x.tx(ii.getValue());
+    }
 
     if (ii.hasUse() || ii.hasPeriod()) {
       x.nbsp();
@@ -1651,7 +1657,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       }
       if (td.hasCode()) {    
         x.tx(", ");
-        x.b().tx(context.formatPhrase(RenderingContext.DATA_REND_CODE));
+        x.b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
         x.tx(": ");
         renderCodeableConcept(x, td.getCode());
       }
@@ -1681,7 +1687,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       }
       if (td.hasCode()) {    
         tr = tbl.tr();  
-        tr.td().b().tx(context.formatPhrase(RenderingContext.DATA_REND_CODE));
+        tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
         renderCodeableConcept(tr.td(), td.getCode());
       }
       if (td.hasTiming()) {    
@@ -1796,7 +1802,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   private String displayTiming(Timing s) throws FHIRException {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     if (s.hasCode())
-      b.append(context.formatPhrase(RenderingContext.DATA_REND_GETCODE, displayCodeableConcept(s.getCode())) + " ");
+      b.append(context.formatPhrase(RenderingContext.GENERAL_CODE, displayCodeableConcept(s.getCode())) + " ");
 
     if (s.getEvent().size() > 0) {
       CommaSeparatedStringBuilder c = new CommaSeparatedStringBuilder();

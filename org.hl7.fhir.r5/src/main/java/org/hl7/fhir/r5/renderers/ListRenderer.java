@@ -49,7 +49,7 @@ public class ListRenderer extends ResourceRenderer {
       td.tx(context.formatPhrase(RenderingContext.LIST_REND_STAT, list.get("status").primitiveValue())+" ");
     }
     if (list.has("code")) {
-      td.tx(context.formatPhrase(RenderingContext.LIST_REND_CODE, displayBase(list.get("code")))+" ");
+      td.tx(context.formatPhrase(RenderingContext.GENERAL_CODE, displayBase(list.get("code")))+" ");
     }    
     tr = t.tr();
     td = tr.td();
@@ -122,7 +122,7 @@ public class ListRenderer extends ResourceRenderer {
       tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_STAT, list.getStatus().getDisplay())+" ");
     }
     if (list.hasCode()) {
-      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_CODE, display(list.getCode()))+" ");
+      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_CODE, display(list.getCode()))+" ");
     }    
     tr = t.tr();
     if (list.hasSubject()) {

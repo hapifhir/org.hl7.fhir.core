@@ -6555,7 +6555,7 @@ public class FHIRPathEngine {
 
           sd = fetchStructureByType(element, expr);
           if (sd == null) {
-            throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_THIS_CANNOT_FIND, element.getElement().getType().get(0).getProfile(), element.getElement().getId());
+            throw makeException(expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_CANT_FIND, element.getElement().getType().get(0).getProfile(), element.getElement().getId());
           }
           childDefinitions = profileUtilities.getChildMap(sd, sd.getSnapshot().getElementFirstRep());
         }

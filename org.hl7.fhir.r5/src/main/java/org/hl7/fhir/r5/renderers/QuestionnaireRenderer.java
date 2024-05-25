@@ -81,7 +81,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table");
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.QUEST_LINKID)), (context.formatPhrase(RenderingContext.QUEST_LINK)), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.QUEST_TEXT)), (context.formatPhrase(RenderingContext.QUEST_TEXTFOR)), null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.QUEST_CARD)), (context.formatPhrase(RenderingContext.QUEST_TIMES)), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.GENERAL_CARDINALITY)), (context.formatPhrase(RenderingContext.QUEST_TIMES)), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.QUEST_TYPE)), (context.formatPhrase(RenderingContext.QUEST_TYPE_ITEM)), null, 0));
     if (hasFlags) {
       model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.QUEST_FLAG)), (context.formatPhrase(RenderingContext.QUEST_ATTRIBUTES)), null, 0));
@@ -1030,7 +1030,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       
     if (qi.hasCode()) {
       XhtmlNode tr = tbl.tr();
-      tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.QUEST_CODE), qi.getCode().size()));
+      tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.GENERAL_CODE), qi.getCode().size()));
       XhtmlNode ul = tr.td().ul();
       for (Coding c : qi.getCode()) {
         renderCodingWithDetails(ul.li(), c);

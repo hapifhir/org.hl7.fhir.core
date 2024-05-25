@@ -185,7 +185,6 @@ public class I18nConstants {
   public static final String DOCUMENT_DATE_REQUIRED_HTML = "Bundle_Document_Date_Missing_html";
   public static final String DOES_NOT_MATCH_SLICE_ = "Does_not_match_slice_";
   public static final String DUPLICATE_ID = "DUPLICATE_ID";
-  public static final String DUPLICATE_JSON_PROPERTY = "DUPLICATE_JSON_PROPERTY";
   public static final String DUPLICATE_JSON_PROPERTY_KEY = "DUPLICATE_JSON_PROPERTY_KEY";
   public static final String DUPLICATE_RESOURCE_ = "Duplicate_Resource_";
   public static final String ED_CONTEXT_INVARIANT_EXPRESSION_ERROR = "ED_CONTEXT_INVARIANT_EXPRESSION_ERROR";
@@ -286,7 +285,6 @@ public class I18nConstants {
   public static final String FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES = "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES";
   public static final String FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE = "FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE";
   public static final String FHIRPATH_DISCRIMINATOR_RESOLVE_NO_TYPE = "FHIRPATH_DISCRIMINATOR_RESOLVE_NO_TYPE";
-  public static final String FHIRPATH_DISCRIMINATOR_THIS_CANNOT_FIND = "FHIRPATH_DISCRIMINATOR_THIS_CANNOT_FIND";
   public static final String FHIRPATH_DISCRIMINATOR_TYPE_NONE = "FHIRPATH_DISCRIMINATOR_TYPE_NONE";
   public static final String FHIRPATH_FOCUS = "FHIRPATH_FOCUS";
   public static final String FHIRPATH_HO_HOST_SERVICES = "FHIRPATH_HO_HOST_SERVICES";
@@ -361,7 +359,6 @@ public class I18nConstants {
   public static final String LIQUID_UNKNOWN_FILTER = "LIQUID_UNKNOWN_FILTER";
   public static final String LIQUID_UNKNOWN_FLOW_STMT = "LIQUID_UNKNOWN_FLOW_STMT";
   public static final String LIQUID_UNKNOWN_NOEND = "LIQUID_UNKNOWN_NOEND";
-  public static final String LIQUID_UNKNOWN_NOTERM = "LIQUID_UNKNOWN_NOTERM";
   public static final String LIQUID_UNKNOWN_SYNTAX = "LIQUID_UNKNOWN_SYNTAX";
   public static final String LIQUID_VARIABLE_ALREADY_ASSIGNED = "LIQUID_VARIABLE_ALREADY_ASSIGNED";
   public static final String LIQUID_VARIABLE_ILLEGAL = "LIQUID_VARIABLE_ILLEGAL";
@@ -711,11 +708,6 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_BINDING_NOSERVER = "Terminology_TX_Binding_NoServer";
   public static final String TERMINOLOGY_TX_BINDING_NOSOURCE = "Terminology_TX_Binding_NoSource";
   public static final String TERMINOLOGY_TX_BINDING_NOSOURCE2 = "Terminology_TX_Binding_NoSource2";
-  public static final String TERMINOLOGY_TX_CODE_NOTVALID = "Terminology_TX_Code_NotValid";
-  public static final String TERMINOLOGY_TX_CODE_UNKNOWN = "Terminology_TX_Code_Unknown";
-  public static final String TERMINOLOGY_TX_CODE_VALUESET = "Terminology_TX_Code_ValueSet";
-  public static final String TERMINOLOGY_TX_CODE_VALUESETMAX = "Terminology_TX_Code_ValueSetMax";
-  public static final String TERMINOLOGY_TX_CODE_VALUESET_EXT = "Terminology_TX_Code_ValueSet_Ext";
   public static final String TERMINOLOGY_TX_CODING_COUNT = "Terminology_TX_Coding_Count";
   public static final String TERMINOLOGY_TX_CONFIRM_1_CC = "Terminology_TX_Confirm_1_CC";
   public static final String TERMINOLOGY_TX_CONFIRM_2_CC = "Terminology_TX_Confirm_2_CC";
@@ -754,7 +746,6 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_OID_MULTIPLE_MATCHES_CHOSEN = "TERMINOLOGY_TX_OID_MULTIPLE_MATCHES_CHOSEN";
   public static final String TERMINOLOGY_TX_SYSTEM_HTTPS = "TERMINOLOGY_TX_SYSTEM_HTTPS";
   public static final String TERMINOLOGY_TX_SYSTEM_INVALID = "Terminology_TX_System_Invalid";
-  public static final String TERMINOLOGY_TX_SYSTEM_NOTKNOWN = "Terminology_TX_System_NotKnown";
   public static final String TERMINOLOGY_TX_SYSTEM_NOT_USABLE = "TERMINOLOGY_TX_SYSTEM_NOT_USABLE";
   public static final String TERMINOLOGY_TX_SYSTEM_NO_CODE = "TERMINOLOGY_TX_SYSTEM_NO_CODE";
   public static final String TERMINOLOGY_TX_SYSTEM_RELATIVE = "Terminology_TX_System_Relative";
@@ -844,7 +835,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CONVERT = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_CONVERT";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_SYSTEM = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_SYSTEM";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_VALUE = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_MIN_NO_VALUE";
-  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_QTY = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_QTY";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_NO_QTY = "TYPE_SPECIFIC_CHECKS_DT_QTY_NO_QTY";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_UCUM_SVC = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_NO_UCUM_SVC";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_SYSTEM_MISMATCH = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_SYSTEM_MISMATCH";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_CODE = "TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_VALUE_NO_CODE";
@@ -857,7 +848,6 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_CONVERT = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_CONVERT";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_SYSTEM = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_SYSTEM";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_VALUE = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_MIN_NO_VALUE";
-  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_QTY = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_QTY";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_UCUM_SVC = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_NO_UCUM_SVC";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_SYSTEM_MISMATCH = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_SYSTEM_MISMATCH";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_CODE = "TYPE_SPECIFIC_CHECKS_DT_QTY_MIN_VALUE_NO_CODE";
@@ -915,7 +905,6 @@ public class I18nConstants {
   public static final String UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT = "UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT";
   public static final String UNABLE_TO_RESOLVE_ELEMENT__IN_PROFILE_ = "Unable_to_resolve_element__in_profile_";
   public static final String UNABLE_TO_RESOLVE_NAME_REFERENCE__AT_PATH_ = "Unable_to_resolve_name_reference__at_path_";
-  public static final String UNABLE_TO_RESOLVE_PROFILE_ = "Unable_to_resolve_profile_";
   public static final String UNABLE_TO_RESOLVE_PROFILE__IN_ELEMENT_ = "Unable_to_resolve_profile__in_element_";
   public static final String UNABLE_TO_RESOLVE_REFERENCE_TO_ = "Unable_to_resolve_reference_to_";
   public static final String UNABLE_TO_RESOLVE_SLICE_MATCHING__NO_FIXED_VALUE_OR_REQUIRED_VALUE_SET = "Unable_to_resolve_slice_matching__no_fixed_value_or_required_value_set";
@@ -929,7 +918,6 @@ public class I18nConstants {
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_UNKNOWN_SYSTEM = "Unable_to_resolve_system__value_set_has_include_with_unknown_system";
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_MULTIPLE_MATCHES = "Unable_to_resolve_system__value_set_has_multiple_matches";
   public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_INCLUDES_OR_EXPANSION = "Unable_to_resolve_system__value_set_has_no_includes_or_expansion";
-  public static final String UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_MATCHES = "Unable_to_resolve_system__value_set_has_no_matches";
   public static final String UNABLE_TO_RESOLVE_VALUE_SET_ = "Unable_to_resolve_value_Set_";
   public static final String UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER = "Unable_to_validate_code_without_using_server";
   public static final String UNABLE_TO_VALIDATE_LOCALLY = "UNABLE_TO_VALIDATE_LOCALLY";
@@ -1106,7 +1094,3 @@ public class I18nConstants {
   //public static final String XML_STATED_ENCODING_INVALID = "xml_stated_encoding_invalid";
   
 }
-
-
-
-

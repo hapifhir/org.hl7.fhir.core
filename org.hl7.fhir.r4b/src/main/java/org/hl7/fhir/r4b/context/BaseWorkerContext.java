@@ -895,7 +895,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
               TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS));
         } else if (unsupportedCodeSystems.contains(codeKey)) {
           t.setResult(new ValidationResult(IssueSeverity.ERROR,
-              formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, t.getCoding().getSystem()),
+              formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, t.getCoding().getSystem()),
               TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED));
         } else if (noTerminologyServer) {
           t.setResult(new ValidationResult(IssueSeverity.ERROR,
@@ -1012,7 +1012,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (unsupportedCodeSystems.contains(codeKey)) {
       return new ValidationResult(IssueSeverity.ERROR,
-          formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, code.getSystem()),
+          formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, code.getSystem()),
           TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
     }
 
