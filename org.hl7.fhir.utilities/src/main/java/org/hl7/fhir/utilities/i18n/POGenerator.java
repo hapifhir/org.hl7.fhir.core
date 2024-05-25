@@ -41,26 +41,29 @@ public class POGenerator {
     private String comment;
     private List<String> msgstr  = new ArrayList<String>();
   }
-
+  
   public static void main(String[] args) throws IOException {
-    new POGenerator().execute(args[0], args[1]);
+    new POGenerator().execute(args[0]);
   }
 
   private List<String> prefixes = new ArrayList<>();
 
-  private void execute(String source, String dest) throws IOException {
-    generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(dest, "rendering-phrases-de.po"));
-    generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(dest, "rendering-phrases-es.po"));
-    generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(dest, "rendering-phrases-ja.po"));
-    generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(dest, "rendering-phrases-nl.po"));
+  private void execute(String source) throws IOException {
+    generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-de.po"),    Utilities.path(source, "rendering-phrases_de.properties"), true);
+    generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-es.po"),    Utilities.path(source, "rendering-phrases_es.properties"), false);
+    generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-ja.po"),    Utilities.path(source, "rendering-phrases_ja.properties"), false);
+    generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-nl.po"),    Utilities.path(source, "rendering-phrases_nl.properties"), false);
+    generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-pt-BR.po"), Utilities.path(source, "rendering-phrases_pt-BR.properties"), false);
 
-    generate(Utilities.path(source, "Messages.properties"), Utilities.path(dest, "validator-messages-de.po"));
-    generate(Utilities.path(source, "Messages.properties"), Utilities.path(dest, "validator-messages-es.po"));
-    generate(Utilities.path(source, "Messages.properties"), Utilities.path(dest, "validator-messages-ja.po"));
-    generate(Utilities.path(source, "Messages.properties"), Utilities.path(dest, "validator-messages-nl.po"));
+    generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-de.po"),    Utilities.path(source, "Messages_de.properties"), true);
+    generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-es.po"),    Utilities.path(source, "Messages_es.properties"), false);
+    generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-ja.po"),    Utilities.path(source, "Messages_ja.properties"), false);
+    generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-nl.po"),    Utilities.path(source, "Messages_nl.properties"), false);
+    generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-pt-BR.po"), Utilities.path(source, "Messages_pt-BR.properties"), false);
+    
   }
 
-  private void generate(String source, String dest) throws IOException {
+  private void generate(String source, String dest, String tgt, boolean firstRun) throws IOException {
     // load the destination file 
     // load the source file 
     // update the destination object set for changes from the source file
@@ -95,10 +98,12 @@ public class POGenerator {
     objects.removeIf(o -> o.orphan);
     Collections.sort(objects, new POObjectSorter());
     Map<String, Integer> sources = new HashMap<>();
+    Set<String> dups = new HashSet<>();
     for (POObject o : objects) {
       if (sources.containsKey(o.msgid)) {
         Integer c = sources.get(o.msgid)+1;
         sources.put(o.msgid, c);
+        dups.add(o.msgid);
 //        System.out.println("Duplicate in "+dest.substring(dest.lastIndexOf("/")+1)+": "+o.msgid+" on ("+CommaSeparatedStringBuilder.join(",", listIds(objects, o.msgid))+")");
       } else {
         sources.put(o.msgid, 1);
@@ -110,7 +115,29 @@ public class POGenerator {
         o.duplicate = true;
       }
     }
+    if (firstRun) {
+      for (String s : Utilities.sorted(dups)) {
+        String mid = null; 
+        boolean first = true;
+        for (POObject o : objects) {
+          if (o.msgid.equals(s) && o.msgidPlural == null) {
+            if (mid == null) {
+              mid = o.id;
+            } else {
+              if (first) {
+                System.out.println("");
+                System.out.println("// "+s);
+                System.out.println("rename(\"/Users/grahamegrieve/work/core\", \""+mid+"\", \""+mid+"\");");
+                first = false;
+              }
+              System.out.println("replace(\"/Users/grahamegrieve/work/core\", \""+o.id+"\", \""+mid+"\");");      
+            }
+          }
+        }
+      }
+    }
     savePOFile(dest, objects);
+    savePropFile(tgt, objects);
   }
 
   private Set<String> listIds(List<POObject> objects, String msgid) {
@@ -198,12 +225,12 @@ public class POGenerator {
         // we don't care; nothing to do 
       }
     } else if (mode == 2) {
-      if (!value.equals(o.msgid)) {
+      if (!value.equals(o.msgidPlural)) {
         // the english string has changed, and the other language string is now out of date 
 //        if (o.oldMsgId != null) {
 //          o.oldMsgId = o.msgid;
 //        }
-        o.msgid = value;
+        o.msgidPlural = value;
         if (o.msgstr.size() > 1 && !Utilities.noString(o.msgstr.get(1))) {
           o.msgstr.set(1, "!!"+o.msgstr.get(1));
         }
@@ -290,9 +317,32 @@ public class POGenerator {
         if (!(v.length() == 3 && v.startsWith("{") && v.endsWith("}"))) {
           res.add(new StringPair(n, v));
         }
-      }
+      } 
     }
     return res;
   }
 
+  private void savePropFile(String tgt, List<POObject> objects) throws IOException {
+    String nameLine = TextFile.fileToLines(tgt)[0];
+    String[] parts = nameLine.substring(1).trim().split("\\=");
+    String[] names = parts[1].split("\\,");
+    
+    StringBuilder b = new StringBuilder();
+    b.append(nameLine+"\r\n");
+    for (POObject o : objects) {
+      if (o.msgidPlural == null) {
+        b.append(o.id+" = "+(o.msgstr.size() > 0 ? o.msgstr.get(0) : "")+"\r\n");
+      } else {
+        for (int i = 0; i < names.length; i++) {
+          b.append(o.id+"_"+names[i].trim()+" = "+(o.msgstr.size() > i ? o.msgstr.get(i) : "")+"\r\n");
+        }
+      }
+    }
+    
+    TextFile.stringToFile(b.toString(), tgt);
+    
+    
+  }
+
+  
 }

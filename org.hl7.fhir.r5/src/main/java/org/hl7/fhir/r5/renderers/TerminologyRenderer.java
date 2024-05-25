@@ -211,7 +211,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     if (hasHierarchy) {
       tr.td().b().tx(context.formatPhrase(RenderingContext.TERMINOLOGY_LVL));
     }
-    tr.td().attribute("style", "white-space:nowrap").b().tx(formatPhrase(RenderingContext.GENERAL_CODE));
+    tr.td().attribute("style", "white-space:nowrap").b().tx(formatPhrase(RenderingContext.TX_CODE));
     if (hasDisplay) {
       tr.td().b().tx(formatPhrase(RenderingContext.TX_DISPLAY));
     }
@@ -229,7 +229,13 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     }
     if (properties != null) {
       for (PropertyComponent pc : properties) {
-        String display = getPropertyDisplay(pc);
+        String display = ToolingExtensions.getPresentation(pc, pc.getCodeElement());
+        if (display == null || display.equals(pc.getCode()) && pc.hasUri()) {
+          display = getDisplayForProperty(pc.getUri());
+          if (display == null) {
+            display = pc.getCode();
+          }
+        }
         tr.td().b().tx(display);      
       }
     }
@@ -246,17 +252,6 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       }
     }
     return tr;
-  }
-
-  protected String getPropertyDisplay(PropertyComponent pc) {
-    String display = ToolingExtensions.getPresentation(pc, pc.getCodeElement());
-    if (display == null || display.equals(pc.getCode()) && pc.hasUri()) {
-      display = getDisplayForProperty(pc.getUri());
-      if (display == null) {
-        display = pc.getCode();
-      }
-    }
-    return display;
   }
 
 
