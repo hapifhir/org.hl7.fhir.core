@@ -542,17 +542,21 @@ public class POGenerator {
     b.append(nameLine+"\r\n");
     for (POObject o : objects) {
       if (o.msgidPlural == null) {
-        b.append(o.id+" = "+(o.msgstr.size() > 0 ? o.msgstr.get(0) : "")+"\r\n");
+        String v= o.msgstr.size() > 0 ? o.msgstr.get(0) : "";
+        if (!Utilities.noString(v)) {
+          b.append(o.id+" = "+v+"\r\n");
+        }
       } else {
         for (int i = 0; i < names.length; i++) {
-          b.append(o.id+"_"+names[i].trim()+" = "+(o.msgstr.size() > i ? o.msgstr.get(i) : "")+"\r\n");
+          String v = (o.msgstr.size() > i ? o.msgstr.get(i) : "");
+          if (!Utilities.noString(v)) {
+            b.append(o.id+"_"+names[i].trim()+" = "+v+"\r\n");
+          }
         }
       }
     }
     
     TextFile.stringToFile(b.toString(), tgt);
-    
-    
   }
 
   
