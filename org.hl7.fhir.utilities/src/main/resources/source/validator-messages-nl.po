@@ -114,7 +114,7 @@ msgstr ""
 
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_APPARENT
-msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references (one of ``{3}``)"
+msgid "Can''t find ''{1}'' in the bundle ({2}). Note that there is a resource in the bundle with the same type and id, but it does not match because of the fullUrl based rules around matching relative references (must be ``{3}``)"
 msgid_plural "Can''t find ''{1}'' in the bundle ({2}). Note that there are {0} resources in the bundle with the same type and id, but they do not match because of the fullUrl based rules around matching relative references (one of ``{3}``)"
 msgstr[0] ""
 msgstr[1] ""
@@ -356,10 +356,10 @@ msgstr "Het type ''{0}'' is niet geldig - moet zijn {1} (toegestaan = {2})"
 
 #: Bundle_BUNDLE_Entry_Type3
 # Bundle_BUNDLE_Entry_Type3
-msgid "The type ''{1}'' is not valid - must be one of {0} types: {2}"
+msgid "The type ''{1}'' is not valid - must be of type {2}"
 msgid_plural "The type ''{1}'' is not valid - must be one of {0} types: {2}"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Het type ''{1}'' is niet geldig - moet type {2} zijn"
+msgstr[1] "Het type ''{1}'' is niet geldig - moet een zijn van {0} typen: {2}"
 
 #: Bundle_BUNDLE_FullUrl_Missing
 # Bundle_BUNDLE_FullUrl_Missing
@@ -829,7 +829,7 @@ msgstr "!!Coding heeft geen system - kan niet valideren"
 #: Coding_has_no_system__cannot_validate_NO_INFER
 # Coding_has_no_system__cannot_validate_NO_INFER
 msgid "Coding has no system, and inferring the code system is not possible in this context. A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
-msgstr ""
+msgstr "Kan geen overeenkomende discriminators ({1}) bepalen voor slice {2} in profiel {3} - Geen van de {0} discriminators {4} hebben een vaste waarde, binding of aanwezigheidverplichtingen"
 
 #: Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_
 # Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_
@@ -838,9 +838,9 @@ msgstr "Contained resource lijkt geen FHIR-type hebben (onbekende naam ''{0}'')"
 
 #: Could_not_match_discriminator_for_slice_in_profile
 # Could_not_match_discriminator_for_slice_in_profile
-msgid "Could not match any discriminators ({1}) for slice {2} in profile {3} - None of the {0} discriminators {4} have fixed value, binding or existence assertions"
+msgid "Could not match discriminator ({0}) for slice {1} in profile {2} - the discriminator {3} does not have fixed value, binding or existence assertions"
 msgid_plural "Could not match any discriminators ({1}) for slice {2} in profile {3} - None of the {0} discriminators {4} have fixed value, binding or existence assertions"
-msgstr[0] ""
+msgstr[0] "Kan geen overeenkomende discriminator ({0}) bepalen voor slice {1} in profiel {2} - de discriminator {3} heeft geen vaste waarde, binding of aanwezigheidverplichtingen"
 msgstr[1] ""
 
 #: DISCRIMINATOR_BAD_PATH
@@ -910,10 +910,11 @@ msgstr "Discriminator ({0}) is gebaseerd op elementaanwezigheid, maar slice {1} 
 
 #: Discriminator__is_based_on_type_but_slice__in__has_multiple_types
 # Discriminator__is_based_on_type_but_slice__in__has_multiple_types
-msgid "Discriminator ({1}) is based on type, but slice {2} in {3} has {0} types: {4}"
+msgctxt "Discriminator__is_based_on_type_but_slice__in__has_multiple_types"
+msgid ""
 msgid_plural "Discriminator ({1}) is based on type, but slice {2} in {3} has {0} types: {4}"
 msgstr[0] ""
-msgstr[1] ""
+msgstr[1] "Discriminator ({1}) is gebaseerd op type, maar slice {2} in {3} heeft {0} typen: {4}"
 
 #: Discriminator__is_based_on_type_but_slice__in__has_no_types
 # Discriminator__is_based_on_type_but_slice__in__has_no_types
@@ -922,17 +923,17 @@ msgstr "Discriminator ({0}) is gebaseerd op type, maar slice {1} in {2} heeft ge
 
 #: Display_Name_WS_for__should_be_one_of__instead_of
 # Display_Name_WS_for__should_be_one_of__instead_of
-msgid "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid display is one of {0} choices: {3} (for the language(s) ''{5}'')"
+msgid "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid display is {3} (for the language(s) ''{5}'')"
 msgid_plural "Wrong whitespace in Display Name ''{4}'' for {1}#{2}. Valid display is one of {0} choices: {3} (for the language(s) ''{5}'')"
 msgstr[0] ""
 msgstr[1] ""
 
 #: Display_Name_for__should_be_one_of__instead_of
 # Display_Name_for__should_be_one_of__instead_of
-msgid "Wrong Display Name ''{4}'' for {1}#{2}. Valid display is one of {0} choices: {3} (for the language(s) ''{5}'')"
+msgid "Wrong Display Name ''{4}'' for {1}#{2}. Valid display is {3} (for the language(s) ''{5}'')"
 msgid_plural "Wrong Display Name ''{4}'' for {1}#{2}. Valid display is one of {0} choices: {3} (for the language(s) ''{5}'')"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Verkeerde weergavenaam ''{4}'' voor {1}#{2} - moet zijn ''{3}'' (voor taal/talen ''{5}'')"
+msgstr[1] "Verkeerde weergavenaam ''{4}'' voor {1}#{2} - moet een zijn van {0} keuzes: ''{3}'' voor de taal/talen ''{5}''"
 
 #: Does_not_match_slice_
 # Does_not_match_slice_
@@ -1390,17 +1391,19 @@ msgstr "Unable to resolve discriminator {0} on {2} found in the definitions beca
 
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
-msgid "Error in discriminator at {1}: no children, {0} type profiles"
+msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
+msgid ""
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
-msgstr[1] ""
+msgstr[1] "Fout in discriminator bij {1}: geen onderliggende elementen, {0} typeprofielen"
 
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 # FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
-msgid "Error in discriminator at {1}: no children, {0} types"
+msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
+msgid ""
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
-msgstr[1] ""
+msgstr[1] "Fout in discriminator bij {1}: geen onderliggende elementen, {0} typen"
 
 #: FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED
 # FHIRPATH_DISCRIMINATOR_NAME_ALREADY_SLICED
@@ -1419,10 +1422,11 @@ msgstr "onjuist gebruik van ofType() in discriminator - Type heeft geen code op 
 
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 # FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
-msgid "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
+msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
+msgid ""
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
-msgstr[1] ""
+msgstr[1] "onjuist gebruik van resolve() in discriminator - {0} mogelijke typen op {1} (kan er maar een zijn)"
 
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
 # FHIRPATH_DISCRIMINATOR_RESOLVE_NOT_REFERENCE
@@ -1446,10 +1450,11 @@ msgstr "onjuist gebruik van ofType() in discriminator - geen type op element {0}
 
 #: FHIRPATH_FOCUS
 # FHIRPATH_FOCUS
-msgid "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
+msgctxt "FHIRPATH_FOCUS"
+msgid ""
 msgid_plural "Error evaluating FHIRPath expression: focus for {0} can only have one value, but has {0} values"
 msgstr[0] ""
-msgstr[1] ""
+msgstr[1] "Fout bij evalueren FHIRPath expressie: focus voor {0} kan maar een warde hebben, maar heeft {0} waarden"
 
 #: FHIRPATH_HO_HOST_SERVICES
 # FHIRPATH_HO_HOST_SERVICES
@@ -1463,10 +1468,11 @@ msgstr ""
 
 #: FHIRPATH_LEFT_VALUE
 # FHIRPATH_LEFT_VALUE
-msgid "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
+msgctxt "FHIRPATH_LEFT_VALUE"
+msgid ""
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
-msgstr[1] ""
+msgstr[1] "Fout bij evalueren FHIRPath expressie: linker operandus van {1} kan maar 1 waarde hebben, maar heeft {0} waarden"
 
 #: FHIRPATH_LEFT_VALUE_WRONG_TYPE
 # FHIRPATH_LEFT_VALUE_WRONG_TYPE
@@ -1546,17 +1552,19 @@ msgstr "Probleem met gebruik van resolve() - profiel {0} op {1} is niet gevonden
 
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 # FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
-msgid "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
+msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
+msgid ""
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
-msgstr[1] ""
+msgstr[1] "Onjuist gebruik van resolve() in discriminator - {0} mogelijke doeltypen op {1} (kan er maar een zijn)"
 
 #: FHIRPATH_RIGHT_VALUE
 # FHIRPATH_RIGHT_VALUE
-msgid "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
+msgctxt "FHIRPATH_RIGHT_VALUE"
+msgid ""
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
-msgstr[1] ""
+msgstr[1] "Fout bij evalueren FHIRPath expressie: rechter operandus van {1} kan maar 1 waarde hebben, maar heeft {0} waarden"
 
 #: FHIRPATH_RIGHT_VALUE_WRONG_TYPE
 # FHIRPATH_RIGHT_VALUE_WRONG_TYPE
@@ -2162,10 +2170,11 @@ msgstr ""
 
 #: MULTIPLE_LOGICAL_MODELS
 # MULTIPLE_LOGICAL_MODELS
-msgid "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
+msgctxt "MULTIPLE_LOGICAL_MODELS"
+msgid ""
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
-msgstr[1] ""
+msgstr[1] "{0} logische modellen gevonden in de aangegeven profielen, dus niet in staat logische model te verwerken (kan er maar een zijn, gevonden {1})"
 
 #: Measure_MR_M_None
 # Measure_MR_M_None
@@ -2189,10 +2198,10 @@ msgstr "Het element {0} is niet gemarkeerd als ''mustSupport'' in het profiel {1
 
 #: NO_VALID_DISPLAY_FOUND
 # NO_VALID_DISPLAY_FOUND
-msgid "No valid Display Names found for {1}#{2} in the languages {4}"
+msgid "No valid Display Names found for {1}#{2} in the language {4}"
 msgid_plural "No valid Display Names found for {1}#{2} in the languages {4}"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Er zijn geen geldige weergavenamen gevonden voor {1}#{2} in de taal {3}"
+msgstr[1] "Er zijn geen geldige weergavenamen gevonden voor {1}#{2} in de talen {3}"
 
 #: Named_items_are_out_of_order_in_the_slice
 # Named_items_are_out_of_order_in_the_slice
@@ -2256,10 +2265,10 @@ msgstr "Nodetype {0} is niet toegestaan"
 
 #: None_of_the_provided_codes_are_in_the_value_set
 # None_of_the_provided_codes_are_in_the_value_set
-msgid "None of the provided codes [{2}] are in the value set ''{1}''"
+msgid "The provided code {2} was not found in the value set ''{1}''"
 msgid_plural "None of the provided codes [{2}] are in the value set ''{1}''"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "De opgegeven code {2} staat niet in de waardelijst ''{1}''"
+msgstr[1] "Geen van de opgegeven codes {2} staan niet in de waardelijst ''{1}''"
 
 #: Not_done_yet
 # Not_done_yet
@@ -2348,7 +2357,7 @@ msgstr ""
 
 #: PRIMITIVE_VALUE_ALTERNATIVES_MESSAGE
 # PRIMITIVE_VALUE_ALTERNATIVES_MESSAGE
-msgid "The element definition ``{0}`` in the profile ''{1}'' requires that if a value is not present, one of the extensions ''{2}'' must be present"
+msgid "The element definition ``{0}`` in the profile ''{1}'' requires that if a value is not present, the extension ''{2}'' must be present"
 msgid_plural "The element definition ``{0}`` in the profile ''{1}'' requires that if a value is not present, one of the extensions ''{2}'' must be present"
 msgstr[0] ""
 msgstr[1] ""
@@ -2420,10 +2429,11 @@ msgstr "Profiel-gebaseerde discriminators moeten een type hebben met een profiel
 
 #: Profile_based_discriminators_must_have_only_one_type__in_profile
 # Profile_based_discriminators_must_have_only_one_type__in_profile
-msgid "Profile based discriminators must have only one type ({1} in profile {2}) but found {0} types"
+msgctxt "Profile_based_discriminators_must_have_only_one_type__in_profile"
+msgid ""
 msgid_plural "Profile based discriminators must have only one type ({1} in profile {2}) but found {0} types"
 msgstr[0] ""
-msgstr[1] ""
+msgstr[1] "Profiel-gebaseerde discriminators moeten slechts een type bevatten ({1} in profile {2}). Gevonden {0} typen"
 
 #: QUESTIONNAIRE_QR_ITEM_BADOPTION_CS
 # QUESTIONNAIRE_QR_ITEM_BADOPTION_CS
@@ -2649,10 +2659,11 @@ msgstr "Er is slechts een antwoorditem toegestaan bij dit linkId"
 
 #: Questionnaire_QR_Item_OnlyOneI
 # Questionnaire_QR_Item_OnlyOneI
-msgid "Only one response item with the linkId {1} allowed - found {0} items"
+msgctxt "Questionnaire_QR_Item_OnlyOneI"
+msgid ""
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] ""
-msgstr[1] ""
+msgstr[1] "Er is slechts een item toegestaan bij dit linkId {1} - gevonden {0} items"
 
 #: Questionnaire_QR_Item_Order
 # Questionnaire_QR_Item_Order
@@ -2676,10 +2687,10 @@ msgstr "Kan tijd-antwoord niet valideren omdat er geen optielijst is gespecifice
 
 #: Questionnaire_QR_Item_WrongType
 # Questionnaire_QR_Item_WrongType
-msgid "Answer value must be one of the {0} types {1}"
+msgid "Answer value must be of the type {1}"
 msgid_plural "Answer value must be one of the {0} types {1}"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Antwoordwaarde moet het type {1} hebben"
+msgstr[1] "Antwoordwaarde moet een van de volgende {0} typen hebben {1}"
 
 #: Questionnaire_QR_Q_None
 # Questionnaire_QR_Q_None
@@ -2948,14 +2959,14 @@ msgstr "Profiel {0} is voor type {1}, wat geen {4} is (welke wordt vereist om he
 
 #: SD_ED_TYPE_PROFILE_WRONG_TYPE
 # SD_ED_TYPE_PROFILE_WRONG_TYPE
-msgid "The type {0} is not in the list of allowed types {1} in the profile {2}"
+msgid "The type {0} is not in the list of allowed type {1} in the profile {2}"
 msgid_plural "The type {0} is not in the list of allowed types {1} in the profile {2}"
 msgstr[0] ""
 msgstr[1] ""
 
 #: SD_ED_TYPE_WRONG_TYPE
 # SD_ED_TYPE_WRONG_TYPE
-msgid "The element has a type {0} which is not in the types {1} on the base profile {2}"
+msgid "The element has a type {0} which is different to the type {1} on the base profile {2}"
 msgid_plural "The element has a type {0} which is not in the types {1} on the base profile {2}"
 msgstr[0] ""
 msgstr[1] ""
@@ -4524,7 +4535,7 @@ msgstr "!!De Unicode sequence heeft niet-beeindigde bidirectionele stuurtekens (
 
 #: UNICODE_XML_BAD_CHARS
 # UNICODE_XML_BAD_CHARS
-msgid "This content includes the characters {1} (hex values). These characters are illegal in the XML version of FHIR, and there is generally no valid use for such characters"
+msgid "This content includes the character {1} (hex value). This character is illegal in the XML version of FHIR, and there is generally no valid use for such characters"
 msgid_plural "This content includes the characters {1} (hex values). These characters are illegal in the XML version of FHIR, and there is generally no valid use for such characters"
 msgstr[0] ""
 msgstr[1] ""
@@ -5203,7 +5214,7 @@ msgstr "!!Het ShareableValueSet profiel zegt dat het {0} element verplicht is, m
 
 #: VALUESET_SUPPLEMENT_MISSING
 # VALUESET_SUPPLEMENT_MISSING
-msgid "Required supplements not found: {1}"
+msgid "Required supplement not found: {1}"
 msgid_plural "Required supplements not found: {1}"
 msgstr[0] ""
 msgstr[1] ""
@@ -5269,43 +5280,43 @@ msgstr "Profiel {0}, element komt overeen met meer dan een slice - {1}, {2}"
 # Validation_VAL_Profile_Maximum
 msgid "{3}: max allowed = {7}, but found {0} (from {1})"
 msgid_plural "{3}: max allowed = {7}, but found {0} (from {1})"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{3}: max toegestaan = {7}, maar gevonden {0} (uit {1})"
+msgstr[1] "{3}: max toegestaan = {7}, maar gevonden {0} (uit {1})"
 
 #: Validation_VAL_Profile_Minimum
 # Validation_VAL_Profile_Minimum
 msgid "{3}: minimum required = {7}, but only found {0} (from {1})"
 msgid_plural "{3}: minimum required = {7}, but only found {0} (from {1})"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{3}: minimum vereist = {7}, maar gevonden {0} (uit {1})"
+msgstr[1] "{3}: minimum vereist = {7}, maar gevonden {0} (uit {1})"
 
 #: Validation_VAL_Profile_Minimum_SLICE
 # Validation_VAL_Profile_Minimum_SLICE
-msgid "Slice ''{3}'': minimum required = {0}, but only found {7} (from {1})"
+msgid "Slice ''{3}'': a matching slice is required, but not found (from {1}). Note that other slices are allowed in addition to this required slice"
 msgid_plural "Slice ''{3}'': minimum required = {0}, but only found {7} (from {1})"
 msgstr[0] ""
 msgstr[1] ""
 
 #: Validation_VAL_Profile_MultipleMatches
 # Validation_VAL_Profile_MultipleMatches
-msgid "Found multiple matching profiles among {0} choices: {1}"
+msgid "Found multiple matching profiles among {0} choice: {1}"
 msgid_plural "Found multiple matching profiles among {0} choices: {1}"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Meerdere overeenkomende profielen gevonden in {0} keuze: {1}"
+msgstr[1] "Meerdere overeenkomende profielen gevonden in {0} keuzes: {1}"
 
 #: Validation_VAL_Profile_NoCheckMax
 # Validation_VAL_Profile_NoCheckMax
-msgid "{3}: Found {0} matches, but unable to check max allowed ({2}) due to lack of slicing validation (from {1})"
+msgid "{3}: Found {0} match, but unable to check max allowed ({2}) due to lack of slicing validation (from {1})"
 msgid_plural "{3}: Found {0} matches, but unable to check max allowed ({2}) due to lack of slicing validation (from {1})"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{3}: {0} matches gevonden, maar kan max toegestaan niet controleren ({2}) vanwege missende slicing-validatie (uit {1})"
+msgstr[1] "{3}: {0} matches gevonden, maar kan max toegestaan niet controleren ({2}) vanwege missende slicing-validatie (uit {1})"
 
 #: Validation_VAL_Profile_NoCheckMin
 # Validation_VAL_Profile_NoCheckMin
-msgid "{3}: Found {0} matches, but unable to check minimum required ({2}) due to lack of slicing validation (from {1})"
+msgid "{3}: Found {0} match, but unable to check minimum required ({2}) due to lack of slicing validation (from {1})"
 msgid_plural "{3}: Found {0} matches, but unable to check minimum required ({2}) due to lack of slicing validation (from {1})"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{3}: {0} matches gevonden, maar kan min toegestaan niet controleren ({2}) vanwege missende slicing-validatie (uit {1})"
+msgstr[1] "{3}: {0} matches gevonden, maar kan min toegestaan niet controleren ({2}) vanwege missende slicing-validatie (uit {1})"
 
 #: Validation_VAL_Profile_NoDefinition
 # Validation_VAL_Profile_NoDefinition
@@ -5426,10 +5437,10 @@ msgstr "De URL is ongeldig vanwege ''({1})'' : {0}"
 
 #: XHTML_URL_INVALID_CHARS
 # XHTML_URL_INVALID_CHARS
-msgid "URL contains {0} Invalid Characters ({1})"
+msgid "URL contains Invalid Character ({1})"
 msgid_plural "URL contains {0} Invalid Characters ({1})"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "URL bevat een ongeldig teken ({1})"
+msgstr[1] "URL bevat {0} ongeldige tekens ({1})"
 
 #: XHTML_XHTML_Attribute_Illegal
 # XHTML_XHTML_Attribute_Illegal
