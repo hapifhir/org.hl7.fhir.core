@@ -5,4 +5,4 @@ git:
     source_file_dir: org.hl7.fhir.utilities/src/main/resources/source
     source_language: en
     source_file_extension: .po
-    translation_files_expression: '*_<lang>.po'
+    translation_files_expression: 'rendering-phrases_<lang>.po'
