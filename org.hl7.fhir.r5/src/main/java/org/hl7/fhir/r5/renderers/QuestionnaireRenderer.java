@@ -81,12 +81,12 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table"); 
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.QUEST_LINKID)), (context.formatPhrase(RenderingContext.QUEST_LINK)), null, 0)); 
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.QUEST_TEXT)), (context.formatPhrase(RenderingContext.QUEST_TEXTFOR)), null, 0)); 
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.QUEST_CARD)), (context.formatPhrase(RenderingContext.QUEST_TIMES)), null, 0)); 
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.QUEST_TYPE)), (context.formatPhrase(RenderingContext.QUEST_TYPE_ITEM)), null, 0)); 
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.GENERAL_CARDINALITY)), (context.formatPhrase(RenderingContext.QUEST_TIMES)), null, 0)); 
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.GENERAL_TYPE)), (context.formatPhrase(RenderingContext.QUEST_TYPE_ITEM)), null, 0)); 
     if (hasFlags) { 
-      model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.QUEST_FLAG)), (context.formatPhrase(RenderingContext.QUEST_ATTRIBUTES)), null, 0)); 
+      model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.GENERAL_FLAGS)), (context.formatPhrase(RenderingContext.QUEST_ATTRIBUTES)), null, 0)); 
     } 
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.QUEST_DESC)), (context.formatPhrase(RenderingContext.QUEST_ADD_INFO)), null, 0)); 
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), (context.formatPhrase(RenderingContext.GENERAL_DESC_CONST)), (context.formatPhrase(RenderingContext.QUEST_ADD_INFO)), null, 0)); 
  
     boolean hasExt = false; 
     // first we add a root for the questionaire itself 
@@ -291,12 +291,12 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     r.getCells().add(defn); 
  
     if (i.hasMaxLength()) { 
-      defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.QUEST_MAX)+" "), null)); 
+      defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_MAX_LENGTH)+" "), null)); 
       defn.getPieces().add(gen.new Piece(null, Integer.toString(i.getMaxLength()), null)); 
     } 
     if (i.hasDefinition()) { 
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br")); 
-      defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.QUEST_DEF)+" "), null)); 
+      defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_DEFINITION_COLON)+" "), null)); 
       genDefinitionLink(gen, i, defn, q);       
     } 
     if (i.hasEnableWhen()) { 
@@ -470,7 +470,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     } 
     model.setDocoRef(context.getLink(KnownLinkType.SPEC)+"formats.html#table"); 
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_LINKID), context.formatPhrase(RenderingContext.QUEST_LINK), null, 0)); 
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.QUEST_DESC), context.formatPhrase(RenderingContext.QUEST_ADD_INFO), null, 0)); 
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), context.formatPhrase(RenderingContext.GENERAL_DESC_CONST), context.formatPhrase(RenderingContext.QUEST_ADD_INFO), null, 0)); 
  
     boolean hasExt = false; 
     if (!q.hasItem()) { 
@@ -496,18 +496,18 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     r.getCells().add(defn); 
  
     if (i.hasMaxLength()) { 
-      defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.QUEST_MAX)+" "), null)); 
+      defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_MAX_LENGTH)+" "), null)); 
       defn.getPieces().add(gen.new Piece(null, Integer.toString(i.getMaxLength()), null)); 
     } 
     if (i.hasDefinition()) { 
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br")); 
-      defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.QUEST_DEF)+" "), null)); 
+      defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.GENERAL_DEFINITION_COLON)+" "), null)); 
       genDefinitionLink(gen, i, defn, q);             
     } 
     if (i.hasEnableWhen()) { 
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br")); 
       defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.QUEST_ENABLE)+" "), null)); 
-      defn.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.QUEST_TODO), null));       
+      defn.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.GENERAL_TODO), null));       
     } 
     if (i.hasAnswerValueSet()) { 
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br")); 
@@ -742,10 +742,10 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     } 
  
     if (i.hasMaxLength()) { 
-      item(ul, context.formatPhrase(RenderingContext.QUEST_MAX), Integer.toString(i.getMaxLength())); 
+      item(ul, context.formatPhrase(RenderingContext.GENERAL_MAX_LENGTH), Integer.toString(i.getMaxLength())); 
     } 
     if (i.hasDefinition()) { 
-      genDefinitionLink(item(ul, context.formatPhrase(RenderingContext.QUEST_DEF)), i, q);       
+      genDefinitionLink(item(ul, context.formatPhrase(RenderingContext.GENERAL_DEFINITION_COLON)), i, q);       
     } 
     if (i.hasEnableWhen()) { 
       item(ul, context.formatPhrase(RenderingContext.QUEST_EN), "todo"); 
@@ -912,10 +912,10 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     td.b().tx(q.getId()); 
      
     // general information 
-    defn(tbl, context.formatPhrase(RenderingContext.QUEST_URL), q.getUrl()); 
-    defn(tbl, context.formatPhrase(RenderingContext.QUEST_VERSION), q.getVersion()); 
-    defn(tbl, context.formatPhrase(RenderingContext.QUEST_NAME), q.getName()); 
-    defn(tbl, context.formatPhrase(RenderingContext.QUEST_TITLE), q.getTitle()); 
+    defn(tbl, context.formatPhrase(RenderingContext.GENERAL_URL), q.getUrl()); 
+    defn(tbl, context.formatPhrase(RenderingContext.GENERAL_VER), q.getVersion()); 
+    defn(tbl, context.formatPhrase(RenderingContext.GENERAL_NAME), q.getName()); 
+    defn(tbl, context.formatPhrase(RenderingContext.GENERAL_TITLE), q.getTitle()); 
     if (q.hasDerivedFrom()) { 
       td = defn(tbl, context.formatPhrase(RenderingContext.QUEST_DERIVED)); 
       boolean first = true; 
@@ -924,8 +924,8 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         td.tx(c.asStringValue()); // todo: make these a reference 
       } 
     } 
-    defn(tbl, context.formatPhrase(RenderingContext.QUEST_STATUS), q.getStatus().getDisplay()); 
-    defn(tbl, context.formatPhrase(RenderingContext.QUEST_EXPER), q.getExperimental()); 
+    defn(tbl, context.formatPhrase(RenderingContext.GENERAL_STATUS), q.getStatus().getDisplay()); 
+    defn(tbl, context.formatPhrase(RenderingContext.GENERAL_EXPER), q.getExperimental()); 
     defn(tbl, context.formatPhrase(RenderingContext.QUEST_PUB), q.getDateElement().primitiveValue()); 
     defn(tbl, context.formatPhrase(RenderingContext.QUEST_APP), q.getApprovalDateElement().primitiveValue()); 
     defn(tbl, context.formatPhrase(RenderingContext.QUEST_REV_DATE), q.getLastReviewDateElement().primitiveValue()); 
@@ -941,9 +941,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         td.tx(c.asStringValue()); 
       } 
     } 
-    defn(tbl, context.formatPhrase(RenderingContext.QUEST_DESCRIPTION), q.getDescription()); 
-    defn(tbl, context.formatPhrase(RenderingContext.QUEST_PURPOSE), q.getPurpose()); 
-    defn(tbl, context.formatPhrase(RenderingContext.QUEST_COPYRIGHT), q.getCopyright()); 
+    defn(tbl, context.formatPhrase(RenderingContext.GENERAL_DESC), q.getDescription()); 
+    defn(tbl, context.formatPhrase(RenderingContext.GENERAL_PURPOSE), q.getPurpose()); 
+    defn(tbl, context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT), q.getCopyright()); 
     if (q.hasCode()) { 
       td = defn(tbl, Utilities.pluralize("Code", q.getCode().size())); 
       boolean first = true; 
@@ -971,18 +971,18 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     defn(tbl, context.formatPhrase(RenderingContext.QUEST_ID), qi.getLinkId()); 
     defn(tbl, context.formatPhrase(RenderingContext.QUEST_PREFIX), qi.getPrefix()); 
     defn(tbl, context.formatPhrase(RenderingContext.QUEST_TEXT), qi.getText()); 
-    defn(tbl, context.formatPhrase(RenderingContext.QUEST_TYPE), qi.getType().getDisplay()); 
-    defn(tbl, context.formatPhrase(RenderingContext.QUEST_REQ), qi.getRequired(), true); 
+    defn(tbl, context.formatPhrase(RenderingContext.GENERAL_TYPE), qi.getType().getDisplay()); 
+    defn(tbl, context.formatPhrase(RenderingContext.GENERAL_REQUIRED), qi.getRequired(), true); 
     defn(tbl, context.formatPhrase(RenderingContext.QUEST_REP), qi.getRepeats(), true); 
     defn(tbl, context.formatPhrase(RenderingContext.QUEST_READ_ONLY), qi.getReadOnly(), false); 
     if (ToolingExtensions.readBoolExtension(qi, "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-isSubject")) { 
-      defn(tbl, context.formatPhrase(RenderingContext.QUEST_SUB), "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-isSubject", "This element changes who the subject of the question is", null); 
+      defn(tbl, context.formatPhrase(RenderingContext.GENERAL_SUBJ), "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-isSubject", "This element changes who the subject of the question is", null); 
     } 
      
     // content control 
     defn(tbl, context.formatPhrase(RenderingContext.QUEST_MAX_LENGTH), qi.getMaxLength()); 
     if (qi.hasAnswerValueSet()) { 
-      defn(tbl, context.formatPhrase(RenderingContext.QUEST_VALUE_SET), qi.getDefinition(), context.getWorker().findTxResource(ValueSet.class,  qi.getAnswerValueSet(), q)); 
+      defn(tbl, context.formatPhrase(RenderingContext.GENERAL_VALUESET), qi.getDefinition(), context.getWorker().findTxResource(ValueSet.class,  qi.getAnswerValueSet(), q)); 
     } 
     if (qi.hasAnswerOption()) { 
       XhtmlNode tr = tbl.tr(); 
@@ -1025,12 +1025,12 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
      
     // formal definitions 
     if (qi.hasDefinition()) { 
-      genDefinitionLink(defn(tbl, context.formatPhrase(RenderingContext.QUEST_DEFINITION)), qi, q); 
+      genDefinitionLink(defn(tbl, context.formatPhrase(RenderingContext.GENERAL_DEFINITION)), qi, q); 
     } 
        
     if (qi.hasCode()) { 
       XhtmlNode tr = tbl.tr(); 
-      tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.QUEST_CODE), qi.getCode().size())); 
+      tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.GENERAL_CODE), qi.getCode().size())); 
       XhtmlNode ul = tr.td().ul(); 
       for (Coding c : qi.getCode()) { 
         renderCodingWithDetails(ul.li(), c); 
@@ -1083,11 +1083,11 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
  
   private void defn(XhtmlNode tbl, String name, String url, Resource res) throws UnsupportedEncodingException, IOException { 
     if (res != null && res.hasWebPath()) { 
-      defn(tbl, context.formatPhrase(RenderingContext.QUEST_DEFINITION), RendererFactory.factory(res, context).display(res), res.getWebPath()); 
+      defn(tbl, context.formatPhrase(RenderingContext.GENERAL_DEFINITION), RendererFactory.factory(res, context).display(res), res.getWebPath()); 
     } else if (Utilities.isAbsoluteUrlLinkable(url)) { 
-      defn(tbl, context.formatPhrase(RenderingContext.QUEST_DEFINITION), url, url); 
+      defn(tbl, context.formatPhrase(RenderingContext.GENERAL_DEFINITION), url, url); 
     } { 
-      defn(tbl, context.formatPhrase(RenderingContext.QUEST_DEFINITION), url); 
+      defn(tbl, context.formatPhrase(RenderingContext.GENERAL_DEFINITION), url); 
     } 
   
   } 

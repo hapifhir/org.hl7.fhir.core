@@ -62,7 +62,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     XhtmlNode tr; 
     if (dr.has("subject")) { 
        tr = tbl.tr(); 
-       tr.td().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_SUB)); 
+       tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_SUBJ)); 
        populateSubjectSummary(tr.td(), getProperty(dr, "subject").value()); 
     } 
      
@@ -105,7 +105,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     pw = getProperty(dr, "request"); 
     if (valued(pw)) { 
       tr = tbl.tr(); 
-      tr.td().tx(Utilities.pluralize((context.formatPhrase(RenderingContext.DIAG_REP_REND_REQUEST)), pw.getValues().size())+":"); 
+      tr.td().tx(Utilities.pluralize((context.formatPhrase(RenderingContext.GENERAL_REQUEST)), pw.getValues().size())+":"); 
       XhtmlNode tdr = tr.td(); 
       for (BaseWrapper v : pw.getValues()) { 
         tdr.tx(" "); 
@@ -178,7 +178,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     else if (r.getName().equals("Patient")) 
       generatePatientSummary(container, r); 
     else 
-      container.tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_NOTDONE)); 
+      container.tx(context.formatPhrase(RenderingContext.GENERAL_TODO)); 
   } 
  
   private void generatePatientSummary(XhtmlNode c, ResourceWrapper r) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome { 
@@ -218,16 +218,16 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     if (issued) cs++; 
     if (effectiveTime) cs++; 
     XhtmlNode tr = tbl.tr(); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_CODE)); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_VALUE)); 
+    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE)); 
+    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_VALUE)); 
     if (refRange) { 
       tr.td().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_REFRAN)); 
     } 
     if (flags) { 
-      tr.td().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_FLAG)); 
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_FLAGS)); 
     } 
     if (note) { 
-      tr.td().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_NOTE)); 
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_NOTE)); 
     } 
     if (effectiveTime) { 
       tr.td().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_WHEN)); 

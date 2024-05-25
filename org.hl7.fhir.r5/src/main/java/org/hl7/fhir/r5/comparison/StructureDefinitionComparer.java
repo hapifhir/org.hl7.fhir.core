@@ -1313,7 +1313,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       else if (isDataType(combined))
         row.setIcon("icon_datatype.gif", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_DATATYPE));
       else
-        row.setIcon("icon_resource.png", session.getI18n().formatPhrase(RenderingContext.TEXT_ICON_RESOURCE));
+        row.setIcon("icon_resource.png", session.getI18n().formatPhrase(RenderingContext.GENERAL_RESOURCE));
       String ref = defPath == null ? null : defPath + combined.either().getDef().getId();
       String sName = tail(path);
       String sn = getSliceName(combined);

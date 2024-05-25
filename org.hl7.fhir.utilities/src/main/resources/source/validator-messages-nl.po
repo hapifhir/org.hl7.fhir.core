@@ -121,6 +121,7 @@ msgstr[1] ""
 
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
+msgctxt "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
 msgstr ""
 
@@ -333,6 +334,12 @@ msgstr "Opgegeven profiel {2} niet gevonden voor {0} resource van type ''{0}''"
 # Bundle_BUNDLE_Entry_NoProfile_TYPE
 msgid "No profile found for {0} resource of type ''{1}''"
 msgstr "Geen profiel gevonden voor {0} resource van type ''{1}''"
+
+#: Bundle_BUNDLE_Entry_NotFound
+# Bundle_BUNDLE_Entry_NotFound
+msgctxt "Bundle_BUNDLE_Entry_NotFound"
+msgid "Can''t find ''{0}'' in the bundle ({1})"
+msgstr ""
 
 #: Bundle_BUNDLE_Entry_Orphan_DOCUMENT
 # Bundle_BUNDLE_Entry_Orphan_DOCUMENT
@@ -755,6 +762,11 @@ msgstr "!!Het ShareableConceptMap profiel zegt dat het {0} element verplicht is,
 msgid "Published concept maps SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} is mandatory, but it is not present"
 msgstr "!!Het ShareableConceptMap profiel zegt dat het {0} element verplicht is, maar het ontbreekt. Door HL7 gepubliceerde conceptmaps MOETEN zich houden aan het ShareableConceptMap profiel"
 
+#: CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM
+# CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM
+msgid "The code ''{1}'' comes from the system {0} which could not be found, so it''s not known whether it''s valid in the value set ''{2}''"
+msgstr ""
+
 #: CONCEPTMAP_VS_INVALID_CONCEPT_CODE
 # CONCEPTMAP_VS_INVALID_CONCEPT_CODE
 msgid "The code ''{1}'' in the system {0} is not valid in the value set ''{2}''"
@@ -826,11 +838,6 @@ msgstr "Code gevonden in expansion, echter: {0}"
 msgid "Coding has no system. A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
 msgstr "!!Coding heeft geen system - kan niet valideren"
 
-#: Coding_has_no_system__cannot_validate_NO_INFER
-# Coding_has_no_system__cannot_validate_NO_INFER
-msgid "Coding has no system, and inferring the code system is not possible in this context. A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
-msgstr "Kan geen overeenkomende discriminators ({1}) bepalen voor slice {2} in profiel {3} - Geen van de {0} discriminators {4} hebben een vaste waarde, binding of aanwezigheidverplichtingen"
-
 #: Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_
 # Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_
 msgid "Contained resource does not appear to be a FHIR resource (unknown name ''{0}'')"
@@ -857,11 +864,6 @@ msgstr "Duplicaat id waarde ''{0}''"
 # DUPLICATE_JSON_PROPERTY_KEY
 msgid "The JSON property ''{0}'' is a duplicate and will be ignored"
 msgstr "De JSON property ''{0}'' is een duplicaat en wordt genegeerd"
-
-#: DUPLICATE_RESOURCE_VERSION
-# DUPLICATE_RESOURCE_VERSION
-msgid "Duplicate Resource {0} Version {1} of type {2}"
-msgstr "Duplicate Resource {0} Version {1} of type {2}"
 
 #: Delimited_versions_have_exact_match_for_delimiter____vs_
 # Delimited_versions_have_exact_match_for_delimiter____vs_
@@ -1264,11 +1266,6 @@ msgstr "Extension url ''{0}'' is niet geldig (element.id ''{1}'' is geldig, maar
 msgid "The Profile ''{0}'' definition allows for the type {1} but found type {2}"
 msgstr "De definitie voor profiel ''{0}'' is voor het type {1} maar gevonden type is {2}"
 
-#: FHIRPATH_ALIAS_COLLECTION
-# FHIRPATH_ALIAS_COLLECTION
-msgid "Attempt to alias a collection, not a singleton evaluating FHIRPath expression"
-msgstr "Poging voor een alias van een collectie, geen singleton bij toepasssen FHIRPath expressie"
-
 #: FHIRPATH_ARITHMETIC_MINUS
 # FHIRPATH_ARITHMETIC_MINUS
 msgid "Error in date arithmetic: Unable to subtract type {0} to {1}"
@@ -1293,16 +1290,6 @@ msgstr ""
 # FHIRPATH_AS_COLLECTION
 msgid "Attempt to use ''as()'' on more than one item (''{0}'', ''{1}'')"
 msgstr ""
-
-#: FHIRPATH_AS_IMPOSSIBLE
-# FHIRPATH_AS_IMPOSSIBLE
-msgid "The type specified in as() is {1} which is not a possible candidate for the existing types ({0}) in the expression {2}. Check the paths and types to be sure this is what is intended"
-msgstr ""
-
-#: FHIRPATH_BAD_DATE
-# FHIRPATH_BAD_DATE
-msgid "Unable to parse Date {0}"
-msgstr "Kan Date {0} niet verwerken"
 
 #: FHIRPATH_CANNOT_USE
 # FHIRPATH_CANNOT_USE
@@ -1437,11 +1424,6 @@ msgstr "onjuist gebruik van resolve() in discriminator - Type op {0} is niet Ref
 # FHIRPATH_DISCRIMINATOR_RESOLVE_NO_TYPE
 msgid "Invalid use of resolve() in discriminator - no type on element {0}"
 msgstr "onjuist gebruik van resolve() in discriminator - geen type op element {0}"
-
-#: FHIRPATH_DISCRIMINATOR_TYPE_MULTIPLE
-# FHIRPATH_DISCRIMINATOR_TYPE_MULTIPLE
-msgid "Invalid use of ofType() in discriminator - Multiple possible types on {0}"
-msgstr "onjuist gebruik van ofType() in discriminator - Meerdere mogelijke typen op {0}"
 
 #: FHIRPATH_DISCRIMINATOR_TYPE_NONE
 # FHIRPATH_DISCRIMINATOR_TYPE_NONE
@@ -1714,11 +1696,6 @@ msgstr "Vaste waarde heeft onbekend type {0}"
 msgid "Internal error -  type not known {0}"
 msgstr "Interne fout - type onbekend {0}"
 
-#: Internal_recursion_detection_find_loop_path_recursion____check_paths_are_valid_for_path_
-# Internal_recursion_detection_find_loop_path_recursion____check_paths_are_valid_for_path_
-msgid "Internal recursion detection: find() loop path recursion > {0} - check paths are valid (for path {1}/{2})"
-msgstr "Interne recursiedetectie: find() loop pad recursie > {0} - controleer of paden geldig zijn (voor pad {1}/{2})"
-
 #: Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist
 # Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist
 msgid "Invalid slicing: there is more than one type slice at {0}, but one of them ({1}) has min = 1, so the other slices cannot exist"
@@ -1894,11 +1871,6 @@ msgstr "Aantal {0} en aantal subjects {1} komen niet overeen"
 msgid "The code for this group population is duplicated with another group"
 msgstr "De code van deze group population wordt gedupliceerd door een andere group"
 
-#: MEASURE_MR_GRP_POP_MISSING_BY_CODE
-# MEASURE_MR_GRP_POP_MISSING_BY_CODE
-msgid "The MeasureReport does not include a population group for the population group {0}"
-msgstr "Het MeasureReport bevat geen population group voor population group {0}"
-
 #: MEASURE_MR_GRP_POP_NO_CODE
 # MEASURE_MR_GRP_POP_NO_CODE
 msgid "Group should have a code that matches the group population definition in the measure"
@@ -1969,11 +1941,6 @@ msgstr "De waarde is ongeldig - deze moeten tussen 0 en 1 liggen"
 msgid "A value is required when the Measure.scoring = {0}"
 msgstr "Een waarde is verplicht als de Measure.scoring = {0} is"
 
-#: MEASURE_M_CQL_NOT_FOUND
-# MEASURE_M_CQL_NOT_FOUND
-msgid "None of the include CQL Libraries define a function {0}"
-msgstr "Geen van de include CQL-bibliotheken definiren een functie {0}"
-
 #: MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID
 # MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID
 msgid "= Error in {0}: Compiled version of CQL is not valid"
@@ -2033,11 +2000,6 @@ msgstr "Measure groups moeten tenminste een population bevatten"
 # MEASURE_M_GROUP_POP_NO_CODE
 msgid "A measure group population should have a code when there is more than one population"
 msgstr "Een measure group population moeten een code bevatten als er meer dan een population is"
-
-#: MEASURE_M_GROUP_STRATA
-# MEASURE_M_GROUP_STRATA
-msgid "Measure Groups should have at least one stratifier"
-msgstr "Measure groups moeten tenminste een stratifier bevatten"
 
 #: MEASURE_M_GROUP_STRATA_COMP_NO_CODE
 # MEASURE_M_GROUP_STRATA_COMP_NO_CODE
@@ -2290,11 +2252,6 @@ msgstr "Nog niet gedaan (ValidatorHostServices.conformsToProfile), wanneer item 
 msgid "Not done yet (ValidatorHostServices.executeFunction)"
 msgstr "Nog niet gedaan (ValidatorHostServices.executeFunction)"
 
-#: Not_done_yet_ValidatorHostServicesresolveFunction_
-# Not_done_yet_ValidatorHostServicesresolveFunction_
-msgid "Not done yet (ValidatorHostServices.resolveFunction): {0}"
-msgstr "Nog niet gedaan (ValidatorHostServices.resolveFunction): {0}"
-
 #: Not_done_yet__resolve__locally_2
 # Not_done_yet__resolve__locally_2
 msgid "Not done yet - resolve {0} locally (2)"
@@ -2304,11 +2261,6 @@ msgstr "Nog niet gedaan - lokaal opzoeken van {0} (2)"
 # Not_handled_yet_sortElements_
 msgid "Not handled yet (sortElements: {0}:{1})"
 msgstr "Nog niet ondersteund (sortElements: {0}:{1})"
-
-#: Not_supported_yet
-# Not_supported_yet
-msgid "Not supported yet"
-msgstr "Nog niet ondersteund"
 
 #: OBJECT_CANNOT_BE_KEYED_ARRAY_CHILD_COUNT
 # OBJECT_CANNOT_BE_KEYED_ARRAY_CHILD_COUNT
@@ -2742,11 +2694,6 @@ msgstr "De syntax van de reference ''{0}'' oogt incorrect en moeten worden gecon
 msgid "The type ''{2}'' is not a valid Target for the element {0} (must be {1})"
 msgstr "Het type ''{2}'' is geen geldig Target voor het element {0} (moet zijn {1})"
 
-#: REPEAT_SLICING_IGNORED
-# REPEAT_SLICING_IGNORED
-msgid "The element at {0} defines the slicing but then an element in the slicing {2} repeats it, which is ignored"
-msgstr ""
-
 #: RESOURCETYPE_PROPERTY_WRONG_TYPE
 # RESOURCETYPE_PROPERTY_WRONG_TYPE
 msgid "The JSON element ''resourceType'' has the wrong JSON type: {0}"
@@ -2961,13 +2908,6 @@ msgstr "Profiel {0} is voor type {1}, wat geen {4} is (welke wordt vereist om he
 # SD_ED_TYPE_PROFILE_WRONG_TYPE
 msgid "The type {0} is not in the list of allowed type {1} in the profile {2}"
 msgid_plural "The type {0} is not in the list of allowed types {1} in the profile {2}"
-msgstr[0] ""
-msgstr[1] ""
-
-#: SD_ED_TYPE_WRONG_TYPE
-# SD_ED_TYPE_WRONG_TYPE
-msgid "The element has a type {0} which is different to the type {1} on the base profile {2}"
-msgid_plural "The element has a type {0} which is not in the types {1} on the base profile {2}"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -3315,11 +3255,6 @@ msgstr "De groep {0} kon niet worden gevonden"
 msgid "The group {0} is invoked using {1} parameters, but it actually takes {2} instead"
 msgstr ""
 
-#: SM_RULE_SOURCE_LISTMODE_REDUNDANT
-# SM_RULE_SOURCE_LISTMODE_REDUNDANT
-msgid "The listMode value of {0} is redundant since the valid max is {0}"
-msgstr "De listMode waarde {0} is redundant aangezien de geldige maximumwaarde {0} is"
-
 #: SM_RULE_SOURCE_MAX_REDUNDANT
 # SM_RULE_SOURCE_MAX_REDUNDANT
 msgid "The max value of {0} is redundant since the valid max is {0}"
@@ -3549,11 +3484,6 @@ msgstr "Slicingregels op differential ({0}) komen niet overeen met die van de ba
 # Slicing_rules_on_differential__do_not_match_those_on_base___rule___
 msgid "Slicing rules on differential ({0}) do not match those on base ({1}) - rule @ {2} ({3})"
 msgstr "Slicingregels op differential ({0}) komen niet overeen met die van de basis ({1}) - regel @ {2} ({3})"
-
-#: StructureDefinition__at__illegal_attempt_to_change_a_binding_from__to_
-# StructureDefinition__at__illegal_attempt_to_change_a_binding_from__to_
-msgid "StructureDefinition {0} at {1}: invalid attempt to change a binding from {2} to {3}"
-msgstr "StructureDefinition {0} in {1}: incorrecte poging om een binding te wijzigen van {2} in {3}"
 
 #: StructureDefinition__at__illegal_constrained_type__from__in_
 # StructureDefinition__at__illegal_constrained_type__from__in_
@@ -3868,6 +3798,11 @@ msgstr "De waarde in de instance ({2}) is kleiner dan de gespecificeerde minimum
 msgid "The value in the instance ({0} {1}) is less than the specified minValue ({2} {3}) after UCUM conversion"
 msgstr "De waaarde in de instance ({0} {1}) is kleiner dan de gespecificeerde minValue ({2} {3}) na UCUM-conversie"
 
+#: TYPE_SPECIFIC_CHECKS_DT_QTY_NO_QTY
+# TYPE_SPECIFIC_CHECKS_DT_QTY_NO_QTY
+msgid "Found {0} of type {2} in the profile validating a Quantity (so it must be a Quantity)"
+msgstr ""
+
 #: TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS
 # TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS
 msgid "UCUM Codes that contain human readable annotations like {0} can be misleading (e.g. they are ignored when comparing units). Best Practice is not to depend on annotations in the UCUM code, so this usage should be checked"
@@ -3950,16 +3885,6 @@ msgstr "Binding voor pad {0} heeft geen bron, dus kan niet worden gevalideerd"
 msgid "Binding has no source, so can''t be checked"
 msgstr "Binding heeft geen bron, dus kan niet worden gevalideerd"
 
-#: Terminology_TX_Code_NotValid
-# Terminology_TX_Code_NotValid
-msgid "Code {0} is not a valid code in code system {1}"
-msgstr "Code {0} is geen geldige code in het codesysteem {1}"
-
-#: Terminology_TX_Code_Unknown
-# Terminology_TX_Code_Unknown
-msgid "Unknown Code ({0}#{1})"
-msgstr "Onbekende code ({0}#{1})"
-
 #: Terminology_TX_Code_ValueSet
 # Terminology_TX_Code_ValueSet
 msgid "No code provided, and a code is required from the value set {0}"
@@ -4005,11 +3930,6 @@ msgstr "Kan niet bevestigen dat de gevonden codings bestaan in de waardelijst {0
 #| The code provided ({2}) is not in the value set {0}, and a code from this value set is required: {1}
 msgid "The code provided ({2}) was not found in the value set {0}, and a code from this value set is required: {1}"
 msgstr "!!De gevonden code ({2}) bestaat niet in waardelijst {0} en een code uit deze waardelijst is verplicht: {1}"
-
-#: Terminology_TX_Confirm_4b
-# Terminology_TX_Confirm_4b
-msgid "The codes provided ({2}) are not in the value set {0}, and a code from this value set is required: {1}"
-msgstr "De gevonden codes ({2}) bestaan niet in waardelijst {0} en een code uit deze waardelijst is verplicht: {1}"
 
 #: Terminology_TX_Confirm_5
 # Terminology_TX_Confirm_5
@@ -4080,11 +4000,6 @@ msgstr "!!De gevonden Coding ({2}) bestaat niet in de waardelijst {0} en een cod
 # Terminology_TX_NoValid_15
 msgid "The value provided (''{0}'') could not be validated in the absence of a terminology server"
 msgstr "De gevonden waarde (''{0}'') kan niet worden gevalideerd zonder een terminologieserver"
-
-#: Terminology_TX_NoValid_15A
-# Terminology_TX_NoValid_15A
-msgid "The value provided (''{0}'') could not be validated because the code system {1} is not known"
-msgstr ""
 
 #: Terminology_TX_NoValid_16
 # Terminology_TX_NoValid_16
@@ -4470,8 +4385,8 @@ msgstr ""
 msgid "Image source ''{0}'' at ''{1}'' does not resolve"
 msgstr ""
 
-#: UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET
-# UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET
+#: UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_
+# UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_
 msgid "Unable to check whether the code is in the value set ''{0}''"
 msgstr ""
 
@@ -4501,11 +4416,6 @@ msgstr ""
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}''"
 msgstr "!!!!!!!!!!!!!!!!De System URI kon niet worden bepaald voor de code {0} in de waardelijst {1}"
 
-#: UNABLE_TO_RESOLVE_CONTENT_REFERENCE
-# UNABLE_TO_RESOLVE_CONTENT_REFERENCE
-msgid "Unable to resolve the content reference {0} on element {1} (path = {2})"
-msgstr "Kan de contentreferentie {0} op element {1} (pad = {2}) niet vinden"
-
 #: UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT
 # UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT
 msgid "Unable to resolve the content reference {0} on element {1} (path = {2}) in this context"
@@ -4515,11 +4425,6 @@ msgstr "Kan de contentreferentie {0} op element {1} (pad = {2}) niet vinden in d
 # UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE
 msgid "The code system {1} referred to from value set {0} has a grammar, and the code might be valid in it"
 msgstr "The code system {1} referred to from value set {0} has a grammar, and the code might be valid in it"
-
-#: UNABLE_TO_VALIDATE_LOCALLY
-# UNABLE_TO_VALIDATE_LOCALLY
-msgid "Unable to validate code locally: {0}"
-msgstr "Unable to validate code locally: {0}"
 
 #: UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED
 # UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED
@@ -5574,11 +5479,6 @@ msgstr "geen url in expand waardelijst 2"
 msgid "ValueSet has no url property"
 msgstr "waardelijst heeft geen url property"
 
-#: not_done_yet__slicing__types__
-# not_done_yet__slicing__types__
-msgid "Not done yet - slicing / types @ {0}"
-msgstr "nog niet gedaan - slicing / typen @ {0}"
-
 #: not_done_yet_cant_fetch_
 # not_done_yet_cant_fetch_
 msgid "Not done yet: can''t fetch {0}"
@@ -5618,9 +5518,4 @@ msgstr "Het XML attribuut {0} bevat een onjuist teken"
 # xml_encoding_invalid
 msgid "The XML encoding is invalid (must be UTF-8)"
 msgstr "De XML encoding is onjuist (moet UTF-8 zijn)"
-
-#: xml_stated_encoding_invalid
-# xml_stated_encoding_invalid
-msgid "The XML encoding stated in the header is invalid (must be ''UTF-8'' if stated)"
-msgstr "De XML encoding in de header is onjuist (moet ''UTF-8'' zijn, indien gespecificeerd)"
 

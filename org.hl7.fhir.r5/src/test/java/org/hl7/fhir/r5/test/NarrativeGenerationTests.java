@@ -257,7 +257,7 @@ public class NarrativeGenerationTests {
     }
     
     XhtmlNode x = RendererFactory.factory(source, rc).build(source);
-    String expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "expected", test.getId() + ".html"));
+    String expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".html"));
     String actual = HEADER+new XhtmlComposer(true, test.pretty).compose(x)+FOOTER;
     String expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.html");
     String actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".html");
@@ -270,7 +270,7 @@ public class NarrativeGenerationTests {
       org.hl7.fhir.r5.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
       x = RendererFactory.factory(source, rc).render(new ElementWrappers.ResourceWrapperMetaElement(rc, e));
 
-      expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "expected", test.getId() + "-meta.html"));
+      expected = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + "-meta.html"));
       actual = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
       actualFileName = CompareUtilities.tempFile("narrative", test.getId() + "-meta.actual.html");
       TextFile.stringToFile(actual, actualFileName);
