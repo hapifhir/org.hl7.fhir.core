@@ -1171,7 +1171,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         CodeSystem cs = getCodeSystem(system);
         if (rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, cs != null, I18nConstants.TERMINOLOGY_TX_SYSTEM_UNKNOWN, system)) {
           ConceptDefinitionComponent def = getCodeDefinition(cs, code);
-          if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, def != null, I18nConstants.TERMINOLOGY_TX_CODE_UNKNOWN, system, code))
+          if (warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, def != null, I18nConstants.UNKNOWN_CODESYSTEM, system, code))
             return warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, element.line(), element.col(), path, display == null || display.equals(def.getDisplay()), I18nConstants.TERMINOLOGY_TX_DISPLAY_WRONG, def.getDisplay()) && ok;
         }
         return false;
