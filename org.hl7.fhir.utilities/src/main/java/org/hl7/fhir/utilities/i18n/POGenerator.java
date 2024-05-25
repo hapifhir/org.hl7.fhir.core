@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -14,14 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.hl7.fhir.utilities.i18n.POGenerator.ConstantDefinition;
-import org.hl7.fhir.utilities.i18n.POGenerator.PropertyValue;
 
 /**
  * This class checks that all the i18n constants and declarations are consistent,
