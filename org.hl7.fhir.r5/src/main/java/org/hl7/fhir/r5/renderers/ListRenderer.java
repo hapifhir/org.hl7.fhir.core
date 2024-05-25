@@ -62,7 +62,7 @@ public class ListRenderer extends ResourceRenderer {
       shortForRef(td, list.get("encounter")); 
     } 
     if (list.has("source")) { 
-      td.tx(context.formatPhrase(RenderingContext.LIST_REND_SRC)+" "); 
+      td.tx(context.formatPhrase(RenderingContext.GENERAL_SRC)+" "); 
       shortForRef(td, list.get("encounter")); 
     } 
     if (list.has("orderedBy")) { 
@@ -146,7 +146,7 @@ public class ListRenderer extends ResourceRenderer {
       shortForRef(tr.td().txN(context.formatPhrase(RenderingContext.LIST_REND_ENC)+" "), list.getEncounter()); 
     } 
     if (list.hasSource()) { 
-      shortForRef(tr.td().txN(context.formatPhrase(RenderingContext.LIST_REND_SRC)+" "), list.getEncounter()); 
+      shortForRef(tr.td().txN(context.formatPhrase(RenderingContext.GENERAL_SRC)+" "), list.getEncounter()); 
     } 
     if (list.hasOrderedBy()) { 
       tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_ORD, display(list.getOrderedBy()))+" "); 

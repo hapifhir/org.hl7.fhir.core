@@ -122,6 +122,7 @@ msgstr[2] ""
 
 #: BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
 # BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT
+msgctxt "BUNDLE_BUNDLE_ENTRY_NOTFOUND_FRAGMENT"
 msgid "Can''t find ''{0}'' in the bundle ({1})"
 msgstr ""
 
@@ -334,6 +335,12 @@ msgstr "El perfil especificado {2} not ha sido encontrado para el recurso {0} de
 # Bundle_BUNDLE_Entry_NoProfile_TYPE
 msgid "No profile found for {0} resource of type ''{1}''"
 msgstr "No se ha encontrado el perfil para el recurso {0} de tipo ''{1}''"
+
+#: Bundle_BUNDLE_Entry_NotFound
+# Bundle_BUNDLE_Entry_NotFound
+msgctxt "Bundle_BUNDLE_Entry_NotFound"
+msgid "Can''t find ''{0}'' in the bundle ({1})"
+msgstr ""
 
 #: Bundle_BUNDLE_Entry_Orphan_DOCUMENT
 # Bundle_BUNDLE_Entry_Orphan_DOCUMENT
@@ -749,6 +756,11 @@ msgstr ""
 msgid "Published concept maps SHALL conform to the ShareableConceptMap profile, which says that the element ConceptMap.{0} is mandatory, but it is not present"
 msgstr ""
 
+#: CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM
+# CONCEPTMAP_VS_CONCEPT_CODE_UNKNOWN_SYSTEM
+msgid "The code ''{1}'' comes from the system {0} which could not be found, so it''s not known whether it''s valid in the value set ''{2}''"
+msgstr ""
+
 #: CONCEPTMAP_VS_INVALID_CONCEPT_CODE
 # CONCEPTMAP_VS_INVALID_CONCEPT_CODE
 msgid "The code ''{1}'' in the system {0} is not valid in the value set ''{2}''"
@@ -822,11 +834,6 @@ msgstr "El código se encontró en la expansión, sin embargo: {0}"
 msgid "Coding has no system. A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
 msgstr "!!El Coding no tiene sistema - no puede ser validado"
 
-#: Coding_has_no_system__cannot_validate_NO_INFER
-# Coding_has_no_system__cannot_validate_NO_INFER
-msgid "Coding has no system, and inferring the code system is not possible in this context. A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
-msgstr ""
-
 #: Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_
 # Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_
 msgid "Contained resource does not appear to be a FHIR resource (unknown name ''{0}'')"
@@ -854,11 +861,6 @@ msgstr "Valor de id duplicado ''{0}''"
 # DUPLICATE_JSON_PROPERTY_KEY
 msgid "The JSON property ''{0}'' is a duplicate and will be ignored"
 msgstr ""
-
-#: DUPLICATE_RESOURCE_VERSION
-# DUPLICATE_RESOURCE_VERSION
-msgid "Duplicate Resource {0} Version {1} of type {2}"
-msgstr "Recurso duplicado {0} Versión {1} de tipo {2}"
 
 #: Delimited_versions_have_exact_match_for_delimiter____vs_
 # Delimited_versions_have_exact_match_for_delimiter____vs_
@@ -1264,11 +1266,6 @@ msgstr "La url de la extensión ''{0}'' no es válida (El Elemento id ''{1}'' es
 msgid "The Profile ''{0}'' definition allows for the type {1} but found type {2}"
 msgstr "La definición del perfil ''{0}'' permite el tipo {1} pero se han encontrado tipo {2}"
 
-#: FHIRPATH_ALIAS_COLLECTION
-# FHIRPATH_ALIAS_COLLECTION
-msgid "Attempt to alias a collection, not a singleton evaluating FHIRPath expression"
-msgstr "Intento de generar un alias para una colección, no un singleton evaluando una expresión FHIRPath"
-
 #: FHIRPATH_ARITHMETIC_MINUS
 # FHIRPATH_ARITHMETIC_MINUS
 msgid "Error in date arithmetic: Unable to subtract type {0} to {1}"
@@ -1293,16 +1290,6 @@ msgstr ""
 # FHIRPATH_AS_COLLECTION
 msgid "Attempt to use ''as()'' on more than one item (''{0}'', ''{1}'')"
 msgstr ""
-
-#: FHIRPATH_AS_IMPOSSIBLE
-# FHIRPATH_AS_IMPOSSIBLE
-msgid "The type specified in as() is {1} which is not a possible candidate for the existing types ({0}) in the expression {2}. Check the paths and types to be sure this is what is intended"
-msgstr ""
-
-#: FHIRPATH_BAD_DATE
-# FHIRPATH_BAD_DATE
-msgid "Unable to parse Date {0}"
-msgstr "Imposible analizar el elemento Date {0}"
 
 #: FHIRPATH_CANNOT_USE
 # FHIRPATH_CANNOT_USE
@@ -1440,11 +1427,6 @@ msgstr "Uso Ilegal de resolve() en el discriminador - el tipo en {0} no es Refer
 # FHIRPATH_DISCRIMINATOR_RESOLVE_NO_TYPE
 msgid "Invalid use of resolve() in discriminator - no type on element {0}"
 msgstr "uso ilegal de resolve() en el discriminador - elemento sin tipo en {0}"
-
-#: FHIRPATH_DISCRIMINATOR_TYPE_MULTIPLE
-# FHIRPATH_DISCRIMINATOR_TYPE_MULTIPLE
-msgid "Invalid use of ofType() in discriminator - Multiple possible types on {0}"
-msgstr "Uso ilegal de ofType() en el discriminador- Multiples posibles tipos en {0}"
 
 #: FHIRPATH_DISCRIMINATOR_TYPE_NONE
 # FHIRPATH_DISCRIMINATOR_TYPE_NONE
@@ -1722,11 +1704,6 @@ msgstr "Tipo de valor fijo no gestionado {0}"
 msgid "Internal error -  type not known {0}"
 msgstr "Error interno - tipo desconocido {0}"
 
-#: Internal_recursion_detection_find_loop_path_recursion____check_paths_are_valid_for_path_
-# Internal_recursion_detection_find_loop_path_recursion____check_paths_are_valid_for_path_
-msgid "Internal recursion detection: find() loop path recursion > {0} - check paths are valid (for path {1}/{2})"
-msgstr "Detección de recursión interna: ciclo de recursion find() detectado > {0} - verifique que las paths sean válidas (para path {1}/{2})"
-
 #: Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist
 # Invalid_slicing__there_is_more_than_one_type_slice_at__but_one_of_them__has_min__1_so_the_other_slices_cannot_exist
 msgid "Invalid slicing: there is more than one type slice at {0}, but one of them ({1}) has min = 1, so the other slices cannot exist"
@@ -1902,11 +1879,6 @@ msgstr "Discordania entre count {0} y la cantidad de pacientes {1}"
 msgid "The code for this group population is duplicated with another group"
 msgstr "El código para este grupo poblacional está duplicado en otro grupo"
 
-#: MEASURE_MR_GRP_POP_MISSING_BY_CODE
-# MEASURE_MR_GRP_POP_MISSING_BY_CODE
-msgid "The MeasureReport does not include a population group for the population group {0}"
-msgstr "El recurso MeasureReport no incluye un grupo poblacional para el grupo {0}"
-
 #: MEASURE_MR_GRP_POP_NO_CODE
 # MEASURE_MR_GRP_POP_NO_CODE
 msgid "Group should have a code that matches the group population definition in the measure"
@@ -1977,11 +1949,6 @@ msgstr "El valor es inválido - debe ser entre 0 y 1"
 msgid "A value is required when the Measure.scoring = {0}"
 msgstr "Se requiere un valor cuando Measure.scoring = {0}"
 
-#: MEASURE_M_CQL_NOT_FOUND
-# MEASURE_M_CQL_NOT_FOUND
-msgid "None of the include CQL Libraries define a function {0}"
-msgstr "Ninguna de las bibliotecas CQL define un una función {0}"
-
 #: MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID
 # MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID
 msgid "= Error in {0}: Compiled version of CQL is not valid"
@@ -2041,11 +2008,6 @@ msgstr "Los grupos de las medidas deben definir al menos una población"
 # MEASURE_M_GROUP_POP_NO_CODE
 msgid "A measure group population should have a code when there is more than one population"
 msgstr "Un grupo de poblacion en una medida debe tener un codigo cuando hay mas de una población definida"
-
-#: MEASURE_M_GROUP_STRATA
-# MEASURE_M_GROUP_STRATA
-msgid "Measure Groups should have at least one stratifier"
-msgstr "Los grupos de las medidas deben tener al menos un estratificador"
 
 #: MEASURE_M_GROUP_STRATA_COMP_NO_CODE
 # MEASURE_M_GROUP_STRATA_COMP_NO_CODE
@@ -2301,11 +2263,6 @@ msgstr "No realizado aun (ValidatorHostServices.conformsToProfile), cuando el it
 msgid "Not done yet (ValidatorHostServices.executeFunction)"
 msgstr "No realizado aún (ValidatorHostServices.executeFunction)"
 
-#: Not_done_yet_ValidatorHostServicesresolveFunction_
-# Not_done_yet_ValidatorHostServicesresolveFunction_
-msgid "Not done yet (ValidatorHostServices.resolveFunction): {0}"
-msgstr "No realizado aún (ValidatorHostServices.resolveFunction): {0}"
-
 #: Not_done_yet__resolve__locally_2
 # Not_done_yet__resolve__locally_2
 msgid "Not done yet - resolve {0} locally (2)"
@@ -2315,11 +2272,6 @@ msgstr "No realizado aún - resolver {0} localmente (2)"
 # Not_handled_yet_sortElements_
 msgid "Not handled yet (sortElements: {0}:{1})"
 msgstr "No soportado aún (sortElements: {0}:{1})"
-
-#: Not_supported_yet
-# Not_supported_yet
-msgid "Not supported yet"
-msgstr "No soportado aún"
 
 #: OBJECT_CANNOT_BE_KEYED_ARRAY_CHILD_COUNT
 # OBJECT_CANNOT_BE_KEYED_ARRAY_CHILD_COUNT
@@ -2756,11 +2708,6 @@ msgstr "La sintaxis de la referencia ''{0}'' parece incorrecta y debe ser verifi
 msgid "The type ''{2}'' is not a valid Target for the element {0} (must be {1})"
 msgstr "El tipo ''{2}'' no es un destino válido para el elemento {0} (debe ser {1})"
 
-#: REPEAT_SLICING_IGNORED
-# REPEAT_SLICING_IGNORED
-msgid "The element at {0} defines the slicing but then an element in the slicing {2} repeats it, which is ignored"
-msgstr ""
-
 #: RESOURCETYPE_PROPERTY_WRONG_TYPE
 # RESOURCETYPE_PROPERTY_WRONG_TYPE
 msgid "The JSON element ''resourceType'' has the wrong JSON type: {0}"
@@ -2977,14 +2924,6 @@ msgstr "El perfil {0} es para tipo {1}, que no es un {4} (que es requerido porqu
 # SD_ED_TYPE_PROFILE_WRONG_TYPE
 msgid "The type {0} is not in the list of allowed type {1} in the profile {2}"
 msgid_plural "The type {0} is not in the list of allowed types {1} in the profile {2}"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-
-#: SD_ED_TYPE_WRONG_TYPE
-# SD_ED_TYPE_WRONG_TYPE
-msgid "The element has a type {0} which is different to the type {1} on the base profile {2}"
-msgid_plural "The element has a type {0} which is not in the types {1} on the base profile {2}"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
@@ -3329,11 +3268,6 @@ msgstr ""
 msgid "The group {0} is invoked using {1} parameters, but it actually takes {2} instead"
 msgstr ""
 
-#: SM_RULE_SOURCE_LISTMODE_REDUNDANT
-# SM_RULE_SOURCE_LISTMODE_REDUNDANT
-msgid "The listMode value of {0} is redundant since the valid max is {0}"
-msgstr ""
-
 #: SM_RULE_SOURCE_MAX_REDUNDANT
 # SM_RULE_SOURCE_MAX_REDUNDANT
 msgid "The max value of {0} is redundant since the valid max is {0}"
@@ -3564,11 +3498,6 @@ msgstr "Las reglas de partición en el diferencial ({0}) no coinciden con aquell
 # Slicing_rules_on_differential__do_not_match_those_on_base___rule___
 msgid "Slicing rules on differential ({0}) do not match those on base ({1}) - rule @ {2} ({3})"
 msgstr "Las reglas de partición en el diferencial ({0}) no coinciden con aquellos en el recurso base ({1}) - regla @ {2} ({3})"
-
-#: StructureDefinition__at__illegal_attempt_to_change_a_binding_from__to_
-# StructureDefinition__at__illegal_attempt_to_change_a_binding_from__to_
-msgid "StructureDefinition {0} at {1}: invalid attempt to change a binding from {2} to {3}"
-msgstr "StructureDefinition {0} en {1}: intento inválido de cambiar una vinculación terminológica de {2} a {3}"
 
 #: StructureDefinition__at__illegal_constrained_type__from__in_
 # StructureDefinition__at__illegal_constrained_type__from__in_
@@ -3888,6 +3817,11 @@ msgstr "El valor en la instancia ({2}) es menor que el valor mínimo especificad
 msgid "The value in the instance ({0} {1}) is less than the specified minValue ({2} {3}) after UCUM conversion"
 msgstr "El valor en la instancia ({0} {1})  es menor que el valor mínimo especificado ({2} {3}) luego de la conversión UCUM"
 
+#: TYPE_SPECIFIC_CHECKS_DT_QTY_NO_QTY
+# TYPE_SPECIFIC_CHECKS_DT_QTY_NO_QTY
+msgid "Found {0} of type {2} in the profile validating a Quantity (so it must be a Quantity)"
+msgstr ""
+
 #: TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS
 # TYPE_SPECIFIC_CHECKS_DT_QTY_UCUM_ANNOTATIONS
 msgid "UCUM Codes that contain human readable annotations like {0} can be misleading (e.g. they are ignored when comparing units). Best Practice is not to depend on annotations in the UCUM code, so this usage should be checked"
@@ -3970,16 +3904,6 @@ msgstr "La vinculación para {0} no tiene origen, asi que no ha podido ser verif
 msgid "Binding has no source, so can''t be checked"
 msgstr "La vinculacieon no tiene origen, asi que no puede ser verificada"
 
-#: Terminology_TX_Code_NotValid
-# Terminology_TX_Code_NotValid
-msgid "Code {0} is not a valid code in code system {1}"
-msgstr "El código {0} no es un código válido en el sistema de codificación {1}"
-
-#: Terminology_TX_Code_Unknown
-# Terminology_TX_Code_Unknown
-msgid "Unknown Code ({0}#{1})"
-msgstr "Código desconocido ({0}#{1})"
-
 #: Terminology_TX_Code_ValueSet
 # Terminology_TX_Code_ValueSet
 msgid "No code provided, and a code is required from the value set {0}"
@@ -4025,11 +3949,6 @@ msgstr "No se pudo confirmar que las codificaciones provistas estén en el set d
 #| The code provided ({2}) is not in the value set {0}, and a code from this value set is required: {1}
 msgid "The code provided ({2}) was not found in the value set {0}, and a code from this value set is required: {1}"
 msgstr "!!El código provisto ({2}) no está en el conjunto de valores {0}, y un código de este conjunto de valores es requerido: {1}"
-
-#: Terminology_TX_Confirm_4b
-# Terminology_TX_Confirm_4b
-msgid "The codes provided ({2}) are not in the value set {0}, and a code from this value set is required: {1}"
-msgstr "Los códigos provistos ({2}) no están en el conjunto de valores {0}, y se requiere un código de este conjunto de valores: {1}"
 
 #: Terminology_TX_Confirm_5
 # Terminology_TX_Confirm_5
@@ -4100,11 +4019,6 @@ msgstr "!!El Coding provisto ({2}) no está en el conjunto de valores{0}, y se r
 # Terminology_TX_NoValid_15
 msgid "The value provided (''{0}'') could not be validated in the absence of a terminology server"
 msgstr "El valor provisto (''{0}'') no pudo ser validado en ausencia de un servidor terminológico"
-
-#: Terminology_TX_NoValid_15A
-# Terminology_TX_NoValid_15A
-msgid "The value provided (''{0}'') could not be validated because the code system {1} is not known"
-msgstr ""
 
 #: Terminology_TX_NoValid_16
 # Terminology_TX_NoValid_16
@@ -4492,8 +4406,8 @@ msgstr ""
 msgid "Image source ''{0}'' at ''{1}'' does not resolve"
 msgstr ""
 
-#: UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET
-# UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET
+#: UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_
+# UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_
 msgid "Unable to check whether the code is in the value set ''{0}''"
 msgstr ""
 
@@ -4522,11 +4436,6 @@ msgstr ""
 msgid "The System URI could not be determined for the code ''{0}'' in the ValueSet ''{1}''"
 msgstr ""
 
-#: UNABLE_TO_RESOLVE_CONTENT_REFERENCE
-# UNABLE_TO_RESOLVE_CONTENT_REFERENCE
-msgid "Unable to resolve the content reference {0} on element {1} (path = {2})"
-msgstr ""
-
 #: UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT
 # UNABLE_TO_RESOLVE_CONTENT_REFERENCE_IN_THIS_CONTEXT
 msgid "Unable to resolve the content reference {0} on element {1} (path = {2}) in this context"
@@ -4535,11 +4444,6 @@ msgstr ""
 #: UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE
 # UNABLE_TO_RESOLVE_SYSTEM_SYSTEM_IS_INDETERMINATE
 msgid "The code system {1} referred to from value set {0} has a grammar, and the code might be valid in it"
-msgstr ""
-
-#: UNABLE_TO_VALIDATE_LOCALLY
-# UNABLE_TO_VALIDATE_LOCALLY
-msgid "Unable to validate code locally: {0}"
 msgstr ""
 
 #: UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED
@@ -5603,11 +5507,6 @@ msgstr "no hay url el conjunto de valores expandido 2"
 msgid "ValueSet has no url property"
 msgstr "El conjunto de valores carece de propiedad url"
 
-#: not_done_yet__slicing__types__
-# not_done_yet__slicing__types__
-msgid "Not done yet - slicing / types @ {0}"
-msgstr "no implementado aún - particiones / tipos @ {0}"
-
 #: not_done_yet_cant_fetch_
 # not_done_yet_cant_fetch_
 msgid "Not done yet: can''t fetch {0}"
@@ -5647,9 +5546,4 @@ msgstr "El atributo XML {0} tiene un caracter inválido"
 # xml_encoding_invalid
 msgid "The XML encoding is invalid (must be UTF-8)"
 msgstr "La codificación de XML es inválida (debe ser UTF-8)"
-
-#: xml_stated_encoding_invalid
-# xml_stated_encoding_invalid
-msgid "The XML encoding stated in the header is invalid (must be ''UTF-8'' if stated)"
-msgstr "La codificación de XML declarada en la cabecera es inválida (debe ser ''UTF-8'' si se declara)"
 

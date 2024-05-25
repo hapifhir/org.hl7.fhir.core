@@ -45,7 +45,7 @@ public class TestPlanRenderer extends ResourceRenderer {
 		XhtmlNode p = null;
 		if (!tp.getContact().isEmpty()) {
 			p = x.para();
-      p.b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_CONT));
+      p.b().tx(context.formatPhrase(RenderingContext.GENERAL_CONTACT));
 			p.tx(" (");
 			boolean firsti = true;
 			for (ContactDetail ci : tp.getContact()) {
@@ -261,8 +261,8 @@ public class TestPlanRenderer extends ResourceRenderer {
   private void renderTestData(XhtmlNode x, TestPlan tp, TestPlanTestCaseTestDataComponent tdata) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     XhtmlNode t = x.table("grid");
     XhtmlNode tr = t.tr();
-    tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_TYPE));
-    tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_CONTENT));
+    tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
+    tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_CONTENT));
     tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_SOURCE));
     tr = t.tr();
     if (tdata.hasType()) {
@@ -291,8 +291,8 @@ public class TestPlanRenderer extends ResourceRenderer {
   private void renderAssertion(XhtmlNode x, TestPlan tp, TestPlanTestCaseAssertionComponent as) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     XhtmlNode t = x.table("grid");
     XhtmlNode tr = t.tr();
-    tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_TYPE));
-    tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_CONTENT));
+    tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
+    tr.td().b().addText(context.formatPhrase(RenderingContext.GENERAL_CONTENT));
     tr.td().b().addText(context.formatPhrase(RenderingContext.TEST_PLAN_RESULT));
     tr = t.tr();
     if (as.hasType()) {

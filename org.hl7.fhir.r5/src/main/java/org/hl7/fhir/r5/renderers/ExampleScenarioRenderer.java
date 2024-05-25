@@ -211,9 +211,9 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
   public boolean renderActors(XhtmlNode x, ExampleScenario scen) throws IOException {
     XhtmlNode tbl = x.table("table-striped table-bordered");
     XhtmlNode thead = tbl.tr();
-    thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_NAME));
-    thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_TYPE));
-    thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_DESC));
+    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));
+    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
+    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_DESC));
     for (ExampleScenarioActorComponent actor : scen.getActor()) {
       XhtmlNode tr = tbl.tr();
       XhtmlNode nameCell = tr.td();
@@ -228,10 +228,10 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
   public boolean renderInstances(XhtmlNode x, ExampleScenario scen) throws IOException {
     XhtmlNode tbl = x.table("table-striped table-bordered");
     XhtmlNode thead = tbl.tr();
-    thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_NAME));
-    thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_TYPE));
-    thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_CONT));
-    thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_DESC));
+    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));
+    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
+    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_CONTENT));
+    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_DESC));
 
     Map<String, String> instanceNames = new HashMap<String, String>();
     for (ExampleScenarioInstanceComponent instance : scen.getInstance()) {
@@ -262,7 +262,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
         }
       } else {
           render(typeCell, instance.getStructureVersionElement());
-          typeCell.tx(" "+(context.formatPhrase(RenderingContext.EX_SCEN_VER, instance.getStructureVersion())+" "));
+          typeCell.tx(" "+(context.formatPhrase(RenderingContext.GENERAL_VER_LOW, instance.getStructureVersion())+" "));
         if (instance.hasStructureProfile()) {
           typeCell.tx(" ");
           renderCanonical(scen, typeCell, instance.getStructureProfile().toString());
@@ -355,11 +355,11 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     XhtmlNode tbl = div.table("table-striped table-bordered").style("width:100%");
     XhtmlNode thead = tbl.tr();
     thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_STEP));
-    thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_NAME));
-    thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_DESC));
+    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));
+    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_DESC));
     thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_IN));
     thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_REC));
-    thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_REQ));
+    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_REQUEST));
     thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_RES));
     int stepCount = 1;
     for (ExampleScenarioProcessStepComponent step: process.getStep()) {

@@ -20,8 +20,50 @@ import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.i18n.POGenerator.ConstantDefinition;
+import org.hl7.fhir.utilities.i18n.POGenerator.PropertyValue;
 
+/**
+ * This class checks that all the i18n constants and declarations are consistent,
+ * and then generates / updates the .po source files, and then updates the .properties files
+ * 
+ * It needs to be run whenever
+ *   (a) New constants are added to the java code
+ *   (b) An implementer contributes translations in a .po source file
+ *   
+ * It takes 3 parameters:
+ *   * path to the local copy of the core repo
+ *   * path to the local copy of the ig-publisher repo
+ *   * path to the local copy of the fhirserver repo
+ */
 public class POGenerator {
+
+  public class PropertyValue extends StringPair {
+    private boolean used;
+    
+    public PropertyValue(String name, String value) {
+      super(name, value);
+      // TODO Auto-generated constructor stub
+    }
+
+    public String getBaseName() {
+      String res = getName();
+      if (res.endsWith("_one")) {
+        res = res.substring(0, res.length()-4);
+      } else if (res.endsWith("_other")) {
+        res = res.substring(0, res.length()-6);
+      }
+      return res;
+    }
+
+  }
+
+  public class ConstantDefinition {
+    private String name;
+    private String sname;
+    private boolean defined;
+    private boolean used;
+  }
 
   public class POObjectSorter implements Comparator<POObject> {
 
@@ -42,35 +84,226 @@ public class POGenerator {
     private List<String> msgstr  = new ArrayList<String>();
   }
   
+
   public static void main(String[] args) throws IOException {
-    new POGenerator().execute(args[0]);
+    new POGenerator().execute(args[0], args[1], args[2]);
   }
 
   private List<String> prefixes = new ArrayList<>();
 
-  private void execute(String source) throws IOException {
-    generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-de.po"),    Utilities.path(source, "rendering-phrases_de.properties"), true);
-    generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-es.po"),    Utilities.path(source, "rendering-phrases_es.properties"), false);
-    generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-ja.po"),    Utilities.path(source, "rendering-phrases_ja.properties"), false);
-    generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-nl.po"),    Utilities.path(source, "rendering-phrases_nl.properties"), false);
-    generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-pt-BR.po"), Utilities.path(source, "rendering-phrases_pt-BR.properties"), false);
+  private void execute(String core, String igpub, String pascal) throws IOException {
+    String source = Utilities.path(core, "/org.hl7.fhir.utilities/src/main/resources");
+    if (checkState(source, core, igpub, pascal)) {
+      generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-de.po"),    Utilities.path(source, "rendering-phrases_de.properties"), 2);
+      generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-es.po"),    Utilities.path(source, "rendering-phrases_es.properties"), 3);
+      generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-ja.po"),    Utilities.path(source, "rendering-phrases_ja.properties"), 2);
+      generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-nl.po"),    Utilities.path(source, "rendering-phrases_nl.properties"), 2);
+      generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-pt-BR.po"), Utilities.path(source, "rendering-phrases_pt-BR.properties"), 2);
 
-    generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-de.po"),    Utilities.path(source, "Messages_de.properties"), true);
-    generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-es.po"),    Utilities.path(source, "Messages_es.properties"), false);
-    generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-ja.po"),    Utilities.path(source, "Messages_ja.properties"), false);
-    generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-nl.po"),    Utilities.path(source, "Messages_nl.properties"), false);
-    generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-pt-BR.po"), Utilities.path(source, "Messages_pt-BR.properties"), false);
-    
+      generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-de.po"),    Utilities.path(source, "Messages_de.properties"), 2);
+      generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-es.po"),    Utilities.path(source, "Messages_es.properties"), 3);
+      generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-ja.po"),    Utilities.path(source, "Messages_ja.properties"), 2);
+      generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-nl.po"),    Utilities.path(source, "Messages_nl.properties"), 2);
+      generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-pt-BR.po"), Utilities.path(source, "Messages_pt-BR.properties"), 2);
+
+      System.out.println("Finished");
+    } 
   }
 
-  private void generate(String source, String dest, String tgt, boolean firstRun) throws IOException {
+  private boolean checkState(String source, String core, String igpub, String pascal) throws IOException {
+    System.out.println("Checking...");
+    List<PropertyValue> props = loadProperties(Utilities.path(source, "rendering-phrases.properties"), true);
+    List<ConstantDefinition> consts = loadConstants(Utilities.path(core, "/org.hl7.fhir.utilities/src/main/java/org/hl7/fhir/utilities/i18n/RenderingI18nContext.java"));
+    boolean ok = true;
+    for (ConstantDefinition cd : consts) {
+      boolean found = false;
+      for (PropertyValue p : props) {
+        String pn = p.getBaseName();        
+        if (pn.equals(cd.sname) || p.getName().equals(cd.sname)) {
+          found = true;
+          p.used = true;
+        }
+      }
+      cd.defined = found;
+    }
+    scanJavaSource(new File(core), consts, "RenderingI18nContext", "RenderingContext");
+    scanJavaSource(new File(igpub), consts, "RenderingI18nContext", "RenderingContext");
+    scanPascalSource(new File(pascal), props);
+    
+    Set<String> pns = new HashSet<>();
+    for (PropertyValue p : props) {
+      if (!p.used) {
+        ok = false;
+        System.out.println("Error: PV "+p.getName()+ " provided but not used");   
+      }
+      if (!pns.contains(p.getName())) {
+        pns.add(p.getName());
+      } else {
+        System.out.println("Error: PV "+p.getName()+ " duplicated");
+      }
+    }
+    
+    for (ConstantDefinition cd : consts) {
+      if (!cd.defined && !cd.used) {
+        System.out.println("Error: "+cd.name+ " not defined or used");        
+        ok = false;
+      } else if (!cd.defined) {
+        ok = false;
+        System.out.println("Error: msg for "+cd.name+ " not found at "+cd.sname);
+      } else if (!cd.used) {
+        System.out.println("Warning: const "+cd.name+ " not used");
+        ok = false;
+      }
+    }
+
+    props = loadProperties(Utilities.path(source, "Messages.properties"), true);
+    consts = loadConstants(Utilities.path(core, "/org.hl7.fhir.utilities/src/main/java/org/hl7/fhir/utilities/i18n/I18nConstants.java"));
+    for (ConstantDefinition cd : consts) {
+      boolean found = false;
+      for (PropertyValue p : props) {
+        String pn = p.getBaseName();
+        if (pn.equals(cd.sname) || p.getName().equals(cd.sname)) {
+          found = true;
+          p.used = true;
+        }
+      }
+      cd.defined = found;
+    }
+
+    scanJavaSource(new File(core), consts, "I18nConstants");
+    scanJavaSource(new File(igpub), consts, "I18nConstants");
+    scanPascalSource(new File(pascal), props);
+
+    pns = new HashSet<>();
+    for (PropertyValue p : props) {
+      if (!p.used) {
+        ok = false;
+        System.out.println("Error: PV "+p.getName()+ " provided but not used");   
+      }
+      if (!pns.contains(p.getName())) {
+        pns.add(p.getName());
+      } else {
+        System.out.println("Error: PV "+p.getName()+ " duplicated");
+      }
+    }
+    
+    for (ConstantDefinition cd : consts) {
+      if (!cd.defined && !cd.used) {
+        System.out.println("Error: "+cd.name+ " not defined or used");        
+        ok = false;
+      } else if (!cd.defined) {
+        ok = false;
+        System.out.println("Error: msg for "+cd.name+ " not found @ "+cd.sname);
+      } else if (!cd.used) {
+        System.out.println("Warning: const "+cd.name+ " not used");
+        ok = false;
+      }
+    }
+    if (ok) {
+      System.out.println("No Errors Found");
+    } else {
+      System.out.println("Errors Found, so not continuing");  
+    }
+
+    return ok;
+  }
+
+  private boolean scanJavaSource(File file, List<ConstantDefinition> consts, String... names) throws FileNotFoundException, IOException {
+    if (file.isDirectory()) {
+      boolean found = true;
+      for (File f : file.listFiles()) {
+        if (!Utilities.existsInList(f.getName(), "model", "formats")) {
+          found = scanJavaSource(f, consts, names) && found;
+        }
+      }
+      return false;
+    } else {
+      String ext = file.getName().substring(file.getName().lastIndexOf(".")+1);
+      if ("java".equals(ext)) {
+        String source = TextFile.fileToString(file);
+        for (ConstantDefinition cd : consts) {
+          if (!cd.used) {
+            boolean found = false;
+            for (String n : names) {
+              if (source.contains(n+"."+cd.name+",")) {
+                found = true;
+              } 
+              if (source.contains(n+"."+cd.name+")")) {
+                found = true;
+              } 
+              if (source.contains(n+"."+cd.name+" :")) {
+                found = true;
+              } 
+              if (source.contains(n+"."+cd.name+";")) {
+                found = true;
+              } 
+            } 
+            if (found) {
+              cd.used = true;
+            }
+          }
+        }
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+
+  private void scanPascalSource(File file, List<PropertyValue> defs) throws FileNotFoundException, IOException {
+    if (file.isDirectory()) {
+      for (File f : file.listFiles()) {
+        scanPascalSource(f, defs);
+      }
+    } else {
+      String ext = file.getName().substring(file.getName().lastIndexOf(".")+1);
+      if ("pas".equals(ext)) {
+        String source = TextFile.fileToString(file);
+        for (PropertyValue pv : defs) {
+          if (!pv.used) {
+            boolean found = false;
+            String pn = pv.getBaseName();
+            if (source.contains("'"+pn+"'")) {
+              found = true;
+            } 
+            if (found) {
+              pv.used = true;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  
+  private List<ConstantDefinition> loadConstants(String path) throws FileNotFoundException, IOException {
+    List<ConstantDefinition> res = new ArrayList<POGenerator.ConstantDefinition>();
+    for (String line : TextFile.fileToLines(path)) {
+      if (line.contains("public static final String") && !line.trim().startsWith("//")) {
+        int i = line.indexOf("public static final String") + "public static final String".length();
+        String[] p = line.substring(i).split("\\=");
+        if (p.length == 2) {
+          String n = p[0].trim();
+          String v = p[1].trim().replace("\"", "").replace(";", "");
+          ConstantDefinition cd = new ConstantDefinition();
+          cd.name = n;
+          cd.sname = v;
+          res.add(cd);
+        }
+      }
+    }
+    return res;
+  }
+
+  private void generate(String source, String dest, String tgt, int count) throws IOException {
     // load the destination file 
     // load the source file 
     // update the destination object set for changes from the source file
     // save the destination file 
     List<POObject> objects = loadPOFile(dest);
-    List<StringPair> props = loadProperties(source);
-    for (StringPair e : props) {
+    List<PropertyValue> props = loadProperties(source, false);
+    for (PropertyValue e : props) {
       String name = e.getName();
       int mode = 0;
       if (name.endsWith("_one")) {
@@ -91,6 +324,7 @@ public class POGenerator {
         o.comment = name;
         objects.add(o);
         o.msgid = e.getValue();
+        o.orphan = false;
       } else {
         update(o, mode, e.getValue());
       }
@@ -115,28 +349,7 @@ public class POGenerator {
         o.duplicate = true;
       }
     }
-    if (firstRun) {
-      for (String s : Utilities.sorted(dups)) {
-        String mid = null; 
-        boolean first = true;
-        for (POObject o : objects) {
-          if (o.msgid.equals(s) && o.msgidPlural == null) {
-            if (mid == null) {
-              mid = o.id;
-            } else {
-              if (first) {
-                System.out.println("");
-                System.out.println("// "+s);
-                System.out.println("rename(\"/Users/grahamegrieve/work/core\", \""+mid+"\", \""+mid+"\");");
-                first = false;
-              }
-              System.out.println("replace(\"/Users/grahamegrieve/work/core\", \""+o.id+"\", \""+mid+"\");");      
-            }
-          }
-        }
-      }
-    }
-    savePOFile(dest, objects);
+    savePOFile(dest, objects, count);
     savePropFile(tgt, objects);
   }
 
@@ -150,7 +363,7 @@ public class POGenerator {
     return res;
   }
 
-  private void savePOFile(String dest, List<POObject> objects) throws IOException {
+  private void savePOFile(String dest, List<POObject> objects, int count) throws IOException {
     prefixes.clear();
     
     StringBuilder b = new StringBuilder();
@@ -172,6 +385,9 @@ public class POGenerator {
       b.append("msgid \""+wrapQuotes(o.msgid)+"\"\r\n");
       if (o.msgidPlural != null) {
         b.append("msgid_plural \""+wrapQuotes(o.msgidPlural)+"\"\r\n"); 
+        while (o.msgstr.size() < count) {
+          o.msgstr.add("");
+        }
         for (int i = 0; i < o.msgstr.size(); i++) {
           b.append("msgstr["+i+"] \""+wrapQuotes(o.msgstr.get(i))+"\"\r\n");
         }
@@ -306,16 +522,16 @@ public class POGenerator {
     return s.trim().replace("\\\"", "\"");
   }
 
-  private List<StringPair> loadProperties(String source) throws IOException {
-    List<StringPair> res = new ArrayList<>();
+  private List<PropertyValue> loadProperties(String source, boolean checking) throws IOException {
+    List<PropertyValue> res = new ArrayList<>();
     File src = ManagedFileAccess.file(source);
     List<String> lines = Files.readAllLines(src.toPath());
     for (String line : lines) {
       if (!line.startsWith("#") && line.contains("=")) {
         String n = line.substring(0, line.indexOf("=")).trim();
         String v = line.substring(line.indexOf("=")+1).trim();
-        if (!(v.length() == 3 && v.startsWith("{") && v.endsWith("}"))) {
-          res.add(new StringPair(n, v));
+        if (checking || !(v.length() == 3 && v.startsWith("{") && v.endsWith("}"))) {
+          res.add(new PropertyValue(n, v));
         }
       } 
     }

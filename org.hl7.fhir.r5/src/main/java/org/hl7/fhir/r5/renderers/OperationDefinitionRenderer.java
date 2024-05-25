@@ -77,16 +77,16 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
         p.ah(sd.getWebPath()).tx(sd.present());                  
       }       
     } 
-    x.para().tx(context.formatPhrase(RenderingContext.OP_DEF_PAR)); 
+    x.para().tx(context.formatPhrase(RenderingContext.GENERAL_PARS)); 
     XhtmlNode tbl = x.table( "grid"); 
     XhtmlNode tr = tbl.tr(); 
     tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_USE)); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_NAME)); 
+    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_NAME)); 
     tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_SCO)); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_CARD)); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_TYPE)); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_BIND)); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_DOC)); 
+    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CARDINALITY)); 
+    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_TYPE)); 
+    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_BINDING)); 
+    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION)); 
     for (OperationDefinitionParameterComponent p : opd.getParameter()) { 
       genOpParam(tbl, "", p, opd); 
     } 
