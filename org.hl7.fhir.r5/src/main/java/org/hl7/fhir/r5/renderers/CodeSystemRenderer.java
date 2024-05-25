@@ -110,7 +110,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       x.para().b().tx(formatPhrase(RenderingContext.CODESYSTEM_FILTERS));
       XhtmlNode tbl = x.table("grid");
       XhtmlNode tr = tbl.tr();
-      tr.td().b().tx(formatPhrase(RenderingContext.CODESYSTEM_FILTER_CODE));
+      tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_CODE));
       tr.td().b().tx(formatPhrase(RenderingContext.CODESYSTEM_FILTER_DESC));
       tr.td().b().tx(formatPhrase(RenderingContext.CODESYSTEM_FILTER_OP));
       tr.td().b().tx(formatPhrase(RenderingContext.CODESYSTEM_FILTER_VALUE));
@@ -132,7 +132,8 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       boolean hasURI = false;
       boolean hasDescription = false;
       for (PropertyComponent p : cs.getProperty()) {
-        hasRendered = hasRendered || !p.getCode().equals(ToolingExtensions.getPresentation(p, p.getCodeElement()));
+        String display = getPropertyDisplay(p);
+        hasRendered = hasRendered || display != null;
         hasURI = hasURI || p.hasUri();
         hasDescription = hasDescription || p.hasDescription();
       }
@@ -144,7 +145,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       if (hasRendered) {
         tr.td().b().tx(formatPhrase(RenderingContext.CODESYSTEM_PROP_NAME));        
       }
-      tr.td().b().tx(formatPhrase(RenderingContext.CODESYSTEM_PROP_CODE));
+      tr.td().b().tx(formatPhrase(RenderingContext.GENERAL_CODE));
       if (hasURI) {
         tr.td().b().tx(formatPhrase(RenderingContext.CODESYSTEM_PROP_URI));
       }
@@ -155,7 +156,8 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       for (PropertyComponent p : cs.getProperty()) {
         tr = tbl.tr();
         if (hasRendered) {
-          tr.td().tx(ToolingExtensions.getPresentation(p, p.getCodeElement()));          
+          String display = getPropertyDisplay(p);
+          tr.td().tx(display);          
         }
         renderStatus(p, tr.td()).tx(p.getCode());
         if (hasURI) {
@@ -259,10 +261,10 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     if (langs.size() >= 2) {
       Collections.sort(langs);
-      x.para().b().tx(context.formatPhrase(RenderingContext.CODE_SYS_ADD_LANG));
+      x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_ADD_LANG));
       t = x.table("codes");
       XhtmlNode tr = t.tr();
-      tr.td().b().tx(context.formatPhrase(RenderingContext.CODE_SYS_CODE));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       for (String lang : langs)
         tr.td().b().addText(describeLang(lang));
       for (ConceptDefinitionComponent c : cs.getConcept()) {

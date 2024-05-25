@@ -138,7 +138,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     }
     if (valued(pw)) {
       XhtmlNode p = x.para();
-      p.b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_CODECON));
+      p.b().tx(context.formatPhrase(RenderingContext.GENERAL_CODECON));
       XhtmlNode ul = x.ul();
       for (BaseWrapper v : pw.getValues()) {
         render(ul.li(), v);
@@ -218,7 +218,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     if (issued) cs++;
     if (effectiveTime) cs++;
     XhtmlNode tr = tbl.tr();
-    tr.td().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_CODE));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
     tr.td().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_VALUE));
     if (refRange) {
       tr.td().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_REFRAN));

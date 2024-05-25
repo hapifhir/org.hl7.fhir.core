@@ -405,13 +405,13 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       if (grp.hasSource()) {
         renderCanonical(cm, pp, grp.getSource());
       } else {
-        pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
+        pp.code(context.formatPhrase(RenderingContext.GENERAL_CODE_SYS_UNSPEC));
       }
       pp.tx(" to ");
       if (grp.hasTarget()) {
         renderCanonical(cm, pp, grp.getTarget());
       } else {
-        pp.code(context.formatPhrase(RenderingContext.CONC_MAP_CODE_SYS_UNSPEC));
+        pp.code(context.formatPhrase(RenderingContext.GENERAL_CODE_SYS_UNSPEC));
       }
       
       String display;
@@ -484,7 +484,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           String url = sources.get("code").iterator().next();
           renderCSDetailsLink(tr, url, true);           
         } else
-          tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_CODE));
+          tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
         for (String s : sources.keySet()) {
           if (s != null && !s.equals("code")) {
             if (sources.get(s).size() == 1) {
@@ -501,7 +501,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           String url = targets.get("code").iterator().next();
           renderCSDetailsLink(tr, url, true);           
         } else
-          tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_CODE));
+          tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
         for (String s : targets.keySet()) {
           if (s != null && !s.equals("code")) {
             if (targets.get(s).size() == 1) {
@@ -698,7 +698,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     if (span2) {
       td.colspan("2");
     }
-    td.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_CODES));
+    td.b().tx(context.formatPhrase(RenderingContext.GENERAL_CODES));
     td.tx(" " + (context.formatPhrase(RenderingContext.CONC_MAP_FRM) + " "));
     if (cs == null)
       td.tx(url);

@@ -83,9 +83,9 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_USE));
     tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_NAME));
     tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_SCO));
-    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_CARD));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CARDINALITY));
     tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_TYPE));
-    tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_BIND));
+    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_BINDING));
     tr.td().b().tx(context.formatPhrase(RenderingContext.OP_DEF_DOC));
     for (OperationDefinitionParameterComponent p : opd.getParameter()) {
       genOpParam(tbl, "", p, opd);

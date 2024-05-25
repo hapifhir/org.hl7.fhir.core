@@ -702,7 +702,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
           || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED
           || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
         if (warnings != null && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
-          warnings.add(context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system));
+          warnings.add(context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, system));
         }
         return null;
       }

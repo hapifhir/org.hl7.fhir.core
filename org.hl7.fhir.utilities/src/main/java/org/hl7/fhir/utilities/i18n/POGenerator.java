@@ -5,10 +5,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.DebugUtilities;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -22,14 +29,16 @@ public class POGenerator {
     public int compare(POObject o1, POObject o2) {
       return o1.id.compareTo(o2.id);
     }
-
   }
 
   private class POObject {
+    private boolean orphan = true;
+    private boolean duplicate;
     private String id;
     private String msgid;
     private String oldMsgId;
     private String msgidPlural;
+    private String comment;
     private List<String> msgstr  = new ArrayList<String>();
   }
 
@@ -76,96 +85,42 @@ public class POGenerator {
         }
         o = new POObject();
         o.id = name;
+        o.comment = name;
         objects.add(o);
         o.msgid = e.getValue();
       } else {
         update(o, mode, e.getValue());
       }
     }
+    objects.removeIf(o -> o.orphan);
     Collections.sort(objects, new POObjectSorter());
+    Map<String, Integer> sources = new HashMap<>();
+    for (POObject o : objects) {
+      if (sources.containsKey(o.msgid)) {
+        Integer c = sources.get(o.msgid)+1;
+        sources.put(o.msgid, c);
+//        System.out.println("Duplicate in "+dest.substring(dest.lastIndexOf("/")+1)+": "+o.msgid+" on ("+CommaSeparatedStringBuilder.join(",", listIds(objects, o.msgid))+")");
+      } else {
+        sources.put(o.msgid, 1);
+      }
+    }
+    for (POObject o : objects) {
+      Integer c = sources.get(o.msgid);
+      if (c > 1) {
+        o.duplicate = true;
+      }
+    }
     savePOFile(dest, objects);
+  }
 
-    //    File dst = ManagedFileAccess.file(dest);
-    //    if (dst.exists()) {
-    //      dst.delete();
-    //    }
-    //    Map<String, String> props = loadProperties(source);
-    //    Map<String, String> curr = loadProperties(current);
-    //    Map<String, String> past = loadProperties(altVersion);
-    //    
-    //    StringBuilder b = new StringBuilder();
-    //    b.append("en -> "+lang+"\r\n");
-    //
-    //    Set<String> plurals = new HashSet<>();
-    //    
-    //    for (String n : Utilities.sorted(curr.keySet())) {
-    //      if (n.endsWith("_one") || n.endsWith("_other") || n.endsWith("_many")) {
-    //        if (n.endsWith("_one")) {
-    //          n = n.substring(0, n.length() - 4);
-    //        } else if (n.endsWith("_other")) {
-    //          n = n.substring(0, n.length() - 6);
-    //        } else if (n.endsWith("_many")) {
-    //          n = n.substring(0, n.length() - 5);
-    //        }
-    //        if (!plurals.contains(n)) {
-    //          plurals.add(n);
-    //          b.append("\r\n");
-    //          String v1 = curr.get(n+"_one");
-    //          String vO = curr.get(n+"_other");
-    //          List<String> ll = new ArrayList<>();
-    //          addToList(ll, props, n+"_one");
-    //          addToList(ll, props, n+"_other");
-    //          addToList(ll, props, n+"_many");
-    //          String p1 = past == null ? null : past.get(n+"_one");
-    //          String pO = past == null ? null : past.get(n+"_other");
-    //          boolean changed = false;
-    //          if (ll.size() > 0 && p1 != null) {
-    //            if (!p1.equals(v1)) {
-    //              changed = true;
-    //              ll.set(0,  "!!"+ll.get(0));
-    //            }
-    //          }        
-    //          if (ll.size() > 1 && pO != null) {
-    //            if (!pO.equals(vO)) {
-    //              changed = true;
-    //              ll.set(1,  "!!"+ll.get(1));
-    //              if (ll.size() == 3) {
-    //                ll.set(2,  "!!"+ll.get(2));                
-    //              }
-    //            }
-    //          }        
-    //          b.append("#: "+n+"\r\n");
-    //          if (changed) {
-    //            b.append("#| one "+p1+"\r\n");
-    //            b.append("#| plural "+pO+"\r\n");
-    //          }
-    //          b.append("msgid \""+v1+"\"\r\n");
-    //          b.append("msgid_plural \""+vO+"\"\r\n");
-    //          for (int i = 0; i < count; i++) {
-    //            b.append("msgstr["+i+"] \""+(i < ll.size() ? ll.get(i) : "")+"\"\r\n");
-    //          }
-    //        }
-    //      } else {
-    //        b.append("\r\n");
-    //        String v = curr.get(n);
-    //        String l = props.get(n);
-    //        String p = past == null ? null : past.get(n);
-    //        boolean changed = false;
-    //        if (l != null && p != null) {
-    //          if (!p.equals(v)) {
-    //            changed = true;
-    //            l = "!!"+l;
-    //          }
-    //        }        
-    //        b.append("#: "+n+"\r\n");
-    //        if (changed) {
-    //          b.append("#| "+p+"\r\n");
-    //        }
-    //        b.append("msgid \""+v+"\"\r\n");
-    //        b.append("msgstr \""+(l == null ? "" : l)+"\"\r\n");
-    //      }
-    //    }
-    //    TextFile.stringToFile(b.toString(), dst);
+  private Set<String> listIds(List<POObject> objects, String msgid) {
+    Set<String> res = new HashSet<>();
+    for (POObject o : objects) {
+      if (o.msgid.equals(msgid)) {
+        res.add(o.id);
+      }
+    }
+    return res;
   }
 
   private void savePOFile(String dest, List<POObject> objects) throws IOException {
@@ -179,20 +134,25 @@ public class POGenerator {
     b.append("\r\n");
     for (POObject o : objects) {
       b.append("#: "+o.id+"\r\n");
+      // for POEdit
+      b.append("# "+o.comment+"\r\n");
       if (o.oldMsgId != null) {
         b.append("#| "+o.oldMsgId+"\r\n");        
       }
-      b.append("msgid \""+o.msgid+"\"\r\n");
+      if (o.duplicate) {
+        b.append("msgctxt \""+o.id+"\"\r\n");        
+      } 
+      b.append("msgid \""+wrapQuotes(o.msgid)+"\"\r\n");
       if (o.msgidPlural != null) {
-        b.append("msgid_plural \""+o.msgidPlural+"\"\r\n"); 
+        b.append("msgid_plural \""+wrapQuotes(o.msgidPlural)+"\"\r\n"); 
         for (int i = 0; i < o.msgstr.size(); i++) {
-          b.append("msgstr["+i+"] \""+o.msgstr.get(i)+"\"\r\n");
+          b.append("msgstr["+i+"] \""+wrapQuotes(o.msgstr.get(i))+"\"\r\n");
         }
       } else {
         if (o.msgstr.size() == 0) {
           b.append("msgstr \"\"\r\n");                  
         } else {
-          b.append("msgstr \""+o.msgstr.get(0)+"\"\r\n");                            
+          b.append("msgstr \""+wrapQuotes(o.msgstr.get(0))+"\"\r\n");                            
         }
       } 
       b.append("\r\n");
@@ -200,7 +160,15 @@ public class POGenerator {
     TextFile.stringToFile(b.toString(), dest);
   }
 
+  private String wrapQuotes(String s) {
+    return s.replace("\"", "\\\"");
+  }
+
   private void update(POObject o, int mode, String value) {
+    o.orphan = false;
+    if (o.comment == null) {
+      o.comment = o.id;
+    }
     if (mode == 0) {
       if (!value.equals(o.msgid)) {
         // the english string has changed, and the other language string is now out of date
@@ -268,12 +236,19 @@ public class POGenerator {
         prefixes.add(line);  
       } else if (line.startsWith("#|")) {
         obj.oldMsgId = line.substring(2).trim();
+      } else if (line.startsWith("# ")) {
+        obj.comment = line.substring(1).trim();
       } else if (line.startsWith("msgid ")) {
         obj.msgid = trimQuotes(line.substring(5).trim());
+        if (obj.msgid.endsWith("("+obj.id+")")) {
+          obj.msgid = obj.msgid.substring(0, obj.msgid.length() - (obj.id.length()+3));
+        }
       } else if (line.startsWith("msgid_plural ")) {
         obj.msgidPlural = trimQuotes(line.substring(12).trim());
       } else if (line.startsWith("msgstr ")) {
         obj.msgstr.add(trimQuotes(line.substring(6).trim()));
+      } else if (line.startsWith("msgctxt ")) {
+        // ignore this
       } else if (line.startsWith("msgstr[")) {
         String s = line.substring(7);
         int i = s.indexOf("]");
@@ -301,7 +276,7 @@ public class POGenerator {
     if (s.endsWith("\"")) {
       s = s.substring(0, s.length()-1);
     }
-    return s.trim();
+    return s.trim().replace("\\\"", "\"");
   }
 
   private List<StringPair> loadProperties(String source) throws IOException {
@@ -312,7 +287,9 @@ public class POGenerator {
       if (!line.startsWith("#") && line.contains("=")) {
         String n = line.substring(0, line.indexOf("=")).trim();
         String v = line.substring(line.indexOf("=")+1).trim();
-        res.add(new StringPair(n, v));
+        if (!(v.length() == 3 && v.startsWith("{") && v.endsWith("}"))) {
+          res.add(new StringPair(n, v));
+        }
       }
     }
     return res;
