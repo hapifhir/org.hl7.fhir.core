@@ -39,7 +39,7 @@ public class ActorDefinitionRenderer extends ResourceRenderer {
     XhtmlNode td = tbl.tr().td().colspan("3");
     addMarkdown(td, acd.getDocumentation());
     if (acd.hasReference()) {
-      tbl.tr().td().tx(context.formatPhrase(RenderingContext.ACTOR_DEF_REF));
+      tbl.tr().td().tx(context.formatPhrase(RenderingContext.GENERAL_REFS));
       td = tr.td().colspan("2");
       boolean first = true;
       for (UrlType t : acd.getReference()) {
