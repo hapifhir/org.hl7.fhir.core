@@ -963,6 +963,15 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
   public void incCount() {
     count++;
+  }
+
+  public boolean containsText(List<String> fragements) {
+    for (String s : fragements) {
+      if ((getMessage() != null && getMessage().contains(s)) || (getMessageId() != null && getMessageId().contains(s))) {
+        return true;
+      }
+    }
+    return false;
   }  
   
 }

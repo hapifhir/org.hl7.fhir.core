@@ -411,9 +411,11 @@ public class StructureDefinitionValidator extends BaseValidator {
     List<Element> types = element.getChildrenByName("type");
     Set<String> typeCodes = new HashSet<>();
     Set<String> characteristics = new HashSet<>();
+    boolean characteristicsValid = false;
     if (!path.contains(".")) {
       typeCodes.add(path); // root is type
       addCharacteristics(characteristics, path);
+      characteristicsValid = true;
     }
 
     if (!snapshot && (element.hasChild("fixed") || element.hasChild("pattern")) && base != null) {
@@ -463,17 +465,20 @@ public class StructureDefinitionValidator extends BaseValidator {
         typeCodes.add(tc);
         Set<String> tcharacteristics = new HashSet<>();
         StructureDefinition tsd = context.fetchTypeDefinition(tc);
-        if (tsd != null && tsd.hasExtension(ToolingExtensions.EXT_TYPE_CHARACTERISTICS)) {
-          for (Extension ext : tsd.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_CHARACTERISTICS)) {
-            tcharacteristics.add(ext.getValue().primitiveValue());
+        if (tsd != null) { 
+          characteristicsValid = true;
+          if (tsd.hasExtension(ToolingExtensions.EXT_TYPE_CHARACTERISTICS)) {        
+            for (Extension ext : tsd.getExtensionsByUrl(ToolingExtensions.EXT_TYPE_CHARACTERISTICS)) {
+              tcharacteristics.add(ext.getValue().primitiveValue());
+            }
+          } else {
+            // nothing specified, so infer from known types
+            addCharacteristics(tcharacteristics, tc);
           }
-        } else {
-          // nothing specified, so infer from known types
-          addCharacteristics(tcharacteristics, tc);
-        }
-        characteristics.addAll(tcharacteristics);
-        if (type.hasChildren("targetProfile")) {
-          ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), tcharacteristics.contains("has-target") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "targetProfile", tc) && ok;
+          characteristics.addAll(tcharacteristics);
+          if (type.hasChildren("targetProfile")) {
+            ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), tcharacteristics.contains("has-target") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "targetProfile", tc) && ok;
+          }
         }
         // check the stated profile - must be a constraint on the type 
         if (snapshot || sd != null) {
@@ -489,7 +494,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     if (element.hasChild("binding", false)) {
-      if (!typeCodes.isEmpty()) {
+      if (!typeCodes.isEmpty() && characteristicsValid) {
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("can-bind") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "Binding", typeCodes) && ok;
       }
       Element binding = element.getNamedChild("binding", false);
@@ -499,7 +504,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       //      String bt = boundType(typeCodes);
       //      hint(errors, UNKNOWN_DATE_TIME, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bt == null, I18nConstants.SD_ED_SHOULD_BIND, element.getNamedChildValue("path", false), bt);              
     }
-    if (!typeCodes.isEmpty()) {
+    if (!typeCodes.isEmpty() && characteristicsValid) {
       if (element.hasChild("maxLength", false)) {
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), characteristics.contains("has-length") , I18nConstants.SD_ILLEGAL_CHARACTERISTICS, "MaxLength", typeCodes) && ok;      
       }
