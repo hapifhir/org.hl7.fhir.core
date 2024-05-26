@@ -88,7 +88,6 @@ public class FhirRequestBuilder {
   /**
    * Adds necessary headers for all REST requests.
    * <li>User-Agent : hapi-fhir-tooling-client</li>
-   * <li>Accept-Charset : {@link FhirRequestBuilder#DEFAULT_CHARSET}</li>
    *
    * @param request {@link Request.Builder} to add default headers to.
    */
@@ -96,7 +95,6 @@ public class FhirRequestBuilder {
     if (headers == null || !headers.names().contains("User-Agent")) {
       request.addHeader("User-Agent", "hapi-fhir-tooling-client");
     }
-    request.addHeader("Accept-Charset", DEFAULT_CHARSET);
   }
 
   /**

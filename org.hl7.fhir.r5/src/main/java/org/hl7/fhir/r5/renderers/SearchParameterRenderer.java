@@ -47,7 +47,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       genStandardsStatus(h2, ss);
     }
     XhtmlNode p =  x.para();
-    p.tx(context.formatPhrase(RenderingContext.SEARCH_PAR_PAR)+" ");
+    p.tx(context.formatPhrase(RenderingContext.GENERAL_PAR)+" ");
     p.code().tx(spd.getCode());
     p.tx(":");
     p.code().tx(spd.getType().toCode());
@@ -55,7 +55,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
 
     XhtmlNode tbl = x.table("grid");
     XhtmlNode tr = tbl.tr();
-    tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.SEARCH_PAR_REND_RES), spd.getBase().size()));
+    tr.td().tx(Utilities.pluralize(context.formatPhrase(RenderingContext.GENERAL_RESOURCE), spd.getBase().size()));
     XhtmlNode td = tr.td();
     for (Enumeration<VersionIndependentResourceTypesAll> t : spd.getBase()) {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(t.getCode());
@@ -118,7 +118,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
 
     if (spd.hasComparator()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_COMP));
+      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_COMPARATORS));
       td = tr.td();
       td.tx(context.formatPhrase(RenderingContext.SEARCH_PAR_ALLOWED)+" ");
       for (Enumeration<SearchComparator> t : spd.getComparator()) {
@@ -128,7 +128,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     }
     if (spd.hasModifier()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_MOD));
+      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_MODIFIERS));
       td = tr.td();
       td.tx(context.formatPhrase(RenderingContext.SEARCH_PAR_ALLOWED)+" ");
       for (Enumeration<SearchModifierCode> t : spd.getModifier()) {
@@ -148,7 +148,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     }
     
     if (spd.hasComponent()) {
-      x.para().b().tx(context.formatPhrase(RenderingContext.SEARCH_PAR_COMP));
+      x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMPARATORS));
       tbl = x.table("grid");
       for (SearchParameterComponentComponent t : spd.getComponent()) {
         tr = tbl.tr();
@@ -167,7 +167,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
   private boolean isAllConcreteResources(List<Enumeration<VersionIndependentResourceTypesAll>> list) {
     for (String s : context.getWorker().getResourceNames()) {
       StructureDefinition sd = context.getWorker().fetchTypeDefinition(s);
-      if (!sd.getAbstract() && !Utilities.existsInList(sd.getType(), context.formatPhrase(RenderingContext.SEARCH_PAR_PAR))) {
+      if (!sd.getAbstract() && !Utilities.existsInList(sd.getType(), context.formatPhrase(RenderingContext.GENERAL_PAR))) {
         boolean found = false;
         for (Enumeration<VersionIndependentResourceTypesAll> c : list) {
           found = found || sd.getName().equals(c.getCode());
