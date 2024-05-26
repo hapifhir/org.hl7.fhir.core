@@ -899,7 +899,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
               TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED));
         } else if (noTerminologyServer) {
           t.setResult(new ValidationResult(IssueSeverity.ERROR,
-              formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES),
+              formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES, t.getCoding().getCode(), t.getCoding().getSystem()),
               TerminologyServiceErrorClass.NOSERVICE));
         }
       }
@@ -1019,7 +1019,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // if that failed, we try to validate on the server
     if (noTerminologyServer) {
       return new ValidationResult(IssueSeverity.ERROR,
-          formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES),
+          formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES, code.getCode(), code.getSystem()),
           TerminologyServiceErrorClass.NOSERVICE);
     }
     String csumm = txCache != null ? txCache.summary(code) : null;
