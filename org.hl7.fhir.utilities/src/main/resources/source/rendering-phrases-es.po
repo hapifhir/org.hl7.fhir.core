@@ -133,7 +133,7 @@ msgstr "Contenido adicional del documento"
 #: BUNDLE_ETAG
 # BUNDLE_ETAG
 msgid "ETag = {0}"
-msgstr "ETag = {0E_LAST_MOD = LastModified = {0}"
+msgstr "ETag = {0}"
 
 #: BUNDLE_HEADER_DOC_ENTRY_RD
 # BUNDLE_HEADER_DOC_ENTRY_RD
