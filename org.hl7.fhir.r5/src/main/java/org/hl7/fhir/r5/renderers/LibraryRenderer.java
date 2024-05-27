@@ -50,32 +50,32 @@ public class LibraryRenderer extends ResourceRenderer {
       boolean email = hasCT(authors, "email") || hasCT(editors, "email") || hasCT(reviewers, "email") || hasCT(endorsers, "email"); 
       boolean phone = hasCT(authors, "phone") || hasCT(editors, "phone") || hasCT(reviewers, "phone") || hasCT(endorsers, "phone"); 
       boolean url = hasCT(authors, "url") || hasCT(editors, "url") || hasCT(reviewers, "url") || hasCT(endorsers, "url"); 
-      x.h2().tx(context.formatMessage(RenderingContext.LIB_REND_PAR));
+      x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_PAR));
       XhtmlNode t = x.table("grid");
       if (authors != null) {
         for (BaseWrapper cd : authors.getValues()) {
-          participantRow(t, (context.formatMessage(RenderingContext.LIB_REND_AUT)), cd, email, phone, url);
+          participantRow(t, (context.formatPhrase(RenderingContext.LIB_REND_AUT)), cd, email, phone, url);
         }
       }
       if (authors != null) {
         for (BaseWrapper cd : editors.getValues()) {
-          participantRow(t, (context.formatMessage(RenderingContext.LIB_REND_ED)), cd, email, phone, url);
+          participantRow(t, (context.formatPhrase(RenderingContext.LIB_REND_ED)), cd, email, phone, url);
         }
       }
       if (authors != null) {
         for (BaseWrapper cd : reviewers.getValues()) {
-          participantRow(t, (context.formatMessage(RenderingContext.LIB_REND_REV)), cd, email, phone, url);
+          participantRow(t, (context.formatPhrase(RenderingContext.LIB_REND_REV)), cd, email, phone, url);
         }
       }
       if (authors != null) {
         for (BaseWrapper cd : endorsers.getValues()) {
-          participantRow(t, (context.formatMessage(RenderingContext.LIB_REND_END)), cd, email, phone, url);
+          participantRow(t, (context.formatPhrase(RenderingContext.LIB_REND_END)), cd, email, phone, url);
         }
       }
     }
     PropertyWrapper artifacts = lib.getChildByName("relatedArtifact");
     if (artifacts != null && artifacts.hasValues()) {
-      x.h2().tx(context.formatMessage(RenderingContext.LIB_REND_ART));
+      x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_ART));
       XhtmlNode t = x.table("grid");
       boolean label = false;
       boolean display = false;
@@ -91,7 +91,7 @@ public class LibraryRenderer extends ResourceRenderer {
     }
     PropertyWrapper parameters = lib.getChildByName("parameter");
     if (parameters != null && parameters.hasValues()) {
-      x.h2().tx(context.formatMessage(RenderingContext.LIB_REND_PARA));
+      x.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
       XhtmlNode t = x.table("grid");
       boolean doco = false;
       for (BaseWrapper p : parameters.getValues()) {
@@ -103,14 +103,14 @@ public class LibraryRenderer extends ResourceRenderer {
     }
     PropertyWrapper dataRequirements = lib.getChildByName("dataRequirement");
     if (dataRequirements != null && dataRequirements.hasValues()) {
-      x.h2().tx(context.formatMessage(RenderingContext.LIB_REND_REQ));
+      x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_REQ));
       for (BaseWrapper p : dataRequirements.getValues()) {
         renderDataRequirement(x, (DataRequirement) p.getBase());
       }      
     }
     PropertyWrapper contents = lib.getChildByName("content");
     if (contents != null) {
-      x.h2().tx(context.formatMessage(RenderingContext.LIB_REND_CONT));          
+      x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_CONT));          
       boolean isCql = false;
       int counter = 0;
       for (BaseWrapper p : contents.getValues()) {
@@ -152,23 +152,23 @@ public class LibraryRenderer extends ResourceRenderer {
       boolean email = hasCT(lib.getAuthor(), "email") || hasCT(lib.getEditor(), "email") || hasCT(lib.getReviewer(), "email") || hasCT(lib.getEndorser(), "email"); 
       boolean phone = hasCT(lib.getAuthor(), "phone") || hasCT(lib.getEditor(), "phone") || hasCT(lib.getReviewer(), "phone") || hasCT(lib.getEndorser(), "phone"); 
       boolean url = hasCT(lib.getAuthor(), "url") || hasCT(lib.getEditor(), "url") || hasCT(lib.getReviewer(), "url") || hasCT(lib.getEndorser(), "url"); 
-      x.h2().tx(context.formatMessage(RenderingContext.LIB_REND_PAR));
+      x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_PAR));
       XhtmlNode t = x.table("grid");
       for (ContactDetail cd : lib.getAuthor()) {
-        participantRow(t, (context.formatMessage(RenderingContext.LIB_REND_AUT)), cd, email, phone, url);
+        participantRow(t, (context.formatPhrase(RenderingContext.LIB_REND_AUT)), cd, email, phone, url);
       }
       for (ContactDetail cd : lib.getEditor()) {
-        participantRow(t, (context.formatMessage(RenderingContext.LIB_REND_ED)), cd, email, phone, url);
+        participantRow(t, (context.formatPhrase(RenderingContext.LIB_REND_ED)), cd, email, phone, url);
       }
       for (ContactDetail cd : lib.getReviewer()) {
-        participantRow(t, (context.formatMessage(RenderingContext.LIB_REND_REV)), cd, email, phone, url);
+        participantRow(t, (context.formatPhrase(RenderingContext.LIB_REND_REV)), cd, email, phone, url);
       }
       for (ContactDetail cd : lib.getEndorser()) {
-        participantRow(t, (context.formatMessage(RenderingContext.LIB_REND_END)), cd, email, phone, url);
+        participantRow(t, (context.formatPhrase(RenderingContext.LIB_REND_END)), cd, email, phone, url);
       }
     }
     if (lib.hasRelatedArtifact()) {
-      x.h2().tx(context.formatMessage(RenderingContext.LIB_REND_ART));
+      x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_ART));
       XhtmlNode t = x.table("grid");
       boolean label = false;
       boolean display = false;
@@ -183,7 +183,7 @@ public class LibraryRenderer extends ResourceRenderer {
       }      
     }
     if (lib.hasParameter()) {
-      x.h2().tx(context.formatMessage(RenderingContext.LIB_REND_PARA));
+      x.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
       XhtmlNode t = x.table("grid");
       boolean doco = false;
       for (ParameterDefinition p : lib.getParameter()) {
@@ -194,13 +194,13 @@ public class LibraryRenderer extends ResourceRenderer {
       }      
     }
     if (lib.hasDataRequirement()) {
-      x.h2().tx(context.formatMessage(RenderingContext.LIB_REND_REQ));
+      x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_REQ));
       for (DataRequirement p : lib.getDataRequirement()) {
         renderDataRequirement(x, p);
       }      
     }
     if (lib.hasContent()) {
-      x.h2().tx(context.formatMessage(RenderingContext.LIB_REND_CONT));          
+      x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_CONT));          
       boolean isCql = false;
       int counter = 0;
       for (Attachment att : lib.getContent()) {
@@ -364,7 +364,7 @@ public class LibraryRenderer extends ResourceRenderer {
         p.tx(att.getTitle());
         p.tx(": ");
       }
-      p.code().tx(context.formatMessage(RenderingContext.LIB_REND_NOCONT));
+      p.code().tx(context.formatPhrase(RenderingContext.LIB_REND_NOCONT));
       p.tx(" (");
       p.code().tx(att.getContentType());
       p.tx(lang(att));
@@ -413,10 +413,10 @@ public class LibraryRenderer extends ResourceRenderer {
           p.tx(att.getTitle());
           p.tx(": ");
         }
-        p.code().tx(context.formatMessage(RenderingContext.LIB_REND_SHOW));
+        p.code().tx(context.formatPhrase(RenderingContext.LIB_REND_SHOW));
         p.code().tx(att.getContentType());
         p.tx(lang(att));
-        p.tx((context.formatMessage(RenderingContext.LIB_REND_SIZE, Utilities.describeSize(att.getData().length))+" ")+")");
+        p.tx((context.formatPhrase(RenderingContext.LIB_REND_SIZE, Utilities.describeSize(att.getData().length))+" ")+")");
       }
     }    
   }

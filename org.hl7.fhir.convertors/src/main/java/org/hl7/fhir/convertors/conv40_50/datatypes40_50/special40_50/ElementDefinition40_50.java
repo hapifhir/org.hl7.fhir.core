@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.BackboneElement40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
+import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.UsageContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
@@ -16,12 +17,22 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.UnsignedI
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.resources40_50.Enumerations40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.BooleanType;
+import org.hl7.fhir.r4.model.CanonicalType;
+import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r4.model.MarkdownType;
+import org.hl7.fhir.r4.model.StringType;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
+import org.hl7.fhir.r5.model.UsageContext;
 
 public class ElementDefinition40_50 {
   public static org.hl7.fhir.r5.model.ElementDefinition convertElementDefinition(org.hl7.fhir.r4.model.ElementDefinition src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.ElementDefinition tgt = new org.hl7.fhir.r5.model.ElementDefinition();
-    BackboneElement40_50.copyBackboneElement(src, tgt, "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.mustHaveValue", "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.valueAlternatives");
+    BackboneElement40_50.copyBackboneElement(src, tgt, 
+        "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.mustHaveValue", 
+        "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.valueAlternatives");
     if (src.hasPath()) tgt.setPathElement(String40_50.convertString(src.getPathElement()));
     tgt.setRepresentation(src.getRepresentation().stream().map(ElementDefinition40_50::convertPropertyRepresentation).collect(Collectors.toList()));
     if (src.hasSliceName()) tgt.setSliceNameElement(String40_50.convertString(src.getSliceNameElement()));
@@ -604,10 +615,66 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent convertElementDefinitionBindingComponent(org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent();
-    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt, 
+        "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.binding.additional");
     if (src.hasStrength()) tgt.setStrengthElement(Enumerations40_50.convertBindingStrength(src.getStrengthElement()));
     if (src.hasDescription()) tgt.setDescriptionElement(String40_50.convertStringToMarkdown(src.getDescriptionElement()));
     if (src.hasValueSet()) tgt.setValueSetElement(Canonical40_50.convertCanonical(src.getValueSetElement()));
+
+    for (org.hl7.fhir.r4.model.Extension ext : src.getExtensionsByUrl("http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.binding.additional")) {
+      tgt.addAdditional(convertAdditional(ext));
+    }
+    return tgt;
+  }
+
+  private static ElementDefinitionBindingAdditionalComponent convertAdditional(Extension src) {
+    if (src == null) return null;
+    ElementDefinitionBindingAdditionalComponent tgt = new ElementDefinitionBindingAdditionalComponent();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt, "valueSet", "purpose", "documentation", "shortDoco", "usage", "any");
+    if (src.hasExtension("purpose")) {
+      tgt.getPurposeElement().setValueAsString(src.getExtensionByUrl("purpose").getValue().primitiveValue());
+    }
+    if (src.hasExtension("valueSet")) {
+      tgt.setValueSetElement(Canonical40_50.convertCanonical((CanonicalType) src.getExtensionByUrl("valueSet").getValue()));
+    }
+    if (src.hasExtension("documentation")) {
+      tgt.setDocumentationElement(MarkDown40_50.convertMarkdown((MarkdownType) src.getExtensionByUrl("documentation").getValue()));
+    }
+    if (src.hasExtension("shortDoco")) {
+      tgt.setShortDocoElement(String40_50.convertString((StringType) src.getExtensionByUrl("shortDoco").getValue()));
+    }
+    for (Extension t : src.getExtensionsByUrl("usage")) {
+      tgt.addUsage(UsageContext40_50.convertUsageContext((org.hl7.fhir.r4.model.UsageContext) t.getValue()));
+    }
+    if (src.hasExtension("any")) {
+      tgt.setAnyElement(Boolean40_50.convertBoolean((BooleanType) src.getExtensionByUrl("any").getValue()));
+    }
+    return tgt;
+  }
+
+  private static Extension convertAdditional(ElementDefinitionBindingAdditionalComponent src) {
+    if (src == null) return null;
+    Extension tgt = new Extension();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    if (src.hasPurpose()) {
+      tgt.addExtension(new Extension("purpose", new CodeType(src.getPurposeElement().primitiveValue())));
+    }
+    if (src.hasValueSet()) {
+      tgt.addExtension(new Extension("valueSet", Canonical40_50.convertCanonical(src.getValueSetElement())));
+    }
+    if (src.hasDocumentation()) {
+      tgt.addExtension(new Extension("documentation", MarkDown40_50.convertMarkdown(src.getDocumentationElement())));
+    }
+    if (src.hasShortDoco()) {
+      tgt.addExtension(new Extension("shortDoco", String40_50.convertString(src.getShortDocoElement())));
+    }
+    for (UsageContext t : src.getUsage()) {
+      tgt.addExtension(new Extension("usage", UsageContext40_50.convertUsageContext(t)));
+    }
+    if (src.hasAny()) {
+      tgt.addExtension(new Extension("any", Boolean40_50.convertBoolean(src.getAnyElement())));
+    }
+    
     return tgt;
   }
 
@@ -618,6 +685,9 @@ public class ElementDefinition40_50 {
     if (src.hasStrength()) tgt.setStrengthElement(Enumerations40_50.convertBindingStrength(src.getStrengthElement()));
     if (src.hasDescription()) tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     if (src.hasValueSet()) tgt.setValueSetElement(Canonical40_50.convertCanonical(src.getValueSetElement()));
+    for (ElementDefinitionBindingAdditionalComponent ab : src.getAdditional()) {
+      tgt.addExtension(convertAdditional(ab));
+    }
     return tgt;
   }
 

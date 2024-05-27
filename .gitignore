@@ -309,3 +309,5 @@ local.properties
 org.hl7.fhir.r5/var/lib/.fhir/packages/
 
 org.hl7.fhir.utilities/src/main/java/org/hl7/fhir/utilities/DebugUtilities.java
+
+org.hl7.fhir.utilities/src/main/resources copy/

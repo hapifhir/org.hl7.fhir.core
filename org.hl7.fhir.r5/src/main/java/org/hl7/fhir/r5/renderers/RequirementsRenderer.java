@@ -43,14 +43,14 @@ public class RequirementsRenderer extends ResourceRenderer {
       if (req.getActor().size() == 1) {
         ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, req.getActor().get(0).getValue(), req);
         XhtmlNode p = x.para();
-        p.tx(context.formatMessage(RenderingContext.REQ_ACTOR)+" ");
+        p.tx(context.formatPhrase(RenderingContext.REQ_ACTOR)+" ");
         if (acd == null) {
           p.code(req.getActor().get(0).getValue());
         } else {
           p.ah(acd.getWebPath()).tx(acd.present());
         }
       } else {
-        x.para().tx(context.formatMessage(RenderingContext.REQ_FOLLOWING_ACTOR)+" ");
+        x.para().tx(context.formatPhrase(RenderingContext.REQ_FOLLOWING_ACTOR)+" ");
         XhtmlNode ul = x.ul();
         for (CanonicalType a : req.getActor()) {
           ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, a.getValue(), req);
@@ -66,14 +66,14 @@ public class RequirementsRenderer extends ResourceRenderer {
       if (req.getDerivedFrom().size() == 1) {
         Requirements reqd = context.getWorker().fetchResource(Requirements.class, req.getDerivedFrom().get(0).getValue(), req);
         XhtmlNode p = x.para();
-        p.tx(context.formatMessage(RenderingContext.REQ_DERIVE)+" ");
+        p.tx(context.formatPhrase(RenderingContext.REQ_DERIVE)+" ");
         if (reqd == null) {
           p.code(req.getDerivedFrom().get(0).getValue());
         } else {
           p.ah(reqd.getWebPath()).tx(reqd.present());
         }
       } else {
-        x.para().tx(context.formatMessage(RenderingContext.REQ_FOLLOWING_REQ)+" ");
+        x.para().tx(context.formatPhrase(RenderingContext.REQ_FOLLOWING_REQ)+" ");
         XhtmlNode ul = x.ul();
         for (CanonicalType a : req.getDerivedFrom()) {
           Requirements reqd = context.getWorker().fetchResource(Requirements.class, a.getValue(), req);
@@ -87,7 +87,7 @@ public class RequirementsRenderer extends ResourceRenderer {
     }
     if (req.hasReference()) {
       XhtmlNode p = x.para();
-      p.tx(context.formatMessage(RenderingContext.REQ_REFERENCES)+" ");
+      p.tx(context.formatPhrase(RenderingContext.GENERAL_REFS)+" ");
       int i = 0;
       for (UrlType c : req.getReference()) {
         i++;
@@ -121,11 +121,11 @@ public class RequirementsRenderer extends ResourceRenderer {
       td = tr.td();
       addMarkdown(td, stmt.getRequirement());
       if (stmt.hasDerivedFrom() || stmt.hasSatisfiedBy() || stmt.hasReference() || stmt.hasSource()) {
-        td.para().tx(context.formatMessage(RenderingContext.REQ_LINKS)+" ");
+        td.para().tx(context.formatPhrase(RenderingContext.REQ_LINKS)+" ");
         XhtmlNode ul = td.ul();
         if (stmt.hasDerivedFrom()) {
           XhtmlNode li = ul.li();
-          li.tx(context.formatMessage(RenderingContext.REQ_DERIVED)+" ");
+          li.tx(context.formatPhrase(RenderingContext.REQ_DERIVED)+" ");
           String url = stmt.getDerivedFrom();
           String key = url.contains("#") ? url.substring(url.indexOf("#")+1) : "";
           if (url.contains("#")) { url = url.substring(0, url.indexOf("#")); };
@@ -143,7 +143,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         }
         if (stmt.hasSatisfiedBy()) {
           XhtmlNode li = ul.li();
-          li.tx(context.formatMessage(RenderingContext.REQ_SATISFIED)+" ");
+          li.tx(context.formatPhrase(RenderingContext.REQ_SATISFIED)+" ");
           first = true;
           for (UrlType c : stmt.getSatisfiedBy()) {
             if (first) first = false; else li.tx(", ");
@@ -162,7 +162,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         }
         if (stmt.hasReference()) {
           XhtmlNode li = ul.li();
-          li.tx(context.formatMessage(RenderingContext.REQ_REFERENCES)+" ");
+          li.tx(context.formatPhrase(RenderingContext.GENERAL_REFS)+" ");
           int i = 0;
           for (UrlType c : stmt.getReference()) {
             i++;
@@ -176,7 +176,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         }
         if (stmt.hasSource()) {
           XhtmlNode li = ul.li();
-          li.tx(context.formatMessage(RenderingContext.REQ_SOURCES)+" ");
+          li.tx(context.formatPhrase(RenderingContext.GENERAL_SRC)+" ");
           first = true;
           for (Reference c : stmt.getSource()) {
             if (first) first = false; else li.tx(", ");

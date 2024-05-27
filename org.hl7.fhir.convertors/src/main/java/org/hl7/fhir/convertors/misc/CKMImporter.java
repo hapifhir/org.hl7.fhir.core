@@ -40,11 +40,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 
 import org.hl7.fhir.convertors.misc.adl.ADLImporter;
-import org.hl7.fhir.utilities.SimpleHTTPClient;
-import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -125,8 +125,8 @@ public class CKMImporter {
   }
 
   private Document loadXml(String address) throws Exception {
-    SimpleHTTPClient http = new SimpleHTTPClient();
-    HTTPResult res = http.get(address, "application/xml");
+
+    HTTPResult res = ManagedWebAccess.get(address, "application/xml");
     res.checkThrowException();
     InputStream xml = new ByteArrayInputStream(res.getContent());
 

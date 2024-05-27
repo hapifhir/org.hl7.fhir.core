@@ -185,6 +185,19 @@ public class TerminologyClientManager {
       }
     }
     
+    for (String sys : systems) {
+      String uri = sys.contains("|") ? sys.substring(0, sys.indexOf("|")) : sys;
+      // this list is the list of code systems that have special handling on tx.fhir.org, and might not be resolved above.
+      // we don't want them to go to secondary servers (e.g. VSAC) by accident (they might go deliberately above)
+      if (Utilities.existsInList(uri, "http://unitsofmeasure.org", "http://loinc.org", "http://snomed.info/sct",
+          "http://www.nlm.nih.gov/research/umls/rxnorm", "http://hl7.org/fhir/sid/cvx", "urn:ietf:bcp:13", "urn:ietf:bcp:47",
+          "urn:ietf:rfc:3986", "http://www.ama-assn.org/go/cpt", "urn:oid:1.2.36.1.2001.1005.17", "urn:iso:std:iso:3166", 
+          "http://varnomen.hgvs.org", "http://unstats.un.org/unsd/methods/m49/m49.htm", "urn:iso:std:iso:4217", 
+          "http://hl7.org/fhir/sid/ndc", "http://fhir.ohdsi.org/CodeSystem/concepts", "http://fdasis.nlm.nih.gov", "https://www.usps.com/")) {
+        return serverList.get(0);
+      }
+    }
+
     // no agreement? Then what we do depends     
     if (vs != null) {
       if (vs.hasUserData("External.Link")) {

@@ -109,6 +109,9 @@ public class BaseValidator implements IValidationContextResourceLoader {
     public void see(boolean ok) {
       value = value && ok;
     }
+    public void set(boolean value) {
+      this.value = value;
+    }
   }
   
 
@@ -1428,25 +1431,7 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return null;
   }
   
-  protected String versionFromCanonical(String system) {
-    if (system == null) {
-      return null;
-    } else if (system.contains("|")) {
-      return system.substring(0, system.indexOf("|"));
-    } else {
-      return system;
-    }
-  }
 
-  protected String systemFromCanonical(String system) {
-    if (system == null) {
-      return null;
-    } else if (system.contains("|")) {
-      return system.substring(system.indexOf("|")+1);
-    } else {
-      return system;
-    }
-  }
   
   @Override
   public Resource loadContainedResource(List<ValidationMessage> errors, String path, Element resource, String id, Class<? extends Resource> class1) throws FHIRException {
@@ -1631,5 +1616,40 @@ public class BaseValidator implements IValidationContextResourceLoader {
     return usage.getValue() instanceof Coding && context.subsumes(baseOptions, usage.getCode(), use) && context.subsumes(baseOptions, (Coding) usage.getValue(), value);
   }
   
+
+  protected boolean isKnownUsage(UsageContext usage) {
+    for (UsageContext t : usageContexts) {
+      if (usagesMatch(usage, t)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean usagesMatch(UsageContext usage, UsageContext t) {
+    if (usage.hasCode() && t.hasCode() && usage.hasValue() && t.hasValue()) {
+      if (usage.getCode().matches(t.getCode())) {
+        if (usage.getValue().fhirType().equals(t.getValue().fhirType())) {
+          switch (usage.getValue().fhirType()) {
+          case "CodeableConcept": 
+            for (Coding uc : usage.getValueCodeableConcept().getCoding()) {              
+              for (Coding tc : t.getValueCodeableConcept().getCoding()) {
+                if (uc.matches(tc)) {
+                  return true;
+                }
+              }
+            }
+          case "Quantity":  
+            return false; // for now
+          case "Range": 
+            return false; // for now
+          case "Reference":
+            return false; // for now
+          }
+        }
+      }
+    }
+    return false;
+  }
 
 }

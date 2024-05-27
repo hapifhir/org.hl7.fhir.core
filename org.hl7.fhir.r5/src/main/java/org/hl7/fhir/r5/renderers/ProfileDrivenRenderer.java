@@ -107,7 +107,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     boolean idDone = false;
     XhtmlNode p = x.para();
     if (context.isAddGeneratedNarrativeHeader()) {
-      p.b().tx(/*!#*/"Generated Narrative: "+r.fhirType()+(context.isContained() ? " #"+r.getId() : ""));
+      p.b().tx(context.formatPhrase(RenderingContext.PROF_DRIV_GEN_NARR, r.fhirType(), (context.isContained() ? " #"+r.getId() : "")));
       if (!Utilities.noString(r.getId())) {
         p.an(r.getId());
         p.an("hc"+r.getId());
@@ -125,7 +125,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     try {
       StructureDefinition sd = r.getDefinition();
       if (sd == null) {
-        throw new FHIRException(context.formatMessage(RenderingContext.PROF_DRIV_FEXCP, r.fhirType())+" ");
+        throw new FHIRException(context.formatPhrase(RenderingContext.PROF_DRIV_FEXCP, r.fhirType())+" ");
       } else {
         ElementDefinition ed = sd.getSnapshot().getElement().get(0);
         containedIds.clear();
@@ -133,9 +133,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), context.isTechnicalMode(), 0);
       }
     } catch (Exception e) {
-      System.out.println(/*!#*/"Error Generating Narrative for "+r.fhirType()+"/"+r.getId()+": "+e.getMessage());
+      System.out.println(context.formatPhrase(RenderingContext.PROF_DRIV_ERR_GEN_NARR) +r.fhirType()+"/"+r.getId()+": "+e.getMessage());
       e.printStackTrace();
-      x.para().b().style("color: maroon").tx(context.formatMessage(RenderingContext.PROF_DRIV_EXCP, e.getMessage())+" ");
+      x.para().b().style("color: maroon").tx(context.formatPhrase(RenderingContext.PROF_DRIV_EXCP, e.getMessage())+" ");
     }
     return hasExtensions;
   }
