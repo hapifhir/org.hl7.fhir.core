@@ -89,17 +89,17 @@ public class POGenerator {
   private void execute(String core, String igpub, String pascal) throws IOException {
     String source = Utilities.path(core, "/org.hl7.fhir.utilities/src/main/resources");
     if (checkState(source, core, igpub, pascal)) {
-      generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-de.po"),    Utilities.path(source, "rendering-phrases_de.properties"), 2);
-      generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-es.po"),    Utilities.path(source, "rendering-phrases_es.properties"), 3);
-      generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-ja.po"),    Utilities.path(source, "rendering-phrases_ja.properties"), 2);
-      generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-nl.po"),    Utilities.path(source, "rendering-phrases_nl.properties"), 2);
-      generate(Utilities.path(source, "rendering-phrases.properties"), Utilities.path(source, "source", "rendering-phrases-pt-BR.po"), Utilities.path(source, "rendering-phrases_pt-BR.properties"), 2);
+      generate(source, "rendering-phrases.properties",  "rendering-phrases-de.po",    "rendering-phrases_de.properties", 2);
+      generate(source, "rendering-phrases.properties",  "rendering-phrases-es.po",    "rendering-phrases_es.properties", 3);
+      generate(source, "rendering-phrases.properties",  "rendering-phrases-ja.po",    "rendering-phrases_ja.properties", 2);
+      generate(source, "rendering-phrases.properties",  "rendering-phrases-nl.po",    "rendering-phrases_nl.properties", 2);
+      generate(source, "rendering-phrases.properties",  "rendering-phrases-pt-BR.po", "rendering-phrases_pt-BR.properties", 2);
 
-      generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-de.po"),    Utilities.path(source, "Messages_de.properties"), 2);
-      generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-es.po"),    Utilities.path(source, "Messages_es.properties"), 3);
-      generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-ja.po"),    Utilities.path(source, "Messages_ja.properties"), 2);
-      generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-nl.po"),    Utilities.path(source, "Messages_nl.properties"), 2);
-      generate(Utilities.path(source, "Messages.properties"), Utilities.path(source, "source", "validator-messages-pt-BR.po"), Utilities.path(source, "Messages_pt-BR.properties"), 2);
+      generate(source, "Messages.properties", "validator-messages-de.po",    "Messages_de.properties", 2);
+      generate(source, "Messages.properties", "validator-messages-es.po",    "Messages_es.properties", 3);
+      generate(source, "Messages.properties", "validator-messages-ja.po",    "Messages_ja.properties", 2);
+      generate(source, "Messages.properties", "validator-messages-nl.po",    "Messages_nl.properties", 2);
+      generate(source, "Messages.properties", "validator-messages-pt-BR.po", "Messages_pt-BR.properties", 2);
 
       System.out.println("Finished");
     } 
@@ -291,13 +291,13 @@ public class POGenerator {
     return res;
   }
 
-  private void generate(String source, String dest, String tgt, int count) throws IOException {
+  private void generate(String source, String src, String dest, String tgt, int count) throws IOException {
     // load the destination file 
     // load the source file 
     // update the destination object set for changes from the source file
     // save the destination file 
-    List<POObject> objects = loadPOFile(dest);
-    List<PropertyValue> props = loadProperties(source, false);
+    List<POObject> objects = loadPOFile(Utilities.path(source, "source", dest));
+    List<PropertyValue> props = loadProperties(Utilities.path(source, src), false);
     for (PropertyValue e : props) {
       String name = e.getName();
       int mode = 0;
@@ -344,8 +344,9 @@ public class POGenerator {
         o.duplicate = true;
       }
     }
-    savePOFile(dest, objects, count);
-    savePropFile(tgt, objects);
+    savePOFile(Utilities.path(source, "source", dest), objects, count, false);
+    savePOFile(Utilities.path(source, "source", "transifex", dest), objects, count, true);
+    savePropFile(Utilities.path(source, tgt), objects);
   }
 
   private Set<String> listIds(List<POObject> objects, String msgid) {
@@ -358,7 +359,7 @@ public class POGenerator {
     return res;
   }
 
-  private void savePOFile(String dest, List<POObject> objects, int count) throws IOException {
+  private void savePOFile(String dest, List<POObject> objects, int count, boolean tfxMode) throws IOException {
     prefixes.clear();
     
     StringBuilder b = new StringBuilder();
@@ -371,7 +372,7 @@ public class POGenerator {
       b.append("#: "+o.id+"\r\n");
       // for POEdit
       b.append("# "+o.comment+"\r\n");
-      if (o.oldMsgId != null) {
+      if (!tfxMode && o.oldMsgId != null) {
         b.append("#| "+o.oldMsgId+"\r\n");        
       }
       if (o.duplicate) {
