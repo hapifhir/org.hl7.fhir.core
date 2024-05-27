@@ -559,7 +559,7 @@ public class ProfilePathProcessor {
         }
       }
       if (!allowedTypes.isEmpty()) {
-        if (currentBasePath.contains("xtension.value")) {
+        if (currentBasePath.contains("xtension.value") && shortCut) {
           for (Iterator<ElementDefinition.TypeRefComponent> iter = elementDefinition.getType().iterator(); iter.hasNext(); ) {
             ElementDefinition.TypeRefComponent tr = iter.next();
             if (allowedTypes.contains(tr.getCode())) {

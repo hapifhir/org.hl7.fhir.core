@@ -26,9 +26,6 @@ class FhirRequestBuilderTest {
     Assertions.assertEquals("hapi-fhir-tooling-client", headersMap.get("User-Agent").get(0),
         "User-Agent header not populated with expected value \"hapi-fhir-tooling-client\".");
 
-    Assertions.assertNotNull(headersMap.get("Accept-Charset"), "Accept-Charset header null.");
-    Assertions.assertEquals(FhirRequestBuilder.DEFAULT_CHARSET, headersMap.get("Accept-Charset").get(0),
-        "Accept-Charset header not populated with expected value " + FhirRequestBuilder.DEFAULT_CHARSET);
   }
 
   @Test

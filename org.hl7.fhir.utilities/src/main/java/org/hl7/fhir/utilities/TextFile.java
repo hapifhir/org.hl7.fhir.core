@@ -51,6 +51,7 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.hl7.fhir.utilities.filesystem.CSFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -201,5 +202,10 @@ public class TextFile {
 
   public static void streamToFileNoClose(final InputStream stream, final String filename) throws IOException {
     Files.copy(stream, Path.of(filename), StandardCopyOption.REPLACE_EXISTING);
+  }
+
+  public static String[] fileToLines(String file) throws FileNotFoundException, IOException {
+    Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
+    return LINE_SEP_PATTERN.split(fileToString(file));
   }
 }

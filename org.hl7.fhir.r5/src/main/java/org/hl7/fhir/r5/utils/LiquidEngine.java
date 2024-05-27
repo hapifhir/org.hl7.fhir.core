@@ -231,9 +231,11 @@ public class LiquidEngine implements IEvaluationContext {
       StringBuilder b = new StringBuilder();
       boolean first = true;
       for (Base i : items) {
-        if (first) first = false; else b.append(", ");
-        String s = renderingSupport != null ? renderingSupport.renderForLiquid(ctxt.externalContext, i) : null;
-        b.append(s != null ? s : engine.convertToString(i));
+        if (i != null) {
+          if (first) first = false; else b.append(", ");
+          String s = renderingSupport != null ? renderingSupport.renderForLiquid(ctxt.externalContext, i) : null;
+          b.append(s != null ? s : engine.convertToString(i));
+        }
       }
       return b.toString();
     }

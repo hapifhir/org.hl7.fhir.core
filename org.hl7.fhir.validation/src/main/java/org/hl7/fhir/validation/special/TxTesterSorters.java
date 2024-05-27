@@ -195,7 +195,6 @@ public class TxTesterSorters {
       }
       return res;
     }
-
   }
   
   
@@ -220,9 +219,9 @@ public class TxTesterSorters {
         }           
       }
       if (o1.getName().equals(o2.getName()) && o1.getName().equals("designation")) {
-        String code1 = o1.getPart("language").hasValue() ? o1.getPart("language").getValue().primitiveValue().toLowerCase() : "";
-        String code2 = o2.getPart("language").hasValue() ? o2.getPart("language").getValue().primitiveValue().toLowerCase() : "";
-        if (code1 != null && code2 != null && !code1.equals(code2)) {
+        String code1 = o1.hasPart("language") && o1.getPart("language").hasValue() && o1.getPart("language").getValue().primitiveValue() != null ? o1.getPart("language").getValue().primitiveValue().toLowerCase() : "";
+        String code2 = o2.hasPart("language") && o2.getPart("language").hasValue() && o2.getPart("language").getValue().primitiveValue() != null ? o2.getPart("language").getValue().primitiveValue().toLowerCase() : "";
+        if (code1 != null && code2 != null && !code1.equals(code2)) { 
           return code1.compareTo(code2);          
         }           
         String v1 = o1.getPart("value") != null && o1.getPart("value").hasPrimitiveValue() ? o1.getPart("value").getValue().primitiveValue().toLowerCase() : null;

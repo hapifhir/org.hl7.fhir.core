@@ -1,5 +1,9 @@
 package org.hl7.fhir.validation;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +14,7 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.instance.InstanceValidator;
@@ -25,7 +30,7 @@ public class ResourceValidationTests {
   private static InstanceValidator val;
 
 
-  private void runTest(String filename) throws IOException, FileNotFoundException, Exception {
+  private List<ValidationMessage> runTest(String filename) throws IOException, FileNotFoundException, Exception {
     TestingUtilities.injectCorePackageLoader();
     if (val == null) {
       ctxt = TestingUtilities.getSharedWorkerContext();
@@ -37,6 +42,7 @@ public class ResourceValidationTests {
     Resource res = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", filename));
     val.validate(val, errors, res);
     Assertions.assertNotNull(errors);
+    return errors;
   }
 
 
@@ -122,5 +128,4 @@ public class ResourceValidationTests {
     runTest("codesystem-example.xml");
   }
 
-  
 }

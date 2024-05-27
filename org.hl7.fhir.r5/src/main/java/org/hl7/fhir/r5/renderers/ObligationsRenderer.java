@@ -353,21 +353,21 @@ public class ObligationsRenderer {
 
     XhtmlNode tr = new XhtmlNode(NodeType.Element, "tr");
     children.add(tr);
-    tr.td().style("font-size: 11px").b().tx(context.formatMessage(RenderingContext.OBLIG_OBLIG));
+    tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_OBLIG));
     if (actor) {
-      tr.td().style("font-size: 11px").tx(context.formatMessage(RenderingContext.OBLIG_ACT));
+      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.OBLIG_ACT));
     }
     if (elementId) {
-      tr.td().style("font-size: 11px").tx(context.formatMessage(RenderingContext.OBLIG_ELE));
+      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.OBLIG_ELE));
     }
     if (usage) {
-      tr.td().style("font-size: 11px").tx(context.formatMessage(RenderingContext.OBLIG_USE));
+      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.GENERAL_USAGE));
     }
     if (doco) {
-      tr.td().style("font-size: 11px").tx(context.formatMessage(RenderingContext.OBLIG_DOC));
+      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION));
     }
     if (filter) {
-      tr.td().style("font-size: 11px").tx(context.formatMessage(RenderingContext.OBLIG_FILT));
+      tr.td().style("font-size: 11px").tx(context.formatPhrase(RenderingContext.GENERAL_FILTER));
     }
     for (ObligationDetail ob : obligations) {
       tr =  new XhtmlNode(NodeType.Element, "tr");

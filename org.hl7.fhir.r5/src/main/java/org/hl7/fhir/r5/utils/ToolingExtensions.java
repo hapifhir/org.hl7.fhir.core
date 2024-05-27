@@ -428,6 +428,14 @@ public class ToolingExtensions {
     }
     return null;
   }
+
+  public static String readStringFromExtension(Extension ext) {
+    if (ext.hasValue() && ext.getValue().isPrimitive()) {
+      return ext.getValue().primitiveValue();
+    }
+    return null;
+  }
+  
   public static String readStringExtension(Element c, String uri) {
     Extension ex = ExtensionHelper.getExtension(c, uri);
     if (ex == null)
@@ -831,6 +839,26 @@ public class ToolingExtensions {
     if (Utilities.noString(lang) || Utilities.noString(value))
       return;
 
+    Extension extension = new Extension().setUrl(EXT_TRANSLATION);
+    extension.addExtension().setUrl("lang").setValue(new CodeType(lang));
+    extension.addExtension().setUrl("content").setValue(new StringType(value));
+    element.getExtension().add(extension);
+  }
+
+  public static void setLanguageTranslation(Element element, String lang, String value) {
+    if (Utilities.noString(lang) || Utilities.noString(value))
+      return;
+
+    for (Extension extension : element.getExtension()) {
+      if (EXT_TRANSLATION.equals(extension.getUrl())) {
+        String l = extension.getExtensionString("lang");
+        if (lang.equals(l)) {
+          setStringExtension(extension, "content", value);
+          return;
+        }
+      }
+    }
+    
     Extension extension = new Extension().setUrl(EXT_TRANSLATION);
     extension.addExtension().setUrl("lang").setValue(new CodeType(lang));
     extension.addExtension().setUrl("content").setValue(new StringType(value));
