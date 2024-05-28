@@ -78,7 +78,7 @@ public class ValidationService {
   private Map<String, ValidationEngine> baseEngines = new HashMap<>();
 
   public void putBaseEngine(String key, CliContext cliContext) throws IOException, URISyntaxException {
-    //FIXME instantiate engine and put below
+
     String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
 
     ValidationEngine baseEngine = buildValidationEngine(cliContext, definitions, new TimeTracker());
@@ -483,8 +483,6 @@ public class ValidationService {
 
   public String initializeValidator(CliContext cliContext, String definitions, TimeTracker tt, String sessionId) throws Exception {
     tt.milestone();
-
-
 
     if (!sessionCache.sessionExists(sessionId)) {
       if (sessionId != null) {
