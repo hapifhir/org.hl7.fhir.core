@@ -382,7 +382,8 @@ public class POGenerator {
       if (o.duplicate) {
         b.append("msgctxt \""+o.id+"\"\r\n");        
       } 
-      b.append("msgid \""+wrapQuotes(o.msgid)+"\"\r\n");
+      String m = tfxMode && Utilities.noString(o.msgid) ? "-- no content: do not translate --" : o.msgid; 
+      b.append("msgid \""+wrapQuotes(m)+"\"\r\n");
       if (o.msgidPlural != null) {
         b.append("msgid_plural \""+wrapQuotes(o.msgidPlural)+"\"\r\n"); 
         while (o.msgstr.size() < count) {
